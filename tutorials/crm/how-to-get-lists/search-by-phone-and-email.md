@@ -242,7 +242,7 @@ We will combine the identifiers of the found duplicates into the `entityIDs` arr
     	}
 
     	// The response is an object with the LEAD, CONTACT, and COMPANY keys. A key may be absent
-    	// at all: if nothing was found for that type, it is simply not sent.
+    	// altogether: if nothing was found for that type, it is simply not sent.
     	var found map[string][]b24.ID
     	if err := json.Unmarshal(res.Result, &found); err != nil {
     		return fmt.Errorf("parse duplicates: %w", err)
@@ -1143,7 +1143,7 @@ Display the found records in the `Identifier`, Object type, `Name/First and last
     //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
     //
     // The example is self-contained: it creates a lead, a contact, and a company with the same
-    // phone number and email, finds them as duplicates, prints the table, and cleans up
+    // phone number and email, finds them as duplicates, prints the table, and cleans up after
     // itself. It runs on any portal, nothing needs to be edited.
     package main
 
@@ -1206,7 +1206,7 @@ Display the found records in the `Identifier`, Object type, `Name/First and last
     		}
 
     		// The response is an object with the LEAD, CONTACT, and COMPANY keys. A key may be absent
-    		// at all: if nothing was found for that type, it is simply not sent.
+    		// altogether: if nothing was found for that type, it is simply not sent.
     		var found map[string][]b24.ID
     		if err := json.Unmarshal(res.Result, &found); err != nil {
     			return fmt.Errorf("parse duplicates: %w", err)
@@ -1343,8 +1343,8 @@ Display the found records in the `Identifier`, Object type, `Name/First and last
     // --- helpers: data setup and cleanup
 
     // createDuplicates creates a lead, a contact, and a company with the same phone number and
-    // and email — exactly the situation the scenario looks for. It returns a function
-    // of the cleanup: it is called even when the setup broke off halfway.
+    // email — exactly the situation the scenario looks for. It returns a cleanup
+    // function: it is called even when the setup broke off halfway.
     func createDuplicates(ctx context.Context, core *b24.Core, phone, email string) (func(), error) {
     	comm := b24.Params{
     		"PHONE": []map[string]any{b24.MultifieldAdd(phone, "WORK")},

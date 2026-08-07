@@ -965,7 +965,7 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
     //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
     //
     // The example is self-contained: it finds the pipeline and the stage, places at this stage
-    // its own deal, displays the list of items at the stage with the responsible persons, and cleans up
+    // its own deal, displays the list of items at the stage with the responsible persons, and cleans up after
     // itself. It runs on any portal, nothing needs to be edited.
     package main
 

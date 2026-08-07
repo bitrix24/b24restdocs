@@ -119,7 +119,7 @@ Uploading a file to Drive is a required step because the `UF_TASK_WEBDAV_FILES` 
     // [file name, content in base64]. The request body is JSON anyway, so a regular
     // []string is serialized exactly as the method expects: neither multipart nor manual
     // url encoding is needed. Base64 inflates the data by about a third —
-    // this path for small files.
+    // this path is for small files.
     res, err := core.Call(ctx, "disk.folder.uploadfile", b24.Params{
     	"id":          folderID,
     	"data":        b24.Params{"NAME": "ava555.jpg"},
@@ -133,7 +133,7 @@ Uploading a file to Drive is a required step because the `UF_TASK_WEBDAV_FILES` 
 
     var file struct {
     	// ID is the ID of the DRIVE OBJECT, and it is exactly what fields of type
-    	// "file (Drive)".
+    	// "file (Drive)" accept.
     	ID b24.ID `json:"ID"`
     	// FILE_ID is the internal file ID. If you substitute it into a field
     	// of the task, the file either will not attach or the wrong one will.
@@ -686,7 +686,7 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), yo
     	// [file name, content in base64]. The request body is JSON anyway, so a regular
     	// []string is serialized exactly as the method expects: neither multipart nor manual
     	// url encoding is needed. Base64 inflates the data by about a third —
-    	// this path for small files.
+    	// this path is for small files.
     	res, err := core.Call(ctx, "disk.folder.uploadfile", b24.Params{
     		"id":          folderID,
     		"data":        b24.Params{"NAME": "ava555.jpg"},
@@ -700,7 +700,7 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), yo
 
     	var file struct {
     		// ID is the ID of the DRIVE OBJECT, and it is exactly what fields of type
-    		// "file (Drive)".
+    		// "file (Drive)" accept.
     		ID b24.ID `json:"ID"`
     		// FILE_ID is the internal file ID. If you substitute it into a field
     		// of the task, the file either will not attach or the wrong one will.
@@ -767,7 +767,7 @@ As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), yo
 
     // rootFolder returns the root folder of the user's personal storage, and if
     // it does not exist — the shared portal storage. The page substitutes a ready-made number here
-    // of the folder; on someone else's portal such a number does not exist, so the example looks it up.
+    // for the folder; on someone else's portal such a number does not exist, so the example looks it up.
     func rootFolder(ctx context.Context, core *b24.Core, userID b24.ID) (b24.ID, error) {
     	for _, filter := range []b24.Params{
     		{"ENTITY_TYPE": "user", "ENTITY_ID": userID},

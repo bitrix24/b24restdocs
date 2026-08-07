@@ -266,7 +266,7 @@ To change the email list, we will execute the method [crm.contact.update](../../
     ```go
     // Rows that are not mentioned stay as they were. That is why deletion is
     // a SEPARATE command rather than the absence of a row in the list: a skipped
-    // the address simply survives.
+    // address simply survives.
     _, err = core.Call(ctx, "crm.contact.update", b24.Params{
     	"id": contactID,
     	"fields": b24.Params{
@@ -476,7 +476,7 @@ Upon a successful update, the method will return `true`.
     //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
     //
     // The example is self-contained: it creates a contact with two emails, reads their
-    // the IDs, changes the first address, deletes the second, displays the result, and
+    // IDs, changes the first address, deletes the second, displays the result, and
     // cleans up after itself. It runs on any portal, nothing needs to be edited.
     package main
 
@@ -549,7 +549,7 @@ Upon a successful update, the method will return `true`.
     	// --- step 3: change the first address, delete the second
     	// Rows that are not mentioned stay as they were. That is why deletion is
     	// a SEPARATE command rather than the absence of a row in the list: a skipped
-    	// the address simply survives.
+    	// address simply survives.
     	_, err = core.Call(ctx, "crm.contact.update", b24.Params{
     		"id": contactID,
     		"fields": b24.Params{
@@ -833,7 +833,7 @@ To change the list of phone numbers, call the [crm.contact.update](../../../api-
     ```go
     // Rows that are not mentioned stay as they were. That is why deletion is
     // a SEPARATE command rather than the absence of a row in the list: a skipped
-    // the number simply survives.
+    // number simply survives.
     _, err = core.Call(ctx, "crm.contact.update", b24.Params{
     	"id": contactID,
     	"fields": b24.Params{
@@ -1036,7 +1036,7 @@ Upon a successful update, the method will return `true`.
     //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
     //
     // The example is self-contained: it creates a contact with two phone numbers, reads their
-    // the IDs, changes the first number, deletes the second, displays the result, and
+    // IDs, changes the first number, deletes the second, displays the result, and
     // cleans up after itself. It runs on any portal, nothing needs to be edited.
     package main
 
@@ -1109,7 +1109,7 @@ Upon a successful update, the method will return `true`.
     	// --- step 3: change the first address, delete the second
     	// Rows that are not mentioned stay as they were. That is why deletion is
     	// a SEPARATE command rather than the absence of a row in the list: a skipped
-    	// the number simply survives.
+    	// number simply survives.
     	_, err = core.Call(ctx, "crm.contact.update", b24.Params{
     		"id": contactID,
     		"fields": b24.Params{

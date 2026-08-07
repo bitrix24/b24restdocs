@@ -346,7 +346,7 @@ The product price is stored separately from the product card. For each found pro
     	return fmt.Errorf("parse prices: %w", err)
     }
     // Take the first price above zero: a product can have several price
-    // price types, and some of them are zero.
+    // types, and some of them are zero.
     for _, pr := range prices.Prices {
     	if pr.Price > 0 {
     		basePrice, currency = pr.Price, pr.Currency
@@ -943,7 +943,7 @@ After adding the functions from the previous steps, select the required object t
     			return fmt.Errorf("parse prices: %w", err)
     		}
     		// Take the first price above zero: a product can have several price
-    		// price types, and some of them are zero.
+    		// types, and some of them are zero.
     		for _, pr := range prices.Prices {
     			if pr.Price > 0 {
     				basePrice, currency = pr.Price, pr.Currency

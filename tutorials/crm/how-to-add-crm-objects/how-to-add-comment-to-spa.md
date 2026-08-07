@@ -101,7 +101,7 @@ To obtain the type identifier, we use the [crm.type.list](../../../api-reference
     }
 
     // The method wraps the response in an object with the types key. Two smart processes
-    // nothing forbids identical titles, so the response is a list even with
+    // may have identical titles, so the response is a list even with
     // an exact filter.
     var types struct {
     	Types []struct {
@@ -118,7 +118,7 @@ To obtain the type identifier, we use the [crm.type.list](../../../api-reference
     }
 
     // id is the sequential number of the smart process, entityTypeId is the ID of its
-    // of the TYPE. Further on you need exactly entityTypeId, these are different numbers.
+    // TYPE. Further on you need exactly entityTypeId, these are different numbers.
     entityTypeID := types.Types[0].EntityTypeID
     ```
 
@@ -231,8 +231,8 @@ To add a comment, use the [crm.timeline.comment.add](../../../api-reference/crm/
     	return fmt.Errorf("crm.timeline.comment.add: %w", err)
     }
 
-    // There is no wrapper here at all: result is the ID of the record itself
-    // of the timeline, as a bare number.
+    // There is no wrapper here at all: result is the ID of the timeline
+    // record itself, as a bare number.
     var commentID b24.ID
     if err := json.Unmarshal(res.Result, &commentID); err != nil {
     	return fmt.Errorf("parse comment ID: %w", err)
@@ -495,7 +495,7 @@ We added a comment to the SPA item timeline and received the timeline entry ID `
     	}
 
     	// The method wraps the response in an object with the types key. Two smart processes
-    	// nothing forbids identical titles, so the response is a list even with
+    	// may have identical titles, so the response is a list even with
     	// an exact filter.
     	var types struct {
     		Types []struct {
@@ -512,7 +512,7 @@ We added a comment to the SPA item timeline and received the timeline entry ID `
     	}
 
     	// id is the sequential number of the smart process, entityTypeId is the ID of its
-    	// of the TYPE. Further on you need exactly entityTypeId, these are different numbers.
+    	// TYPE. Further on you need exactly entityTypeId, these are different numbers.
     	entityTypeID := types.Types[0].EntityTypeID
     	fmt.Printf("smart process %q: id=%d, entityTypeId=%d\n",
     		types.Types[0].Title, types.Types[0].ID, entityTypeID)
@@ -540,8 +540,8 @@ We added a comment to the SPA item timeline and received the timeline entry ID `
     		return fmt.Errorf("crm.timeline.comment.add: %w", err)
     	}
 
-    	// There is no wrapper here at all: result is the ID of the record itself
-    	// of the timeline, as a bare number.
+    	// There is no wrapper here at all: result is the ID of the timeline
+    	// record itself, as a bare number.
     	var commentID b24.ID
     	if err := json.Unmarshal(res.Result, &commentID); err != nil {
     		return fmt.Errorf("parse comment ID: %w", err)
@@ -553,7 +553,7 @@ We added a comment to the SPA item timeline and received the timeline entry ID `
     // --- helpers: data setup and cleanup
 
     // addType creates a smart process. entityTypeId is deliberately not passed: it is
-    // is issued by the portal, and that is exactly what step 1 goes for.
+    // issued by the portal, and that is exactly what step 1 goes for.
     func addType(ctx context.Context, core *b24.Core, title string) (b24.ID, error) {
     	// isRecyclebinEnabled is disabled deliberately: an item in the recycle bin still
     	// counts as an item, and crm.type.delete refuses to delete a type

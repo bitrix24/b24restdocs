@@ -228,7 +228,7 @@ We will use the method [bizproc.task.list](../../api-reference/bizproc/bizproc-t
 
     // WORKFLOW_ID is NOT a number: "67e3db8e581121.72266518". Parsing it into
     // int destroys the value, so the field stays a string from the list up to
-    // of the termination command.
+    // the termination command.
     var tasks []struct {
     	ID           b24.ID `json:"ID"`
     	WorkflowID   string `json:"WORKFLOW_ID"`
@@ -528,8 +528,8 @@ In the example, all found processes are deleted within a loop. If you need to de
     //
     // The example is self-contained and safe: it creates ITS OWN deal, terminates
     // only the workflows that started on it, and deletes the deal afterwards.
-    // A dismissed employee cannot be created and "dismissed", so steps 1 and 2 are
-    // performs for real and shows what it found, while it terminates only its own.
+    // A dismissed employee cannot be created and "dismissed", so it performs steps 1 and 2
+    // for real and shows what it found, while it terminates only its own.
     // It runs on any portal, nothing needs to be edited.
     package main
 
@@ -644,7 +644,7 @@ In the example, all found processes are deleted within a loop. If you need to de
 
     		// WORKFLOW_ID is NOT a number: "67e3db8e581121.72266518". Parsing it into
     		// int destroys the value, so the field stays a string from the list up to
-    		// of the termination command.
+    		// the termination command.
     		var tasks []struct {
     			ID           b24.ID `json:"ID"`
     			WorkflowID   string `json:"WORKFLOW_ID"`

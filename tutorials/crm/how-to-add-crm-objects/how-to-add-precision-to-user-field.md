@@ -88,7 +88,7 @@ The step examples follow one another. The SDK is initialized once here; subseque
 
     ```go
     // The webhook path is a secret, so it comes from the environment, not from the code.
-    // The client is built once per portal: it holds the HTTP client and the state
+    // The client is built once per portal: it holds the HTTP client and the
     // authorization state.
     core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
     ```
@@ -913,7 +913,7 @@ The example assembles the second scenario in its entirety: it finds a deal field
 
     func run(ctx context.Context) error {
     	// The webhook path is a secret, so it comes from the environment, not from the code.
-    	// The client is built once per portal: it holds the HTTP client and the state
+    	// The client is built once per portal: it holds the HTTP client and the
     	// authorization state.
     	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
     	// --- scenario 1: create the field with the precision right away

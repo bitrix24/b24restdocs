@@ -119,7 +119,7 @@ To retrieve an SPA identifier, use the [crm.enum.ownertype](../../api-reference/
 
     ```go
     // The method is called without parameters and returns both the preset types
-    // CRM objects, and smart processes.
+    // of CRM objects and smart processes.
     res, err := core.Call(ctx, "crm.enum.ownertype", nil, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("crm.enum.ownertype: %w", err)
@@ -322,7 +322,7 @@ To retrieve the SPA item ID, use the [crm.item.list](../../api-reference/crm/uni
     }
 
     // The method wraps the response in an object with the items key. Identical titles
-    // nothing forbids it, so the response is a list even with an exact filter.
+    // are not forbidden, so the response is a list even with an exact filter.
     var list struct {
     	Items []struct {
     		ID    int    `json:"id"`
@@ -439,7 +439,7 @@ To create a task, use the [tasks.task.add](../../api-reference/tasks/tasks-task-
 
     ```go
     // The binding value is assembled from the responses rather than from a ready-made string: the short
-    // the code depends on entityTypeId and will differ on another portal.
+    // code depends on entityTypeId and will differ on another portal.
     binding := symbolCodeShort + "_" + strconv.Itoa(list.Items[0].ID)
 
     res, err = core.Call(ctx, "tasks.task.add", b24.Params{
@@ -817,7 +817,7 @@ The script executes all three steps consecutively: finds the SPA by name, finds 
 
     	// --- step 1: the smart process IDs
     	// The method is called without parameters and returns both the preset types
-    	// CRM objects, and smart processes.
+    	// of CRM objects and smart processes.
     	res, err := core.Call(ctx, "crm.enum.ownertype", nil, b24.WithIdempotent())
     	if err != nil {
     		return fmt.Errorf("crm.enum.ownertype: %w", err)
@@ -861,7 +861,7 @@ The script executes all three steps consecutively: finds the SPA by name, finds 
     	}
 
     	// The method wraps the response in an object with the items key. Identical titles
-    	// nothing forbids it, so the response is a list even with an exact filter.
+    	// are not forbidden, so the response is a list even with an exact filter.
     	var list struct {
     		Items []struct {
     			ID    int    `json:"id"`
@@ -878,7 +878,7 @@ The script executes all three steps consecutively: finds the SPA by name, finds 
 
     	// --- step 3: a task with a binding
     	// The binding value is assembled from the responses rather than from a ready-made string: the short
-    	// the code depends on entityTypeId and will differ on another portal.
+    	// code depends on entityTypeId and will differ on another portal.
     	binding := symbolCodeShort + "_" + strconv.Itoa(list.Items[0].ID)
 
     	res, err = core.Call(ctx, "tasks.task.add", b24.Params{

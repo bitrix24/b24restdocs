@@ -898,7 +898,7 @@ In the examples below, replace `1267` with the `element.id` value obtained in th
     // adds a product with property values and files, adds a price, displays
     // the result and cleans up after itself. The files are not read from disk — the example generates
     // their content itself, so it runs on any portal, and nothing needs to be edited or
-    // nothing needs to be prepared.
+    // prepared.
     package main
 
     import (

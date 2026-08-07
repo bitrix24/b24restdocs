@@ -84,7 +84,7 @@ We will use the [crm.contact.get](../../../api-reference/crm/contacts/crm-contac
     	return fmt.Errorf("crm.contact.get: %w", err)
     }
 
-    // The phone and the responsible person are needed from the response. PHONE is a multifield: a list
+    // The phone and the responsible person are needed from the response. PHONE is a multifield: a list of
     // objects, even when there is a single number, and it arrives only if the contact
     // has any phone numbers at all.
     var contact struct {
@@ -572,7 +572,7 @@ The example creates an activity "Meeting" in the CRM contact detail form and an 
     		return fmt.Errorf("crm.contact.get: %w", err)
     	}
 
-    	// The phone and the responsible person are needed from the response. PHONE is a multifield: a list
+    	// The phone and the responsible person are needed from the response. PHONE is a multifield: a list of
     	// objects, even when there is a single number, and it arrives only if the contact
     	// has any phone numbers at all.
     	var contact struct {
@@ -640,7 +640,7 @@ The example creates an activity "Meeting" in the CRM contact detail form and an 
     // --- helpers: data setup and cleanup
 
     // addContact creates a contact with a phone number: the page takes a ready-made contact with
-    // with ID 1, but on someone else's portal that is a different person or nobody.
+    // ID 1, but on someone else's portal that is a different person or nobody.
     func addContact(ctx context.Context, core *b24.Core) (b24.ID, error) {
     	res, err := core.Call(ctx, "crm.contact.add", b24.Params{
     		"fields": b24.Params{

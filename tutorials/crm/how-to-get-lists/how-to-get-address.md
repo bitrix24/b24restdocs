@@ -747,7 +747,7 @@ To retrieve only one type of address, add `TYPE_ID` to the filter. For example, 
     }
 
     // address is a single row of the crm.address.list response. The method has no ready-made address string
-    // there is none: it is assembled from parts, and the unfilled parts arrive as null — this is
+    // at all: it is assembled from parts, and the unfilled parts arrive as null — this is
     // normal even for a filled-in address.
     type address struct {
     	TypeID     b24.ID `json:"TYPE_ID"`
@@ -779,7 +779,7 @@ To retrieve only one type of address, add `TYPE_ID` to the filter. For example, 
 
     // userFieldAddresses reads the address stored not in the requisite but directly in
     // the contact — in a custom field of the address type. To the crm.address.* methods such an
-    // the address is not visible, this is an independent storage option.
+    // address is not visible, this is an independent storage option.
     func userFieldAddresses(ctx context.Context, core *b24.Core, contactID b24.ID) error {
     	res, err := core.Call(ctx, "crm.contact.userfield.list", b24.Params{
     		"filter": b24.Params{"USER_TYPE_ID": "address"},
@@ -821,7 +821,7 @@ To retrieve only one type of address, add `TYPE_ID` to the filter. For example, 
     // --- helpers: data setup and cleanup
 
     // createClient creates a contact, its requisite, and two addresses in ONE linked
-    // in a batch: 4 commands cost one call to the portal instead of four.
+    // batch: 4 commands cost one call to the portal instead of four.
     func createClient(ctx context.Context, core *b24.Core) (b24.ID, error) {
     	presetID, err := firstPreset(ctx, core)
     	if err != nil {

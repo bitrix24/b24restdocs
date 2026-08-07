@@ -174,7 +174,7 @@ To make the request faster and return only relevant data, add a filter by stages
     ```go
     // A list method returns at most 50 records per request. Pages walks
     // the cursor itself: the ABSENCE of next ends the list, because next: 0 is
-    // is a legitimate first offset rather than a sign of the end.
+    // a legitimate first offset rather than a sign of the end.
     pager, err := core.Pages("crm.item.list", b24.Params{
     	"entityTypeId": entityTypeDeal,
     	"select":       []string{"id", "title"},
@@ -918,7 +918,7 @@ As a result, we will receive information about the users.
     	// --- step 2: the deals the employee is responsible for
     	// A list method returns at most 50 records per request. Pages walks
     	// the cursor itself: the ABSENCE of next ends the list, because next: 0 is
-    	// is a legitimate first offset rather than a sign of the end.
+    	// a legitimate first offset rather than a sign of the end.
     	pager, err := core.Pages("crm.item.list", b24.Params{
     		"entityTypeId": entityTypeDeal,
     		"select":       []string{"id", "title"},

@@ -441,7 +441,7 @@ Retrieve and sanitize the data from the form:
     ```go
     // The requisite type is converted to a number, the rest is stripped of HTML tags.
     // The tags are STRIPPED rather than escaped: escaping is needed when rendering to
-    // page, while in CRM it turns "Weber & Son" into
+    // a page, while in CRM it turns "Weber & Son" into
     // "Weber &amp; Son".
     presetID, _ := strconv.Atoi(r.PostFormValue("REQ_TYPE"))
     name := stripTags(r.PostFormValue("NAME"))
@@ -1125,7 +1125,7 @@ Add an address for the company details using the [crm.address.add](../../../api-
     	}
     	// The requisite type is converted to a number, the rest is stripped of HTML tags.
     	// The tags are STRIPPED rather than escaped: escaping is needed when rendering to
-    	// page, while in CRM it turns "Weber & Son" into
+    	// a page, while in CRM it turns "Weber & Son" into
     	// "Weber &amp; Son".
     	presetID, _ := strconv.Atoi(r.PostFormValue("REQ_TYPE"))
     	name := stripTags(r.PostFormValue("NAME"))

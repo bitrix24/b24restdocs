@@ -184,7 +184,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     	// --- the page scenario itself
 
     	// The price is set manually, so customPrice = "Y". A markup is expressed
-    	// a NEGATIVE discountPrice: the base price is 1030, it is sold for 1100.
+    	// by a NEGATIVE discountPrice: the base price is 1030, it is sold for 1100.
     	res, err := core.Call(ctx, "sale.basketitem.add", b24.Params{
     		"fields": b24.Params{
     			"orderId":       orderID,
@@ -323,7 +323,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
     }
 
     // del removes what was created. A cleanup error is printed but not returned: it must not
-    // must not mask the real error of the scenario.
+    // mask the real error of the scenario.
     func del(ctx context.Context, core *b24.Core, method string, id b24.ID) {
     	if _, err := core.Call(ctx, method, b24.Params{"id": id}); err != nil {
     		fmt.Fprintf(os.Stderr, "%s(%d): %v\n", method, id, err)

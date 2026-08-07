@@ -241,7 +241,7 @@ The handler receives a POST request at the address specified in the `handlerUrl`
 
     mux := http.NewServeMux()
     // The page with the form is served from here as well: then the form request goes to the same
-    // the address it was opened from, and no static file setup is required.
+    // address it was opened from, and no static file setup is required.
     mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
     	w.Header().Set("Content-Type", "text/html; charset=utf-8")
     	fmt.Fprint(w, formPage)
@@ -393,7 +393,7 @@ In REST, we pass the values as is. Do not apply `htmlspecialchars` or other HTML
     }
     // In REST, values are sent as is: html.EscapeString and the like
     // is needed when rendering to a page, while in CRM it turns "Weber & Son" into
-    // yields "Weber &amp; Son".
+    // "Weber &amp; Son".
     ```
 
 {% endlist %}
@@ -982,7 +982,7 @@ The handler returns `{ "message": "Lead created", "id": 3465 }` to the page. The
     //
     // A separate form.html file is not needed: the page with the form is served by the same program,
     // open http://localhost:3000/. To check the result, run the same program with
-    // as an argument: go run . check 3465
+    // an argument: go run . check 3465
     package main
 
     import (
@@ -1029,7 +1029,7 @@ The handler returns `{ "message": "Lead created", "id": 3465 }` to the page. The
 
     	mux := http.NewServeMux()
     	// The page with the form is served from here as well: then the form request goes to the same
-    	// the address it was opened from, and no static file setup is required.
+    	// address it was opened from, and no static file setup is required.
     	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
     		w.Header().Set("Content-Type", "text/html; charset=utf-8")
     		fmt.Fprint(w, formPage)
@@ -1081,7 +1081,7 @@ The handler returns `{ "message": "Lead created", "id": 3465 }` to the page. The
     	}
     	// In REST, values are sent as is: html.EscapeString and the like
     	// is needed when rendering to a page, while in CRM it turns "Weber & Son" into
-    	// yields "Weber &amp; Son".
+    	// "Weber &amp; Son".
     	// The phone and the email go into the fm field — an array of crm_multifield objects.
     	// The universal crm.item.* methods accept keys in camelCase, whereas
     	// crm.lead.add would expect the same keys in UPPERCASE.
@@ -1185,7 +1185,7 @@ The handler returns `{ "message": "Lead created", "id": 3465 }` to the page. The
     }
 
     // formPage is the same form as in step 1, only served by the program rather than
-    // is stored as a separate file.
+    // stored as a separate file.
     const formPage = `<!doctype html>
     <meta charset="utf-8">
     <title>Request</title>
