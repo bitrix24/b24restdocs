@@ -29,7 +29,7 @@ After saving, the application is added to Bitrix24, and further installation dep
 1. Determine whether the application requires an interface within Bitrix24
 2. Prepare the application page, server handler, or a ZIP archive containing static files
 3. Select an option from the [How to Choose a Scenario](#installation-scenarios) table
-4. Open the local application form following the [user instructions](https://helpdesk.bitrix24.com/open/20886106/#2)
+4. Open the local application form following the [user instructions](https://helpdesk.bitrix24.com/open/21133100/#app)
 5. Specify a name, select permissions, and fill in the fields for the chosen scenario
 6. Save the application and perform the initial setup if required
 
