@@ -1,0 +1,25 @@
+title: e-Signature Integration with HR Systems
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Company
+    href: humanresources-hcmlink-company-add.md
+  - name: Update Company
+    href: humanresources-hcmlink-company-update.md
+  - name: Get Company List
+    href: humanresources-hcmlink-company-list.md
+  - name: Get Current User Company List
+    href: humanresources-hcmlink-company-user-list.md
+  - name: Delete Company
+    href: humanresources-hcmlink-company-delete.md
+  - name: Transfer Employee List
+    href: humanresources-hcmlink-employee-set.md
+  - name: Get Mapped Employee List
+    href: humanresources-hcmlink-employee-list.md
+  - name: Transfer Field Values
+    href: humanresources-hcmlink-field-value-set.md
+  - name: Update Synchronization Job
+    href: humanresources-hcmlink-job-update.md
+  - name: Get Synchronization Job Status
+    href: humanresources-hcmlink-job-status-get.md

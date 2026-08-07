@@ -24,7 +24,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 || **disk** | [Drive](../disk/index.md) | Bitrix24.Drive ||
 || **entity** | [Data store](../entity/index.md) | Data store ||
 || **humanresources** | [Company Structure REST 3.0](../departments/index.md) | Company Structure ||
-|| **humanresources.hcmlink** | [HCM Link](../sign/index.md#osobennosti-scope) | KEDO, Signature ||
+|| **humanresources.hcmlink** | [e-Signature Integration with HR Systems](../sign/hcm-link/index.md) | e-Signature ||
 || **im** | [Chat and Notifications](../chats/index.md) | Chat and Notifications ||
 || **imbot** | [Creating and managing Chatbots](../chat-bots/index.md) | Chat bots ||
 || **imconnector** | [Connectors for external messengers](../imopenlines/imconnector/index.md) | Open Channels ||
@@ -43,7 +43,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 || **rpa** | [Business Automation](../outdated/rpa/index.md) | Business Automation ||
 || **sale** | [Online store](../sale/index.md) | Online store ||
 || **salescenter** | [CRM. Payment](../crm/universal/payment/index.md) | Chat sales ||
-|| **sign.b2e** | [KEDO + Gosklyuch](../sign/index.md) | KEDO, Signature ||
+|| **sign.b2e** | [e-Signature](../sign/index.md) | e-Signature ||
 || **sonet_group, socialnetwork** | [Social Network Working Groups](../sonet-group/sonet-group-create.md) | Social Network Working Groups ||
 || **task** | [Tasks](../tasks/index.md) | Tasks ||
 || **telephony** | [Telephony](../telephony/index.md) | Telephony ||

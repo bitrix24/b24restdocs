@@ -95,7 +95,7 @@ items:
     include:
       path: pay-system/b24-toc.yaml
       mode: link
-  - name: Signature
+  - name: e-Signature
     include:
       path: sign/b24-toc.yaml
       mode: link

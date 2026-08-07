@@ -1,4 +1,4 @@
-title: Signature  
+title: e-Signature
 href: index.md  
 items:  
   - name: Overview of Methods  
@@ -16,4 +16,8 @@ items:
   - name: Events  
     include:  
       path: events/b24-toc.yaml  
-      mode: link  
+      mode: link
+  - name: HCM Link Integration with HR Systems
+    include:
+      path: hcm-link/b24-toc.yaml
+      mode: link

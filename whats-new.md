@@ -2,6 +2,11 @@
 
 ## 2026
 
+### August 7, 2026
+
+- Added the page [e-Signature Integration with HR Systems: Overview of Methods](./api-reference/sign/hcm-link/index.md)
+- Added the methods [humanresources.hcmlink.*](./api-reference/sign/hcm-link/index.md) for e-Signature integration with HR systems
+
 ### August 4, 2026
 
 - Updated the tutorial [How to Add an Action to Create a Smart Invoice Based on a Lead or Deal](./tutorials/bizproc/activity.md)
