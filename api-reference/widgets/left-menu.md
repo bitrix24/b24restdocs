@@ -33,6 +33,8 @@ The application item goes to the *Applications* group of the main menu, together
 
 The item name is set by the `TITLE` parameter during registration. If the parameter is not passed, the application name is displayed.
 
+Only the employees who have access to the application see the item. Bitrix24 checks access every time it displays the menu.
+
 ## What the Handler Receives
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
