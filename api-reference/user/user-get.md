@@ -75,6 +75,8 @@ A key can be assigned an additional prefix that clarifies the filter behavior. P
 - `!=` - not equal
 - `!` — not equal
 
+Pass the values of date and time fields in ISO 8601 format, for example `2020-01-01T00:00:00+02:00`, or in the date format of your Bitrix24. This applies to the `TIMESTAMP_X`, `DATE_REGISTER`, `LAST_LOGIN`, `LAST_ACTIVITY_DATE`, `PERSONAL_BIRTHDAY`, `UF_EMPLOYMENT_DATE` fields and to custom fields of the date and date-time types. If the value is not recognized as a date, the condition retrieves no records
+
  ||
 || **ADMIN_MODE**
 [`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
