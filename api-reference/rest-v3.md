@@ -87,6 +87,45 @@ The result will be JSON in OpenAPI format.
 
 The method can be called in Swagger, Postman, or another program that works with OpenAPI.
 
+## Repeated calls without duplicates {#idempotency}
+
+If a request does not reach Bitrix24 or the response is lost, an integration usually repeats the call. A method that creates or modifies data runs a second time, and a duplicate appears in Bitrix24.
+
+To prevent this, pass the `Idempotency-Key` header in the request — an arbitrary string that identifies a specific call. For example, a UUID.
+
+```bash
+curl -X POST \
+-H "Content-Type: application/json" \
+-H "Accept: application/json" \
+-H "Idempotency-Key: 9f1c1a7e-5f1b-4a1e-9a2c-2f5f2b6c7d80" \
+-d '{"fields":{"title":"Prepare a report","responsibleId":1,"creatorId":1}}' \
+https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/tasks.task.add
+```
+
+The first call runs as usual, and its response is stored for 24 hours. When the call is repeated with the same key and the same request body, the method does not run: Bitrix24 returns the stored response and adds the `Idempotent-Replayed: true` header to it.
+
+### What to consider
+
+- The header works only in REST 3.0, that is, when calling the `/rest/api/` address. In the previous version of REST it is ignored.
+
+- The header is taken into account in methods that create, modify, and delete data. In methods that retrieve data it is not needed: a repeated call does not change the state of Bitrix24.
+
+- The key is unique within a single application or webhook, a single user, and a single method. The same key in two different methods means two independent calls.
+
+- The response is stored only when the call succeeds. If the method returns an error, a repeated call with the same key runs the method again.
+
+- The key value is 1 to 255 printable ASCII characters.
+
+- Send a repeated call after you receive a response or the timeout expires. Two requests with the same key sent at the same time may both run.
+
+### Errors
+
+#|
+|| **Code** | **Reason** | **What to do** ||
+|| `BITRIX_REST_V3_EXCEPTION_IDEMPOTENCYKEYREUSEDEXCEPTION` | The key was already used with a different request body | Take a new key. Reuse the previous key only when you repeat the same call ||
+|| `BITRIX_REST_V3_EXCEPTION_INVALIDIDEMPOTENCYKEYEXCEPTION` | The key value does not fit the length limit or contains invalid characters | Pass a string of 1 to 255 printable ASCII characters ||
+|#
+
 ## Unified response format
 
 In the previous version of REST, different modules returned results in various formats. For example, the identifier of a created item could be a nested object `"result": { "id": 1823 }` or returned directly in the result as `"result": 1823`. Different methods required writing custom logic for response handling.
