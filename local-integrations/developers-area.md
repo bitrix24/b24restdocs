@@ -86,7 +86,9 @@ This list shows the following information about integrations:
 
 You can customize the displayed fields by clicking the gear icon in the upper left corner of the list.
 
-From this list, you can also edit the integration settings (or delete it).
+From this list, you can also edit the integration settings or delete it.
+
+An integration can be deleted by the Bitrix24 administrator or by the employee who created it. The integration is deleted as a whole, together with all of its parts: the incoming webhook, event handlers, the local application and its widgets, and the chat bot.
 
 > **Important!** The secret codes of **other people's** webhooks are not accessible even to the administrator. If an administrator edits someone else's webhook, the secret code will be reset, and the administrator will become the owner of that webhook.
 
