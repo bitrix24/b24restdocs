@@ -37,7 +37,7 @@ Some codes contain the name of the entity type. Substitute the required value fo
 
 #|
 || **Code Template** | **What to Substitute** ||
-|| `CRM_XXX_...` | `LEAD`, `DEAL`, `CONTACT`, `COMPANY`, `QUOTE`, `SMART_INVOICE`, `ORDER`. For a [custom entity type](../crm/universal/index.md), use `DYNAMIC_` and the numeric identifier of the type: `CRM_DYNAMIC_183_DETAIL_TAB` ||
+|| `CRM_XXX_...` | `LEAD`, `DEAL`, `CONTACT`, `COMPANY`, `QUOTE`, `SMART_INVOICE`, `ORDER`, `ACTIVITY`. For a [custom entity type](../crm/universal/index.md), use `DYNAMIC_` and the numeric identifier of the type: `CRM_DYNAMIC_183_DETAIL_TAB` ||
 || `TASK_XXX_LIST_TOOLBAR` | `USER` for the task list of a user, `GROUP` for the task list of a project ||
 |#
 

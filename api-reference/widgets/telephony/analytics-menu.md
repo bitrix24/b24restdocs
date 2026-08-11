@@ -31,10 +31,18 @@ Open the *Telephony* section and go to the *Call statistics* tab — the page ad
 
 ![Menu item in call analytics](./_images/TELEPHONY_ANALYTICS_MENU.png "Menu item in call analytics")
 
-The item name and the group name are set during registration:
+The item name and the group name are set with the parameters of the [placement.bind](../placement-bind.md) method during registration.
 
-- `TITLE` — the item name in the menu. If the parameter is not passed, the application name is displayed instead
-- `GROUP_NAME` — the name of the group the item belongs to. If the parameter is not passed, the item goes to the *Applications* group. Items of several applications with the same `GROUP_NAME` are collected into a single group
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **TITLE**
+[`string`](../../data-types.md) | The item name in the menu. If the parameter is not passed, the application name is displayed instead ||
+|| **GROUP_NAME**
+[`string`](../../data-types.md) | The name of the group the item belongs to. If the parameter is not passed, the item goes to the *Applications* group. Items of several applications with the same `GROUP_NAME` are collected into a single group ||
+|#
+
+Both names are translated into the user's language with the `LANG_ALL` parameter — as in the examples below.
 
 ## What the Handler Receives
 
@@ -320,12 +328,24 @@ This placement does not support the `OPTIONS` parameter of the [placement.bind](
     	return fmt.Errorf("placement.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage — unmarshal it into a struct
+    // matching the response shape from the "Response Handling" section of the placement.bind page.
     fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The placement code is specified incorrectly or the application has not been granted the `telephony` scope ||
+|| `placement.bind` returns `ERROR_ARGUMENT` | Pass the required `PLACEMENT` and `HANDLER` parameters. The code of the empty field arrives in `argument` ||
+|| The widget is registered, but there is no item in the analytics menu | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the Bitrix24 page: the list of menu items is assembled when the page loads ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
 
 ## Continue Your Exploration
 

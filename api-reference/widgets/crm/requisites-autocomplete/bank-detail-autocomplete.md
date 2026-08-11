@@ -1,4 +1,4 @@
-# Bank Details Autofill Point in CRM
+# Bank Details Autofill in the CRM Card CRM_BANK_DETAIL_AUTOCOMPLETE
 
 {% note tip "" %}
 
@@ -10,9 +10,24 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The `CRM_BANK_DETAIL_AUTOCOMPLETE` point connects an application handler to the bank details search in a CRM card. It is required when an application searches for and populates bank company details, for example, by BIC.
 
-The general workflow and common errors are described in the [Autofilling details in the CRM card](./index.md) overview.
+The embedding point code is passed in the `PLACEMENT` parameter of the [placement.bind](../../placement-bind.md) method.
 
-## Where to find it in the interface
+The general workflow is described in the [Autofilling details in the CRM card](./index.md) overview.
+
+{% note info "" %}
+
+The handler will not be available in the search source selection interface until the application installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
+## Where the Widget Is Embedded
+
+#|
+|| **Embedding Point Code** | **Location** ||
+|| `CRM_BANK_DETAIL_AUTOCOMPLETE` | Search source in the *Find details* field of the *Banking details* section of the details form ||
+|#
+
+### Where to Find It in the Interface
 
 To reach the search field:
 
@@ -26,57 +41,9 @@ If only one search source is available, its name is shown as a hint inside the f
 
 ![Application handler in the list of bank details search sources](./_images/CRM_BANK_DETAIL_AUTOCOMPLETE.png "Application handler in the list of bank details search sources")
 
-## How to register a handler
+## What the Handler Receives
 
-When registering a handler using the [placement.bind](../../placement-bind.md) method, pass the value `CRM_BANK_DETAIL_AUTOCOMPLETE` in the `PLACEMENT` parameter. Bitrix24 uses this code to determine that the handler belongs to bank details autofill.
-
-Connection parameters are not included in the data that Bitrix24 passes to the handler during a search.
-
-{% include [Note on parameters](../../../../_includes/required.md) %}
-
-#|
-|| **Parameter**
-[`type`](../../../data-types.md) | **Description** ||
-|| **PLACEMENT***
-[`string`](../../../data-types.md) | Embedding point code. Pass the value `CRM_BANK_DETAIL_AUTOCOMPLETE` ||
-|| **HANDLER***
-[`string`](../../../data-types.md) | Application handler URL ||
-|| **TITLE**
-[`string`](../../../data-types.md) | Handler name in the search source selection interface ||
-|| **OPTIONS[countries]**
-[`string`](../../../data-types.md) | Country identifiers separated by commas without spaces. If the parameter is not passed, the handler is available to all countries for which the search field is open.
-
-Country identifiers can be obtained via the [crm.requisite.preset.countries](../../../crm/requisites/presets/crm-requisite-preset-countries.md) ||
-|#
-
-Example of registering a handler:
-
-```javascript
-BX24.callMethod(
-    'placement.bind',
-    {
-        PLACEMENT: 'CRM_BANK_DETAIL_AUTOCOMPLETE',
-        HANDLER: 'https://example.com/bank-detail-autocomplete/',
-        TITLE: 'Bank details search',
-        OPTIONS: {
-            countries: '1'
-        }
-    },
-    function(result)
-    {
-        if (result.error())
-        {
-            console.error(result.error());
-        }
-    }
-);
-```
-
-## What the handler receives
-
-Bitrix24 sends a POST request with the point data to the handler. Some parameters come in the handler URL query string, the rest in the request body.
-
-Example POST request:
+Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
 ```php
 Array
@@ -98,22 +65,45 @@ Array
 )
 ```
 
+After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+```json
+{
+    "searchQuery": "044599999",
+    "URI": "/bitrix/components/bitrix/crm.requisite.details/slider.ajax.php?requisite_id=n0&sessid=1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d&etype=4&eid=2979&external_context_id=COMPANY_2979&pid=1&cid=0&IFRAME=Y&IFRAME_TYPE=SIDE_SLIDER"
+}
+```
+
 {% include notitle [description of standard data](../../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
-The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
+The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call. Along with the universal `URI` key, the context carries the key of the placement itself. For this placement, `URI` is filled in differently from the other CRM placements, so it is described in the table separately.
+
+{% include [Note on parameters](../../../../_includes/required.md) %}
 
 #|
-|| **Parameter**
-[`type`](../../../data-types.md) | **Description** ||
+|| **Parameter** | **Description** ||
 || **searchQuery***
 [`string`](../../../data-types.md) | The string that the user entered in the bank details search field ||
 || **URI***
 [`string`](../../../data-types.md) | Address of the page the widget is opened from. The details form is a separate document of the `crm.requisite.details` component, so its address arrives here instead of the client card address. The client identifier is passed in the `eid` and `external_context_id` parameters ||
 |#
 
-## How to return found options
+## OPTIONS When Registering via placement.bind
+
+The placement supports the `OPTIONS` parameter of the [placement.bind](../../placement-bind.md) method. It restricts the list of countries the handler works for and is not included in the data that Bitrix24 passes to the handler during a search.
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **countries**
+[`string`](../../../data-types.md) | Country identifiers separated by commas without spaces. If the parameter is not passed, the handler is available to all countries for which the search field is open.
+
+Country identifiers can be obtained via the [crm.requisite.preset.countries](../../../crm/requisites/presets/crm-requisite-preset-countries.md) ||
+|#
+
+## How to Return Found Options
 
 Pass the found options using the [BX24.placement.call](../../ui-interaction/bx24-placement-call.md) command with the name `crmShowFoundEntities`.
 
@@ -142,7 +132,7 @@ BX24.placement.call(
             {
                 id: 'bank-044525225',
                 name: 'Ltd. Superbank',
-                phone: '+1 495 000-00-00',
+                phone: '+49 30 000-00-00',
                 web: 'https://bank.example.com'
             }
         ]
@@ -150,7 +140,7 @@ BX24.placement.call(
 );
 ```
 
-## How to create a selected option
+## How to Fill the Selected Option Into the Card
 
 If a user selects an option from the application response, Bitrix24 triggers the `onCrmEntityIsNeedToCreate` interface event. Subscribe to it using the [BX24.placement.bindEvent](../../ui-interaction/bx24-placement-bind-event.md) method.
 
@@ -182,9 +172,9 @@ BX24.placement.bindEvent('onCrmEntityIsNeedToCreate', function (eventData) {
                 NAME: selectedTitle,
                 RQ_BANK_NAME: selectedTitle,
                 RQ_BIK: '044525225',
-                RQ_BANK_ADDR: 'New York City',
+                RQ_BANK_ADDR: 'Berlin',
                 RQ_COR_ACC_NUM: '30101810400000000225',
-                RQ_SWIFT: 'EXAMPLERU'
+                RQ_SWIFT: 'EXAMPLEDE'
             }
         }
     );
@@ -225,8 +215,280 @@ Bank detail fields:
 [`string`](../../../data-types.md) | SWIFT ||
 |#
 
+## Code Examples
+
+{% include [Note on Examples](../../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- cURL (OAuth)
+
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{
+        "PLACEMENT": "CRM_BANK_DETAIL_AUTOCOMPLETE",
+        "HANDLER": "https://your-domain.com/widgets/crm-bank-detail-autocomplete-handler.php",
+        "TITLE": "Bank detail search",
+        "LANG_ALL": {
+          "de": {
+            "TITLE": "Bank detail search"
+          },
+          "en": {
+            "TITLE": "Bank detail search"
+          }
+        },
+        "OPTIONS": {
+          "countries": "1"
+        },
+        "auth": "**put_access_token_here**"
+      }' \
+      https://**put_your_bitrix24_address**/rest/placement.bind
+    ```
+
+- JS (TS)
+
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'placement.bind',
+        params: {
+          PLACEMENT: 'CRM_BANK_DETAIL_AUTOCOMPLETE',
+          HANDLER: 'https://your-domain.com/widgets/crm-bank-detail-autocomplete-handler.php',
+          TITLE: 'Bank detail search',
+          LANG_ALL: {
+            de: {
+              TITLE: 'Bank detail search',
+            },
+            en: {
+              TITLE: 'Bank detail search',
+            },
+          },
+          OPTIONS: {
+            countries: '1',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Placement bound successfully:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function bindCrmBankDetailAutocomplete() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'placement.bind',
+            params: {
+              PLACEMENT: 'CRM_BANK_DETAIL_AUTOCOMPLETE',
+              HANDLER: 'https://your-domain.com/widgets/crm-bank-detail-autocomplete-handler.php',
+              TITLE: 'Bank detail search',
+              LANG_ALL: {
+                de: {
+                  TITLE: 'Bank detail search',
+                },
+                en: {
+                  TITLE: 'Bank detail search',
+                },
+              },
+              OPTIONS: {
+                countries: '1',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Placement bound successfully:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', bindCrmBankDetailAutocomplete)
+    </script>
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'placement.bind',
+                [
+                    'PLACEMENT' => 'CRM_BANK_DETAIL_AUTOCOMPLETE',
+                    'HANDLER' => 'https://your-domain.com/widgets/crm-bank-detail-autocomplete-handler.php',
+                    'TITLE' => 'Bank detail search',
+                    'LANG_ALL' => [
+                        'de' => [
+                            'TITLE' => 'Bank detail search',
+                        ],
+                        'en' => [
+                            'TITLE' => 'Bank detail search',
+                        ],
+                    ],
+                    'OPTIONS' => [
+                        'countries' => '1',
+                    ],
+                ]
+            );
+
+        $result = $response->getResponseData()->getResult();
+        if ($result->error()) {
+            error_log($result->error());
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error binding placement: ' . $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'placement.bind',
+        {
+            PLACEMENT: 'CRM_BANK_DETAIL_AUTOCOMPLETE',
+            HANDLER: 'https://your-domain.com/widgets/crm-bank-detail-autocomplete-handler.php',
+            TITLE: 'Bank detail search',
+            LANG_ALL: {
+                de: { TITLE: 'Bank detail search' },
+                en: { TITLE: 'Bank detail search' }
+            },
+            OPTIONS: {
+                countries: '1'
+            }
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'placement.bind',
+        [
+            'PLACEMENT' => 'CRM_BANK_DETAIL_AUTOCOMPLETE',
+            'HANDLER' => 'https://your-domain.com/widgets/crm-bank-detail-autocomplete-handler.php',
+            'TITLE' => 'Bank detail search',
+            'LANG_ALL' => [
+                'de' => [
+                    'TITLE' => 'Bank detail search',
+                ],
+                'en' => [
+                    'TITLE' => 'Bank detail search',
+                ],
+            ],
+            'OPTIONS' => [
+                'countries' => '1',
+            ],
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
+    	"PLACEMENT": "CRM_BANK_DETAIL_AUTOCOMPLETE",
+    	"HANDLER":   "https://your-domain.com/widgets/crm-bank-detail-autocomplete-handler.php",
+    	"TITLE":     "Bank detail search",
+    	"LANG_ALL": b24.Params{
+    		"de": b24.Params{
+    			"TITLE": "Bank detail search",
+    		},
+    		"en": b24.Params{
+    			"TITLE": "Bank detail search",
+    		},
+    	},
+    	"OPTIONS": b24.Params{
+    		"countries": "1",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("placement.bind: %w", err)
+    }
+
+    // The response arrives as json.RawMessage — unmarshal it into the response
+    // shape of the placement.bind method, see "Response Handling" on its page.
+    fmt.Printf("%s\n", res.Result)
+    ```
+
+{% endlist %}
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| The handler is registered but does not appear in the list of search sources | Complete the [application installation](../../../../settings/app-installation/installation-finish.md) and check that the `CRM_BANK_DETAIL_AUTOCOMPLETE` code is passed in `PLACEMENT` ||
+|| The handler is unavailable for the required country | Check the value of `OPTIONS[countries]`. The string must contain country identifiers separated by commas without spaces ||
+|| The handler is not called while the user is typing the query | Bitrix24 calls the external search when the search string contains at least three characters ||
+|| The handler does not find the search string in the request body | `searchQuery` arrives inside `PLACEMENT_OPTIONS` as a separate JSON string, not as a separate parameter ||
+|| The `URI` key carries an address other than the client card | The details form is a separate document of the `crm.requisite.details` component. Take the client identifier from the `eid` and `external_context_id` parameters ||
+|| Found options are not displayed | Pass the array of options to the `data` field of the `crmShowFoundEntities` command ||
+|| The option is not filled into the card after selection | Subscribe to `onCrmEntityIsNeedToCreate` and call `crmShowCreatedEntity` after creating the object ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../../placement-bind.md) page.
+
 ## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./requisite-autocomplete.md)
+- [{#T}](../../placement-bind.md)
+- [{#T}](../../ui-interaction/index.md)
+- [{#T}](../../bx24-widget-methods.md)
 - [{#T}](../../../crm/requisites/bank-detail/index.md)

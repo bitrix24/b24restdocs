@@ -1,10 +1,10 @@
 title: Widgets in Messenger  
 href: index.md  
-items:   
-  - name: Overview of Widgets  
-    href: index.md  
-  - name: Widget Above Message  
-    href: textarea.md  
+items:
+  - name: Overview of Embedding Points
+    href: index.md
+  - name: Widget Above the Input Field
+    href: textarea.md
   - name: Sidebar Widget  
     href: sidebar.md  
   - name: Context Menu Item for Message  

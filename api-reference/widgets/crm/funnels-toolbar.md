@@ -71,6 +71,10 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context.
 
 The placement has no keys of its own — the context carries only the universal `URI` key.
 
+## OPTIONS When Registering via placement.bind
+
+This placement does not support the `OPTIONS` parameters. The values passed are not retained: the [placement.get](../placement-get.md) method returns an empty array for such a registration.
+
 ## Code Examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
@@ -296,12 +300,24 @@ The placement has no keys of its own — the context carries only the universal 
     	return fmt.Errorf("placement.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage — unmarshal it into the response
+    // shape of the placement.bind method, see "Response Handling" on its page.
     fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is assembled for an object type that this placement does not support, or the application has not been granted the `crm` scope. Check the code against the table at the beginning of the page ||
+|| The `CRM_DEAL_FUNNELS_TOOLBAR` code is registered for deals | For deals, the placement code carries no object name — use `CRM_FUNNELS_TOOLBAR` ||
+|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
 
 ## Continue Your Exploration
 

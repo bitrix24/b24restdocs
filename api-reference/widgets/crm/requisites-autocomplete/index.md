@@ -40,15 +40,20 @@ The handler will not be available in the search source selection interface until
 ## Common errors
 
 #|
-|| **Error** | **How to fix** ||
+|| **Error** | **Solution** ||
 || Handler is registered but unavailable during search | Check that the application is installed and that the correct embedding point code is passed in `PLACEMENT` ||
 || Handler is unavailable for the required country | Check the value of `OPTIONS[countries]`. The string must contain country identifiers separated by commas without spaces ||
 || Found options are not displayed | Pass the array of options to the `data` field of the `crmShowFoundEntities` command ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
 || The option is not substituted into the card after selection | Subscribe to `onCrmEntityIsNeedToCreate` and call `crmShowCreatedEntity` after creation ||
 |#
 
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../../placement-bind.md) page.
+
 ## Continue Learning
 
+- [{#T}](../index.md)
+- [{#T}](../../placements.md)
 - [{#T}](../../placement-bind.md)
 - [{#T}](../../placement-get.md)
 - [{#T}](../../placement-unbind.md)

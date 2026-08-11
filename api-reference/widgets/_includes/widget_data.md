@@ -52,3 +52,22 @@
 |#
 
 Bitrix24 adds a `URI` key to `PLACEMENT_OPTIONS` — the path with the query string of the page from which the widget was opened. It arrives for any placement, along with the keys of that placement itself. The key is absent if the browser did not send the `Referer` header or if the widget was opened from a page on a different domain.
+
+**How to Parse the Call Context**
+
+`PLACEMENT_OPTIONS` arrives as a JSON string, not as an array: parse it on the handler side before use. The set of keys is specific to each placement and is described in the `PLACEMENT_OPTIONS` section of this page.
+
+```php
+$placement = $_POST['PLACEMENT'] ?? '';
+$options = json_decode($_POST['PLACEMENT_OPTIONS'] ?? '{}', true);
+```
+
+```python
+options = json.loads(request.form.get("PLACEMENT_OPTIONS", "{}") or "{}")
+```
+
+In [B24JsSDK](/sdk/bx24-js-sdk/index.html), there is no need to parse the string: the `$b24.placement.options` property returns a ready object, and `$b24.placement.placement` returns the placement code.
+
+**What the Handler Must Return**
+
+The handler responds with a regular HTML page — Bitrix24 displays it in a frame in place of the widget. The page must allow embedding: if the application server sends the `X-Frame-Options` or `Content-Security-Policy` headers that prohibit framing, an empty area remains in place of the widget. How to fix it is described in the article [Site Does Not Allow Connection](/local-integrations/site-does-not-allow-connection.html).

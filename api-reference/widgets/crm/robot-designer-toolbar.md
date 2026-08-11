@@ -74,6 +74,10 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context.
 
 The placement has no keys of its own — the context carries only the universal `URI` key. The pipeline identifier does not arrive as a separate parameter, but it can be taken from the path in `URI`. For example, for the `/crm/deal/automation/0/` value the pipeline identifier is `0`.
 
+## OPTIONS When Registering via placement.bind
+
+This placement does not support the `OPTIONS` parameters. The values passed are not retained: the [placement.get](../placement-get.md) method returns an empty array for such a registration.
+
 ## Code Examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
@@ -299,12 +303,24 @@ The placement has no keys of its own — the context carries only the universal 
     	return fmt.Errorf("placement.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage — unmarshal it into the response
+    // shape of the placement.bind method, see "Response Handling" on its page.
     fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is assembled for an object type that this placement does not support, or the application has not been granted the `crm` scope. Check the code against the table at the beginning of the page ||
+|| The `TASK_ROBOT_DESIGNER_TOOLBAR` or `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR` code is registered | These placements belong to task and workgroup automation and require different scopes. For CRM, take the code from the table at the beginning of the page ||
+|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
 
 ## Continue Your Exploration
 

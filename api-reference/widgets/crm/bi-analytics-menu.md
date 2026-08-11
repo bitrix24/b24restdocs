@@ -280,12 +280,24 @@ The `BI_ANALYTICS_MENU` placement does not support the `OPTIONS` parameters. Bit
     	return fmt.Errorf("placement.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage — unmarshal it into the response
+    // shape of the placement.bind method, see "Response Handling" on its page.
     fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is specified incorrectly or the application has not been granted the `placement` scope. The placement is registered only with the `BI_ANALYTICS_MENU` code ||
+|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
+|| Not all employees see the item | The item is displayed only to those who are allowed to work with BI analytics ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
 
 ## Continue Learning
 

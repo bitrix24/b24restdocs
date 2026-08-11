@@ -40,7 +40,6 @@ If there are more items than fit into the row, some of them move under the *More
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
 ```php
-
 Array
 (
     [DOMAIN] => xxx.bitrix24.com
@@ -58,7 +57,14 @@ Array
     [PLACEMENT] => IM_NAVIGATION
     [PLACEMENT_OPTIONS] => {"URI":"\/online\/"}
 )
+```
 
+After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+```json
+{
+    "URI": "/online/"
+}
 ```
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -99,7 +105,7 @@ Possible values:
 
 The `context` parameter, which limits the display by chat type, does not apply to this placement: the navigation item is not bound to a chat.
 
-### Code Examples
+## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -359,18 +365,32 @@ The `context` parameter, which limits the display by chat type, does not apply t
     	return fmt.Errorf("placement.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage — unmarshal it into a struct
+    // matching the response shape from the "Response Handling" section of the placement.bind page.
     fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
+
+## Typical Errors
+
+#|
+|| **Error** | **How to Resolve** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
+|| `placement.bind` returns `ERROR_ARGUMENT` | The required `OPTIONS[iconName]` parameter is missing. The code of the empty field arrives in `argument` ||
+|| The item did not appear in the messenger navigation menu | Complete the application installation and reopen the messenger ||
+|| The item is not found in the navigation row | The application item is added last, so most often it moves under the *More* button. Open that list ||
+|| The display of the item is restricted with the `context` key | The embedding point is not tied to a chat, and the `context` key does not apply to it. Access can be restricted with the `role` and `extranet` keys ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
 
 ## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./sidebar.md)
 - [{#T}](./textarea.md)
+- [{#T}](./context-menu.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../bx24-widget-methods.md)

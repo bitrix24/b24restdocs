@@ -296,8 +296,8 @@ For `SONET_GROUP_DETAIL_TAB`, the context includes the key:
     	return fmt.Errorf("placement.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage — unmarshal it into the response
+    // shape of the placement.bind method, see "Response Handling" on its page.
     fmt.Printf("%s\n", res.Result)
     ```
 

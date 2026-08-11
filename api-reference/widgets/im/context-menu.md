@@ -55,6 +55,16 @@ Array
 )
 ```
 
+After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+```json
+{
+    "messageId": "2431",
+    "dialogId": "chat2",
+    "URI": "/online/"
+}
+```
+
 {% include [Note on Required Parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
@@ -69,7 +79,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 || **messageId***
 [`string`](../../data-types.md) | Identifier of the message whose menu the widget is called from. The value comes as a string. The application works with the message by this identifier using the [chat message methods](../../chats/messages/index.md) ||
 || **dialogId***
-[`string`](../../data-types.md) | Chat identifier: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by this identifier with the [im.dialog.get](../../chats/im-dialog-get.md) method ||
+[`string`](../../data-types.md) | Chat identifier: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by this identifier with the [im.dialog.get](../../chats/im-dialog-get.md) method. For a private conversation, the data of the interlocutor is returned by the [user.get](../../user/user-get.md) method ||
 || **URI***
 [`string`](../../data-types.md) | Address of the page the widget is opened from. For the messenger this is `/online/` ||
 |#
@@ -371,16 +381,32 @@ Possible values:
     	return fmt.Errorf("placement.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage — unmarshal it into a struct
+    // matching the response shape from the "Response Handling" section of the placement.bind page.
     fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
 
+## Typical Errors
+
+#|
+|| **Error** | **How to Resolve** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
+|| The item did not appear in the context menu of a message | Complete the application installation and reopen the chat ||
+|| The item is not found in the menu because only the first actions are checked | The application item is placed at the end of the list. Hover over *More* to open the remaining items ||
+|| Registration fails because of the `context` value | Use only the valid values: `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
+|| The item is visible in chats other than those set by `context` | `ALL` was passed along with the other values, and the other values are ignored. Pass either `ALL` or a list of specific contexts separated by `;` ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
+
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./textarea.md)
+- [{#T}](./sidebar.md)
+- [{#T}](./navigation.md)
 - [{#T}](../placement-bind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../bx24-widget-methods.md)

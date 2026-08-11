@@ -114,7 +114,7 @@ For the `CRM_XXX_DETAIL_ACTIVITY` placements, the `placement.bind` method suppor
 [`string`](../../data-types.md) | Text of the notification for a new user. Clicking *Learn more* opens a slider with the `newUserNotification=Y` context and a width of `800px` ||
 |#
 
-### Code Examples
+## Code Examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
@@ -374,12 +374,24 @@ For the `CRM_XXX_DETAIL_ACTIVITY` placements, the `placement.bind` method suppor
     	return fmt.Errorf("placement.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage — unmarshal it into the response
+    // shape of the placement.bind method, see "Response Handling" on its page.
     fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is assembled for an object type that this placement does not support, or the application has not been granted the `crm` scope. Check the code against the table at the beginning of the page ||
+|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
+|| The item cannot be found in the card | The item is located in the *More* menu of the panel above the timeline — the row with the *Activity*, *Comment*, and *Message* buttons ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
 
 ## Continue Your Learning
 

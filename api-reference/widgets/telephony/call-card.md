@@ -27,7 +27,18 @@ The widget is not displayed in the interface until the application installation 
 
 ### Where to Find It in the Interface
 
-The call card appears for the employee when a conversation starts. The application tab is displayed on the right side of the card, in the same row as the built-in tabs. The tab name is taken from the `TITLE` parameter passed during registration.
+The call card appears for the employee when a conversation starts. The application tab is displayed on the right side of the card, in the same row as the built-in tabs.
+
+The tab name is set with a parameter of the [placement.bind](../placement-bind.md) method during registration.
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **TITLE**
+[`string`](../../data-types.md) | The tab name in the call card. If the parameter is not passed, the application name is displayed instead ||
+|#
+
+The name is translated into the user's language with the `LANG_ALL` parameter — as in the examples below.
 
 ![Tab in the call card](./_images/CALL_CARD.png "Tab in the call card")
 
@@ -77,7 +88,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the call contex
 The [telephony.externalCall.register](../../telephony/telephony-external-call-register.md) method returns the same identifier. It is accepted by the methods that finish a call and attach a call recording
 
 ||
-|| **PHONE_NUMBER***
+|| **PHONE_NUMBER**
 [`string`](../../data-types.md) | The phone number of the client the conversation is held with.
 
 The number arrives in normalized form, without spaces or separators. If the client's number is unknown, the key is not passed
@@ -114,7 +125,7 @@ If the call is not linked to CRM, the key carries `0`
 
 ||
 || **CRM_BINDINGS**
-[`array`](../../data-types.md) | All CRM items linked to the call. Each element of the array contains the `ENTITY_TYPE` and `ENTITY_ID` keys — with the same values as the single keys above.
+[`array`](../../data-types.md) | All CRM items linked to the call. The composition of an array element is [described below](#crm_bindings).
 
 The `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` keys name the primary item only. If the call is linked to several items at once — for example, to a company and its deal — the full list arrives in `CRM_BINDINGS`.
 
@@ -153,11 +164,22 @@ If no activity was created for the call, the key carries the string `undefined`.
 
 Along with these keys, the universal `URI` key arrives — it is described above, in the standard data.
 
+#### Composition of CRM_BINDINGS {#crm_bindings}
+
+#|
+|| **Key**
+`type` | **Description** ||
+|| **ENTITY_TYPE**
+[`string`](../../data-types.md) | Symbolic code of the [CRM item type](../../crm/data-types.md#object_type): `LEAD`, `DEAL`, `CONTACT`, `COMPANY` ||
+|| **ENTITY_ID**
+[`string`](../../data-types.md) | Identifier of the CRM item ||
+|#
+
 This placement does not support the `OPTIONS` parameter of the [placement.bind](../placement-bind.md) method: the values passed are not retained, and [placement.get](../placement-get.md) returns an empty array.
 
 ## Managing the Call Card From the Handler
 
-The handler can do more than read the context: it can change the link to a CRM item, track call state changes, and disable the automatic closing of the card. These methods are described in the [{#T}](../ui-interaction/index.md) section.
+The handler can do more than read the context: it can also work with the call card from the browser — retrieve the data of the current call, disable and re-enable the automatic closing of the card, and track the change of the client and of the call state. The card commands and events are described in the [{#T}](../ui-interaction/call-card/index.md) section.
 
 ## Code Examples
 
@@ -384,12 +406,36 @@ The handler can do more than read the context: it can change the link to a CRM i
     	return fmt.Errorf("placement.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage — unmarshal it into a struct
+    // matching the response shape from the "Response Handling" section of the placement.bind page.
     fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The placement code is specified incorrectly or the application has not been granted the `telephony` scope ||
+|| `placement.bind` returns `ERROR_ARGUMENT` | Pass the required `PLACEMENT` and `HANDLER` parameters. The code of the empty field arrives in `argument` ||
+|| The widget is registered, but there is no tab in the call card | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the Bitrix24 page: the list of card tabs is assembled when the page loads ||
+|| The handler does not find the activity identifier | If no activity has been created for the call, the string `undefined` arrives in `CRM_ACTIVITY_ID`. Check the value before using it ||
+|| The handler does not recognize `CRM_ENTITY_TYPE` | The key carries the symbolic code of the type — `LEAD`, `DEAL`, `CONTACT`, `COMPANY` — not the numeric identifier ||
+|| The widget does not see the second linked CRM item | The `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID` keys name the primary item only. The full list of links arrives in `CRM_BINDINGS` ||
+|#
+
+The error arrives in the response body — the code in the `error` field, the text in `error_description`:
+
+```json
+{
+    "error": "WRONG_AUTH_TYPE",
+    "error_description": "Current authorization type is denied for this method Application context required"
+}
+```
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
 
 ## Continue Your Exploration
 

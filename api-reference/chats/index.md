@@ -114,13 +114,14 @@ For new integrations, use the current sections `im.*` and new methods `im.v2`, i
 
 ## Widgets
 
-You can embed an application into the chat interface. By embedding, you can add an action next to the input field, a separate item in the chat sidebar, or an action in the context menu of a message.
+You can embed an application into the chat interface. By embedding, you can add an action next to the input field, a separate item in the chat sidebar, an action in the context menu of a message, or your own section in the messenger navigation menu.
 
 - [Item in the panel above the input field](../widgets/im/textarea.md) `IM_TEXTAREA`
 - [Item in the chat sidebar](../widgets/im/sidebar.md) `IM_SIDEBAR`
 - [Item in the context menu of a message](../widgets/im/context-menu.md) `IM_CONTEXT_MENU`
+- [Item in the messenger navigation menu](../widgets/im/navigation.md) `IM_NAVIGATION`
 
-To register an embedding point, use the method [placement.bind](../widgets/placement-bind.md) and pass the required code in the `PLACEMENT` parameter.
+To register an embedding point, use the method [placement.bind](../widgets/placement-bind.md) and pass the required code in the `PLACEMENT` parameter. All placements of the section, with the setup order and the call context, are collected in the overview [{#T}](../widgets/im/index.md).
 
 ## Overview of Methods and Events {#all-methods}
 

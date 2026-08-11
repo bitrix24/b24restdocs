@@ -61,6 +61,16 @@ Array
 
 ```
 
+After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+```json
+{
+    "entityTypeName": "COMPANY",
+    "searchQuery": "Daisy",
+    "URI": "/crm/deal/details/5/?any=details%2F5%2F&IFRAME=Y&IFRAME_TYPE=SIDE_SLIDER"
+}
+```
+
 {% include [Footnote on Required Parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
@@ -400,12 +410,24 @@ Fields of the `crmShowCreatedEntity` command:
     	return fmt.Errorf("placement.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage — unmarshal it into the response
+    // shape of the placement.bind method, see "Response Handling" on its page.
     fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
+
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | The code is specified incorrectly or the application has not been granted the `crm` scope. The placement is registered only with the `CRM_DETAIL_SEARCH` code ||
+|| The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
+|| The item does not appear in the client search | Enter at least three characters in the *Contact* or *Company* field — the application item is not displayed until then ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
 
 ## Continue Learning
 
