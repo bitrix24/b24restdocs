@@ -6,11 +6,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-To manage the call card, it is advisable to familiarize yourself with the [scenarios](index.md).
+The call card consists of areas: the title, the status text, and the operator buttons. Each area is changed by its own command, and the set of buttons depends on the interface state — there are twelve of them in total. The state also determines which events reach the application.
+
+The commands and events that manage the card are listed in the section overview [{#T}](./index.md), and the order of registering a handler is described on the page [{#T}](./webrtc-scenario.md).
 
 ## General Description
 
-To change the title of the card (area 1), you need to call the method [CallCardSetCardTitle](./call-card-set-card-title.md) and pass an object with the `title` property.
+To change the title of the card (area 1), call the [CallCardSetCardTitle](./call-card-set-card-title.md) command and pass an object with the `title` property.
 
 ```js
 BX24.placement.call('CallCardSetCardTitle', { title: 'Card Title' }, () => {
@@ -18,7 +20,7 @@ BX24.placement.call('CallCardSetCardTitle', { title: 'Card Title' }, () => {
 });
 ```
 
-To change the text in area 2, you need to call the method [CallCardSetStatusText](./call-card-set-status-text.md) and pass an object with the `statusText` property.
+To change the text in area 2, call the [CallCardSetStatusText](./call-card-set-status-text.md) command and pass an object with the `statusText` property.
 
 ```js
 BX24.placement.call('CallCardSetStatusText', { statusText: 'Status Text' }, () => {
@@ -26,7 +28,7 @@ BX24.placement.call('CallCardSetStatusText', { statusText: 'Status Text' }, () =
 });
 ```
 
-The call card has a total of 12 interface states. You can retrieve them by calling the method [CallCardGetListUiStates](./call-card-get-list-ui-states.md). An array of available call card states will be passed to the callback function.
+The call card has a total of 12 interface states. You can retrieve them with the [CallCardGetListUiStates](./call-card-get-list-ui-states.md) command. An array of available call card states will be passed to the callback function.
 
 ```js
 BX24.placement.call('CallCardGetListUiStates', {}, (data) => {
@@ -34,7 +36,7 @@ BX24.placement.call('CallCardGetListUiStates', {}, (data) => {
 });
 ```
 
-To switch to another state of the card, you call the method [CallCardSetUiState](./call-card-set-ui-state.md) and pass an object with the `uiState` property.
+The transition to another state of the card is performed by the [CallCardSetUiState](./call-card-set-ui-state.md) command: pass it an object with the `uiState` property.
 
 ```js
 BX24.placement.call('CallCardSetUiState', { uiState: 'connected' }, () => {
@@ -42,7 +44,7 @@ BX24.placement.call('CallCardSetUiState', { uiState: 'connected' }, () => {
 });
 ```
 
-To handle button presses by the operator in the call card, you need to subscribe to the corresponding events.
+To handle button presses by the operator in the call card, subscribe to the corresponding events — see [{#T}](./events/index.md).
 
 ## Card States
 
@@ -76,10 +78,17 @@ To handle button presses by the operator in the call card, you need to subscribe
 - Hang up - `BackgroundCallCard::hangupButtonClick` ||
 || error | If an error occurred |
 - Close - `BackgroundCallCard::closeButtonClick` ||
-|| moneyError | If the account runs out of money and you need to inform the account administrator |
+|| moneyError | If the account runs out of money and you need to inform the Bitrix24 administrator |
 - Notify administrator - `BackgroundCallCard::notifyAdminButtonClick`
 - Close - `BackgroundCallCard::closeButtonClick` ||
 || redial | If the subscriber is busy, allow the operator to call this number again without hiding the call card |
 - Call again - `BackgroundCallCard::makeCallButtonClick` ||
 || Timer in the call card | By default, when transitioning to the `connected` state, the call timer is automatically started. This behavior can be disabled by passing, in addition to `uiState: 'connected'`, the property `disableAutoStartTimer` with the value `true`. When transitioning to other states, the timer will stop. | ||
 |#
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./events/index.md)
+- [{#T}](./call-card-set-ui-state.md)
+- [{#T}](./webrtc-scenario.md)

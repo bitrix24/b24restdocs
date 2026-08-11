@@ -1,4 +1,4 @@
-# Set Call on Hold Using the CallCardSetHold Application
+# Put the Call on Hold from the Application CallCardSetHold
 
 {% note tip "" %}
 
@@ -6,42 +6,37 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`telephony`](../../../scopes/permissions.md)
+> Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the method: any user
+> Who can execute the command: any user
 
-The `CallCardSetHold` method enables or disables call hold in the card.
+The `CallCardSetHold` command puts the call on hold or takes it off hold in the call card.
 
 {% note info "" %}
 
-The method operates within the context of the application in the `PAGE_BACKGROUND_WORKER` placement.
+The command operates within the application context in the `PAGE_BACKGROUND_WORKER` placement. This is a JS interface command, not a REST method: it cannot be invoked with a request to `/rest/`.
 
 {% endnote %}
 
-## Method Parameters
+## How to Call the Command
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+The command is invoked from the widget with the [BX24.placement.call](../bx24-placement-call.md) method. The third argument is the callback function, which receives the result of the command.
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **PLACEMENT***
-[`string`](../../../data-types.md) | The name of the interface command.
+```js
+BX24.placement.call('CallCardSetHold', {held: true}, function (result) {
+    console.log(result);
+});
+```
 
-For this method — `CallCardSetHold` ||
-|| **PARAMS***
-[`object`](../../../data-types.md) | The parameters object for the command.
+## Command Parameters
 
-For this method, an object with the `held` property is passed [(detailed description)](#params) ||
-|#
-
-### PARAMS Parameter {#params}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **held***
-[`boolean`](../../../data-types.md) | Control of hold status.
+[`boolean`](../../../data-types.md) | Hold control.
 
 Possible values:
 
@@ -51,59 +46,37 @@ Possible values:
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% note info "" %}
 
-It is recommended to call the method after the [BackgroundCallCard::initialized](./events/initialized.md) event.
+It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
 
 {% endnote %}
 
 {% list tabs %}
 
-- cURL (OAuth)
+- BX24.js
 
-    ```bash
-    curl -X POST \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json" \
-      -d '{"PLACEMENT":"CallCardSetHold","PARAMS":{"held":true}}' \
-      "https://**put_your_bitrix24_address**/rest/placement.call?auth=**put_access_token_here**"
+    ```js
+    BX24.ready(function () {
+        BX24.init(function () {
+            BX24.placement.call('CallCardSetHold', {held: true}, function (result) {
+                console.log(result);
+            });
+        });
+    });
     ```
 
 - JS (TS)
 
     ```ts
-    // This snippet is an ES module: top-level await requires type="module" or a bundler.
-    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
-    import { Text } from '@bitrix24/b24jssdk'
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide)
     import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
-    try {
-      const response = await $b24.actions.v2.call.make<never[]>({
-        method: 'placement.call',
-        params: {
-          PLACEMENT: 'CallCardSetHold',
-          PARAMS: {
-            held: true,
-          },
-        },
-        requestId: Text.getUuidRfc4122()
-      })
-
-      // The payload is available only on a successful response
-      if (!response.isSuccess) {
-        console.error(response.getErrorMessages().join('; '))
-      } else {
-        const result = response.getData()!.result
-        console.info('CallCardSetHold response:', result)
-      }
-    } catch (error) {
-      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-      console.error(error)
-    }
+    await $b24.placement.call('CallCardSetHold', { held: true })
     ```
 
 - JS (UMD)
@@ -112,136 +85,19 @@ It is recommended to call the method after the [BackgroundCallCard::initialized]
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function setHold() {
-        try {
-          // Initialize the SDK inside a Bitrix24 frame
-          const $b24 = await B24Js.initializeB24Frame()
+      document.addEventListener('DOMContentLoaded', async () => {
+        const $b24 = await B24Js.initializeB24Frame()
 
-          const response = await $b24.actions.v2.call.make({
-            method: 'placement.call',
-            params: {
-              PLACEMENT: 'CallCardSetHold',
-              PARAMS: {
-                held: true,
-              },
-            },
-            requestId: B24Js.Text.getUuidRfc4122()
-          })
+        const result = await $b24.placement.call('CallCardSetHold', {held: true})
 
-          // The payload is available only on a successful response
-          if (!response.isSuccess) {
-            console.error(response.getErrorMessages().join('; '))
-            return
-          }
-
-          const result = response.getData().result
-          console.info('CallCardSetHold response:', result)
-        } catch (error) {
-          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-          console.error(error)
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', setHold)
+        console.log(result)
+      })
     </script>
-    ```
-
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'placement.call',
-                [
-                    'PLACEMENT' => 'CallCardSetHold',
-                    'PARAMS' => [
-                        'held' => true,
-                    ]
-                ]
-            );
-
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-
-        echo 'Success: ' . print_r($result, true);
-        processData($result);
-
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    BX24.callMethod(
-        'placement.call',
-        {
-            PLACEMENT: 'CallCardSetHold',
-            PARAMS: {
-                held: true
-            }
-        },
-        function(result)
-        {
-            if (result.error())
-            {
-                console.error(result.error(), result.error_description());
-            }
-            else
-            {
-                console.log(result.data());
-            }
-        }
-    );
-    ```
-
-- PHP CRest
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'placement.call',
-        [
-            'PLACEMENT' => 'CallCardSetHold',
-            'PARAMS' => [
-                'held' => true,
-            ]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- Go
-
-    ```go
-    // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "placement.call", b24.Params{
-    	"PLACEMENT": "CallCardSetHold",
-    	"PARAMS": b24.Params{
-    		"held": true,
-    	},
-    })
-    if err != nil {
-    	return fmt.Errorf("placement.call: %w", err)
-    }
-
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
 
-## Response Handling
+## Command Result
 
 ```json
 []
@@ -249,20 +105,13 @@ It is recommended to call the method after the [BackgroundCallCard::initialized]
 
 ### Returned Data
 
-An empty array upon a successful call.
+An empty array on a successful call.
 
-## Error Handling
+If the call is already in the requested state, the command returns an empty array right away: the card does not change and the [BackgroundCallCard::holdButtonClick](./events/hold-button-click.md) event does not occur.
 
-### REST Call Error
+## Errors
 
-```json
-{
-    "error": "WRONG_AUTH_TYPE",
-    "error_description": "Application context required"
-}
-```
-
-### Interface Call Error
+The command error arrives in the same callback function: instead of the usual result, it receives an array with an object whose `result` equals `error`.
 
 ```json
 [
@@ -273,18 +122,15 @@ An empty array upon a successful call.
 ]
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
-
-### Possible Error Codes
+### errorCode Values
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Application context required | The method was called outside the application context in the `PAGE_BACKGROUND_WORKER` placement ||
-|| `Call card is undefined` | Call card is unavailable | No active call card available for management ||
-|| `missing field held` | Required parameter `held` not provided | Parameter error in the desktop scenario. Due to callback implementation specifics, an additional successful response `[]` may occur ||
+|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage ||
+|| `missing field held` | The required `held` parameter was not passed | A parameter error in the desktop scenario. Because of the way it is implemented, a second response — an empty array — may arrive after it ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardSetHold` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.
 
 ## Continue Learning
 
@@ -295,3 +141,4 @@ An empty array upon a successful call.
 - [{#T}](./call-card-set-status-text.md)
 - [{#T}](./call-card-close.md)
 - [{#T}](./events/index.md)
+- [{#T}](./index.md)

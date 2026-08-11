@@ -1,4 +1,4 @@
-# Saving a Comment in the Call Card BackgroundCallCard::addCommentButtonClick
+# When Saving a Comment in the Call Card BackgroundCallCard::addCommentButtonClick
 
 {% note tip "" %}
 
@@ -6,15 +6,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`telephony`](../../../../scopes/permissions.md)
+> Scope: [`placement`](../../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../../scopes/permissions.md) — registration of the call that raises the card
 >
 > Who can subscribe: any user
 
-The event `BackgroundCallCard::addCommentButtonClick` is triggered when a comment is saved in the call card.
+The `BackgroundCallCard::addCommentButtonClick` event occurs when a comment is saved in the call card.
 
 {% note info "" %}
 
-The event operates within the application context in the placement `PAGE_BACKGROUND_WORKER`.
+The event operates within the application context in the `PAGE_BACKGROUND_WORKER` placement. This is a JS interface event, not a REST event: you cannot subscribe to it with a request to `/rest/`.
 
 {% endnote %}
 
@@ -28,77 +28,61 @@ callback("Operator's comment");
 
 ## Event Handler Parameters
 
-{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
 `type` | **Description** ||
-|| **eventData*** 
+|| **eventData***
 [`string`](../../../../data-types.md) | The text of the saved comment ||
 |#
 
 ## Event Subscription Parameters
 
-{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
+The handler is registered from the widget with the [BX24.placement.bindEvent](../../bx24-placement-bind-event.md) method.
+
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **PLACEMENT*** 
+|| **event***
 [`string`](../../../../data-types.md) | The name of the interface event.
 
 For this event — `BackgroundCallCard::addCommentButtonClick` ||
-|| **HANDLER*** 
-[`string`](../../../../data-types.md) | The URL of the event handler for calling `placement.bindEvent` ||
+|| **callback***
+[`callable`](../../../../data-types.md) | The function Bitrix24 invokes when the event occurs. The handler arguments are described above ||
 |#
 
 ## Code Examples
 
-{% include [Footnote on examples](../../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- cURL (OAuth)
+- BX24.js
 
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"PLACEMENT":"BackgroundCallCard::addCommentButtonClick","HANDLER":"**your_handler_url_here**"}' \
-    "https://**put_your_bitrix24_address**/rest/placement.bindEvent?auth=**put_access_token_here**"
+    ```js
+    BX24.ready(function () {
+        BX24.init(function () {
+            BX24.placement.bindEvent('BackgroundCallCard::addCommentButtonClick', function (eventData) {
+                console.log(eventData);
+            });
+        });
+    });
     ```
 
 - JS (TS)
 
     ```ts
-    // This snippet is an ES module: top-level await requires type="module" or a bundler.
-    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
-    import { Text } from '@bitrix24/b24jssdk'
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide)
     import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
-    try {
-      const response = await $b24.actions.v2.call.make<boolean>({
-        method: 'placement.bindEvent',
-        params: {
-          PLACEMENT: 'BackgroundCallCard::addCommentButtonClick',
-          HANDLER: '**your_handler_url_here**',
-        },
-        requestId: Text.getUuidRfc4122()
-      })
-
-      // The payload is available only on a successful response
-      if (!response.isSuccess) {
-        console.error(response.getErrorMessages().join('; '))
-      } else {
-        const result = response.getData()!.result
-        console.info('placement.bindEvent result:', result)
-      }
-    } catch (error) {
-      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-      console.error(error)
-    }
+    await $b24.placement.bindEvent('BackgroundCallCard::addCommentButtonClick', (eventData: string) => {
+      console.log(eventData)
+    })
     ```
 
 - JS (UMD)
@@ -107,126 +91,28 @@ For this event — `BackgroundCallCard::addCommentButtonClick` ||
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function bindPlacementEvent() {
-        try {
-          // Initialize the SDK inside a Bitrix24 frame
-          const $b24 = await B24Js.initializeB24Frame()
+      document.addEventListener('DOMContentLoaded', async () => {
+        const $b24 = await B24Js.initializeB24Frame()
 
-          const response = await $b24.actions.v2.call.make({
-            method: 'placement.bindEvent',
-            params: {
-              PLACEMENT: 'BackgroundCallCard::addCommentButtonClick',
-              HANDLER: '**your_handler_url_here**',
-            },
-            requestId: B24Js.Text.getUuidRfc4122()
-          })
-
-          // The payload is available only on a successful response
-          if (!response.isSuccess) {
-            console.error(response.getErrorMessages().join('; '))
-            return
-          }
-
-          const result = response.getData().result
-          console.info('placement.bindEvent result:', result)
-        } catch (error) {
-          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-          console.error(error)
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', bindPlacementEvent)
+        await $b24.placement.bindEvent('BackgroundCallCard::addCommentButtonClick', (eventData) => {
+          console.log(eventData)
+        })
+      })
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'placement.bindEvent',
-                [
-                    'PLACEMENT' => 'BackgroundCallCard::addCommentButtonClick',
-                    'HANDLER' => '**your_handler_url_here**'
-                ]
-            );
-
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-
-        echo 'Success: ' . print_r($result, true);
-        processData($result);
-
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    BX24.callMethod(
-        'placement.bindEvent',
-        {
-            PLACEMENT: 'BackgroundCallCard::addCommentButtonClick',
-            HANDLER: '**your_handler_url_here**'
-        },
-        function(result)
-        {
-            if (result.error())
-            {
-                console.error(result.error(), result.error_description());
-            }
-            else
-            {
-                console.log(result.data());
-            }
-        }
-    );
-    ```
-
-- PHP CRest
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'placement.bindEvent',
-        [
-            'PLACEMENT' => 'BackgroundCallCard::addCommentButtonClick',
-            'HANDLER' => '**your_handler_url_here**'
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- Go
-
-    ```go
-    // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "placement.bindEvent", b24.Params{
-    	"PLACEMENT": "BackgroundCallCard::addCommentButtonClick",
-    	"HANDLER":   "**your_handler_url_here**",
-    })
-    if err != nil {
-    	return fmt.Errorf("placement.bindEvent: %w", err)
-    }
-
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
-    ```
-
 {% endlist %}
+
+## Errors
+
+Check the following conditions.
+
+- The widget is open in the `PAGE_BACKGROUND_WORKER` placement. In other placements, the `BackgroundCallCard::*` events are not registered, and the subscription silently fails
+- The event name is passed without typos and with the correct capitalization. The list of events available in the current placement is returned by [BX24.placement.getInterface](../../bx24-placement-get-interface.md)
+- The call was raised by the application with the [telephony.externalCall.register](../../../../telephony/telephony-external-call-register.md) method. For calls made by Bitrix24 itself, the `BackgroundCallCard::*` events are not emitted at all
 
 ## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](../card.md)
+- [{#T}](../index.md)

@@ -1,4 +1,4 @@
-# Change the Call Card Interface State via the CallCardSetUiState Application Method
+# Change the Call Card Interface State from the Application CallCardSetUiState
 
 {% note tip "" %}
 
@@ -6,51 +6,61 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`telephony`](../../../scopes/permissions.md)
+> Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the method: any user
+> Who can execute the command: any user
 
-The `CallCardSetUiState` method changes the state of the call card interface.
+The `CallCardSetUiState` command changes the interface state of the call card.
 
 {% note info "" %}
 
-The method operates within the context of the application in the `PAGE_BACKGROUND_WORKER` placement.
+The command operates within the application context in the `PAGE_BACKGROUND_WORKER` placement. This is a JS interface command, not a REST method: it cannot be invoked with a request to `/rest/`.
 
 {% endnote %}
 
-## Method Parameters
+## How to Call the Command
+
+The command is invoked from the widget with the [BX24.placement.call](../bx24-placement-call.md) method. The third argument is the callback function, which receives the result of the command.
+
+```js
+BX24.placement.call('CallCardSetUiState', {uiState: 'connected'}, function (result) {
+    console.log(result);
+});
+```
+
+## Command Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **PLACEMENT***
-[`string`](../../../data-types.md) | The name of the interface command.
-
-For this method — `CallCardSetUiState` ||
-|| **PARAMS***
-[`object`](../../../data-types.md) | The parameters object for the command.
-
-For this method, an object with properties `uiState` and `disableAutoStartTimer` is passed [(detailed description)](#params) ||
-|#
-
-### PARAMS Parameter {#params}
-
-#|
-|| **Name**
-`type` | **Description** ||
 || **uiState***
-[`string`](../../../data-types.md) | The state of the call card interface.
+[`string`](../../../data-types.md) | The interface state of the card.
 
-Available values can be obtained using the [CallCardGetListUiStates](./call-card-get-list-ui-states.md) method ||
+Possible values:
+
+- `incoming` — incoming call
+- `transferIncoming` — incoming call transfer
+- `outgoing` — outgoing call
+- `connectingIncoming` — connecting an incoming call
+- `connectingOutgoing` — connecting an outgoing call
+- `connected` — connection established
+- `transferring` — the call is being transferred
+- `transferFailed` — call transfer error
+- `transferConnected` — the call transfer was connected successfully
+- `error` — call error
+- `moneyError` — an error caused by insufficient funds
+- `redial` — redial
+
+The same list can be retrieved programmatically with the [CallCardGetListUiStates](./call-card-get-list-ui-states.md) command. How the card looks in each state and which buttons are available in it is shown on the page [{#T}](./card.md) ||
 || **disableAutoStartTimer**
 [`boolean`](../../../data-types.md) | An additional parameter for `uiState = connected`.
 
 Possible values:
 
 - `true` — do not start the timer automatically
-- `false` or absence of the parameter — start the timer automatically ||
+- `false` or no parameter — start the timer automatically ||
 |#
 
 ## Code Examples
@@ -59,56 +69,33 @@ Possible values:
 
 {% note info "" %}
 
-It is recommended to call the method after the [BackgroundCallCard::initialized](./events/initialized.md) event.
+It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
 
 {% endnote %}
 
 {% list tabs %}
 
-- cURL (OAuth)
+- BX24.js
 
-    ```bash
-    curl -X POST \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json" \
-      -d '{"PLACEMENT":"CallCardSetUiState","PARAMS":{"uiState":"connected","disableAutoStartTimer":true}}' \
-      "https://**put_your_bitrix24_address**/rest/placement.call?auth=**put_access_token_here**"
+    ```js
+    BX24.ready(function () {
+        BX24.init(function () {
+            BX24.placement.call('CallCardSetUiState', {uiState: 'connected'}, function (result) {
+                console.log(result);
+            });
+        });
+    });
     ```
 
 - JS (TS)
 
     ```ts
-    // This snippet is an ES module: top-level await requires type="module" or a bundler.
-    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
-    import { Text } from '@bitrix24/b24jssdk'
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide)
     import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
-    try {
-      const response = await $b24.actions.v2.call.make<unknown[]>({
-        method: 'placement.call',
-        params: {
-          PLACEMENT: 'CallCardSetUiState',
-          PARAMS: {
-            uiState: 'connected',
-            disableAutoStartTimer: true,
-          },
-        },
-        requestId: Text.getUuidRfc4122()
-      })
-
-      // The payload is available only on a successful response
-      if (!response.isSuccess) {
-        console.error(response.getErrorMessages().join('; '))
-      } else {
-        const result = response.getData()!.result
-        console.info('UI state set:', result)
-      }
-    } catch (error) {
-      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-      console.error(error)
-    }
+    await $b24.placement.call('CallCardSetUiState', { uiState: 'connected' })
     ```
 
 - JS (UMD)
@@ -117,141 +104,19 @@ It is recommended to call the method after the [BackgroundCallCard::initialized]
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function setCallCardUiState() {
-        try {
-          // Initialize the SDK inside a Bitrix24 frame
-          const $b24 = await B24Js.initializeB24Frame()
+      document.addEventListener('DOMContentLoaded', async () => {
+        const $b24 = await B24Js.initializeB24Frame()
 
-          const response = await $b24.actions.v2.call.make({
-            method: 'placement.call',
-            params: {
-              PLACEMENT: 'CallCardSetUiState',
-              PARAMS: {
-                uiState: 'connected',
-                disableAutoStartTimer: true,
-              },
-            },
-            requestId: B24Js.Text.getUuidRfc4122()
-          })
+        const result = await $b24.placement.call('CallCardSetUiState', {uiState: 'connected'})
 
-          // The payload is available only on a successful response
-          if (!response.isSuccess) {
-            console.error(response.getErrorMessages().join('; '))
-            return
-          }
-
-          const result = response.getData().result
-          console.info('UI state set:', result)
-        } catch (error) {
-          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-          console.error(error)
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', setCallCardUiState)
+        console.log(result)
+      })
     </script>
-    ```
-
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'placement.call',
-                [
-                    'PLACEMENT' => 'CallCardSetUiState',
-                    'PARAMS' => [
-                        'uiState' => 'connected',
-                        'disableAutoStartTimer' => true,
-                    ]
-                ]
-            );
-
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-
-        echo 'Success: ' . print_r($result, true);
-        processData($result);
-
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    BX24.callMethod(
-        'placement.call',
-        {
-            PLACEMENT: 'CallCardSetUiState',
-            PARAMS: {
-                uiState: 'connected',
-                disableAutoStartTimer: true
-            }
-        },
-        function(result)
-        {
-            if (result.error())
-            {
-                console.error(result.error(), result.error_description());
-            }
-            else
-            {
-                console.log(result.data());
-            }
-        }
-    );
-    ```
-
-- PHP CRest
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'placement.call',
-        [
-            'PLACEMENT' => 'CallCardSetUiState',
-            'PARAMS' => [
-                'uiState' => 'connected',
-                'disableAutoStartTimer' => true,
-            ]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- Go
-
-    ```go
-    // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "placement.call", b24.Params{
-    	"PLACEMENT": "CallCardSetUiState",
-    	"PARAMS": b24.Params{
-    		"uiState":               "connected",
-    		"disableAutoStartTimer": true,
-    	},
-    })
-    if err != nil {
-    	return fmt.Errorf("placement.call: %w", err)
-    }
-
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
 
-## Response Handling
+## Command Result
 
 ```json
 []
@@ -259,19 +124,11 @@ It is recommended to call the method after the [BackgroundCallCard::initialized]
 
 ### Returned Data
 
-An empty array upon successful call.
+An empty array on a successful call.
 
-## Error Handling
+## Errors
 
-### REST Call Error
-
-```json
-{
-    "error": "WRONG_AUTH_TYPE",
-    "error_description": "Application context required"
-}
-```
-### Interface Call Error
+The command error arrives in the same callback function: instead of the usual result, it receives an array with an object whose `result` equals `error`.
 
 ```json
 [
@@ -282,18 +139,15 @@ An empty array upon successful call.
 ]
 ```
 
-{% include notitle [error handling](../../../../_includes/error-info.md) %}
-
-### Possible Error Codes
+### errorCode Values
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Application context required | Method called outside the application context in the `PAGE_BACKGROUND_WORKER` placement ||
-|| `Call card is undefined` | Call card is unavailable | No active call card to manage ||
-|| `Invalid ui state` | Invalid `uiState` value | The provided state is not in the list of supported states ||
+|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage ||
+|| `Invalid ui state` | An incorrect `uiState` value | The state that was passed is not in the list of supported states ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardSetUiState` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.
 
 ## Continue Learning
 
@@ -304,3 +158,4 @@ An empty array upon successful call.
 - [{#T}](./call-card-set-status-text.md)
 - [{#T}](./call-card-close.md)
 - [{#T}](./events/index.md)
+- [{#T}](./index.md)

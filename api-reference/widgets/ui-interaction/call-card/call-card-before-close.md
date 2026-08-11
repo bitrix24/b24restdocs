@@ -1,4 +1,4 @@
-# Event Before Closing the CallCard::BeforeClose
+# Before Close Card Event CallCard::BeforeClose
 
 {% note tip "" %}
 
@@ -6,15 +6,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`telephony`](../../../scopes/permissions.md)
+> Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — access to the call card placement
 >
 > Who can subscribe: any user
 
-The event `CallCard::BeforeClose` occurs before the call card is closed.
+The `CallCard::BeforeClose` event occurs when Bitrix24 tries to close the call card.
+
+The card may not close. If auto-closing is blocked by the [disableAutoClose](./disable-auto-close.md) command or a comment form is open in the card, the event still arrives while the card stays on screen for another 65 seconds. When the card actually closes, the event arrives a second time, so the handler must be ready to run twice.
 
 {% note info "" %}
 
-The event operates within the application context in the `CALL_CARD` placement.
+The event operates within the application context in the `CALL_CARD` placement. This is a JS interface event, not a REST event: you cannot subscribe to it with a request to `/rest/`.
 
 {% endnote %}
 
@@ -24,66 +26,50 @@ No data is passed to the event handler.
 
 ## Event Subscription Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+The handler is registered from the widget with the [BX24.placement.bindEvent](../bx24-placement-bind-event.md) method.
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **PLACEMENT***
+|| **event***
 [`string`](../../../data-types.md) | The name of the interface event.
 
 For this event — `CallCard::BeforeClose` ||
-|| **HANDLER***
-[`string`](../../../data-types.md) | The URL of the event handler for calling `placement.bindEvent` ||
+|| **callback***
+[`callable`](../../../data-types.md) | The function Bitrix24 invokes when the event occurs. No arguments are passed to the handler ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- cURL (OAuth)
+- BX24.js
 
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"PLACEMENT":"CallCard::BeforeClose","HANDLER":"**your_handler_url_here**"}' \
-    "https://**put_your_bitrix24_address**/rest/placement.bindEvent?auth=**put_access_token_here**"
+    ```js
+    BX24.ready(function () {
+        BX24.init(function () {
+            BX24.placement.bindEvent('CallCard::BeforeClose', function () {
+                // handler code
+            });
+        });
+    });
     ```
 
 - JS (TS)
 
     ```ts
-    // This snippet is an ES module: top-level await requires type="module" or a bundler.
-    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
-    import { Text } from '@bitrix24/b24jssdk'
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide)
     import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
-    try {
-      const response = await $b24.actions.v2.call.make<boolean>({
-        method: 'placement.bindEvent',
-        params: {
-          PLACEMENT: 'CallCard::BeforeClose',
-          HANDLER: '**your_handler_url_here**',
-        },
-        requestId: Text.getUuidRfc4122()
-      })
-
-      // The payload is available only on a successful response
-      if (!response.isSuccess) {
-        console.error(response.getErrorMessages().join('; '))
-      } else {
-        const result = response.getData()!.result
-        console.info('Event binding registered:', result)
-      }
-    } catch (error) {
-      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-      console.error(error)
-    }
+    await $b24.placement.bindEvent('CallCard::BeforeClose', () => {
+      // handler code
+    })
     ```
 
 - JS (UMD)
@@ -92,124 +78,24 @@ For this event — `CallCard::BeforeClose` ||
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function bindCallCardBeforeClose() {
-        try {
-          // Initialize the SDK inside a Bitrix24 frame
-          const $b24 = await B24Js.initializeB24Frame()
+      document.addEventListener('DOMContentLoaded', async () => {
+        const $b24 = await B24Js.initializeB24Frame()
 
-          const response = await $b24.actions.v2.call.make({
-            method: 'placement.bindEvent',
-            params: {
-              PLACEMENT: 'CallCard::BeforeClose',
-              HANDLER: '**your_handler_url_here**',
-            },
-            requestId: B24Js.Text.getUuidRfc4122()
-          })
-
-          // The payload is available only on a successful response
-          if (!response.isSuccess) {
-            console.error(response.getErrorMessages().join('; '))
-            return
-          }
-
-          const result = response.getData().result
-          console.info('Event binding registered:', result)
-        } catch (error) {
-          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-          console.error(error)
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', bindCallCardBeforeClose)
+        await $b24.placement.bindEvent('CallCard::BeforeClose', () => {
+          // handler code
+        })
+      })
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'placement.bindEvent',
-                [
-                    'PLACEMENT' => 'CallCard::BeforeClose',
-                    'HANDLER' => '**your_handler_url_here**'
-                ]
-            );
-
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-
-        echo 'Success: ' . print_r($result, true);
-        processData($result);
-
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    BX24.callMethod(
-        'placement.bindEvent',
-        {
-            PLACEMENT: 'CallCard::BeforeClose',
-            HANDLER: '**your_handler_url_here**'
-        },
-        function(result)
-        {
-            if (result.error())
-            {
-                console.error(result.error(), result.error_description());
-            }
-            else
-            {
-                console.log(result.data());
-            }
-        }
-    );
-    ```
-
-- PHP CRest
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'placement.bindEvent',
-        [
-            'PLACEMENT' => 'CallCard::BeforeClose',
-            'HANDLER' => '**your_handler_url_here**'
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- Go
-
-    ```go
-    // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "placement.bindEvent", b24.Params{
-    	"PLACEMENT": "CallCard::BeforeClose",
-    	"HANDLER":   "**your_handler_url_here**",
-    })
-    if err != nil {
-    	return fmt.Errorf("placement.bindEvent: %w", err)
-    }
-
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
-    ```
-
 {% endlist %}
+
+## Errors
+
+Check the following conditions.
+
+- The widget is open in the `CALL_CARD` placement. In other placements, the `CallCard::*` events are not registered, and the subscription silently fails
+- The event name is passed without typos and with the correct capitalization. The list of events available in the current placement is returned by [BX24.placement.getInterface](../bx24-placement-get-interface.md)
 
 ## Continue Learning
 
@@ -218,3 +104,5 @@ For this event — `CallCard::BeforeClose` ||
 - [{#T}](./enable-auto-close.md)
 - [{#T}](./call-card-entity-changed.md)
 - [{#T}](./call-card-call-state-changed.md)
+- [{#T}](./index.md)
+- [{#T}](../../telephony/call-card.md)

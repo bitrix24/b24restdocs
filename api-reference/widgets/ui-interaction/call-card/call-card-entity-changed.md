@@ -6,15 +6,22 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`telephony`](../../../scopes/permissions.md)
+> Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — access to the call card placement
 >
 > Who can subscribe: any user
 
-The `CallCard::EntityChanged` event occurs when the current client in the call card changes.
+The `CallCard::EntityChanged` event occurs when the client bound to the call changes.
+
+The event arrives in four cases:
+
+- the call card opened and pulled up CRM data
+- the card refreshed the client data
+- a CRM item was created or bound from the card — a lead, a contact, or a company
+- in call campaign mode, the operator moved on to the next client
 
 {% note info "" %}
 
-The event operates within the context of the application in the `CALL_CARD` placement.
+The event operates within the application context in the `CALL_CARD` placement. This is a JS interface event, not a REST event: you cannot subscribe to it with a request to `/rest/`.
 
 {% endnote %}
 
@@ -32,81 +39,67 @@ callback({
 
 ## Event Handler Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Parameter**
 `type` | **Description** ||
 || **PHONE_NUMBER***
-[`string`](../../../data-types.md) | The client's phone number ||
+[`string`](../../../data-types.md) | The client's phone number.
+
+If the client has no phone number at all, the string `unknown` arrives ||
 || **CRM_ENTITY_TYPE***
-[`string`](../../../data-types.md) | The type of the CRM object associated with the call ||
+[`string`](../../../data-types.md) | The type of the CRM object linked to the call ||
 || **CRM_ENTITY_ID***
-[`integer`](../../../data-types.md) | The identifier of the CRM object associated with the call ||
+[`integer`](../../../data-types.md) | The identifier of the CRM object linked to the call ||
 |#
 
 ## Event Subscription Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+The handler is registered from the widget with the [BX24.placement.bindEvent](../bx24-placement-bind-event.md) method.
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **PLACEMENT***
+|| **event***
 [`string`](../../../data-types.md) | The name of the interface event.
 
 For this event — `CallCard::EntityChanged` ||
-|| **HANDLER***
-[`string`](../../../data-types.md) | The URL of the event handler for calling `placement.bindEvent` ||
+|| **callback***
+[`callable`](../../../data-types.md) | The function Bitrix24 invokes when the event occurs. The handler arguments are described above ||
 |#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
-- cURL (OAuth)
+- BX24.js
 
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"PLACEMENT":"CallCard::EntityChanged","HANDLER":"**your_handler_url_here**"}' \
-    "https://**put_your_bitrix24_address**/rest/placement.bindEvent?auth=**put_access_token_here**"
+    ```js
+    BX24.ready(function () {
+        BX24.init(function () {
+            BX24.placement.bindEvent('CallCard::EntityChanged', function (eventData) {
+                console.log(eventData);
+            });
+        });
+    });
     ```
 
 - JS (TS)
 
     ```ts
-    // This snippet is an ES module: top-level await requires type="module" or a bundler.
-    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
-    import { Text } from '@bitrix24/b24jssdk'
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide)
     import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
-    try {
-      const response = await $b24.actions.v2.call.make<boolean>({
-        method: 'placement.bindEvent',
-        params: {
-          PLACEMENT: 'CallCard::EntityChanged',
-          HANDLER: '**your_handler_url_here**',
-        },
-        requestId: Text.getUuidRfc4122()
-      })
-
-      // The payload is available only on a successful response
-      if (!response.isSuccess) {
-        console.error(response.getErrorMessages().join('; '))
-      } else {
-        const result = response.getData()!.result
-        console.info('Event handler bound:', result)
-      }
-    } catch (error) {
-      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-      console.error(error)
-    }
+    await $b24.placement.bindEvent('CallCard::EntityChanged', (eventData: { PHONE_NUMBER: string; CRM_ENTITY_TYPE: string; CRM_ENTITY_ID: number }) => {
+      console.log(eventData.CRM_ENTITY_ID)
+    })
     ```
 
 - JS (UMD)
@@ -115,124 +108,24 @@ For this event — `CallCard::EntityChanged` ||
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function bindEntityChangedEvent() {
-        try {
-          // Initialize the SDK inside a Bitrix24 frame
-          const $b24 = await B24Js.initializeB24Frame()
+      document.addEventListener('DOMContentLoaded', async () => {
+        const $b24 = await B24Js.initializeB24Frame()
 
-          const response = await $b24.actions.v2.call.make({
-            method: 'placement.bindEvent',
-            params: {
-              PLACEMENT: 'CallCard::EntityChanged',
-              HANDLER: '**your_handler_url_here**',
-            },
-            requestId: B24Js.Text.getUuidRfc4122()
-          })
-
-          // The payload is available only on a successful response
-          if (!response.isSuccess) {
-            console.error(response.getErrorMessages().join('; '))
-            return
-          }
-
-          const result = response.getData().result
-          console.info('Event handler bound:', result)
-        } catch (error) {
-          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-          console.error(error)
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', bindEntityChangedEvent)
+        await $b24.placement.bindEvent('CallCard::EntityChanged', (eventData) => {
+          console.log(eventData)
+        })
+      })
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'placement.bindEvent',
-                [
-                    'PLACEMENT' => 'CallCard::EntityChanged',
-                    'HANDLER' => '**your_handler_url_here**'
-                ]
-            );
-
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-
-        echo 'Success: ' . print_r($result, true);
-        processData($result);
-
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    BX24.callMethod(
-        'placement.bindEvent',
-        {
-            PLACEMENT: 'CallCard::EntityChanged',
-            HANDLER: '**your_handler_url_here**'
-        },
-        function(result)
-        {
-            if (result.error())
-            {
-                console.error(result.error(), result.error_description());
-            }
-            else
-            {
-                console.log(result.data());
-            }
-        }
-    );
-    ```
-
-- PHP CRest
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'placement.bindEvent',
-        [
-            'PLACEMENT' => 'CallCard::EntityChanged',
-            'HANDLER' => '**your_handler_url_here**'
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- Go
-
-    ```go
-    // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "placement.bindEvent", b24.Params{
-    	"PLACEMENT": "CallCard::EntityChanged",
-    	"HANDLER":   "**your_handler_url_here**",
-    })
-    if err != nil {
-    	return fmt.Errorf("placement.bindEvent: %w", err)
-    }
-
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
-    ```
-
 {% endlist %}
+
+## Errors
+
+Check the following conditions.
+
+- The widget is open in the `CALL_CARD` placement. In other placements, the `CallCard::*` events are not registered, and the subscription silently fails
+- The event name is passed without typos and with the correct capitalization. The list of events available in the current placement is returned by [BX24.placement.getInterface](../bx24-placement-get-interface.md)
 
 ## Continue Learning
 
@@ -241,3 +134,5 @@ For this event — `CallCard::EntityChanged` ||
 - [{#T}](./enable-auto-close.md)
 - [{#T}](./call-card-before-close.md)
 - [{#T}](./call-card-call-state-changed.md)
+- [{#T}](./index.md)
+- [{#T}](../../telephony/call-card.md)

@@ -7,7 +7,7 @@ items:
     href: bx24-placement-info.md  
   - name: Get List of Methods and Events  
     href: bx24-placement-get-interface.md  
-  - name: Call Widget Method  
+  - name: Call Interface Command
     href: bx24-placement-call.md  
   - name: Register Event Handler  
     href: bx24-placement-bind-event.md  
@@ -15,7 +15,7 @@ items:
     include:  
       path: call-card/b24-toc.yaml  
       mode: link  
-  - name: WebRTC — Manage Call Card  
+  - name: Manage the Call Card of a WebRTC Client
     include:  
       path: page-background-worker/b24-toc.yaml  
       mode: link  

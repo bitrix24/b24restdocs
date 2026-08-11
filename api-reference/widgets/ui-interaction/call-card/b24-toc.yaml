@@ -1,7 +1,7 @@
 title: Interaction with Call Card  
 href: index.md  
 items:  
-  - name: Overview of Methods and Events  
+  - name: Overview of Commands and Events
     href: index.md  
   - name: Get Call Status  
     href: get-status.md  

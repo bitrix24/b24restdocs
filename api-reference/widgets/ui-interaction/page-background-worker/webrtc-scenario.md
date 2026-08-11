@@ -6,6 +6,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
+A telephony application with its own WebRTC client works with the Bitrix24 call card in two steps: it registers a background handler on all pages and raises the card with a call of its own. The commands and events of the card are listed in the section overview [{#T}](./index.md).
+
 ## Handler Registration
 
 The handler of the WebRTC client is registered once and loads on every page.
@@ -32,8 +34,15 @@ An important distinction from other placements is the mandatory `OPTIONS[errorHa
 
 ## Usage Scenario
 
-The work with telephony remains the same as it was. The call registration is performed using the method [telephony.externalcall.register](../../../telephony/index.md). This same method "raises" the call detail form. It is evident that this should occur if the WebRTC client in this widget has started processing the call.
+The call is registered with the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method — the same method raises the call card. Call it at the moment when the WebRTC client of the widget starts processing the call.
 
-Furthermore, the widget can interact with the open call detail form, managing buttons and button press events. For working with the call detail form through the placement **PAGE_BACKGROUND_WORKER**, 9 methods have been added to retrieve and modify detail form data and 17 events for handling user activities.
+Furthermore, the widget can interact with the open call card. For working with the card through the `PAGE_BACKGROUND_WORKER` placement, there are 9 JS interface commands for retrieving and modifying card data and 17 events for handling operator actions — the full list is in the section overview [{#T}](./index.md).
 
-The key event is `BackgroundCallCard::initialized`. It is triggered upon the creation of the call detail form, and after that, it becomes possible to manage this detail form. Therefore, it is strongly recommended that all method calls from the application side be made specifically in the event handler function for this event.
+The key event is [BackgroundCallCard::initialized](./events/initialized.md). It occurs when the call card is created, and only after that can the card be managed. Therefore, make all command calls from the application side in the handler of this event.
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./card.md)
+- [{#T}](./events/index.md)
+- [{#T}](../../universal/background-worker.md)

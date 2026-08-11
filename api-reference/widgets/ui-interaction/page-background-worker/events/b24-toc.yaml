@@ -1,5 +1,5 @@
 title: Events
-href: initialized.md
+href: index.md
 items: 
   - name: Overview of Events
     href: index.md
@@ -27,7 +27,7 @@ items:
     href: skip-button-click.md
   - name: When Clicking the "Answer" Button
     href: answer-button-click.md
-  - name: In the Outbound Call Detail Form When Changing the Current Contact
+  - name: When Loading or Changing a CRM Object
     href: entity-changed.md
   - name: When Clicking the "Call" or "Callback" Button
     href: make-call-button-click.md

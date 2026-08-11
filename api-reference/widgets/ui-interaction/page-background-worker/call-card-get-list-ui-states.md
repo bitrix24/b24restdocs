@@ -1,4 +1,4 @@
-# Get a List of Available Call Card UI States CallCardGetListUiStates
+# Get the List of Available Call Card Interface States CallCardGetListUiStates
 
 {% note tip "" %}
 
@@ -6,91 +6,67 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`telephony`](../../../scopes/permissions.md)
+> Scope: [`placement`](../../../scopes/permissions.md) — registration of the placement, [`telephony`](../../../scopes/permissions.md) — registration of the call that raises the card
 >
-> Who can execute the method: any user
+> Who can execute the command: any user
 
-The method `CallCardGetListUiStates` returns a list of available states for the call card interface.
+The `CallCardGetListUiStates` command returns the list of available interface states of the call card.
 
 {% note info "" %}
 
-The method operates within the context of the application in the placement `PAGE_BACKGROUND_WORKER`.
+The command operates within the application context in the `PAGE_BACKGROUND_WORKER` placement. This is a JS interface command, not a REST method: it cannot be invoked with a request to `/rest/`.
 
 {% endnote %}
 
-## Method Parameters
+## How to Call the Command
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+The command is invoked from the widget with the [BX24.placement.call](../bx24-placement-call.md) method. The third argument is the callback function, which receives the result of the command.
 
-#|
-|| **Name**
-`type` | **Description** ||
-|| **PLACEMENT***
-[`string`](../../../data-types.md) | The name of the interface command.
+```js
+BX24.placement.call('CallCardGetListUiStates', {}, function (result) {
+    console.log(result);
+});
+```
 
-For this method — `CallCardGetListUiStates` ||
-|| **PARAMS***
-[`object`](../../../data-types.md) | The parameters object for the command.
+## Command Parameters
 
-For this method, an empty object is passed: `{}` ||
-|#
+The command takes no parameters. Pass an empty object `{}` as the second argument.
 
 ## Code Examples
 
-{% include [Note on Examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% note info "" %}
 
-It is recommended to call the method after the event [BackgroundCallCard::initialized](./events/initialized.md)
+It is recommended to call the command after the [BackgroundCallCard::initialized](./events/initialized.md) event
 
 {% endnote %}
 
 {% list tabs %}
 
-- cURL (OAuth)
+- BX24.js
 
-    ```bash
-    curl -X POST \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json" \
-      -d '{"PLACEMENT":"CallCardGetListUiStates","PARAMS":{}}' \
-      "https://**put_your_bitrix24_address**/rest/placement.call?auth=**put_access_token_here**"
+    ```js
+    BX24.ready(function () {
+        BX24.init(function () {
+            BX24.placement.call('CallCardGetListUiStates', {}, function (result) {
+                console.log(result);
+            });
+        });
+    });
     ```
 
 - JS (TS)
 
     ```ts
-    // This snippet is an ES module: top-level await requires type="module" or a bundler.
-    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
-    import { Text } from '@bitrix24/b24jssdk'
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide)
     import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
-    // Shape of the payload returned in result (match the "response handling" section of the page)
-    type CallCardUiStatesResult = string[]
+    const uiStates = await $b24.placement.call('CallCardGetListUiStates') as string[]
 
-    try {
-      const response = await $b24.actions.v2.call.make<CallCardUiStatesResult>({
-        method: 'placement.call',
-        params: {
-          PLACEMENT: 'CallCardGetListUiStates',
-          PARAMS: {},
-        },
-        requestId: Text.getUuidRfc4122()
-      })
-
-      // The payload is available only on a successful response
-      if (!response.isSuccess) {
-        console.error(response.getErrorMessages().join('; '))
-      } else {
-        const result = response.getData()!.result
-        console.info('Available call card UI states:', result)
-      }
-    } catch (error) {
-      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-      console.error(error)
-    }
+    console.log(uiStates)
     ```
 
 - JS (UMD)
@@ -99,126 +75,19 @@ It is recommended to call the method after the event [BackgroundCallCard::initia
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function getCallCardUiStates() {
-        try {
-          // Initialize the SDK inside a Bitrix24 frame
-          const $b24 = await B24Js.initializeB24Frame()
+      document.addEventListener('DOMContentLoaded', async () => {
+        const $b24 = await B24Js.initializeB24Frame()
 
-          const response = await $b24.actions.v2.call.make({
-            method: 'placement.call',
-            params: {
-              PLACEMENT: 'CallCardGetListUiStates',
-              PARAMS: {},
-            },
-            requestId: B24Js.Text.getUuidRfc4122()
-          })
+        const result = await $b24.placement.call('CallCardGetListUiStates')
 
-          // The payload is available only on a successful response
-          if (!response.isSuccess) {
-            console.error(response.getErrorMessages().join('; '))
-            return
-          }
-
-          const result = response.getData().result
-          console.info('Available call card UI states:', result)
-        } catch (error) {
-          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-          console.error(error)
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', getCallCardUiStates)
+        console.log(result)
+      })
     </script>
-    ```
-
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'placement.call',
-                [
-                    'PLACEMENT' => 'CallCardGetListUiStates',
-                    'PARAMS' => []
-                ]
-            );
-
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-
-        echo 'Success: ' . print_r($result, true);
-        processData($result);
-
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    BX24.callMethod(
-        'placement.call',
-        {
-            PLACEMENT: 'CallCardGetListUiStates',
-            PARAMS: {}
-        },
-        function(result)
-        {
-            if (result.error())
-            {
-                console.error(result.error(), result.error_description());
-            }
-            else
-            {
-                console.log(result.data());
-            }
-        }
-    );
-    ```
-
-- PHP CRest
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'placement.call',
-        [
-            'PLACEMENT' => 'CallCardGetListUiStates',
-            'PARAMS' => (object)[]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- Go
-
-    ```go
-    // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "placement.call", b24.Params{
-    	"PLACEMENT": "CallCardGetListUiStates",
-    	"PARAMS":    b24.Params{},
-    })
-    if err != nil {
-    	return fmt.Errorf("placement.call: %w", err)
-    }
-
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
     ```
 
 {% endlist %}
 
-## Response Handling
+## Command Result
 
 ```json
 [
@@ -239,44 +108,29 @@ It is recommended to call the method after the event [BackgroundCallCard::initia
 
 ### Returned Data
 
-The root element of the response is an array of strings representing the available states of the call card interface.
+The root element of the response is an array of strings with the available interface states of the card.
 
 Possible values:
 
 - `incoming` — incoming call
 - `transferIncoming` — incoming call transfer
 - `outgoing` — outgoing call
-- `connectingIncoming` — connecting incoming call
-- `connectingOutgoing` — connecting outgoing call
+- `connectingIncoming` — connecting an incoming call
+- `connectingOutgoing` — connecting an outgoing call
 - `connected` — connection established
-- `transferring` — transferring the call
+- `transferring` — the call is being transferred
 - `transferFailed` — call transfer error
-- `transferConnected` — call transfer successfully connected
+- `transferConnected` — the call transfer was connected successfully
 - `error` — call error
-- `moneyError` — error due to insufficient funds
+- `moneyError` — an error caused by insufficient funds
 - `redial` — redial
 
-## Error Handling
+## Errors
 
-### REST Call Error
+The `CallCardGetListUiStates` command has no error codes of its own: it either runs or is not invoked at all.
 
-```json
-{
-    "error": "WRONG_AUTH_TYPE",
-    "error_description": "Application context required"
-}
-```
-
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
-
-### Possible Error Codes
-
-#|
-|| **Code** | **Description** | **Value** ||
-|| `WRONG_AUTH_TYPE` | Application context required | Method called outside the context of the application in the placement `PAGE_BACKGROUND_WORKER` ||
-|#
-
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+- If the widget is open outside the `PAGE_BACKGROUND_WORKER` placement, the placement interface ignores the unknown command and the callback function is not invoked
+- Check the command name with the correct capitalization: the list of commands available in the current placement is returned by [BX24.placement.getInterface](../bx24-placement-get-interface.md)
 
 ## Continue Learning
 
@@ -287,3 +141,4 @@ Possible values:
 - [{#T}](./call-card-set-status-text.md)
 - [{#T}](./call-card-close.md)
 - [{#T}](./events/index.md)
+- [{#T}](./index.md)

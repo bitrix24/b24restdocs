@@ -1,7 +1,7 @@
-title: Integration of a Custom WebRTC Client  
-href: index.md  
-items:  
-  - name: Overview of Methods  
+title: Manage the Call Card of a WebRTC Client
+href: index.md
+items:
+  - name: Overview of Commands and Events
     href: index.md  
   - name: WebRTC Embedding Scenario  
     href: webrtc-scenario.md  
@@ -19,7 +19,11 @@ items:
     href: call-card-set-card-title.md  
   - name: Change Text in the Center of the Call Card from the Application  
     href: call-card-set-status-text.md  
-  - name: Close Call Card from the Application  
+  - name: Start the Call Timer from the Application
+    href: call-card-start-timer.md
+  - name: Stop the Call Timer from the Application
+    href: call-card-stop-timer.md
+  - name: Close Call Card from the Application
     href: call-card-close.md  
   - name: Events  
     include:  
