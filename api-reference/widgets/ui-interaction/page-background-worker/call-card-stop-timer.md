@@ -18,7 +18,9 @@ The command operates within the application context in the `PAGE_BACKGROUND_WORK
 
 {% endnote %}
 
-The command is needed when the application shows its own conversation time in the card or puts the call on hold. When the card switches to a state other than `connected`, the timer stops on its own — see [CallCardSetUiState](./call-card-set-ui-state.md).
+The command is needed when the application shows its own conversation time in the card or puts the call on hold.
+
+Some interface states stop the timer on their own: `incoming`, `transferIncoming`, `outgoing`, `connectingIncoming`, `connectingOutgoing`, `error`, `moneyError`, and `redial`. During a call transfer, however — the `transferring`, `transferFailed`, and `transferConnected` states — the countdown continues, and only this command can stop it. The states are described on the page [CallCardSetUiState](./call-card-set-ui-state.md).
 
 ## How to Call the Command
 
@@ -92,6 +94,8 @@ It is recommended to call the command after the [BackgroundCallCard::initialized
 
 In the browser, a successful call returns nothing: the callback function is not invoked, and the counting in the card stops.
 
+The timer itself is not hidden — the last value stays in the card. It disappears when the card switches to a state other than `connected`. Calling the command again on an already stopped timer is safe: it does nothing and reports nothing.
+
 In the Bitrix24 desktop application, an empty array arrives after a successful call.
 
 ```json
@@ -115,7 +119,7 @@ The command error arrives in the same callback function: instead of the usual re
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage. The card is raised by the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method ||
+|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage. The same code arrives when the card exists but the call is not an external one: the interface only works with a card raised by the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method ||
 |#
 
 If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardStopTimer` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.

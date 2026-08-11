@@ -20,6 +20,8 @@ The command operates within the application context in the `PAGE_BACKGROUND_WORK
 
 The command is needed when the application counts the conversation time itself. When the card switches to the `connected` state, the timer starts automatically — the automatic start can be disabled with the `disableAutoStartTimer` parameter of the [CallCardSetUiState](./call-card-set-ui-state.md) command.
 
+The countdown runs from the moment of the first start, not from the command call. If the timer is already running, the command changes nothing; after [CallCardStopTimer](./call-card-stop-timer.md), it resumes counting from the previous point rather than from zero. The only way to reset it is to switch the card to `connected` with `disableAutoStartTimer`.
+
 ## How to Call the Command
 
 The command is invoked from the widget with the [BX24.placement.call](../bx24-placement-call.md) method. The third argument is the callback function, which receives the result of the command.
@@ -115,7 +117,7 @@ The command error arrives in the same callback function: instead of the usual re
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage. The card is raised by the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method ||
+|| `Call card is undefined` | The call card is unavailable | There is no active call card to manage. The same code arrives when the card exists but the call is not an external one: the interface only works with a card raised by the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method ||
 |#
 
 If the command is invoked in another placement, the callback function will not be invoked at all: the placement interface ignores an unknown command. To check that the `CallCardStartTimer` command is available, use the [BX24.placement.getInterface](../bx24-placement-get-interface.md) method.
