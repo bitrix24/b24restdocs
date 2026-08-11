@@ -41,9 +41,9 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **message**
 [`string`](../../../../data-types.md) | New text of the message. Maximum length—20,000 characters ||
 || **attach**
-[`array`](../../../../data-types.md) | New attachments. More details: [How to use attachments](../../../../chats/messages/attachments.md) ||
+[`array`](../../../../data-types.md) | New attachments. More details: [How to use attachments](./attachments/index.md) ||
 || **keyboard**
-[`array`](../../../../data-types.md) | New keyboard. More details: [Working with keyboards](../../../../chats/messages/keyboards.md). To remove the keyboard, pass `"N"` ||
+[`array`](../../../../data-types.md) | New keyboard. More details: [Working with keyboards](./message-keyboards.md). To remove the keyboard, pass `"N"` ||
 || **urlPreview**
 [`string`](../../../../data-types.md) | Show link previews. Acceptable values: `Y`, `N`. Default is `Y` ||
 |#

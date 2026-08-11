@@ -12,6 +12,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `imbot.v2.Chat.Message.read` marks messages as read on behalf of the bot. It marks all messages up to and including the specified one as read. If `messageId` is not specified, it marks all messages in the chat as read.
 
+A typical scenario: the bot has handled an incoming message from the [ONIMBOTV2MESSAGEADD](../events/events.md#onimbotv2messageadd) event and resets the unread counter so that no notifications are left hanging for the user. The response returns the remaining `counter` value.
+
 ## Method Parameters
 
 {% include [Note on parameters](../../../../../_includes/required.md) %}
@@ -26,7 +28,7 @@ The method `imbot.v2.Chat.Message.read` marks messages as read on behalf of the 
 
 Pass the same botToken that was specified during the chat bot registration ||
 || **dialogId*** 
-[`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
+[`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}`. More details — [Format of dialogId](../../index.md#dialog-id) ||
 || **messageId** 
 [`integer`](../../../../data-types.md) | Read all messages up to and including this one. If not specified — reads all messages in the chat ||
 |#
@@ -240,5 +242,8 @@ HTTP Status: **400**, **403**
 ## Continue Learning
 
 - [API Change Log for imbot.v2](../../change-log.md)
+- [Messages imbot.v2](./index.md)
 - [{#T}](./chat-message-send.md)
+- [{#T}](./chat-message-get.md)
 - [{#T}](../events/event-get.md)
+- [{#T}](../../entities.md)

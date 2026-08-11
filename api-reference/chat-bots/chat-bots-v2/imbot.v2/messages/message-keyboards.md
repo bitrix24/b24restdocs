@@ -21,12 +21,6 @@ Methods that support keyboard functionality:
 - [im.message.add](../../../../chats/messages/im-message-add.md) — send a message in a chat
 - [im.message.update](../../../../chats/messages/im-message-update.md) — modify a sent message
 
-**Deprecated Chatbots (`imbot`)**
-
-- [imbot.message.add](../../../outdated/messages/imbot-message-add.md) — send a message on behalf of the chatbot
-- [imbot.message.update](../../../outdated/messages/imbot-message-update.md) — modify a sent message from the chatbot
-- [imbot.command.answer](../../../outdated/commands/imbot-command-answer.md) — send a response to a chatbot command
-
 ## How to Add a Keyboard
 
 To add a keyboard, pass the `KEYBOARD` parameter when creating or updating a message.
@@ -321,7 +315,6 @@ To update buttons, use the following methods:
 
 - [imbot.v2.Chat.Message.update](./chat-message-update.md)
 - [im.message.update](../../../../chats/messages/im-message-update.md)
-- [imbot.message.update](../../../outdated/messages/imbot-message-update.md)
 
 When updating a keyboard, specify `BOT_ID` inside the `keyboard` object, at the same level as `BUTTONS`. If you pass only `BUTTONS`, the button command may not be routed to the correct bot.
 

@@ -26,30 +26,7 @@ In the method documentation, you may see the note **“available from revision N
 
 ## Method Parameters
 
-The method does not require `botId` and `botToken`. There are no parameters.
-
-## How to Use
-
-A typical scenario is to check before using a method or field that appeared in a specific revision:
-
-```js
-const revision = await BX.rest.callMethod('imbot.v2.Revision.get', {});
-const restRevision = revision.data().rest;
-
-if (restRevision >= 33)
-{
-    await BX.rest.callMethod('imbot.v2.Chat.Message.send', {
-        botId: 456,
-        botToken: '...',
-        dialogId: 'chat5',
-        fields: { message: 'Hello', system: true }
-    });
-}
-else
-{
-    // system may not work correctly in earlier revisions
-}
-```
+No parameters. The method does not require `botId` and `botToken`.
 
 ## Code Examples
 
@@ -59,55 +36,84 @@ else
 
 - cURL (Webhook)
 
-  ```bash
-  curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.v2.Revision.get
-  ```
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/imbot.v2.Revision.get
+    ```
 
 - cURL (OAuth)
 
-  ```bash
-  curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/imbot.v2.Revision.get
-  ```
+    ```bash
+    curl -X POST \
+      -H "Content-Type: application/json" \
+      -H "Accept: application/json" \
+      -d '{"auth":"**put_access_token_here**"}' \
+      https://**put_your_bitrix24_address**/rest/imbot.v2.Revision.get
+    ```
 
 - JS
 
-  ```js
-  BX.rest.callMethod('imbot.v2.Revision.get', {})
-      .then(result => console.log(result.data()));
-  ```
+    ```js
+    try {
+      const response = await $b24.callMethod('imbot.v2.Revision.get', {});
+
+      const { result } = response.getData();
+      console.log('result:', result);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+    ```
 
 - PHP
 
-  ```php
-  $result = $b24Service->core->call('imbot.v2.Revision.get');
-  print_r($result->getResponseData()->getResult());
-  ```
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call('imbot.v2.Revision.get');
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo 'result: ' . print_r($result, true);
+    } catch (Throwable $exception) {
+        error_log($exception->getMessage());
+        echo 'Error: ' . $exception->getMessage();
+    }
+    ```
 
 - BX24.js
 
-  ```js
-  BX24.callMethod('imbot.v2.Revision.get', {}, function(result) {
-      if (result.error()) {
-          console.error(result.error().ex);
-      } else {
-          console.log(result.data());
-      }
-  });
-  ```
+    ```js
+    BX24.callMethod(
+        'imbot.v2.Revision.get',
+        {},
+        function(result) {
+            if (result.error()) {
+                console.error(result.error().ex);
+            } else {
+                console.log(result.data());
+            }
+        }
+    );
+    ```
 
 - PHP CRest
 
-  ```php
-  $result = CRest::call('imbot.v2.Revision.get');
-  print_r($result['result']);
-  ```
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call('imbot.v2.Revision.get');
+
+    if (!empty($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo 'REST revision: ' . $result['result']['rest'];
+    }
+    ```
 
 - Go
 
@@ -161,9 +167,9 @@ HTTP Status: **200**
 || **Name**
 `Type` | **Description** ||
 || **result**
-[object](../../../data-types.md) | API revision numbers and client protocols [(detailed description)](#revision-object) ||
+[`object`](../../../data-types.md) | API revision numbers and client protocols [(detailed description)](#revision-object) ||
 || **time**
-[time](../../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ### Fields of the Revision Object {#revision-object}
@@ -180,6 +186,28 @@ HTTP Status: **200**
 || **desktop**
 [`integer`](../../../data-types.md) | Revision of the desktop application protocol ||
 |#
+
+## Checking Compatibility Before a Call
+
+A typical scenario is to check the revision before using a method or field that was not available from the start:
+
+```js
+const response = await $b24.callMethod('imbot.v2.Revision.get', {});
+const restRevision = response.getData().result.rest;
+
+if (restRevision >= 33) {
+    // the fields.system field is supported — send a system message
+    await $b24.callMethod('imbot.v2.Chat.Message.send', {
+        botId: 456,
+        dialogId: 'chat5',
+        fields: { message: 'Hello', system: true }
+    });
+} else {
+    // in earlier revisions, the fields.system field may be handled incorrectly
+}
+```
+
+The revision number from which a specific change becomes available is listed in the [API Change Log for imbot.v2](../change-log.md).
 
 ## Error Handling
 

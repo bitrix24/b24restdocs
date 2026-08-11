@@ -45,9 +45,9 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **message** 
 [`string`](../../../../data-types.md) | Response text. Maximum length — 20,000 characters ||
 || **attach** 
-[`array`](../../../../data-types.md) | Attachments. More details: [How to use attachments](../../../../chats/messages/attachments.md) ||
+[`array`](../../../../data-types.md) | Attachments. More details: [How to use attachments](../messages/attachments/index.md) ||
 || **keyboard** 
-[`array`](../../../../data-types.md) | Keyboard. More details: [Working with keyboards](../../../../chats/messages/keyboards.md) ||
+[`array`](../../../../data-types.md) | Keyboard. More details: [Working with keyboards](../messages/message-keyboards.md) ||
 || **system** 
 [`boolean`](../../../../data-types.md) | System message. Allowed values: `true`, `false`. Default is `false` ||
 || **urlPreview** 

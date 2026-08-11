@@ -10,34 +10,35 @@ Attachments `ATTACH` allow you to add structured content to messages: text block
 
 ![Attachments](./_images/attach1.png){width=520}
 
-Methods that support working with `ATTACH`:
+> Quick navigation: [all methods](#all-methods)
 
-**Chatbots 2.0 (`imbot.v2`)**
+## How to Build an Attachment {#how-to-start}
 
-- [imbot.v2.Chat.Message.send](../chat-message-send.md) — send a message on behalf of the chatbot
-- [imbot.v2.Chat.Message.update](../chat-message-update.md) — modify a chatbot message
-- [imbot.v2.Command.answer](../../commands/command-answer.md) — send a chatbot response to a command
+1. Choose the form of the object: full — with the `ID`, `COLOR_TOKEN`, `COLOR` metadata and the `BLOCKS` array, or short — the array of blocks right away.
+2. Compose the array of blocks. Each element is an object with a single top-level key, and this key sets the block type: `MESSAGE`, `LINK`, `USER`, `GRID`, `IMAGE`, `FILE`, `DELIMITER`.
+3. Pass the object in the `fields.attach` parameter of the message sending method — for example, [imbot.v2.Chat.Message.send](../chat-message-send.md).
+4. To modify an already sent attachment, call [imbot.v2.Chat.Message.update](../chat-message-update.md) with a new value of `fields.attach`.
 
-**Chats (`im`)**
+Ready-made composite cards built from several blocks are described in [Attachment Builder ATTACH](./constructor.md).
 
-- [im.message.add](../../../../../chats/messages/im-message-add.md) — send a message in a chat
-- [im.message.update](../../../../../chats/messages/im-message-update.md) — modify a sent message
+## Block Types {#blocks}
 
-**Notifications (`im.notify`)**
+#|
+|| **Key in BLOCKS** | **Block** | **What to Use It For** ||
+|| `MESSAGE` | [Text Block](./block-collections/text.md) | A text fragment with BB code support ||
+|| `LINK` | [Link Block](./block-collections/links.md) | A clickable link with a caption ||
+|| `USER` | [User Block](./block-collections/user.md) | A user card: name, avatar, link ||
+|| `GRID` | [Grid Block for Rows and Columns](./block-collections/grid.md) | A table of name-value pairs ||
+|| `IMAGE` | [Image Block](./block-collections/images.md) | One or several images ||
+|| `FILE` | [File Block](./block-collections/files.md) | A file with a name, size, and link ||
+|| `DELIMITER` | [Delimiter Block](./block-collections/delimiter.md) | A visual divider between parts of the attachment ||
+|#
 
-- [im.notify](../../../../../chats/notifications/im-notify.md) — send a notification
-- [im.notify.personal.add](../../../../../chats/notifications/im-notify-personal-add.md) — send a personal notification
-- [im.notify.system.add](../../../../../chats/notifications/im-notify-system-add.md) — send a system notification
+A full description of the parameters of each block is available in [ATTACH Block Collection](./block-collections/index.md).
 
-**Deprecated Chatbots (`imbot`)**
+## ATTACH Object Formats {#formats}
 
-- [imbot.message.add](../../../../outdated/messages/imbot-message-add.md) — send a message on behalf of the chatbot
-- [imbot.message.update](../../../../outdated/messages/imbot-message-update.md) — modify a sent chatbot message
-- [imbot.command.answer](../../../../outdated/commands/imbot-command-answer.md) — send a chatbot response to a command
-
-## ATTACH Object Formats
-
-You can pass `ATTACH` in one of two formats:
+`ATTACH` can be passed in one of two formats:
 
 1. Full form: an object with attachment metadata and an array of `BLOCKS`
 2. Short form: an array of blocks without a wrapper
@@ -411,31 +412,69 @@ If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can dir
 
 {% endlist %}
 
-## Limitations and Errors
+## What Is Returned in the Response {#response}
 
-- Maximum size of serialized `ATTACH`: `60000` characters
-- An incorrect structure returns the error `ATTACH_ERROR`
-- Exceeding the limit returns the error `ATTACH_OVERSIZE`
+The sending method itself returns only the ID of the created message — it does not repeat the attachment structure in the response:
 
-## Link Validation
+```json
+{
+    "result": {
+        "id": 789,
+        "uuidMap": {}
+    }
+}
+```
 
-Supported in attachment blocks:
+To see the sent attachment, read the message with the [imbot.v2.Chat.Message.get](../chat-message-get.md) method or receive it in the [ONIMBOTV2MESSAGEADD](../../events/events.md#onimbotv2messageadd) event. The attachment arrives in the `params` field of the Message object together with the keyboard and files — [Objects and Fields](../../../entities.md#message).
 
-- absolute URLs: `http://` and `https://`
-- relative URLs from the root of Bitrix: `/company/personal/user/1/`
+## Limitations and Errors {#limits}
 
-{% note warning %}
+#|
+|| **Limit** | **Value** ||
+|| Maximum size of serialized `ATTACH` | 60,000 characters ||
+|| Allowed links in blocks | Absolute URLs `http://` and `https://` or relative paths from the Bitrix24 root, for example `/company/personal/user/1/` ||
+|| External channels | The content of `ATTACH` is not automatically transmitted to XMPP, email, and push notifications ||
+|#
 
-The content of `ATTACH` is not automatically transmitted in XMPP, email, and push notifications.
+Error codes specific to attachments:
 
-{% endnote %}
+#|
+|| **Code** | **When It Is Returned** ||
+|| `ATTACH_ERROR` | The attachment structure is incorrect ||
+|| `ATTACH_OVERSIZE` | The limit of 60,000 characters is exceeded ||
+|#
+
+The remaining error codes depend on the sending method — they are listed in the “Possible Error Codes” section on the method page, for example [imbot.v2.Chat.Message.send](../chat-message-send.md).
+
+## Methods That Support ATTACH {#all-methods}
+
+The methods that support working with `ATTACH` are listed below:
+
+**Chatbots 2.0 (`imbot.v2`)**
+
+- [imbot.v2.Chat.Message.send](../chat-message-send.md) — send a message on behalf of the chatbot
+- [imbot.v2.Chat.Message.update](../chat-message-update.md) — modify a chatbot message
+- [imbot.v2.Command.answer](../../commands/command-answer.md) — send a chatbot response to a command
+
+**Chats (`im`)**
+
+- [im.message.add](../../../../../chats/messages/im-message-add.md) — send a message in a chat
+- [im.message.update](../../../../../chats/messages/im-message-update.md) — modify a sent message
+
+**Notifications (`im.notify`)**
+
+- [im.notify](../../../../../chats/notifications/im-notify.md) — send a notification
+- [im.notify.personal.add](../../../../../chats/notifications/im-notify-personal-add.md) — send a personal notification
+- [im.notify.system.add](../../../../../chats/notifications/im-notify-system-add.md) — send a system notification
 
 ## Continue Learning
 
 - [API imbot.v2 Change Log](../../../change-log.md)
 - [{#T}](./constructor.md)
 - [{#T}](./block-collections/index.md)
+- [Messages imbot.v2](../index.md)
 - [{#T}](../message-keyboards.md)
+- [{#T}](../message-formatting.md)
 - [{#T}](../chat-message-send.md)
 - [{#T}](../chat-message-update.md)
 - [{#T}](../../../../../chats/notifications/im-notify.md)

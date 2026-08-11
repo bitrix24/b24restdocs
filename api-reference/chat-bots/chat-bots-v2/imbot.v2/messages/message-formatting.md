@@ -35,12 +35,6 @@ Methods that support formatting:
 - [im.notify.personal.add](../../../../chats/notifications/im-notify-personal-add.md) — send a personal notification
 - [im.notify.system.add](../../../../chats/notifications/im-notify-system-add.md) — send a system notification
 
-**Outdated Chatbots (`imbot`)**
-
-- [imbot.message.add](../../../outdated/messages/imbot-message-add.md) — send a message on behalf of the chatbot
-- [imbot.message.update](../../../outdated/messages/imbot-message-update.md) — update a sent message from the chatbot
-- [imbot.command.answer](../../../outdated/commands/imbot-command-answer.md) — send a response to a chatbot command
-
 ## Supported BB Codes
 
 ### Text Formatting
@@ -164,8 +158,6 @@ First line[br]Second line
 ```markdown
 [icon=http://files.shelenkov.com/images/unicorn.png size=30 title=Unicorn]
 ```
-
-![Link Result](./_images/unicorn.png)
 
 ## Example of Sending a Formatted Message
 

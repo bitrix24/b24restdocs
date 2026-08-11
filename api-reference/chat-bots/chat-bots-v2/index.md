@@ -7,10 +7,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 Chatbots 2.0 combine two sets of APIs:
-— The `imbot.v2` methods manage the bot's lifecycle, messages, commands, files, and chat management.
-— The `im.v2` methods allow the application or user to subscribe to messenger events and receive them in polling mode — where the application periodically requests accumulated events from the server without needing a public URL for incoming requests.
 
-> Quick navigation: [Quick Start](./quick-start.md) | [Change Log](./change-log.md) | [Authorization](#auth) | [Bot Types](#bot-types) | [Events](#event-modes) | [Limits](#limits) | [All Methods](#all-methods)
+- the `imbot.v2` methods manage the bot's lifecycle, messages, commands, files, and chat management
+- the `im.v2` methods allow the application or user to subscribe to messenger events and receive them in polling mode — where the application periodically requests accumulated events from the server without needing a public URL for incoming requests
+
+> Quick navigation: [all methods](#all-methods)
 
 ## What Tasks Does This Section Solve
 
@@ -39,6 +40,22 @@ A typical workflow with the new API:
 6. Upload files via [imbot.v2.File.upload](./imbot.v2/files/file-upload.md) and download via [imbot.v2.File.download](./imbot.v2/files/file-download.md).
 
 For a detailed step-by-step scenario with cURL examples: [Quick Start](./quick-start.md).
+
+## Section Navigation {#navigation}
+
+#|
+|| **If You Need To** | **Open the Subsection** ||
+|| Register a bot and manage its properties | [Bots](./imbot.v2/bots/index.md) ||
+|| Create a group chat, manage participants and managers | [Chats](./imbot.v2/chats/index.md) ||
+|| Send, modify, and delete messages, work with reactions | [Messages](./imbot.v2/messages/index.md) ||
+|| Register slash commands and respond to their calls | [Commands](./imbot.v2/commands/index.md) ||
+|| Display the bot's action indicator or manage the input field | [Chat Interface](./imbot.v2/ui/index.md) ||
+|| Receive bot events — messages, commands, adding to a chat | [Events imbot.v2](./imbot.v2/events/index.md) ||
+|| Upload files to a chat on behalf of the bot | [Files imbot.v2](./imbot.v2/files/index.md) ||
+|| Read messenger events on behalf of a user, without registering a bot | [Working with Chat im.v2](./im.v2/index.md) ||
+|| Understand the structure of the Bot, Chat, Message, User, and File objects | [Objects and Fields](./entities.md) ||
+|| Move an existing bot from `imbot.*` to `imbot.v2` | [Migration from imbot to imbot.v2](./migration.md) ||
+|#
 
 ## Authorization {#auth}
 
@@ -297,11 +314,21 @@ The Bot Context mechanism allows passing arbitrary JSON data to the bot when ope
 
 Detailed descriptions of link formats, events, and security recommendations: [Bot Context](./imbot.v2/bot-context.md).
 
-## API Revisions and Compatibility
+## Relevance of Methods and Compatibility {#lifecycle}
+
+All methods of this section are current and recommended for new development. There are no outdated methods within `imbot.v2` and `im.v2`.
+
+If you have a bot built on the previous generation of the bot platform, move it to `imbot.v2`. The migration procedure and the method mapping table are available in [Migration from imbot to imbot.v2](./migration.md).
+
+{% note info "" %}
+
+The v1 and v2 methods work in parallel. Bots registered through v1 are visible in v2 and vice versa. However, the event format differs: a bot receives events only in the format of the API version it was registered through.
+
+{% endnote %}
 
 Bitrix24 cloud and on-premise versions may have different API revisions. To find out which revision is installed in a specific Bitrix24, use [imbot.v2.Revision.get](./imbot.v2/revision-get.md).
 
-New features, fixes, and breaking changes that affect integration compatibility are collected on the [Change Log for API imbot.v2](./change-log.md).
+New features, fixes, and breaking changes that affect integration compatibility are collected on the [Change Log for API imbot.v2](./change-log.md). If the call or response format of a method changes, the previous variant continues to be supported for six months from the date the change is published.
 
 ## Overview of Methods {#all-methods}
 
@@ -311,7 +338,7 @@ New features, fixes, and breaking changes that affect integration compatibility 
 >
 > Who can execute methods: owner of the registered bot
 
-**Bots**
+**[Bots](./imbot.v2/bots/index.md)**
 
 #|
 || **Method** | **Description** ||
@@ -322,7 +349,7 @@ New features, fixes, and breaking changes that affect integration compatibility 
 || [imbot.v2.Bot.unregister](./imbot.v2/bots/bot-unregister.md) | Deletes the bot ||
 |#
 
-**Chats**
+**[Chats](./imbot.v2/chats/index.md)**
 
 #|
 || **Method** | **Description** ||
@@ -338,7 +365,7 @@ New features, fixes, and breaking changes that affect integration compatibility 
 || [imbot.v2.Chat.setOwner](./imbot.v2/chats/chat-set-owner.md) | Assigns a new owner to the chat ||
 |#
 
-**Messages**
+**[Messages](./imbot.v2/messages/index.md)**
 
 #|
 || **Method** | **Description** ||
@@ -352,7 +379,7 @@ New features, fixes, and breaking changes that affect integration compatibility 
 || [imbot.v2.Chat.Message.Reaction.delete](./imbot.v2/messages/chat-message-reaction-delete.md) | Removes a reaction from a message ||
 |#
 
-**Commands**
+**[Commands](./imbot.v2/commands/index.md)**
 
 #|
 || **Method** | **Description** ||
@@ -363,7 +390,7 @@ New features, fixes, and breaking changes that affect integration compatibility 
 || [imbot.v2.Command.answer](./imbot.v2/commands/command-answer.md) | Responds to the command call ||
 |#
 
-**Interface**
+**[Chat Interface](./imbot.v2/ui/index.md)**
 
 #|
 || **Method** | **Description** ||

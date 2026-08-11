@@ -16,7 +16,7 @@ The method is idempotent: repeated calls are safe and do not result in an error.
 
 ## Method Parameters
 
-The method does not accept any parameters.
+No parameters.
 
 ## Code Examples
 

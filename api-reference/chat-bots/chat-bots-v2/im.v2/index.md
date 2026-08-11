@@ -18,9 +18,26 @@ The already existing messenger methods are available in the [Chats with User](..
 
 > Quick navigation: [all methods](#all-methods)
 
-## Working with Events
+## How to Choose the Section {#how-to-choose}
 
-User events in `im.v2` do not support webhook mode, unlike chat bot events. Events in this section are only available through polling: the application periodically retrieves the accumulated queue after subscribing to event records via the `im.v2.Event.*` methods.
+`im.v2` and `imbot.v2` solve different tasks and do not replace each other.
+
+#|
+|| **If You Need To** | **Open the Section** ||
+|| Read the messenger event stream on behalf of a user or application, without registering a bot | The `im.v2` methods on this page ||
+|| Create a chatbot: reply in chats, handle slash commands, manage group chats | [Chatbots 2.0](../index.md) ||
+|| Maintain an integration built on the existing messenger methods | [Chats with User](../../../chats/index.md) ||
+|#
+
+The main differences from the bot platform methods:
+
+- calls are executed on behalf of the current user — the `botId` and `botToken` parameters are not needed
+- the `im` scope is required instead of `imbot`
+- events require an explicit subscription and are delivered only in polling mode
+
+## Working with Events {#events}
+
+First, the application subscribes to event records, and then it periodically retrieves the accumulated queue itself.
 
 1. Subscribe to event records via [im.v2.Event.subscribe](./events/event-subscribe.md).
 2. Periodically retrieve new events via [im.v2.Event.get](./events/event-get.md).
@@ -35,10 +52,26 @@ This distinguishes polling from webhook: in webhook mode, Bitrix24 calls the app
 
 {% endnote %}
 
-## Working with Files
+The event types that arrive in the `events[].type` field: `ONIMV2MESSAGEADD`, `ONIMV2MESSAGEUPDATE`, `ONIMV2MESSAGEDELETE`, `ONIMV2REACTIONCHANGE`, `ONIMV2JOINCHAT`. The data of each is described in [Event Formats](./events/events.md).
+
+## Working with Files {#files}
 
 - Upload a file to the chat via [im.v2.File.upload](./files/file-upload.md).
 - Get a download link for the uploaded file via [im.v2.File.download](./files/file-download.md).
+
+The recipient is set by the `dialogId` parameter: for group chats — `chat{chatId}`, for private chats — the ID of the other participant. More details — [Format of dialogId](../index.md#dialog-id).
+
+## Limits and Restrictions {#limits}
+
+#|
+|| **Limit** | **Value** ||
+|| Events per single `im.v2.Event.get` call | 1–1000, 100 by default ||
+|| Storage period of recorded events | 24 hours ||
+|| Number of event recipients | The events of a single user can be received by only one application ||
+|| Maximum file size in `im.v2.File.upload` | 100 MB ||
+|#
+
+The general REST API limits also apply to the methods of this section — [REST API Limits](../../../../limits.md).
 
 ## Overview of Methods {#all-methods}
 
@@ -69,4 +102,6 @@ This distinguishes polling from webhook: in webhook mode, Bitrix24 calls the app
 - [API imbot.v2 Change Log](../change-log.md)
 - [im.v2 Events](./events/index.md)
 - [im.v2 Files](./files/index.md)
+- [Event Formats for im.v2](./events/events.md)
 - [{#T}](../index.md)
+- [{#T}](../entities.md)
