@@ -255,7 +255,7 @@ Currently, the `avatar_hr` field is always returned, regardless of the parameter
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -306,7 +306,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -319,7 +319,7 @@ The structure of the object is described in detail [below](#result-object) ||
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Result Object {#result-object}
+#### Result Object {#result-object}
 
 #|
 || **Name**
@@ -387,6 +387,8 @@ The structure of the object is described in detail [below](#result-object) ||
 #|
 || **Name**
 `Type` | **Description** ||
+|| **work_phone**
+[`string`](../../data-types.md) | Work phone ||
 || **personal_mobile**
 [`string`](../../data-types.md) | Mobile phone ||
 || **inner_phone**

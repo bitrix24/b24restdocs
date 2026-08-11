@@ -13,7 +13,7 @@ items:
     href: im-notify-get.md
   - name: Get Notification Types Schema
     href: im-notify-schema-get.md
-  - name: Read Notification List 
+  - name: Read Notification List
     href: im-notify-read-list.md
   - name: Read Notification
     href: im-notify-read.md

@@ -10,9 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `im.search.last.delete` removes a dialog from the last search history.
+{% note warning "Deprecated method" %}
 
-This method was designed for the previous version of the chat. In the current version of the chat M1, it works, but the results are not displayed in the interface.
+The method was designed for the previous version of the chat and is kept only to support existing integrations. In the current M1 chat version, it works, but the result is not displayed in the interface. There is no replacement in the current version.
+
+{% endnote %}
+
+The method `im.search.last.delete` removes a dialog from the last search history.
 
 ## Method Parameters
 
@@ -206,7 +210,7 @@ Supported formats:
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -224,7 +228,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -264,3 +268,4 @@ HTTP Status: **400**
 - [{#T}](./im-search-user-list.md)
 - [{#T}](./im-search-last-add.md)
 - [{#T}](./im-search-last-get.md)
+- [{#T}](./index.md)

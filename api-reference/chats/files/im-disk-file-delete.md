@@ -10,6 +10,12 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a chat participant who sent the file
 
+{% note info "" %}
+
+The method belongs to the `im.disk.*` group of the previous generation of the messenger API. It has no replacement in `im.v2` yet — use this method.
+
+{% endnote %}
+
 The method `im.disk.file.delete` removes a file from the chat folder. Only the user—who is a participant in the chat and sent the file—can delete it. Other chat participants cannot delete the file.
 
 After deletion, the text *Message deleted* is displayed in the chat instead of the file.
@@ -276,3 +282,4 @@ HTTP Status: **400**
 - [{#T}](./im-disk-file-commit.md)
 - [{#T}](./im-disk-file-save.md)
 - [{#T}](./im-disk-folder-get.md)
+- [{#T}](./index.md)

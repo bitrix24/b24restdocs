@@ -9,8 +9,8 @@ items:
     href: im-chat-get.md  
   - name: Get Chat Data  
     href: im-dialog-get.md  
-  - name: Update Chat  
-    include:  
+  - name: Chat Update
+    include:
       path: chat-update/b24-toc.yaml  
       mode: link  
   - name: Get Short List of Recent Chats  

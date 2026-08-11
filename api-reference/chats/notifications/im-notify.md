@@ -14,7 +14,7 @@ The `im.notify` method sends a notification to a user.
 
 {% note info "" %}
 
-The method is only available when called through the application.
+The method cannot be called with session authorization — it returns the `WRONG_AUTH_TYPE` error. Call it via a webhook or with an application token.
 
 {% endnote %}
 
@@ -30,12 +30,12 @@ The method is only available when called through the application.
 
 You can obtain the user ID using the [user.get](../../user/user-get.md) or [user.search](../../user/user-search.md) methods. ||
 || **TYPE**
-[`string`](../../data-types.md) | The type of notification. 
+[`string`](../../data-types.md) | The type of notification.
 
 Allowed values:
 - `USER` — personal notification
 - `SYSTEM` — system notification
- 
+
 Default value — `USER` ||
 || **MESSAGE***
 [`string`](../../data-types.md) | The text of the notification. The method trims whitespace from the ends of the string before sending. ||
@@ -48,6 +48,8 @@ Default value — `USER` ||
 || **ATTACH**
 [`object`](../../data-types.md) 
 [`string`](../../data-types.md) | An attachment for the notification in object format or JSON string. For more details, see the [Attachments](../messages/attachments.md) section. ||
+|| **CLIENT_ID**
+[`string`](../../data-types.md) | The application identifier. The parameter is required only when calling via a webhook: pass it together with `TAG` and `SUB_TAG` ||
 |#
 
 ## Code Examples
@@ -257,7 +259,7 @@ Default value — `USER` ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -275,7 +277,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -307,7 +309,7 @@ HTTP Status: **400**, **403**
 || `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with session authorization, which is prohibited. ||
 || `USER_ID_EMPTY` | User ID can't be empty | The `USER_ID` parameter was not provided, or `USER_ID <= 0`. ||
 || `MESSAGE_EMPTY` | Message can't be empty | The message text was not provided. ||
-|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The maximum allowable size for the `ATTACH` is exceeded — 30 KB. ||
+|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The maximum allowable size for the `ATTACH` is exceeded — 60,000 characters. ||
 || `ATTACH_ERROR` | Incorrect attach params | An incorrect format for the `ATTACH` was provided. ||
 |#
 

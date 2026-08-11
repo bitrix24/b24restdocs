@@ -6,115 +6,102 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The chat feature in Bitrix24 helps to:
+A chat in Bitrix24 helps you:
+
 - communicate one-on-one
-- discuss tasks in groups
-- manage notifications, files, and messages within a single messenger interface
+- discuss tasks in a group
+- work with notifications, files, and messages within a single messenger interface
 
-To work with chats, use the methods `im.*`. This section includes methods for managing chats and subsections for specific scenarios: participants, messages, notifications, search, files, and special operations.
+Chats are managed by the `im.*` methods. Individual scenarios — participants, messages, notifications, search, files, and special operations — are placed in subsections.
 
-For new developments, keep in mind that some scenarios have already been migrated to `im.v2`. This is particularly important for working with files and messenger events.
-
-> Quick navigation: [all methods and events](#all-methods)
+> Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [Chats in Bitrix24: interface and capabilities](https://helpdesk.bitrix24.com/open/21924784/)
+> User documentation: [Chats in Bitrix24: Interface and Capabilities](https://helpdesk.bitrix24.com/open/21924784/)
 
-## Main Components of Chat
+## How to Choose a Subsection
 
-A chat in Bitrix24 can be viewed as an object composed of several blocks:
+#|
+|| **If You Need To** | **Open the Subsection** ||
+|| Change the title, color, avatar, or owner of a chat | [Chat Update](./chat-update/index.md) ||
+|| Add, retrieve, or remove participants | [Chat Participants](./chat-users/index.md) ||
+|| Send, modify, and read messages | [Messages](./messages/index.md) ||
+|| Format a message, build an attachment, a keyboard, or a context menu | [Formatting](./messages/formatting.md), [Attachments](./messages/attachments.md), [Keyboards](./messages/keyboards.md), [Context Menu](./messages/menu.md) ||
+|| Send notifications and manage their read status | [Notifications](./notifications/index.md) ||
+|| Upload and download chat files | [Files](./files/index.md) ||
+|| Search chats, employees, and departments | [Search](./search/index.md) ||
+|| Retrieve user data and manage the status | [Users](./users/index.md) ||
+|| Retrieve the composition of company departments | [Departments](./departments/index.md) ||
+|| Pin, hide, and mute chats | [Special Operations](./special-operations/index.md) ||
+|| Understand the mechanisms of the previous generation of chat applications | [Deprecated](./outdated/index.md) ||
+|#
 
-- dialog type and identifiers
-- chat settings and design
-- participants and roles
-- messages and history
-- files
-- notifications and special actions
+## Chat Identifiers
 
-### Dialog Type and Identifiers
+A group chat and a private dialog differ by the `DIALOG_ID` identifier:
 
-Group chats and personal dialogs differ by the identifier `DIALOG_ID`:
+#|
+|| **Format** | **What It Means** | **Example** ||
+|| `XXX` | A private dialog, where `XXX` is the user identifier | `47` ||
+|| `chatXXX` | A group chat, where `XXX` is the chat identifier | `chat2935` ||
+|| `sgXXX` | A workgroup or project chat, where `XXX` is the group identifier | `sg17` ||
+|#
 
-- `XXX` — personal chat with a user, where `XXX` is the user identifier
-- `chatXXX` — group chat
-- `sgXXX` — chat for a group or project
+Some methods accept not `DIALOG_ID` but a numeric `CHAT_ID` — the same value without the `chat` prefix.
 
-Group chats are created using the method [im.chat.add](./im-chat-add.md). In the `TYPE` parameter, you can choose:
+Chats linked to CRM, tasks, the calendar, and Open Channels are found by the `ENTITY_TYPE` and `ENTITY_ID` pair with the [im.chat.get](./im-chat-get.md) method.
 
-- `CHAT` — closed chat
-- `OPEN` — open chat
+## Authorization and Limits
 
-If you need to find an existing chat associated with an external object, use [im.chat.get](./im-chat-get.md). For chats linked to CRM, tasks, calendars, open channels, and other objects, use the parameters `ENTITY_TYPE` and `ENTITY_ID`.
-
-### Chat Settings and Design
-
-When creating a chat, you can specify the name, description, color, avatar, and initial message through [im.chat.add](./im-chat-add.md).
-
-If you do not provide a `TITLE` when creating the chat, the system will generate a name automatically. In working scenarios, assign a clear name and, if necessary, link the chat to an external object.
-
-After creating the chat, you can modify its design and owner using methods from the [Chat Update](./chat-update/index.md) section.
-
-### Participants and Roles
-
-The chat owner is automatically assigned upon chat creation. The user who invoked [im.chat.add](./im-chat-add.md) is added to the chat as the owner.
-
-The owner identifier, the role of the current user, the list of managers, and action restrictions in the chat are returned by the methods [im.dialog.get](./im-dialog-get.md), [im.recent.get](./im-recent-get.md), and [im.recent.list](./im-recent-list.md).
-
-To work with participants, use the methods from the [Chat Participants](./chat-users/index.md) section:
-
-- [im.chat.user.add](./chat-users/im-chat-user-add.md) — add participants
-- [im.chat.user.delete](./chat-users/im-chat-user-delete.md) — remove participants
-- [im.chat.user.list](./chat-users/im-chat-user-list.md) — get participant identifiers
-- [im.dialog.users.list](./chat-users/im-dialog-users-list.md) — get detailed participant list
-
-You can transfer ownership to another participant using the method [im.chat.setOwner](./chat-update/im-chat-set-owner.md).
-
-### Messages and History
-
-The primary workflow for messaging begins with methods from the [Messages](./messages/index.md) section.
-
-To send messages, use [im.message.add](./messages/im-message-add.md), to read history — [im.dialog.messages.get](./messages/im-dialog-messages-get.md), and to search through history — [im.dialog.messages.search](./messages/im-dialog-messages-search.md).
-
-The read status and service actions for messaging are managed by the methods [im.dialog.read](./messages/im-dialog-read.md), [im.dialog.unread](./messages/im-dialog-unread.md), and [im.dialog.writing](./messages/im-dialog-writing.md).
-
-### Files
-
-You can send files in the chat. To work with files in new integrations, use the methods from the `im.v2` section of [Files](../chat-bots/chat-bots-v2/im.v2/files/index.md).
-
-Use the methods from the group [im.disk.*](./files/index.md) only for existing integrations with the old scenario.
-
-### Notifications and Special Actions
-
-A notification in the messenger is a message containing information from the system or a user. Notifications are handled by the group of methods [im.notify.*](./notifications/index.md).
-
-Methods for service actions with chats and recent dialog lists can be found in the [Special Operations](./special-operations/index.md) section. You can pin a chat, mark it as read, and hide it from the recent list.
+- the `im.*` and `im.v2.*` methods work in the `im` scope. The exception is the `imbot.app.*` methods from the [Deprecated](./outdated/index.md) subsection — they require the `imbot` scope
+- the notification sending methods [im.notify](./notifications/im-notify.md), [im.notify.personal.add](./notifications/im-notify-personal-add.md), and [im.notify.system.add](./notifications/im-notify-system-add.md) cannot be called with session authorization — call them via a webhook or with an application token
+- when calling via a webhook, the `TAG` and `SUB_TAG` tags are passed together with `CLIENT_ID`
+- the size of the serialized `ATTACH` attachment is limited to 60,000 characters
+- in the search methods, the search phrase must be at least two characters, and `LIMIT` is 50 at most
+- the chat avatar is passed as a Base64 string, and the maximum image size is 5000×5000 pixels
+- the content of a file uploaded to a chat is passed as a Base64 string, with a maximum size of 100 MB
 
 ## How to Get Started
 
-1. Create a chat using the method [im.chat.add](./im-chat-add.md) or obtain an existing identifier through [im.chat.get](./im-chat-get.md).
-2. Retrieve basic dialog data using the method [im.dialog.get](./im-dialog-get.md) and, if necessary, the list of recent chats through [im.recent.list](./im-recent-list.md).
-3. Add participants to the chat using the method [im.chat.user.add](./chat-users/im-chat-user-add.md).
-4. Configure the chat as needed: change the name, color, avatar, or owner using methods from the [Chat Update](./chat-update/index.md) section.
-5. Send a message using [im.message.add](./messages/im-message-add.md) or a notification using [im.notify](./notifications/im-notify.md).
+1. Create a chat with the [im.chat.add](./im-chat-add.md) method or obtain an existing identifier through [im.chat.get](./im-chat-get.md)
+2. Retrieve the basic dialog data with the [im.dialog.get](./im-dialog-get.md) method and, if necessary, the list of recent chats through [im.recent.list](./im-recent-list.md)
+3. Add participants to the chat with the [im.chat.user.add](./chat-users/im-chat-user-add.md) method
+4. Configure the chat if needed: change the title, color, avatar, or owner with the methods of the [Chat Update](./chat-update/index.md) subsection
+5. Send a message through [im.message.add](./messages/im-message-add.md) or a notification through [im.notify](./notifications/im-notify.md)
 
 ## Interaction with Other Objects
 
-**User.** Most methods operate on behalf of the current user or use identifiers `USER_ID`, `USERS`. You can obtain a user identifier using the method [user.get](../user/user-get.md). You can work with users using methods from the [Users](./users/index.md) section.
+**User.** Most methods operate on behalf of the current user or use the identifiers `USER_ID`, `USERS`. You can obtain a user identifier with the [user.get](../user/user-get.md) method. You can work with users using the methods of the [Users](./users/index.md) subsection.
 
-**Company Departments.** Methods for searching and working with departments use the department identifier `ID`. You can obtain a department identifier using the [get department list](../departments/department-get.md) method or the [search departments by name](./search/im-search-department-list.md) method.
+**Company departments.** The methods for searching and working with departments use the department identifier `ID`. You can obtain a department identifier with the [get department list](../departments/department-get.md) method or the [search departments by name](./search/im-search-department-list.md) method.
 
-**Files.** Old file upload scenarios use methods `im.disk.*`, while new scenarios have been moved to `im.v2`. Details are collected in the [Files](./files/index.md) section.
+**Files.** A chat file is stored on Drive and linked to a message. How to upload and download a file is described in the [Files](./files/index.md) subsection.
+
+**CRM, tasks, and the calendar.** A chat can be linked to an external object. The link is set by the `ENTITY_TYPE` and `ENTITY_ID` pair when creating the chat with the [im.chat.add](./im-chat-add.md) method, and you can find the linked chat by this pair with the [im.chat.get](./im-chat-get.md) method.
+
+**Chatbots.** The same operations on behalf of a bot are performed by the methods of the [Chatbots](../chat-bots/index.md) section.
 
 ## Current API Version
 
-For new integrations, use the current sections `im.*` and new methods `im.v2`, if the scenario has already been migrated to the new generation of the API.
+For new integrations, use the `im.*` methods from this section and the `im.v2` methods wherever the scenario has already been migrated to the new generation of the API.
 
-- For files, use [im.v2.File.upload](../chat-bots/chat-bots-v2/im.v2/files/file-upload.md) and [im.v2.File.download](../chat-bots/chat-bots-v2/im.v2/files/file-download.md).
-- For user events in the messenger, use the section [im.v2: events](../chat-bots/chat-bots-v2/im.v2/events/index.md).
-- Methods from the sections [Files](./files/index.md), [Search](./search/index.md), and [Users](./users/index.md) contain notes about scenarios from the previous version of the chat, which operate with limitations in the M1 interface.
+What is replaced by what:
+
+#|
+|| **Deprecated Path** | **Current Replacement** ||
+|| [im.disk.folder.get](./files/im-disk-folder-get.md) + upload through Drive methods + [im.disk.file.commit](./files/im-disk-file-commit.md) | [im.v2.File.upload](../chat-bots/chat-bots-v2/im.v2/files/file-upload.md) — a single call instead of a chain ||
+|| [im.disk.file.save](./files/im-disk-file-save.md), [im.disk.file.delete](./files/im-disk-file-delete.md) | There is no replacement yet, use these methods ||
+|| [im.search.last.add](./search/im-search-last-add.md), [im.search.last.get](./search/im-search-last-get.md), [im.search.last.delete](./search/im-search-last-delete.md) | There is no replacement: the methods work, but the result is not displayed in the M1 chat interface ||
+|| [im.user.status.idle.start](./users/im-user-status-idle-start.md), [im.user.status.idle.end](./users/im-user-status-idle-end.md) | There is no replacement: the methods work, but the result is not displayed in the M1 chat interface ||
+|| The previous generation of chat applications — the [Deprecated](./outdated/index.md) subsection | [Chatbots](../chat-bots/index.md) and [messenger widgets](../widgets/im/index.md) ||
+|#
+
+The user events of the messenger are collected in the [im.v2: Events](../chat-bots/chat-bots-v2/im.v2/events/index.md) section.
+
+The remaining `im.*` methods from this section are current and have no deprecated variants.
 
 ## Widgets
 
-You can embed an application into the chat interface. By embedding, you can add an action next to the input field, a separate item in the chat sidebar, an action in the context menu of a message, or your own section in the messenger navigation menu.
+You can embed an application into the chat interface. An embedding adds an action next to the input field, an item in the chat sidebar, an action in the context menu of a message, or your own section in the messenger navigation menu.
 
 - [Item in the panel above the input field](../widgets/im/textarea.md) `IM_TEXTAREA`
 - [Item in the chat sidebar](../widgets/im/sidebar.md) `IM_SIDEBAR`
@@ -123,7 +110,7 @@ You can embed an application into the chat interface. By embedding, you can add 
 
 To register an embedding point, use the method [placement.bind](../widgets/placement-bind.md) and pass the required code in the `PLACEMENT` parameter. All placements of the section, with the setup order and the call context, are collected in the overview [{#T}](../widgets/im/index.md).
 
-## Overview of Methods and Events {#all-methods}
+## Overview of Methods {#all-methods}
 
 > Scope: [`im`](../scopes/permissions.md)
 >
@@ -147,9 +134,9 @@ To register an embedding point, use the method [placement.bind](../widgets/place
 #|
 || **Method** | **Description** ||
 || [im.chat.setOwner](./chat-update/im-chat-set-owner.md) | Changes the chat owner ||
+|| [im.chat.updateTitle](./chat-update/im-chat-update-title.md) | Changes the chat title ||
 || [im.chat.updateAvatar](./chat-update/im-chat-update-avatar.md) | Changes the chat avatar ||
 || [im.chat.updateColor](./chat-update/im-chat-update-color.md) | Changes the chat color ||
-|| [im.chat.updateTitle](./chat-update/im-chat-update-title.md) | Changes the chat title ||
 |#
 
 ### Chat Participants
@@ -171,8 +158,8 @@ To register an embedding point, use the method [placement.bind](../widgets/place
 || [im.message.update](./messages/im-message-update.md) | Modifies a sent message ||
 || [im.message.delete](./messages/im-message-delete.md) | Deletes a message ||
 || [im.message.like](./messages/im-message-like.md) | Changes the "like" status of a message ||
-|| [im.message.share](./messages/im-message-share.md) | Creates an object based on a message ||
-|| [im.message.command](./messages/im-message-command.md) | Executes a chat-bot command ||
+|| [im.message.share](./messages/im-message-share.md) | Creates a chat, task, post, or calendar event based on a message ||
+|| [im.message.command](./messages/im-message-command.md) | Executes a chatbot command ||
 || [im.dialog.messages.get](./messages/im-dialog-messages-get.md) | Retrieves the list of recent messages ||
 || [im.dialog.messages.search](./messages/im-dialog-messages-search.md) | Searches for messages in the chat ||
 || [im.dialog.read](./messages/im-dialog-read.md) | Marks messages as "read" ||
@@ -192,7 +179,7 @@ To register an embedding point, use the method [placement.bind](../widgets/place
 || [im.notify.read.list](./notifications/im-notify-read-list.md) | Marks a list of notifications as read ||
 || [im.notify.read](./notifications/im-notify-read.md) | Marks a notification as read or returns it to unread ||
 || [im.notify.read.all](./notifications/im-notify-read-all.md) | Marks all notifications as read ||
-|| [im.notify.answer](./notifications/im-notify-answer.md) | Responds to a notification with a quick reply ||
+|| [im.notify.answer](./notifications/im-notify-answer.md) | Replies to a notification with a quick response ||
 || [im.notify.confirm](./notifications/im-notify-confirm.md) | Interacts with notification buttons ||
 || [im.notify.delete](./notifications/im-notify-delete.md) | Deletes notifications ||
 || [im.notify.history.search](./notifications/im-notify-history-search.md) | Searches through notification history ||
@@ -205,6 +192,12 @@ To register an embedding point, use the method [placement.bind](../widgets/place
 || [im.search.chat.list](./search/im-search-chat-list.md) | Searches chats by name ||
 || [im.search.department.list](./search/im-search-department-list.md) | Searches departments ||
 || [im.search.user.list](./search/im-search-user-list.md) | Searches users ||
+|#
+
+#### Methods of the Previous Version of the Chat
+
+#|
+|| **Method** | **Description** ||
 || [im.search.last.add](./search/im-search-last-add.md) | Adds search to history ||
 || [im.search.last.get](./search/im-search-last-get.md) | Retrieves search history ||
 || [im.search.last.delete](./search/im-search-last-delete.md) | Deletes search from history ||
@@ -228,6 +221,12 @@ To register an embedding point, use the method [placement.bind](../widgets/place
 || [im.user.list.get](./users/im-user-list-get.md) | Retrieves data about a list of users ||
 || [im.user.status.set](./users/im-user-status-set.md) | Sets the user's status in the chat ||
 || [im.user.status.get](./users/im-user-status-get.md) | Retrieves the user's set status ||
+|#
+
+#### Methods of the Previous Version of the Chat
+
+#|
+|| **Method** | **Description** ||
 || [im.user.status.idle.start](./users/im-user-status-idle-start.md) | Sets the automatic status "Away" ||
 || [im.user.status.idle.end](./users/im-user-status-idle-end.md) | Disables the automatic status "Away" ||
 |#
@@ -237,7 +236,7 @@ To register an embedding point, use the method [placement.bind](../widgets/place
 #|
 || **Method** | **Description** ||
 || [im.recent.pin](./special-operations/im-recent-pin.md) | Pins the chat at the top of the list ||
-|| [im.recent.unread](./special-operations/im-recent-unread.md) | Sets or removes the "read" status for the chat ||
+|| [im.recent.unread](./special-operations/im-recent-unread.md) | Sets or removes the "unread" label on the chat ||
 || [im.dialog.read.all](./special-operations/im-dialog-read-all.md) | Marks all chats of the user as "read" ||
 || [im.chat.mute](./special-operations/im-chat-mute.md) | Disables notifications from the chat ||
 || [im.recent.hide](./special-operations/im-recent-hide.md) | Removes the chat from the recent list ||
@@ -249,13 +248,30 @@ To register an embedding point, use the method [placement.bind](../widgets/place
 || **Method** | **Description** ||
 || [im.v2.File.upload](../chat-bots/chat-bots-v2/im.v2/files/file-upload.md) | Uploads a file to the chat ||
 || [im.v2.File.download](../chat-bots/chat-bots-v2/im.v2/files/file-download.md) | Returns a link to download the file ||
-|| [im.disk.file.commit](./files/im-disk-file-commit.md) | Adds a file to the chat ||
-|| [im.disk.file.save](./files/im-disk-file-save.md) | Saves a file to your drive ||
+|| [im.disk.file.save](./files/im-disk-file-save.md) | Saves a file to your Drive ||
 || [im.disk.file.delete](./files/im-disk-file-delete.md) | Deletes a file from the chat folder ||
-|| [im.disk.folder.get](./files/im-disk-folder-get.md) | Retrieves the folder for storing chat files ||
 |#
 
-### New API Events
+#### Methods of the Previous Generation of the API
+
+#|
+|| **Method** | **Description** ||
+|| [im.disk.file.commit](./files/im-disk-file-commit.md) | Adds a file to the chat. Replaced by the [im.v2.File.upload](../chat-bots/chat-bots-v2/im.v2/files/file-upload.md) method ||
+|| [im.disk.folder.get](./files/im-disk-folder-get.md) | Retrieves the folder for storing chat files. The folder is no longer needed to upload a file ||
+|#
+
+### Previous Generation of Chat Applications
+
+The methods work in the `imbot` scope and are kept only to support existing integrations. For new development, use [chatbots](../chat-bots/index.md) and [messenger widgets](../widgets/im/index.md).
+
+#|
+|| **Method** | **Description** ||
+|| [imbot.app.register](./outdated/create-app/imbot-app-register.md) | Registers a chat application ||
+|| [imbot.app.update](./outdated/create-app/imbot-app-update.md) | Updates the data of a chat application ||
+|| [imbot.app.unregister](./outdated/create-app/imbot-app-unregister.md) | Deletes a chat application ||
+|#
+
+### Working with Messenger Events
 
 #|
 || **Method** | **Description** ||

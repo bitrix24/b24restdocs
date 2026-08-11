@@ -18,13 +18,15 @@ The method `im.department.colleagues.list` retrieves the list of colleagues for 
 || **Name**
 `type` | **Description** ||
 || **USER_DATA**
-[`string`](../../data-types.md) | Return detailed user data. 
+[`string`](../../data-types.md) | Return detailed user data.
 
 Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+Default: `N` ||
 || **OFFSET**
-[`integer`](../../data-types.md) | Offset for user selection ||
+[`integer`](../../data-types.md) | Offset for user selection. Default is `0` ||
 || **LIMIT**
 [`integer`](../../data-types.md) | Number of items in the selection. Default is `10`. Maximum value is `50` ||
 |#
@@ -101,8 +103,6 @@ Possible values:
       // im.department.colleagues.list returns a single page (max 50 records). For the whole result set
       // use a list helper: $b24.actions.v2.callList.make() returns every record as one
       // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<ColleagueUser[]>({
         method: 'im.department.colleagues.list',
         params: {
@@ -140,8 +140,6 @@ Possible values:
           // im.department.colleagues.list returns a single page (max 50 records). For the whole result set
           // use a list helper: $b24.actions.v2.callList.make() returns every record as one
           // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'im.department.colleagues.list',
             params: {
@@ -324,8 +322,7 @@ HTTP Status: **200**
                 "type": "user",
                 "website": "",
                 "email": "anna.smith@mysite.com"
-            },
-            ... // description for each user
+            }
         ],
         "next": 5,
         "total": 7,
@@ -348,7 +345,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | List of users. 
+[`array`](../../data-types.md) | List of users.
 - When `USER_DATA = 'N'`, contains user IDs
 - When `USER_DATA = 'Y'`, contains user objects [(detailed description)](#user-object) ||
 || **total**
@@ -460,4 +457,4 @@ HTTP Status: **403**
 - [{#T}](./im-department-get.md)
 - [{#T}](./im-department-managers-get.md)
 - [{#T}](./im-department-employees-get.md)
-- [{#T}](./im-department-colleagues-list.md)
+- [{#T}](./index.md)

@@ -20,9 +20,13 @@ The method `im.chat.updateAvatar` updates the chat avatar.
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../data-types.md) | Identifier of the chat.
+[`integer`](../../data-types.md) | Identifier of the chat. Pass a number without the `chat` prefix. Required if `DIALOG_ID` is not provided.
 
 The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method ||
+|| **DIALOG_ID**
+[`string`](../../data-types.md) | Identifier of the dialog in the format `chatXXX`, where `XXX` is the chat identifier. Can be provided instead of `CHAT_ID`.
+
+The method works only with group chats: for a private dialog it returns the `DIALOG_ID_EMPTY` error ||
 || **AVATAR***
 [`string`](../../data-types.md) | Image in [Base64](../../files/how-to-upload-files.md) format.
 
@@ -263,7 +267,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided ||
+|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided, or the value contains the `chat` prefix ||
+|| `DIALOG_ID_EMPTY` | Dialog ID can't be empty | A private dialog or an invalid format was provided in `DIALOG_ID` ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to change the avatar ||
 || `ACCESS_ERROR` | Action unavailable | Operation not available for this chat ||
 || `ACCESS_ERROR` | The avatar of this chat cannot be changed | Cannot change the avatar of this chat ||

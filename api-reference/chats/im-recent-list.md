@@ -599,8 +599,7 @@ HTTP Status: **200**
 							"isNew": false
 						}
 					]
-				},
-				... // description of other roles
+				}
 			},
 			"recommendedRoles": [
 				"copilot_assistant",
@@ -927,7 +926,7 @@ HTTP Status: **200**
 [`string`](../data-types.md) | Permission to send messages ||
 |#
 
-### Object copilot {#copilot}
+#### Object copilot {#copilot}
 
 #|
 || **Name**
@@ -943,6 +942,17 @@ HTTP Status: **200**
 |#
 
 ## Error Handling
+
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+The method has no error codes of its own — only system REST API errors are possible.
 
 {% include notitle [error handling](../../_includes/error-info.md) %}
 

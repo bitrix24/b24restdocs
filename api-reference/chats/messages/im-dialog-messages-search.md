@@ -324,7 +324,9 @@ HTTP status: **200**
         "messages": [
             {
                 "id": 33653,
+                "chatId": 2421,
                 "chat_id": 2421,
+                "authorId": 1,
                 "author_id": 1,
                 "date": "2026-02-13T14:28:00+01:00",
                 "text": "test message",
@@ -333,8 +335,10 @@ HTTP status: **200**
                 "forward": null,
                 "params": [],
                 "viewedByOthers": false,
+                "block": null,
                 "unread": false,
-                "viewed": true
+                "viewed": true,
+                "viewedCount": 0
             }
         ]
     },
@@ -391,10 +395,14 @@ Used as a supplementary reference to `result.reactions.reactionUsers`, contains 
 `type` | **Description** ||
 || **id**
 [`integer`](../../data-types.md) | Identifier of the message ||
-|| **chat_id**
+|| **chatId**
 [`integer`](../../data-types.md) | Identifier of the chat ||
-|| **author_id**
+|| **chat_id**
+[`integer`](../../data-types.md) | Identifier of the chat. A duplicate of the `chatId` field in the old spelling ||
+|| **authorId**
 [`integer`](../../data-types.md) | Identifier of the message author ||
+|| **author_id**
+[`integer`](../../data-types.md) | Identifier of the message author. A duplicate of the `authorId` field in the old spelling ||
 || **date**
 [`datetime`](../../data-types.md) | Date and time of message creation ||
 || **text**
@@ -413,6 +421,10 @@ Used as a supplementary reference to `result.reactions.reactionUsers`, contains 
 [`boolean`](../../data-types.md) | Indicator of an unread message for the current user ||
 || **viewed**
 [`boolean`](../../data-types.md) | Indicator that the message has been viewed by the current user ||
+|| **viewedCount**
+[`integer`](../../data-types.md) | Number of participants who have viewed the message ||
+|| **block**
+[`object`](../../data-types.md) | Service data of the message block. Can be `null` ||
 |#
 
 #### User {#user}
@@ -493,7 +505,6 @@ Used as a supplementary reference to `result.reactions.reactionUsers`, contains 
 [`array`](../../data-types.md) | Reactions of the current user ||
 |#
 
-
 ## Error Handling
 
 HTTP status: **400**, **403**
@@ -515,7 +526,7 @@ HTTP status: **400**, **403**
 || `ACCESS_ERROR` | You do not have access to this chat | No access to the specified chat ||
 |#
 
-{% include [system errors](./../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

@@ -256,7 +256,7 @@ HTTP Status: **400**, **403**
 || `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided ||
 || `ACCESS_ERROR` | Action unavailable | Operation not available for this chat ||
 || `ACCESS_ERROR` | It is forbidden to delete users of this chat | Cannot leave this chat using this method ||
-|| `ACCESS_DENIED_KICK` | Insufficient rights to remove participants from the chat | User is not a participant of the chat ||
+|| `ACCESS_DENIED_KICK` | Access denied to kick user from chat | The user is not a participant of the chat or cannot leave this chat ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

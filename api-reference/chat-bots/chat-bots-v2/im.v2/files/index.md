@@ -18,7 +18,7 @@ The methods allow you to upload files to the chat and receive a download link fo
 
 The recipient is set by the `dialogId` parameter: for group chats — `chat{chatId}`, for private chats — the ID of the other participant. More details — [Format of dialogId](../../index.md#dialog-id). The description of the File object fields is available in [Objects and Fields](../../entities.md#file).
 
-Both methods appeared only in `im.v2` and have no direct counterparts among the previous generation of messenger methods.
+Both methods appeared in `im.v2`. In the previous generation, the same task was handled by a chain of `im.disk.*` and Drive method calls — it is described in the [Files in Chats](../../../../chats/files/index.md) subsection.
 
 ## Limits {#limits}
 
@@ -45,7 +45,7 @@ How to prepare the file content — [How to Upload Files](../../../../files/how-
 
 > Scope: [`im`](../../../../scopes/permissions.md)
 >
-> Who can execute the methods: a user or an application with access to the messenger
+> Who can execute the method: a user with access to the chat
 
 #| 
 || **Method** | **Description** ||

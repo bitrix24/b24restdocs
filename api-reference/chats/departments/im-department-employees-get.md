@@ -22,13 +22,15 @@ The method `im.department.employees.get` retrieves a list of employees from the 
 || **ID***
 [`array`](../../data-types.md) | An array of department IDs. You can pass a string with a JSON array of IDs.
 
-You can obtain the department ID using the [get department list method](../../departments/department-get.md) or the [search departments by name method](../search/im-search-department-list.md) ||
+You can obtain the department identifier using the [get department list method](../../departments/department-get.md) or the [search departments by name method](../search/im-search-department-list.md) ||
 || **USER_DATA**
-[`string`](../../data-types.md) | Return detailed user data.  
+[`string`](../../data-types.md) | Return detailed user data.
 
 Possible values:
-- `Y` — yes,
-- `N` — no ||
+- `Y` — yes
+- `N` — no
+
+Default: `N` ||
 |#
 
 ## Code Examples
@@ -312,15 +314,7 @@ HTTP Status: **200**
                     "type": "user",
                     "website": "",
                     "email": "john.smith@mysite.com"
-                },
-                {
-                    "id": 67,
-                    "active": true,
-                    "name": "Anna Johnson",
-                    "first_name": "Anna",
-                    ...
-                },
-
+                }
             ],
             "3": [
                 {
@@ -329,9 +323,31 @@ HTTP Status: **200**
                     "name": "Maria Brown",
                     "first_name": "Maria",
                     "last_name": "Brown",
-                    ...
-                },
-            ...
+                    "work_position": "Manager",
+                    "color": "#df532d",
+                    "avatar": "",
+                    "gender": "F",
+                    "birthday": "",
+                    "extranet": false,
+                    "network": false,
+                    "bot": false,
+                    "connector": false,
+                    "external_auth_id": "default",
+                    "status": "online",
+                    "idle": false,
+                    "last_activity_date": "2026-03-03T09:36:00+01:00",
+                    "mobile_last_date": false,
+                    "desktop_last_date": false,
+                    "absent": false,
+                    "departments": [
+                        3
+                    ],
+                    "phones": false,
+                    "bot_data": null,
+                    "type": "user",
+                    "website": "",
+                    "email": "maria.brown@mysite.com"
+                }
             ]
         },
         "time": {
@@ -461,5 +477,5 @@ HTTP Status: **400**
 
 - [{#T}](./im-department-get.md)
 - [{#T}](./im-department-managers-get.md)
-- [{#T}](./im-department-employees-get.md)
 - [{#T}](./im-department-colleagues-list.md)
+- [{#T}](./index.md)

@@ -321,7 +321,7 @@ Notifications are sorted first by descending creation date, then by descending i
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -395,7 +395,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -408,7 +408,7 @@ The structure of the object is described in detail [below](#result-object) ||
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Result Object {#result-object}
+#### Result Object {#result-object}
 
 #|
 || **Name**
@@ -427,7 +427,7 @@ The structure of the object is described in detail [below](#notification-object)
 The structure of the object is described in detail [below](#user-object) ||
 |#
 
-### Notification Object {#notification-object}
+#### Notification Object {#notification-object}
 
 #|
 || **Name**
@@ -465,7 +465,7 @@ The structure of the object is described in detail [below](#user-object) ||
 [`null`](../../data-types.md) | Additional parameters of the notification ||
 |#
 
-### User Object {#user-object}
+#### User Object {#user-object}
 
 #|
 || **Name**
@@ -533,6 +533,8 @@ The structure of the object is described in detail [below](#user-object) ||
 #|
 || **Name**
 `Type` | **Description** ||
+|| **work_phone**
+[`string`](../../data-types.md) | Work phone ||
 || **personal_mobile**
 [`string`](../../data-types.md) | Mobile phone ||
 || **inner_phone**

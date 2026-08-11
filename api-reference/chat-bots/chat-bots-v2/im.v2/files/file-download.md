@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`im`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: authorized user
+> Who can execute the method: a user with access to the chat
 
 The method `im.v2.File.download` returns a link to download a file from the chat.
 
@@ -175,7 +175,7 @@ HTTP Status: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #| 
 || **Name** 
@@ -205,8 +205,7 @@ HTTP Status: **400**, **403**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `FILE_NOT_FOUND` | File not found | File not found in the specified chat ||
-|| `FILE_ACCESS_ERROR` | File access error | No permission to download the file — the file does not belong to the specified chat ||
+|| `FILE_NOT_FOUND` | File not found | No file with this ID was found ||
 || `ACCESS_DENIED` | Access denied | No access to the chat ||
 |#
 
@@ -216,3 +215,4 @@ HTTP Status: **400**, **403**
 
 - [API Change Log imbot.v2](../../change-log.md)
 - [{#T}](./file-upload.md)
+- [{#T}](../../../../chats/files/index.md)

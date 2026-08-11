@@ -10,6 +10,12 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: chat participant
 
+{% note info "" %}
+
+The method belongs to the `im.disk.*` group of the previous generation of the messenger API. It has no replacement in `im.v2` yet — use this method.
+
+{% endnote %}
+
 The method `im.disk.file.save` saves a file from the chat to the user's personal Drive.
 
 The file is saved in the *Saved Files* folder. If the folder does not exist, the system will create it automatically.
@@ -259,7 +265,7 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Folder Object {#folder}
+#### Folder Object {#folder}
 
 #|
 || **Name**
@@ -270,7 +276,7 @@ HTTP Status: **200**
 [`string`](../../data-types.md) | Folder name — *Saved Files* ||
 |#
 
-### File Object {#file}
+#### File Object {#file}
 
 #|
 || **Name**
@@ -314,3 +320,4 @@ HTTP Status: **400**
 - [{#T}](./im-disk-file-commit.md)
 - [{#T}](./im-disk-file-delete.md)
 - [{#T}](./im-disk-folder-get.md)
+- [{#T}](./index.md)

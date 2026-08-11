@@ -19,16 +19,18 @@ The method `im.chat.mute` disables or enables notifications in the specified cha
 #|
 || **Name**
 `type` | **Description** ||
-|| **CHAT_ID***
-[`integer`](../../data-types.md) | The identifier of the chat. You can obtain the identifier using the [im.chat.get](../im-chat-get.md) method ||
-|| **DIALOG_ID***
+|| **CHAT_ID**
+[`integer`](../../data-types.md) | The identifier of the chat. Required if `DIALOG_ID` is not provided.
+
+You can obtain the identifier using the [im.chat.get](../im-chat-get.md) method ||
+|| **DIALOG_ID**
 [`string`](../../data-types.md) | The chat identifier in the format:
 
 - `chatXXX` — chat
 - `sgXXX` — group or project chat
 - `XXX` — user identifier for personal chat
 
-This can be passed instead of `CHAT_ID`. 
+Required if `CHAT_ID` is not provided. Pass either `CHAT_ID` or `DIALOG_ID`.
 
 The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. The user identifier can be obtained using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods ||
 || **MUTE**

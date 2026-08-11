@@ -214,7 +214,7 @@ If any value other than `Y` is provided, the method applies the action as for `N
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -232,7 +232,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**

@@ -20,16 +20,15 @@ The method `im.search.user.list` allows you to search for users by first name, l
 || **Name**
 `Type` | **Description** ||
 || **FIND***
-[`string`](../../data-types.md) | Search phrase. The minimum number of characters for the search is `3` ||
+[`string`](../../data-types.md) | Search phrase. The minimum number of characters for the search is `2` ||
 || **BUSINESS**
-[`string`](../../data-types.md) | Search only among business users. 
+[`string`](../../data-types.md) | Search only among business users.
 
 Allowed values:
 - `Y` — yes
 - `N` — no
 
 Default value is `N` ||
-
 || **OFFSET**
 [`integer`](../../data-types.md) | Offset for the user selection. Default is `0` ||
 || **LIMIT**
@@ -102,11 +101,8 @@ Default value is `N` ||
     }
 
     try {
-      // im.search.user.list returns a single page (max 50 records). For the whole result set
       // use a list helper: $b24.actions.v2.callList.make() returns every record as one
       // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<UserResult[]>({
         method: 'im.search.user.list',
         params: {
@@ -114,7 +110,6 @@ Default value is `N` ||
           BUSINESS: 'N',
           OFFSET: 0,
           LIMIT: 10,
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -143,11 +138,8 @@ Default value is `N` ||
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // im.search.user.list returns a single page (max 50 records). For the whole result set
           // use a list helper: $b24.actions.v2.callList.make() returns every record as one
           // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'im.search.user.list',
             params: {
@@ -155,7 +147,6 @@ Default value is `N` ||
               BUSINESS: 'N',
               OFFSET: 0,
               LIMIT: 10,
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -270,12 +261,12 @@ Default value is `N` ||
 
 ## Response Handling
 
-HTTP Status Code: **200**
+HTTP Status: **200**
 
 ```json
 {
-    "result": [
-        {
+    "result": {
+        "103": {
             "id": 103,
             "name": "Emily Smith",
             "first_name": "Emily",
@@ -301,9 +292,8 @@ HTTP Status Code: **200**
                 "personal_mobile": "12123456789",
                 "inner_phone": "78"
             }
-        },
-        ... // description for each user
-    ],
+        }
+    },
     "total": 2,
     "time": {
         "start": 1772628089,
@@ -318,13 +308,13 @@ HTTP Status Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
 `Type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | List of found users.
+[`object`](../../data-types.md) | Found users. The key of each element equals the user identifier. If nothing is found, the method returns an empty array.
 
 The structure of the user object is described in detail [below](#user-object) ||
 || **total**
@@ -335,7 +325,7 @@ The structure of the user object is described in detail [below](#user-object) ||
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### User Object {#user-object}
+#### User Object {#user-object}
 
 #|
 || **Name**
@@ -389,10 +379,10 @@ The structure of the user object is described in detail [below](#user-object) ||
 || **phones**
 [`object`](../../data-types.md) | User's phones or `false`.
 
-The structure of the object is described in detail [below](#phones-object) ||
+The structure of the object is described in detail [below](#phones) ||
 |#
 
-### Phones Object {#phones-object}
+#### Phones Object {#phones}
 
 #|
 || **Name**
@@ -434,3 +424,4 @@ HTTP Status: **400**
 - [{#T}](./im-search-last-add.md)
 - [{#T}](./im-search-last-get.md)
 - [{#T}](./im-search-last-delete.md)
+- [{#T}](./index.md)

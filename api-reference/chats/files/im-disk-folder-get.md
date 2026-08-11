@@ -10,6 +10,12 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: chat participant
 
+{% note warning "Deprecated method" %}
+
+The method is kept to support existing integrations. To upload a file to a chat, the folder is no longer needed — use [im.v2.File.upload](../../chat-bots/chat-bots-v2/im.v2/files/file-upload.md).
+
+{% endnote %}
+
 The method `im.disk.folder.get` retrieves the identifier of the folder where chat files are stored.
 
 The identifier from the response can be used in Drive methods:
@@ -280,3 +286,4 @@ HTTP Status: **400**
 - [{#T}](./im-disk-file-commit.md)
 - [{#T}](./im-disk-file-save.md)
 - [{#T}](./im-disk-file-delete.md)
+- [{#T}](./index.md)

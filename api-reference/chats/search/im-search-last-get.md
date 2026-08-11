@@ -10,9 +10,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `im.search.last.get` returns a list of dialogs from the history of the last search.
+{% note warning "Deprecated method" %}
 
-This method was designed for the previous version of the chat. In the current M1 chat version, it works, but the results are not displayed in the interface.
+The method was designed for the previous version of the chat and is kept only to support existing integrations. In the current M1 chat version, it works, but the result is not displayed in the interface. There is no replacement in the current version.
+
+{% endnote %}
+
+The method `im.search.last.get` returns a list of dialogs from the history of the last search.
 
 ## Method Parameters
 
@@ -292,7 +296,7 @@ Default value — `N` ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -365,8 +369,7 @@ HTTP Code: **200**
                 "website": "",
                 "email": "emily@example.com"
             }
-        },
-        ... // description for each chat, user
+        }
     ],
     "time": {
         "start": 1772695649,
@@ -381,7 +384,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -394,7 +397,7 @@ The structure of the item object is described in detail [below](#last-item-objec
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Search History Item {#last-item-object}
+#### Search History Item {#last-item-object}
 
 #|
 || **Name**
@@ -420,7 +423,7 @@ The structure of the object is described in detail [below](#user-object) ||
 The structure of the object is described in detail [below](#chat-object) ||
 |#
 
-### Avatar Object {#avatar-object}
+#### Avatar Object {#avatar-object}
 
 #|
 || **Name**
@@ -431,7 +434,7 @@ The structure of the object is described in detail [below](#chat-object) ||
 [`string`](../../data-types.md) | Color in HEX format ||
 |#
 
-### User Object {#user-object}
+#### User Object {#user-object}
 
 #|
 || **Name**
@@ -499,13 +502,15 @@ The structure of the object is described in detail [below](#chat-object) ||
 #|
 || **Name**
 `Type` | **Description** ||
+|| **work_phone**
+[`string`](../../data-types.md) | Work phone ||
 || **personal_mobile**
 [`string`](../../data-types.md) | Mobile phone ||
 || **inner_phone**
 [`string`](../../data-types.md) | Internal phone ||
 |#
 
-### Chat Object {#chat-object}
+#### Chat Object {#chat-object}
 
 #|
 || **Name**
@@ -545,6 +550,17 @@ The structure of the object is described in detail [below](#chat-object) ||
 
 ## Error Handling
 
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+The method has no error codes of its own — only system REST API errors are possible.
+
 {% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
@@ -556,3 +572,4 @@ The structure of the object is described in detail [below](#chat-object) ||
 - [{#T}](./im-search-user-list.md)
 - [{#T}](./im-search-last-add.md)
 - [{#T}](./im-search-last-delete.md)
+- [{#T}](./index.md)

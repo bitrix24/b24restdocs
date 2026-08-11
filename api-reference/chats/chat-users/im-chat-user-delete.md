@@ -26,7 +26,7 @@ The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) m
 || **USER_ID***
 [`integer`](../../data-types.md) | Identifier of the user to be excluded from the chat.
 
-The identifier can be obtained using the [im.chat.user.list](../chat-users/im-chat-user-list.md) method ||
+The identifier can be obtained using the [im.chat.user.list](./im-chat-user-list.md) method ||
 |#
 
 ## Code Examples

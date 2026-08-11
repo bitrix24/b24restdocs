@@ -20,11 +20,15 @@ The method `im.chat.updateColor` updates the chat color for the mobile applicati
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../data-types.md) | Identifier of the chat.
+[`integer`](../../data-types.md) | Identifier of the chat. Pass a number without the `chat` prefix. Required if `DIALOG_ID` is not provided.
 
 The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method ||
+|| **DIALOG_ID**
+[`string`](../../data-types.md) | Identifier of the dialog in the format `chatXXX`, where `XXX` is the chat identifier. Can be provided instead of `CHAT_ID`.
+
+The method works only with group chats: for a private dialog it returns the `DIALOG_ID_EMPTY` error ||
 || **COLOR***
-[`string`](../../data-types.md) | Chat color for the mobile application. Possible values:
+[`string`](../../data-types.md) | Chat color. It is displayed in the mobile application and wherever the chat has no avatar. Possible values:
 - `RED` — red
 - `GREEN` — green
 - `MINT` — mint
@@ -277,7 +281,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided ||
+|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided, or the value contains the `chat` prefix ||
+|| `DIALOG_ID_EMPTY` | Dialog ID can't be empty | A private dialog or an invalid format was provided in `DIALOG_ID` ||
 || `ACCESS_ERROR` | Action unavailable | Operation not available for this chat ||
 || `WRONG_COLOR` | This color currently unavailable | Invalid color provided ||
 || `WRONG_REQUEST` | This color currently set or chat doesn't exist | Color already set or chat does not exist ||

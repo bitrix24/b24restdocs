@@ -22,14 +22,15 @@ The method `im.department.managers.get` retrieves a list of managers for the spe
 || **ID***
 [`array`](../../data-types.md) | An array of department identifiers. You can pass a string with a JSON array of identifiers.
 
-You can obtain the department ID using the [get department list](../../departments/department-get.md) or the [search departments by name](../search/im-search-department-list.md) ||
+You can obtain the department identifier using the [get department list](../../departments/department-get.md) or the [search departments by name](../search/im-search-department-list.md) ||
 || **USER_DATA**
-[`string`](../../data-types.md) | Return detailed user data.  
+[`string`](../../data-types.md) | Return detailed user data.
 
 Possible values:
 - `Y` — yes
 - `N` — no
-||
+
+Default: `N` ||
 |#
 
 ## Code Examples
@@ -381,7 +382,7 @@ HTTP Status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### User Object {#user-object}
+#### User Object {#user-object}
 
 #|
 || **Name**
@@ -481,6 +482,6 @@ HTTP Status: **400**
 ## Continue Learning
 
 - [{#T}](./im-department-get.md)
-- [{#T}](./im-department-managers-get.md)
 - [{#T}](./im-department-employees-get.md)
 - [{#T}](./im-department-colleagues-list.md)
+- [{#T}](./index.md)

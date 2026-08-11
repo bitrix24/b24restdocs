@@ -190,18 +190,18 @@ No parameters
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
     "result": {
         "tasks": {
-            "name": "Tasks",
-            "module_id": "tasks",
-            "list": [
+            "NAME": "Tasks",
+            "MODULE_ID": "tasks",
+            "LIST": [
                 {
-                    "id": "tasks|task_update",
-                    "name": "Task Updates"
+                    "ID": "tasks|task_update",
+                    "NAME": "Task Updates"
                 }
             ]
         }
@@ -219,7 +219,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -232,7 +232,7 @@ The structure of the module object is described in detail [below](#module-object
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Object \{MODULE_ID\} {#module-object}
+#### Object \{MODULE_ID\} {#module-object}
 
 #|
 || **Name**
@@ -247,7 +247,7 @@ The structure of the module object is described in detail [below](#module-object
 The structure of the list item is described in detail [below](#list-item-object) ||
 |#
 
-### LIST Item {#list-item-object}
+#### LIST Item {#list-item-object}
 
 #|
 || **Name**
@@ -259,6 +259,17 @@ The structure of the list item is described in detail [below](#list-item-object)
 |#
 
 ## Error Handling
+
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+The method has no error codes of its own — only system REST API errors are possible.
 
 {% include notitle [Error Handling](../../../_includes/error-info.md) %}
 

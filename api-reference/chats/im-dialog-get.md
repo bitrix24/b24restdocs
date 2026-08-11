@@ -526,6 +526,12 @@ HTTP Status: **200**
 
 #### Object permissions {#permissions}
 
+Each field of the object shows which group of participants the action is available to:
+
+- `member` — all chat participants
+- `manager` — the chat owner and administrators
+- `owner` — only the chat owner
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -534,7 +540,7 @@ HTTP Status: **200**
 || **manage_users_delete**
 [`string`](../data-types.md) | Permission to remove participants ||
 || **manage_ui**
-[`string`](../data-types.md) | Permission to manage the chat interface ||
+[`string`](../data-types.md) | Permission to change the chat appearance: title, color, and avatar ||
 || **manage_settings**
 [`string`](../data-types.md) | Permission to manage chat settings ||
 || **manage_messages**

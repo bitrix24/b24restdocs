@@ -221,7 +221,7 @@ HTTP Status: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -243,6 +243,17 @@ HTTP Status: **200**
 |#
 
 ## Error Handling
+
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+The method has no error codes of its own — only system REST API errors are possible.
 
 There are no specific business errors for this method.
 

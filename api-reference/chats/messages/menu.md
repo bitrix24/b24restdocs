@@ -76,7 +76,7 @@ For more details on command processing by the chat bot, see [below](#command-pro
 
 Deprecated scenario. To open an application from chat, use widgets. ||
 || **APP_PARAMS**
-[`string`](../../data-types.md) | Parameters for launching the application in chat. Pass together with `APP_ID`. 
+[`string`](../../data-types.md) | Parameters for launching the application in chat. Pass together with `APP_ID`.
 
 Deprecated scenario. To open an application from chat, use widgets.
 
@@ -410,10 +410,19 @@ To disable the display of additional menu items, pass:
     ```php
     "COMMAND" => "example", // command that will be sent to the chat bot
     "COMMAND_PARAMS" => "example", // parameters for the command
-     ```  
-     
+     ```
+
 2. Clicking on the menu item will generate the event [ONIMCOMMANDADD](../../chat-bots/outdated/commands/events/on-im-command-add.md).
 3. Inside the event, the array `data[COMMAND]` will contain data about the invoked event. The value `COMMAND_CONTEXT` will indicate the context in which the command was invoked:
    - `TEXTAREA` — command entered manually
    - `KEYBOARD` — command invoked by button
    - `MENU` — command invoked from the context menu
+
+## Continue Learning
+
+- [{#T}](./im-message-add.md)
+- [{#T}](./im-message-update.md)
+- [{#T}](./keyboards.md)
+- [{#T}](./attachments.md)
+- [{#T}](./formatting.md)
+- [{#T}](./index.md)

@@ -39,7 +39,6 @@ In the new messenger interface, only the `online` status is displayed. The statu
 
 {% endnote %}
 
-
 ## Code Examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
@@ -217,7 +216,7 @@ In the new messenger interface, only the `online` status is displayed. The statu
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -235,7 +234,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**

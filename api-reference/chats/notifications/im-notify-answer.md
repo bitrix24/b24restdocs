@@ -217,7 +217,7 @@ You can obtain the notification identifier using the [im.notify.get](./im-notify
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -239,7 +239,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -252,7 +252,7 @@ The structure of the object is described in detail [below](#result-object) ||
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
-### Result Object {#result-object}
+#### Result Object {#result-object}
 
 #|
 || **Name**

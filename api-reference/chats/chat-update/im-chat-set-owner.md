@@ -20,9 +20,13 @@ The method `im.chat.setOwner` changes the owner of the chat.
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../data-types.md) | Identifier of the chat.
+[`integer`](../../data-types.md) | Identifier of the chat. Pass a number without the `chat` prefix. Required if `DIALOG_ID` is not provided.
 
 The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. ||
+|| **DIALOG_ID**
+[`string`](../../data-types.md) | Identifier of the dialog in the format `chatXXX`, where `XXX` is the chat identifier. Can be provided instead of `CHAT_ID`.
+
+The method works only with group chats: for a private dialog it returns the `DIALOG_ID_EMPTY` error ||
 || **USER_ID***
 [`integer`](../../data-types.md) | Identifier of the new chat owner.
 
@@ -248,7 +252,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -263,7 +267,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided. ||
+|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided, or the value contains the `chat` prefix. ||
+|| `DIALOG_ID_EMPTY` | Dialog ID can't be empty | A private dialog or an invalid format was provided in `DIALOG_ID`. ||
 || `USER_ID_EMPTY` | User ID can't be empty | `USER_ID` not provided. ||
 || `ACCESS_ERROR` | Action unavailable | Operation not available for this chat. ||
 || `WRONG_REQUEST` | Change owner can only owner and user must be member in chat | Only the current owner can change the owner, and the new owner must be a participant in the chat. ||

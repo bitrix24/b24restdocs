@@ -22,9 +22,9 @@ Results are sorted in descending order of identifiers.
 || **Name**
 `Type` | **Description** ||
 || **FIND**
-[`string`](../../data-types.md) | Search phrase for querying indexed chat data. The minimum number of characters for a search is `3` ||
+[`string`](../../data-types.md) | Search phrase for querying indexed chat data. The minimum number of characters for a search is `2` ||
 || **FIND_LINES**
-[`string`](../../data-types.md) | Search phrase for finding chats among Open Channels. The minimum number of characters for a search is `3` ||
+[`string`](../../data-types.md) | Search phrase for finding chats among Open Channels. The minimum number of characters for a search is `2` ||
 || **OFFSET**
 [`integer`](../../data-types.md) | Offset for the chat sample. Default is `0` ||
 || **LIMIT**
@@ -33,7 +33,7 @@ Results are sorted in descending order of identifiers.
 
 {% note info "" %}
 
-At least one parameter must be provided: `FIND` or `FIND_LINES`.
+At least one parameter must be provided: `FIND` or `FIND_LINES`. If both are provided, `FIND` takes priority and the search among Open Channels is not performed.
 
 {% endnote %}
 
@@ -49,7 +49,7 @@ At least one parameter must be provided: `FIND` or `FIND_LINES`.
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"FIND":"Project","FIND_LINES":"Line","OFFSET":0,"LIMIT":10}' \
+      -d '{"FIND":"Project","OFFSET":0,"LIMIT":10}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.search.chat.list
     ```
 
@@ -59,7 +59,7 @@ At least one parameter must be provided: `FIND` or `FIND_LINES`.
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"FIND":"Project","FIND_LINES":"Line","OFFSET":0,"LIMIT":10,"auth":"**put_access_token_here**"}' \
+      -d '{"FIND":"Project","OFFSET":0,"LIMIT":10,"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/im.search.chat.list
     ```
 
@@ -144,7 +144,6 @@ At least one parameter must be provided: `FIND` or `FIND_LINES`.
         method: 'im.search.chat.list',
         params: {
           FIND: 'Project',
-          FIND_LINES: 'Line',
           OFFSET: 0,
           LIMIT: 10,
         },
@@ -184,7 +183,6 @@ At least one parameter must be provided: `FIND` or `FIND_LINES`.
             method: 'im.search.chat.list',
             params: {
               FIND: 'Project',
-              FIND_LINES: 'Line',
               OFFSET: 0,
               LIMIT: 10,
             },
@@ -217,7 +215,6 @@ At least one parameter must be provided: `FIND` or `FIND_LINES`.
             'im.search.chat.list',
             [
                 'FIND' => 'Project',
-                'FIND_LINES' => 'Line',
                 'OFFSET' => 0,
                 'LIMIT' => 10,
             ]
@@ -242,7 +239,6 @@ At least one parameter must be provided: `FIND` or `FIND_LINES`.
         'im.search.chat.list',
         {
             FIND: 'Project',
-            FIND_LINES: 'Line',
             OFFSET: 0,
             LIMIT: 10,
         },
@@ -265,7 +261,6 @@ At least one parameter must be provided: `FIND` or `FIND_LINES`.
         'im.search.chat.list',
         [
             'FIND' => 'Project',
-            'FIND_LINES' => 'Line',
             'OFFSET' => 0,
             'LIMIT' => 10,
         ]
@@ -284,7 +279,6 @@ At least one parameter must be provided: `FIND` or `FIND_LINES`.
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "im.search.chat.list", b24.Params{
     	"FIND":       "Project",
-    	"FIND_LINES": "Line",
     	"OFFSET":     0,
     	"LIMIT":      10,
     }, b24.WithIdempotent())
@@ -301,7 +295,7 @@ At least one parameter must be provided: `FIND` or `FIND_LINES`.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -364,8 +358,7 @@ HTTP Code: **200**
                 "can_post": "member"
             },
             "is_new": false
-        },
-        ... // description for each chat
+        }
     ],
     "total": 2,
     "time": {
@@ -381,7 +374,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -398,7 +391,7 @@ The structure of the chat object is described in detail [below](#chat-object) ||
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-### Chat Object {#chat-object}
+#### Chat Object {#chat-object}
 
 #|
 || **Name**
@@ -486,7 +479,7 @@ The structure of the object is described in detail [below](#permissions-object) 
 [`boolean`](../../data-types.md) | Indicates if the chat is new ||
 |#
 
-### Restrictions Object {#restrictions-object}
+#### Restrictions Object {#restrictions-object}
 
 #|
 || **Name**
@@ -515,7 +508,7 @@ The structure of the object is described in detail [below](#permissions-object) 
 [`string`](../../data-types.md) | Link text for navigating via `path`. This field is available along with `path` ||
 |#
 
-### Public Object {#public-object}
+#### Public Object {#public-object}
 
 #|
 || **Name**
@@ -526,7 +519,7 @@ The structure of the object is described in detail [below](#permissions-object) 
 [`string`](../../data-types.md) | Public link to the chat ||
 |#
 
-### Entity Link Object {#entity-link-object}
+#### Entity Link Object {#entity-link-object}
 
 #|
 || **Name**
@@ -540,7 +533,7 @@ The structure of the object is described in detail [below](#permissions-object) 
 [`integer`](../../data-types.md) | Identifier of the related object ||
 |#
 
-### Permissions Object {#permissions-object}
+#### Permissions Object {#permissions-object}
 
 #|
 || **Name**
@@ -576,7 +569,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `FIND_SHORT` | Too short a search phrase | No search parameter was provided or the phrase is less than three characters ||
+|| `FIND_SHORT` | Too short a search phrase | No search parameter was provided or the phrase is less than two characters ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
@@ -588,3 +581,4 @@ HTTP Status: **400**
 - [{#T}](./im-search-last-add.md)
 - [{#T}](./im-search-last-get.md)
 - [{#T}](./im-search-last-delete.md)
+- [{#T}](./index.md)

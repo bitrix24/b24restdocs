@@ -20,11 +20,13 @@ The method `im.search.department.list` performs a search for departments by thei
 || **Name**
 `Type` | **Description** ||
 || **FIND***
-[`string`](../../data-types.md) | Search phrase for finding the full name of the department (field [full_name](../departments/im-department-get.md#department)) ||
-|| **USER_DATA**
-[`string`](../../data-types.md) | Return the manager's data in the field [manager_user_data](#manager_user_data). 
+[`string`](../../data-types.md) | Search phrase for finding the beginning of words in the full name of the department (field [full_name](../departments/im-department-get.md#department)).
 
-Available values: 
+If the parameter is not provided, the method returns the `FIND_SHORT` error. An empty or very short phrase does not cause an error: the filter is switched off and the method returns the whole list of departments ||
+|| **USER_DATA**
+[`string`](../../data-types.md) | Return the manager's data in the field [manager_user_data](#manager_user_data).
+
+Available values:
 - `Y` — yes
 - `N` — no
 
@@ -278,7 +280,7 @@ Default value — `N` ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -321,8 +323,7 @@ HTTP Code: **200**
                 "website": "example.com",
                 "email": "user@example.com"
             }
-        },
-        ... // description for each department
+        }
     ],
     "total": 2,
     "time": {
@@ -338,7 +339,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -355,7 +356,7 @@ The structure of the department object is described in detail [below](#departmen
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-### Department Object {#department-object}
+#### Department Object {#department-object}
 
 #|
 || **Name**
@@ -442,6 +443,8 @@ The structure of the manager object is described in detail [below](#manager_user
 #|
 || **Name**
 `Type` | **Description** ||
+|| **work_phone**
+[`string`](../../data-types.md) | Work phone ||
 || **personal_mobile**
 [`string`](../../data-types.md) | Mobile phone ||
 || **inner_phone**
@@ -465,7 +468,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `FIND_SHORT` | Too short a search phrase | The `FIND` parameter is not provided or the phrase is less than three characters ||
+|| `FIND_SHORT` | Too short a search phrase | The `FIND` parameter is not provided ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
@@ -477,3 +480,4 @@ HTTP Status: **400**
 - [{#T}](./im-search-last-add.md)
 - [{#T}](./im-search-last-get.md)
 - [{#T}](./im-search-last-delete.md)
+- [{#T}](./index.md)

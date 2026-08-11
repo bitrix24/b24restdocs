@@ -220,7 +220,7 @@ Default value is `Y` ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -238,7 +238,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -250,6 +250,17 @@ HTTP Code: **200**
 |#
 
 ## Error Handling
+
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+The method has no error codes of its own — only system REST API errors are possible.
 
 {% include notitle [Error Handling](../../../_includes/error-info.md) %}
 

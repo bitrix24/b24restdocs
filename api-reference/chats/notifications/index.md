@@ -6,60 +6,68 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-A chat notification is a message containing information from the system or a user. The group of methods `im.notify.*` manages notifications.
+A chat notification is a message containing information from the system or a user. It arrives in the messenger notification center, not in the chat conversation. The group of methods `im.notify.*` manages notifications. The subsection is part of the [Chats in Bitrix24](../index.md) section.
 
-> Quick Navigation: [All Methods and Events](#all-methods)  
-> User Documentation: [Notifications in Bitrix24](https://helpdesk.bitrix24.com/open/19423886/)
+The `im.notify.*` methods are current and have no deprecated variants.
+
+{% note warning %}
+
+The sending methods [im.notify](./im-notify.md), [im.notify.personal.add](./im-notify-personal-add.md), and [im.notify.system.add](./im-notify-system-add.md) cannot be called with session authorization — they return the `WRONG_AUTH_TYPE` error. Call them via a webhook or with an application token.
+
+{% endnote %}
+
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Notifications in Bitrix24](https://helpdesk.bitrix24.com/open/19423886/)
+
+## Personal and System Notification
+
+Notifications come in two types, and the type determines on whose behalf the message arrives:
+
+- a personal notification arrives on behalf of the user who called the method. The `USER` type in the `TYPE` parameter, which is also used by default
+- a system notification arrives on behalf of the system, without an author. The `SYSTEM` type
+
+## Notification or Message
+
+#|
+|| **Task** | **What to Use** ||
+|| Inform a user about an event in the integration without creating a conversation | The `im.notify.*` methods of this subsection ||
+|| Write to a dialogue or a group chat | [im.message.add](../messages/im-message-add.md) from the [Messages](../messages/index.md) subsection ||
+|| Find out the number of unread messages and notifications | [im.counters.get](../im-counters-get.md) ||
+|#
+
+## How to Get Started
+
+1. Retrieve the recipient identifier with the [user.get](../../user/user-get.md) method
+2. Send the notification with the [im.notify](./im-notify.md) method and choose the type in the `TYPE` parameter
+3. Retain the notification identifier from the response — it is needed for the read, reply, and delete methods
+4. Manage the state of the notifications with the [im.notify.read](./im-notify-read.md), [im.notify.read.list](./im-notify-read-list.md), and [im.notify.delete](./im-notify-delete.md) methods
 
 ## Linking Notifications to Other Objects
 
-**User.** A notification is sent to a user by their `USER_ID`. You can obtain the user ID using the [user.get](../../user/user-get.md) method.
+**User.** A notification goes to the user specified in `USER_ID`. You can obtain the user identifier using the [user.get](../../user/user-get.md) method.
 
-## Send Notification
+**Application.** Notification tags are bound to the application. The `TAG` tag is unique within it: if a new notification is sent with the same `TAG`, the system removes the previous one. `SUB_TAG` is an auxiliary tag without a uniqueness check. When calling via a webhook, both tags are passed together with `CLIENT_ID`.
 
-You can send a message with information to the messenger, which will appear in the notifications list.
+**Attachments.** Structured content can be attached to a notification in the `ATTACH` parameter — the format is described in the [Attachments](../messages/attachments.md) article.
 
-- **Universal Method.** The [im.notify](./im-notify.md) method sends a personal or system notification via the `TYPE` parameter.
+**Search.** The [im.notify.history.search](./im-notify-history-search.md) method helps you find a notification in the history, and the search across chats, employees, and departments is collected in the [Search](../search/index.md) subsection.
 
-- **Personal Notification.** An employee will receive a notification on behalf of the user who initiated the method. The [im.notify.personal.add](./im-notify-personal-add.md) method sends a personal notification.
+## How to Choose a Method
 
-- **System Notification.** The [im.notify.system.add](./im-notify-system-add.md) method sends a notification from the system.
+#|
+|| **Task** | **Method** ||
+|| Send a notification | [im.notify](./im-notify.md) — one method for both types, the type is set by the `TYPE` parameter. The separate methods [im.notify.personal.add](./im-notify-personal-add.md) and [im.notify.system.add](./im-notify-system-add.md) solve the same tasks ||
+|| Retrieve notifications and types | [im.notify.get](./im-notify-get.md), [im.notify.schema.get](./im-notify-schema-get.md) ||
+|| Manage the read status | [im.notify.read](./im-notify-read.md) — a single notification, [im.notify.read.list](./im-notify-read-list.md) — a list, [im.notify.read.all](./im-notify-read-all.md) — all ||
+|| Reply or press a button | [im.notify.answer](./im-notify-answer.md), [im.notify.confirm](./im-notify-confirm.md) ||
+|| Delete or find in the history | [im.notify.delete](./im-notify-delete.md), [im.notify.history.search](./im-notify-history-search.md) ||
+|#
 
-Each notification can be associated with a unique tag `TAG`. If a new notification is sent with the same tag, the system will remove the previous notification.
+## Limits and Pagination
 
-All sending methods return the notification ID, which can be used in other methods.
-
-## Get Notifications
-
-The [im.notify.get](./im-notify-get.md) method returns the current notifications with pagination.
-
-The [im.notify.schema.get](./im-notify-schema-get.md) method returns the available notification types by modules.
-
-## Read Notifications
-
-The [im.notify.read.list](./im-notify-read-list.md) method manages the Read label for the list of notifications, except for the `CONFIRM` type with confirmation buttons. Using the `ACTION` parameter, you can mark notifications as read `Y` or unread `N`.
-
-The [im.notify.read](./im-notify-read.md) method reads a single notification or all notifications after a specified one. The `ONLY_CURRENT` parameter defines the scope:
-
-- `Y` — the Read label will be set only for the specified notification,
-
-- `N` or absence of the parameter — for all notifications with `ID` equal to or greater than the specified one.
-
-The [im.notify.read.all](./im-notify-read-all.md) method marks all notifications of the current user as read.
-
-## Delete Notification
-
-The [im.notify.delete](./im-notify-delete.md) method deletes a notification by its `ID` or by tags `TAG`, `SUB_TAG`.
-
-## Reply to Notification
-
-You can reply to a notification that supports quick responses using the [im.notify.answer](./im-notify-answer.md) method.
-
-You can interact with buttons in the notification using the [im.notify.confirm](./im-notify-confirm.md) method. The `NOTIFY_VALUE` parameter should contain the button value. For example, for a meeting invitation notification, the Accept button has a value of `Y`, and the Decline button has a value of `N`.
-
-## Search Notification History
-
-The [im.notify.history.search](./im-notify-history-search.md) method performs a search through the notification history with filters for text, type, date, and group tag.
+- the [im.notify.get](./im-notify-get.md) and [im.notify.history.search](./im-notify-history-search.md) methods return the selection page by page using a cursor, with a maximum of 50 notifications per page
+- the size of the serialized `ATTACH` attachment is limited to 60,000 characters
 
 ## Overview of Methods {#all-methods}
 
@@ -73,10 +81,10 @@ The [im.notify.history.search](./im-notify-history-search.md) method performs a 
 || [im.notify.system.add](./im-notify-system-add.md) | Sends a system notification ||
 || [im.notify.get](./im-notify-get.md) | Returns user notifications ||
 || [im.notify.schema.get](./im-notify-schema-get.md) | Returns the notification types schema ||
-|| [im.notify.read.list](./im-notify-read-list.md) | Reads the list of notifications ||
-|| [im.notify.read](./im-notify-read.md) | Reads a notification or returns it as unread ||
-|| [im.notify.read.all](./im-notify-read-all.md) | Reads all notifications ||
-|| [im.notify.answer](./im-notify-answer.md) | Replies to a notification that supports quick response ||
+|| [im.notify.read.list](./im-notify-read-list.md) | Marks a list of notifications as read ||
+|| [im.notify.read](./im-notify-read.md) | Marks a notification as read or returns it to unread ||
+|| [im.notify.read.all](./im-notify-read-all.md) | Marks all notifications as read ||
+|| [im.notify.answer](./im-notify-answer.md) | Replies to a notification with a quick response ||
 || [im.notify.confirm](./im-notify-confirm.md) | Interacts with notification buttons ||
 || [im.notify.delete](./im-notify-delete.md) | Deletes notifications ||
 || [im.notify.history.search](./im-notify-history-search.md) | Searches through notification history ||

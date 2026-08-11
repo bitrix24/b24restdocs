@@ -14,7 +14,7 @@ The method `im.notify.system.add` sends a system notification to a user.
 
 {% note info "" %}
 
-The method is only available when called through an application.
+The method cannot be called with session authorization — it returns the `WRONG_AUTH_TYPE` error. Call it via a webhook or with an application token.
 
 {% endnote %}
 
@@ -40,6 +40,8 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
 || **ATTACH** 
 [`object`](../../data-types.md) 
 [`string`](../../data-types.md) | An attachment for the notification in object format or JSON string. See more in the [Attachments](../messages/attachments.md) section. ||
+|| **CLIENT_ID**
+[`string`](../../data-types.md) | The application identifier. The parameter is required only when calling via a webhook: pass it together with `TAG` and `SUB_TAG` ||
 |#
 
 ## Code Examples
@@ -243,7 +245,7 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -261,7 +263,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #| 
 || **Name**
@@ -293,7 +295,7 @@ HTTP Status: **400**, **403**
 || `WRONG_AUTH_TYPE` | Access for this method not allowed by session authorization. | The method was called with session authorization, which is prohibited ||
 || `USER_ID_EMPTY` | User ID can't be empty | The `USER_ID` parameter is not provided or `USER_ID <= 0` ||
 || `MESSAGE_EMPTY` | Message can't be empty | The message text was not provided ||
-|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The maximum allowable size of the `ATTACH` is exceeded — 30 KB ||
+|| `ATTACH_OVERSIZE` | You have exceeded the maximum allowable size of attach | The maximum allowable size of the `ATTACH` is exceeded — 60,000 characters ||
 || `ATTACH_ERROR` | Incorrect attach params | An incorrect format for the `ATTACH` was provided ||
 |#
 

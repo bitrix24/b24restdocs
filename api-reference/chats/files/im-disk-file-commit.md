@@ -10,10 +10,16 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: chat participant
 
+{% note warning "Deprecated method" %}
+
+The method is kept to support existing integrations. For new development, use [im.v2.File.upload](../../chat-bots/chat-bots-v2/im.v2/files/file-upload.md): it uploads a file to the chat in a single call, without uploading the file through Drive methods first.
+
+{% endnote %}
+
 The method `im.disk.file.commit` adds a file to a chat.
 
 To add a file, specify:
-- one of the chat identifier parameters — `CHAT_ID` or `DIALOG_ID` 
+- one of the chat identifier parameters — `CHAT_ID` or `DIALOG_ID`
 - one of the file identifier parameters — `FILE_ID` or `UPLOAD_ID`
 
 If multiple parameters are passed simultaneously, the method processes only the first one.
@@ -633,3 +639,4 @@ HTTP Status: **400**
 - [{#T}](./im-disk-file-save.md)
 - [{#T}](./im-disk-file-delete.md)
 - [{#T}](./im-disk-folder-get.md)
+- [{#T}](./index.md)

@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`im`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: authorized user
+> Who can execute the method: a user with access to the chat
 
 The method `im.v2.File.upload` uploads a file to the chat on behalf of the current user. It combines three steps of the deprecated API into a single call: uploading the file to the Drive, attaching it to the chat, and sending a message.
 
@@ -208,29 +208,60 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-        "dialogId": "chat5",
-        "chatId": 5,
-        "messageId": 123,
         "file": {
-            "id": 138,
-            "chatId": 5,
+            "id": 9817,
+            "chatId": 4415,
+            "date": "2026-08-11T15:28:50+02:00",
+            "type": "file",
             "name": "report.pdf",
             "extension": "pdf",
-            "size": 35341
-        }
+            "size": 35341,
+            "image": false,
+            "status": "done",
+            "progress": 100,
+            "authorId": 1,
+            "authorName": "Klaus Weber",
+            "urlPreview": "",
+            "urlShow": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=9817&exact=N&fileName=report.pdf",
+            "urlDownload": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=9817&exact=N&fileName=report.pdf",
+            "viewerAttrs": {
+                "viewer": "",
+                "viewerType": "code",
+                "src": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=9817&exact=N&fileName=report.pdf",
+                "objectId": "9817",
+                "viewerGroupBy": "4415",
+                "imChatId": 4415,
+                "title": "report.pdf",
+                "unifiedLink": "https://some-domain.bitrix24.com/file/5tqNA6utERA5MIWnKpFX",
+                "actions": "[{\"type\":\"download\"}]"
+            },
+            "mediaUrl": {
+                "preview": {
+                    "250": ""
+                }
+            },
+            "isTranscribable": false,
+            "isVideoNote": false,
+            "isVoiceNote": false
+        },
+        "messageId": 38655,
+        "chatId": 4415,
+        "dialogId": "chat4415"
     },
     "time": {
-        "start": 1728626400.123,
-        "finish": 1728626400.234,
-        "duration": 0.111,
-        "processing": 0.045,
-        "date_start": "2024-10-11T10:00:00+02:00",
-        "date_finish": "2024-10-11T10:00:00+02:00"
+        "start": 1786451330,
+        "finish": 1786451330.233862,
+        "duration": 0.23386192321777344,
+        "processing": 0,
+        "date_start": "2026-08-11T15:28:50+02:00",
+        "date_finish": "2026-08-11T15:28:50+02:00",
+        "operating_reset_at": 1786451790,
+        "operating": 0
     }
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
@@ -238,32 +269,62 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../../data-types.md) | Result of the operation ||
 || **result.dialogId**
-[`string`](../../../../data-types.md) | ID of the dialog ||
+[`string`](../../../../data-types.md) | Identifier of the dialog ||
 || **result.chatId**
-[`integer`](../../../../data-types.md) | Numeric ID of the chat ||
+[`integer`](../../../../data-types.md) | Numeric identifier of the chat ||
 || **result.messageId**
-[`integer`](../../../../data-types.md) | ID of the created message with the file ||
+[`integer`](../../../../data-types.md) | Identifier of the created message with the file ||
 || **result.file**
 [`File`](../../entities.md#file) | Data of the uploaded file [(detailed description)](#file-object) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Fields of the File Object {#file-object}
+#### File Object {#file-object}
 
 #|
-|| **Field**
+|| **Name**
 `Type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | Identifier of the file ||
+[`integer`](../../../../data-types.md) | Identifier of the file on Drive ||
 || **chatId**
 [`integer`](../../../../data-types.md) | Identifier of the chat ||
+|| **date**
+[`datetime`](../../../../data-types.md) | Date the file was uploaded ||
+|| **type**
+[`string`](../../../../data-types.md) | File type: `file`, `image`, `video`, `audio` ||
 || **name**
 [`string`](../../../../data-types.md) | Name of the file ||
 || **extension**
 [`string`](../../../../data-types.md) | File extension ||
 || **size**
 [`integer`](../../../../data-types.md) | Size of the file in bytes ||
+|| **image**
+[`boolean`](../../../../data-types.md) | `false` for a regular file. For an image — an object with width and height ||
+|| **status**
+[`string`](../../../../data-types.md) | Upload status, for example `done` ||
+|| **progress**
+[`integer`](../../../../data-types.md) | Upload progress in percent ||
+|| **authorId**
+[`integer`](../../../../data-types.md) | Identifier of the user who uploaded the file ||
+|| **authorName**
+[`string`](../../../../data-types.md) | Name of the user who uploaded the file ||
+|| **urlPreview**
+[`string`](../../../../data-types.md) | Link to the file preview or an empty string ||
+|| **urlShow**
+[`string`](../../../../data-types.md) | Link to view the file ||
+|| **urlDownload**
+[`string`](../../../../data-types.md) | Link to download the file ||
+|| **viewerAttrs**
+[`object`](../../../../data-types.md) | Attributes for the built-in Bitrix24 viewer ||
+|| **mediaUrl**
+[`object`](../../../../data-types.md) | Links to media file previews by size ||
+|| **isTranscribable**
+[`boolean`](../../../../data-types.md) | Indicates a file that can be transcribed into text ||
+|| **isVideoNote**
+[`boolean`](../../../../data-types.md) | Indicates a video message ||
+|| **isVoiceNote**
+[`boolean`](../../../../data-types.md) | Indicates a voice message ||
 |#
 
 A complete description of all object fields can be found on the [Objects and Fields](../../entities.md) page.
@@ -285,8 +346,9 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `FILE_EMPTY` | File name or content is empty | File name or content is not specified ||
-|| `INVALID_CONTENT` | Invalid base64 content | Invalid Base64 ||
+|| `FILE_EMPTY` | File name and content are required | The file name or content was not passed ||
+|| `FILE_INVALID_CONTENT` | Invalid base64 content | The file content is not a Base64 string ||
+|| `CHAT_NOT_FOUND` | CHAT_NOT_FOUND | The chat from `dialogId` was not found ||
 || `FOLDER_ERROR` | Failed to get chat folder | Failed to get chat folder ||
 || `UPLOAD_FAILED` | File upload failed | File upload error ||
 || `SEND_FAILED` | Failed to send message | Message sending error ||
@@ -300,3 +362,4 @@ HTTP Status: **400**, **403**
 
 - [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](./file-download.md)
+- [{#T}](../../../../chats/files/index.md)

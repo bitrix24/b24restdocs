@@ -20,9 +20,13 @@ The method `im.chat.updateTitle` updates the chat title.
 || **Name**
 `type` | **Description** ||
 || **CHAT_ID***
-[`integer`](../../data-types.md) | Chat identifier.
+[`integer`](../../data-types.md) | Chat identifier. Pass a number without the `chat` prefix. Required if `DIALOG_ID` is not provided.
 
 The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. ||
+|| **DIALOG_ID**
+[`string`](../../data-types.md) | Identifier of the dialog in the format `chatXXX`, where `XXX` is the chat identifier. Can be provided instead of `CHAT_ID`.
+
+The method works only with group chats: for a private dialog it returns the `DIALOG_ID_EMPTY` error ||
 || **TITLE***
 [`string`](../../data-types.md) | Chat title.
 
@@ -263,7 +267,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided. ||
+|| `CHAT_ID_EMPTY` | Chat ID can't be empty | `CHAT_ID` not provided, or the value contains the `chat` prefix. ||
+|| `DIALOG_ID_EMPTY` | Dialog ID can't be empty | A private dialog or an invalid format was provided in `DIALOG_ID`. ||
 || `TITLE_EMPTY` | Title can't be empty | `TITLE` not provided or empty after trimming. ||
 || `ACCESS_ERROR` | Action unavailable | Operation not available for this chat. ||
 || `ACCESS_ERROR` | This chat cannot be renamed | This chat cannot be renamed. ||

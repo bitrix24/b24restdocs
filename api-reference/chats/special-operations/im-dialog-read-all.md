@@ -217,6 +217,17 @@ HTTP Status: **200**
 
 ## Error Handling
 
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+The method has no error codes of its own — only system REST API errors are possible.
+
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning

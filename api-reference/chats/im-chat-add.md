@@ -14,6 +14,10 @@ The method `im.chat.add` creates a new chat.
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../_includes/required.md) %}
+
+The method has no required parameters: without any parameters it creates a closed chat with an automatically generated title, where the current user is the only participant and the owner.
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -359,6 +363,17 @@ HTTP Status: **200**
 |#
 
 ## Error Handling
+
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+The method has no error codes of its own — only system REST API errors are possible.
 
 {% include notitle [error handling](../../_includes/error-info.md) %}
 

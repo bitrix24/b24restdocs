@@ -25,7 +25,7 @@ The method `im.dialog.users.list` returns detailed information about the partici
 - `chatXXX` — chat
 - `sgXXX` — group or project chat
 - `XXX` — identifier of the personal chat user
-  
+
 The chat identifier can be obtained using the [im.chat.get](../im-chat-get.md) method. The user identifier can be retrieved using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods ||
 || **SKIP_EXTERNAL**
 [`string`](../../data-types.md) | Exclude system users:
@@ -116,18 +116,12 @@ Used for sequential loading of the list ||
     }
 
     try {
-      // im.dialog.users.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<DialogUser[]>({
         method: 'im.dialog.users.list',
         params: {
           DIALOG_ID: 'chat13',
           SKIP_EXTERNAL: 'Y',
           LIMIT: 20,
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -156,18 +150,12 @@ Used for sequential loading of the list ||
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // im.dialog.users.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'im.dialog.users.list',
             params: {
               DIALOG_ID: 'chat13',
               SKIP_EXTERNAL: 'Y',
               LIMIT: 20,
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })

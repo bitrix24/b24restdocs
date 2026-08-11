@@ -25,12 +25,18 @@ You must provide one of three parameters: `ID`, `TAG`, or `SUB_TAG`.
 #|
 || **Name**
 `Type` | **Description** ||
-|| **ID***
-[`integer`](../../data-types.md) | Identifier of the notification to be deleted ||
-|| **TAG***
-[`string`](../../data-types.md) | Unique tag of the notification within the application. Only notifications from the current application are deleted ||
-|| **SUB_TAG***
-[`string`](../../data-types.md) | Additional tag of the notification. Only notifications from the current application are deleted ||
+|| **ID**
+[`integer`](../../data-types.md) | Identifier of the notification to be deleted.
+
+Pass one of the parameters: `ID`, `TAG`, or `SUB_TAG` ||
+|| **TAG**
+[`string`](../../data-types.md) | Unique tag of the notification within the application. Only notifications from the current application are deleted.
+
+Pass one of the parameters: `ID`, `TAG`, or `SUB_TAG` ||
+|| **SUB_TAG**
+[`string`](../../data-types.md) | Additional tag of the notification. Only notifications from the current application are deleted.
+
+Pass one of the parameters: `ID`, `TAG`, or `SUB_TAG` ||
 || **CLIENT_ID**
 [`string`](../../data-types.md) | This parameter is required only for webhooks. Pass the same `CLIENT_ID` that was specified during the chat bot registration ||
 |#
@@ -212,7 +218,7 @@ You must provide one of three parameters: `ID`, `TAG`, or `SUB_TAG`.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -230,7 +236,7 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
