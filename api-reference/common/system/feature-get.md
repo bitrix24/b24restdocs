@@ -1,4 +1,4 @@
-# Get information about feature availability on the account feature.get
+# Get information about feature availability in Bitrix24 feature.get
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `feature.get` returns information about the availability of features on a specific account.
+The method `feature.get` returns information about the availability of features in a specific Bitrix24.
 
 ## Method Parameters
 
@@ -244,7 +244,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | The object contains information about the method's availability:
-- `value` — (Y/N) presence of the feature on the account
+- `value` — (Y/N) presence of the feature in Bitrix24
 - `lang_selfhosted` — *lang* is replaced with en, de, ua, kz, etc. (used for on-premise *Bitrix24*) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||

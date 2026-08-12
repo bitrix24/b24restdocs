@@ -20,7 +20,15 @@ The method `access.name` retrieves the names of access permissions.
 || **Name**
 `type` | **Description** ||
 || **ACCESS***
-[`array`](../../data-types.md) | List of permission identifiers for which names need to be retrieved ||
+[`array`](../../data-types.md) | List of access codes for which names need to be retrieved.
+
+Code formats:
+
+- `U<id>` — user, for example `U1`
+- `G<id>` — user group, for example `G2`
+- `AU` — all authorized users
+
+If the parameter is not provided or is empty, the method returns `false` ||
 |#
 
 ## Code Examples
@@ -253,10 +261,29 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Objects describing permissions ||
+[`object`](../../data-types.md)\|[`boolean`](../../data-types.md) | An object where the key is an access code from the `ACCESS` parameter and the value is the description of that code.
+
+The structure is described [below](#access-item).
+
+If the `ACCESS` parameter is not provided or is empty, the method returns `false` ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
+
+### Access Code Description {#access-item}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name**
+[`string`](../../data-types.md) | Name of the access code in the Bitrix24 language, for example `All authorized users` ||
+|| **provider**
+[`string`](../../data-types.md) | Name of the access code provider. For the `G` and `AU` codes, it is an empty string ||
+|| **provider_id**
+[`string`](../../data-types.md) | Identifier of the access code provider, for example `other` for the `G2` and `AU` codes ||
+|#
+
+Codes that do not exist in Bitrix24 are not returned in the response.
 
 ## Error Handling
 

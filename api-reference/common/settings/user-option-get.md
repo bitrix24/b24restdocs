@@ -12,13 +12,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `user.option.get` retrieves user data associated with the application. If no input is provided, it will return all properties recorded through [user.option.set](./user-option-set.md).
 
-## Parameters
+## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **option**
-[`string`](../../data-types.md) | A string, one of the keys from the property [user.option.set](./user-option-set.md). ||
+[`string`](../../data-types.md) | One of the keys saved by the [user.option.set](./user-option-set.md) method.
+
+If the parameter is not provided, the method returns all saved settings of the current user ||
 |#
 
 ## Code Examples
@@ -243,15 +247,57 @@ The method `user.option.get` retrieves user data associated with the application
 
 HTTP Status: **200**
 
+A call without the `option` parameter — the method returns all saved settings of the current user:
+
 ```json
 {
-    "data": "value",
-    "data2": "value2"
+    "result": {
+        "data": "value",
+        "data2": "value2"
+    },
+    "time": {
+        "start": 1722001311.94644,
+        "finish": 1722001311.98622,
+        "duration": 0.0397801399230957,
+        "processing": 0.000041961669921875,
+        "date_start": "2024-07-26T13:41:51+00:00",
+        "date_finish": "2024-07-26T13:41:51+00:00",
+        "operating": 0
+    }
 }
 ```
 
-The method returns user data associated with the application.
+A call with the `option` parameter — the method returns the value of a single key:
 
+```json
+{
+    "result": "value",
+    "time": {
+        "start": 1722001311.94644,
+        "finish": 1722001311.98622,
+        "duration": 0.0397801399230957,
+        "processing": 0.000041961669921875,
+        "date_start": "2024-07-26T13:41:51+00:00",
+        "date_finish": "2024-07-26T13:41:51+00:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md)\|[`string`](../../data-types.md)\|[`null`](../../data-types.md) | Depends on the `option` parameter:
+
+- the parameter is not provided — an object where the key is the setting name and the value is the saved value. If there are no settings, the object is empty
+- the parameter is provided — the saved value of the key
+- the parameter is provided, but there is no such key — `null` ||
+|| **time**
+[`time`](../../data-types.md) | Information about the request execution time ||
+|#
 
 ## Error Handling
 
@@ -260,7 +306,7 @@ HTTP Status: **400**
 ```json
 {
     "error":"AccessException",
-    "error_description":"Application context required / User authorization required"
+    "error_description":"Application context required"
 }
 ```
 
@@ -270,7 +316,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `AccessException` | Application context required / Administrator authorization required | Access denied ||
+|| `AccessException` | Application context required | The method is called outside the application context ||
+|| `AccessException` | User authorization required | The user is not authorized ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

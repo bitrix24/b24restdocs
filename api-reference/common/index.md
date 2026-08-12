@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 General methods and events help verify the application context, retrieve data about the current user, save integration settings, and manage the application lifecycle.
 
-No separate scopes are needed for the methods in this section. Additional restrictions depend on the application context and the access permissions of the current user.
+No separate scopes are needed for the methods in this section. The exception is the [onUserAdd](./events/on-user-add.md) event, which requires the `user` scope. Additional restrictions depend on the application context and the access permissions of the current user.
 
 > Quick navigation: [all methods and events](#all-methods)
 
@@ -44,7 +44,7 @@ This section is connected with the application, the current user, and access per
 
 ## Overview of Methods and Events {#all-methods}
 
-> Scope: [`basic`](../scopes/permissions.md)
+> Scope: [`basic`](../scopes/permissions.md), for the `onUserAdd` event — [`user`](../scopes/permissions.md)
 >
 > Who can execute the method: depends on the method
 
@@ -78,7 +78,7 @@ This section is connected with the application, the current user, and access per
     || [onAppUninstall](./events/on-app-uninstall.md) | Upon uninstalling the application ||
     || [onAppMethodConfirm](./events/on-app-method-confirm.md) | Upon receiving an administrator's decision on a request to use methods requiring confirmation ||
     || [onAppPayment](./events/on-app-payment.md) | Upon payment for the application ||
-    || [onAppUserAdd](./events/on-user-add.md) | Upon adding a user to Bitrix24 ||
+    || [onUserAdd](./events/on-user-add.md) | Upon adding a user to Bitrix24 (`user` scope) ||
     |#
 
 {% endlist %}

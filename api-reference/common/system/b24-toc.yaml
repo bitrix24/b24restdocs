@@ -11,7 +11,7 @@ items:
     href: app-info.md
   - name: Get Access Permission Names
     href: access-name.md
-  - name: Get Information on Feature Availability on Account
+  - name: Get Information on Feature Availability in Bitrix24
     href: feature-get.md
   - name: Get Current Server Time
     href: server-time.md

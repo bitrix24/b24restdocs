@@ -209,9 +209,34 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The object contains information about the user ||
+[`object`](../../data-types.md) | An object with the basic data of the current user.
+
+The structure is described [below](#profile).
+
+If the user is inactive, the object is empty ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+### Object result {#profile}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Identifier of the current user ||
+|| **ADMIN**
+[`boolean`](../../data-types.md) | Indicates the permission to manage application settings. Matches the result of the [user.admin](./user-admin.md) method ||
+|| **NAME**
+[`string`](../../data-types.md) | First name of the user ||
+|| **LAST_NAME**
+[`string`](../../data-types.md) | Last name of the user ||
+|| **PERSONAL_GENDER**
+[`string`](../../data-types.md) | Gender: `M` — male, `F` — female. If the gender is not specified, an empty string is returned ||
+|| **TIME_ZONE**
+[`string`](../../data-types.md) | Time zone of the user, for example `Europe/Berlin`. If the time zone is not set, an empty string is returned ||
+|| **PERSONAL_PHOTO**
+[`string`](../../data-types.md) | Link to the user's photo. The field is returned only if a photo has been uploaded ||
 |#
 
 ## Error Handling

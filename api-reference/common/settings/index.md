@@ -30,7 +30,7 @@ If each user should have their own values, use the method group `user.option.*`.
 
 ## Relationships with Other Objects
 
-**Application.** The group of methods [System Methods](../system/index.md) checks the application context, available scopes, and the presence of the method on the account. For example, [app.info](../system/app-info.md) retrieves information about the application, while [scope](../system/scope.md) returns a list of available scopes.
+**Application.** The group of methods [System Methods](../system/index.md) checks the application context, available scopes, and the presence of the method in Bitrix24. For example, [app.info](../system/app-info.md) retrieves information about the application, while [scope](../system/scope.md) returns a list of available scopes.
 
 **User.** The method [user.admin](../users/user-admin.md) checks the permissions of the current user before saving settings. The basic data of the current user is obtained through [profile](../users/profile.md).
 

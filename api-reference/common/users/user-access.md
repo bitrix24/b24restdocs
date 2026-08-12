@@ -20,8 +20,22 @@ The `user.access` method checks if the current user has at least one of the perm
 || **Name**
 `type` | **Description** ||
 || **ACCESS***
-[`array`](../../data-types.md) | Identifier or list of identifiers of the permissions to check access for ||
+[`array`](../../data-types.md) | List of access codes to check.
+
+Code formats:
+
+- `U<id>` — user, for example `U1`
+- `G<id>` — user group, for example `G2`
+- `AU` — all authorized users
+
+The names of the codes are retrieved by the [access.name](../system/access-name.md) method ||
 |#
+
+{% note info "" %}
+
+For a user with permissions to manage application settings, the method always returns `true`, regardless of the access codes provided. The permissions themselves are checked by the [user.admin](./user-admin.md) method.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -132,7 +146,7 @@ The `user.access` method checks if the current user has at least one of the perm
             ->call(
                 'user.access',
                 [
-                    "'ACCESS" => ["G2", "AU"]
+                    'ACCESS' => ["G2", "AU"]
                 ]
             );
     
@@ -158,7 +172,7 @@ The `user.access` method checks if the current user has at least one of the perm
     BX24.callMethod(
         "user.access",
         {
-            "'ACCESS": ["G2", "AU"]
+            "ACCESS": ["G2", "AU"]
         },
         function(result)
         {
@@ -232,7 +246,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the current user has at least one of the permissions listed in the `ACCESS` parameter, `false` otherwise ||
+[`boolean`](../../data-types.md) | Returns `true` if the current user has at least one of the access codes listed in the `ACCESS` parameter or has permissions to manage application settings, `false` otherwise ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

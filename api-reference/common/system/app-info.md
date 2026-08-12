@@ -237,7 +237,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | The object contains information about the application:
 
-- `ID` — local identifier of the application on the account 
+- `ID` — local identifier of the application in Bitrix24 
 - `CODE` — application code 
 - `VERSION` — installed version of the application 
 - `STATUS` — status of the application. Possible values:
@@ -245,12 +245,11 @@ HTTP status: **200**
     - `D` (Demo) — demo version
     - `T` (Trial) — trial version (time-limited)
     - `P` (Paid) — paid application
-    - `L` (Local) — local application
-    - `S` (Subscription) — subscription application 
-- `INSTALLED` — [true\|false] status of the application's installation. If the application is not installed, it is only available to account administrators and should signal the end of installation by calling [BX24.installFinish](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md)
+    - `L` (Local) — local application 
+- `INSTALLED` — [true\|false] status of the application's installation. If the application is not installed, it is only available to Bitrix24 administrators and should signal the end of installation by calling [BX24.installFinish](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md)
 - `PAYMENT_EXPIRED` — [Y\|N] flag indicating whether the paid period or trial period has expired
 - `DAYS` — number of days remaining until the end of the paid period or trial period
-- `LICENSE` — designation of the plan with the region indicated as a prefix. Consists of the base language of the account and the identifier of the plan. In cases where the composition of the plans has changed while retaining the public name (such as CRM+, Team, and Company), it is not possible to determine which plan is active based on this field. Examples of possible values:
+- `LICENSE` — designation of the plan with the region indicated as a prefix. Consists of the base language of Bitrix24 and the identifier of the plan. In cases where the composition of the plans has changed while retaining the public name (such as CRM+, Team, and Company), it is not possible to determine which plan is active based on this field. Examples of possible values:
     - `de_project` — Project plan
     - `de_basic` — Basic plan
     - `de_std` — Standard plan

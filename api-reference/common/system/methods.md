@@ -236,7 +236,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array containing the list of permissions ||
+[`array`](../../data-types.md) | An array with the names of available methods ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

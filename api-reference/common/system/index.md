@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-System methods check the availability of methods and scope, retrieve information about the application, access codes, account functionality, and server time.
+System methods check the availability of methods and scope, retrieve information about the application, access codes, available functionality, and server time.
 
 > Quick Navigation: [All Methods](#all-methods)
 
@@ -14,9 +14,9 @@ System methods check the availability of methods and scope, retrieve information
 
 **Application Context.** The method [app.info](./app-info.md) only works within the context of the application. Otherwise, the method will return an `ACCESS_DENIED` error.
 
-**Method Availability.** For new integrations, use [method.get](./method-get.md). This method shows whether it exists on the account and if it can be called with the current permissions.
+**Method Availability.** For new integrations, use [method.get](./method-get.md). This method shows whether the method exists in Bitrix24 and if it can be called with the current permissions.
 
-**Account Functionality.** The method [feature.get](./feature-get.md) is needed when behavior depends on scope and account functionality.
+**Functionality Availability.** The method [feature.get](./feature-get.md) is needed when behavior depends on scope and the functionality enabled in Bitrix24.
 
 ## Relationship with Other Objects
 
@@ -34,11 +34,11 @@ System methods check the availability of methods and scope, retrieve information
 
 #| 
 || **Method** | **Description** ||
-|| [method.get](./method-get.md) | Checks the existence of a method on the account and its availability for the application ||
+|| [method.get](./method-get.md) | Checks the existence of a method in Bitrix24 and its availability for the application ||
 || [scope](./scope.md) | Retrieves a list of scopes available to the current application ||
 || [app.info](./app-info.md) | Returns information about the application ||
 || [access.name](./access-name.md) | Retrieves the names of `ACCESS` codes ||
-|| [feature.get](./feature-get.md) | Checks the availability of functionality on the account ||
+|| [feature.get](./feature-get.md) | Checks the availability of functionality in Bitrix24 ||
 || [server.time](./server-time.md) | Returns the current server time ||
 || [methods](./methods.md) | {% note warning "DEPRECATED" %}
 

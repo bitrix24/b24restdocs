@@ -262,6 +262,36 @@ The `app.option.set` method binds data to the application.
 
 {% endlist %}
 
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1722001311.94644,
+        "finish": 1722001311.98622,
+        "duration": 0.0397801399230957,
+        "processing": 0.000041961669921875,
+        "date_start": "2024-07-26T13:41:51+00:00",
+        "date_finish": "2024-07-26T13:41:51+00:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Returns `true` if the settings were saved ||
+|| **time**
+[`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
 ## Error Handling
 
 HTTP Status: **400**
@@ -280,7 +310,8 @@ HTTP Status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ArgumentNullException` | options is empty | Empty array `options`  ||
-|| `AccessException` | Application context required / Administrator authorization required | Access denied ||
+|| `AccessException` | Application context required | The method is called outside the application context ||
+|| `AccessException` | Administrator authorization required | The current user does not have administrator permissions ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

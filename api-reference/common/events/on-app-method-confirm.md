@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: any user
 
-The `ONAPPMETHODCONFIRM` event is triggered upon receiving the [administrator's decision](../../scopes/confirmation.md) from the account regarding the use of methods.
+The `ONAPPMETHODCONFIRM` event is triggered upon receiving the [decision of the Bitrix24 administrator](../../scopes/confirmation.md) regarding the use of methods.
 
 {% note info "" %}
 
@@ -84,7 +84,7 @@ The structure is described [below](#auth) ||
 || **Name**
 `type` | **Description** ||
 || **domain***
-[`string`](../../data-types.md) | Address of the Bitrix24 account ||
+[`string`](../../data-types.md) | Address of the Bitrix24 account where the event occurred ||
 || **server_endpoint***
 [`string`](../../data-types.md) | Authorization server address for token renewal||
 || **client_endpoint***

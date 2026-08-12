@@ -37,7 +37,8 @@ Data is transmitted as a POST request {.b24-info}
     "auth": {
         "domain": "some-domain.bitrix24.com",
         "server_endpoint": "https://oauth.bitrix.info/rest/",
-        "client_endpoint": "https://some-domain.bitrix24.com/rest/"
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553"
     }
 }
 ```
@@ -77,8 +78,7 @@ The structure is described [below](#auth) ||
 - `F` (Free) — free
 - `D` (Demo) — demo version
 - `T` (Trial) — trial version, time-limited
-- `P` (Paid) — paid application
-- `S` (Subscription) — subscription-based application (Market+) ||
+- `P` (Paid) — paid application ||
 || **PAYMENT_EXPIRED***
 [`string`](../../data-types.md) | [Y|N] Flag indicating whether the paid period or trial period has expired ||
 || **DAYS***
@@ -93,7 +93,7 @@ The structure is described [below](#auth) ||
 || **Name**
 `type` | **Description** ||
 || **domain***
-[`string`](../../data-types.md) | Address of the Bitrix24 account ||
+[`string`](../../data-types.md) | Address of the Bitrix24 account where the event occurred ||
 || **server_endpoint***
 [`string`](../../data-types.md) | Authorization server address for token renewal||
 || **client_endpoint***

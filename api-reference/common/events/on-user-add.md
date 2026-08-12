@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`basic`](../../scopes/permissions.md)
+> Scope: [`user`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The `ONUSERADD` event is triggered when a user is added to Bitrix24. The event occurs not after the invitation, but after the user logs into the account and completes the registration process.
+The `ONUSERADD` event is triggered when a user is added to Bitrix24. The event occurs not after the invitation, but after the user logs into Bitrix24 and completes the registration.
 
 {% note info "" %}
 
@@ -40,10 +40,15 @@ Data is transmitted as a POST request {.b24-info}
     },
     "ts": "1466439714",
     "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": 3600,
+        "scope": "user",
         "domain": "some-domain.bitrix24.com",
         "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
-        "member_id": "a223c6b3710f85df22e9377d6c4f7553"
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
     }
 }
 ```
@@ -128,14 +133,15 @@ Some fields may be absent or have a value of `null` if the application does not 
 
 - `L` — [local](../../../local-integrations/local-apps.md) application
 - `F` — [free mass-market](../../../market/index.md) application
+- `D` — demo version of a mass-market application
+- `T` — trial version of a mass-market application, time-limited
+- `P` — paid mass-market application
 
 ||
 || **client_endpoint***
 [`string`](../../data-types.md) | Common path for API method calls for Bitrix24 where the event occurred ||
 || **member_id***
 [`string`](../../data-types.md) | Identifier of Bitrix24 where the event occurred ||
-|| **refresh_token***
-[`string`](../../data-types.md) | Token for renewing authorization [OAuth 2.0](../../../settings/oauth/index.md) ||
 || **application_token***
 [`string`](../../data-types.md) | Token for secure event handling ||
 |#

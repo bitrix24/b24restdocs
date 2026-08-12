@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The `method.get` method returns two parameters `isExisting` and `isAvailable`, which determine the existence of the method on the account and its availability for invocation.
+The `method.get` method returns two parameters `isExisting` and `isAvailable`, which determine the existence of the method in Bitrix24 and its availability for invocation.
 
 ## Method Parameters
 
@@ -20,7 +20,9 @@ The `method.get` method returns two parameters `isExisting` and `isAvailable`, w
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../data-types.md) | The name of the method to check in lowercase, for example `user.get` ||
+[`string`](../../data-types.md) | The name of the method to check in lowercase, for example `user.get`.
+
+If the parameter is not provided or is empty, the method returns `isExisting` and `isAvailable` with the value `false` ||
 |#
 
 ## Code Examples
@@ -246,7 +248,7 @@ HTTP status: **200**
 || **result**
 [`array`](../../data-types.md) | Two parameters are returned:
 
-- `isExisting => true/false` — determines whether the method exists on this account
+- `isExisting => true/false` — determines whether the method exists in this Bitrix24
 - `isAvailable => true/false` — determines the availability of the method for invocation with the current access permissions ([scope](./scope.md)) of the application ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||

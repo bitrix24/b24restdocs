@@ -97,7 +97,7 @@ Possible values:
 || **Name**
 `type` | **Description** ||
 || **domain***
-[`string`](../../data-types.md) | Address of the Bitrix24 account ||
+[`string`](../../data-types.md) | Address of the Bitrix24 account where the event occurred ||
 || **scope***
 [`string`](../../data-types.md) | List of permissions granted to the application, separated by spaces ||
 || **access_token***
@@ -112,7 +112,10 @@ Possible values:
 [`string`](../../data-types.md) | Status of the application that subscribed to this event:
 
 - `L` — local application
-- `F` — free mass-market application ||
+- `F` — free mass-market application
+- `D` — demo version of a mass-market application
+- `T` — trial version of a mass-market application, time-limited
+- `P` — paid mass-market application ||
 || **client_endpoint***
 [`string`](../../data-types.md) | Common path for API method calls to the account ||
 || **member_id***

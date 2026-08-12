@@ -18,6 +18,9 @@
 
 - `L` — [local](/local-integrations/local-apps.html) application
 - `F` — [free mass-market](/market/index.html) application
+- `D` — demo version of a mass-market application
+- `T` — trial version of a mass-market application, time-limited
+- `P` — paid mass-market application
 
 ||
 || **client_endpoint***

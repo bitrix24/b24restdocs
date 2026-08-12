@@ -80,7 +80,7 @@ The structure is described [below](#auth) ||
 || **Name**
 `type` | **Description** ||
 || **domain***
-[`string`](../../data-types.md) | Address of the Bitrix24 account ||
+[`string`](../../data-types.md) | Address of the Bitrix24 account where the event occurred ||
 || **scope***
 [`string`](../../data-types.md) | List of permissions granted to the application, separated by spaces ||
 || **access_token***
@@ -96,7 +96,9 @@ The structure is described [below](#auth) ||
 
 - `L` — local application
 - `F` — free mass-market application
-- `S` — subscription mass-market application
+- `D` — demo version of a mass-market application
+- `T` — trial version of a mass-market application, time-limited
+- `P` — paid mass-market application
 ||
 || **client_endpoint***
 [`string`](../../data-types.md) | Common path for API method calls to the account ||

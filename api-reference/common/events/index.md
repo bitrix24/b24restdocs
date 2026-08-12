@@ -35,20 +35,20 @@ An example of a handler code for the event is described in the article [How to T
 
 ## Interaction with Other Objects
 
-**User.** Data from the [onAppUserAdd](./on-user-add.md) event can be used together with the [user.get](../../user/user-get.md) method if additional information about the user is needed after registration or to configure access.
+**User.** Data from the [onUserAdd](./on-user-add.md) event can be used together with the [user.get](../../user/user-get.md) method if additional information about the user is needed after registration or to configure access. The event requires the `user` scope rather than the basic one — request it when installing the application.
 
 ## Overview of Events {#all-events}
 
-> Scope: [`basic`](../../scopes/permissions.md)
+> Scope: [`basic`](../../scopes/permissions.md), for `onUserAdd` — [`user`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
 #| 
-|| **Event** | **Description** ||
+|| **Event** | **Triggered** ||
 || [onAppInstall](./on-app-install.md) | When the application is successfully installed ||
 || [onAppUpdate](./on-app-update.md) | When the application is updated ||
 || [onAppUninstall](./on-app-uninstall.md) | When the application is uninstalled ||
 || [onAppMethodConfirm](./on-app-method-confirm.md) | When receiving the administrator's decision regarding a request for access to methods requiring confirmation ||
 || [onAppPayment](./on-app-payment.md) | When the application is paid for ||
-|| [onAppUserAdd](./on-user-add.md) | When a user is added to Bitrix24 ||
+|| [onUserAdd](./on-user-add.md) | When a user is added to Bitrix24 ||
 |#

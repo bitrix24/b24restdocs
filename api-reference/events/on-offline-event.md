@@ -94,6 +94,9 @@ The parameter arrives empty. The event does not transmit data about specific cha
 
 - `L` — [local](../../local-integrations/local-apps.md) application
 - `F` — [free mass-market](../../market/index.md) application
+- `D` — demo version of a mass-market application
+- `T` — trial version of a mass-market application, time-limited
+- `P` — paid mass-market application
 
 ||
 || **client_endpoint*** 
