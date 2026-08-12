@@ -9,7 +9,7 @@ items:
     href: how-to-add-lead-with-files.md
   - name: Add Activity to a New Lead or Deal Depending on CRM Mode
     href: how-to-add-objects-with-crm-mode.md
-  - name: Add Duplicate Lead
+  - name: Add Repeat Lead
     href: how-to-add-repeat-lead.md
   - name: Add Contact
     href: how-to-add-contact.md

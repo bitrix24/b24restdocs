@@ -871,7 +871,7 @@ The method does not return errors that occur between the form and the handler â€
 
 ## Key Considerations
 
-- Each form submission creates a new company. If a client contacts you again, duplicates appear. You can find matches by phone and email before creating a record with the [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md) method; an example of such a check is covered in the tutorial [Add Duplicate Lead](./how-to-add-repeat-lead.md)
+- Each form submission creates a new company. If a client contacts you again, duplicates appear. You can find matches by phone and email before creating a record with the [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md) method; an example of such a check is covered in the tutorial [Add Repeat Lead](./how-to-add-repeat-lead.md)
 
 - A webhook grants access to the entire CRM. Call REST from the server only and do not pass the webhook URL to the browser
 

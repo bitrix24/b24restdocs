@@ -1,4 +1,4 @@
-# Add Duplicate Lead
+# Add Repeat Lead
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
@@ -511,7 +511,7 @@ If the lead is created successfully, the method will return its identifier. If y
             if (contact) arFields.CONTACT_ID = contact
         }
 
-        const result = await $b24.actions.v2.call.make({ // create duplicate lead
+        const result = await $b24.actions.v2.call.make({ // create repeat lead
             method: 'crm.lead.add',
             params: { fields: arFields },
             requestId: 'repeat-lead-add'
@@ -591,7 +591,7 @@ If the lead is created successfully, the method will return its identifier. If y
     }
 
     try {
-        $sb->getCRMScope()->lead()->add($arFields); // create duplicate lead
+        $sb->getCRMScope()->lead()->add($arFields); // create repeat lead
         echo json_encode(['message' => 'Lead add']);
     } catch (\Throwable $e) {
         echo json_encode(['message' => 'Lead not added: ' . $e->getMessage()]);
@@ -650,7 +650,7 @@ If the lead is created successfully, the method will return its identifier. If y
                 ar_fields["CONTACT_ID"] = contact
 
         try:
-            client.crm.lead.add(fields=ar_fields)  # create duplicate lead
+            client.crm.lead.add(fields=ar_fields)  # create repeat lead
             return jsonify({"message": "Lead add"})
         except Exception as e:
             return jsonify({"message": f"Lead not added: {e}"})

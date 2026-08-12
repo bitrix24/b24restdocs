@@ -234,7 +234,7 @@ A list of possible identifiers can be obtained using the [crm.status.list](./sta
 
 When using [crm.lead.update](./leads/crm-lead-update.md) and [crm.lead.add](./leads/crm-lead-add.md), you can pass an array of contacts  | Yes | Yes ||
 || **IS_RETURN_CUSTOMER**
-[`char`][1] | Duplicate lead flag. Allowed values `Y` or `N` | Yes | No ||
+[`char`][1] | Repeat lead indicator. Allowed values `Y` or `N` | Yes | No ||
 || **DATE_CLOSED**
 [`datetime`][1] | Closing date | Yes | No ||
 || **ORIGINATOR_ID**

@@ -25,7 +25,7 @@ Start by selecting a base object. The choice depends on the customer's interacti
 #|
 || **Scenario** | **Main methods** | **Result** ||
 || [Add lead via web form](./how-to-add-lead.md) | [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) with `entityTypeId = 1` | New lead ID ||
-|| [Add duplicate lead](./how-to-add-repeat-lead.md) | [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md), [crm.lead.list](../../../api-reference/crm/leads/crm-lead-list.md), [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) | New duplicate lead ID after duplicate check ||
+|| [Add repeat lead](./how-to-add-repeat-lead.md) | [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md), [crm.lead.list](../../../api-reference/crm/leads/crm-lead-list.md), [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) | New repeat lead ID after the duplicate check ||
 || [Add contact via web form](./how-to-add-contact.md) | [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) with `entityTypeId = 3` | New contact ID ||
 || [Add company via web form](./how-to-add-company.md) | [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) with `entityTypeId = 4` | New company ID ||
 || [Add deal and company with billing details](./how-to-add-deal-with-choice-of-requisite.md) | [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md), [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md), [crm.deal.add](../../../api-reference/crm/deals/crm-deal-add.md) | Company, billing details, and deal ID ||

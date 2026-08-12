@@ -21,6 +21,25 @@ You can subscribe to events for custom lead fields through:
 
 An example of a handler for the event is described in the article [How to Test Your Handler for Bitrix24 Event Processing](../../../../events/test-handler.md).
 
+## What the Handler Receives
+
+The events pass the custom field identifier, the object it belongs to, and its code in the `data.FIELDS` object:
+
+```json
+{
+    "event": "ONCRMLEADUSERFIELDUPDATE",
+    "data": {
+        "FIELDS": {
+            "ID": "6977",
+            "ENTITY_ID": "CRM_LEAD",
+            "FIELD_NAME": "UF_CRM_1742999523"
+        }
+    }
+}
+```
+
+The composition of `FIELDS` is the same for all four events. The field type, its settings, and the list of values are not passed in the event — retrieve them with the [crm.lead.userfield.get](../crm-lead-userfield-get.md) method using the received `ID`. After the `onCrmLeadUserFieldDelete` event, this method returns the `ERROR_NOT_FOUND` error: the field no longer exists in Bitrix24.
+
 ## Server Availability for Sending and Receiving Events
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../../../_includes/events-index.md) %}

@@ -614,7 +614,7 @@
 - Added the article [How to Update and Delete Files](./api-reference/files/how-to-update-files.md)
 - Updated the tutorial [Add Contact with Requisites via Web Form](./tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)
 - Updated the tutorial [How to Edit or Remove Phone Numbers and Email](./tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
-- Updated the tutorial [Add Recurring Lead](./tutorials/crm/how-to-add-crm-objects/how-to-add-repeat-lead.md)
+- Updated the tutorial [Add Repeat Lead](./tutorials/crm/how-to-add-crm-objects/how-to-add-repeat-lead.md)
   
 ### June 04, 2025
 

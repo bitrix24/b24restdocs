@@ -11,12 +11,41 @@ A lead is the starting point of the Sales Funnel. Its card contains information 
 The main goal of working with leads is to determine their potential and convert them into deals for further selling of the product or service.
 
 > Quick navigation: [all methods and events](#all-methods)
-> 
-> User documentation: [leads in Bitrix24](https://helpdesk.bitrix24.com/open/19360846/) 
+>
+> User documentation: [leads in Bitrix24](https://helpdesk.bitrix24.com/open/19360846/)
+
+## Current API Version
+
+Development of the `crm.lead.*` and `crm.lead.details.configuration.*` methods has been discontinued. For new development, use the universal methods [crm.item.*](../universal/index.md) and pass `entityTypeId: 1` to them — this is the identifier of the "Lead" object type. The `crm.lead.*` methods continue to work — retain them only in existing integrations.
+
+#|
+|| **Method with Discontinued Development** | **Replacement** ||
+|| `crm.lead.add` | [crm.item.add](../universal/crm-item-add.md) ||
+|| `crm.lead.update` | [crm.item.update](../universal/crm-item-update.md) ||
+|| `crm.lead.get` | [crm.item.get](../universal/crm-item-get.md) ||
+|| `crm.lead.list` | [crm.item.list](../universal/crm-item-list.md) ||
+|| `crm.lead.delete` | [crm.item.delete](../universal/crm-item-delete.md) ||
+|| `crm.lead.fields` | [crm.item.fields](../universal/crm-item-fields.md) ||
+|| `crm.lead.productrows.*` | [crm.item.productrow.*](../universal/product-rows/index.md) ||
+|| `crm.lead.details.configuration.*` | [crm.item.details.configuration.*](../universal/item-details-configuration/index.md) ||
+|#
+
+The [crm.lead.contact.*](./management-communication/index.md) and [crm.lead.userfield.*](./userfield/index.md) method groups have no replacement — they are current.
+
+Field names differ between the two method groups: `crm.lead.*` accepts and returns fields in `UPPER_CASE` format, for example `STATUS_ID`, while `crm.item.*` uses `camelCase` format, for example `statusId`.
+
+## How to Get Started
+
+1. Retrieve the list of lead fields with the [crm.lead.fields](./crm-lead-fields.md) method. It returns system and custom fields with their types and names.
+2. Create a lead with the [crm.lead.add](./crm-lead-add.md) method. A lead has no required fields, but without a filled `TITLE` it will be hard to find in the list.
+3. Add product items to the lead with the [crm.lead.productrows.set](./crm-lead-productrows-set.md) method if the client's request concerns specific products.
+4. Link the lead to contacts with the [crm.lead.contact.*](./management-communication/index.md) methods if the client is already in the database.
+5. Move the lead through the stages with the [crm.lead.update](./crm-lead-update.md) method by changing the `STATUS_ID` field. The list of stages is returned by the [crm.status.list](../status/crm-status-list.md) method with the `filter[ENTITY_ID]=STATUS` filter.
+6. Subscribe to [lead events](./events/index.md) to receive notifications about changes in real time.
 
 ## Connection of Leads with Other CRM Objects
 
-**Products.** Adding, modifying, and deleting product items in deals is possible through the group of methods [crm.item.productrow.*](../universal/product-rows/index.md).
+**Products.** The product items of a lead are set by the [crm.lead.productrows.set](./crm-lead-productrows-set.md) method and returned by [crm.lead.productrows.get](./crm-lead-productrows-get.md). The universal replacement for these methods is the [crm.item.productrow.*](../universal/product-rows/index.md) group with the `ownerType: L` parameter.
 
 **Deal.** The connection appears after converting the lead into a successful one.
 
@@ -37,9 +66,9 @@ The main workspace in a lead is the General tab of its card. It consists of two 
 
 * The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. They allow storing information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom lead fields, the group of methods [crm.lead.userfield.*](./userfield/index.md) is used.
 
-* The right part contains the deal timeline. In it, you can create, edit, filter, and delete CRM activities — the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records — the group of methods [crm.timeline.*](../timeline/index.md).
+* The right part contains the lead timeline. In it, you can create, edit, filter, and delete CRM activities — the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records — the group of methods [crm.timeline.*](../timeline/index.md).
 
-The parameters of the deal card can be managed depending on the funnel through the group of methods [crm.lead.details.configuration.*](./custom-form/index.md).
+The composition of sections and fields of the lead card is managed by the group of methods [crm.lead.details.configuration.*](./custom-form/index.md). Configurations are set separately for the simple lead card and the repeat lead card.
 
 {% note tip "User Documentation" %}
 
@@ -54,7 +83,8 @@ The parameters of the deal card can be managed depending on the funnel through t
 
 An application can be embedded into the lead card. Thanks to embedding, you can use the application without leaving the lead card.
 
-There are two embedding scenarios: 
+There are two embedding scenarios:
+
 * Use special [embedding locations](../../widgets/crm/index.md). For example, by creating your own tab.
 * Create a [custom field](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md), into which the content of your application will be loaded.
 
@@ -67,9 +97,11 @@ There are two embedding scenarios:
 
 ## Features
 
-Leads in CRM may be absent — this happens if the simple mode of CRM operation is activated.
+**A lead may not be retained as a lead.** Bitrix24 has two CRM operating modes. In classic mode, a lead remains in the system after creation. In simple mode there are no leads: the system immediately converts a created lead into a deal, and it can no longer be retrieved with the [crm.lead.get](./crm-lead-get.md) method. Check the mode with the [crm.settings.mode.get](../crm-settings-mode-get.md) method before building a scenario around leads.
 
-It is impossible to convert a lead using the REST API. You can only change the stage to successful without creating new objects.
+**Conversion is not available in REST.** There is no separate method for converting a lead into a contact, company, or deal. Through the API, you can only move the lead to a successful stage with the [crm.lead.update](./crm-lead-update.md) method — no new objects are created, and they have to be created with separate calls to [crm.contact.add](../contacts/crm-contact-add.md), [crm.company.add](../companies/crm-company-add.md), and [crm.deal.add](../deals/crm-deal-add.md).
+
+**A repeat lead is determined by the system.** The repeat lead indicator `IS_RETURN_CUSTOMER` is read-only: it is set to `Y` automatically when the lead has the `CONTACT_ID` or `COMPANY_ID` field filled. `IS_RETURN_CUSTOMER` cannot be passed directly to [crm.lead.add](./crm-lead-add.md) or [crm.lead.update](./crm-lead-update.md) — the value is recalculated.
 
 {% note tip "User Documentation" %}
 
@@ -81,7 +113,7 @@ It is impossible to convert a lead using the REST API. You can only change the s
 ## Overview of Methods and Events {#all-methods}
 
 > Scope: [`crm`](../../scopes/permissions.md)
-> 
+>
 > Who can execute the method: depending on the method
 
 ### Main
@@ -89,7 +121,7 @@ It is impossible to convert a lead using the REST API. You can only change the s
 {% list tabs %}
 
 - Methods
-  
+
     #|
     || **Method** | **Description** ||
     || [crm.lead.add](./crm-lead-add.md) | Creates a new lead ||
@@ -97,18 +129,18 @@ It is impossible to convert a lead using the REST API. You can only change the s
     || [crm.lead.get](./crm-lead-get.md) | Returns a lead by ID ||
     || [crm.lead.list](./crm-lead-list.md) | Returns a list of leads by filter ||
     || [crm.lead.delete](./crm-lead-delete.md) | Deletes a lead and all associated objects ||
+    || [crm.lead.productrows.set](./crm-lead-productrows-set.md) | Sets the list of lead products ||
+    || [crm.lead.productrows.get](./crm-lead-productrows-get.md) | Returns the products of a lead ||
     || [crm.lead.fields](./crm-lead-fields.md) | Returns the description of lead fields ||
-    || [crm.lead.productrows.set](./crm-lead-productrows-set.md) | Adds products to a lead ||
-    || [crm.lead.productrows.get](./crm-lead-get.md) | Returns the products of a lead ||
     |#
 
-- Events 
+- Events
 
     #|
     || **Event** | **Triggered** ||
-    || [onCrmLeadAdd](./events/on-crm-lead-add.md) | When a lead is added ||
-    || [onCrmLeadUpdate](./events/on-crm-lead-update.md) | When a lead is modified ||
-    || [onCrmLeadDelete](./events/on-crm-lead-delete.md) | When a lead is deleted ||
+    || [onCrmLeadAdd](./events/on-crm-lead-add.md) | When a lead is added manually or via the [crm.lead.add](./crm-lead-add.md) method ||
+    || [onCrmLeadUpdate](./events/on-crm-lead-update.md) | When a lead is modified manually or via the [crm.lead.update](./crm-lead-update.md) method ||
+    || [onCrmLeadDelete](./events/on-crm-lead-delete.md) | When a lead is deleted manually or via the [crm.lead.delete](./crm-lead-delete.md) method ||
     |#
 
 {% endlist %}
@@ -140,24 +172,24 @@ It is impossible to convert a lead using the REST API. You can only change the s
     || [crm.lead.userfield.delete](./userfield/crm-lead-userfield-delete.md) | Deletes a field ||
     |#
 
-- Events 
+- Events
 
     #|
     || **Event** | **Triggered** ||
-    || [onCrmLeadUserFieldAdd](./userfield/events/on-crm-lead-user-field-add.md) | When a custom field is added ||
-    || [onCrmLeadUserFieldUpdate](./userfield/events/on-crm-lead-user-field-update.md) | When a custom field is modified ||
-    || [onCrmLeadUserFieldDelete](./userfield/events/on-crm-lead-user-field-delete.md) | When a custom field is deleted ||
-    || [onCrmLeadUserFieldSetEnumValues](./userfield/events/on-crm-lead-user-field-set-enum-values.md) | When the set of values for a custom list-type field is modified ||
+    || [onCrmLeadUserFieldAdd](./userfield/events/on-crm-lead-user-field-add.md) | When a custom field is added manually or via the [crm.lead.userfield.add](./userfield/crm-lead-userfield-add.md) method ||
+    || [onCrmLeadUserFieldUpdate](./userfield/events/on-crm-lead-user-field-update.md) | When a custom field is modified manually or via the [crm.lead.userfield.update](./userfield/crm-lead-userfield-update.md) method ||
+    || [onCrmLeadUserFieldDelete](./userfield/events/on-crm-lead-user-field-delete.md) | When a custom field is deleted manually or via the [crm.lead.userfield.delete](./userfield/crm-lead-userfield-delete.md) method ||
+    || [onCrmLeadUserFieldSetEnumValues](./userfield/events/on-crm-lead-user-field-set-enum-values.md) | When the set of values for a custom list-type field is modified manually or via the [crm.lead.userfield.update](./userfield/crm-lead-userfield-update.md) method ||
     |#
 
 {% endlist %}
 
-### Managing Lead Cards 
+### Managing Lead Cards
 
 #|
 || **Method** | **Description** ||
+|| [crm.lead.details.configuration.set](./custom-form/crm-lead-details-configuration-set.md) | Sets the settings for lead cards ||
 || [crm.lead.details.configuration.get](./custom-form/crm-lead-details-configuration-get.md) | Retrieves the settings parameters for lead cards ||
 || [crm.lead.details.configuration.reset](./custom-form/crm-lead-details-configuration-reset.md) | Resets the settings for lead cards ||
-|| [crm.lead.details.configuration.set](./custom-form/crm-lead-details-configuration-set.md) | Sets the settings for lead cards ||
 || [crm.lead.details.configuration.forceCommonScopeForAll](./custom-form/crm-lead-details-configuration-force-common-scope-for-all.md) | Forces a common lead card for all users ||
 |#

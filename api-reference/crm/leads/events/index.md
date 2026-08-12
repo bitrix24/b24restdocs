@@ -21,6 +21,23 @@ You can subscribe to lead events through:
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).
 
+## What the Handler Receives
+
+All three lead events pass only the lead identifier in the `data.FIELDS` object:
+
+```json
+{
+    "event": "ONCRMLEADADD",
+    "data": {
+        "FIELDS": {
+            "ID": "1000983"
+        }
+    }
+}
+```
+
+The event contains no field values and no list of changes. To find out what exactly changed, retrieve the lead with the [crm.lead.get](../crm-lead-get.md) method and compare the data with your own copy. After the `onCrmLeadDelete` event, this method returns the `Not found` error: the lead no longer exists in Bitrix24.
+
 ## Server Availability for Sending and Receiving Events
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../../_includes/events-index.md) %}

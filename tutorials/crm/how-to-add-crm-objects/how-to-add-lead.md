@@ -1375,7 +1375,7 @@ The method does not return errors that occur between the form and the handler â€
 
 ## Key Considerations
 
-- Each form submission creates a new lead. If a client contacts you again, duplicates appear. How to find them and link them to existing records is described in the tutorial [Add Duplicate Lead](./how-to-add-repeat-lead.md)
+- Each form submission creates a new lead. If a client contacts you again, duplicates appear. How to find them and link them to existing records is described in the tutorial [Add Repeat Lead](./how-to-add-repeat-lead.md)
 
 - A webhook grants access to the entire CRM. Call REST from the server only and do not pass the webhook URL to the browser
 
