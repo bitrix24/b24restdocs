@@ -750,7 +750,7 @@ The following fields are retained only for compatibility and are not recommended
 
 ## Error Handling
 
-does not return errors.
+The `crm.quote.fields` method does not return errors: it takes no parameters and does not check access permissions.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

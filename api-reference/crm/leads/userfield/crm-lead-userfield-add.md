@@ -66,11 +66,16 @@ An incorrect field in `fields` will be ignored ||
 - [custom field types](../../universal/user-defined-fields/userfield-type.md)
 ||
 || **FIELD_NAME***
-[`string`](../../../data-types.md) | Field code. Unique.
+[`string`](../../../data-types.md) | Field code. Unique within leads.
 
-The system limit for the field code is 20 characters. The custom field name always has the prefix `UF_CRM_`, meaning the actual name length is 13 characters.
+The prefix `UF_CRM_` is always added to the code, and the system builds the full field name itself:
+- `MANAGER_NOTE` becomes `UF_CRM_MANAGER_NOTE`
+- `UF_MANAGER_NOTE` becomes `UF_CRM_MANAGER_NOTE` — the prefix `UF_` is replaced with `UF_CRM_`
+- `UF_CRM_MANAGER_NOTE` remains unchanged
 
-Allowed characters: `A-Z`, `0-9`, and `_`||
+The length limit is `50` characters including the prefix, that is, up to `43` characters for the code. If a longer value is passed, the method returns the error `ERROR_CORE`.
+
+Allowed characters: `A-Z`, `0-9`, and `_`. Lowercase letters are converted to uppercase, and any other characters cause the error `ERROR_CORE`||
 || **LABEL**
 [`string`](../../../data-types.md) | Default name of the custom field.
 
@@ -1167,13 +1172,14 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `400` | The 'FIELD_NAME' field is not found | Either an empty `FIELD_NAME` was provided, or it was not provided at all ||
-|| `400` | Field name is too long (more than 50 characters). | The provided `FIELD_NAME` contains more than 50 characters ||
-|| `400` | Field name contains invalid characters. Allowed characters are: A-Z, 0-9 and _. | The provided `FIELD_NAME` contains invalid characters ||
-|| `400` | The 'USER_TYPE_ID' field is not found | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
-|| `400` | Invalid custom type specified | The provided `USER_TYPE_ID` does not exist ||
-|| `400` | List item with XML_ID='XML_ID' already exists | The provided `XML_ID` in list items are not unique ||
+|| `-` | The 'FIELD_NAME' field is not found. | Either an empty `FIELD_NAME` was provided, or it was not provided at all ||
+|| `ERROR_CORE` | Field name is too long (more than 50 characters). | The full field name including the prefix `UF_CRM_` contains more than 50 characters, that is, more than 43 characters were provided in `FIELD_NAME` ||
+|| `ERROR_CORE` | Field name contains invalid characters. Allowed characters are: A-Z, 0-9 and _. | The provided `FIELD_NAME` contains characters other than `A-Z`, `0-9`, and `_` ||
+|| `-` | The 'USER_TYPE_ID' field is not found. | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
+|| `ERROR_CORE` | Invalid custom type specified. | The provided `USER_TYPE_ID` does not exist ||
+|| `ERROR_CORE` | List item with XML_ID=xml_id already exists. | The provided `XML_ID` in list items are not unique ||
 |#
+
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
