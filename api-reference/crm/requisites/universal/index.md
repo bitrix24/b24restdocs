@@ -231,7 +231,7 @@ You can add a custom field to requisites using the method [crm.requisite.userfie
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the methods: depending on the method — access permissions are checked against the contact or company that owns the requisite
 
 #|
 || **Method** | **Description** ||

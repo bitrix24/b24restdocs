@@ -12,9 +12,31 @@ The `Details` field is available:
 * in contacts and companies — where buyer data is stored
 * in your companies — where your company's data, acting as the seller, is stored. This type of company is located in a separate section in the CRM settings
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: [add company details](https://helpdesk.bitrix24.com/open/5870771/), [use of company details](https://helpdesk.bitrix24.com/open/16059544/) 
+> Quick navigation: [all methods and events](#all-methods)
+>
+> User documentation: [add company details](https://helpdesk.bitrix24.com/open/5870771/), [use of company details](https://helpdesk.bitrix24.com/open/16059544/)
+
+## How to Choose a Section
+
+Requisite methods are split into subsections by the objects they work with.
+
+#|
+|| **If You Need To** | **Open the Section** ||
+|| Create a requisite for a contact or company, retrieve or update its data | [Universal Company Details](./universal/index.md) ||
+|| Add a legal, actual, or other address to a requisite | [Addresses](./addresses/index.md) ||
+|| Store a bank account, BIC, and other payment data | [Banking Details](./bank-detail/index.md) ||
+|| Specify which requisites to insert into an invoice, quote, or deal | [Linking Company Details to CRM Objects](./links/index.md) ||
+|| Manage the set of requisite fields for a country or counterparty type | [Requisite Templates](./presets/index.md) and [Customizable Template Fields](./presets/fields/index.md) ||
+|| Add a custom field to a requisite | [CRM Company Details Custom Fields](./user-fields/index.md) ||
+|| Receive notifications about requisite changes | [Events](./events/index.md) ||
+|#
+
+## Getting Started
+
+1. Choose a requisite template — it defines the set of fields. The list of templates is returned by the [crm.requisite.preset.list](./presets/crm-requisite-preset-list.md) method
+2. Create a requisite using the [crm.requisite.add](./universal/crm-requisite-add.md) method. Pass the template identifier to it, along with the type and identifier of the owner — a contact or a company
+3. Supplement the requisite with [addresses](./addresses/index.md) and [banking details](./bank-detail/index.md) if they are needed in documents
+4. Link the requisite to a deal, invoice, or quote using the methods of the [Linking Company Details to CRM Objects](./links/index.md) section so that it is inserted into printed forms
 
 ## Connection of Details with Other CRM Entities
 
@@ -24,13 +46,12 @@ The `Details` field is available:
 
 **My Company.** The details of the company selected as the main seller are automatically filled in all documents.
 
-**Address.** A separate entity accessible through the standard `Address` field. Addresses can only be linked to Details or Leads. To work with addresses, use the group of methods [crm.address.*](./addresses/index.md), where the details ID is passed in the `ENTITY_ID` parameter.  
+**Address.** A separate entity accessible through the standard `Address` field. Addresses can only be linked to requisites or leads. To work with addresses, use the group of methods [crm.address.*](./addresses/index.md), where the requisite identifier is passed in the `ENTITY_ID` parameter.
 
-**Documents.** Any printed forms: invoices, acts, contracts, and others generated through the document generator. 
+**Documents.** Any printed forms: invoices, acts, contracts, and others generated through the document generator. Which requisites end up in a document is determined by the link registered with the [crm.requisite.link.*](./links/index.md) methods.
 
 {% note tip "User Documentation" %}
 
-- [Connections of requisites with CRM entities](../requisites/links/index.md)
 - [Updates in working with addresses and contact or company details in CRM](https://helpdesk.bitrix24.com/open/11785262/)
 - [Documents in CRM: how to create and send in a couple of minutes](https://helpdesk.bitrix24.com/open/19441484/)
 
@@ -44,7 +65,7 @@ Any detail for a contact or company is created within templates. A template cons
 
 You can add, modify, and delete details templates through the group of methods [crm.requisite.preset.*](./presets/index.md).
 
-Manage the list of fields for a specific template — [crm.requisite.preset.field.*](./presets/fields/index.md). 
+Manage the list of fields for a specific template — [crm.requisite.preset.field.*](./presets/fields/index.md).
 
 Create and modify custom fields that can be used in the template — [crm.requisite.userfield.*](./user-fields/index.md).
 
@@ -58,7 +79,7 @@ Create and modify custom fields that can be used in the template — [crm.requis
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute methods: depending on the method
+> Who can execute methods: depending on the method — access permissions are checked against the object that owns the requisite
 
 ### Basic
 
@@ -103,8 +124,8 @@ Create and modify custom fields that can be used in the template — [crm.requis
     |#
 
 - Events
-  
-   #| 
+
+    #| 
     || **Event** | **Triggered** ||
     || [onCrmAddressRegister](./events/on-crm-address-register.md) | When an address is registered ||
     || [onCrmAddressUnregister](./events/on-crm-address-unregister.md) | When an address is deleted ||
@@ -129,8 +150,8 @@ Create and modify custom fields that can be used in the template — [crm.requis
     |#
 
 - Events
-  
-   #| 
+
+    #| 
     || **Event** | **Triggered** ||
     || [onCrmBankDetailAdd](./events/on-crm-bank-detail-add.md) | When a banking requisite is added ||
     || [onCrmBankDetailUpdate](./events/on-crm-bank-detail-update.md) | When a banking requisite is modified ||
@@ -147,16 +168,16 @@ Create and modify custom fields that can be used in the template — [crm.requis
 
     #| 
     || **Method** | **Description** ||
-    || [crm.requisite.userfield.add.md](./user-fields/crm-requisite-userfield-add.md) | Creates a new custom field for a requisite ||
-    || [crm.requisite.userfield.update.md](./user-fields/crm-requisite-userfield-update.md) | Modifies an existing custom field for a requisite ||
-    || [crm.requisite.userfield.get.md](./user-fields/crm-requisite-userfield-get.md) | Returns a custom field for a requisite by ID ||
-    || [crm.requisite.userfield.list.md](./user-fields/crm-requisite-userfield-list.md) | Returns a list of custom fields for a requisite by filter ||
-    || [crm.requisite.userfield.delete.md](./user-fields/crm-requisite-userfield-delete.md) | Deletes a custom field for a requisite ||
+    || [crm.requisite.userfield.add](./user-fields/crm-requisite-userfield-add.md) | Creates a new custom field for a requisite ||
+    || [crm.requisite.userfield.update](./user-fields/crm-requisite-userfield-update.md) | Modifies an existing custom field for a requisite ||
+    || [crm.requisite.userfield.get](./user-fields/crm-requisite-userfield-get.md) | Returns a custom field for a requisite by ID ||
+    || [crm.requisite.userfield.list](./user-fields/crm-requisite-userfield-list.md) | Returns a list of custom fields for a requisite by filter ||
+    || [crm.requisite.userfield.delete](./user-fields/crm-requisite-userfield-delete.md) | Deletes a custom field for a requisite ||
     |#
 
 - Events
-  
-   #| 
+
+    #| 
     || **Event** | **Triggered** ||
     || [onCrmRequisiteUserFieldAdd](./events/on-crm-requisite-user-field-add.md) | When a custom field is added ||
     || [onCrmRequisiteUserFieldUpdate](./events/on-crm-requisite-user-field-update.md) | When a custom field is modified ||
@@ -183,22 +204,22 @@ Create and modify custom fields that can be used in the template — [crm.requis
 || **Method** | **Description** ||
 || [crm.requisite.preset.add](./presets/crm-requisite-preset-add.md) | Creates a new requisites template ||
 || [crm.requisite.preset.update](./presets/crm-requisite-preset-update.md) | Modifies a requisites template ||
-|| [crm.requisite.preset.countries](./presets/crm-requisite-preset-countries.md) | Returns a possible list of countries for requisites templates ||
 || [crm.requisite.preset.get](./presets/crm-requisite-preset-get.md) | Returns a requisites template by ID ||
 || [crm.requisite.preset.list](./presets/crm-requisite-preset-list.md) | Returns a list of requisites templates by filter ||
 || [crm.requisite.preset.delete](./presets/crm-requisite-preset-delete.md) | Deletes a requisites template ||
+|| [crm.requisite.preset.countries](./presets/crm-requisite-preset-countries.md) | Returns the list of countries available for requisites templates ||
 || [crm.requisite.preset.fields](./presets/crm-requisite-preset-fields.md) | Returns the formal description of fields for requisites templates ||
 |#
 
-### Fields of Requisites Templates
+### Customizable Requisite Template Fields
 
 #| 
 || **Method** | **Description** ||
 || [crm.requisite.preset.field.add](./presets/fields/crm-requisite-preset-field-add.md) | Adds a customizable field to the requisites template ||
 || [crm.requisite.preset.field.update](./presets/fields/crm-requisite-preset-field-update.md) | Modifies a customizable field in the requisites template ||
-|| [crm.requisite.preset.field.availabletoadd](./presets/fields/crm-requisite-preset-field-available-to-add.md) | Returns fields available for addition to the specified requisites template ||
 || [crm.requisite.preset.field.get](./presets/fields/crm-requisite-preset-field-get.md) | Returns the description of a customizable field in the requisites template by ID ||
 || [crm.requisite.preset.field.list](./presets/fields/crm-requisite-preset-field-list.md) | Returns a list of all customizable fields for a specific requisites template ||
 || [crm.requisite.preset.field.delete](./presets/fields/crm-requisite-preset-field-delete.md) | Deletes a customizable field from the requisites template ||
-|| [crm.requisite.preset.field.fields](./presets/fields/crm-requisite-preset-field-fields.md) | Returns the formal description of fields that describe the customizable field in the requisites template ||
+|| [crm.requisite.preset.field.availabletoadd](./presets/fields/crm-requisite-preset-field-available-to-add.md) | Returns fields available for addition to the specified requisites template ||
+|| [crm.requisite.preset.field.fields](./presets/fields/crm-requisite-preset-field-fields.md) | Returns a formal description of a customizable field in the requisites template ||
 |#

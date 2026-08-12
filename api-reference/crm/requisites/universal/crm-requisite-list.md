@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "read" access permission for contacts and companies
 
 This method retrieves a list of company details based on a filter.
 
@@ -475,7 +475,7 @@ Formula for calculating the `start` parameter value:
 
     {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -551,7 +551,7 @@ HTTP status: **200**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
-## Response on Error
+## Error Handling
 
 HTTP status: **400**
 
@@ -564,7 +564,7 @@ HTTP status: **400**
 
 {% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
 #|
 || **Code** | **Error text** | **Description** ||

@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "add" access permission for both contacts and companies
 
 This method creates a new requisites template.
 
@@ -38,7 +38,7 @@ The identifiers of CRM object types are provided by the method [crm.enum.ownerty
 || **COUNTRY_ID***
 [`integer`](../../../data-types.md) | Identifier of the country corresponding to the set of fields in the requisites template (for available values, see the method [crm.requisite.preset.countries](./crm-requisite-preset-countries.md)) ||
 || **NAME***
-[`string`](../../../data-types.md) | Name of the requisite ||
+[`string`](../../../data-types.md) | Name of the template ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
 

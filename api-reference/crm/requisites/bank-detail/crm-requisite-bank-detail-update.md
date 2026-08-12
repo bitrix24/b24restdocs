@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "edit" access permission for the contact or company that owns the requisite
 
 This method updates an existing bank detail.
 
@@ -389,7 +389,7 @@ HTTP status: **40x**, **50x**
 
 {% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
 #|
 || **Error text** | **Description** ||

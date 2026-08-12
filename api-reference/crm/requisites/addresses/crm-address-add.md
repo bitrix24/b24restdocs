@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "add" access permission for the contact, company, or lead that owns the address
 
 This method adds a new address for a requisite or lead. For the user, this address appears as the address of a contact, company, or lead.
 

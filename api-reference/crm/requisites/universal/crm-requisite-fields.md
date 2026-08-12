@@ -224,7 +224,7 @@ No parameters.
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 

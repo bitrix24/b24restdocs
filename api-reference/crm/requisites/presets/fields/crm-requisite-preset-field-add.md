@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "add" access permission for both contacts and companies
 
 Adds a custom field to a company details template. Use the [crm.requisite.preset.field.availabletoadd](./crm-requisite-preset-field-available-to-add.md) method to retrieve the fields available for addition to the template.
 

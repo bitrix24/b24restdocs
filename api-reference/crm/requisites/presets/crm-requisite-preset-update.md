@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with "edit" access permission for both contacts and companies
 
 This method updates the requisite template.
 
@@ -33,7 +33,7 @@ This method updates the requisite template.
 || **Name**
 `type` | **Description** ||
 || **NAME***
-[`string`](../../../data-types.md) | Name of the requisite ||
+[`string`](../../../data-types.md) | Name of the template ||
 || **XML_ID**
 [`string`](../../../data-types.md) |External key. Used for exchange operations. Identifier of the external information base object. 
 

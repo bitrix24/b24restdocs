@@ -78,7 +78,7 @@ Bank details identifiers can be obtained using the [crm.requisite.bankdetail.lis
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: any user
+> Who can execute the methods: depending on the method — access permissions are checked against the CRM object the requisites are linked to
 
 #|
 || **Method** | **Description** ||

@@ -122,7 +122,7 @@ Currently, the field does not actually affect anything ||
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: any user
+> Who can execute the methods: depending on the method — access permissions are checked against the contact or company that owns the requisite
 
 #|
 || **Method** | **Description** ||

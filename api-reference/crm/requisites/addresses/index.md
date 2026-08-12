@@ -89,7 +89,7 @@ Use the method [crm.address.fields](./crm-address-fields.md) to obtain a formal 
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the methods: depending on the method — access permissions are checked against the address owner: a contact, company, or lead
 
 #|
 || **Method** | **Description** ||

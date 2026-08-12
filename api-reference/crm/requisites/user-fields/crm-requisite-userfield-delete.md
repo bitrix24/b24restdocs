@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: administrator, user with the "Allow to modify settings" access permission in CRM
 
 Deletes a custom field of the company details.
 
@@ -277,7 +277,7 @@ HTTP status: **40x**, **50x**
 
 {% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
 #|
 || **Code** | **Error text** | **Description** ||

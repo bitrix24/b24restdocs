@@ -105,7 +105,7 @@ The purpose of the field may be changed by the end developer ||
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: any user
+> Who can execute the methods: depending on the method — a user with "read" access permission for requisites can read the fields, while only a CRM administrator can change the set of fields
 
 #|
 || **Method** | **Description** ||

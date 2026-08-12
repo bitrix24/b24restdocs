@@ -64,15 +64,17 @@ Use the method [crm.requisite.preset.field.fields](./crm-requisite-preset-field-
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the methods: any user
+> Who can execute the methods: a user with access permissions for contacts and companies
+
+Access permissions for template fields are checked the same way as permissions for the [template](../index.md) itself: reading requires "read" access permission for both contacts and companies, while changing the set of fields requires "add", "edit", or "delete" access permission for both objects.
 
 #|
 || **Method** | **Description** ||
 || [crm.requisite.preset.field.add](./crm-requisite-preset-field-add.md) | Adds a customizable field to the requisites template ||
 || [crm.requisite.preset.field.update](./crm-requisite-preset-field-update.md) | Modifies a customizable field in the requisites template ||
-|| [crm.requisite.preset.field.availabletoadd](./crm-requisite-preset-field-available-to-add.md) | Returns fields available for addition to the specified requisites template ||
 || [crm.requisite.preset.field.get](./crm-requisite-preset-field-get.md) | Returns the description of a customizable field in the requisites template by ID ||
 || [crm.requisite.preset.field.list](./crm-requisite-preset-field-list.md) | Returns a list of all customizable fields for a specific requisites template ||
 || [crm.requisite.preset.field.delete](./crm-requisite-preset-field-delete.md) | Deletes a customizable field from the requisites template ||
+|| [crm.requisite.preset.field.availabletoadd](./crm-requisite-preset-field-available-to-add.md) | Returns fields available for addition to the specified requisites template ||
 || [crm.requisite.preset.field.fields](./crm-requisite-preset-field-fields.md) | Returns a formal description of a configurable template field ||
 |#

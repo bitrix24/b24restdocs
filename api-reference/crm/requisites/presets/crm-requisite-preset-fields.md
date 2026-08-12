@@ -359,7 +359,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the requisite. Created automatically and unique within the account ||
+[`integer`](../../../data-types.md) | Identifier of the template. Created automatically and unique within Bitrix24 ||
 || **ENTITY_TYPE_ID**
 [`integer`](../../../data-types.md) | Identifier of the parent object's type. Currently, this is only "Requisite" (identifier `8`).
 
@@ -372,11 +372,11 @@ The identifiers of CRM object types are provided by the method [crm.enum.ownerty
 || **DATE_MODIFY**
 [`datetime`](../../../data-types.md) | Modification date. Contains an empty string if the template has not been changed since creation ||
 || **CREATED_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who created the requisite ||
+[`user`](../../../data-types.md) | Identifier of the user who created the template ||
 || **MODIFY_BY_ID**
-[`user`](../../../data-types.md) | Identifier of the user who modified the requisite ||
+[`user`](../../../data-types.md) | Identifier of the user who modified the template ||
 || **NAME**
-[`string`](../../../data-types.md) | Name of the requisite ||
+[`string`](../../../data-types.md) | Name of the template ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External key. Used for exchange operations. Identifier of the external information base object. 
 
