@@ -23,7 +23,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 1. Create a numerator using the method [crm.documentgenerator.numerator.add](./numerator/crm-document-generator-numerator-add.md) — this sets the number template for documents.
 2. Prepare a `.docx` template file in Base64 format — [How to upload files](../../files/how-to-upload-files.md).
-3. Define the `entityTypeId` of the required CRM object — typical values are provided in the article [Features of transmitted values](../index.md).
+3. Define the `entityTypeId` of the required CRM object — the values are provided in the table [CRM Object Types](../data-types.md#object_type).
 4. Upload the template using the method [crm.documentgenerator.template.add](./templates/crm-document-generator-template-add.md): pass the name, file, `numeratorId`, `entityTypeId`, and `region`.
 5. Obtain the `entityId` of the required CRM object using the method [crm.item.list](../universal/crm-item-list.md).
 6. Choose how to work with the document:
@@ -40,6 +40,16 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 - When creating a document from a template, the link between the template and the Sales Funnel is not automatically checked — the document is created even if the template is configured for a different funnel.
 - The `pdfUrl` and `imageUrl` links may be absent immediately after creating or updating the document, as conversion is performed asynchronously. If you need the links right away, repeat the request using the method [crm.documentgenerator.document.get](./documents/crm-document-generator-document-get.md) after 30-40 seconds.
+- Only numerators created with the method [crm.documentgenerator.numerator.add](./numerator/crm-document-generator-numerator-add.md) can be modified or deleted via REST. Numerators created in the Bitrix24 interface are read-only.
+
+## How to Choose a Section
+
+Bitrix24 has two parallel groups of document generator methods:
+
+- `crm.documentgenerator.*` — this section. The document is linked to a CRM object via `entityTypeId` and `entityId`, and the template is populated with data from a deal, lead, contact, company, invoice, estimate, or SPA element.
+- `documentgenerator.*` — the [Document Generator](../../document-generator/index.md) section. The document is built from application data via `providerClassName` and `value`, and it has no access to CRM data.
+
+For CRM scenarios, use the methods of this section.
 
 ## Relationships with Other Objects
 
@@ -49,7 +59,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 **Documents.** A document is created from a template using the method [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md) or a ready-made file is uploaded using the method [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md) — in both cases, the document is attached to a CRM object.
 
-**CRM Entities.** Templates and documents use `entityTypeId` and `entityId`. Typical values of `entityTypeId` for CRM entities are provided in the article [Features of transmitted values](../index.md). For Smart Processes, `entityTypeId` can be obtained using the method [crm.type.list](../universal/user-defined-object-types/crm-type-list.md). The identifier of the required object `entityId` is obtained using the method [crm.item.list](../universal/crm-item-list.md).
+**CRM Entities.** Templates and documents use `entityTypeId` and `entityId`. The values of `entityTypeId` for standard objects are provided in the table [CRM Object Types](../data-types.md#object_type). For Smart Processes, `entityTypeId` can be obtained using the method [crm.type.list](../universal/user-defined-object-types/crm-type-list.md). The identifier of the required object `entityId` is obtained using the method [crm.item.list](../universal/crm-item-list.md).
 
 **Regions.** The template is linked to the country via the `region` parameter. The `region` value is passed in the method [crm.documentgenerator.template.add](./templates/crm-document-generator-template-add.md), for example, `de`. A list of available regions can be obtained using the method [documentgenerator.region.list](../../document-generator/region/document-generator-region-list.md).
 
@@ -106,7 +116,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
     #| 
     || **Event** | **Triggered** ||
-    || [onCrmDocumentGeneratorDocumentAdd](./documents/events/on-crm-document-generator-document-add.md) | When generating a document manually or using the method [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md) ||
+    || [onCrmDocumentGeneratorDocumentAdd](./documents/events/on-crm-document-generator-document-add.md) | When generating a document manually or using the methods [crm.documentgenerator.document.add](./documents/crm-document-generator-document-add.md) and [crm.documentgenerator.document.upload](./documents/crm-document-generator-document-upload.md) ||
     || [onCrmDocumentGeneratorDocumentUpdate](./documents/events/on-crm-document-generator-document-update.md) | When modifying a document manually or using the method [crm.documentgenerator.document.update](./documents/crm-document-generator-document-update.md) ||
     || [onCrmDocumentGeneratorDocumentDelete](./documents/events/on-crm-document-generator-document-delete.md) | When deleting a document manually or using the method [crm.documentgenerator.document.delete](./documents/crm-document-generator-document-delete.md) ||
     |#

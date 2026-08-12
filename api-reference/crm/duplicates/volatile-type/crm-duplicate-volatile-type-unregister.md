@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: Bitrix24 administrator or CRM administrator
 
 The method `crm.duplicate.volatileType.unregister` removes a custom field from the duplicate search.
 
@@ -264,7 +264,7 @@ HTTP status: **400**
 ```json
 {
     "error": "TYPE_IS_NOT_ASSIGNED",
-    "error_description": "This type is not assigned."
+    "error_description": "This type is not assigned"
 }
 ```
 
@@ -274,13 +274,14 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `400` | `TYPE_IS_NOT_ASSIGNED` | Identifier of the added field record not found ||
+|| `TYPE_IS_NOT_ASSIGNED` | This type is not assigned | The record with the `id` passed was not found. Current identifiers are returned by [crm.duplicate.volatileType.list](./crm-duplicate-volatile-type-list.md) ||
+|| `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
 |#
 
 {% include [System errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md)
-- [crm.duplicate.volatileType.list](./crm-duplicate-volatile-type-list.md)
-- [crm.duplicate.volatileType.register](./crm-duplicate-volatile-type-register.md) 
+- [{#T}](./crm-duplicate-volatile-type-fields.md)
+- [{#T}](./crm-duplicate-volatile-type-list.md)
+- [{#T}](./crm-duplicate-volatile-type-register.md) 

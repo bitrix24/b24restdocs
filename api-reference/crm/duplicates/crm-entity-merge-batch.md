@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 > 
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to modify the main entity and permission to delete the remaining entities being merged
 
 The method `crm.entity.mergeBatch` merges multiple entities into one.
 
@@ -50,6 +50,8 @@ Full automatic merging is available in several cases:
 - the entities are not identical, but the differences in field values do not require manual processing. For example, if one entity has a field filled and the other has the same field empty — the value from the filled field will be retained.
 
 The main entity in the merge will be the one whose `ID` is specified first in the `entityIds` array. Information from other entities will be transferred to the main entity. All entities except the main one will be deleted after a successful merge.
+
+Permissions are checked for each entity separately. The main entity requires read and modify permissions, and the remaining ones require read and delete permissions. Permissions are not checked for the administrator.
 
 #### Manual Merging in Case of Conflict
 
@@ -371,4 +373,4 @@ HTTP status: **400**
 
 ## Continue Learning
 
-- [crm.duplicate.findbycomm](./crm-duplicate-find-by-comm.md) 
+- [{#T}](./crm-duplicate-find-by-comm.md) 

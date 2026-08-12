@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: Bitrix24 administrator or CRM administrator
 
 The method `crm.duplicate.volatileType.fields` returns a list of standard and custom fields that can be used for finding duplicates in leads, contacts, and companies.
 
@@ -291,12 +291,28 @@ HTTP status: **200**
 
 ## Error Handling
 
-Specific errors for the method are not highlighted.
+HTTP status: **400**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied"
+}
+```
+
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
+|#
 
 {% include [System errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [crm.duplicate.volatileType.list](./crm-duplicate-volatile-type-list.md)
-- [crm.duplicate.volatileType.register](./crm-duplicate-volatile-type-register.md)
-- [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md) 
+- [{#T}](./crm-duplicate-volatile-type-list.md)
+- [{#T}](./crm-duplicate-volatile-type-register.md)
+- [{#T}](./crm-duplicate-volatile-type-unregister.md)

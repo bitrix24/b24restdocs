@@ -50,13 +50,13 @@ Typical values:
 - `7` — estimate
 - `31` — invoice
 
-For objects with directions, a direction suffix is added, for example:
-- `2_category_0` — deal, direction `0`
-- `31_1` — invoice, direction `1`
+For objects with pipelines, a pipeline suffix is added, for example:
+- `2_category_0` — deal, pipeline `0`
+- `31_1` — invoice, pipeline `1`
 
 For SPAs, specify `entityTypeId` of the type from [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) or [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md), for example:
 - `177` — SPA element with `entityTypeId = 177`
-- `177_1` — SPA element with direction `1` ||
+- `177_1` — SPA element with pipeline `1` ||
 || **users**
 [`array`](../../data-types.md) | Array of access permission codes, for example `["UA"]`
 

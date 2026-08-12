@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`documentgenerator, crm`](../../../../scopes/permissions.md)
+> Scope: [`crm`](../../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
-The event `ONCRMDOCUMENTGENERATORDOCUMENTADD` will trigger upon the creation of a new document.
+The event `ONCRMDOCUMENTGENERATORDOCUMENTADD` will trigger upon the creation of a new document: from a template with the method [crm.documentgenerator.document.add](../crm-document-generator-document-add.md) and when a ready file is uploaded with the method [crm.documentgenerator.document.upload](../crm-document-generator-document-upload.md).
 
 {% note info "" %}
 

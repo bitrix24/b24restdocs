@@ -1,8 +1,8 @@
 title: Document Generator  
 href: index.md  
 items:  
-  - name: Document Generator  
-    href: index.md  
+  - name: Method Overview
+    href: index.md
   - name: Documents  
     include:  
       path: documents/b24-toc.yaml  

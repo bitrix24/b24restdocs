@@ -16,18 +16,21 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 ## Getting Started
 
-1. Create a numbering rule using the method [crm.documentgenerator.numerator.add](./crm-document-generator-numerator-add.md).
-2. If you are using an already created numbering rule, retrieve the list of numbering rules and their identifiers using the method [crm.documentgenerator.numerator.list](./crm-document-generator-numerator-list.md).
-3. If you know the `id` of the numbering rule and want to check its settings, use the method [crm.documentgenerator.numerator.get](./crm-document-generator-numerator-get.md).
-4. Pass the `numeratorId` to the document template:
-   - if creating a new template, use the method [crm.documentgenerator.template.add](../templates/crm-document-generator-template-add.md).
-   - if modifying an existing template, use the method [crm.documentgenerator.template.update](../templates/crm-document-generator-template-update.md).
-5. If you need to change the settings of the numbering rule, use the method [crm.documentgenerator.numerator.update](./crm-document-generator-numerator-update.md).
-6. Delete an unnecessary numbering rule using the method [crm.documentgenerator.numerator.delete](./crm-document-generator-numerator-delete.md).
+1. Create a numbering rule using the method [crm.documentgenerator.numerator.add](./crm-document-generator-numerator-add.md) — pass the name and the number template. If the numbering rule already exists, find its `id` using the method [crm.documentgenerator.numerator.list](./crm-document-generator-numerator-list.md).
+2. Pass the received `id` as `numeratorId` to [crm.documentgenerator.template.add](../templates/crm-document-generator-template-add.md) when uploading a template, or to [crm.documentgenerator.template.update](../templates/crm-document-generator-template-update.md) for a template that has already been uploaded.
+3. Create a document from this template using the method [crm.documentgenerator.document.add](../documents/crm-document-generator-document-add.md) — the number is inserted automatically.
+
+## What a Numbering Rule Consists Of
+
+- **Number Template.** A string with placeholders, for example `INV-{NUMBER}`. The `{NUMBER}` placeholder is replaced with the counter value.
+- **Counter Settings.** These define the starting value and the step of the counter, the minimum length of the number, and the reset period — day, month, year, or no reset.
+
+The exact list of placeholders and settings is described in the parameters of the method [crm.documentgenerator.numerator.add](./crm-document-generator-numerator-add.md).
 
 ## Important Considerations
 
-The methods [crm.documentgenerator.numerator.update](./crm-document-generator-numerator-update.md) and [crm.documentgenerator.numerator.delete](./crm-document-generator-numerator-delete.md) only work with numbering rules created using the method [crm.documentgenerator.numerator.add](./crm-document-generator-numerator-add.md).
+- The methods [crm.documentgenerator.numerator.update](./crm-document-generator-numerator-update.md) and [crm.documentgenerator.numerator.delete](./crm-document-generator-numerator-delete.md) only work with numbering rules created using the method [crm.documentgenerator.numerator.add](./crm-document-generator-numerator-add.md). Numbering rules created in the Bitrix24 interface cannot be modified or deleted via REST.
+- The numbering rules of the document generator in CRM and the numbering rules of the [Document Generator](../../../document-generator/numerators/index.md) section are different groups of methods. For CRM documents, use `crm.documentgenerator.numerator.*`.
 
 ## Relationship with Other Objects
 
@@ -39,7 +42,7 @@ The methods [crm.documentgenerator.numerator.update](./crm-document-generator-nu
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "modify" permission for document generator templates
+> Who can execute the method: a user with permission to modify document generator templates
 
 #| 
 || **Method** | **Description** ||

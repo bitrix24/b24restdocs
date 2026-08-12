@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: Bitrix24 administrator or CRM administrator
 
 The method `crm.duplicate.volatileType.register` adds a field to the duplicate search functionality in leads, contacts, or companies.
 
@@ -30,7 +30,9 @@ The method `crm.duplicate.volatileType.register` adds a field to the duplicate s
 
 ### Method Operation Features
 
-A total of 7 custom fields can be registered for duplicate searches. For example, if you have already added 3 fields for contacts and 4 fields for companies, attempting to add another field for any object type will result in the error `MAX_TYPES_COUNT_EXCEEDED`.
+A total of seven custom fields can be registered for duplicate searches. For example, if you have already added three fields for contacts and four fields for companies, attempting to add another field for any object type will result in the error `MAX_TYPES_COUNT_EXCEEDED`.
+
+Calling the method again for a field that is already registered does not take up a new slot — the method returns the `id` of the existing record.
 
 ## Code Examples
 
@@ -290,8 +292,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "Field not found",
-    "error_description": "Specified field not found."
+    "error": "FIELD_NOT_FOUND",
+    "error_description": "Field not found"
 }
 ```
 
@@ -301,14 +303,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `400` | `Field not found` | The specified field was not found ||
-|| `400` | `MAX_TYPES_COUNT_EXCEEDED` | The maximum number of custom field types in the duplicate search has been exceeded ||
+|| `FIELD_NOT_FOUND` | Field not found | The field with the specified `fieldCode` is not available for the `entityTypeId` passed. The list of available fields is returned by [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md) ||
+|| `MAX_TYPES_COUNT_EXCEEDED` | There is already a maximum number of volatile types | All seven slots for additional fields are taken. Free up a slot using the method [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md) ||
+|| `ACCESS_DENIED` | Access denied | The method is available only to the Bitrix24 administrator or the CRM administrator ||
 |#
 
 {% include [System errors](./../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [crm.duplicate.volatileType.fields](./crm-duplicate-volatile-type-fields.md)
-- [crm.duplicate.volatileType.list](./crm-duplicate-volatile-type-list.md)
-- [crm.duplicate.volatileType.unregister](./crm-duplicate-volatile-type-unregister.md) 
+- [{#T}](./crm-duplicate-volatile-type-fields.md)
+- [{#T}](./crm-duplicate-volatile-type-list.md)
+- [{#T}](./crm-duplicate-volatile-type-unregister.md)
