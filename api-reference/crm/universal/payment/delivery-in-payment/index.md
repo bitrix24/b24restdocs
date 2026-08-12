@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The methods in this section manage delivery items within CRM payments. A delivery item stores service parameters and links the payment to a specific delivery document.
+The methods `crm.item.payment.delivery.*` manage delivery items within CRM payments. A delivery item stores service parameters and links the payment to a specific delivery document.
 
 This is necessary to account for logistics costs in the overall invoice. For example, you can add delivery to the payment for goods and associate it with the transport company's waybill.
 
@@ -14,9 +14,11 @@ This is necessary to account for logistics costs in the overall invoice. For exa
 
 ## Linking Deliveries in Payments with Other Objects
 
-**CRM Activity.** All methods in this section operate with a specific payment identified by the `paymentId`.
+**CRM Payment.** All methods in this group operate with a specific payment identified by the `paymentId`.
 
-**Delivery Document.** The method [crm.item.payment.delivery.setDelivery](./crm-item-payment-delivery-set-delivery.md) links the delivery item to the required document via `deliveryId`.
+**Delivery Document.** The method [crm.item.payment.delivery.setDelivery](./crm-item-payment-delivery-set-delivery.md) links the delivery item to the required document via `deliveryId`. The list of delivery documents for a CRM object is returned by the [crm.item.delivery.list](../../delivery/crm-item-delivery-list.md) method.
+
+**CRM Object.** A payment always belongs to a deal or an invoice — only these objects support payments. Therefore, delivery items in a payment exist only for them.
 
 ## How to Work with Deliveries in Payment
 
@@ -38,3 +40,9 @@ This is necessary to account for logistics costs in the overall invoice. For exa
 || [crm.item.payment.delivery.delete](./crm-item-payment-delivery-delete.md) | Deletes a delivery item from the payment ||
 || [crm.item.payment.delivery.setDelivery](./crm-item-payment-delivery-set-delivery.md) | Reassigns the delivery item to another delivery document ||
 |#
+
+## Continue Learning
+
+- [{#T}](../index.md)
+- [{#T}](../../delivery/index.md)
+- [{#T}](../products-in-payment/index.md)

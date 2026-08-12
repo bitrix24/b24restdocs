@@ -1,4 +1,4 @@
-# Invoices: Overview of Methods
+# Invoices: Overview of Methods and Events
 
 {% note tip "" %}
 
@@ -14,9 +14,25 @@ An invoice can be generated from a template and sent to the client as a document
 - Track the stages of working with the invoice
 - Accept online payments
 
-> Quick navigation: [all methods and events](#all-methods) 
+Invoices are a separate CRM object type with the identifier `entityTypeId = 31`. Work with them using the universal `crm.item.*` methods and pass `entityTypeId = 31` in every call.
+
+{% note warning "" %}
+
+The `crm.item.*` methods work only with new-type invoices `entityTypeId = 31`. For old-type invoices `entityTypeId = 5`, they return the `ENTITY_TYPE_NOT_SUPPORTED` error.
+
+{% endnote %}
+
+> Quick navigation: [all methods and events](#all-methods)
 >
 > User documentation: [New invoices in CRM](https://helpdesk.bitrix24.com/open/14809588/)
+
+## Getting Started
+
+1. Retrieve the list of available invoice fields using the [crm.item.fields](./crm-item-fields.md) method with `entityTypeId = 31`.
+2. Create an invoice using the [crm.item.add](./crm-item-add.md) method. Link it to a deal through `parentId2` and specify the client in the `companyId` and `contactIds` fields.
+3. Add product items using the [crm.item.productrow.*](./product-rows/index.md) methods with `ownerType = SI`.
+4. Create a payment using the [crm.item.payment.add](./payment/crm-item-payment-add.md) method and get a link for the client using the [salescenter.payment.getPublicUrl](./payment/salescenter-payment-get-public-url.md) method.
+5. Track the invoice status using the [crm.item.get](./crm-item-get.md) and [crm.item.list](./crm-item-list.md) methods, and change it using the [crm.item.update](./crm-item-update.md) method.
 
 ## Linking Invoices with Other CRM Objects
 
@@ -30,27 +46,9 @@ An invoice can be generated from a template and sent to the client as a document
 
 **Payments.** Adding, modifying, and deleting payment documents in invoices can be done through the group of methods [crm.item.payment.*](./payment/index.md).
 
-**Your Company Details.** Specify your company ID in the `mycompanyId` field so that its details are automatically used in documents. You can obtain your company ID using the method [crm.item.list](./crm-item-list.md) for the companies object with a filter on the `isMyCompany` field.
+**Your Company Details.** Specify your company ID in the `mycompanyId` field so that its details are automatically used in documents. You can obtain your company ID using the method [crm.item.list](./crm-item-list.md): pass `entityTypeId = 4` and the filter `isMyCompany = Y`.
 
-```JavaScript
-BX24.callMethod(
-        'crm.item.list',
-        {
-            entityTypeId: 4,
-            filter: {
-                "isMyCompany": "Y",
-            },
-        },
-        (result) => {
-            if (result.error())
-            {
-                console.error(result.error());
-                return;
-            }
-            console.info(result.data());
-        },
-    );
-```
+**Online Store Orders.** An order can be linked to an invoice using the [crm.orderentity.*](./order-entity/index.md) methods by passing `ownerTypeId = 31` and the `ownerId` of the invoice.
 
 {% note tip "User Documentation" %}
 
@@ -64,7 +62,7 @@ BX24.callMethod(
 
 The main workspace in invoices is the General tab of the detail form. It consists of two parts:
 
-- The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. These allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields for invoices, use the group of methods [userfieldconfig.*](./userfieldconfig/userfieldconfig-add.md).
+- The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. These allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields for invoices, use the group of methods [userfieldconfig.*](./userfieldconfig/index.md) with `entityId = CRM_SMART_INVOICE`.
 
 - The right part contains the invoice timeline. In it, you can create, edit, filter, and delete CRM activities — the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records — the group of methods [crm.timeline.*](../timeline/index.md).
 
@@ -102,7 +100,7 @@ There are two embedding scenarios:
 
 - [`CRM_SMART_INVOICE_LIST_TOOLBAR`](../../widgets/crm/list-toolbar.md) — an item in the dropdown menu above the list of entities
 
-- [`CRM_SMART_INVOICE_TIMELINE_MENU`](../../widgets/crm/activity-timeline-menu.md) — an item in the context menu of an activity in the detail form
+- [`CRM_SMART_INVOICE_ACTIVITY_TIMELINE_MENU`](../../widgets/crm/activity-timeline-menu.md) — an item in the context menu of an activity in the detail form
 
 - [`CRM_SMART_INVOICE_ROBOT_DESIGNER_TOOLBAR`](../../widgets/crm/robot-designer-toolbar.md) — an item in the dropdown menu of the top button of the robot designer
 
@@ -115,8 +113,8 @@ There are two embedding scenarios:
 
 ## Overview of Methods and Events {#all-methods}
 
-> Scope: [`crm`](../../scopes/permissions.md)
-> 
+> Scope: [`crm`](../../scopes/permissions.md), [`salescenter`](../../scopes/permissions.md)
+>
 > Who can execute the method: depending on the method
 
 ### Main
@@ -128,6 +126,7 @@ CRM Object Identifier **entityTypeId** — `31`
 - Methods
 
     #|
+    || **Method** | **Description** ||
     || [crm.item.add](./crm-item-add.md) | Creates a new CRM object ||
     || [crm.item.update](./crm-item-update.md) | Updates an entity ||
     || [crm.item.get](./crm-item-get.md) | Returns an entity by Id ||
@@ -139,10 +138,13 @@ CRM Object Identifier **entityTypeId** — `31`
 - Events
 
     #|
-    || [onCrmDynamicItemAdd](./events/on-crm-dynamic-item-add.md) | When a custom type CRM object is created ||
-    || [onCrmDynamicItemDelete](./events/on-crm-dynamic-item-delete.md) | When a custom type CRM object is deleted ||
-    || [onCrmDynamicItemUpdate](./events/on-crm-dynamic-item-update.md) | When a custom type CRM object is modified ||
+    || **Event** | **Triggered** ||
+    || [onCrmDynamicItemAdd](./events/on-crm-dynamic-item-add.md) | When an invoice is created manually or via the [crm.item.add](./crm-item-add.md) method ||
+    || [onCrmDynamicItemUpdate](./events/on-crm-dynamic-item-update.md) | When an invoice is modified manually or via the [crm.item.update](./crm-item-update.md) method ||
+    || [onCrmDynamicItemDelete](./events/on-crm-dynamic-item-delete.md) | When an invoice is deleted manually or via the [crm.item.delete](./crm-item-delete.md) method ||
     |#
+
+    These events are delivered for items of all smart processes and invoices. To select invoice events, check `data.FIELDS.ENTITY_TYPE_ID = 31` in the handler. For details, see the [Smart Process Element Events](./events/index.md) section.
 
 {% endlist %}
 
@@ -172,7 +174,7 @@ CRM Object Identifier **ownerType** — `SI`
 || [crm.item.productrow.set](./product-rows/crm-item-productrow-set.md) | Associates a product item with a CRM object ||
 || [crm.item.productrow.list](./product-rows/crm-item-productrow-list.md) | Retrieves a list of product items ||
 || [crm.item.productrow.getAvailableForPayment](./product-rows/crm-item-productrow-get-available-for-payment.md) | Retrieves a list of unpaid products ||
-|| [crm.item.productrow.delete](./product-rows/crm-item-productrow-update.md) | Deletes a product item ||
+|| [crm.item.productrow.delete](./product-rows/crm-item-productrow-delete.md) | Deletes a product item ||
 || [crm.item.productrow.fields](./product-rows/crm-item-productrow-fields.md) | Retrieves a list of product item fields ||
 |#
 
@@ -189,6 +191,7 @@ CRM Object Identifier **entityTypeId** — `31`
 || [crm.item.payment.delete](./payment/crm-item-payment-delete.md) | Deletes a payment ||
 || [crm.item.payment.pay](./payment/crm-item-payment-pay.md) | Changes the payment status to "Paid" ||
 || [crm.item.payment.unpay](./payment/crm-item-payment-unpay.md) | Changes the payment status to "Unpaid" ||
+|| [salescenter.payment.getPublicUrl](./payment/salescenter-payment-get-public-url.md) | Generates a public payment link ||
 |#
 
 #### Product Items in Payment
@@ -216,8 +219,15 @@ CRM Object Identifier **entityTypeId** — `31`
 CRM Object Identifier **entityTypeId** — `31`
 
 #|
-|| [crm.item.details.configuration.forceCommonScopeForAll](./item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md) | Sets a common detail form for all users ||
+|| **Method** | **Description** ||
 || [crm.item.details.configuration.get](./item-details-configuration/crm-item-details-configuration-get.md) | Retrieves the parameters of the detail form for entities ||
-|| [crm.item.details.configuration.reset](./item-details-configuration/crm-item-details-configuration-reset.md) | Resets the parameters of the detail form for entities ||
 || [crm.item.details.configuration.set](./item-details-configuration/crm-item-details-configuration-set.md) | Sets the parameters of the detail form for entities ||
+|| [crm.item.details.configuration.reset](./item-details-configuration/crm-item-details-configuration-reset.md) | Resets the parameters of the detail form for entities ||
+|| [crm.item.details.configuration.forceCommonScopeForAll](./item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md) | Sets a common detail form for all users ||
 |#
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./payment/index.md)
+- [{#T}](./product-rows/index.md)

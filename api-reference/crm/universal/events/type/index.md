@@ -1,4 +1,4 @@
-# Overview of CRM Custom Type Events
+# Overview of Events When Working with CRM Custom Types
 
 {% note tip "" %}
 
@@ -7,6 +7,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 Events allow applications to respond to changes in near real-time: receiving notifications about the addition, update, or deletion of CRM custom types.
+
+A CRM custom type is a [smart process](../../user-defined-object-types/index.md). The events of this section are triggered when the smart process itself is created, updated, or deleted. Changes to the elements inside a smart process are tracked by the events in the [Smart Process Element Events](../index.md) section.
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../../events/index.md).
 
@@ -21,6 +23,12 @@ You can subscribe to CRM custom type events through:
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../../events/test-handler.md).
 
+## What the Handler Receives
+
+In all events of this section, the handler receives the `data.FIELDS` object with a single key `ID`. It contains the primary key of the type record, not the `entityTypeId` of the smart process.
+
+To retrieve the `entityTypeId` and the remaining settings, pass this value as `id` to the [crm.type.get](../../user-defined-object-types/crm-type-get.md) method. For the deletion event, the type data is no longer available — match the `ID` against what you previously retained in your own system.
+
 ## Server Availability for Sending and Receiving Events
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../../../_includes/events-index.md) %}
@@ -29,9 +37,7 @@ An example of a handler code for the event is described in the article [How to T
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
-
-## Events
+> Who can subscribe: any user
 
 #| 
 || **Event** | **Triggered** ||

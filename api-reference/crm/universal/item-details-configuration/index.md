@@ -11,6 +11,8 @@ The sections in the CRM detail form display information about the entity. For ex
 The methods `crm.item.details.configuration.*` manage the sections of the detail form. You can save user-specific settings or set a uniform view for the entire company.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [CRM Detail Form: Features and Settings](https://helpdesk.bitrix24.com/open/22879716/)
 
 ## How to Work with Form Settings
 
@@ -32,11 +34,25 @@ The `scope` parameter defines whose settings will be changed.
 
 To work with personal settings, standard user permissions are sufficient. Changing common or other users' settings requires administrator rights.
 
+## The extras Parameter by Object
+
+In addition to `entityTypeId`, the detail form is specified by the `extras` parameter. Its composition depends on the CRM object.
+
+#|
+|| **CRM Object** | **Key in `extras`** | **Meaning** ||
+|| Lead | `leadCustomerType` | Type of leads: `1` — simple leads, `2` — repeat leads ||
+|| Deal | `dealCategoryId` | Identifier of the deal funnel ||
+|| Smart Process | `categoryId` | Identifier of the smart process funnel ||
+|| Other objects | — | `extras` is not passed ||
+|#
+
+The funnel identifier is returned by the [crm.category.list](../category/crm-category-list.md) method. If `extras` is not passed, the methods work with the default funnel.
+
 ## Relationship with Other Objects
 
 **CRM object Type.** The settings of the detail form apply to a specific entity type through the `entityTypeId` parameter. For system objects, use identifiers from the section [System CRM Types](../../index.md), and for smart processes, refer to the section [Smart Processes](../user-defined-object-types/index.md).
 
-**Funnels.** For deals and smart processes, the view of the detail form may differ across different funnels. Specify the funnel identifier in the `extras` parameter. If the parameter is not provided, the system uses the default funnel.
+**Funnels.** For deals and smart processes, the view of the detail form may differ across different funnels. Funnels are handled by the [crm.category.*](../category/index.md) methods, and in the detail form methods the funnel is passed in the `extras` parameter.
 
 **User.** Personal settings of the detail form are tied to the user through the `userId` parameter when `scope = 'P'`. If `userId` is not provided, the methods use the user executing the request. You can obtain the user identifier using the method [user.get](../../../user/user-get.md).
 
@@ -61,3 +77,9 @@ To work with personal settings, standard user permissions are sufficient. Changi
 || [crm.item.details.configuration.reset](./crm-item-details-configuration-reset.md) | Resets settings to default values ||
 || [crm.item.details.configuration.forceCommonScopeForAll](./crm-item-details-configuration-forceCommonScopeForAll.md) | Makes the common configuration mandatory for all users ||
 |#
+
+## Continue Learning
+
+- [{#T}](../index.md)
+- [{#T}](../user-defined-object-types/index.md)
+- [{#T}](../category/index.md)

@@ -1,4 +1,4 @@
-# Smart Processes: Overview of Methods
+# Smart Processes: Overview of Methods and Events
 
 {% note tip "" %}
 
@@ -14,7 +14,7 @@ A Smart Process is a versatile CRM object that can be customized to meet the nee
 
 ## Working with a Smart Process
 
-1. Create and configure the Smart Process — methods [crm.type.*](./index.md).
+1. Create and configure the Smart Process — methods [crm.type.*](#all-methods).
 2. Set up Sales Funnels and stages — [crm.category.*](../category/index.md) for funnels and [crm.status.*](../../status/index.md) for stages.
 3. Add custom fields — [userfieldconfig.*](../userfieldconfig/index.md).
 4. Configure the item detail form — [crm.item.details.configuration.*](../item-details-configuration/index.md).
@@ -52,7 +52,7 @@ You can obtain the user ID and data using the [user.get](../../../user/user-get.
 - [How to Attach a Task to a Smart Process](../../../../tutorials/tasks/how-to-connect-task-to-spa.md)
 - [How to Create a Custom Field in a Smart Process](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
 - [How to Add a Comment to the Smart Process Timeline](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)
-- [How to Create a New Funnel with Stages in a Smart Process](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)  
+- [How to Create a New Funnel with Stages in a Smart Process](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)
 
 {% endnote %}
 
@@ -62,7 +62,7 @@ The main workspace in a Smart Process is the "General" tab of the detail form. I
 
 - The left part contains fields with information. If the system fields are insufficient, you can create your own custom fields. Fields allow you to store information in various data formats: string, number, link, address, and others. To create, modify, retrieve, or delete custom fields in the Smart Process, use the group of methods [userfieldconfig.*](../userfieldconfig/index.md).
 
-- The right part contains the Smart Process timeline. Here, you can create, edit, filter, and delete CRM activities — a group of methods [crm.activity.*](../../timeline/activities/index), and timeline records — a group of methods [crm.timeline.*](../../timeline/index).
+- The right part contains the Smart Process timeline. Here, you can create, edit, filter, and delete CRM activities — a group of methods [crm.activity.*](../../timeline/activities/index.md), and timeline records — a group of methods [crm.timeline.*](../../timeline/index.md).
 
 You can manage the parameters of the Smart Process detail form through the group of methods [crm.item.details.configuration.*](../item-details-configuration/index.md).
 
@@ -82,9 +82,9 @@ You can embed an application into the Smart Process detail form. This allows you
 There are two embedding scenarios:
 
 - Use special [embedding locations](../../../widgets/crm/index.md). For example, by creating your own tab.
-  
+
 - Create a [custom field](../../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md) where the interface of your application will be loaded.
-  
+
 ### Embedding Locations for Smart Processes
 
 Replace `XXX` with the numeric identifier of the specific Smart Process, for example, `CRM_DYNAMIC_183_DOCUMENTGENERATOR_BUTTON`.
@@ -116,13 +116,21 @@ Replace `XXX` with the numeric identifier of the specific Smart Process, for exa
 
 Each Smart Process has four types of identifiers. Use these identifiers to apply a method to a specific Smart Process.
 
-1. Numeric identifier of type `130`. Obtain it using the [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) `ID` or [crm.type.list](./crm-type-list.md) `entityTypeId`.
+In the table, all examples refer to the same Smart Process: it has `id = 13` and `entityTypeId = 156`.
 
-1. Symbolic code of type `DYNAMIC_130` — [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) `SYMBOL_CODE`.
+#|
+|| **Identifier** | **Example** | **Where It Is Used** | **How to Obtain It** ||
+|| Numeric identifier of the type | `156` | The `entityTypeId` parameter in the `crm.item.*`, `crm.category.*`, and `crm.item.details.configuration.*` methods | [crm.type.list](./crm-type-list.md), the `entityTypeId` key, or [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md), the `ID` key ||
+|| Symbolic code of the type | `DYNAMIC_156` | Stage reference identifiers such as `DYNAMIC_156_STAGE_52` and object codes in custom field lists | [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md), the `SYMBOL_CODE` key ||
+|| Short symbolic code of the type | `T9c` | The `ownerType` parameter in the `crm.item.productrow.*` methods | [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md), the `SYMBOL_CODE_SHORT` key ||
+|| Custom field object type | `CRM_13` | The `entityId` parameter in the `userfieldconfig.*` methods | [crm.type.list](./crm-type-list.md), the `id` key substituted into the formula `CRM_{id}` ||
+|#
 
-2. Short symbolic code of type `T82` — [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) `SYMBOL_CODE_SHORT`.
+{% note warning "" %}
 
-3. Custom field object type `CRM_13` — [crm.type.list](./crm-type-list.md). Substitute the `id` from the method result into the formula `CRM_ + {ID}`.
+`id` and `entityTypeId` are different values, and one is not calculated from the other. In the formula `CRM_{id}` for custom fields, use `id`, and in the `entityTypeId` parameter, use `entityTypeId`. Both values are returned by the [crm.type.list](./crm-type-list.md) method.
+
+{% endnote %}
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -242,3 +250,9 @@ The CRM object identifier **ownerType** — [short symbolic code type](#id), for
 || [crm.item.productrow.delete](../product-rows/crm-item-productrow-delete.md) | Deletes a product item ||
 || [crm.item.productrow.fields](../product-rows/crm-item-productrow-fields.md) | Retrieves a list of product item fields ||
 |#
+
+## Continue Learning
+
+- [{#T}](../index.md)
+- [{#T}](../category/index.md)
+- [{#T}](../events/type/index.md)

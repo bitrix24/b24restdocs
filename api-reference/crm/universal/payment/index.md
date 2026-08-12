@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The methods in this section work with payments associated with universal CRM objects. For example, you can create a payment for a deal, mark the receipt of funds, or generate a payment link for the client.
+The methods `crm.item.payment.*` work with payments associated with universal CRM objects. For example, you can create a payment for a deal, mark the receipt of funds, or generate a payment link for the client.
 
 This is necessary to synchronize the status and parameters of payments in the CRM with external payment systems. Bitrix24 stores payment data separately from the main fields of the object but links them through identifiers.
 
@@ -16,22 +16,32 @@ This is necessary to synchronize the status and parameters of payments in the CR
 
 **CRM Object.** To create and retrieve a list of payments, use the parameter pair `entityTypeId` and `entityId`. The first indicates the [type of CRM object](../../data-types.md#object_type), while the second refers to a specific element of that type.
 
+Not all CRM objects support payments.
+
+#|
+|| **CRM Object** | **`entityTypeId`** ||
+|| Deal | `2` ||
+|| Invoice | `31` ||
+|#
+
+For other objects, such as a lead or a smart process, the [crm.item.payment.add](./crm-item-payment-add.md) method returns an error stating that payment creation is not available for this entity, and [crm.item.payment.list](./crm-item-payment-list.md) returns an empty list.
+
 **Payment Systems.** The payment data returns `paySystemId` and `paySystemName`. You can access available payment systems using the [sale.paysystem.list](../../../pay-system/sale-pay-system-list.md) method.
 
-**Payment Line Items.** Each payment can contain a set of line items. To manage the composition of the payment, use the methods in the section [Line Items in Payment](./products-in-payment/index.md).
+**Payment Line Items.** Each payment can contain a set of line items. The composition of the payment is managed by the [crm.item.payment.product.*](./products-in-payment/index.md) methods.
 
-**Delivery Items.** A payment can be linked to delivery items. To work with them, use the methods in the section [Deliveries in Payments](./delivery-in-payment/index.md).
+**Delivery Items.** A payment can be linked to delivery items. They are handled by the [crm.item.payment.delivery.*](./delivery-in-payment/index.md) methods.
 
 ## How to Work with Payments in CRM
 
 1. Define the CRM object type `entityTypeId` and its identifier `entityId`.
 2. Create a payment using the [crm.item.payment.add](./crm-item-payment-add.md) method.
-3. If necessary, add products to the payment using the methods in the section [Line Items in Payment](./products-in-payment/index.md) or delivery services using the methods in the section [Deliveries in Payments](./delivery-in-payment/index.md).
-5. Retrieve the list of payments for the object using the [crm.item.payment.list](./crm-item-payment-list.md) method and select the desired payment by `id`.
-6. Get the details of a specific payment using the [crm.item.payment.get](./crm-item-payment-get.md) method and update the data if necessary using the [crm.item.payment.update](./crm-item-payment-update.md) method.
-7. Change the payment status using the [crm.item.payment.pay](./crm-item-payment-pay.md) or [crm.item.payment.unpay](./crm-item-payment-unpay.md) methods.
-8. If a payment link for the client is needed, use [salescenter.payment.getPublicUrl](./salescenter-payment-get-public-url.md).
-9. If the payment is no longer needed, delete it using the [crm.item.payment.delete](./crm-item-payment-delete.md) method.
+3. If necessary, add products to the payment using the [crm.item.payment.product.*](./products-in-payment/index.md) methods or delivery services using the [crm.item.payment.delivery.*](./delivery-in-payment/index.md) methods.
+4. Retrieve the list of payments for the object using the [crm.item.payment.list](./crm-item-payment-list.md) method and select the desired payment by `id`.
+5. Get the details of a specific payment using the [crm.item.payment.get](./crm-item-payment-get.md) method and update the data if necessary using the [crm.item.payment.update](./crm-item-payment-update.md) method.
+6. Change the payment status using the [crm.item.payment.pay](./crm-item-payment-pay.md) or [crm.item.payment.unpay](./crm-item-payment-unpay.md) methods.
+7. If a payment link for the client is needed, use [salescenter.payment.getPublicUrl](./salescenter-payment-get-public-url.md).
+8. If the payment is no longer needed, delete it using the [crm.item.payment.delete](./crm-item-payment-delete.md) method.
 
 ## Limitations and Features
 
@@ -85,3 +95,9 @@ This is necessary to synchronize the status and parameters of payments in the CR
 || [crm.item.payment.delivery.delete](./delivery-in-payment/crm-item-payment-delivery-delete.md) | Deletes a delivery item from the payment ||
 || [crm.item.payment.delivery.setDelivery](./delivery-in-payment/crm-item-payment-delivery-set-delivery.md) | Reassigns a delivery item to another delivery document ||
 |#
+
+## Continue Learning
+
+- [{#T}](../invoice.md)
+- [{#T}](../delivery/index.md)
+- [{#T}](../product-rows/index.md)

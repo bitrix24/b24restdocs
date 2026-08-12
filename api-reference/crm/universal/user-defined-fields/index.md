@@ -8,11 +8,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Custom fields allow you to extend CRM cards to fit your own processes: adding additional attributes, storing internal classifiers, and transferring data between the CRM and external systems.
 
-This section describes universal methods that help understand the structure of a custom field: its characteristics, types, settings, and format of list values. These methods do not create a field in the object card but return reference information for configuring the field.
+The methods `crm.userfield.*` help understand the structure of a custom field: its characteristics, types, settings, and format of list values. They do not create a field in the object card but return reference information for configuring it.
 
 > Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [Custom Fields in CRM](https://helpdesk.bitrix24.com/open/22067852/)
+
+## How to Choose a Section
+
+The documentation has several sections about custom fields. Choose the one that matches your task.
+
+#|
+|| **If You Need To** | **Open the Section** ||
+|| Learn the types, characteristics, settings, and list format | The current section ||
+|| Create, modify, or delete a field for any object | [Custom Field Settings](../userfieldconfig/index.md) ||
+|| Create a field for a specific object using its own methods | The `crm.*.userfield.*` sections: [leads](../../leads/userfield/index.md), [deals](../../deals/user-defined-fields/index.md), [contacts](../../contacts/userfield/index.md), [companies](../../companies/userfields/index.md), [estimates](../../quote/user-field/index.md), [requisites](../../requisites/user-fields/index.md) ||
+|| Display your application's interface in a field | [Custom Field Types in CRM](./userfield-type.md) ||
+|#
 
 ## Connection of Custom Fields with CRM Objects
 
@@ -37,7 +49,6 @@ This section describes universal methods that help understand the structure of a
 
 {% note tip "Additionally" %}
 
-- [Custom Field Settings](../userfieldconfig/index.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
 
 {% endnote %}
@@ -55,3 +66,9 @@ This section describes universal methods that help understand the structure of a
 || [crm.userfield.settings.fields](./crm-userfield-settings-fields.md) | Returns a description of settings fields for the specified type ||
 || [crm.userfield.enumeration.fields](./crm-userfield-enumeration-fields.md) | Returns a description of fields for the custom field of type `enumeration` ||
 |#
+
+## Continue Learning
+
+- [{#T}](./userfield-type.md)
+- [{#T}](../userfieldconfig/index.md)
+- [{#T}](../index.md)

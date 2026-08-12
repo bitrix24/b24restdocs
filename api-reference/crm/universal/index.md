@@ -11,6 +11,8 @@ The methods `crm.item.*` manage CRM objects: leads, deals, contacts, companies, 
 A unified interface simplifies working with different objects. Instead of separate commands for each object, use universal methods with the type identifier `entityTypeId`.
 
 > Quick navigation: [all methods and events](#all-methods)
+>
+> User documentation: [CRM implementation steps](https://helpdesk.bitrix24.com/open/23477678/)
 
 ## Getting Started
 
@@ -22,13 +24,14 @@ A unified interface simplifies working with different objects. Instead of separa
    || Deal | 2 ||
    || Contact | 3 ||
    || Company | 4 ||
-   || Invoice (new, smart) | 31 ||
-   || Invoice (old, deprecated) | 5 ||
    || Estimate | 7 ||
    || Requisite | 8 ||
    || Order | 14 ||
+   || Invoice (new) | 31 ||
    || Smart Process | from 128 ||
    |#
+
+   The `crm.item.*` methods do not work with old-type invoices `entityTypeId = 5` and return the `ENTITY_TYPE_NOT_SUPPORTED` error for them. Use `entityTypeId = 31` for invoices.
 
 2. Retrieve the list of available fields for this type using the [crm.item.fields](./crm-item-fields.md) method.
 3. Create a new item using the [crm.item.add](./crm-item-add.md) method or get a list of existing items using the [crm.item.list](./crm-item-list.md) method.
@@ -56,21 +59,25 @@ In the database, fields are stored in `UPPER_CASE` format, while in REST, names 
 
 Example: `ASSIGNED_BY_ID` becomes `assignedById`.
 
-For custom fields, the conversion is more complex because the original names often contain numbers and underscores.
+For custom fields, the conversion is more complex because the original names often contain numbers and underscores. CRM uses two conversion methods.
 
-Standard case: `UF_CRM_10_5186744711` becomes `ufCrm10_5186744711`. Underscores between numeric blocks are preserved, while others are removed.
+**Regular conversion.** Applied when only digits or only letters follow `UF_CRM_` and the object number. Underscores between numeric blocks are preserved, while others are removed.
 
-A problem arises when letters and numbers are mixed. For example, `UF_CRM_10_DIGIT10` converts to `ufCrm10Digit10`. In reverse conversion, it is impossible to determine whether the original field was `UF_CRM_10_DIGIT10` or `UF_CRM_10_DIGIT_10`.
+Example: `UF_CRM_10_5186744711` becomes `ufCrm10_5186744711`, and `UF_CRM_10_DIGIT` becomes `ufCrm10Digit`.
 
-Starting from version **CRM 21.1800.0**, the system checks for such conflicts before conversion. If the name becomes ambiguous, it is returned in its original `UPPER_CASE` form.
+**Simplified conversion.** Applied when letters and numbers are mixed in the name. For such a name, regular conversion is irreversible: from the result `ufCrm10Digit10`, it is impossible to determine whether the original field was `UF_CRM_10_DIGIT10` or `UF_CRM_10_DIGIT_10`.
+
+To keep the conversion reversible, CRM replaces only the prefix: `UF_CRM_` becomes `ufCrm_`, and the rest of the name is preserved unchanged. For example, `UF_CRM_10_DIGIT10` becomes `ufCrm_10_DIGIT10`.
+
+CRM also checks for matches separately. If the converted name is already taken by another field of the object, the field is returned in its original `UPPER_CASE` form.
 
 #|
-|| **UPPER_CASE** | **camelCase** ||
-|| `UF_CRM_3_DIGIT` | `ufCrm3Digit` ||
-|| `UF_CRM_3_DIGIT10` | `ufCrm_3_DIGIT10` ||
-|| `UF_CRM_3_DIGIT_10` | `ufCrm_3_DIGIT_10` ||
-|| `UF_CRM_3_1747309727` | `ufCrm3_1747309727` ||
-|| `UF_CRM_1747309879` | `ufCrm_1747309879` ||
+|| **UPPER_CASE** | **camelCase** | **Conversion Method** ||
+|| `UF_CRM_3_DIGIT` | `ufCrm3Digit` | regular ||
+|| `UF_CRM_3_1747309727` | `ufCrm3_1747309727` | regular ||
+|| `UF_CRM_3_DIGIT10` | `ufCrm_3_DIGIT10` | simplified ||
+|| `UF_CRM_3_DIGIT_10` | `ufCrm_3_DIGIT_10` | simplified ||
+|| `UF_CRM_1747309879` | `ufCrm_1747309879` | simplified ||
 |#
 
 Starting from version **CRM 25.0.0**, the `crm.item.*` methods support the `useOriginalUfNames` parameter, which controls the format of custom field names in requests and responses:
@@ -78,7 +85,7 @@ Starting from version **CRM 25.0.0**, the `crm.item.*` methods support the `useO
 - `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
 - `N` — names of custom fields in `camelCase`, e.g., `ufCrm2_1639669411830`
 
-By default, `N` is used.
+By default, `N` is used. If you do not want to deal with the conversion rules, pass `useOriginalUfNames = Y` and work with the original field names.
 
 ## Use Cases
 
@@ -87,6 +94,7 @@ By default, `N` is used.
 - Manage the composition of a deal or invoice: [Product Items](./product-rows/index.md), [Payments and Deliveries](./payment/index.md), [Deliveries](./delivery/index.md), [Invoices](./invoice.md)
 - Configure the detail form and interface: [Managing Item Detail Forms](./item-details-configuration/index.md), [Widgets](./widgets.md)
 - Bulk upload and link data: [Import](./import/index.md), [Linking CRM with Online Store Orders](./order-entity/index.md)
+- Track changes in real time: [Smart Process Element Events](./events/index.md), [CRM Custom Type Events](./events/type/index.md)
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -116,6 +124,8 @@ By default, `N` is used.
   || [onCrmDynamicItemUpdate](./events/on-crm-dynamic-item-update.md) | After updating a smart process item ||
   || [onCrmDynamicItemDelete](./events/on-crm-dynamic-item-delete.md) | After deleting a smart process item ||
   |#
+
+  These events are delivered for items of all smart processes. How to subscribe to the events of a single smart process is described in the [Smart Process Element Events](./events/index.md) section.
 
 {% endlist %}
 

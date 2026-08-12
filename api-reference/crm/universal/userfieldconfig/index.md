@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The methods in this section allow you to manage custom fields: access available field types, create a field for the desired object, read its settings, update parameters, and delete the field.
+The methods `userfieldconfig.*` manage custom fields: they return available field types, create a field for the desired object, read its settings, update parameters, and delete the field.
 
 Technically, the handler for these methods resides in the `main` module, but in REST, they are available as a separate group `userfieldconfig.*` and use the scope `userfieldconfig`. In AJAX, the same handler is called as `main.userfieldconfig.*`.
 
@@ -59,17 +59,17 @@ The association of a field with an object is defined by the value of `entityId`.
 
 ### CRM Smart Processes
 
-For a smart process, the format `CRM_{ID}` is used, where `ID` is the identifier of the smart process.
+For a smart process, the format `CRM_{id}` is used, where `id` is the `id` key from the result of the [crm.type.list](../user-defined-object-types/crm-type-list.md) method. This is not `entityTypeId`: for a smart process with `id = 13` and `entityTypeId = 156`, the `entityId` value is `CRM_13`.
+
+### RPA
+
+In the `rpa` module, the format `RPA_{id}` is used, where `id` is the process identifier.
 
 {% note tip "Typical use-cases and scenarios" %}
 
 - [How to Create a Custom Field in a Smart Process](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
 
 {% endnote %}
-
-### RPA
-
-In the `rpa` module, the format `RPA_{ID}` is used, where `ID` is the process identifier.
 
 ## Overview of Methods {#all-methods}
 
@@ -86,3 +86,9 @@ In the `rpa` module, the format `RPA_{ID}` is used, where `ID` is the process id
 || [userfieldconfig.delete](./userfieldconfig-delete.md) | Deletes a custom field ||
 || [userfieldconfig.getTypes](./userfieldconfig-get-types.md) | Retrieves available types of custom fields for the module ||
 |#
+
+## Continue Learning
+
+- [{#T}](../user-defined-fields/index.md)
+- [{#T}](../user-defined-object-types/index.md)
+- [{#T}](../index.md)
