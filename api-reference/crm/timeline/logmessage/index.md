@@ -22,7 +22,7 @@ The log record journal serves as a utility for secondary events in the timeline.
 
 ## Key Limitations of the Section
 
-- The methods [crm.timeline.logmessage.get](./crm-timeline-logmessage-get.md) and [crm.timeline.logmessage.list](./crm-timeline-logmessage-list.md) only return records created by the [crm.timeline.logmessage.add](./crm-timeline-logmessage-add.md) method. System records cannot be retrieved using these methods.
+- The methods [crm.timeline.logmessage.get](./crm-timeline-logmessage-get.md) and [crm.timeline.logmessage.list](./crm-timeline-logmessage-list.md) only return records created by the [crm.timeline.logmessage.add](./crm-timeline-logmessage-add.md) method, including records of other applications. System records cannot be retrieved using these methods.
 - A record can only be deleted using the [crm.timeline.logmessage.delete](./crm-timeline-logmessage-delete.md) method in the context of the application that created it.
 
 ## Relationship with Other Objects

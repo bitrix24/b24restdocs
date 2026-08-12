@@ -21,6 +21,12 @@ You can subscribe to timeline comment events through:
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../../events/test-handler.md).
 
+## What the Handler Receives
+
+Comment events pass only the identifier of the comment in the `data.ID` field. To retrieve the remaining data, call the [crm.timeline.comment.get](../crm-timeline-comment-get.md) method.
+
+The events are triggered both for comments added manually in the CRM entity detail form and for comments created with the [crm.timeline.comment.*](../index.md) methods.
+
 ## Availability of Servers for Sending and Receiving Events
 
 {% include notitle [Availability of Servers for Sending and Receiving Events](../../../../../_includes/events-index.md) %}
@@ -29,9 +35,7 @@ An example of a handler code for the event is described in the article [How to T
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can subscribe: `any user`
-
-## Events
+> Who can subscribe: any user
 
 #| 
 || **Event** | **Triggered** ||

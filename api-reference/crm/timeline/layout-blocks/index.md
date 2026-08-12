@@ -15,10 +15,11 @@ These additional blocks are necessary when the standard entry view is insufficie
 ## Considerations Before Calling Methods
 
 - Methods only work in the context of the [application](../../../../settings/app-installation/index.md).
-- The application can only retrieve and remove the set of blocks that it has installed itself.
+- The application can only retrieve and remove the set of blocks that it has installed itself. It neither sees nor modifies the sets of other applications.
+- The restriction applies to the block set, not to the timeline entry. The entry itself may have been created by another application or by an employee — only the current user's permissions for the CRM entity matter.
 - When calling [crm.timeline.layout.blocks.set](./crm-timeline-layout-blocks-set.md) again, the previous set of blocks for the same application will be overwritten.
 
-## Application Limitations
+## Usage Limitations
 
 - Sets of additional content blocks cannot be installed for deals. For deals, use the methods [crm.activity.layout.blocks.*](../activities/layout-blocks/index.md).
 - Sets of additional content blocks cannot be installed for [timeline log entries](../logmessage/index.md).
@@ -41,7 +42,7 @@ These additional blocks are necessary when the standard entry view is insufficie
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to read the CRM entity — for [crm.timeline.layout.blocks.get](./crm-timeline-layout-blocks-get.md), and a user with permission to modify the entity — for [crm.timeline.layout.blocks.set](./crm-timeline-layout-blocks-set.md) and [crm.timeline.layout.blocks.delete](./crm-timeline-layout-blocks-delete.md)
 
 #| 
 || **Method** | **Description** ||

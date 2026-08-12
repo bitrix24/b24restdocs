@@ -20,14 +20,14 @@ Comments exist only in relation to CRM entities.
 
 **CRM object.** The connection between a comment and an entity is defined by the parameters `ENTITY_TYPE` and `ENTITY_ID`.
 
-- `ENTITY_TYPE` stores the type of CRM object. You can find the type values in the [CRM Object Type Reference](../../data-types.md#object_type).  
-- `ENTITY_ID` stores the identifier of the CRM object. It is returned by list methods and creation methods, such as [crm.item.list](../../universal/crm-item-list.md) and [crm.item.add](../../universal/crm-item-add.md).  
+- `ENTITY_TYPE` stores the symbolic code of the CRM object type in lowercase, for example `deal` or `dynamic_1046`. You can find the codes of the system types in the [CRM Object Type Reference](../../data-types.md#object_type), and the codes of smart processes in the [Smart Processes](../../universal/user-defined-object-types/index.md) section.
+- `ENTITY_ID` stores the identifier of the CRM object. It is returned by list methods and creation methods, such as [crm.item.list](../../universal/crm-item-list.md) and [crm.item.add](../../universal/crm-item-add.md).
 
 The parameters `ENTITY_TYPE` and `ENTITY_ID` are used in the methods [crm.timeline.comment.add](./crm-timeline-comment-add.md) and [crm.timeline.comment.list](./crm-timeline-comment-list.md).
 
 **Files.** A comment can contain attachments in the `FILES` field. The format for file transmission is described in the articles [How to Upload Files](../../../files/how-to-upload-files.md) and [How to Update Files](../../../files/how-to-update-files.md).
 
-The `FILES` field is processed by the methods [crm.timeline.comment.add](./crm-timeline-comment-add.md) and [crm.timeline.comment.update](./crm-timeline-comment-update.md), while attachments are returned in the responses of [crm.timeline.comment.get](./crm-timeline-comment-get.md) and [crm.timeline.comment.list](./crm-timeline-comment-list.md).  
+The `FILES` field is processed by the methods [crm.timeline.comment.add](./crm-timeline-comment-add.md) and [crm.timeline.comment.update](./crm-timeline-comment-update.md), while attachments are returned in the responses of [crm.timeline.comment.get](./crm-timeline-comment-get.md) and [crm.timeline.comment.list](./crm-timeline-comment-list.md).
 
 ## How to Work with Comments
 

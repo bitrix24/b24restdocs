@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: any user with permission to modify the CRM entity to which the activity is linked
 
 The method `crm.activity.layout.blocks.set` sets a set of additional content blocks for the activity.
 

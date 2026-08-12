@@ -30,7 +30,7 @@ Using the methods in this section, you can add a custom icon, retrieve data by c
 
 ## Relation to Other Objects
 
-**Log Record.** The icon code is passed in the `fields.iconCode` field of the method [crm.timeline.logmessage.add](../crm-timeline-logmessage-add.md). 
+**Log Record.** The icon code is passed in the `fields.iconCode` field of the method [crm.timeline.logmessage.add](../crm-timeline-logmessage-add.md).
 
 ## Overview of Methods {#all-methods}
 
