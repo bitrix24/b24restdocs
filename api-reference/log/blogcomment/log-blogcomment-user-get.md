@@ -324,11 +324,13 @@ HTTP Status: **200**
 
 ## Error Handling
 
-The method does not return errors.
-
 If the user identifier is not specified or an incorrect value is provided, the method returns comments from the current user.
 
-{% include [System errors](../../../_includes/system-errors.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
 
 - [{#T}](./log-blogcomment-add.md)
 - [{#T}](./log-blogcomment-delete.md)

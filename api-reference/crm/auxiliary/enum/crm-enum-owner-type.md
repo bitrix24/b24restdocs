@@ -131,18 +131,18 @@ No parameters.
                 'crm.enum.ownertype',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error calling crm.enum.ownertype: ' . $e->getMessage();
@@ -298,7 +298,7 @@ HTTP status: **200**
      "NAME": "Purchase",
      "SYMBOL_CODE": "DYNAMIC_156",
      "SYMBOL_CODE_SHORT": "T9c"
-    },
+    }
 ],
 "time": {
     "start": 1750153184.228934,
@@ -341,9 +341,9 @@ HTTP status: **200**
 
 ## Error Handling
 
-The method does not return errors.
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-{% include [System errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

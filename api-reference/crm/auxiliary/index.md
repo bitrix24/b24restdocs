@@ -1,4 +1,4 @@
-# Overview of Helper Methods
+# Helper Objects: Overview of Methods
 
 {% note tip "" %}
 
@@ -6,34 +6,30 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The helper method groups include multiple fields, enumerations, and VAT rates.
+Helper methods return reference data required to work with the main CRM objects: the structure of multiple fields and enumeration values — identifiers of object types, address types, and activities. These methods do not modify any data of their own.
 
-> Quick navigation: [all methods and events](#all-methods)
+Helper methods are split into two groups: [multiple fields](./multifield/index.md) and [enumerations](./enum/index.md).
+
+> Quick navigation: [all methods](#all-methods)
 
 ## Multiple Fields
 
-The method [crm.multifield.fields](./multifield/crm-multifield-fields.md) returns information about the structure of multiple fields, such as phone numbers or e-mails. To populate a field with a value of [type](../data-types.md#crm_multifield), pass the data in the structure returned by the method. 
-Example of passing data to fill in a mobile phone number:
+Multiple fields store the contact details of leads, contacts, and companies: phone numbers, e-mails, messengers. The value of such a field is an array of [crm_multifield](../data-types.md#crm_multifield) objects. The method [crm.multifield.fields](./multifield/crm-multifield-fields.md) returns the composition and characteristics of this object's fields.
 
-```js
-PHONE: [
-            { 
-                VALUE: "555888",
-                VALUE_TYPE: "MOBILE",
-            },
-        ] ,
-```
+Which methods accept the value and which value types are allowed — see the [Multiple Fields](./multifield/index.md) subsection.
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [How to change phone numbers and e-mails using a contact example](../../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
+- [How to change or delete phone numbers and e-mails](../../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
 - [Create a new lead crm.lead.add](../leads/crm-lead-add.md)
 
 {% endnote %}
 
 ## Enumerations
 
-The group of enumeration methods [crm.enum.*](./enum/index.md) returns information about the names and identifiers of CRM objects. For example, the method [crm.enum.ownertype](./enum/crm-enum-owner-type.md) returns identifiers for smart processes, while the method [crm.enum.addresstype](./enum/crm-enum-address-type.md) returns identifiers for address types: legal, physical, delivery address.
+Enumerations are reference lists of identifiers that CRM uses in the parameters of other methods. The group of methods [crm.enum.*](./enum/index.md) returns identifier–name pairs. For example, the method [crm.enum.ownertype](./enum/crm-enum-owner-type.md) returns the identifiers of CRM object types and smart processes for the `entityTypeId` parameter, while the method [crm.enum.addresstype](./enum/crm-enum-address-type.md) returns the identifiers of address types: legal, actual, delivery address.
+
+Which identifier belongs in which parameter — see the [Enumerations](./enum/index.md) subsection.
 
 {% note tip "Typical use-cases and scenarios" %}
 
@@ -42,19 +38,20 @@ The group of enumeration methods [crm.enum.*](./enum/index.md) returns informati
 
 {% endnote %}
 
-## VAT Rates 
+## Where to Get VAT Rates
 
-The group of methods [catalog.vat.*](../../catalog/vat/index.md) manages VAT rates. These methods allow you to [create](../../catalog/vat/catalog-vat-add.md), [delete](../../catalog/vat/catalog-vat-delete.md), [update](../../catalog/vat/catalog-vat-update.md), and [retrieve](../../catalog/vat/catalog-vat-list.md) VAT rate values.
+VAT rates are managed by the group of methods [catalog.vat.*](../../catalog/vat/index.md) of the Product Catalog. This group has its own scope `catalog`, so it is not included in the method tables below.
 
-To set the VAT for a product in a deal or another CRM object, use the `taxRate` parameter from the group of methods [crm.item.productrow.*](../universal/product-rows/index.md).
+Pass the rate identifier returned by the `catalog.vat.*` methods:
 
-To set the VAT for a product or service in the product catalog, use the `vatId` parameter from the group of methods [catalog.product.*](../../catalog/product/index.md).
+- in the `taxRate` parameter of the group of methods [crm.item.productrow.*](../universal/product-rows/index.md) — to set the VAT for a product in a deal or another CRM object
+- in the `vatId` parameter of the group of methods [catalog.product.*](../../catalog/product/index.md) — to set the VAT for a product or service in the product catalog
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can perform methods: depending on the method
+> Who can perform methods: any user
 
 ### Multiple Fields
 
@@ -67,11 +64,19 @@ To set the VAT for a product or service in the product catalog, use the `vatId` 
 
 #|
 || **Method** | **Description** ||
-|| [crm.enum.fields](./enum/crm-enum-fields.md) | Returns the description of enumeration fields ||
-|| [crm.enum.ownertype](./enum/crm-enum-owner-type.md) | Returns the types of objects in CRM ||
+|| [crm.enum.fields](./enum/crm-enum-fields.md) | Returns the description of the fields of enumeration items ||
 || [crm.enum.getorderownertypes](./enum/crm-enum-get-order-owner-types.md) | Returns the identifiers of object types to which order binding is available ||
+|| [crm.enum.ownertype](./enum/crm-enum-owner-type.md) | Returns the types of objects in CRM ||
 || [crm.enum.addresstype](./enum/crm-enum-address-type.md) | Returns the types of addresses ||
 || [crm.enum.settings.mode](./enum/crm-enum-settings-mode.md) | Returns the description of CRM operation modes ||
+|#
+
+### Deprecated Enumerations
+
+The methods below are no longer being developed. Retrieve activity enumerations in the [Activities in CRM](../timeline/activities/index.md) section.
+
+#|
+|| **Method** | **Description** ||
 || [crm.enum.activitytype](./enum/outdated/crm-enum-activity-type.md) | Returns the enumeration items "Activity Types" ||
 || [crm.enum.activitypriority](./enum/outdated/crm-enum-activity-priority.md) | Returns the enumeration items "Activity Priorities" ||
 || [crm.enum.activitydirection](./enum/outdated/crm-enum-activity-direction.md) | Returns the enumeration items "Activity Direction" for e-mails and calls ||

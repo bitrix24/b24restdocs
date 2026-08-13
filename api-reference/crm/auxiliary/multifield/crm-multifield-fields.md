@@ -7,7 +7,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 > Scope: [`crm`](../../../scopes/permissions.md)
-> 
+>
 > Who can execute the method: any user
 
 The method `crm.multifield.fields` returns the description of multiple fields used to store phone numbers, email addresses, and other contact information in leads, contacts, and companies.
@@ -130,18 +130,18 @@ No parameters.
                 'crm.multifield.fields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching multifield fields: ' . $e->getMessage();
@@ -176,6 +176,31 @@ No parameters.
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.client import BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    client: BaseClient
+
+    try:
+        bitrix_response = client.crm.multifield.fields().response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - Go
@@ -270,21 +295,43 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier ||
+[`object`](../../../data-types.md) | Identifier of the multiple field value ||
 || **TYPE_ID**
-[`string`](../../../data-types.md) | Field Type ||
+[`object`](../../../data-types.md) | Type of the multiple field: `PHONE`, `EMAIL`, `WEB`, `IM` ||
 || **VALUE**
-[`string`](../../../data-types.md) | Value ||
+[`object`](../../../data-types.md) | Value of the multiple field ||
 || **VALUE_TYPE**
-[`string`](../../../data-types.md) | Value Type ||
+[`object`](../../../data-types.md) | Type of the multiple field value ||
+|#
+
+#### Description of Field Characteristics
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../../data-types.md) | Data type of the field ||
+|| **isRequired**
+[`boolean`](../../../data-types.md) | Required ||
+|| **isReadOnly**
+[`boolean`](../../../data-types.md) | Read-only ||
+|| **isImmutable**
+[`boolean`](../../../data-types.md) | Immutable ||
+|| **isMultiple**
+[`boolean`](../../../data-types.md) | Multiple ||
+|| **isDynamic**
+[`boolean`](../../../data-types.md) | Dynamic ||
+|| **title**
+[`string`](../../../data-types.md) | Name of the field ||
 |#
 
 ## Error Handling
 
-The method does not return errors.
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-{% include [system errors](./../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](../index.md)

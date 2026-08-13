@@ -125,18 +125,18 @@ No parameters.
                 'crm.calllist.statuslist',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching call list status: ' . $e->getMessage();
@@ -298,7 +298,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-The method does not return errors.
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

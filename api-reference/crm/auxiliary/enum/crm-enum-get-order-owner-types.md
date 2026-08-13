@@ -131,18 +131,18 @@ No parameters.
                 'crm.enum.getorderownertypes',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
             echo 'Error: ' . $result->error();
         } else {
             echo 'Data: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching order owner types: ' . $e->getMessage();
@@ -284,9 +284,9 @@ HTTP status: **200**
 
 ## Error Handling
 
-The method does not return errors.
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-{% include [System errors](../../../../_includes/system-errors.md) %}
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

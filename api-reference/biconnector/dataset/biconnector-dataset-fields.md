@@ -7,7 +7,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
-> 
+>
 > Who can execute the method: a user with access to the Analytics hub section
 
 The `biconnector.dataset.fields` method returns a description of the dataset fields.
@@ -130,17 +130,17 @@ No parameters.
                 'biconnector.dataset.fields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error calling biconnector.dataset.fields: ' . $e->getMessage();
@@ -347,9 +347,9 @@ HTTP status: **200**
 
 ## Error Handling
 
-The method does not return errors.
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
-{% include [System errors](./../../../_includes/system-errors.md) %}
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
