@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 This method updates an existing currency.
 
-## Parameters
+## Method Parameters
 
 #|
 ||  **Name**
@@ -114,7 +114,7 @@ If not all languages are specified, [default localization parameters](../data-ty
 Refer to the [crm_currency_localization](../data-types.md#crm_currency_localization) documentation for acceptable values. ||
 |#
 
-## Examples
+## Code Examples
 
 1. Changing the exchange rate of the yuan relative to the base currency.
 

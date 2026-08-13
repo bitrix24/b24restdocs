@@ -2,7 +2,7 @@
 
 The methods in this section allow external events to be transmitted to CRM automation through triggers. When a trigger is configured for an object, it transitions the object to another stage or status.
 
-This section includes two scenarios. In the first, a pre-configured webhook trigger is initiated using the [crm.automation.trigger](./crm-automation-trigger.md) method — the trigger is set up in the Bitrix24 interface and then called via the API. In the second scenario, the application registers the trigger and manages it through the methods in the [CRM Automation Triggers](./triggers/index.md) section.
+A trigger is launched in one of two ways. A pre-configured webhook trigger is set up in the Bitrix24 interface and called using the [crm.automation.trigger](./crm-automation-trigger.md) method. A custom trigger is registered and launched by the application through the [crm.automation.trigger.*](./triggers/index.md) group of methods.
 
 {% note tip "" %}
 

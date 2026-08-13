@@ -1,7 +1,7 @@
 title: Automation
 href: index.md
 items:
-  - name: About Automation
+  - name: Overview of Methods
     href: index.md
   - name: Activate Trigger
     href: crm-automation-trigger.md

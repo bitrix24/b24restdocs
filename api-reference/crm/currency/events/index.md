@@ -8,6 +8,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, updating, or deletion of currencies in CRM.
 
+Each event delivers only the currency identifier in the `FIELDS.ID` field. The event does not pass field values: after a currency is created or updated, retrieve them using the [crm.currency.get](../crm-currency-get.md) method from the [Currencies in CRM](../index.md) section.
+
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../events/index.md).
 
 > Quick navigation: [all events](#all-events)
@@ -17,7 +19,6 @@ Detailed information on working with events is described in the article [Concept
 You can subscribe to currency events through:
 
 - [outgoing webhook](../../../../local-integrations/local-webhooks.md)
-
 - [application](../../../../settings/app-installation/index.md) and the method [event.bind](../../../events/event-bind.md)
 
 An example of a handler for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).
