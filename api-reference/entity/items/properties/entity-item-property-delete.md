@@ -1,4 +1,4 @@
-# Delete Property of Storage Elements entity.item.property.delete
+# Delete Property of Storage Items entity.item.property.delete
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with access permission level `X` (management) on the data storage
 
-The method `entity.item.property.delete` removes a property from the application's data storage elements.
+The method `entity.item.property.delete` removes a property from the application's data storage items.
 
 {% note info "" %}
 

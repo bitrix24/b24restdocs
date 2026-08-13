@@ -1,4 +1,4 @@
-# Add Property to Data Storage Elements entity.item.property.add
+# Add Property to Data Storage Items entity.item.property.add
 
 {% note tip "" %}
 
@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`entity`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access permission level `X` (management) in the data storage
+> Who can execute the method: a user with access permission level `X` (management) on the data storage
 
-The method `entity.item.property.add` adds a property to the elements of the application's data storage.
+The method `entity.item.property.add` adds a property to the items of the application's data storage.
 
 {% note info "" %}
 

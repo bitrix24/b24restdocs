@@ -49,7 +49,9 @@ You can obtain the identifier using the [entity.get](../entities/entity-get.md) 
 || **DETAIL_PICTURE**
 [`file`](../../data-types.md) | Detailed image of the section. File format — as described in [How to upload files](../../files/how-to-upload-files.md). ||
 || **UF_**
-[`object`](../../data-types.md) | Custom fields of the section `UF_*` in the format `{"UF_CODE": value}` ||
+[`any`](../../data-types.md) | Custom fields of the section `UF_*`.
+
+Passed as separate parameters in the format `"UF_CODE": value`, for example: `"UF_COLOR": "#ff6600"` ||
 |#
 
 ## Code Examples

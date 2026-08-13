@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`entity`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access permission level `X` (management) or `W` (write) in the data storage
+> Who can execute the method: a user with access permission level `W` (write) or `X` (management) on the data storage
 
 The method `entity.item.add` adds an item to the application's data storage.
 

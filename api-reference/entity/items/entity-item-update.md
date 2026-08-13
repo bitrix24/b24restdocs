@@ -1,4 +1,4 @@
-# Update Entity Storage entity.item.update
+# Update a Storage Item entity.item.update
 
 {% note tip "" %}
 
@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`entity`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access permission level `X` (management) in the data storage
+> Who can execute the method: a user with access permission level `W` (write) or `X` (management) on the data storage
 
 {% note info "" %}
 

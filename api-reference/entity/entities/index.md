@@ -1,4 +1,4 @@
-# Data Storage: Overview of Methods
+# Managing Data Storages: Overview of Methods
 
 {% note tip "" %}
 
@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Data storage helps applications retain their own information in Bitrix24. You can save entities in the storage, group them by sections, and configure access permissions.
+Data storage helps applications retain their own information in Bitrix24. You can save items in the storage, group them by sections, and configure access permissions.
 
 The group of methods `entity.*` allows you to create storages, retrieve their list, modify parameters, manage permissions, and delete unnecessary ones.
 
@@ -41,13 +41,25 @@ Access permissions can be set when creating the storage, modified along with its
 || Retrieve or change only access permissions | [entity.rights](./entity-rights.md) method ||
 |#
 
+The format of the `ACCESS` parameter, the access codes, and the `R`, `W`, and `X` permission levels are described in the [Access Permission Levels](../index.md#access-levels) section.
+
+Only a user with the `X` level on the storage can change permissions. When a storage is created and every time its permissions are changed, the calling user is automatically granted this level.
+
+## Specifics of Working with Storages
+
+**Identifier.** The storage identifier is unique within the application, so identical identifiers in different applications do not conflict. The requirements for the value are described in the [Storage Identifier](../index.md#entity-id) section.
+
+**Renaming.** The identifier is changed using the `ENTITY_NEW` parameter of the [entity.update](./entity-update.md) method. After renaming, the new value is passed to the other methods in this section.
+
+**Deletion.** The [entity.delete](./entity-delete.md) method deletes the storage along with all of its sections, items, and item properties. This data cannot be restored.
+
 ## Relationships with Other Objects
 
-**Storage Sections.** After creating a storage, you can group entities by sections. Use the [entity.section.*](../sections/index.md) methods to work with sections.
+**Storage Sections.** After creating a storage, you can group items by sections. Use the [entity.section.*](../sections/index.md) methods to work with sections.
 
-**Storage Entities.** The main application data is stored in entities. Use the [entity.item.*](../items/index.md) methods to work with them.
+**Storage Items.** The main application data is stored in items. Use the [entity.item.*](../items/index.md) methods to work with them.
 
-**Entity Properties.** You can create additional fields for storage entities. Use the [entity.item.property.*](../items/properties/index.md) methods to work with properties.
+**Item Properties.** You can create additional fields for storage items. Use the [entity.item.property.*](../items/properties/index.md) methods to work with properties.
 
 ## Overview of Methods {#all-methods}
 

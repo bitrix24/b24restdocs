@@ -1,17 +1,17 @@
-title: Storage Elements  
+title: Storage Items  
 href: index.md  
 items:  
   - name: Overview of Methods  
     href: index.md  
-  - name: Add Storage Element  
+  - name: Add a Storage Item  
     href: entity-item-add.md  
-  - name: Update Storage Element  
+  - name: Update a Storage Item  
     href: entity-item-update.md  
-  - name: Retrieve List of Storage Elements  
+  - name: Retrieve List of Storage Items  
     href: entity-item-get.md  
-  - name: Delete Storage Element  
+  - name: Delete a Storage Item  
     href: entity-item-delete.md  
-  - name: Properties of Elements  
+  - name: Properties of Items  
     include:  
       path: properties/b24-toc.yaml  
       mode: link  

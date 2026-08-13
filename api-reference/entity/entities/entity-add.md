@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`entity`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user authorized in the application
+> Who can execute the method: any user upon application authorization
 
 The `entity.add` method creates a new data storage for the application.
 

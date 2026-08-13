@@ -1,4 +1,4 @@
-# Get Properties of Storage Elements entity.item.property.get
+# Get Properties of Storage Items entity.item.property.get
 
 {% note tip "" %}
 
@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`entity`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user authorized in the application
+> Who can execute the method: any user upon application authorization
 
-The method `entity.item.property.get` returns the properties of the application's data storage elements.
+The method `entity.item.property.get` returns the properties of the application's data storage items.
 
 {% note info "" %}
 
@@ -42,7 +42,7 @@ Allowed characters are `a-z`, `A-Z`, `0-9`, `_` ||
 
 {% include [Footnote about examples](../../../../_includes/examples.md) %}
 
-Example of retrieving a list of properties for elements, where `ENTITY` is the identifier of the storage `dish`.
+Example of retrieving a list of properties for items, where `ENTITY` is the identifier of the storage `dish`.
 
 {% list tabs %}
 

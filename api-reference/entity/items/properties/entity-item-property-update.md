@@ -1,4 +1,4 @@
-# Update Property of Storage Elements entity.item.property.update
+# Update Property of Storage Items entity.item.property.update
 
 {% note tip "" %}
 
@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`entity`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access permission level `X` (management) in the data storage
+> Who can execute the method: a user with access permission level `X` (management) on the data storage
 
-The method `entity.item.property.update` modifies the property of elements in the application's data storage.
+The method `entity.item.property.update` modifies the property of items in the application's data storage.
 
 {% note info "" %}
 
@@ -43,7 +43,8 @@ Allowed characters are `a-z`, `A-Z`, `0-9`, `_` ||
 [`string`](../../../data-types.md) | New property type:
 - `S` — string
 - `N` — number
-- `F` — file ||
+
+The property type cannot be changed to `F` (file) — the method returns an error ||
 || **SORT**
 [`integer`](../../../data-types.md) | Property sort index. ||
 |#

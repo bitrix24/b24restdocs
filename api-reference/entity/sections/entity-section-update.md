@@ -51,7 +51,9 @@ You can obtain the identifier using the [entity.get](../entities/entity-get.md) 
 || **DETAIL_PICTURE**
 [`file`](../../data-types.md) | Detailed image of the section. File format — see the article [How to upload files](../../files/how-to-upload-files.md). ||
 || **UF_**
-[`object`](../../data-types.md) | Custom fields of the section `UF_*` in the format `{"UF_CODE": value}` ||
+[`any`](../../data-types.md) | Custom fields of the section `UF_*`.
+
+Passed as separate parameters in the format `"UF_CODE": value`, for example: `"UF_COLOR": "#ff6600"` ||
 |#
 
 ## Code Examples
@@ -253,6 +255,34 @@ Example of updating a section where:
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "entity.section.update", b24.Params{
+    	"ENTITY":         "dish",
+    	"ID":             673,
+    	"NAME":           "Test Section (updated)",
+    	"SECTION":        671,
+    	"ACTIVE":         "Y",
+    	"SORT":           550,
+    	"CODE":           "test-section-updated",
+    	"DESCRIPTION":    "Updated description",
+    	"PICTURE":        []string{"section.jpg", "**base64_section_image**"},
+    	"DETAIL_PICTURE": []string{"section-detail.jpg", "**base64_section_detail_image**"},
+    	"UF_COLOR":       "#ff6600",
+    })
+    if err != nil {
+    	return fmt.Errorf("entity.section.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
     ```
 
 {% endlist %}
