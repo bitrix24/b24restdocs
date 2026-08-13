@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method adds an order property.
+The method `sale.property.add` adds an order property.
 
 ## Method Parameters
 

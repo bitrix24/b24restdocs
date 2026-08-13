@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of payer types.
+The method `sale.persontype.list` retrieves a list of payer types.
 
 Use the `sale.persontype.list` method when creating a payment system **for orders**. In CRM (for old invoices, deals), the list of payer types is retrieved using the [crm.persontype.list](../../crm/outdated/invoice/crm-person-type-list.md) method.
 

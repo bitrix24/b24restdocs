@@ -19,6 +19,8 @@ Each property value is defined by a set of fields:
 - `value` — value of the order property
 
 > Quick Navigation: [all methods](#all-methods)
+>
+> User documentation: [Online Store: Personal Account](https://helpdesk.bitrix24.com/open/26006727/)
 
 ## Considerations Before Calling Methods
 
@@ -42,6 +44,13 @@ Each property value is defined by a set of fields:
 **Order Properties.** A value pertains to a specific property via `orderPropsId`. To work with order properties, use the methods in the [sale.property.*](../property/index.md) section.
 
 **Property Binding.** The visibility and display conditions of a property during order checkout are configured separately using the methods in the [sale.propertyRelation.*](../property-relation/index.md) section.
+
+## How to Get Started
+
+1. Retrieve the order ID using [sale.order.list](../order/sale-order-list.md).
+2. Retrieve the order property ID using [sale.property.list](../property/sale-property-list.md).
+3. Change property values using [sale.propertyvalue.modify](./sale-property-value-modify.md).
+4. Check property values using [sale.propertyvalue.get](./sale-property-value-get.md) or [sale.propertyvalue.list](./sale-property-value-list.md).
 
 ## Overview of Methods {#all-methods}
 

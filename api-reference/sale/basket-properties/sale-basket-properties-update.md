@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method modifies the property for an item (position) in the basket of an order.
+The method `sale.basketproperties.update` modifies the property for an item (position) in the basket of an order.
 
 ## Method Parameters
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves the available fields for payment item basket bindings.
+The method `sale.paymentitembasket.getfields` retrieves the available fields for payment item basket bindings.
 
 No parameters.
 

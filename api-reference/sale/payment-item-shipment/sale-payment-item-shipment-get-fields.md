@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves the available fields of the payment item shipment binding table.
+The method `sale.paymentItemShipment.getFields` retrieves the available fields of the payment item shipment binding table.
 
 No parameters.
 

@@ -15,6 +15,8 @@ Each binding is defined by a set of fields:
 - `propertyId` — identifier of the order property
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Place an Order on the Website](https://helpdesk.bitrix24.com/open/17300484/)
 
 ## How to Get Started with Property Binding
 

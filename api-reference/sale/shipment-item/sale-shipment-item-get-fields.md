@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `sale.shipmentitem.getfields` allows you to retrieve a list of available fields for shipment item table entries.
+The method `sale.shipmentitem.getfields` retrieves a list of available fields for shipment item table entries.
 
 No parameters required.
 

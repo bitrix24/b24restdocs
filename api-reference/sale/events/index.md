@@ -11,6 +11,8 @@ Events allow applications to respond to changes in the online store almost in re
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../events/index.md).
 
 > Quick navigation: [all events](#all-events)
+>
+> User documentation: [Place an Order on the Website](https://helpdesk.bitrix24.com/open/17300484/)
 
 ## How to Receive Events
 

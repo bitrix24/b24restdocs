@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: CRM administrator
 
-This method retrieves the settings of the delivery service.
+The method `sale.delivery.config.get` retrieves the settings of the delivery service.
 
 ## Method Parameters
 

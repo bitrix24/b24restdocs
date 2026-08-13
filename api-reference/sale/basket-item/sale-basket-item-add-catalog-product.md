@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method adds a position (item) with a product or service from the catalog module to the cart of an existing order.
+The method `sale.basketitem.addCatalogProduct` adds a position (item) with a product or service from the catalog module to the cart of an existing order.
 
 ## Method Parameters
 

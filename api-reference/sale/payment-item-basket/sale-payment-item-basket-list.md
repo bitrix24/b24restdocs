@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of bindings of basket items to payments.
+The method `sale.paymentitembasket.list` retrieves a list of bindings of basket items to payments.
 
 ## Method Parameters
 

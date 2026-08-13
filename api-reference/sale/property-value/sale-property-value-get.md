@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves the property value by its identifier.
+The method `sale.propertyvalue.get` retrieves the property value by its identifier.
 
 ## Method Parameters
 

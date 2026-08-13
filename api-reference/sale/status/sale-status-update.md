@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method updates the status of an order or delivery.
+The method `sale.status.update` updates the status of an order or delivery.
 
 ## Method Parameters
 

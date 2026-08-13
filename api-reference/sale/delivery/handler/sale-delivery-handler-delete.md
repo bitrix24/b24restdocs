@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: CRM administrator
 
-This method deletes the delivery service handler.
+The method `sale.delivery.handler.delete` deletes the delivery service handler.
 
 ## Method Parameters
 

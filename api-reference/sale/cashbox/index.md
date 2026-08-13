@@ -20,9 +20,17 @@ To add a new cash register, first create a cash register handler. It will connec
 
 {% endnote %}
 
+## How to Get Started
+
+1. Create a cash register handler using [sale.cashbox.handler.add](./sale-cashbox-handler-add.md).
+2. Retrieve the list of handlers using [sale.cashbox.handler.list](./sale-cashbox-handler-list.md) to select the handler code.
+3. Add a cash register using [sale.cashbox.add](./sale-cashbox-add.md) and pass the fiscalization settings.
+4. Check the list of cash registers using [sale.cashbox.list](./sale-cashbox-list.md).
+5. After printing a receipt, pass the result using [sale.cashbox.check.apply](./sale-cashbox-check-apply.md).
+
 ## Overview of Methods {#all-methods}
 
-> Scope: [`sale, cashbox`](../../scopes/permissions.md)
+> Scope: [`cashbox`](../../scopes/permissions.md)
 >
 > Who can perform the methods: CRM administrator with the permission "Allow to change settings"
 

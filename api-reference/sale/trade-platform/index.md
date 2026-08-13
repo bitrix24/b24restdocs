@@ -16,12 +16,20 @@ Orders can be created manually using the [sale.order.add](../order/sale-order-ad
 To view all order sources in your Bitrix24, use the [sale.tradePlatform.list](./sale-trade-platform-list.md) method.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Online Store in Bitrix24: Getting Started](https://helpdesk.bitrix24.com/open/25809723/)
 
 ## Linking Order Sources to Other Objects
 
 **Binding order sources to orders.** To view orders from a specific source, use the [sale.tradeBinding.list](../trade-binding/sale-trade-binding-list.md) method.
 
 **Order.** Retrieve all information about an order using the [sale.order.get](../order/sale-order-get.md) method.
+
+## How to Get Started
+
+1. Retrieve the list of order sources using [sale.tradePlatform.list](./sale-trade-platform-list.md).
+2. Retrieve the description of source fields using [sale.tradePlatform.getFields](./sale-trade-platform-get-fields.md).
+3. Use the source ID in the filter of [sale.tradeBinding.list](../trade-binding/sale-trade-binding-list.md) to find linked orders.
 
 ## Overview of Methods {#all-methods}
 

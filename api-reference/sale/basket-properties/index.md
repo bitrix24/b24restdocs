@@ -9,10 +9,20 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 The properties of the cart are characteristics of the [cart items](../basket-item/index.md): size, color, article number, manufacturer.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Create and Configure Product Properties in CRM](https://helpdesk.bitrix24.com/open/25882983/)
 
 ## Connection of Cart Properties with Other Objects
 
 **Cart.** Specify the cart item to which the property is linked. The list of cart items can be obtained using the [sale.basketitem.list](../basket-item/sale-basket-item-list.md) method.
+
+## How to Get Started
+
+1. Retrieve the cart item ID using [sale.basketitem.list](../basket-item/sale-basket-item-list.md).
+2. Create a cart item property using [sale.basketproperties.add](./sale-basket-properties-add.md).
+3. Check the property value using [sale.basketproperties.get](./sale-basket-properties-get.md) or retrieve a list of properties using [sale.basketproperties.list](./sale-basket-properties-list.md).
+4. If the data has changed, update the property using [sale.basketproperties.update](./sale-basket-properties-update.md).
+5. Delete an obsolete property using [sale.basketproperties.delete](./sale-basket-properties-delete.md).
 
 ## Overview of Methods {#all-methods}
 

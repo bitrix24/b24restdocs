@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method returns the available fields of shipment property values.
+The method `sale.shipmentpropertyvalue.getfields` retrieves the available fields of shipment property values.
 
 No parameters.
 

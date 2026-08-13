@@ -19,10 +19,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 For an order property of the "list" type `ENUM`, you need to specify the available options. For example, create an order property "Delivery Time" and add options "08:00-12:00", "12:00-16:00", and "16:00-20:00".
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Create and Configure Product Properties in CRM](https://helpdesk.bitrix24.com/open/25882983/)
 
 ## Linking Order Property Options with Other Objects
 
 **Order properties.** Specify the identifier of the order property. You can obtain a list of identifiers using the [sale.property.list](../property/sale-property-list.md) method.
+
+## How to Get Started
+
+1. Create an order property of type `ENUM` using [sale.property.add](../property/sale-property-add.md).
+2. Add a property value variant using [sale.propertyvariant.add](./sale-property-variant-add.md).
+3. Check variants using [sale.propertyvariant.get](./sale-property-variant-get.md) or [sale.propertyvariant.list](./sale-property-variant-list.md).
+4. If necessary, update or delete a variant using [sale.propertyvariant.update](./sale-property-variant-update.md) or [sale.propertyvariant.delete](./sale-property-variant-delete.md).
 
 ## Overview of Methods {#all-methods}
 

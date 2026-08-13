@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: store manager
 
-This method returns a set of items (positions) in the cart filtered by the specified criteria.
+The method `sale.basketitem.list` retrieves a set of items (positions) in the cart filtered by the specified criteria.
 
 ## Method Parameters
 

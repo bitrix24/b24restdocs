@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `sale.businessValuePersonDomain.getFields` returns fields corresponding to a natural or legal person.
+The method `sale.businessValuePersonDomain.getFields` retrieves fields corresponding to a natural or legal person.
 
 No parameters.
 

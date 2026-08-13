@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method returns the available fields of property value variants.
+The method `sale.propertyvariant.getFields` retrieves the available fields of property value variants.
 
 No parameters.
 

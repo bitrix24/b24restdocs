@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: store manager
 
-This method retrieves information about a basket item (position).
+The method `sale.basketitem.get` retrieves information about a basket item (position).
 
 ## Method Parameters
 

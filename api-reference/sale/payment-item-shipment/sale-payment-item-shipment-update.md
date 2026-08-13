@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method changes the binding of payment to shipment.
+The method `sale.paymentItemShipment.update` changes the binding of payment to shipment.
 
 ## Method Parameters
 

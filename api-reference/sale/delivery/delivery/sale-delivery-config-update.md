@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: CRM administrator
 
-This method updates the delivery service settings.
+The method `sale.delivery.config.update` updates the delivery service settings.
 
 ## Method Parameters
 

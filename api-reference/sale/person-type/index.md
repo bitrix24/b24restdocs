@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Customers are divided into individual and legal entities based on payer types. Each payer type has its own properties for placing an order. Depending on the selection, the user sees the corresponding fields, available payment systems, and delivery services.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Place an Order on the Website](https://helpdesk.bitrix24.com/open/17300484/)
 
 ## Connection of Payer Types with Other Objects
 
@@ -25,6 +27,13 @@ In all connections of the online store, the required parameter `personTypeId` is
 **Property Groups.** Link the order or shipment property to the appropriate group: personal data, delivery information, company data, contact information. You can create or modify property groups using the methods [sale.propertygroup.*](../property-group/index.md).
 
 **Payment Systems.** Create or modify a payment system using the methods [sale.paysystem.*](../../pay-system/index.md).
+
+## How to Get Started
+
+1. Check existing payer types using [sale.persontype.list](./sale-person-type-list.md).
+2. Create a payer type using [sale.persontype.add](./sale-person-type-add.md) if the default types are not enough.
+3. Configure order or shipment properties for this payer type using [sale.property.*](../property/index.md) or [sale.shipmentproperty.*](../shipment-property/index.md).
+4. Use the payer type ID when creating an order using [sale.order.add](../order/sale-order-add.md).
 
 ## Overview of Methods {#all-methods}
 

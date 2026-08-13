@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method deletes a property group.
+The method `sale.propertygroup.delete` deletes a property group.
 
 ## Method Parameters
 

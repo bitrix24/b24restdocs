@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves the available localization fields for order or delivery statuses.
+The method `sale.statusLang.getFields` retrieves the available localization fields for order or delivery statuses.
 
 No parameters.
 
@@ -27,7 +27,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.statuslang.getfields
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.statusLang.getFields
     ```
 
 - cURL (OAuth)
@@ -37,7 +37,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/sale.statuslang.getfields
+    https://**put_your_bitrix24_address**/rest/sale.statusLang.getFields
     ```
 
 - JS (TS)
@@ -64,7 +64,7 @@ No parameters.
 
     try {
       const response = await $b24.actions.v2.call.make<GetFieldsResult>({
-        method: 'sale.statuslang.getfields',
+        method: 'sale.statusLang.getFields',
         params: {},
         requestId: Text.getUuidRfc4122()
       })
@@ -94,7 +94,7 @@ No parameters.
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'sale.statuslang.getfields',
+            method: 'sale.statusLang.getFields',
             params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -124,7 +124,7 @@ No parameters.
         $response = $b24Service
             ->core
             ->call(
-                'sale.statuslang.getfields',
+                'sale.statusLang.getFields',
                 []
             );
     
@@ -148,7 +148,7 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        "sale.statuslang.getfields",
+        "sale.statusLang.getFields",
         {},
         function(result) {
             if (result.error()) {
@@ -166,7 +166,7 @@ No parameters.
     require_once('crest.php');
 
     $result = CRest::call(
-        'sale.statuslang.getfields',
+        'sale.statusLang.getFields',
         []
     );
 
@@ -179,15 +179,15 @@ No parameters.
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "sale.statuslang.getfields", nil, b24.WithIdempotent())
+    res, err := client.Core().Call(ctx, "sale.statusLang.getFields", nil, b24.WithIdempotent())
     if err != nil {
-    	return fmt.Errorf("sale.statuslang.getfields: %w", err)
+        return fmt.Errorf("sale.statusLang.getFields: %w", err)
     }
 
     // The method wraps the response in an object with the "statusLang" key.
     raw, ok := b24.Unwrap(res.Result, "statusLang")
     if !ok {
-    	return fmt.Errorf("no statusLang key in the response")
+        return fmt.Errorf("no statusLang key in the response")
     }
 
     fmt.Printf("%s\n", raw)

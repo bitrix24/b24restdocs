@@ -14,7 +14,7 @@ There are two types of statuses:
 
 > Quick navigation: [all methods](#all-methods)
 > 
-> User documentation: [Configure order and delivery statuses](https://helpdesk.bitrix24.com/open/17286220/)
+> User documentation: [Configure Order and Delivery Statuses in Bitrix24](https://helpdesk.bitrix24.com/open/26012583/)
 
 ## Default Statuses
 
@@ -36,9 +36,16 @@ In Bitrix24, there is a default set of statuses for orders and deliveries. Some 
 
 **Order.** Create or modify an order using the methods [sale.order.*](../order/index.md).
 
-**Shipments.** Create or modify a shipment using the methods [sale.shipment.*](../shipment/index.md). If the `statusId` parameter does not specify the delivery status identifier when creating a shipment, it will have the status DN "Awaiting processing."
+**Shipments.** Create or modify a shipment using the methods [sale.shipment.*](../shipment/index.md). If the `statusId` parameter does not specify the delivery status identifier when creating a shipment, it will have the status `DN` "Awaiting processing."
 
 **Localization of Statuses.** Adapt statuses for different languages using the methods [sale.statusLang.*](../status-lang/index.md).
+
+## How to Get Started
+
+1. Select the status type: `O` for an order or `D` for a delivery.
+2. Check existing statuses using [sale.status.list](./sale-status-list.md).
+3. Create a new status using [sale.status.add](./sale-status-add.md) if the default statuses are not enough.
+4. Add status names for the required languages using [sale.statusLang.*](../status-lang/index.md).
 
 ## Overview of Methods {#all-methods}
 

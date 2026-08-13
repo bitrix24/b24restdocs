@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: store manager
 
-This method returns a list of available fields for a basket item (position) for the methods [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md) and [sale.basketitem.updateCatalogProduct](./sale-basket-item-update-catalog-product.md) — these methods only work with products from the catalog module in basket items (positions).
+The method `sale.basketitem.getFieldsCatalogProduct` retrieves a list of available fields for a basket item (position) for the methods [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md) and [sale.basketitem.updateCatalogProduct](./sale-basket-item-update-catalog-product.md) — these methods only work with products from the catalog module in basket items (positions).
 
 Unlike [sale.basketitem.getFields](./sale-basket-item-get-fields.md), the method `sale.basketitem.getFieldsCatalogProduct` returns the minimum necessary list of fields for operation.
 

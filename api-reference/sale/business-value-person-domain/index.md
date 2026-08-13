@@ -11,10 +11,20 @@ When creating a [payer type](../person-type/index.md), you can specify any name,
 - `E` — legal entity.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Place an Order on the Website](https://helpdesk.bitrix24.com/open/17300484/)
 
 ## Relationship of Payer Type Statuses with Other Objects
 
 **Payer Types.** Specify the payer type for which you are configuring the correspondence to an individual or legal entity. You can access the available payer types using the method [sale.persontype.list](../person-type/sale-person-type-list.md).
+
+## How to Get Started
+
+1. Retrieve the list of payer types using [sale.persontype.list](../person-type/sale-person-type-list.md).
+2. Select the domain value: `I` for an individual or `E` for a legal entity.
+3. Create a mapping using [sale.businessValuePersonDomain.add](./sale-business-value-person-domain-add.md).
+4. Check the list of mappings using [sale.businessValuePersonDomain.list](./sale-business-value-person-domain-list.md).
+5. If the mapping is no longer needed, delete it using [sale.businessValuePersonDomain.deleteByFilter](./sale-business-value-person-domain-delete-by-filter.md).
 
 ## Overview of Methods {#all-methods}
 

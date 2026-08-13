@@ -66,9 +66,9 @@ Access permissions for the Sites and Stores sections are shared. If you change t
 
 ## Relationships with Other Objects
 
-**CRM.** Orders and payments from the online store are used in CRM scenarios where the composition of the order, cost, and statuses are important. To work with orders, use the [Order](./order/index.md) section, for payments — [Payments](./payment/index.md), and for tracking changes — [Events](./events/index.md).
+**CRM.** Orders and payments from the online store are used in CRM scenarios where the composition of the order, cost, and statuses are important. To work with orders, use the [Order](./order/index.md) method group, for payments — [Payments](./payment/index.md), and for tracking changes — [Events](./events/index.md).
 
-**Product Catalog.** The online store utilizes product data from the catalog: products, prices, properties, and stock levels. For these scenarios, use the [Product Catalog](../catalog/index.md), [Products](../catalog/product/index.md), and [Price](../catalog/price/index.md) sections.
+**Product Catalog.** The online store utilizes product data from the catalog: products, prices, properties, and stock levels. For these scenarios, use the [Product Catalog](../catalog/index.md), [Products](../catalog/product/index.md), and [Price](../catalog/price/index.md) method groups.
 
 **Delivery Services.** Delivery is related to shipments, shipment properties, and transport requests in the [Delivery Services](./delivery/index.md) section.
 

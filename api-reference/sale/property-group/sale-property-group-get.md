@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method allows you to retrieve the values of all fields in a property group.
+The method `sale.propertygroup.get` retrieves the values of all fields in a property group.
 
 ## Method Parameters
 

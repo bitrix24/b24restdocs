@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method updates the fields of a property group.
+The method `sale.propertygroup.update` updates the fields of a property group.
 
 ## Method Parameters
 

@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 An order is a record of a purchase. An order contains customer data, a list of products or services, their quantity, cost, and the status of the order.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Place an Order on the Website](https://helpdesk.bitrix24.com/open/17300484/)
 > 
 > User documentation: [How to create an order within CRM](https://helpdesk.bitrix24.com/open/8271153/)
 
@@ -31,6 +33,14 @@ When a customer places an order, products and services are first added to the ca
 **Payments.** Create and modify order payments using the methods [sale.payment.*](../payment/index.md).
 
 **Shipments.** Control the shipment of products to customers using the methods [sale.shipment.*](../shipment/index.md).
+
+## How to Get Started with an Order
+
+1. Retrieve the payer type using [sale.persontype.list](../person-type/sale-person-type-list.md).
+2. Add products or services to the cart using [sale.basketitem.*](../basket-item/index.md).
+3. Create an order using [sale.order.add](./sale-order-add.md) and pass customer data, currency, and cart contents.
+4. Create payments using [sale.payment.*](../payment/index.md) and, if necessary, link the payment to cart items or shipments.
+5. Create shipments using [sale.shipment.*](../shipment/index.md) and track order progress through [sale.status.*](../status/index.md).
 
 ## Overview of Methods {#all-methods}
 

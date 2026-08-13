@@ -34,7 +34,7 @@ This is necessary so that the customer can select additional options during the 
 
 ## Overview of Methods {#all-methods}
 
-> Scope: [`sale, delivery`](../../../scopes/permissions.md)
+> Scope: [`delivery`](../../../scopes/permissions.md)
 >
 > Who can execute the methods: administrator
 

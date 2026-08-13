@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves the values of all fields of the status.
+The method `sale.status.get` retrieves the values of all fields of the status.
 
 ## Method Parameters
 

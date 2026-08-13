@@ -11,6 +11,8 @@ All order or shipment properties are grouped into categories: personal informati
 Each payer type has its own groups. The payer type of a created property group cannot be changed.
 
 > Quick Navigation: [all methods](#all-methods)
+>
+> User documentation: [Place an Order on the Website](https://helpdesk.bitrix24.com/open/17300484/)
 
 ## Linking Property Groups to Other Objects
 
@@ -19,6 +21,13 @@ Each payer type has its own groups. The payer type of a created property group c
 **Order Properties.** Create fields that the buyer must fill out when placing an order, such as "Metro Station" or "Delivery Date and Time." Use the [sale.property.*](../property/index.md) methods to create order properties.
 
 **Shipment Properties.** If there are multiple shipments in one order, create shipment properties using the [sale.shipmentproperty.*](../shipment-property/index.md) methods. For example, if an order contains three books that need to be sent to different addresses, create shipment properties to specify the address for each shipment.
+
+## How to Get Started
+
+1. Retrieve existing property groups using [sale.propertygroup.list](./sale-property-group-list.md).
+2. Create a group using [sale.propertygroup.add](./sale-property-group-add.md) if you need a separate block for order or shipment properties.
+3. Add properties to the group using [sale.property.add](../property/sale-property-add.md) or [sale.shipmentproperty.add](../shipment-property/sale-shipment-property-add.md).
+4. If necessary, update or delete the group using [sale.propertygroup.update](./sale-property-group-update.md) or [sale.propertygroup.delete](./sale-property-group-delete.md).
 
 ## Overview of Methods {#all-methods}
 

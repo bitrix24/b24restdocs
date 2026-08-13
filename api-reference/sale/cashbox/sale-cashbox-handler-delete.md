@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`sale, cashbox`](../../scopes/permissions.md)
+> Scope: [`cashbox`](../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator (access permission "Allow to change settings")
 
-This method deletes the REST cashbox handler.
+The method `sale.cashbox.handler.delete` deletes the REST cashbox handler.
 
 If there are cashboxes linked to the handler, it will not be deleted — you must first remove the cashboxes.
 

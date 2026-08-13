@@ -11,6 +11,8 @@ Delivery requests synchronize an order in Bitrix24 with the statuses and message
 This is necessary to keep the information about the cargo movement up to date and to inform the participants in the delivery process.
 
 > Quick Navigation: [all methods](#all-methods)
+>
+> User documentation: [Delivery Services](https://helpdesk.bitrix24.com/open/17297482/)
 
 ## Data Structure of the Request
 
@@ -36,7 +38,7 @@ The method [sale.delivery.request.sendmessage](./sale-delivery-request-send-mess
 
 ## Overview of Methods {#all-methods}
 
-> Scope: [`sale, delivery`](../../../scopes/permissions.md)
+> Scope: [`delivery`](../../../scopes/permissions.md)
 >
 > Who can perform the methods: administrator
 

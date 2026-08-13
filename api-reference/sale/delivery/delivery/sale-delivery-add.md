@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: CRM administrator
 
-This method adds a delivery service.
+The method `sale.delivery.add` adds a delivery service.
 
 ## Method Parameters
 

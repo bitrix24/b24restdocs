@@ -34,6 +34,14 @@ Delivery services automate the calculation of shipping costs, order creation, an
 
 **Property Binding.** Set conditions under which the buyer will see a specific shipment property. To ensure the buyer sees the "Floor" property only when selecting courier delivery, bind the property to the delivery service using the [sale.propertyRelation.add](../../property-relation/sale-property-relation-add.md) method.
 
+## How to Get Started
+
+1. Create a delivery service handler using [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md).
+2. Create a delivery service using [sale.delivery.add](./sale-delivery-add.md), specifying the handler symbolic code.
+3. Configure the service parameters using [sale.delivery.config.update](./sale-delivery-config-update.md).
+4. Check the list of services using [sale.delivery.getlist](./sale-delivery-get-list.md).
+5. If the service is no longer used, delete it using [sale.delivery.delete](./sale-delivery-delete.md).
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`sale`](../../../scopes/permissions.md)

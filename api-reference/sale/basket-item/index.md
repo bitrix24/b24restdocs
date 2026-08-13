@@ -11,6 +11,8 @@ The shopping cart is a temporary storage area where customers add products and s
 This section gathers methods for working with cart items in created orders.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Place an Order on the Website](https://helpdesk.bitrix24.com/open/17300484/)
 
 ## Linking the Cart to Other Objects
 
@@ -30,6 +32,14 @@ This section gathers methods for working with cart items in created orders.
 
 **Shipment Table Part.** Use the [sale.shipmentitem.*](../shipment-item/index.md) methods to specify which cart items to ship.
 
+## How to Get Started
+
+1. Create an order using [sale.order.add](../order/sale-order-add.md) or find an existing order using [sale.order.list](../order/sale-order-list.md).
+2. If you add a product from the catalog, retrieve its ID using catalog methods and use [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md).
+3. If you add a custom item, use [sale.basketitem.add](./sale-basket-item-add.md) and pass the product data manually.
+4. Check the cart contents using [sale.basketitem.list](./sale-basket-item-list.md).
+5. If necessary, change the quantity or price using [sale.basketitem.update](./sale-basket-item-update.md), then link the item to a payment or shipment.
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`sale`](../../scopes/permissions.md)
@@ -41,10 +51,10 @@ This section gathers methods for working with cart items in created orders.
 || [sale.basketitem.add](./sale-basket-item-add.md) | Adds an item to the cart of an existing order ||
 || [sale.basketitem.update](./sale-basket-item-update.md) | Modifies a cart item in an existing order ||
 || [sale.basketitem.get](./sale-basket-item-get.md) | Retrieves information about a cart item in an order ||
-|| [sale.basketItem.list](./sale-basket-item-list.md) | Returns a set of cart items based on a filter ||
+|| [sale.basketitem.list](./sale-basket-item-list.md) | Returns a set of cart items based on a filter ||
 || [sale.basketitem.delete](./sale-basket-item-delete.md) | Removes a cart item from an order ||
 || [sale.basketitem.getFields](./sale-basket-item-get-fields.md) | Returns available fields of a cart item ||
 || [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md) | Adds an item with a product or service from the catalog module to the cart of an existing order ||
 || [sale.basketitem.updateCatalogProduct](./sale-basket-item-update-catalog-product.md) | Modifies a catalog product in an existing order ||
-|| [sale.basketItem.getCatalogProductFields](./sale-basket-item-get-catalog-product-fields.md) | Returns available fields of a catalog product in the cart ||
+|| [sale.basketitem.getFieldsCatalogProduct](./sale-basket-item-get-catalog-product-fields.md) | Returns available fields of a catalog product in the cart ||
 |#

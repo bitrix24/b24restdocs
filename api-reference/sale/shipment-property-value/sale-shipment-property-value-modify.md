@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method updates the shipment property values.
+The method `sale.shipmentpropertyvalue.modify` updates the shipment property values.
 
 ## Method Parameters
 

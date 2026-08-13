@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Order properties are fields that the customer fills out when placing an order: name, phone number, delivery address. Each type of payer will have its own order properties.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Place an Order on the Website](https://helpdesk.bitrix24.com/open/17300484/)
 > 
 > User documentation: [Create an order in CRM](https://helpdesk.bitrix24.com/open/8271153)
 
@@ -37,6 +39,14 @@ To transmit customer data to payment systems and cash registers, create STRING t
 **Property Binding.** Set conditions under which the customer will see a specific property. For this, link the order property to the payment system, delivery service, landing page, or trading platform using the methods [sale.propertyRelation.*](../property-relation/index.md). For example, if the customer selects "Courier Delivery," they must specify the order property "Metro Station."
 
 **Property Values.** View or modify the values of a specific order property using the methods [sale.propertyvalue.*](../property-value/index.md).
+
+## How to Get Started
+
+1. Determine the payer type using [sale.persontype.list](../person-type/sale-person-type-list.md).
+2. Select a property group using [sale.propertygroup.list](../property-group/sale-property-group-list.md) or create a new group using [sale.propertygroup.add](../property-group/sale-property-group-add.md).
+3. Create an order property using [sale.property.add](./sale-property-add.md).
+4. If the property has a fixed list of values, add variants using [sale.propertyvariant.*](../property-variant/index.md).
+5. If the property should depend on a payer type, delivery service, or payment system, configure bindings using [sale.propertyRelation.*](../property-relation/index.md).
 
 ## Overview of Methods {#all-methods}
 

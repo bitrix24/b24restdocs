@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: CRM administrator
 
-This method retrieves a list of delivery service handlers.
+The method `sale.delivery.handler.list` retrieves a list of delivery service handlers.
 
 No parameters.
 

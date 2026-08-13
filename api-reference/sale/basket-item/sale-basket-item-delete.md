@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method removes an item (position) from the cart in the order.
+The method `sale.basketitem.delete` removes an item (position) from the cart in the order.
 
 ## Method Parameters
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `sale.shipmentitem.list` allows you to retrieve a list of shipment item table elements.
+The method `sale.shipmentitem.list` retrieves a list of shipment item table elements.
 
 ## Method Parameters
 

@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 [Order and Delivery Statuses](../status/index.md) can be adapted for different languages.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Configure Order and Delivery Statuses in Bitrix24](https://helpdesk.bitrix24.com/open/26012583/)
 
 ## Localization Languages
 
@@ -34,17 +36,24 @@ Status localization is available for the following languages:
 - `ua` — Ukrainian,
 - `vn` — Vietnamese.
 
-The list of current languages can be obtained using the method [sale.statuslang.getlistlangs](./sale-status-lang-get-list-langs.md).
+The list of current languages can be obtained using the method [sale.statusLang.getListLangs](./sale-status-lang-get-list-langs.md).
 
 ## Connection of Status Localization with Other Objects
 
 **Status.** Specify the identifier of the required status. The list of identifiers can be obtained using the method [sale.status.list](../status/sale-status-list.md).
 
+## How to Get Started
+
+1. Retrieve the list of available languages using [sale.statusLang.getListLangs](./sale-status-lang-get-list-langs.md).
+2. Retrieve the status ID using [sale.status.list](../status/sale-status-list.md).
+3. Add localization using [sale.statusLang.add](./sale-status-lang-add.md).
+4. Check the result using [sale.statusLang.list](./sale-status-lang-list.md).
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the methods: administrator
 
 #|
 || **Method** | **Description** ||

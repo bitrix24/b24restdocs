@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Shipments allow you to see which products have been sent, in what quantities, and when. This helps manage delivery statuses. An order can be shipped in parts, meaning as several independent shipments. Each shipment has its own delivery service, status, and contents.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Delivery Services](https://helpdesk.bitrix24.com/open/17297482/)
 
 ## Connection of Shipments with Other Objects
 
@@ -23,6 +25,14 @@ Shipments allow you to see which products have been sent, in what quantities, an
 **Shipment Properties.** If there are multiple shipments in the order, create shipment properties using the methods [sale.shipmentproperty.*](../shipment-property/index.md). For example, if there are three books in the order that need to be sent to different addresses. To specify the address for each shipment, create shipment properties.
 
 **Linking Payments to Shipments.** Specify which shipments have been paid for. Use the methods [sale.paymentItemShipment.*](../payment-item-shipment/index.md).
+
+## How to Get Started
+
+1. Create an order using [sale.order.add](../order/sale-order-add.md) or find an existing order using [sale.order.list](../order/sale-order-list.md).
+2. Select a delivery service in [Delivery Services](../delivery/delivery/index.md).
+3. Add a shipment using [sale.shipment.add](./sale-shipment-add.md).
+4. Add products to the shipment using [sale.shipmentitem.*](../shipment-item/index.md).
+5. Check the shipment state using [sale.shipment.get](./sale-shipment-get.md) or [sale.shipment.list](./sale-shipment-list.md).
 
 ## Overview of Methods {#all-methods}
 

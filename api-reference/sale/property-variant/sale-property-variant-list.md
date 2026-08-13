@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method retrieves a list of property value variants. This method is applicable only for properties of type `ENUM`.
+The method `sale.propertyvariant.list` retrieves a list of property value variants. This method is applicable only for properties of type `ENUM`.
 
 ## Method Parameters
 

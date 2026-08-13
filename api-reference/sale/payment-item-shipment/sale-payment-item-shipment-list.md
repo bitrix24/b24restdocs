@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of payment bindings to shipments based on a filter.
+The method `sale.paymentItemShipment.list` retrieves a list of payment bindings to shipments based on a filter.
 
 ## Method Parameters
 

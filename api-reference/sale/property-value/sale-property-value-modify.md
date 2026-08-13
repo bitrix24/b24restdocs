@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method updates the property values of an order.
+The method `sale.propertyvalue.modify` updates the property values of an order.
 
 **Please note** that this method accepts **all** property values of the order as input. If values for any properties are not provided, their current values will be removed from the order as a result of the request.
 

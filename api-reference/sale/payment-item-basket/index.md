@@ -9,12 +9,22 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 A single cart can have multiple payments—for example, if products are paid for through different payment systems. Determine which cart items correspond to each payment.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Payment Systems for Online Stores](https://helpdesk.bitrix24.com/open/25826751/)
 
 ## Relationship of Cart Item Binding to Payments with Other Objects
 
 **Payments.** Specify the payment ID to which you want to bind the cart item. A list of payment IDs can be obtained using the [sale.payment.list](../payment/sale-payment-list.md) method.
 
 **Cart.** Specify the cart item ID for the payment. A list of cart item IDs can be obtained using the [sale.basketitem.list](../basket-item/sale-basket-item-list.md) method.
+
+## How to Get Started
+
+1. Retrieve the payment ID using [sale.payment.list](../payment/sale-payment-list.md).
+2. Retrieve cart item IDs using [sale.basketitem.list](../basket-item/sale-basket-item-list.md).
+3. Create a binding using [sale.paymentitembasket.add](./sale-payment-item-basket-add.md).
+4. Check the binding using [sale.paymentitembasket.get](./sale-payment-item-basket-get.md) or [sale.paymentitembasket.list](./sale-payment-item-basket-list.md).
+5. If necessary, update or delete the binding using [sale.paymentitembasket.update](./sale-payment-item-basket-update.md) or [sale.paymentitembasket.delete](./sale-payment-item-basket-delete.md).
 
 ## Overview of Methods {#all-methods}
 

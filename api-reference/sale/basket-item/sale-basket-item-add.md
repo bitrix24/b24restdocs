@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method adds an item to the cart of an existing order.
+The method `sale.basketitem.add` adds an item to the cart of an existing order.
 
 ## Method Parameters
 

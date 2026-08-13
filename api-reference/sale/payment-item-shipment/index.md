@@ -9,12 +9,22 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 An order can include multiple products that need to be shipped in parts, meaning as several independent shipments. To allocate payments among shipments, use the linking of payments to shipments.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Payment Systems for Online Stores](https://helpdesk.bitrix24.com/open/25826751/)
 
 ## Connection of Payment Linking to Shipments with Other Objects
 
 **Shipments.** Specify the ID of the paid shipment. You can obtain a list of shipment IDs using the method [sale.shipment.list](../shipment/sale-shipment-list.md).
 
 **Payments.** Specify the ID of the payment that needs to be linked to the shipment. You can obtain a list of payment IDs using the method [sale.payment.list](../payment/sale-payment-list.md).
+
+## How to Get Started
+
+1. Retrieve the payment ID using [sale.payment.list](../payment/sale-payment-list.md).
+2. Retrieve the shipment ID using [sale.shipment.list](../shipment/sale-shipment-list.md).
+3. Create a binding using [sale.paymentItemShipment.add](./sale-payment-item-shipment-add.md).
+4. Check the binding using [sale.paymentItemShipment.get](./sale-payment-item-shipment-get.md) or [sale.paymentItemShipment.list](./sale-payment-item-shipment-list.md).
+5. If necessary, update the binding using [sale.paymentItemShipment.update](./sale-payment-item-shipment-update.md).
 
 ## Overview of Methods {#all-methods}
 

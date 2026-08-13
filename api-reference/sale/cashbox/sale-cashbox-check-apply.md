@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`sale, cashbox`](../../scopes/permissions.md)
+> Scope: [`cashbox`](../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator (permission "Allow to change settings")
 
-The method saves the result of printing a receipt that was printed on a REST cash register. The UUID of the receipt is saved when it is printed from the `PRINT_URL` response specified when adding the handler (see [example of implementing a simple cash register on REST API](../../../tutorials/sale/cashbox-add-example.md)).
+The method `sale.cashbox.check.apply` saves the result of printing a receipt that was printed on a REST cash register. The UUID of the receipt is saved when it is printed from the `PRINT_URL` response specified when adding the handler (see [example of implementing a simple cash register on REST API](../../../tutorials/sale/cashbox-add-example.md)).
 
 ## Method Parameters
 

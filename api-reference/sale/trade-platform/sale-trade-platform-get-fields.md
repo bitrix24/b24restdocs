@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user with the "View product catalog" access permission
 
-The method `sale.tradePlatform.getFields` returns the available fields of order sources.
+The method `sale.tradePlatform.getFields` retrieves the available fields of order sources.
 
 No parameters.
 

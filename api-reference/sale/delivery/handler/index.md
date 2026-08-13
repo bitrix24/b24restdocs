@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Delivery service handlers are templates for connecting delivery services to Bitrix24. Handlers automatically calculate delivery costs, create orders, and track statuses.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Delivery Services](https://helpdesk.bitrix24.com/open/17297482/)
 
 {% note tip "Typical use-cases and scenarios" %}
 
@@ -16,7 +18,7 @@ Delivery service handlers are templates for connecting delivery services to Bitr
 
 {% endnote %}
 
-# URLs in the Delivery Service Handler
+## URLs in the Delivery Service Handler
 
 When creating a delivery service handler, specify the URLs:
 - `CALCULATE_URL` — URL for calculating delivery costs, a required parameter. Data about the package, including products, destination address, and other parameters, will be sent to this address. In response, you will receive information about the delivery cost. See the request and response format in the article [Calculating Delivery Costs](../webhooks/calculate.md).

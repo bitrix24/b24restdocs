@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Shipping properties are additional parameters that can be set for the shipment of goods: delivery address and method, shipment date. For example, in an order with three books that need to be sent to different addresses. To specify the address for each shipment, create shipping properties.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Delivery Services](https://helpdesk.bitrix24.com/open/17297482/)
 
 ## Connection of Shipping Properties with Other Objects
 
@@ -17,6 +19,13 @@ Shipping properties are additional parameters that can be set for the shipment o
 **Property Groups.** Associate the shipping property with the appropriate group: personal data, delivery information, company data, contact information. You can create or modify property groups using the methods [sale.propertygroup.*](../property-group/index.md).
 
 **Shipping Property Values.** Change the values of a specific shipment property using the methods [sale.shipmentpropertyvalue.*](../shipment-property-value/index.md).
+
+## How to Get Started
+
+1. Determine the payer type using [sale.persontype.list](../person-type/sale-person-type-list.md).
+2. Select a property group using [sale.propertygroup.list](../property-group/sale-property-group-list.md) or create a new group using [sale.propertygroup.add](../property-group/sale-property-group-add.md).
+3. Add a shipment property using [sale.shipmentproperty.add](./sale-shipment-property-add.md).
+4. If the property is already used, change its value for a specific shipment using [sale.shipmentpropertyvalue.*](../shipment-property-value/index.md).
 
 ## Overview of Methods {#all-methods}
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method is used to access the fields of the payer type by its `Id`.
+The method `sale.persontype.get` is used to access the fields of the payer type by its `Id`.
 
 ## Method Parameters
 

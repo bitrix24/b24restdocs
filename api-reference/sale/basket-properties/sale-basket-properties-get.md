@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: store manager
 
-The method returns the property for an item (position) in the basket of an order by its identifier.
+The method `sale.basketproperties.get` retrieves the property for an item (position) in the basket of an order by its identifier.
 
 ## Method Parameters
 

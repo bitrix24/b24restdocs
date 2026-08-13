@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: store manager
 
-The method returns a list of available fields of the basket item. Each field is described as a field settings structure [rest_field_description](../data-types.md).
+The method `sale.basketitem.getFields` returns a list of available fields of the basket item. Each field is described as a field settings structure [rest_field_description](../data-types.md).
 
 No parameters.
 

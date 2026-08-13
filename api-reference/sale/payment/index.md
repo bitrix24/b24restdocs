@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Payments contain information about payments for orders: payment system, status and date of payment, payer identifier.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Payment Systems for Online Stores](https://helpdesk.bitrix24.com/open/25826751/)
 > 
 > User documentation: [Track the payment status in the deal form](https://helpdesk.bitrix24.com/open/18367058/)
 
@@ -21,6 +23,13 @@ Payments contain information about payments for orders: payment system, status a
 **Linking Cart Items to Payment.** Select the cart items for which you want to create a payment. Use the [sale.paymentitembasket.*](../payment-item-basket/index.md) methods.
 
 **Linking Payments to Shipments.** Specify which shipments have been paid. Use the [sale.paymentItemShipment.*](../payment-item-shipment/index.md) methods.
+
+## How to Get Started
+
+1. Create an order using [sale.order.add](../order/sale-order-add.md) or find an existing order using [sale.order.list](../order/sale-order-list.md).
+2. Create a payment using [sale.payment.add](./sale-payment-add.md) and specify the order ID.
+3. Link the payment to cart items using [sale.paymentitembasket.*](../payment-item-basket/index.md) or to shipments using [sale.paymentItemShipment.*](../payment-item-shipment/index.md).
+4. Check payment data using [sale.payment.get](./sale-payment-get.md) or [sale.payment.list](./sale-payment-list.md).
 
 ## Overview of Methods {#all-methods}
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method deletes a payment.
+The method `sale.payment.delete` deletes a payment.
 
 ## Method Parameters
 

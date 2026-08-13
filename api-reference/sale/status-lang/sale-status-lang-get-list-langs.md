@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of possible languages for localizations.
+The method `sale.statusLang.getListLangs` retrieves a list of possible languages for localizations.
 
 No parameters.
 
@@ -27,7 +27,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.statuslang.getlistlangs
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.statusLang.getListLangs
     ```
 
 - cURL (OAuth)
@@ -37,7 +37,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/sale.statuslang.getlistlangs
+    https://**put_your_bitrix24_address**/rest/sale.statusLang.getListLangs
     ```
 
 - JS (TS)
@@ -61,7 +61,7 @@ No parameters.
 
     try {
       const response = await $b24.actions.v2.call.make<GetListLangsResult>({
-        method: 'sale.statuslang.getlistlangs',
+        method: 'sale.statusLang.getListLangs',
         params: {},
         requestId: Text.getUuidRfc4122()
       })
@@ -91,7 +91,7 @@ No parameters.
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'sale.statuslang.getlistlangs',
+            method: 'sale.statusLang.getListLangs',
             params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -121,7 +121,7 @@ No parameters.
         $response = $b24Service
             ->core
             ->call(
-                'sale.statuslang.getlistlangs',
+                'sale.statusLang.getListLangs',
                 []
             );
     
@@ -143,7 +143,7 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        'sale.statuslang.getlistlangs',
+        'sale.statusLang.getListLangs',
         {},
         function(result) {
             if (result.error()) {
@@ -161,7 +161,7 @@ No parameters.
     require_once('crest.php');
 
     $result = CRest::call(
-        'sale.statuslang.getlistlangs',
+        'sale.statusLang.getListLangs',
         []
     );
 
@@ -174,15 +174,15 @@ No parameters.
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "sale.statuslang.getlistlangs", nil)
+    res, err := client.Core().Call(ctx, "sale.statusLang.getListLangs", nil)
     if err != nil {
-    	return fmt.Errorf("sale.statuslang.getlistlangs: %w", err)
+        return fmt.Errorf("sale.statusLang.getListLangs: %w", err)
     }
 
     // The method wraps the response in an object with the "langs" key.
     raw, ok := b24.Unwrap(res.Result, "langs")
     if !ok {
-    	return fmt.Errorf("no langs key in the response")
+        return fmt.Errorf("no langs key in the response")
     }
 
     var items []struct {
@@ -191,7 +191,7 @@ No parameters.
     	Name   string `json:"name"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
-    	return fmt.Errorf("parse response: %w", err)
+        return fmt.Errorf("parse response: %w", err)
     }
     for _, it := range items {
     	fmt.Println(it.Active)
@@ -275,11 +275,6 @@ HTTP status: **200**
             },
             {
                 "active": "Y",
-                "lid": "de",
-                "name": "Русский"
-            },
-            {
-                "active": "Y",
                 "lid": "sc",
                 "name": "中文（简体）"
             },
@@ -300,17 +295,12 @@ HTTP status: **200**
             },
             {
                 "active": "Y",
-                "lid": "ua",
-                "name": "Українська"
-            },
-            {
-                "active": "Y",
                 "lid": "vn",
                 "name": "Tiếng Việt"
             }
         ]
     },
-    "total": 20,
+    "total": 18,
     "time": {
         "start": 1712230480.81481,
         "finish": 1712230480.8460569,

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method adds a variant value for a property. It is applicable only for properties of type `ENUM`.
+The method `sale.propertyvariant.add` adds a variant value for a property. It is applicable only for properties of type `ENUM`.
 
 ## Method Parameters
 

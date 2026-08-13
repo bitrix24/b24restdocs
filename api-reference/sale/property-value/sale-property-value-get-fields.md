@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method returns the available fields of the order property value options.
+The method `sale.propertyvalue.getfields` retrieves the available fields of the order property value options.
 
 ## Method Parameters
 

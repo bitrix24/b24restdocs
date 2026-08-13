@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method modifies the fields of the payer type.
+The method `sale.persontype.update` modifies the fields of the payer type.
 
 ## Method Parameters
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method updates the binding of the cart item to the payment.
+The method `sale.paymentitembasket.update` updates the binding of the cart item to the payment.
 
 ## Method Parameters
 

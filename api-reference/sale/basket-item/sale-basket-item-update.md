@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method modifies the position of the basket in an existing order.
+The method `sale.basketitem.update` modifies the position of the basket in an existing order.
 
 ## Method Parameters
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of localizations for order or delivery statuses.
+The method `sale.statusLang.list` retrieves a list of localizations for order or delivery statuses.
 
 ## Method Parameters
 
@@ -82,7 +82,7 @@ The formula for calculating the `start` parameter value:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"select":["statusId","lid","name","description"],"filter":{"statusId":"N","lid":"de"},"order":{"statusId":"asc"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.statuslang.list
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.statusLang.list
     ```
 
 - cURL (OAuth)
@@ -92,7 +92,7 @@ The formula for calculating the `start` parameter value:
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"select":["statusId","lid","name","description"],"filter":{"statusId":"N","lid":"de"},"order":{"statusId":"asc"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/sale.statuslang.list
+    https://**put_your_bitrix24_address**/rest/sale.statusLang.list
     ```
 
 - JS (TS)
@@ -116,13 +116,13 @@ The formula for calculating the `start` parameter value:
     }
 
     try {
-      // sale.statuslang.list returns a single page (max 50 records). For the whole result set
+      // sale.statusLang.list returns a single page (max 50 records). For the whole result set
       // use a list helper: $b24.actions.v2.callList.make() returns every record as one
       // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
       // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
       // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<StatusLangListResult>({
-        method: 'sale.statuslang.list',
+        method: 'sale.statusLang.list',
         params: {
           select: ['statusId', 'lid', 'name', 'description'],
           filter: {
@@ -161,13 +161,13 @@ The formula for calculating the `start` parameter value:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // sale.statuslang.list returns a single page (max 50 records). For the whole result set
+          // sale.statusLang.list returns a single page (max 50 records). For the whole result set
           // use a list helper: $b24.actions.v2.callList.make() returns every record as one
           // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
           // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
           // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
-            method: 'sale.statuslang.list',
+            method: 'sale.statusLang.list',
             params: {
               select: ['statusId', 'lid', 'name', 'description'],
               filter: {
@@ -207,7 +207,7 @@ The formula for calculating the `start` parameter value:
         $response = $b24Service
             ->core
             ->call(
-                'sale.statuslang.list',
+                'sale.statusLang.list',
                 [
                     'select' => [
                         'statusId',
@@ -241,7 +241,7 @@ The formula for calculating the `start` parameter value:
 
     ```js
     BX24.callMethod(
-        "sale.statuslang.list", {
+        "sale.statusLang.list", {
             "select": [
                 "statusId",
                 "lid",
@@ -272,7 +272,7 @@ The formula for calculating the `start` parameter value:
     require_once('crest.php');
 
     $result = CRest::call(
-        'sale.statuslang.list',
+        'sale.statusLang.list',
         [
             'select' => [
                 'statusId',
@@ -299,7 +299,7 @@ The formula for calculating the `start` parameter value:
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "sale.statuslang.list", b24.Params{
+    res, err := client.Core().Call(ctx, "sale.statusLang.list", b24.Params{
     	"select": []string{"statusId", "lid", "name", "description"},
     	"filter": b24.Params{
     		"statusId": "N",
@@ -310,13 +310,13 @@ The formula for calculating the `start` parameter value:
     	},
     }, b24.WithIdempotent())
     if err != nil {
-    	return fmt.Errorf("sale.statuslang.list: %w", err)
+        return fmt.Errorf("sale.statusLang.list: %w", err)
     }
 
     // The method wraps the response in an object with the "statusLangs" key.
     raw, ok := b24.Unwrap(res.Result, "statusLangs")
     if !ok {
-    	return fmt.Errorf("no statusLangs key in the response")
+        return fmt.Errorf("no statusLangs key in the response")
     }
 
     var items []struct {
@@ -326,7 +326,7 @@ The formula for calculating the `start` parameter value:
     	StatusID    string `json:"statusId"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
-    	return fmt.Errorf("parse response: %w", err)
+        return fmt.Errorf("parse response: %w", err)
     }
     for _, it := range items {
     	fmt.Println(it.Description)

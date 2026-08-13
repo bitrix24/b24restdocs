@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`sale, cashbox`](../../scopes/permissions.md)
+> Scope: [`cashbox`](../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator (access permission "Allow changing settings")
 
-The method returns a list of available REST cash register handlers.
+The method `sale.cashbox.handler.list` retrieves a list of available REST cash register handlers.
 
 No parameters.
 

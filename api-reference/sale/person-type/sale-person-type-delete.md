@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method deletes a payer type.
+The method `sale.persontype.delete` deletes a payer type.
 
 ## Method Parameters
 

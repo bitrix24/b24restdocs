@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`sale, delivery`](../../../scopes/permissions.md)
+> Scope: [`delivery`](../../../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-This method updates the delivery service.
+The method `sale.delivery.extra.service.update` updates the delivery service.
 
 ## Method Parameters
 

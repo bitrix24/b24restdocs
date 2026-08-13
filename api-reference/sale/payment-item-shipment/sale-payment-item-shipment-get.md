@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves the payment binding to the shipment by `ID`.
+The method `sale.paymentItemShipment.get` retrieves the payment binding to the shipment by `ID`.
 
 ## Method Parameters
 

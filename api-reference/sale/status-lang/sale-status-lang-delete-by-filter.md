@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method deletes the localization records of the order or delivery status by status ID and language.
+The method `sale.statusLang.deleteByFilter` deletes the localization records of the order or delivery status by status ID and language.
 
 ## Method Parameters
 
@@ -66,7 +66,7 @@ fields: {
 - ua — Ukrainian
 - vn — Vietnamese
 
-The list of available languages can be obtained using the method [sale.statuslang.getlistlangs](./sale-status-lang-get-list-langs.md) ||
+The list of available languages can be obtained using the method [sale.statusLang.getListLangs](./sale-status-lang-get-list-langs.md) ||
 || **name***
 [`string`](../../data-types.md) | 
 

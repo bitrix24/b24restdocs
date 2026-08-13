@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method is designed to retrieve a list of property groups.
+The method `sale.propertygroup.list` retrieves a list of property groups.
 
 ## Method Parameters
 

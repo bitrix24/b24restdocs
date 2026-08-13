@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method removes the binding of a cart item to a payment.
+The method `sale.paymentitembasket.delete` removes the binding of a cart item to a payment.
 
 ## Method Parameters
 

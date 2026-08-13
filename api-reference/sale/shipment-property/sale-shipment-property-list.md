@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method retrieves a list of shipment properties.
+The method `sale.shipmentproperty.list` retrieves a list of shipment properties.
 
 ## Method Parameters
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method creates a status for an order or delivery.
+The method `sale.status.add` creates a status for an order or delivery.
 
 ## Method Parameters
 

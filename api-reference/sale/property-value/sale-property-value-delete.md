@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method deletes the value of an order property.
+The method `sale.propertyvalue.delete` deletes the value of an order property.
 
 ## Method Parameters
 

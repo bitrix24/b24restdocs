@@ -38,6 +38,17 @@ To allow an external system to report the order status, configure transport requ
 
 **Property Binding.** Set conditions under which the buyer will see a specific shipping property. To do this, bind the property to the delivery service using the method [sale.propertyRelation.add](../property-relation/sale-property-relation-add.md).
 
+## How to Choose a Section
+
+#|
+|| **If You Need To** | **Open the Section** ||
+|| Register external delivery calculation or webhooks | [Delivery Service Handlers](./handler/index.md) ||
+|| Create and configure a delivery service in Bitrix24 | [Delivery Services](./delivery/index.md) ||
+|| Add paid or selectable delivery options | [Additional Services](./extra-service/index.md) ||
+|| Update delivery statuses from an external system | [Transport Requests](./delivery-request/index.md) ||
+|| Implement incoming requests from Bitrix24 to your service | [Webhooks](./webhooks/index.md) ||
+|#
+
 ## Overview of Methods {#all-methods}
 
 ### Delivery Service Handlers
@@ -72,7 +83,7 @@ To allow an external system to report the order status, configure transport requ
 
 ### Additional Services
 
-> Scope: [`sale, delivery`](../../scopes/permissions.md)
+> Scope: [`delivery`](../../scopes/permissions.md)
 >
 > Who can execute methods: administrator
 
@@ -86,7 +97,7 @@ To allow an external system to report the order status, configure transport requ
 
 ### Transport Requests
 
-> Scope: [`sale, delivery`](../../scopes/permissions.md)
+> Scope: [`delivery`](../../scopes/permissions.md)
 >
 > Who can execute methods: administrator
 

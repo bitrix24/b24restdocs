@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method adds a payment binding to a shipment.
+The method `sale.paymentItemShipment.add` adds a payment binding to a shipment.
 
 ## Method Parameters
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method deletes an order or delivery status.
+The method `sale.status.delete` deletes an order or delivery status.
 
 ## Method Parameters
 

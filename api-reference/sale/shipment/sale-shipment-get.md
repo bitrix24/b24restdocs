@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves the values of all shipment fields.
+The method `sale.shipment.get` retrieves the values of all shipment fields.
 
 ## Method Parameters
 

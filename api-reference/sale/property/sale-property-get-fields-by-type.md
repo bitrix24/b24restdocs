@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves the available fields of order properties by property type.
+The method `sale.property.getfieldsbytype` retrieves the available fields of order properties by property type.
 
 ## Method Parameters
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of order property value options.
+The method `sale.propertyvalue.list` retrieves a list of order property value options.
 
 ## Method Parameters
 

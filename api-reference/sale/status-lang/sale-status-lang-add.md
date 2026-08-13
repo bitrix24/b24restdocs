@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method adds localization for the order or delivery status.
+The method `sale.statusLang.add` adds localization for the order or delivery status.
 
 ## Method Parameters
 
@@ -67,7 +67,7 @@ fields: {
 - ua — Ukrainian
 - vn — Vietnamese
 
-The list of available languages can be obtained using the method [sale.statuslang.getlistlangs](./sale-status-lang-get-list-langs.md)
+The list of available languages can be obtained using the method [sale.statusLang.getListLangs](./sale-status-lang-get-list-langs.md)
 ||
 || **name***
 [`string`](../../data-types.md) | Name of the status for the created localization ||
@@ -88,7 +88,7 @@ The list of available languages can be obtained using the method [sale.statuslan
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"statusId":"RD","lid":"de","name":"Returned by Customer","description":"The customer returned the product due to a defect"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.statuslang.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.statusLang.add
     ```
 
 - cURL (OAuth)
@@ -98,7 +98,7 @@ The list of available languages can be obtained using the method [sale.statuslan
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"statusId":"RD","lid":"de","name":"Returned by Customer","description":"The customer returned the product due to a defect"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/sale.statuslang.add
+    https://**put_your_bitrix24_address**/rest/sale.statusLang.add
     ```
 
 - JS (TS)
@@ -123,7 +123,7 @@ The list of available languages can be obtained using the method [sale.statuslan
 
     try {
       const response = await $b24.actions.v2.call.make<StatusLangAddResult>({
-        method: 'sale.statuslang.add',
+        method: 'sale.statusLang.add',
         params: {
           fields: {
             statusId: 'RD',
@@ -160,7 +160,7 @@ The list of available languages can be obtained using the method [sale.statuslan
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'sale.statuslang.add',
+            method: 'sale.statusLang.add',
             params: {
               fields: {
                 statusId: 'RD',
@@ -197,7 +197,7 @@ The list of available languages can be obtained using the method [sale.statuslan
         $response = $b24Service
             ->core
             ->call(
-                'sale.statuslang.add',
+                'sale.statusLang.add',
                 [
                     'fields' => [
                         'statusId'    => 'RD',
@@ -224,7 +224,7 @@ The list of available languages can be obtained using the method [sale.statuslan
 
     ```js
     BX24.callMethod(
-        'sale.statuslang.add',
+        'sale.statusLang.add',
         {
             fields: {
                 statusId: 'RD',
@@ -249,7 +249,7 @@ The list of available languages can be obtained using the method [sale.statuslan
     require_once('crest.php');
 
     $result = CRest::call(
-        'sale.statuslang.add',
+        'sale.statusLang.add',
         [
             'fields' =>
             [
@@ -270,7 +270,7 @@ The list of available languages can be obtained using the method [sale.statuslan
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "sale.statuslang.add", b24.Params{
+    res, err := client.Core().Call(ctx, "sale.statusLang.add", b24.Params{
     	"fields": b24.Params{
     		"statusId":    "RD",
     		"lid":         "ru",
@@ -279,13 +279,13 @@ The list of available languages can be obtained using the method [sale.statuslan
     	},
     })
     if err != nil {
-    	return fmt.Errorf("sale.statuslang.add: %w", err)
+        return fmt.Errorf("sale.statusLang.add: %w", err)
     }
 
     // The method wraps the response in an object with the "statusLang" key.
     raw, ok := b24.Unwrap(res.Result, "statusLang")
     if !ok {
-    	return fmt.Errorf("no statusLang key in the response")
+        return fmt.Errorf("no statusLang key in the response")
     }
 
     var item struct {
@@ -295,7 +295,7 @@ The list of available languages can be obtained using the method [sale.statuslan
     	StatusID    string `json:"statusId"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
-    	return fmt.Errorf("parse response: %w", err)
+        return fmt.Errorf("parse response: %w", err)
     }
     fmt.Println(item.Description, item.Lid)
     ```

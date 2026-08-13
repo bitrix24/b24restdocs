@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method deletes a shipment.
+The method `sale.shipment.delete` deletes a shipment.
 
 ## Method Parameters
 

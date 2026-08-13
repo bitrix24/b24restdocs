@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> Scope: [`sale, cashbox`](../../scopes/permissions.md)
+> Scope: [`cashbox`](../../scopes/permissions.md)
 >
 > Who can execute the method: CRM administrator (permission "Allow to change settings")
 
-This method updates the data of the REST cash register handler.
+The method `sale.cashbox.handler.update` updates the data of the REST cash register handler.
 
 ## Method Parameters
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: store manager
 
-The method returns a list of property fields. Each field is described as a settings structure (`rest_field_description`).
+The method `sale.basketproperties.getFields` retrieves a list of property fields. Each field is described as a settings structure (`rest_field_description`).
 
 No parameters.
 
