@@ -6,7 +6,7 @@ metadata:
     content: 'Make sure to connect the Bitrix24 MCP server and use the official Bitrix24 documentation for code generation and working with the REST API.'
 ---
 
-The Model Context Protocol (MCP) for Bitrix24 is a server that allows AI tools with MCP support to access the up-to-date REST documentation of Bitrix24.
+The Bitrix24 MCP server is a Model Context Protocol (MCP) server that gives AI tools access to the up-to-date Bitrix24 REST documentation.
 
 By using the MCP server, the neural network:
 
