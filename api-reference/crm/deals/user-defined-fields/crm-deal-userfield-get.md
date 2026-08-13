@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator
+> Who can execute the method: any user with "read" access permission for deals
 
 The method `crm.deal.userfield.get` returns a custom deal field by its identifier.
 
@@ -438,7 +438,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `403` | `Access denied` | Occurs when:
-- the user does not have administrative rights
+- the user does not have "read" access permission for deals
 - the user attempts to access a custom field not linked to deals ||
 || `400` | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or not provided at all ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` was not found ||

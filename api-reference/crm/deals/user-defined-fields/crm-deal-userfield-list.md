@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator
+> Who can execute the method: any user with "read" access permission for deals
 
 The method `crm.deal.userfield.list` returns a list of custom fields for deals based on the filter.
 
@@ -140,9 +140,11 @@ Possible values:
 {% include [Examples Note](../../../../_includes/examples.md) %}
 
 Get a list of custom fields that:
-- are multiple,
-- are mandatory,
-- have custom field labels in German. Thanks to the filter by the `LANG` parameter, we will additionally receive field names in the response.
+- are multiple
+- are mandatory
+- have custom field labels in German
+
+Thanks to the filter by the `LANG` parameter, we will additionally receive field names in the response.
 
 {% list tabs %}
 

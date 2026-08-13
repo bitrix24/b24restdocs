@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "read" access permission for deals
+> Who can execute the method: a user with "read" and "modify" access permissions for deals
 
 The method `crm.deal.contact.items.delete` removes all contact associations with the specified deal.
 
@@ -282,7 +282,7 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `-` | `The parameter ownerEntityID is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
 || `-` | `Access denied` | The user does not have read access permission for deals ||
-|| `ACCESS_DENIED` | `Access denied!` | No read access permission for the deal ||
+|| `ACCESS_DENIED` | `Access denied!` | No read or modify access permission for the deal ||
 || `-` | `Not found` | The deal with the provided `id` was not found ||
 |#
 
