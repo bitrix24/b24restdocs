@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, update, or deletion of company user fields.
 
-Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../../events/index.md).
+Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../../events/index.md). The methods that manage the fields themselves are collected in the section [Custom Company Fields](../index.md).
 
-> Quick navigation: [all events](#all-events) 
+> Quick navigation: [all events](#all-events)
 
 ## How to Receive Events
 
@@ -36,5 +36,5 @@ An example of a handler code for the event is described in the article [How to T
 || [onCrmCompanyUserFieldAdd](./on-crm-company-user-field-add.md) | When a user field is added manually or via the method [crm.company.userfield.add](../crm-company-userfield-add.md) ||
 || [onCrmCompanyUserFieldUpdate](./on-crm-company-user-field-update.md) | When a user field is changed manually or via the method [crm.company.userfield.update](../crm-company-userfield-update.md) ||
 || [onCrmCompanyUserFieldDelete](./on-crm-company-user-field-delete.md) | When a user field is deleted manually or via the method [crm.company.userfield.delete](../crm-company-userfield-delete.md) ||
-|| [onCrmCompanyUserFieldSetEnumValues](./on-crm-company-user-field-set-enum-values.md) | When the set of values for a list-type user field is changed manually or via the method [crm.company.userfield.updates](../crm-company-userfield-update.md) ||
+|| [onCrmCompanyUserFieldSetEnumValues](./on-crm-company-user-field-set-enum-values.md) | When the set of values for a list-type user field is changed manually or via the methods [crm.company.userfield.add](../crm-company-userfield-add.md) and [crm.company.userfield.update](../crm-company-userfield-update.md) ||
 |#

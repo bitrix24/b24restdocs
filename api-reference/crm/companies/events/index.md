@@ -10,7 +10,7 @@ Events allow applications to respond to changes in almost real-time: receiving n
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../events/index.md).
 
-> Quick navigation: [all events](#all-events) 
+> Quick navigation: [all events](#all-events)
 
 ## How to Receive Events
 

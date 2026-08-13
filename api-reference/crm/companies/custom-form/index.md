@@ -7,12 +7,43 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 The group of methods `crm.company.details.configuration.*` manages the settings of the card for two views:
-* "General view" — the card view for all employees
-* "My view" — personal card settings for the employee
 
-In the view, you can configure the sections of the card, for example, create a section for "Contact Information." Within the section, you can set the list of fields — in the "Contact Information" section, you can display the fields "Phone" and "Email." Fields that are not related to contact information should be displayed in another section.
+- "General view" — the card view for all employees
+- "My view" — personal card settings for the employee
 
-> Quick navigation: [all methods](#all-methods) 
+In the view, you can configure the sections of the card, for example, create a section "Contact Information." Within the section, you set the list of fields: in "Contact Information" you display the fields "Phone" and "Email," and the remaining fields go to other sections.
+
+General information about companies and the other groups of methods is in the section [Companies in CRM](../index.md).
+
+{% note warning "Method Development Has Been Discontinued" %}
+
+Development of the `crm.company.details.configuration.*` methods has been discontinued. For new development, use the universal methods `crm.item.details.configuration.*` — the replacement table is in the section [Current API Version](#actual-version).
+
+{% endnote %}
+
+> Quick navigation: [all methods](#all-methods)
+
+## Current API Version {#actual-version}
+
+The methods for the company card settings have been replaced by the [universal card settings methods](../../universal/item-details-configuration/index.md). A universal method works with the card of any CRM object and receives the object type in the `entityTypeId` parameter. For a company, `entityTypeId` equals `4`.
+
+#|
+|| **Method with Discontinued Development** | **Replacement** ||
+|| `crm.company.details.configuration.get` | [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md) ||
+|| `crm.company.details.configuration.set` | [crm.item.details.configuration.set](../../universal/item-details-configuration/crm-item-details-configuration-set.md) ||
+|| `crm.company.details.configuration.reset` | [crm.item.details.configuration.reset](../../universal/item-details-configuration/crm-item-details-configuration-reset.md) ||
+|| `crm.company.details.configuration.forceCommonScopeForAll` | [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md) ||
+|#
+
+The discontinued methods keep working — you do not have to rewrite existing integrations.
+
+## Who Can Change the Card Settings
+
+The permissions depend on whose settings you read or change:
+
+- Any user retrieves the general settings and retrieves, sets, and resets their own personal settings.
+- Only a user with the "Allow to change settings" access permission in CRM can change and reset the general settings, as well as read and change the personal settings of other users. This permission applies to the entire CRM, not to an individual object.
+- The method `crm.company.details.configuration.forceCommonScopeForAll` is available only to a user with the "Allow to change settings" access permission in CRM.
 
 ## Connection of Company Cards with Other Objects
 
@@ -24,7 +55,7 @@ In the view, you can configure the sections of the card, for example, create a s
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: any user
+> Who can execute the methods: depending on the method
 
 #| 
 || **Method** | **Description** ||
