@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: CRM administrator
 
 The method `crm.contact.userfield.delete` removes a custom contact field.
 

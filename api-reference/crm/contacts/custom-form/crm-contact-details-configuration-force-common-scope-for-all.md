@@ -7,8 +7,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 > Scope: [`crm`](../../../scopes/permissions.md)
-> 
-> Who can execute the method: Administrator
+>
+> Who can execute the method: a user with the "Allow to change settings" access permission in CRM
 
 {% note warning "DEPRECATED" %}
 

@@ -6,11 +6,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, updating, or deletion of custom contact fields.
+Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, updating, or deletion of [custom contact fields](../index.md).
+
+The events report changes in the structure of the fields, not in the values stored in contact cards. In all four events, the handler receives the same set of data in `data.FIELDS`: the field identifier `ID`, the object type `ENTITY_ID` with the value `CRM_CONTACT`, and the field code `FIELD_NAME`. Request the settings of the field itself with the method [crm.contact.userfield.get](../crm-contact-userfield-get.md) — after the deletion event, the field is no longer available.
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Handling](../../../../events/index.md).
 
-> Quick navigation: [all events](#all-events) 
+> Quick navigation: [all events](#all-events)
 
 ## How to Receive Events
 
@@ -36,5 +38,5 @@ An example of a handler for the event is described in the article [How to Test Y
 || [onCrmContactUserFieldAdd](./on-crm-contact-user-field-add.md) | When a custom field is added manually or via the method [crm.contact.userfield.add](../crm-contact-userfield-add.md) ||
 || [onCrmContactUserFieldUpdate](./on-crm-contact-user-field-update.md) | When a custom field is changed manually or via the method [crm.contact.userfield.update](../crm-contact-userfield-update.md) ||
 || [onCrmContactUserFieldDelete](./on-crm-contact-user-field-delete.md) | When a custom field is deleted manually or via the method [crm.contact.userfield.delete](../crm-contact-userfield-delete.md) ||
-|| [onCrmContactUserFieldSetEnumValues](./on-crm-contact-user-field-set-enum-values.md) | When the set of values for a list-type custom field is changed manually or via the method [crm.contact.userfield.update](../crm-contact-userfield-update.md) ||
+|| [onCrmContactUserFieldSetEnumValues](./on-crm-contact-user-field-set-enum-values.md) | When the set of values for a list-type custom field is changed manually or via the methods [crm.contact.userfield.add](../crm-contact-userfield-add.md) and [crm.contact.userfield.update](../crm-contact-userfield-update.md) ||
 |#

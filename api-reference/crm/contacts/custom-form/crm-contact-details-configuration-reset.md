@@ -9,8 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method:
->  - Any user has the right to access their own and shared settings
->  - Only an administrator has the right to access others' settings
+>  - any user can reset their own personal settings
+>  - a user with the "Allow to change settings" access permission in CRM can reset the shared settings and another user's personal settings
 
 {% note warning "DEPRECATED" %}
 
