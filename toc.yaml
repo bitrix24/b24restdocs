@@ -83,6 +83,6 @@ navigation:
         url: '/ai-tools/mcp.html'         
       - text: 'GitHub'
         type: 'link'
-        url: 'https://github.com/bitrix24/bitrix24-dev-hub'
+        url: 'https://github.com/bitrix24/b24-ai-starter'
     rightItems:    
       - type: controls

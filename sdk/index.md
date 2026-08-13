@@ -66,4 +66,6 @@ Use B24GoSDK:
 
 [MCP](../ai-tools/mcp.md) is an auxiliary service for AI assistants in the development environment. MCP provides AI assistants with structured data and specifications for REST API methods, helps generate correct code, and speeds up application creation.
 
+[B24 AI Starter](https://github.com/bitrix24/b24-ai-starter) is a starter template for a Bitrix24 application with instructions for AI agents. The template includes a ready-made Nuxt 3 frontend with the UI Kit connected and three backend options to choose from: PHP, Python, or Node.js — with SDKs, authorization through the [OAuth protocol](../settings/oauth/index.md), and a Docker environment. The template saves you from building the application structure from scratch: the AI agent writes the business logic following the ready-made instructions from the repository.
+
 [UI Kit](../api-reference/widgets/ui-kit/index.md) is a set of Vue components for creating interfaces in the Bitrix24 brand style. It ensures consistency in visual language and accelerates frontend development.
