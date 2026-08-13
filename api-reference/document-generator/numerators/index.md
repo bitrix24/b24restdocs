@@ -23,7 +23,7 @@ Numbering rules define the format for document numbers:
 
 {% note info " " %}
 
-The [documentgenerator.numerator.list](./document-generator-numerator-list.md) method returns all numbering rules available in the current Bitrix24, including [CRM numbering rules](../../crm/document-generator/numerator/index.md).
+The [documentgenerator.numerator.list](./document-generator-numerator-list.md) method returns the numbering rules of the document generator, including those created by the [CRM numbering rule](../../crm/document-generator/numerator/index.md) methods. Numbering rules of other tools, such as CRM invoices, are not included in the selection.
 
 {% endnote %}
 

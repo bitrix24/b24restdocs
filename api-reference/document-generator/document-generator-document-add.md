@@ -26,7 +26,7 @@ You can obtain the template identifier after [creating a template](./templates/d
 || **providerClassName**
 [`string`](../data-types.md) | Data provider class.
 
-Defaults to `Bitrix\DocumentGenerator\DataProvider\Rest` ||
+When called via REST, `Bitrix\DocumentGenerator\DataProvider\Rest` is always used: the value passed is ignored, so this parameter can be omitted ||
 || **value***
 [`string`](../data-types.md) | External identifier of the object for which the document is being generated.
 
@@ -573,7 +573,7 @@ HTTP Status: **200**
 
 {% note info "" %}
 
-File conversion to PDF is performed asynchronously. If the `pdfUrl` field is not filled immediately after creation, re-invoke [documentgenerator.document.get](./document-generator-document-get.md) to check the conversion result.
+File conversion to PDF is performed asynchronously. The `pdfUrl` field is returned in the response only after the PDF has been generated, so it is usually absent immediately after the document is created. To check the conversion result, re-invoke [documentgenerator.document.get](./document-generator-document-get.md).
 
 {% endnote %}
 

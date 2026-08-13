@@ -19,9 +19,9 @@ Templates, documents, and input data created through `documentgenerator.*` do no
 #| 
 ||  | Methods `documentgenerator.*` | Methods `crm.documentgenerator.*` ||
 || Where to Use | In REST application scenarios, when templates and documents are within the `documentgenerator` scope | In CRM scenarios, when the document is linked to a CRM object ||
-|| What to Pass During Generation | 
+|| What to Pass During Generation |
 - `value` — external ID of the object for which the document is created
-- `providerClassName` — data provider class | 
+- `providerClassName` — data provider class |
 - `entityId` — CRM object identifier
 - `entityTypeId` — CRM object type ||
 || Template Methods | [documentgenerator.template.*](./templates/index.md) | [crm.documentgenerator.template.*](../crm/document-generator/templates/index.md) ||
@@ -61,7 +61,7 @@ To work with documents in the Document Generator REST scenario:
 
 ## Feature of Document Conversion to PDF
 
-The conversion of a file to PDF is performed asynchronously. If the `pdfUrl` field is not filled immediately after the document is created, call the [documentgenerator.document.get](./document-generator-document-get.md) method to check the conversion result again.
+The conversion of a file to PDF is performed asynchronously. The `pdfUrl` field is returned in the response only after the PDF has been generated, so it is usually absent immediately after the document is created. To check the conversion result again, call the [documentgenerator.document.get](./document-generator-document-get.md) method.
 
 ## Overview of Methods {#all-methods}
 

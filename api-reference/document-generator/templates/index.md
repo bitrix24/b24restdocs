@@ -16,7 +16,7 @@ The template file must be in `.docx` format and contain placeholders for fields 
 
 Values for substitution are formatted within curly braces, such as `{DocumentNumber}` or `{MyField}`.
 
-Supported field types include `IMAGE`, `STAMP`, `DATE`, and `NAME`. The Money and Address fields pertain to the CRM module, so in the REST template, such values need to be passed in a prepared format.
+The field type is specified in the `fields` parameter when creating a document. Supported types include `TEXT`, `DATE`, `NAME`, `PHONE`, `IMAGE`, and `STAMP`. The Money and Address fields pertain to the CRM module, so in a document generator template, such values need to be passed in a prepared format.
 
 ## Getting Started
 
@@ -43,7 +43,9 @@ Supported field types include `IMAGE`, `STAMP`, `DATE`, and `NAME`. The Money an
 
 All templates in this section are created in the `documentgenerator` scope and pertain to the `rest` module. The `moduleId` field for them always remains `rest`, so these methods cannot be used to manage templates from other modules.
 
-When creating a template, providers for the REST scenario are filled in automatically. The base provider is `Bitrix\DocumentGenerator\DataProvider\Rest`. To pass arrays into tables and repeating blocks, `Bitrix\DocumentGenerator\DataProvider\HashDataProvider` is used.
+Template providers are filled in automatically: the `documentgenerator.template.*` methods always assign the base provider `Bitrix\DocumentGenerator\DataProvider\Rest` to the template, even if a different class is passed in the request.
+
+Arrays for tables and repeating blocks are described not in the template, but in the `fields` parameter when creating a document: the list itself through `Bitrix\DocumentGenerator\DataProvider\ArrayDataProvider`, and its items through `Bitrix\DocumentGenerator\DataProvider\HashDataProvider`. Examples are provided in the section [{#T}](../examples/index.md).
 
 The fields `users`, `active`, and `sort` relate to the application's own settings. They help manage the visibility and order of templates in the application's interface but do not create a ready-made user interface on the Bitrix24 side.
 
