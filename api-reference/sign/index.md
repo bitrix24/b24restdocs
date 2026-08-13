@@ -29,6 +29,18 @@ These methods can only be executed in the context of authorization of the [appli
 || Transfer data from an HR system to fill e-Signature documents | [humanresources.hcmlink.*](./hcm-link/index.md) methods ||
 |#
 
+## Link to Other Objects
+
+**CRM company.** The e-Signature document is sent on behalf of a company. In the `sign.b2e.document.send` and `sign.b2e.company.provider.list` methods, you can specify the company using `company.crmId` or `companyCrmId`. This is the identifier of the CRM company connected as "my company". You can retrieve it using the [crm.item.list](../crm/universal/crm-item-list.md) method with the `entityTypeId = 4` parameter and the `isMyCompany = Y` filter.
+
+**Employee and user.** Signing participants and the responsible person are linked to Bitrix24 users through `userId`. If the company is connected to HCM Link, you can pass the employee's `employeeId` or `employeeCode` from the HR system instead of `userId`.
+
+**HCM Link.** The integration with HR systems transfers companies, employees, and field values for e-Signature documents. If a document is sent using HCM Link data, the `sign.b2e.*` methods are linked to the [humanresources.hcmlink.*](./hcm-link/index.md) methods.
+
+**Document file.** The `sign.b2e.document.send` method accepts a PDF file in the `files[].fileContent` parameter, encoded in Base64. After signing, the file can be retrieved from the user's signed document lists or from the company safe.
+
+**Signing statuses.** The `OnSignB2eDocumentStatusChanged` and `OnSignB2eMemberStatusChanged` events report changes in document and participant statuses. Document details can be retrieved using the [sign.b2e.document.get](./sign-b2e-document-get.md) method by `uid`.
+
 ## Scope Features
 
 **sign.b2e** — used in methods for working with e-Signature documents and signing events.

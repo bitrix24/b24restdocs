@@ -11,6 +11,8 @@ Events allow applications to receive notifications about changes in the statuses
 A detailed explanation of working with events is provided in the article [Concept and Benefits of Event Processing](../../events/index.md).
 
 > Quick navigation: [all events](#all-events)
+>
+> User documentation: [Bitrix24 e-Signature for HR: service for signing HR documents](https://helpdesk.bitrix24.com/open/20687576/)
 
 ## How to Receive Events
 

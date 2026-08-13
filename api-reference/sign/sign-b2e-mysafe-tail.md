@@ -24,7 +24,7 @@ The method works only in the context of [application](../../settings/app-install
 || **limit**
 [`integer`](../data-types.md) | Number of records per page.
 
-The parameter accepts a value from 1 to 50.
+The parameter accepts a value from 1 to 1000.
 
 By default, 20 records are displayed per page ||
 || **offset**
@@ -73,7 +73,7 @@ The page size of results depends on the **limit** parameter
     }
 
     try {
-      // sign.b2e.mysafe.tail returns a single page (max 50 records). For the whole result set
+      // sign.b2e.mysafe.tail returns a single page (max 1000 records). For the whole result set
       // use a list helper: $b24.actions.v2.callList.make() returns every record as one
       // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
       // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
@@ -111,7 +111,7 @@ The page size of results depends on the **limit** parameter
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // sign.b2e.mysafe.tail returns a single page (max 50 records). For the whole result set
+          // sign.b2e.mysafe.tail returns a single page (max 1000 records). For the whole result set
           // use a list helper: $b24.actions.v2.callList.make() returns every record as one
           // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
           // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
@@ -177,7 +177,7 @@ The page size of results depends on the **limit** parameter
     BX24.callMethod(
         'sign.b2e.mysafe.tail',
         {
-            // Number of records per page. Value from 1 to 50. Default is 20.
+            // Number of records per page. Value from 1 to 1000. Default is 20.
             limit: 2,
             
             // Parameter for managing pagination.
@@ -261,7 +261,7 @@ HTTP status: **200**
             "creator_id": 1,
             "member_id": 1,
             "role": "signer",
-            "file_url": "https://your-domain.bitrix24.com/rest/download.json?auth=7e34b4670000071b0075444600000037f0f1072e5aa442013dece15a3df95d26ed4873&token=sign.b2e%7CaWQ9NTkmXz1IVEVndlJnZUttZUFkeERtaVBRbkhwZkhhTEJFZklpYQ%3D%3D%7CImRvd25sb2FkfHNpZ24uYjJlfGFXUTlOVGttWHoxSVZFVm5kbEpuWlV0dFpVRmtlRVJ0YVZCUmJraHdaa2hoVEVKRlprbHBZUT09fDdlMzRiNDY3MDAwMDA3MWIwMDc1NDQ0NjAwMDAwMDM3ZjBmMTA3MmU1YWE0NDIwMTNkZWNlMTVhM2RmOTVkMjZlZDQ4NzMi.8C%2B3HpNFR5C0YkzTeVL%2FdhE6QJYN66CGoDzZG4VeR4Q%3D"
+            "file_url": "https://your-domain.bitrix24.com/rest/download.json?auth=7e34b467...&token=sign.b2e..."
         },
         {
             "id": 55,
@@ -271,7 +271,7 @@ HTTP status: **200**
             "creator_id": 19,
             "member_id": 1,
             "role": "signer",
-            "file_url": "https://your-domain.bitrix24.com/rest/download.json?auth=7e34b4670000071b0075444600000037f0f1072e5aa442013dece15a3df95d26ed4873&token=sign.b2e%7CaWQ9NTUmXz12czNjZDhyM3g2SUZYdzByRVZBbVJIYzZTY3dxZUFxbw%3D%3D%7CImRvd25sb2FkfHNpZ24uYjJlfGFXUTlOVFVtWHoxMmN6TmpaRGh5TTNnMlNVWllkekJ5UlZaQmJWSklZelpUWTNkeFpVRnhidz09fDdlMzRiNDY3MDAwMDA3MWIwMDc1NDQ0NjAwMDAwMDM3ZjBmMTA3MmU1YWE0NDIwMTNkZWNlMTVhM2RmOTVkMjZlZDQ4NzMi.r6Khc2bwTlEANXvuAptaut0Z%2F6y1nGx%2FZhRKqEGkjk0%3D"
+            "file_url": "https://your-domain.bitrix24.com/rest/download.json?auth=7e34b467...&token=sign.b2e..."
         }
     ],
     "time": {
@@ -293,7 +293,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response. Contains information about signed documents in the company's safe ||
+[`array`](../data-types.md) | The root element of the response. Contains information about signed documents in the company's safe ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
@@ -316,12 +316,16 @@ HTTP status: **200**
 || **member_id**
 [`integer`](../data-types.md) | Identifier of the user with whom the document is signed ||
 || **role**
-[`string`](../data-types.md) | Employee's role in the document:                
+[`string`](../data-types.md) | Employee's role in the document:
  - editor — filler
  - reviewer — approver
  - assignee — company representative
- - signer - employee
+ - signer — employee
 ||
+|| **folderName**
+[`string`](../data-types.md) | Document folder name.
+
+Returned if safe document grouping by folders is enabled ||
 || **file_url**
 [`string`](../data-types.md) | Link to download the signed document ||
 |#

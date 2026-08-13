@@ -24,7 +24,7 @@ The method works only in the context of authorization of the [application](../..
 || **limit**
 [`integer`](../data-types.md) | Number of records per page. 
 
-The parameter accepts a value from 1 to 50. 
+The parameter accepts a value from 1 to 1000.
 
 By default, 20 records are displayed per page ||
 || **offset**
@@ -72,7 +72,7 @@ The page size of results depends on the **limit** parameter
       const response = await $b24.actions.v2.call.make<SignedDocumentItem[]>({
         method: 'sign.b2e.personal.tail',
         params: {
-          // Number of records per page. Value from 1 to 50. Default is 20.
+          // Number of records per page. Value from 1 to 1000. Default is 20.
           limit: 2,
           // Offset for pagination (analogous to the standard start parameter).
           offset: 0,
@@ -107,7 +107,7 @@ The page size of results depends on the **limit** parameter
           const response = await $b24.actions.v2.call.make({
             method: 'sign.b2e.personal.tail',
             params: {
-              // Number of records per page. Value from 1 to 50. Default is 20.
+              // Number of records per page. Value from 1 to 1000. Default is 20.
               limit: 2,
               // Offset for pagination (analogous to the standard start parameter).
               offset: 0,
@@ -167,7 +167,7 @@ The page size of results depends on the **limit** parameter
     BX24.callMethod(
         'sign.b2e.personal.tail',
         {
-            // Number of records per page. Value from 1 to 50. Default is 20.
+            // Number of records per page. Value from 1 to 1000. Default is 20.
             limit: 2,
             
             // Parameter for pagination control.
@@ -245,13 +245,13 @@ HTTP status: **200**
             "id": 59,
             "title": "test-pdf e",
             "signed_date": "2024-06-28T19:34:58+02:00",
-            "file_url": "https://your-domain.bitrix24.com/rest/download.json?auth=6348b3670000071b0075444600000001f0f1073855cfba3bff42f043e2c1c26a46cb93&token=sign.b2e%7CaWQ9NTkmXz1udzlucFJBVHUxM2JjcUV2YncyY0tQbTZNSTNzT0Z3MA%3D%3D%7CImRvd25sb2FkfHNpZ24uYjJlfGFXUTlOVGttWHoxdWR6bHVjRkpCVkhVeE0ySmpjVVYyWW5jeVkwdFFiVFpOU1ROelQwWjNNQT09fDYzNDhiMzY3MDAwMDA3MWIwMDc1NDQ0NjAwMDAwMDAxZjBmMTA3Mzg1NWNmYmEzYmZmNDJmMDQzZTJjMWMyNmE0NmNiOTMi.AoYFUXxsuvEjW9ipqBndwej6EvcjBWJTXMh9QQ3O6BU%3D"
+            "file_url": "https://your-domain.bitrix24.com/rest/download.json?auth=6348b367...&token=sign.b2e..."
         },
         {
             "id": 55,
             "title": "test-pdf 778484",
             "signed_date": "2024-06-28T18:39:47+02:00",
-            "file_url": "https://your-domain.bitrix24.com/rest/download.json?auth=6348b3670000071b0075444600000001f0f1073855cfba3bff42f043e2c1c26a46cb93&token=sign.b2e%7CaWQ9NTUmXz04eDU2VkhCUU9hZ0xQQzA3eDJLNWRuYmJ4dTFYOWgzOA%3D%3D%7CImRvd25sb2FkfHNpZ24uYjJlfGFXUTlOVFVtWHowNGVEVTJWa2hDVVU5aFoweFFRekEzZURKTE5XUnVZbUo0ZFRGWU9XZ3pPQT09fDYzNDhiMzY3MDAwMDA3MWIwMDc1NDQ0NjAwMDAwMDAxZjBmMTA3Mzg1NWNmYmEzYmZmNDJmMDQzZTJjMWMyNmE0NmNiOTMi.PYj60eOODc0X4n0pbwMFwIJKV3uZTlSpZBGCmPaj%2F7A%3D"
+            "file_url": "https://your-domain.bitrix24.com/rest/download.json?auth=6348b367...&token=sign.b2e..."
         }
     ],
     "time": {
@@ -273,7 +273,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response. Contains information about the user's signed documents ||
+[`array`](../data-types.md) | The root element of the response. Contains information about the user's signed documents ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
@@ -310,7 +310,7 @@ HTTP status: **401**
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./sign-b2e-mysafe-tail.md)

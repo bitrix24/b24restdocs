@@ -10,6 +10,21 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
+## Request Execution Time Limit
+
+In the Bitrix24 cloud version, one REST request must finish within 60 seconds. If processing takes longer, the request is interrupted by timeout.
+
+Request duration can be affected by the data volume, filter complexity, nested calls in [batch](settings/how-to-call-rest-api/batch.md), and automation that is launched when the method is executed.
+
+To reduce the timeout risk:
+
+- split large operations into several requests
+- use pagination and do not request unnecessary fields
+- move long-running scenarios to an external queue or background processing on the application side
+- check the `duration` field in the response [`time`](api-reference/data-types.md#time) object
+
+In the Bitrix24 self-hosted version, request execution time depends on server settings.
+
 ## Request Rate Limits
 
 The Bitrix24 request rate limit operates on the Leaky Bucket Algorithm principle. An application can perform intensive requests briefly, but it cannot maintain such intensity constantly.

@@ -107,6 +107,13 @@ Deprecated scenario. To open an application from the chat, use widgets ||
 - `Y` — block after pressing
 - `N` — do not block
 
+`BLOCK` works only for buttons with `COMMAND`:
+
+- `COMMAND + BLOCK=Y` — the button is blocked after it is pressed
+- `ACTION + BLOCK=Y` — the button performs the action but is not blocked
+
+Buttons with `ACTION` are executed on the client side. The bot does not control them and cannot unblock them.
+
 Default is `N` ||
 || **DISABLED**
 [`string`](../../../../data-types.md) | Button activity:
