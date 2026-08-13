@@ -20,7 +20,7 @@ The method is available only for `supervisor` and `personal` type bots. For more
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name** 

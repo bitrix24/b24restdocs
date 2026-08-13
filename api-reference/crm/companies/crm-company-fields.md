@@ -924,7 +924,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Access denied` | The user does not have permission to "Read" companies ||
+|| Empty value | `Access denied` | The user does not have permission to "Read" companies ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

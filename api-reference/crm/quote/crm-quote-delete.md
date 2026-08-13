@@ -20,7 +20,7 @@ The method `crm.quote.delete` removes an estimate.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -255,8 +255,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `ID is not defined or invalid.` | An incorrect `id` was provided ||
-|| `-` | `Access denied.` | The user does not have permission to delete estimates ||
+|| Empty value | `ID is not defined or invalid.` | An incorrect `id` was provided ||
+|| Empty value | `Access denied.` | The user does not have permission to delete estimates ||
 || `ERROR_CORE` | `Element not found` | The estimate with the provided `id` was not found ||
 |#
 

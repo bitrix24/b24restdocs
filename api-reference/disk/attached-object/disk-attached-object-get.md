@@ -14,7 +14,7 @@ The method `disk.attachedObject.get` returns information about the attached file
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

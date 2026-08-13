@@ -14,7 +14,7 @@ The `crm.deal.userfield.add` method creates a new custom field for deals.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -40,7 +40,7 @@ An incorrect field in `fields` will be ignored ||
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -1000,10 +1000,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `The 'FIELD_NAME' field is not found.` | Either an empty `FIELD_NAME` was provided, or it was not provided at all ||
+|| Empty value | `The 'FIELD_NAME' field is not found.` | Either an empty `FIELD_NAME` was provided, or it was not provided at all ||
 || `ERROR_CORE` | `Field name is too long (more than 50 characters).` | The full field name including the prefix `UF_CRM_` contains more than 50 characters, that is, more than 43 characters were provided in `FIELD_NAME` ||
 || `ERROR_CORE` | `Field name contains invalid characters. Allowed characters are: A-Z, 0-9 and _.` | The provided `FIELD_NAME` contains characters other than `A-Z`, `0-9`, and `_` ||
-|| `-` | `The 'USER_TYPE_ID' field is not found.` | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
+|| Empty value | `The 'USER_TYPE_ID' field is not found.` | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
 || `ERROR_CORE` | `Incorrect custom type specified.` | The provided `USER_TYPE_ID` does not exist ||
 || `ERROR_CORE` | `List item with value XML_ID=xml_id already exists.` | The provided `XML_ID` in list items are not unique ||
 |#

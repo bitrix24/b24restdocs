@@ -18,7 +18,7 @@ If the block is marked as deleted, first restore it using the [landing.landing.m
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**

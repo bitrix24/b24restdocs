@@ -20,7 +20,7 @@ Save the folder ID after deletion so that it can be restored later using the met
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

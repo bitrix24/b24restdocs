@@ -20,7 +20,7 @@ Save the file ID after deletion so that it can be restored later using the [disk
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

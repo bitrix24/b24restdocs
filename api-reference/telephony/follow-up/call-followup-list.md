@@ -20,7 +20,7 @@ The `call.followup.list` method returns a list of follow-up calls for the specif
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

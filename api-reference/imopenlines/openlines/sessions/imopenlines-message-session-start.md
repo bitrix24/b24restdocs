@@ -14,7 +14,7 @@ The method `imopenlines.message.session.start` initiates a new session and trans
 
 ## Method Parameters
 
-{% include [Footnote on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

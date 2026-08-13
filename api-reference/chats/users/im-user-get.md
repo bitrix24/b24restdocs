@@ -14,7 +14,7 @@ The method `im.user.get` retrieves data about the current user or a user by `ID`
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

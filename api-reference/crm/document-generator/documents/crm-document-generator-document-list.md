@@ -14,7 +14,7 @@ The method `crm.documentgenerator.document.list` returns a list of documents bas
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

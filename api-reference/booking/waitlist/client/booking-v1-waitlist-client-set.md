@@ -14,7 +14,7 @@ The method `booking.v1.waitlist.client.set` sets clients for the specified recor
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

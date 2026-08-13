@@ -20,7 +20,7 @@ This method delegates a workflow task. You can only delegate your own task.
 
 ## Method parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

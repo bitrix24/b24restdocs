@@ -20,7 +20,7 @@ The `note.document.tree.field.get` method returns a description of a document tr
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -20,7 +20,7 @@ The development of this method has been halted since version `tasks 25.700.0`. U
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**
@@ -35,7 +35,7 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 
 ### FIELDS Parameter {#fields}
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

@@ -20,7 +20,7 @@ Localization parameters (settings dependent on language) will be returned for th
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 ||  **Name**

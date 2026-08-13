@@ -18,7 +18,7 @@ The method `crm.item.details.configuration.reset` resets the item card settings 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

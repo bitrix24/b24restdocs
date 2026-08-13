@@ -20,7 +20,7 @@ The method `crm.deal.update` updates an existing deal.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -568,13 +568,13 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `ID is not defined or invalid` | The parameter `id` is not a positive integer ||
-|| `-`     | `Not found` | The deal with the provided `id` does not exist ||
-|| `-`     | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
-|| `-`     | `Parameter 'params' must be array` | The parameter `params` is not an object ||
-|| `-`     | `Access denied` | The user does not have permission to "edit" deals ||
-|| `-`     | Disk resource exhausted |> ||
-|| `-`     | Invalid value for the "Currency" field |> ||
+|| Empty value | `ID is not defined or invalid` | The parameter `id` is not a positive integer ||
+|| Empty value | `Not found` | The deal with the provided `id` does not exist ||
+|| Empty value | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
+|| Empty value | `Parameter 'params' must be array` | The parameter `params` is not an object ||
+|| Empty value | `Access denied` | The user does not have permission to "edit" deals ||
+|| Empty value | Disk resource exhausted |> ||
+|| Empty value | Invalid value for the "Currency" field |> ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

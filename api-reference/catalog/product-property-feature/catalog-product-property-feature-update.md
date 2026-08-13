@@ -14,7 +14,7 @@ The method `catalog.productPropertyFeature.update` updates the parameter of a pr
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,7 +29,7 @@ The parameter identifier can be obtained using the [catalog.productPropertyFeatu
 
 ### Parameter fields {#fields}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

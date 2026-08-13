@@ -14,7 +14,7 @@ The method `crm.deal.userfield.update` updates an existing custom field for deal
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -46,7 +46,7 @@ Only those fields that need to be changed should be passed in `fields` ||
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Parameter**

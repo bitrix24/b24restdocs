@@ -26,7 +26,7 @@ Starting from version 19.0.0, it is recommended to use the method [crm.status.de
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

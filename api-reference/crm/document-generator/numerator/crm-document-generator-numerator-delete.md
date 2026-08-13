@@ -16,7 +16,7 @@ You can only delete numerators created through [crm.documentgenerator.numerator.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

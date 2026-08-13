@@ -20,7 +20,7 @@ The method `tasks.task.access.field.list` returns a list of available access per
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

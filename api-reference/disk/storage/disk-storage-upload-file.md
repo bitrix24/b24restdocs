@@ -14,7 +14,7 @@ The method `disk.storage.uploadFile` uploads a new file to the root of the stora
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

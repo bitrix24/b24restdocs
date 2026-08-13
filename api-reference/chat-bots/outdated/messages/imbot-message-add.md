@@ -20,7 +20,7 @@ The method `imbot.message.add` sends a message from the chat bot.
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

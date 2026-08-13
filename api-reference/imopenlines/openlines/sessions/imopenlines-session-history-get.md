@@ -14,7 +14,7 @@ The method `imopenlines.session.history.get` returns the message history of an o
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -10,7 +10,7 @@ The event is triggered when a recurring invoice is updated.
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

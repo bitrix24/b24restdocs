@@ -14,7 +14,7 @@ The method `booking.v1.booking.createfromwaitlist` creates a booking based on an
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

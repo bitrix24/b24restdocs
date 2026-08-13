@@ -14,7 +14,7 @@ The method `landing.demos.getSiteList` retrieves a list of file demo templates f
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

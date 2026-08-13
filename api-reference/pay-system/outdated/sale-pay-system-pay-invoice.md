@@ -14,7 +14,7 @@ This method is used to pay an invoice (legacy version) through a specific paymen
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

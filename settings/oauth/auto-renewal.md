@@ -20,7 +20,7 @@ https://oauth.bitrix.info/oauth/token/?
 
 **Parameters:**
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 - **grant_type*** — a parameter indicating the type of authorization data to be validated. It must have the value `refresh_token`;
 - **client_id*** — the application code obtained in the partner cabinet during application registration, or on the portal in the case of a local application;

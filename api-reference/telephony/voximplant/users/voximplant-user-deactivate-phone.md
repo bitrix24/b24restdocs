@@ -37,4 +37,4 @@ The method is available to the holder of the [permission](https://helpdesk.bitri
 [`int`](../../../data-types.md) | User identifier. ||
 |#
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}

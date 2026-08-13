@@ -16,7 +16,7 @@ To check the current status, use the method [im.user.status.get](./im-user-statu
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

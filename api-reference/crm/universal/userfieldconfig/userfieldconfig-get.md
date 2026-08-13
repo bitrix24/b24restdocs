@@ -14,7 +14,7 @@ The `userfieldconfig.get` method returns the settings of a user field by its ide
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**
@@ -423,9 +423,9 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `-` | You do not have permission to view user field settings | Insufficient rights to view the field. This same error may be returned if the field with the provided `id` has already been deleted or is unavailable in the context of `moduleId` ||
-|| `-` | The current method required more scopes. (crm) | The application does not have the required scope for the module from `moduleId` ||
-|| `-` | No settings for UserFieldAccess | Access to user fields is not configured for the provided `moduleId` ||
+|| Empty value | You do not have permission to view user field settings | Insufficient rights to view the field. This same error may be returned if the field with the provided `id` has already been deleted or is unavailable in the context of `moduleId` ||
+|| Empty value | The current method required more scopes. (crm) | The application does not have the required scope for the module from `moduleId` ||
+|| Empty value | No settings for UserFieldAccess | Access to user fields is not configured for the provided `moduleId` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

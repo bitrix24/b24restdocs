@@ -14,7 +14,7 @@ The method `tasks.template.checklist.list` returns a list of checklist items for
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name** 

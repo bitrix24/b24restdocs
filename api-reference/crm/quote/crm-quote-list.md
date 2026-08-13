@@ -22,7 +22,7 @@ This method implements the [list method](../../../settings/how-to-call-rest-api/
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -439,10 +439,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Parameter 'order' must be array.` | An object was not passed in `order` ||
-|| `-` | `Parameter 'filter' must be array.` | An object was not passed in `filter` ||
-|| `-` | `Access denied.` | The user does not have permission to read estimates ||
-|| `-` | `Failed to get list. General error.` | General error executing the request ||
+|| Empty value | `Parameter 'order' must be array.` | An object was not passed in `order` ||
+|| Empty value | `Parameter 'filter' must be array.` | An object was not passed in `filter` ||
+|| Empty value | `Access denied.` | The user does not have permission to read estimates ||
+|| Empty value | `Failed to get list. General error.` | General error executing the request ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

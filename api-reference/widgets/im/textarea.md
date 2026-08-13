@@ -64,7 +64,7 @@ After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
 }
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
@@ -85,7 +85,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 
 For `IM_TEXTAREA`, the `placement.bind` method supports `OPTIONS` parameters.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Parameter** `type` | **Description** ||

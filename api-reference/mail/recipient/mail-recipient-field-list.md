@@ -20,7 +20,7 @@ The `mail.recipient.field.list` method returns a list of available recipient fie
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

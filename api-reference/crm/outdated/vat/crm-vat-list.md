@@ -20,7 +20,7 @@ The method `crm.vat.list` returns a list of VAT rates based on a filter. It is a
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

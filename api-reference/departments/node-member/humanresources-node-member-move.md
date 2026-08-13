@@ -20,7 +20,7 @@ The method `humanresources.node.member.move` transfers users to the specified de
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name** 

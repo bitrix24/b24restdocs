@@ -140,7 +140,7 @@ The request is sent to the address specified in `CALCULATE_URL` when creating a 
 
 ## Response Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

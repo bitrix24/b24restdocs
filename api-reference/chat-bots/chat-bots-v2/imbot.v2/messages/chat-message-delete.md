@@ -16,7 +16,7 @@ Messages sent with the parameter `system: true` have `authorId = 0`. The bot wil
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

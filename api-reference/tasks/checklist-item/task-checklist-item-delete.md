@@ -18,7 +18,7 @@ You can check permissions for deleting an item using the method [task.checklisti
 
 ## Method Parameters
 
-{% include [Required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

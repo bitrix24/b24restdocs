@@ -16,7 +16,7 @@ Messages sent with the parameter `system: true` cannot be updated—they have `a
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

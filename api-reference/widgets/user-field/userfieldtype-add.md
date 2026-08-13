@@ -34,7 +34,7 @@ When opening a card with a user type field, an array `PLACEMENT_OPTIONS` contain
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

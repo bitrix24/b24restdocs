@@ -54,7 +54,7 @@ The identifier can be obtained using the [lists.section.get](./lists-section-get
 
 ### Parameter FIELDS {#parametr-fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

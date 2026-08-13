@@ -20,7 +20,7 @@ The method `imbot.chat.setManager` assigns a chat administrator or revokes admin
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

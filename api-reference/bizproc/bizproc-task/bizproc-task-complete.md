@@ -26,7 +26,7 @@ You can only complete your own task.
 
 ## Method parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

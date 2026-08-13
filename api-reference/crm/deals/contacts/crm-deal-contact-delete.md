@@ -14,7 +14,7 @@ The method `crm.deal.contact.delete` removes a contact from the specified deal.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -30,7 +30,7 @@ Can be obtained using the methods [crm.deal.list](../crm-deal-list.md) or [crm.d
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -328,12 +328,12 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `The parameter 'ownerEntityID' is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
-|| `-` | `The parameter 'item' must be array.` | The `fields` is not an object ||
-|| `-` | `Access denied.` | The user does not have permission to modify deals ||
+|| Empty value | `The parameter 'ownerEntityID' is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
+|| Empty value | `The parameter 'item' must be array.` | The `fields` is not an object ||
+|| Empty value | `Access denied.` | The user does not have permission to modify deals ||
 || `ACCESS_DENIED` | `Access denied!` | No permission to modify the deal ||
-|| `-` | `Not found.` | The deal with the provided `id` was not found ||
-|| `-` | `The parameter 'fields' is not valid.` | Can occur for several reasons:
+|| Empty value | `Not found.` | The deal with the provided `id` was not found ||
+|| Empty value | `The parameter 'fields' is not valid.` | Can occur for several reasons:
 - if the required parameter `fields.CONTACT_ID` is not provided
 - if the provided parameter `fields.CONTACT_ID` is less than or equal to 0 ||
 |#

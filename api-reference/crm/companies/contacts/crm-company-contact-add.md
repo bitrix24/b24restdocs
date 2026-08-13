@@ -14,7 +14,7 @@ The method `crm.company.contact.add` adds a contact to the specified company.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -45,7 +45,7 @@ The list of available fields is described [below](#parameter-fields) ||
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -359,11 +359,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `The parameter 'ownerEntityID' is invalid or not defined` | The provided `id` is less than or equal to 0 or not provided at all ||
-|| `-`     | `The parameter 'fields' must be array` | The `fields` parameter is not an object ||
+|| Empty value | `The parameter 'ownerEntityID' is invalid or not defined` | The provided `id` is less than or equal to 0 or not provided at all ||
+|| Empty value | `The parameter 'fields' must be array` | The `fields` parameter is not an object ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit the company ||
-|| `-`     | `Not found` | The company with the provided `id` was not found ||
-|| `-`     | `The parameter 'fields' is not valid` | Can occur for several reasons:
+|| Empty value | `Not found` | The company with the provided `id` was not found ||
+|| Empty value | `The parameter 'fields' is not valid` | Can occur for several reasons:
 - if the required parameter `fields.CONTACT_ID` is not provided
 - if the provided parameter `fields.CONTACT_ID` is less than or equal to 0 ||
 |#

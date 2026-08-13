@@ -20,7 +20,7 @@ The method `humanresources.employee.search` searches for employees by name.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

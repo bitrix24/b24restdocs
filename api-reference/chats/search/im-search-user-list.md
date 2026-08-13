@@ -14,7 +14,7 @@ The method `im.search.user.list` allows you to search for users by first name, l
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

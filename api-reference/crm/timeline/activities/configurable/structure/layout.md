@@ -16,7 +16,7 @@ The top-level object of the timeline entry is `LayoutDto`.
 
 ## Parameters of the `LayoutDto` Object
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||

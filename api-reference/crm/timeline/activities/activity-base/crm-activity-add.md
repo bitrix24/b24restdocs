@@ -20,7 +20,7 @@ The `crm.activity.add` method creates a new system activity.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -53,7 +53,7 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 
 ### Parameter fields {#fields}
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Field** `type` | **Description** ||

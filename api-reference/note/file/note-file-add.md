@@ -26,7 +26,7 @@ The method does not automatically insert the attachment into the document conten
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -20,7 +20,7 @@ The method `main.eventlog.list` returns a list of event log entries based on spe
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

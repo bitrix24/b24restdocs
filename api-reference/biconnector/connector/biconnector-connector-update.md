@@ -14,7 +14,7 @@ The method `biconnector.connector.update` updates an existing connector.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

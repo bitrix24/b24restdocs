@@ -14,7 +14,7 @@ The `imbot.v2.Bot.list` method returns a list of bots for the current applicatio
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

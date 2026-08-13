@@ -14,7 +14,7 @@ The method `crm.calllist.add` creates a new call list.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -24,7 +24,7 @@ The method `crm.calllist.add` creates a new call list.
 - `CONTACT` — contact,
 - `COMPANY` — company ||
 || **ENTITIES***
-[`array`](../../data-types.md) | Array of `ID` of contacts or companies, which can be obtained using the [crm.item.list](../universal/crm-item-list.md) method ||
+[`integer[]`](../../data-types.md) | Array of numeric identifiers of contacts or companies, which can be obtained using the [crm.item.list](../universal/crm-item-list.md) method ||
 || **WEBFORM_ID**
 [`integer`](../../data-types.md) | `ID` of the CRM form that will be displayed in the call list form. 
 The `ID` can be found in the list of forms in Bitrix24 https://your-domain.com/crm/webform/ ||
@@ -286,8 +286,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "Invalid parameters.",
-    "error_description": "Invalid parameters were provided."
+    "error": "ENTITIES_ERROR",
+    "error_description": "Entities is not array"
 }
 ```
 
@@ -296,14 +296,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400` | `Access denied` | No permission to perform the operation ||
-|| `400` | `Invalid parameters` | Invalid parameters were provided ||
-|| `400` | `Incorrect entity type` | An unsupported object type was specified ||
-|| `400` | `Entities is not array` | The `ENTITIES` parameter is not an array ||
-|| `400` | `Incorrect entities id` | Invalid `ID` of elements were provided ||
-|| `403` | `You don't have access to these entities` | No access to the specified elements ||
-|| `400` | `Incorrect webform id` | Invalid `ID` of the CRM form ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | `ENTITY_TYPE is not found`, `ENTITIES is not found` | A required parameter was not passed ||
+|| `400` | `ENTITIES_ERROR` | `Entities is not array` | The `ENTITIES` parameter received a value that is not an array ||
+|| `400` | `ENTITY_TYPE_ERROR` | `Incorrect entity type` | The `ENTITY_TYPE` parameter received a value other than `CONTACT` or `COMPANY` ||
+|| `400` | `ENTITY_ERROR` | `Incorrect entities id` | The `ENTITIES` parameter contains identifiers that do not exist in CRM ||
+|| `400` | `WEBFORM_ERROR` | `Incorrect webform id` | The `WEBFORM_ID` parameter specifies a CRM form that does not exist ||
+|| `403` | `ACCESS_ERROR` | `You don't have access to these entities` | There is no access to any of the passed elements ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

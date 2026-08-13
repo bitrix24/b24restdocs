@@ -14,7 +14,7 @@ The method `imbot.v2.Chat.update` updates chat properties. It combines the updat
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name** 

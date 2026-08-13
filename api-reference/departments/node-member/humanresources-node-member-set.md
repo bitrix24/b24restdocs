@@ -20,7 +20,7 @@ The method `humanresources.node.member.set` updates the composition of participa
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

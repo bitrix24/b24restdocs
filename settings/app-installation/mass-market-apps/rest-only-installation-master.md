@@ -52,7 +52,7 @@ The header defines the name of the settings page and the builder version.
 }
 ```
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -84,7 +84,7 @@ The header defines the name of the settings page and the builder version.
 }
 ```
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -103,7 +103,7 @@ The header defines the name of the settings page and the builder version.
 
 #### Parameter fields {#fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -146,7 +146,7 @@ The `form` block describes where to send the data and which buttons to show.
 }
 ```
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

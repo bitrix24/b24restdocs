@@ -14,7 +14,7 @@ The method `imbot.v2.Command.list` returns a list of all bot commands.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name**

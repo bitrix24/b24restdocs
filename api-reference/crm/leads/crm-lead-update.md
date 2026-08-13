@@ -26,7 +26,7 @@ It is strongly recommended to pass the complete set of address fields when updat
 
 {% endnote %}
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -210,7 +210,7 @@ When modifying a lead, you cannot explicitly set the repeat lead indicator (the 
 [`char`](../../data-types.md) | Register an event for adding the lead in the activity stream. A notification will also be sent to the person responsible for the lead. Acceptable values are `Y` or `N` ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 ## Code Examples
 

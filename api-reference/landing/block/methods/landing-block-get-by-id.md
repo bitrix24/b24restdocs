@@ -14,7 +14,7 @@ The method `landing.block.getbyid` returns a single block of a page by its ident
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**

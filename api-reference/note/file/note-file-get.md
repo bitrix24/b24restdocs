@@ -20,7 +20,7 @@ The `note.file.get` method returns file metadata and a ready-to-use Markdown blo
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

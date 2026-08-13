@@ -20,7 +20,7 @@ Tasks will be added to the kanban of the active sprint. If there were completed 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

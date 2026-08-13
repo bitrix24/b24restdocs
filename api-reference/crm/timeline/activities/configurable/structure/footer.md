@@ -10,7 +10,7 @@ The bottom part of the [timeline record](../index.md) with the `FooterDto` actio
 
 ## Parameters of the `FooterDto` Object
 
-{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -26,7 +26,7 @@ A button in the bottom part of the timeline record.
 
 ### Parameters of the `FooterButtonDto` Object
 
-{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||

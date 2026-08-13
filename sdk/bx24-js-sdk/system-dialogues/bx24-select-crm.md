@@ -14,7 +14,7 @@ The function `BX24.selectCRM` invokes the system dialog for selecting a CRM enti
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

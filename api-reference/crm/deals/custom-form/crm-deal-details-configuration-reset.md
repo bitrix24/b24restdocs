@@ -29,7 +29,7 @@ The settings of deal cards in different Sales Funnels may vary. To select a Sale
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -54,7 +54,7 @@ If not specified, the current user is used
 
 ### Parameter extras Parameter {#parameter-extras}
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

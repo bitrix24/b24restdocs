@@ -20,7 +20,7 @@ The `note.collection.get` method retrieves a knowledge base by identifier.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

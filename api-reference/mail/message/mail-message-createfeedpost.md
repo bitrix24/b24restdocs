@@ -20,7 +20,7 @@ The `mail.message.createfeedpost` method creates a News Feed message from an e-m
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -20,7 +20,7 @@ The method `im.search.last.get` returns a list of dialogs from the history of th
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

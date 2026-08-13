@@ -54,7 +54,7 @@ At least one of the parameters: `IBLOCK_ID` or `IBLOCK_CODE` must be specified.
 
 ### Parameter FIELDS {#parametr-fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

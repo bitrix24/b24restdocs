@@ -14,7 +14,7 @@ The method `sale.propertyRelation.add` adds a property binding.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**
@@ -25,7 +25,7 @@ The method `sale.propertyRelation.add` adds a property binding.
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Parameter**

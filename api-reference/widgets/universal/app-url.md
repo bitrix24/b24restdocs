@@ -64,7 +64,7 @@ Array
 
 The example was captured for the link `/marketplace/view/#APP_CODE#/?params[test]=y&params[docId]=42` followed from the news feed.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 

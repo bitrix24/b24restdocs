@@ -20,7 +20,7 @@ Only those files and folders for which the user has "Read" access permission are
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

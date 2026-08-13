@@ -20,7 +20,7 @@ The method `crm.company.list` returns a list of companies based on a filter. It 
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -421,10 +421,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `Access denied` | The user does not have "Read" access permission for companies ||
-|| `-`     | `Parameter 'order' must be array` | The `order` parameter is not an array ||
-|| `-`     | `Parameter 'filter' must be array` | The `filter` parameter is not an array ||
-|| `-`     | `Failed to get list. General error` | An unknown error occurred ||
+|| Empty value | `Access denied` | The user does not have "Read" access permission for companies ||
+|| Empty value | `Parameter 'order' must be array` | The `order` parameter is not an array ||
+|| Empty value | `Parameter 'filter' must be array` | The `filter` parameter is not an array ||
+|| Empty value | `Failed to get list. General error` | An unknown error occurred ||
 |#
 
 {% include [System Errors](./../../../_includes/system-errors.md) %}

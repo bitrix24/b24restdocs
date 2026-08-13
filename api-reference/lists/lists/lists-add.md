@@ -86,7 +86,7 @@ If the parameter is not provided, the authorized user who called the method is a
 
 ### Parameter FIELDS {#parametr-fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

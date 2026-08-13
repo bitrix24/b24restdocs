@@ -16,7 +16,7 @@ If you want to move the file to the trash, use the method [disk.file.markDeleted
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

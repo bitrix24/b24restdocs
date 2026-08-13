@@ -14,7 +14,7 @@ This method creates notifications for a delivery request.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**
@@ -43,7 +43,7 @@ Possible values:
 
 ### MESSAGE Parameter {#parametr-message}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**
@@ -72,7 +72,7 @@ Used to replace monetary values in the body of the message (see example below)
 
 ### STATUS Parameter {#parametr-status}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**

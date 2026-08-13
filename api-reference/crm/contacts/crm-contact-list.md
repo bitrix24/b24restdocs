@@ -638,10 +638,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `Access denied` | The user does not have permission for "Read" contacts ||
-|| `-`     | `Parameter 'order' must be array` | A non-array value was passed to the `order` parameter ||
-|| `-`     | `Parameter 'filter' must be array` | A non-array value was passed to the `filter` parameter ||
-|| `-`     | `Failed to get list. General error` | An unknown error occurred ||
+|| Empty value | `Access denied` | The user does not have permission for "Read" contacts ||
+|| Empty value | `Parameter 'order' must be array` | A non-array value was passed to the `order` parameter ||
+|| Empty value | `Parameter 'filter' must be array` | A non-array value was passed to the `filter` parameter ||
+|| Empty value | `Failed to get list. General error` | An unknown error occurred ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

@@ -14,7 +14,7 @@ The method `crm.company.contact.items.set` sets a set of contacts associated wit
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -30,7 +30,7 @@ The identifier can be obtained using the methods [crm.company.list](../crm-compa
 
 ### Structure of the Binding Object {#company_contact_binding}
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -417,10 +417,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `The parameter ownerEntityID is invalid or not defined` | The provided `id` is less than or equal to 0 or not provided at all ||
-|| `-`     | `The parameter items must be array` | The `items` parameter is not an array ||
+|| Empty value | `The parameter ownerEntityID is invalid or not defined` | The provided `id` is less than or equal to 0 or not provided at all ||
+|| Empty value | `The parameter items must be array` | The `items` parameter is not an array ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit companies ||
-|| `-`     | `Not found` | The company with the provided `id` was not found ||
+|| Empty value | `Not found` | The company with the provided `id` was not found ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

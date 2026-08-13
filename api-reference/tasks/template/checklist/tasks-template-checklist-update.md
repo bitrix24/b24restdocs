@@ -14,7 +14,7 @@ The method `tasks.template.checklist.update` updates a checklist item of the tas
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

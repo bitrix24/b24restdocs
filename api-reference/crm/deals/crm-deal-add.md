@@ -661,11 +661,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
-|| `-`     | `Parameter 'params' must be array` | The parameter `params` is not an object ||
-|| `-`     | `Access denied` | The user does not have permission to "add" deals ||
-|| `-`     | Disk resource exhausted |> ||
-|| `-`     | Invalid value for the "Currency" field |> ||
+|| Empty value | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
+|| Empty value | `Parameter 'params' must be array` | The parameter `params` is not an object ||
+|| Empty value | `Access denied` | The user does not have permission to "add" deals ||
+|| Empty value | Disk resource exhausted |> ||
+|| Empty value | Invalid value for the "Currency" field |> ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

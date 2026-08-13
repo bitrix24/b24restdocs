@@ -14,7 +14,7 @@ The method `crm.documentgenerator.document.add` creates a document based on a te
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

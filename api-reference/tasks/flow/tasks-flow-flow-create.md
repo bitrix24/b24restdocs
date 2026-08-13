@@ -16,7 +16,7 @@ The flow must be associated with a group. If the group ID is not provided when c
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ The flow must be associated with a group. If the group ID is not provided when c
 
 ### Parameter flowData
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

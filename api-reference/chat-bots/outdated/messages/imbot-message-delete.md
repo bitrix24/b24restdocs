@@ -20,7 +20,7 @@ The method `imbot.message.delete` removes a message from the chat bot.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

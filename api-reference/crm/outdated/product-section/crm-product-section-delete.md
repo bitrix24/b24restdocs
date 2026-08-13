@@ -20,7 +20,7 @@ The method `crm.productsection.delete` removes a product category from the catal
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `im.notify.answer` sends a text quick response to a notification.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

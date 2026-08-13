@@ -14,7 +14,7 @@ The method `im.department.managers.get` retrieves a list of managers for the spe
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

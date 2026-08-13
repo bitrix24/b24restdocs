@@ -14,7 +14,7 @@ The method `log.blogpost.update` updates a message in the News Feed.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

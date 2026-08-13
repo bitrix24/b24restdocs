@@ -59,7 +59,7 @@ Array
 )
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
@@ -79,7 +79,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the call contex
 
 For `PAGE_BACKGROUND_WORKER`, the `placement.bind` method supports one `OPTIONS` parameter.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter**

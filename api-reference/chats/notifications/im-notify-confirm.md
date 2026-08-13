@@ -14,7 +14,7 @@ The method `im.notify.confirm` sends the selected value of the notification butt
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

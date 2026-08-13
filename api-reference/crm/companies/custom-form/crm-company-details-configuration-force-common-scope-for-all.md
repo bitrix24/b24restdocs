@@ -237,7 +237,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Access denied` | The user does not have permission to modify CRM settings ||
+|| Empty value | `Access denied` | The user does not have permission to modify CRM settings ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

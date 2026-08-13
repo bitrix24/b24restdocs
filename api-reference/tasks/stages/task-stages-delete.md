@@ -18,7 +18,7 @@ It accepts the `id` of the stage as input. The stage is checked for sufficient a
 
 ## Method Parameters
 
-{% include [Required parameters note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

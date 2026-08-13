@@ -20,7 +20,7 @@ The `mail.recipient.listcontacts` method searches for contacts in the current us
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

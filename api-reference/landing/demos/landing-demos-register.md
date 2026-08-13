@@ -16,7 +16,7 @@ The method updates the template if it already exists with the same code for the 
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,7 +33,7 @@ The method accepts both the site export with `items` and an array of individual 
 
 ### Type data {#data}
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -89,7 +89,7 @@ Possible values:
 
 ### Type of data.items element {#data-items-element}
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

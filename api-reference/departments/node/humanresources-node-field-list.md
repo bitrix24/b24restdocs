@@ -20,7 +20,7 @@ The method `humanresources.node.field.list` returns a list of available fields i
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

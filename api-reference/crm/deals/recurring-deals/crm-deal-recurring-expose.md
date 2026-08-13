@@ -14,7 +14,7 @@ The method `crm.deal.recurring.expose` creates a new deal based on the template 
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -20,7 +20,7 @@ The method `crm.quote.update` updates an existing estimate.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -398,11 +398,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Parameter 'fields' must be array.` | `fields` is not an object ||
-|| `-` | `Parameter 'params' must be array.` | `params` is not an object ||
-|| `-` | `ID is not defined or invalid.` | An incorrect `id` was provided ||
-|| `-` | `Access denied.` | The user does not have permission to edit estimates ||
-|| `-` | `Quote is not found` | The estimate with the provided `id` was not found ||
+|| Empty value | `Parameter 'fields' must be array.` | `fields` is not an object ||
+|| Empty value | `Parameter 'params' must be array.` | `params` is not an object ||
+|| Empty value | `ID is not defined or invalid.` | An incorrect `id` was provided ||
+|| Empty value | `Access denied.` | The user does not have permission to edit estimates ||
+|| Empty value | `Quote is not found` | The estimate with the provided `id` was not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

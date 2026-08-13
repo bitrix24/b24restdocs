@@ -20,7 +20,7 @@ The method `crm.contact.delete` removes a contact and all associated objects.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -259,8 +259,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
-|| `-`     | `Access denied` | The user does not have permission to "Delete" the contact ||
+|| Empty value | `ID is not defined or invalid` | The `id` parameter is not provided or the provided value is not a positive integer ||
+|| Empty value | `Access denied` | The user does not have permission to "Delete" the contact ||
 || `ERROR_CORE` | Element not found | The contact with the provided `id` was not found ||
 |#
 

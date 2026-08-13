@@ -20,7 +20,7 @@ The method `crm.activity.update` updates an existing activity.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -44,7 +44,7 @@ fields:
 
 ### Parameter fields {#fields}
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Field** `type` | **Description** ||

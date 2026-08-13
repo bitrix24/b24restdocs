@@ -14,7 +14,7 @@ The method `catalog.userfield.document.update` updates the values of user fields
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**
@@ -27,7 +27,7 @@ The method `catalog.userfield.document.update` updates the values of user fields
 
 ### Parameter fields {#fields}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

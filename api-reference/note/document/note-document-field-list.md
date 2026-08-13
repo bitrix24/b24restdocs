@@ -20,7 +20,7 @@ The `note.document.field.list` method returns a list of available document field
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

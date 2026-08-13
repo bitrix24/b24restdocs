@@ -10,7 +10,7 @@ The event is triggered when an invoice is updated.
 
 ## Parameters
 
-{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

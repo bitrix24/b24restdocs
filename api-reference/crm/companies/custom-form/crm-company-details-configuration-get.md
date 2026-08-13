@@ -22,7 +22,7 @@ The method `crm.company.details.configuration.get` retrieves the settings for co
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -688,7 +688,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Access denied` | The user does not have the "Allow to modify settings" permission to retrieve others' settings ||
+|| Empty value | `Access denied` | The user does not have the "Allow to modify settings" permission to retrieve others' settings ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

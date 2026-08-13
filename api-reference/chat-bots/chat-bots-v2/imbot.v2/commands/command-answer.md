@@ -16,7 +16,7 @@ The bot can respond in the chat from which the command originated, even if the b
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name**

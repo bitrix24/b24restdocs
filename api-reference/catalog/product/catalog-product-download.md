@@ -51,7 +51,7 @@ To obtain existing identifiers or property codes for products, use [catalog.prod
  ||
 |#
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 ## Code Examples
 

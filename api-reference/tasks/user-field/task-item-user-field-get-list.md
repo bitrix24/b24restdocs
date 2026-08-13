@@ -22,7 +22,7 @@ These are created based on custom fields, which is why they appear in the list. 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

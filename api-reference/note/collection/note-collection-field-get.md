@@ -20,7 +20,7 @@ The `note.collection.field.get` method retrieves a Knowledge base field descript
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

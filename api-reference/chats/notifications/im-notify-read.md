@@ -14,7 +14,7 @@ The method `im.notify.read` marks a notification or all notifications as read or
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

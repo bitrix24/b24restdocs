@@ -14,7 +14,7 @@ The method `disk.file.restoreFromVersion` restores a file from a specific versio
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

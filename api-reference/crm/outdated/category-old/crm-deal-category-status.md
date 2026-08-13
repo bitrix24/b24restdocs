@@ -24,7 +24,7 @@ The identifier is intended for use with the family of methods [`crm.status.*`](.
 
 # Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

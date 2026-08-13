@@ -14,7 +14,7 @@ The method `landing.site.getMenuBindings` returns Knowledge Base bindings to the
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

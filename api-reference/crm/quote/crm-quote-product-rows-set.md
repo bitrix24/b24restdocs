@@ -22,7 +22,7 @@ To modify only a single row, use the methods [crm.item.productrow.*](../universa
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -475,11 +475,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `The parameter id is invalid or not defined.` | The parameter `id` has no value or an invalid value was provided ||
-|| `-` | `The parameter rows must be array.` | The parameter `rows` is not an array ||
-|| `-` | `Access denied.` | The user does not have permission to edit the estimate ||
-|| `-` | `Not found.` | The estimate with the provided `id` was not found ||
-|| `-` | Catalog rights check error message | Error checking rights for catalog products and/or catalog restrictions for the provided rows ||
+|| Empty value | `The parameter id is invalid or not defined.` | The parameter `id` has no value or an invalid value was provided ||
+|| Empty value | `The parameter rows must be array.` | The parameter `rows` is not an array ||
+|| Empty value | `Access denied.` | The user does not have permission to edit the estimate ||
+|| Empty value | `Not found.` | The estimate with the provided `id` was not found ||
+|| Empty value | Catalog rights check error message | Error checking rights for catalog products and/or catalog restrictions for the provided rows ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

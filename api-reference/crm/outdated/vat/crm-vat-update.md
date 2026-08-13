@@ -20,7 +20,7 @@ The method `crm.vat.update` updates the parameters of an existing VAT rate.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

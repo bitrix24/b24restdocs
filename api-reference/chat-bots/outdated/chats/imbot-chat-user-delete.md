@@ -20,7 +20,7 @@ The method `imbot.chat.user.delete` removes a user from the chat.
 
 ## Method Parameters
 
-{% include [Required Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

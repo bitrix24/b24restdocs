@@ -14,7 +14,7 @@ The method `crm.documentgenerator.numerator.get` returns information about the n
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

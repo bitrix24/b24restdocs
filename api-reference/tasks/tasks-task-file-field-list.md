@@ -20,7 +20,7 @@ The method `tasks.task.file.field.list` returns a list of available fields for t
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

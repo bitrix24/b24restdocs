@@ -26,7 +26,7 @@ When deleting the bot, personal chats with users will also be deleted.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

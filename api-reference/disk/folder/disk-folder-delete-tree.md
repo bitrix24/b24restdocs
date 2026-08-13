@@ -16,7 +16,7 @@ If you want to move the folder to the trash, use the method [disk.folder.markDel
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

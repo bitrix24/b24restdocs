@@ -16,7 +16,7 @@ The method `crm.tracking.trace.add` creates a Sales Intelligence trace and retur
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

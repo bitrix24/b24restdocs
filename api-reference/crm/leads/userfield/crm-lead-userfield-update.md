@@ -14,7 +14,7 @@ The method `crm.lead.userfield.update` updates an existing custom field for lead
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -46,7 +46,7 @@ Only those fields that need to be changed should be passed in `fields` ||
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Parameter**

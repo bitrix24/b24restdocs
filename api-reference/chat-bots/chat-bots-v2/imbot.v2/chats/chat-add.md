@@ -14,7 +14,7 @@ The method `imbot.v2.Chat.add` creates a new group chat on behalf of the bot. If
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `log.blogcomment.delete` removes a comment from the News Feed.
 
 ## Method Parameters
 
-{% include [Note about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

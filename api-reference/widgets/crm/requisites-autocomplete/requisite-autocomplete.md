@@ -74,7 +74,7 @@ After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
 
 The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call. Along with the universal `URI` key, the context carries the key of the placement itself.
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||

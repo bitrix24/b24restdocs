@@ -14,7 +14,7 @@ The method `task.item.userfield.delete` removes a custom field from a task.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

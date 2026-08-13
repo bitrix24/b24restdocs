@@ -22,7 +22,7 @@ If the transcription is not ready, is missing, or if the call processing ended w
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

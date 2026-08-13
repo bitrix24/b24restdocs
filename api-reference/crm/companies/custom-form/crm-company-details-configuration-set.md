@@ -22,7 +22,7 @@ The method `crm.company.details.configuration.set` sets the settings for company
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -51,7 +51,7 @@ The structure is described [below](#section) ||
 
 Describes a specific section with fields within the company card.
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -76,7 +76,7 @@ The structure is described [below](#section_element) ||
 
 Configuration of a specific field within the section.
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -569,14 +569,14 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | Access denied | The user does not have permission to change CRM settings ||
-|| `-` | Parameter 'data' must be array | A non-array value was passed in `data` ||
-|| `-` | The data must be indexed array | A non-indexed array was passed in `data` ||
-|| `-` | There are no data to write | An empty array was passed in `data` ||
-|| `-` | Section at index `#` has type `data[i].type`. The expected type is 'section' | The value in `data[i].type` is different from `'section'` ||
-|| `-` | Section at index `#` does not have name | An empty value was passed in `data[i].name` ||
-|| `-` | Section at index `#` does not have title | An empty value was passed in `data[i].title` ||
-|| `-` | Element at index `#` in section at index `#` does not have name | An empty value was passed in `data[i].elements[j].name` ||
+|| Empty value | Access denied | The user does not have permission to change CRM settings ||
+|| Empty value | Parameter 'data' must be array | A non-array value was passed in `data` ||
+|| Empty value | The data must be indexed array | A non-indexed array was passed in `data` ||
+|| Empty value | There are no data to write | An empty array was passed in `data` ||
+|| Empty value | Section at index `#` has type `data[i].type`. The expected type is 'section' | The value in `data[i].type` is different from `'section'` ||
+|| Empty value | Section at index `#` does not have name | An empty value was passed in `data[i].name` ||
+|| Empty value | Section at index `#` does not have title | An empty value was passed in `data[i].title` ||
+|| Empty value | Element at index `#` in section at index `#` does not have name | An empty value was passed in `data[i].elements[j].name` ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

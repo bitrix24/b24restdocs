@@ -31,7 +31,7 @@ When an application is deleted or updated, its actions will be removed. Therefor
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

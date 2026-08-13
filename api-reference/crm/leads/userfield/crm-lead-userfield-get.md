@@ -14,7 +14,7 @@ The method `crm.lead.userfield.get` returns a custom lead field by its identifie
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

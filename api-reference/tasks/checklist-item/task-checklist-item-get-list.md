@@ -14,7 +14,7 @@ The method `task.checklistitem.getlist` retrieves a list of checklist items in a
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

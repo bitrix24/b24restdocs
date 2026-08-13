@@ -22,7 +22,7 @@ There is a system limitation on the field name - 20 characters. The custom field
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

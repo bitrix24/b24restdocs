@@ -16,7 +16,7 @@ An administrator can retrieve information about any group on the account, even i
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ An administrator can retrieve information about any group on the account, even i
 
 ### Parameter params {#params}
 
-{% include [Footnote on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -20,7 +20,7 @@ The method `main.eventlog.get` returns an event log entry by its identifier.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

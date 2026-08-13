@@ -73,7 +73,7 @@ The formula for calculating the `start` parameter value:
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 ## Examples
 

@@ -16,7 +16,7 @@ The `BX24.setTitle` method changes the heading within the application container:
 
 ## Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

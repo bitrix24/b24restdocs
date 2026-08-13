@@ -14,7 +14,7 @@ The `BX24.userOption.get` method returns the value of the setting named `name` f
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -725,11 +725,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `-`     | `Access denied` | The user does not have permission to "read" deals ||
-|| `-`     | `Parameter 'order' must be array` | A non-object was passed to the `order` parameter ||
-|| `-`     | `Parameter 'filter' must be array` | A non-object was passed to the `filter` parameter ||
-|| `-`     | `Failed to get list. General error` | An unknown error occurred ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user does not have the permission to read deals ||
+|| `400` | Empty value | `Parameter 'order' must be array.` | A non-object was passed to the `order` parameter ||
+|| `400` | Empty value | `Parameter 'filter' must be array.` | A non-object was passed to the `filter` parameter ||
+|| `400` | Empty value | `Failed to get list. General error.` | An unknown error occurred ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

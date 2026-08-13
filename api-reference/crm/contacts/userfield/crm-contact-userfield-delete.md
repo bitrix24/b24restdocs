@@ -14,7 +14,7 @@ The method `crm.contact.userfield.delete` removes a custom contact field.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -267,12 +267,12 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `ID is not defined or invalid` | The provided `id` is either less than or equal to zero, or not provided at all ||
-|| `-` | `Access denied` | Occurs when:
+|| Empty value | `ID is not defined or invalid` | The provided `id` is either less than or equal to zero, or not provided at all ||
+|| Empty value | `Access denied` | Occurs when:
 - the user does not have administrative rights
 - the user attempts to delete a custom field not associated with contacts ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` does not exist ||
-|| `-` | Error deleting `FIELD_NAME` for object `ENTITY_ID` | Unknown error during deletion ||
+|| Empty value | Error deleting `FIELD_NAME` for object `ENTITY_ID` | Unknown error during deletion ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

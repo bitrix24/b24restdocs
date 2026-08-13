@@ -35,7 +35,7 @@ The method `im:getImTextareaContent` returns the current text from the input fie
 
 ### Parameters
 
-{% include [Parameters Note](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #| 
 || **Parameter** | **Description** ||
@@ -76,7 +76,7 @@ The method `im:setImTextareaContent` inserts text into the input field of the ac
 
 ### Parameters
 
-{% include [Parameters Note](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #| 
 || **Parameter** | **Description** ||

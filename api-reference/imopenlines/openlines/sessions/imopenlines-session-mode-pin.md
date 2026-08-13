@@ -14,7 +14,7 @@ The method `imopenlines.session.mode.pin` pins or unpins a dialog to the current
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

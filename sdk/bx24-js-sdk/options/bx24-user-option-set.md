@@ -14,7 +14,7 @@ The `BX24.userOption.set` method sets the value of the `value` configuration wit
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

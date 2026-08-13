@@ -14,7 +14,7 @@ The method `imbot.v2.Chat.Message.send` sends a message on behalf of the bot to 
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

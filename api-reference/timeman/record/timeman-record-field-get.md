@@ -20,7 +20,7 @@ The method `timeman.record.field.get` returns the description of the working tim
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

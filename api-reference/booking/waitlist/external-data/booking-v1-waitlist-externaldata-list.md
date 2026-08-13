@@ -14,7 +14,7 @@ The method `booking.v1.waitlist.externalData.list` returns links for the specifi
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

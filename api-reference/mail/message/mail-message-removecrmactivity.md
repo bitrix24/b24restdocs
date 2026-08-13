@@ -20,7 +20,7 @@ The `mail.message.removecrmactivity` method removes the link between an e-mail a
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -20,7 +20,7 @@ The `imbot.command.register` method registers a command for the chat bot.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

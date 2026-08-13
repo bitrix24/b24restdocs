@@ -14,7 +14,7 @@ The method `imopenlines.config.list.get` retrieves a list of open channels.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

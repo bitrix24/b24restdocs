@@ -20,7 +20,7 @@ The method `crm.company.delete` removes a company.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -257,8 +257,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Access denied` | User does not have permission for "Delete" companies ||
-|| `-` | `Company is not found` | Company not found ||
+|| Empty value | `Access denied` | User does not have permission for "Delete" companies ||
+|| Empty value | `Company is not found` | Company not found ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

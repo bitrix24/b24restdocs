@@ -14,7 +14,7 @@ The method `documentgenerator.document.add` creates a new document based on a te
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The `crm.activity.type.add` method registers a custom activity type by specifyin
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -37,7 +37,7 @@ A detailed description is provided [below](#parametr-fields)
 
 ### Parameter fields {#parametr-fields}
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

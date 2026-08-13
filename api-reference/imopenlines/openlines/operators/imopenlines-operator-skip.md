@@ -14,7 +14,7 @@ The method `imopenlines.operator.skip` transfers the current dialog to the next 
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

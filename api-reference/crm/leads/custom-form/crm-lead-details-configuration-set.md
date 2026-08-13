@@ -28,7 +28,7 @@ The settings for repeat leads may differ from those for simple leads. To switch 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -527,14 +527,14 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | Access denied | Insufficient permissions. ||
-|| `-` | Parameter 'data' must be array | The `data` parameter is not an array. ||
-|| `-` | The data must be indexed array | The `data` parameter is not an indexed array. ||
-|| `-` | There are no data to write | An empty array was passed in `data`. ||
-|| `-` | Section at index `i` has type `data[i].type`. The expected type is 'section' | A value other than `'section'` was passed in `data[i].type`. ||
-|| `-` | Section at index `i` does not have name | An empty value was passed in `data[i].name`. ||
-|| `-` | Section at index `i` does not have title | An empty value was passed in `data[i].title`. ||
-|| `-` | Element at index `j` in section at index `i` does not have name | An empty value was passed in `data[i].elements[j].name`. ||
+|| Empty value | Access denied | Insufficient permissions. ||
+|| Empty value | Parameter 'data' must be array | The `data` parameter is not an array. ||
+|| Empty value | The data must be indexed array | The `data` parameter is not an indexed array. ||
+|| Empty value | There are no data to write | An empty array was passed in `data`. ||
+|| Empty value | Section at index `i` has type `data[i].type`. The expected type is 'section' | A value other than `'section'` was passed in `data[i].type`. ||
+|| Empty value | Section at index `i` does not have name | An empty value was passed in `data[i].name`. ||
+|| Empty value | Section at index `i` does not have title | An empty value was passed in `data[i].title`. ||
+|| Empty value | Element at index `j` in section at index `i` does not have name | An empty value was passed in `data[i].elements[j].name`. ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

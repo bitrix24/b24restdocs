@@ -14,7 +14,7 @@ The method works only in the context of authorizing the [application](../../sett
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

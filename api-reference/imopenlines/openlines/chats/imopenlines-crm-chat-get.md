@@ -14,7 +14,7 @@ The method `imopenlines.crm.chat.get` retrieves a list of chats associated with 
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

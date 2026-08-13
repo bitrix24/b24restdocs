@@ -20,7 +20,7 @@ The `mail.message.forward` method forwards an e-mail.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

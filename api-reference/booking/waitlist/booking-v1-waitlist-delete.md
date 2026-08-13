@@ -14,7 +14,7 @@ The method `booking.v1.waitlist.delete` removes an entry from the waitlist.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

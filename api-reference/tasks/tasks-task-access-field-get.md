@@ -20,7 +20,7 @@ The method `tasks.task.access.field.get` returns the description of the task acc
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

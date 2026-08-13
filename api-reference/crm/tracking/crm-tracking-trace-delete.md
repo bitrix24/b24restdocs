@@ -16,7 +16,7 @@ The method `crm.tracking.trace.delete` removes a Sales Intelligence trace.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

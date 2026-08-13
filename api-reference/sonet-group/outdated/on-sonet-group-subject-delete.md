@@ -16,4 +16,4 @@ The event `onSonetGroupSubjectDelete` is triggered before a workgroup topic is d
 || **Field** | **Description** ||
 || **ID** | Identifier of the deleted topic ||
 |#
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}

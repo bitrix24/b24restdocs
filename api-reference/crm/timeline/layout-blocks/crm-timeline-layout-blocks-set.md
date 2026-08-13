@@ -21,7 +21,7 @@ The setting of additional content blocks cannot be applied to timeline records r
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**

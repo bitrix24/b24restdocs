@@ -16,7 +16,7 @@ The method `tasks.task.pause` stops the execution of the task and changes its st
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

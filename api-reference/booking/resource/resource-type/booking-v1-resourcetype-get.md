@@ -14,7 +14,7 @@ The method `booking.v1.resourceType.get` returns information about the resource 
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

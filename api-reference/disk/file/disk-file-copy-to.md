@@ -14,7 +14,7 @@ The method `disk.file.copyTo` copies a file to the specified folder.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

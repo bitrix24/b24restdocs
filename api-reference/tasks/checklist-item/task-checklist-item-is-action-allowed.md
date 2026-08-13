@@ -14,7 +14,7 @@ The method `task.checklistitem.isactionallowed` checks whether an action is perm
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name** 

@@ -20,7 +20,7 @@ The method `imbot.message.update` modifies a previously sent message from the ch
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

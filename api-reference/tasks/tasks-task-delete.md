@@ -16,7 +16,7 @@ You can check the permission to delete a task using the [check access to task](.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

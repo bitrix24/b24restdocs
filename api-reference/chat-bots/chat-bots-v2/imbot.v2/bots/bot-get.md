@@ -16,7 +16,7 @@ For the owner application, it returns an extended format including `moduleId`, `
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name** 

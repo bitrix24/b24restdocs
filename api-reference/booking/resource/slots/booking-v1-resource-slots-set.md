@@ -14,7 +14,7 @@ The method `booking.v1.resource.slots.set` allows you to set time slots for the 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `im.search.department.list` performs a search for departments by thei
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -20,7 +20,7 @@ The method rejects a query shorter than three characters, so it is not suitable 
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

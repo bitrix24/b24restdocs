@@ -20,7 +20,7 @@ The method `crm.company.update` updates an existing company.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -405,10 +405,10 @@ HTTP Status: **400**
 
 #|
 || **Code**      | **Description** | **Value** ||
-|| `-`          | Parameter 'fields' must be an array | The `fields` parameter is not an object ||
-|| `-`          | Parameter 'params' must be an array | The `params` parameter is not an object ||
-|| `-`          | Access denied | The user does not have "Edit" access permission for companies ||
-|| `-`          | Exhausted allocated disk resource | ||
+|| Empty value | Parameter 'fields' must be an array | The `fields` parameter is not an object ||
+|| Empty value | Parameter 'params' must be an array | The `params` parameter is not an object ||
+|| Empty value | Access denied | The user does not have "Edit" access permission for companies ||
+|| Empty value | Exhausted allocated disk resource | ||
 || `ERROR_CORE` | The `E-mail` field contains an invalid address | The `E-mail` field contains an invalid address ||
 |#
 

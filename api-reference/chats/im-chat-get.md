@@ -14,7 +14,7 @@ The method `im.chat.get` retrieves the chat ID.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `catalog.priceTypeGroup.add` adds a price type binding to a customer 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `catalog.priceTypeGroup.add` adds a price type binding to a customer 
 
 ### Parameter fields {#fields}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

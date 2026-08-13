@@ -16,7 +16,7 @@ It only works in the context of the [application](../../../settings/app-installa
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

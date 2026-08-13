@@ -16,7 +16,7 @@ A connection can be deleted if it has no datasets.
 
 ## Method parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

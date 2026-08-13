@@ -25,7 +25,7 @@ The method `crm.deal.productrows.get` returns the product rows of a deal.
 [`integer`](../../data-types.md) | The identifier of the deal. It can be obtained using the method for retrieving the list of deals: [`crm.deal.list`](./crm-deal-list.md) or when creating a deal: [`crm.deal.add`](./crm-deal-add.md) ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 
 ## Code Examples

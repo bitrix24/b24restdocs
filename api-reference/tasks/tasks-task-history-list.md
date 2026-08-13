@@ -14,7 +14,7 @@ The method `tasks.task.history.list` retrieves the history of changes for a task
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

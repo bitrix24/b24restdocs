@@ -20,7 +20,7 @@ The `note.document.get` method returns a single document with its content in Mar
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

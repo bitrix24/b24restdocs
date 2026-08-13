@@ -21,7 +21,7 @@ This method deletes a funnel (direction) with the identifier `id`.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

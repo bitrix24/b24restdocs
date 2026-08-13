@@ -14,7 +14,7 @@ The method `biconnector.connector.get` returns information about the connector b
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

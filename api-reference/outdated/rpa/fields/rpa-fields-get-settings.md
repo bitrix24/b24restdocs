@@ -20,7 +20,7 @@ This method retrieves the complete set of field visibility settings for the stag
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

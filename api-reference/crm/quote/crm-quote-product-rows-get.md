@@ -20,7 +20,7 @@ The method `crm.quote.productrows.get` returns the product rows of an estimate.
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -403,8 +403,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `The parameter id is invalid or not defined.` | The `id` parameter has no value or an invalid value was provided ||
-|| `-` | `Access denied.` | The user does not have permission to read the estimate ||
+|| Empty value | `The parameter id is invalid or not defined.` | The `id` parameter has no value or an invalid value was provided ||
+|| Empty value | `Access denied.` | The user does not have permission to read the estimate ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

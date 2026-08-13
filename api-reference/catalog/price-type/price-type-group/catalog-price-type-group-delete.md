@@ -14,7 +14,7 @@ The method `catalog.priceTypeGroup.delete` removes the binding of a price type t
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ If a relative link to standard Bitrix24 objects that support opening in a slider
 
 ### Parameters
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -45,7 +45,7 @@ Calling the action will generate the event **onCrmTimelineItemAction**. When the
 
 ### Parameters
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -97,7 +97,7 @@ Calling the action will open the slider of the application that created the time
 
 ### Parameters
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||

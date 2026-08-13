@@ -14,7 +14,7 @@ The method `tasks.task.counters.get` retrieves task counter values for the speci
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #| 
 || **Name** 

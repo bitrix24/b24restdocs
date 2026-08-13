@@ -14,7 +14,7 @@ The method `imbot.v2.Chat.InputAction.notify` sends a bot action indicator in th
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

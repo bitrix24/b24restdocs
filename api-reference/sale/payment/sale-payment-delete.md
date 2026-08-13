@@ -21,7 +21,7 @@ This method deletes a payment.
 [`sale_order_payment.id`](../data-types.md) | Payment identifier ||
 |#
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 ## Code Examples
 

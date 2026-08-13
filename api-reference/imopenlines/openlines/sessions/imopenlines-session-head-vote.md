@@ -14,7 +14,7 @@ The method `imopenlines.session.head.vote` saves the manager's rating and commen
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `userfieldconfig.getTypes` returns a set of available user field type
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -336,8 +336,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | The current method required more scopes. (crm) | The application does not have the required scope for the module from `moduleId` ||
-|| `-` | No settings for UserFieldAccess | Access to user fields is not configured for the provided `moduleId` ||
+|| Empty value | The current method required more scopes. (crm) | The application does not have the required scope for the module from `moduleId` ||
+|| Empty value | No settings for UserFieldAccess | Access to user fields is not configured for the provided `moduleId` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

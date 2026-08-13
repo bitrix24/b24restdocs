@@ -14,7 +14,7 @@ The method `landing.landing.markUnDelete` restores a page from the recycle bin a
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

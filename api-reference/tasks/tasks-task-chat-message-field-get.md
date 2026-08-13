@@ -20,7 +20,7 @@ The method `tasks.task.chat.message.field.get` returns the description of a chat
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

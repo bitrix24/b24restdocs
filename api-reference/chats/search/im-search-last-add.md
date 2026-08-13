@@ -20,7 +20,7 @@ The method `im.search.last.add` adds a dialog to the last search history.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

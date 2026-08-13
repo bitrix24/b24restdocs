@@ -20,7 +20,7 @@ The method `tasks.task.result.list` returns a list of task results.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

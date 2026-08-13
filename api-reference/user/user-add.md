@@ -16,7 +16,7 @@ If you need to add an extranet user, you must pass the following fields: `EXTRAN
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

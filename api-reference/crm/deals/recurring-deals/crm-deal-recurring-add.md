@@ -14,7 +14,7 @@ The method `crm.deal.recurring.add` creates a template for a recurring deal base
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

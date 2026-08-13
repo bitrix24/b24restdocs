@@ -14,7 +14,7 @@ The method `catalog.productPropertyEnum.add` adds a value to a list property.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `catalog.productPropertyEnum.add` adds a value to a list property.
 
 ### Parameter fields {#fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

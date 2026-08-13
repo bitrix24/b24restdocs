@@ -14,7 +14,7 @@ This method updates the funnel (direction) with the identifier `id`, setting new
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -20,7 +20,7 @@ You must provide one of three parameters: `ID`, `TAG`, or `SUB_TAG`.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -10,7 +10,7 @@ Icon of the [timeline entry](../index.md) `IconDto`.
 
 ## Parameters of the `IconDto` Object
 
-{% include [Footnote on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** | **Additional** ||

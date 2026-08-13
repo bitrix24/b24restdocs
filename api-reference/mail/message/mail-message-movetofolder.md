@@ -20,7 +20,7 @@ The `mail.message.movetofolder` method moves emails to a folder, spam, or the tr
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
