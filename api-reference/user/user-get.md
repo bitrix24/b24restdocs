@@ -80,6 +80,23 @@ Pass the values of date and time fields in ISO 8601 format, for example `2020-01
  ||
 || **ADMIN_MODE**
 [`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to obtain data about any users ||
+|| **select**
+[`array`](../data-types.md) | An array with the names of the fields to return in the response. Without this parameter, the method returns all fields available to the application or webhook scope.
+
+When selecting, use masks:
+
+- `*` — all available fields
+- `UF_*` — all available custom fields, including those created in Bitrix24
+
+The method skips fields that are unavailable to the scope or do not exist, without returning an error ||
+|| **IMAGE_RESIZE**
+[`string`](../data-types.md) | The size of the photo copy in the `PERSONAL_PHOTO` field:
+
+- `small` — 150 × 150 pixels
+- `medium` — 300 × 300 pixels
+- `large` — 1000 × 1000 pixels
+
+Without this parameter, the method returns a link to the original image ||
 || **start**
 [`integer`](../data-types.md) | The parameter is used to control pagination.
 
@@ -91,6 +108,13 @@ Formula for calculating the value of the `start` parameter:
 
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 |#
+
+{% note tip "How to Speed Up List Retrieval" %}
+
+- Pass only the fields you need in the `select` parameter. If none of them are custom fields, the method skips loading custom field data
+- Disable the total count calculation with `start = -1` when you retrieve large volumes of data. In this mode, select pages by filtering on the last received identifier — [How to Retrieve Large Volumes of Data](../../settings/performance/huge-data.md)
+
+{% endnote %}
 
 ## Code Examples
 

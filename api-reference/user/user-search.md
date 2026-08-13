@@ -53,6 +53,15 @@ The method can work either with filtering using the FIND key or with all other f
 - `DESC` — descending ||
 || **ADMIN_MODE**
 [`boolean`](../data-types.md) | [Key for operation](*key_Key for operation) in administrator mode. Used to retrieve data about any users ||
+|| **select**
+[`array`](../data-types.md) | An array with the names of the fields to return in the response. Without this parameter, the method returns all fields available to the application or webhook scope.
+
+When selecting, use masks:
+
+- `*` — all available fields
+- `UF_*` — all available custom fields, including those created in Bitrix24
+
+The method skips fields that are unavailable to the scope or do not exist, without returning an error ||
 || **start**
 [`integer`](../data-types.md) | The parameter is used to manage pagination.
 
