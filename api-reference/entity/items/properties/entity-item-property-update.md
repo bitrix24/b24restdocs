@@ -1,4 +1,4 @@
-# Update Property of Storage Items entity.item.property.update
+# Update a Storage Item Property entity.item.property.update
 
 {% note tip "" %}
 

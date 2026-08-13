@@ -1,4 +1,4 @@
-# Delete Property of Storage Items entity.item.property.delete
+# Delete a Storage Item Property entity.item.property.delete
 
 {% note tip "" %}
 

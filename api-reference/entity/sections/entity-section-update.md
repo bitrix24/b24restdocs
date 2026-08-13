@@ -1,4 +1,4 @@
-# Update the entity.section.update method
+# Update a Storage Section entity.section.update
 
 {% note tip "" %}
 

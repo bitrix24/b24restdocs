@@ -3,13 +3,13 @@ href: index.md
 items:  
   - name: Overview of Methods  
     href: index.md  
-  - name: Add a Storage Item  
+  - name: Add Storage Item  
     href: entity-item-add.md  
-  - name: Update a Storage Item  
+  - name: Update Storage Item  
     href: entity-item-update.md  
-  - name: Retrieve List of Storage Items  
+  - name: Get List of Storage Items  
     href: entity-item-get.md  
-  - name: Delete a Storage Item  
+  - name: Delete Storage Item  
     href: entity-item-delete.md  
   - name: Properties of Items  
     include:  

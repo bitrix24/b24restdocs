@@ -1,4 +1,4 @@
-# Get Properties of Storage Items entity.item.property.get
+# Get Storage Item Properties entity.item.property.get
 
 {% note tip "" %}
 

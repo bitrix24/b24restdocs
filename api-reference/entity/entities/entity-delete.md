@@ -1,4 +1,4 @@
-# Delete Data Store entity.delete
+# Delete a Storage entity.delete
 
 {% note tip "" %}
 

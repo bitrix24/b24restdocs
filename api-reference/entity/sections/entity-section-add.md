@@ -1,4 +1,4 @@
-# Add Section to the entity.section.add Storage
+# Add a Storage Section entity.section.add
 
 {% note tip "" %}
 

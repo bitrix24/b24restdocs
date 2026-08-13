@@ -1,4 +1,4 @@
-# Change Parameters of entity.update
+# Update Storage Parameters entity.update
 
 {% note tip "" %}
 

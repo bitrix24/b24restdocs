@@ -1,4 +1,4 @@
-# Get or Modify Access Permissions for entity.rights
+# Get or Modify Access Permissions entity.rights
 
 {% note tip "" %}
 

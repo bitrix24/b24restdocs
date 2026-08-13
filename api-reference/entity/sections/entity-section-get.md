@@ -1,4 +1,4 @@
-# Get a List of Sections with entity.section.get
+# Get a List of Storage Sections entity.section.get
 
 {% note tip "" %}
 

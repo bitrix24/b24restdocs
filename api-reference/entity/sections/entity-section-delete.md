@@ -1,4 +1,4 @@
-# Delete the entity.section.delete method
+# Delete a Storage Section entity.section.delete
 
 {% note tip "" %}
 

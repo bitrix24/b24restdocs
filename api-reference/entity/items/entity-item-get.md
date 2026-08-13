@@ -1,4 +1,4 @@
-# Get a List of Storage Items: entity.item.get
+# Get a List of Storage Items entity.item.get
 
 {% note tip "" %}
 

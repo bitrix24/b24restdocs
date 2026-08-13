@@ -1,4 +1,4 @@
-# Add Property to Data Storage Items entity.item.property.add
+# Add a Storage Item Property entity.item.property.add
 
 {% note tip "" %}
 

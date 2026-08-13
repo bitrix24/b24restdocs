@@ -1,4 +1,4 @@
-# Add Item to the Storage entity.item.add
+# Add a Storage Item entity.item.add
 
 {% note tip "" %}
 
