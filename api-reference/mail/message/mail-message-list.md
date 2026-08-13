@@ -20,7 +20,7 @@ The `mail.message.list` method returns a list of e-mails based on specified cond
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The `userfieldconfig.add` method adds a new custom field.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -798,13 +798,13 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | Access denied | Insufficient permissions to create a custom field ||
-|| `-` | You cannot create custom fields | This error may occur if `field.fieldName` does not start with `UF_{entityId}_` ||
-|| `-` | The 'USER_TYPE_ID' field is not found | Mandatory `field.userTypeId` not provided ||
-|| `-` | The 'FIELD_NAME' field is not found | Mandatory `field.fieldName` not provided ||
-|| `-` | Field ... already exists | The provided `field.fieldName` is already in use for this object ||
-|| `-` | Fail to create new user field | Error creating the field on the server side ||
-|| `-` | Fail to save enumeration field values | Error saving list values for type `enumeration` ||
+|| Empty value | Access denied | Insufficient permissions to create a custom field ||
+|| Empty value | You cannot create custom fields | This error may occur if `field.fieldName` does not start with `UF_{entityId}_` ||
+|| Empty value | The 'USER_TYPE_ID' field is not found | Mandatory `field.userTypeId` not provided ||
+|| Empty value | The 'FIELD_NAME' field is not found | Mandatory `field.fieldName` not provided ||
+|| Empty value | Field ... already exists | The provided `field.fieldName` is already in use for this object ||
+|| Empty value | Fail to create new user field | Error creating the field on the server side ||
+|| Empty value | Fail to save enumeration field values | Error saving list values for type `enumeration` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

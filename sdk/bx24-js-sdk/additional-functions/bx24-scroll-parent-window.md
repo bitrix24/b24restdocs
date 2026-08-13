@@ -14,7 +14,7 @@ void BX24.scrollParentWindow(Integer scroll[, Function callback])
 
 ## Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name** 

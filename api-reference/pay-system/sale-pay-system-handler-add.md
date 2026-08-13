@@ -14,7 +14,7 @@ This method adds a REST handler for the payment system.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,7 +31,7 @@ This method adds a REST handler for the payment system.
 
 ### SETTINGS Parameter
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 Depending on the operating mode used, at least one of the following parameters must be present: `FORM_DATA`, `CHECKOUT_DATA`, `IFRAME_DATA`.
 
@@ -203,7 +203,7 @@ Form data (the `FIELDS` values from `FORM_DATA`) will be sent to `ACTION_URI`. I
 
 ### Parameters Passed When Adding a Handler in the FORM_DATA Array
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -227,7 +227,7 @@ If both `FIELDS` and `PARAMS` are passed, only `FIELDS` will be used.
 
 ### FIELDS Parameter
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 Represents an array of descriptions of fields displayed in the form and sent to `ACTION_URI`. The key is the field code used as the field name in the form. The values are the field parameter objects.
 
@@ -937,7 +937,7 @@ If nothing is returned, the default error `Error registering order in payment sy
 
 ### Parameters Passed When Adding a Handler in the CHECKOUT_DATA Array
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -1385,7 +1385,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 ### Parameters Passed When Adding a Handler in the IFRAME_DATA Array
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

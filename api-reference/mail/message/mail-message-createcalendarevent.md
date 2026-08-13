@@ -20,7 +20,7 @@ The `mail.message.createcalendarevent` method creates a calendar event from an e
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

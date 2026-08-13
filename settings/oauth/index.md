@@ -69,7 +69,7 @@ https://portal.bitrix24.com/oauth/authorize/?
 
 URL parameters:
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 - **client_id** — the application code obtained: 
   - in the partner area when registering the application and valid for any Bitrix24
@@ -125,7 +125,7 @@ https://oauth.bitrix.info/oauth/token/?
 
 Parameters:
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 - **grant_type** — a parameter indicating the type of authorization data to be validated. It should have the value *authorization_code*
 - **client_id** — the application code obtained in the partner area when registering the application or on the portal in the case of a local application

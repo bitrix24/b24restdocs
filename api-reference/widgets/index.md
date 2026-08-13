@@ -123,7 +123,7 @@ Array
 )
 ```
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](_includes/widget_data.md) %}
 

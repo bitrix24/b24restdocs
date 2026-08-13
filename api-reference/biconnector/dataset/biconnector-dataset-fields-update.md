@@ -14,7 +14,7 @@ The method `biconnector.dataset.fields.update` updates the fields of an existing
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

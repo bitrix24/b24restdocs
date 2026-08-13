@@ -14,7 +14,7 @@ The method `im.notify.read.list` marks a list of notifications as read or unread
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

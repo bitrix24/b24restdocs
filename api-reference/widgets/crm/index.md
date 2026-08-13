@@ -81,7 +81,7 @@ After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
 }
 ```
 
-{% include [Footnote on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [description of standard data](../_includes/widget_data.md) %}
 

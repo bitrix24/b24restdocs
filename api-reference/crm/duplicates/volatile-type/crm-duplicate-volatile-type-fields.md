@@ -14,7 +14,7 @@ The method `crm.duplicate.volatileType.fields` returns a list of standard and cu
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

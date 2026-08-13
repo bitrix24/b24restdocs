@@ -14,7 +14,7 @@ The method `crm.deal.recurring.get` returns the fields of the recurring deal tem
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

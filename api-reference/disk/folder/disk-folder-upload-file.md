@@ -14,7 +14,7 @@ The method `disk.folder.uploadFile` uploads a new file to the specified folder.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

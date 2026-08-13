@@ -14,7 +14,7 @@ The `crm.activity.type.delete` method deletes a custom activity type.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

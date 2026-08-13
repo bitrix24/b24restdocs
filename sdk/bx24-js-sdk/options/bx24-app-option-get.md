@@ -14,7 +14,7 @@ The `BX24.appOption.get` method returns a configuration by its code.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `crm.documentgenerator.template.getfields` returns a card of template
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

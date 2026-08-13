@@ -14,7 +14,7 @@ The method `catalog.productProperty.add` adds a property to a product or variati
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `catalog.productProperty.add` adds a property to a product or variati
 
 ### Parameter fields {#fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

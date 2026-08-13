@@ -14,7 +14,7 @@ The method `disk.folder.get` returns data about a folder.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

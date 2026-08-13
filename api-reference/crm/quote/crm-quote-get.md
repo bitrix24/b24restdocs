@@ -20,7 +20,7 @@ The method `crm.quote.get` returns an estimate by its ID.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -350,9 +350,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `ID is not defined or invalid.` | An incorrect `id` was provided ||
-|| `-` | `Access denied.` | The user does not have permission to read estimates ||
-|| `-` | `Not found` | The estimate with the provided `id` was not found ||
+|| Empty value | `ID is not defined or invalid.` | An incorrect `id` was provided ||
+|| Empty value | `Access denied.` | The user does not have permission to read estimates ||
+|| Empty value | `Not found` | The estimate with the provided `id` was not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

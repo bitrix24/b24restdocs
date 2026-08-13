@@ -51,7 +51,7 @@ Data is transmitted as a POST request {.b24-info}
 
 ## Request Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #| 
 || **Name**
@@ -74,7 +74,7 @@ The parameter arrives empty. The event does not transmit data about specific cha
 
 ### Parameter auth {#auth}
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #| 
 || **Name**

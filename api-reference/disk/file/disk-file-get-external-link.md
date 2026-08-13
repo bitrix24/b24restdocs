@@ -14,7 +14,7 @@ The method `disk.file.getExternalLink` returns a public link to a file.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

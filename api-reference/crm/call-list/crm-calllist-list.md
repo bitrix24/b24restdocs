@@ -14,7 +14,7 @@ The method `crm.calllist.list` returns a list of call list activities.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -399,8 +399,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "Invalid parameters.",
-    "error_description": "Invalid parameters were provided."
+    "error": "100",
+    "error_description": "Unknown field definition `TITLE` (TITLE) for \\Bitrix\\Crm\\CallList\\Internals\\CallList Entity."
 }
 ```
 
@@ -409,9 +409,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400` | `Invalid parameters` | Invalid parameters were provided ||
-|| `100` | `Unknown field definition "TITLE"` | Unknown parameter "Field name" ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | ``Unknown field definition `FIELD` (FIELD) for \Bitrix\Crm\CallList\Internals\CallList Entity.`` | The `select`, `filter`, or `order` parameter received a field that the call list does not have ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

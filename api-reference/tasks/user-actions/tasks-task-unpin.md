@@ -14,7 +14,7 @@ The `tasks.task.unpin` method unpins a task in the current user's task list.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

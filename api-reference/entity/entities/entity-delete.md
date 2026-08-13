@@ -21,7 +21,7 @@ This method only works in the context of the [application](../../../settings/app
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

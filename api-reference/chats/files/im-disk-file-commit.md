@@ -30,7 +30,7 @@ You can obtain the identifier of the new file after uploading it using the metho
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

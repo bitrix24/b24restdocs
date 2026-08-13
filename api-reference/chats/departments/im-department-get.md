@@ -14,7 +14,7 @@ The method `im.department.get` retrieves data about departments by their `ID` id
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -16,7 +16,7 @@ If the page is already published, the changes will be visible to visitors after 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

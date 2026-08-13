@@ -14,7 +14,7 @@ The method `landing.block.getContentFromRepository` returns the HTML content of 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

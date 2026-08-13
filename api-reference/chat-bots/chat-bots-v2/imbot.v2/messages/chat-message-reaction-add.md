@@ -14,7 +14,7 @@ The method `imbot.v2.Chat.Message.Reaction.add` adds a bot reaction to a message
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ This method creates a new SPA.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ This method creates a new SPA.
 
 ### Parameter fields
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -100,7 +100,7 @@ This parameter is deprecated. For working with digital workplaces, use the metho
 
 #### One relation relation {#relation}
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

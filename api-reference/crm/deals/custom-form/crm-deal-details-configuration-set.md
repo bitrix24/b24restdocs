@@ -29,7 +29,7 @@ The settings for deal cards in different Sales Funnels may vary. To select a Sal
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -56,7 +56,7 @@ If not specified, the current user is used
 
 ### Parameter extras Parameter {#parameter-extras}
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -72,7 +72,7 @@ If not specified, the default funnel for deals is used
 
 Describes an individual section with fields within the deal card
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -94,7 +94,7 @@ Currently, only the value `section` is available
 
 Configuration of an individual field within the section
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

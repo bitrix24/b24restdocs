@@ -14,7 +14,7 @@ The method `tasks.api.scrum.sprint.update` updates a sprint.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

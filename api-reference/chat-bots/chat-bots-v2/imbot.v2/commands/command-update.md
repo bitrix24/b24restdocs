@@ -14,7 +14,7 @@ The method `imbot.v2.Command.update` updates the bot's slash command.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

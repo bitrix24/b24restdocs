@@ -655,7 +655,7 @@ HTTP status: **200**
 
 #### Overview of System Activity Fields {#all-fields}
 
-{% include [Footnote on required parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Field** `type` | **Description** | **Note** ||

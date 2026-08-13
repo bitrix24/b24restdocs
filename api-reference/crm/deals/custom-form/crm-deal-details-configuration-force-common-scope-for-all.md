@@ -27,7 +27,7 @@ The settings for deal detail forms may vary across different Sales Funnels. To s
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -38,7 +38,7 @@ The settings for deal detail forms may vary across different Sales Funnels. To s
 
 ### extras Parameter {#parameter-extras}
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

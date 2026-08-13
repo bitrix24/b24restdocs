@@ -14,7 +14,7 @@ The method `booking.v1.booking.client.set` sets clients for the specified bookin
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

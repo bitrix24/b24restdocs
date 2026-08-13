@@ -14,7 +14,7 @@ The method `crm.documentgenerator.document.upload` uploads a prepared document a
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `crm.documentgenerator.document.upload` uploads a prepared document a
 
 ### Parameter fields {#fields}
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

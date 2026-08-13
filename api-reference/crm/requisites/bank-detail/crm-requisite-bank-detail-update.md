@@ -14,7 +14,7 @@ This method updates an existing bank detail.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **parameter** | **Description** ||

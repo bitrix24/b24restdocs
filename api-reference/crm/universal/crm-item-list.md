@@ -16,7 +16,7 @@ CRM object items will not be included in the final selection if the user does no
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

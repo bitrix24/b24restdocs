@@ -14,7 +14,7 @@ The method returns the values of the parent product fields by identifier.
 
 ## Method Parameters
 
-{% include [Note about required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -29,7 +29,7 @@ The simplest block `type = text`, which outputs certain formatted text.
 
 #### Parameters
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -83,7 +83,7 @@ The `type = largeText` block allows displaying long multiline texts, which will 
 
 #### Parameters
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -129,7 +129,7 @@ The `type = link` block outputs a link.
 
 #### Parameters
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -167,7 +167,7 @@ The `type = withTitle` block outputs a name-value pair. Another content block ca
 
 #### Parameters
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -228,7 +228,7 @@ The `type = lineOfBlocks` block outputs several text or link type content blocks
 
 #### Parameters
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -281,7 +281,7 @@ The `type = deadline` block displays the current deadline value with the ability
 
 #### Parameters
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||

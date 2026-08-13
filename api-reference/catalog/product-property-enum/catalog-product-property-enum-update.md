@@ -14,7 +14,7 @@ The method `catalog.productPropertyEnum.update` updates the value of a list prop
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -29,7 +29,7 @@ The identifier can be obtained using the [catalog.productPropertyEnum.list](./ca
 
 ### Parameter fields {#fields}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

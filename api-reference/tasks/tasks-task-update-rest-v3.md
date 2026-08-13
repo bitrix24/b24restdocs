@@ -20,7 +20,7 @@ The method `tasks.task.update` updates a task.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

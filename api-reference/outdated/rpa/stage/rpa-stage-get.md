@@ -20,7 +20,7 @@ This method retrieves information about a stage by its `id`.
 
 ## Stage Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

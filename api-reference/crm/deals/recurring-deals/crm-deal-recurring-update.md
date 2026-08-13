@@ -14,7 +14,7 @@ The method `crm.deal.recurring.update` updates an existing recurring deal templa
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

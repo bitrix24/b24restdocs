@@ -20,7 +20,7 @@ The method `imbot.chat.leave` removes the chat bot from the chat.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

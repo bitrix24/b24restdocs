@@ -14,7 +14,7 @@ The method `landing.role.setRights` sets role permissions for sites. You can spe
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

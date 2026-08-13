@@ -14,7 +14,7 @@ The method `im.dialog.messages.search` performs a search for messages in the cha
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

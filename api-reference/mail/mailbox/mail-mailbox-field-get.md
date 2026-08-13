@@ -20,7 +20,7 @@ The `mail.mailbox.field.get` method returns the description of a mailbox field b
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

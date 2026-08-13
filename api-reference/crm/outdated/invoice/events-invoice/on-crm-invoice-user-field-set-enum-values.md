@@ -10,7 +10,7 @@ The event is triggered when the set of values for a custom list field is changed
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

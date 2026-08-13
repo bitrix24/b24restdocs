@@ -20,7 +20,7 @@ Non-existent or inactive users will be ignored without an error.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name** 

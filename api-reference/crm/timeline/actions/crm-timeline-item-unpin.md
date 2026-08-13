@@ -14,7 +14,7 @@ The `crm.timeline.item.unpin` method unpins a timeline entry.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

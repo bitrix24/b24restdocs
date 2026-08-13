@@ -22,7 +22,7 @@ It is recommended to pass the complete set of address fields when updating an ad
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -668,10 +668,10 @@ HTTP status: **400**
 
 #|
 || **Code**      | **Description** | **Value** ||
-|| `-`          | `Parameter 'fields' must be array` | The `fields` parameter is not an object ||
-|| `-`          | `Parameter 'params' must be array` | The `params` parameter is not an object ||
-|| `-`          | `Access denied` | The user does not have permission to "Edit" contacts ||
-|| `-`          | Disk resource exhausted | ||
+|| Empty value | `Parameter 'fields' must be array` | The `fields` parameter is not an object ||
+|| Empty value | `Parameter 'params' must be array` | The `params` parameter is not an object ||
+|| Empty value | `Access denied` | The user does not have permission to "Edit" contacts ||
+|| Empty value | Disk resource exhausted | ||
 || `ERROR_CORE` | The field `Work e-mail` contains an invalid address | ||
 |#
 

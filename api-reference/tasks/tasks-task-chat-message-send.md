@@ -20,7 +20,7 @@ The method `tasks.task.chat.message.send` sends a new message to the task chat.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,7 +31,7 @@ The method `tasks.task.chat.message.send` sends a new message to the task chat.
 
 ### Parameter fields {#fields}
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

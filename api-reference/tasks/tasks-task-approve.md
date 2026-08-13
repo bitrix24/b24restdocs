@@ -16,7 +16,7 @@ You can check the access permission to approve the Participant's work on the tas
 
 ## Method Parameters
 
-{% include [Parameters Note](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #| 
 || **Name**

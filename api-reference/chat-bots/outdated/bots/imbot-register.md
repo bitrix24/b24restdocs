@@ -20,7 +20,7 @@ The method `imbot.register` registers a chat-bot and binds event handlers of the
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

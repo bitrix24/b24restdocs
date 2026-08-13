@@ -20,7 +20,7 @@ The method `crm.vat.get` returns the parameters of the VAT rate by its ID.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

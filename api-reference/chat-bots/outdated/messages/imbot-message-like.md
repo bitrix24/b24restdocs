@@ -20,7 +20,7 @@ The method `imbot.message.like` sets or removes the "Like" mark for a message.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

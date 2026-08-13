@@ -16,7 +16,7 @@ The method works in both group and personal chats with the bot. Access is verifi
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name** 

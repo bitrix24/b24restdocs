@@ -16,7 +16,7 @@ In response, the method returns the file identifier and a link to it in the `src
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

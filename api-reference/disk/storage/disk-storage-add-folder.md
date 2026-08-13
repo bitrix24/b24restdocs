@@ -14,7 +14,7 @@ The method `disk.storage.addFolder` creates a folder in the root of the storage.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

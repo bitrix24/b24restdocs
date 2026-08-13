@@ -14,7 +14,7 @@ The method `catalog.productPropertyFeature.add` adds a parameter to a product or
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,7 +25,7 @@ The method `catalog.productPropertyFeature.add` adds a parameter to a product or
 
 ### Parameter fields {#fields}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

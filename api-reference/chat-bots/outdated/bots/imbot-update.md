@@ -20,7 +20,7 @@ The `imbot.update` method updates the data of the chat-bot and its event handler
 
 ## Method Parameters
 
-{% include [Parameters Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

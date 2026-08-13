@@ -14,7 +14,7 @@ The method `booking.v1.waitlist.get` returns information about a waitlist record
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

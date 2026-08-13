@@ -16,7 +16,7 @@ Notifications are sorted first by descending creation date, then by descending i
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

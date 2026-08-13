@@ -26,7 +26,7 @@ The response contains documents from Knowledge bases to which the user has acces
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

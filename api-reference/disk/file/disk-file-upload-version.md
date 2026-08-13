@@ -14,7 +14,7 @@ The method `disk.file.uploadVersion` uploads a new version of a file.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ Retrieves a list of custom fields for the specified entity based on the filter.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

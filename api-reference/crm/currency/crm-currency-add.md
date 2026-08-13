@@ -16,7 +16,7 @@ For the languages used on the account, localization parameters must be specified
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 ||  **Name**
@@ -40,7 +40,7 @@ fields: {
 
 ### Parameter fields
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 ||  **Name**

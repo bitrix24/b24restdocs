@@ -14,7 +14,7 @@ The method `crm.documentgenerator.numerator.update` updates an existing numerato
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -41,7 +41,7 @@ The list of fields is [below](#parameter-fields) ||
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

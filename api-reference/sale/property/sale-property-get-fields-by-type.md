@@ -14,7 +14,7 @@ This method retrieves the available fields of order properties by property type.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name** 

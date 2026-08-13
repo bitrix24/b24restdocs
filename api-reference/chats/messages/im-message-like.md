@@ -14,7 +14,7 @@ The method `im.message.like` sets or removes the "Like" mark for a message.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

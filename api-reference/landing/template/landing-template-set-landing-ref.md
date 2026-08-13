@@ -16,7 +16,7 @@ Included areas of the template are separate pages used as parts of the layout, s
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

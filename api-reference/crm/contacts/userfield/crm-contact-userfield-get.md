@@ -14,7 +14,7 @@ The method `crm.contact.userfield.get` returns a custom contact field by its ide
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -800,10 +800,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Access denied` | Occurs when:
+|| Empty value | `Access denied` | Occurs when:
 - the user does not have administrative rights
 - the user attempts to access a custom field not linked to contacts ||
-|| `-` | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or not provided at all ||
+|| Empty value | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or not provided at all ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` was not found ||
 |#
 

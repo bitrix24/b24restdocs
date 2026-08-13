@@ -31,7 +31,7 @@ Below, we will look in more detail at how to use this method and which parameter
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -74,7 +74,7 @@ Default is `N` ||
 
 ### Parameter fields
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% list tabs %}
 

@@ -14,7 +14,7 @@ The method `landing.site.getGroupBindings` returns the bindings of Knowledge Bas
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -49,7 +49,7 @@ Data is transmitted as a POST request {.b24-info}
 
 ## Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

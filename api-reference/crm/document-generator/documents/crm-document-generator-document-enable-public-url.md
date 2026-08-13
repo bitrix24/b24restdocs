@@ -14,7 +14,7 @@ The method `crm.documentgenerator.document.enablepublicurl` enables or disables 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

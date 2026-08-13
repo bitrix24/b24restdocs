@@ -14,7 +14,7 @@ The method `lists.element.get.file.url` returns the file path.
 
 ## Method Parameters
 
-{% include [Note about required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -164,7 +164,7 @@ General structure of a block:
 
 A block displaying formatted text.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -212,7 +212,7 @@ A block displaying formatted text.
 
 ##### Link {#link}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -250,7 +250,7 @@ A block displaying formatted text.
 
 The block displays a title and a value. Another content block can be used as the value.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -315,7 +315,7 @@ Example with a link content block:
 
 The block displays multiple content blocks of type text or link in one line. This allows displaying text with different formatting and links in a single line.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -361,7 +361,7 @@ The block displays multiple content blocks of type text or link in one line. Thi
 
 ##### Dropdown Menu {#dropdownMenu}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -397,7 +397,7 @@ When the value changes, the callback will receive the `id` of the dropdown block
 
 ##### Text Input Field {#input}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -437,7 +437,7 @@ When the value changes, the callback will receive the `id` of the text input fie
 
 ##### Multiline Text Input Field {#textarea}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -475,7 +475,7 @@ When the value changes, the callback will receive the `id` of the text input fie
 
 ##### Input Field with List Selection {#select}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -518,7 +518,7 @@ When the value changes, the callback will receive the `id` of the field and its 
 
 ##### Unordered List {#list}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -568,7 +568,7 @@ When the value changes, the callback will receive the `id` of the field and its 
 
 The block displays a grouped set of blocks. An option with an image is possible.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -699,7 +699,7 @@ Redirecting is possible in two variants:
 - slider, if it is a relative link to standard Bitrix24 objects that support working in a slider,
 - regular link redirection in other cases.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -719,7 +719,7 @@ Redirecting is possible in two variants:
 
 ##### JS Event {#js}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -748,7 +748,7 @@ Calling the action will open the slider of the application that registered the w
 * `entityTypeId` is the identifier of the object type to which the deal is linked,
 * `entityId` is the identifier of the element.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

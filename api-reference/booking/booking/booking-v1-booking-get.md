@@ -14,7 +14,7 @@ The method `booking.v1.booking.get` returns information about a booking by its i
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

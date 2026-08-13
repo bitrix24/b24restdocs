@@ -16,7 +16,7 @@ You can only delete a smart process if there are no associated elements. If such
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `imbot.v2.Chat.Manager.delete` removes users from the chat managers l
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name**

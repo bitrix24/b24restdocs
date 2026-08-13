@@ -20,7 +20,7 @@ The method `tasks.task.file.field.get` returns the description of a task file fi
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

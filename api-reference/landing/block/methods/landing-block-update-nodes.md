@@ -14,7 +14,7 @@ The method `landing.block.updatenodes` updates the nodes of a block in the draft
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `crm.status.list` returns a list of directory items based on the filt
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

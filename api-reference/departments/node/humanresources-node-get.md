@@ -20,7 +20,7 @@ The method `humanresources.node.get` returns a department or team by its identif
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

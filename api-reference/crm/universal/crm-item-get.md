@@ -14,7 +14,7 @@ This method returns information about an entity based on its identifier and the 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -20,7 +20,7 @@ The method `tasks.task.file.attach` adds files from Drive to a task. The user mu
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -22,7 +22,7 @@ Objects are deleted if they are not linked to other objects or entities. If the 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

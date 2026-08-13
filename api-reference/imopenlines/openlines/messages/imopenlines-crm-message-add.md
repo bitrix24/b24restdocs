@@ -14,7 +14,7 @@ The method `imopenlines.crm.message.add` sends a message on behalf of an employe
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

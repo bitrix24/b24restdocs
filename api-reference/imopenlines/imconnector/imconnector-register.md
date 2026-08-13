@@ -22,7 +22,7 @@ The method works only in the context of an [application](../../../settings/app-i
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

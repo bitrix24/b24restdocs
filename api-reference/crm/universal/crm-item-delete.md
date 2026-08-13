@@ -14,7 +14,7 @@ Deletes a CRM object element by its item ID and entity type ID.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

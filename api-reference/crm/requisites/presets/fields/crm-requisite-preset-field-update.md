@@ -14,7 +14,7 @@ Updates a custom field in the specified template.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -35,7 +35,7 @@ The API requires a value to be specified in the **FIELD_NAME** field. If it does
 
 ### Parameter fields
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 ||  **Name**

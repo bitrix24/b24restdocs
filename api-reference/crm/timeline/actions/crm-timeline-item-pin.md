@@ -14,7 +14,7 @@ The `crm.timeline.item.pin` method pins an entry in the timeline.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

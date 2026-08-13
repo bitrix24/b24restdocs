@@ -14,7 +14,7 @@ The method `crm.userfield.settings.fields` returns the field settings descriptio
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

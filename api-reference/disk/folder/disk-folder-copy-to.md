@@ -14,7 +14,7 @@ The method `disk.folder.copyTo` copies a folder and all its contents to the spec
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

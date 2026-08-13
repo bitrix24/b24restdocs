@@ -20,7 +20,7 @@ The method `crm.company.get` returns a company by its identifier.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -331,8 +331,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Access denied` | The user does not have "Read" access permission for companies ||
-|| `-` | `Not found` | Company not found ||
+|| Empty value | `Access denied` | The user does not have "Read" access permission for companies ||
+|| Empty value | `Not found` | Company not found ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

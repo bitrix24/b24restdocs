@@ -14,7 +14,7 @@ The method `landing.block.getrepository` returns the available sections of the b
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

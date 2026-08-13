@@ -14,7 +14,7 @@ The method `disk.file.restore` restores a file from the trash.
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `catalog.productPropertyFeature.get` returns the product property fea
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

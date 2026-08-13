@@ -16,7 +16,7 @@ If the current user is an extranet user, the method will return data only for us
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

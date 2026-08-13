@@ -28,7 +28,7 @@ The settings for repeat leads may differ from those for simple leads. To switch 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -597,7 +597,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | Access denied | Insufficient permissions to retrieve the requested configuration ||
+|| Empty value | Access denied | Insufficient permissions to retrieve the requested configuration ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

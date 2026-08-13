@@ -18,7 +18,7 @@ The method `crm.item.details.configuration.get` returns the settings of the deta
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

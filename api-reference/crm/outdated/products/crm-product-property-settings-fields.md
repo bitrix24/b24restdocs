@@ -20,7 +20,7 @@ The method `crm.product.property.settings.fields` returns the description of the
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**

@@ -20,7 +20,7 @@ The `mail.mailbox.senders` method returns a list of senders available to the cur
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

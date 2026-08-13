@@ -15,7 +15,7 @@ This method is similar to [crm.status.list](crm-status-list.md), except that the
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

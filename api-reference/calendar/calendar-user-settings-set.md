@@ -14,7 +14,7 @@ This method sets user calendar settings for the current user.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

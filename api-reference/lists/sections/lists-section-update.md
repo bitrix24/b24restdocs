@@ -60,7 +60,7 @@ At least one of the parameters must be specified: `SECTION_ID` or `SECTION_CODE`
 
 ### FIELDS Parameter {#parametr-fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

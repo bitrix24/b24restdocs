@@ -20,7 +20,7 @@ The `mail.message.send` method sends a new e-mail on behalf of an available send
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

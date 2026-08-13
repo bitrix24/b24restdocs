@@ -18,7 +18,7 @@ Each document generates its own set of field types. For example, in CRM, there i
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

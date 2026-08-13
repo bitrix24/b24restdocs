@@ -14,7 +14,7 @@ The method `landing.repo.getList` retrieves a list of custom blocks.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

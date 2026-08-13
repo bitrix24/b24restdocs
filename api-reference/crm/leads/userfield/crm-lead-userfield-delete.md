@@ -14,7 +14,7 @@ The method `crm.lead.userfield.delete` removes a custom field for leads.
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

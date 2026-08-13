@@ -22,7 +22,7 @@ To retrieve a list of companies associated with the contact, use the method [`cr
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

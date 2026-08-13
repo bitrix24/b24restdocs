@@ -14,7 +14,7 @@ The method `imopenlines.session.start` initiates a new session in the current op
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

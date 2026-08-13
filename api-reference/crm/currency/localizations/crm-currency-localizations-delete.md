@@ -14,7 +14,7 @@ This method deletes currency localizations for the specified languages.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 ||  **Name**

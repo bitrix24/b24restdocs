@@ -14,7 +14,7 @@ This method retrieves information about a product in the trade catalog by its `I
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

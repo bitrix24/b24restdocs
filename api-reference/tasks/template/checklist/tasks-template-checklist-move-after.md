@@ -14,7 +14,7 @@ The method `tasks.template.checklist.moveAfter` moves a checklist item after a s
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**

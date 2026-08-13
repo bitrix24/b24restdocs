@@ -100,7 +100,7 @@ Access permissions can only be assigned to users or departments that do not alre
 
 ### FIELDS Parameter {#parametr-fields}
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

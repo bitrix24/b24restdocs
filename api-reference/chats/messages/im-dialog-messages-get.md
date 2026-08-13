@@ -20,7 +20,7 @@ Messages can only be retrieved without participating in the chat for Open Channe
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

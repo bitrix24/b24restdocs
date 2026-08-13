@@ -16,7 +16,7 @@ It does not return the original file but rather the prepared data for a specific
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**

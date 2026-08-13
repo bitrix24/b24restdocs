@@ -22,7 +22,7 @@ If you need to explicitly specify the details of the buyer and seller in the est
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -52,7 +52,7 @@ A complete list of available fields and their types can be obtained using the me
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -457,9 +457,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Parameter 'fields' must be array.` | `fields` is not an object ||
-|| `-` | `Parameter 'params' must be array.` | `params` is not an object ||
-|| `-` | `Access denied.` | The user does not have permission to add estimates ||
+|| Empty value | `Parameter 'fields' must be array.` | `fields` is not an object ||
+|| Empty value | `Parameter 'params' must be array.` | `params` is not an object ||
+|| Empty value | `Access denied.` | The user does not have permission to add estimates ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

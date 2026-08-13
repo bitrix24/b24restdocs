@@ -20,7 +20,7 @@ The method `tasks.task.result.addfromchatmessage` creates a task result from a t
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

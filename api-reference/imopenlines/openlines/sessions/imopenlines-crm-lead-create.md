@@ -14,7 +14,7 @@ The method `imopenlines.crm.lead.create` creates a CRM lead based on the current
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

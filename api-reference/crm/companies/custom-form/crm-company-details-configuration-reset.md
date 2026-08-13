@@ -22,7 +22,7 @@ The method `crm.company.details.configuration.reset` resets the settings of comp
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -486,7 +486,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `Access denied` | The user does not have permission to reset settings ||
+|| Empty value | `Access denied` | The user does not have permission to reset settings ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

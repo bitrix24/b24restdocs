@@ -20,7 +20,7 @@ The method cannot be called with session authorization — it returns the `WRONG
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

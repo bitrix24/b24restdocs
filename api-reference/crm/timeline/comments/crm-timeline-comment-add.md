@@ -14,7 +14,7 @@ Adds a new activity of type "Comment" to the timeline.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -55,7 +55,7 @@ Starting from crm version 23.100.0, the method only accepts parameters with the 
 
 ### Parameter fields {#parametr-fields}
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

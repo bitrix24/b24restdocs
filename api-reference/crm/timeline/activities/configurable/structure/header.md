@@ -10,7 +10,7 @@ Header of the [timeline record](../index.md) `HeaderDto`.
 
 ## Parameters of the `HeaderDto` Object
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -36,7 +36,7 @@ No more than two tags are allowed.
 
 ### Parameters of the `TagDto` Object
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||

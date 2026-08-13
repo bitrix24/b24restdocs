@@ -16,7 +16,7 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

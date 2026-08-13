@@ -14,7 +14,7 @@ The method `crm.calllist.items.get` returns a list of participants, contacts, or
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -312,8 +312,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "Incorrect list id",
-    "error_description": "An incorrect list identifier was provided."
+    "error": "LIST_ID_ERROR",
+    "error_description": "List id should be positive"
 }
 ```
 
@@ -322,10 +322,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400` | `Incorrect list id` | Incorrect call list identifier ||
-|| `400` | `Incorrect status` | Incorrect call status ||
-|| `403` | `Access denied` | No access to list items ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | `LIST_ID is not found` | The required parameter `LIST_ID` was not passed ||
+|| `400` | `LIST_ID_ERROR` | `List id should be positive`, `Call list is not found` | The call list identifier is less than one, or a call list with this identifier does not exist ||
+|| `400` | `STATUS_ERROR` | `Incorrect status` | The `STATUS` filter received a value that is not in the list of statuses ||
+|| `403` | `ACCESS_ERROR` | `You do not have access to the participants of this call list` | The user does not have access to any participant of the call list ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

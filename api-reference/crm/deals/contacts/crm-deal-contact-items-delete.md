@@ -14,7 +14,7 @@ The method `crm.deal.contact.items.delete` removes all contact associations with
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**
@@ -280,10 +280,10 @@ HTTP status: **400**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `-` | `The parameter ownerEntityID is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
-|| `-` | `Access denied` | The user does not have read access permission for deals ||
+|| Empty value | `The parameter ownerEntityID is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
+|| Empty value | `Access denied` | The user does not have read access permission for deals ||
 || `ACCESS_DENIED` | `Access denied!` | No read or modify access permission for the deal ||
-|| `-` | `Not found` | The deal with the provided `id` was not found ||
+|| Empty value | `Not found` | The deal with the provided `id` was not found ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

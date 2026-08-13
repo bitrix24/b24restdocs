@@ -20,7 +20,7 @@ The method `main.eventlog.tail` returns new log entries that appeared after the 
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

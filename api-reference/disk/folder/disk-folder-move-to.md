@@ -14,7 +14,7 @@ The method `disk.folder.moveTo` moves a folder and all its contents to the speci
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

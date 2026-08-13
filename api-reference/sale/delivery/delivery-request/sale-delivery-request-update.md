@@ -14,7 +14,7 @@ This method updates the delivery request.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -57,7 +57,7 @@ Possible values:
 
 ### Parameter STATUS {#parametr-status}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -75,7 +75,7 @@ Possible values:
 
 ### Parameter PROPERTIES {#parametr-properties}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `imopenlines.dialog.get` returns data from the open line chat. You on
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

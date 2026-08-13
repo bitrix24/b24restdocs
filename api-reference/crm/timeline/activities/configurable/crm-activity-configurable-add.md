@@ -20,7 +20,7 @@ The method can only be called within the context of an [application](https://hel
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -52,7 +52,7 @@ fields:
 
 ### Parameter fields {#parametr-fields}
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

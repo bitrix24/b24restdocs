@@ -20,7 +20,7 @@ The method `main.eventlog.field.get` returns the description of the event log fi
 
 ## Method Parameters
 
-{% include [Parameter Note](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

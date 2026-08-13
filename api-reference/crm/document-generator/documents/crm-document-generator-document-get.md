@@ -14,7 +14,7 @@ The method `crm.documentgenerator.document.get` returns the document data by its
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -16,4 +16,4 @@ The event `onSonetGroupSubjectUpdate` is triggered after the subject of a workgr
 || **Field** | **Description** ||
 || **ID** | Identifier of the changed subject ||
 |#
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}

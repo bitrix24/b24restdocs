@@ -14,7 +14,7 @@ The method `crm.company.contact.items.get` returns a set of contacts associated 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -329,7 +329,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `The parameter ownerEntityID is invalid or not defined` | The provided `id` is less than or equal to 0 or not provided at all ||
+|| Empty value | `The parameter ownerEntityID is invalid or not defined` | The provided `id` is less than or equal to 0 or not provided at all ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to read companies ||
 |#
 

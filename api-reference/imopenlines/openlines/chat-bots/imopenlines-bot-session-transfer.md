@@ -14,7 +14,7 @@ The method `imopenlines.bot.session.transfer` transfers a dialogue from the chat
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**

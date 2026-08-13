@@ -16,7 +16,7 @@ A typical scenario: the bot has handled an incoming message from the [ONIMBOTV2M
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name** 

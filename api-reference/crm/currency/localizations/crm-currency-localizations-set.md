@@ -14,7 +14,7 @@ This method updates localizations for a currency or adds them if the localizatio
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 ||  **Name** /

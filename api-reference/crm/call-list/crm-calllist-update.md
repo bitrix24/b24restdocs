@@ -14,7 +14,7 @@ The `crm.calllist.update` method allows you to add or remove participants from a
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -311,8 +311,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "Invalid parameters.",
-    "error_description": "Invalid parameters were provided."
+    "error": "ENTITY_TYPE_ERROR",
+    "error_description": "EntityType is incorrect"
 }
 ```
 
@@ -321,14 +321,15 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400` | `Invalid parameters` | Invalid parameters were provided ||
-|| `400` | `Incorrect entity type` | Unsupported entity type specified ||
-|| `400` | `Entities is not array` | The ENTITIES parameter is not an array ||
-|| `400` | `Incorrect entities id` | Invalid IDs of elements were provided ||
-|| `400` | `Incorrect list id or access denied` | Invalid list identifier or no access ||
-|| `400` | `Discrepancy between the type of call participants and incoming type` | Mismatch between participant type and provided type ||
-|| `400` | `Incorrect webform id` | Invalid ID of the CRM form ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | `LIST_ID is not found`, `ENTITY_TYPE is not found`, `ENTITIES is not found` | A required parameter was not passed ||
+|| `400` | `ENTITY_TYPE_ERROR` | `EntityType is incorrect` | The `ENTITY_TYPE` parameter received a value other than `CONTACT` or `COMPANY` ||
+|| `400` | `ENTITIES_ERROR` | `Entities is not array` | The `ENTITIES` parameter received a value that is not an array ||
+|| `400` | `ENTITIES_ERROR` | `Incorrect entities id` | The `ENTITIES` parameter contains identifiers that do not exist in CRM ||
+|| `400` | `LIST_ID_ERROR` | `Incorrect list id or access denied` | A call list with this identifier does not exist, or there is no access to it ||
+|| `400` | `ENTITY_TYPE_ERROR` | `Discrepancy between the type of call participants and incoming type` | The entity type in `ENTITY_TYPE` does not match the type of the call list participants ||
+|| `400` | `WEBFORM_ERROR` | `Incorrect webform id` | The `WEBFORM_ID` parameter specifies a CRM form that does not exist ||
+|| `403` | `ACCESS_ERROR` | `Access Denied` | The user does not have the permission to read contacts or companies ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

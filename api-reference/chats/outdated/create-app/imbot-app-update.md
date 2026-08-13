@@ -20,7 +20,7 @@ The required fields are the application ID and one of the necessary fields for e
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name** | **Example** | **Description** ||

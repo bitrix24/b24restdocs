@@ -20,7 +20,7 @@ This method sets the full visibility settings for fields at the stage with the i
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

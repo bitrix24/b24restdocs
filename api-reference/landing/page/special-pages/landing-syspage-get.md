@@ -14,7 +14,7 @@ The method `landing.syspage.get` returns a list of special pages for the site.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

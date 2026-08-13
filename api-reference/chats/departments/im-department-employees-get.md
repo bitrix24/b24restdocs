@@ -14,7 +14,7 @@ The method `im.department.employees.get` retrieves a list of employees from the 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

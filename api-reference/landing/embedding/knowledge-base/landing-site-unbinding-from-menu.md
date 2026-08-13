@@ -14,7 +14,7 @@ The method `landing.site.unbindingFromMenu` removes the binding of the Knowledge
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

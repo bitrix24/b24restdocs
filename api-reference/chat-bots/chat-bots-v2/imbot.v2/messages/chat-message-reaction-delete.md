@@ -14,7 +14,7 @@ The method `imbot.v2.Chat.Message.Reaction.delete` removes the bot's reaction fr
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

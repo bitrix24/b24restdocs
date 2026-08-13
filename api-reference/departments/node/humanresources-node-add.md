@@ -20,7 +20,7 @@ The method `humanresources.node.add` creates a new department or team.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

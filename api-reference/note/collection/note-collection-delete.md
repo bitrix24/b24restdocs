@@ -20,7 +20,7 @@ The `note.collection.delete` method moves a knowledge base to the shopping cart 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `imopenlines.session.join` adds the current operator to an active dia
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

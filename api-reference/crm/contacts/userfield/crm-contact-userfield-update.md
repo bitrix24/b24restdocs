@@ -14,7 +14,7 @@ The `crm.contact.userfield.update` method updates an existing contact custom fie
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -920,9 +920,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `Parameter 'fields' must be array` | The provided `fields` is not an object ||
-|| `-`     | `ID is not defined or invalid`     | The passed `id` is less than zero or not passed at all ||
-|| `-`     | `Access denied`                    | Occurs when:
+|| Empty value | `Parameter 'fields' must be array` | The provided `fields` is not an object ||
+|| Empty value | `ID is not defined or invalid`     | The passed `id` is less than zero or not passed at all ||
+|| Empty value | `Access denied`                    | Occurs when:
 - the user does not have administrative rights
 - the user attempts to delete a custom field not associated with contacts ||
 || `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The user field with the passed `id` does not exist ||

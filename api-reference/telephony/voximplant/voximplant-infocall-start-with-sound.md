@@ -14,7 +14,7 @@ The method `voximplant.infocall.startwithsound` initiates an auto-call and plays
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

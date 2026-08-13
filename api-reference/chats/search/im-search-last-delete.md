@@ -20,7 +20,7 @@ The method `im.search.last.delete` removes a dialog from the last search history
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

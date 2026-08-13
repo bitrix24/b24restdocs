@@ -14,7 +14,7 @@ This method checks whether an action is permitted on a record: creation, modific
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **TASKID*** 

@@ -20,7 +20,7 @@ If the user is not a participant in the chat, the method will return `true` (ide
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name** 

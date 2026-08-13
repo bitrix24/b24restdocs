@@ -16,7 +16,7 @@ For successful registration, the requisite IDs must belong to the client and sel
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -27,7 +27,7 @@ For successful registration, the requisite IDs must belong to the client and sel
 
 ### Parameter fields
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

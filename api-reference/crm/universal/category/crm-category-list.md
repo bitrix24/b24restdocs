@@ -20,7 +20,7 @@ The list of returned funnels is filtered by access permissions. This means that 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

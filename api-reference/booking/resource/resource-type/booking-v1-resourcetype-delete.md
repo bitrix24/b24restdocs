@@ -14,7 +14,7 @@ The method `booking.v1.resourceType.delete` removes a resource type.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

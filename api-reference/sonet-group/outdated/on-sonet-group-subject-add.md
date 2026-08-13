@@ -16,4 +16,4 @@ The event `onSonetGroupSubjectAdd` is triggered after a workgroup/project topic 
 || **Field** | **Description** ||
 || **ID** | Identifier of the created topic ||
 |#
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}

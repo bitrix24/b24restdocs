@@ -16,7 +16,7 @@ This method updates the property values of an order.
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -42,7 +42,7 @@ This method updates the property values of an order.
 
 ### Parameter fields
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -63,7 +63,7 @@ This method updates the property values of an order.
 
 ### Parameter order
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -76,7 +76,7 @@ This method updates the property values of an order.
 
 ### Parameter propertyValues
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Value**

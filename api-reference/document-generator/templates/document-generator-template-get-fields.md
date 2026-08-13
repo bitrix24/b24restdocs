@@ -14,7 +14,7 @@ The method `documentgenerator.template.getfields` returns the detail form of the
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

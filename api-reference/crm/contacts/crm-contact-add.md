@@ -838,10 +838,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
-|| `-`     | `Parameter 'params' must be array` | The parameter `params` is not an object ||
-|| `-`     | `Access denied` | The user does not have permission to "Add" or "Import" contacts ||
-|| `-`     | Disk resource exhausted | ||
+|| Empty value | `Parameter 'fields' must be array` | The parameter `fields` is not an object ||
+|| Empty value | `Parameter 'params' must be array` | The parameter `params` is not an object ||
+|| Empty value | `Access denied` | The user does not have permission to "Add" or "Import" contacts ||
+|| Empty value | Disk resource exhausted | ||
 || `ERROR_CORE` | The field `Work e-mail` contains an invalid address | ||
 |#
 

@@ -14,7 +14,7 @@ The method `tasks.template.checklist.add` adds a checklist item to the task temp
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**
@@ -29,7 +29,7 @@ The identifier of the task template can be obtained when [creating a new templat
 
 ### Parameter fields {#fields}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**

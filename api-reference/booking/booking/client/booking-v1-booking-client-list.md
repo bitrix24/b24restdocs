@@ -14,7 +14,7 @@ The method `booking.v1.booking.client.list` returns a list of clients for the sp
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

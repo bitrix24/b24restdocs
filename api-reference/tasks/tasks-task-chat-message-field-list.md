@@ -20,7 +20,7 @@ The method `tasks.task.chat.message.field.list` returns a list of available fiel
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

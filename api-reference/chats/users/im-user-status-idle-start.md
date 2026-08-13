@@ -22,7 +22,7 @@ This method was designed for the previous version of the chat. In the current M1
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

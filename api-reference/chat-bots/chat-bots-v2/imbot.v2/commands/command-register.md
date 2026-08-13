@@ -22,7 +22,7 @@ The method call format has changed: command parameters are now passed in the `fi
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

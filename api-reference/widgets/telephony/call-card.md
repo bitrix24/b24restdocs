@@ -70,7 +70,7 @@ Array
 )
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
@@ -78,7 +78,7 @@ Array
 
 The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the call context.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||

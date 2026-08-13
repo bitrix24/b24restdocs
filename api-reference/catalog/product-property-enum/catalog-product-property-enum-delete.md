@@ -14,7 +14,7 @@ The method `catalog.productPropertyEnum.delete` removes the value of a list prop
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

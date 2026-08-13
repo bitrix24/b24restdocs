@@ -20,7 +20,7 @@ The method `crm.lead.list` returns a list of leads based on a filter. It is an i
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|  
 || **Name**  

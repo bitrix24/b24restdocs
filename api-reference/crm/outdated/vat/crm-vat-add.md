@@ -20,7 +20,7 @@ The method `crm.vat.add` creates a new VAT rate in the CRM.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

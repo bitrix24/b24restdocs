@@ -24,7 +24,7 @@ To update, pass the same `message.id` and `chat.id` that were used when sending 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

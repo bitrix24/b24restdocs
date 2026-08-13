@@ -20,7 +20,7 @@ The `note.collection.add` method creates a new Knowledge base and returns its ob
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

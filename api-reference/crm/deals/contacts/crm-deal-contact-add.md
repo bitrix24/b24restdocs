@@ -14,7 +14,7 @@ The method `crm.deal.contact.add` adds a contact to the specified deal.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -45,7 +45,7 @@ The list of available fields is described in [(detailed description)](#parameter
 
 ### Parameter fields {#parameter-fields}
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -357,12 +357,12 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `The parameter 'ownerEntityID' is invalid or not defined.` | The provided `id` is less than 1 or not provided at all ||
-|| `-` | `The parameter 'fields' must be array.` | An object was not provided in `fields` ||
-|| `-` | `Access denied.` | The user does not have permission to modify deals ||
+|| Empty value | `The parameter 'ownerEntityID' is invalid or not defined.` | The provided `id` is less than 1 or not provided at all ||
+|| Empty value | `The parameter 'fields' must be array.` | An object was not provided in `fields` ||
+|| Empty value | `Access denied.` | The user does not have permission to modify deals ||
 || `ACCESS_DENIED` | `Access denied!` | No permission to modify the deal ||
-|| `-` | `Not found.` | The deal with the provided `id` was not found ||
-|| `-` | `The parameter 'fields' is not valid.` | Can occur for several reasons:
+|| Empty value | `Not found.` | The deal with the provided `id` was not found ||
+|| Empty value | `The parameter 'fields' is not valid.` | Can occur for several reasons:
 - if the required parameter `fields.CONTACT_ID` is not provided
 - if the provided parameter `fields.CONTACT_ID` is less than or equal to 0 ||
 |#

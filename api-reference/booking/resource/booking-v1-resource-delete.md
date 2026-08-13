@@ -14,7 +14,7 @@ The method `booking.v1.resource.delete` removes a resource.
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

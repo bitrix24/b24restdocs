@@ -16,7 +16,7 @@ You can check the access permission to disapprove the Participant's work on the 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

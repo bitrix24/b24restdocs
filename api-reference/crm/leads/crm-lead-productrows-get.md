@@ -20,7 +20,7 @@ The method `crm.lead.productrows.get` returns the product rows of a lead.
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

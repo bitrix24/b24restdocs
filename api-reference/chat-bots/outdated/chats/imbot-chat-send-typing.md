@@ -20,7 +20,7 @@ The method `imbot.chat.sendTyping` sends a typing indicator to the dialog. The m
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

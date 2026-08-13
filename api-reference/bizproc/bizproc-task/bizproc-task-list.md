@@ -24,7 +24,7 @@ In cloud Bitrix24, task information is available for one day after the workflow 
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

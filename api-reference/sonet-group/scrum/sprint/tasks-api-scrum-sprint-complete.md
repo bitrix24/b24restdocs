@@ -16,7 +16,7 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

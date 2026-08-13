@@ -74,7 +74,7 @@ After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
 }
 ```
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
@@ -84,7 +84,7 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 
 The `ENTITY_ID`, `ASSOCIATED_ENTITY_ID`, and `ASSOCIATED_ENTITY_TYPE_ID` keys arrive for an activity record. The set of the remaining keys depends on the type of the timeline record the widget is opened on.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Parameter** | **Description** ||

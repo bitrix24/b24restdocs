@@ -14,7 +14,7 @@ Returns a list of all customizable fields for a specific company details templat
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

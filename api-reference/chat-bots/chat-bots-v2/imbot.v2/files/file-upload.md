@@ -14,7 +14,7 @@ The method `imbot.v2.File.upload` uploads a file to the chat on behalf of the bo
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

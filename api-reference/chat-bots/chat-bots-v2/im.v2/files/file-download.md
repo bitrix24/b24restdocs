@@ -14,7 +14,7 @@ The method `im.v2.File.download` returns a link to download a file from the chat
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #| 
 || **Name** 

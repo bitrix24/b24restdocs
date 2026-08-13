@@ -16,7 +16,7 @@ To delete a recurring deal template, you can use the method [crm.deal.delete](..
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

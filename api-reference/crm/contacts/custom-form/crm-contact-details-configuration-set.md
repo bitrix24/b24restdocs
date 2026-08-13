@@ -22,7 +22,7 @@ This method sets the contact card settings: it writes personal settings for the 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -51,7 +51,7 @@ The structure is described [below](#section) ||
 
 Describes an individual section with fields within the contact card.
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -76,7 +76,7 @@ The structure is described [below](#section_element) ||
 
 Configuration of an individual field within the section.
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

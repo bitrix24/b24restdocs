@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 ## Parameters of the `BodyDto` Object
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||
@@ -34,7 +34,7 @@ Logo of the timeline entry.
 
 ### Parameters of the `LogoDto` Object
 
-{% include [Note on parameters](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||

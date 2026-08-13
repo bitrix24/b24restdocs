@@ -20,7 +20,7 @@ The `mail.message.thread` method returns an e-mail thread by the identifier of a
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

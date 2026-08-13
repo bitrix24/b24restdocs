@@ -85,7 +85,7 @@ Data is sent in a POST request: some parameters come in the handler URL query st
 
 {% endlist %}
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 

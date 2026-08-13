@@ -20,7 +20,7 @@ For security reasons, this method does not work in the mobile application.
 
 ## Parameters
 
-{% include [Required parameters note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

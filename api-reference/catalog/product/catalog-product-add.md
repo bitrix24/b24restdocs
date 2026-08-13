@@ -14,7 +14,7 @@ This method adds a product to the trading catalog.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -77,7 +77,7 @@ This method adds a product to the trading catalog.
 
 ### Parameter fields
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `imopenlines.crm.chat.user.delete` removes a user from the chat assoc
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

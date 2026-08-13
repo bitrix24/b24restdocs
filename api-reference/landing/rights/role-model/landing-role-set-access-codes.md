@@ -14,7 +14,7 @@ The method `landing.role.setAccessCodes` specifies to whom the role is assigned:
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

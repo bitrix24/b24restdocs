@@ -20,7 +20,7 @@ The method `tasks.task.field.get` returns the description of a task field by nam
 
 ## Method Parameters
 
-{% include [Parameter Notes](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

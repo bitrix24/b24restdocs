@@ -20,7 +20,7 @@ The method `crm.deal.get` returns a deal by its identifier.
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -534,9 +534,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `ID is not defined or invalid` | The `id` parameter either has no value or is not a positive integer ||
-|| `-`     | `Access denied` | The user does not have permission to "read" this deal ||
-|| `-`     | `Not found`      | No deal exists with the provided `id` ||
+|| Empty value | `ID is not defined or invalid` | The `id` parameter either has no value or is not a positive integer ||
+|| Empty value | `Access denied` | The user does not have permission to "read" this deal ||
+|| Empty value | `Not found`      | No deal exists with the provided `id` ||
 |#
 
 {% include [system errors](./../../../_includes/system-errors.md) %}

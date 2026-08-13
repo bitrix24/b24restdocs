@@ -20,7 +20,7 @@ The `mail.mailbox.list` method retrieves a list of the current user's mailboxes 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -22,7 +22,7 @@ The method inherits the behavior of the [user.get](./user-get.md) method; all pa
 
 ## Method Parameters
 
-{% include [Note on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -14,7 +14,7 @@ The method `crm.deal.contact.items.set` sets a set of contacts associated with t
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -30,7 +30,7 @@ Can be obtained using the methods [crm.deal.list](../crm-deal-list.md) or [crm.d
 
 ### Structure of the binding object {#deal_contact_binding}
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -409,11 +409,11 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `The parameter ownerEntityID is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
-|| `-` | `The parameter items must be array.` | The `items` is not an array ||
-|| `-` | `Access denied.` | The user does not have permission to modify deals ||
+|| Empty value | `The parameter ownerEntityID is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
+|| Empty value | `The parameter items must be array.` | The `items` is not an array ||
+|| Empty value | `Access denied.` | The user does not have permission to modify deals ||
 || `ACCESS_DENIED` | `Access denied!` | No permission to modify the deal ||
-|| `-` | `Not found.` | The deal with the provided `id` was not found ||
+|| Empty value | `Not found.` | The deal with the provided `id` was not found ||
 || `ERROR_CORE` | `-` | Internal error while normalizing bindings ||
 |#
 

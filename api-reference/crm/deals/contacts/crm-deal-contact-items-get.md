@@ -14,7 +14,7 @@ The method `crm.deal.contact.items.get` returns a set of contacts associated wit
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -331,10 +331,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | `The parameter ownerEntityID is invalid or not defined.` | The provided `id` is less than 1 or not provided at all ||
-|| `-` | `Access denied.` | The user does not have permission to read deals ||
+|| Empty value | `The parameter ownerEntityID is invalid or not defined.` | The provided `id` is less than 1 or not provided at all ||
+|| Empty value | `Access denied.` | The user does not have permission to read deals ||
 || `ACCESS_DENIED` | `Access denied!` | No permission to read the deal ||
-|| `-` | `Not found.` | The deal with the provided `id` was not found ||
+|| Empty value | `Not found.` | The deal with the provided `id` was not found ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

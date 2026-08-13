@@ -20,7 +20,7 @@ If you need to temporarily hide the block with the option to restore it, use [la
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #| 
 || **Name**

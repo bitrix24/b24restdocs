@@ -10,7 +10,7 @@ Items in the bottom dropdown menu of the [timeline entry](../index.md) `MenuItem
 
 ## Parameters of the `MenuItemDto` Object
 
-{% include [Parameters Note](../../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
 || **Field** | **Description** ||

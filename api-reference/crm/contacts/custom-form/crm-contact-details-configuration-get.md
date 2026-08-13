@@ -22,7 +22,7 @@ Retrieves the contact card configurations: reads the personal card configuration
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

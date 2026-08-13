@@ -14,7 +14,7 @@ The method `crm.duplicate.volatileType.register` adds a field to the duplicate s
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

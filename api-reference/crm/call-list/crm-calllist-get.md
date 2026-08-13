@@ -14,7 +14,7 @@ The method `crm.calllist.get` returns information about the call list by its ide
 
 ## Method Parameters
 
-{% include [Footnote about parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -296,8 +296,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "Incorrect list id",
-    "error_description": "An incorrect list identifier was provided."
+    "error": "LIST_ID_ERROR",
+    "error_description": "Incorrect list id"
 }
 ```
 
@@ -306,8 +306,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400` | `Incorrect list id` | Incorrect list identifier or the user does not have read access permission ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | `ID is not found` | The required parameter `ID` was not passed ||
+|| `400` | `LIST_ID_ERROR` | `Incorrect list id` | A call list with this identifier does not exist, or the user does not have the read permission ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

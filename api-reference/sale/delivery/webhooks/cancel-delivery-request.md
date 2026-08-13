@@ -36,7 +36,7 @@ The identifier is assigned by the external system in response to the webhook for
 
 ## Response Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -16,7 +16,7 @@ When creating a custom field, it is mandatory to use the prefix `UF_` in the fie
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -22,7 +22,7 @@ To modify only a single row, use the methods [crm.item.productrow.*](../universa
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -84,7 +84,7 @@ After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
 
 The values arrive as strings, including `CALL_LIST_MODE` and `CRM_ACTIVITY_ID`: compare them with the strings `"true"`, `"false"`, and `"undefined"`, not with a boolean type.
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 

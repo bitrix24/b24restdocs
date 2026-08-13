@@ -716,9 +716,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-`     | `Parameter 'order' must be array` | The provided `order` is not an object ||
-|| `-`     | `Parameter 'filter' must be array` | The provided `filter` is not an object ||
-|| `-`     | `Access denied` | The user does not have administrative rights ||
+|| Empty value | `Parameter 'order' must be array` | The provided `order` is not an object ||
+|| Empty value | `Parameter 'filter' must be array` | The provided `filter` is not an object ||
+|| Empty value | `Access denied` | The user does not have administrative rights ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

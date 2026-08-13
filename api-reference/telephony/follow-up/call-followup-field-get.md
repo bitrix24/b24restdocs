@@ -20,7 +20,7 @@ The `call.followup.field.get` method returns the description of the Follow-up fi
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

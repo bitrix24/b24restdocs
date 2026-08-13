@@ -19,7 +19,7 @@ The method `crm.item.details.configuration.set` sets the configurations for the 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -51,7 +51,7 @@ By default, the value is `'P'`
 
 Describes a specific section with fields within the item card.
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -72,7 +72,7 @@ Currently, only the value `'section'` is available ||
 
 Configuration of a specific field within the section.
 
-{% include [Note on parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

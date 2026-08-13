@@ -148,7 +148,7 @@ No parameters are required.
 
 ### Returned Data
 
-{% include [Notes on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

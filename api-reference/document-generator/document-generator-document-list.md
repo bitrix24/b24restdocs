@@ -14,7 +14,7 @@ The method `documentgenerator.document.list` returns a list of documents based o
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

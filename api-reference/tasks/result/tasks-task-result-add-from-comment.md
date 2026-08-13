@@ -22,7 +22,7 @@ When working with the [new task detail form](../tasks-new.md) with chat from ver
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -20,7 +20,7 @@ The `call.followup.get` method returns the follow-up of a single call by its ide
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

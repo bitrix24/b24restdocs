@@ -16,7 +16,7 @@ Before adding a user-defined field `UF_...` to the template, you must create it 
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,7 +31,7 @@ Template identifiers can be obtained using the method [crm.requisite.preset.list
 
 ### Parameter fields
 
-{% include [Note on parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 ||  **Name**

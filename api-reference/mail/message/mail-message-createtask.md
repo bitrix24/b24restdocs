@@ -20,7 +20,7 @@ The `mail.message.createtask` method creates a task from an e-mail.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

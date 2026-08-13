@@ -16,7 +16,7 @@ If you need to fully manage the fields of the created page, use [landing.landing
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -39,7 +39,7 @@ A list of available templates can be obtained using the [landing.demos.getPageLi
 
 ### Parameter fields {#fields}
 
-{% include [Note on Required Parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

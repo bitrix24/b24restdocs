@@ -17,7 +17,7 @@ The method `documentgenerator.template.delete` removes a template.
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

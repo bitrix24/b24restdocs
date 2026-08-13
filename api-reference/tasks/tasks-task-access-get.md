@@ -20,7 +20,7 @@ The method `tasks.task.access.get` checks the available actions a user can perfo
 
 ## Method Parameters
 
-{% include [Footnote on parameters](../../_includes/required.md) %}
+{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**

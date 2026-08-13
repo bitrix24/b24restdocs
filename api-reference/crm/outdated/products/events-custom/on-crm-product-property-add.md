@@ -10,7 +10,7 @@ This event is triggered when a product property is added.
 
 ## Parameters
 
-{% include [Note on Required Parameters](../../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -16,7 +16,7 @@ The method `tasks.task.renew` renews a task after it has been completed.
 
 ## Method Parameters
 
-{% include [Note on Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

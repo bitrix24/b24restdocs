@@ -20,7 +20,7 @@ You can check permissions to modify the item using the method [task.checklistite
 
 ## Method Parameters
 
-{% include [Required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name**

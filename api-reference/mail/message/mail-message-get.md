@@ -20,7 +20,7 @@ The `mail.message.get` method retrieves an e-mail by its identifier.
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

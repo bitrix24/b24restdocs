@@ -23,7 +23,7 @@ When updating an item, a standard series of checks, modifications, and automatic
 
 ## Method Parameters
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -75,7 +75,7 @@ Default is `N` ||
 
 ### Parameter fields
 
-{% include [Note on parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% list tabs %}
 

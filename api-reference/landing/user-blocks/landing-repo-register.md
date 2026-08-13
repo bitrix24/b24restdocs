@@ -16,7 +16,7 @@ The method updates the block if it already exists with the same code for the cur
 
 ## Method Parameters
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -33,7 +33,7 @@ See the structure of the manifest in the method [landing.block.getManifestFile](
 
 ### Type fields {#fields}
 
-{% include [Footnote on required parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

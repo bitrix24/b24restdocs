@@ -312,7 +312,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `-` | Access denied | Insufficient permissions to forcibly set the common lead card ||
+|| Empty value | Access denied | Insufficient permissions to forcibly set the common lead card ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

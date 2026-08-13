@@ -14,7 +14,7 @@ The method `catalog.productPropertyEnum.list` returns a list of values for list 
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

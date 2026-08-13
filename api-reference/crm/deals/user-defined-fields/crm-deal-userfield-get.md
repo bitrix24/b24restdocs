@@ -14,7 +14,7 @@ The method `crm.deal.userfield.get` returns a custom deal field by its identifie
 
 ## Method Parameters
 
-{% include [Parameter Note](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**

@@ -17,7 +17,7 @@ The method `catalog.documentcontractor.list` returns a list of vendor bindings t
 
 ## Method Parameters
 
-{% include [Note on Required Parameters](../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|  
 || **Name**  
