@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method changes the status of a task to "Deferred." To perform this operation, the task must be in the [In Progress](./task-item-start-execution.md) status.
+The method `task.item.defer` changes a task to the "deferred" status. To perform this operation, the task must be in the [in progress](./task-item-start-execution.md) status.
 
 {% note warning "DEPRECATED" %}
 

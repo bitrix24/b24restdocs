@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method transitions a task to "In Progress" status.
+The method `task.item.startexecution` moves a task to the "in progress" status.
 
 {% note warning "DEPRECATED" %}
 

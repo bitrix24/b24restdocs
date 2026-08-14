@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns an array where the keys are the names of actions (the names correspond to the constants of the PHP class `CTaskItem`), and the values indicate whether the action is allowed (`true`) or not (`false`).
+The method `task.item.getallowedtaskactionsasstrings` returns an array where the keys are action names (the names correspond to constants of the PHP class `CTaskItem`), and the values indicate whether the action is allowed (`true`) or not (`false`).
 
 {% note warning "DEPRECATED" %}
 

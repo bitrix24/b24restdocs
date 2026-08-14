@@ -7,13 +7,14 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 With the Time Tracking in Tasks tool, you can:
+
 - monitor the time spent by an employee on specific tasks
 - enhance the transparency of task execution
 - analyze employee efficiency
 
-> Quick Navigation: [all methods and events](#all-methods) 
-> 
-> User Documentation: [time tracking in tasks](https://helpdesk.bitrix24.com/open/18009084/) 
+> Quick Navigation: [all methods](#all-methods)
+>
+> User Documentation: [Time Tracking in Tasks](https://helpdesk.bitrix24.com/open/25873619/)
 
 ## Linking Time Spent with Other Objects
 
@@ -33,13 +34,13 @@ To add, modify, or delete a time spent entry, you need access permissions to the
 
 ## Reference Information on Methods
 
-You can find up-to-date information about methods for working with time spent using the [task.elapseditem.getmanifest](./task-elapsed-item-get-manifest.md) method. It is recommended to use it only as a reference, as the structure of the method's response may change at any time by the developer.
+You can find up-to-date information about methods for working with elapsed time using the [task.elapseditem.getmanifest](./task-elapsed-item-get-manifest.md) method. Use it only as a reference: the response structure may change at any time.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the methods: any user
 
 #| 
 || **Method** | **Description** ||
@@ -48,6 +49,6 @@ You can find up-to-date information about methods for working with time spent us
 || [task.elapseditem.get](./task-elapsed-item-get.md) | Returns a time spent entry by its identifier ||
 || [task.elapseditem.getlist](./task-elapsed-item-get-list.md) | Returns a list of time spent entries for a task ||
 || [task.elapseditem.delete](./task-elapsed-item-delete.md) | Deletes a time spent entry ||
-|| [task.elapseditem.isactionallowed](./task-elapsed-item-is-action-allowed.md) | Checks if the action is allowed ||
+|| [task.elapseditem.isactionallowed](./task-elapsed-item-is-action-allowed.md) | Checks whether the action is allowed ||
 || [task.elapseditem.getmanifest](./task-elapsed-item-get-manifest.md) | Returns a list of methods and their descriptions ||
 |#

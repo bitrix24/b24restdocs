@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns an array of task data (`TITLE`, `DESCRIPTION`, etc.). The following [fields](./index.md) are available.
+The method `task.item.getdata` returns an array of task data (`TITLE`, `DESCRIPTION`, and so on). See the available [fields](./index.md).
 
 {% note warning "DEPRECATED" %}
 

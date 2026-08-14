@@ -7,26 +7,34 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 {% endnote %}
 
 Scrum tasks are standard Bitrix24 tasks with enhanced capabilities for working within the Scrum methodology. In Scrum, the team can:
+
 - assess task complexity using story points
 - attach tasks to epics
 - place tasks in the backlog and sprints
 - move tasks through the stages of the sprint during the workflow
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: [How to work in Scrum](https://helpdesk.bitrix24.com/open/21300770/)
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Team collaboration with Scrum](https://helpdesk.bitrix24.com/open/21300770/)
 
 ## How to Add a Task in Scrum
 
-A task can be created using the [tasks.task.add](../../../tasks/tasks-task-add.md) method or updated using the [tasks.task.update](../../../tasks/tasks-task-update.md) method. The task's association with Scrum is specified in the group identifier parameter `GROUP_ID`. 
+A task can be created using the [tasks.task.add](../../../tasks/tasks-task-add.md) method or updated using the [tasks.task.update](../../../tasks/tasks-task-update.md) method. The task is linked to Scrum using the group identifier parameter `GROUP_ID`.
 
-You can obtain the group identifier using the [create new group](../../sonet-group-create.md) method or the [get list of groups](../../socialnetwork-api-workgroup-list.md) method. A group is considered a Scrum group if the `SCRUM_MASTER_ID` field is filled.
+You can obtain the group identifier using the [create new group](../../sonet-group-create.md) method or the [get list of groups](../../socialnetwork-api-workgroup-list.md) method. A group is considered a Scrum group if the `SCRUM_MASTER_ID` field is filled.
+
+## How to Get Started
+
+1. Create a task using the [tasks.task.add](../../../tasks/tasks-task-add.md) method or retrieve an existing task using the [tasks.task.list](../../../tasks/tasks-task-list.md) method.
+2. Retrieve the Scrum group identifier using the [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) method.
+3. Link the task to Scrum and fill in Scrum fields using the [tasks.api.scrum.task.update](./tasks-api-scrum-task-update.md) method.
+4. Check the Scrum task data using the [tasks.api.scrum.task.get](./tasks-api-scrum-task-get.md) method.
 
 Once the task is linked to Scrum, you can use methods for managing Scrum tasks. For example, add story points and an epic using the [tasks.api.scrum.task.update](./tasks-api-scrum-task-update.md) method.
 
 {% note tip "User Documentation" %}
 
-- [How to create a task](https://helpdesk.bitrix24.com/open/18025566/)
+- [Create a task](https://helpdesk.bitrix24.com/open/25865519/)
 - [How to create a group and project](https://helpdesk.bitrix24.com/open/22796428/)
 
 {% endnote %}
@@ -41,7 +49,7 @@ Once the task is linked to Scrum, you can use methods for managing Scrum tasks. 
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the methods: depending on the method
 
 #|
 || **Method** | **Description** ||

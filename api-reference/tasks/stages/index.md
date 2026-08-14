@@ -10,11 +10,11 @@ Kanban is a tool that helps visually represent task management through columns a
 
 "My Planner" is a task management mode presented in a Kanban format. Each employee will have their own stages in "My Planner."
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: 
->   - [Kanban: how to track tasks in projects](https://helpdesk.bitrix24.com/open/18113582/)
->   - [How to work with tasks in "My Planner" mode](https://helpdesk.bitrix24.com/open/18891600/)
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation:
+> - [Kanban: Track tasks in projects effectively](https://helpdesk.bitrix24.com/open/25762719/)
+> - [Planner view in Tasks](https://helpdesk.bitrix24.com/open/18891600/)
 
 ## Connection of Kanban Stages and "My Planner" with Other Objects
 
@@ -22,7 +22,7 @@ Kanban is a tool that helps visually represent task management through columns a
 
 **User.** The stage of "My Planner" is tied to the user. Any user, including the account administrator, can change stages only in their own planner.
 
-**Stage.** Kanban or "My Planner" stages can be interconnected. Specify the stage identifier in the `AFTER_ID` parameter, indicating after which stage the new stage should be added. The identifier can be obtained using the [add new stage method](task-stages-add.md) or the [get list of stages method](./task-stages-get.md). If the identifier is left blank or set to zero, the stage will be added to the beginning of the Kanban.
+**Stage.** Kanban or "My Planner" stages can be linked to each other. Specify the stage identifier in the `AFTER_ID` parameter to define which stage the new stage should be added after. You can obtain the identifier using the [add new stage](task-stages-add.md) method or the [get list of stages](./task-stages-get.md) method. If the identifier is not specified or is set to zero, the stage is added to the beginning of the Kanban.
 
 {% note tip "User Documentation" %}
 

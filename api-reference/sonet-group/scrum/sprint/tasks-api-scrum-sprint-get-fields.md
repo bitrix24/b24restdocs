@@ -12,6 +12,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `tasks.api.scrum.sprint.getFields` returns the available fields for the sprint.
 
+## Method Parameters
+
 No parameters.
 
 ## Code Examples

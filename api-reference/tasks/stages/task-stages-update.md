@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > - any user for "My Plan" stages
 > - any user with access to the group for Kanban stages
 
-This method updates Kanban stages or "My Plan".
+The method `task.stages.update` updates Kanban or "My Plan" stages.
 
 The method can also be used to move a stage from one position to another. To do this, simply pass the required `AFTER_ID`.
 

@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > - any user for "My Plan" stages
 > - any user with group access for Kanban stages
 
-This method deletes a Kanban or "My Plan" stage.
+The method `task.stages.delete` deletes a Kanban or "My Plan" stage.
 
 It accepts the `id` of the stage as input. The stage is checked for sufficient access permission levels and whether it contains any tasks.
 

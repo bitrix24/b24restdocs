@@ -8,15 +8,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Scrum is a flexible way to organize work with tasks. The team can break down a large project and execute it gradually, one piece at a time.
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: [Bitrix24.Scrum](https://helpdesk.bitrix24.com/open/14786248/)
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Team collaboration with Scrum](https://helpdesk.bitrix24.com/open/21300770/)
 
 ## Scrum in Bitrix24
 
 Technically, Scrum is a group. The Scrum identifier `groupId` in the method parameters and fields of Scrum elements is the `id` of the group.
 
 To create a Scrum, use the [create new group method](../sonet-group-create.md). A group is considered a Scrum if the `SCRUM_MASTER_ID` field is filled.
+
+## How to Get Started
+
+1. Create a group using the [sonet_group.create](../sonet-group-create.md) method and fill in the `SCRUM_MASTER_ID` field.
+2. Retrieve the group identifier using the [socialnetwork.api.workgroup.list](../socialnetwork-api-workgroup-list.md) method.
+3. Create a backlog using the [tasks.api.scrum.backlog.add](./backlog/tasks-api-scrum-backlog-add.md) method.
+4. Add tasks to an epic using the [tasks.api.scrum.task.update](./task/tasks-api-scrum-task-update.md) method.
+5. Organize work by backlog, epics, sprints, and Kanban using [tasks.api.scrum.epic.*](./epic/index.md) and [tasks.api.scrum.sprint.*](./sprint/index.md).
 
 {% note tip "User documentation" %}
 
@@ -26,21 +34,21 @@ To create a Scrum, use the [create new group method](../sonet-group-create.md). 
 
 ## Scrum Elements
 
-Tasks in Scrum are standard Bitrix24 tasks with enhanced capabilities for working according to the Scrum methodology. To create or modify tasks, the group of methods [tasks.api.scrum.task.*](./task/index.md) is used.
+Tasks in Scrum are standard Bitrix24 tasks with enhanced capabilities for working according to the Scrum methodology. Create and update tasks using the [tasks.api.scrum.task.*](./task/index.md) method group.
 
-The Scrum team gathers all project tasks in one place—the backlog. Tasks, wishes, ideas, and feedback are recorded and prioritized. Working with the backlog can be done using the group of methods [tasks.api.scrum.backlog.*](./backlog/index.md).
+The Scrum team gathers all project tasks in one place, the backlog. Tasks, requests, ideas, and feedback are recorded and prioritized. Work with the backlog using the [tasks.api.scrum.backlog.*](./backlog/index.md) method group.
 
-To make the backlog more visual, tasks are attached to epics. An epic is a theme, context, or larger goal to which a task relates. To create, modify, retrieve, or delete epics, the group of methods [tasks.api.scrum.epic.*](./epic/index.md) is used.
+To make the backlog more visual, tasks are attached to epics. An epic is a theme, context, or larger goal to which a task relates. To create, update, retrieve, or delete epics, use the [tasks.api.scrum.epic.*](./epic/index.md) method group.
 
-Team members review the backlog and decide which tasks to take on in the sprint. A sprint is a short iterative cycle during which the team completes specific work. Managing sprints can be done using the group of methods [tasks.api.scrum.sprint.*](./sprint/index.md).
+Team members review the backlog and decide which tasks to take on in a sprint. A sprint is a short iterative cycle during which the team completes specific work. Manage sprints using the [tasks.api.scrum.sprint.*](./sprint/index.md) method group.
 
-The team moves tasks through the stages of the Kanban, working on the tasks of the sprint. Kanban is a tool that helps visually represent work with tasks in the form of columns and cards. Columns are the stages of work, and cards are the tasks. Working with stages and managing tasks in Kanban is performed using the methods [tasks.api.scrum.kanban.*](./kanban/index.md).
+The team moves tasks through Kanban stages while working on sprint tasks. Kanban is a tool that helps visually represent task work as columns and cards. Columns are work stages, and cards are tasks. Work with stages and manage tasks in Kanban using the [tasks.api.scrum.kanban.*](./kanban/index.md) methods.
 
 ## Overview of Methods {#all-methods} 
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the methods: any user
 
 ### Backlog
 

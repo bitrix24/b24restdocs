@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method returns an array containing links to files attached to a task.
+The method `task.item.getfiles` returns an array containing links to files attached to a task.
 
 {% note warning "DEPRECATED" %}
 

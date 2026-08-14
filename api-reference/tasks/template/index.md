@@ -20,7 +20,7 @@ Task templates help to describe a typical workflow in advance and use a unified 
 4. Create the template using the [tasks.template.add](./tasks-template-add.md) method.
 5. Retrieve the template using the [tasks.template.get](./tasks-template-get.md) method if you need to check the saved values.
 6. Modify the template using the [tasks.template.update](./tasks-template-update.md) method if you need to adjust the parameters.
-7. Add checklist items using the methods from the [Task Template Checklists](./checklist/index.md) section if the task consists of recurring steps.
+7. Add checklist items using [tasks.template.checklist.add](./checklist/tasks-template-checklist-add.md), [tasks.template.checklist.update](./checklist/tasks-template-checklist-update.md), and [tasks.template.checklist.list](./checklist/tasks-template-checklist-list.md) if the task consists of recurring steps.
 8. Delete the template using the [tasks.template.delete](./tasks-template-delete.md) method if it is no longer needed.
 
 ## Access Permissions
@@ -35,7 +35,7 @@ Permissions for working with task templates depend on the access settings in tas
 
 ## Relationships with Other Objects
 
-**Tasks.** The template stores the settings for the future task: title, description, deadlines, responsible persons, observers, checklist, and other parameters. Use the methods from the [Tasks](../index.md) section to work with tasks.
+**Tasks.** The template stores the settings for the future task: title, description, deadlines, assignees, observers, checklist, and other parameters. To work with tasks, use [tasks.task.add](../tasks-task-add.md), [tasks.task.get](../tasks-task-get.md), [tasks.task.update](../tasks-task-update.md), and [tasks.task.list](../tasks-task-list.md).
 
 **Users.** In the template, you can specify the Creator, main Participant, other Participants, and observers through the fields `CREATED_BY`, `RESPONSIBLE_ID`, `RESPONSIBLES`, `ACCOMPLICES`, `AUDITORS`. User identifiers can be obtained using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods.
 
@@ -43,7 +43,7 @@ Permissions for working with task templates depend on the access settings in tas
 
 **CRM.** The template can pre-save links to CRM entities. In the `UF_CRM_TASK` field, specify the identifiers of CRM entities with a prefix, for example, `L_15` for a lead or `D_27` for a deal. Identifiers of existing entities can be obtained using the [crm.item.list](../../crm/universal/crm-item-list.md) method. If the entity needs to be created first, use [crm.item.add](../../crm/universal/crm-item-add.md).
 
-**Checklists.** If the typical task consists of recurring steps, add them to the template using the methods from the [Task Template Checklists](./checklist/index.md) subsection.
+**Checklists.** If the typical task consists of recurring steps, add them to the template using [tasks.template.checklist.add](./checklist/tasks-template-checklist-add.md), [tasks.template.checklist.update](./checklist/tasks-template-checklist-update.md), and [tasks.template.checklist.delete](./checklist/tasks-template-checklist-delete.md).
 
 ## Overview of Methods {#all-methods}
 

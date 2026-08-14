@@ -10,11 +10,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns a list of methods of the form `task.elapseditem.*` and their descriptions.
+The method `task.elapseditem.getmanifest` returns a list of `task.elapseditem.*` methods and their descriptions.
 
 The return value of this method is not intended for automated processing, as its format may change without notice.
 
 The method can be useful as reference information, as it always contains up-to-date information.
+
+## Method Parameters
+
+No parameters.
 
 ## Code Examples
 

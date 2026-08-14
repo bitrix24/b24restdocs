@@ -12,6 +12,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `tasks.api.scrum.epic.getFields` returns the available fields for an epic.
 
+## Method Parameters
+
 No parameters.
 
 ## Code Examples

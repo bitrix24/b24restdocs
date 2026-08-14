@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > - any user for "My Plan" stages
 > - any user with access to the group for kanban stages
 
-This method checks whether the current user can move tasks in the specified object.
+The method `task.stages.canmovetask` checks whether the current user can move tasks in the specified object.
 
 ## Method Parameters
 

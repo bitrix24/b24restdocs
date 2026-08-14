@@ -24,7 +24,7 @@ You may need to obtain the `id` of the backlog to add or move a task to the back
 || **id***
 [`integer`](../../../data-types.md) | Identifier of the group.
 
-Can be obtained when creating a new group [sonet_group.create](../../sonet-group-create.md) or when retrieving a list of existing groups [socialnetwork-api-workgroup-list.md](../../socialnetwork-api-workgroup-list.md) ||
+Can be obtained when creating a new group [sonet_group.create](../../sonet-group-create.md) or when retrieving a list of existing groups [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) ||
 |#
 
 ## Code Examples
@@ -274,7 +274,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `0` | Backlog not found | An invalid backlog identifier was provided ||
+|| `0` | Group id not found | The group identifier `id` was not provided ||
+|| `0` | Backlog not found | No backlog was found for the specified group ||
 || `0` | Access denied | Missing appropriate access permissions ||
 || `0` | Unknown error | Another error occurred ||
 |#

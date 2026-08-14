@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method delegates a task to a new user.
+The method `task.item.delegate` delegates a task to a new user.
 
 {% note warning "DEPRECATED" %}
 

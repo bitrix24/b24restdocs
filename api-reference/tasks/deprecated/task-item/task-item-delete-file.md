@@ -16,7 +16,7 @@ The development of this method has been halted. Please use [tasks.task.update](.
 
 {% endnote %}
 
-This method removes the file link from the task.
+The method `task.item.deletefile` removes a file link from a task.
 
 ## Method Parameters
 

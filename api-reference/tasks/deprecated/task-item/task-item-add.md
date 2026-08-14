@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method creates a new task and returns the identifier of the added task. The following [fields](./index.md) are available.
+The method `task.item.add` creates a new task. The identifier of the created task is returned. See the available [fields](./index.md).
 
 {% note warning "DEPRECATED" %}
 

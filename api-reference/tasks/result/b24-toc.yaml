@@ -13,9 +13,9 @@ items:
     href: tasks-task-result-list-rest-v3.md
   - name: Delete Task Result
     href: tasks-task-result-delete.md
-  - name: Add Comment to Result
+  - name: Pin Comment as Result
     href: tasks-task-result-add-from-comment.md
   - name: Get Task Result List
     href: tasks-task-result-list.md
-  - name: Remove Comment from Result
+  - name: Unpin Comment as Result
     href: tasks-task-result-delete-from-comment.md

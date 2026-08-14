@@ -11,8 +11,8 @@ The result of a task is a fixed comment summarizing the work done on the task. T
 In [REST 3.0](../../rest-v3.md), task results have separate methods for creating, updating, and deleting a result, as well as a list method with the new response format.
 
 > Quick access: [all methods](#all-methods)
-> 
-> User documentation: [how to fix the result of work on a task](https://helpdesk.bitrix24.com/open/21841518/) 
+>
+> User documentation: [Task status summary](https://helpdesk.bitrix24.com/open/25869151/)
 
 ## Getting Started
 
@@ -48,7 +48,7 @@ In [REST 3.0](../../rest-v3.md), task results have separate methods for creating
 
 ## How to Delete a Comment
 
-The [tasks.task.result.deleteFromComment](./tasks-task-result-delete-from-comment.md) method does not delete the comment; it only removes its fixation as a result. To delete a comment with the result, use the [task.commentitem.delete](../comment-item/task-comment-item-delete.md) method.
+The [tasks.task.result.deleteFromComment](./tasks-task-result-delete-from-comment.md) method does not delete the comment; it only removes the result marker. To delete a comment together with the result, use the [task.commentitem.delete](../comment-item/task-comment-item-delete.md) method.
 
 ## Overview of Methods {#all-methods}
 
@@ -64,7 +64,7 @@ The [tasks.task.result.deleteFromComment](./tasks-task-result-delete-from-commen
 || [tasks.task.result.add](./tasks-task-result-add.md) | Adds a result to the task ||
 || [tasks.task.result.addfromchatmessage](./tasks-task-result-addfromchatmessage.md) | Creates a result from a task chat message ||
 || [tasks.task.result.update](./tasks-task-result-update.md) | Updates the result text ||
-|| [tasks.task.result.list](./tasks-task-result-list-rest-v3.md) | Gets a list of task results v 3.0 ||
+|| [tasks.task.result.list](./tasks-task-result-list-rest-v3.md) | Retrieves a list of task results in REST 3.0 ||
 || [tasks.task.result.delete](./tasks-task-result-delete.md) | Deletes a task result ||
 || [tasks.task.result.addFromComment](./tasks-task-result-add-from-comment.md) | Adds a comment to the result || 
 || [tasks.task.result.list](./tasks-task-result-list.md) | Retrieves the list of task results || 

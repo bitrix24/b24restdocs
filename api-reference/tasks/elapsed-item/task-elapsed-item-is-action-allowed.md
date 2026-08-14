@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method checks whether an action is permitted on a record: creation, modification, and deletion.
+The method `task.elapseditem.isactionallowed` checks whether an action is permitted for a record: creation, update, and deletion.
 
 ## Method Parameters
 

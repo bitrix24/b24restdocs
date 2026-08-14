@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method translates a pending control task to "not executed" status.
+The method `task.item.disapprove` moves a task pending control to the "not executed" status.
 
 {% note warning "DEPRECATED" %}
 

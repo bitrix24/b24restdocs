@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns an array of identifiers for the allowed actions on the task.
+The method `task.item.getallowedactions` returns an array of identifiers for allowed actions on the task.
 
 {% note warning "DEPRECATED" %}
 

@@ -8,13 +8,21 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 A sprint is a short iterative cycle during which a team accomplishes specific work. This format allows for obtaining a small but predictable result within a clear timeframe.
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: [Bitrix24.Scrum](https://helpdesk.bitrix24.com/open/14786248/) 
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Team collaboration with Scrum](https://helpdesk.bitrix24.com/open/21300770/)
 
 ## Connection of Sprints with Other Objects
 
 **Workgroup.** Sprints are linked to a workgroup (scrum) by the group identifier `groupId`. You can obtain the identifier using the [create new group](../../sonet-group-create.md) method or the [get list of groups](../../socialnetwork-api-workgroup-list.md) method. A group is considered a scrum if the `SCRUM_MASTER_ID` field is filled.
+
+## How to Get Started
+
+1. Retrieve the group identifier using the [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) method.
+2. Create a sprint using the [tasks.api.scrum.sprint.add](./tasks-api-scrum-sprint-add.md) method.
+3. Add tasks to a sprint using the [tasks.api.scrum.task.update](../task/tasks-api-scrum-task-update.md) method.
+4. Start a sprint using the [tasks.api.scrum.sprint.start](./tasks-api-scrum-sprint-start.md) method.
+5. Complete the active sprint using the [tasks.api.scrum.sprint.complete](./tasks-api-scrum-sprint-complete.md) method.
 
 {% note tip "User Documentation" %}
 

@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > - any user for stages of "My Plan"
 > - any user with access to the group for kanban stages
 
-This method moves a task from one stage to another and allows you to change the position of the task within the group's kanban or "My Plan".
+The method `task.stages.movetask` moves a task from one stage to another and allows you to change the task position within a group Kanban or "My Plan".
 
 The method works as follows:
 - If a group stage is provided, the move occurs within the group's kanban.

@@ -16,7 +16,7 @@ Development of this method has been halted. Use [tasks.task.history.list](../../
 
 {% endnote %}
 
-The method returns the history of changes for a task.
+The method `task.logitem.list` returns the task change history.
 
 ## Method Parameters
 

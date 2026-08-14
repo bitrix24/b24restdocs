@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method returns a list of methods in the form of `task.item.*` along with their descriptions.
+The method `task.item.getmanifest` returns a list of `task.item.*` methods and their descriptions.
 
 The return value of this method is not intended for automated processing, as its format may change without notice.
 

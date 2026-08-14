@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method updates the backlog.
+The method `tasks.api.scrum.backlog.update` updates the backlog.
 
 ## Method Parameters
 
@@ -44,7 +44,7 @@ You can obtain it using the method [tasks.api.scrum.backlog.get](./tasks-api-scr
 || **groupId**
 [`integer`](../../../data-types.md) | Identifier of the group to which the backlog belongs.
 
-The group identifier can be obtained when creating a new group [sonet_group.create](../../sonet-group-create.md) or when retrieving a list of existing groups [socialnetwork-api-workgroup-list.md](../../socialnetwork-api-workgroup-list.md) ||
+The group identifier can be obtained when creating a new group [sonet_group.create](../../sonet-group-create.md) or when retrieving a list of existing groups [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) ||
 || **createdBy**
 [`integer`](../../../data-types.md) | Identifier of the user who will create the backlog ||
 || **modifiedBy**
@@ -321,8 +321,14 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
+|| `0` | Backlog id not found | The backlog identifier `id` was not provided ||
 || `0` | Backlog not found | Invalid backlog identifier provided ||
 || `0` | Access denied | Insufficient access permissions ||
+|| `0` | It is forbidden move a backlog with items | The backlog cannot be moved to another group if it contains tasks ||
+|| `0` | The target group already has a backlog | The target group already has a backlog ||
+|| `0` | createdBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||
+|| `0` | modifiedBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||
+|| `0` | Unable to update backlog | Could not update the backlog ||
 || `0` | Unknown error | Other error ||
 |#
 

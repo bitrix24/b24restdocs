@@ -12,7 +12,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `tasks.api.scrum.backlog.getFields` returns the available backlog fields.
 
-Without parameters.
+## Method Parameters
+
+No parameters.
 
 ## Code Examples
 

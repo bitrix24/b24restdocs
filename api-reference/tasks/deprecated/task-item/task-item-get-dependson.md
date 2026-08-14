@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns an array containing the identifiers of tasks that the specified task depends on (the `Previous Tasks` option in the task creation form).
+The method `task.item.getdependson` returns an array containing the identifiers of tasks that the specified task depends on (the `Previous Tasks` option in the task creation form).
 
 {% note warning "DEPRECATED" %}
 

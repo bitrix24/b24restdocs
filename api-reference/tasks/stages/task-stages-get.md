@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > - any user for "My Plan" stages
 > - any user with group access for Kanban stages
 
-This method retrieves the Kanban stages or "My Plan".
+The method `task.stages.get` retrieves Kanban stages or "My Plan" stages.
 
 ## Method Parameters
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method updates the data for a task. The following [fields](./index.md) are available for updating. When updating task data, business logic and permissions are taken into account. For example, a Participant cannot rename a task — in such a case, an error will be generated.
+The method `task.item.update` updates task data. See the [fields](./index.md) available for update. When task data is updated, business logic and permissions are taken into account. For example, a participant cannot rename a task; in this case, an error is returned.
 
 It is recommended to check whether the action is allowed before updating the data ([task.item.isactionallowed](./task-item-is-action-allowed.md)).
 

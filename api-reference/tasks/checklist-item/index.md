@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 A checklist is a list of steps for a task. Each item in the checklist can be completed separately.
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: [checklists in tasks](https://helpdesk.bitrix24.com/open/17740572/)
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Checklists in Tasks](https://helpdesk.bitrix24.com/open/25865167/)
 
 ## Structure of Checklists
 
@@ -18,9 +18,9 @@ A checklist in Bitrix24 is a hierarchical list with a tree-like structure of up 
 
 Checklist items support nesting. The `PARENT_ID` field points to the parent item. The root item's `PARENT_ID` is `0`.
 
-The `SORT_INDEX` field determines the position of the item. The smaller the number, the higher the item.
+The `SORT_INDEX` field specifies the item position. The smaller the number, the higher the item.
 
-Each item can have a status of *Completed* `IS_COMPLETE = 'Y'` or *Not completed* `IS_COMPLETE = 'N'`. When the status changes, the system automatically fills in the fields *Who changed* `TOGGLED_BY` and *When changed* `TOGGLED_DATE`.
+Each item can have the status *completed* `IS_COMPLETE = 'Y'` or *not completed* `IS_COMPLETE = 'N'`. When the status changes, the system automatically fills in the fields *who changed* `TOGGLED_BY` and *when changed* `TOGGLED_DATE`.
 
 An item can be marked as important `IS_IMPORTANT = 'Y'`.
 
@@ -30,15 +30,16 @@ An item can be marked as important `IS_IMPORTANT = 'Y'`.
 
 **User.** A checklist item can have links to users in the fields:
 
--  `TOGGLED_BY` — the identifier of the user who completed the item,
+- `TOGGLED_BY` — the identifier of the user who completed the item
 
--  `MEMBERS` — an array with information about watchers `"TYPE": "U"` and participants `"TYPE": "A"` in the checklist item.
+- `MEMBERS` — an array with information about watchers `"TYPE": "U"` and participants `"TYPE": "A"` in the checklist item
 
 **Files.** A checklist item can contain files. The `ATTACHMENTS` field stores objects with descriptions of each file, including the identifier `FILE_ID`. You can get information about a file by its identifier using the [disk.file.get](../../disk/file/disk-file-get.md) method.
 
 {% note tip "User Documentation" %}
 
-- [Bitrix24 Tasks](https://helpdesk.bitrix24.com/open/18034564/)
+- [Tasks in Bitrix24](https://helpdesk.bitrix24.com/open/18034564/)
+- [Create a Task](https://helpdesk.bitrix24.com/open/25865519/)
 
 {% endnote %}
 
@@ -63,9 +64,9 @@ Checklist 1 (431)                             Checklist 1 (431)
 
 The [task.checklistitem.complete](./task-checklist-item-complete.md) method marks a checklist item as completed. The system sets the value `'Y'` in the `IS_COMPLETE` field and automatically fills in the fields:
 
--  `TOGGLED_BY` — the identifier of the user who changed the item's status,
+- `TOGGLED_BY` — the identifier of the user who changed the item status
 
--  `TOGGLED_DATE` — the current date and time when the user changed the item.
+- `TOGGLED_DATE` — the current date and time when the user changed the item
 
 The [task.checklistitem.renew](./task-checklist-item-renew.md) method returns the checklist item to work. The system sets the value `'N'` in the `IS_COMPLETE` field and updates the `TOGGLED_BY` and `TOGGLED_DATE` fields.
 
@@ -81,7 +82,7 @@ You can find up-to-date information about methods for working with checklists in
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the methods: depending on the method
 
 #|
 || **Method** | **Description** ||

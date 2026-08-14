@@ -16,7 +16,7 @@ Development of this method has been halted. Use [tasks.task.files.attach](../../
 
 {% endnote %}
 
-This method uploads a file to a task. Currently, file upload is implemented via `post`, with the file content passed in the `CONTENT` parameter.
+The method `task.item.addfile` uploads a file to a task. Currently, file upload is implemented via `post`, with the file content passed in the `CONTENT` parameter.
 
 ## Method Parameters
 

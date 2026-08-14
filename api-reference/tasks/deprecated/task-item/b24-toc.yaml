@@ -1,7 +1,7 @@
 title: Tasks (item)
 href: index.md
 items:
-  - name: List of methods
+  - name: Overview of Methods
     href: index.md
   - name: View task change history
     href: task-log-item-list.md

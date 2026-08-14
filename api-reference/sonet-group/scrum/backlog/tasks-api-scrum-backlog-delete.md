@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `tasks.api.scrum.backlog.delete` removes the backlog.
 
-In normal circumstances, there is no need to delete the backlog. When the backlog is deleted, *Bitrix24* will automatically recreate it when the planning page in Scrum tasks is opened.
+In normal circumstances, there is no need to delete the backlog. When the backlog is deleted, Bitrix24 will automatically recreate it when the planning page in Scrum tasks is opened.
 
 The method is used if the backlog was mistakenly added to a group or project that is not Scrum.
 
@@ -243,8 +243,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error message** | **Description** ||
+|| `0` | Backlog id not found | The backlog identifier `id` was not provided ||
 || `0` | Backlog not found | Error occurs when trying to delete a non-existent backlog ||
 || `0` | Access denied | Missing appropriate access permissions ||
+|| `0` | It is forbidden remove a backlog with items | The backlog cannot be deleted if it contains tasks ||
+|| `0` | Backlog not deleted | Could not delete the backlog ||
 || `0` | Unknown error | Another error ||
 |#
 

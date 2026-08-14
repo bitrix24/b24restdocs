@@ -8,11 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Workgroups and projects in Bitrix24 help organize team collaboration. In groups, you can:
 
-- distribute tasks among participants, set deadlines, and track progress,
+- distribute tasks among participants, set deadlines, and track progress
 
-- exchange documents, store, and collaboratively edit files,
+- exchange documents, store, and collaboratively edit files
 
-- discuss tasks in chats, leave comments, and hold online meetings.
+- discuss tasks in chats, leave comments, and hold online meetings
 
 > Quick navigation: [all methods and events](#all-methods)
 >
@@ -22,29 +22,37 @@ Workgroups and projects in Bitrix24 help organize team collaboration. In groups,
 
 A project is a group with enhanced capabilities. Its main distinction from a group is the ability to set deadlines. The algorithm for creating a group and a project is identical: in both cases, use the method [sonet_group.create](./sonet-group-create.md). For a project, specify additional parameters:
 
-- `PROJECT` — indicates that the created object is a project,
+- `PROJECT` — indicates that the created object is a project
 
-- `PROJECT_DATE_START` — the project's start date,
+- `PROJECT_DATE_START` — the project's start date
 
-- `PROJECT_DATE_FINISH` — the project's end date.
+- `PROJECT_DATE_FINISH` — the project's end date
 
 ## Connection of Workgroups and Projects with Other Objects
 
-**Users**. Collaborate on tasks within workgroups and projects. Use the methods group sonet_group.user.* to manage workgroup participants: add, remove, assign roles, and permissions.
+**Users.** Collaborate on tasks within workgroups and projects. To manage workgroup participants, use the [sonet_group.user.*](./members/index.md) method group: add and remove users, assign roles and permissions.
 
-**Tasks**. Needed to distribute responsibilities among workgroup participants, track completion, and control deadlines. Create and modify tasks using the group of methods [tasks.task.*](../tasks/index.md).
+**Tasks.** Needed to distribute responsibilities among workgroup participants, track completion, and control deadlines. Create and update tasks using the [tasks.task.*](../tasks/index.md) method group.
 
-**Drive**. A storage linked to a specific group or project containing necessary materials for work. To manage storages, use the group of methods [disk.storage.*](../disk/storage/index.md).
+**Drive.** A storage linked to a specific group or project containing materials needed for work. To manage storages, use the [disk.storage.*](../disk/storage/index.md) method group.
 
-**Universal Lists**. Structured lists of items within workgroups. Needed to create registries or data storages, sort and filter information, and automate accounting. Create, update, and delete universal lists using the methods from the group [lists.lists.*](../lists/lists/index.md).
+**Universal Lists.** Structured lists of items within workgroups. Needed to create registries or data storages, sort and filter information, and automate accounting. Create, update, and delete universal lists using the [lists.lists.*](../lists/lists/index.md) method group.
 
-**News Feed**. Use the method [log.blogpost.add](../log/log-blogpost-add.md) to publish messages that will only be visible to users added to the group.
+**News Feed.** Publish messages for group participants using the [log.blogpost.add](../log/log-blogpost-add.md) method.
 
 {% note tip "User Documentation" %}
 
 - [How to Create a Group and Project](https://helpdesk.bitrix24.com/open/22796428/)
 
 {% endnote %}
+
+## How to Get Started
+
+1. Create a group or project using the [sonet_group.create](./sonet-group-create.md) method.
+2. Retrieve the group identifier using the [socialnetwork.api.workgroup.list](./socialnetwork-api-workgroup-list.md) or [sonet_group.get](./sonet-group-get.md) method.
+3. Add participants using the [sonet_group.user.*](./members/index.md) methods.
+4. Connect related tools: tasks, Drive, universal lists, or News Feed messages.
+5. To track group creation, update, and deletion, subscribe to [events](./events/index.md).
 
 ## Widgets for Workgroups and Projects
 
@@ -67,7 +75,7 @@ Specify the widget embedding code in the `PLACEMENT` parameter of the method [pl
 {% note tip "User Documentation" %}
 
 - [Bitrix24 Flows: Getting Started](https://helpdesk.bitrix24.com/open/21415178/)
-- [Bitrix24.Scrum](https://helpdesk.bitrix24.com/open/14786248/)
+- [How to Work in Scrum](https://helpdesk.bitrix24.com/open/21300770/)
 
 {% endnote %}
 
@@ -81,7 +89,7 @@ To link a Flow to a group, use the identifier `groupId`. To obtain the identifie
 
 > Scope: [`sonet`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the methods: any user
 
 {% list tabs %}
 

@@ -8,15 +8,23 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The backlog is a list of all the team's tasks. Tasks, requests, ideas, and feedback are recorded and prioritized. Team members review the backlog and decide which tasks to take on in a [sprint](../sprint/index.md).
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: [Bitrix24.Scrum](https://helpdesk.bitrix24.com/open/14786248/)
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Team collaboration with Scrum](https://helpdesk.bitrix24.com/open/21300770/)
 
 ## Connection of the Backlog with Other Objects
 
-**Workgroup.** The backlog is linked to a workgroup (scrum) by the group identifier `groupId`. You can obtain the identifier using the [create new group](../../sonet-group-create.md) method or the [get list of groups](../../socialnetwork-api-workgroup-list.md) method. A group is considered a scrum if the `SCRUM_MASTER_ID` field is filled.
+**Workgroup.** The backlog is linked to a workgroup (Scrum) by the group identifier `groupId`. You can obtain the identifier using the [create new group](../../sonet-group-create.md) method or the [get list of groups](../../socialnetwork-api-workgroup-list.md) method. A group is considered a Scrum if the `SCRUM_MASTER_ID` field is filled.
 
 **User.** The backlog is associated with users by their numerical identifier in the `createdBy` and `modifiedBy` parameters. You can obtain the user identifier using the [user.get](../../../user/user-get.md) method.
+
+## How to Get Started
+
+1. Create a Scrum using the [sonet_group.create](../../sonet-group-create.md) method and fill in the `SCRUM_MASTER_ID` field.
+2. Retrieve the group identifier using the [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) method.
+3. Retrieve the backlog data using the [tasks.api.scrum.backlog.get](./tasks-api-scrum-backlog-get.md) method.
+4. Add tasks to the Scrum using the [tasks.api.scrum.task.update](../task/tasks-api-scrum-task-update.md) method.
+5. If you need to import data after creating a Scrum, use the [tasks.api.scrum.backlog.add](./tasks-api-scrum-backlog-add.md) method.
 
 {% note tip "User Documentation" %}
 
@@ -36,7 +44,7 @@ Use the [delete backlog](./tasks-api-scrum-backlog-delete.md) method if you mist
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can perform the method: any user
+> Who can execute the methods: any user
 
 #|
 || **Method** | **Description** ||

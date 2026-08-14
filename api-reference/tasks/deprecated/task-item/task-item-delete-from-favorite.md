@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method removes a task from Favorites.
+The method `task.item.deletefromfavorite` removes a task from Favorites.
 
 {% note warning "DEPRECATED" %}
 

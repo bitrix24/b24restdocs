@@ -8,9 +8,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Tasks in Bitrix24 are a unified workspace that helps organize team workflows: assigning small assignments and managing large projects. With tasks, you can track employee progress, monitor deadlines, and distribute responsibilities.
 
-> Quick links: [all methods and events](#all-methods) 
-> 
-> User documentation: [Bitrix24 tasks](https://helpdesk.bitrix24.com/open/18034564/) 
+> Quick links: [all methods and events](#all-methods)
+>
+> User documentation: [Create a task](https://helpdesk.bitrix24.com/open/25865519/)
 
 ## Task method features
 
@@ -59,8 +59,8 @@ In REST 3.0, the task card structure remains the same, but the data model and wo
 
 {% note tip "User documentation" %}
 
-  - [How to create a task](https://helpdesk.bitrix24.com/open/18025566/)
-  - [Checklists in tasks](https://helpdesk.bitrix24.com/open/17740572/)
+- [How to Create a Task](https://helpdesk.bitrix24.com/open/18025566/)
+- [Checklists in Tasks](https://helpdesk.bitrix24.com/open/17740572/)
   - [Time tracking in tasks](https://helpdesk.bitrix24.com/open/18009084/)
   - [Additional task features](https://helpdesk.bitrix24.com/open/17876766/)
 
@@ -70,14 +70,17 @@ In REST 3.0, the task card structure remains the same, but the data model and wo
 
 **Parent task.** A task can have subtasks. In this case, it is considered a parent task. You can add a link to a parent task in the `PARENT_ID` parameter. You can retrieve a task identifier using the [task creation](./tasks-task-add.md) method or the [task list retrieval](./tasks-task-list.md) method.
 
-**Group or project.** A task is linked by the group identifier `GROUP_ID`. You can retrieve the identifier using the [new group creation](../sonet-group/sonet-group-create.md) method or the [group list retrieval](../sonet-group/socialnetwork-api-workgroup-list.md) method.**User.** A task is linked to users via numeric identifiers in the following fields:
-  - `CREATED_BY` — Creator
-  - `RESPONSIBLE_ID` — Responsible person
-  - `ACCOMPLICES` — Co-executors
-  - `AUDITORS` — Observers
-  - `CHANGED_BY` — Last user who changed the task
-  - `STATUS_CHANGED_BY` — Last user who changed the task status
-  - `CLOSED_BY` — User who completed the task
+**Group or project.** A task is linked by the group identifier `GROUP_ID`. You can retrieve the identifier using the [new group creation](../sonet-group/sonet-group-create.md) method or the [group list retrieval](../sonet-group/socialnetwork-api-workgroup-list.md) method.
+
+**User.** A task is linked to users via numeric identifiers in the following fields:
+
+- `CREATED_BY` — creator
+- `RESPONSIBLE_ID` — assignee
+- `ACCOMPLICES` — participants
+- `AUDITORS` — observers
+- `CHANGED_BY` — last user who changed the task
+- `STATUS_CHANGED_BY` — last user who changed the task status
+- `CLOSED_BY` — user who completed the task
 
 You can retrieve a user identifier using the [user.get](../user/user-get.md) method.
 
@@ -101,12 +104,14 @@ The [tasks.task.get](./tasks-task-get-rest-v3.md) method can get related object 
 You can attach Drive files to a task description. In the `UF_TASK_WEBDAV_FILES` parameter, pass an array of Drive file IDs. Before each ID, specify the prefix `n`, for example: `"UF_TASK_WEBDAV_FILES": ["n428", "n345"]`. You can retrieve file identifiers in two ways.
 
 Use one of the file upload methods:
-  - [disk.storage.uploadfile](../disk/storage/disk-storage-upload-file.md)
-  - [disk.folder.uploadfile](../disk/folder/disk-folder-upload-file.md)
+
+- [disk.storage.uploadfile](../disk/storage/disk-storage-upload-file.md)
+- [disk.folder.uploadfile](../disk/folder/disk-folder-upload-file.md)
 
 Use one of the file list retrieval methods:
-  - [disk.storage.getchildren](../disk/storage/disk-storage-get-children.md)
-  - [disk.folder.getchildren](../disk/folder/disk-folder-get-children.md)
+
+- [disk.storage.getchildren](../disk/storage/disk-storage-get-children.md)
+- [disk.folder.getchildren](../disk/folder/disk-folder-get-children.md)
 
 Attach files to a task using the [tasks.task.files.attach](./tasks-task-files-attach.md) method if the task has already been created.
 
@@ -123,7 +128,7 @@ In REST 3.0, use [tasks.task.file.attach](./tasks-task-file-attach.md) for an al
 
 Flows are a tool that automates task distribution and execution. Employees do not need to search for who will perform a task. They place tasks into a department flow, and it automatically assigns an executor.
 
-Flows can be managed using the [tasks.flow.Flow.*](./flow/index.md) group of methods.
+Manage flows using the [tasks.flow.Flow.*](./flow/index.md) method group.
 
 {% note tip "User documentation" %}
 
@@ -369,10 +374,10 @@ Comment methods are not applicable to the new task card. Task discussions are he
 
 #|
 || **Method** | **Description** ||
-|| [tasks.flow.Flow.create](./flow/tasks-flow-flow-create.md) | Create a stream ||
-|| [tasks.flow.Flow.get](./flow/tasks-flow-flow-get.md) | Get a stream ||
-|| [tasks.flow.Flow.update](./flow/tasks-flow-flow-update.md) | Change a stream ||
-|| [tasks.flow.Flow.delete](./flow/tasks-flow-flow-delete.md) | Delete a stream ||
-|| [tasks.flow.Flow.isExists](./flow/tasks-flow-flow-is-exists.md) | Check if a stream with such a name exists ||
-|| [tasks.flow.Flow.activate](./flow/tasks-flow-flow-activate.md) | Enable or disable a stream ||
+|| [tasks.flow.Flow.create](./flow/tasks-flow-flow-create.md) | Creates a flow ||
+|| [tasks.flow.Flow.get](./flow/tasks-flow-flow-get.md) | Retrieves a flow ||
+|| [tasks.flow.Flow.update](./flow/tasks-flow-flow-update.md) | Updates a flow ||
+|| [tasks.flow.Flow.delete](./flow/tasks-flow-flow-delete.md) | Deletes a flow ||
+|| [tasks.flow.Flow.isExists](./flow/tasks-flow-flow-is-exists.md) | Checks whether a flow with this name exists ||
+|| [tasks.flow.Flow.activate](./flow/tasks-flow-flow-activate.md) | Enables or disables a flow ||
 |#

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method returns a list of time tracking records for a task.
+The method `task.elapseditem.getlist` returns a list of time tracking records for a task.
 
 ## Method Parameters
 

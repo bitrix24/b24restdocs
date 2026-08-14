@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method adds elapsed time to a task and returns the identifier of the added record.
+The method `task.elapseditem.add` adds elapsed time to a task. The identifier of the added record is returned.
 
 {% note info %}
 

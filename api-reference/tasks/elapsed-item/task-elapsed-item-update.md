@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method modifies the parameters of the specified time entry.
+The method `task.elapseditem.update` updates the parameters of the specified time entry.
 
 {% note info %}
 

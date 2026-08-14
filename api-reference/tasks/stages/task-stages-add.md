@@ -12,7 +12,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > - any user for "My Plan" stages
 > - any user with group access for Kanban stages
 
-The method adds a Kanban or "My Plan" stage.
+The method `task.stages.add` adds a Kanban or "My Plan" stage.
 
 ## Method Parameters
 

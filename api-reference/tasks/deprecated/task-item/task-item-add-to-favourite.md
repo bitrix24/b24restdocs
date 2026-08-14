@@ -23,7 +23,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method adds a task to Favorites.
+The method `task.item.addtofavourite` adds a task to Favorites.
 
 {% note warning "DEPRECATED" %}
 

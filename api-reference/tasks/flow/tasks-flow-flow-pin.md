@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user who can see the flow in the list of flows.
 
-This method pins or unpins a flow in the list of flows by its identifier.
+The method `tasks.flow.Flow.pin` pins or unpins a flow in the list of flows by its identifier.
 
 ## Method Parameters
 

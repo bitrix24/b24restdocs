@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method changes the status of a task to "Not Executed." It is applicable for tasks in the [Completed](./task-item-complete.md) status.
+The method `task.item.renew` changes a task to the "not executed" status. It applies to tasks in the [completed](./task-item-complete.md) status.
 
 {% note warning "DEPRECATED" %}
 

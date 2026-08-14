@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method returns the task description.
+The method `task.item.getdescription` returns the task description.
 
 {% note warning "DEPRECATED" %}
 

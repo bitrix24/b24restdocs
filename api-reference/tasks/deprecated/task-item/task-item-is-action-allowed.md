@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns `true` if the action is allowed. Otherwise, it will return `false`.
+The method `task.item.isactionallowed` returns `true` if the action is allowed. Otherwise, it returns `false`.
 
 {% note warning "DEPRECATED" %}
 

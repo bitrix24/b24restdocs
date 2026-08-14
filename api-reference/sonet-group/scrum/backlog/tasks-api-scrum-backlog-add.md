@@ -44,7 +44,7 @@ It may be necessary to create a backlog during import after creating the Scrum.
 || **groupId***
 [`integer`](../../../data-types.md) | The identifier of the group for which the backlog is created.
 
-The group identifier can be obtained when creating a new group [sonet_group.create](../../sonet-group-create.md) or when retrieving a list of existing groups [socialnetwork-api-workgroup-list.md](../../socialnetwork-api-workgroup-list.md) ||
+The group identifier can be obtained when creating a new group [sonet_group.create](../../sonet-group-create.md) or when retrieving a list of existing groups [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) ||
 || **createdBy***
 [`integer`](../../../data-types.md) | The identifier of the user who will create the backlog ||
 || **modifiedBy**
@@ -315,10 +315,12 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| `0` | Backlog already added | The error occurs when trying to create a backlog while an active backlog already exists in the group ||
+|| `0` | Group id not found | The group identifier `groupId` was not provided ||
+|| `0` | Backlog already added | The error occurs when trying to create a backlog if an active backlog already exists in the group ||
 || `0` | Access denied | Missing appropriate access permissions ||
 || `0` | createdBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||
 || `0` | modifiedBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||
+|| `0` | Unable to add backlog | Could not create the backlog ||
 || `0` | Unknown error | Another error ||
 |#
 

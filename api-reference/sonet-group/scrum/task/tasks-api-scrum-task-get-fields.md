@@ -10,7 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method retrieves the available fields of a Scrum task.
+The method `tasks.api.scrum.task.getFields` retrieves the available fields of a Scrum task.
+
+## Method Parameters
 
 No parameters.
 

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method moves a pending control task to "completed" status.
+The method `task.item.approve` moves a task pending control to the "completed" status.
 
 {% note warning "DEPRECATED" %}
 

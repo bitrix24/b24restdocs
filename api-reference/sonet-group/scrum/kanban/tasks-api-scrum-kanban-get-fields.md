@@ -10,7 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method returns the available fields for the kanban stage.
+The method `tasks.api.scrum.kanban.getFields` returns the available fields for the Kanban stage.
+
+## Method Parameters
 
 No parameters.
 

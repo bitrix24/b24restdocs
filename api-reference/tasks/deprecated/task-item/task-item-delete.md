@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method deletes a task.
+The method `task.item.delete` deletes a task.
 
 {% note warning "DEPRECATED" %}
 

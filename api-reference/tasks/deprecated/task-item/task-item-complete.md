@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method moves a task to the "completed" or "conditionally completed (awaiting executor control)" status.
+The method `task.item.complete` moves a task to the "completed" or "conditionally completed (awaiting assignee control)" status.
 
 {% note warning "DEPRECATED" %}
 

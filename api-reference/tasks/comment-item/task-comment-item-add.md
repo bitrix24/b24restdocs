@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user with read access permission to the task or higher.
 
-The method `task.commentitem.add` adds a new comment to a task.
+The method `task.commentitem.add` adds a comment to a task.
 
 {% note warning "DEPRECATED" %}
 
