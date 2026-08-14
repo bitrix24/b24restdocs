@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Events allow applications to respond to changes in near real-time: receiving notifications about the addition, update, or deletion of CRM custom types.
 
-A CRM custom type is a [smart process](../../user-defined-object-types/index.md). The events of this section are triggered when the smart process itself is created, updated, or deleted. Changes to the elements inside a smart process are tracked by the events in the [Smart Process Element Events](../index.md) section.
+A CRM custom type is a [smart process](../../user-defined-object-types/index.md). The events of this section are triggered when the smart process itself is created, updated, or deleted. Changes to the elements inside a smart process are tracked by the events in the [Smart Process Element Events](../index.md) section, and changes to custom fields by the [custom field settings events](../../userfieldconfig/events/index.md).
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../../events/index.md).
 

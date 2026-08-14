@@ -152,15 +152,31 @@ CRM Object Identifier **entityTypeId** — `31`
 
 CRM Object Identifier **entityId** — `CRM_SMART_INVOICE`
 
-#| 
-|| **Method** | **Description** ||
-|| [userfieldconfig.add](./userfieldconfig/userfieldconfig-add.md) | Creates a custom field ||
-|| [userfieldconfig.update](./userfieldconfig/userfieldconfig-update.md) | Modifies field settings ||
-|| [userfieldconfig.get](./userfieldconfig/userfieldconfig-get.md) | Returns custom field settings by identifier ||
-|| [userfieldconfig.getTypes](./userfieldconfig/userfieldconfig-get-types.md) | Returns the set of available custom field types for the module ||
-|| [userfieldconfig.list](./userfieldconfig/userfieldconfig-list.md) | Returns a list of custom field settings ||
-|| [userfieldconfig.delete](./userfieldconfig/userfieldconfig-delete.md) | Deletes a custom field ||
-|#
+{% list tabs %}
+
+- Methods
+
+    #|
+    || **Method** | **Description** ||
+    || [userfieldconfig.add](./userfieldconfig/userfieldconfig-add.md) | Creates a custom field ||
+    || [userfieldconfig.update](./userfieldconfig/userfieldconfig-update.md) | Modifies field settings ||
+    || [userfieldconfig.get](./userfieldconfig/userfieldconfig-get.md) | Returns custom field settings by identifier ||
+    || [userfieldconfig.getTypes](./userfieldconfig/userfieldconfig-get-types.md) | Returns the set of available custom field types for the module ||
+    || [userfieldconfig.list](./userfieldconfig/userfieldconfig-list.md) | Returns a list of custom field settings ||
+    || [userfieldconfig.delete](./userfieldconfig/userfieldconfig-delete.md) | Deletes a custom field ||
+    |#
+
+- Events
+
+    #|
+    || **Event** | **Triggered** ||
+    || [onCrmTypeUserFieldAdd](./userfieldconfig/events/on-crm-type-user-field-add.md) | When a custom field of an invoice is added ||
+    || [onCrmTypeUserFieldUpdate](./userfieldconfig/events/on-crm-type-user-field-update.md) | When the settings of a custom field of an invoice are changed ||
+    || [onCrmTypeUserFieldDelete](./userfieldconfig/events/on-crm-type-user-field-delete.md) | When a custom field of an invoice is deleted ||
+    || [onCrmTypeUserFieldSetEnumValues](./userfieldconfig/events/on-crm-type-user-field-set-enum-values.md) | When the set of values of a list-type custom field is changed ||
+    |#
+
+{% endlist %}
 
 ### Product Items
 

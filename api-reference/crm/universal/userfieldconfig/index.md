@@ -87,8 +87,27 @@ In the `rpa` module, the format `RPA_{id}` is used, where `id` is the process id
 || [userfieldconfig.getTypes](./userfieldconfig-get-types.md) | Retrieves available types of custom fields for the module ||
 |#
 
+## Events {#events}
+
+Bitrix24 sends events when the custom fields of smart processes, new invoices, and documents for signing change. How to subscribe and what the handler receives is described in the [Events When Working with Custom Field Settings](./events/index.md) section.
+
+> Scope: [`crm`](../../../scopes/permissions.md)
+>
+> Who can subscribe: any user
+
+#|
+|| **Event** | **Triggered** ||
+|| [onCrmTypeUserFieldAdd](./events/on-crm-type-user-field-add.md) | When a custom field is added manually or via the [userfieldconfig.add](./userfieldconfig-add.md) method ||
+|| [onCrmTypeUserFieldUpdate](./events/on-crm-type-user-field-update.md) | When the settings of a custom field are changed manually or via the [userfieldconfig.update](./userfieldconfig-update.md) method ||
+|| [onCrmTypeUserFieldDelete](./events/on-crm-type-user-field-delete.md) | When a custom field is deleted manually or via the [userfieldconfig.delete](./userfieldconfig-delete.md) method ||
+|| [onCrmTypeUserFieldSetEnumValues](./events/on-crm-type-user-field-set-enum-values.md) | When the set of values of a list-type custom field is changed manually or via the [userfieldconfig.add](./userfieldconfig-add.md) and [userfieldconfig.update](./userfieldconfig-update.md) methods ||
+|#
+
+Custom fields of leads, contacts, companies, deals, estimates, and requisites have their own events. No events are sent for fields in the `rpa` and `catalog` modules.
+
 ## Continue Learning
 
+- [{#T}](./events/index.md)
 - [{#T}](../user-defined-fields/index.md)
 - [{#T}](../user-defined-object-types/index.md)
 - [{#T}](../index.md)
