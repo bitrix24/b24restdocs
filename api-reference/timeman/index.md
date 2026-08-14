@@ -27,7 +27,7 @@ Time tracking records the hours worked by an employee. To do this, the employee 
 
 {% note tip "User Documentation" %}
 
-- [How to Track Working Hours](https://helpdesk.bitrix24.com/open/21521542/)
+- [Worktime](https://helpdesk.bitrix24.com/open/24856218/)
 
 {% endnote %}
 

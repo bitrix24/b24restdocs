@@ -26,7 +26,7 @@ The method `crm.tracking.trace.delete` removes a Sales Intelligence trace.
 
 To fully delete the trace, permissions to modify all related objects are required.
 
-The `id` can be obtained using the method [crm.tracking.trace.add](./crm-tracking-trace-add.md) ||
+The identifier can be obtained in the response of the [crm.tracking.trace.add](./crm-tracking-trace-add.md) method ||
 |#
 
 ## Code Examples

@@ -12,7 +12,7 @@ The methods `timeman.*` are used to manage the workday of the token holder or we
 
 > Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [How to Track Working Hours](https://helpdesk.bitrix24.com/open/21521542/)
+> User documentation: [Worktime](https://helpdesk.bitrix24.com/open/24856218/)
 
 ## How to Get Started
 

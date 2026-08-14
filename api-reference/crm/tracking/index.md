@@ -16,16 +16,22 @@ The methods in this section help create and utilize Sales Intelligence traces in
 
 ## Getting Started
 
-1. Collect source data: UTM parameters, channel, customer path, or another external identifier
-2. Create a trace using the [crm.tracking.trace.add](./crm-tracking-trace-add.md) method
-3. Pass the trace identifier to the method for creating a lead, deal, contact, company, or SPA item
+1. Collect source data in the `TRACE` JSON string: retrieve it on the website via `b24Tracker.guest.getTrace()` or create UTM parameters in the `tags.list` object
+2. Create a new CRM object using the [crm.item.add](../universal/crm-item-add.md) method or retrieve the identifier of an existing object using the [crm.item.list](../universal/crm-item-list.md) method
+3. Create a trace using the [crm.tracking.trace.add](./crm-tracking-trace-add.md) method and pass the link to the CRM object in the `ENTITIES` parameter
 4. If the trace is no longer used, delete it using the [crm.tracking.trace.delete](./crm-tracking-trace-delete.md) method
+
+{% note tip "Common Cases and Scenarios" %}
+
+- [How to Pass Sales Intelligence Data to CRM](../../../tutorials/crm/how-to-use-analitycs/info-to-analitics.md)
+
+{% endnote %}
 
 ## Connection with CRM Objects
 
-**Leads and Deals.** A trace helps link a created CRM object to the source of the inquiry. To create objects, use the [crm.lead.add](../leads/crm-lead-add.md) and [crm.deal.add](../deals/crm-deal-add.md) methods.
+**Leads, deals, contacts, companies, and estimates.** A trace helps link a CRM object to the source of the inquiry. In the `ENTITIES` parameter of the [crm.tracking.trace.add](./crm-tracking-trace-add.md) method, pass the object type in `TYPE` and its identifier in `ID`. You can retrieve the identifier using the [crm.item.list](../universal/crm-item-list.md) method or from the response of the [crm.item.add](../universal/crm-item-add.md) method.
 
-**Contacts, Companies, and SPAs.** Analytics data can be passed when creating related customers and custom CRM objects via the corresponding addition methods.
+**Object types.** For a lead, use `TYPE = LEAD`; for a deal, `DEAL`; for a contact, `CONTACT`; for a company, `COMPANY`; for an estimate, `QUOTE`. If you retrieve the identifier using [crm.item.list](../universal/crm-item-list.md), pass the `entityTypeId` of the required type: `1` for a lead, `2` for a deal, `3` for a contact, `4` for a company, `7` for an estimate.
 
 ## Overview of Methods {#all-methods}
 
@@ -35,12 +41,11 @@ The methods in this section help create and utilize Sales Intelligence traces in
 
 #|
 || **Method** | **Description** ||
-|| [crm.tracking.trace.add](./crm-tracking-trace-add.md) | Creates a Sales Intelligence trace and returns its identifier ||
-|| [crm.tracking.trace.delete](./crm-tracking-trace-delete.md) | Deletes a Sales Intelligence trace ||
+|| [crm.tracking.trace.add](./crm-tracking-trace-add.md) | Creates a Sales Intelligence trace, can link it to CRM objects, and returns the trace identifier ||
+|| [crm.tracking.trace.delete](./crm-tracking-trace-delete.md) | Deletes a Sales Intelligence trace by the identifier from the add method response ||
 |#
 
 ## Continue Learning
 
-- [{#T}](../../../tutorials/crm/how-to-use-analitycs/info-to-analitics.md)
-- [{#T}](../deals/crm-deal-add.md)
-- [{#T}](../contacts/crm-contact-add.md)
+- [{#T}](../universal/crm-item-add.md)
+- [{#T}](../universal/crm-item-list.md)
