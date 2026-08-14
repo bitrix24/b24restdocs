@@ -2,6 +2,10 @@
 
 ## 2026
 
+### August 14, 2026
+
+- Added the [onCrmTypeUserField*](./api-reference/crm/universal/userfieldconfig/events/index.md) events for custom fields of smart processes, invoices, and documents for signing
+
 ### August 7, 2026
 
 - Added the page [e-Signature Integration with HR Systems: Overview of Methods](./api-reference/sign/hcm-link/index.md)

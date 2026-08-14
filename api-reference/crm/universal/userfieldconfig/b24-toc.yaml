@@ -13,5 +13,9 @@ items:
     href: userfieldconfig-get-types.md  
   - name: List Custom Field Settings  
     href: userfieldconfig-list.md  
-  - name: Update Custom Field Values  
-    href: userfieldconfig-update.md  
+  - name: Update Custom Field Values
+    href: userfieldconfig-update.md
+  - name: Events
+    include:
+      path: events/b24-toc.yaml
+      mode: link

@@ -213,15 +213,31 @@ The CRM object identifier **entityTypeId** — [numeric identifier type](#id), f
 
 The CRM object identifier **entityId** — [custom field object type](#id), for example, `CRM_1`.
 
-#|
-|| **Method** | **Description** ||
-|| [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md) | Creates a custom field ||
-|| [userfieldconfig.update](../userfieldconfig/userfieldconfig-update.md) | Modifies the field settings ||
-|| [userfieldconfig.get](../userfieldconfig/userfieldconfig-get.md) | Returns the settings of the custom field by identifier ||
-|| [userfieldconfig.getTypes](../userfieldconfig/userfieldconfig-get-types.md) | Returns the set of available custom field types for the module ||
-|| [userfieldconfig.list](../userfieldconfig/userfieldconfig-list.md) | Returns a list of custom field settings ||
-|| [userfieldconfig.delete](../userfieldconfig/userfieldconfig-delete.md) | Deletes the custom field ||
-|#
+{% list tabs %}
+
+- Methods
+
+    #|
+    || **Method** | **Description** ||
+    || [userfieldconfig.add](../userfieldconfig/userfieldconfig-add.md) | Creates a custom field ||
+    || [userfieldconfig.update](../userfieldconfig/userfieldconfig-update.md) | Modifies the field settings ||
+    || [userfieldconfig.get](../userfieldconfig/userfieldconfig-get.md) | Returns the settings of the custom field by identifier ||
+    || [userfieldconfig.getTypes](../userfieldconfig/userfieldconfig-get-types.md) | Returns the set of available custom field types for the module ||
+    || [userfieldconfig.list](../userfieldconfig/userfieldconfig-list.md) | Returns a list of custom field settings ||
+    || [userfieldconfig.delete](../userfieldconfig/userfieldconfig-delete.md) | Deletes the custom field ||
+    |#
+
+- Events
+
+    #|
+    || **Event** | **Triggered** ||
+    || [onCrmTypeUserFieldAdd](../userfieldconfig/events/on-crm-type-user-field-add.md) | When a custom field of a smart process is added ||
+    || [onCrmTypeUserFieldUpdate](../userfieldconfig/events/on-crm-type-user-field-update.md) | When the settings of a custom field of a smart process are changed ||
+    || [onCrmTypeUserFieldDelete](../userfieldconfig/events/on-crm-type-user-field-delete.md) | When a custom field of a smart process is deleted ||
+    || [onCrmTypeUserFieldSetEnumValues](../userfieldconfig/events/on-crm-type-user-field-set-enum-values.md) | When the set of values of a list-type custom field is changed ||
+    |#
+
+{% endlist %}
 
 ### Managing Detail Form Settings
 
