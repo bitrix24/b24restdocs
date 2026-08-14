@@ -8,23 +8,32 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Time tracking in Bitrix24 checks the compliance of an employee's working hours with the established schedule. The work schedule records:
 
--  start and end of the workday
--  number of working hours per day
--  permissible editing of the workday by the employee
--  allowable underperformance for the reporting period
+- start and end of the workday
+- number of working hours per day
+- permissible editing of the workday by the employee
+- allowable underperformance for the reporting period
 
 The system logs schedule violations, and the manager can view reports on these violations.
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: [Working time control](https://helpdesk.bitrix24.com/open/24640398/)
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Working Time Control](https://helpdesk.bitrix24.com/open/24640398/)
+
+## How to Get Started
+
+1. Check the current time control settings using [timeman.timecontrol.settings.get](./timeman-timecontrol-settings-get.md)
+2. If time control is disabled or not configured for the required scenario, update the settings using [timeman.timecontrol.settings.set](./timeman-timecontrol-settings-set.md)
+3. Retrieve the report interface settings using [timeman.timecontrol.reports.settings.get](./timeman-timecontrol-reports-settings-get.md) to understand the current user's permissions and available departments
+4. Retrieve department employees using [timeman.timecontrol.reports.users.get](./timeman-timecontrol-reports-users-get.md)
+5. Generate a report on identified absences using [timeman.timecontrol.reports.get](./timeman-timecontrol-reports-get.md)
+6. If an employee explains an absence, submit the report using [timeman.timecontrol.report.add](./timeman-timecontrol-report-add.md)
 
 ## Connection of Time Tracking with Other Objects
 
 **User.** The report on identified absences is linked to the user by the identifier `USER_ID`. In the time tracking tool settings, lists of users are defined:
 
--  who to request the report from
--  who has access to the simplified or detailed report
+- who to request the report from
+- who has access to the simplified or detailed report
 
 You can obtain the user identifier using the [user.get](../../user/user-get.md) method.
 
@@ -32,9 +41,9 @@ You can obtain the user identifier using the [user.get](../../user/user-get.md) 
 
 You can enable and configure the time tracking tool using the [timeman.timecontrol.settings.set](./timeman-timecontrol-settings-set.md) method. The settings define:
 
--  which user activities to record
--  users from whom to request the report
--  users who have access to simplified and detailed reports
+- which user activities to record
+- users from whom to request the report
+- users who have access to simplified and detailed reports
 
 Settings are usually the same for employees of the same department. To obtain the identifiers of users in the department, use the [timeman.timecontrol.reports.users.get](./timeman-timecontrol-reports-users-get.md) method.
 

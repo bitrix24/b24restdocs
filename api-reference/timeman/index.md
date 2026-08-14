@@ -8,9 +8,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Time tracking in Bitrix24 helps organize the workflow and monitor employee adherence to schedules.
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: [time and reports in Bitrix24](https://helpdesk.bitrix24.com/open/18041848/)
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Time and Reports in Bitrix24](https://helpdesk.bitrix24.com/open/18041848/)
+
+## How to Get Started
+
+1. Define the integration scenario: managing the current workday, reading the schedule, tracking violations, checking the office network, or retrieving work time records
+2. To start, pause, close, and check the current workday, use the [Workday](./base/index.md) methods
+3. To retrieve schedule settings, use the [Work Schedule](./schedule/index.md) method
+4. To configure time control and retrieve reports on identified absences, use the [Time Control](./timecontrol/index.md) methods
+5. To check office network IP addresses, use the [Office Networks](./networkrange/index.md) methods
+6. To retrieve work time records in REST 3.0, use the [Work Time Records](./record/index.md) methods
 
 ## Workday
 
@@ -18,7 +27,7 @@ Time tracking records the hours worked by an employee. To do this, the employee 
 
 {% note tip "User Documentation" %}
 
--  [Worktime tracking in Bitrix24](https://helpdesk.bitrix24.com/open/21658854)
+- [How to Track Working Hours](https://helpdesk.bitrix24.com/open/21521542/)
 
 {% endnote %}
 
@@ -28,7 +37,7 @@ The work schedule defines the mode and duration of employees' work. You can obta
 
 {% note tip "User Documentation" %}
 
--  [Work Schedules](https://helpdesk.bitrix24.com/open/18039560)
+- [Work Schedules](https://helpdesk.bitrix24.com/open/18039560)
 
 {% endnote %}
 
@@ -40,13 +49,15 @@ You can work with reports and configure time control using the group of methods 
 
 {% note tip "User Documentation" %}
 
--  [Working time control](https://helpdesk.bitrix24.com/open/24640398)
+- [Working Time Control](https://helpdesk.bitrix24.com/open/24640398)
 
 {% endnote %}
 
 ## Office Networks
 
 An office network is a group of IP addresses used within the organization's local network. Working with the ranges of IP addresses in the office network is done using the methods from the group [timeman.networkrange.*](./networkrange/index.md).
+
+Office network methods are related to time control: reports on identified absences can show whether an employee was in the office network when starting or ending the workday.
 
 ## Work Time Records
 

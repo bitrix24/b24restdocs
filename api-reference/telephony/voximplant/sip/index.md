@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section describes working with SIP connections in telephony:
+SIP connections link Bitrix24 to a cloud or office PBX. The `voximplant.sip.*` methods allow you to:
 
 - how to check the status of the SIP connector
 - how to create and configure a SIP connection

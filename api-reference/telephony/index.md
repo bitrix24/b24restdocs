@@ -1,4 +1,4 @@
-# Telephony: Overview of Methods
+# Telephony: Overview of Methods and Events
 
 {% note tip "" %}
 

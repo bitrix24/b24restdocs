@@ -1,4 +1,4 @@
-# SIP and Built-in Telephony: Overview of Methods
+# SIP and Built-in Telephony: Overview of Methods and Events
 
 {% note tip "" %}
 
@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section describes the workflow for working with built-in telephony and the SIP connector in Bitrix24.
+Built-in telephony and the SIP connector allow you to initiate calls, receive call events, manage outgoing lines, SIP connections, and users' SIP settings.
 
 - Built-in telephony is the basic telephony mode in Bitrix24 for handling calls within the platform. Through the API in this mode, you can initiate calls, receive call events, manage outgoing lines, and configure users' SIP settings.
 - The SIP connector is the integration mode of Bitrix24 with external SIP providers and PBXs. Through the API in this mode, you can create, update, and delete SIP connections for the application, check their registration status, and assign a default SIP line for outgoing calls.

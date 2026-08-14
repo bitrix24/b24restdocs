@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section describes working with users' SIP settings:
+Users' SIP settings define the parameters for connecting an employee to a SIP phone or softphone. The `voximplant.user.*` methods allow you to:
 
 - how to view the current configuration of an employee
 - how to enable the SIP device indicator
@@ -21,7 +21,7 @@ Calling the methods depends on the `User Settings — Modify` access permission.
 
 ## Interaction with Other Objects
 
-**User.** The methods in this section operate with users by `USER_ID`. The user identifier can be obtained using the [user.get](../../../user/user-get.md) method.
+**User.** The methods operate with users by `USER_ID`. The user identifier can be obtained using the [user.get](../../../user/user-get.md) method.
 
 {% note tip "User Documentation" %}
 

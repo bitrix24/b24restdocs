@@ -10,9 +10,18 @@ Time tracking in Bitrix24 records the hours worked by an employee. To do this, t
 
 The methods `timeman.*` are used to manage the workday of the token holder or webhook. To manage the workdays of other employees, the user needs access permission to edit others' workdays.
 
-> Quick navigation: [all methods and events](#all-methods) 
-> 
-> User documentation: [How to track working hours in Bitrix24](https://helpdesk.bitrix24.com/open/21658854)
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [How to Track Working Hours](https://helpdesk.bitrix24.com/open/21521542/)
+
+## How to Get Started
+
+1. Obtain the `USER_ID` of the employee whose workday you need to manage
+2. Check the current workday status using [timeman.status](./timeman-status.md)
+3. If the workday is not open, start it using [timeman.open](./timeman-open.md)
+4. If the employee goes on a break, pause the day using [timeman.pause](./timeman-pause.md)
+5. When work is completed, close the workday using [timeman.close](./timeman-close.md)
+6. Retrieve the user's working time settings using [timeman.settings](./timeman-settings.md) if you need to account for the work schedule and change approval rules
 
 ## Linking the Workday to Other Objects
 
@@ -25,6 +34,7 @@ The [timeman.open](./timeman-open.md) method starts the workday for the employee
 To set a break or lunch period, use the [timeman.pause](./timeman-pause.md) method.
 
 The workday can be ended using the [timeman.close](./timeman-close.md) method:
+
 - by default, the workday ends at the current moment
 - the time zone of the start of the day is used
 - the end date must match the start date
@@ -45,7 +55,7 @@ Work schedule settings define the mode and duration of the employee's work. The 
 
 {% note tip "User documentation" %}
 
--  [Workflow designer](https://helpdesk.bitrix24.com/open/23379262/)
+- [Work Schedules](https://helpdesk.bitrix24.com/open/18039560)
 
 {% endnote %}
 

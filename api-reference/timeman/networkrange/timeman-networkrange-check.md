@@ -258,9 +258,9 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response.
 
-Contains an object describing the range that the IP address falls into.
+Contains an object describing the range that includes the IP address.
 
-Will return `false` if the IP address does not fall into any office network range ||
+Returns `false` if the IP address is not included in any office network range ||
 || **ip**
  [`string`](../../data-types.md) | The IP address that was checked ||
 || **range**

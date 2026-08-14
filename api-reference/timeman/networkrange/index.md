@@ -6,9 +6,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-An office network is a group of IP addresses used within an organization's local network. Working with the ranges of IP addresses in the office network is done using the methods from the group timeman.networkrange.*.
+An office network is a group of IP addresses used within an organization's local network. Working with the ranges of IP addresses in the office network is done using the methods from the group `timeman.networkrange.*`.
 
-> Quick Navigation: [all methods and events](#all-methods)
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Working Time Control](https://helpdesk.bitrix24.com/open/24640398/)
+
+## How to Get Started
+
+1. Retrieve the current office network ranges using [timeman.networkrange.get](./timeman-networkrange-get.md)
+2. Prepare a list of IP addresses and ranges that belong to the office network
+3. Save the ranges using [timeman.networkrange.set](./timeman-networkrange-set.md)
+4. Check a separate IP address using [timeman.networkrange.check](./timeman-networkrange-check.md)
+5. Use the check result with the [timeman.timecontrol.reports.get](../timecontrol/timeman-timecontrol-reports-get.md) report to determine whether the employee was in the office network when starting or ending the workday
 
 ## Get Range
 
@@ -17,6 +27,7 @@ You can find out the current settings of the IP address ranges using the [timema
 ## Set Range
 
 The [timeman.networkrange.set](./timeman-networkrange-set.md) method creates or updates ranges. You can specify a range as:
+
 - a single IP address. For example, `10.10.0.1`
 - a block of addresses in the format `start_address-end_address`. For example, `10.0.0.0-10.255.255.255`
 

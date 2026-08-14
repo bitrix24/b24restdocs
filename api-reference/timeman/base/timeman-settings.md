@@ -256,7 +256,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response.
 
-Contains an object with the user's work time settings ||
+Contains an object describing the user's working time settings ||
 || **UF_TIMEMAN**
 [`boolean`](../../data-types.md) | Whether work time tracking is enabled for the user.
 

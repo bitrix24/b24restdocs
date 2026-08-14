@@ -271,7 +271,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response.
 
-Contains an object with the description of the workday ||
+Contains an object describing the workday ||
 || **STATUS**
  [`string`](../../data-types.md) | Status of the current workday.
  
@@ -285,7 +285,7 @@ Contains an object with the description of the workday ||
 
 The time zone corresponds to the time zone at the start of the workday ||
 || **TIME_FINISH**
-[`datetime`](../../data-types.md) | Date and time when the workday ends.
+[`datetime`](../../data-types.md) | Date and time the workday ends.
 
 Returns `null` for an unfinished workday ||
 || **DURATION**

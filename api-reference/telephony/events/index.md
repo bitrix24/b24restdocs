@@ -17,7 +17,6 @@ Detailed work with events is described in the article [Concept and Benefits of E
 You can subscribe to the event [OnExternalCallBackStart](on-external-call-back-start.md) via:
 
 - [outgoing webhook](../../../local-integrations/local-webhooks.md)
-
 - [application](../../../settings/app-installation/index.md) and the method [event.bind](../../events/event-bind.md)
 
 You can subscribe to the event [OnExternalCallStart](on-external-call-start.md) only through the [application](../../../settings/app-installation/index.md) and the method [event.bind](../../events/event-bind.md).
@@ -30,7 +29,7 @@ An example of a handler code for the event is described in the article [How to T
 
 ## Overview of Events {#all-events}
 
-> Scope: [`telephony`](../../scopes/permissions.md) 
+> Scope: [`telephony`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 

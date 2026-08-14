@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This section describes how to work with outgoing lines in telephony:
+Outgoing lines define which number will be used for employees' outgoing calls. The `voximplant.line.*` methods allow you to:
 
 - how to obtain a list of available lines
 - how to find out the current default outgoing line
@@ -15,6 +15,8 @@ This section describes how to work with outgoing lines in telephony:
 To call the methods, you need the `Manage numbers - modify` access permission.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [General Telephony Settings](https://helpdesk.bitrix24.com/open/19721462/)
 
 ## Interaction with Other Objects
 
