@@ -17,7 +17,6 @@ Detailed information on working with events is described in the article [Concept
 You can subscribe to News Feed events through:
 
 - [outgoing webhook](../../../local-integrations/local-webhooks.md)
-
 - [application](../../../settings/app-installation/index.md) and the method [event.bind](../../events/event-bind.md)
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../events/test-handler.md).
@@ -28,7 +27,7 @@ An example of a handler code for the event is described in the article [How to T
 
 ## Overview of Events {#all-events}
 
-> Scope: [`sonet`](../../scopes/permissions.md)
+> Scope: [`log`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 

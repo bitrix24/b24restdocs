@@ -46,7 +46,7 @@ You can specify the date without time. To do this, pass the value `Y` in the `sk
 [`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `to` parameter. ||
 || **section**
 [`integer`](../../data-types.md) | Calendar identifier. ||
-|| **name***
+|| **name**
 [`string`](../../data-types.md) | Event name. ||
 || **skip_time**
 [`string`](../../data-types.md) | Pass the date value without time in the `from` and `to` parameters. Possible values:
@@ -116,13 +116,13 @@ For a meeting with participants, pass the list of participants in `attendees`. |
 || **attendees**
 [`array`](../../data-types.md) | List of participant identifiers for the event.
 
-If you do not pass this parameter when updating a meeting, the current list of participants will be retained ||
+If you pass `is_meeting = Y` and do not pass `attendees`, the attendee list will be cleared. If you do not pass `is_meeting`, the current attendee list will be retained ||
 || **host**
 [`integer`](../../data-types.md) | Event organizer identifier.
 
 Pass this parameter only if the meeting is updated by someone other than the organizer. In this case, specify the identifier of the current organizer. If you do not pass the parameter or pass another user's identifier, the method returns the `Access denied` error.
 
-You can retrieve the current organizer using [calendar.event.getbyid](./calendar-event-get-by-id.md) or [calendar.event.get](./calendar-event-get.md).
+You can retrieve the current organizer identifier in the response of the [calendar.event.getbyid](./calendar-event-get-by-id.md) and [calendar.event.get](./calendar-event-get.md) methods in the `MEETING_HOST` field.
 
 You cannot use this parameter to change the organizer of an existing event. To change the organizer, delete the event using [calendar.event.delete](./calendar-event-delete.md) and create a new one using [calendar.event.add](./calendar-event-add.md) on behalf of the required organizer ||
 || **meeting**

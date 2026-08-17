@@ -30,6 +30,16 @@ Possible values:
 
 {% include notitle [Message Recipients](./_includes/log-recepients.md) %}
 ||
+|| **LOG_DATE_FROM**
+[`string`](../data-types.md) | Lower boundary of the post publication period in ISO 8601 format. If `LOG_DATE_FROM` and `LOG_DATE_TO` are specified, the `LOG_DATE_FROM` value must not be later than `LOG_DATE_TO` ||
+|| **LOG_DATE_TO**
+[`string`](../data-types.md) | Upper boundary of the post publication period in ISO 8601 format. If the value is not specified, the upper boundary of the period is not applied ||
+|| **FIRST_ID**
+[`integer`](../data-types.md) | News Feed entry identifier for cursor-based forward navigation. The method returns posts with identifiers greater than the specified value. If `FIRST_ID` and `LAST_ID` are passed, `FIRST_ID` is applied ||
+|| **LAST_ID**
+[`integer`](../data-types.md) | News Feed entry identifier for cursor-based backward navigation. The method returns posts with identifiers less than the specified value ||
+|| **LIMIT**
+[`integer`](../data-types.md) | Page size in cursor mode. A non-positive or non-numeric value is replaced with the default value. The maximum value is `200` ||
 || **start**
 [`integer`](../data-types.md) | This parameter is used for pagination control.
 

@@ -111,7 +111,7 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 - `Y` — meeting with participants
 - `N` — meeting without participants
 
-For a meeting with participants, pass the list of attendees in `attendees`. The event organizer will be the user on whose behalf the method is executed
+For a meeting with participants, pass the list of attendees in `attendees`
 ||
 || **location**
 [`string`](../../data-types.md) | Venue ||
@@ -130,6 +130,14 @@ If you do not pass this parameter for a meeting with participants, the attendee 
  - `L_` — lead
  - `D_` — deal ||
 |#
+
+### Event Organizer
+
+The event organizer is the user on whose behalf the `calendar.event.add` method is executed.
+
+The parameter table does not include a special `host` parameter because the `calendar.event.add` method does not use it to assign the organizer. The `host` parameter is used in the [calendar.event.update](./calendar-event-update.md) method so that a user who is not the organizer can update a meeting by specifying the current organizer.
+
+You can retrieve the current organizer identifier in the response of the [calendar.event.getbyid](./calendar-event-get-by-id.md) and [calendar.event.get](./calendar-event-get.md) methods in the `MEETING_HOST` field.
 
 ### Timezone Handling Features {#timezone-features}
 

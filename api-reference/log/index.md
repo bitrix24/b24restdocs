@@ -1,4 +1,4 @@
-# News Feed: Overview of Methods
+# News Feed: Overview of Methods and Events
 
 {% note tip "" %}
 
@@ -6,11 +6,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The corporate news feed resembles social media feeds. It allows employees to stay updated on company events. It displays news, messages, tasks, polls, congratulations, and much more.
+The News Feed in Bitrix24 helps employees share information and follow company events. It displays messages, tasks, polls, appreciations, calendar events, and started workflows.
 
 > Quick navigation: [all methods and events](#all-methods)
 >
-> User documentation: [News Feed](https://helpdesk.bitrix24.com/section/47478/)
+> User documentation: [Feed](https://helpdesk.bitrix24.com/section/47478/)
 
 ## Connection of the Feed with Other Objects
 
@@ -46,7 +46,8 @@ Workflows can be initiated directly from the News Feed without navigating to oth
 
 {% note tip "User documentation" %}
 
-- [Workflows in the News Feed](https://helpdesk.bitrix24.com/open/9717699/)
+- [Start workflows in Feed](https://helpdesk.bitrix24.com/open/21591866/)
+- [Configure workflows in Feed](https://helpdesk.bitrix24.com/open/21727292/)
 
 {% endnote %}
 
@@ -54,11 +55,11 @@ Use the [bizproc.workflow.template.list](./../bizproc/template/bizproc-workflow-
 
 With the [bizproc.workflow.start](./../bizproc/bizproc-workflow-start.md) method, start a workflow by specifying its ID. To link the workflow to the News Feed, associate it with a list item. To work with list items, use the methods from the [lists.element.*](./../lists/elements/index.md) group. To create or retrieve a list item associated with the News Feed workflow, specify `IBLOCK_TYPE_ID: bitrix_processes`. If the workflow is started for a list item, the News Feed will automatically create a message.
 
-## **Managing Messages in the Feed**
+## Managing Messages in the Feed
 
-**How to add, modify, or delete a message**. Using methods, you can add, modify, and delete messages in the News Feed. Use the [log.blogpost.add](./../log/log-blogpost-add.md) method to add a message to the News Feed on behalf of the current user. You can modify a message using the [log.blogpost.update](./../log/log-blogpost-update.md) method. To delete a message, apply the [log.blogpost.delete](./../log/log-blogpost-delete.md) method.
+**Messages.** The `log.blogpost.*` methods add, update, retrieve, share, and delete News Feed posts. You can create a post using the [log.blogpost.add](./log-blogpost-add.md) method, update it using [log.blogpost.update](./log-blogpost-update.md), and delete it using [log.blogpost.delete](./log-blogpost-delete.md).
 
-**How to manage comments**. Use the [log.blogcomment.add](./blogcomment/log-blogcomment-add.md) method to add comments to messages and the [log.blogcomment.delete](./blogcomment/log-blogcomment-delete.md) method to delete comments. The [log.blogcomment.user.get](./blogcomment/log-blogcomment-user-get.md) method returns comments on messages and can filter them by ID range (`FIRST_ID`, `LAST_ID`). If no filtering parameters are provided, the method will return all comments available to the current user, considering their access permissions.
+**Comments.** The [log.blogcomment.add](./blogcomment/log-blogcomment-add.md) method adds comments to posts, and the [log.blogcomment.delete](./blogcomment/log-blogcomment-delete.md) method deletes comments. The [log.blogcomment.user.get](./blogcomment/log-blogcomment-user-get.md) method returns comments on posts and can filter them by ID range (`FIRST_ID`, `LAST_ID`). If no filtering parameters are passed, the method returns all comments available to the current user, taking into account their access permissions.
 
 **How to find out which users have read an important message**. A message published in the News Feed can be marked as important. To view the list of users who have read the important message, use the [log.blogpost.getusers.important](./log-blogpost-getusers-important.md) method. The combination of "important message and tracking the list of readers" can be used for automated scenarios of mass informing employees.
 
@@ -70,7 +71,7 @@ With the [bizproc.workflow.start](./../bizproc/bizproc-workflow-start.md) method
 
 > Scope: [`log`](../scopes/permissions.md)
 > 
-> Who can execute the method: any user
+> Who can execute methods and subscribe to events: any user
 
 {% list tabs %}
 

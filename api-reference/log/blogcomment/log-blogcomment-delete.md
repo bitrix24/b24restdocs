@@ -1,4 +1,4 @@
-# Delete comment from log.blogcomment.delete
+# Delete Comment from a Post log.blogcomment.delete
 
 {% note tip "" %}
 

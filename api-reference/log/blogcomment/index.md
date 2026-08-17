@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Comments in the News Feed allow users to discuss posts, share opinions, and clarify details. Files can be attached to each comment.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Feed](https://helpdesk.bitrix24.com/section/47478/)
 
 ## Linking Comments to Other Objects
 
@@ -23,6 +25,13 @@ Comments in the News Feed allow users to discuss posts, share opinions, and clar
 - [How to upload files](../../files/how-to-upload-files.md)
 
 {% endnote %}
+
+## How to Get Started
+
+1. Retrieve the post identifier `POST_ID` using the [log.blogpost.get](../log-blogpost-get.md) method
+2. Add a comment using the [log.blogcomment.add](./log-blogcomment-add.md) method
+3. Retrieve the user's comments using the [log.blogcomment.user.get](./log-blogcomment-user-get.md) method if you need to synchronize the discussion
+4. Delete the comment using the [log.blogcomment.delete](./log-blogcomment-delete.md) method if the user's permissions allow it
 
 ## Overview of Methods {#all-methods}
 
