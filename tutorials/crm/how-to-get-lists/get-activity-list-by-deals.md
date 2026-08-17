@@ -1,4 +1,4 @@
-# How to Retrieve a List of Tasks from Deals
+# How to Retrieve a List of Activities from Deals
 
 > Scope: [`crm, user_brief`](../../../api-reference/scopes/permissions.md)
 >
@@ -10,15 +10,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The task list allows you to track current tasks and calls related to deals, deadlines, and responsible parties. To create a task table, we will sequentially execute the following methods:
+The activity list allows you to track current activities and calls related to deals, deadlines, and responsible parties. To create an activity table, we will sequentially execute the following methods:
 
 1. [user.current](../../../api-reference/user/user-current.md) — find the `ID` of the current user,
 
 2. [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) — retrieve the `ID` of all deals for which the employee is responsible,
 
-3. [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) — generate a list of tasks related to the deals,
+3. [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) — generate a list of activities related to the deals,
 
-4. [user.get](../../../api-reference/user/user-get.md) — obtain information about the individuals responsible for the tasks.
+4. [user.get](../../../api-reference/user/user-get.md) — obtain information about the individuals responsible for the activities.
 
 ## 1. Retrieve the ID of the Current User
 
@@ -227,29 +227,29 @@ As a result, we will receive an array `items` with deal identifiers like `"id": 
 }
 ```
 
-## 3. Retrieve the List of Tasks for the Found Deals
+## 3. Retrieve the List of Activities for the Found Deals
 
-To obtain the list of tasks, we will use the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method.
+To obtain the list of activities, we will use the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method.
 
-To select tasks from multiple deals, we will use the binding key `BINDINGS` in the `filter`. We will pass an array of objects, where each object contains:
+To select activities from multiple deals, we will use the binding key `BINDINGS` in the `filter`. We will pass an array of objects, where each object contains:
 
 -  `OWNER_TYPE_ID` — the identifier for the CRM object type. You can retrieve the identifiers using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method. We will specify the value — `2`, which corresponds to a deal.
 
 -  `OWNER_ID` — the identifier of the deal from the result of the previous request.
 
-We will also filter only active tasks `COMPLETED: 'N'`.
+We will also filter only active activities `COMPLETED: 'N'`.
 
 We will output the following fields in the `select`:
 
--  `ID` — the identifier of the task,
+-  `ID` — the identifier of the activity,
 
 -  `OWNER_ID` — the identifier of the deal,
 
--  `SUBJECT` — the description of the task,
+-  `SUBJECT` — the description of the activity,
 
 -  `DEADLINE` — the date and time of the deadline,
 
--  `RESPONSIBLE_ID` — the identifier of the user responsible for the task.
+-  `RESPONSIBLE_ID` — the identifier of the user responsible for the activity.
 
 {% list tabs %}
 
@@ -368,7 +368,7 @@ As a result, you will obtain a list of activities with a description for each ac
 
 ## 4. Retrieve User Data by RESPONSIBLE_ID
 
-The individual responsible for a task in a deal can be any user, not just the one responsible for the deal. To display the name and surname of the person responsible for the task in the table, we will use the [user.get](../../../api-reference/user/user-get.md) method.
+The individual responsible for an activity in a deal can be any user, not just the one responsible for the deal. To display the name and surname of the person responsible for the activity in the table, we will use the [user.get](../../../api-reference/user/user-get.md) method.
 
 Pass the assigned user identifiers `ID: [29, 47, ...]` in the `filter` filter.
 
@@ -538,10 +538,10 @@ As a result, we will receive information about the users.
     if (dealIds.length === 0) {
         console.log('Employee has no deals');
     } else {
-        // Forming links to search for tasks by deals
+        // Forming links to search for activities by deals
         const bindings = buildBindingsFromDealIds(dealIds);
 
-        // Step 3: Get all tasks linked to these deals
+        // Step 3: Get all activities linked to these deals
         const allActivities = await fetchAllItems('crm.activity.list', {
             filter: { BINDINGS: bindings, COMPLETED: 'N' },
             select: ['ID', 'OWNER_ID', 'SUBJECT', 'DEADLINE', 'RESPONSIBLE_ID']
@@ -550,7 +550,7 @@ As a result, we will receive information about the users.
         const userIds = [...new Set(allActivities.map(a => a.RESPONSIBLE_ID))];
 
         if (userIds.length === 0) {
-            console.log('No incomplete tasks for these deals.');
+            console.log('No incomplete activities for these deals.');
             console.table([]);
         } else {
             // Step 4: Get user data
@@ -665,10 +665,10 @@ As a result, we will receive information about the users.
         exit;
     }
 
-    // Forming links to search for tasks by deals
+    // Forming links to search for activities by deals
     $bindings = buildBindingsFromDealIds($dealIds);
 
-    // Step 3: Get all tasks linked to these deals
+    // Step 3: Get all activities linked to these deals
     $allActivities = fetchAllItems(fn($start) => $crm->activity()->list(
         [],
         [
@@ -680,8 +680,8 @@ As a result, we will receive information about the users.
     )->getActivities());
 
     if (empty($allActivities)) {
-        echo "No incomplete tasks for these deals.\n";
-        echo implode("\t", ['Task ID', 'Deal', 'Subject', 'Deadline', 'Responsible person']) . "\n";
+        echo "No incomplete activities for these deals.\n";
+        echo implode("\t", ['Activity ID', 'Deal', 'Subject', 'Deadline', 'Responsible person']) . "\n";
         exit;
     }
 
@@ -703,7 +703,7 @@ As a result, we will receive information about the users.
     }
 
     // Forming and displaying the table
-    $header = ['Task ID', 'Deal', 'Subject', 'Deadline', 'Responsible person'];
+    $header = ['Activity ID', 'Deal', 'Subject', 'Deadline', 'Responsible person'];
     echo implode("\t", $header) . "\n";
 
     foreach ($allActivities as $a) {
@@ -797,8 +797,8 @@ As a result, we will receive information about the users.
         )
 
         if not all_activities:
-            print("No incomplete tasks for these deals.")
-            print("\t".join(["Task ID", "Deal", "Subject", "Deadline", "Responsible person"]))
+            print("No incomplete activities for these deals.")
+            print("\t".join(["Activity ID", "Deal", "Subject", "Deadline", "Responsible person"]))
         else:
             responsible_ids = sorted(
                 {
@@ -820,7 +820,7 @@ As a result, we will receive information about the users.
                     full_name = f"{user.get('NAME', '')} {user.get('LAST_NAME', '')}".strip()
                     user_map[str(user["ID"])] = full_name or user.get("LOGIN", f"User {user['ID']}")
 
-            print("\t".join(["Task ID", "Deal", "Subject", "Deadline", "Responsible person"]))
+            print("\t".join(["Activity ID", "Deal", "Subject", "Deadline", "Responsible person"]))
             for activity in all_activities:
                 activity_id = activity.get("ID", "")
                 owner_id = int(activity.get("OWNER_ID", 0))
