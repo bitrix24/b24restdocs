@@ -111,7 +111,7 @@ For the first version of the application, this field does not need to be filled;
 
 - **The solution card contains:**
   1. Offensive, obscene information in the card fields: calls to violence, pornography, racism, and other materials prohibited by government legislation;
-  2. Information that violates Federal laws in the solution description.
+  2. Information that violates applicable legislation in the solution description.
   3. Unfilled fields "Solution Installation," "Solution Description," "Support," icon, and screenshots;
   4. Information that does not correspond to the fields (contacts in the description, solution description in support, discounts in the installation description, etc.), or meaningless information;
   5. Offers to purchase the solution, partner services, and/or Bitrix24 products directly from the partner;
@@ -119,7 +119,7 @@ For the first version of the application, this field does not need to be filled;
   7. Obvious grammatical errors in the description fields;
   8. Texts in descriptions or screenshots that do not correspond to the selected description language.
 - **ii. The version card will contain:**
-  1. Offensive, obscene information in the version fields: calls to violence, pornography, racism, and other materials prohibited by Russian legislation;
+  1. Offensive, obscene information in the version fields: calls to violence, pornography, racism, and other materials prohibited by applicable legislation;
   2. Unfilled "What's New in the Application" field, or text that does not correspond to the selected description language;
   3. Information that does not correspond to the fields (title in the description, discounts in the version description, etc.), or meaningless information;
   4. Offers to purchase the solution, partner services, and/or 1C-Bitrix products directly from the partner;
