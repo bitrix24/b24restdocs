@@ -37,11 +37,15 @@ If not provided, defaults to `N` ||
 [`object`](../data-types.md) | List of handler settings values in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the name of the setting and `value` is an object containing keys [TYPE](#possible-values-of-key-type) and [VALUE](#possible-values-of-key-value) (see description below).
 
 The structure of settings is defined when adding the payment system handler in the [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) method under the `CODES` key of the `SETTINGS` parameter ||
-|| **ENTITY_REGISTRY_TYPE***
+|| **ENTITY_REGISTRY_TYPE**
 [`string`](../data-types.md) | Binding of the payment system:
 - `ORDER` — value for store orders, deals, smart processes
 - `CRM_INVOICE` — value for CRM invoices
 - `CRM_QUOTE` — value for CRM estimates
+
+If not provided, defaults to `CRM_INVOICE`.
+
+The payer type `PERSON_TYPE_ID` must belong to the same binding type
 ||
 || **LOGOTYPE**
 [`string`](../data-types.md) | Logo of the payment system (image in Base64 format) ||

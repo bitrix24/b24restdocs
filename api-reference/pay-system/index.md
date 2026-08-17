@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Payment systems accept payments from customers. For example, you can integrate bank acquiring or an online payment service. The customer selects a payment method during the checkout process, after which the system processes the transaction.
 
-This section consolidates methods for registering a handler, creating a payment system, configuring parameters, and initiating payments.
+Through the REST API, you can register a handler for an external payment service, create a payment system, configure its parameters, and initiate payment.
 
 > Quick navigation: [all methods](#all-methods)
 
@@ -24,11 +24,35 @@ The payment system operates in conjunction with the payer type, payment, order, 
 
 **REST Handler.** The code `BX_REST_HANDLER` connects the payment system with an external payment provider.
 
+## Payment System Binding Types
+
+The `ENTITY_REGISTRY_TYPE` parameter defines where the payment system will be available.
+
+#|
+|| **Value** | **Where the Payment System Works** ||
+|| `ORDER` | Store orders, deals, smart processes ||
+|| `CRM_INVOICE` | CRM invoices ||
+|| `CRM_QUOTE` | CRM estimates ||
+|#
+
+The binding type is set once when the payment system is created using the method [sale.paysystem.add](./sale-pay-system-add.md). If the parameter is not provided, the payment system is created with the `CRM_INVOICE` type. The payer type `PERSON_TYPE_ID` must belong to the same binding type, otherwise the method returns the `ERROR_PERSON_TYPE_NOT_FOUND` error.
+
+## REST Handler Operating Modes
+
+The mode defines how the customer reaches the payment. The mode is set when the handler is registered using the method [sale.paysystem.handler.add](./sale-pay-system-handler-add.md): pass one of the three objects in the `SETTINGS` parameter.
+
+#|
+|| **Mode** | **What Happens During Payment** | **When to Use** ||
+|| `FORM_DATA` | Bitrix24 displays a form and sends its data to the `ACTION_URI` address of the payment service | Little or no data is required from the customer ||
+|| `CHECKOUT_DATA` | Bitrix24 sends the payment data to `ACTION_URI`, the service creates a payment and returns a link to its own payment page | The payment is processed on the payment service side ||
+|| `IFRAME_DATA` | Bitrix24 loads the payment service page in an iframe on the payment page | The payment is processed on the service side, but without leaving the Bitrix24 page ||
+|#
+
 ## How to Get Started
 
 1. Obtain the payer type identifier `PERSON_TYPE_ID` using the method [sale.persontype.list](../sale/person-type/sale-person-type-list.md).
-2. Register the REST handler using the method [sale.paysystem.handler.add](./sale-pay-system-handler-add.md).
-3. Create the payment system using the method [sale.paysystem.add](./sale-pay-system-add.md). Pass `PERSON_TYPE_ID` and the handler code `BX_REST_HANDLER`.
+2. Register the REST handler using the method [sale.paysystem.handler.add](./sale-pay-system-handler-add.md). Select the handler operating mode. Handlers and payment systems can be configured by a CRM administrator with the "Allow to modify settings" permission.
+3. Create the payment system using the method [sale.paysystem.add](./sale-pay-system-add.md). Pass `PERSON_TYPE_ID`, the handler code `BX_REST_HANDLER`, and the binding type `ENTITY_REGISTRY_TYPE`.
 4. Check the result using the method [sale.paysystem.list](./sale-pay-system-list.md). If necessary, update the data using the method [sale.paysystem.update](./sale-pay-system-update.md).
 5. Configure the operational parameters using the methods [sale.paysystem.settings.get](./sale-pay-system-settings-get.md) and [sale.paysystem.settings.update](./sale-pay-system-settings-update.md).
 6. To process the order payment, obtain `PAYMENT_ID` using the method [sale.payment.list](../sale/payment/sale-payment-list.md), then initiate the payment through [sale.paysystem.pay.payment](./sale-pay-system-pay-payment.md).
