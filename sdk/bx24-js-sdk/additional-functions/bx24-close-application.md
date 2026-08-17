@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `BX24.closeApplication` sends a command to close the pop-up window with the application.
 
-This method is recommended for use in integrations such as `CRM_*_LIST_MENU` from the [Widgets](https://apidocs.bitrix24.com/api-reference/widgets/index.html) section. For example, you can add a button that closes the application window.
+This method is recommended for use in integrations such as `CRM_*_LIST_MENU` from the [Widgets](../../../api-reference/widgets/index.md) section. For example, you can add a button that closes the application window.
 
 ```js
 void BX24.closeApplication([Function callback])

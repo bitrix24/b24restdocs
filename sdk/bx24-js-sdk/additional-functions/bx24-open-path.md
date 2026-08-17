@@ -26,19 +26,23 @@ For security reasons, this method does not work in the mobile application.
 || **Name**
 `type` | **Description** ||
 || **path*** 
-`string` | The path within Bitrix24. The following prefixes are supported:
+`string` | The path within Bitrix24. It starts with `/` and leads to a page of the same Bitrix24 where the application is open. The method does not open external addresses or paths to other domains.
 
-- `/crm/deal/` — CRM deal detail forms and sections
-- `/crm/lead/` — CRM lead detail forms and sections
-- `/crm/contact/` — CRM contact detail forms and sections
-- `/crm/company/` — CRM company detail forms and sections
-- `/crm/type/` — CRM Smart Processes
-- `/marketplace/` — Marketplace pages
-- `/company/personal/user/{ID}/` — User profile
-- `/workgroups/group/{ID}/` — Workgroup or project ||
+The numbers in the path are identifiers of specific objects. Substitute your own values for them:
+
+- `/crm/deal/details/5/` — a deal detail form, where `5` is the deal identifier
+- `/crm/lead/details/12/` — a lead detail form, where `12` is the lead identifier
+- `/crm/contact/details/2/` — a contact detail form, where `2` is the contact identifier
+- `/crm/company/details/7/` — a company detail form, where `7` is the company identifier
+- `/crm/type/128/details/3/` — a smart process item detail form, where `128` is the smart process type identifier `entityTypeId`, and `3` is the identifier of the item itself
+- `/company/personal/user/1/` — an employee profile, where `1` is the user identifier
+- `/workgroups/group/4/` — a workgroup or project, where `4` is the group identifier
+- `/marketplace/` — Marketplace, no identifier required ||
 || **callback**
 `function` | Callback function. Invoked when there is an error opening the path or when the slider is closed ||
 |#
+
+To retrieve CRM object identifiers, use the list and creation methods, for example [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) and [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md). To retrieve an employee identifier, use [user.get](../../../api-reference/user/user-get.md), and for a workgroup identifier use [sonet_group.get](../../../api-reference/sonet-group/sonet-group-get.md).
 
 Before opening, the SDK automatically adds service parameters to the path: 
 `from=rest_placement&from_app={appId}`.

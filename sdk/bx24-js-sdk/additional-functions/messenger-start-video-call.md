@@ -27,8 +27,12 @@ Promise Messenger.startVideoCall([String dialogId[, Boolean withVideo]])
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
+The `Messenger` object becomes available after the `im.public.iframe` extension is loaded:
+
 ```js
-BX.Messenger.Public.startVideoCall('chat123', true);
+BX.Runtime.loadExtension('im.public.iframe').then(function (exports) {
+    exports.Messenger.startVideoCall('chat123', true);
+});
 ```
 
 ## Response Handling
@@ -47,4 +51,4 @@ The method returns a `Promise`.
 ## Continue Learning
 
 - [{#T}](./messenger-start-phone-call.md)
-- [{#T}](./outdated/bx24-im-call-to.md)
+- [{#T}](./messenger-open-chat.md)

@@ -29,8 +29,12 @@ Promise Messenger.startPhoneCall(String number[, Object params])
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
+The `Messenger` object becomes available after the `im.public.iframe` extension is loaded:
+
 ```js
-BX.Messenger.Public.startPhoneCall('88000000000');
+BX.Runtime.loadExtension('im.public.iframe').then(function (exports) {
+    exports.Messenger.startPhoneCall('88000000000');
+});
 ```
 
 ## Handling the Response
@@ -49,4 +53,4 @@ The method returns a `Promise`.
 ## Continue Your Learning
 
 - [{#T}](./messenger-start-video-call.md)
-- [{#T}](./outdated/bx24-im-phone-to.md)
+- [{#T}](./messenger-open-chat.md)

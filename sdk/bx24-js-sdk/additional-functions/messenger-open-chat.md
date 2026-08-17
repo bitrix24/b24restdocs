@@ -27,12 +27,20 @@ Promise Messenger.openChat([String dialogId[, Integer messageId]])
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
-```js
-BX.Messenger.Public.openChat('chat123');
-```
+The `Messenger` object becomes available after the `im.public.iframe` extension is loaded:
 
 ```js
-BX.Messenger.Public.openChat('chat123', 12345);
+BX.Runtime.loadExtension('im.public.iframe').then(function (exports) {
+    exports.Messenger.openChat('chat123');
+});
+```
+
+To open a chat focused on a specific message, pass the second parameter:
+
+```js
+BX.Runtime.loadExtension('im.public.iframe').then(function (exports) {
+    exports.Messenger.openChat('chat123', 12345);
+});
 ```
 
 ## Response Handling
@@ -50,5 +58,6 @@ The method returns a `Promise`.
 
 ## Continue Learning
 
-- [{#T}](./outdated/bx24-im-open-messenger.md)
-- [{#T}](./outdated/bx24-im-open-history.md)
+- [{#T}](./messenger-start-video-call.md)
+- [{#T}](./messenger-start-phone-call.md)
+- [{#T}](./bx24-open-path.md)
