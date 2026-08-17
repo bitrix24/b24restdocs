@@ -20,7 +20,7 @@ The method `crm.contact.userfield.get` returns a custom contact field by its ide
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the custom field associated with the contact.
+[`integer`](../../../data-types.md) | Identifier of the custom field associated with the contact.
 
 The identifier can be obtained using the methods [`crm.contact.userfield.add`](./crm-contact-userfield-add.md) or [`crm.contact.userfield.list`](./crm-contact-userfield-list.md) ||
 |#
@@ -396,15 +396,15 @@ HTTP status: **200**
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`][1] | Identifier of the custom field ||
+[`integer`](../../../data-types.md) | Identifier of the custom field ||
 || **ENTITY_ID**
-[`string`][1] | String identifier binding the custom field to the entity. 
+[`string`](../../../data-types.md) | String identifier binding the custom field to the entity. 
 
 In the case of methods `crm.contact.userfield.*`, the value `CRM_CONTACT` is automatically assigned ||
 || **FIELD_NAME**
-[`string`][1] | Field code. Unique ||
+[`string`](../../../data-types.md) | Field code. Unique ||
 || **USER_TYPE_ID**
-[`string`][1] | Data type of the custom field. Possible values:
+[`string`](../../../data-types.md) | Data type of the custom field. Possible values:
 - `string` — string
 - `integer` — integer
 - `double` — number
@@ -424,28 +424,28 @@ In the case of methods `crm.contact.userfield.*`, the value `CRM_CONTACT` is aut
 - [custom field types](../../universal/user-defined-fields/userfield-type.md)
 ||
 || **XML_ID**
-[`string`][1] | External code ||
+[`string`](../../../data-types.md) | External code ||
 || **SORT**
-[`integer`][1] | Sorting index ||
+[`integer`](../../../data-types.md) | Sorting index ||
 || **MULTIPLE**
-[`boolean`][1] | Indicates whether the field is multiple. Possible values:
+[`boolean`](../../../data-types.md) | Indicates whether the field is multiple. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **MANDATORY**
-[`boolean`][1] | Is the field mandatory? Possible values:
+[`boolean`](../../../data-types.md) | Is the field mandatory? Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **SHOW_FILTER**
-[`boolean`][1] | Indicates whether to show the field in the filter. Possible values:
+[`boolean`](../../../data-types.md) | Indicates whether to show the field in the filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring
 ||
 || **SHOW_IN_LIST**
-[`boolean`][1] | Should the user field be shown in the list?
+[`boolean`](../../../data-types.md) | Should the user field be shown in the list?
 
 This parameter does not affect anything within `crm`.
 
@@ -454,12 +454,12 @@ Possible values:
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`][1] | Allows user editing. Possible values:
+[`boolean`](../../../data-types.md) | Allows user editing. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **IS_SEARCHABLE**
-[`boolean`][1] | Are the field values searchable?
+[`boolean`](../../../data-types.md) | Are the field values searchable?
 
 This parameter does not affect anything within `crm`.
 
@@ -468,7 +468,7 @@ Possible values:
 - `N` — no
 ||
 || **SETTINGS**
-[`object`][1] | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, which are described [below](#settings) ||
+[`object`](../../../data-types.md) | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, which are described [below](#settings) ||
 || **LIST**
 [`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. For custom fields of other types, this parameter is meaningless ||
 || **EDIT_FORM_LABEL**
@@ -482,7 +482,7 @@ Possible values:
 || **HELP_MESSAGE**
 [`lang_map`](../../data-types.md) | Help ||
 || **USER_TYPE_OWNER**
-[`string`][1] | `CLIENT_ID` of the application that serves this field type.
+[`string`](../../../data-types.md) | `CLIENT_ID` of the application that serves this field type.
 
 Returned when the field type is custom ||
 |#
@@ -497,15 +497,15 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **PRECISION**
-    [`integer`][1] | Precision (number of decimal places) ||
+    [`integer`](../../../data-types.md) | Precision (number of decimal places) ||
     || **SIZE**
-    [`integer`][1] | Input field size for display ||
+    [`integer`](../../../data-types.md) | Input field size for display ||
     || **MIN_VALUE**
-    [`double`][1] | Minimum value (0 — do not check) ||
+    [`double`](../../../data-types.md) | Minimum value (0 — do not check) ||
     || **MAX_VALUE**
-    [`double`][1] | Maximum value (0 — do not check) ||
+    [`double`](../../../data-types.md) | Maximum value (0 — do not check) ||
     || **DEFAULT_VALUE**
-    [`double`][1] | Default value ||
+    [`double`](../../../data-types.md) | Default value ||
     |#
 
 - boolean
@@ -514,21 +514,21 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`integer`][1] | Is it a default value. Possible values:
+    [`integer`](../../../data-types.md) | Is it a default value. Possible values:
     - `0` — no
     - `1` — yes ||
     || **DISPLAY**
-    [`string`][1] | Appearance. Possible values:
+    [`string`](../../../data-types.md) | Appearance. Possible values:
     - `CHECKBOX` — checkbox
     - `RADIO` — radio buttons
     - `DROPDOWN` — dropdown list ||
     || **LABEL**
-    [`string[]`][1] | Labels for values, where:
+    [`string[]`](../../../data-types.md) | Labels for values, where:
     - array item with index `0` — label for value `No`
     - array item with index `1` — label for value `Yes`
     ||
     || **LABEL_CHECKBOX**
-    [`string`][1] | Checkbox label ||
+    [`string`](../../../data-types.md) | Checkbox label ||
     |#
 
 - date
@@ -537,7 +537,7 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`object`][1] | Default value. Object format:
+    [`object`](../../../data-types.md) | Default value. Object format:
 
     ```
     {
@@ -560,13 +560,13 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **SIZE**
-    [`integer`][1] | Input field size for display ||
+    [`integer`](../../../data-types.md) | Input field size for display ||
     || **MIN_VALUE**
-    [`integer`][1] | Minimum value (0 — do not check) ||
+    [`integer`](../../../data-types.md) | Minimum value (0 — do not check) ||
     || **MAX_VALUE**
-    [`integer`][1] | Maximum value (0 — do not check) ||
+    [`integer`](../../../data-types.md) | Maximum value (0 — do not check) ||
     || **DEFAULT_VALUE**
-    [`integer`][1] | Default value ||
+    [`integer`](../../../data-types.md) | Default value ||
     |#
 
 - datetime
@@ -575,7 +575,7 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`object`][1] | Default value. Object format:
+    [`object`](../../../data-types.md) | Default value. Object format:
 
     ```
     {
@@ -591,11 +591,11 @@ Returned when the field type is custom ||
         - `FIXED` — date and time from `VALUE`
     - `VALUE` has type `datetime` ||
     || **USE_SECOND**
-    [`boolean`][1] | Use seconds. Possible values:
+    [`boolean`](../../../data-types.md) | Use seconds. Possible values:
     - `Y` — yes
     - `N` — no ||
     || **USE_TIMEZONE**
-    [`boolean`][1] | Use time zones. Possible values:
+    [`boolean`](../../../data-types.md) | Use time zones. Possible values:
     - `Y` — yes
     - `N` — no ||
     |#
@@ -606,17 +606,17 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **SIZE**
-    [`integer`][1] | Input field size for display ||
+    [`integer`](../../../data-types.md) | Input field size for display ||
     || **ROWS**
-    [`integer`][1] | Number of input field lines ||
+    [`integer`](../../../data-types.md) | Number of input field lines ||
     || **REGEXP**
-    [`string`][1] | Regular expression for validation ||
+    [`string`](../../../data-types.md) | Regular expression for validation ||
     || **MIN_LENGTH**
-    [`integer`][1] | Minimum string length (0 — do not check) ||
+    [`integer`](../../../data-types.md) | Minimum string length (0 — do not check) ||
     || **MAX_LENGTH**
-    [`integer`][1] | Maximum string length (0 — do not check) ||
+    [`integer`](../../../data-types.md) | Maximum string length (0 — do not check) ||
     || **DEFAULT_VALUE**
-    [`string`][1] | Default value ||
+    [`string`](../../../data-types.md) | Default value ||
     |#
 
 - enumeration
@@ -625,17 +625,17 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **DISPLAY**
-    [`string`][1] | Appearance. Possible values:
+    [`string`](../../../data-types.md) | Appearance. Possible values:
     - `LIST` — list
     - `CHECKBOX` — checkboxes
     - `UI` — searchable list
     - `DIALOG` — entity selection dialog ||
     || **LIST_HEIGHT**
-    [`integer`][1] | List height ||
+    [`integer`](../../../data-types.md) | List height ||
     || **CAPTION_NO_VALUE**
-    [`string`][1] | Label when value is missing ||
+    [`string`](../../../data-types.md) | Label when value is missing ||
     || **SHOW_NO_VALUE**
-    [`boolean`][1] | Whether to show an empty value for a required field. Possible values:
+    [`boolean`](../../../data-types.md) | Whether to show an empty value for a required field. Possible values:
     - `Y` — yes
     - `N` — no ||
     |#
@@ -646,19 +646,19 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **DISPLAY**
-    [`string`][1] | Appearance. Possible values:
+    [`string`](../../../data-types.md) | Appearance. Possible values:
     - `LIST` — list
     - `CHECKBOX` — checkboxes
     - `UI` — searchable list
     - `DIALOG` — entity selection dialog ||
     || **LIST_HEIGHT**
-    [`integer`][1] | List height ||
+    [`integer`](../../../data-types.md) | List height ||
     || **IBLOCK_ID**
-    [`integer`][1] | Information block ID ||
+    [`integer`](../../../data-types.md) | Information block ID ||
     || **DEFAULT_VALUE**
-    [`integer`][1] | Default value ||
+    [`integer`](../../../data-types.md) | Default value ||
     || **ACTIVE_FILTER**
-    [`boolean`][1] | Show only active items. Possible values:
+    [`boolean`](../../../data-types.md) | Show only active items. Possible values:
     - `Y` — yes
     - `N` — no ||
     |#
@@ -669,7 +669,7 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **ENTITY_TYPE**
-    [`object`][1] | CRM directory. The structure is similar to the elements returned by the [`crm.status.entity.types`](../../status/crm-status-entity-types.md) method ||
+    [`object`](../../../data-types.md) | CRM directory. The structure is similar to the elements returned by the [`crm.status.entity.types`](../../status/crm-status-entity-types.md) method ||
     |#
 
 - crm
@@ -678,21 +678,21 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`][1] | Whether binding to Leads is enabled ||
+    [`boolean`](../../../data-types.md) | Whether binding to Leads is enabled ||
     || **CONTACT**
-    [`boolean`][1] | Whether binding to Contacts is enabled ||
+    [`boolean`](../../../data-types.md) | Whether binding to Contacts is enabled ||
     || **COMPANY**
-    [`boolean`][1] | Whether binding to Companies is enabled ||
+    [`boolean`](../../../data-types.md) | Whether binding to Companies is enabled ||
     || **DEAL**
-    [`boolean`][1] | Whether binding to Deals is enabled ||
+    [`boolean`](../../../data-types.md) | Whether binding to Deals is enabled ||
     || **ORDER**
-    [`boolean`][1] | Whether binding to Orders is enabled ||
+    [`boolean`](../../../data-types.md) | Whether binding to Orders is enabled ||
     || **QUOTE**
-    [`boolean`][1] | Whether binding to Commercial proposals is enabled ||
+    [`boolean`](../../../data-types.md) | Whether binding to Commercial proposals is enabled ||
     || **SMART_INVOICE**
-    [`boolean`][1] | Whether binding to New invoices is enabled ||
+    [`boolean`](../../../data-types.md) | Whether binding to New invoices is enabled ||
     || **DYNAMIC_...**
-    [`boolean`][1] | Whether binding to a specific SPA is enabled.
+    [`boolean`](../../../data-types.md) | Whether binding to a specific SPA is enabled.
 
     Each such field has the form: `DYNAMIC_{entityTypeId}`, where `entityTypeId` is the SPA type ID to which the binding is enabled ||
     |#
@@ -703,7 +703,7 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`string`][1] | Default value.
+    [`string`](../../../data-types.md) | Default value.
 
     The value of this field has the format: `{VALUE}\|{CURRENCY}`, where:
     - `VALUE` — default amount of money
@@ -720,7 +720,7 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **SHOW_MAP**
-    [`boolean`][1] | Show map ||
+    [`boolean`](../../../data-types.md) | Show map ||
     |#
 
 - url
@@ -729,17 +729,17 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **POPUP**
-    [`boolean`][1] | Open in a new window ||
+    [`boolean`](../../../data-types.md) | Open in a new window ||
     || **SIZE**
-    [`integer`][1] | Input field size for display ||
+    [`integer`](../../../data-types.md) | Input field size for display ||
     || **MIN_LENGTH**
-    [`integer`][1] | Minimum string length (0 — do not check) ||
+    [`integer`](../../../data-types.md) | Minimum string length (0 — do not check) ||
     || **MAX_LENGTH**
-    [`integer`][1] | Maximum string length (0 — do not check) ||
+    [`integer`](../../../data-types.md) | Maximum string length (0 — do not check) ||
     || **DEFAULT_VALUE**
-    [`string`][1] | Default value ||
+    [`string`](../../../data-types.md) | Default value ||
     || **ROWS**
-    [`integer`][1] | Number of input field lines ||
+    [`integer`](../../../data-types.md) | Number of input field lines ||
     |#
 
 - file
@@ -748,19 +748,19 @@ Returned when the field type is custom ||
     || **Name**
     `type` | **Description** ||
     || **SIZE**
-    [`integer`][1] | Input field size for display ||
+    [`integer`](../../../data-types.md) | Input field size for display ||
     || **LIST_WIDTH**
-    [`integer`][1] | Maximum width for display in the list ||
+    [`integer`](../../../data-types.md) | Maximum width for display in the list ||
     || **LIST_HEIGHT**
-    [`integer`][1] | Maximum height for display in the list ||
+    [`integer`](../../../data-types.md) | Maximum height for display in the list ||
     || **MAX_SHOW_SIZE**
-    [`integer`][1] | Maximum allowable size for display in the list (0 — no limit) ||
+    [`integer`](../../../data-types.md) | Maximum allowable size for display in the list (0 — no limit) ||
     || **MAX_ALLOWED_SIZE**
-    [`integer`][1] | Maximum allowable file size for upload (0 — do not check) ||
+    [`integer`](../../../data-types.md) | Maximum allowable file size for upload (0 — do not check) ||
     || **EXTENSIONS**
-    [`string[]`][1] | Allowed extensions ||
+    [`string[]`](../../../data-types.md) | Allowed extensions ||
     || **TARGET_BLANK**
-    [`boolean`][1] | Open file in a new tab ||
+    [`boolean`](../../../data-types.md) | Open file in a new tab ||
     |#
 
 {% endlist %}
@@ -771,13 +771,13 @@ Returned when the field type is custom ||
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`][1] | Identifier of the list element ||
+[`integer`](../../../data-types.md) | Identifier of the list element ||
 || **VALUE**
-[`string`][1] | Value of the list element ||
+[`string`](../../../data-types.md) | Value of the list element ||
 || **SORT**
-[`integer`][1] | Sorting index ||
+[`integer`](../../../data-types.md) | Sorting index ||
 || **DEF**
-[`boolean`][1] | Indicates whether the list element is the default value. Possible values:
+[`boolean`](../../../data-types.md) | Indicates whether the list element is the default value. Possible values:
 - `Y` — yes
 - `N` — no
 ||
@@ -815,5 +815,3 @@ HTTP status: **400**
 - [{#T}](./crm-contact-userfield-update.md)
 - [{#T}](./crm-contact-userfield-list.md)
 - [{#T}](./crm-contact-userfield-delete.md)
-
-[1]: ../../../data-types.md

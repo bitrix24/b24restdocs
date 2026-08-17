@@ -51,23 +51,23 @@ Data is transmitted as a POST request {.b24-info}
 || **parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic code of the event.
+[`string`](../../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONCRMTYPEDELETE` ||
 || **event_handler_id**
-[`integer`][1] | Identifier of the event handler ||
+[`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`][1] | Object containing information about the deleted custom CRM type.
+[`object`](../../../../data-types.md) | Object containing information about the deleted custom CRM type.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`][1] | An object containing information about remote CRM custom type fields.
+[`object`](../../../../data-types.md) | An object containing information about remote CRM custom type fields.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`][1] | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -78,7 +78,7 @@ The structure is described [below](#auth) ||
 || **parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`][1] | Identifier of the deleted custom CRM type (primary key, not type identifier) ||
+[`integer`](../../../../data-types.md) | Identifier of the deleted custom CRM type (primary key, not type identifier) ||
 |#
 
 ### Parameter auth {#auth}
@@ -92,5 +92,3 @@ The structure is described [below](#auth) ||
 - [{#T}](index.md)
 - [{#T}](on-crm-type-add.md)
 - [{#T}](on-crm-type-update.md)
-
-[1]: ../../../../data-types.md

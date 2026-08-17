@@ -24,7 +24,7 @@ The method `crm.contact.add` creates a new contact.
 || **Name**
 `type` | **Description** ||
 || **fields**
-[`object`][1] | An object in the following format:
+[`object`](../../data-types.md) | An object in the following format:
 
 ```
 {
@@ -43,7 +43,7 @@ The list of available fields is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored ||
 || **params**
-[`object`][1] | An object containing a set of additional parameters.
+[`object`](../../data-types.md) | An object containing a set of additional parameters.
 
 The structure and possible values are described [below](#parameter-params) ||
 |#
@@ -56,51 +56,51 @@ The structure and possible values are described [below](#parameter-params) ||
 || **HONORIFIC**
 [`crm_status`](../data-types.md) | Salutation.
 
-The list of available salutation types can be obtained using the method [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }`.
+The list of available salutation types can be obtained using the method [`crm.status.list`](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "HONORIFIC" }`.
 
 Default — the first available salutation type ||
 || **NAME**
-[`string`][1] | First name ||
+[`string`](../../data-types.md) | First name ||
 || **SECOND_NAME**
-[`string`][1] | Middle name ||
+[`string`](../../data-types.md) | Middle name ||
 || **LAST_NAME**
-[`string`][1] | Last name ||
+[`string`](../../data-types.md) | Last name ||
 || **PHOTO**
-[`file`][1] | Photograph ||
+[`file`](../../data-types.md) | Photograph ||
 || **BIRTHDATE**
-[`date`][1] | Date of birth ||
+[`date`](../../data-types.md) | Date of birth ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | Contact type.
 
-The list of available contact types can be obtained using the method [`crm.status.list`][2] with the filter `{ ENTITY_ID: "CONTACT_TYPE" }`.
+The list of available contact types can be obtained using the method [`crm.status.list`](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "CONTACT_TYPE" }`.
 
 Default — the first available contact type ||
 || **SOURCE_ID**
 [`crm_status`](../data-types.md) | Source.
 
-The list of available source types can be obtained using the method [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }`.
+The list of available source types can be obtained using the method [`crm.status.list`](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
 
 Default — the first available source type ||
 || **SOURCE_DESCRIPTION**
-[`string`][1] | Additional information about the source ||
+[`string`](../../data-types.md) | Additional information about the source ||
 || **POST**
-[`string`][1] | Position ||
+[`string`](../../data-types.md) | Position ||
 || **COMMENTS**
-[`string`][1] | Comment. Supports BB codes ||
+[`string`](../../data-types.md) | Comment. Supports BB codes ||
 || **OPENED**
-[`boolean`][1] | Is it available to everyone? Possible values:
+[`boolean`](../../data-types.md) | Is it available to everyone? Possible values:
 - `Y` — yes
 - `N` — no
 
 Default is `Y`. The default value can be changed in the CRM settings ||
 || **EXPORT**
-[`boolean`][1] | Is the contact included in the export? Possible values:
+[`boolean`](../../data-types.md) | Is the contact included in the export? Possible values:
 - `Y` — yes
 - `N` — no
 
 Default is `Y` ||
 || **ASSIGNED_BY_ID**
-[`user`][1] | Identifier of the user responsible for the item.
+[`user`](../../data-types.md) | Identifier of the user responsible for the item.
 
 Default — the identifier of the user calling the method ||
 || **COMPANY_ID**
@@ -112,19 +112,19 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, Microsoft Advertising, etc.) ||
+[`string`](../../data-types.md) | Advertising system (Google Ads, Microsoft Advertising, etc.) ||
 || **UTM_MEDIUM**
-[`string`][1] | Traffic type. Possible values:
+[`string`](../../data-types.md) | Traffic type. Possible values:
 - `CPC` — ads
 - `CPM` — banners ||
 || **UTM_CAMPAIGN**
-[`string`][1] | Advertising campaign designation ||
+[`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
-[`string`][1] | Campaign content. For example, for contextual ads ||
+[`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`][1] | Campaign search condition. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Campaign search condition. For example, keywords for contextual advertising ||
 || **TRACE**
-[`string`][1] | Information for [Sales Intelligence](../../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-contact.md) ||
+[`string`](../../data-types.md) | Information for [Sales Intelligence](../../../tutorials/crm/how-to-use-analitycs/use-analitics-for-add-contact.md) ||
 || **PHONE**
 [`crm_multifield[]`](../data-types.md) | Phone ||
 || **EMAIL**
@@ -158,13 +158,13 @@ If the contact is created by an external system, then:
 || **Name**
 `type` | **Description** ||
 || **ORIGINATOR_ID**
-[`string`][1] | Identifier of the external system that is the source of data about this contact ||
+[`string`](../../data-types.md) | Identifier of the external system that is the source of data about this contact ||
 || **ORIGIN_ID**
-[`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system. 
+[`string`](../../data-types.md) | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system. 
 
 If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **ORIGIN_VERSION**
-[`string`][1] | Original version ||
+[`string`](../../data-types.md) | Original version ||
 |#
 
 **Import**
@@ -175,22 +175,22 @@ The fields are available for filling when the parameter `IMPORT = 'Y'` is passed
 || **Name**
 `type` | **Description** ||
 || **DATE_CREATE**
-[`datetime`][1] | Creation date.
+[`datetime`](../../data-types.md) | Creation date.
 
 Available when `IMPORT = Y` is passed in `params`.
 
 Cannot be earlier than the creation date of the last created contact
 ||
 || **DATE_MODIFY**
-[`datetime`][1] | Modification date.
+[`datetime`](../../data-types.md) | Modification date.
 
 Available when `IMPORT = Y` is passed in `params` ||
 || **CREATED_BY_ID**
-[`user`][1] | Created by.
+[`user`](../../data-types.md) | Created by.
 
 Available when `IMPORT = Y` is passed in `params` ||
 || **MODIFY_BY_ID**
-[`user`][1] | Modified by.
+[`user`](../../data-types.md) | Modified by.
 Available when `IMPORT = Y` is passed in `params` ||
 |#
 
@@ -202,23 +202,23 @@ Address fields in the contact are deprecated and are only used for compatibility
 || **Name**
 `type` | **Description** ||
 || **ADDRESS**
-[`string`][1] | Address ||
+[`string`](../../data-types.md) | Address ||
 || **ADDRESS_2**
-[`string`][1] | Second line of the address ||
+[`string`](../../data-types.md) | Second line of the address ||
 || **ADDRESS_CITY**
-[`string`][1] | City ||
+[`string`](../../data-types.md) | City ||
 || **ADDRESS_POSTAL_CODE**
-[`string`][1] | Postal code ||
+[`string`](../../data-types.md) | Postal code ||
 || **ADDRESS_REGION**
-[`string`][1] | Region ||
+[`string`](../../data-types.md) | Region ||
 || **ADDRESS_PROVINCE**
-[`string`][1] | Province ||
+[`string`](../../data-types.md) | Province ||
 || **ADDRESS_COUNTRY**
-[`string`][1] | Country ||
+[`string`](../../data-types.md) | Country ||
 || **ADDRESS_COUNTRY_CODE**
-[`string`][1] | Country code ||
+[`string`](../../data-types.md) | Country code ||
 || **ADDRESS_LOC_ADDR_ID**
-[`integer`][1] | Location address identifier ||
+[`integer`](../../data-types.md) | Location address identifier ||
 |#
 
 ### Parameter params {#parameter-params}
@@ -227,13 +227,13 @@ Address fields in the contact are deprecated and are only used for compatibility
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`][1] | Should the event of adding a contact be registered in the live feed? Possible values:
+[`boolean`](../../data-types.md) | Should the event of adding a contact be registered in the live feed? Possible values:
 - `Y` — yes
 - `N` — no
 
 Default is `N` ||
 || **IMPORT**
-[`boolean`][1] | Is import mode enabled? Possible values:
+[`boolean`](../../data-types.md) | Is import mode enabled? Possible values:
 - `Y` — yes
 
 To pass the value `No`, you must either not pass the parameter at all or pass the value `0`, `''`
@@ -816,7 +816,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`][1] | The root element of the response, contains the identifier of the created contact ||
+[`integer`](../../data-types.md) | The root element of the response, contains the identifier of the created contact ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -857,6 +857,3 @@ HTTP status: **400**
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)
 - [{#T}](../../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
-
-[1]: ../../data-types.md
-[2]: ../status/crm-status-list.md

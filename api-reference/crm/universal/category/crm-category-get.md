@@ -20,9 +20,9 @@ This method retrieves information about the funnel (direction) with the identifi
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which we want to get the funnel ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which we want to get the funnel ||
 || **id***
-[`integer`][1] | Funnel identifier. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel using the [`crm.category.add`](./crm-category-add.md) method ||
+[`integer`](../../../data-types.md) | Funnel identifier. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel using the [`crm.category.add`](./crm-category-add.md) method ||
 |#
 
 ## Code Examples
@@ -307,9 +307,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response. Contains the [`category`](./crm-category-add.md#category) object ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the [`category`](./crm-category-add.md#category) object ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -344,5 +344,3 @@ HTTP status: **400**
 - [{#T}](./crm-category-list.md)
 - [{#T}](./crm-category-delete.md)
 - [{#T}](./crm-category-fields.md)
-
-[1]: ../../../data-types.md

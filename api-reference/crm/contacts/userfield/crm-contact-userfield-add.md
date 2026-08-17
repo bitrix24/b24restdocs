@@ -20,7 +20,7 @@ The `crm.contact.userfield.add` method creates a new custom field for contacts.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`][1] | An object in the following format:
+[`object`](../../../data-types.md) | An object in the following format:
 
 ```
 {
@@ -48,7 +48,7 @@ An incorrect field in `fields` will be ignored ||
 || **Name**
 `type` | **Description** ||
 || **USER_TYPE_ID***
-[`string`][1] | Data type of the custom field. Possible values:
+[`string`](../../../data-types.md) | Data type of the custom field. Possible values:
 - `string` — string
 - `integer` — integer
 - `double` — number
@@ -68,7 +68,7 @@ An incorrect field in `fields` will be ignored ||
 - [custom field types](../../universal/user-defined-fields/userfield-type.md)
 ||
 || **FIELD_NAME***
-[`string`][1] | Field code. Unique within contacts.
+[`string`](../../../data-types.md) | Field code. Unique within contacts.
 
 The prefix `UF_CRM_` is always added to the code, and the system builds the full field name itself:
 - `MANAGER_NOTE` becomes `UF_CRM_MANAGER_NOTE`
@@ -80,13 +80,13 @@ The length limit is `50` characters including the prefix, that is, up to `43` ch
 Allowed characters: `A-Z`, `0-9`, and `_`. Lowercase letters are converted to uppercase, and any other characters cause the error `ERROR_CORE`
 ||
 || **LABEL**
-[`string`][1] | Default name of the custom field.
+[`string`](../../../data-types.md) | Default name of the custom field.
 
 The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided for them ||
 || **XML_ID**
-[`string`][1] | External code ||
+[`string`](../../../data-types.md) | External code ||
 || **LIST_FILTER_LABEL**
-[`string`][1]\|[`lang_map`](../../data-types.md) | Filter label in the list.
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Filter label in the list.
 
 When a string is provided, it will be set for all language identifiers.
 
@@ -94,7 +94,7 @@ When a `lang_map` type value is provided, the value from `LABEL` will be set for
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **LIST_COLUMN_LABEL**
-[`string`][1]\|[`lang_map`](../../data-types.md) | Header in the list.
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Header in the list.
 
 When a string is provided, it will be set for all language identifiers.
 
@@ -102,7 +102,7 @@ When a `lang_map` type value is provided, the value from `LABEL` will be set for
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **EDIT_FORM_LABEL**
-[`string`][1]\|[`lang_map`](../../data-types.md) | Label in the edit form.
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Label in the edit form.
 
 When a string is provided, it will be set for all language identifiers.
 
@@ -110,7 +110,7 @@ When a `lang_map` type value is provided, the value from `LABEL` will be set for
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **ERROR_MESSAGE**
-[`string`][1]\|[`lang_map`](../../data-types.md) | Error message.
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Error message.
 
 When a string is provided, it will be set for all language identifiers.
 
@@ -118,7 +118,7 @@ When a `lang_map` type value is provided, the value from `LABEL` will be set for
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **HELP_MESSAGE**
-[`string`][1]\|[`lang_map`](../../data-types.md) | Help.
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Help.
 
 When a string is provided, it will be set for all language identifiers.
 
@@ -126,7 +126,7 @@ When a `lang_map` type value is provided, the value from `LABEL` will be set for
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **MULTIPLE**
-[`boolean`][1] | Is the field multiple. Possible values:
+[`boolean`](../../../data-types.md) | Is the field multiple. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -134,29 +134,29 @@ Fields of type `boolean` cannot be multiple.
 
 By default, `N` ||
 || **MANDATORY**
-[`boolean`][1] | Is the field mandatory. Possible values:
+[`boolean`](../../../data-types.md) | Is the field mandatory. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default, `N` ||
 || **SHOW_FILTER**
-[`boolean`][1] | Show the field in the filter. Possible values:
+[`boolean`](../../../data-types.md) | Show the field in the filter. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default, `N` ||
 || **SETTINGS**
-[`object`][1] | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, which are described [below](#settings) ||
+[`object`](../../../data-types.md) | Additional field parameters. Each field type (`USER_TYPE_ID`) has its own set of available settings, which are described [below](#settings) ||
 || **LIST**
 [`uf_enum_element[]`](#uf_enum_element) | List of possible values for the custom field of type `enumeration`. For custom fields of other types, this parameter is meaningless.
 
 By default `[]` ||
 || **SORT**
-[`integer`][1] | Sort index. Must be greater than zero.
+[`integer`](../../../data-types.md) | Sort index. Must be greater than zero.
 
 By default `100` ||
 || **SHOW_IN_LIST**
-[`boolean`][1] | Show the custom field in the list.
+[`boolean`](../../../data-types.md) | Show the custom field in the list.
 
 This parameter does not affect anything within `crm`.
 
@@ -166,13 +166,13 @@ Possible values:
 
 By default `N` ||
 || **EDIT_IN_LIST**
-[`boolean`][1] | Allow user editing. Possible values:
+[`boolean`](../../../data-types.md) | Allow user editing. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default `Y` ||
 || **IS_SEARCHABLE**
-[`boolean`][1] | Are the field values included in the search.
+[`boolean`](../../../data-types.md) | Are the field values included in the search.
 
 This parameter does not affect anything within `crm`.
 
@@ -195,11 +195,11 @@ Each type of custom field has its own set of additional settings. This method on
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`string`][1] | Default value.
+    [`string`](../../../data-types.md) | Default value.
 
     Default `''` ||
     || **ROWS**
-    [`integer`][1] | Number of rows in the input field. Must be greater than 0.
+    [`integer`](../../../data-types.md) | Number of rows in the input field. Must be greater than 0.
 
     Default `1` ||
     |#
@@ -210,7 +210,7 @@ Each type of custom field has its own set of additional settings. This method on
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`integer`][1] | Default value ||
+    [`integer`](../../../data-types.md) | Default value ||
     |#
 
 - double
@@ -219,9 +219,9 @@ Each type of custom field has its own set of additional settings. This method on
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`double`][1] | Default value ||
+    [`double`](../../../data-types.md) | Default value ||
     || **PRECISION**
-    [`integer`][1] | Number precision. Must be greater than or equal to 0.
+    [`integer`](../../../data-types.md) | Number precision. Must be greater than or equal to 0.
 
     Default `2` ||
     |#
@@ -232,7 +232,7 @@ Each type of custom field has its own set of additional settings. This method on
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`integer`][1] | Default value, where `1` is yes, `0` is no.
+    [`integer`](../../../data-types.md) | Default value, where `1` is yes, `0` is no.
 
     Possible values:
     - `>= 1` -> 1
@@ -240,7 +240,7 @@ Each type of custom field has its own set of additional settings. This method on
 
     Default `0` ||
     || **DISPLAY**
-    [`string`][1] | Appearance. Possible values:
+    [`string`](../../../data-types.md) | Appearance. Possible values:
     - `CHECKBOX` — checkbox
     - `RADIO` — radio buttons
     - `DROPDOWN` — dropdown list
@@ -254,7 +254,7 @@ Each type of custom field has its own set of additional settings. This method on
     || **Name**
     `type` | **Description** ||
     || **DEFAULT_VALUE**
-    [`object`][1]  | Default value.
+    [`object`](../../../data-types.md)  | Default value.
 
     Format object:
 
@@ -289,7 +289,7 @@ Each type of custom field has its own set of additional settings. This method on
     || **Name**
     `type` | **Description** ||
     || **DISPLAY**
-    [`string`][1] | Appearance. Possible values:
+    [`string`](../../../data-types.md) | Appearance. Possible values:
     - `LIST` — list
     - `UI` — autocomplete list
     - `CHECKBOX` — checkboxes
@@ -309,19 +309,19 @@ Each type of custom field has its own set of additional settings. This method on
     || **Name**
     `type` | **Description** ||
     || **IBLOCK_TYPE_ID**
-    [`string`][1] | Information block type identifier.
+    [`string`](../../../data-types.md) | Information block type identifier.
 
     Default `''` ||
     || **IBLOCK_ID**
-    [`string`][1] | Information block identifier.
+    [`string`](../../../data-types.md) | Information block identifier.
 
     Default `0` ||
     || **DEFAULT_VALUE**
-    [`string`][1] | Default value.
+    [`string`](../../../data-types.md) | Default value.
 
     Default `''` ||
     || **DISPLAY**
-    [`string`][1] | Appearance. Possible values:
+    [`string`](../../../data-types.md) | Appearance. Possible values:
     - `DIALOG` — dialog
     - `UI` — autocomplete list
     - `LIST` — list
@@ -329,11 +329,11 @@ Each type of custom field has its own set of additional settings. This method on
 
     Default `LIST` ||
     || **LIST_HEIGHT**
-    [`integer`][1] | List height. Must be greater than 0.
+    [`integer`](../../../data-types.md) | List height. Must be greater than 0.
 
     Default `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`][1] | Whether to show items with the activity flag enabled. Possible values:
+    [`boolean`](../../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -346,7 +346,7 @@ Each type of custom field has its own set of additional settings. This method on
     || **Name**
     `type` | **Description** ||
     || **ENTITY_TYPE**
-    [`string`][1] | Dictionary type identifier.
+    [`string`](../../../data-types.md) | Dictionary type identifier.
 
     Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find possible values.
 
@@ -361,25 +361,25 @@ Each type of custom field has its own set of additional settings. This method on
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`][1] | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
+    [`boolean`](../../../data-types.md) | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default `N` ||
     || **CONTACT**
-    [`boolean`][1] | Whether binding to [Contacts](../index.md) is enabled. Possible values:
+    [`boolean`](../../../data-types.md) | Whether binding to [Contacts](../index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default `N` ||
     || **COMPANY**
-    [`boolean`][1] | Whether binding to [Companies](../../companies/index.md) is enabled. Possible values:
+    [`boolean`](../../../data-types.md) | Whether binding to [Companies](../../companies/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default `N` ||
     || **DEAL**
-    [`boolean`][1] | Is the link to [Deals](../../deals/index.md) enabled? Possible values:
+    [`boolean`](../../../data-types.md) | Is the link to [Deals](../../deals/index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -394,15 +394,15 @@ Each type of custom field has its own set of additional settings. This method on
 || **Name**
 `type` | **Description** ||
 || **VALUE**
-[`string`][1] | Value of the list element.
+[`string`](../../../data-types.md) | Value of the list element.
 
 List elements with an empty or missing `VALUE` will be ignored ||
 || **SORT**
-[`integer`][1] | Sort index. Must be greater than or equal to 0.
+[`integer`](../../../data-types.md) | Sort index. Must be greater than or equal to 0.
 
 By default `0` ||
 || **DEF**
-[`boolean`][1] | Is the list element the default value. Possible values:
+[`boolean`](../../../data-types.md) | Is the list element the default value. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -410,7 +410,7 @@ For a multiple field, multiple `DEF = Y` are allowed. For a non-multiple field, 
 
 By default `N` ||
 || **XML_ID**
-[`string`][1] | External code of the value. Must be unique within the elements of the user field list ||
+[`string`](../../../data-types.md) | External code of the value. Must be unique within the elements of the user field list ||
 |#
 
 ## Code Examples
@@ -911,7 +911,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`][1] | Root element of the response, contains the identifier of the created custom field ||
+[`integer`](../../../data-types.md) | Root element of the response, contains the identifier of the created custom field ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -952,5 +952,3 @@ This method may not return errors immediately, but instead collects several erro
 - [{#T}](./crm-contact-userfield-get.md)
 - [{#T}](./crm-contact-userfield-list.md)
 - [{#T}](./crm-contact-userfield-delete.md)
-
-[1]: ../../../data-types.md

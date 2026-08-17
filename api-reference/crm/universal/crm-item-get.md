@@ -20,15 +20,15 @@ This method returns information about an entity based on its identifier and the 
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose element we want to retrieve.
+[`integer`](../../data-types.md) | Identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose element we want to retrieve.
 
 Numeric values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier for a smart process can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
 || **id***
-[`integer`][1] | Identifier of the element whose information we want to retrieve.
+[`integer`](../../data-types.md) | Identifier of the element whose information we want to retrieve.
 
 This can be obtained using the [`crm.item.list`](./crm-item-list.md) method or when creating an element with the [`crm.item.add`](./crm-item-add.md) method. ||
 || **useOriginalUfNames**
-[`boolean`][1] | This parameter controls the format of custom field names in the response.   
+[`boolean`](../../data-types.md) | This parameter controls the format of custom field names in the response.   
 Possible values:
 
 - `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
@@ -454,11 +454,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | The root element of the response. Contains a single key `item` ||
+[`object`](../../data-types.md) | The root element of the response. Contains a single key `item` ||
 || **item**
 [`item`](./object-fields.md) | Information about the entity, [field description](./object-fields.md) ||
 || **time**
-[`time`][1] | Object containing information about the request execution time ||
+[`time`](../../data-types.md) | Object containing information about the request execution time ||
 |#
 
 The response contains the `fm` field — an array of all system multiple fields (phone, e-mail, and others) in a structured format. Each array item contains:
@@ -509,5 +509,3 @@ HTTP status: **400**, **403**
 - [{#T}](./crm-item-delete.md)
 - [{#T}](./crm-item-fields.md)
 - [{#T}](./object-fields.md)
-
-[1]: ../../data-types.md

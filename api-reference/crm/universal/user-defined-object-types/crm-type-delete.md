@@ -22,7 +22,7 @@ You can only delete a smart process if there are no associated elements. If such
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the smart process. It can be obtained using the methods: [`crm.type.list`](./crm-type-list.md), [`crm.type.add`](./crm-type-add.md) ||
+[`integer`](../../../data-types.md) | Identifier of the smart process. It can be obtained using the methods: [`crm.type.list`](./crm-type-list.md), [`crm.type.add`](./crm-type-add.md) ||
 |#
 
 ## Code Examples
@@ -232,11 +232,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`][1] | Root element of the response. In case of success, `result = []`.
+[`array`](../../../data-types.md) | Root element of the response. In case of success, `result = []`.
 
 If `result` returns `null`, it is likely that the required parameter `id` was not provided. In this case, the object will not be deleted ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -274,5 +274,3 @@ HTTP status: **400**
 - [{#T}](./crm-type-get-by-entity-type-id.md)
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-fields.md)
-
-[1]: ../../../data-types.md

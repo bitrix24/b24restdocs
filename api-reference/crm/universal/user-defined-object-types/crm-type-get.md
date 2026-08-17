@@ -20,7 +20,7 @@ The method retrieves information about the SPA with the identifier `id`.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the SPA. Can be obtained using the methods: [`crm.type.list`](./crm-type-list.md), [`crm.type.add`](./crm-type-add.md) ||
+[`integer`](../../../data-types.md) | Identifier of the SPA. Can be obtained using the methods: [`crm.type.list`](./crm-type-list.md), [`crm.type.add`](./crm-type-add.md) ||
 |#
 
 ## Code Examples
@@ -358,9 +358,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response containing the object [`type`](../../data-types.md#type) with information about the SPA ||
+[`object`](../../../data-types.md) | Root element of the response containing the object [`type`](../../data-types.md#type) with information about the SPA ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -395,6 +395,3 @@ HTTP status: **400**
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
 - [{#T}](./crm-type-fields.md)
-
-
-[1]: ../../../data-types.md

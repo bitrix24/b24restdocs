@@ -57,21 +57,21 @@ Example: event for deleting a calendar section object with `id = 202`.
 || **Name**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic code of the event.
+[`string`](../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONCALENDARSECTIONDELETE` ||
 || **event_handler_id**
-[`integer`][1] | Identifier of the event handler ||
+[`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`][1] | An object containing information about a remote calendar section object.
+[`object`](../../data-types.md) | An object containing information about a remote calendar section object.
 
 Contains a single key — `id` ||
 || **data.id**
-[`string`][1] | Identifier of the calendar section object ||
+[`string`](../../data-types.md) | Identifier of the calendar section object ||
 || **ts**
-[`timestamp`][1] | Date and time of the event sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
-[`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -87,5 +87,3 @@ The structure is described [below](#auth) ||
 - [{#T}](./index.md)
 - [{#T}](./on-calendar-section-add.md)
 - [{#T}](./on-calendar-section-update.md)
-
-[1]: ../../data-types.md

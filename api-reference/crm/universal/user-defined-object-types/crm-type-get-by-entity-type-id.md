@@ -20,7 +20,7 @@ The method retrieves information about the SPA with the smart process type ident
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the smart process type. ||
+[`integer`](../../../data-types.md) | Identifier of the smart process type. ||
 |#
 
 ## Code Examples
@@ -366,9 +366,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response containing the [`type`](../../data-types.md#type) object with information about the smart process ||
+[`object`](../../../data-types.md) | Root element of the response containing the [`type`](../../data-types.md#type) object with information about the smart process ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -403,6 +403,3 @@ HTTP Status: **400**
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
 - [{#T}](./crm-type-fields.md)
-
-
-[1]: ../../../data-types.md

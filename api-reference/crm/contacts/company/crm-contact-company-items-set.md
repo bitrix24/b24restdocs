@@ -20,12 +20,12 @@ The method `crm.contact.company.items.set` sets the set of companies associated 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the contact.
+[`integer`](../../../data-types.md) | Identifier of the contact.
 
 The identifier can be obtained using the methods [crm.contact.list](../crm-contact-list.md) or [crm.contact.add](../crm-contact-add.md)
 ||
 || **items***
-[`object[]`][1] | A set of objects that describe the associated companies for the contact. The structure of an individual binding object is described [below](#contact_company_binding) ||
+[`object[]`](../../../data-types.md) | A set of objects that describe the associated companies for the contact. The structure of an individual binding object is described [below](#contact_company_binding) ||
 |#
 
 ### Structure of the Binding Object {#contact_company_binding}
@@ -36,11 +36,11 @@ The identifier can be obtained using the methods [crm.contact.list](../crm-conta
 || **Name**
 `type` | **Description** ||
 || **COMPANY_ID***
-[`crm_entity`][2] | Identifier of the company that will be linked to the contact.
+[`crm_entity`](../../data-types.md) | Identifier of the company that will be linked to the contact.
 
 The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **IS_PRIMARY**
-[`boolean`][1] | Indicates whether the binding is primary. Possible values:
+[`boolean`](../../../data-types.md) | Indicates whether the binding is primary. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -49,7 +49,7 @@ If there is no binding with `IS_PRIMARY = Y`, it will be set for the first bindi
 If multiple bindings with `IS_PRIMARY = Y` are provided, the first binding with `IS_PRIMARY = Y` will be considered primary.
 ||
 || **SORT**
-[`integer`][1] | Sort index.
+[`integer`](../../../data-types.md) | Sort index.
 
 By default, `i + 10`, where `i` is the maximum sort index of existing and provided bindings for the current contact or `0` if `SORT` is not provided for any of the bindings and if the contact has no bindings.
 
@@ -400,9 +400,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response. Contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -437,6 +437,3 @@ HTTP status: **400**
 - [{#T}](./crm-contact-company-fields.md)
 - [{#T}](./crm-contact-company-items-get.md)
 - [{#T}](./crm-contact-company-items-delete.md)
-
-[1]: ../../../data-types.md
-[2]: ../../data-types.md

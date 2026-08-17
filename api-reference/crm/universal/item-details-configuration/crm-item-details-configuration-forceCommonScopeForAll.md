@@ -22,9 +22,9 @@ The method `crm.item.details.configuration.forceCommonScopeForAll` enforces a co
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
+[`integer`](../../../data-types.md) | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
 || **extras**
-[`object`][1] | Additional parameters. Possible values and their structure are described [below](#extras) ||
+[`object`](../../../data-types.md) | Additional parameters. Possible values and their structure are described [below](#extras) ||
 |#
 
 ### Parameter extras
@@ -307,9 +307,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response. Returns `true` on success ||
+[`boolean`](../../../data-types.md) | Root element of the response. Returns `true` on success ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -342,5 +342,3 @@ HTTP status: **400**
 - [{#T}](./crm-item-details-configuration-get.md)
 - [{#T}](./crm-item-details-configuration-set.md)
 - [{#T}](./crm-item-details-configuration-reset.md)
-
-[1]: ../../../data-types.md

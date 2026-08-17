@@ -28,7 +28,7 @@ To retrieve a list of companies associated with the contact, use the method [`cr
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the contact. Can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
+[`integer`](../../data-types.md) | Identifier of the contact. Can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
 |#
 
 ## Code Examples
@@ -326,7 +326,7 @@ HTTP Status: **200**
 || **result**
 [`contact`](#contact) | Root element of the response. Contains information about the contact fields. The structure is described [below](#contact) ||
 || **time**
-[`time`][1] | Object containing information about the request execution time ||
+[`time`](../../data-types.md) | Object containing information about the request execution time ||
 |#
 
 ### contact
@@ -335,21 +335,21 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`][1] | Identifier of the contact ||
+[`integer`](../../data-types.md) | Identifier of the contact ||
 || **POST**
-[`string`][1] | Position ||
+[`string`](../../data-types.md) | Position ||
 || **COMMENTS**
-[`text`][1] | Comment ||
+[`text`](../../data-types.md) | Comment ||
 || **HONORIFIC**
 [`crm_status`](../data-types.md) | Salutation ||
 || **NAME**
-[`string`][1] | First name ||
+[`string`](../../data-types.md) | First name ||
 || **SECOND_NAME**
-[`string`][1] | Middle name ||
+[`string`](../../data-types.md) | Middle name ||
 || **LAST_NAME**
-[`string`][1] | Last name ||
+[`string`](../../data-types.md) | Last name ||
 || **PHOTO**
-[`file`][1] | Photo ||
+[`file`](../../data-types.md) | Photo ||
 || **LEAD_ID**
 [`crm_lead`](../data-types.md) | Identifier of the lead from which the contact was created ||
 || **TYPE_ID**
@@ -357,59 +357,59 @@ HTTP Status: **200**
 || **SOURCE_ID**
 [`crm_status`](../data-types.md) | Source ||
 || **SOURCE_DESCRIPTION**
-[`text`][1] | Additional information about the source ||
+[`text`](../../data-types.md) | Additional information about the source ||
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the main company ||
 || **BIRTHDATE**
-[`date`][1] | Date of birth ||
+[`date`](../../data-types.md) | Date of birth ||
 || **EXPORT**
-[`boolean`][1] | Whether the contact is included in exports. Possible values:
+[`boolean`](../../data-types.md) | Whether the contact is included in exports. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_PHONE**
-[`boolean`][1] | Is a phone number provided. Possible values:
+[`boolean`](../../data-types.md) | Is a phone number provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_EMAIL**
-[`boolean`][1] | Is an e-mail provided. Possible values:
+[`boolean`](../../data-types.md) | Is an e-mail provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **HAS_IMOL**
-[`boolean`][1] | Is an open line provided. Possible values:
+[`boolean`](../../data-types.md) | Is an open line provided. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **DATE_CREATE**
-[`datetime`][1] | Creation date ||
+[`datetime`](../../data-types.md) | Creation date ||
 || **DATE_MODIFY**
-[`datetime`][1] | Modification date ||
+[`datetime`](../../data-types.md) | Modification date ||
 || **ASSIGNED_BY_ID**
-[`user`][1] | Responsible person ||
+[`user`](../../data-types.md) | Responsible person ||
 || **CREATED_BY_ID**
-[`user`][1] | Created by ||
+[`user`](../../data-types.md) | Created by ||
 || **MODIFY_BY_ID**
-[`user`][1] | Modified by ||
+[`user`](../../data-types.md) | Modified by ||
 || **OPENED**
-[`boolean`][1] | Is it available to everyone. Possible values:
+[`boolean`](../../data-types.md) | Is it available to everyone. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **FACE_ID**
-[`integer`][1] | Link to faces from the `faceid` module ||
+[`integer`](../../data-types.md) | Link to faces from the `faceid` module ||
 || **LAST_ACTIVITY_TIME**
-[`datetime`][1] | Last activity ||
+[`datetime`](../../data-types.md) | Last activity ||
 || **LAST_ACTIVITY_BY**
-[`user`][1] | Who performed the last activity in the timeline ||
+[`user`](../../data-types.md) | Who performed the last activity in the timeline ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, etc.) ||
+[`string`](../../data-types.md) | Advertising system (Google Ads, etc.) ||
 || **UTM_MEDIUM**
-[`string`][1] | Type of traffic. Possible values:
+[`string`](../../data-types.md) | Type of traffic. Possible values:
 - `CPC` — ads
 - `CPM` — banners ||
 || **UTM_CAMPAIGN**
-[`string`][1] | Identifier of the advertising campaign ||
+[`string`](../../data-types.md) | Identifier of the advertising campaign ||
 || **UTM_CONTENT**
-[`string`][1] | Content of the campaign. For example, for contextual ads ||
+[`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **PHONE**
 [`crm_multifield[]`](../data-types.md) | Phone ||
 || **EMAIL**
@@ -433,11 +433,11 @@ If the contact was created by an external system, then:
 || **Name**
 `type` | **Description** ||
 || **ORIGINATOR_ID**
-[`string`][1] | External source ||
+[`string`](../../data-types.md) | External source ||
 || **ORIGIN_ID**
-[`string`][1] | Identifier of the element in the external source ||
+[`string`](../../data-types.md) | Identifier of the element in the external source ||
 || **ORIGIN_VERSION**
-[`string`][1] | Version of the original ||
+[`string`](../../data-types.md) | Version of the original ||
 |#
 
 **Deprecated Fields**
@@ -448,21 +448,21 @@ Address fields in the contact are deprecated and are only used for compatibility
 || **Name**
 `type` | **Description** ||
 || **ADDRESS**
-[`string`][1] | Address ||
+[`string`](../../data-types.md) | Address ||
 || **ADDRESS_2**
-[`string`][1] | Second line of the address ||
+[`string`](../../data-types.md) | Second line of the address ||
 || **ADDRESS_CITY**
-[`string`][1] | City ||
+[`string`](../../data-types.md) | City ||
 || **ADDRESS_POSTAL_CODE**
-[`string`][1] | Postal code ||
+[`string`](../../data-types.md) | Postal code ||
 || **ADDRESS_REGION**
-[`string`][1] | District ||
+[`string`](../../data-types.md) | District ||
 || **ADDRESS_PROVINCE**
-[`string`][1] | Region ||
+[`string`](../../data-types.md) | Region ||
 || **ADDRESS_COUNTRY**
-[`string`][1] | Country ||
+[`string`](../../data-types.md) | Country ||
 || **ADDRESS_LOC_ADDR_ID**
-[`integer`][1] | Identifier of the location address ||
+[`integer`](../../data-types.md) | Identifier of the location address ||
 |#
 
 {% note tip "Fields of type `crm_multifield`" %}
@@ -505,5 +505,3 @@ HTTP Status: **400**
 - [{#T}](../../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-send-email.md)
-
-[1]: ../../data-types.md

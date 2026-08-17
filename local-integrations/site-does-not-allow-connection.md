@@ -1,7 +1,3 @@
----
-title: How to fix the "Site does not allow a connection" error when opening the application
----
-
 # How to Fix the "Site Cannot Be Reached" Error When Opening an Application
 
 {% note tip "" %}

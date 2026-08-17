@@ -26,27 +26,27 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   || **Name**
   `type` | **Description** ||
   || **assignedById**
-  [`user`][1] | Identifier of the user responsible for the item ||
+  [`user`](../data-types.md) | Identifier of the user responsible for the item ||
   || **createdBy**
-  [`user`][1] | Identifier of the user who created the item ||
+  [`user`](../data-types.md) | Identifier of the user who created the item ||
   || **createdTime**
-  [`datetime`][1] | Time of item creation ||
+  [`datetime`](../data-types.md) | Time of item creation ||
   || **entityTypeId**
-  [`integer`][1] | Identifier of the entity type ||
+  [`integer`](../data-types.md) | Identifier of the entity type ||
   || **id**
-  [`integer`][1] | Identifier of the item ||
+  [`integer`](../data-types.md) | Identifier of the item ||
   || **lastActivityBy**
-  [`user`][1] | Identifier of the user who last interacted in the timeline ||
+  [`user`](../data-types.md) | Identifier of the user who last interacted in the timeline ||
   || **lastActivityTime**
-  [`datetime`][1] | Time of the last activity in the timeline ||
+  [`datetime`](../data-types.md) | Time of the last activity in the timeline ||
   || **opened**
-  [`boolean`][1] | Is the item open ||
+  [`boolean`](../data-types.md) | Is the item open ||
   || **parentId...**
-  [`crm_entity`][1] | Parent field. An element of another CRM object type that is linked to this item.
+  [`crm_entity`](../data-types.md) | Parent field. An element of another CRM object type that is linked to this item.
   Each such field has the code `parentId + {parentEntityTypeId}`
   ||
   || **ufCrm...**
-  [`crm_userfield`][1] | Custom field. See the section [{#T}](./user-defined-fields/index.md).
+  [`crm_userfield`](../data-types.md) | Custom field. See the section [{#T}](./user-defined-fields/index.md).
   - Values of multiple fields are returned as an array
   - Value of the `file` type field is returned as an object:
   - `id` — identifier
@@ -54,28 +54,28 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   - `urlMachine` — link to the file for the application
   ||
   || **updatedBy**
-  [`user`][1] | Identifier of the user who modified the item ||
+  [`user`](../data-types.md) | Identifier of the user who modified the item ||
   || **updatedTime**
-  [`datetime`][1] | Time of the last modification of the item ||
+  [`datetime`](../data-types.md) | Time of the last modification of the item ||
   || **utmCampaign**
-  [`string`][1] | Identifier of the advertising campaign ||
+  [`string`](../data-types.md) | Identifier of the advertising campaign ||
   || **utmContent**
-  [`string`][1] | Content of the campaign.
+  [`string`](../data-types.md) | Content of the campaign.
   For example, for contextual ads
   ||
   || **utmMedium**
-  [`string`][1] | Type of traffic. Possible values:
+  [`string`](../data-types.md) | Type of traffic. Possible values:
   - CPC — ads
   - CPM — banners
   ||
   || **utmSource**
-  [`string`][1] | Advertising system. Google Ads and others ||
+  [`string`](../data-types.md) | Advertising system. Google Ads and others ||
   || **utmTerm**
-  [`string`][1] | Search condition of the campaign.
+  [`string`](../data-types.md) | Search condition of the campaign.
   For example, keywords for contextual advertising
   ||
   || **webformId**
-  [`integer`][1] | Identifier of the CRM form ||
+  [`integer`](../data-types.md) | Identifier of the CRM form ||
   |#
 
 ## Object Fields
@@ -86,129 +86,129 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   || **Name**
   `type` | **Description** ||
   || **dateCreateShort**
-  [`datetime`][1] | Time of item creation (short format).
+  [`datetime`](../data-types.md) | Time of item creation (short format).
   Field is disabled
   ||
   || **dateModifyShort**
-  [`datetime`][1] | Time of the last modification of the item (short format).
+  [`datetime`](../data-types.md) | Time of the last modification of the item (short format).
   Field is disabled
   ||
   || **companyId**
-  [`crm_company`][1] | Identifier of the company linked to the item ||
+  [`crm_company`](../data-types.md) | Identifier of the company linked to the item ||
   || **contactId**
-  [`crm_contact`][1] | Identifier of the contact linked to the item ||
+  [`crm_contact`](../data-types.md) | Identifier of the contact linked to the item ||
   || **stageId**
-  [`crm_status`][1] | String identifier of the item's stage ||
+  [`crm_status`](../data-types.md) | String identifier of the item's stage ||
   || **isConvert**
-  [`boolean`][1] | Has the lead been converted.
+  [`boolean`](../data-types.md) | Has the lead been converted.
   Field is disabled
   ||
   || **statusDescription**
-  [`text`][1] | Additional information about the stage ||
+  [`text`](../data-types.md) | Additional information about the stage ||
   || **stageSemanticId**
-  [`string`][1] | Group of the stage. Possible values:
+  [`string`](../data-types.md) | Group of the stage. Possible values:
   - `P` — in progress
   - `S` — successful
   - `F` — unsuccessful
   ||
   || **productId**
-  [`string`][1] | Identifier of the product.
+  [`string`](../data-types.md) | Identifier of the product.
   Deprecated.
   Field is disabled
   ||
   || **opportunity**
-  [`double`][1] | Amount ||
+  [`double`](../data-types.md) | Amount ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier of the item's currency ||
+  [`crm_currency`](../data-types.md) | Identifier of the item's currency ||
   || **sourceId**
-  [`crm_status`][1] | String identifier of the source type ||
+  [`crm_status`](../data-types.md) | String identifier of the source type ||
   || **sourceDescription**
-  [`text`][1] | Additional information about the source ||
+  [`text`](../data-types.md) | Additional information about the source ||
   || **title**
-  [`string`][1] | Name of the item ||
+  [`string`](../data-types.md) | Name of the item ||
   || **name**
-  [`string`][1] | First name ||
+  [`string`](../data-types.md) | First name ||
   || **lastName**
-  [`string`][1] | Last name ||
+  [`string`](../data-types.md) | Last name ||
   || **secondName**
-  [`string`][1] | Middle name ||
+  [`string`](../data-types.md) | Middle name ||
   || **shortName**
-  [`string`][1] | Last name First name.
+  [`string`](../data-types.md) | Last name First name.
   Short format: for example 'Smith John' -> 'Smith J.'.
   Field is disabled
   ||
   || **companyTitle**
-  [`string`][1] | Company name ||
+  [`string`](../data-types.md) | Company name ||
   || **post**
-  [`string`][1] | Position ||
+  [`string`](../data-types.md) | Position ||
   || **address**
-  [`text`][1] | Address.
+  [`text`](../data-types.md) | Address.
   Deprecated.
   Field is disabled
   ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../data-types.md) | Comment ||
   || **originatorId**
-  [`string`][1] | External source ||
+  [`string`](../data-types.md) | External source ||
   || **originId**
-  [`string`][1] | Identifier of the item in the external source ||
+  [`string`](../data-types.md) | Identifier of the item in the external source ||
   || **dateClosed**
-  [`datetime`][1] | Time of item closure ||
+  [`datetime`](../data-types.md) | Time of item closure ||
   || **birthdate**
-  [`date`][1] | Date of birth ||
+  [`date`](../data-types.md) | Date of birth ||
   || **honorific**
-  [`crm_status`][1] | String identifier of the salutation type ||
+  [`crm_status`](../data-types.md) | String identifier of the salutation type ||
   || **hasPhone**
-  [`boolean`][1] | Does the item have a phone ||
+  [`boolean`](../data-types.md) | Does the item have a phone ||
   || **hasEmail**
-  [`boolean`][1] | Does the item have an email ||
+  [`boolean`](../data-types.md) | Does the item have an email ||
   || **hasImol**
-  [`boolean`][1] | Does the item have open channels ||
+  [`boolean`](../data-types.md) | Does the item have open channels ||
   || **login**
-  [`string`][1] | Login.
+  [`string`](../data-types.md) | Login.
   Deprecated.
   Field is disabled
   ||
   || **isReturnCustomer**
-  [`boolean`][1] | Is the item a repeat customer ||
+  [`boolean`](../data-types.md) | Is the item a repeat customer ||
   || **searchContent**
-  [`text`][1] | Information for full-text search.
+  [`text`](../data-types.md) | Information for full-text search.
   System field
   ||
   || **isManualOpportunity**
-  [`boolean`][1] | Is manual mode for calculating the amount set ||
+  [`boolean`](../data-types.md) | Is manual mode for calculating the amount set ||
   || **movedBy**
-  [`user`][1] | Identifier of the user who last changed the stage ||
+  [`user`](../data-types.md) | Identifier of the user who last changed the stage ||
   || **movedTime**
-  [`datetime`][1] | Time of the last stage change ||
+  [`datetime`](../data-types.md) | Time of the last stage change ||
   || **phoneMobile**
-  [`string`][1] | Mobile phone ||
+  [`string`](../data-types.md) | Mobile phone ||
   || **phoneWork**
-  [`string`][1] | Work phone ||
+  [`string`](../data-types.md) | Work phone ||
   || **phoneMailing**
-  [`string`][1] | Mailing phone ||
+  [`string`](../data-types.md) | Mailing phone ||
   || **emailHome**
-  [`string`][1] | Personal E-mail ||
+  [`string`](../data-types.md) | Personal E-mail ||
   || **emailWork**
-  [`string`][1] | Work E-mail ||
+  [`string`](../data-types.md) | Work E-mail ||
   || **emailMailing**
-  [`string`][1] | Mailing email ||
+  [`string`](../data-types.md) | Mailing email ||
   || **skype**
-  [`string`][1] | Skype ||
+  [`string`](../data-types.md) | Skype ||
   || **icq**
-  [`string`][1] | ICQ ||
+  [`string`](../data-types.md) | ICQ ||
   || **imol**
-  [`string`][1] | IMOL ||
+  [`string`](../data-types.md) | IMOL ||
   || **email**
-  [`string`][1] | E-mail ||
+  [`string`](../data-types.md) | E-mail ||
   || **phone**
-  [`string`][1] | Phone ||
+  [`string`](../data-types.md) | Phone ||
   || **observers**
-  [`user[]`][1] | List of user identifiers who are Observers ||
+  [`user[]`](../data-types.md) | List of user identifiers who are Observers ||
   || **contactIds**
-  [`crm_contact[]`][1] | List of contact identifiers linked to the item ||
+  [`crm_contact[]`](../data-types.md) | List of contact identifiers linked to the item ||
   || **fm**
-  [`multifield`][1] | Array of multifields.
+  [`multifield`](../data-types.md) | Array of multifields.
   More about multifields can be found in the section [{#T}](../data-types.md#crm_multifield)
   Structure of the multifield:
   - `id` — Unique identifier
@@ -224,135 +224,135 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   || **Name**
   `type` | **Description** ||
   || **dateCreateShort**
-  [`datetime`][1] | Time of item creation (short format).
+  [`datetime`](../data-types.md) | Time of item creation (short format).
   Field is disabled
   ||
   || **dateModifyShort**
-  [`datetime`][1] | Time of the last modification of the item (short format).
+  [`datetime`](../data-types.md) | Time of the last modification of the item (short format).
   Field is disabled
   ||
   || **leadId**
-  [`crm_lead`][1] | Identifier of the lead based on which the item was created ||
+  [`crm_lead`](../data-types.md) | Identifier of the lead based on which the item was created ||
   || **companyId**
-  [`crm_company`][1] | Identifier of the company linked to the item ||
+  [`crm_company`](../data-types.md) | Identifier of the company linked to the item ||
   || **contactId**
-  [`crm_contact`][1] | Identifier of the contact linked to the item ||
+  [`crm_contact`](../data-types.md) | Identifier of the contact linked to the item ||
   || **quoteId**
-  [`crm_quote`][1] | Identifier of the estimate linked to the item ||
+  [`crm_quote`](../data-types.md) | Identifier of the estimate linked to the item ||
   || **title**
-  [`string`][1] | Name of the item ||
+  [`string`](../data-types.md) | Name of the item ||
   || **productId**
-  [`string`][1] | Identifier of the product.
+  [`string`](../data-types.md) | Identifier of the product.
   Deprecated. Field is disabled
   ||
   || **categoryId**
-  [`crm_category`][1] | Identifier of the funnel (direction) of the item ||
+  [`crm_category`](../data-types.md) | Identifier of the funnel (direction) of the item ||
   || **stageId**
-  [`crm_status`][1] | String identifier of the item's stage ||
+  [`crm_status`](../data-types.md) | String identifier of the item's stage ||
   || **stageSemanticId**
-  [`string`][1] | Group of the stage
+  [`string`](../data-types.md) | Group of the stage
   - `P` — in progress
   - `S` — successful
   - `F` — unsuccessful
   ||
   || **isNew**
-  [`boolean`][1] | Is the deal new ||
+  [`boolean`](../data-types.md) | Is the deal new ||
   || **isRecurring**
-  [`boolean`][1] | Is the deal recurring ||
+  [`boolean`](../data-types.md) | Is the deal recurring ||
   || **isReturnCustomer**
-  [`boolean`][1] | Is the item a repeat customer ||
+  [`boolean`](../data-types.md) | Is the item a repeat customer ||
   || **isRepeatedApproach**
-  [`boolean`][1] | Is the deal a repeated approach ||
+  [`boolean`](../data-types.md) | Is the deal a repeated approach ||
   || **closed**
-  [`boolean`][1] | Is the deal closed ||
+  [`boolean`](../data-types.md) | Is the deal closed ||
   || **typeId**
-  [`crm_status`][1] | String identifier of the deal type ||
+  [`crm_status`](../data-types.md) | String identifier of the deal type ||
   || **opportunity**
-  [`double`][1] | Amount ||
+  [`double`](../data-types.md) | Amount ||
   || **isManualOpportunity**
-  [`boolean`][1] | Is manual mode for calculating the amount set ||
+  [`boolean`](../data-types.md) | Is manual mode for calculating the amount set ||
   || **taxValue**
-  [`double`][1] | Tax amount ||
+  [`double`](../data-types.md) | Tax amount ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier of the item's currency ||
+  [`crm_currency`](../data-types.md) | Identifier of the item's currency ||
   || **probability**
-  [`integer`][1] | Probability, % ||
+  [`integer`](../data-types.md) | Probability, % ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../data-types.md) | Comment ||
   || **begindate**
-  [`date`][1] | Start date of the item ||
+  [`date`](../data-types.md) | Start date of the item ||
   || **begindateShort**
-  [`datetime`][1] | Start time of the item (short format).
+  [`datetime`](../data-types.md) | Start time of the item (short format).
   Field is disabled
   ||
   || **closedate**
-  [`date`][1] | Completion date of the item ||
+  [`date`](../data-types.md) | Completion date of the item ||
   || **closedateShort**
-  [`datetime`][1] | End time of the item (short format).
+  [`datetime`](../data-types.md) | End time of the item (short format).
   Field is disabled
   ||
   || **eventDate**
-  [`datetime`][1] | Event date ||
+  [`datetime`](../data-types.md) | Event date ||
   || **eventDateShort**
-  [`datetime`][1] | Event date (short format).
+  [`datetime`](../data-types.md) | Event date (short format).
   Field is disabled
   ||
   || **eventId**
-  [`crm_status`][1] | String identifier of the event type ||
+  [`crm_status`](../data-types.md) | String identifier of the event type ||
   || **eventDescription**
-  [`text`][1] | Description of the event ||
+  [`text`](../data-types.md) | Description of the event ||
   || **locationId**
-  [`location`][1] | Identifier of the location.
+  [`location`](../data-types.md) | Identifier of the location.
   System field
   ||
   || **sourceId**
-  [`crm_status`][1] | String identifier of the source type ||
+  [`crm_status`](../data-types.md) | String identifier of the source type ||
   || **sourceDescription**
-  [`text`][1] | Additional information about the source ||
+  [`text`](../data-types.md) | Additional information about the source ||
   || **originatorId**
-  [`string`][1] | External source ||
+  [`string`](../data-types.md) | External source ||
   || **originId**
-  [`string`][1] | Identifier of the item in the external source ||
+  [`string`](../data-types.md) | Identifier of the item in the external source ||
   || **additionalInfo**
-  [`string`][1] | Additional information ||
+  [`string`](../data-types.md) | Additional information ||
   || **searchContent**
-  [`text`][1] | Information for full-text search.
+  [`text`](../data-types.md) | Information for full-text search.
   System field
   ||
   || **orderStage**
-  [`string`][1] | Payment status of the deal ||
+  [`string`](../data-types.md) | Payment status of the deal ||
   || **movedBy**
-  [`user`][1] | Identifier of the user who last changed the stage ||
+  [`user`](../data-types.md) | Identifier of the user who last changed the stage ||
   || **movedTime**
-  [`datetime`][1] | Time of the last stage change ||
+  [`datetime`](../data-types.md) | Time of the last stage change ||
   || **isWork**
-  [`boolean`][1] | Is the deal in progress.
+  [`boolean`](../data-types.md) | Is the deal in progress.
   Field is disabled
   ||
   || **isWon**
-  [`boolean`][1] | Is the deal won.
+  [`boolean`](../data-types.md) | Is the deal won.
   Field is disabled
   ||
   || **isLose**
-  [`boolean`][1] | Is the deal lost.
+  [`boolean`](../data-types.md) | Is the deal lost.
   Field is disabled
   ||
   || **receivedAmount**
-  [`string`][1] | Amount received.
+  [`string`](../data-types.md) | Amount received.
   Field is disabled
   ||
   || **lostAmount**
-  [`string`][1] | Amount lost.
+  [`string`](../data-types.md) | Amount lost.
   Field is disabled
   ||
   || **hasProducts**
-  [`boolean`][1] | Does the item contain products.
+  [`boolean`](../data-types.md) | Does the item contain products.
   Field is disabled
   ||
   || **observers**
-  [`user[]`][1] | List of user identifiers who are Observers ||
+  [`user[]`](../data-types.md) | List of user identifiers who are Observers ||
   || **contactIds**
-  [`crm_contact[]`][1] | List of contact identifiers linked to the item ||
+  [`crm_contact[]`](../data-types.md) | List of contact identifiers linked to the item ||
   |#
 
 ### Contact {#contact}
@@ -361,86 +361,86 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   || **Name**
   `type` | **Description** ||
   || **companyId**
-  [`crm_company`][1] | Identifier of the company linked to the item ||
+  [`crm_company`](../data-types.md) | Identifier of the company linked to the item ||
   || **sourceId**
-  [`crm_status`][1] | String identifier of the source type ||
+  [`crm_status`](../data-types.md) | String identifier of the source type ||
   || **sourceDescription**
-  [`text`][1] | Additional information about the source ||
+  [`text`](../data-types.md) | Additional information about the source ||
   || **name**
-  [`string`][1] | First name ||
+  [`string`](../data-types.md) | First name ||
   || **lastName**
-  [`string`][1] | Last name ||
+  [`string`](../data-types.md) | Last name ||
   || **secondName**
-  [`string`][1] | Middle name ||
+  [`string`](../data-types.md) | Middle name ||
   || **shortName**
-  [`string`][1] | Last name First name.
+  [`string`](../data-types.md) | Last name First name.
   Short format: for example 'Smith John' -> 'Smith J.'.
   Field is disabled
   ||
   || **photo**
-  [`file`][1] | Photo ||
+  [`file`](../data-types.md) | Photo ||
   || **post**
-  [`string`][1] | Position ||
+  [`string`](../data-types.md) | Position ||
   || **address**
-  [`text`][1] | Address.
+  [`text`](../data-types.md) | Address.
   Deprecated. Field is disabled
   ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../data-types.md) | Comment ||
   || **leadId**
-  [`crm_lead`][1] | Identifier of the lead based on which the item was created ||
+  [`crm_lead`](../data-types.md) | Identifier of the lead based on which the item was created ||
   || **export**
-  [`boolean`][1] | Is exporting the contact allowed ||
+  [`boolean`](../data-types.md) | Is exporting the contact allowed ||
   || **typeId**
-  [`crm_status`][1] | String identifier of the deal type ||
+  [`crm_status`](../data-types.md) | String identifier of the deal type ||
   || **originatorId**
-  [`string`][1] | External source ||
+  [`string`](../data-types.md) | External source ||
   || **originId**
-  [`string`][1] | Identifier of the item in the external source ||
+  [`string`](../data-types.md) | Identifier of the item in the external source ||
   || **originVersion**
-  [`string`][1] | Version of the original ||
+  [`string`](../data-types.md) | Version of the original ||
   || **birthdate**
-  [`date`][1] | Date of birth ||
+  [`date`](../data-types.md) | Date of birth ||
   || **honorific**
-  [`crm_status`][1] | String identifier of the salutation type ||
+  [`crm_status`](../data-types.md) | String identifier of the salutation type ||
   || **hasPhone**
-  [`boolean`][1] | Does the item have a phone ||
+  [`boolean`](../data-types.md) | Does the item have a phone ||
   || **hasEmail**
-  [`boolean`][1] | Does the item have an email ||
+  [`boolean`](../data-types.md) | Does the item have an email ||
   || **hasImol**
-  [`boolean`][1] | Does the item have open channels ||
+  [`boolean`](../data-types.md) | Does the item have open channels ||
   || **searchContent**
-  [`text`][1] | Information for full-text search. System field ||
+  [`text`](../data-types.md) | Information for full-text search. System field ||
   || **categoryId**
-  [`crm_category`][1] | Identifier of the funnel (direction) of the item ||
+  [`crm_category`](../data-types.md) | Identifier of the funnel (direction) of the item ||
   || **login**
-  [`string`][1] | Login.
+  [`string`](../data-types.md) | Login.
   Deprecated. Field is disabled
   ||
   || **emailHome**
-  [`string`][1] | Personal E-mail ||
+  [`string`](../data-types.md) | Personal E-mail ||
   || **emailWork**
-  [`string`][1] | Work E-mail ||
+  [`string`](../data-types.md) | Work E-mail ||
   || **emailMailing**
-  [`string`][1] | Mailing email ||
+  [`string`](../data-types.md) | Mailing email ||
   || **phoneMobile**
-  [`string`][1] | Mobile phone ||
+  [`string`](../data-types.md) | Mobile phone ||
   || **phoneWork**
-  [`string`][1] | Work phone ||
+  [`string`](../data-types.md) | Work phone ||
   || **phoneMailing**
-  [`string`][1] | Mailing phone ||
+  [`string`](../data-types.md) | Mailing phone ||
   || **imol**
-  [`string`][1] | IMOL ||
+  [`string`](../data-types.md) | IMOL ||
   || **email**
-  [`string`][1] | E-mail ||
+  [`string`](../data-types.md) | E-mail ||
   || **phone**
-  [`string`][1] | Phone ||
+  [`string`](../data-types.md) | Phone ||
   || **observers**
-  [`user[]`][1] | List of user identifiers who are Observers ||
+  [`user[]`](../data-types.md) | List of user identifiers who are Observers ||
   || **companyIds**
-  [`crm_company[]`][1] | List of company identifiers linked to the item ||
+  [`crm_company[]`](../data-types.md) | List of company identifiers linked to the item ||
   || **fm**
-  [`multifield`][1] | Array of multifields.
+  [`multifield`](../data-types.md) | Array of multifields.
   More about multifields can be found in the section [{#T}](../data-types.md#crm_multifield)
   Structure of the multifield:
   - `id` — Unique identifier
@@ -456,85 +456,85 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Name of the item ||
+  [`string`](../data-types.md) | Name of the item ||
   || **logo**
-  [`file`][1] | Logo ||
+  [`file`](../data-types.md) | Logo ||
   || **address**
-  [`text`][1] | Address.
+  [`text`](../data-types.md) | Address.
   Deprecated. Field is disabled
   ||
   || **addressLegal**
-  [`text`][1] | Legal address.
+  [`text`](../data-types.md) | Legal address.
   Deprecated
   ||
   || **bankingDetails**
-  [`string`][1] | Banking details ||
+  [`string`](../data-types.md) | Banking details ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../data-types.md) | Comment ||
   || **typeId**
-  [`crm_status`][1] | String identifier of the deal type ||
+  [`crm_status`](../data-types.md) | String identifier of the deal type ||
   || **industry**
-  [`crm_status`][1] | String identifier of the industry type ||
+  [`crm_status`](../data-types.md) | String identifier of the industry type ||
   || **revenue**
-  [`double`][1] | Annual turnover ||
+  [`double`](../data-types.md) | Annual turnover ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier of the item's currency ||
+  [`crm_currency`](../data-types.md) | Identifier of the item's currency ||
   || **employees**
-  [`crm_status`][1] | String identifier of the number of employees type ||
+  [`crm_status`](../data-types.md) | String identifier of the number of employees type ||
   || **leadId**
-  [`crm_lead`][1] | Identifier of the lead based on which the item was created ||
+  [`crm_lead`](../data-types.md) | Identifier of the lead based on which the item was created ||
   || **originatorId**
-  [`string`][1] | External source ||
+  [`string`](../data-types.md) | External source ||
   || **originId**
-  [`string`][1] | Identifier of the item in the external source ||
+  [`string`](../data-types.md) | Identifier of the item in the external source ||
   || **originVersion**
-  [`string`][1] | Version of the original ||
+  [`string`](../data-types.md) | Version of the original ||
   || **hasPhone**
-  [`boolean`][1] | Does the item have a phone ||
+  [`boolean`](../data-types.md) | Does the item have a phone ||
   || **hasEmail**
-  [`boolean`][1] | Does the item have an email ||
+  [`boolean`](../data-types.md) | Does the item have an email ||
   || **hasImol**
-  [`boolean`][1] | Does the item have open channels ||
+  [`boolean`](../data-types.md) | Does the item have open channels ||
   || **isMyCompany**
-  [`boolean`][1] | Is the company my company ||
+  [`boolean`](../data-types.md) | Is the company my company ||
   || **searchContent**
-  [`text`][1] | Information for full-text search.
+  [`text`](../data-types.md) | Information for full-text search.
   System field
   ||
   || **categoryId**
-  [`crm_category`][1] | Identifier of the funnel (direction) of the item ||
+  [`crm_category`](../data-types.md) | Identifier of the funnel (direction) of the item ||
   || **emailHome**
-  [`string`][1] | Personal E-mail ||
+  [`string`](../data-types.md) | Personal E-mail ||
   || **emailWork**
-  [`string`][1] | Work E-mail ||
+  [`string`](../data-types.md) | Work E-mail ||
   || **emailMailing**
-  [`string`][1] | Mailing email ||
+  [`string`](../data-types.md) | Mailing email ||
   || **phoneMobile**
-  [`string`][1] | Mobile phone ||
+  [`string`](../data-types.md) | Mobile phone ||
   || **phoneWork**
-  [`string`][1] | Work phone ||
+  [`string`](../data-types.md) | Work phone ||
   || **phoneMailing**
-  [`string`][1] | Mailing phone ||
+  [`string`](../data-types.md) | Mailing phone ||
   || **imol**
-  [`string`][1] | IMOL ||
+  [`string`](../data-types.md) | IMOL ||
   || **email**
-  [`string`][1] | E-mail ||
+  [`string`](../data-types.md) | E-mail ||
   || **phone**
-  [`string`][1] | Phone ||
+  [`string`](../data-types.md) | Phone ||
   || **ufLogo**
-  [`file`][1] | Logo (document generator) ||
+  [`file`](../data-types.md) | Logo (document generator) ||
   || **ufStamp**
-  [`file`][1] | Company seal (document generator) ||
+  [`file`](../data-types.md) | Company seal (document generator) ||
   || **ufDirectorSign**
-  [`file`][1] | Director's signature (document generator) ||
+  [`file`](../data-types.md) | Director's signature (document generator) ||
   || **ufAccountantSign**
-  [`file`][1] | Chief accountant's signature (document generator) ||
+  [`file`](../data-types.md) | Chief accountant's signature (document generator) ||
   || **observers**
-  [`user[]`][1] | List of user identifiers who are Observers ||
+  [`user[]`](../data-types.md) | List of user identifiers who are Observers ||
   || **contactIds**
-  [`crm_contact[]`][1] | List of contact identifiers linked to the item ||
+  [`crm_contact[]`](../data-types.md) | List of contact identifiers linked to the item ||
   || **fm**
-  [`multifield`][1] | Array of multifields.
+  [`multifield`](../data-types.md) | Array of multifields.
   More about multifields can be found in the section [{#T}](../data-types.md#crm_multifield)
   Structure of the multifield:
   - `id` — Unique identifier
@@ -550,43 +550,43 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   || **Name**
   `type` | **Description** ||
   || **dateCreateShort**
-  [`datetime`][1] | Time of item creation (short format).
+  [`datetime`](../data-types.md) | Time of item creation (short format).
   Field is disabled
   ||
   || **dateModifyShort**
-  [`datetime`][1] | Time of the last modification of the item (short format).
+  [`datetime`](../data-types.md) | Time of the last modification of the item (short format).
   Field is disabled
   ||
   || **leadId**
-  [`crm_lead`][1] | Identifier of the lead based on which the item was created ||
+  [`crm_lead`](../data-types.md) | Identifier of the lead based on which the item was created ||
   || **dealId**
-  [`crm_deal`][1] | Identifier of the deal linked to the item ||
+  [`crm_deal`](../data-types.md) | Identifier of the deal linked to the item ||
   || **companyId**
-  [`crm_company`][1] | Identifier of the company linked to the item ||
+  [`crm_company`](../data-types.md) | Identifier of the company linked to the item ||
   || **contactId**
-  [`crm_contact`][1] | Identifier of the contact linked to the item ||
+  [`crm_contact`](../data-types.md) | Identifier of the contact linked to the item ||
   || **personTypeId**
-  [`integer`][1] | Identifier of the payer type ||
+  [`integer`](../data-types.md) | Identifier of the payer type ||
   || **mycompanyId**
-  [`crm_company`][1] | Identifier of "my" company ||
+  [`crm_company`](../data-types.md) | Identifier of "my" company ||
   || **title**
-  [`string`][1] | Name of the item ||
+  [`string`](../data-types.md) | Name of the item ||
   || **stageId**
-  [`crm_status`][1] | String identifier of the item's stage ||
+  [`crm_status`](../data-types.md) | String identifier of the item's stage ||
   || **closed**
-  [`boolean`][1] | Is the deal closed ||
+  [`boolean`](../data-types.md) | Is the deal closed ||
   || **opportunity**
-  [`double`][1] | Amount ||
+  [`double`](../data-types.md) | Amount ||
   || **isManualOpportunity**
-  [`boolean`][1] | Is manual mode for calculating the amount set ||
+  [`boolean`](../data-types.md) | Is manual mode for calculating the amount set ||
   || **taxValue**
-  [`double`][1] | Tax amount ||
+  [`double`](../data-types.md) | Tax amount ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier of the item's currency ||
+  [`crm_currency`](../data-types.md) | Identifier of the item's currency ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../data-types.md) | Comment ||
   || **commentsType**
-  [`integer`][1] | Identifier of the comment type.
+  [`integer`](../data-types.md) | Identifier of the comment type.
   Possible values:
   - `0` — unknown
   - `1` — text
@@ -594,23 +594,23 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   - `3` — HTML
   ||
   || **begindate**
-  [`date`][1] | Start date of the item ||
+  [`date`](../data-types.md) | Start date of the item ||
   || **begindateShort**
-  [`datetime`][1] | Start time of the item (short format).
+  [`datetime`](../data-types.md) | Start time of the item (short format).
   Field is disabled
   ||
   || **closedate**
-  [`date`][1] | Completion date of the item ||
+  [`date`](../data-types.md) | Completion date of the item ||
   || **closedateShort**
-  [`datetime`][1] | End time of the item (short format).
+  [`datetime`](../data-types.md) | End time of the item (short format).
   Field is disabled
   ||
   || **quoteNumber**
-  [`string`][1] | Estimate number ||
+  [`string`](../data-types.md) | Estimate number ||
   || **content**
-  [`text`][1] | Content ||
+  [`text`](../data-types.md) | Content ||
   || **contentType**
-  [`integer`][1] | Identifier of the content type.
+  [`integer`](../data-types.md) | Identifier of the content type.
   Possible values:
   - `0` — unknown
   - `1` — text
@@ -618,9 +618,9 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   - `3` — HTML
   ||
   || **terms**
-  [`text`][1] | Terms ||
+  [`text`](../data-types.md) | Terms ||
   || **termsType**
-  [`integer`][1] | Identifier of the terms type.
+  [`integer`](../data-types.md) | Identifier of the terms type.
   Possible values:
   - `0` — unknown
   - `1` — text
@@ -628,35 +628,35 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   - `3` — HTML
   ||
   || **storageTypeId**
-  [`integer`][1] | Identifier of the storage type ||
+  [`integer`](../data-types.md) | Identifier of the storage type ||
   || **storageElementIds**
-  [`integer[]`][1] | Array of files ||
+  [`integer[]`](../data-types.md) | Array of files ||
   || **locationId**
-  [`location`][1] | Identifier of the location. System field ||
+  [`location`](../data-types.md) | Identifier of the location. System field ||
   || **clientTitle**
-  [`string`][1] | Client name ||
+  [`string`](../data-types.md) | Client name ||
   || **clientAddr**
-  [`string`][1] | Client address ||
+  [`string`](../data-types.md) | Client address ||
   || **clientContact**
-  [`string`][1] | Client contacts ||
+  [`string`](../data-types.md) | Client contacts ||
   || **clientEmail**
-  [`string`][1] | Client E-mail ||
+  [`string`](../data-types.md) | Client E-mail ||
   || **clientPhone**
-  [`string`][1] | Client phone ||
+  [`string`](../data-types.md) | Client phone ||
   || **clientTpId**
-  [`string`][1] | Client TIN ||
+  [`string`](../data-types.md) | Client TIN ||
   || **clientTpaId**
-  [`string`][1] | Client TPP ||
+  [`string`](../data-types.md) | Client TPP ||
   || **searchContent**
-  [`text`][1] | Information for full-text search. System field ||
+  [`text`](../data-types.md) | Information for full-text search. System field ||
   || **hasProducts**
-  [`boolean`][1] | Does the item contain products.
+  [`boolean`](../data-types.md) | Does the item contain products.
   Field is disabled
   ||
   || **actualDate**
-  [`date`][1] | Valid until ||
+  [`date`](../data-types.md) | Valid until ||
   || **contactIds**
-  [`crm_contact[]`][1] | List of contact identifiers linked to the item ||
+  [`crm_contact[]`](../data-types.md) | List of contact identifiers linked to the item ||
   |#
 
 ### Invoice {#invoice}
@@ -665,53 +665,53 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   || **Name**
   `type` | **Description** ||
   || **xmlId**
-  [`string`][1] | External code ||
+  [`string`](../data-types.md) | External code ||
   || **title**
-  [`string`][1] | Name of the item ||
+  [`string`](../data-types.md) | Name of the item ||
   || **movedBy**
-  [`user`][1] | Identifier of the user who last changed the stage ||
+  [`user`](../data-types.md) | Identifier of the user who last changed the stage ||
   || **movedTime**
-  [`datetime`][1] | Time of the last stage change ||
+  [`datetime`](../data-types.md) | Time of the last stage change ||
   || **categoryId**
-  [`crm_category`][1] | Identifier of the funnel (direction) of the item ||
+  [`crm_category`](../data-types.md) | Identifier of the funnel (direction) of the item ||
   || **stageId**
-  [`crm_status`][1] | String identifier of the item's stage ||
+  [`crm_status`](../data-types.md) | String identifier of the item's stage ||
   || **previousStageId**
-  [`crm_status`][1] | Identifier of the previous stage type ||
+  [`crm_status`](../data-types.md) | Identifier of the previous stage type ||
   || **begindate**
-  [`date`][1] | Start date of the item ||
+  [`date`](../data-types.md) | Start date of the item ||
   || **closedate**
-  [`date`][1] | Completion date of the item ||
+  [`date`](../data-types.md) | Completion date of the item ||
   || **companyId**
-  [`crm_company`][1] | Identifier of the company linked to the item ||
+  [`crm_company`](../data-types.md) | Identifier of the company linked to the item ||
   || **contactId**
-  [`crm_contact`][1] | Identifier of the contact linked to the item ||
+  [`crm_contact`](../data-types.md) | Identifier of the contact linked to the item ||
   || **opportunity**
-  [`double`][1] | Amount ||
+  [`double`](../data-types.md) | Amount ||
   || **isManualOpportunity**
-  [`boolean`][1] | Is manual mode for calculating the amount set ||
+  [`boolean`](../data-types.md) | Is manual mode for calculating the amount set ||
   || **taxValue**
-  [`double`][1] | Tax amount ||
+  [`double`](../data-types.md) | Tax amount ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier of the item's currency ||
+  [`crm_currency`](../data-types.md) | Identifier of the item's currency ||
   || **mycompanyId**
-  [`crm_company`][1] | Identifier of "my" company ||
+  [`crm_company`](../data-types.md) | Identifier of "my" company ||
   || **sourceId**
-  [`crm_status`][1] | String identifier of the source type ||
+  [`crm_status`](../data-types.md) | String identifier of the source type ||
   || **sourceDescription**
-  [`text`][1] | Additional information about the source ||
+  [`text`](../data-types.md) | Additional information about the source ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../data-types.md) | Comment ||
   || **accountNumber**
-  [`string`][1] | Invoice number ||
+  [`string`](../data-types.md) | Invoice number ||
   || **locationId**
-  [`location`][1] | Identifier of the location.
+  [`location`](../data-types.md) | Identifier of the location.
   System field
   ||
   || **observers**
-  [`user[]`][1] | List of user identifiers who are Observers ||
+  [`user[]`](../data-types.md) | List of user identifiers who are Observers ||
   || **contactIds**
-  [`crm_contact[]`][1] | List of contact identifiers linked to the item ||
+  [`crm_contact[]`](../data-types.md) | List of contact identifiers linked to the item ||
   |#
 
 ### SPA {#spa}
@@ -720,95 +720,92 @@ Use the method [crm.item.fields](./crm-item-fields.md) with the specified [objec
   || **Name**
   `type` | **Description** ||
   || **xmlId**
-  [`string`][1] | External code ||
+  [`string`](../data-types.md) | External code ||
   || **title**
-  [`string`][1] | Name of the item ||
+  [`string`](../data-types.md) | Name of the item ||
   || **movedBy**
-  [`user`][1] | Identifier of the user who last changed the stage.
+  [`user`](../data-types.md) | Identifier of the user who last changed the stage.
   Available only when the `isStagesEnabled` setting is enabled for the corresponding SPA
   ||
   || **movedTime**
-  [`datetime`][1] | Time of the last stage change.
+  [`datetime`](../data-types.md) | Time of the last stage change.
   Available only when the `isStagesEnabled` setting is enabled for the corresponding SPA
   ||
   || **categoryId**
-  [`crm_category`][1] | Identifier of the funnel (direction) of the item ||
+  [`crm_category`](../data-types.md) | Identifier of the funnel (direction) of the item ||
   || **stageId**
-  [`crm_status`][1] | String identifier of the item's stage.
+  [`crm_status`](../data-types.md) | String identifier of the item's stage.
   Available only when the `isStagesEnabled` setting is enabled for the corresponding SPA
   ||
   || **previousStageId**
-  [`crm_status`][1] | Identifier of the previous stage type.
+  [`crm_status`](../data-types.md) | Identifier of the previous stage type.
   Available only when the `isStagesEnabled` setting is enabled for the corresponding SPA
   ||
   || **begindate**
-  [`date`][1] | Start date of the item.
+  [`date`](../data-types.md) | Start date of the item.
   Available only when the `isBeginCloseDatesEnabled` setting is enabled for the corresponding SPA
   ||
   || **closedate**
-  [`date`][1] | Completion date of the item.
+  [`date`](../data-types.md) | Completion date of the item.
   Available only when the `isBeginCloseDatesEnabled` setting is enabled for the corresponding SPA
   ||
   || **companyId**
-  [`crm_company`][1] | Identifier of the company linked to the item.
+  [`crm_company`](../data-types.md) | Identifier of the company linked to the item.
   Available only when the `isClientEnabled` setting is enabled for the corresponding SPA
   ||
   || **contactId**
-  [`crm_contact`][1] | Identifier of the contact linked to the item.
+  [`crm_contact`](../data-types.md) | Identifier of the contact linked to the item.
   Available only when the `isClientEnabled` setting is enabled for the corresponding SPA
   ||
   || **opportunity**
-  [`double`][1] | Amount.
+  [`double`](../data-types.md) | Amount.
   Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA
   ||
   || **isManualOpportunity**
-  [`boolean`][1] | Is manual mode for calculating the amount set.
+  [`boolean`](../data-types.md) | Is manual mode for calculating the amount set.
   Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA
   ||
   || **taxValue**
-  [`double`][1] | Tax amount.
+  [`double`](../data-types.md) | Tax amount.
   Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA
   ||
   || **currencyId**
-  [`crm_currency`][1] | Identifier of the item's currency.
+  [`crm_currency`](../data-types.md) | Identifier of the item's currency.
   Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA
   ||
   || **opportunityAccount**
-  [`double`][1] | Amount in accounting currency.
+  [`double`](../data-types.md) | Amount in accounting currency.
   Deprecated. Field is disabled.
   Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA
   ||
   || **taxValueAccount**
-  [`double`][1] | Tax amount in accounting currency.
+  [`double`](../data-types.md) | Tax amount in accounting currency.
   Deprecated. Field is disabled.
   Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA
   ||
   || **accountCurrencyId**
-  [`crm_currency`][1] | Accounting currency.
+  [`crm_currency`](../data-types.md) | Accounting currency.
   Field is disabled.
   Available only when the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA
   ||
   || **mycompanyId**
-  [`crm_company`][1] | Identifier of "my" company.
+  [`crm_company`](../data-types.md) | Identifier of "my" company.
   Available only when the `isMycompanyEnabled` setting is enabled for the corresponding SPA
   ||
   || **sourceId**
-  [`crm_status`][1] | String identifier of the source type.
+  [`crm_status`](../data-types.md) | String identifier of the source type.
   Available only when the `isSourceEnabled` setting is enabled for the corresponding SPA
   ||
   || **sourceDescription**
-  [`text`][1] | Additional information about the source.
+  [`text`](../data-types.md) | Additional information about the source.
   Available only when the `isSourceEnabled` setting is enabled for the corresponding SPA
   ||
   || **observers**
-  [`user[]`][1] | List of user identifiers who are Observers.
+  [`user[]`](../data-types.md) | List of user identifiers who are Observers.
   Available only when the `isObserversEnabled` setting is enabled for the corresponding SPA
   ||
   || **contactIds**
-  [`crm_contact[]`][1] | List of contact identifiers linked to the item.
+  [`crm_contact[]`](../data-types.md) | List of contact identifiers linked to the item.
   Available only when the `isClientEnabled` setting is enabled for the corresponding SPA
   ||
   |#
-
-
-[1]: ../data-types.md

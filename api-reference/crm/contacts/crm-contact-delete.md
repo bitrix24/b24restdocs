@@ -26,7 +26,7 @@ The method `crm.contact.delete` removes a contact and all associated objects.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | The identifier of the contact.
+[`integer`](../../data-types.md) | The identifier of the contact.
 
 The identifier can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
 |#
@@ -235,7 +235,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | The root element of the response.
+[`boolean`](../../data-types.md) | The root element of the response.
 
 Returns `true` on success ||
 || **time**
@@ -273,5 +273,3 @@ HTTP Status: **400**
 - [{#T}](./crm-contact-get.md)
 - [{#T}](./crm-contact-list.md)
 - [{#T}](./crm-contact-fields.md)
-
-[1]: ../../data-types.md

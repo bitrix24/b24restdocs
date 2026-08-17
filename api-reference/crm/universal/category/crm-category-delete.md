@@ -27,9 +27,9 @@ This method deletes a funnel (direction) with the identifier `id`.
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of the CRM object from which the funnel will be deleted   ||
+[`integer`](../../../data-types.md) | Identifier of the [system](./../../index.md) or [user-defined type](./../user-defined-object-types/index.md) of the CRM object from which the funnel will be deleted   ||
 || **id***
-[`integer`][1] | Identifier of the funnel to be deleted. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the funnel to be deleted. Can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
 |#
 
 ## Code Examples
@@ -276,9 +276,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`null`][1] | Root element of the response, equal to `null` ||
+[`null`](../../../data-types.md) | Root element of the response, equal to `null` ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -318,5 +318,3 @@ HTTP status: **160**, **400**
 - [{#T}](./crm-category-get.md)
 - [{#T}](./crm-category-list.md)
 - [{#T}](./crm-category-fields.md)
-
-[1]: ../../../data-types.md

@@ -20,7 +20,7 @@ The method `crm.contact.company.items.delete` clears the set of companies associ
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the contact.
+[`integer`](../../../data-types.md) | Identifier of the contact.
 
 The identifier can be obtained using the methods [crm.contact.list](../crm-contact-list.md) or [crm.contact.add](../crm-contact-add.md) ||
 |#
@@ -258,9 +258,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response. Contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -293,5 +293,3 @@ HTTP status: **400**
 - [{#T}](./crm-contact-company-fields.md)
 - [{#T}](./crm-contact-company-items-get.md)
 - [{#T}](./crm-contact-company-items-set.md)
-
-[1]: ../../../data-types.md

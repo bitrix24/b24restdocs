@@ -20,7 +20,7 @@ The method `crm.contact.company.items.get` returns a set of companies associated
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the contact.
+[`integer`](../../../data-types.md) | Identifier of the contact.
 
 The identifier can be obtained using the methods [crm.contact.list](../crm-contact-list.md) or [crm.contact.add](../crm-contact-add.md) ||
 |#
@@ -294,7 +294,7 @@ HTTP status: **200**
 || **result**
 [`contact_company_binding[]`](#contact_company_binding) | Root element of the response. Contains an array with information about the companies associated with the contact ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ### Parameter Contact_Company_Binding {#contact_company_binding}
@@ -303,13 +303,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **COMPANY_ID**
-[`integer`][1] | Company identifier ||
+[`integer`](../../../data-types.md) | Company identifier ||
 || **SORT**
-[`integer`][1] | Sorting index ||
+[`integer`](../../../data-types.md) | Sorting index ||
 || **ROLE_ID**
-[`integer`][1] | Identifier of the role (reserved) ||
+[`integer`](../../../data-types.md) | Identifier of the role (reserved) ||
 || **IS_PRIMARY**
-[`boolean`][1] | Indicates whether the binding is primary. Possible values:
+[`boolean`](../../../data-types.md) | Indicates whether the binding is primary. Possible values:
 - `Y` — yes
 - `N` — no ||
 |#
@@ -344,5 +344,3 @@ HTTP status: **200**
 - [{#T}](./crm-contact-company-fields.md)
 - [{#T}](./crm-contact-company-items-set.md)
 - [{#T}](./crm-contact-company-items-delete.md)
-
-[1]: ../../../data-types.md

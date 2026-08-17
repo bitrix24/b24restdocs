@@ -24,22 +24,22 @@ The method `crm.item.details.configuration.reset` resets the item card settings 
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
+[`integer`](../../../data-types.md) | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
 || **userId**
-[`user`][1] | Identifier of the user whose configuration you want to reset.
+[`user`](../../../data-types.md) | Identifier of the user whose configuration you want to reset.
 
 If the parameter is not provided, the `userId` of the user calling this method will be used.
 
 Required only when requesting personal settings
 ||
 || **scope**
-[`string`][1] | Scope of the settings. Acceptable values:
+[`string`](../../../data-types.md) | Scope of the settings. Acceptable values:
 - `'P'` — personal settings
 - `'C'` — shared settings
 
 By default, the value is `'P'` ||
 || **extras**
-[`object`][1] | Additional parameters. Possible values and their structure are described [below](#extras) ||
+[`object`](../../../data-types.md) | Additional parameters. Possible values and their structure are described [below](#extras) ||
 |#
 
 ### Parameter extras
@@ -336,9 +336,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response. Returns `true` if the settings were successfully reset ||
+[`boolean`](../../../data-types.md) | Root element of the response. Returns `true` if the settings were successfully reset ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -371,5 +371,3 @@ HTTP status: **400**
 - [{#T}](./crm-item-details-configuration-get.md)
 - [{#T}](./crm-item-details-configuration-set.md)
 - [{#T}](./crm-item-details-configuration-forceCommonScopeForAll.md)
-
-[1]: ../../../data-types.md

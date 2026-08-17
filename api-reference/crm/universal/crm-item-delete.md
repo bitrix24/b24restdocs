@@ -20,11 +20,11 @@ Deletes a CRM object element by its item ID and entity type ID.
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | The identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose element we want to delete.
+[`integer`](../../data-types.md) | The identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose element we want to delete.
 
 Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier of the SPA can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method. ||
 || **id***
-[`integer`][1] | The identifier of the item to be deleted.
+[`integer`](../../data-types.md) | The identifier of the item to be deleted.
 
 It can be obtained using the [`crm.item.list`](./crm-item-list.md) method or when creating an item with [`crm.item.add`](./crm-item-add.md). ||
 |#
@@ -273,11 +273,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`][1] | The root element of the response.
+[`array`](../../data-types.md) | The root element of the response.
 
 Returns an empty array `[]` in case of success. ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 
@@ -315,5 +315,3 @@ HTTP status: **400**, **403**
 - [{#T}](crm-item-list.md)
 - [{#T}](crm-item-fields.md)
 - [{#T}](./object-fields.md)
-
-[1]: ../../data-types.md

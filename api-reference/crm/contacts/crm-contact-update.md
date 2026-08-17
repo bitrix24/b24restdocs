@@ -28,11 +28,11 @@ It is recommended to pass the complete set of address fields when updating an ad
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | The identifier of the contact to be changed.
+[`integer`](../../data-types.md) | The identifier of the contact to be changed.
 
 The identifier can be obtained using the methods [`crm.contact.list`](crm-contact-list.md) or [`crm.contact.add`](crm-contact-add.md) ||
 || **fields***
-[`object`][1] | An object in the following format:
+[`object`](../../data-types.md) | An object in the following format:
 
 ```
 {
@@ -54,7 +54,7 @@ An incorrect field in `fields` will be ignored.
 Only the fields that need to be changed should be passed in `fields`
 ||
 || **params**
-[`object`][1] | An object containing a set of additional parameters.
+[`object`](../../data-types.md) | An object containing a set of additional parameters.
 
 The structure and possible values are described [below](#parameter-params)
 |#
@@ -67,39 +67,39 @@ The structure and possible values are described [below](#parameter-params)
 || **HONORIFIC**
 [`crm_status`](../data-types.md) | Salutation.
 
-The list of available salutation types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "HONORIFIC" }` ||
+The list of available salutation types can be obtained using [`crm.status.list`](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "HONORIFIC" }` ||
 || **NAME**
-[`string`][1] | First name ||
+[`string`](../../data-types.md) | First name ||
 || **SECOND_NAME**
-[`string`][1] | Middle name ||
+[`string`](../../data-types.md) | Middle name ||
 || **LAST_NAME**
-[`string`][1] | Last name ||
+[`string`](../../data-types.md) | Last name ||
 || **PHOTO**
-[`file`][1] | Photograph ||
+[`file`](../../data-types.md) | Photograph ||
 || **BIRTHDATE**
-[`date`][1] | Date of birth ||
+[`date`](../../data-types.md) | Date of birth ||
 || **TYPE_ID**
 [`crm_status`](../data-types.md) | Contact type.
-The list of available contact types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "CONTACT_TYPE" }` ||
+The list of available contact types can be obtained using [`crm.status.list`](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "CONTACT_TYPE" }` ||
 || **SOURCE_ID**
 [`crm_status`](../data-types.md) | Source
-The list of available source types can be obtained using [`crm.status.list`][2] with the filter `{ ENTITY_ID: "SOURCE" }` ||
+The list of available source types can be obtained using [`crm.status.list`](../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }` ||
 || **SOURCE_DESCRIPTION**
-[`string`][1] | Additional information about the source ||
+[`string`](../../data-types.md) | Additional information about the source ||
 || **POST**
-[`string`][1] | Position ||
+[`string`](../../data-types.md) | Position ||
 || **COMMENTS**
-[`string`][1] | Comment. Supports BB codes ||
+[`string`](../../data-types.md) | Comment. Supports BB codes ||
 || **OPENED**
-[`boolean`][1] | Is it available to everyone? Possible values:
+[`boolean`](../../data-types.md) | Is it available to everyone? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **EXPORT**
-[`boolean`][1] | Is the contact participating in the export? Possible values:
+[`boolean`](../../data-types.md) | Is the contact participating in the export? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **ASSIGNED_BY_ID**
-[`user`][1] | Identifier of the user responsible for the item ||
+[`user`](../../data-types.md) | Identifier of the user responsible for the item ||
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the main company for the contact.
 
@@ -109,17 +109,17 @@ The list of companies can be obtained using the method [`crm.item.list`](../univ
 
 The list of companies can be obtained using the method [`crm.item.list`](../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **UTM_SOURCE**
-[`string`][1] | Advertising system (Google Ads, Microsoft Advertising, etc.) ||
+[`string`](../../data-types.md) | Advertising system (Google Ads, Microsoft Advertising, etc.) ||
 || **UTM_MEDIUM**
-[`string`][1] | Traffic type. Possible values:
+[`string`](../../data-types.md) | Traffic type. Possible values:
 - `CPC` — ads
 - `CPM` — banners ||
 || **UTM_CAMPAIGN**
-[`string`][1] | Advertising campaign designation ||
+[`string`](../../data-types.md) | Advertising campaign designation ||
 || **UTM_CONTENT**
-[`string`][1] | Content of the campaign. For example, for contextual ads ||
+[`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads ||
 || **UTM_TERM**
-[`string`][1] | Search condition of the campaign. For example, keywords for contextual advertising ||
+[`string`](../../data-types.md) | Search condition of the campaign. For example, keywords for contextual advertising ||
 || **PHONE**
 [`crm_multifield[]`](../data-types.md) | Phone ||
 || **EMAIL**
@@ -155,13 +155,13 @@ If the contact was created by an external system, then:
 || **Name**
 `type` | **Description** ||
 || **ORIGINATOR_ID**
-[`string`][1] | Identifier of the external system that is the source of data about this contact ||
+[`string`](../../data-types.md) | Identifier of the external system that is the source of data about this contact ||
 || **ORIGIN_ID**
-[`string`][1] | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system.
+[`string`](../../data-types.md) | Version of the contact data in the external system. Used to protect data from accidental overwriting by the external system.
 
 If the data was imported and not changed in the external system, then such data can be edited in CRM without fear that the next export will lead to overwriting of the data ||
 || **ORIGIN_VERSION**
-[`string`][1] | Version of the original ||
+[`string`](../../data-types.md) | Version of the original ||
 |#
 
 **Deprecated fields**
@@ -172,23 +172,23 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **Name**
 `type` | **Description** ||
 || **ADDRESS**
-[`string`][1] | Address ||
+[`string`](../../data-types.md) | Address ||
 || **ADDRESS_2**
-[`string`][1] | Second line of the address ||
+[`string`](../../data-types.md) | Second line of the address ||
 || **ADDRESS_CITY**
-[`string`][1] | City ||
+[`string`](../../data-types.md) | City ||
 || **ADDRESS_POSTAL_CODE**
-[`string`][1] | Postal code ||
+[`string`](../../data-types.md) | Postal code ||
 || **ADDRESS_REGION**
-[`string`][1] | Region ||
+[`string`](../../data-types.md) | Region ||
 || **ADDRESS_PROVINCE**
-[`string`][1] | Province ||
+[`string`](../../data-types.md) | Province ||
 || **ADDRESS_COUNTRY**
-[`string`][1] | Country ||
+[`string`](../../data-types.md) | Country ||
 || **ADDRESS_COUNTRY_CODE**
-[`string`][1] | Country code ||
+[`string`](../../data-types.md) | Country code ||
 || **ADDRESS_LOC_ADDR_ID**
-[`integer`][1] | Location address identifier ||
+[`integer`](../../data-types.md) | Location address identifier ||
 |#
 
 ### Parameter params {#parameter-params}
@@ -197,13 +197,13 @@ Address fields in the contact are deprecated and are only used in compatibility 
 || **Name**
 `type` | **Description** ||
 || **REGISTER_SONET_EVENT**
-[`boolean`][1] | Should the update event of the contact be registered in the activity stream? Possible values:
+[`boolean`](../../data-types.md) | Should the update event of the contact be registered in the activity stream? Possible values:
 - `Y` — yes
 - `N` — no
 
 Default is `N` ||
 || **REGISTER_HISTORY_EVENT**
-[`boolean`][1] | Should the update of the contact be registered in the history? Possible values:
+[`boolean`](../../data-types.md) | Should the update of the contact be registered in the history? Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -646,9 +646,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response, `true` in case of success ||
+[`boolean`](../../data-types.md) | Root element of the response, `true` in case of success ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -685,6 +685,3 @@ HTTP status: **400**
 - [{#T}](./crm-contact-delete.md)
 - [{#T}](./crm-contact-fields.md)
 - [{#T}](../../../tutorials/crm/how-to-edit-crm-objects/how-to-change-email-or-phone.md)
-
-[1]: ../../data-types.md
-[2]: ../status/crm-status-list.md

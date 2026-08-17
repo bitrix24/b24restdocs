@@ -20,7 +20,7 @@ This method creates a new SPA.
 || **Name**
 `type`         | **Description** ||
 || **fields***
-[`object`][1] | Field values (detailed description provided [below](#parametr-fields)) for adding a new SPA ||
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new SPA ||
 |#
 
 ### Parameter fields
@@ -31,9 +31,9 @@ This method creates a new SPA.
 || **Name**
 `type` | **Description** | **Default** ||
 || **title***
-[`string`][1]  | Title of the SPA | ||
+[`string`](../../../data-types.md)  | Title of the SPA | ||
 || **entityTypeId**
-[`integer`][1] | Identifier of the created SPA. If this field is not provided, it will be generated automatically.
+[`integer`](../../../data-types.md) | Identifier of the created SPA. If this field is not provided, it will be generated automatically.
 
 It should be noted that:
 1. This parameter is unique. It is not possible to create two SPAs with the same `entityTypeId`
@@ -42,47 +42,47 @@ It should be noted that:
    - in the range from 128 to 192
 | ||
 || **relations**
-[`object`][1]  | An object containing links to other CRM entities. The structure is described [below](#relations) | ||
+[`object`](../../../data-types.md)  | An object containing links to other CRM entities. The structure is described [below](#relations) | ||
 || **isUseInUserfieldEnabled** 
-[`boolean`][1] | Is the use of the SPA in the user field enabled | `N` ||
+[`boolean`](../../../data-types.md) | Is the use of the SPA in the user field enabled | `N` ||
 || **linkedUserFields** 
-[`object`][1]  | A set of user fields in which this SPA should be displayed. The structure is described [below](#linkedUserFields) | `{}` ||
+[`object`](../../../data-types.md)  | A set of user fields in which this SPA should be displayed. The structure is described [below](#linkedUserFields) | `{}` ||
 || **isAutomationEnabled**
-[`boolean`][1] | Are Automation rules and triggers enabled | `N` ||
+[`boolean`](../../../data-types.md) | Are Automation rules and triggers enabled | `N` ||
 || **isBeginCloseDatesEnabled**
-[`boolean`][1] | Are the **Start Date** and **End Date** fields enabled | `N` ||
+[`boolean`](../../../data-types.md) | Are the **Start Date** and **End Date** fields enabled | `N` ||
 || **isBizProcEnabled**
-[`boolean`][1] | Is the business process designer enabled | `N` ||
+[`boolean`](../../../data-types.md) | Is the business process designer enabled | `N` ||
 || **isCategoriesEnabled**
-[`boolean`][1] | Are custom sales funnels and tunnels enabled | `N` ||
+[`boolean`](../../../data-types.md) | Are custom sales funnels and tunnels enabled | `N` ||
 || **isClientEnabled**
-[`boolean`][1] | Is the **Client** field enabled. When this option is enabled, the SPA has a preset binding to **Contacts** and **Companies** | `N` ||
+[`boolean`](../../../data-types.md) | Is the **Client** field enabled. When this option is enabled, the SPA has a preset binding to **Contacts** and **Companies** | `N` ||
 || **isDocumentsEnabled**
-[`boolean`][1] | Is document printing enabled | `N` ||
+[`boolean`](../../../data-types.md) | Is document printing enabled | `N` ||
 || **isLinkWithProductsEnabled**
-[`boolean`][1] | Is the binding of catalog products enabled | `N` ||
+[`boolean`](../../../data-types.md) | Is the binding of catalog products enabled | `N` ||
 || **isMycompanyEnabled**
-[`boolean`][1] | Is the **Your Company Details** field enabled | `N` ||
+[`boolean`](../../../data-types.md) | Is the **Your Company Details** field enabled | `N` ||
 || **isObserversEnabled** 
-[`boolean`][1] | Is the **Observers** field enabled | `N` ||
+[`boolean`](../../../data-types.md) | Is the **Observers** field enabled | `N` ||
 || **isRecyclebinEnabled**
-[`boolean`][1] | Is the use of the recycle bin enabled | `N` ||
+[`boolean`](../../../data-types.md) | Is the use of the recycle bin enabled | `N` ||
 || **isSetOpenPermissions** 
-[`boolean`][1] | Should new funnels be available to everyone | `Y` ||
+[`boolean`](../../../data-types.md) | Should new funnels be available to everyone | `Y` ||
 || **isSourceEnabled** 
-[`boolean`][1] | Are the **Source** and **Additional Information about Source** fields enabled | `N` ||
+[`boolean`](../../../data-types.md) | Are the **Source** and **Additional Information about Source** fields enabled | `N` ||
 || **isStagesEnabled**
-[`boolean`][1] | Is the use of custom stages and kanban enabled | `N` ||
+[`boolean`](../../../data-types.md) | Is the use of custom stages and kanban enabled | `N` ||
 || **isExternal**
-[`boolean`][1] | Is the SPA external to the CRM (linked to a digital workplace)
+[`boolean`](../../../data-types.md) | Is the SPA external to the CRM (linked to a digital workplace)
 
 This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) | `-` ||
 || **customSectionId**
-[`integer`][1] | Identifier of the digital workplace
+[`integer`](../../../data-types.md) | Identifier of the digital workplace
 
 This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) | `-` ||
 || **customSections**
-[`array`][1] | Array of digital workplaces
+[`array`](../../../data-types.md) | Array of digital workplaces
 
 This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) | `-` ||
 |#
@@ -106,9 +106,9 @@ This parameter is deprecated. For working with digital workplaces, use the metho
 || **Name**
 `type` | **Description** | **Default** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../index.md) or [custom type](./index.md) of the CRM object | `-` ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../index.md) or [custom type](./index.md) of the CRM object | `-` ||
 || **isChildrenListEnabled**
-[`boolean`][1] | Should the linked element be added to the card. 
+[`boolean`](../../../data-types.md) | Should the linked element be added to the card. 
 
 Values `Y` and `N` do not work. You must pass `"true"` or `"false"` | `"false"` ||
 |#
@@ -122,11 +122,11 @@ This setting will only be considered if `isUseInUserfieldEnabled = 'Y'` is passe
 || **Name**
 `type` | **Description** | **Default Value** ||
 || **CALENDAR_EVENT**\|**UF_CRM_CAL_EVENT**
-[`boolean`][1] | Calendar event | `"false"` ||
+[`boolean`](../../../data-types.md) | Calendar event | `"false"` ||
 || **TASKS_TASK**\|**UF_CRM_TASK**
-[`boolean`][1] | Tasks | `"false"` ||
+[`boolean`](../../../data-types.md) | Tasks | `"false"` ||
 || **TASKS_TASK_TEMPLATE**\|**UF_CRM_TASK**
-[`boolean`][1] | Task templates | `"false"` ||
+[`boolean`](../../../data-types.md) | Task templates | `"false"` ||
 |#
 
 These parameters do not support passing values `Y` and `N`. Use `"true"` or `"false"`.
@@ -740,11 +740,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response. Contains a single key `type` ||
+[`object`](../../../data-types.md) | Root element of the response. Contains a single key `type` ||
 || **type**
 [`type`](../../data-types.md#type) | Information about the created SPA ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -783,5 +783,3 @@ HTTP status: **400**, **403**
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
 - [{#T}](./crm-type-fields.md)
-
-[1]: ../../../data-types.md

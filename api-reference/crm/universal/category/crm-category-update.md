@@ -20,11 +20,11 @@ This method updates the funnel (direction) with the identifier `id`, setting new
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM entities for which the funnel will be updated            ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM entities for which the funnel will be updated            ||
 || **id***
-[`integer`][1] | Identifier of the funnel. It can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
+[`integer`](../../../data-types.md) | Identifier of the funnel. It can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
 || **fields***
-[`object`][1]  |  Field values (detailed description provided [below](#parametr-fields)) for updating the funnel fields in the form of a structure:
+[`object`](../../../data-types.md)  |  Field values (detailed description provided [below](#parametr-fields)) for updating the funnel fields in the form of a structure:
 
 ```js
 fields: {
@@ -43,20 +43,20 @@ fields: {
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`][1] | Name of the funnel. The name can be:
+[`string`](../../../data-types.md) | Name of the funnel. The name can be:
 - length cannot exceed `255` characters
 - cannot be empty
 - cannot consist solely of spaces, tabs, etc.
 
 Defaults to `-` ||
 || **sort**
-[`integer`][1] | Sort index. 
+[`integer`](../../../data-types.md) | Sort index. 
 
 Cannot be negative. If a value less than zero is passed to `sort`, it will be ignored and `sort = 0` will be set.
 
 Defaults to `500` || 
 || **isDefault**
-[`boolean`][1] | Indicates whether the funnel is the default funnel. Can have values:
+[`boolean`](../../../data-types.md) | Indicates whether the funnel is the default funnel. Can have values:
 - `Y` — yes, it is
 - `N` — no
 
@@ -414,5 +414,3 @@ HTTP Status: **400**
 - [{#T}](./crm-category-list.md)
 - [{#T}](./crm-category-delete.md)
 - [{#T}](./crm-category-fields.md)
-
-[1]: ../../../data-types.md

@@ -20,15 +20,15 @@ The method `crm.contact.company.delete` removes a company from the specified con
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the contact.
+[`integer`](../../../data-types.md) | Identifier of the contact.
 
 The identifier can be obtained using the methods [crm.contact.list](../crm-contact-list.md) or [crm.contact.add](../crm-contact-add.md) ||
 || **fields***
-[`object`][1] | An object containing information about which company needs to be removed from the bindings.
+[`object`](../../../data-types.md) | An object containing information about which company needs to be removed from the bindings.
 
 Contains a single key `COMPANY_ID` ||
 || **fields.COMPANY_ID***
-[`integer`][1] | Identifier of the company that needs to be removed from the bindings ||
+[`integer`](../../../data-types.md) | Identifier of the company that needs to be removed from the bindings ||
 |#
 
 {% note info "Remove Primary Binding" %}
@@ -291,12 +291,12 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response. Contains:
+[`boolean`](../../../data-types.md) | Root element of the response. Contains:
 - `true` — in case of success
 - `false` — in case of failure (most likely the company you are trying to remove is not linked to the contact)
 ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -334,5 +334,3 @@ HTTP status: **400**
 - [{#T}](./crm-contact-company-items-get.md)
 - [{#T}](./crm-contact-company-items-set.md)
 - [{#T}](./crm-contact-company-items-delete.md)
-
-[1]: ../../../data-types.md

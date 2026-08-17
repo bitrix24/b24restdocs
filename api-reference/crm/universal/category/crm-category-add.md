@@ -20,9 +20,9 @@ This method creates a new sales funnel (direction) for the CRM object type with 
 || **Name**
 `type` | **Description** ||
 || **entityTypeId*** 
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which the new funnel will be created ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of the CRM object for which the new funnel will be created ||
 || **fields***
-[`object`][1]  | Field values (detailed description provided [below](#parametr-fields)) for adding a new funnel in the form of a structure:
+[`object`](../../../data-types.md)  | Field values (detailed description provided [below](#parametr-fields)) for adding a new funnel in the form of a structure:
 
 ```js
 fields: {
@@ -43,20 +43,20 @@ fields: {
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`][1] | Name of the funnel. The name can be:
+[`string`](../../../data-types.md) | Name of the funnel. The name can be:
 - length cannot exceed `255` characters
 - cannot be empty
 - cannot consist solely of spaces, tabs, etc.
 
 Defaults to `-` ||
 || **sort**
-[`integer`][1] | Sort index. 
+[`integer`](../../../data-types.md) | Sort index. 
 
 Cannot be negative. If a value less than zero is passed to `sort`, it will be ignored and set to `sort = 0`
 
 Defaults to `500` || 
 || **isDefault**
-[`boolean`][1] | Indicates whether the funnel is the default funnel. Can have values:
+[`boolean`](../../../data-types.md) | Indicates whether the funnel is the default funnel. Can have values:
 - `Y` — yes, it is
 - `N` — no
 
@@ -376,9 +376,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response. Contains the [`category`](#category) object with information about the funnel ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the [`category`](#category) object with information about the funnel ||
 || **time**
-[`object`][1] | Object containing information about the execution time of the request  ||
+[`object`](../../../data-types.md) | Object containing information about the execution time of the request  ||
 |#
 
 #### Object category {#category}
@@ -387,29 +387,29 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`][1] | Identifier of the funnel (direction) ||
+[`integer`](../../../data-types.md) | Identifier of the funnel (direction) ||
 || **name**
-[`string`][1] | Name of the funnel ||
+[`string`](../../../data-types.md) | Name of the funnel ||
 || **sort**
-[`integer`][1] | Sort index ||
+[`integer`](../../../data-types.md) | Sort index ||
 || **entityTypeId**
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) to which the funnel belongs ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) to which the funnel belongs ||
 || **isDefault**
-[`boolean`][1] | Indicates whether the funnel is the default funnel ||
+[`boolean`](../../../data-types.md) | Indicates whether the funnel is the default funnel ||
 || **originId**
-[`string`][1] | Identifier of the data source.
+[`string`](../../../data-types.md) | Identifier of the data source.
 
 Exists only in deals ||
 || **originatorId**
-[`string`][1] | Identifier of the element in the data source.
+[`string`](../../../data-types.md) | Identifier of the element in the data source.
 
 Exists only in deals ||
 || **isSystem** 
-[`boolean`][1] | Indicates whether the funnel is a system funnel.
+[`boolean`](../../../data-types.md) | Indicates whether the funnel is a system funnel.
 
 Exists only in SPAs ||
 || **code**
-[`string`][1] | Alias for system funnels.
+[`string`](../../../data-types.md) | Alias for system funnels.
 
 Exists only in SPAs ||
 |#
@@ -449,5 +449,3 @@ HTTP Status: **160**, **400**
 - [{#T}](./crm-category-delete.md)
 - [{#T}](./crm-category-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)
-
-[1]: ../../../data-types.md

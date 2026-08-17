@@ -20,7 +20,7 @@ It also outputs information about these fields, but without the name assigned to
 || **Name**
 `type` | **Description** ||
 || **filter**
-[`object`][1] | Object format:
+[`object`](../../../data-types.md) | Object format:
 
 ```
 {
@@ -37,7 +37,7 @@ where:
 
 All conditions for individual fields are combined using `AND`. See the [list of available fields for filtering](#filterable) below ||
 || **order**
-[`object`][1] | Object format:
+[`object`](../../../data-types.md) | Object format:
 
 ```
 {
@@ -78,11 +78,11 @@ By default:
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`][1] | Identifier of the custom field ||
+[`integer`](../../../data-types.md) | Identifier of the custom field ||
 || **FIELD_NAME**
-[`string`][1] | Code of the custom field ||
+[`string`](../../../data-types.md) | Code of the custom field ||
 || **USER_TYPE_ID**
-[`string`][1] | Type of the custom field. Possible values:
+[`string`](../../../data-types.md) | Type of the custom field. Possible values:
 - `string` — string
 - `integer` — integer
 - `double` — number
@@ -102,34 +102,34 @@ By default:
 - [custom field types](../../universal/user-defined-fields/userfield-type.md)
 ||
 || **XML_ID**
-[`string`][1] | External code ||
+[`string`](../../../data-types.md) | External code ||
 || **SORT**
-[`integer`][1] | Sorting index ||
+[`integer`](../../../data-types.md) | Sorting index ||
 || **MULTIPLE**
-[`boolean`][1] | Is the custom field multiple (`Y` — yes / `N` — no) ||
+[`boolean`](../../../data-types.md) | Is the custom field multiple (`Y` — yes / `N` — no) ||
 || **MANDATORY**
-[`boolean`][1] | Is the custom field mandatory (`Y` — yes / `N` — no) ||
+[`boolean`](../../../data-types.md) | Is the custom field mandatory (`Y` — yes / `N` — no) ||
 || **SHOW_FILTER**
-[`char`][1] | Show in the list filter. Possible values:
+[`char`](../../../data-types.md) | Show in the list filter. Possible values:
 - `N` — do not show
 - `I` — exact match
 - `E` — mask
 - `S` — substring
 ||
 || **SHOW_IN_LIST**
-[`boolean`][1] | Show in the list (`Y` — yes / `N` — no).
+[`boolean`](../../../data-types.md) | Show in the list (`Y` — yes / `N` — no).
 
 This parameter does not affect anything within `crm`
 ||
 || **EDIT_IN_LIST**
-[`boolean`][1] | Allow user editing (`Y` — yes / `N` — no) ||
+[`boolean`](../../../data-types.md) | Allow user editing (`Y` — yes / `N` — no) ||
 || **IS_SEARCHABLE**
-[`boolean`][1] | Are field values included in the search (`Y` — yes / `N` — no)
+[`boolean`](../../../data-types.md) | Are field values included in the search (`Y` — yes / `N` — no)
 
 This parameter does not affect anything within `crm`
 ||
 || **LANG**
-[`string`][1] | [Language identifier](../../data-types.md#last-ids). When filtering by this parameter, a set of fields with values in the provided language will be returned:
+[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#last-ids). When filtering by this parameter, a set of fields with values in the provided language will be returned:
 - `EDIT_FORM_LABEL` — label in the edit form
 - `LIST_COLUMN_LABEL` — header in the list
 - `LIST_FILTER_LABEL` — filter label in the list
@@ -694,7 +694,7 @@ HTTP status: **200**
 
 The structure of an individual custom field is identical to [`userfield`](./crm-contact-userfield-get.md#userfield) except that the fields: `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned either as `string` when passing `filter.LANG`, or are not returned at all ||
 || **total**
-[`integer`][1] | Number of found custom fields ||
+[`integer`](../../../data-types.md) | Number of found custom fields ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -729,5 +729,3 @@ HTTP status: **400**
 - [{#T}](./crm-contact-userfield-update.md)
 - [{#T}](./crm-contact-userfield-get.md)
 - [{#T}](./crm-contact-userfield-delete.md)
-
-[1]: ../../../data-types.md

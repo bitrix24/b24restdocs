@@ -1,7 +1,3 @@
----
-title: Migration from imbot to imbot.v2
----
-
 # Migration from imbot to imbot.v2
 
 {% note tip "" %}

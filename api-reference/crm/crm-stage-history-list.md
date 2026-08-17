@@ -23,7 +23,7 @@ The method `crm.stagehistory.list` returns records of stage movement history for
 || **Name**
 `type` | **Description** ||
 || **entityTypeId**
-[`integer`][1] | Identifier of the object type. Can take the following values:
+[`integer`](../data-types.md) | Identifier of the object type. Can take the following values:
 - `1` — lead,
 - `2` — deal,
 - `5` — invoice (old),
@@ -31,9 +31,9 @@ The method `crm.stagehistory.list` returns records of stage movement history for
 - numeric identifier of a [custom type](./universal/user-defined-object-types/index.md#id), for example `130`
 ||
 || **order**
-[`object`][1]| Sorting list, where the key is the field and the value is `ASC` or `DESC` ||
+[`object`](../data-types.md)| Sorting list, where the key is the field and the value is `ASC` or `DESC` ||
 || **filter**
-[`object`][1] | Filtering list. The filter supports the use of exact values, arrays of values, and modifiers:
+[`object`](../data-types.md) | Filtering list. The filter supports the use of exact values, arrays of values, and modifiers:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -57,9 +57,9 @@ The method `crm.stagehistory.list` returns records of stage movement history for
 - `!` — not equal
 ||
 || **select**
-[`object`][1]| List of fields to retrieve ||
+[`object`](../data-types.md)| List of fields to retrieve ||
 || **start**
-[`integer`][1] | Offset for pagination. The pagination logic is standard for [list methods](../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
+[`integer`](../data-types.md) | Offset for pagination. The pagination logic is standard for [list methods](../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
 |#
 
 ## Code Examples
@@ -493,17 +493,17 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`int`][1] | Record identifier ||
+[`int`](../data-types.md) | Record identifier ||
 || **TYPE_ID**
-[`int`][1] | Record type. Can take the following values:
+[`int`](../data-types.md) | Record type. Can take the following values:
 - `1` — creation of an element,
 - `2` — transfer to an intermediate stage,
 - `3` — transfer to the final stage,
 - `5` — change of funnel ||
 || **OWNER_ID**
-[`int`][1] | Identifier of the object in which the stage changed ||
+[`int`](../data-types.md) | Identifier of the object in which the stage changed ||
 || **CREATED_TIME**
-[`datetime`][1] | Identifier of the created element, equal to the time of transferring the element to the stage ||
+[`datetime`](../data-types.md) | Identifier of the created element, equal to the time of transferring the element to the stage ||
 |#
 
 Additionally, there are fields specific to different object types:
@@ -516,12 +516,12 @@ Additionally, there are fields specific to different object types:
     || **Name**
     `type` | **Description** ||
     || **STATUS_SEMANTIC_ID**
-    [`int`][1] | Stage semantics:
+    [`int`](../data-types.md) | Stage semantics:
     - `P` — intermediate stage,
     - `S` — successful stage,
     - `F` — failed stage ||
     || **STATUS_ID**
-    [`int`][1] | Identifier of the stage ||
+    [`int`](../data-types.md) | Identifier of the stage ||
     |#
 
 - for deals, new invoices, and SPAs
@@ -530,14 +530,14 @@ Additionally, there are fields specific to different object types:
     || **Name**
     `type` | **Description** ||
     || **CATEGORY_ID**
-    [`int`][1] | Identifier of the funnel ||
+    [`int`](../data-types.md) | Identifier of the funnel ||
     || **STAGE_SEMANTIC_ID**
-    [`int`][1] | Stage semantics:
+    [`int`](../data-types.md) | Stage semantics:
     - `P` — intermediate stage,
     - `S` — successful stage,
     - `F` — failed stage ||
     || **STAGE_ID**
-    [`int`][1] | Identifier of the stage ||
+    [`int`](../data-types.md) | Identifier of the stage ||
     |#
 
 {% endlist %}    
@@ -574,6 +574,3 @@ HTTP Status: **401**, **400**
 
 - [{#T}](./index.md)
 - [{#T}](./main-entities-fields.md)
-
-[1]: ../data-types.md
-

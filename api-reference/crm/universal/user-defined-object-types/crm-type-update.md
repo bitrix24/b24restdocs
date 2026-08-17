@@ -20,9 +20,9 @@ This method updates an existing SPA by its identifier `id`.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the SPA. Can be obtained using the methods: [`crm.type.list`](./crm-type-list.md), [`crm.type.add`](./crm-type-add.md) ||
+[`integer`](../../../data-types.md) | Identifier of the SPA. Can be obtained using the methods: [`crm.type.list`](./crm-type-list.md), [`crm.type.add`](./crm-type-add.md) ||
 || **fields**
-[`object`][1]  | Field values (detailed description provided [below](#parametr-fields)) for updating the SPA ||
+[`object`](../../../data-types.md)  | Field values (detailed description provided [below](#parametr-fields)) for updating the SPA ||
 |#
 
 ### Parameter fields
@@ -31,49 +31,49 @@ This method updates an existing SPA by its identifier `id`.
 || **Name**
 `type` | **Description** ||
 || **title** 
-[`string`][1]  | Title of the SPA ||
+[`string`](../../../data-types.md)  | Title of the SPA ||
 || **relations**
-[`object`][1]  | An object containing links to other CRM entities. The structure is described by the object [`type.relations`](../../data-types.md#typerelations)  ||
+[`object`](../../../data-types.md)  | An object containing links to other CRM entities. The structure is described by the object [`type.relations`](../../data-types.md#typerelations)  ||
 || **isUseInUserfieldEnabled**
-[`boolean`][1] | Is the use of the SPA in the user field enabled ||
+[`boolean`](../../../data-types.md) | Is the use of the SPA in the user field enabled ||
 || **linkedUserFields**       
-[`object`][1]  | A set of user fields in which this SPA should be displayed. The structure is described by the object [`type.linkedUserFields`](../../data-types.md#typelinkeduserfields) ||
+[`object`](../../../data-types.md)  | A set of user fields in which this SPA should be displayed. The structure is described by the object [`type.linkedUserFields`](../../data-types.md#typelinkeduserfields) ||
 || **isAutomationEnabled**    
-[`boolean`][1] | Are automation rules and triggers enabled ||
+[`boolean`](../../../data-types.md) | Are automation rules and triggers enabled ||
 || **isBeginCloseDatesEnabled**
-[`boolean`][1] | Are the **Start Date** and **End Date** fields enabled ||
+[`boolean`](../../../data-types.md) | Are the **Start Date** and **End Date** fields enabled ||
 || **isBizProcEnabled**       
-[`boolean`][1] | Is the use of the business process designer enabled ||
+[`boolean`](../../../data-types.md) | Is the use of the business process designer enabled ||
 || **isCategoriesEnabled**    
-[`boolean`][1] | Are custom Sales Funnels and sales tunnels enabled ||
+[`boolean`](../../../data-types.md) | Are custom Sales Funnels and sales tunnels enabled ||
 || **isClientEnabled**        
-[`boolean`][1] | Is the **Client** field enabled. When this option is enabled, the SPA has a preset link to **Contacts** and **Companies** ||
+[`boolean`](../../../data-types.md) | Is the **Client** field enabled. When this option is enabled, the SPA has a preset link to **Contacts** and **Companies** ||
 || **isDocumentsEnabled**     
-[`boolean`][1] | Is document printing enabled ||
+[`boolean`](../../../data-types.md) | Is document printing enabled ||
 || **isLinkWithProductsEnabled**
-[`boolean`][1] | Is the link to catalog products enabled ||
+[`boolean`](../../../data-types.md) | Is the link to catalog products enabled ||
 || **isMycompanyEnabled**     
-[`boolean`][1] | Is the **Your Company Details** field enabled ||
+[`boolean`](../../../data-types.md) | Is the **Your Company Details** field enabled ||
 || **isObserversEnabled**     
-[`boolean`][1] | Is the **Observers** field enabled ||
+[`boolean`](../../../data-types.md) | Is the **Observers** field enabled ||
 || **isRecyclebinEnabled**    
-[`boolean`][1] | Is the use of the recycle bin enabled ||
+[`boolean`](../../../data-types.md) | Is the use of the recycle bin enabled ||
 || **isSetOpenPermissions**   
-[`boolean`][1] | Should new funnels be made available to everyone ||
+[`boolean`](../../../data-types.md) | Should new funnels be made available to everyone ||
 || **isSourceEnabled**        
-[`boolean`][1] | Are the **Source** and **Additional Information about Source** fields enabled ||
+[`boolean`](../../../data-types.md) | Are the **Source** and **Additional Information about Source** fields enabled ||
 || **isStagesEnabled**        
-[`boolean`][1] | Is the use of custom stages and Kanban enabled ||
+[`boolean`](../../../data-types.md) | Is the use of custom stages and Kanban enabled ||
 || **isExternal**
-[`boolean`][1] | Is the SPA external to the CRM (linked to a digital workplace)
+[`boolean`](../../../data-types.md) | Is the SPA external to the CRM (linked to a digital workplace)
 
 This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) ||
 || **customSectionId**
-[`integer`][1] | Identifier of the digital workplace
+[`integer`](../../../data-types.md) | Identifier of the digital workplace
 
 This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) ||
 || **customSections**
-[`array`][1]   | Array of digital workplaces
+[`array`](../../../data-types.md)   | Array of digital workplaces
 
 This parameter is deprecated. For working with digital workplaces, use the methods [`crm.automatedsolution.*`](../../automated-solution/index.md) ||
 |#
@@ -619,11 +619,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response. Contains a single key `type` ||
+[`object`](../../../data-types.md) | Root element of the response. Contains a single key `type` ||
 || **type**
 [`type`](../../data-types.md#type) | Information about the updated SPA ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -658,5 +658,3 @@ HTTP Status: **400**
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
 - [{#T}](./crm-type-fields.md)
-
-[1]: ../../../data-types.md

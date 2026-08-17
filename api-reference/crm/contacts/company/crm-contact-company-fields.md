@@ -274,7 +274,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Object in the format:
+[`object`](../../../data-types.md) | Object in the format:
 ```
 {
     field_1: value_1,
@@ -288,7 +288,7 @@ where:
 - `field_n` — field of the element
 - `value_n` — information about the field in the format [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -304,5 +304,3 @@ The method does not return errors.
 - [{#T}](./crm-contact-company-items-get.md)
 - [{#T}](./crm-contact-company-items-set.md)
 - [{#T}](./crm-contact-company-items-delete.md)
-
-[1]: ../../../data-types.md

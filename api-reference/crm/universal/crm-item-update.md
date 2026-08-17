@@ -29,15 +29,15 @@ When updating an item, a standard series of checks, modifications, and automatic
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose item we want to modify.
+[`integer`](../../data-types.md) | Identifier of the [system](../data-types.md#object_type) or [custom type](./user-defined-object-types/index.md) whose item we want to modify.
 
 Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are listed in the [CRM object types reference](../data-types.md#object_type). The identifier of the smart process can be obtained using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method ||
 || **id^*^**
-[`integer`][1] | Identifier of the item we want to modify.
+[`integer`](../../data-types.md) | Identifier of the item we want to modify.
 
 Can be obtained using the [`crm.item.list`](crm-item-list.md) or [`crm.item.add`](crm-item-add.md) methods ||
 || **fields***
-[`object`][1] | Object in the format
+[`object`](../../data-types.md) | Object in the format
 ```
 {
     field_1: value_1,
@@ -64,7 +64,7 @@ Only those fields that need to be changed should be passed in `fields`.
 
 ||
 || **useOriginalUfNames**
-[`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
+[`boolean`](../../data-types.md) | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
 - `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
@@ -87,60 +87,60 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Name of the item 
+  [`string`](../../data-types.md) | Name of the item 
   ||
   || **honorific**
   [`crm_status`](../data-types.md) | String identifier of the lead request (e.g., `'HNR_DE_1' = 'Mr.'`).
 
-  A list of available requests can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "HONOFIRIC" }` filter ||
+  A list of available requests can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "HONOFIRIC" }` filter ||
   || **name**
-  [`string`][1] | First Name ||
+  [`string`](../../data-types.md) | First Name ||
   || **secondName**
-  [`string`][1] | Middle Name ||
+  [`string`](../../data-types.md) | Middle Name ||
   || **lastName**
-  [`string`][1] | Last Name ||
+  [`string`](../../data-types.md) | Last Name ||
   || **birthdate**
-  [`date`][1] | Date of birth ||
+  [`date`](../../data-types.md) | Date of birth ||
   || **companyTitle**
-  [`string`][1] | Company name ||
+  [`string`](../../data-types.md) | Company name ||
   || **sourceId**
   [`crm_status`](../data-types.md) | String identifier of the source.
   
   For example, `'CALL' = 'Call'`.
   
-  A list of available sources can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "SOURCE" }` filter  ||
+  A list of available sources can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter  ||
   || **sourceDescription**
-  [`text`][1] | Additional information about the source ||
+  [`text`](../../data-types.md) | Additional information about the source ||
   || **stageId**
   [`crm_status`](../data-types.md) | String identifier of the item stage.
   
   For example, `'NEW' = 'Unprocessed'`.
 
-  A list of available stages can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "STATUS" }` filter ||
+  A list of available stages can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "STATUS" }` filter ||
   || **statusDescription**
-  [`text`][1] | Additional information about the stage ||
+  [`text`](../../data-types.md) | Additional information about the stage ||
   || **post**
-  [`string`][1] | Job Title ||
+  [`string`](../../data-types.md) | Job Title ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Item currency identifier  ||
   || **isManualOpportunity**
-  [`boolean`][1] | Amount calculation mode. Possible values:
+  [`boolean`](../../data-types.md) | Amount calculation mode. Possible values:
 
   - `Y` — manual
   - `N` — automatic
   ||
   || **opportunity**
-  [`double`][1] | Amount ||
+  [`double`](../../data-types.md) | Amount ||
   || **opened**
-  [`boolean`][1] | Whether the item is available to everyone. Possible values:
+  [`boolean`](../../data-types.md) | Whether the item is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
   ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../../data-types.md) | Comment ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the item  ||
+  [`user`](../../data-types.md) | Identifier of the person responsible for the item  ||
   || **companyId**
   [`crm_company`](../data-types.md) | Company identifier linked to the item.
 
@@ -154,26 +154,26 @@ Default is `N` ||
 
   A list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method by `entityTypeId = 3` ||
   || **originatorId**
-  [`string`][1] | External source ||
+  [`string`](../../data-types.md) | External source ||
   || **originId**
-  [`string`][1] | Identifier of the element in the external source ||
+  [`string`](../../data-types.md) | Identifier of the element in the external source ||
   || **webformId**
-  [`integer`][1] | CRM Form identifier ||
+  [`integer`](../../data-types.md) | CRM Form identifier ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the item ||
+  [`user[]`](../../data-types.md) | Array of user identifiers who will be Observers in the item ||
   || **utmSource**
-  [`string`][1] | Ad system. For example: Search Ads, Display Ads, etc. ||
+  [`string`](../../data-types.md) | Ad system. For example: Search Ads, Display Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Traffic type. Possible values:
+  [`string`](../../data-types.md) | Traffic type. Possible values:
   
   - CPC — ads
   - CPM — banners ||
   || **utmCampaign**
-  [`string`][1] | Advertising campaign designation ||
+  [`string`](../../data-types.md) | Advertising campaign designation ||
   || **utmContent**
-  [`string`][1] | Campaign content. For example, for contextual ads ||
+  [`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Campaign search term. For example, keywords for contextual advertising ||
+  [`string`](../../data-types.md) | Campaign search term. For example, keywords for contextual advertising ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. 
   
@@ -228,45 +228,45 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Name of the item ||
+  [`string`](../../data-types.md) | Name of the item ||
   || **typeId**
   [`crm_status`](../data-types.md) | String identifier of the entity type.
 
   For example, for a deal: `'SALE' = 'Sale'`
 
-  A list of available entity types can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "DEAL_TYPE" }` filter ||
+  A list of available entity types can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "DEAL_TYPE" }` filter ||
   || **categoryId**
-  [`integer`][1] | Identifier of the deal [direction](./category/index.md) (pipeline) ||
+  [`integer`](../../data-types.md) | Identifier of the deal [direction](./category/index.md) (pipeline) ||
   || **stageId**
   [`crm_status`](../data-types.md) | String identifier of the item stage. 
   
   For example, `'NEW' = 'Unprocessed'`.
 
-  A list of available stages can be obtained using [`crm.status.list`][2] by applying the following filter:
+  A list of available stages can be obtained using [`crm.status.list`](../data-types.md) by applying the following filter:
     - If the deal is in the general pipeline (direction) — `{ ENTITY_ID: "DEAL_STAGE" }`
     - If the deal is not in the general pipeline (direction) — `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }`, where
       `categoryId` is the identifier of the deal pipeline ([direction](./category/index.md))
   ||
   || **isRecurring**
-  [`boolean`][1] | Whether the deal is recurring. Possible values:
+  [`boolean`](../../data-types.md) | Whether the deal is recurring. Possible values:
 
   - `Y` — yes
   - `N` — no
   ||
   || **probability**
-  [`integer`][1] | Probability % ||
+  [`integer`](../../data-types.md) | Probability % ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Item currency identifier ||
   || **isManualOpportunity**
-  [`boolean`][1] | Amount calculation mode. Possible values:
+  [`boolean`](../../data-types.md) | Amount calculation mode. Possible values:
 
   - `Y` — manual
   - `N` — automatic
   ||
   || **opportunity**
-  [`double`][1] | Amount ||
+  [`double`](../../data-types.md) | Amount ||
   || **taxValue**
-  [`double`][1] | Tax amount ||
+  [`double`](../../data-types.md) | Tax amount ||
   || **companyId**
   [`crm_company`](../data-types.md) | Company identifier linked to the item.
 
@@ -282,51 +282,51 @@ Default is `N` ||
   || **quoteId**
   [`crm_quote`](../data-types.md) | Offer identifier that will be linked to the deal ||
   || **begindate**
-  [`date`][1] | Item start date ||
+  [`date`](../../data-types.md) | Item start date ||
   || **closedate**
-  [`date`][1] | Item end date ||
+  [`date`](../../data-types.md) | Item end date ||
   || **opened**
-  [`boolean`][1] | Whether the item is available to everyone. Possible values:
+  [`boolean`](../../data-types.md) | Whether the item is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
   ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../../data-types.md) | Comment ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the item ||
+  [`user`](../../data-types.md) | Identifier of the person responsible for the item ||
   || **sourceId**
   [`crm_status`](../data-types.md) | String identifier of the source. 
   
   For example, `'CALL' = 'Call'`.
   
-  A list of available sources can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "SOURCE" }` filter ||
+  A list of available sources can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter ||
   || **sourceDescription**
-  [`text`][1] | Additional information about the source ||
+  [`text`](../../data-types.md) | Additional information about the source ||
   || **leadId**
   [`crm_lead`](../data-types.md) | Lead identifier on the basis of which the item is created ||
   || **additionalInfo**
-  [`string`][1] | Additional information ||
+  [`string`](../../data-types.md) | Additional information ||
   || **originatorId**
-  [`string`][1] | External source ||
+  [`string`](../../data-types.md) | External source ||
   || **originId**
-  [`string`][1] | Identifier of the element in the external source ||
+  [`string`](../../data-types.md) | Identifier of the element in the external source ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the item ||
+  [`user[]`](../../data-types.md) | Array of user identifiers who will be Observers in the item ||
   || **locationId**
-  [`location`][1] | Location identifier. Service field  ||
+  [`location`](../../data-types.md) | Location identifier. Service field  ||
   || **utmSource**
-  [`string`][1] | Advertising system. Google Ads, Facebook Ads, etc. ||
+  [`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Traffic type. Possible values:
+  [`string`](../../data-types.md) | Traffic type. Possible values:
   
   - CPC — ads
   - CPM — banners ||
-  || **utmCampaign** [`string`][1] | Advertising campaign designation ||
+  || **utmCampaign** [`string`](../../data-types.md) | Advertising campaign designation ||
   || **utmContent**
-  [`string`][1] | Campaign content. For example, for contextual ads ||
+  [`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Campaign search term. For example, keywords for contextual advertising ||
+  [`string`](../../data-types.md) | Campaign search term. For example, keywords for contextual advertising ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md)
 
@@ -353,45 +353,45 @@ Default is `N` ||
   
   For example, `'HNR_DE_1' = 'Mr.'`.
 
-  A list of available requests can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "HONOFIRIC" }` filter ||
+  A list of available requests can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "HONOFIRIC" }` filter ||
   || **name**
-  [`string`][1] | First Name ||
+  [`string`](../../data-types.md) | First Name ||
   || **secondName**
-  [`string`][1] | Middle Name ||
+  [`string`](../../data-types.md) | Middle Name ||
   || **lastName**
-  [`string`][1] | Last Name ||
+  [`string`](../../data-types.md) | Last Name ||
   || **photo**
-  [`file`][1] | Photograph ||
+  [`file`](../../data-types.md) | Photograph ||
   || **birthdate**
-  [`date`][1] | Date of birth ||
+  [`date`](../../data-types.md) | Date of birth ||
   || **typeId**
   [`crm_status`](../data-types.md) | String identifier of the entity type.
   
   For example, for a deal: `'SALE' = 'Sale'`.
   
-  A list of available entity types can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "CONTACT_TYPE" }` filter  ||
+  A list of available entity types can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "CONTACT_TYPE" }` filter  ||
   || **sourceId**
   [`crm_status`](../data-types.md) | String identifier of the source.
   
   For example, `'CALL' = 'Call'`.
   
-  A list of available sources can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "SOURCE" }` filter  ||
+  A list of available sources can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter  ||
   || **sourceDescription**
-  [`text`][1] | Additional information about the source ||
+  [`text`](../../data-types.md) | Additional information about the source ||
   || **post**
-  [`string`][1] | Job Title ||
+  [`string`](../../data-types.md) | Job Title ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../../data-types.md) | Comment ||
   || **opened**
-  [`boolean`][1] | Whether the item is available to everyone. Possible values:
+  [`boolean`](../../data-types.md) | Whether the item is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
   ||
   || **export**
-  [`boolean`][1] | Whether the contact is included in the export ||
+  [`boolean`](../../data-types.md) | Whether the contact is included in the export ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the item ||
+  [`user`](../../data-types.md) | Identifier of the person responsible for the item ||
   || **companyId**
   [`crm_company`](../data-types.md) | Company identifier linked to the item.
 
@@ -401,26 +401,26 @@ Default is `N` ||
   || **leadId**
   [`crm_lead`](../data-types.md) | Lead identifier on the basis of which the item is created ||
   || **originatorId**
-  [`string`][1] | External source ||
+  [`string`](../../data-types.md) | External source ||
   || **originId**
-  [`string`][1] | Identifier of the element in the external source ||
+  [`string`](../../data-types.md) | Identifier of the element in the external source ||
   || **originVersion**
-  [`string`][1]          | Original version ||
+  [`string`](../../data-types.md)          | Original version ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the item ||
+  [`user[]`](../../data-types.md) | Array of user identifiers who will be Observers in the item ||
   || **utmSource**
-  [`string`][1] | Advertising system. Google Ads, Facebook Ads, etc. ||
+  [`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Traffic type. Possible values:
+  [`string`](../../data-types.md) | Traffic type. Possible values:
   
   - CPC — ads
   - CPM — banners ||
   || **utmCampaign**
-  [`string`][1] | Advertising campaign designation ||
+  [`string`](../../data-types.md) | Advertising campaign designation ||
   || **utmContent**
-  [`string`][1] | Campaign content. For example, for contextual ads ||
+  [`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Campaign search term. For example, keywords for contextual advertising ||
+  [`string`](../../data-types.md) | Campaign search term. For example, keywords for contextual advertising ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md)
 
@@ -482,71 +482,71 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Name of the item ||
+  [`string`](../../data-types.md) | Name of the item ||
   || **typeId**
   [`crm_status`](../data-types.md) | String identifier of the entity type.
   
   For example, for a deal: `'SALE' = 'Sale'`.
   
-  A list of available entity types can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "COMPANY_TYPE" }` filter ||
+  A list of available entity types can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "COMPANY_TYPE" }` filter ||
   || **logo**
-  [`file`][1] | Logo ||
+  [`file`](../../data-types.md) | Logo ||
   || **bankingDetails**
-  [`string`][1] | Banking Details ||
+  [`string`](../../data-types.md) | Banking Details ||
   || **industry**
   [`crm_status`](../data-types.md) | String identifier of the industry type. 
   
   For example `'IT' = 'Information Technology'`.
   
-  A list of available industry types can be obtained using the [`crm.status.list`][2] method by applying the `{ ENTITY_ID: "INDUSTRY"}` filter ||
+  A list of available industry types can be obtained using the [`crm.status.list`](../data-types.md) method by applying the `{ ENTITY_ID: "INDUSTRY"}` filter ||
   || **employees**
   [`crm_status`](../data-types.md) | String identifier of the employee count type.
   
   The value is taken from the list of available values, for example `'EMPLOYEES_1' = 'less than 50'`.
 
-  A list of available employee count types can be obtained using the [`crm.status.list`][2] method by applying the `{ ENTITY_ID: "EMPLOYEES" }` filter ||
+  A list of available employee count types can be obtained using the [`crm.status.list`](../data-types.md) method by applying the `{ ENTITY_ID: "EMPLOYEES" }` filter ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Item currency identifier ||
   || **revenue**
-  [`double`][1] | Annual revenue ||
+  [`double`](../../data-types.md) | Annual revenue ||
   || **opened**
-  [`boolean`][1] | Whether the item is available to everyone. Possible values:
+  [`boolean`](../../data-types.md) | Whether the item is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
   ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../../data-types.md) | Comment ||
   || **isMyCompany**
-  [`boolean`][1] | Whether the company is my company ||
+  [`boolean`](../../data-types.md) | Whether the company is my company ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the item ||
+  [`user`](../../data-types.md) | Identifier of the person responsible for the item ||
   || **contactIds**
   [`crm_contact[]`](../data-types.md) | List of contact identifiers linked to the item.
 
   A list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method via `entityTypeId = 3`||
   || **leadId**
-  [`crm_lead`][1] | Lead identifier on the basis of which the item is created||
+  [`crm_lead`](../../data-types.md) | Lead identifier on the basis of which the item is created||
   || **originatorId**
-  [`string`][1] | External source ||
+  [`string`](../../data-types.md) | External source ||
   || **originId**
-  [`string`][1] | Identifier of the element in the external source ||
+  [`string`](../../data-types.md) | Identifier of the element in the external source ||
   || **originVersion**
-  [`string`][1] | Original version ||
+  [`string`](../../data-types.md) | Original version ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the item ||
+  [`user[]`](../../data-types.md) | Array of user identifiers who will be Observers in the item ||
   || **utmSource**
-  [`string`][1] | Advertising system. Google Ads, Facebook Ads, etc. ||
+  [`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Traffic type. Possible values:
+  [`string`](../../data-types.md) | Traffic type. Possible values:
   - CPC — ads
   - CPM — banners ||
   || **utmCampaign**
-  [`string`][1] | Advertising campaign designation ||
+  [`string`](../../data-types.md) | Advertising campaign designation ||
   || **utmContent**
-  [`string`][1] | Campaign content. For example, for contextual ads ||
+  [`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Campaign search term. For example, keywords for contextual advertising ||
+  [`string`](../../data-types.md) | Campaign search term. For example, keywords for contextual advertising ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md)
 
@@ -608,35 +608,35 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Name of the item ||
+  [`string`](../../data-types.md) | Name of the item ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the item ||
+  [`user`](../../data-types.md) | Identifier of the person responsible for the item ||
   || **opened**
-  [`boolean`][1] | Whether the item is available to everyone. Possible values:
+  [`boolean`](../../data-types.md) | Whether the item is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
   ||
   || **content**
-  [`text`][1] | Content ||
+  [`text`](../../data-types.md) | Content ||
   || **terms**
-  [`text`][1] | Conditions ||
+  [`text`](../../data-types.md) | Conditions ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../../data-types.md) | Comment ||
   || **dealId**
   [`crm_deal`](../data-types.md) | Linked deal identifier ||
   || **leadId**
   [`crm_lead`](../data-types.md) | Lead identifier on the basis of which the item is created ||
   || **storageTypeId**
-  [`integer`][1] | Storage type identifier. Possible values:
+  [`integer`](../../data-types.md) | Storage type identifier. Possible values:
   - `1` — file
   - `2` — WebDAV
   - `3` — Drive
   ||
   || **storageElementIds**
-  [`integer`][1] | Files array ||
+  [`integer`](../../data-types.md) | Files array ||
   || **webformId**
-  [`integer`][1] | CRM Form identifier ||
+  [`integer`](../../data-types.md) | CRM Form identifier ||
   || **companyId**
   [`crm_company`](../data-types.md) | Company identifier linked to the item.
 
@@ -650,46 +650,46 @@ Default is `N` ||
 
   A list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method by `entityTypeId = 3` ||
   || **locationId**
-  [`location`][1] | Location identifier. Service field ||
+  [`location`](../../data-types.md) | Location identifier. Service field ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Item currency identifier ||
   || **isManualOpportunity**
-  [`boolean`][1] | Amount calculation mode.
+  [`boolean`](../../data-types.md) | Amount calculation mode.
 
   - `Y` — manual
   - `N` — automatic
   ||
   || **opportunity**
-  [`double`][1] | Amount ||
+  [`double`](../../data-types.md) | Amount ||
   || **taxValue**
-  [`double`][1] | Tax amount ||
+  [`double`](../../data-types.md) | Tax amount ||
   || **stageId**
   [`crm_status`](../data-types.md) | String identifier of the item stage. 
   
   For example `'DRAFT' = 'New'`.
 
-  A list of available stages can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "QUOTE_STATUS" }` filter ||
+  A list of available stages can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "QUOTE_STATUS" }` filter ||
   || **begindate**
-  [`date`][1] | Item start date ||
+  [`date`](../../data-types.md) | Item start date ||
   || **closedate**
-  [`date`][1] | Item end date ||
+  [`date`](../../data-types.md) | Item end date ||
   || **actualDate**
-  [`date`][1] | Valid until ||
+  [`date`](../../data-types.md) | Valid until ||
   || **mycompanyId**
   [`crm_company`](../data-types.md) | My company identifier ||
   || **utmSource**
-  [`string`][1] | Advertising system. Google Ads, Facebook Ads, etc. ||
+  [`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, etc. ||
   || **utmMedium**
-  [`string`][1] | Traffic type.
+  [`string`](../../data-types.md) | Traffic type.
   
   - CPC — ads
   - CPM — banners ||
   || **utmCampaign**
-  [`string`][1] | Advertising campaign designation ||
+  [`string`](../../data-types.md) | Advertising campaign designation ||
   || **utmContent**
-  [`string`][1] | Campaign content. For example, for contextual ads ||
+  [`string`](../../data-types.md) | Campaign content. For example, for contextual ads ||
   || **utmTerm**
-  [`string`][1] | Campaign search term. For example, keywords for contextual advertising ||
+  [`string`](../../data-types.md) | Campaign search term. For example, keywords for contextual advertising ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md).
 
@@ -712,24 +712,24 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Name of the item
+  [`string`](../../data-types.md) | Name of the item
   ||
   || **xmlId**
-  [`string`][1] | External code ||
+  [`string`](../../data-types.md) | External code ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the item ||
+  [`user`](../../data-types.md) | Identifier of the person responsible for the item ||
   || **opened**
-  [`boolean`][1] | Whether the item is available to everyone. Possible values:
+  [`boolean`](../../data-types.md) | Whether the item is available to everyone. Possible values:
 
   - `Y` — yes
   - `N` — no
   ||
   || **webformId**
-  [`integer`][1] | CRM Form identifier ||
+  [`integer`](../../data-types.md) | CRM Form identifier ||
   || **begindate**
-  [`date`][1] | Item start date ||
+  [`date`](../../data-types.md) | Item start date ||
   || **closedate**
-  [`date`][1] | Item end date ||
+  [`date`](../../data-types.md) | Item end date ||
   || **companyId**
   [`crm_company`](../data-types.md) | Company identifier linked to the item.
 
@@ -743,40 +743,40 @@ Default is `N` ||
 
   A list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method by `entityTypeId = 3` ||
   || **observers**
-  [`user[]`][1] | Array of user identifiers who will be Observers in the item ||
+  [`user[]`](../../data-types.md) | Array of user identifiers who will be Observers in the item ||
   || **stageId**
   [`crm_status`](../data-types.md) | String identifier of the item stage. 
   
   For example `'DT31_13:N' = 'New'`.
 
-  A list of available stages can be obtained using [`crm.status.list`][2] by applying the filter: `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
+  A list of available stages can be obtained using [`crm.status.list`](../data-types.md) by applying the filter: `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
   `categoryId` — the default invoice pipeline identifier. It can be found using [`crm.category.list`](category/crm-category-list.md) via `entityTypeId = 31` ||
   || **sourceId**
   [`crm_status`](../data-types.md) | String identifier of the source.
   
   For example `'CALL' = 'Call'`.
   
-  A list of available sources can be obtained using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "SOURCE" }` filter ||
+  A list of available sources can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter ||
   || **sourceDescription**
-  [`text`][1] | Additional information about the source ||
+  [`text`](../../data-types.md) | Additional information about the source ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Item currency identifier ||
   || **isManualOpportunity**
-  [`boolean`][1] | Amount calculation mode. Possible values:
+  [`boolean`](../../data-types.md) | Amount calculation mode. Possible values:
 
   - `Y` — manual
   - `N` — automatic
   ||
   || **opportunity**
-  [`double`][1] | Amount ||
+  [`double`](../../data-types.md) | Amount ||
   || **taxValue**
-  [`double`][1] | Tax amount ||
+  [`double`](../../data-types.md) | Tax amount ||
   || **mycompanyId**
   [`crm_company`](../data-types.md) | My company identifier ||
   || **comments**
-  [`text`][1] | Comment ||
+  [`text`](../../data-types.md) | Comment ||
   || **locationId**
-  [`location`][1] | Location identifier. Service field ||
+  [`location`](../../data-types.md) | Location identifier. Service field ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md).
 
@@ -799,26 +799,26 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`][1] | Name of the item  ||
+  [`string`](../../data-types.md) | Name of the item  ||
   || **xmlId**
-  [`string`][1] | External code ||
+  [`string`](../../data-types.md) | External code ||
   || **assignedById**
-  [`user`][1] | Identifier of the person responsible for the item  ||
+  [`user`](../../data-types.md) | Identifier of the person responsible for the item  ||
   || **opened**
-  [`boolean`][1] | Whether the item is available to everyone.
+  [`boolean`](../../data-types.md) | Whether the item is available to everyone.
 
   - `Y` — yes
   - `N` — no
   ||
   || **webformId**
-  [`integer`][1] | CRM Form identifier ||
+  [`integer`](../../data-types.md) | CRM Form identifier ||
   || **begindate**
-  [`date`][1] | Item start date.
+  [`date`](../../data-types.md) | Item start date.
 
   Only available if the `isBeginCloseDatesEnabled` setting is enabled for the corresponding SPA
   ||
   || **closedate**
-  [`date`][1] | Item end date.
+  [`date`](../../data-types.md) | Item end date.
 
   Only available if the `isBeginCloseDatesEnabled` setting is enabled for the corresponding SPA ||
   || **companyId**
@@ -840,7 +840,7 @@ Default is `N` ||
 
   Available only if the `isClientEnabled` setting is enabled for the corresponding SPA ||
   || **observers**
-  [`user[]`][1] | An array of user identifiers who will be Observers in the item.
+  [`user[]`](../../data-types.md) | An array of user identifiers who will be Observers in the item.
 
   Available only if the `isObserversEnabled` setting is enabled for the corresponding SPA ||
   || **categoryId**
@@ -854,7 +854,7 @@ Default is `N` ||
   
   For example, `'DT1220_30:NEW' = 'Start'`.
 
-  The list of available stages can be found using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "DYNAMIC_{entityTypeId}_STAGE_{categoryId}" }` filter, where:
+  The list of available stages can be found using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "DYNAMIC_{entityTypeId}_STAGE_{categoryId}" }` filter, where:
   - `entityTypeId` — SPA type identifier
   - `categoryId` — SPA item pipeline (direction) identifier
 
@@ -864,11 +864,11 @@ Default is `N` ||
   || **sourceId**
   [`crm_status`](../data-types.md) | String identifier of the source. (for example `'CALL' = 'Call'`).
   
-  The list of available sources can be found using [`crm.status.list`][2] by applying the `{ ENTITY_ID: "SOURCE" }` filter.
+  The list of available sources can be found using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter.
 
   Available only if the `isSourceEnabled` setting is enabled for the corresponding SPA  ||
   || **sourceDescription**
-  [`text`][1] | Additional information about the source.
+  [`text`](../../data-types.md) | Additional information about the source.
 
   Available only if the `isSourceEnabled` setting is enabled for the corresponding SPA ||
   || **currencyId**
@@ -876,18 +876,18 @@ Default is `N` ||
 
   Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA  ||
   || **isManualOpportunity**
-  [`boolean`][1] | Amount calculation mode. Possible values:
+  [`boolean`](../../data-types.md) | Amount calculation mode. Possible values:
 
   - `Y` — manual
   - `N` — automatic
 
   Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA||
   || **opportunity**
-  [`double`][1] | Amount.
+  [`double`](../../data-types.md) | Amount.
 
   Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA ||
   || **taxValue**
-  [`double`][1] | Tax amount.
+  [`double`](../../data-types.md) | Tax amount.
 
   Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA ||
   || **mycompanyId**
@@ -1378,11 +1378,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response, contains a single key `item` ||
+[`object`](../../data-types.md) | Root element of the response, contains a single key `item` ||
 || **item**
 [`item`](./object-fields.md) | Information about the updated item, [description of fields](./object-fields.md) ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 {% note info " " %}
@@ -1428,7 +1428,3 @@ HTTP status: **400**, **403**
 - [{#T}](crm-item-delete.md)
 - [{#T}](crm-item-fields.md)
 - [{#T}](./object-fields.md)
-
-[1]: ../../data-types.md
-[2]: ../data-types.md
-[3]: ../status/crm-status-list.md

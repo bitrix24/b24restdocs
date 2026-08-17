@@ -464,11 +464,11 @@ HTTP status: **200**
 || **Title**
 `type` | **Description** ||
 || **result**
-[`object`][1] | Root element of the response. Contains an object with a single key `fields` ||
+[`object`](../../../data-types.md) | Root element of the response. Contains an object with a single key `fields` ||
 || **fields**
-[`object`][1] | Object in the format: `{ field_1: value_1, field_2: value_2, ... , field_n: value_n }`, where `field_n` — fields of the smart process settings, and `value_n` — object of type [`crm_rest_field_description`](../../data-types.md#crm_rest_field_description) ||
+[`object`](../../../data-types.md) | Object in the format: `{ field_1: value_1, field_2: value_2, ... , field_n: value_n }`, where `field_n` — fields of the smart process settings, and `value_n` — object of type [`crm_rest_field_description`](../../data-types.md#crm_rest_field_description) ||
 || **time**
-[`time`][1] | Object containing information about the request execution time  ||
+[`time`](../../../data-types.md) | Object containing information about the request execution time  ||
 |#
 
 ## Error Handling
@@ -503,5 +503,3 @@ HTTP status: **400**, **403**
 - [{#T}](./crm-type-get-by-entity-type-id.md)
 - [{#T}](./crm-type-list.md)
 - [{#T}](./crm-type-delete.md)
-
-[1]: ../../../data-types.md

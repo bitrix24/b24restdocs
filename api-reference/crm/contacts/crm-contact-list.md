@@ -26,7 +26,7 @@ To retrieve a list of companies associated with a contact, use the method [`crm.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`][1] | A list of fields that should be populated for the contacts in the selection.
+[`string[]`](../../data-types.md) | A list of fields that should be populated for the contacts in the selection.
 
 You can use masks in the selection:
 - `'*'` — to select all fields (excluding custom and multiple fields)
@@ -39,7 +39,7 @@ You can find the list of available fields for selection using the method [`crm.c
 By default, all fields are taken — `'*'` + Custom fields — `'UF_*'`
 ||
 || **filter**
-[`object`][1] | An object in the format:
+[`object`](../../data-types.md) | An object in the format:
 
 ```
 {
@@ -81,7 +81,7 @@ You can find the list of available fields for filtering using the method [`crm.c
 The `logic` key in the filter is not supported. To use complex logic in the filter, use the method [crm.item.list](../universal/crm-item-list.md).
 ||
 || **order**
-[`object`][1] | An object in the format:
+[`object`](../../data-types.md) | An object in the format:
 
 ```
 {
@@ -100,7 +100,7 @@ where:
 You can find the list of available fields for sorting using the method [`crm.contact.fields`](crm-contact-fields.md)
 ||
 || **start**
-[`integer`][1] | A parameter for managing pagination.
+[`integer`](../../data-types.md) | A parameter for managing pagination.
 
 The page size of results is always static — 50 records.
 
@@ -612,13 +612,13 @@ HTTP Status: **200**
 
 The fields of an individual contact are configured by the `select` parameter ||
 || **total**
-[`integer`][1] | The total number of contacts found based on the specified conditions ||
+[`integer`](../../data-types.md) | The total number of contacts found based on the specified conditions ||
 || **next**
-[`integer`][1] | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
+[`integer`](../../data-types.md) | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
 
 The `next` parameter appears in the response if the number of elements matching your request exceeds `50` ||
 || **time**
-[`time`][1] | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -654,5 +654,3 @@ HTTP Status: **400**
 - [{#T}](./crm-contact-delete.md)
 - [{#T}](./crm-contact-fields.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/search-by-phone-and-email.md)
-
-[1]: ../../data-types.md

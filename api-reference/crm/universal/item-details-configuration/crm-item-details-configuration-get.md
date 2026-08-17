@@ -24,16 +24,16 @@ The method `crm.item.details.configuration.get` returns the settings of the deta
 || **Name**
 `type` | **Description**                                                                                                                    ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../../index.md) or [custom type](../user-defined-object-types/index.md) of CRM entities ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [custom type](../user-defined-object-types/index.md) of CRM entities ||
 || **userId**
-[`user`][1] | Identifier of the user whose configuration you want to retrieve.
+[`user`](../../../data-types.md) | Identifier of the user whose configuration you want to retrieve.
 
 If this parameter is not provided, the `userId` of the user calling this method will be used.
 
 Required only when requesting personal settings
 ||
 || **scope**
-[`string`][1] | Scope of the settings. Acceptable values:
+[`string`](../../../data-types.md) | Scope of the settings. Acceptable values:
 - `'P'` — personal settings
 - `'C'` — shared settings
 
@@ -41,7 +41,7 @@ By default, the value is `'P'`
 
 ||
 || **extras**
-[`object`][1] | Additional parameters. Possible values and their structure are described [below](#extras) ||
+[`object`](../../../data-types.md) | Additional parameters. Possible values and their structure are described [below](#extras) ||
 |#
 
 ### Parameter extras
@@ -561,7 +561,7 @@ HTTP status: **200**
 || **result**
 [`section[]`](#section)\|`null` | Root element of the response. Contains the configuration of the sections of the detail form. Returns `null` if there is no configuration ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 #### Section
@@ -572,11 +572,11 @@ Describes a specific section with fields inside the element card
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`][1] | Unique name of the section used for identification ||
+[`string`](../../../data-types.md) | Unique name of the section used for identification ||
 || **title**
-[`string`][1] | Title of the section ||
+[`string`](../../../data-types.md) | Title of the section ||
 || **type**
-[`string`][1] | Type of the section ||
+[`string`](../../../data-types.md) | Type of the section ||
 || **elements**
 [`section_element[]`](#section_element) | List of fields displayed in the entity card with additional settings ||
 |#
@@ -589,13 +589,13 @@ Configuration of a specific field within the section
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`][1] | Field identifier ||
+[`string`](../../../data-types.md) | Field identifier ||
 || **optionFlags**
-[`string`][1] | Values:
+[`string`](../../../data-types.md) | Values:
 - `"1"` — always show
 - `"0"` — not always show ||
 || **options**
-[`object`][1] | Additional field options ||
+[`object`](../../../data-types.md) | Additional field options ||
 |#
 
 ## Error Handling
@@ -628,5 +628,3 @@ HTTP status: **400**
 - [{#T}](./crm-item-details-configuration-set.md)
 - [{#T}](./crm-item-details-configuration-reset.md)
 - [{#T}](./crm-item-details-configuration-forceCommonScopeForAll.md)
-
-[1]: ../../../data-types.md

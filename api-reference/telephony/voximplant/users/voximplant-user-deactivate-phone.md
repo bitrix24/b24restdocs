@@ -25,7 +25,9 @@ Some data may be missing here — we will complete it shortly.
 
 {% endif %}
 
-{% include notitle [Scope telephony admin](../../_includes/scope-telephony-admin.md) %}
+> Scope: [`telephony`](../../../scopes/permissions.md)
+>
+> Who can execute the method: administrator
 
 The method `voximplant.user.deactivatePhone` disables the SIP phone presence for an employee. This method checks for the permission to modify the user.
 

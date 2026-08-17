@@ -26,7 +26,7 @@ The list of returned funnels is filtered by access permissions. This means that 
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM entities for which to retrieve the list of funnels ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM entities for which to retrieve the list of funnels ||
 |#
 
 ## Code Examples
@@ -349,7 +349,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response. Contains a single element with the key `categories`, which represents an array of funnels. The structure of an individual funnel corresponds to the [`category`](./crm-category-add.md#category) object ||
 || **total**
-[`integer`][1] | The total number of funnels belonging to a specific `entityTypeId` ||
+[`integer`](../../../data-types.md) | The total number of funnels belonging to a specific `entityTypeId` ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -387,6 +387,3 @@ HTTP status: **400**
 - [{#T}](../../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contractor.md)
 - [{#T}](../../../../tutorials/crm/how-to-get-lists/how-to-get-contractors.md)
-
-[1]: ../../../data-types.md
-

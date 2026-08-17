@@ -54,23 +54,23 @@ Event for changing an element with `id = 24`, belonging to a smart process with 
 || **parameter**
 `type` | **Description** ||
 || **event**
-[`string`][1] | Symbolic code of the event.
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONCRMDYNAMICITEMUPDATE` ||
 || **event_handler_id**
-[`integer`][1] | Identifier of the event handler ||
+[`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`][1] | Object containing information about the modified custom type CRM object.
+[`object`](../../../data-types.md) | Object containing information about the modified custom type CRM object.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`][1] | An object containing information about the fields of a modified CRM custom type object.
+[`object`](../../../data-types.md) | An object containing information about the fields of a modified CRM custom type object.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`][1] | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`][1] | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -81,9 +81,9 @@ The structure is described [below](#auth) ||
 || **parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`][1] | Identifier of the modified custom type CRM object ||
+[`integer`](../../../data-types.md) | Identifier of the modified custom type CRM object ||
 || **ENTITY_TYPE_ID**
-[`integer`][1] | Identifier of the custom CRM type ||
+[`integer`](../../../data-types.md) | Identifier of the custom CRM type ||
 |#
 
 ### Parameter auth {#auth}
@@ -113,5 +113,3 @@ When new invoices are modified, the event `onCrmDynamicItemUpdate` will trigger.
 - [{#T}](index.md)
 - [{#T}](on-crm-dynamic-item-add.md)
 - [{#T}](on-crm-dynamic-item-delete.md)
-
-[1]: ../../../data-types.md

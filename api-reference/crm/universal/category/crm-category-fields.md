@@ -20,7 +20,7 @@ The method retrieves information about the fields of the sales funnels (directio
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM objects for which to retrieve information about the funnel fields ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) of CRM objects for which to retrieve information about the funnel fields ||
 |#
 
 ## Code Examples
@@ -361,29 +361,29 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`][1] | Identifier of the funnel (direction) ||
+[`integer`](../../../data-types.md) | Identifier of the funnel (direction) ||
 || **name**
-[`string`][1] | Name of the funnel ||
+[`string`](../../../data-types.md) | Name of the funnel ||
 || **sort**
-[`integer`][1] | Sort index ||
+[`integer`](../../../data-types.md) | Sort index ||
 || **entityTypeId**
-[`integer`][1] | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) to which the funnel belongs ||
+[`integer`](../../../data-types.md) | Identifier of the [system](../../index.md) or [user-defined type](../user-defined-object-types/index.md) to which the funnel belongs ||
 || **isDefault**
-[`boolean`][1] | Indicates whether the funnel is the default funnel ||
+[`boolean`](../../../data-types.md) | Indicates whether the funnel is the default funnel ||
 || **originId**
-[`string`][1] | Identifier of the data source.
+[`string`](../../../data-types.md) | Identifier of the data source.
 
 Exists only in deals ||
 || **originatorId**
-[`string`][1] | Identifier of the item in the data source.
+[`string`](../../../data-types.md) | Identifier of the item in the data source.
 
 Exists only in deals ||
 || **isSystem** 
-[`boolean`][1] | Indicates whether the funnel is a system funnel.
+[`boolean`](../../../data-types.md) | Indicates whether the funnel is a system funnel.
 
 Exists only in SPAs ||
 || **code**
-[`string`][1] | Alias for system funnels.
+[`string`](../../../data-types.md) | Alias for system funnels.
 
 Exists only in SPAs ||
 |#
@@ -419,5 +419,3 @@ HTTP status: **400**
 - [{#T}](./crm-category-get.md)
 - [{#T}](./crm-category-list.md)
 - [{#T}](./crm-category-delete.md)
-
-[1]: ../../../data-types.md

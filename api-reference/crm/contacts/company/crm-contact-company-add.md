@@ -20,12 +20,12 @@ The method `crm.contact.company.add` links a company to the specified contact.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`][1] | Identifier of the contact.
+[`integer`](../../../data-types.md) | Identifier of the contact.
 
 Can be obtained using the methods [crm.contact.list](../crm-contact-list.md) or [crm.contact.add](../crm-contact-add.md)
 ||
 || **fields***
-[`object`][1] | Object format:
+[`object`](../../../data-types.md) | Object format:
 
 ```
 {
@@ -51,11 +51,11 @@ The list of available fields is described [below](#parameter-fields). ||
 || **Name**
 `type` | **Description** ||
 || **COMPANY_ID***
-[`crm_entity`][2] | Identifier of the company that will be linked to the contact.
+[`crm_entity`](../../data-types.md) | Identifier of the company that will be linked to the contact.
 
 The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 4` ||
 || **IS_PRIMARY**
-[`boolean`][1] | Indicates whether the link is primary. Possible values:
+[`boolean`](../../../data-types.md) | Indicates whether the link is primary. Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -63,7 +63,7 @@ For the first added element, `IS_PRIMARY` is `Y` by default.
 
 Passing `IS_PRIMARY = Y` for a new and not first link overrides the existing primary link ||
 || **SORT**
-[`integer`][1] | Sort index.
+[`integer`](../../../data-types.md) | Sort index.
 
 By default, `i + 10`, where `i` is the maximum sort index of existing links for the current contact or `0` if there are none ||
 |#
@@ -339,12 +339,12 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response. Contains:
+[`boolean`](../../../data-types.md) | Root element of the response. Contains:
 - `true` — on success
 - `false` — on failure (most likely the company you are trying to add is already linked)
 ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -382,6 +382,3 @@ HTTP status: **400**
 - [{#T}](./crm-contact-company-items-get.md)
 - [{#T}](./crm-contact-company-items-set.md)
 - [{#T}](./crm-contact-company-items-delete.md)
-
-[1]: ../../../data-types.md
-[2]: ../../data-types.md

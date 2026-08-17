@@ -17,5 +17,5 @@ items:
     href: serverside-local-app-with-no-ui.md
   - name: Overview of the Developer Resources Section
     href: developers-area.md
-  - name: How to Fix the "Site Does Not Allow Connection" Error When Opening an Application
+  - name: How to Fix the "Site Cannot Be Reached" Error When Opening an Application
     href: site-does-not-allow-connection.md

@@ -22,11 +22,11 @@ CRM object items will not be included in the final selection if the user does no
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | [System](../data-types.md#object_type) or [user type](./user-defined-object-types/index.md) identifier whose items need to be retrieved.
+[`integer`](../../data-types.md) | [System](../data-types.md#object_type) or [user type](./user-defined-object-types/index.md) identifier whose items need to be retrieved.
 
 Numeric values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Account — 31, etc.) are provided in the [CRM object type directory](../data-types.md#object_type). The SPA identifier can be found using the [crm.type.list](./user-defined-object-types/crm-type-list.md) method ||
 || **select**
-[`array`][1] | List of fields that must be populated for the items in the selection.
+[`array`](../../data-types.md) | List of fields that must be populated for the items in the selection.
 
 May contain only item field names or `'*'`.
 
@@ -35,7 +35,7 @@ The list of all available fields for selection can be found using the [`crm.item
 The `fm` field (multiple fields: phones, e-mail, messengers) is not a CRM object field and cannot be explicitly requested via `select`. To receive `fm` in the response, pass `select: ['*']`
 ||
 || **filter**
-[`object`][1] |Format object:
+[`object`](../../data-types.md) |Format object:
 ```
 {
     field_1: value_1,
@@ -80,7 +80,7 @@ The list of all available fields for filtering can be found using the [`crm.item
 To filter by custom fields of type `boolean`, pass `1` or `0` values in `filter`, even if when receiving or changing an item, the value of such a field is passed in the format `Y` or `N`. For example, for the field `ufCrm2_1234567890` use the filter `{"ufCrm2_1234567890": 1}`. Format `Y` or `N` in the filter for custom fields of type `boolean` is not supported
 ||
 || **order**
-[`object`][1] |Format object:
+[`object`](../../data-types.md) |Format object:
 ```
 {
     field_1: value_1,
@@ -98,7 +98,7 @@ where
 A list of all available fields for sorting can be obtained using the [`crm.item.fields`](./crm-item-fields.md) method. The list of standard fields is available in the article [CRM object fields](./object-fields.md)
 ||
 || **start**
-[`integer`][1] | This parameter is used to control pagination.
+[`integer`](../../data-types.md) | This parameter is used to control pagination.
 
 The page size of results is always static — 50 records.
 
@@ -109,7 +109,7 @@ The formula for calculating the `start` parameter value:
 `start = (N-1) * 50`, where `N` — the number of the desired page
 ||
 || **useOriginalUfNames**
-[`boolean`][1] | Parameter to control the format of custom field names in the request and response.   
+[`boolean`](../../data-types.md) | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
 - `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
@@ -1076,19 +1076,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | The root element of the response. Contains a single key `items` ||
+[`object`](../../data-types.md) | The root element of the response. Contains a single key `items` ||
 || **items**
 [`item[]`](./object-fields.md) | Array with information about the found items.
 
 Returned fields depend on the `select` parameter, [field descriptions](./object-fields.md) ||
 || **total**
-[`integer`][1] | The total number of found items ||
+[`integer`](../../data-types.md) | The total number of found items ||
 || **next**
-[`integer`][1] | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
+[`integer`](../../data-types.md) | Contains the value to be passed in the next request in the `start` parameter to get the next batch of data.
 
 The `next` parameter appears in the response if the number of items matching your request exceeds `50` ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 {% note info " " %}
@@ -1137,5 +1137,3 @@ HTTP status: **400**, **403**
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-contractors.md)
-  
-[1]: ../../data-types.md

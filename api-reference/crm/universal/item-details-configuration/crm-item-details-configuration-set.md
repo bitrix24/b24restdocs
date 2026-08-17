@@ -25,18 +25,18 @@ The method `crm.item.details.configuration.set` sets the configurations for the 
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`][1] | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
+[`integer`](../../../data-types.md) | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
 || **data***
 [`section[]`](#section)| List of `section` describing the configuration of field sections in the item card. The structure of `section` is described below ||
 || **userId**
-[`user`][1] | Identifier of the user for whom you want to set the configuration.
+[`user`](../../../data-types.md) | Identifier of the user for whom you want to set the configuration.
 
 If the parameter is not provided, the `userId` of the user calling this method will be used.
 
 Required only when requesting personal settings
 ||
 || **scope**
-[`string`][1] | Scope of the settings. Acceptable values:
+[`string`](../../../data-types.md) | Scope of the settings. Acceptable values:
 - `'P'` — personal settings
 - `'C'` — shared settings
 
@@ -44,7 +44,7 @@ By default, the value is `'P'`
 
 ||
 || **extras**
-[`object`][1] | Additional parameters. Possible values and their structure are described [below](#extras) ||
+[`object`](../../../data-types.md) | Additional parameters. Possible values and their structure are described [below](#extras) ||
 |#
 
 ### Section
@@ -57,11 +57,11 @@ Describes a specific section with fields within the item card.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`][1] | Unique name of the section ||
+[`string`](../../../data-types.md) | Unique name of the section ||
 || **title***
-[`string`][1] | Title of the section. Displayed in the item card ||
+[`string`](../../../data-types.md) | Title of the section. Displayed in the item card ||
 || **type***
-[`string`][1] | Type of the section. 
+[`string`](../../../data-types.md) | Type of the section. 
 
 Currently, only the value `'section'` is available ||
 || **elements**
@@ -78,15 +78,15 @@ Configuration of a specific field within the section.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`][1] | Field identifier. A list of available fields can be obtained using [`crm.item.fields`](../crm-item-fields.md) ||
+[`string`](../../../data-types.md) | Field identifier. A list of available fields can be obtained using [`crm.item.fields`](../crm-item-fields.md) ||
 || **optionFlags**
-[`integer`][1] | Should the field always be displayed:
+[`integer`](../../../data-types.md) | Should the field always be displayed:
 - `1` — yes
 - `0` — no
 
 By default, the value is `0` ||
 || **options**
-[`object`][1] | Additional [list of options](#section_elementoptions) for the field ||
+[`object`](../../../data-types.md) | Additional [list of options](#section_elementoptions) for the field ||
 |#
 
 #### section_element.options
@@ -95,22 +95,22 @@ By default, the value is `0` ||
 || **Name**
 `type` | **Fields where the option is available** | **Description** | **Default** ||
 || **defaultAddressType**
-[`integer`][1] | `ADDRESS` | Default address type identifier. To find possible address types, use [`crm.enum.addresstype`][2] | `Calculated` ||
+[`integer`](../../../data-types.md) | `ADDRESS` | Default address type identifier. To find possible address types, use [`crm.enum.addresstype`](../../auxiliary/enum/crm-enum-address-type.md) | `Calculated` ||
 || **defaultCountry** 
-[`string`][1] | `PHONE`
+[`string`](../../../data-types.md) | `PHONE`
 `CLIENT`
 `COMPANY`
 `CONTACT`
 `MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example `"RU"`              | `Calculated` ||
 || **isPayButtonVisible**
-[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Whether the payment acceptance button is shown.
+[`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the payment acceptance button is shown.
 
 Possible values:
 - `'true'` — shown
 - `'false'` — hidden 
 | `'true'` ||
 || **isPaymentDocumentsVisible**
-[`boolean`][1] | `OPPORTUNITY_WITH_CURRENCY` | Whether the "Payment and Delivery" block is shown.
+[`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the "Payment and Delivery" block is shown.
 
 Possible values: 
 - `'true'` — shown
@@ -156,7 +156,7 @@ For a user with `id = 1`, set the following configuration for item cards
         - Default country: **United Kingdom (+44)**
     - **Address**
         - Always show
-        - Default address type: **Registration Address** (see [`crm.enum.addresstype`][2])
+        - Default address type: **Registration Address** (see [`crm.enum.addresstype`](../../auxiliary/enum/crm-enum-address-type.md))
 - Section 2 - **Basic Information**
     - **Contact Type**
     - **Source**
@@ -828,9 +828,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`][1] | Root element of the response. Returns `true` on success ||
+[`boolean`](../../../data-types.md) | Root element of the response. Returns `true` on success ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -870,6 +870,3 @@ HTTP status: **400**
 - [{#T}](./crm-item-details-configuration-get.md)
 - [{#T}](./crm-item-details-configuration-reset.md)
 - [{#T}](./crm-item-details-configuration-forceCommonScopeForAll.md)
-
-[1]: ../../../data-types.md
-[2]: ../../auxiliary/enum/crm-enum-address-type.md

@@ -18,7 +18,7 @@ This method retrieves a list of smart process settings.
 || **Name**
 `type` | **Description** ||
 || **order**
-[`object`][1]  | Object format: `{ field_1: value_1, field_2: value_2, ..., field_n: value_n }`, where
+[`object`](../../../data-types.md)  | Object format: `{ field_1: value_1, field_2: value_2, ..., field_n: value_n }`, where
 * `field_n`: the name of the field by which the smart processes will be sorted
 * `value_n`: a `string` value, equal to: 
   * `ASC` — ascending order
@@ -27,7 +27,7 @@ This method retrieves a list of smart process settings.
 Possible values for `field` correspond to the fields of the [type](../../data-types.md#type) object
  ||
 || **filter**
-[`object`][1]  | Object format: `{ field_1: value_1, field_2: value_2, ..., field_n: value_n }`, where
+[`object`](../../../data-types.md)  | Object format: `{ field_1: value_1, field_2: value_2, ..., field_n: value_n }`, where
 * `field_n`: the name of the field by which the smart processes will be filtered
 * `value_n`: the filter value
 
@@ -62,7 +62,7 @@ Possible prefix values:
 
  ||
 || **start**
-[`integer`][1] | This parameter is used for pagination control.
+[`integer`](../../../data-types.md) | This parameter is used for pagination control.
 
 The page size of results is always static — 50 records.
 
@@ -626,13 +626,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`][1] | The root element of the response. Contains a single key `types` ||
+[`object`](../../../data-types.md) | The root element of the response. Contains a single key `types` ||
 || **types**
 [`type[]`](../../data-types.md#type) | A list of smart processes, each corresponding to the structure of the [type](../../data-types.md#type) object ||
 || **time**
-[`time`][1] | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 || **total**
-[`integer`][1]| The total number of records found || 
+[`integer`](../../../data-types.md)| The total number of records found || 
 |#
 
 ## Error Handling
@@ -672,5 +672,3 @@ HTTP status: **400**
 - [{#T}](./crm-type-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)
-
-[1]: ../../../data-types.md
