@@ -181,7 +181,7 @@ Default is `N` ||
   
   Values for multiple fields are passed as an array.
   
-  To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-update-files.md)
+  To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-upload-files.md)
   ||
   || **parentId...**
   [`crm_entity`](../data-types.md) | Parent field. An item of another CRM object type that is linked to this item.
@@ -331,7 +331,7 @@ Default is `N` ||
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md)
 
     - Values for multiple fields are passed as an array
-    - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-update-files.md)
+    - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-upload-files.md)
   
   ||
   || **parentId...**
@@ -425,7 +425,7 @@ Default is `N` ||
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md)
 
     - Values for multiple fields are passed as an array
-    - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-update-files.md)
+    - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-upload-files.md)
 
   ||
   || **parentId...**
@@ -551,7 +551,7 @@ Default is `N` ||
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md)
 
     - Values for multiple fields are passed as an array
-    - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-update-files.md)
+    - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-upload-files.md)
 
   ||
   || **parentId...**
@@ -694,7 +694,7 @@ Default is `N` ||
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md).
 
   - Values for multiple fields are passed as an array
-  - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-update-files.md)
+  - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-upload-files.md)
 
   ||
   || **parentId...**
@@ -781,7 +781,7 @@ Default is `N` ||
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md).
 
     - Values for multiple fields are passed as an array
-    - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-update-files.md)
+    - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-upload-files.md)
 
   ||
   || **parentId...**
@@ -898,7 +898,7 @@ Default is `N` ||
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md).
 
     - Values for multiple fields are passed as an array
-    - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-update-files.md)
+    - To upload a file, you must pass an array as the custom field value, where the first item is the filename and the second is the file content encoded in [base64](../../files/how-to-upload-files.md)
 
   ||
   || **parentId...**
@@ -920,7 +920,7 @@ Default is `N` ||
 
 1. Upload a new file to replace the old one (non-multiple field)
 
-    To replace a file in a non-multiple field, simply upload a new file. The old one will be deleted automatically.
+    To replace a file in a single-value field, upload a new file. The old one will be deleted automatically.
 
     ```json
     {

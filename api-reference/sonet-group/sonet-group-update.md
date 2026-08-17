@@ -67,7 +67,7 @@ Possible values:
 
 The user identifier can be obtained using the [user.get](../user/user-get.md) method. ||
 || **IMAGE**
-[`file`](../data-types.md) | New group avatar in [Base64](../files/how-to-upload-files.md#how-to-encode-file-to-base64) format. ||
+[`file`](../data-types.md) | New group avatar in [Base64](../files/how-to-upload-files.md#how-to-encode-a-file-in-base64) format. ||
 || **IMAGE_FILE_ID**
 [`integer`](../data-types.md) | File identifier from Drive for setting the avatar.
 

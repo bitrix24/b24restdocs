@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-This page describes how to upload a new file to Bitrix24 via the Bitrix24 REST API: how to encode a file in Base64, which format to use when passing it to a method, and which limitations to consider.
+A new file reaches Bitrix24 in the request body: it is encoded in Base64 and passed to a field or a parameter of a method. The sections below cover how to encode a file, which format a specific method expects, and which limitations to consider.
 
 There is no single format for all methods: some accept a Base64 string, others accept an array containing a filename and such a string, and others use a separate parameter. Before making a call, check the [How to Choose a Format](#formats) table.
 
@@ -20,7 +20,7 @@ In Bitrix24, there are two types of file fields.
 
 - **File.** This field is not linked to Drive. The file is passed directly into the field — either as a Base64 string or as an array containing a filename and such a string. Bitrix24 decodes the string and saves the file, while the field retains the `ID` of the file.
 
-- **File (Drive).** This field is linked to Drive, and the field stores the `ID` of an object on Drive. Some methods accept Base64 and upload the file to Drive themselves — this is how "file (Drive)" type fields work in the CRM. If the method expects a ready-made `ID`, first upload the file to Drive, and then pass `ID` to the field. For more details, see the [How to Pass a File to a Field Linked to Drive](#disk-field) section.
+- **File (Drive).** This field is linked to Drive, and the field stores the `ID` of an object on Drive. Such fields exist in lists, tasks, and the feed. A method usually expects a ready-made `ID`: first upload the file to Drive, and then pass the `ID` to the field. For more details, see the [How to Pass a File to a Field Linked to Drive](#disk-field) section.
 
 ## How to Encode a File in Base64
 
@@ -76,7 +76,7 @@ The format depends on the method and whether the field is a multiple field or no
 || [user.add](../user/user-add.md) | ["name — Base64" array](#array) in field `PERSONAL_PHOTO` | — ||
 || [crm.item.add](../crm/universal/crm-item-add.md) | ["name — Base64" array](#array) in "file" type field | [array of pairs](#multiple-array) ||
 || [crm.timeline.comment.add](../crm/timeline/comments/crm-timeline-comment-add.md) | [array of pairs](#multiple-array) of one item in field `FILES` | [array of pairs](#multiple-array) in field `FILES` ||
-|| [log.blogpost.add](../log/log-blogpost-add.md) | [array of pairs](#multiple-array) of one item in field `FILES` | [array of pairs](#multiple-array) in field `FILES` ||
+|| [log.blogpost.add](../log/log-blogpost-add.md), [log.blogcomment.add](../log/blogcomment/log-blogcomment-add.md) | [array of pairs](#multiple-array) of one item in field `FILES` | [array of pairs](#multiple-array) in field `FILES` ||
 || [lists.element.add](../lists/elements/lists-element-add.md) | ["name — Base64" array](#array) in "file" type property | [array of pairs](#multiple-array) ||
 || [entity.item.add](../entity/items/entity-item-add.md) | ["name — Base64" array](#array) in "file" type property | [array of pairs](#multiple-array) ||
 || [crm.lead.add](../crm/leads/crm-lead-add.md), [crm.deal.add](../crm/deals/crm-deal-add.md), [crm.contact.add](../crm/contacts/crm-contact-add.md), [crm.company.add](../crm/companies/crm-company-add.md) | [object `fileData`](#filedata) in "file" type field | [array of objects `fileData`](#multiple-filedata) ||
@@ -84,7 +84,14 @@ The format depends on the method and whether the field is a multiple field or no
 || [disk.storage.uploadfile](../disk/storage/disk-storage-upload-file.md), [disk.folder.uploadfile](../disk/folder/disk-folder-upload-file.md), [disk.file.uploadversion](../disk/file/disk-file-upload-version.md) | [parameter `fileContent`](#filecontent) | — ||
 || [catalog.productImage.add](../catalog/product-image/catalog-product-image-add.md) | [parameter `fileContent`](#filecontent) | — ||
 || [telephony.externalCall.attachRecord](../telephony/telephony-external-call-attach-record.md) | [parameters `FILENAME` and `FILE_CONTENT`](#filename) | — ||
+|| [note.file.add](../note/file/note-file-add.md) | Name in parameter `fileName`, content as a Base64 string in parameter `fileContent` | — ||
+|| [im.v2.File.upload](../chat-bots/chat-bots-v2/im.v2/files/file-upload.md), [imbot.v2.File.upload](../chat-bots/chat-bots-v2/imbot.v2/files/file-upload.md) | Name in field `fields.name`, content as a Base64 string in field `fields.content` | — ||
+|| [landing.block.uploadfile](../landing/block/methods/landing-block-upload-file.md) | In parameter `picture` — an image URL or a ["name — Base64" array](#array) | — ||
+|| [tasks.task.add](../tasks/tasks-task-add.md) | Does not accept Base64: field `UF_TASK_WEBDAV_FILES` takes the `ID` of a file already stored on Drive, prefixed with `n` — for example, `"n12345"` | An array of such values ||
+|| [tasks.task.file.attach](../tasks/tasks-task-file-attach.md) | Does not accept Base64: parameter `fileIds` takes the `ID` of Drive files as numbers | An array of `ID` ||
 |#
+
+The table lists the methods that create objects. The paired update method accepts a file in the same format: for example, [crm.item.update](../crm/universal/crm-item-update.md) accepts it the same way as [crm.item.add](../crm/universal/crm-item-add.md). What happens to the old files in this case is shown in the [How Methods Handle Files](./how-to-update-files.md#behavior) table.
 
 If the required method is not in the table, check the parameter descriptions on the method's page for the format.
 
@@ -1476,7 +1483,7 @@ A "file (Drive)" type field stores the `ID` of an object on Drive. If a method d
 
 2. Take the `ID` from the response and pass it to the object field. For example, the [tasks.task.file.attach](../tasks/tasks-task-file-attach.md) method attaches a file that is already stored on Drive to a task.
 
-"File (Drive)" type fields in the CRM are an exception. They accept a [ `fileData`](#filedata) object with Base64, and Bitrix24 automatically saves the file to Drive in a system folder for REST files.
+Some methods accept Base64 and save the file to Drive themselves. This is how timeline comment attachments work: it is not a field type but a behavior of the method — parameter `FILES` accepts the file content, and Bitrix24 places the file on Drive in a system folder for REST files. There are no "file (Drive)" type fields in the CRM.
 
 ## Response Content
 
@@ -1521,7 +1528,7 @@ To download a file using `DOWNLOAD_URL` or `urlMachine`, send a separate `GET` r
 
 - The POST request size in Bitrix24 Cloud is limited by server settings — 2 GB. A file larger than this size will not be processed. If multiple files are passed in a single request and their total size exceeds the limit, the request will be interrupted — pass such files in separate requests. Refer to the size of the Base64 string rather than the original file: the string is approximately one-third longer.
 
-- In the Self-hosted version, the request size limit is determined by your server settings, not Bitrix24. Check this with your portal administrator.
+- In the Self-hosted version, the request size limit is determined by your server settings, not Bitrix24. Check this with your Bitrix24 administrator.
 
 - The request execution time limit is 60 seconds for Bitrix24 Cloud. The request will time out if processing takes longer. You can check the execution time in the [time](../data-types.md#time) object of the response, parameter `duration`.
 

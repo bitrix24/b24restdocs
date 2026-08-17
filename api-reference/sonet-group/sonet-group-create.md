@@ -83,7 +83,7 @@ The user ID can be obtained using the [user.get](../user/user-get.md) method.
 
 Specifying the owner is available only to administrators. For all others, the current user automatically becomes the owner ||
 || **IMAGE**
-[`file`](../data-types.md) | The group's avatar in [Base64](../files/how-to-upload-files.md#how-to-encode-file-to-base64) format ||
+[`file`](../data-types.md) | The group's avatar in [Base64](../files/how-to-upload-files.md#how-to-encode-a-file-in-base64) format ||
 || **IMAGE_FILE_ID**
 [`integer`](../data-types.md) | The file ID from Drive for setting the avatar.
 

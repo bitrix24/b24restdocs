@@ -52,7 +52,7 @@ How to prepare the value for `content`:
 2. Encode the content in Base64.
 3. Pass only the Base64 string, without the prefix `data:*/*;base64,`.
 
-More details: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-file-in-base64).
+More details: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-a-file-in-base64).
 
 {% endnote %}
 

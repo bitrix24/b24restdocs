@@ -81,7 +81,7 @@ To pass a value in a File type field, specify:
 - for File type — [base64](../../files/how-to-upload-files.md) or an array with the name and base64
 - for File type (Drive) — file identifier from Drive
 
-More about working with files in the article [How to Update and Delete Files](../../files/how-to-update-files.md#listselementupdate-update-field-in-list)
+More about working with files in the article [How to Update and Delete Files](../../files/how-to-update-files.md#lists-element-update)
 
 ||
 |#

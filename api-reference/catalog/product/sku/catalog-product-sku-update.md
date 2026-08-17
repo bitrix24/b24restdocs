@@ -168,7 +168,7 @@ For main products, the ability to edit this field is available only in the on-pr
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]` if the property is multiple. Here `valueId` — identifier of the property value, and `value` — property value. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
 `valueId` of all properties of the main product can be obtained using the methods [catalog.product.sku.get](./catalog-product-sku-get.md) and [catalog.product.sku.list](./catalog-product-sku-list.md)
 ||

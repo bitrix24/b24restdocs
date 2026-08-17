@@ -344,7 +344,7 @@ Used only in the on-premise version for content sales
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
 `valueId` of all properties of the product can be obtained using the [catalog.product.get](./product/catalog-product-get.md) and [catalog.product.list](./product/catalog-product-list.md) methods
 ||
@@ -657,7 +657,7 @@ For parent products, the ability to edit this field is available only in the on-
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
 `valueId` of all properties of the parent product can be obtained using the [catalog.product.sku.get](./product/sku/catalog-product-sku-get.md) and [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md) methods
 ||
@@ -832,7 +832,7 @@ Used only in the on-premise version for content sales
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
 `valueId` of all properties of the trade offer can be obtained using the [catalog.product.offer.get](./product/offer/catalog-product-offer-get.md) and [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md) methods
 ||
@@ -927,7 +927,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed.
+If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
 `valueId` of all properties of the service can be obtained using the [catalog.product.service.get](./product/service/catalog-product-service-get.md) and [catalog.product.service.list](./product/service/catalog-product-service-list.md) methods
 ||

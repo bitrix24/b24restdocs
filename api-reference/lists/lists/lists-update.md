@@ -112,7 +112,7 @@ Access permissions can only be assigned to users or departments that do not alre
 || **SORT**
 [`integer`](../../data-types.md) | Sorting ||
 || **PICTURE**
-[`array`](../../data-types.md) | Picture. An object in the format `{fileData: [value1, value2]}`, where `value1` is the name of the picture file with the extension, and `value2` is the picture in [base64](../../files/how-to-update-files.md#kak-kodirovat-fajl-v-base64) format ||
+[`array`](../../data-types.md) | Picture. An object in the format `{fileData: [value1, value2]}`, where `value1` is the name of the picture file with the extension, and `value2` is the picture in [base64](../../files/how-to-upload-files.md#how-to-encode-a-file-in-base64) format ||
 || **BIZPROC**
 [`string`](../../data-types.md) | Enabling business process support. Possible values:
 - `Y` — yes

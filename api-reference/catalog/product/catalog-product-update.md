@@ -269,7 +269,7 @@ For a property with `userType = BoolEnum` in `value`, pass:
 
 If `valueId` is not specified, the existing value will be deleted from the database and replaced with the new one specified in `value`.
 
-If the property is multiple, all existing property values for which `valueId` was not specified will be deleted.
+If the property is multiple, all existing property values for which `valueId` was not specified will be deleted. An exception is "file" type properties: their values that are not passed in the request are retained, but after a deletion the `valueId` of the remaining values changes.
 
 The `valueId` identifiers of all product properties can be obtained using the [catalog.product.get](./catalog-product-get.md) and [catalog.product.list](./catalog-product-list.md) methods.
 

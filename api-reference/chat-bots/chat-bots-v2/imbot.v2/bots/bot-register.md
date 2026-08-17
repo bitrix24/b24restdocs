@@ -89,7 +89,7 @@ If not specified — assigned automatically ||
 || **avatar** 
 [`file`](../../../../data-types.md) | Avatar. Pass a Base64 string without the prefix `data:*/*;base64,`.
 
-How to prepare data: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-file-to-base64) || 
+How to prepare data: [How to upload files](../../../../files/how-to-upload-files.md#how-to-encode-a-file-in-base64) || 
 |#
 
 ### Available Backgrounds {#backgrounds}
