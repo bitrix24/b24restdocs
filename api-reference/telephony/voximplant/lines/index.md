@@ -16,7 +16,7 @@ To call the methods, you need the `Manage numbers - modify` access permission.
 
 > Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [General Telephony Settings](https://helpdesk.bitrix24.com/open/19721462/)
+> User documentation: [General Telephony Settings](https://helpdesk.bitrix24.com/open/8748685/)
 
 ## Interaction with Other Objects
 

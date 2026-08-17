@@ -108,15 +108,23 @@ Required only for `recurrence_mode` with values `this` or `next`. ||
 - `Y` — meeting with participants
 - `N` — meeting without participants
 
-For a meeting with participants, you must specify the list of participants in `attendees` and the event organizer in `host`. Without filling these fields, the event will not be created. ||
+For a meeting with participants, pass the list of participants in `attendees`. ||
 || **location**
 [`string`](../../data-types.md) | Location. ||
 || **remind**
 [`array`](../../data-types.md) | Array of objects describing reminders for the event. The structure is described [below](#remind). ||
-|| **attendees***
-[`array`](../../data-types.md) | List of participant identifiers for the event. This field is required if `is_meeting` = `Y`. ||
-|| **host***
-[`string`](../../data-types.md) | Identifier of the event organizer. This field is required if `is_meeting` = `Y`. ||
+|| **attendees**
+[`array`](../../data-types.md) | List of participant identifiers for the event.
+
+If you do not pass this parameter when updating a meeting, the current list of participants will be retained ||
+|| **host**
+[`integer`](../../data-types.md) | Event organizer identifier.
+
+Pass this parameter only if the meeting is updated by someone other than the organizer. In this case, specify the identifier of the current organizer. If you do not pass the parameter or pass another user's identifier, the method returns the `Access denied` error.
+
+You can retrieve the current organizer using [calendar.event.getbyid](./calendar-event-get-by-id.md) or [calendar.event.get](./calendar-event-get.md).
+
+You cannot use this parameter to change the organizer of an existing event. To change the organizer, delete the event using [calendar.event.delete](./calendar-event-delete.md) and create a new one using [calendar.event.add](./calendar-event-add.md) on behalf of the required organizer ||
 || **meeting**
 [`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting). ||
 || **crm_fields**
@@ -230,7 +238,7 @@ Priority of timezone parameter processing:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":699,"type":"user","ownerId":2,"name":"Changed Event Name","description":"New description for event","from":"2024-06-17","to":"2024-06-17","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"free","importance":"normal","is_meeting":"Y","private_event":"Y","recurrence_mode":"next","current_date_from":"2024-12-04","remind":[{"type":"min","count":10}],"location":"London","attendees":[1,2,3],"host":2,"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"]}' \
+    -d '{"id":699,"type":"user","ownerId":2,"name":"Changed Event Name","description":"New description for event","from":"2024-06-17","to":"2024-06-17","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"free","importance":"normal","is_meeting":"Y","private_event":"Y","recurrence_mode":"next","current_date_from":"2024-12-04","remind":[{"type":"min","count":10}],"location":"London","attendees":[1,2,3],"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"]}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.update
     ```
 
@@ -240,7 +248,7 @@ Priority of timezone parameter processing:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":699,"type":"user","ownerId":2,"name":"Changed Event Name","description":"New description for event","from":"2024-06-17","to":"2024-06-17","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"free","importance":"normal","is_meeting":"Y","private_event":"Y","recurrence_mode":"next","current_date_from":"2024-12-04","remind":[{"type":"min","count":10}],"location":"London","attendees":[1,2,3],"host":2,"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"],"auth":"**put_access_token_here**"}' \
+    -d '{"id":699,"type":"user","ownerId":2,"name":"Changed Event Name","description":"New description for event","from":"2024-06-17","to":"2024-06-17","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"free","importance":"normal","is_meeting":"Y","private_event":"Y","recurrence_mode":"next","current_date_from":"2024-12-04","remind":[{"type":"min","count":10}],"location":"London","attendees":[1,2,3],"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"],"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/calendar.event.update
     ```
 
@@ -294,7 +302,6 @@ Priority of timezone parameter processing:
           ],
           location: 'London',
           attendees: [1, 2, 3],
-          host: 2,
           meeting: {
             notify: true,
             reinvite: false,
@@ -364,7 +371,6 @@ Priority of timezone parameter processing:
               ],
               location: 'London',
               attendees: [1, 2, 3],
-              host: 2,
               meeting: {
                 notify: true,
                 reinvite: false,
@@ -434,7 +440,6 @@ Priority of timezone parameter processing:
                     ],
                     'location'        => 'London',
                     'attendees'       => [1, 2, 3],
-                    'host'            => 2,
                     'meeting'         => [
                         'notify'      => true,
                         'reinvite'    => false,
@@ -496,7 +501,6 @@ Priority of timezone parameter processing:
             ],
             location: 'London',
             attendees: [1, 2, 3],
-            host: 2,
             meeting: {
                 notify: true,
                 reinvite: false,
@@ -547,7 +551,6 @@ Priority of timezone parameter processing:
             ],
             'location' => 'London',
             'attendees' => [1, 2, 3],
-            'host' => 2,
             'meeting' => [
                 'notify' => true,
                 'reinvite' => false,
@@ -599,7 +602,6 @@ Priority of timezone parameter processing:
     	},
     	"location":  "London",
     	"attendees": []int{1, 2, 3},
-    	"host":      2,
     	"meeting": b24.Params{
     		"notify":       true,
     		"reinvite":     false,

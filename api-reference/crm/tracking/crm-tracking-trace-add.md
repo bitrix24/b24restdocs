@@ -24,9 +24,19 @@ The method `crm.tracking.trace.add` creates a Sales Intelligence trace and retur
 || **TRACE**^*^
 [`string`](../../data-types.md) | JSON string containing trace data.
 
-For the correct value, refer to the [tutorial](../../../tutorials/crm/how-to-use-analitycs/info-to-analitics.md) ||
+You can retrieve a ready-to-use value on the website via `b24Tracker.guest.getTrace()`. A practical scenario is described in the [tutorial](../../../tutorials/crm/how-to-use-analitycs/info-to-analitics.md).
+
+If you create `TRACE` manually, pass UTM parameters in the `tags.list` object:
+
+```json
+{"tags":{"list":{"utm_source":"google-maps"}}}
+```
+
+In this example, only one UTM parameter is passed to the trace: `utm_source` with the value `google-maps`. To pass other UTM parameters, add them to `tags.list`, for example `utm_medium`, `utm_campaign`, `utm_content`, or `utm_term` ||
 || **ENTITIES**
-[`object[]`](../../data-types.md) | Array of objects to be linked with the trace [more details](#entities) ||
+[`object[]`](../../data-types.md) | Array of objects to be linked with the trace [(detailed description)](#entities)
+
+If `ENTITIES` is not passed, the method creates a trace without linking it to CRM objects ||
 |#
 
 ### Parameter ENTITIES {#entities}
@@ -35,15 +45,20 @@ For the correct value, refer to the [tutorial](../../../tutorials/crm/how-to-use
 || **Name**
 `type` | **Description** ||
 || **TYPE**^*^
-[`string`](../../data-types.md) | Object type. Possible values:
+[`string`](../../data-types.md) | CRM object type.
 
-- `COMPANY`
-- `CONTACT`
-- `DEAL`
-- `LEAD`
-- `QUOTE` ||
+Possible values:
+
+- `COMPANY` — company, `entityTypeId = 4`
+- `CONTACT` — contact, `entityTypeId = 3`
+- `DEAL` — deal, `entityTypeId = 2`
+- `LEAD` — lead, `entityTypeId = 1`
+- `QUOTE` — estimate, `entityTypeId = 7`
+||
 || **ID**^*^
-[`integer`](../../data-types.md) | Identifier of the entity.
+[`integer`](../../data-types.md) | CRM object identifier.
+
+You can retrieve the identifier using the [crm.item.list](../universal/crm-item-list.md) method with `entityTypeId` of the required object type.
 
 The user must have modification rights for the specified object ||
 |#
@@ -53,8 +68,8 @@ The user must have modification rights for the specified object ||
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 Example of creating a Sales Intelligence trace, where:
-- `TRACE` — JSON string with trace data
-- `ENTITIES` — objects linked to the trace
+- `TRACE` — JSON string with the `utm_source` UTM parameter and the value `google-maps`
+- `ENTITIES` — contact and lead linked to the trace
 
 {% list tabs %}
 
@@ -64,15 +79,15 @@ Example of creating a Sales Intelligence trace, where:
     curl -X POST \
       -H "Content-Type: application/json" \
       -d '{
-        "TRACE": "{\"SOURCE_ID\":\"6\",\"SOURCE_DESC\":\"Direct sale\",\"PAGES\":[{\"URL\":\"https://example.com/\",\"DATE\":\"2024-04-03T10:26:32+03:00\"}]}",
+        "TRACE": "{\"tags\":{\"list\":{\"utm_source\":\"google-maps\"}}}",
         "ENTITIES": [
           {
             "TYPE": "CONTACT",
-            "ID": 3215
+            "ID": 17
           },
           {
             "TYPE": "LEAD",
-            "ID": 1
+            "ID": 1000739
           }
         ]
       }' \
@@ -85,15 +100,15 @@ Example of creating a Sales Intelligence trace, where:
     curl -X POST \
       -H "Content-Type: application/json" \
       -d '{
-        "TRACE": "{\"SOURCE_ID\":\"6\",\"SOURCE_DESC\":\"Direct sale\",\"PAGES\":[{\"URL\":\"https://example.com/\",\"DATE\":\"2024-04-03T10:26:32+03:00\"}]}",
+        "TRACE": "{\"tags\":{\"list\":{\"utm_source\":\"google-maps\"}}}",
         "ENTITIES": [
           {
             "TYPE": "CONTACT",
-            "ID": 3215
+            "ID": 17
           },
           {
             "TYPE": "LEAD",
-            "ID": 1
+            "ID": 1000739
           }
         ],
         "auth": "**put_access_token_here**"
@@ -115,15 +130,15 @@ Example of creating a Sales Intelligence trace, where:
       const response = await $b24.actions.v2.call.make<number>({
         method: 'crm.tracking.trace.add',
         params: {
-          TRACE: '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+03:00"}]}',
+          TRACE: '{"tags":{"list":{"utm_source":"google-maps"}}}',
           ENTITIES: [
             {
               TYPE: 'CONTACT',
-              ID: 3215,
+              ID: 17,
             },
             {
               TYPE: 'LEAD',
-              ID: 1,
+              ID: 1000739,
             },
           ],
         },
@@ -157,15 +172,15 @@ Example of creating a Sales Intelligence trace, where:
           const response = await $b24.actions.v2.call.make({
             method: 'crm.tracking.trace.add',
             params: {
-              TRACE: '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+03:00"}]}',
+              TRACE: '{"tags":{"list":{"utm_source":"google-maps"}}}',
               ENTITIES: [
                 {
                   TYPE: 'CONTACT',
-                  ID: 3215,
+                  ID: 17,
                 },
                 {
                   TYPE: 'LEAD',
-                  ID: 1,
+                  ID: 1000739,
                 },
               ],
             },
@@ -199,15 +214,15 @@ Example of creating a Sales Intelligence trace, where:
             ->call(
                 'crm.tracking.trace.add',
                 [
-                    'TRACE' => '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+03:00"}]}',
+                    'TRACE' => '{"tags":{"list":{"utm_source":"google-maps"}}}',
                     'ENTITIES' => [
                         [
                             'TYPE' => 'CONTACT',
-                            'ID' => 3215,
+                            'ID' => 17,
                         ],
                         [
                             'TYPE' => 'LEAD',
-                            'ID' => 1,
+                            'ID' => 1000739,
                         ],
                     ],
                 ]
@@ -230,15 +245,15 @@ Example of creating a Sales Intelligence trace, where:
     BX24.callMethod(
         'crm.tracking.trace.add',
         {
-            TRACE: '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+03:00"}]}',
+            TRACE: '{"tags":{"list":{"utm_source":"google-maps"}}}',
             ENTITIES: [
                 {
                     TYPE: 'CONTACT',
-                    ID: 3215
+                    ID: 17
                 },
                 {
                     TYPE: 'LEAD',
-                    ID: 1
+                    ID: 1000739
                 }
             ]
         },
@@ -268,15 +283,15 @@ Example of creating a Sales Intelligence trace, where:
 
     try:
         bitrix_response = client.crm.tracking.trace.add(
-            trace="{\"SOURCE_ID\":\"6\",\"SOURCE_DESC\":\"Direct sale\",\"PAGES\":[{\"URL\":\"https://example.com/\",\"DATE\":\"2024-04-03T10:26:32+03:00\"}]}",
+            trace="{\"tags\":{\"list\":{\"utm_source\":\"google-maps\"}}}",
             entities=[
                 {
                     "TYPE": "CONTACT",
-                    "ID": 3215
+                    "ID": 17
                 },
                 {
                     "TYPE": "LEAD",
-                    "ID": 1
+                    "ID": 1000739
                 }
             ],
         )
@@ -301,15 +316,15 @@ Example of creating a Sales Intelligence trace, where:
     $result = CRest::call(
         'crm.tracking.trace.add',
         [
-            'TRACE' => '{"SOURCE_ID":"6","SOURCE_DESC":"Direct sale","PAGES":[{"URL":"https://example.com/","DATE":"2024-04-03T10:26:32+03:00"}]}',
+            'TRACE' => '{"tags":{"list":{"utm_source":"google-maps"}}}',
             'ENTITIES' => [
                 [
                     'TYPE' => 'CONTACT',
-                    'ID' => 3215,
+                    'ID' => 17,
                 ],
                 [
                     'TYPE' => 'LEAD',
-                    'ID' => 1,
+                    'ID' => 1000739,
                 ],
             ],
         ]
@@ -325,15 +340,15 @@ Example of creating a Sales Intelligence trace, where:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.tracking.trace.add", b24.Params{
-    	"TRACE": "{\"SOURCE_ID\":\"6\",\"SOURCE_DESC\":\"Direct sale\",\"PAGES\":[{\"URL\":\"https://example.com/\",\"DATE\":\"2024-04-03T10:26:32+03:00\"}]}",
+        "TRACE": "{\"tags\":{\"list\":{\"utm_source\":\"google-maps\"}}}",
     	"ENTITIES": []b24.Params{
     		{
     			"TYPE": "CONTACT",
-    			"ID":   3215,
+                "ID":   17,
     		},
     		{
     			"TYPE": "LEAD",
-    			"ID":   1,
+                "ID":   1000739,
     		},
     	},
     })
@@ -356,15 +371,15 @@ HTTP status: **200**
 
 ```json
 {
-    "result": 341,
+    "result": 1581,
     "time": {
-        "start": 1775117366,
-        "finish": 1775117367.080829,
-        "duration": 1.0808289051055908,
+        "start": 1786711683,
+        "finish": 1786711683.296598,
+        "duration": 0.296597957611084,
         "processing": 0,
-        "date_start": "2026-04-02T11:09:26+03:00",
-        "date_finish": "2026-04-02T11:09:27+03:00",
-        "operating_reset_at": 1775117967,
+        "date_start": "2026-08-14T15:48:03+03:00",
+        "date_finish": "2026-08-14T15:48:03+03:00",
+        "operating_reset_at": 1786712283,
         "operating": 0
     }
 }

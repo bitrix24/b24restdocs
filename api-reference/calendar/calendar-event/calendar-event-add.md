@@ -111,16 +111,16 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 - `Y` — meeting with participants
 - `N` — meeting without participants
 
-For a meeting with participants, you must specify the list of attendees `attendees` and the event organizer `host`. Without filling in these fields, the event will not be created
+For a meeting with participants, pass the list of attendees in `attendees`. The event organizer will be the user on whose behalf the method is executed
 ||
 || **location**
 [`string`](../../data-types.md) | Venue ||
 || **remind**
 [`array`](../../data-types.md) | Array of objects describing reminders for the event. The structure is described [below](#remind) ||
-|| **attendees***
-[`array`](../../data-types.md) | List of identifiers of event participants. This field is mandatory if `is_meeting` = `Y` ||
-|| **host***
-[`integer`](../../data-types.md) | Identifier of the event organizer. This field is mandatory if `is_meeting` = `Y` ||
+|| **attendees**
+[`array`](../../data-types.md) | List of identifiers of event participants.
+
+If you do not pass this parameter for a meeting with participants, the attendee will be the user on whose behalf the method is executed ||
 || **meeting**
 [`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting) ||
 || **crm_fields**
@@ -234,7 +234,7 @@ Priority of timezone parameter processing:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"type":"user","ownerId":2,"name":"New Event Name","description":"Description for event","from":"2024-06-14","to":"2024-06-14","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"absent","importance":"normal","is_meeting":"Y","private_event":"N","remind":[{"type":"min","count":20}],"location":"New York","attendees":[1,2,3],"host":2,"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"]}' \
+    -d '{"type":"user","ownerId":2,"name":"New Event Name","description":"Description for event","from":"2024-06-14","to":"2024-06-14","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"absent","importance":"normal","is_meeting":"Y","private_event":"N","remind":[{"type":"min","count":20}],"location":"New York","attendees":[1,2,3],"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"]}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.add
     ```
 
@@ -244,7 +244,7 @@ Priority of timezone parameter processing:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"type":"user","ownerId":2,"name":"New Event Name","description":"Description for event","from":"2024-06-14","to":"2024-06-14","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"absent","importance":"normal","is_meeting":"Y","private_event":"N","remind":[{"type":"min","count":20}],"location":"New York","attendees":[1,2,3],"host":2,"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"],"auth":"**put_access_token_here**"}' \
+    -d '{"type":"user","ownerId":2,"name":"New Event Name","description":"Description for event","from":"2024-06-14","to":"2024-06-14","skip_time":"Y","section":5,"color":"#9cbe1c","text_color":"#283033","accessibility":"absent","importance":"normal","is_meeting":"Y","private_event":"N","remind":[{"type":"min","count":20}],"location":"New York","attendees":[1,2,3],"meeting":{"notify":true,"reinvite":false,"allow_invite":false,"hide_guests":false},"rrule":{"FREQ":"WEEKLY","BYDAY":["MO","WE"],"COUNT":10,"INTERVAL":1},"crm_fields":["C_5","L_11"],"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/calendar.event.add
     ```
 
@@ -284,7 +284,6 @@ Priority of timezone parameter processing:
           ],
           location: 'London',
           attendees: [1, 2, 3],
-          host: 2,
           meeting: {
             notify: true,
             reinvite: false,
@@ -348,7 +347,6 @@ Priority of timezone parameter processing:
               ],
               location: 'London',
               attendees: [1, 2, 3],
-              host: 2,
               meeting: {
                 notify: true,
                 reinvite: false,
@@ -416,7 +414,6 @@ Priority of timezone parameter processing:
                     ],
                     'location'      => 'New York',
                     'attendees'     => [1, 2, 3],
-                    'host'          => 2,
                     'meeting'       => [
                         'notify'      => true,
                         'reinvite'    => false,
@@ -475,7 +472,6 @@ Priority of timezone parameter processing:
             ],
             location: 'New York',
             attendees: [1, 2, 3],
-            host: 2,
             meeting: {
                 notify: true,
                 reinvite: false,
@@ -523,7 +519,6 @@ Priority of timezone parameter processing:
             ],
             'location' => 'New York',
             'attendees' => [1, 2, 3],
-            'host' => 2,
             'meeting' => [
                 'notify' => true,
                 'reinvite' => false,
@@ -572,7 +567,6 @@ Priority of timezone parameter processing:
     	},
     	"location":  "London",
     	"attendees": []int{1, 2, 3},
-    	"host":      2,
     	"meeting": b24.Params{
     		"notify":       true,
     		"reinvite":     false,
@@ -611,7 +605,7 @@ Priority of timezone parameter processing:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"type":"company_calendar","ownerId":"","from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"host":1,"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false}}' \
+    -d '{"type":"company_calendar","ownerId":"","from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.add
     ```
 
@@ -621,7 +615,7 @@ Priority of timezone parameter processing:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"type":"company_calendar","ownerId":"","from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"host":1,"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false},"auth":"**put_access_token_here**"}' \
+    -d '{"type":"company_calendar","ownerId":"","from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/calendar.event.add
     ```
 
@@ -669,7 +663,6 @@ Priority of timezone parameter processing:
             { type: 'min', count: 30 },
           ],
           attendees: [29, 93],
-          host: 1,
           meeting: {
             notify: true,
             reinvite: false,
@@ -734,7 +727,6 @@ Priority of timezone parameter processing:
                 { type: 'min', count: 30 },
               ],
               attendees: [29, 93],
-              host: 1,
               meeting: {
                 notify: true,
                 reinvite: false,
@@ -800,7 +792,6 @@ Priority of timezone parameter processing:
                         ['type' => 'min', 'count' => 30]
                     ],
                     'attendees'      => [29, 93],
-                    'host'           => 1,
                     'meeting'        => [
                         'notify'       => true,
                         'reinvite'     => false,
@@ -855,7 +846,6 @@ Priority of timezone parameter processing:
                 { type: 'min', count: 30 } // Reminder 30 minutes before the event
             ],
             attendees: [29, 93], // List of identifiers of event participants
-            host: 1, // Identifier of the event organizer
             meeting: { // Meeting parameters
                 notify: true, // Notification of confirmation or refusal by participants
                 reinvite: false, // Do not request re-confirmation of participation
@@ -908,7 +898,6 @@ Priority of timezone parameter processing:
                 ['type' => 'min', 'count' => 30] // Reminder 30 minutes before the event
             ],
             'attendees' => [29, 93], // List of identifiers of event participants
-            'host' => 1, // Identifier of the event organizer
             'meeting' => [ // Meeting parameters
                 'notify' => true, // Notification of confirmation or refusal by participants
                 'reinvite' => false, // Do not request re-confirmation of participation
@@ -961,7 +950,6 @@ Priority of timezone parameter processing:
     		},
     	},
     	"attendees": []int{29, 93},
-    	"host":      1,
     	"meeting": b24.Params{
     		"notify":       true,
     		"reinvite":     false,
