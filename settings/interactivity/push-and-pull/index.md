@@ -6,9 +6,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The Push&Pull methods assist applications in transmitting and receiving data in real-time. They enable the application to obtain connection parameters, send events to a channel, and push notifications to the application user.
+The Push&Pull methods transmit data between the application and Bitrix24 in real time. The application retrieves the channel connection parameters, sends an event to the channel, and delivers a push notification to the user.
 
-The group of methods `pull.application.*` helps update the interface without reloading the page and sends notifications to mobile devices.
+With the `pull.application.*` group of methods, the application updates the interface without reloading the page and notifies the user on a mobile device.
 
 > Quick Navigation: [All Methods](#all-methods)
 >
@@ -32,8 +32,8 @@ The methods in this section are used in two scenarios:
 
 1. Obtain the application connection parameters using the method [pull.application.config.get](./pull-application-config-get.md).
 2. Connect the application to Push&Pull using the server and channel data from the response of [pull.application.config.get](./pull-application-config-get.md).
-3. If you need to update the interface of the open application, send an event to the channel using the method [pull.application.event.add](./pull-application-event-add.md).
-4. If you need to notify the user on a mobile device, use the method [pull.application.push.add](./pull-application-push-add.md).
+3. Send an event to the channel using the method [pull.application.event.add](./pull-application-event-add.md) if you need to update the interface of the open application.
+4. Send a push notification using the method [pull.application.push.add](./pull-application-push-add.md) if you need to notify the user on a mobile device.
 
 ## Interaction with Other Objects
 
@@ -47,7 +47,7 @@ The methods in this section are used in two scenarios:
 
 #| 
 || **Method** | **Description** ||
-|| [pull.application.config.get](./pull-application-config-get.md) | Returns the connection configuration to the Push&Pull servers for the current application ||
+|| [pull.application.config.get](./pull-application-config-get.md) | Returns the connection configuration to Push&Pull servers, channels, and the application API ||
 || [pull.application.event.add](./pull-application-event-add.md) | Sends an event to the application channel ||
-|| [pull.application.push.add](./pull-application-push-add.md) | Sends a push notification to a mobile device within the application ||
+|| [pull.application.push.add](./pull-application-push-add.md) | Sends a push notification to a mobile device ||
 |#

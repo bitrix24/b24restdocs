@@ -25,7 +25,7 @@ This method works only in the context of the [application](../../app-installatio
 #| 
 || **Name** 
 `type` | **Description** ||
-|| **USER_ID** 
+|| **USER_ID**^*^ 
 [`integer`](../../../api-reference/data-types.md) \| [`integer[]`](../../../api-reference/data-types.md) | Identifier of the user or an array of user identifiers to whom the push notification is sent.
 
 `USER_ID` can be obtained via:

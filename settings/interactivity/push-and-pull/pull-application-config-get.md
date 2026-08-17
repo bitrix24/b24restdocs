@@ -307,7 +307,10 @@ Returned if JWT issuance is enabled in the server configuration ||
 || **server_enabled**
 [`boolean`](../../../api-reference/data-types.md) | Server availability indicator ||
 || **mode**
-[`string`](../../../api-reference/data-types.md) | Server mode ||
+[`string`](../../../api-reference/data-types.md) | Server mode:
+
+- `personal` — own Push&Pull server
+- `shared` — shared Push&Pull server ||
 || **hostname**
 [`string`](../../../api-reference/data-types.md) | Account hostname ||
 || **long_polling**
@@ -350,7 +353,7 @@ May be absent for `shared` ||
 
 - `shared`
 - `private` ||
-  |#
+|#
 
 ## Error Handling
 

@@ -1,7 +1,7 @@
 title: Interactivity
 href: index.md
 items: 
-  - name: Overview of Scenarios and Methods
+  - name: Overview of Methods
     href: index.md
   - name: Push&Pull in the Browser
     href: push-and-pull-in-browser.md
