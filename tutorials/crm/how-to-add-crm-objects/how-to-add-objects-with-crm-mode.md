@@ -22,7 +22,7 @@ Setting up the form consists of two steps.
 
    -  receives and prepares the data,
 
-   -  creates a lead using the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add) method,
+   -  creates a lead using the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method,
 
    -  checks the CRM mode,
 
@@ -232,7 +232,7 @@ Retrieve the form data and strip HTML tags.
 
 {% endlist %}
 
-The system stores phone and email as an array of [crm_multifield](../../../api-reference/crm/data-types#crm_multifield) objects, so they must be converted to an array format.
+The system stores phone and email as an array of [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) objects, so they must be converted to an array format.
 
 1. If a value exists, add it as the first item `VALUE` in the array, and specify the type `VALUE_TYPE` as the second value, for example:
 

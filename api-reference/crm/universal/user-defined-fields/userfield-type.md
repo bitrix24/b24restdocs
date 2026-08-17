@@ -87,9 +87,9 @@ If the field was created without errors, but the content is not loading:
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [Embed a Widget into a Lead as a User Field](../../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page)
+- [Embed a Widget into a Lead as a User Field](../../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md)
 
-- [Widget Embedding Mechanism](../../../widgets/index)
+- [Widget Embedding Mechanism](../../../widgets/index.md)
 
 {% endnote %}
 

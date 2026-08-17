@@ -46,14 +46,14 @@ Example workflow for working with a section:
 ## Tutorial Categories {#categories}
 
 #|
-|| [CRM](./crm/index) | How to work with CRM objects: contacts, deals, smart processes, custom fields, widgets, and Sales Intelligence ||
-|| [Online sales and Online store](./sale/index) | How to integrate trading functions: create product items, set up delivery, implement a cash register ||
-|| [Product catalog](./catalog/index) | How to create products, properties, prices, and other catalog data ||
-|| [Business processes](./bizproc/index) | How to embed an action, complete processes, configure robot parameters ||
-|| [Chatbots](./chat-bots/index) | How to create a chatbot, configure it for Open Channels, and create a support channel ||
-|| [Telephony](./telephony/index) | How to implement custom scenarios for integration with a call center ||
-|| [Tasks](./tasks/index) | How to create tasks with files, attach them to smart processes, and add comments ||
-|| [Open Channels](./openlines/example-connector) | How to create a connector for an online chat on a website and integrate it with Bitrix24 ||
+|| [CRM](./crm/index.md) | How to work with CRM objects: contacts, deals, smart processes, custom fields, widgets, and Sales Intelligence ||
+|| [Online sales and Online store](./sale/index.md) | How to integrate trading functions: create product items, set up delivery, implement a cash register ||
+|| [Product catalog](./catalog/index.md) | How to create products, properties, prices, and other catalog data ||
+|| [Business processes](./bizproc/index.md) | How to embed an action, complete processes, configure robot parameters ||
+|| [Chatbots](./chat-bots/index.md) | How to create a chatbot, configure it for Open Channels, and create a support channel ||
+|| [Telephony](./telephony/index.md) | How to implement custom scenarios for integration with a call center ||
+|| [Tasks](./tasks/index.md) | How to create tasks with files, attach them to smart processes, and add comments ||
+|| [Open Channels](./openlines/example-connector.md) | How to create a connector for an online chat on a website and integrate it with Bitrix24 ||
 |#
 
 ## How to Provide Feedback on Tutorials

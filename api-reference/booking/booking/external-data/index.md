@@ -24,7 +24,7 @@ Currently, only CRM deals can be linked to bookings. Other modules and types of 
 
 ## Overview of Methods {#all-methods}
 
-> Scope: [`booking`](../../../scopes/permissions)
+> Scope: [`booking`](../../../scopes/permissions.md)
 >
 > Who can perform the methods: any user
 

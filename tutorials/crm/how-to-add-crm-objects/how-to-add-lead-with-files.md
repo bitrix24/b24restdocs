@@ -16,7 +16,7 @@ Setting up the form consists of two steps.
 
 1. Place the form on an HTML page. It will send data to the handler.
 
-2. Create a file to process the data. The handler will receive and prepare the data, and then create a lead using the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add) method.
+2. Create a file to process the data. The handler will receive and prepare the data, and then create a lead using the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
 
 ## 1. Creating the Web Form
 
