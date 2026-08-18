@@ -2,7 +2,11 @@
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to modify the CRM object
+> Who can execute the methods: to complete the entire scenario, the strictest of the listed rights is required — administrative access to the CRM section
+>
+> - [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — a user with administrative access to the CRM section
+> - [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) — any user
+> - [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) — any user with permission to read CRM object items
 
 {% note tip "" %}
 
@@ -10,31 +14,49 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The key parameter for adding a comment to a CRM object is the [object type identifier](../../../api-reference/crm/data-types.md#object_type). This identifier indicates which type of object the comment will be added to: a deal, a lead, or a specific smart process. The identifier is used in the parameters `OWNER_TYPE`, `OWNER_TYPE_ID`, `ENTITY_TYPE`, and `ENTITY_TYPE_ID` of the method groups [crm.item.*](../../../api-reference/crm/universal/index.md), [crm.timeline.*](../../../api-reference/crm/timeline/index.md), and [crm.activity.*](../../../api-reference/crm/timeline/activities/index.md).
+The key parameter for adding a comment to a CRM object is the [object type identifier](../../../api-reference/crm/data-types.md#object_type). This identifier indicates which type of object the comment will be added to: a deal, a lead, or a specific smart process.
+
+The identifier is used in the parameters `OWNER_TYPE`, `OWNER_TYPE_ID`, `ENTITY_TYPE`, and `ENTITY_TYPE_ID` of the method groups [crm.item.*](../../../api-reference/crm/universal/index.md), [crm.timeline.*](../../../api-reference/crm/timeline/index.md), and [crm.activity.*](../../../api-reference/crm/timeline/activities/index.md).
 
 In CRM, there are two types of object identifiers:
-* **Predefined** — these are identifiers for [leads](../../../api-reference/crm/leads/index.md), [deals](../../../api-reference/crm/deals/index.md), [companies](../../../api-reference/crm/companies/index.md), [contacts](../../../api-reference/crm/contacts/index.md), [invoices](../../../api-reference/crm/universal/invoice.md), and [estimates](../../../api-reference/crm/quote/index.md). The identifiers for predefined objects can be found in the [documentation](../../../api-reference/crm/data-types.md#object_type).
-* **Dynamic** — these are identifiers for smart processes. The identifier for a smart process is generated at the time of creation and does not depend on the name of the smart process.
+
+- **Predefined** — these are identifiers for [leads](../../../api-reference/crm/leads/index.md), [deals](../../../api-reference/crm/deals/index.md), [companies](../../../api-reference/crm/companies/index.md), [contacts](../../../api-reference/crm/contacts/index.md), [invoices](../../../api-reference/crm/universal/invoice.md), and [estimates](../../../api-reference/crm/quote/index.md). The identifiers for predefined objects can be found in the [documentation](../../../api-reference/crm/data-types.md#object_type).
+
+- **Dynamic** — these are identifiers for smart processes. The identifier for a smart process is generated at the time of creation and does not depend on the name of the smart process.
 
 You can obtain the identifier for a smart process using two methods:
-* [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) — a method without parameters that returns an enumeration of CRM object types, both predefined and dynamic.
-* [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — a method with a filter that returns only dynamic CRM objects.
 
-To create a comment in a smart process entity, we will sequentially execute two methods:
-1. [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — retrieve the smart process using a filter.
-2. [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) — create the comment.
+- [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) — a method without parameters that returns an enumeration of CRM object types, both predefined and dynamic.
+
+- [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — a method with a filter that returns only dynamic CRM objects.
+
+As a result of the scenario, a comment appears in the timeline of the smart process item, and the method returns the ID of the timeline entry.
+
+The scenario consists of two steps.
+
+1. Retrieve the `entityTypeId` of the smart process using the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method.
+2. Create the comment using the [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) method, building the value of the `ENTITY_TYPE` parameter from `entityTypeId`.
+
+## Before You Start
+
+- The smart process is already created in Bitrix24, and you know its name. Smart processes are not available on every plan: if they cannot be created, the [crm.type.add](../../../api-reference/crm/universal/user-defined-object-types/crm-type-add.md) method returns the `CREATE_DYNAMIC_TYPE_RESTRICTED` error.
+
+- The smart process contains an item whose timeline you want to add a comment to. The item ID is returned by the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method with the `entityTypeId` parameter from step 1.
+
+- The webhook is created on behalf of a user with administrative access to the CRM section — this is a requirement of the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method.
 
 ## 1. Retrieve the Smart Process Type Identifier
 
 To obtain the type identifier, we use the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method with a filter:
-* `title` — specify the name of the smart process.
+
+- `title` — specify the name of the smart process. Replace `Equipment procurement` with the name of your own smart process.
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - JS
-  
+
     ```javascript
     import { B24Hook } from '@bitrix24/b24jssdk'
 
@@ -93,6 +115,7 @@ To obtain the type identifier, we use the [crm.type.list](../../../api-reference
 - Go
 
     ```go
+    // core, ctx, and spaTitle are declared in the complete example below
     res, err := core.Call(ctx, "crm.type.list", b24.Params{
     	"filter": b24.Params{"title": spaTitle},
     }, b24.WithIdempotent())
@@ -125,9 +148,11 @@ To obtain the type identifier, we use the [crm.type.list](../../../api-reference
 {% endlist %}
 
 As a result, we obtained two ID values:
-* `id`: `7` — the sequential number of the SPA in Bitrix
-* `entityTypeId`: `177` — the SPA type identifier. This parameter is required for the next request
-  
+
+- `id`: `7` — the sequential number of the smart process in Bitrix24
+
+- `entityTypeId`: `177` — the smart process type identifier. This parameter is required for the next request
+
 ```json
 {
     "result": {
@@ -164,12 +189,17 @@ As a result, we obtained two ID values:
 }
 ```
 
+Retain the `entityTypeId` — the `ENTITY_TYPE` value is built from it in the next step. The `id` value is not needed for this scenario.
+
 ## 2. Add a Comment to the Smart Process Entity
 
 To add a comment, use the [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) method with the following parameters:
-* `ENTITY_ID` — the item ID. To retrieve the ID value, use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method, where the `entityTypeId` filter equals the `entityTypeId` value from [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md)
-* `ENTITY_TYPE` — specify `DYNAMIC_177`. The value consists of `entityTypeId` from the previous method's result and the dynamic object prefix `DYNAMIC_`
-* `COMMENT` — the text value of the comment
+
+- `ENTITY_ID` — the item ID. To retrieve the ID value, use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method, where the `entityTypeId` filter equals the `entityTypeId` value from [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md). In the example, we specify `19`
+
+- `ENTITY_TYPE` — specify `DYNAMIC_177`. The value consists of the dynamic object prefix `DYNAMIC_` and `entityTypeId` from the previous method's result. Substitute exactly `entityTypeId`: the `id` of the smart process does not work here
+
+- `COMMENT` — the text value of the comment. The method does not accept an empty string
 
 {% list tabs %}
 
@@ -217,6 +247,7 @@ To add a comment, use the [crm.timeline.comment.add](../../../api-reference/crm/
 - Go
 
     ```go
+    // core, ctx, entityTypeID, and itemID are declared in the complete example below.
     // ENTITY_TYPE for a smart process is the string "DYNAMIC_" + entityTypeId.
     // Timeline fields are written in UPPERCASE, whereas crm.item.* accepts
     // camelCase: one entity, two conventions in a single scenario.
@@ -248,6 +279,112 @@ We added a comment to the SPA item timeline and received the timeline entry ID `
     "result": 55771
 }
 ```
+
+## Verify the Result
+
+Open the smart process item in Bitrix24. The comment is displayed in the item timeline, in the feed below the card.
+
+Through REST, the item comments are returned by the [crm.timeline.comment.list](../../../api-reference/crm/timeline/comments/crm-timeline-comment-list.md) method with the same `ENTITY_ID` and `ENTITY_TYPE` values as in step 2.
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    const checkResponse = await $b24.actions.v2.call.make({
+        method: 'crm.timeline.comment.list',
+        params: {
+            filter: {
+                "ENTITY_ID": 19,
+                "ENTITY_TYPE": "DYNAMIC_177"
+            },
+            order: { ID: 'DESC' }
+        },
+        requestId: 'comment-list'
+    });
+
+    console.dir(checkResponse.getData().result);
+    ```
+
+- PHP
+
+    ```php
+    // crm.timeline.comment.list has no wrapper in the SDK — call the method directly
+    $comments = $sb->core->call(
+        'crm.timeline.comment.list',
+        [
+            'filter' => [
+                'ENTITY_ID' => 19,
+                'ENTITY_TYPE' => 'DYNAMIC_177',
+            ],
+            'order' => ['ID' => 'DESC'],
+        ]
+    )->getResponseData()->getResult();
+    ```
+
+- Python
+
+    ```python
+    comments = client.crm.timeline.comment.list(
+        filter={
+            "ENTITY_ID": 19,
+            "ENTITY_TYPE": "DYNAMIC_177",
+        },
+        order={"ID": "DESC"},
+    ).response.result
+    ```
+
+{% endlist %}
+
+The scenario is complete if the response contains an object with the `ID` from step 2, and its `COMMENT` field matches the text you sent.
+
+```json
+{
+    "result": [
+        {
+            "ID": "55771",
+            "ENTITY_ID": 19,
+            "ENTITY_TYPE": "dynamic_177",
+            "CREATED": "2024-11-12T15:32:39+03:00",
+            "COMMENT": "Confirm the purchase via email!",
+            "AUTHOR_ID": "1"
+        }
+    ],
+    "total": 1
+}
+```
+
+In the request, `ENTITY_TYPE` can be passed in any case, and the method returns it in lowercase — `dynamic_177`. This is not a sign of an error.
+
+## Errors and Diagnostics
+
+If the method returns an error, check the request data.
+
+#|
+|| **Code** | **Reason and action** ||
+|| `ACCESS_DENIED` | The user does not have administrative access to the CRM section required by [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md). Check which user the webhook was created on behalf of ||
+|| `allowed_only_intranet_user` | The [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method is allowed only for intranet users. Extranet users and external users cannot complete the scenario ||
+|| `INVALID_ARG_VALUE` | A nonexistent filter field was passed to [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md). Filter by the fields of the [type](../../../api-reference/crm/data-types.md#type) object, and to search by name — by the `title` field ||
+|| `OWNER_NOT_FOUND` | A type that does not exist in Bitrix24 was passed in `ENTITY_TYPE`. Rebuild the value: the `DYNAMIC_` prefix and `entityTypeId` from step 1, not `id` ||
+|| `INVALID_ARG_VALUE` `Empty comment message` | An empty string was passed in `COMMENT`. The method does not create empty comments ||
+|| `100` | Required fields were not passed. The `fields` of the [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) method require all three values: `ENTITY_ID`, `ENTITY_TYPE`, and `COMMENT` ||
+|#
+
+The [crm.timeline.comment.add](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md) method may return an entry ID while the comment does not appear in the timeline. The method does not check whether an item with the passed `ENTITY_ID` exists: if there is no such item, the comment is created but has nothing to attach to.
+
+- Check `ENTITY_ID` using the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method with `entityTypeId` from step 1. If there is no item with that identifier, take an existing one
+
+- Make sure that `ENTITY_ID` is the item identifier, not the `id` or `entityTypeId` of the smart process
+
+Repeat the scenario from the step that returned the error. Step 1 does not create anything, so it can be executed any number of times. If step 2 returned the error, the comment was not created: fix the `fields` and repeat only that step.
+
+## Key Considerations
+
+- Timeline fields are written in uppercase — `ENTITY_ID`, `ENTITY_TYPE`, `COMMENT`. The [crm.item.*](../../../api-reference/crm/universal/index.md) methods for the same object accept camelCase, for example `entityTypeId`. One entity, two conventions in a single scenario
+
+- The `title` filter in [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) does not guarantee a single result: two smart processes are allowed to have the same name. The method always returns a list, so check that it contains exactly one element instead of blindly taking the first one
+
+- Running the example again adds one more comment to the timeline, duplicates are not filtered out
 
 ## Code Example
 
@@ -605,3 +742,13 @@ We added a comment to the SPA item timeline and received the timeline entry ID `
     ```
 
 {% endlist %}
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/timeline/comments/crm-timeline-comment-add.md)
+- [{#T}](../../../api-reference/crm/timeline/comments/crm-timeline-comment-list.md)
+- [{#T}](../../../api-reference/crm/timeline/comments/crm-timeline-comment-update.md)
+- [{#T}](../../../api-reference/crm/timeline/comments/crm-timeline-comment-delete.md)
+- [{#T}](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md)
+- [{#T}](../../../api-reference/crm/universal/crm-item-list.md)
+- [{#T}](../../../api-reference/crm/data-types.md)

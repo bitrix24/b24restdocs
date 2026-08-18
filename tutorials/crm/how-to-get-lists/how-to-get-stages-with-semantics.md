@@ -1,8 +1,8 @@
 # How to Retrieve a List of Stages with Semantics for CRM Entities
 
-> Scope: [`crm, user_brief`](../../../api-reference/scopes/permissions.md)
+> Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: any user with access to CRM
+> Who can execute the method: any user with permission to read at least one CRM object
 
 {% note tip "" %}
 
@@ -12,25 +12,37 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The semantics of a stage reflects the current state of a CRM object: in progress, successfully completed, or unsuccessful. The system uses the semantic value in automation and reporting.
 
-To create a table of CRM object stages with semantics, we will use the method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md).
+The stages of any CRM object are returned by a single method — [crm.status.list](../../../api-reference/crm/status/crm-status-list.md). It returns the stages of one directory, which is set by the `ENTITY_ID` code in the filter. As a result, we get a list of stages with semantics for the selected object.
 
-## Retrieve a List of Stages with Semantics
+The scenario consists of two steps.
 
-The method [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) returns a description of stages based on the stage code `ENTITY_ID` for the CRM object.
+1. Determine the `ENTITY_ID` directory code for the required CRM object.
+2. Retrieve the stages of that directory using the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) method and read the semantics of each stage.
 
--  [Deals](../../../api-reference/crm/deals/index.md) — `DEAL_STAGE` for the main deal direction and `DEAL_STAGE_xx` for additional ones, where xx is the direction identifier.
+## 1. Determine the Directory Code {#entity-id}
 
--  [Leads](../../../api-reference/crm/leads/index.md) — `STATUS`.
+The directory code depends on the CRM object and on the pipeline.
 
--  [Invoices](../../../api-reference/crm/universal/invoice.md) — `SMART_INVOICE_STAGE_xx`, where `xx` is the invoice direction identifier value.
+#|
+|| **CRM object** | **`ENTITY_ID` code** | **Where to get the numeric part** ||
+|| [Leads](../../../api-reference/crm/leads/index.md) | `STATUS` | A constant code, there is no numeric part ||
+|| [Deals](../../../api-reference/crm/deals/index.md) | `DEAL_STAGE` for the main pipeline, `DEAL_STAGE_{categoryId}` for the others | `categoryId` — the deal pipeline identifier from the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with `entityTypeId`: `2` ||
+|| [Quotes](../../../api-reference/crm/quote/index.md) | `QUOTE_STATUS` | A constant code, there is no numeric part ||
+|| [Invoices](../../../api-reference/crm/universal/invoice.md) | `SMART_INVOICE_STAGE_{categoryId}` | `categoryId` — the invoice pipeline identifier from the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with `entityTypeId`: `31` ||
+|| [Documents](https://helpdesk.bitrix24.com/open/19441484/) | `SMART_DOCUMENT_STAGE_{categoryId}` | `categoryId` — the document pipeline identifier from the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with `entityTypeId`: `36` ||
+|| [Smart Processes](../../../api-reference/crm/universal/index.md) | `DYNAMIC_{entityTypeId}_STAGE_{categoryId}` | `entityTypeId` — the smart process type identifier from the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method, `categoryId` — the pipeline identifier from the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with that `entityTypeId` ||
+|#
 
--  [Quotes](../../../api-reference/crm/quote/index.md) — `QUOTE_STATUS`.
+The smart process code uses `entityTypeId`, not the `id` from the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) response. These are different numbers: for a smart process with `id`: `7`, the `entityTypeId` value is `177`, so the directory code of its main pipeline is `DYNAMIC_177_STAGE_7`, not `DYNAMIC_7_STAGE_7`.
 
--  [Documents](https://helpdesk.bitrix24.com/open/19441484/) — `SMART_DOCUMENT_STAGE_xx`, where `xx` is the `ID` of the document direction.
+For leads, the code is constant, so we use `STATUS` in the examples below.
 
--  [Smart Processes](../../../api-reference/crm/universal/index.md) — `DYNAMIC_xx_STAGE_xx`, where the first `xx` is the smart process `ID`, and the second `xx` is the direction `ID`.
+## 2. Retrieve the Stages with Semantics
 
-Let's retrieve the description of stages with semantics for leads. To do this, we will specify in the filter `filter` the field `ENTITY_ID` with the value `STATUS`.
+Call the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) method with the following parameters:
+
+- `filter` — specify the `ENTITY_ID` field with the value `STATUS` to get the lead stages
+- `order` — sort by the `SORT` field in ascending order so that the stages follow the same order as in the interface
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
@@ -49,7 +61,8 @@ Let's retrieve the description of stages with semantics for leads. To do this, w
         params: {
             order: { SORT: 'ASC' }, // sort by ascending value in the SORT field
             filter: { ENTITY_ID: 'STATUS' }, // get stages for leads
-        }
+        },
+        requestId: 'status-list'
     });
 
     if (result.isSuccess) {
@@ -77,8 +90,8 @@ Let's retrieve the description of stages with semantics for leads. To do this, w
         ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
     $statuses = $sb->getCRMScope()->status()->list(
-        ['SORT' => 'ASC'],
-        ['ENTITY_ID' => 'STATUS']
+        ['SORT' => 'ASC'], // sort by ascending value in the SORT field
+        ['ENTITY_ID' => 'STATUS'] // get stages for leads
     )->getStatuses();
     ```
 
@@ -95,14 +108,14 @@ Let's retrieve the description of stages with semantics for leads. To do this, w
     )
 
     result = client.crm.status.list(
-        order={"SORT": "ASC"},
-        filter={"ENTITY_ID": "STATUS"},
+        order={"SORT": "ASC"},  # sort by ascending value in the SORT field
+        filter={"ENTITY_ID": "STATUS"},  # get stages for leads
     ).response.result
     ```
 
 {% endlist %}
 
-As a result, we will receive an array of objects, where each object is a description of a stage.
+As a result, we will receive an array of objects, where each object is a description of a stage. The response is shortened, showing the first and the last two stages.
 
 ```json
 {
@@ -123,23 +136,6 @@ As a result, we will receive an array of objects, where each object is a descrip
                 "COLOR": "#00FFFF"
             }
         },
-        {
-            "ID": "3",
-            "ENTITY_ID": "STATUS",
-            "STATUS_ID": "ASSIGNED",
-            "NAME": "Responsible person assigned",
-            "NAME_INIT": "",
-            "SORT": "20",
-            "SYSTEM": "N",
-            "CATEGORY_ID": null,
-            "COLOR": "#FFF100",
-            "SEMANTICS": null,
-            "EXTRA": {
-                "SEMANTICS": "process",
-                "COLOR": "#FFF100"
-            }
-        },
-        ...,
         {
             "ID": "15",
             "ENTITY_ID": "STATUS",
@@ -177,17 +173,123 @@ As a result, we will receive an array of objects, where each object is a descrip
 }
 ```
 
-The `EXTRA.SEMANTICS` object contains the semantics of the stages. Possible values include:
+## Read the Semantics from the Response {#semantics}
 
--  `process` — the CRM object is in progress,
+The method returns the semantics in two different fields, and which one is filled in depends on the CRM object.
 
--  `success` — the work with the CRM object has been successfully completed,
+- `EXTRA.SEMANTICS` — the text semantics: `process`, `success`, or `failure`. The method adds the `EXTRA` object only for leads, deals, and quotes, that is, for the codes `STATUS`, `DEAL_STAGE`, `DEAL_STAGE_{categoryId}`, and `QUOTE_STATUS`
 
--  `failure` — the work with the CRM object has been unsuccessfully completed.
+- `SEMANTICS` — the short semantics: `null`, `S`, or `F`. This field is filled in for all CRM objects, including invoices, documents, and smart processes
+
+{% note warning "" %}
+
+Code that reads only `EXTRA.SEMANTICS` gets an empty value on every stage of invoices, documents, and smart processes. Their successful and unsuccessful final stages are then wrongly grouped as "in progress".
+
+{% endnote %}
+
+For the code to work with any CRM object, read `EXTRA.SEMANTICS`, and when it is missing, convert the short `SEMANTICS` value into a text one using the table.
+
+#|
+|| **`SEMANTICS`** | **`EXTRA.SEMANTICS`** | **State of the CRM object** ||
+|| `null` | `process` | The object is in progress ||
+|| `S` | `success` | The work with the object was completed successfully ||
+|| `F` | `failure` | The work with the object was completed unsuccessfully ||
+|#
+
+For comparison, here is the response for the main pipeline of a smart process with `entityTypeId`: `177`, that is, with the filter `ENTITY_ID`: `DYNAMIC_177_STAGE_7`. The objects have no `EXTRA` key, the semantics is present only in the `SEMANTICS` field.
+
+```json
+{
+    "result": [
+        {
+            "ID": "263",
+            "ENTITY_ID": "DYNAMIC_177_STAGE_7",
+            "STATUS_ID": "DT177_7:NEW",
+            "NAME": "Start",
+            "NAME_INIT": "Start",
+            "SORT": "10",
+            "SYSTEM": "Y",
+            "CATEGORY_ID": "7",
+            "COLOR": "#22B9FF",
+            "SEMANTICS": null
+        },
+        {
+            "ID": "269",
+            "ENTITY_ID": "DYNAMIC_177_STAGE_7",
+            "STATUS_ID": "DT177_7:SUCCESS",
+            "NAME": "Success",
+            "NAME_INIT": "Success",
+            "SORT": "40",
+            "SYSTEM": "Y",
+            "CATEGORY_ID": "7",
+            "COLOR": "#00ff00",
+            "SEMANTICS": "S"
+        },
+        {
+            "ID": "271",
+            "ENTITY_ID": "DYNAMIC_177_STAGE_7",
+            "STATUS_ID": "DT177_7:FAIL",
+            "NAME": "Failure",
+            "NAME_INIT": "Failure",
+            "SORT": "50",
+            "SYSTEM": "Y",
+            "CATEGORY_ID": "7",
+            "COLOR": "#ff0000",
+            "SEMANTICS": "F"
+        }
+    ],
+    "total": 5
+}
+```
+
+## Verify the Result
+
+The scenario is complete if the response contains stages and the semantics is determined for each of them.
+
+- The `result` array in the response is not empty, and the `total` field matches the number of stages of the selected pipeline in the Bitrix24 interface
+
+- Exactly one stage has `SEMANTICS`: `S`. Every pipeline is built this way: it has a single successful final stage. There can be several unsuccessful final stages with the value `F`, and the remaining stages have the value `null`
+
+- The `NAME` values match the stage names in the Kanban of the CRM object. Lead stages are available in CRM → Leads → Kanban, and smart process stages are in its Kanban on the tab of the required pipeline
+
+If the response contains a single object whose `NAME` matches the stage name and whose `ENTITY_ID` matches the code from step 1, you can check the semantics pointwise: the final successful stage has `SEMANTICS` equal to `S`.
+
+## Errors and Diagnostics
+
+If the method returns an error, check the request data.
+
+#|
+|| **Code** | **Reason and action** ||
+|| `400` `Access denied.` | The user does not have permission to read CRM objects. Check which user the webhook was created on behalf of ||
+|| `400` `Invalid parameters.` | Incorrect values were passed in `filter` or `order`. The set of fields available for filtering and sorting is returned by the [crm.status.fields](../../../api-reference/crm/status/crm-status-fields.md) method ||
+|| `400` `Filter by ENTITY_ID must be a string` | The `ENTITY_ID` field was passed in `filter` as an array. The method filters by one directory per call — pass a string, and make several calls for several objects ||
+|#
+
+The method may return an empty `result` without an error. This means that Bitrix24 has no directory with that code.
+
+- Check the numeric part of the code. For smart processes, a common cause is `id` instead of `entityTypeId`: the code `DYNAMIC_7_STAGE_7` returns an empty list, while `DYNAMIC_177_STAGE_7` returns the stages
+
+- Check the pipeline identifier. The pipeline may have been deleted, or the object may not have one at all — the current list is returned by the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method
+
+The method does not modify anything, so the call can be repeated any number of times after an error.
+
+## Key Considerations
+
+- The method ignores the `select` parameter and always returns the full set of stage fields. You cannot narrow the selection on the API side, so pick the fields you need in your own code
+
+- Every pipeline has its own stage directory. You cannot retrieve the stages of all pipelines of one object in a single call — iterate over the pipelines from the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method and call [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) for each code
+
+- `STATUS_ID` is unique only within its own directory. Stages of different pipelines share both codes and names, so retain the stage together with its `ENTITY_ID`
+
+- The `SEMANTICS` field in the filter accepts only a string. You cannot set the value `null` in the filter — select the in-progress stages in your own code
+
+- The "Company document" object has a separate directory code — `SMART_B2E_DOC_STAGE_{categoryId}`, and its `entityTypeId` is `39`. It follows the same rules as the other codes with a numeric part
 
 ## Code Example
 
-The code outputs tables with a list of stages for leads and quotes.
+The code outputs tables with a list of stages for leads and for the main pipeline of a smart process. The semantics is determined universally, so the table is built the same way for an object with `EXTRA` and without it.
+
+Replace `DYNAMIC_177_STAGE_7` with the directory code of your own object from step 1.
 
 {% list tabs %}
 
@@ -199,71 +301,75 @@ The code outputs tables with a list of stages for leads and quotes.
    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
+   // Short semantics to text: there are only three of these values
+   const SEMANTICS_MAP = { S: 'success', F: 'failure' };
+
    /**
-    * Loads all statuses for the specified ENTITY_ID
-    * @param {string} entityId — entity code, for example, 'STATUS' or 'QUOTE_STATUS'
-    * @returns {Promise<Array>} — array of all statuses
+    * Loads all stages for the specified ENTITY_ID
+    * @param {string} entityId — directory code, for example, 'STATUS' or 'DYNAMIC_177_STAGE_7'
+    * @returns {Promise<Array>} — array of all stages
     */
    async function loadStatuses(entityId) {
        const result = await $b24.actions.v2.call.make({
            method: 'crm.status.list',
            params: {
                filter: { ENTITY_ID: entityId },
-               select: ['STATUS_ID', 'NAME', 'EXTRA'],
                order: { SORT: 'ASC' }
-           }
+           },
+           requestId: 'status-list'
        });
        if (!result.isSuccess) {
            throw new Error(result.getErrorMessages().join('; '));
        }
        return result.getData().result;
    }
-   
+
    /**
-    * Groups statuses by semantics
+    * Returns the stage semantics for any CRM object.
+    * EXTRA is present only for leads, deals, and quotes, so for the other
+    * objects we convert the short SEMANTICS value into a text one
+    */
+   function getSemantics(item) {
+       return item.EXTRA?.SEMANTICS || SEMANTICS_MAP[item.SEMANTICS] || 'process';
+   }
+
+   /**
+    * Groups stages by semantics
     */
    function groupStatusesBySemantics(statuses) {
        const groups = { success: [], process: [], failure: [] };
-   
+
        statuses.forEach(item => {
-           const semantics = item.EXTRA?.SEMANTICS || '';
            const name = item.NAME || item.STATUS_ID;
-   
-           if (semantics === 'success') {
-               groups.success.push(name);
-           } else if (semantics === 'failure') {
-               groups.failure.push(name);
-           } else {
-               groups.process.push(name);
-           }
+           groups[getSemantics(item)].push(name);
        });
-   
+
        return groups;
    }
-   
+
    /**
     * Formats groups for console.table
     */
    function formatForConsoleTable(groups) {
        const { success, process, failure } = groups;
        const maxLen = Math.max(success.length, process.length, failure.length);
-   
+
        const pad = (arr, len) => [...arr, ...Array(len - arr.length).fill('')];
-   
+
        return Array(maxLen).fill().map((_, i) => ({
-           '✅ Success': pad(success, maxLen)[i],
-           '⚠️ In progress': pad(process, maxLen)[i],
-           '❌ Failure': pad(failure, maxLen)[i]
+           'Success': pad(success, maxLen)[i],
+           'In progress': pad(process, maxLen)[i],
+           'Failure': pad(failure, maxLen)[i]
        }));
    }
-   
-   // Requesting statuses
+
+   // Requesting the stages: leads keep the semantics in EXTRA, the smart process — in SEMANTICS
    Promise.all([
        loadStatuses('STATUS').then(data => ({ type: 'Leads', data })),
-       loadStatuses('QUOTE_STATUS').then(data => ({ type: 'Commercial offers', data }))
+       loadStatuses('DYNAMIC_177_STAGE_7').then(data => ({ type: 'Smart process', data }))
    ]).then(results => {
        results.forEach(({ type, data }) => {
-           console.group(`📊 ${type}`);
+           console.group(type);
            const groups = groupStatusesBySemantics(data);
            console.table(formatForConsoleTable(groups));
            console.groupEnd();
@@ -281,6 +387,7 @@ The code outputs tables with a list of stages for leads and quotes.
    require_once 'vendor/autoload.php';
 
    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+   use Bitrix24\SDK\Services\ServiceBuilder;
    use Symfony\Component\EventDispatcher\EventDispatcher;
    use Monolog\Logger;
    use Monolog\Handler\StreamHandler;
@@ -291,55 +398,56 @@ The code outputs tables with a list of stages for leads and quotes.
    $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
+   // Short semantics to text: there are only three of these values
+   const SEMANTICS_MAP = ['S' => 'success', 'F' => 'failure'];
+
    /**
-    * Gets all statuses for the specified ENTITY_ID
-    * @param string $entityId
-    * @return array
+    * Gets all stages for the specified ENTITY_ID
     */
-   function loadStatuses($entityId) {
-       global $sb;
+   function loadStatuses(ServiceBuilder $sb, string $entityId): array {
        return $sb->getCRMScope()->status()->list(
            ['SORT' => 'ASC'],
-           ['ENTITY_ID' => $entityId],
-           ['STATUS_ID', 'NAME', 'EXTRA']
+           ['ENTITY_ID' => $entityId]
        )->getStatuses();
    }
-   
+
    /**
-    * Groups statuses by semantics
+    * Returns the stage semantics for any CRM object.
+    * EXTRA is present only for leads, deals, and quotes, so for the other
+    * objects we convert the short SEMANTICS value into a text one
     */
-   function groupStatusesBySemantics($statuses) {
-       $groups = ['success' => [], 'process' => [], 'failure' => []];
-   
-       foreach ($statuses as $item) {
-           $semantics = $item->EXTRA['SEMANTICS'] ?? '';
-           $name = $item->NAME ?? $item->STATUS_ID;
-   
-           if ($semantics === 'success') {
-               $groups['success'][] = $name;
-           } elseif ($semantics === 'failure') {
-               $groups['failure'][] = $name;
-           } else {
-               $groups['process'][] = $name;
-           }
+   function getSemantics($item): string {
+       $extra = $item->EXTRA['SEMANTICS'] ?? '';
+       if ($extra !== '') {
+           return $extra;
        }
-   
+       return SEMANTICS_MAP[$item->SEMANTICS] ?? 'process';
+   }
+
+   /**
+    * Groups stages by semantics
+    */
+   function groupStatusesBySemantics(array $statuses): array {
+       $groups = ['success' => [], 'process' => [], 'failure' => []];
+
+       foreach ($statuses as $item) {
+           $name = $item->NAME ?? $item->STATUS_ID;
+           $groups[getSemantics($item)][] = $name;
+       }
+
        return $groups;
    }
-   
+
    /**
     * Formats table rows
     */
-   function buildTableRows($groups) {
-       $success = $groups['success'];
-       $process = $groups['process'];
-       $failure = $groups['failure'];
-       $max = max(count($success), count($process), count($failure));
-   
-       $success = array_pad($success, $max, '');
-       $process = array_pad($process, $max, '');
-       $failure = array_pad($failure, $max, '');
-   
+   function buildTableRows(array $groups): array {
+       $max = max(count($groups['success']), count($groups['process']), count($groups['failure']));
+
+       $success = array_pad($groups['success'], $max, '');
+       $process = array_pad($groups['process'], $max, '');
+       $failure = array_pad($groups['failure'], $max, '');
+
        $rows = [];
        for ($i = 0; $i < $max; $i++) {
            $rows[] = [
@@ -350,31 +458,31 @@ The code outputs tables with a list of stages for leads and quotes.
        }
        return $rows;
    }
-   
+
+   // Leads keep the semantics in EXTRA, the smart process — in SEMANTICS
    $entities = [
-       ['title' => 'Lead statuses', 'entityId' => 'STATUS'],
-       ['title' => 'Commercial offer statuses', 'entityId' => 'QUOTE_STATUS']
+       ['title' => 'Lead stages', 'entityId' => 'STATUS'],
+       ['title' => 'Smart process stages', 'entityId' => 'DYNAMIC_177_STAGE_7']
    ];
-   
+
    foreach ($entities as $entity) {
        try {
-           $statuses = loadStatuses($entity['entityId']);
+           $statuses = loadStatuses($sb, $entity['entityId']);
            if (empty($statuses)) {
-               echo "<p>No statuses for " . htmlspecialchars($entity['title']) . "</p>\n";
+               echo "<p>No stages for " . htmlspecialchars($entity['title']) . "</p>\n";
                continue;
            }
-   
-           $groups = groupStatusesBySemantics($statuses);
-           $rows = buildTableRows($groups);
-   
+
+           $rows = buildTableRows(groupStatusesBySemantics($statuses));
+
            echo "<h2>" . htmlspecialchars($entity['title']) . "</h2>\n";
            echo "<table border=\"1\" style=\"border-collapse: collapse; width: 100%;\">\n";
            echo "<thead><tr>
-               <th style=\"padding: 8px; background: #d4edda;\">✅ Success</th>
-               <th style=\"padding: 8px; background: #fff3cd;\">⚠️ In progress</th>
-               <th style=\"padding: 8px; background: #f8d7da;\">❌ Failure</th>
+               <th style=\"padding: 8px; background: #d4edda;\">Success</th>
+               <th style=\"padding: 8px; background: #fff3cd;\">In progress</th>
+               <th style=\"padding: 8px; background: #f8d7da;\">Failure</th>
            </tr></thead>\n<tbody>";
-   
+
            foreach ($rows as $row) {
                echo "<tr>
                    <td style=\"padding: 6px;\">{$row[0]}</td>
@@ -384,8 +492,8 @@ The code outputs tables with a list of stages for leads and quotes.
            }
    
            echo "</tbody></table><br>\n";
-   
-       } catch (Exception $e) {
+
+       } catch (\Throwable $e) {
            echo "<p style=\"color: red;\">Error: " . htmlspecialchars($e->getMessage()) . "</p>\n";
        }
    }
@@ -397,39 +505,41 @@ The code outputs tables with a list of stages for leads and quotes.
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
+    # Short semantics to text: there are only three of these values
+    SEMANTICS_MAP = {"S": "success", "F": "failure"}
+
     def load_statuses(client, entity_id: str) -> list:
         return client.crm.status.list(
             filter={"ENTITY_ID": entity_id},
             order={"SORT": "ASC"},
         ).response.result
 
+    def get_semantics(item: dict) -> str:
+        """Returns the stage semantics for any CRM object.
+
+        EXTRA is present only for leads, deals, and quotes, so for the other
+        objects we convert the short SEMANTICS value into a text one.
+        """
+        extra = (item.get("EXTRA") or {}).get("SEMANTICS")
+        if extra:
+            return extra
+        return SEMANTICS_MAP.get(item.get("SEMANTICS"), "process")
+
     def group_statuses_by_semantics(statuses: list) -> dict:
         groups = {"success": [], "process": [], "failure": []}
         for item in statuses:
-            semantics = (item.get("EXTRA") or {}).get("SEMANTICS", "")
             name = item.get("NAME") or item.get("STATUS_ID")
-            if semantics == "success":
-                groups["success"].append(name)
-            elif semantics == "failure":
-                groups["failure"].append(name)
-            else:
-                groups["process"].append(name)
+            groups[get_semantics(item)].append(name)
         return groups
 
     def build_table_rows(groups: dict) -> list:
-        success = groups["success"]
-        process = groups["process"]
-        failure = groups["failure"]
-        max_len = max(len(success), len(process), len(failure))
+        max_len = max(len(groups["success"]), len(groups["process"]), len(groups["failure"]))
 
-        success = success + [""] * (max_len - len(success))
-        process = process + [""] * (max_len - len(process))
-        failure = failure + [""] * (max_len - len(failure))
+        success = groups["success"] + [""] * (max_len - len(groups["success"]))
+        process = groups["process"] + [""] * (max_len - len(groups["process"]))
+        failure = groups["failure"] + [""] * (max_len - len(groups["failure"]))
 
-        rows = []
-        for i in range(max_len):
-            rows.append([success[i], process[i], failure[i]])
-        return rows
+        return [[success[i], process[i], failure[i]] for i in range(max_len)]
 
     client = Client(
         BitrixWebhook(
@@ -438,27 +548,35 @@ The code outputs tables with a list of stages for leads and quotes.
         )
     )
 
+    # Leads keep the semantics in EXTRA, the smart process — in SEMANTICS
     entities = [
-        {"title": "Lead statuses", "entity_id": "STATUS"},
-        {"title": "Commercial offer statuses", "entity_id": "QUOTE_STATUS"},
+        {"title": "Lead stages", "entity_id": "STATUS"},
+        {"title": "Smart process stages", "entity_id": "DYNAMIC_177_STAGE_7"},
     ]
 
-    try:
-        tables = {}
-        for entity in entities:
+    for entity in entities:
+        try:
             statuses = load_statuses(client, entity["entity_id"])
-            if not statuses:
-                continue
-            groups = group_statuses_by_semantics(statuses)
-            tables[entity["title"]] = build_table_rows(groups)
+        except BitrixAPIError as error:
+            print(f"Loading error: {error}")
+            continue
 
-        for title, rows in tables.items():
-            print(title)
-            print("✅ Success\t⚠️ In progress\t❌ Failure")
-            for row in rows:
-                print("\t".join(row))
-    except BitrixAPIError as error:
-        print(f"Loading error: {error}")
+        if not statuses:
+            print(f"No stages for {entity['title']}")
+            continue
+
+        print(entity["title"])
+        print("Success\tIn progress\tFailure")
+        for row in build_table_rows(group_statuses_by_semantics(statuses)):
+            print("\t".join(row))
     ```
 
 {% endlist %}
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/status/crm-status-list.md)
+- [{#T}](../../../api-reference/crm/status/crm-status-fields.md)
+- [{#T}](../../../api-reference/crm/universal/category/crm-category-list.md)
+- [{#T}](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md)
+- [{#T}](./how-to-get-deal-funnels.md)
