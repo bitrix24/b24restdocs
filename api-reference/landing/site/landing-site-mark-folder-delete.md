@@ -10,7 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with the "delete" access permission for the site to which the folder belongs
 
-The method `landing.site.markFolderDelete` marks a folder as deleted and moves it to the trash. Upon successful execution, the method also marks the pages within this folder and any nested folders as deleted.
+The method `landing.site.markFolderDelete` marks a folder as deleted and moves it to the trash. Upon successful execution, the method also marks the pages within this folder and any nested folders as deleted. Those pages are unpublished.
+
+The folder and its pages remain in the database. To restore them, use the [landing.site.markFolderUnDelete](./landing-site-mark-folder-undelete.md) method. By default, the trash contents are kept for 30 days and are then deleted automatically.
+
+Included areas block the call. Move such pages out of the folder or delete them, otherwise the method returns the `FOLDER_CONTAINS_AREAS` error.
 
 ## Method Parameters
 
@@ -27,6 +31,10 @@ The value of `scope` must correspond to the type of site [(detailed description)
 [`integer`](../../data-types.md) | Identifier of the folder.
 
 The folder identifier can be obtained using the [landing.site.getFolders](./landing-site-get-folders.md) method ||
+|| **mark**
+[`boolean`](../../data-types.md) | Indicator for marking the folder as deleted. Default is `true`.
+
+If `false` is passed, the method restores the folder from the trash. This scenario typically uses [landing.site.markFolderUnDelete](./landing-site-mark-folder-undelete.md) ||
 |#
 
 ## Code Examples

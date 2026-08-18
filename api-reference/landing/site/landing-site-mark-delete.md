@@ -10,7 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "delete" access permission for sites
 
-The method `landing.site.markDelete` marks the site as deleted and moves it to the trash.
+The method `landing.site.markDelete` marks the site as deleted, moves it to the trash, and unpublishes it.
+
+The site and its pages remain in the database. To restore the site, use the [landing.site.markUnDelete](./landing-site-mark-undelete.md) method. By default, sites are kept in the trash for 30 days and are then deleted automatically. To delete a site immediately and irreversibly, use the [landing.site.delete](./landing-site-delete.md) method.
 
 ## Method Parameters
 
@@ -27,6 +29,10 @@ The value of `scope` must correspond to the type of site [(detailed description)
 [`integer`](../../data-types.md) | Identifier of the site.
 
 The site identifier can be obtained using the method [landing.site.getList](./landing-site-get-list.md) or from the result of the method [landing.site.add](./landing-site-add.md) ||
+|| **mark**
+[`boolean`](../../data-types.md) | Indicator for marking the site as deleted. Default is `true`.
+
+If `false` is passed, the method restores the site from the trash. This scenario typically uses [landing.site.markUnDelete](./landing-site-mark-undelete.md) ||
 |#
 
 ## Code Examples

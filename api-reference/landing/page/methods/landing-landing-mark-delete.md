@@ -12,6 +12,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `landing.landing.markDelete` marks the page as deleted, moves it to the trash, and unpublishes it.
 
+The page remains in the database. To restore it, use the [landing.landing.markUnDelete](./landing-landing-mark-undelete.md) method. By default, pages are kept in the trash for 30 days and are then deleted automatically. To delete a page immediately and irreversibly, use the [landing.landing.delete](./landing-landing-delete.md) method.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -19,10 +21,18 @@ The method `landing.landing.markDelete` marks the page as deleted, moves it to t
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
 || **lid***
 [`integer`](../../../data-types.md) | Identifier of the page.
 
 The page identifier can be obtained using the [landing.landing.getList](./landing-landing-get-list.md) method, as well as from the results of the [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), and [landing.landing.copy](./landing-landing-copy.md) methods ||
+|| **mark**
+[`boolean`](../../../data-types.md) | Indicator for marking the page as deleted. Default is `true`.
+
+If `false` is passed, the method restores the page from the trash. This scenario typically uses [landing.landing.markUnDelete](./landing-landing-mark-undelete.md) ||
 |#
 
 ## Code Examples

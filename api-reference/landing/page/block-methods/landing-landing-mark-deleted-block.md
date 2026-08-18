@@ -10,7 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with "edit" access permission for the site
 
-The method `landing.landing.markdeletedblock` marks a page block as deleted but does not remove it from the database. The marked block can be restored using the method [landing.landing.markundeletedblock](./landing-landing-mark-undeleted-block.md).
+The method `landing.landing.markdeletedblock` marks a page block as deleted but does not remove it from the database. The marked block can be restored using the method [landing.landing.markundeletedblock](./landing-landing-mark-undeleted-block.md). To delete a block immediately and irreversibly, use the method [landing.landing.deleteblock](./landing-landing-delete-block.md).
+
+The method works only with blocks of the page passed in the `lid` parameter.
 
 If the page is already published, changes will be visible to visitors after the "Publish Changes" command in the interface or after calling the method [landing.landing.publication](../methods/landing-landing-publication.md).
 
