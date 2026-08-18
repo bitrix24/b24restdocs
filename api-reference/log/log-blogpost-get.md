@@ -28,7 +28,10 @@ You can obtain the ID using the [log.blogpost.get](./log-blogpost-get.md) method
 
 Possible values:
 
-{% include notitle [Message Recipients](./_includes/log-recepients.md) %}
+- `SG<X>` — workgroups and projects with the identifier `X`. You can retrieve the identifier using the [sonet_group.get](../sonet-group/sonet-group-get.md) method
+- `U<X>` — users with the identifier `X`. You can retrieve the identifier using the [user.get](../user/user-get.md) method
+- `UA` — all authorized users
+- `DR<X>` — company departments with the identifier `X`. You can retrieve the identifier using the [department.get](../departments/department-get.md) method
 ||
 || **LOG_DATE_FROM**
 [`string`](../data-types.md) | Lower boundary of the post publication period in ISO 8601 format. If `LOG_DATE_FROM` and `LOG_DATE_TO` are specified, the `LOG_DATE_FROM` value must not be later than `LOG_DATE_TO` ||

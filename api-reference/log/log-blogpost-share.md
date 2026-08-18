@@ -28,7 +28,10 @@ You can obtain the identifier using the [log.blogpost.get](./log-blogpost-get.md
 
 Possible values:
 
-{% include notitle [message recipients](./_includes/log-recepients.md) %}
+- `SG<X>` — workgroups and projects with the identifier `X`. You can retrieve the identifier using the [sonet_group.get](../sonet-group/sonet-group-get.md) method
+- `U<X>` — users with the identifier `X`. You can retrieve the identifier using the [user.get](../user/user-get.md) method
+- `UA` — all authorized users
+- `DR<X>` — company departments with the identifier `X`. You can retrieve the identifier using the [department.get](../departments/department-get.md) method
 ||
 || **USER_ID**
 [`integer`](../data-types.md) | Identifier of the user on behalf of whom the message is edited. Available only to administrators.

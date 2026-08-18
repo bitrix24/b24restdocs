@@ -28,7 +28,10 @@ The method `log.blogpost.add` adds a message to the News Feed.
 
 Possible values:
 
-{% include notitle [Message Recipients](./_includes/log-recepients.md) %}
+- `SG<X>` — workgroups and projects with the identifier `X`. You can retrieve the identifier using the [sonet_group.get](../sonet-group/sonet-group-get.md) method
+- `U<X>` — users with the identifier `X`. You can retrieve the identifier using the [user.get](../user/user-get.md) method
+- `UA` — all authorized users
+- `DR<X>` — company departments with the identifier `X`. You can retrieve the identifier using the [department.get](../departments/department-get.md) method
 
 Default — `UA`
 ||
