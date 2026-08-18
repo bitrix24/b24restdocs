@@ -135,7 +135,7 @@ The value is automatically changed when the document is approved or canceled ||
 || **documentType**
 [`string`](../data-types.md) | Type of inventory document ||
 || **fieldN**
-[`mixed`](../data-types.md) | Value of the custom field of the document, where `N` — identifier of the custom field, for example `field7097` ||
+[`any`](../data-types.md) | Value of the custom field of the document, where `N` — identifier of the custom field, for example `field7097` ||
 |#
 
 ### catalog_document_element
@@ -273,13 +273,13 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 - `N` — no
 ||
 || **height**
-[`float`](../data-types.md) | Height of the product ||
+[`double`](../data-types.md) | Height of the product ||
 || **length**
-[`float`](../data-types.md) | Length of the product ||
+[`double`](../data-types.md) | Length of the product ||
 || **weight**
-[`float`](../data-types.md) | Weight of the product ||
+[`double`](../data-types.md) | Weight of the product ||
 || **width**
-[`float`](../data-types.md) | Width of the product ||
+[`double`](../data-types.md) | Width of the product ||
 || **quantityTrace**
 [`string`](../data-types.md) | Quantity accounting mode. Possible values:
 - `Y` — enabled
@@ -298,17 +298,17 @@ The list of currencies can be obtained using the [crm.currency.list](../crm/curr
 Not editable when inventory accounting is enabled
 ||
 || **purchasingPrice**
-[`float`](../data-types.md) | Purchasing price.
+[`double`](../data-types.md) | Purchasing price.
 
 Not editable when inventory accounting is enabled
 ||
 || **quantity**
-[`float`](../data-types.md) | Quantity.
+[`double`](../data-types.md) | Quantity.
 
 Not editable when inventory accounting is enabled
 ||
 || **quantityReserved**
-[`float`](../data-types.md) | Reserved quantity.
+[`double`](../data-types.md) | Reserved quantity.
 
 Not editable when inventory accounting is enabled
 ||
@@ -609,19 +609,19 @@ For parent products, the ability to edit this field is available only in the on-
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **height**
-[`float`](../data-types.md) | Height of the parent product.
+[`double`](../data-types.md) | Height of the parent product.
 
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **length**
-[`float`](../data-types.md) | Length of the parent product.
+[`double`](../data-types.md) | Length of the parent product.
 
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **weight**
-[`float`](../data-types.md) | Weight of the parent product.
+[`double`](../data-types.md) | Weight of the parent product.
 
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **width**
-[`float`](../data-types.md) | Width of the parent product.
+[`double`](../data-types.md) | Width of the parent product.
 
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **type**
@@ -639,14 +639,14 @@ Not editable when inventory accounting is enabled.
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **purchasingPrice**
-[`float`](../data-types.md) | Purchasing price.
+[`double`](../data-types.md) | Purchasing price.
 
 Not editable when inventory accounting is enabled.
 
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **quantity**
-[`float`](../data-types.md) | Quantity.
+[`double`](../data-types.md) | Quantity.
 
 Not editable when inventory accounting is enabled.
 
@@ -760,13 +760,13 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 - `N` — no
 ||
 || **height**
-[`float`](../data-types.md) | Height of the product ||
+[`double`](../data-types.md) | Height of the product ||
 || **length**
-[`float`](../data-types.md) | Length of the product ||
+[`double`](../data-types.md) | Length of the product ||
 || **weight**
-[`float`](../data-types.md) | Weight of the product ||
+[`double`](../data-types.md) | Weight of the product ||
 || **width**
-[`float`](../data-types.md) | Width of the product ||
+[`double`](../data-types.md) | Width of the product ||
 || **quantityTrace**
 [`string`](../data-types.md) | Quantity accounting mode. Possible values:
 - `Y` — enabled
@@ -786,17 +786,17 @@ The list of currencies can be obtained using the [crm.currency.list](../crm/curr
 Not editable when inventory accounting is enabled
 ||
 || **purchasingPrice**
-[`float`](../data-types.md) | Purchasing price.
+[`double`](../data-types.md) | Purchasing price.
 
 Not editable when inventory accounting is enabled
 ||
 || **quantity**
-[`float`](../data-types.md) | Quantity.
+[`double`](../data-types.md) | Quantity.
 
 Not editable when inventory accounting is enabled
 ||
 || **quantityReserved**
-[`float`](../data-types.md) | Reserved quantity.
+[`double`](../data-types.md) | Reserved quantity.
 
 Not editable when inventory accounting is enabled
 ||

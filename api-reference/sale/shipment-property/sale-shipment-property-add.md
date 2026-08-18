@@ -84,7 +84,7 @@ If not provided, the default value is `N` ||
 || **sort**
 [`integer`](../../data-types.md) | Sorting ||
 || **description**
-[`string`](../data-types.md) | Description of the shipment property ||
+[`string`](../../data-types.md) | Description of the shipment property ||
 || **required**
 [`string`](../../data-types.md) | Indicator of whether the value of the shipment property is required.
 Possible values:
@@ -708,7 +708,7 @@ Multiplicity is not supported for shipment properties marked with the `isLocatio
 Multiplicity is not supported for shipment properties marked with the `isLocation4tax` indicator ||
 || `200850000015` | Error occurs when trying to create a shipment property of type `STRING` with the `isProfileName` parameter set to `Y`, if the `required` parameter is not specified. 
 Profile name is required and cannot be empty ||
-|| `200850000016` | Error occurs when trying to create a shipment property of type [`STRING`](../../data-types.md) with the `isProfileName` parameter set to `Y`, if the `required` parameter is not equal to `Y`. 
+|| `200850000016` | Error occurs when trying to create a shipment property of type `STRING` with the `isProfileName` parameter set to `Y`, if the `required` parameter is not equal to `Y`. 
 Profile name is required and cannot be empty ||
 || `200040300020` | Insufficient permissions to add shipment property ||
 || `100` | The `fields` parameter is not specified or is empty ||

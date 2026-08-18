@@ -20,7 +20,7 @@ The `crm.activity.type.add` method registers a custom activity type by specifyin
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../../data-types.md#object_type) | Field values for adding a new custom activity type in the form of a structure:
+[`object`](../../../data-types.md#object_type) | Field values for adding a new custom activity type in the form of a structure:
 
 ```json
 fields:
@@ -47,7 +47,7 @@ A detailed description is provided [below](#parametr-fields)
 || **NAME**
 [`string`](../../../../data-types.md) | Name of the deal type, for example `Case 1c` for a deal. By default, an empty string ||
 || **ICON_FILE**
-[`attached_diskfile`](../../../../data-types.md) | Icon file for the activity type, described according to [rules](../../../../files/how-to-upload-files.md) ||
+[`attached_diskfile`](../../../data-types.md#attached_diskfile) | Icon file for the activity type, described according to [rules](../../../../files/how-to-upload-files.md) ||
 || **IS_CONFIGURABLE_TYPE**
 [`string`](../../../../data-types.md) | Default value is `N`. Value `Y` indicates that the type will be used for [configurable activities](../configurable/crm-activity-configurable-add.md) ||
 |#

@@ -319,7 +319,7 @@ HTTP status: **200**
 || **personType**
 [`sale_person_type`](../data-types.md) | Object with information about the updated payer type ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

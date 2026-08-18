@@ -20,15 +20,15 @@ The method `department.update` modifies the department data in the company struc
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`int`](../data-types.md) | Identifier of the department ||
+[`integer`](../data-types.md) | Identifier of the department ||
 || **NAME**
 [`string`](../data-types.md) | Name of the department ||
 || **SORT**
-[`int`](../data-types.md) | Sorting field of the department ||
+[`integer`](../data-types.md) | Sorting field of the department ||
 || **PARENT**
-[`int`](../data-types.md) | Identifier of the parent department ||
+[`integer`](../data-types.md) | Identifier of the parent department ||
 || **UF_HEAD**
-[`int`](../data-types.md) | Identifier of the user who will be the head of the department ||
+[`integer`](../data-types.md) | Identifier of the user who will be the head of the department ||
 |#
 
 ## Code Examples

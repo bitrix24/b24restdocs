@@ -20,7 +20,7 @@ The method `sale.persontype.delete` deletes a payer type.
 || **Parameter**
 `type`| **Description** ||
 || **id***
-[`sale_person_type.id`](../../data-types.md) | Identifier of the payer type ||
+[`sale_person_type.id`](../data-types.md) | Identifier of the payer type ||
 |#
 
 ## Code Examples
@@ -227,7 +227,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Result of deleting the payer type ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

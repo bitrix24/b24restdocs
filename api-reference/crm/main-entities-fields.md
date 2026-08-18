@@ -22,7 +22,7 @@ The field description is returned by the method [crm.deal.fields](./deals/crm-de
 || **TYPE_ID**
 [`crm_status`](./data-types.md) | Deal type. Used only for linking to an external source. | Yes | Yes ||
 || **CATEGORY_ID**
-[`crm_category`](../data-types.md) | Direction identifier. Immutable. If this field is not passed when creating a deal, the deal will be created in the general direction. | Yes | Yes ||
+[`crm_category`](./data-types.md) | Direction identifier. Immutable. If this field is not passed when creating a deal, the deal will be created in the general direction. | Yes | Yes ||
 || **STAGE_ID**
 [`crm_status`](./data-types.md) | Stage identifier. Possible values:
 - `NEW` — new deal
@@ -105,7 +105,7 @@ A list of possible identifiers can be obtained using the [crm.status.list](./sta
 || **LEAD_ID**
 [`crm_lead`](./data-types.md) | Linked lead identifier. | Yes | No ||
 || **LOCATION_ID**
-[`location`](../data-types.md) | Customer location. Service field, not recommended for use. | Yes | Yes ||
+[`location`](./data-types.md) | Customer location. Service field, not recommended for use. | Yes | Yes ||
 || **ORIGINATOR_ID**
 [`string`](../data-types.md) | Data source identifier. Used only for linking to an external source. | Yes | Yes ||
 || **ORIGIN_ID**
@@ -456,7 +456,7 @@ Address fields in the contact are deprecated and used only for backward compatib
 ||**ADDRESS_COUNTRY_CODE**
 [`string`](../data-types.md) | Country code (deprecated) | Yes | Yes ||
 ||**ADDRESS_LOC_ADDR_ID**
-[`location`](../data-types.md) | Location address identifier (deprecated) | Yes | Yes ||
+[`location`](./data-types.md) | Location address identifier (deprecated) | Yes | Yes ||
 ||**COMMENTS**
 [`string`](../data-types.md) | Comment. Supports bb-codes | Yes | Yes ||
 ||**OPENED**
@@ -950,9 +950,9 @@ The field description is returned by the method [crm.activity.fields](./timeline
 || **OWNER_ID**
 [`integer`](../data-types.md) | Owner identifier, immutable | Yes | Yes ||
 || **OWNER_TYPE_ID**
-[`crm.enum.ownertype`](./data-types.md) | Owner type, immutable | Yes | Yes ||
+[`crm_enum_ownertype`](./data-types.md#activity-enums) | Owner type, immutable | Yes | Yes ||
 || **TYPE_ID**
-[`crm_enum_activitytype`](./data-types.md) | Type, immutable | Yes | Yes ||
+[`crm_enum_activitytype`](./data-types.md#activity-enums) | Type, immutable | Yes | Yes ||
 || **PROVIDER_ID**
 [`string`](../data-types.md) | Provider identifier | Yes | Yes ||
 || **PROVIDER_TYPE_ID**
@@ -972,21 +972,21 @@ The field description is returned by the method [crm.activity.fields](./timeline
 || **COMPLETED**
 [`char`](../data-types.md) | Completed | Yes | Yes ||
 || **STATUS**
-[`crm_enum_activitystatus`](./data-types.md) | Status | Yes | Yes ||
+[`crm_enum_activitystatus`](./data-types.md#activity-enums) | Status | Yes | Yes ||
 || **RESPONSIBLE_ID**
 [`user`](../data-types.md) | assigned user | Yes | Yes ||
 || **PRIORITY**
-[`crm.enum.activitypriority`](./data-types.md) | Importance | Yes | Yes ||
+[`crm_enum_activitypriority`](./data-types.md#activity-enums) | Importance | Yes | Yes ||
 || **NOTIFY_TYPE**
-[`crm.enum.activitynotifytype`](./data-types.md) | Notification type | Yes | Yes ||
+[`crm_enum_activitynotifytype`](./data-types.md#activity-enums) | Notification type | Yes | Yes ||
 || **NOTIFY_VALUE**
 [`integer`](../data-types.md) | Notification parameter | Yes | Yes ||
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description | Yes | Yes ||
 || **DESCRIPTION_TYPE**
-[`crm.enum.contenttype`](./data-types.md) | Description type | Yes | Yes ||
+[`crm_enum_contenttype`](./data-types.md#activity-enums) | Description type | Yes | Yes ||
 || **DIRECTION**
-[`crm.enum.activitydirection`](./data-types.md) | Activity direction: inbound/outbound. Relevant for calls and emails, not used for meetings. | Yes | Yes ||
+[`crm_enum_activitydirection`](./data-types.md#activity-enums) | Activity direction: inbound/outbound. Relevant for calls and emails, not used for meetings. | Yes | Yes ||
 || **LOCATION**
 [`string`](../data-types.md) | Location | Yes | Yes ||
 || **CREATED**
@@ -1024,13 +1024,13 @@ The field description is returned by the method [crm.activity.fields](./timeline
 || **AUTOCOMPLETE_RULE**
 [`integer`](../data-types.md) | Autofill | Yes | Yes ||
 || **BINDINGS**
-[`crm_activity_binding`](./data-types.md) | Links | Yes | No ||
+[`crm_activity_binding`](./data-types.md#crm_activity_binding) | Links | Yes | No ||
 || **COMMUNICATIONS**
 [`crm_activity_communication`](./data-types.md) | Communication channel. Multiple, mandatory | Yes | Yes ||
 || **FILES**
-[`diskfile`](../data-types.md) | Added files. Multiple | Yes | Yes ||
+[`diskfile`](./data-types.md#diskfile) | Added files. Multiple | Yes | Yes ||
 || **WEBDAV_ELEMENTS**
-[`diskfile`](../data-types.md) | Added files. Multiple. Deprecated, kept for compatibility | Yes | Yes ||
+[`diskfile`](./data-types.md#diskfile) | Added files. Multiple. Deprecated, kept for compatibility | Yes | Yes ||
 || **IS_INCOMING_CHANNEL**
 [`char`](../data-types.md) | Whether the activity is inbound, i.e., created as a result of an incoming client Salutation to a communication channel | Yes | No ||
 |#

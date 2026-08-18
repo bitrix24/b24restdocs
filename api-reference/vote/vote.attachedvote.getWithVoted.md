@@ -439,7 +439,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **attach**
-[`attached_vote`](../data-types.md) | Data of the attached vote, structure described [below](#attach) ||
+[`object`](../data-types.md) | Data of the attached vote, structure described [below](#attach) ||
 || **voted**
 [`object`](../data-types.md) | Information about the users who voted, structure described [below](#voted) ||
 |#
@@ -464,13 +464,13 @@ HTTP Status: **200**
 || **userAnswerMap**
 [`array`](../data-types.md) | Map of current user's answers ||
 || **canEdit**
-[`bool`](../data-types.md) | Can the current user edit the poll ||
+[`boolean`](../data-types.md) | Can the current user edit the poll ||
 || **canVote**
-[`bool`](../data-types.md) | Can the current user vote ||
+[`boolean`](../data-types.md) | Can the current user vote ||
 || **canRevote**
-[`bool`](../data-types.md) | Can the current user revote ||
+[`boolean`](../data-types.md) | Can the current user revote ||
 || **isVoted**
-[`bool`](../data-types.md) | Has the current user already voted ||
+[`boolean`](../data-types.md) | Has the current user already voted ||
 || **signedAttachId**
 [`string`](../data-types.md) | Signed ID ||
 || **resultUrl**
@@ -480,7 +480,7 @@ HTTP Status: **200**
 || **entityId**
 [`integer`](../data-types.md) | The ID of the element to which the poll is attached ||
 || **isFinished**
-[`bool`](../data-types.md) | Is the poll completed ||
+[`boolean`](../data-types.md) | Is the poll completed ||
 |#
 
 ##### Response Element voted {#voted}

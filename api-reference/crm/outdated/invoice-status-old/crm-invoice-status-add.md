@@ -32,7 +32,7 @@ Starting from version 19.0.0, it is recommended to use the method [crm.status.ad
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`array`](../../data-types.md) | A set of fields — an array in the form `array("field"=>"value"[, ...])`, containing the values of the invoice status fields. 
+[`array`](../../../data-types.md) | A set of fields — an array in the form `array("field"=>"value"[, ...])`, containing the values of the invoice status fields. 
 
 {% note info %}
 

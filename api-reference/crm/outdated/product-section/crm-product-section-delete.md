@@ -26,7 +26,7 @@ The method `crm.productsection.delete` removes a product category from the catal
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the product section ||
+[`integer`](../../../data-types.md) | Identifier of the product section ||
 |#
 
 ## Code Examples

@@ -492,7 +492,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **payment**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [sale_order_payment](../data-types.md), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [sale_order_payment](../data-types.md), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

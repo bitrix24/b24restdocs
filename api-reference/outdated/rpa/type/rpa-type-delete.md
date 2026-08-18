@@ -26,7 +26,7 @@ This method deletes a process.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`number`](../../../data-types.md) | Process identifier ||
+[`integer`](../../../data-types.md) | Process identifier ||
 |#
 
 ## Continue Exploring 

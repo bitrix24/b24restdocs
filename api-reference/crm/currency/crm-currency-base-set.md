@@ -24,7 +24,7 @@ After changing the base currency, it is necessary to update the exchange rates o
 ||  **Name**
 `type`| **Description** ||
 || **id**
-[`srting`](../../data-types.md) | Identifier of the currency that will become the base.
+[`string`](../../data-types.md) | Identifier of the currency that will become the base.
 
 Corresponds to the ISO 4217 standard.
 

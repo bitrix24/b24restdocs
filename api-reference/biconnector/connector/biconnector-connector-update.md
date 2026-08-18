@@ -61,7 +61,7 @@ The method `biconnector.connector.update` updates an existing connector.
 || **settings**
 [`array`](../../data-types.md) | New list of connection parameters, [(detailed description)](./index.md#settings) ||
 || **sort**
-[`int`](../../data-types.md) | New sorting parameter for the connector ||
+[`integer`](../../data-types.md) | New sorting parameter for the connector ||
 |#
 
 ## Code Examples

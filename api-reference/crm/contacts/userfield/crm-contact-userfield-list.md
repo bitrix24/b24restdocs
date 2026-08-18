@@ -129,7 +129,7 @@ This parameter does not affect anything within `crm`
 This parameter does not affect anything within `crm`
 ||
 || **LANG**
-[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#last-ids). When filtering by this parameter, a set of fields with values in the provided language will be returned:
+[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). When filtering by this parameter, a set of fields with values in the provided language will be returned:
 - `EDIT_FORM_LABEL` — label in the edit form
 - `LIST_COLUMN_LABEL` — header in the list
 - `LIST_FILTER_LABEL` — filter label in the list

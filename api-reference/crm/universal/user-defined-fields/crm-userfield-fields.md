@@ -303,9 +303,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object with a description of characteristics [(detailed description)](#result) ||
+[`object`](../../../data-types.md) | Object with a description of characteristics [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Fields of the result object {#result}
@@ -314,43 +314,43 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier ||
+[`integer`](../../../data-types.md) | Identifier ||
 || **ENTITY_ID**
-[`string`](../../data-types.md) | Custom field object ||
+[`string`](../../../data-types.md) | Custom field object ||
 || **FIELD_NAME**
-[`string`](../../data-types.md) | Field code ||
+[`string`](../../../data-types.md) | Field code ||
 || **USER_TYPE_ID**
-[`string`](../../data-types.md) | Custom field data type ||
+[`string`](../../../data-types.md) | Custom field data type ||
 || **XML_ID**
-[`string`](../../data-types.md) | External ID (XML ID) ||
+[`string`](../../../data-types.md) | External ID (XML ID) ||
 || **SORT**
-[`integer`](../../data-types.md) | Sorting order ||
+[`integer`](../../../data-types.md) | Sorting order ||
 || **MULTIPLE**
-[`char`](../../data-types.md) | Multiple indicator ||
+[`char`](../../../data-types.md) | Multiple indicator ||
 || **MANDATORY**
-[`char`](../../data-types.md) | Mandatory indicator ||
+[`char`](../../../data-types.md) | Mandatory indicator ||
 || **SHOW_FILTER**
-[`char`](../../data-types.md) | Display in list filter indicator ||
+[`char`](../../../data-types.md) | Display in list filter indicator ||
 || **SHOW_IN_LIST**
-[`char`](../../data-types.md) | Display in list indicator ||
+[`char`](../../../data-types.md) | Display in list indicator ||
 || **EDIT_IN_LIST**
-[`char`](../../data-types.md) | Allow user editing indicator ||
+[`char`](../../../data-types.md) | Allow user editing indicator ||
 || **IS_SEARCHABLE**
-[`char`](../../data-types.md) | Field values are searchable indicator ||
+[`char`](../../../data-types.md) | Field values are searchable indicator ||
 || **EDIT_FORM_LABEL**
-[`string`](../../data-types.md)\|[`lang_map`](../../data-types.md) | Label in edit form ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Label in edit form ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../data-types.md)\|[`lang_map`](../../data-types.md) | Header in list ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Header in list ||
 || **LIST_FILTER_LABEL**
-[`string`](../../data-types.md)\|[`lang_map`](../../data-types.md) | Filter label in list ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Filter label in list ||
 || **ERROR_MESSAGE**
-[`string`](../../data-types.md)\|[`lang_map`](../../data-types.md) | Error message ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Error message ||
 || **HELP_MESSAGE**
-[`string`](../../data-types.md)\|[`lang_map`](../../data-types.md) | Help ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Help ||
 || **LIST**
 [`uf_enum_element`](./crm-userfield-enumeration-fields.md) | List elements for `enumeration` type field ||
 || **SETTINGS**
-[`object`](../../data-types.md) | Additional settings depending on field type ||
+[`object`](../../../data-types.md) | Additional settings depending on field type ||
 |#
 
 ## Error Handling

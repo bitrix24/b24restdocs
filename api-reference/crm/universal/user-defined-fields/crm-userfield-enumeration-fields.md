@@ -243,9 +243,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object with field descriptions [(detailed description)](#result) ||
+[`object`](../../../data-types.md) | Object with field descriptions [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Fields of the result Object {#result}
@@ -254,15 +254,15 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the list value ||
+[`integer`](../../../data-types.md) | Identifier of the list value ||
 || **SORT**
-[`integer`](../../data-types.md) | Sorting order ||
+[`integer`](../../../data-types.md) | Sorting order ||
 || **VALUE**
-[`string`](../../data-types.md) | Value of the list item ||
+[`string`](../../../data-types.md) | Value of the list item ||
 || **DEF**
-[`string`](../../data-types.md) | Default value indicator ||
+[`string`](../../../data-types.md) | Default value indicator ||
 || **DEL**
-[`string`](../../data-types.md) | Element deletion flag ||
+[`string`](../../../data-types.md) | Element deletion flag ||
 |#
 
 ## Error Handling

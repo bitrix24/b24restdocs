@@ -68,9 +68,9 @@ Identifiers of delivery service handlers can be obtained using the method [sale.
 || **basketId**
 [`sale_basket_item.id`](#sale_basket_item) | Identifier of the basket ||
 || **quantity**
-[`float`](../data-types.md) | Quantity of the product ||
+[`double`](../data-types.md) | Quantity of the product ||
 || **reservedQuantity**
-[`float`](../data-types.md) | Reserved quantity of the product ||
+[`double`](../data-types.md) | Reserved quantity of the product ||
 || **xmlId**
 [`string`](../data-types.md) | External identifier.
 

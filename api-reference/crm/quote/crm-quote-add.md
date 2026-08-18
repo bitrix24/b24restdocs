@@ -28,7 +28,7 @@ If you need to explicitly specify the details of the buyer and seller in the est
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../data-types.md) | An object containing the fields of the estimate in the following format:
+[`object`](../../data-types.md) | An object containing the fields of the estimate in the following format:
 
 ```json
 {
@@ -47,7 +47,7 @@ The list of required and main fields is provided [below](#parameter-fields).
 A complete list of available fields and their types can be obtained using the method [crm.quote.fields](./crm-quote-fields.md)
 ||
 || **params**
-[`object`](../data-types.md) | An object of additional parameters [(detailed description)](#parameter-params) ||
+[`object`](../../data-types.md) | An object of additional parameters [(detailed description)](#parameter-params) ||
 |#
 
 ### Parameter fields {#parameter-fields}
@@ -58,7 +58,7 @@ A complete list of available fields and their types can be obtained using the me
 || **Name**
 `type` | **Description** ||
 || **TITLE***
-[`string`](../data-types.md) | Subject of the estimate
+[`string`](../../data-types.md) | Subject of the estimate
 
 Length restriction — up to `255` characters.
 
@@ -72,11 +72,11 @@ The list of available stages can be obtained using the method [crm.status.list](
 || **CURRENCY_ID**
 [`crm_currency`](../data-types.md) | Currency of the estimate amount ||
 || **OPPORTUNITY**
-[`double`](../data-types.md) | Amount of the estimate
+[`double`](../../data-types.md) | Amount of the estimate
 
 Provide a numeric value along with `CURRENCY_ID` ||
 || **ASSIGNED_BY_ID**
-[`user`](../data-types.md) | Identifier of the responsible person ||
+[`user`](../../data-types.md) | Identifier of the responsible person ||
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the client company ||
 || **CONTACT_IDS**
@@ -85,25 +85,25 @@ Provide a numeric value along with `CURRENCY_ID` ||
 || **MYCOMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of "your company" for seller requisites ||
 || **OPENED**
-[`char`](../data-types.md) | Is the estimate available to everyone? Possible values:
+[`char`](../../data-types.md) | Is the estimate available to everyone? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **PERSON_TYPE_ID**
-[`integer`](../data-types.md) | Identifier of the payer type ||
+[`integer`](../../data-types.md) | Identifier of the payer type ||
 || **BEGINDATE**
-[`date`](../data-types.md) | Date of issue ||
+[`date`](../../data-types.md) | Date of issue ||
 || **CLOSEDATE**
-[`date`](../data-types.md) | Expiration date of the estimate ||
+[`date`](../../data-types.md) | Expiration date of the estimate ||
 || **CLIENT_TITLE**
-[`string`](../data-types.md) | Client name, up to `255` characters ||
+[`string`](../../data-types.md) | Client name, up to `255` characters ||
 || **CLIENT_ADDR**
-[`string`](../data-types.md) | Client address, up to `255` characters ||
+[`string`](../../data-types.md) | Client address, up to `255` characters ||
 || **CLIENT_EMAIL**
-[`string`](../data-types.md) | Client email, up to `255` characters ||
+[`string`](../../data-types.md) | Client email, up to `255` characters ||
 || **CLIENT_PHONE**
-[`string`](../data-types.md) | Client phone, up to `255` characters ||
+[`string`](../../data-types.md) | Client phone, up to `255` characters ||
 || **COMMENTS**
-[`string`](../data-types.md) | Comment ||
+[`string`](../../data-types.md) | Comment ||
 |#
 
 {% note info "Method Feature" %}
@@ -118,7 +118,7 @@ Some incorrect values in the fields may not lead to a `400` error: values are no
 || **Name**
 `type` | **Description** ||
 || **IMPORT**
-[`boolean`](../data-types.md) | Import mode. Possible values:
+[`boolean`](../../data-types.md) | Import mode. Possible values:
 - `Y` — yes
 - `N` — no ||
 |#
@@ -131,13 +131,13 @@ These fields are available for filling when the parameter `IMPORT = 'Y'` is pass
 || **Name**
 `type` | **Description** ||
 || **DATE_CREATE**
-[`datetime`](../data-types.md) | Creation date ||
+[`datetime`](../../data-types.md) | Creation date ||
 || **DATE_MODIFY**
-[`datetime`](../data-types.md) | Modification date ||
+[`datetime`](../../data-types.md) | Modification date ||
 || **CREATED_BY_ID**
-[`user`](../data-types.md) | Created by ||
+[`user`](../../data-types.md) | Created by ||
 || **MODIFY_BY_ID**
-[`user`](../data-types.md) | Modified by ||
+[`user`](../../data-types.md) | Modified by ||
 |#
 
 ## Code Examples
@@ -435,9 +435,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../data-types.md) | Root element of the response. Contains the identifier of the created estimate ||
+[`integer`](../../data-types.md) | Root element of the response. Contains the identifier of the created estimate ||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

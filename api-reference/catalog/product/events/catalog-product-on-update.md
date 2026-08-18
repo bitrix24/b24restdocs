@@ -54,23 +54,23 @@ Data is transmitted as a POST request {.b24-info}
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic code of the event.
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `CATALOG.PRODUCT.ON.UPDATE` ||
 || **event_handler_id***
-[`integer`](../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data***
-[`object`](../../data-types.md) | An object containing information about the updated product.
+[`object`](../../../data-types.md) | An object containing information about the updated product.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS***
-[`object`](../../data-types.md) | An object containing information about the product fields.
+[`object`](../../../data-types.md) | An object containing information about the product fields.
 
 The structure is described [below](#fields) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -91,7 +91,7 @@ The structure is described [below](#auth) ||
 - [catalog.product.service.get](../service/catalog-product-service-get.md) — for services
 ||
 || **TYPE***
-[`integer`](../../data-types.md) | Product type:
+[`integer`](../../../data-types.md) | Product type:
 - `1` — simple product
 - `3` — parent product with variations
 - `4` — variation

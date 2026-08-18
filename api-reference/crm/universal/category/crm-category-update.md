@@ -377,9 +377,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains the [`category`](./crm-category-add.md#category) object ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the [`category`](./crm-category-add.md#category) object ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

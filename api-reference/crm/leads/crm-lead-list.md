@@ -72,7 +72,7 @@ Possible values for `order`:
 - `asc` — in ascending order  
 - `desc` — in descending order ||  
 || **start**  
-[`integer`](../data-types.md) | This parameter is used to control pagination.  
+[`integer`](../../data-types.md) | This parameter is used to control pagination.  
 
 The page size of results is always static: 50 records.  
 

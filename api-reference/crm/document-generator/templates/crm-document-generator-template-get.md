@@ -20,7 +20,7 @@ The method `crm.documentgenerator.template.get` returns information about a temp
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../data-types.md) | Identifier of the template ||
+[`integer`](../../../data-types.md) | Identifier of the template ||
 |#
 
 ## Code Examples
@@ -311,9 +311,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains the object [`template`](#template) ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the object [`template`](#template) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Template Type {#template}
@@ -322,37 +322,37 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Identifier of the template ||
+[`string`](../../../data-types.md) | Identifier of the template ||
 || **name**
-[`string`](../../data-types.md) | Template name ||
+[`string`](../../../data-types.md) | Template name ||
 || **region**
-[`string`](../../data-types.md) | Template region ||
+[`string`](../../../data-types.md) | Template region ||
 || **code**
-[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Symbolic code of the template ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Symbolic code of the template ||
 || **download**
-[`string`](../../data-types.md) | Link to download the template file ||
+[`string`](../../../data-types.md) | Link to download the template file ||
 || **downloadMachine**
-[`string`](../../data-types.md) | Link to download the template file for the application ||
+[`string`](../../../data-types.md) | Link to download the template file for the application ||
 || **active**
-[`char`](../../data-types.md) | Template activity: `Y` or `N` ||
+[`char`](../../../data-types.md) | Template activity: `Y` or `N` ||
 || **moduleId**
-[`string`](../../data-types.md) | Module identifier ||
+[`string`](../../../data-types.md) | Module identifier ||
 || **numeratorId**
-[`string`](../../data-types.md) | The identifier of the numerator ||
+[`string`](../../../data-types.md) | The identifier of the numerator ||
 || **withStamps**
-[`char`](../../data-types.md) | Include stamp and signature: `Y` or `N` ||
+[`char`](../../../data-types.md) | Include stamp and signature: `Y` or `N` ||
 || **users**
-[`object`](../../data-types.md) | Object of access permission codes in the format `{"UA":"UA"}` ||
+[`object`](../../../data-types.md) | Object of access permission codes in the format `{"UA":"UA"}` ||
 || **isDeleted**
-[`char`](../../data-types.md) | Template deletion flag: `Y` or `N` ||
+[`char`](../../../data-types.md) | Template deletion flag: `Y` or `N` ||
 || **sort**
-[`string`](../../data-types.md) | Sorting index ||
+[`string`](../../../data-types.md) | Sorting index ||
 || **entityTypeId**
-[`array`](../../data-types.md) | Array of CRM object identifiers for which the template is available ||
+[`array`](../../../data-types.md) | Array of CRM object identifiers for which the template is available ||
 || **createTime**
-[`datetime`](../../data-types.md) | Date and time of template creation ||
+[`datetime`](../../../data-types.md) | Date and time of template creation ||
 || **updateTime**
-[`datetime`](../../data-types.md) | Date and time of the last template update ||
+[`datetime`](../../../data-types.md) | Date and time of the last template update ||
 |#
 
 ## Error Handling

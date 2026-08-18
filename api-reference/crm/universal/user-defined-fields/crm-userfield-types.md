@@ -299,9 +299,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of objects with supported types [(detailed description)](#result) ||
+[`array`](../../../data-types.md) | Array of objects with supported types [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Object {#result}
@@ -310,9 +310,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`](../../data-types.md) | Code of the custom field type ||
+[`string`](../../../data-types.md) | Code of the custom field type ||
 || **title**
-[`string`](../../data-types.md) | Name of the custom field type ||
+[`string`](../../../data-types.md) | Name of the custom field type ||
 |#
 
 ## Error Handling

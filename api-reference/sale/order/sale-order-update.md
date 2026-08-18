@@ -22,7 +22,7 @@ The method `sale.order.update` updates the fields of an order.
 || **id***
 [`sale_order.id`](../data-types.md) | Order identifier ||
 || **fields***
-[`object`](../data-types.md) | Field values for updating the order ||
+[`object`](../../data-types.md) | Field values for updating the order ||
 |#
 
 ## Fields Parameter

@@ -162,7 +162,7 @@ For the `image` category, the `prompt` key receives an object with the following
 || **max_tokens**
 [`integer`](../data-types.md) | Maximum number of tokens in the response ||
 || **temperature**
-[`number`](../data-types.md) | A parameter that controls the degree of randomness of the output ||
+[`double`](../data-types.md) | A parameter that controls the degree of randomness of the output ||
 || **callbackUrl**
 [`string`](../data-types.md) | URL to which the result of successful processing should be sent ||
 || **errorCallbackUrl**

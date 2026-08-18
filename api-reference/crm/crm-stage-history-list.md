@@ -493,15 +493,15 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`int`](../data-types.md) | Record identifier ||
+[`integer`](../data-types.md) | Record identifier ||
 || **TYPE_ID**
-[`int`](../data-types.md) | Record type. Can take the following values:
+[`integer`](../data-types.md) | Record type. Can take the following values:
 - `1` — creation of an element,
 - `2` — transfer to an intermediate stage,
 - `3` — transfer to the final stage,
 - `5` — change of funnel ||
 || **OWNER_ID**
-[`int`](../data-types.md) | Identifier of the object in which the stage changed ||
+[`integer`](../data-types.md) | Identifier of the object in which the stage changed ||
 || **CREATED_TIME**
 [`datetime`](../data-types.md) | Identifier of the created element, equal to the time of transferring the element to the stage ||
 |#
@@ -516,12 +516,12 @@ Additionally, there are fields specific to different object types:
     || **Name**
     `type` | **Description** ||
     || **STATUS_SEMANTIC_ID**
-    [`int`](../data-types.md) | Stage semantics:
+    [`string`](../data-types.md) | Stage semantics:
     - `P` — intermediate stage,
     - `S` — successful stage,
     - `F` — failed stage ||
     || **STATUS_ID**
-    [`int`](../data-types.md) | Identifier of the stage ||
+    [`crm_status`](./data-types.md) | Identifier of the stage ||
     |#
 
 - for deals, new invoices, and SPAs
@@ -530,14 +530,14 @@ Additionally, there are fields specific to different object types:
     || **Name**
     `type` | **Description** ||
     || **CATEGORY_ID**
-    [`int`](../data-types.md) | Identifier of the funnel ||
+    [`integer`](../data-types.md) | Identifier of the funnel ||
     || **STAGE_SEMANTIC_ID**
-    [`int`](../data-types.md) | Stage semantics:
+    [`string`](../data-types.md) | Stage semantics:
     - `P` — intermediate stage,
     - `S` — successful stage,
     - `F` — failed stage ||
     || **STAGE_ID**
-    [`int`](../data-types.md) | Identifier of the stage ||
+    [`crm_status`](./data-types.md) | Identifier of the stage ||
     |#
 
 {% endlist %}    

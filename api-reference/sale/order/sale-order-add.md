@@ -20,7 +20,7 @@ The method `sale.order.add` is designed for adding an order.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../data-types.md) | Field values for creating an order ||
+[`object`](../../data-types.md) | Field values for creating an order ||
 |#
 
 ### Parameter fields

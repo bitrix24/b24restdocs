@@ -38,13 +38,13 @@ The badge is displayed on the kanban of the object to which the activity is link
 #|
 || **Field** | **Description** ||
 || **code**
-[`string`](../../../../data-types.md) | Badge code, for example `missedCall`. The badge is specified in an activity, retrieved, and deleted by this code ||
+[`string`](../../../../../data-types.md) | Badge code, for example `missedCall`. The badge is specified in an activity, retrieved, and deleted by this code ||
 || **title**
 [`string`\|`array`](../../../../data-types.md) | Name of the badge. Can be a string or an array of strings for different languages ||
 || **value**
 [`string`\|`array`](../../../../data-types.md) | Text displayed inside the icon itself. It is shown in uppercase. Can be a string or an array of strings for different languages ||
 || **type**
-[`string`](../../../../data-types.md) | [Badge type](#badge-type), defines the color of the icon ||
+[`string`](../../../../../data-types.md) | [Badge type](#badge-type), defines the color of the icon ||
 |#
 
 If **title** or **value** contains an array, the keys should be language codes, and the values should be text in those languages, for example:

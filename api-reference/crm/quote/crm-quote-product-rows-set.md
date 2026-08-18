@@ -28,7 +28,7 @@ To modify only a single row, use the methods [crm.item.productrow.*](../universa
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../data-types.md) | Identifier of the estimate.
+[`integer`](../../data-types.md) | Identifier of the estimate.
 
 The identifier can be obtained using the methods [crm.quote.list](./crm-quote-list.md) or [crm.quote.add](./crm-quote-add.md) ||
 || **rows**
@@ -56,39 +56,39 @@ A list of primary fields is described [below](#parameter-rows) ||
 || **Name**
 `type` | **Description** ||
 || **PRODUCT_ID**
-[`integer`](../data-types.md) | Identifier of the product in the catalog.
+[`integer`](../../data-types.md) | Identifier of the product in the catalog.
 
 The list of products can be obtained using the method [catalog.product.list](../../catalog/product/catalog-product-list.md).
 
 If `PRODUCT_ID = 0`, the row is created as "custom" ||
 || **PRODUCT_NAME**
-[`string`](../data-types.md) | Name of the product row ||
+[`string`](../../data-types.md) | Name of the product row ||
 || **PRODUCT_DESCRIPTION**
-[`string`](../data-types.md) | Description of the product row ||
+[`string`](../../data-types.md) | Description of the product row ||
 || **PRICE**
-[`double`](../data-types.md) | Final cost of the product per unit ||
+[`double`](../../data-types.md) | Final cost of the product per unit ||
 || **QUANTITY**
-[`double`](../data-types.md) | Number of product units ||
+[`double`](../../data-types.md) | Number of product units ||
 || **DISCOUNT_TYPE_ID**
-[`integer`](../data-types.md) | Type of discount:
+[`integer`](../../data-types.md) | Type of discount:
 - `1` — absolute
 - `2` — percentage ||
 || **DISCOUNT_RATE**
-[`double`](../data-types.md) | Discount value in percentage ||
+[`double`](../../data-types.md) | Discount value in percentage ||
 || **DISCOUNT_SUM**
-[`double`](../data-types.md) | Absolute discount value ||
+[`double`](../../data-types.md) | Absolute discount value ||
 || **TAX_RATE**
-[`double`](../data-types.md) | Tax rate in percentage ||
+[`double`](../../data-types.md) | Tax rate in percentage ||
 || **TAX_INCLUDED**
-[`char`](../data-types.md) | Is tax included in the price:
+[`char`](../../data-types.md) | Is tax included in the price:
 - `Y` — yes
 - `N` — no ||
 || **MEASURE_CODE**
 [`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | Unit of measure code ||
 || **MEASURE_NAME**
-[`string`](../data-types.md) | Text representation of the unit of measure ||
+[`string`](../../data-types.md) | Text representation of the unit of measure ||
 || **SORT**
-[`integer`](../data-types.md) | Sorting ||
+[`integer`](../../data-types.md) | Sorting ||
 |#
 
 The complete list of fields for product rows and types can be obtained using the method [crm.productrow.fields](../outdated/productrow-old/crm-productrow-fields.md).
@@ -451,11 +451,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Root element of the response. Contains:
+[`boolean`](../../data-types.md) | Root element of the response. Contains:
 - `true` — product rows successfully saved
 - `false` — product rows not saved ||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

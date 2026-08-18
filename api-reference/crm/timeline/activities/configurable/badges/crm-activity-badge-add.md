@@ -298,7 +298,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response containing information about the added badge in case of success. In case of failure, it will return `null` ||
+[`object`](../../../../../data-types.md) | Root element of the response containing information about the added badge in case of success. In case of failure, it will return `null` ||
 || **time**
 [`time`](../../../../../data-types.md#time) | Information about the request execution time ||
 |#

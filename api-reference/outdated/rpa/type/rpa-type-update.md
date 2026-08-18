@@ -24,7 +24,7 @@ This method updates the process by its `id`.
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`number`](../../../data-types.md) | Identifier of the process ||
+[`integer`](../../../data-types.md) | Identifier of the process ||
 || **fields** 
 [`array`](../../../data-types.md) | List of process fields. Fully analogous to the set from the [rpa.type.add](./rpa-type-add.md) method ||
 |#

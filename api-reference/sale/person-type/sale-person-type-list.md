@@ -330,7 +330,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **personTypes**
-[`sale_person_type[]`](../../data-types.md) | Array of objects with information about the selected payer types ||
+[`sale_person_type[]`](../data-types.md) | Array of objects with information about the selected payer types ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**

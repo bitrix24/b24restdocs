@@ -28,7 +28,7 @@ A process must always have one successful stage. It is not possible to delete a 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`number`](../../../data-types.md) | Identifier of the stage ||
+[`integer`](../../../data-types.md) | Identifier of the stage ||
 |#
 
 ## Continue Your Exploration

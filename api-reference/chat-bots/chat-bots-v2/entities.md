@@ -54,19 +54,19 @@ A user of the system. Returned in the `user` fields and in the `users` collectio
 || **status**
 [`string`](../../data-types.md) | Status: `online`, `dnd` ||
 || **idle**
-[`string\|false`](../../data-types.md) | Time of inactivity in ISO 8601 format, or `false` ||
+[`string \| boolean`](../../data-types.md#compound-types) | Time of inactivity in ISO 8601 format, or `false` ||
 || **lastActivityDate**
-[`string\|false`](../../data-types.md) | Date of last activity in ISO 8601 format, or `false` ||
+[`string \| boolean`](../../data-types.md#compound-types) | Date of last activity in ISO 8601 format, or `false` ||
 || **mobileLastDate**
-[`string\|false`](../../data-types.md) | Date of last mobile login in ISO 8601 format, or `false` ||
+[`string \| boolean`](../../data-types.md#compound-types) | Date of last mobile login in ISO 8601 format, or `false` ||
 || **desktopLastDate**
-[`string\|false`](../../data-types.md) | Date of last desktop login in ISO 8601 format, or `false` ||
+[`string \| boolean`](../../data-types.md#compound-types) | Date of last desktop login in ISO 8601 format, or `false` ||
 || **absent**
-[`string\|false`](../../data-types.md) | Date of absence start in ISO 8601 format, or `false` ||
+[`string \| boolean`](../../data-types.md#compound-types) | Date of absence start in ISO 8601 format, or `false` ||
 || **departments**
 [`integer[]`](../../data-types.md) | Array of department IDs ||
 || **phones**
-[`object\|false`](../../data-types.md) | Object with phone numbers (`personalPhone`, `workPhone`, etc.) or `false` ||
+[`object \| boolean`](../../data-types.md#compound-types) | Object with phone numbers (`personalPhone`, `workPhone`, etc.) or `false` ||
 || **type**
 [`string`](../../data-types.md) | Type: `employee`, `extranet`, `email`, `collaber`, `bot` ||
 || **website**
@@ -371,7 +371,7 @@ File attached to a message. Returned in the `file` field of the response from th
 || **size**
 [`integer`](../../data-types.md) | File size in bytes ||
 || **image**
-[`object\|false`](../../data-types.md) | Preview sizes for images: `{"height": 600, "width": 800}`, or `false` ||
+[`object \| boolean`](../../data-types.md#compound-types) | Preview sizes for images: `{"height": 600, "width": 800}`, or `false` ||
 || **authorId**
 [`integer`](../../data-types.md) | ID of the user who uploaded the file ||
 || **authorName**

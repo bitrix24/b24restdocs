@@ -20,9 +20,9 @@ The method `crm.documentgenerator.document.enablepublicurl` enables or disables 
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../data-types.md) | Document identifier ||
+[`integer`](../../../data-types.md) | Document identifier ||
 || **status**
-[`integer`](../../data-types.md) | Public link mode:
+[`integer`](../../../data-types.md) | Public link mode:
 
 - `1` — enable
 - `0` — disable
@@ -278,9 +278,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root object of the response. Contains the structure [`result`](#result) ||
+[`object`](../../../data-types.md) | Root object of the response. Contains the structure [`result`](#result) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Type {#result}
@@ -289,7 +289,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **publicUrl**
-[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Public link to the document. Returns `status = 0` when `null` ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Public link to the document. Returns `status = 0` when `null` ||
 |#
 
 ## Error Handling

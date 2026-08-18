@@ -50,21 +50,21 @@ Data is transmitted as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../../data-types.md) | Symbolic code of the event.
 
 In this case — `onCrmActivityDelete` ||
 || **data**
-[`object`](../../../data-types.md) | An object containing information about the deleted deal.
+[`object`](../../../../data-types.md) | An object containing information about the deleted deal.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../data-types.md) | An object containing information about remote case fields.
+[`object`](../../../../data-types.md) | An object containing information about remote case fields.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -75,7 +75,7 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Remote case identifier ||
+[`integer`](../../../../data-types.md) | Remote case identifier ||
 |#
 
 ### Parameter auth {#auth}

@@ -49,63 +49,63 @@ fields:
 #|
 || **Field** `type` | **Description** ||
 || **OWNER_ID***
-[`integer`](../../../data-types.md) | Identifier of the CRM object ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM object ||
 || **OWNER_TYPE_ID***
-[`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
 || **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md) | Type of the activity ||
+[`crm_enum_activitytype`](../../../data-types.md#activity-enums) | Type of the activity ||
 || **ASSOCIATED_ENTITY_ID**
 [`integer`](../../../../data-types.md) | Identifier of the entity associated with the activity ||
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of the communication](./crm-activity-communication-fields.md) ||
 || **DEADLINE**
-[`datetime`](../../../data-types.md) | Date and time of the activity deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings, and from END_TIME for tasks ||
+[`datetime`](../../../../data-types.md) | Date and time of the activity deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings, and from END_TIME for tasks ||
 || **DESCRIPTION**
-[`string`](../../../data-types.md) | Text description of the activity ||
+[`string`](../../../../data-types.md) | Text description of the activity ||
 || **DESCRIPTION_TYPE**
-[`crm.enum.contenttype`](../../../data-types.md) | Type of description ||
+[`crm_enum_contenttype`](../../../data-types.md#activity-enums) | Type of description ||
 || **DIRECTION**
-[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
+[`crm_enum_activitydirection`](../../../data-types.md#activity-enums) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
 || **END_TIME**
-[`datetime`](../../../data-types.md) | End time of the activity | ||
+[`datetime`](../../../../data-types.md) | End time of the activity | ||
 || **FILES**
 [`diskfile`](../../../data-types.md) | Files added to the activity ||
 || **LOCATION**
-[`string`](../../../data-types.md) | Location ||
+[`string`](../../../../data-types.md) | Location ||
 || **NOTIFY_TYPE**
-[`crm.enum.activitynotifytype`](../../../data-types.md) | Type of notification ||
+[`crm_enum_activitynotifytype`](../../../data-types.md#activity-enums) | Type of notification ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
+[`string`](../../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
+[`string`](../../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
 || **ORIGIN_VERSION**
-[`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, it can be edited in CRM without fear that the next export will overwrite the data ||
+[`string`](../../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, it can be edited in CRM without fear that the next export will overwrite the data ||
 || **PRIORITY**
-[`crm.enum.activitypriority`](../../../data-types.md) | Priority ||
+[`crm_enum_activitypriority`](../../../data-types.md#activity-enums) | Priority ||
 || **PROVIDER_DATA**
-[`string`](../../../data-types.md) | Additional provider data ||
+[`string`](../../../../data-types.md) | Additional provider data ||
 || **PROVIDER_GROUP_ID**
-[`string`](../../../data-types.md) | Identifier of the provider group ||
+[`string`](../../../../data-types.md) | Identifier of the provider group ||
 || **PROVIDER_ID**
-[`string`](../../../data-types.md) | Identifier of the provider ||
+[`string`](../../../../data-types.md) | Identifier of the provider ||
 || **PROVIDER_TYPE_ID**
-[`string`](../../../data-types.md) | Identifier of the provider type, status from the directory ||
+[`string`](../../../../data-types.md) | Identifier of the provider type, status from the directory ||
 || **PROVIDER_PARAMS**
-[`object`](../../../data-types.md) | Additional provider parameters ||
+[`object`](../../../../data-types.md) | Additional provider parameters ||
 || **RESPONSIBLE_ID***
-[`user`](../../../data-types.md) | Identifier of the user responsible for the activity ||
+[`user`](../../../../data-types.md) | Identifier of the user responsible for the activity ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings ||
+[`object`](../../../../data-types.md) | Additional settings ||
 || **START_TIME**
-[`datetime`](../../../data-types.md) | Start time of the activity ||
+[`datetime`](../../../../data-types.md) | Start time of the activity ||
 || **STATUS**
-[`crm_enum_activitystatus`](../../../data-types.md) | Status of the activity ||
+[`crm_enum_activitystatus`](../../../data-types.md#activity-enums) | Status of the activity ||
 || **SUBJECT**
-[`string`](../../../data-types.md) | Additional description of the activity ||
+[`string`](../../../../data-types.md) | Additional description of the activity ||
 || **WEBDAV_ELEMENTS**
 [`diskfile`](../../../data-types.md) | Added files. Deprecated, retained for compatibility ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
+[`char`](../../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
 |#
 
 ## Code Examples

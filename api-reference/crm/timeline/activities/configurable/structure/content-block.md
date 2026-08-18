@@ -36,17 +36,17 @@ The simplest block `type = text`, which outputs certain formatted text.
 || **value^*^**
 [`textWithTranslation`](./field-types.md) | Text to be displayed ||
 || **multiline**
-[`boolean`](../../../../data-types.md) | Line break handling. If true, `\n` characters will be replaced with `<br>`. Default is `false` ||
+[`boolean`](../../../../../data-types.md) | Line break handling. If true, `\n` characters will be replaced with `<br>`. Default is `false` ||
 || **title**
 [`textWithTranslation`](./field-types.md#textwithtranslation) | Title attribute ||
 || **bold**
-[`boolean`](../../../../data-types.md) | Bold text. Default is `false` ||
+[`boolean`](../../../../../data-types.md) | Bold text. Default is `false` ||
 || **size**
-[`string`](../../../../data-types.md) | Text size. Can take values `xs`, `sm`, `md` (default is `md`) ||
+[`string`](../../../../../data-types.md) | Text size. Can take values `xs`, `sm`, `md` (default is `md`) ||
 || **color**
-[`string`](../../../../data-types.md) | Text color. Can take values `base_50`, `base_60`, `base_70`, `base_90` ||
+[`string`](../../../../../data-types.md) | Text color. Can take values `base_50`, `base_60`, `base_70`, `base_90` ||
 || **scope**
-[`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
+[`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
 
 #### Example
@@ -90,7 +90,7 @@ The `type = largeText` block allows displaying long multiline texts, which will 
 || **value^*^**
 [`textWithTranslation`](./field-types.md#textwithtranslation) | Text to be displayed ||
 || **scope**
-[`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
+[`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
 
 #### Example
@@ -138,9 +138,9 @@ The `type = link` block outputs a link.
 || **action^*^**
 [`ActionDto`](./action.md) | Action upon clicking the link ||
 || **bold**
-[`boolean`](../../../../data-types.md) | Bold text. Default is `false` ||
+[`boolean`](../../../../../data-types.md) | Bold text. Default is `false` ||
 || **scope**
-[`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
+[`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
 
 #### Example
@@ -176,9 +176,9 @@ The `type = withTitle` block outputs a name-value pair. Another content block ca
 || **block^*^**
 [`ContentBlockDto`](content-block.md) | Content block that serves as the value. Blocks of types `text`, `link`, `deadline` are supported ||
 || **inline**
-[`boolean`](../../../../data-types.md) | Display title and value in one line. Default is `false` ||
+[`boolean`](../../../../../data-types.md) | Display title and value in one line. Default is `false` ||
 || **scope**
-[`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
+[`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
 
 #### Examples
@@ -235,7 +235,7 @@ The `type = lineOfBlocks` block outputs several text or link type content blocks
 || **blocks^*^**
 [`ContentBlockDto[]`](content-block.md) | Associative array of content blocks. Blocks of types `text`, `link`, `deadline` are supported ||
 || **scope**
-[`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
+[`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
 
 #### Examples
@@ -286,9 +286,9 @@ The `type = deadline` block displays the current deadline value with the ability
 #|
 || **Field** | **Description** ||
 || **readonly**
-[`boolean`](../../../../data-types.md) | Permission to change the deadline. By default `false`. If the user does not have access to edit the object to which the case belongs, or if the case is completed, then `readonly = true` regardless of the provided settings ||
+[`boolean`](../../../../../data-types.md) | Permission to change the deadline. By default `false`. If the user does not have access to edit the object to which the case belongs, or if the case is completed, then `readonly = true` regardless of the provided settings ||
 || **scope**
-[`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
+[`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
 
 #### Examples

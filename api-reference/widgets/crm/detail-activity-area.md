@@ -767,9 +767,9 @@ Calling the action will open the slider of the application that registered the w
 || **Name**
 `type` | **Description** ||
 || **width**
-[`int`](../../data-types.md) | Slider width, px. Cannot be used simultaneously with `leftBoundary` ||
+[`integer`](../../data-types.md) | Slider width, px. Cannot be used simultaneously with `leftBoundary` ||
 || **leftBoundary**
-[`int`](../../data-types.md) | Slider full width of the browser window with a left margin, px. Cannot be used simultaneously with `width` ||
+[`integer`](../../data-types.md) | Slider full width of the browser window with a left margin, px. Cannot be used simultaneously with `width` ||
 || **title**
 [`string`](../../data-types.md) | Text of the browser window title when opening the slider ||
 |#

@@ -24,7 +24,7 @@ The method `sonet_group.user.invite` sends invitations to users in a workgroup o
 
 The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md) method. ||
 || **USER_ID***
-[`integer/array`](../../data-types.md) | User identifier.
+[`integer \| integer[]`](../../data-types.md#compound-types) | User identifier.
 
 The identifier can be obtained using the [user.get](../../user/user-get.md) method. ||
 || **MESSAGE**

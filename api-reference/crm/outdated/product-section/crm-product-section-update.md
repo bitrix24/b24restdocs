@@ -26,9 +26,9 @@ The method `crm.productsection.update` updates an existing product section.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the product section ||
+[`integer`](../../../data-types.md) | Identifier of the product section ||
 || **fields**
-[`array`](../../data-types.md) | [Set of fields](./crm-product-section-add.md) — an array in the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values returned by the method [crm.productsection.fields](./crm-product-section-fields.md). 
+[`array`](../../../data-types.md) | [Set of fields](./crm-product-section-add.md) — an array in the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values returned by the method [crm.productsection.fields](./crm-product-section-fields.md). 
 
 {% note info %}
 

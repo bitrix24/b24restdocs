@@ -177,7 +177,7 @@ No parameters required.
 || **LIMIT_DATE**
 [`date`](../../../data-types.md) | Date until which invoices can be created from this template | Considered if `IS_LIMIT` is equal to `D` ||
 || **PARAMS**
-[`unknown`](../../../data-types.md)
+[`recurring_params`](../../data-types.md)
 | Set of parameters for calculation - recurring_params: 
 - **PERIOD** - repetition period:
     - day - day

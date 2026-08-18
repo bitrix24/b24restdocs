@@ -152,19 +152,19 @@ No parameters required.
 || **Field**
 `type` | **Description** | **Note** ||
 || **CODE** 
-[`integer`](../../data-types.md) | Unit code | Required ||
+[`integer`](../../../data-types.md) | Unit code | Required ||
 || **ID** 
-[`integer`](../../data-types.md) | Identifier | Read-only ||
+[`integer`](../../../data-types.md) | Identifier | Read-only ||
 || **IS_DEFAULT** 
-[`char`](../../data-types.md) | Default | ||
+[`char`](../../../data-types.md) | Default | ||
 || **MEASURE_TITLE** 
-[`string`](../../data-types.md) | Measurement unit name | Required ||
+[`string`](../../../data-types.md) | Measurement unit name | Required ||
 || **SYMBOL_INTL** 
-[`string`](../../data-types.md) | International symbol | ||
+[`string`](../../../data-types.md) | International symbol | ||
 || **SYMBOL_LETTER_INTL** 
-[`string`](../../data-types.md) | International letter code | ||
+[`string`](../../../data-types.md) | International letter code | ||
 || **SYMBOL_RUS** 
-[`string`](../../data-types.md) | Symbol | ||
+[`string`](../../../data-types.md) | Symbol | ||
 |#
 
 ## Continue Learning

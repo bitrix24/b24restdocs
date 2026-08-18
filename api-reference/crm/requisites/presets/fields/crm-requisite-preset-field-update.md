@@ -345,12 +345,12 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of updating the custom field:
+[`boolean`](../../../../data-types.md) | Result of updating the custom field:
 - `true` — updated
 - `false` — not updated 
 ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

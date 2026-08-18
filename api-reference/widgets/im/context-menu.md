@@ -75,7 +75,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 
 #|
 || **Parameter**
-[`type`](../../data-types.md) | **Description** ||
+`type` | **Description** ||
 || **messageId***
 [`string`](../../data-types.md) | Identifier of the message whose menu the widget is called from. The value comes as a string. The application works with the message by this identifier using the [chat message methods](../../chats/messages/index.md) ||
 || **dialogId***

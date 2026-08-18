@@ -33,7 +33,7 @@ The complete procedure is outlined in the [CRM Automation Triggers](./triggers/i
 
 **CRM Automation.** In both scenarios, the trigger must be pre-bound to a stage or status in the Bitrix24 automation settings.
 
-**CRM Objects.** The trigger is initiated for a specific CRM object. In the webhook scenario, the `target` parameter passes the string identifier of the object in the format [`TYPENAME_ID`](../../data-types.md), for example, `DEAL_25`, where `DEAL` is the CRM object type and `25` is its numeric identifier from [crm.item.list](../universal/crm-item-list.md). In the application scenario, the object type `OWNER_TYPE_ID` is obtained using the [crm.enum.ownertype](../auxiliary/enum/crm-enum-owner-type.md) method, and the object identifier `OWNER_ID` is retrieved using the [crm.item.list](../universal/crm-item-list.md) method.
+**CRM Objects.** The trigger is initiated for a specific CRM object. In the webhook scenario, the `target` parameter passes the string identifier of the object in the format [`TYPENAME_ID`](../data-types.md#object_type), for example, `DEAL_25`, where `DEAL` is the CRM object type and `25` is its numeric identifier from [crm.item.list](../universal/crm-item-list.md). In the application scenario, the object type `OWNER_TYPE_ID` is obtained using the [crm.enum.ownertype](../auxiliary/enum/crm-enum-owner-type.md) method, and the object identifier `OWNER_ID` is retrieved using the [crm.item.list](../universal/crm-item-list.md) method.
 
 ## Overview of Methods {#all-methods}
 

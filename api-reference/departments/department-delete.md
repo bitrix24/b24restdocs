@@ -20,7 +20,7 @@ The method `department.delete` removes a department from the company structure.
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`int`](../data-types.md) | Identifier of the department ||
+[`integer`](../data-types.md) | Identifier of the department ||
 |#
 
 ## Code Examples

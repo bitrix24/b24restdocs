@@ -333,7 +333,7 @@ HTTP Code: **200**
 [`object`](../data-types.md#catalog_document) | Object with the description of fields for the inventory document 
 Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the field of the [`catalog_document`](../data-types.md#catalog_document) object, and `value` is an object of type [`rest_field_description`](../data-types.md). ||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

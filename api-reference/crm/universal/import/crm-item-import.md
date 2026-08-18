@@ -22,11 +22,11 @@ You can read about the differences between the import logic and the standard add
 || **Name**
 `type`          | **Description** ||
 || **entityTypeId***
-[`integer`](../../data-types.md) | Identifier of the [system](../../data-types.md#object_type) or [custom type](../user-defined-object-types/index.md) for which the entity needs to be created.
+[`integer`](../../../data-types.md) | Identifier of the [system](../../data-types.md#object_type) or [custom type](../user-defined-object-types/index.md) for which the entity needs to be created.
 
 Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are provided in the [CRM object types reference](../../data-types.md#object_type). The identifier for the SPA can be obtained using the [crm.type.list](../user-defined-object-types/crm-type-list.md) method. ||
 || **fields***
-[`object`](../../data-types.md)  | An object in the following format:
+[`object`](../../../data-types.md)  | An object in the following format:
 
 ```js
 {
@@ -76,7 +76,7 @@ You can also find out the set of fields using the universal method [crm.item.fie
 - [crm.quote.fields](../../quote/crm-quote-fields.md)
 ||
 || **useOriginalUfNames**
-[`boolean`](../../data-types.md) | Parameter to control the format of custom field names in the request and response.   
+[`boolean`](../../../data-types.md) | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
 - `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
@@ -99,7 +99,7 @@ Default is `N`. ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`](../../data-types.md) | Name of the entity.
+  [`string`](../../../data-types.md) | Name of the entity.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
     - `entityTypeName` — name of the entity
@@ -114,23 +114,23 @@ Default is `N`. ||
 
   By default — `null` ||
   || **name**
-  [`string`](../../data-types.md) | First name.
+  [`string`](../../../data-types.md) | First name.
 
   By default — `null` ||
   || **secondName**
-  [`string`](../../data-types.md) | Middle name.
+  [`string`](../../../data-types.md) | Middle name.
 
   By default — `null` ||
   || **lastName**
-  [`string`](../../data-types.md) | Last name.
+  [`string`](../../../data-types.md) | Last name.
 
   By default — `null` ||
   || **birthdate**
-  [`date`](../../data-types.md) | Date of birth.
+  [`date`](../../../data-types.md) | Date of birth.
 
   By default — `null` ||
   || **companyTitle**
-  [`string`](../../data-types.md) | Company name.
+  [`string`](../../../data-types.md) | Company name.
 
   By default — `null` ||
   || **sourceId**
@@ -142,7 +142,7 @@ Default is `N`. ||
 
   By default, it takes the value of the first available source  ||
   || **sourceDescription**
-  [`text`](../../data-types.md) | Additional information about the source.
+  [`text`](../../../data-types.md) | Additional information about the source.
 
   By default — `null` ||
   || **stageId**
@@ -154,11 +154,11 @@ Default is `N`. ||
 
   By default, it takes the value of the first available stage  ||
   || **statusDescription**
-  [`text`](../../data-types.md) | Additional information about the stage.
+  [`text`](../../../data-types.md) | Additional information about the stage.
 
   By default — `null` ||
   || **post**
-  [`string`](../../data-types.md) | Position.
+  [`string`](../../../data-types.md) | Position.
 
   By default — `null` ||
   || **currencyId**
@@ -166,29 +166,29 @@ Default is `N`. ||
 
   By default, it takes the default currency  ||
   || **isManualOpportunity**
-  [`boolean`](../../data-types.md) | Calculation mode for the amount. Possible values:
+  [`boolean`](../../../data-types.md) | Calculation mode for the amount. Possible values:
 
     - `Y` — manual
     - `N` — automatic
 
   By default — `N` ||
   || **opportunity**
-  [`double`](../../data-types.md) | Amount.
+  [`double`](../../../data-types.md) | Amount.
 
   By default — `null` ||
   || **opened**
-  [`boolean`](../../data-types.md) | Is the element available to everyone? Possible values:
+  [`boolean`](../../../data-types.md) | Is the element available to everyone? Possible values:
 
     - `Y` — yes
     - `N` — no
 
   By default — `Y`. The default value can be changed in the CRM settings  ||
   || **comments**
-  [`text`](../../data-types.md) | Comment.
+  [`text`](../../../data-types.md) | Comment.
 
   By default — `null` ||
   || **assignedById**
-  [`user`](../../data-types.md) | Identifier of the person responsible for the element.
+  [`user`](../../../data-types.md) | Identifier of the person responsible for the element.
 
   By default, this is the identifier of the user who calls the method  ||
   || **companyId**
@@ -210,42 +210,42 @@ Default is `N`. ||
 
   By default — `null` ||
   || **originatorId**
-  [`string`](../../data-types.md) | External source.
+  [`string`](../../../data-types.md) | External source.
 
   By default — `null` ||
   || **originId**
-  [`string`](../../data-types.md) | Identifier of the element in the external source.
+  [`string`](../../../data-types.md) | Identifier of the element in the external source.
 
   By default — `null` ||
   || **webformId**
-  [`integer`](../../data-types.md) | Identifier of the CRM Form.
+  [`integer`](../../../data-types.md) | Identifier of the CRM Form.
 
   By default — `null` ||
   || **observers**
-  [`user[]`](../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
 
   By default — `null` ||
   || **utmSource**
-  [`string`](../../data-types.md) | Advertising system. For example: Google-Adwords
+  [`string`](../../../data-types.md) | Advertising system. For example: Google-Adwords
 
   By default — `null` ||
   || **utmMedium**
-  [`string`](../../data-types.md) | Type of traffic. Possible values:
+  [`string`](../../../data-types.md) | Type of traffic. Possible values:
 
     - CPC — ads
     - CPM — banners
 
   By default — `null` ||
   || **utmCampaign**
-  [`string`](../../data-types.md) | Identifier of the advertising campaign.
+  [`string`](../../../data-types.md) | Identifier of the advertising campaign.
 
   By default — `null` ||
   || **utmContent**
-  [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads.
+  [`string`](../../../data-types.md) | Content of the campaign. For example, for contextual ads.
 
   By default — `null` ||
   || **utmTerm**
-  [`string`](../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
+  [`string`](../../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
 
   By default equals `null` ||
   || **ufCrm...**
@@ -272,7 +272,7 @@ Default is `N`. ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`](../../data-types.md) | Name of the element.
+  [`string`](../../../data-types.md) | Name of the element.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
     - `entityTypeName` — name of the entity
@@ -287,7 +287,7 @@ Default is `N`. ||
 
   By default — the first available entity type ||
   || **categoryId**
-  [`integer`](../../data-types.md) | Identifier of the [direction](../category/index.md) (funnel) of the deal.
+  [`integer`](../../../data-types.md) | Identifier of the [direction](../category/index.md) (funnel) of the deal.
 
   By default — `0` (general) ||
   || **stageId**
@@ -302,14 +302,14 @@ Default is `N`. ||
 
   By default — the first available stage relative to the funnel ||
   || **isRecurring**
-  [`boolean`](../../data-types.md) | Is the deal recurring? Possible values:
+  [`boolean`](../../../data-types.md) | Is the deal recurring? Possible values:
 
   - `Y` — yes
   - `N` — no
 
   By default — `N`||
   || **probability**
-  [`integer`](../../data-types.md) | Probability %.
+  [`integer`](../../../data-types.md) | Probability %.
 
   By default — `null` ||
   || **currencyId**
@@ -317,18 +317,18 @@ Default is `N`. ||
 
   By default — the default currency ||
   || **isManualOpportunity**
-  [`boolean`](../../data-types.md) | Calculation mode for the amount. Possible values:
+  [`boolean`](../../../data-types.md) | Calculation mode for the amount. Possible values:
 
   - `Y` — manual
   - `N` — automatic
 
   By default — `N` ||
   || **opportunity**
-  [`double`](../../data-types.md) | Amount.
+  [`double`](../../../data-types.md) | Amount.
 
   By default — `null` ||
   || **taxValue**
-  [`double`](../../data-types.md) | Tax amount.
+  [`double`](../../../data-types.md) | Tax amount.
 
   By default — `null` ||
   || **companyId**
@@ -352,26 +352,26 @@ Default is `N`. ||
   || **quoteId**
   [`crm_quote`](../../data-types.md) | Identifier of the estimate that will be linked to the deal ||
   || **begindate**
-  [`date`](../../data-types.md) | Start date of the element.
+  [`date`](../../../data-types.md) | Start date of the element.
 
   By default — creation date ||
   || **closedate**
-  [`date`](../../data-types.md) | End date of the element.
+  [`date`](../../../data-types.md) | End date of the element.
 
   By default — creation date + 7 days ||
   || **opened**
-  [`boolean`](../../data-types.md) | Is the element available to everyone? Possible values:
+  [`boolean`](../../../data-types.md) | Is the element available to everyone? Possible values:
 
   - `Y` — yes
   - `N` — no
 
   By default — `Y`. The default value can be changed in the CRM settings ||
   || **comments**
-  [`text`](../../data-types.md) | Comment.
+  [`text`](../../../data-types.md) | Comment.
 
   By default — `null` ||
   || **assignedById**
-  [`user`](../../data-types.md) | Identifier of the person responsible for the element.
+  [`user`](../../../data-types.md) | Identifier of the person responsible for the element.
 
   By default — the identifier of the user who calls the method ||
   || **sourceId**
@@ -383,7 +383,7 @@ Default is `N`. ||
 
   By default — the first available source ||
   || **sourceDescription**
-  [`text`](../../data-types.md) | Additional information about the source.
+  [`text`](../../../data-types.md) | Additional information about the source.
 
   By default — `null`||
   || **leadId**
@@ -391,19 +391,19 @@ Default is `N`. ||
 
   By default — `null`||
   || **additionalInfo**
-  [`string`](../../data-types.md) | Additional information.
+  [`string`](../../../data-types.md) | Additional information.
 
   By default — `null` ||
   || **originatorId**
-  [`string`](../../data-types.md) | External source.
+  [`string`](../../../data-types.md) | External source.
 
   By default — `null`||
   || **originId**
-  [`string`](../../data-types.md) | Identifier of the element in the external source.
+  [`string`](../../../data-types.md) | Identifier of the element in the external source.
 
   By default — `null`||
   || **observers**
-  [`user[]`](../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
 
   By default — `null` ||
   || **locationId**
@@ -411,25 +411,25 @@ Default is `N`. ||
 
   By default — `null` ||
   || **utmSource**
-  [`string`](../../data-types.md) | Advertising system. For example: Google-Adwords
+  [`string`](../../../data-types.md) | Advertising system. For example: Google-Adwords
 
   By default — `null` ||
   || **utmMedium**
-  [`string`](../../data-types.md) | Type of traffic. Possible values:
+  [`string`](../../../data-types.md) | Type of traffic. Possible values:
 
   - CPC — ads
   - CPM — banners
 
   By default — `null` ||
-  || **utmCampaign** [`string`](../../data-types.md) | Identifier of the advertising campaign.
+  || **utmCampaign** [`string`](../../../data-types.md) | Identifier of the advertising campaign.
 
   By default — `null` ||
   || **utmContent**
-  [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads.
+  [`string`](../../../data-types.md) | Content of the campaign. For example, for contextual ads.
 
   By default — `null` ||
   || **utmTerm**
-  [`string`](../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
+  [`string`](../../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
 
   By default — `null` ||
   || **ufCrm...**
@@ -463,23 +463,23 @@ Default is `N`. ||
 
   By default — `null` ||
   || **name**
-  [`string`](../../data-types.md) | First name.
+  [`string`](../../../data-types.md) | First name.
 
   By default — `null` ||
   || **secondName**
-  [`string`](../../data-types.md) | Middle name.
+  [`string`](../../../data-types.md) | Middle name.
 
   By default — `null` ||
   || **lastName**
-  [`string`](../../data-types.md) | Last name.
+  [`string`](../../../data-types.md) | Last name.
 
   By default — `null` ||
   || **photo**
-  [`file`](../../data-types.md) | Photo.
+  [`file`](../../../data-types.md) | Photo.
 
   By default — `null` ||
   || **birthdate**
-  [`date`](../../data-types.md) | Date of birth.
+  [`date`](../../../data-types.md) | Date of birth.
 
   By default — `null` ||
   || **typeId**
@@ -499,30 +499,30 @@ Default is `N`. ||
 
   By default — the first available source  ||
   || **sourceDescription**
-  [`text`](../../data-types.md) | Additional information about the source.
+  [`text`](../../../data-types.md) | Additional information about the source.
 
   By default — `null` ||
   || **post**
-  [`string`](../../data-types.md) | Position.
+  [`string`](../../../data-types.md) | Position.
 
   By default — `null` ||
   || **comments**
-  [`text`](../../data-types.md) | Comment.
+  [`text`](../../../data-types.md) | Comment.
 
   By default — `null` ||
   || **opened**
-  [`boolean`](../../data-types.md) | Is the element available to everyone? Possible values:
+  [`boolean`](../../../data-types.md) | Is the element available to everyone? Possible values:
 
     - `Y` — yes
     - `N` — no
 
   By default — `Y`. The default value can be changed in the CRM settings  ||
   || **export**
-  [`boolean`](../../data-types.md) | Is the contact included in the export?
+  [`boolean`](../../../data-types.md) | Is the contact included in the export?
 
   By default — `Y` ||
   || **assignedById**
-  [`user`](../../data-types.md) | Identifier of the person responsible for the element.
+  [`user`](../../../data-types.md) | Identifier of the person responsible for the element.
 
   By default — the identifier of the user who calls the method ||
   || **companyId**
@@ -538,42 +538,42 @@ Default is `N`. ||
 
   By default — `null` ||
   || **originatorId**
-  [`string`](../../data-types.md) | External source.
+  [`string`](../../../data-types.md) | External source.
 
   By default — `null` ||
   || **originId**
-  [`string`](../../data-types.md) | Identifier of the element in the external source.
+  [`string`](../../../data-types.md) | Identifier of the element in the external source.
 
   By default — `null` ||
   || **originVersion**
-  [`string`](../../data-types.md)          | Version of the original.
+  [`string`](../../../data-types.md)          | Version of the original.
 
   By default — `null` ||
   || **observers**
-  [`user[]`](../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
 
   By default — `null` ||
   || **utmSource**
-  [`string`](../../data-types.md) | Advertising system. For example: Google-Adwords
+  [`string`](../../../data-types.md) | Advertising system. For example: Google-Adwords
 
   By default — `null` ||
   || **utmMedium**
-  [`string`](../../data-types.md) | Type of traffic. Possible values:
+  [`string`](../../../data-types.md) | Type of traffic. Possible values:
 
     - CPC — ads
     - CPM — banners
 
   By default — `null` ||
   || **utmCampaign**
-  [`string`](../../data-types.md) | Identifier of the advertising campaign.
+  [`string`](../../../data-types.md) | Identifier of the advertising campaign.
 
   By default — `null` ||
   || **utmContent**
-  [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads.
+  [`string`](../../../data-types.md) | Content of the campaign. For example, for contextual ads.
 
   By default — `null` ||
   || **utmTerm**
-  [`string`](../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
+  [`string`](../../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
 
   By default — `null` ||
   || **ufCrm...**
@@ -599,7 +599,7 @@ Default is `N`. ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`](../../data-types.md) | Name of the element.
+  [`string`](../../../data-types.md) | Name of the element.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
 
@@ -616,11 +616,11 @@ Default is `N`. ||
 
   By default — the first available entity type ||
   || **logo**
-  [`file`](../../data-types.md) | Logo.
+  [`file`](../../../data-types.md) | Logo.
 
   By default — `null` ||
   || **bankingDetails**
-  [`string`](../../data-types.md) | Banking details.
+  [`string`](../../../data-types.md) | Banking details.
 
   By default — `null` ||
   || **industry**
@@ -644,26 +644,26 @@ Default is `N`. ||
 
   By default — the default currency ||
   || **revenue**
-  [`double`](../../data-types.md) | Annual revenue.
+  [`double`](../../../data-types.md) | Annual revenue.
 
   By default — `0` ||
   || **opened**
-  [`boolean`](../../data-types.md) | Is the element available to everyone? Possible values:
+  [`boolean`](../../../data-types.md) | Is the element available to everyone? Possible values:
 
     - `Y` — yes
     - `N` — no
 
   By default — `Y`. The default value can be changed in the CRM settings ||
   || **comments**
-  [`text`](../../data-types.md) | Comment.
+  [`text`](../../../data-types.md) | Comment.
 
   By default — `null` ||
   || **isMyCompany**
-  [`boolean`](../../data-types.md) | Is the company my company?
+  [`boolean`](../../../data-types.md) | Is the company my company?
 
   By default — `N` ||
   || **assignedById**
-  [`user`](../../data-types.md) | Identifier of the person responsible for the element.
+  [`user`](../../../data-types.md) | Identifier of the person responsible for the element.
 
   By default — the identifier of the user who calls the method ||
   || **contactIds**
@@ -677,41 +677,41 @@ Default is `N`. ||
 
   By default — `null`||
   || **originatorId**
-  [`string`](../../data-types.md) | External source.
+  [`string`](../../../data-types.md) | External source.
 
   By default — `null` ||
   || **originId**
-  [`string`](../../data-types.md) | Identifier of the element in the external source.
+  [`string`](../../../data-types.md) | Identifier of the element in the external source.
 
   By default — `null` ||
   || **originVersion**
-  [`string`](../../data-types.md) | Version of the original.
+  [`string`](../../../data-types.md) | Version of the original.
 
   By default — `null` ||
   || **observers**
-  [`user[]`](../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
 
   By default — `null` ||
   || **utmSource**
-  [`string`](../../data-types.md) | Advertising system. For example: Google-Adwords
+  [`string`](../../../data-types.md) | Advertising system. For example: Google-Adwords
 
   By default — `null` ||
   || **utmMedium**
-  [`string`](../../data-types.md) | Type of traffic. Possible values:
+  [`string`](../../../data-types.md) | Type of traffic. Possible values:
     - CPC — ads
     - CPM — banners
 
   By default — `null` ||
   || **utmCampaign**
-  [`string`](../../data-types.md) | Identifier of the advertising campaign.
+  [`string`](../../../data-types.md) | Identifier of the advertising campaign.
 
   By default — `null` ||
   || **utmContent**
-  [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads.
+  [`string`](../../../data-types.md) | Content of the campaign. For example, for contextual ads.
 
   By default — `null` ||
   || **utmTerm**
-  [`string`](../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
+  [`string`](../../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
 
   By default — `null` ||
   || **ufCrm...**
@@ -737,7 +737,7 @@ Default is `N`. ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`](../../data-types.md) | Name of the element.
+  [`string`](../../../data-types.md) | Name of the element.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
     - `entityTypeName` — name of the entity
@@ -745,26 +745,26 @@ Default is `N`. ||
 
   For example, for an estimate with `id = 13` => 'Estimate #13' ||
   || **assignedById**
-  [`user`](../../data-types.md) | Identifier of the person responsible for the element.
+  [`user`](../../../data-types.md) | Identifier of the person responsible for the element.
 
   By default — the identifier of the user who calls the method ||
   || **opened**
-  [`boolean`](../../data-types.md) | Is the element available to everyone? Possible values:
+  [`boolean`](../../../data-types.md) | Is the element available to everyone? Possible values:
 
     - `Y` — yes
     - `N` — no
 
   By default — `Y`. The default value can be changed in the CRM settings ||
   || **content**
-  [`text`](../../data-types.md) | Content.
+  [`text`](../../../data-types.md) | Content.
 
   By default — `null` ||
   || **terms**
-  [`text`](../../data-types.md) | Terms.
+  [`text`](../../../data-types.md) | Terms.
 
   By default — `null` ||
   || **comments**
-  [`text`](../../data-types.md) | Comment.
+  [`text`](../../../data-types.md) | Comment.
 
   By default — `null` ||
   || **dealId**
@@ -776,7 +776,7 @@ Default is `N`. ||
 
   By default — `null` ||
   || **storageTypeId**
-  [`integer`](../../data-types.md) | Identifier of the storage type. Possible values:
+  [`integer`](../../../data-types.md) | Identifier of the storage type. Possible values:
     - `1` — file
     - `2` — WebDAV
     - `3` — disk
@@ -787,11 +787,11 @@ Default is `N`. ||
     3. File
   ||
   || **storageElementIds**
-  [`integer`](../../data-types.md) | Array of files.
+  [`integer`](../../../data-types.md) | Array of files.
 
   By default — `null` ||
   || **webformId**
-  [`integer`](../../data-types.md) | Identifier of the CRM Form.
+  [`integer`](../../../data-types.md) | Identifier of the CRM Form.
 
   By default — `null` ||
   || **companyId**
@@ -821,18 +821,18 @@ Default is `N`. ||
 
   By default — the default currency ||
   || **isManualOpportunity**
-  [`boolean`](../../data-types.md) | Calculation mode for the amount.
+  [`boolean`](../../../data-types.md) | Calculation mode for the amount.
 
     - `Y` — manual
     - `N` — automatic
 
   By default — `N` ||
   || **opportunity**
-  [`double`](../../data-types.md) | Amount.
+  [`double`](../../../data-types.md) | Amount.
 
   By default — `null` ||
   || **taxValue**
-  [`double`](../../data-types.md) | Tax amount.
+  [`double`](../../../data-types.md) | Tax amount.
 
   By default — `null` ||
   || **stageId**
@@ -844,15 +844,15 @@ Default is `N`. ||
 
   By default — the first available stage ||
   || **begindate**
-  [`date`](../../data-types.md) | Start date of the element.
+  [`date`](../../../data-types.md) | Start date of the element.
 
   By default — creation date of the element ||
   || **closedate**
-  [`date`](../../data-types.md) | End date of the element.
+  [`date`](../../../data-types.md) | End date of the element.
 
   By default — creation date + 7 days ||
   || **actualDate**
-  [`date`](../../data-types.md) | Valid until.
+  [`date`](../../../data-types.md) | Valid until.
 
   By default — creation date + 7 days ||
   || **mycompanyId**
@@ -860,26 +860,26 @@ Default is `N`. ||
 
   By default — identifier of the first available "my" company ||
   || **utmSource**
-  [`string`](../../data-types.md) | Advertising system. For example: Google-Adwords
+  [`string`](../../../data-types.md) | Advertising system. For example: Google-Adwords
 
   By default — `null` ||
   || **utmMedium**
-  [`string`](../../data-types.md) | Type of traffic.
+  [`string`](../../../data-types.md) | Type of traffic.
 
     - CPC — ads
     - CPM — banners
 
   By default — `null` ||
   || **utmCampaign**
-  [`string`](../../data-types.md) | Identifier of the advertising campaign.
+  [`string`](../../../data-types.md) | Identifier of the advertising campaign.
 
   By default — `null` ||
   || **utmContent**
-  [`string`](../../data-types.md) | Content of the campaign. For example, for contextual ads.
+  [`string`](../../../data-types.md) | Content of the campaign. For example, for contextual ads.
 
   By default — `null` ||
   || **utmTerm**
-  [`string`](../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
+  [`string`](../../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
 
   By default — `null` ||
   || **ufCrm...**
@@ -905,7 +905,7 @@ Default is `N`. ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`](../../data-types.md) | Name of the element.
+  [`string`](../../../data-types.md) | Name of the element.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
 
@@ -915,30 +915,30 @@ Default is `N`. ||
   For example, for an invoice with `id = 13` => 'Invoice #13'
   ||
   || **xmlId**
-  [`string`](../../data-types.md) | External code.
+  [`string`](../../../data-types.md) | External code.
 
   By default — `null` ||
   || **assignedById**
-  [`user`](../../data-types.md) | Identifier of the person responsible for the element.
+  [`user`](../../../data-types.md) | Identifier of the person responsible for the element.
 
   By default — the identifier of the user who calls the method ||
   || **opened**
-  [`boolean`](../../data-types.md) | Is the element available to everyone? Possible values:
+  [`boolean`](../../../data-types.md) | Is the element available to everyone? Possible values:
 
     - `Y` — yes
     - `N` — no
 
   By default — `Y`. The default value can be changed in the CRM settings ||
   || **webformId**
-  [`integer`](../../data-types.md) | Identifier of the CRM Form.
+  [`integer`](../../../data-types.md) | Identifier of the CRM Form.
 
   By default — `null` ||
   || **begindate**
-  [`date`](../../data-types.md) | Start date of the element.
+  [`date`](../../../data-types.md) | Start date of the element.
 
   By default — creation date ||
   || **closedate**
-  [`date`](../../data-types.md) | End date of the element.
+  [`date`](../../../data-types.md) | End date of the element.
 
   By default — creation date + 7 days ||
   || **companyId**
@@ -960,7 +960,7 @@ Default is `N`. ||
 
   By default — `null` ||
   || **observers**
-  [`user[]`](../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
 
   By default — `null` ||
   || **stageId**
@@ -981,7 +981,7 @@ Default is `N`. ||
 
   By default — the first available source ||
   || **sourceDescription**
-  [`text`](../../data-types.md) | Additional information about the source.
+  [`text`](../../../data-types.md) | Additional information about the source.
 
   By default — `null` ||
   || **currencyId**
@@ -989,18 +989,18 @@ Default is `N`. ||
 
   By default — the default currency ||
   || **isManualOpportunity**
-  [`boolean`](../../data-types.md) | Calculation mode for the amount. Possible values:
+  [`boolean`](../../../data-types.md) | Calculation mode for the amount. Possible values:
 
     - `Y` — manual
     - `N` — automatic
 
   By default — `N` ||
   || **opportunity**
-  [`double`](../../data-types.md) | Amount.
+  [`double`](../../../data-types.md) | Amount.
 
   By default — `null` ||
   || **taxValue**
-  [`double`](../../data-types.md) | Tax amount.
+  [`double`](../../../data-types.md) | Tax amount.
 
   By default — `null` ||
   || **mycompanyId**
@@ -1008,7 +1008,7 @@ Default is `N`. ||
 
   By default — identifier of the first available "my" company ||
   || **comments**
-  [`text`](../../data-types.md) | Comment.
+  [`text`](../../../data-types.md) | Comment.
 
   By default — `null` ||
   || **locationId**
@@ -1038,7 +1038,7 @@ Default is `N`. ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`](../../data-types.md) | Name of the element.
+  [`string`](../../../data-types.md) | Name of the element.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
     - `entityTypeName` — name of the SPA
@@ -1046,32 +1046,32 @@ Default is `N`. ||
 
   For example, for the SPA element "HR" with `id = 13` => 'HR #13'  ||
   || **xmlId**
-  [`string`](../../data-types.md) | External code.
+  [`string`](../../../data-types.md) | External code.
 
   By default — `null` ||
   || **assignedById**
-  [`user`](../../data-types.md) | Identifier of the person responsible for the element.
+  [`user`](../../../data-types.md) | Identifier of the person responsible for the element.
 
   By default — the identifier of the user who calls the method  ||
   || **opened**
-  [`boolean`](../../data-types.md) | Is the element available to everyone?
+  [`boolean`](../../../data-types.md) | Is the element available to everyone?
 
     - `Y` — yes
     - `N` — no
 
   By default — `Y`. The default value can be changed in the CRM settings  ||
   || **webformId**
-  [`integer`](../../data-types.md) | Identifier of the CRM Form.
+  [`integer`](../../../data-types.md) | Identifier of the CRM Form.
 
   By default — `null` ||
   || **begindate**
-  [`date`](../../data-types.md) | Start date of the element.
+  [`date`](../../../data-types.md) | Start date of the element.
 
   Available only if the `isBeginCloseDatesEnabled` setting is enabled for the corresponding SPA.
 
   By default — creation date of the element  ||
   || **closedate**
-  [`date`](../../data-types.md) | End date of the element.
+  [`date`](../../../data-types.md) | End date of the element.
 
   Available only if the `isBeginCloseDatesEnabled` setting is enabled for the corresponding SPA.
 
@@ -1101,7 +1101,7 @@ Default is `N`. ||
 
   By default — `null` ||
   || **observers**
-  [`user[]`](../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
 
   Available only if the `isObserversEnabled` setting is enabled for the corresponding SPA.
 
@@ -1133,7 +1133,7 @@ Default is `N`. ||
 
   By default — the first available source  ||
   || **sourceDescription**
-  [`text`](../../data-types.md) | Additional information about the source.
+  [`text`](../../../data-types.md) | Additional information about the source.
 
   Available only if the `isSourceEnabled` setting is enabled for the corresponding SPA.
 
@@ -1145,7 +1145,7 @@ Default is `N`. ||
 
   By default — the default currency  ||
   || **isManualOpportunity**
-  [`boolean`](../../data-types.md) | Calculation mode for the amount. Possible values:
+  [`boolean`](../../../data-types.md) | Calculation mode for the amount. Possible values:
 
     - `Y` — manual
     - `N` — automatic
@@ -1154,13 +1154,13 @@ Default is `N`. ||
 
   By default — `N` ||
   || **opportunity**
-  [`double`](../../data-types.md) | Amount.
+  [`double`](../../../data-types.md) | Amount.
 
   Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA.
 
   By default — `null` ||
   || **taxValue**
-  [`double`](../../data-types.md) | Tax amount.
+  [`double`](../../../data-types.md) | Tax amount.
 
   Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA.
 
@@ -1582,17 +1582,17 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response. 
+[`object`](../../../data-types.md) | The root element of the response. 
 
 Contains a single key — `item` ||
 || **item**
-[`object`](../../data-types.md) | Information about the created element. 
+[`object`](../../../data-types.md) | Information about the created element. 
 
 Contains a single key — `id` ||
 || **id**
-[`int`](../../data-types.md) | Identifier of the created entity ||
+[`integer`](../../../data-types.md) | Identifier of the created entity ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 {% note info " " %}

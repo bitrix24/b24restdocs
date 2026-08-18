@@ -37,7 +37,7 @@ The method `catalog.userfield.document.update` updates the values of user fields
 
 Allowed values: [types of inventory accounting documents](../enum/catalog-enum-get-store-document-types.md) ||
 || **fieldN** 
-[`mixed`](../../data-types.md) | Value of the user field, where `N` is the identifier of the user field, for example `field287`.
+[`any`](../../data-types.md) | Value of the user field, where `N` is the identifier of the user field, for example `field287`.
 
 Identifiers and settings for user fields can be obtained using the [userfieldconfig.list](../../crm/universal/userfieldconfig/userfieldconfig-list.md) method ||
 |#

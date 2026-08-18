@@ -53,9 +53,9 @@ The `userfieldconfig.add` method adds a new custom field.
 || **settings**
 [`object`](../../../data-types.md) | Additional field settings. The set of keys depends on `userTypeId` [(detailed description)](#settings) ||
 || **editFormLabel**
-[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Label in the edit form. When a string is passed, it is used as a general value; when a `lang_map` is passed, labels can be set by languages ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Label in the edit form. When a string is passed, it is used as a general value; when a `lang_map` is passed, labels can be set by languages ||
 || **helpMessage**
-[`string`](../../../data-types.md)\|[`lang_map`](../../../data-types.md#lang_map) | Help text. When a string is passed, it is used as a general value; when a `lang_map` is passed, help texts can be set by languages ||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md) | Help text. When a string is passed, it is used as a general value; when a `lang_map` is passed, help texts can be set by languages ||
 || **enum**
 [`uf_enum_element[]`](#uf_enum_element) | Value options for fields of type `enumeration` ||
 |#
@@ -768,15 +768,15 @@ HTTP Status: **200**
 || **languageId**
 [`object`](../../../data-types.md) | Languages for which field labels are set ||
 || **editFormLabel**
-[`lang_map`](../../../data-types.md) | Labels in the edit form ||
+[`lang_map`](../../data-types.md) | Labels in the edit form ||
 || **listColumnLabel**
-[`lang_map`](../../../data-types.md) | Column labels in the list ||
+[`lang_map`](../../data-types.md) | Column labels in the list ||
 || **listFilterLabel**
-[`lang_map`](../../../data-types.md) | Filter labels ||
+[`lang_map`](../../data-types.md) | Filter labels ||
 || **errorMessage**
-[`lang_map`](../../../data-types.md) | Error message text ||
+[`lang_map`](../../data-types.md) | Error message text ||
 || **helpMessage**
-[`lang_map`](../../../data-types.md) | Help text for the field ||
+[`lang_map`](../../data-types.md) | Help text for the field ||
 || **enum**
 [`object[]`](../../../data-types.md) | Value options. This field is returned only for `userTypeId = enumeration` ||
 |#

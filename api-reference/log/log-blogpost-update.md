@@ -66,7 +66,7 @@ The identifier can be obtained using the [user.get](../user/user-get.md) method.
 
 By default, it is the current user who initiated the method call. ||
 || **UF_\***
-[`mixed`](../data-types.md) | Custom fields. A specific [set of fields](#uf-fields) is supported, depending on the account settings. ||
+[`any`](../data-types.md) | Custom fields. A specific [set of fields](#uf-fields) is supported, depending on the account settings. ||
 |#
 
 ### Custom Fields {#uf-fields}

@@ -26,7 +26,7 @@ To change the owner, use the method [sonet_group.setowner](../sonet-group-setown
 
 The identifier can be obtained using the method [sonet_group.get](../sonet-group-get.md) ||
 || **USER_ID***
-[`integer/array`](../../data-types.md) | Identifier of the participant.
+[`integer \| integer[]`](../../data-types.md#compound-types) | Identifier of the participant.
 
 The identifier can be obtained using the method [sonet_group.user.get](./sonet-group-user-get.md) ||
 || **ROLE***

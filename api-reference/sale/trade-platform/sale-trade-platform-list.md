@@ -49,7 +49,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 
 The fields correspond to the fields of the [sale_order_trade_platform](../data-types.md#sale_order_trade_platform) object. ||
 || **start**
-[`int`](../../data-types.md) | This parameter is used for pagination control.
+[`integer`](../../data-types.md) | This parameter is used for pagination control.
  
 The page size of results is always static: 50 records.
  

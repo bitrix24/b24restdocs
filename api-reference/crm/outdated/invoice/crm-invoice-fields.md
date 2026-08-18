@@ -162,7 +162,7 @@ No parameters are required.
 || **CREATED_BY**
 [`integer`](../../../data-types.md) | Created by user | Read-only ||
 || **CURRENCY**
-[`crm_currency`](../../../data-types.md) | Currency identifier | Read-only ||
+[`crm_currency`](../../data-types.md) | Currency identifier | Read-only ||
 || **DATE_BILL**
 [`date`](../../../data-types.md) | Billing date | ||
 || **DATE_INSERT**
@@ -218,7 +218,7 @@ No parameters are required.
 || **RESPONSIBLE_WORK_POSITION**
 [`string`](../../../data-types.md) | Position of the responsible person | Read-only ||
 || **STATUS_ID**
-[`crm_status`](../../../data-types.md) | Status identifier | Identifier from the "INVOICE_STATUS" reference ||
+[`crm_status`](../../data-types.md) | Status identifier | Identifier from the "INVOICE_STATUS" reference ||
 || **TAX_VALUE**
 [`double`](../../../data-types.md) | Tax amount | Read-only ||
 || **UF_COMPANY_ID**

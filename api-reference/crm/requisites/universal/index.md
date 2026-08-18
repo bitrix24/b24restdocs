@@ -131,7 +131,7 @@ Values `Y` or `N` are used. When the value is `Y`, Company details are not shown
 || **RQ_FAX**
 [`string`](../../../data-types.md) | Fax ||
 || **RQ_IDENT_TYPE**
-[`crm_status`](../../../data-types.md) | Method of identification ||
+[`crm_status`](../../data-types.md) | Method of identification ||
 || **RQ_IDENT_DOC**
 [`string`](../../../data-types.md) | Type of document ||
 || **RQ_IDENT_DOC_SER**

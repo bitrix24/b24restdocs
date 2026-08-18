@@ -27,7 +27,7 @@ This method updates an existing measurement unit.
 `type` | **Description** ||
 || **id*** | Identifier of the measurement unit ||
 || **fields**
-[`array`](../../data-types.md) | [Set of fields](./crm-measure-add.md) — an array in the format `array("field_to_update"=>"value"[, ...])`, where the field to update can take values returned by the method [crm.measure.fields](./crm-measure-fields.md). 
+[`array`](../../../data-types.md) | [Set of fields](./crm-measure-add.md) — an array in the format `array("field_to_update"=>"value"[, ...])`, where the field to update can take values returned by the method [crm.measure.fields](./crm-measure-fields.md). 
 
 To find out the required format of the fields, execute the method [crm.measure.fields](./crm-measure-fields.md) and check the format of the returned values for those fields 
 ||

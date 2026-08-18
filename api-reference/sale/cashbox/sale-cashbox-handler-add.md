@@ -740,7 +740,7 @@ The `PRINT_URL` page is the address to which data for printing the receipt is se
 || **client_phone**
 [`string`](../../data-types.md) | Client's phone number (if available) ||
 || **total_sum**
-[`float`](../../data-types.md) | Total amount of the receipt ||
+[`double`](../../data-types.md) | Total amount of the receipt ||
 || **uuid**
 [`string`](../../data-types.md) | Identifier of the document in the external system (Bitrix24 account) ||
 || **service_email**
@@ -755,17 +755,17 @@ The `PRINT_URL` page is the address to which data for printing the receipt is se
 || **name**
 [`string`](../../data-types.md) | Name of the product ||
 || **base_price**
-[`float`](../../data-types.md) | Price of the product without discounts and surcharges ||
+[`double`](../../data-types.md) | Price of the product without discounts and surcharges ||
 || **price**
-[`float`](../../data-types.md) | Selling price ||
+[`double`](../../data-types.md) | Selling price ||
 || **sum**
-[`float`](../../data-types.md) | Amount of the item ||
+[`double`](../../data-types.md) | Amount of the item ||
 || **quantity**
-[`float`](../../data-types.md) | Quantity of the product ||
+[`double`](../../data-types.md) | Quantity of the product ||
 || **vat**
-[`int`](../../data-types.md) | Tax identifier. It can be used in the [catalog.vat.get](../../catalog/vat/catalog-vat-get.md) method to obtain information about the tax ||
+[`integer`](../../data-types.md) | Tax identifier. It can be used in the [catalog.vat.get](../../catalog/vat/catalog-vat-get.md) method to obtain information about the tax ||
 || **vat_sum**
-[`float`](../../data-types.md) | Tax amount ||
+[`double`](../../data-types.md) | Tax amount ||
 || **barcode**
 [`string`](../../data-types.md) | Barcode. Used when inventory management is enabled and the product is transferred with a unique barcode ||
 || **nomenclature_code**
@@ -792,7 +792,7 @@ The `PRINT_URL` page is the address to which data for printing the receipt is se
 [`array`](../../data-types.md) | Agency details when using agency schemes (detailed description provided [below](#supplier_info)) ||
 || **discount**
 [`array`](../../data-types.md) | Discount on the product. The key is deprecated and is no longer used. 
-The array transmits the parameter `discount` ([`float`](../../data-types.md)) — the size of the discount in monetary terms ||
+The array transmits the parameter `discount` ([`double`](../../data-types.md)) — the size of the discount in monetary terms ||
 |#
 
 ##### supplier_info Parameter {#supplier_info}
@@ -820,7 +820,7 @@ The array transmits the parameter `discount` ([`float`](../../data-types.md)) �
 || **is_cash**
 [`string`](../../data-types.md) | Is the payment made in cash (`Y/N`). The key is deprecated, it is recommended to use `type` instead ||
 || **sum**
-[`float`](../../data-types.md) | Payment amount ||
+[`double`](../../data-types.md) | Payment amount ||
 || **currency**
 [`string`](../../data-types.md) | Payment currency ||
 |#

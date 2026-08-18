@@ -597,7 +597,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_delivery_handler.ID`](../../../data-types.md) | Identifier of the delivery service handler ||
+[`sale_delivery_handler.ID`](../../data-types.md) | Identifier of the delivery service handler ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#

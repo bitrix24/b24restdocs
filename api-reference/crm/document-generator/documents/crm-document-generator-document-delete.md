@@ -20,7 +20,7 @@ The method `crm.documentgenerator.document.delete` removes a document.
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../data-types.md) | Document identifier ||
+[`integer`](../../../data-types.md) | Document identifier ||
 |#
 
 ## Code Examples
@@ -250,9 +250,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`null`](../../data-types.md) | Root element of the response. For the delete method, it returns `null` ||
+[`null`](../../../data-types.md) | Root element of the response. For the delete method, it returns `null` ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

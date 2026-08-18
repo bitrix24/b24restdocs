@@ -18,12 +18,12 @@ The method `catalog.priceTypeGroup.list` returns a list of price type bindings t
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md)| An array of fields from [catalog_price_type_group](../../data-types.md#catalog_price_type_group) that need to be selected.
+[`array`](../../../data-types.md)| An array of fields from [catalog_price_type_group](../../data-types.md#catalog_price_type_group) that need to be selected.
 
 If the array is not provided or an empty array is passed, all available binding fields will be selected.
 ||
 || **filter**
-[`object`](../../data-types.md)| An object for filtering the selected bindings in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
+[`object`](../../../data-types.md)| An object for filtering the selected bindings in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_price_type_group](../../data-types.md#catalog_price_type_group) object.
 
@@ -45,7 +45,7 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 If the filter conditions do not match any records, the method will return an empty list.
 ||
 || **order**
-[`object`](../../data-types.md)| An object for sorting the selected bindings in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../../data-types.md)| An object for sorting the selected bindings in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_price_type_group](../../data-types.md#catalog_price_type_group) object.
 
@@ -55,7 +55,7 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../data-types.md)| This parameter is used for managing pagination.
+[`integer`](../../../data-types.md)| This parameter is used for managing pagination.
 
 The page size of results is always static — 50 records.
 
@@ -355,11 +355,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response ||
+[`object`](../../../data-types.md) | The root element of the response ||
 || **priceTypeGroups**
 [`catalog_price_type_group[]`](../../data-types.md#catalog_price_type_group) | An array of objects containing information about the selected price type bindings to customer groups, structure depends on the `select` parameter ||
 || **total**
-[`integer`](../../data-types.md) | The total number of records found ||
+[`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#

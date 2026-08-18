@@ -67,12 +67,12 @@ It is not recommended to change the base currency via REST. Otherwise, it will b
 
  ||
 || **AMOUNT_CNT***
-[`int`](../../data-types.md) | Denomination. Typically, `1` or a multiple of `10` is used as the denomination.
+[`integer`](../../data-types.md) | Denomination. Typically, `1` or a multiple of `10` is used as the denomination.
  ||
 || **AMOUNT***
 [`double`](../../data-types.md) | Exchange rate relative to the base currency. ||
 || **SORT**
-[`int`](../../data-types.md) | Position in the currency list.
+[`integer`](../../data-types.md) | Position in the currency list.
 
  Default value is `100`.
  ||
@@ -91,7 +91,7 @@ If not all languages are specified, [default localization parameters](../data-ty
 ||  **Name**
 `type`| **Description** ||
 || **DECIMALS***
-[`int`](../../data-types.md) | Number of decimal places in the fractional part. ||
+[`integer`](../../data-types.md) | Number of decimal places in the fractional part. ||
 || **DEC_POINT**
 [`string`](../../data-types.md) | Decimal point for output. ||
 || **FORMAT_STRING**

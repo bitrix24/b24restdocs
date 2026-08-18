@@ -26,7 +26,7 @@ This method retrieves information about a process by its `id`.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`number`](../../../data-types.md) | Process identifier ||
+[`integer`](../../../data-types.md) | Process identifier ||
 |#
 
 ## Response Handling

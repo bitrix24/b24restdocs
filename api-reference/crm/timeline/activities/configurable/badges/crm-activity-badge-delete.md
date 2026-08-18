@@ -243,7 +243,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Root element of the response. Contains:
+[`boolean`](../../../../../data-types.md) | Root element of the response. Contains:
 - `true` — on success
 - `null` — on failure (an error occurred)
 ||

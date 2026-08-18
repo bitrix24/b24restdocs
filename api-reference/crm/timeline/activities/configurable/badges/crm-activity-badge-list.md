@@ -270,7 +270,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | The root element of the response containing an array, each element of which carries information about the badge ||
+[`array`](../../../../../data-types.md) | The root element of the response containing an array, each element of which carries information about the badge ||
 || **time**
 [`time`](../../../../../data-types.md#time) | Information about the execution time of the request ||
 |#

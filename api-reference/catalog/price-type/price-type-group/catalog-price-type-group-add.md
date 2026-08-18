@@ -20,7 +20,7 @@ The method `catalog.priceTypeGroup.add` adds a price type binding to a customer 
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating a price type binding to a customer group ([detailed description](#fields)) ||
+[`object`](../../../data-types.md) | Field values for creating a price type binding to a customer group ([detailed description](#fields)) ||
 |#
 
 ### Parameter fields {#fields}
@@ -33,9 +33,9 @@ The method `catalog.priceTypeGroup.add` adds a price type binding to a customer 
 || **catalogGroupId***
 [`catalog_price_type.id`](../../data-types.md#catalog_price_type) | Identifier of the price type. Can be obtained using the [catalog.priceType.list](../catalog-price-type-list.md) method ||
 || **groupId***
-[`integer`](../../data-types.md) | Identifier of the customer group ||
+[`integer`](../../../data-types.md) | Identifier of the customer group ||
 || **access***
-[`char`](../../data-types.md) | Type of access to the price. Possible values:
+[`char`](../../../data-types.md) | Type of access to the price. Possible values:
 - `Y` — right to purchase at this price type
 - `N` — right to view this price type ||
 |#
@@ -302,7 +302,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
+[`object`](../../../data-types.md) | Root element of the response ||
 || **priceTypeGroup**
 [`catalog_price_type_group`](../../data-types.md#catalog_price_type_group) | Object containing information about the created price type binding to the customer group ||
 || **time**

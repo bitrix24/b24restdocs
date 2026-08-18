@@ -26,11 +26,11 @@ The method `crm.quote.update` updates an existing estimate.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../data-types.md) | Identifier of the estimate.
+[`integer`](../../data-types.md) | Identifier of the estimate.
 
 The identifier can be obtained using the methods [crm.quote.list](./crm-quote-list.md) and [crm.quote.add](./crm-quote-add.md) ||
 || **fields**
-[`object`](../data-types.md) | Object format:
+[`object`](../../data-types.md) | Object format:
 
 ```json
 {
@@ -52,7 +52,7 @@ The list of main fields for updating is provided [below](#parameter-fields).
 
 A complete list of fields and types can be obtained using the method [crm.quote.fields](./crm-quote-fields.md) ||
 || **params**
-[`object`](../data-types.md) | Object of additional parameters [(detailed description)](#parameter-params) ||
+[`object`](../../data-types.md) | Object of additional parameters [(detailed description)](#parameter-params) ||
 |#
 
 ### Fields Parameter {#parameter-fields}
@@ -61,7 +61,7 @@ A complete list of fields and types can be obtained using the method [crm.quote.
 || **Name**
 `type` | **Description** ||
 || **TITLE**
-[`string`](../data-types.md) | Subject of the estimate.
+[`string`](../../data-types.md) | Subject of the estimate.
 
 Length limit — up to `255` characters.
 
@@ -73,9 +73,9 @@ The list of available stages can be obtained using the method [crm.status.list](
 || **CURRENCY_ID**
 [`crm_currency`](../data-types.md) | Currency of the estimate amount ||
 || **OPPORTUNITY**
-[`double`](../data-types.md) | Amount of the estimate ||
+[`double`](../../data-types.md) | Amount of the estimate ||
 || **ASSIGNED_BY_ID**
-[`user`](../data-types.md) | Identifier of the responsible person ||
+[`user`](../../data-types.md) | Identifier of the responsible person ||
 || **COMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of the client company ||
 || **CONTACT_IDS**
@@ -85,25 +85,25 @@ This field is completely replaced ||
 || **MYCOMPANY_ID**
 [`crm_company`](../data-types.md) | Identifier of "your company" for vendor details ||
 || **OPENED**
-[`char`](../data-types.md) | Is the estimate available to everyone? Possible values:
+[`char`](../../data-types.md) | Is the estimate available to everyone? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **PERSON_TYPE_ID**
-[`integer`](../data-types.md) | Identifier of the client type ||
+[`integer`](../../data-types.md) | Identifier of the client type ||
 || **BEGINDATE**
-[`date`](../data-types.md) | Date of issuance ||
+[`date`](../../data-types.md) | Date of issuance ||
 || **CLOSEDATE**
-[`date`](../data-types.md) | Expiration date of the estimate ||
+[`date`](../../data-types.md) | Expiration date of the estimate ||
 || **CLIENT_TITLE**
-[`string`](../data-types.md) | Client name, up to `255` characters ||
+[`string`](../../data-types.md) | Client name, up to `255` characters ||
 || **CLIENT_ADDR**
-[`string`](../data-types.md) | Client address, up to `255` characters ||
+[`string`](../../data-types.md) | Client address, up to `255` characters ||
 || **CLIENT_EMAIL**
-[`string`](../data-types.md) | Client email, up to `255` characters ||
+[`string`](../../data-types.md) | Client email, up to `255` characters ||
 || **CLIENT_PHONE**
-[`string`](../data-types.md) | Client phone, up to `255` characters ||
+[`string`](../../data-types.md) | Client phone, up to `255` characters ||
 || **COMMENTS**
-[`string`](../data-types.md) | Comment ||
+[`string`](../../data-types.md) | Comment ||
 || **PARENT_ID_...**
 [`crm_entity`](../data-types.md) | Fields for connections with smart processes.
 
@@ -122,7 +122,7 @@ Some incorrect values in the fields may not lead to a `400` error: values are no
 || **Name**
 `type` | **Description** ||
 || **REGISTER_HISTORY_EVENT**
-[`boolean`](../data-types.md) | Should a record be created in the change history? Possible values:
+[`boolean`](../../data-types.md) | Should a record be created in the change history? Possible values:
 - `Y` — yes
 - `N` — no
 
@@ -376,9 +376,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Root element of the response, returns `true` on success ||
+[`boolean`](../../data-types.md) | Root element of the response, returns `true` on success ||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

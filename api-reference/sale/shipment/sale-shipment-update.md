@@ -47,7 +47,7 @@ Possible values:
 || **deliveryId***
 [`sale_delivery_service`](../data-types.md) | Delivery service identifier ||
 || **statusId**
-[`sale_status`](../../data-types.md) | Delivery status identifier.
+[`sale_status`](../data-types.md) | Delivery status identifier.
 
 If not provided, the status DN is used (see the default status table in the documentation for [`sale.status.*`](../status/index.md)) ||
 || **deliveryDocDate**
@@ -80,7 +80,6 @@ Currently not used ||
 [`string`](../../data-types.md) | External shipment identifier.
 
 Can be used for synchronizing the shipment with an external system ||
-|#
 |#
 
 ## Code Examples

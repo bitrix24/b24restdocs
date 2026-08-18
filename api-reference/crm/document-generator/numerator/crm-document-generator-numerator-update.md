@@ -20,9 +20,9 @@ The method `crm.documentgenerator.numerator.update` updates an existing numerato
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | The identifier of the numerator ||
+[`integer`](../../../data-types.md) | The identifier of the numerator ||
 || **fields***
-[`object`](../../data-types.md) | Object with fields to update in the format:
+[`object`](../../../data-types.md) | Object with fields to update in the format:
 
 ```json
 {
@@ -47,11 +47,11 @@ The list of fields is [below](#parameter-fields) ||
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../data-types.md) | The name of the numerator ||
+[`string`](../../../data-types.md) | The name of the numerator ||
 || **template**
-[`string`](../../data-types.md) | The number template, for example `{NUMBER}` ||
+[`string`](../../../data-types.md) | The number template, for example `{NUMBER}` ||
 || **settings**
-[`object`](../../data-types.md) | Generator settings. Description of parameters is [below](#parameter-settings) ||
+[`object`](../../../data-types.md) | Generator settings. Description of parameters is [below](#parameter-settings) ||
 |#
 
 ### Parameter Settings {#parameter-settings}
@@ -60,7 +60,7 @@ The list of fields is [below](#parameter-fields) ||
 || **Name**
 `type` | **Description** ||
 || **Bitrix_Main_Numerator_Generator_SequentNumberGenerator**
-[`object`](../../data-types.md) | Settings for sequential numbering. Parameter descriptions are [below](#parameter-sequent-settings) ||
+[`object`](../../../data-types.md) | Settings for sequential numbering. Parameter descriptions are [below](#parameter-sequent-settings) ||
 |#
 
 #### Parameters {#parameter-sequent-settings}
@@ -70,23 +70,23 @@ Bitrix_Main_Numerator_Generator_SequentNumberGenerator
 || **Name**
 `type` | **Description** ||
 || **start**
-[`integer`](../../data-types.md) | The initial value of the counter. Default is `1` ||
+[`integer`](../../../data-types.md) | The initial value of the counter. Default is `1` ||
 || **step**
-[`integer`](../../data-types.md) | The increment step of the counter. Default is `1` ||
+[`integer`](../../../data-types.md) | The increment step of the counter. Default is `1` ||
 || **length**
-[`integer`](../../data-types.md) | The minimum length of the number. Default is `0` ||
+[`integer`](../../../data-types.md) | The minimum length of the number. Default is `0` ||
 || **padString**
-[`string`](../../data-types.md) | The left padding character when `length > 0`. Default is `'0'` ||
+[`string`](../../../data-types.md) | The left padding character when `length > 0`. Default is `'0'` ||
 || **periodicBy**
-[`string`](../../data-types.md) | The reset period for the counter:
+[`string`](../../../data-types.md) | The reset period for the counter:
 - `''` — no reset
 - `day` — daily
 - `month` — monthly
 - `year` — yearly ||
 || **timezone**
-[`string`](../../data-types.md) | Timezone identifier for periodic reset, for example `Europe/Berlin` ||
+[`string`](../../../data-types.md) | Timezone identifier for periodic reset, for example `Europe/Berlin` ||
 || **isDirectNumeration**
-[`boolean`](../../data-types.md) | Indicator of direct numbering. Default is `false` ||
+[`boolean`](../../../data-types.md) | Indicator of direct numbering. Default is `false` ||
 |#
 
 ## Code Examples
@@ -467,9 +467,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains numerator data directly in the format [`result`](#result), without additional wrapping `numerator` — unlike the methods [crm.documentgenerator.numerator.add](./crm-document-generator-numerator-add.md) and [crm.documentgenerator.numerator.get](./crm-document-generator-numerator-get.md) ||
+[`object`](../../../data-types.md) | Root element of the response. Contains numerator data directly in the format [`result`](#result), without additional wrapping `numerator` — unlike the methods [crm.documentgenerator.numerator.add](./crm-document-generator-numerator-add.md) and [crm.documentgenerator.numerator.get](./crm-document-generator-numerator-get.md) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Type {#result}
@@ -478,15 +478,15 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | The identifier of the numerator ||
+[`string`](../../../data-types.md) | The identifier of the numerator ||
 || **name**
-[`string`](../../data-types.md) | The name of the numerator ||
+[`string`](../../../data-types.md) | The name of the numerator ||
 || **template**
-[`string`](../../data-types.md) | The number template ||
+[`string`](../../../data-types.md) | The number template ||
 || **code**
-[`string`](../../data-types.md) | The symbolic code of the numerator. Can be `null` ||
+[`string`](../../../data-types.md) | The symbolic code of the numerator. Can be `null` ||
 || **settings**
-[`object`](../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
+[`object`](../../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
 |#
 
 #### Settings Type {#settings}
@@ -495,19 +495,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **start**
-[`integer`](../../data-types.md) | The initial value of the counter ||
+[`integer`](../../../data-types.md) | The initial value of the counter ||
 || **step**
-[`integer`](../../data-types.md) | The increment step of the counter ||
+[`integer`](../../../data-types.md) | The increment step of the counter ||
 || **length**
-[`integer`](../../data-types.md) | The minimum length of the number ||
+[`integer`](../../../data-types.md) | The minimum length of the number ||
 || **padString**
-[`string`](../../data-types.md) | The left padding character ||
+[`string`](../../../data-types.md) | The left padding character ||
 || **periodicBy**
-[`string`](../../data-types.md) | The reset period for the counter: `null`, `day`, `month`, or `year` ||
+[`string`](../../../data-types.md) | The reset period for the counter: `null`, `day`, `month`, or `year` ||
 || **timezone**
-[`string`](../../data-types.md) | The timezone identifier for periodic reset. Can be `null` ||
+[`string`](../../../data-types.md) | The timezone identifier for periodic reset. Can be `null` ||
 || **isDirectNumeration**
-[`boolean`](../../data-types.md) | Indicator of direct numbering ||
+[`boolean`](../../../data-types.md) | Indicator of direct numbering ||
 |#
 
 ## Error Handling

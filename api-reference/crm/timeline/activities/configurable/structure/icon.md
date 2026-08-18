@@ -15,7 +15,7 @@ Icon of the [timeline entry](../index.md) `IconDto`.
 #|
 || **Field** | **Description** | **Additional** ||
 || **code^*^**
-[`string`](../../../../data-types.md) | Icon code | A list of available codes can be obtained using the [crm.timeline.icon.list](../../../logmessage/icons/crm-timeline-icon-list.md) method ||
+[`string`](../../../../../data-types.md) | Icon code | A list of available codes can be obtained using the [crm.timeline.icon.list](../../../logmessage/icons/crm-timeline-icon-list.md) method ||
 |#
 
 ## Example of the Object

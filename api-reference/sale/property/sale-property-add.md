@@ -279,7 +279,7 @@ Parameters applicable to order properties of type `FILE`
 [`string`](../../data-types.md) | List of file extensions that are allowed to be uploaded for this order property value. Example: png, doc, zip ||
 |#
 
-Parameters applicable to order properties of type [`DATE`](../data-types.md)
+Parameters applicable to order properties of type `DATE`
 
 #|
 || **Name**

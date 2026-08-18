@@ -85,7 +85,7 @@ An incorrect field in `fields` will be ignored
 || **ASSIGNED_BY_ID**
 [`user`](../../data-types.md) | Responsible person ||
 || **CONTACT_ID**
-[`crm_contact`](../../data-types.md) | Contact. Multiple ||
+[`crm_contact`](../data-types.md) | Contact. Multiple ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
 || **ORIGIN_ID**

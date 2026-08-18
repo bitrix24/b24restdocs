@@ -163,7 +163,7 @@ No parameters required.
 || **DESCRIPTION_TYPE**
 [`string`](../../../data-types.md) | Description type ||
 || **DETAIL_PICTURE**
-[`product_file`](../../../data-types.md) | Detailed picture, field available in the old product card ||
+[`product_file`](../../data-types.md) | Detailed picture, field available in the old product card ||
 || **ID**
 [`integer`](../../../data-types.md) | Product identifier ||
 || **MEASURE**
@@ -173,7 +173,7 @@ No parameters required.
 || **NAME***
 [`string`](../../../data-types.md) | Name ||
 || **PREVIEW_PICTURE**
-[`product_file`](../../../data-types.md) | Preview picture, field available in the old product card ||
+[`product_file`](../../data-types.md) | Preview picture, field available in the old product card ||
 || **PRICE**
 [`double`](../../../data-types.md) | Price ||
 || **SECTION_ID**

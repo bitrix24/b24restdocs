@@ -101,7 +101,7 @@ Pass the found options using the [BX24.placement.call](../../ui-interaction/bx24
 
 #|
 || **Field**
-[`type`](../../../data-types.md) | **Description** ||
+`type` | **Description** ||
 || **data**
 [`array`](../../../data-types.md) | List of found options ||
 || **data[].id**
@@ -141,7 +141,7 @@ The data of the selected option is passed to the `onCrmEntityIsNeedToCreate` eve
 
 #|
 || **Field**
-[`type`](../../../data-types.md) | **Description** ||
+`type` | **Description** ||
 || **appSid**
 [`string`](../../../data-types.md) | Application session identifier in which the selected option was found ||
 || **data**
@@ -173,7 +173,7 @@ Fields of the `crmShowCreatedEntity` command:
 
 #|
 || **Field**
-[`type`](../../../data-types.md) | **Description** ||
+`type` | **Description** ||
 || **entityType**
 [`string`](../../../data-types.md) | Created object type. For a company, pass `company`, for a contact — `contact` ||
 || **id**

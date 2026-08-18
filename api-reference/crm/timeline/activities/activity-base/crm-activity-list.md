@@ -20,10 +20,10 @@ The `crm.activity.list` method returns a list of activities by filter, taking th
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array of fields of the activity [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To get the fields `COMMUNICATIONS` and `FILES`, specify them in select
+[`array`](../../../../data-types.md) | An array of fields of the activity [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To get the fields `COMMUNICATIONS` and `FILES`, specify them in select
 ||
 || **filter**
-[`object`](../../../data-types.md) | An object for filtering the selected items in key-value format.
+[`object`](../../../../data-types.md) | An object for filtering the selected items in key-value format.
 
 Possible values for `field` correspond to the fields of the activity [crm.activity.fields](./crm-activity-fields.md).
 
@@ -52,7 +52,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `!` — not equal
 ||
 || **order**
-[`object`](../../../data-types.md) | A set of key-value pairs for sorting the output results. The keys can use the fields of the activity [crm.activity.fields](./crm-activity-fields.md).
+[`object`](../../../../data-types.md) | A set of key-value pairs for sorting the output results. The keys can use the fields of the activity [crm.activity.fields](./crm-activity-fields.md).
 
 Possible values for `order`:
 
@@ -62,7 +62,7 @@ Possible values for `order`:
 By default, it is sorted by increasing the Start Date field (`START_TIME`)
 ||
 || **start**
-  [`integer`](../../../data-types.md) | This parameter is used to control pagination.
+  [`integer`](../../../../data-types.md) | This parameter is used to control pagination.
 
 The page size of results is always static: 50 records.
 

@@ -250,7 +250,7 @@ Default is `N` ||
   Each such field has a code `parentId + {parentEntityTypeId}`
   ||
   || **fm**
-  [`multifield[]`](../data-types.md) | Multi-field array.
+  [`crm_multifield[]`](../data-types.md#crm_multifield) | Multi-field array.
 
   You can read more about multi-fields in the [{#T}](../data-types.md#crm_multifield) section.
 
@@ -423,7 +423,7 @@ Default is `N` ||
 
   Default — `null` ||
   || **locationId**
-  [`location`](../../data-types.md) | Location identifier. Service field.
+  [`location`](../data-types.md) | Location identifier. Service field.
 
   Default — `null` ||
   || **utmSource**
@@ -604,7 +604,7 @@ Default is `N` ||
   Each such field has a code `parentId + {parentEntityTypeId}`
   ||
   || **fm**
-  [`multifield[]`](../data-types.md) | Multi-field array.
+  [`crm_multifield[]`](../data-types.md#crm_multifield) | Multi-field array.
 
   You can read more about multi-fields in the [{#T}](../data-types.md#crm_multifield) section.
 
@@ -769,7 +769,7 @@ Default is `N` ||
   Each such field has a code `parentId + {parentEntityTypeId}`
   ||
   || **fm**
-  [`multifield[]`](../data-types.md) | Multi-field array.
+  [`crm_multifield[]`](../data-types.md#crm_multifield) | Multi-field array.
 
   For more details on multi-fields, see section [{#T}](../data-types.md#crm_multifield)
 
@@ -883,7 +883,7 @@ Default is `N` ||
 
   Default — `null` ||
   || **locationId**
-  [`location`](../../data-types.md) | Location identifier. Service field.
+  [`location`](../data-types.md) | Location identifier. Service field.
 
   Default — `null` ||
   || **currencyId**
@@ -1081,7 +1081,7 @@ Default is `N` ||
 
   Default — `null` ||
   || **locationId**
-  [`location`](../../data-types.md) | Location identifier. Service field.
+  [`location`](../data-types.md) | Location identifier. Service field.
 
   Default — `null` ||
   || **ufCrm...**

@@ -347,11 +347,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response. Contains a single element with the key `categories`, which represents an array of funnels. The structure of an individual funnel corresponds to the [`category`](./crm-category-add.md#category) object ||
+[`object`](../../../data-types.md) | The root element of the response. Contains a single element with the key `categories`, which represents an array of funnels. The structure of an individual funnel corresponds to the [`category`](./crm-category-add.md#category) object ||
 || **total**
 [`integer`](../../../data-types.md) | The total number of funnels belonging to a specific `entityTypeId` ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

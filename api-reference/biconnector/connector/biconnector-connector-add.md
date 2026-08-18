@@ -59,7 +59,7 @@ The `biconnector.connector.add` method creates a new connector that allows integ
 || **settings***
 [`array`](../../data-types.md) | List of connection parameters, [(detailed description)](./index.md#settings) ||
 || **sort**
-[`int`](../../data-types.md) | Connector sorting parameter. Default value is `100` ||
+[`integer`](../../data-types.md) | Connector sorting parameter. Default value is `100` ||
 |#
 
 ## Code Examples

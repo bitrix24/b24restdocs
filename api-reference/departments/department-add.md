@@ -22,11 +22,11 @@ The method `department.add` adds a new department to the company's structure.
 || **NAME***
 [`string`](../data-types.md) | Department name ||
 || **SORT**
-[`int`](../data-types.md) | Department sorting field ||
+[`integer`](../data-types.md) | Department sorting field ||
 || **PARENT***
-[`int`](../data-types.md) | Identifier of the parent department ||
+[`integer`](../data-types.md) | Identifier of the parent department ||
 || **UF_HEAD**
-[`int`](../data-types.md) | Identifier of the user who will become the head of the department ||
+[`integer`](../data-types.md) | Identifier of the user who will become the head of the department ||
 |#
 
 ## Code Examples
@@ -243,7 +243,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`int`](../data-types.md) | Identifier of the created department ||
+[`integer`](../data-types.md) | Identifier of the created department ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#

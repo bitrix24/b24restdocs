@@ -26,7 +26,7 @@ This method adds a new measurement unit.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`array`](../../data-types.md) | A set of fields — an array in the form `array("field"=>"value"[, ...])`, containing the values of the measurement unit fields.
+[`array`](../../../data-types.md) | A set of fields — an array in the form `array("field"=>"value"[, ...])`, containing the values of the measurement unit fields.
 
 To find out the required format of the fields, execute the method [crm.measure.fields](./crm-measure-fields.md) and check the format of the incoming values for these fields.
 ||
@@ -40,17 +40,17 @@ To find out the required format of the fields, execute the method [crm.measure.f
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`integer`](../../data-types.md) | Code ||
+[`integer`](../../../data-types.md) | Code ||
 || **MEASURE_TITLE***
-[`string`](../../data-types.md) | Name of the measurement unit ||
+[`string`](../../../data-types.md) | Name of the measurement unit ||
 || **SYMBOL_RUS**
-[`string`](../../data-types.md) | Symbol ||
+[`string`](../../../data-types.md) | Symbol ||
 || **SYMBOL_INTL**
-[`string`](../../data-types.md) | International symbol ||
+[`string`](../../../data-types.md) | International symbol ||
 || **SYMBOL_LETTER_INTL**
-[`string`](../../data-types.md) | International letter code ||
+[`string`](../../../data-types.md) | International letter code ||
 || **IS_DEFAULT**
-[`char`](../../data-types.md) | Default ||
+[`char`](../../../data-types.md) | Default ||
 |#
 
 ## Code Examples

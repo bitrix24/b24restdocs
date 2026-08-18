@@ -800,7 +800,7 @@ HTTP Status: **200**
 || **TITLE**
 [`string`](../../data-types.md) | Company Name ||
 || **COMPANY_TYPE**
-[`crm_status`](../../data-types.md) | Company Type. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=COMPANY_TYPE` ||
+[`crm_status`](../data-types.md) | Company Type. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=COMPANY_TYPE` ||
 || **LOGO**
 [`file`](../../data-types.md) | Logo ||
 || **ADDRESS**
@@ -828,11 +828,11 @@ Deprecated address fields:
 || **BANKING_DETAILS**
 [`string`](../../data-types.md) | Banking Details ||
 || **INDUSTRY**
-[`crm_status`](../../data-types.md) | Industry. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=INDUSTRY` ||
+[`crm_status`](../data-types.md) | Industry. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=INDUSTRY` ||
 || **EMPLOYEES**
-[`crm_status`](../../data-types.md) | Number of Employees. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=EMPLOYEES` ||
+[`crm_status`](../data-types.md) | Number of Employees. Values can be obtained using the method [crm.status.list](../status/crm-status-list.md) with a filter for `ENTITY_ID=EMPLOYEES` ||
 || **CURRENCY_ID**
-[`crm_currency`](../../data-types.md) | Currency ||
+[`crm_currency`](../data-types.md) | Currency ||
 || **REVENUE**
 [`double`](../../data-types.md) | Annual Revenue ||
 || **OPENED**
@@ -858,9 +858,9 @@ Deprecated address fields:
 || **DATE_MODIFY**
 [`datetime`](../../data-types.md) | Modification Date ||
 || **CONTACT_ID**
-[`crm_contact`](../../data-types.md) | Contact. Multiple ||
+[`crm_contact`](../data-types.md) | Contact. Multiple ||
 || **LEAD_ID**
-[`crm_lead`](../../data-types.md) | Identifier of the lead associated with the company ||
+[`crm_lead`](../data-types.md) | Identifier of the lead associated with the company ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source. Used only for linking to an external source ||
 || **ORIGIN_ID**
@@ -889,15 +889,15 @@ If there are smart processes related to companies on the account, there is a fie
 || **LAST_COMMUNICATION_TIME**
 [`string`](../../data-types.md) | Last Communication Date ||
 || **PHONE**
-[`crm_multifield`](../../data-types.md) | Phone. Multiple ||
+[`crm_multifield`](../data-types.md) | Phone. Multiple ||
 || **EMAIL**
-[`crm_multifield`](../../data-types.md) | E-mail. Multiple ||
+[`crm_multifield`](../data-types.md) | E-mail. Multiple ||
 || **WEB**
-[`crm_multifield`](../../data-types.md) | Website. Multiple ||
+[`crm_multifield`](../data-types.md) | Website. Multiple ||
 || **IM**
-[`crm_multifield`](../../data-types.md) | Messenger. Multiple ||
+[`crm_multifield`](../data-types.md) | Messenger. Multiple ||
 || **LINK**
-[`crm_multifield`](../../data-types.md) | LINK. Multiple ||
+[`crm_multifield`](../data-types.md) | LINK. Multiple ||
 ||**UF_...**  | Custom fields. For example, `UF_CRM_25534736`.
 
 Depending on the portal settings, companies may have a set of custom fields of specific types.

@@ -20,7 +20,7 @@ The method `crm.userfield.settings.fields` returns the field settings descriptio
 || **Name**
 `type` | **Description** ||
 || **type***
-[`string`](../../data-types.md) | The type of the custom field. A value from the list returned by the method [crm.userfield.types](./crm-userfield-types.md) ||
+[`string`](../../../data-types.md) | The type of the custom field. A value from the list returned by the method [crm.userfield.types](./crm-userfield-types.md) ||
 |#
 
 ## Code Examples
@@ -246,9 +246,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response containing field settings. The final list of fields depends on the type of the requested field ||
+[`object`](../../../data-types.md) | The root element of the response containing field settings. The final list of fields depends on the type of the requested field ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

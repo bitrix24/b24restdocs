@@ -50,21 +50,21 @@ Data is transmitted as a POST request {.b24-info}
 || **Parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../../data-types.md) | Symbolic code of the event.
 
 In this case — `onCrmActivityAdd` ||
 || **data**
-[`object`](../../../data-types.md) | An object containing information about the created deal.
+[`object`](../../../../data-types.md) | An object containing information about the created deal.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../data-types.md) | An object containing information about the fields of the created case.
+[`object`](../../../../data-types.md) | An object containing information about the fields of the created case.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -75,7 +75,7 @@ The structure is described [below](#auth) ||
 || **Parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the added case ||
+[`integer`](../../../../data-types.md) | Identifier of the added case ||
 |#
 
 ### Parameter auth {#auth}

@@ -46,15 +46,40 @@ where
 `lang_n` - [Language identifier](#lang-ids)
 `value_n` - Value for language `lang_n`
 ||
+|| `crm_dynamic_type.id` | Integer identifier of a smart process. Identifiers can be obtained using the method [crm.type.list](./universal/user-defined-object-types/crm-type-list.md). ||
+|| `crm_userfield` | Value of a user field. The specific type of the value depends on the type of the field itself — see [{#T}](./universal/user-defined-fields/crm-userfield-types.md). ||
+|| `userFieldEntityId` | String code of the CRM object type to which the user field is bound. For example, `CRM_CONTACT`. The complete list of codes is in the section [CRM Object Types](#object_type). ||
+|| `location` | Integer identifier of a location from the Bitrix24 location directory. This is a service type: fields with it are not recommended for use, and in most objects they are marked as outdated. ||
 || [`crm_item_product_row`](#crm_item_product_row) | Integer identifier of the product row of a CRM object. Product row identifiers can be obtained using the method [crm.item.productrow.list](../crm/universal/product-rows/crm-item-productrow-list.md). ||
 || [`crm_multifield`](#crm_multifield) | Object describing a "multifield". Multifields are used to store phone numbers, email addresses, and other contact information. In leads, contacts, and companies, fields of this type are `PHONE`, `EMAIL`, `WEB`, and `IM`. ||
 || [`crm_currency`](#crm_currency) | Object describing currency. ||
 || [`crm_currency_localization`](#crm_currency_localization) | Object describing currency localization. ||
 || [`crm_orderentity`](#crm_orderentity) | Object describing the connection between CRM and online store orders. ||
+|| `recurring_params` | Object with the parameters for calculating the next repetition date for a recurring CRM object template. The composition of the fields depends on the object and is described on the page of the specific method. For example, [fields of the PARAMS object](./deals/recurring-deals/crm-deal-recurring-fields.md#params-fields) for recurring deals. ||
 || [`type`](#type) | Object describing a custom CRM object type (SPA). ||
 || [`type.relations`](#typerelations) | Object containing relationships to other CRM entities. ||
 || [`relation`](#relation) | Object describing a related CRM element. ||
 || [`type.linkedUserFields`](#typelinkeduserfields) | Object describing a set of fields in which the SPA should be displayed. ||
+|| [`diskfile`](#diskfile) | File retained on Bitrix24 Drive. In the response, the method returns an object describing the file; when writing, the value is passed as an upload structure. ||
+|| [`attached_diskfile`](#attached_diskfile) | File attached to a timeline record. In the response, the method returns an object describing the file; when writing, the value is passed as an upload structure. ||
+|| `product_file` | Product image in the old product card. In the response, the method returns an object describing the file. ||
+|| [`crm_activity_binding`](#crm_activity_binding) | Object describing the binding of an activity to a CRM element. ||
+|| `crm_activity_communication` | Object describing the communication channel of an activity. The composition of the fields is in the article [{#T}](./timeline/activities/activity-base/crm-activity-communication-fields.md). ||
+|#
+
+## Activity Enumerations {#activity-enums}
+
+Activity fields reference service enumerations. The field value is an integer from a fixed set.
+
+#|
+|| **Type** | **Values** ||
+|| `crm_enum_activitytype` | Type of the activity: `1` — meeting, `2` — call, `3` — task, `4` — email, `5` — general type for importing calendar events, `6` — general type for activities managed by providers. `0` — type is not defined. ||
+|| `crm_enum_activitystatus` | Status of the activity: `1` — pending, `2` — completed, `3` — completed automatically. `0` — status is not defined. ||
+|| `crm_enum_activitypriority` | Importance of the activity: `1` — low, `2` — medium, `3` — high. `0` — not specified. ||
+|| `crm_enum_activitynotifytype` | Unit of time for the reminder: `1` — minutes, `2` — hours, `3` — days. `0` — reminder is not specified. ||
+|| `crm_enum_activitydirection` | Direction of the activity: `1` — incoming, `2` — outgoing. `0` — direction is not defined. Applies to calls and emails. ||
+|| `crm_enum_contenttype` | Format of the description text: `1` — plain text, `2` — BB codes, `3` — HTML. `0` — format is not defined. ||
+|| `crm_enum_ownertype` | Integer identifier of the CRM object type to which the record belongs. The possible values are returned by the method [crm.enum.ownertype](./auxiliary/enum/crm-enum-owner-type.md). ||
 |#
 
 ## Object Structure
@@ -347,6 +372,54 @@ This parameter is deprecated. For working with digital workplaces, use the metho
 [`boolean`](../data-types.md) | Tasks. ||
 || **TASKS_TASK_TEMPLATE\|UF_CRM_TASK**
 [`boolean`](../data-types.md) | Task templates. ||
+|#
+
+### diskfile {#diskfile}
+
+File retained on Bitrix24 Drive. In the response, the method returns an object describing the file.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../data-types.md) | Identifier of the file on Drive. ||
+|| **FILE_ID**
+[`integer`](../data-types.md) | Identifier of the file in the file storage. ||
+|| **NAME**
+[`string`](../data-types.md) | Name of the file. ||
+|| **SIZE**
+[`string`](../data-types.md) | Size of the file in a readable form. For example, `43 Kb`. ||
+|| **BYTES**
+[`integer`](../data-types.md) | Size of the file in bytes. ||
+|| **CAN_READ**
+[`boolean`](../data-types.md) | Is the file available for reading by the current user? ||
+|| **VIEW_URL**
+[`string`](../data-types.md) | Address for viewing or downloading the file. ||
+|| **PREVIEW_URL**
+[`string`](../data-types.md) | Address of the preview. It is filled in only for images and videos; in other cases, it is an empty string. ||
+|#
+
+To write a value into a field of this type, pass the file upload structure according to the [rules for working with files](../files/how-to-upload-files.md).
+
+### attached_diskfile {#attached_diskfile}
+
+File attached to a timeline record. It differs from [`diskfile`](#diskfile) in that the file is not retained in the CRM object but is bound to the record as an attachment.
+
+In the response, the method returns an object describing the file: identifier of the attachment, date, type, name, size and — for images — the dimensions of the image.
+
+To write a value, pass the file upload structure according to the [rules for working with files](../files/how-to-upload-files.md).
+
+### crm_activity_binding {#crm_activity_binding}
+
+Binding of an activity to a CRM element. The field is multiple and read-only.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **OWNER_TYPE_ID**
+[`crm_enum_ownertype`](#activity-enums) | Type of the CRM object to which the activity is bound. ||
+|| **OWNER_ID**
+[`integer`](../data-types.md) | Identifier of the CRM element to which the activity is bound. ||
 |#
 
 ## Language Identifiers for Bitrix24 {#lang-ids}

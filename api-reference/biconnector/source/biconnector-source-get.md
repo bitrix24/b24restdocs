@@ -281,7 +281,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`item`](../../data-types.md) | Root element of the response. Contains information about the source fields. Field descriptions can be found in the article [Sources: Overview of Methods](./index.md#fields) ||
+[`object`](../../data-types.md) | Root element of the response. Contains information about the source fields. Field descriptions can be found in the article [Sources: Overview of Methods](./index.md#fields) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

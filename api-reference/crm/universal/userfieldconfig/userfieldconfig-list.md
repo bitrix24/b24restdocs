@@ -114,7 +114,7 @@ Use the `next` parameter value from the previous response ||
 || **settings**
 [`string`](../../../data-types.md) | Additional settings for the field ||
 || **languageId**
-[`string`](../../../data-types.md) | [Language identifier](../../../data-types.md#lang-ids). When this parameter is passed, a set of language fields in the selected language is returned:
+[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). When this parameter is passed, a set of language fields in the selected language is returned:
 - `editFormLabel` - label in the edit form
 - `listColumnLabel` - header in the list
 - `listFilterLabel` - label of the filter in the list
@@ -545,15 +545,15 @@ The composition of keys depends on `userTypeId` ||
 || **languageId**
 [`object`](../../../data-types.md) | Language identifiers for which labels are set ||
 || **editFormLabel**
-[`lang_map`](../../../data-types.md) | Labels in the edit form ||
+[`lang_map`](../../data-types.md) | Labels in the edit form ||
 || **listColumnLabel**
-[`lang_map`](../../../data-types.md) | Header in the list ||
+[`lang_map`](../../data-types.md) | Header in the list ||
 || **listFilterLabel**
-[`lang_map`](../../../data-types.md) | Label of the filter in the list ||
+[`lang_map`](../../data-types.md) | Label of the filter in the list ||
 || **errorMessage**
-[`lang_map`](../../../data-types.md) | Error message ||
+[`lang_map`](../../data-types.md) | Error message ||
 || **helpMessage**
-[`lang_map`](../../../data-types.md) | Help ||
+[`lang_map`](../../data-types.md) | Help ||
 || **enum**
 [`object[]`](../../../data-types.md) | List elements for `userTypeId = enumeration`.
 

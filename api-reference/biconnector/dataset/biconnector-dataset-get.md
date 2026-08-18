@@ -282,7 +282,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`item`](../../data-types.md) | Root element of the response. Contains information about the dataset fields. Field descriptions can be found in the article [Datasets: Overview of Methods](./index.md#dataset) ||
+[`object`](../../data-types.md) | Root element of the response. Contains information about the dataset fields. Field descriptions can be found in the article [Datasets: Overview of Methods](./index.md#dataset) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#    

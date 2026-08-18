@@ -19,9 +19,9 @@ Items in the bottom dropdown menu of the [timeline entry](../index.md) `MenuItem
 || **action^*^**
 [`ActionDto`](./action.md) | Action to be performed when the button is pressed ||
 || **scope**
-[`string`](../../../../data-types.md) | [Scope](./field-types.md#scope), for example `web` ||
+[`string`](../../../../../data-types.md) | [Scope](./field-types.md#scope), for example `web` ||
 || **hideIfReadonly**
-[`boolean`](../../../../data-types.md) | Flag. Hides the tag if the user does not have edit access, default is `false` ||
+[`boolean`](../../../../../data-types.md) | Flag. Hides the tag if the user does not have edit access, default is `false` ||
 |#
 
 ## Example

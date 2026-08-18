@@ -26,7 +26,7 @@ The method `crm.quote.productrows.get` returns the product rows of an estimate.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../data-types.md) | Identifier of the estimate.
+[`integer`](../../data-types.md) | Identifier of the estimate.
 
 The identifier can be obtained using the methods [crm.quote.list](./crm-quote-list.md) or [crm.quote.add](./crm-quote-add.md) ||
 |#
@@ -309,7 +309,7 @@ HTTP Status: **200**
 || **result**
 [`productrow[]`](#productrow) | Root element of the response containing an array of product rows of the estimate ||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Type productrow {#productrow}
@@ -318,72 +318,72 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../data-types.md) | Identifier of the product row ||
+[`integer`](../../data-types.md) | Identifier of the product row ||
 || **OWNER_ID**
-[`integer`](../data-types.md) | Identifier of the element to which the product is linked. For this method, it equals the `id` of the estimate ||
+[`integer`](../../data-types.md) | Identifier of the element to which the product is linked. For this method, it equals the `id` of the estimate ||
 || **OWNER_TYPE**
-[`string`](../data-types.md) | String identifier of the CRM object type to which the product is linked. For this method, it is always `Q` ||
+[`string`](../../data-types.md) | String identifier of the CRM object type to which the product is linked. For this method, it is always `Q` ||
 || **PRODUCT_ID**
-[`integer`](../data-types.md) | Identifier of the product in the catalog. `0` if the product is not from the catalog.
+[`integer`](../../data-types.md) | Identifier of the product in the catalog. `0` if the product is not from the catalog.
 
 To get detailed information about the product, use [catalog.product.get](../../catalog/product/catalog-product-get.md) ||
 || **PRODUCT_NAME**
-[`string`](../data-types.md) | Name of the product row ||
+[`string`](../../data-types.md) | Name of the product row ||
 || **ORIGINAL_PRODUCT_NAME**
-[`string`](../data-types.md) | Name of the product row in the catalog ||
+[`string`](../../data-types.md) | Name of the product row in the catalog ||
 || **PRODUCT_DESCRIPTION**
-[`string`](../data-types.md) | Description of the product row ||
+[`string`](../../data-types.md) | Description of the product row ||
 || **PRICE**
-[`double`](../data-types.md) | Final cost of the product per unit ||
+[`double`](../../data-types.md) | Final cost of the product per unit ||
 || **PRICE_EXCLUSIVE**
-[`double`](../data-types.md) | Cost per unit considering discounts, excluding taxes ||
+[`double`](../../data-types.md) | Cost per unit considering discounts, excluding taxes ||
 || **PRICE_NETTO**
-[`double`](../data-types.md) | Cost per unit excluding discounts and taxes ||
+[`double`](../../data-types.md) | Cost per unit excluding discounts and taxes ||
 || **PRICE_BRUTTO**
-[`double`](../data-types.md) | Cost per unit excluding discounts but including taxes ||
+[`double`](../../data-types.md) | Cost per unit excluding discounts but including taxes ||
 || **PRICE_ACCOUNT**
-[`string`](../data-types.md) | Cost of the product in reporting currency ||
+[`string`](../../data-types.md) | Cost of the product in reporting currency ||
 || **QUANTITY**
-[`double`](../data-types.md) | Quantity of product units ||
+[`double`](../../data-types.md) | Quantity of product units ||
 || **DISCOUNT_TYPE_ID**
-[`integer`](../data-types.md) | Type of discount:
+[`integer`](../../data-types.md) | Type of discount:
 - `1` — absolute
 - `2` — percentage ||
 || **DISCOUNT_RATE**
-[`double`](../data-types.md) | Discount value in percentage ||
+[`double`](../../data-types.md) | Discount value in percentage ||
 || **DISCOUNT_SUM**
-[`double`](../data-types.md) | Absolute value of the discount ||
+[`double`](../../data-types.md) | Absolute value of the discount ||
 || **TAX_RATE**
-[`double`](../data-types.md) | Tax rate in percentage ||
+[`double`](../../data-types.md) | Tax rate in percentage ||
 || **TAX_INCLUDED**
-[`char`](../data-types.md) | Whether tax is included in the price:
+[`char`](../../data-types.md) | Whether tax is included in the price:
 - `Y` — yes
 - `N` — no ||
 || **CUSTOMIZED**
-[`char`](../data-types.md) | Indicator of manual modification of the product row:
+[`char`](../../data-types.md) | Indicator of manual modification of the product row:
 - `Y` — yes
 - `N` — no ||
 || **MEASURE_CODE**
 [`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | Unit of measure code ||
 || **MEASURE_NAME**
-[`string`](../data-types.md) | Text representation of the unit of measure ||
+[`string`](../../data-types.md) | Text representation of the unit of measure ||
 || **SORT**
-[`integer`](../data-types.md) | Sorting ||
+[`integer`](../../data-types.md) | Sorting ||
 || **XML_ID**
-[`string`](../data-types.md) | External code of the product row ||
+[`string`](../../data-types.md) | External code of the product row ||
 || **TYPE**
-[`integer`](../data-types.md) | Type of product:
+[`integer`](../../data-types.md) | Type of product:
 - `1` — simple product
 - `4` — trade offer (variation)
 - `7` — service ||
 || **STORE_ID**
-[`integer`](../data-types.md) | Identifier of the warehouse ||
+[`integer`](../../data-types.md) | Identifier of the warehouse ||
 || **RESERVE_ID**
-[`integer`](../data-types.md) | Identifier of the reserve ||
+[`integer`](../../data-types.md) | Identifier of the reserve ||
 || **DATE_RESERVE_END**
-[`date`](../data-types.md) | Date of reservation end ||
+[`date`](../../data-types.md) | Date of reservation end ||
 || **RESERVE_QUANTITY**
-[`double`](../data-types.md) | Quantity of reserved product units ||
+[`double`](../../data-types.md) | Quantity of reserved product units ||
 |#
 
 ## Error Handling

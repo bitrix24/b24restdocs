@@ -45,7 +45,7 @@ When opening a card with a user type field, an array `PLACEMENT_OPTIONS` contain
 - must be unique
 - the final code is formed as `rest_<APP_ID>_<USER_TYPE_ID>` and cannot exceed 50 characters, so the length of `USER_TYPE_ID` must be no more than `50 - length("rest_<APP_ID>_")` ||
 || **HANDLER***
-[`URL`](../../data-types.md) | Custom type handler address | 
+[`string`](../../data-types.md) | Custom type handler address | 
 - in the same domain as the main application address
 - must be unique ||
 || **TITLE**

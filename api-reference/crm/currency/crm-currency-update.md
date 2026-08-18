@@ -97,7 +97,7 @@ If not all languages are specified, [default localization parameters](../data-ty
 ||  **Name**
 `type`| **Description** ||
 || **DECIMALS***
-[`int`](../../data-types.md) | Number of decimal places in the fractional part. ||
+[`integer`](../../data-types.md) | Number of decimal places in the fractional part. ||
 || **DEC_POINT**
 [`string`](../../data-types.md) | Decimal point for output. ||
 || **FORMAT_STRING**

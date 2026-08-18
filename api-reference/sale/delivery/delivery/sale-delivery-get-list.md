@@ -20,12 +20,12 @@ The method `sale.delivery.getlist` retrieves a list of delivery services.
 || **Name**
 `type` | **Description** ||
 || **SELECT**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the object [`sale_delivery_service`](../../data-types.md)).
+[`array`](../../../data-types.md) | An array containing the list of fields to select (see fields of the object [`sale_delivery_service`](../../data-types.md)).
  
 If not provided or an empty array is passed, all available fields of delivery services will be selected.
 ||
 || **FILTER**
-[`object`](../../data-types.md) | An object for filtering the selected delivery services in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../../data-types.md) | An object for filtering the selected delivery services in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
  
 Possible values for `field` correspond to the fields of the object [`sale_delivery_service`](../../data-types.md).
 
@@ -51,7 +51,7 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `!%=` — NOT LIKE (see description above)
 ||
 || **ORDER**
-[`object`](../../data-types.md) | An object for sorting the selected delivery services in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../../data-types.md) | An object for sorting the selected delivery services in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
  
 Possible values for `field` correspond to the fields of the object [`sale_delivery_service`](../../data-types.md).
  

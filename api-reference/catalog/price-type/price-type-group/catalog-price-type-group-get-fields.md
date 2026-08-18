@@ -249,7 +249,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
+[`object`](../../../data-types.md) | Root element of the response ||
 || **priceTypeGroup**
 [`object`](../../data-types.md#catalog_price_type_group) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [catalog_price_type_group](../../data-types.md#catalog_price_type_group) object, and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
 || **time**

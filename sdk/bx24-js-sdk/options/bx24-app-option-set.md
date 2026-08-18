@@ -24,7 +24,7 @@ Setting application configuration values is only available to users with applica
 || **name***
 [`string`](../../../api-reference/data-types.md) | Parameter code ||
 || **value***
-[`mixed`](../../../api-reference/data-types.md) | Parameter value ||
+[`any`](../../../api-reference/data-types.md) | Parameter value ||
 || **callback**
 [`function`](../../../api-reference/data-types.md) | Callback after saving. The current application settings will be passed as an argument ||
 |#

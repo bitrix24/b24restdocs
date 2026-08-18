@@ -264,7 +264,7 @@ HTTP status: **200**
 [`object`](../../data-types.md) | Root element of the response ||
 || **personType**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value"}`.
-Where `field` is the identifier of the object [sale_person_type](../data-types.md), and value is an object of type [rest_field_description](../../data-types.md#rest_field_description)
+Where `field` is the identifier of the object [sale_person_type](../data-types.md), and value is an object of type [rest_field_description](../data-types.md#rest_field_description)
 ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||

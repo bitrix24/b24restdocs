@@ -36,7 +36,7 @@ The method is available to the holder of the [permission](https://helpdesk.bitri
 #|
 || **Parameter** / **Type** | **Description** ||
 || **USER_ID**^*^
-[`int`](../../../data-types.md) | User identifier. ||
+[`integer`](../../../data-types.md) | User identifier. ||
 |#
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}

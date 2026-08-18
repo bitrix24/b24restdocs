@@ -669,7 +669,7 @@ HTTP Status: **200**
 || **CREATED_BY_ID**  
 [`integer`](../../data-types.md) | Identifier of the user who created the estimate. Read-only ||
 || **CURRENCY_ID**  
-[`crm_currency`](../../data-types.md) | Currency of the estimate ||
+[`crm_currency`](../data-types.md) | Currency of the estimate ||
 || **DATE_CREATE**  
 [`datetime`](../../data-types.md) | Date of the estimate creation. Read-only ||
 || **DATE_MODIFY**  
@@ -695,7 +695,7 @@ HTTP Status: **200**
 || **QUOTE_NUMBER**  
 [`string`](../../data-types.md) | Estimate number. Read-only ||
 || **STATUS_ID**  
-[`crm_status`](../../data-types.md) | Estimate stage. You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID=QUOTE_STATUS` ||
+[`crm_status`](../data-types.md) | Estimate stage. You can get the values of the directory using the method [crm.status.list](../status/crm-status-list.md) with the filter `ENTITY_ID=QUOTE_STATUS` ||
 || **TAX_VALUE**  
 [`double`](../../data-types.md) | Tax rate ||
 || **TERMS**  

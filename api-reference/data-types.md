@@ -13,7 +13,7 @@ This page describes the data types used in method parameters, object structures,
 #|
 || **Type** | **Description** ||
 || `integer` | An integer. For example, `10116` ||
-|| `boolean` | A boolean value. Most often takes values `Y` or `N`. In some methods, it may take values `0` or `1` ||
+|| `boolean` | A boolean value. Most often takes values `Y` or `N`. In some methods, it may take values `0` or `1`, as well as `true` or `false` ||
 || `char` | A fixed-length string type, usually `CHAR(1)`. Often used as a substitute for `boolean` and stores `Y` or `N` ||
 || `double` | A floating-point number. For example, `100.15` ||
 || `date` | A date in the format `YYYY-MM-DD`. For example, `2025-12-28`, December 28, 2025 ||
@@ -49,6 +49,7 @@ For more information on working with files, read the articles:
 || `function` | A function. Used in JavaScript examples and Bitrix24 js interfaces to describe a handler ||
 || `callable` | A callable handler, usually a callback function. In JavaScript, this can be a regular function or its shorthand notation using `=>` ||
 || `any` | Various data types can serve as parameter values ||
+|| `null` | The absence of a value. It is not used on its own — it is specified as the second type for fields that can return either a value or emptiness. For example, `string \| null` ||
 |#
 
 {% note tip "Date and Time Features" %}
@@ -56,6 +57,16 @@ For more information on working with files, read the articles:
 When working with fields of types _date_ and _datetime_, note that each user in Bitrix24 can have their own time zone specified in the settings. The Bitrix24 user interface displays dates and times adapted to the specific user; however, at the API level, all dates and times are stored according to the server parameters.
 
 {% endnote %}
+
+## How Compound Types Are Written {#compound-types}
+
+In addition to single types, compound notations are found in the descriptions of parameters and fields.
+
+#|
+|| **Notation** | **Meaning** ||
+|| `type[]` | An array of values of the specified type. For example, `string[]` is an array of strings, `integer[]` is an array of integers ||
+|| `type1 \| type2` | The field accepts a value of one of the listed types. For example, `string \| null` is a string or an empty value ||
+|#
 
 ## Data Types for Object References and Directories {#standart-objects}
 
@@ -78,6 +89,29 @@ Data directories for various Bitrix24 tools:
 - [CRM](./crm/data-types.md)
 - [Online Store](./sale/data-types.md)
 - [Product Catalog](./catalog/data-types.md)
+
+## uf_enum_element Object {#uf_enum_element}
+
+A value option of a custom field of the list type `enumeration`. Fields of this type are multiple: an array of such objects is passed in them.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+`integer` | Identifier of the option. It is filled in for existing options and is not passed when adding a new one ||
+|| **VALUE**
+`string` | Value of the option ||
+|| **DEF**
+`char` | Indicates the default value. Takes values `Y` or `N` ||
+|| **SORT**
+`integer` | Sorting order ||
+|| **XML_ID**
+`string` | External identifier of the option ||
+|| **DEL**
+`char` | Indicates the deletion of an existing option. Takes values `Y` or `N` ||
+|#
+
+Methods of the `*.userfieldconfig.*` group use camelCase notation for the same fields — `id`, `value`, `def`, `sort`, `xmlId`, `del`.
 
 ## Time Object {#time}
 

@@ -26,7 +26,7 @@ The method `crm.quote.delete` removes an estimate.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../data-types.md) | Identifier of the estimate.
+[`integer`](../../data-types.md) | Identifier of the estimate.
 
 The identifier can be obtained using the methods [crm.quote.list](./crm-quote-list.md) or [crm.quote.add](./crm-quote-add.md) ||
 |#
@@ -233,9 +233,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Root element of the response, returns `true` on success ||
+[`boolean`](../../data-types.md) | Root element of the response, returns `true` on success ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

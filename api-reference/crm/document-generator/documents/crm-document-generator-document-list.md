@@ -20,7 +20,7 @@ The method `crm.documentgenerator.document.list` returns a list of documents bas
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | A list of fields that should be populated in the documents returned.
+[`string[]`](../../../data-types.md) | A list of fields that should be populated in the documents returned.
 
 You can use:
 - `'*'` — to select all standard fields of the document
@@ -30,7 +30,7 @@ Refer to the [Document Type](#document) section for the list of fields.
 
 By default, `['*']` is used. ||
 || **filter**
-[`object`](../../data-types.md) | An object in the following format:
+[`object`](../../../data-types.md) | An object in the following format:
 
 ```
 {
@@ -57,7 +57,7 @@ You can add prefixes to the keys `field_n`:
 
 Refer to the [Document Type](#document) section for the list of available fields for filtering. ||
 || **order**
-[`object`](../../data-types.md) | An object in the following format:
+[`object`](../../../data-types.md) | An object in the following format:
 
 ```
 {
@@ -76,7 +76,7 @@ Refer to the [Document Type](#document) section for the list of fields for sorti
 
 Example: `{"id":"DESC","createTime":"ASC"}` ||
 || **start**
-[`integer`](../../data-types.md) | Pagination parameter.
+[`integer`](../../../data-types.md) | Pagination parameter.
 
 The page size is fixed: `50` records.
 
@@ -531,13 +531,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root object of the response. Contains the structure [`result`](#result) ||
+[`object`](../../../data-types.md) | Root object of the response. Contains the structure [`result`](#result) ||
 || **total**
-[`integer`](../../data-types.md) | The total number of documents matching the filter ||
+[`integer`](../../../data-types.md) | The total number of documents matching the filter ||
 || **next**
-[`integer`](../../data-types.md) | Offset for the next page. Returned if there is a next page ||
+[`integer`](../../../data-types.md) | Offset for the next page. Returned if there is a next page ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Type {#result}
@@ -546,7 +546,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **documents**
-[`object[]`](../../data-types.md) | An array of documents. The structure of each element is described in the [`document`](#document) type ||
+[`object[]`](../../../data-types.md) | An array of documents. The structure of each element is described in the [`document`](#document) type ||
 |#
 
 #### Document Type {#document}
@@ -557,47 +557,47 @@ The composition of fields depends on the `select` parameter.
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Document identifier ||
+[`string`](../../../data-types.md) | Document identifier ||
 || **title**
-[`string`](../../data-types.md) | Document name ||
+[`string`](../../../data-types.md) | Document name ||
 || **number**
-[`string`](../../data-types.md) | Document number ||
+[`string`](../../../data-types.md) | Document number ||
 || **templateId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the document template ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the document template ||
 || **entityTypeId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the CRM object type ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object type ||
 || **entityId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the CRM object ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object ||
 || **fileId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Document DOCX file identifier ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Document DOCX file identifier ||
 || **imageId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Document image identifier ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Document image identifier ||
 || **pdfId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Document PDF file identifier ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Document PDF file identifier ||
 || **createTime**
-[`datetime`](../../data-types.md) | Date of document creation ||
+[`datetime`](../../../data-types.md) | Date of document creation ||
 || **updateTime**
-[`datetime`](../../data-types.md) | Document update date ||
+[`datetime`](../../../data-types.md) | Document update date ||
 || **createdBy**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) \| [`null`](../../data-types.md) | Identifier of the user who created the document ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Identifier of the user who created the document ||
 || **updatedBy**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) \| [`null`](../../data-types.md) | Identifier of the user who updated the document ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Identifier of the user who updated the document ||
 || **values**
-[`object`](../../data-types.md) \| [`null`](../../data-types.md) | Field values of the document ||
+[`object`](../../../data-types.md) \| [`null`](../../../data-types.md) | Field values of the document ||
 || **downloadUrl**
-[`string`](../../data-types.md) | Link to download the document ||
+[`string`](../../../data-types.md) | Link to download the document ||
 || **imageUrl**
-[`string`](../../data-types.md) | Link to the document image ||
+[`string`](../../../data-types.md) | Link to the document image ||
 || **pdfUrl**
-[`string`](../../data-types.md) | Link to the PDF document ||
+[`string`](../../../data-types.md) | Link to the PDF document ||
 || **downloadUrlMachine**
-[`string`](../../data-types.md) | Link to download the document for machine access ||
+[`string`](../../../data-types.md) | Link to download the document for machine access ||
 || **pdfUrlMachine**
-[`string`](../../data-types.md) | Link to the PDF document for machine access ||
+[`string`](../../../data-types.md) | Link to the PDF document for machine access ||
 || **imageUrlMachine**
-[`string`](../../data-types.md) | Link to the document image for machine access ||
+[`string`](../../../data-types.md) | Link to the document image for machine access ||
 || **stampsEnabled**
-[`boolean`](../../data-types.md) | Stamp and signature inclusion flag ||
+[`boolean`](../../../data-types.md) | Stamp and signature inclusion flag ||
 |#
 
 ## Error Handling

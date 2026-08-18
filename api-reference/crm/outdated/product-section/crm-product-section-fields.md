@@ -156,13 +156,13 @@ No parameters required.
 || **Name**
 `type`  | **Description** | **Note** ||
 || **CATALOG_ID** 
-[`integer`](../../data-types.md) | Catalog Identifier | Immutable ||
+[`integer`](../../../data-types.md) | Catalog Identifier | Immutable ||
 || **ID** 
-[`integer`](../../data-types.md) | Section Identifier | Read-only ||
+[`integer`](../../../data-types.md) | Section Identifier | Read-only ||
 || **NAME** 
-[`string`](../../data-types.md) | Section Name | Required ||
+[`string`](../../../data-types.md) | Section Name | Required ||
 || **SECTION_ID** 
-[`integer`](../../data-types.md) | Identifier of the linked section | ||
+[`integer`](../../../data-types.md) | Identifier of the linked section | ||
 || **XML_ID** 
-[`string`](../../data-types.md) | Symbolic Code | ||
+[`string`](../../../data-types.md) | Symbolic Code | ||
 |#

@@ -287,7 +287,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`item`](../../data-types.md) | The root element of the response. Contains information about the connector fields. Field descriptions can be found in the article [Connector: Overview of Methods](./index.md#fields) ||
+[`object`](../../data-types.md) | The root element of the response. Contains information about the connector fields. Field descriptions can be found in the article [Connector: Overview of Methods](./index.md#fields) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#                                                                         

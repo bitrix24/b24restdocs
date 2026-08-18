@@ -22,7 +22,7 @@ The `BX24.userOption.set` method sets the value of the `value` configuration wit
 || **name***
 [`string`](../../../api-reference/data-types.md) | Parameter code ||
 || **value***
-[`mixed`](../../../api-reference/data-types.md) | Parameter value ||
+[`any`](../../../api-reference/data-types.md) | Parameter value ||
 |#
 
 ## Code Example

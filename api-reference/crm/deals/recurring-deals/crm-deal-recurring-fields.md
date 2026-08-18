@@ -485,7 +485,7 @@ HTTP Status: **200**
 || **LIMIT_DATE**
 [`date`](../../../data-types.md) | End date for deal generation | Used when `IS_LIMIT = D` ||
 || **PARAMS**
-[`recurring_params`](../../../data-types.md) | Parameters for calculating the next execution date | Structure of fields — [below](#params-fields) ||
+[`recurring_params`](../../data-types.md) | Parameters for calculating the next execution date | Structure of fields — [below](#params-fields) ||
 |#
 
 #### Fields of the PARAMS Object {#params-fields}

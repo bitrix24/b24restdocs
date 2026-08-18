@@ -22,7 +22,7 @@ Retrieves a list of deliveries for a specific CRM object.
 || **entityId***
 [`integer`](../../../data-types.md) | Identifier of the CRM object ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#crm-entity-type)  ||
+[`integer`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type)  ||
 || **filter**
 [`object`](../../../data-types.md) | Additional filter for cases when you need to get not all deliveries of the CRM object, but based on a more specific filter. 
 The format of the `filter` parameter corresponds to what is described in the [`sale.shipment.list`](../../../sale/shipment/sale-shipment-list.md) method ||

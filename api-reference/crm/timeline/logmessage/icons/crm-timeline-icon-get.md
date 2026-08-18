@@ -287,7 +287,7 @@ HTTP status: **200**
 
 The `result` field contains the [icon](./crm-timeline-icon-add.md#icon) object ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

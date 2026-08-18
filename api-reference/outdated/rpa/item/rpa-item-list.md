@@ -26,13 +26,13 @@ This method retrieves a list of process elements with the identifier `typeId`.
 || **typeId** 
 [`integer`](../../../data-types.md) | Identifier of the process ||
 || **order** 
-[`number`](../../../data-types.md)  | List for sorting, where the key is the field and the value is `ASC` or `DESC` ||
+[`object`](../../../data-types.md)  | List for sorting, where the key is the field and the value is `ASC` or `DESC` ||
 || **filter** 
-[`number`](../../../data-types.md)  | List for filtering.
+[`object`](../../../data-types.md)  | List for filtering.
 
 Keys for filtering by custom fields should be in `UPPER_CASE`, while others should be in `camelCase`. Examples of filters are provided [below](#filters) ||
 || **start** 
-[`number`](../../../data-types.md)  | Offset for pagination. ||
+[`integer`](../../../data-types.md)  | Offset for pagination. ||
 |#
 
 ## Response Handling

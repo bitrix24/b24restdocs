@@ -58,11 +58,11 @@ There is an additional field `DISABLE_SENDING_MESSAGE_COPY`. It is intended to f
 #|
 || **Field** `type` | **Description** ||
 || **OWNER_ID***
-[`integer`](../../../data-types.md) | Identifier of the CRM entity ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity ||
 || **OWNER_TYPE_ID***
-[`integer`](../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) ||
 || **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md) | Type of the activity. To get available activity types, use the method [crm.enum.activitytype](../../../auxiliary/enum/outdated/crm-enum-activity-type.md). 
+[`crm_enum_activitytype`](../../../data-types.md#activity-enums) | Type of the activity. To get available activity types, use the method [crm.enum.activitytype](../../../auxiliary/enum/outdated/crm-enum-activity-type.md). 
 
 To create an activity with the type "task", use the [creation](../../../../tasks/tasks-task-add.md) or [modification](../../../../tasks/tasks-task-update.md) method and specify the CRM entity in the `UF_CRM_TASK` field ||
 || **ASSOCIATED_ENTITY_ID**
@@ -70,53 +70,53 @@ To create an activity with the type "task", use the [creation](../../../../tasks
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of communication](./crm-activity-communication-fields.md) ||
 || **DEADLINE**
-[`datetime`](../../../data-types.md) | Date and time of the activity's deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../../data-types.md) | Date and time of the activity's deadline. This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
 || **DESCRIPTION**
-[`string`](../../../data-types.md) | Text description of the activity ||
+[`string`](../../../../data-types.md) | Text description of the activity ||
 || **DESCRIPTION_TYPE**
-[`crm.enum.contenttype`](../../../data-types.md) | Description type ||
+[`crm_enum_contenttype`](../../../data-types.md#activity-enums) | Description type ||
 || **DIRECTION**
-[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
+[`crm_enum_activitydirection`](../../../data-types.md#activity-enums) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
 || **END_TIME**
-[`datetime`](../../../data-types.md) | Activity completion time | ||
+[`datetime`](../../../../data-types.md) | Activity completion time | ||
 || **FILES**
 [`diskfile`](../../../data-types.md) | Files added to the activity ||
 || **LOCATION**
-[`string`](../../../data-types.md) | Location ||
+[`string`](../../../../data-types.md) | Location ||
 || **NOTIFY_TYPE**
-[`crm.enum.activitynotifytype`](../../../data-types.md) | Type of notification ||
+[`crm_enum_activitynotifytype`](../../../data-types.md#activity-enums) | Type of notification ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
+[`string`](../../../../data-types.md) | Identifier of the data source, used only for linking to an external source ||
 || **ORIGIN_ID**
-[`string`](../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
+[`string`](../../../../data-types.md) | Identifier of the entity in the data source, used only for linking to an external source ||
 || **ORIGIN_VERSION**
-[`string`](../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
+[`string`](../../../../data-types.md) | Original version, used to protect data from accidental overwriting by an external system. If the data was imported and not modified in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **PRIORITY**
-[`crm.enum.activitypriority`](../../../data-types.md) | Priority ||
+[`crm_enum_activitypriority`](../../../data-types.md#activity-enums) | Priority ||
 || **PROVIDER_DATA**
-[`string`](../../../data-types.md) | Additional provider data ||
+[`string`](../../../../data-types.md) | Additional provider data ||
 || **PROVIDER_GROUP_ID**
-[`string`](../../../data-types.md) | Identifier of the provider group ||
+[`string`](../../../../data-types.md) | Identifier of the provider group ||
 || **PROVIDER_ID**
-[`string`](../../../data-types.md) | Identifier of the provider ||
+[`string`](../../../../data-types.md) | Identifier of the provider ||
 || **PROVIDER_TYPE_ID**
-[`string`](../../../data-types.md) | Identifier of the provider type, status from the directory ||
+[`string`](../../../../data-types.md) | Identifier of the provider type, status from the directory ||
 || **PROVIDER_PARAMS**
-[`object`](../../../data-types.md) | Additional provider parameters ||
+[`object`](../../../../data-types.md) | Additional provider parameters ||
 || **RESPONSIBLE_ID***
-[`user`](../../../data-types.md) | Identifier of the user responsible for the activity ||
+[`user`](../../../../data-types.md) | Identifier of the user responsible for the activity ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings ||
+[`object`](../../../../data-types.md) | Additional settings ||
 || **START_TIME**
-[`datetime`](../../../data-types.md) | Time when the activity starts ||
+[`datetime`](../../../../data-types.md) | Time when the activity starts ||
 || **STATUS**
-[`crm_enum_activitystatus`](../../../data-types.md) | Status of the activity ||
+[`crm_enum_activitystatus`](../../../data-types.md#activity-enums) | Status of the activity ||
 || **SUBJECT**
-[`string`](../../../data-types.md) | Additional description of the activity ||
+[`string`](../../../../data-types.md) | Additional description of the activity ||
 || **WEBDAV_ELEMENTS**
 [`diskfile`](../../../data-types.md) | Added files. Deprecated, kept for compatibility ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
+[`char`](../../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) ||
 |#
 
 ### Field Value Usage Options

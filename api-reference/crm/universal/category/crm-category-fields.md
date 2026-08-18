@@ -350,9 +350,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing a list of available fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field_N` is the identifier of the [object field](#fields), and `value` is an object of type [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
+[`object`](../../../data-types.md) | Object containing a list of available fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field_N` is the identifier of the [object field](#fields), and `value` is an object of type [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 #### Field Descriptions {#fields}

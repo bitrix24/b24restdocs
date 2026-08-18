@@ -302,7 +302,7 @@ HTTP status: **200**
 
 The `result` field contains the [logo](#logo) object ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
 

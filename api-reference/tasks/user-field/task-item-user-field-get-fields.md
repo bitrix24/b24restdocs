@@ -348,7 +348,7 @@ HTTP Status: **200**
 || **HELP_MESSAGE**
 [`string`](../../data-types.md) | Help Message ||
 || **LIST**
-[`uf_enum_element`](../../data-types.md) | List Elements. Multiple ||
+[`uf_enum_element`](../../data-types.md#uf_enum_element) | List Elements. Multiple ||
 || **SETTINGS**
 [`object`](../../data-types.md) | Additional Settings ||
 |#

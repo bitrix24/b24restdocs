@@ -660,13 +660,13 @@ HTTP status: **200**
 #|
 || **Field** `type` | **Description** | **Note** ||
 || **ID***
-[`integer`](../../../data-types.md) | Activity ID | Read-only ||
+[`integer`](../../../../data-types.md) | Activity ID | Read-only ||
 || **OWNER_ID***
-[`integer`](../../../data-types.md) | CRM object ID | Can be changed using the [crm.activity.binding.move](../binding/crm-activity-binding-move.md) method ||
+[`integer`](../../../../data-types.md) | CRM object ID | Can be changed using the [crm.activity.binding.move](../binding/crm-activity-binding-move.md) method ||
 || **OWNER_TYPE_ID***
-[`integer`](../../../data-types.md) | [CRM object type ID](../../../data-types.md#object_type) | Immutable ||
+[`integer`](../../../../data-types.md) | [CRM object type ID](../../../data-types.md#object_type) | Immutable ||
 || **TYPE_ID***
-[`crm_enum_activitytype`](../../../data-types.md) | Activity type | Required, immutable ||
+[`crm_enum_activitytype`](../../../data-types.md#activity-enums) | Activity type | Required, immutable ||
 || **ASSOCIATED_ENTITY_ID**
 [`integer`](../../../../data-types.md) | Integer ID of the associated entity | Read-only ||
 || **AUTHOR_ID***
@@ -678,77 +678,77 @@ HTTP status: **200**
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of communication](./crm-activity-communication-fields.md) | Multiple, required ||
 || **COMPLETED***
-[`char`](../../../data-types.md) | Flag indicating whether the activity is completed (`Y`|`N`) | ||
+[`char`](../../../../data-types.md) | Flag indicating whether the activity is completed (`Y`|`N`) | ||
 || **CREATED***
-[`datetime`](../../../data-types.md) | Date and time the activity was created | ||
+[`datetime`](../../../../data-types.md) | Date and time the activity was created | ||
 || **DEADLINE**
-[`datetime`](../../../data-types.md) | Date and time of the activity's execution deadline | This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
+[`datetime`](../../../../data-types.md) | Date and time of the activity's execution deadline | This field is not set directly; the value is taken from START_TIME for calls and meetings and from END_TIME for tasks ||
 || **DESCRIPTION**
-[`string`](../../../data-types.md) | Text description of the activity | ||
+[`string`](../../../../data-types.md) | Text description of the activity | ||
 || **DESCRIPTION_TYPE**
-[`crm.enum.contenttype`](../../../data-types.md) | Description type | ||
+[`crm_enum_contenttype`](../../../data-types.md#activity-enums) | Description type | ||
 || **DIRECTION**
-[`crm.enum.activitydirection`](../../../data-types.md) | Direction of the activity: incoming/outgoing. | Relevant for calls and emails, not used for meetings ||
+[`crm_enum_activitydirection`](../../../data-types.md#activity-enums) | Direction of the activity: incoming/outgoing. | Relevant for calls and emails, not used for meetings ||
 || **EDITOR_ID**
-[`user`](../../../data-types.md) | Integer ID of the user who edited the activity | Read-only ||
+[`user`](../../../../data-types.md) | Integer ID of the user who edited the activity | Read-only ||
 || **END_TIME**
-[`datetime`](../../../data-types.md) | Time the activity ended | ||
+[`datetime`](../../../../data-types.md) | Time the activity ended | ||
 || **FILES**
 [`diskfile`](../../../data-types.md) | Files added to the activity | Multiple ||
 || **LAST_UPDATED**
-[`datetime`](../../../data-types.md) | Date of the last update | Read-only ||
+[`datetime`](../../../../data-types.md) | Date of the last update | Read-only ||
 || **LOCATION**
-[`string`](../../../data-types.md) | Location | ||
+[`string`](../../../../data-types.md) | Location | ||
 || **NOTIFY_TYPE**
-[`crm.enum.activitynotifytype`](../../../data-types.md) | Notification type | ||
+[`crm_enum_activitynotifytype`](../../../data-types.md#activity-enums) | Notification type | ||
 || **NOTIFY_VALUE**
-[`integer`](../../../data-types.md) | Notification value | Read-only ||
+[`integer`](../../../../data-types.md) | Notification value | Read-only ||
 || **ORIGINATOR_ID**
-[`string`](../../../data-types.md) | Data source ID | Used only for binding to an external source ||
+[`string`](../../../../data-types.md) | Data source ID | Used only for binding to an external source ||
 || **ORIGIN_ID**
-[`string`](../../../data-types.md) | ID of the element in the data source | Used only for binding to an external source ||
+[`string`](../../../../data-types.md) | ID of the element in the data source | Used only for binding to an external source ||
 || **ORIGIN_VERSION**
-[`string`](../../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
+[`string`](../../../../data-types.md) | Original version | Used to protect data from accidental overwriting by an external system. If the data was imported and not changed in the external system, such data can be edited in CRM without fear that the next export will lead to data overwriting ||
 || **PRIORITY**
-[`crm.enum.activitypriority`](../../../data-types.md) | Priority | ||
+[`crm_enum_activitypriority`](../../../data-types.md#activity-enums) | Priority | ||
 || **PROVIDER_DATA**
-[`string`](../../../data-types.md) | Additional provider data | ||
+[`string`](../../../../data-types.md) | Additional provider data | ||
 || **PROVIDER_GROUP_ID**
-[`string`](../../../data-types.md) | Provider group ID | ||
+[`string`](../../../../data-types.md) | Provider group ID | ||
 || **PROVIDER_ID**
-[`string`](../../../data-types.md) | Provider ID | Read-only ||
+[`string`](../../../../data-types.md) | Provider ID | Read-only ||
 || **PROVIDER_TYPE_ID**
-[`string`](../../../data-types.md) | Provider type ID | Status from the directory ||
+[`string`](../../../../data-types.md) | Provider type ID | Status from the directory ||
 || **PROVIDER_PARAMS**
-[`object`](../../../data-types.md) | Additional provider parameters | ||
+[`object`](../../../../data-types.md) | Additional provider parameters | ||
 || **RESPONSIBLE_ID***
-[`user`](../../../data-types.md) | Integer ID of the user responsible for the activity | Required ||
+[`user`](../../../../data-types.md) | Integer ID of the user responsible for the activity | Required ||
 || **RESULT_CURRENCY_ID**
-[`string`](../../../data-types.md) | | ||
+[`string`](../../../../data-types.md) | | ||
 || **RESULT_MARK**
-[`integer`](../../../data-types.md) | | ||
+[`integer`](../../../../data-types.md) | | ||
 || **RESULT_SOURCE_ID**
-[`string`](../../../data-types.md) | | ||
+[`string`](../../../../data-types.md) | | ||
 || **RESULT_STATUS**
-[`integer`](../../../data-types.md) | | ||
+[`integer`](../../../../data-types.md) | | ||
 || **RESULT_STREAM**
-[`integer`](../../../data-types.md) | Report statistics | ||
+[`integer`](../../../../data-types.md) | Report statistics | ||
 || **RESULT_SUM**
-[`double`](../../../data-types.md) | | ||
+[`double`](../../../../data-types.md) | | ||
 || **RESULT_VALUE**
-[`double`](../../../data-types.md) | | ||
+[`double`](../../../../data-types.md) | | ||
 || **SETTINGS**
-[`object`](../../../data-types.md) | Additional settings | ||
+[`object`](../../../../data-types.md) | Additional settings | ||
 || **START_TIME**
-[`datetime`](../../../data-types.md) | Time the activity starts | ||
+[`datetime`](../../../../data-types.md) | Time the activity starts | ||
 || **STATUS**
-[`crm_enum_activitystatus`](../../../data-types.md) | Activity status | ||
+[`crm_enum_activitystatus`](../../../data-types.md#activity-enums) | Activity status | ||
 || **SUBJECT**
-[`string`](../../../data-types.md) | Additional description of the activity | Required ||
+[`string`](../../../../data-types.md) | Additional description of the activity | Required ||
 || **WEBDAV_ELEMENTS**
 [`diskfile`](../../../data-types.md) | Added files | Multiple. Deprecated, kept for compatibility ||
 || **IS_INCOMING_CHANNEL**
-[`char`](../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) |  ||
+[`char`](../../../../data-types.md) | Flag indicating whether the activity was created from an incoming channel (`Y`/`N`) |  ||
 |#
 
 ## Error Handling

@@ -30,9 +30,9 @@ This method updates the existing settings of the digital workplace with the iden
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../data-types.md) | Identifier of the digital workplace. It can be obtained from the response of the method [crm.automatedsolution.add](./crm-automated-solution-add.md) (result.automatedSolution.id), which was called when adding the digital workplace, or [crm.automatedsolution.list](./crm-automated-solution-list.md). You can also use the "Digital Workplaces" section in the Bitrix24 account — the `ID` column in the list of digital workplaces ||
+[`integer`](../../data-types.md) | Identifier of the digital workplace. It can be obtained from the response of the method [crm.automatedsolution.add](./crm-automated-solution-add.md) (result.automatedSolution.id), which was called when adding the digital workplace, or [crm.automatedsolution.list](./crm-automated-solution-list.md). You can also use the "Digital Workplaces" section in the Bitrix24 account — the `ID` column in the list of digital workplaces ||
 || **fields***
-[`object`](../data-types.md) | Field values (detailed description provided below) for creating a digital workplace in the following structure:
+[`object`](../../data-types.md) | Field values (detailed description provided below) for creating a digital workplace in the following structure:
 
 ```js
 "fields": {

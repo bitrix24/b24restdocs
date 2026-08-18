@@ -836,7 +836,7 @@ Address fields in the contact are deprecated and are only used for compatibility
 ||**ADDRESS_COUNTRY_CODE**
 [`string`](../../data-types.md) | Country Code ||
 ||**ADDRESS_LOC_ADDR_ID**
-[`location`](../../data-types.md) | Location Address ID ||
+[`location`](../data-types.md) | Location Address ID ||
 |#
 
 ## Error Handling

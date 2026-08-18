@@ -26,9 +26,9 @@ This method sets the full visibility settings for fields at the stage with the i
 || **Name**
 `type` | **Description** ||
 || **typeId*** 
-[`number`](../../../data-types.md) | Identifier of the process ||
+[`integer`](../../../data-types.md) | Identifier of the process ||
 || **stageId** 
-[`number`](../../../data-types.md) | Identifier of the stage.
+[`integer`](../../../data-types.md) | Identifier of the stage.
 
 Defaults to `0`, meaning — general settings ||
 || **fields*** 

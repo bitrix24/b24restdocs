@@ -87,7 +87,7 @@ If not provided, the default value is `N` ||
 || **xmlId**
 [`string`](../../data-types.md) | External identifier of the shipment property ||
 || **defaultValue**
-[`any`](../data-types.md) | Default value of the shipment property.
+[`any`](../../data-types.md) | Default value of the shipment property.
 For multiple shipment properties (multiple), an array of values is supported ||
 || **settings**
 [`object`](../../data-types.md) | An object in the format {"field_1": "value_1", ... "field_N": "value_N"} for passing additional settings for the shipment property.
@@ -144,7 +144,7 @@ Possible values:
 If not provided, the default value is `N` ||
 |#
 
-Parameters applicable to shipment properties of type [`LOCATION`](../data-types.md)
+Parameters applicable to shipment properties of type `LOCATION`
 
 #|
 || **Name**
@@ -633,7 +633,7 @@ HTTP status: **200**
 || **property**
 [`sale_shipment_property`](../data-types.md) | Object with information about the updated shipment property ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling

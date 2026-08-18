@@ -20,7 +20,7 @@ The method `crm.documentgenerator.template.list` returns a list of document temp
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | A list of fields to return for the templates.
+[`array`](../../../data-types.md) | A list of fields to return for the templates.
 
 You can use:
 - `'*'` — to select all standard fields of the template
@@ -34,7 +34,7 @@ Main fields for `select`: `id`, `name`, `region`, `code`, `active`, `moduleId`, 
 
 See the list of template fields in the [Type template](#template) section. By default, `["*"]` is used. ||
 || **filter**
-[`object`](../../data-types.md) | An object in the format:
+[`object`](../../../data-types.md) | An object in the format:
 
 ```
 {
@@ -66,7 +66,7 @@ Features:
 
 Main fields for `filter`: `id`, `name`, `region`, `code`, `active`, `moduleId`, `numeratorId`, `withStamps`, `isDeleted`, `sort`, `createTime`, `updateTime`, `entityTypeId` ||
 || **order**
-[`object`](../../data-types.md) | An object in the format:
+[`object`](../../../data-types.md) | An object in the format:
 
 ```
 {
@@ -85,7 +85,7 @@ Main fields for `order`: `id`, `name`, `region`, `code`, `active`, `moduleId`, `
 
 Example: `{"id":"DESC","sort":"ASC"}` ||
 || **start**
-[`integer`](../../data-types.md) | Pagination parameter.
+[`integer`](../../../data-types.md) | Pagination parameter.
 
 The page size is fixed: `50` records.
 
@@ -491,16 +491,16 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response. Contains the object [`templates`](#templates) ||
+[`object`](../../../data-types.md) | The root element of the response. Contains the object [`templates`](#templates) ||
 || **total**
-[`integer`](../../data-types.md) | The total number of templates matching the filter ||
+[`integer`](../../../data-types.md) | The total number of templates matching the filter ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Templates Object {#templates}
 
-[`object`](../../data-types.md), where the key is the string identifier of the template, and the value is the object [`template`](#template)
+[`object`](../../../data-types.md), where the key is the string identifier of the template, and the value is the object [`template`](#template)
 
 #### Template Type {#template}
 
@@ -508,37 +508,37 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Identifier of the template ||
+[`string`](../../../data-types.md) | Identifier of the template ||
 || **name**
-[`string`](../../data-types.md) | Template name ||
+[`string`](../../../data-types.md) | Template name ||
 || **region**
-[`string`](../../data-types.md) | Template region ||
+[`string`](../../../data-types.md) | Template region ||
 || **download**
-[`string`](../../data-types.md) | The link to download the template ||
+[`string`](../../../data-types.md) | The link to download the template ||
 || **users**
-[`array`](../../data-types.md) | An array of user or access group codes ||
+[`array`](../../../data-types.md) | An array of user or access group codes ||
 || **entityTypeId**
-[`array`](../../data-types.md) | An array of bindings to object types ||
+[`array`](../../../data-types.md) | An array of bindings to object types ||
 || **downloadMachine**
-[`string`](../../data-types.md) | The link for machine downloading of the template ||
+[`string`](../../../data-types.md) | The link for machine downloading of the template ||
 || **code**
-[`string`](../../data-types.md) | The symbolic code of the template. Can be `null` ||
+[`string`](../../../data-types.md) | The symbolic code of the template. Can be `null` ||
 || **active**
-[`char`](../../data-types.md) | The activity status (`Y`/`N`) ||
+[`char`](../../../data-types.md) | The activity status (`Y`/`N`) ||
 || **moduleId**
-[`string`](../../data-types.md) | The identifier of the template owner module ||
+[`string`](../../../data-types.md) | The identifier of the template owner module ||
 || **numeratorId**
-[`integer`](../../data-types.md) | The identifier of the numerator ||
+[`integer`](../../../data-types.md) | The identifier of the numerator ||
 || **withStamps**
-[`char`](../../data-types.md) | The indication of stamp usage (`Y`/`N`) ||
+[`char`](../../../data-types.md) | The indication of stamp usage (`Y`/`N`) ||
 || **isDeleted**
-[`char`](../../data-types.md) | The indication of deletion (`Y`/`N`) ||
+[`char`](../../../data-types.md) | The indication of deletion (`Y`/`N`) ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting index ||
+[`integer`](../../../data-types.md) | Sorting index ||
 || **createTime**
-[`datetime`](../../data-types.md) | The creation time of the template ||
+[`datetime`](../../../data-types.md) | The creation time of the template ||
 || **updateTime**
-[`datetime`](../../data-types.md) | The last update time of the template ||
+[`datetime`](../../../data-types.md) | The last update time of the template ||
 |#
 
 ## Error Handling

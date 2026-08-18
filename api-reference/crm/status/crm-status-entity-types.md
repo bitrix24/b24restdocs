@@ -399,7 +399,7 @@ HTTP status: **200**
 || **NAME**
 [`string`](../../data-types.md) | Name ||
 || **ENTITY_TYPE_ID**
-[`integer`](../../data-types.md) | [CRM object type](../data-types.md#object_type#) to which the status belongs ||
+[`integer`](../../data-types.md) | [CRM object type](../data-types.md#object_type) to which the status belongs ||
 || **SEMANTIC_INFO**
 [`object`](../../data-types.md) | Information about the semantics of status stages ||
 || **PREFIX**

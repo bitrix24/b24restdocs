@@ -72,7 +72,7 @@ Possible values:
 
 Default — `N` ||
 || **UF_\***
-[`mixed`](../data-types.md) | Custom fields. A specific [set of fields](#uf-fields) is supported, depending on the account settings ||
+[`any`](../data-types.md) | Custom fields. A specific [set of fields](#uf-fields) is supported, depending on the account settings ||
 |#
 
 ### Custom Fields {#uf-fields}

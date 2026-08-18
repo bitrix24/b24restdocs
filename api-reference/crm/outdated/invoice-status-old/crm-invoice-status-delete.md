@@ -32,5 +32,5 @@ Starting from version 19.0.0, it is recommended to use the method [crm.status.de
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the invoice status ||
+[`integer`](../../../data-types.md) | Identifier of the invoice status ||
 |#

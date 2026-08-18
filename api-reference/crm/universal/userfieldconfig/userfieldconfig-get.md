@@ -391,15 +391,15 @@ The composition of keys depends on `userTypeId` ||
 || **languageId**
 [`object`](../../../data-types.md) | Languages for which field labels are defined ||
 || **editFormLabel**
-[`lang_map`](../../../data-types.md) | Labels in the edit form ||
+[`lang_map`](../../data-types.md) | Labels in the edit form ||
 || **listColumnLabel**
-[`lang_map`](../../../data-types.md) | Column labels in the list ||
+[`lang_map`](../../data-types.md) | Column labels in the list ||
 || **listFilterLabel**
-[`lang_map`](../../../data-types.md) | Labels in the filter ||
+[`lang_map`](../../data-types.md) | Labels in the filter ||
 || **errorMessage**
-[`lang_map`](../../../data-types.md) | Error message text ||
+[`lang_map`](../../data-types.md) | Error message text ||
 || **helpMessage**
-[`lang_map`](../../../data-types.md) | Field help text ||
+[`lang_map`](../../data-types.md) | Field help text ||
 || **enum**
 [`object[]`](../../../data-types.md) | Value options.
 

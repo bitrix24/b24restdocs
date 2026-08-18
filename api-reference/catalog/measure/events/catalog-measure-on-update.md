@@ -55,23 +55,23 @@ Data is transmitted as a POST request {.b24-info}
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../../data-types.md) | Symbolic code of the event.
+[`string`](../../../data-types.md) | Symbolic code of the event.
 
 In this case — `CATALOG.MEASURE.ON.UPDATE` ||
 || **event_handler_id***
-[`integer`](../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data***
-[`object`](../../data-types.md) | An object containing information about the updated unit of measurement.
+[`object`](../../../data-types.md) | An object containing information about the updated unit of measurement.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS***
-[`object`](../../data-types.md) | An object containing information about the unit of measurement fields.
+[`object`](../../../data-types.md) | An object containing information about the unit of measurement fields.
 
 The structure is described [below](#fields) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
+[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth***
-[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#

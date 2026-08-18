@@ -570,7 +570,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **product**
-[`object`](../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [`catalog_product`](../data-types.md#catalog_product), and `value` is an object of type [`rest_field_description`](../data-types.md). ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [`catalog_product`](../data-types.md#catalog_product), and `value` is an object of type [`rest_field_description`](../data-types.md). ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#

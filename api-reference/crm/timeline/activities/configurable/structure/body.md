@@ -39,7 +39,7 @@ Logo of the timeline entry.
 #|
 || **Field** | **Description** ||
 || **code^*^**
-[`string`](../../../../data-types.md) | Logo code, for example `call`. A list of available codes can be obtained using the [crm.timeline.logo.list](../../../logmessage/logo/crm-timeline-logo-list.md) method ||
+[`string`](../../../../../data-types.md) | Logo code, for example `call`. A list of available codes can be obtained using the [crm.timeline.logo.list](../../../logmessage/logo/crm-timeline-logo-list.md) method ||
 || **action**
 [`ActionDto`](./action.md) | Action to be taken when the logo is clicked ||
 |#

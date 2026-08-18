@@ -42,23 +42,23 @@ To obtain existing identifiers, use [catalog.catalog.list](../catalog/catalog-ca
 To obtain existing identifiers, use [catalog.section.list](./catalog-section-list.md) 
 ||
 || **name***
-[`string`](../data-types.md) | Name of the catalog section ||
+[`string`](../../data-types.md) | Name of the catalog section ||
 || **xmlId**
-[`string`](../data-types.md) | External identifier.
+[`string`](../../data-types.md) | External identifier.
 
 Can be used to synchronize the current catalog section with a similar position in an external system ||
 || **code**
-[`string`](../data-types.md) | Code of the catalog section. Must be unique ||
+[`string`](../../data-types.md) | Code of the catalog section. Must be unique ||
 || **sort**
-[`integer`](../data-types.md) | Sorting ||
+[`integer`](../../data-types.md) | Sorting ||
 || **active**
-[`string`](../data-types.md) | Indicator of the catalog section's activity:
+[`string`](../../data-types.md) | Indicator of the catalog section's activity:
 - `Y` — active
 - `N` — inactive ||
 || **description**
-[`string`](../data-types.md) | Description of the catalog section ||
+[`string`](../../data-types.md) | Description of the catalog section ||
 || **descriptionType**
-[`string`](../data-types.md) | Type of description. Available types: `text`, `html` ||
+[`string`](../../data-types.md) | Type of description. Available types: `text`, `html` ||
 |#
 
 ## Code Examples

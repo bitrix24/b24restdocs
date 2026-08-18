@@ -397,7 +397,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array[]`](../../data-types.md) | Array of companies matching the filter. The format of the returned data depends on the `select` parameter ||
+[`object[]`](../../data-types.md) | Array of companies matching the filter. The format of the returned data depends on the `select` parameter ||
 || **total**
 [`integer`](../../data-types.md) | Total number of companies found ||
 || **time**

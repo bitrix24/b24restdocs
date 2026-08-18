@@ -229,7 +229,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` on success ||
+[`boolean`](../../../data-types.md) | Root element of the response, contains `true` on success ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#

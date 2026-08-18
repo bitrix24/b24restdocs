@@ -486,7 +486,7 @@ To learn more about the lead, you can use the method [crm.item.get](../universal
 || **ADDITIONAL_INFO**
 [`string`](../../data-types.md) | Additional information ||
 || **LOCATION_ID**
-[`location`](../../data-types.md) | Location. System field ||
+[`location`](../data-types.md) | Location. System field ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | External source ||
 || **ORIGIN_ID**

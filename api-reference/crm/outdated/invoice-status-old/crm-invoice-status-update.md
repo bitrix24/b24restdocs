@@ -32,7 +32,7 @@ Starting from version 19.0.0, it is recommended to use the method [crm.status.up
 || **id***
 [`integer`](../../../data-types.md) | Identifier of the invoice status ||
 || **fields***
-[`array`](../../data-types.md) | Set of fields — an array in the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values returned by the method [crm.invoice.status.fields](./crm-invoice-status-fields.md). 
+[`array`](../../../data-types.md) | Set of fields — an array in the form `array("field_to_update"=>"value"[, ...])`, where "field_to_update" can take values returned by the method [crm.invoice.status.fields](./crm-invoice-status-fields.md). 
 
 {% note info %}
 

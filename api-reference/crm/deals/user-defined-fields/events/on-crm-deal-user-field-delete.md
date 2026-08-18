@@ -49,23 +49,23 @@ Data is transmitted as a POST request {.b24-info}
 || **parameter**
 `type` | **Description** ||
 || **event**
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../../data-types.md) | Symbolic code of the event.
 
 In this case — `ONCRMDEALUSERFIELDDELETE` ||
 || **event_handler_id**
-[`integer`](../../../data-types.md) | Identifier of the event handler ||
+[`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | Object containing information about the deleted custom field.
+[`object`](../../../../data-types.md) | Object containing information about the deleted custom field.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../data-types.md) | An object containing custom field properties.
+[`object`](../../../../data-types.md) | An object containing custom field properties.
 
 The structure is described [below](#fields) ||
 || **ts**
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -76,11 +76,11 @@ The structure is described [below](#auth) ||
 || **parameter**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the custom field ||
+[`integer`](../../../../data-types.md) | Identifier of the custom field ||
 || **ENTITY_ID**
-[`string`](../../../data-types.md) | Symbolic identifier of the object for which the field was deleted. In this case — `CRM_DEAL` ||
+[`string`](../../../../data-types.md) | Symbolic identifier of the object for which the field was deleted. In this case — `CRM_DEAL` ||
 || **FIELD_NAME**
-[`string`](../../../data-types.md) | Name of the deleted custom field ||
+[`string`](../../../../data-types.md) | Name of the deleted custom field ||
 |#
 
 ### Parameter auth {#auth}

@@ -24,7 +24,7 @@ This method updates the stage by `id`.
 || **Name**
 `type` | **Description** ||
 || **id** 
-[`number`](../../../data-types.md) | Identifier of the stage ||
+[`integer`](../../../data-types.md) | Identifier of the stage ||
 || **fields** 
 [`array`](../../../data-types.md) | Object with [fields](#fields) of the stage ||
 |#

@@ -30,7 +30,7 @@ The method `tasks.task.file.attach` adds files from Drive to a task. The user mu
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add-rest-v3.md) or by using the old method of [getting the task list](./tasks-task-list-rest-v3.md) ||
 || **fileIds***
-[`array<integer>`](../data-types.md) | An array of file identifiers from Drive.
+[`integer[]`](../data-types.md) | An array of file identifiers from Drive.
 
 File identifiers can be obtained in two ways.
 

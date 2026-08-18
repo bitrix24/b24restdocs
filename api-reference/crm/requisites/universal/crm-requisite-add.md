@@ -108,7 +108,7 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_FAX**
 [`string`](../../../data-types.md) | Fax ||
 || **RQ_IDENT_TYPE**
-[`crm_status`](../../../data-types.md) | Method of identification ||
+[`crm_status`](../../data-types.md) | Method of identification ||
 || **RQ_IDENT_DOC**
 [`string`](../../../data-types.md) | Type of document ||
 || **RQ_IDENT_DOC_SER**

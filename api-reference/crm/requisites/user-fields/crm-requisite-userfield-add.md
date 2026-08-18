@@ -47,7 +47,7 @@ The system limitation for the field name is 20 characters. The custom field name
 
 The purpose of the field may change by the final developer ||
 || **SORT**
-[`int`](../../../data-types.md) | Sorting ||
+[`integer`](../../../data-types.md) | Sorting ||
 || **MULTIPLE**
 [`char`](../../../data-types.md) | Multiplicity indicator. Possible values:
 - `Y` — yes
@@ -103,7 +103,7 @@ Defaults to `N`
 || **HELP_MESSAGE**
 [`string`](../../../data-types.md) | Help ||
 || **LIST**
-[`uf_enum_element`](../../../data-types.md) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
+[`uf_enum_element`](../../../data-types.md#uf_enum_element) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
 || **SETTINGS**
 [`object`](../../../data-types.md) | Additional settings (dependent on type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
 |#

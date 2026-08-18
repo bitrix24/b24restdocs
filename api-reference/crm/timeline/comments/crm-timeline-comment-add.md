@@ -69,7 +69,7 @@ The value can be obtained using the method [`crm.item.list`](../../universal/crm
 || **COMMENT***
 [`string`](../../../data-types.md) | The text of the comment ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to the [rules](../../../files/how-to-upload-files.md) ||
+[`attached_diskfile`](../../data-types.md#attached_diskfile) | List of files. An array of values described according to the [rules](../../../files/how-to-upload-files.md) ||
 |#
 
 ## Code Examples

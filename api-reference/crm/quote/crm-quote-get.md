@@ -26,7 +26,7 @@ The method `crm.quote.get` returns an estimate by its ID.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../data-types.md) | The ID of the estimate.
+[`integer`](../../data-types.md) | The ID of the estimate.
 
 The ID can be obtained using the methods [crm.quote.list](./crm-quote-list.md) and [crm.quote.add](./crm-quote-add.md) ||
 |#
@@ -326,11 +326,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response. Contains fields of the estimate.
+[`object`](../../data-types.md) | The root element of the response. Contains fields of the estimate.
 
 The set and types of fields can be obtained using the method [crm.quote.fields](./crm-quote-fields.md) ||
 || **time**
-[`time`](../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

@@ -28,7 +28,7 @@ This method implements the [list method](../../../settings/how-to-call-rest-api/
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../data-types.md) | A list of fields to return in the response.
+[`string[]`](../../data-types.md) | A list of fields to return in the response.
 
 You can use masks for selection:
 - `'*'` — to select all standard fields (excluding custom and multiple fields),
@@ -38,7 +38,7 @@ A list of available fields for selection can be obtained using the [crm.quote.fi
 
 By default, all standard fields and custom fields are returned (`'*'` + `'UF_*'`) ||
 || **filter**
-[`object`](../data-types.md) | An object in the format:
+[`object`](../../data-types.md) | An object in the format:
 
 ```json
 {
@@ -76,7 +76,7 @@ For `LIKE`:
 
 A list of available fields for filtering can be obtained using the [crm.quote.fields](./crm-quote-fields.md) method ||
 || **order**
-[`object`](../data-types.md) | An object in the format:
+[`object`](../../data-types.md) | An object in the format:
 
 ```json
 {
@@ -95,7 +95,7 @@ A list of available fields for sorting can be obtained using the [crm.quote.fiel
 
 When sorting by `STATUS_ID`, the internal field `STATUS_SORT` is used ||
 || **start**
-[`integer`](../data-types.md) | Pagination parameter.
+[`integer`](../../data-types.md) | Pagination parameter.
 
 Page size — `50` records.
 
@@ -411,15 +411,15 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object[]`](../data-types.md) | An array of estimates. The composition of fields depends on the `select` parameter ||
+[`object[]`](../../data-types.md) | An array of estimates. The composition of fields depends on the `select` parameter ||
 || **total**
-[`integer`](../data-types.md) | The total number of records found ||
+[`integer`](../../data-types.md) | The total number of records found ||
 || **next**
-[`integer`](../data-types.md) | The value for the `start` parameter in the next request.
+[`integer`](../../data-types.md) | The value for the `start` parameter in the next request.
 
 The `next` parameter is returned if the number of items in the selection exceeds `50` ||
 || **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

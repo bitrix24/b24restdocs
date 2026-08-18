@@ -49,7 +49,7 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
 
 ||
 || **ownerTypeId**
-[`integer`](../../data-types.md) | [Integer identifier of the CRM object type](../../data-types.md#object_type) to which the comment is linked (e.g., `2` for a deal) ||
+[`integer`](../../../data-types.md) | [Integer identifier of the CRM object type](../../data-types.md#object_type) to which the comment is linked (e.g., `2` for a deal) ||
 || **ownerId**
 [`integer`](../../../data-types.md) | Integer identifier of the CRM object to which the comment is attached (e.g., `1`). You can obtain a list of identifiers using the [`crm.timeline.bindings.list`](../bindings/crm-timeline-bindings-list.md) method (field `ENTITY_ID`) ||
 |#
@@ -63,7 +63,7 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
 || **COMMENT**
 [`string`](../../../data-types.md) | The text of the comment ||
 || **FILES**
-[`attached_diskfile`](../../../data-types.md) | List of files. An array of values described according to the [rules](../../../files/how-to-update-files.md) ||
+[`attached_diskfile`](../../data-types.md#attached_diskfile) | List of files. An array of values described according to the [rules](../../../files/how-to-update-files.md) ||
 |#
 
 ## Code Examples

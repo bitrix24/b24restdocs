@@ -50,17 +50,17 @@ Data is transmitted as a POST request {.b24-info}
 || **parameter**
 `type` | **Description** ||
 || **event***
-[`string`](../../../data-types.md) | Symbolic code of the event.
+[`string`](../../../../data-types.md) | Symbolic code of the event.
 
 In this case — `onCrmTimelineCommentUpdate` ||
 || **data***
-[`object`](../../../data-types.md) | An object containing the data of the comment case being updated.
+[`object`](../../../../data-types.md) | An object containing the data of the comment case being updated.
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
+[`timestamp`](../../../../data-types.md) | Date and time of the event sent from the [event queue](../../../../events/index.md) ||
 || **auth***
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -71,7 +71,7 @@ The structure is described [below](#auth) ||
 || **parameter**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../../data-types.md) | Identifier of the updated comment ||
+[`integer`](../../../../data-types.md) | Identifier of the updated comment ||
 |#
 
 ### Parameter auth {#auth}

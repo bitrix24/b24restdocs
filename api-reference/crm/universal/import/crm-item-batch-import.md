@@ -28,13 +28,13 @@ A maximum of 20 entities can be imported in a single request.
 || **Name**
 `type`          | **Description** ||
 || **entityTypeId***
-[`integer`](../../data-types.md) | Identifier of the [system](../../data-types.md#object_type) or [custom type](../user-defined-object-types/index.md) for which the entity needs to be created.
+[`integer`](../../../data-types.md) | Identifier of the [system](../../data-types.md#object_type) or [custom type](../user-defined-object-types/index.md) for which the entity needs to be created.
 
 Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are provided in the [CRM object types reference](../../data-types.md#object_type). The identifier for the SPA can be obtained using the [crm.type.list](../user-defined-object-types/crm-type-list.md) method. ||
 || **data***
-[`array`](../../data-types.md) | An array of field values for the entities. It can be viewed as an array where each element contains a set of `fields`, as described in the [crm.item.import](crm-item-import.md) method. ||
+[`array`](../../../data-types.md) | An array of field values for the entities. It can be viewed as an array where each element contains a set of `fields`, as described in the [crm.item.import](crm-item-import.md) method. ||
 || **useOriginalUfNames**
-[`boolean`](../../data-types.md) | Parameter to control the format of custom field names in the request and response.   
+[`boolean`](../../../data-types.md) | Parameter to control the format of custom field names in the request and response.   
 Possible values:
 
 - `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
@@ -826,19 +826,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response.
+[`object`](../../../data-types.md) | The root element of the response.
 
 Contains a single key `item` ||
 || **items**
-[`array`](../../data-types.md) | An array containing `item` objects or errors ||
+[`array`](../../../data-types.md) | An array containing `item` objects or errors ||
 || **item**
-[`object`](../../data-types.md) | Information about the created entity.
+[`object`](../../../data-types.md) | Information about the created entity.
 
 Contains a single key `id` ||
 || **id**
-[`int`](../../data-types.md) | Identifier of the created entity ||
+[`integer`](../../../data-types.md) | Identifier of the created entity ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 {% note info " " %}

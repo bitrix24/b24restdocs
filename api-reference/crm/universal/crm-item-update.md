@@ -92,7 +92,7 @@ Default is `N` ||
   || **honorific**
   [`crm_status`](../data-types.md) | String identifier of the lead request (e.g., `'HNR_DE_1' = 'Mr.'`).
 
-  A list of available requests can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "HONOFIRIC" }` filter ||
+  A list of available requests can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "HONOFIRIC" }` filter ||
   || **name**
   [`string`](../../data-types.md) | First Name ||
   || **secondName**
@@ -108,7 +108,7 @@ Default is `N` ||
   
   For example, `'CALL' = 'Call'`.
   
-  A list of available sources can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter  ||
+  A list of available sources can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter  ||
   || **sourceDescription**
   [`text`](../../data-types.md) | Additional information about the source ||
   || **stageId**
@@ -116,7 +116,7 @@ Default is `N` ||
   
   For example, `'NEW' = 'Unprocessed'`.
 
-  A list of available stages can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "STATUS" }` filter ||
+  A list of available stages can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "STATUS" }` filter ||
   || **statusDescription**
   [`text`](../../data-types.md) | Additional information about the stage ||
   || **post**
@@ -189,7 +189,7 @@ Default is `N` ||
   Each such field has a `parentId + {parentEntityTypeId}` code 
   ||
   || **fm**
-  [`multifield[]`](../data-types.md) | Array of multipools.
+  [`crm_multifield[]`](../data-types.md#crm_multifield) | Array of multipools.
 
   You can read more about multipools in the [{#T}](../data-types.md#crm_multifield) section.
 
@@ -234,7 +234,7 @@ Default is `N` ||
 
   For example, for a deal: `'SALE' = 'Sale'`
 
-  A list of available entity types can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "DEAL_TYPE" }` filter ||
+  A list of available entity types can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "DEAL_TYPE" }` filter ||
   || **categoryId**
   [`integer`](../../data-types.md) | Identifier of the deal [direction](./category/index.md) (pipeline) ||
   || **stageId**
@@ -242,7 +242,7 @@ Default is `N` ||
   
   For example, `'NEW' = 'Unprocessed'`.
 
-  A list of available stages can be obtained using [`crm.status.list`](../data-types.md) by applying the following filter:
+  A list of available stages can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the following filter:
     - If the deal is in the general pipeline (direction) — `{ ENTITY_ID: "DEAL_STAGE" }`
     - If the deal is not in the general pipeline (direction) — `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }`, where
       `categoryId` is the identifier of the deal pipeline ([direction](./category/index.md))
@@ -300,7 +300,7 @@ Default is `N` ||
   
   For example, `'CALL' = 'Call'`.
   
-  A list of available sources can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter ||
+  A list of available sources can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter ||
   || **sourceDescription**
   [`text`](../../data-types.md) | Additional information about the source ||
   || **leadId**
@@ -314,7 +314,7 @@ Default is `N` ||
   || **observers**
   [`user[]`](../../data-types.md) | Array of user identifiers who will be Observers in the item ||
   || **locationId**
-  [`location`](../../data-types.md) | Location identifier. Service field  ||
+  [`location`](../data-types.md) | Location identifier. Service field  ||
   || **utmSource**
   [`string`](../../data-types.md) | Advertising system. Google Ads, Facebook Ads, etc. ||
   || **utmMedium**
@@ -353,7 +353,7 @@ Default is `N` ||
   
   For example, `'HNR_DE_1' = 'Mr.'`.
 
-  A list of available requests can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "HONOFIRIC" }` filter ||
+  A list of available requests can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "HONOFIRIC" }` filter ||
   || **name**
   [`string`](../../data-types.md) | First Name ||
   || **secondName**
@@ -369,13 +369,13 @@ Default is `N` ||
   
   For example, for a deal: `'SALE' = 'Sale'`.
   
-  A list of available entity types can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "CONTACT_TYPE" }` filter  ||
+  A list of available entity types can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "CONTACT_TYPE" }` filter  ||
   || **sourceId**
   [`crm_status`](../data-types.md) | String identifier of the source.
   
   For example, `'CALL' = 'Call'`.
   
-  A list of available sources can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter  ||
+  A list of available sources can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter  ||
   || **sourceDescription**
   [`text`](../../data-types.md) | Additional information about the source ||
   || **post**
@@ -434,7 +434,7 @@ Default is `N` ||
   Each such field has a `parentId + {parentEntityTypeId}` code
   ||
   || **fm**
-  [`multifield[]`](../data-types.md) | Array of multi-fields (phones, e-mail, messengers).
+  [`crm_multifield[]`](../data-types.md#crm_multifield) | Array of multi-fields (phones, e-mail, messengers).
 
   Structure of each item:
   - `typeId` — multi-field type: `PHONE`, `EMAIL`, `WEB`, `IM`
@@ -488,7 +488,7 @@ Default is `N` ||
   
   For example, for a deal: `'SALE' = 'Sale'`.
   
-  A list of available entity types can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "COMPANY_TYPE" }` filter ||
+  A list of available entity types can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "COMPANY_TYPE" }` filter ||
   || **logo**
   [`file`](../../data-types.md) | Logo ||
   || **bankingDetails**
@@ -498,13 +498,13 @@ Default is `N` ||
   
   For example `'IT' = 'Information Technology'`.
   
-  A list of available industry types can be obtained using the [`crm.status.list`](../data-types.md) method by applying the `{ ENTITY_ID: "INDUSTRY"}` filter ||
+  A list of available industry types can be obtained using the [`crm.status.list`](../status/crm-status-list.md) method by applying the `{ ENTITY_ID: "INDUSTRY"}` filter ||
   || **employees**
   [`crm_status`](../data-types.md) | String identifier of the employee count type.
   
   The value is taken from the list of available values, for example `'EMPLOYEES_1' = 'less than 50'`.
 
-  A list of available employee count types can be obtained using the [`crm.status.list`](../data-types.md) method by applying the `{ ENTITY_ID: "EMPLOYEES" }` filter ||
+  A list of available employee count types can be obtained using the [`crm.status.list`](../status/crm-status-list.md) method by applying the `{ ENTITY_ID: "EMPLOYEES" }` filter ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Item currency identifier ||
   || **revenue**
@@ -526,7 +526,7 @@ Default is `N` ||
 
   A list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method via `entityTypeId = 3`||
   || **leadId**
-  [`crm_lead`](../../data-types.md) | Lead identifier on the basis of which the item is created||
+  [`crm_lead`](../data-types.md) | Lead identifier on the basis of which the item is created||
   || **originatorId**
   [`string`](../../data-types.md) | External source ||
   || **originId**
@@ -560,7 +560,7 @@ Default is `N` ||
   Each such field has a `parentId + {parentEntityTypeId}` code
   ||
   || **fm**
-  [`multifield[]`](../data-types.md) | Array of multi-fields (phones, e-mail, messengers).
+  [`crm_multifield[]`](../data-types.md#crm_multifield) | Array of multi-fields (phones, e-mail, messengers).
 
   Structure of each item:
   - `typeId` — multi-field type: `PHONE`, `EMAIL`, `WEB`, `IM`
@@ -650,7 +650,7 @@ Default is `N` ||
 
   A list of contacts can be obtained using the [`crm.item.list`](crm-item-list.md) method by `entityTypeId = 3` ||
   || **locationId**
-  [`location`](../../data-types.md) | Location identifier. Service field ||
+  [`location`](../data-types.md) | Location identifier. Service field ||
   || **currencyId**
   [`crm_currency`](../data-types.md) | Item currency identifier ||
   || **isManualOpportunity**
@@ -668,7 +668,7 @@ Default is `N` ||
   
   For example `'DRAFT' = 'New'`.
 
-  A list of available stages can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "QUOTE_STATUS" }` filter ||
+  A list of available stages can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "QUOTE_STATUS" }` filter ||
   || **begindate**
   [`date`](../../data-types.md) | Item start date ||
   || **closedate**
@@ -749,14 +749,14 @@ Default is `N` ||
   
   For example `'DT31_13:N' = 'New'`.
 
-  A list of available stages can be obtained using [`crm.status.list`](../data-types.md) by applying the filter: `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
+  A list of available stages can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the filter: `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
   `categoryId` — the default invoice pipeline identifier. It can be found using [`crm.category.list`](category/crm-category-list.md) via `entityTypeId = 31` ||
   || **sourceId**
   [`crm_status`](../data-types.md) | String identifier of the source.
   
   For example `'CALL' = 'Call'`.
   
-  A list of available sources can be obtained using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter ||
+  A list of available sources can be obtained using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter ||
   || **sourceDescription**
   [`text`](../../data-types.md) | Additional information about the source ||
   || **currencyId**
@@ -776,7 +776,7 @@ Default is `N` ||
   || **comments**
   [`text`](../../data-types.md) | Comment ||
   || **locationId**
-  [`location`](../../data-types.md) | Location identifier. Service field ||
+  [`location`](../data-types.md) | Location identifier. Service field ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md).
 
@@ -854,7 +854,7 @@ Default is `N` ||
   
   For example, `'DT1220_30:NEW' = 'Start'`.
 
-  The list of available stages can be found using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "DYNAMIC_{entityTypeId}_STAGE_{categoryId}" }` filter, where:
+  The list of available stages can be found using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "DYNAMIC_{entityTypeId}_STAGE_{categoryId}" }` filter, where:
   - `entityTypeId` — SPA type identifier
   - `categoryId` — SPA item pipeline (direction) identifier
 
@@ -864,7 +864,7 @@ Default is `N` ||
   || **sourceId**
   [`crm_status`](../data-types.md) | String identifier of the source. (for example `'CALL' = 'Call'`).
   
-  The list of available sources can be found using [`crm.status.list`](../data-types.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter.
+  The list of available sources can be found using [`crm.status.list`](../status/crm-status-list.md) by applying the `{ ENTITY_ID: "SOURCE" }` filter.
 
   Available only if the `isSourceEnabled` setting is enabled for the corresponding SPA  ||
   || **sourceDescription**

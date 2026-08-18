@@ -337,7 +337,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`int`](../../../data-types.md) | Identifier of the custom field ||
+[`integer`](../../../data-types.md) | Identifier of the custom field ||
 || **ENTITY_ID**
 [`string`](../../../data-types.md) | The identifier of the entity to which the custom field belongs. For requisites, this is always `CRM_REQUISITE` ||
 || **FIELD_NAME**
@@ -349,7 +349,7 @@ HTTP status: **200**
 
 The purpose of the field may change by the final developer ||
 || **SORT**
-[`int`](../../../data-types.md) | Sorting ||
+[`integer`](../../../data-types.md) | Sorting ||
 || **MULTIPLE**
 [`char`](../../../data-types.md) | Indicator of multiplicity. Possible values:
 - `Y` — yes
@@ -393,7 +393,7 @@ The purpose of the field may change by the final developer ||
 || **HELP_MESSAGE**
 [`string`](../../../data-types.md) | Help ||
 || **LIST**
-[`uf_enum_element`](../../../data-types.md) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
+[`uf_enum_element`](../../../data-types.md#uf_enum_element) | List elements. For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-enumeration-fields.md) ||
 || **SETTINGS**
 [`object`](../../../data-types.md) | Additional settings (dependent on type). For detailed information, see the section [{#T}](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
 |#

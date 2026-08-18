@@ -140,7 +140,7 @@ The list of available sources can be found using the method [crm.status.list](..
 || **ADDITIONAL_INFO**
 [`string`](../../data-types.md) | Additional information ||
 || **LOCATION_ID**
-[`location`](../../data-types.md) | Client's location. System field ||
+[`location`](../data-types.md) | Client's location. System field ||
 || **ORIGINATOR_ID**
 [`string`](../../data-types.md) | Identifier of the data source.
 

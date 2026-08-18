@@ -22,7 +22,7 @@ The method `telephony.externalCall.show` displays the call card to a user or a l
 || **CALL_ID***
 [`string`](../data-types.md) | Identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md) ||
 || **USER_ID**
-[`integer/array`](../data-types.md) | Identifier of the user or an array of user identifiers.
+[`integer \| integer[]`](../data-types.md#compound-types) | Identifier of the user or an array of user identifiers.
 
 The identifier can be obtained using the method [user.get](../user/user-get.md).
 

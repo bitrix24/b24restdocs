@@ -43,9 +43,9 @@ The `userfieldconfig.update` method updates the settings of an existing user fie
 || **isSearchable** 
 [`boolean`](../../../data-types.md) | Field participation in search flag (`Y`/`N`) ||
 || **editFormLabel** 
-[`lang_map`](../../../data-types.md) | Labels in the edit form by languages ||
+[`lang_map`](../../data-types.md) | Labels in the edit form by languages ||
 || **helpMessage** 
-[`lang_map`](../../../data-types.md) | Help text by languages ||
+[`lang_map`](../../data-types.md) | Help text by languages ||
 || **settings** 
 [`object`](../../../data-types.md) | Additional field settings. The set of keys depends on the field type [(detailed description)](#settings) ||
 || **enum** 
@@ -694,15 +694,15 @@ The set of keys depends on `userTypeId` ||
 || **languageId** 
 [`object`](../../../data-types.md) | Languages for which field labels are set ||
 || **editFormLabel** 
-[`lang_map`](../../../data-types.md) | Labels in the edit form ||
+[`lang_map`](../../data-types.md) | Labels in the edit form ||
 || **listColumnLabel** 
-[`lang_map`](../../../data-types.md) | Column labels in the list ||
+[`lang_map`](../../data-types.md) | Column labels in the list ||
 || **listFilterLabel** 
-[`lang_map`](../../../data-types.md) | Filter labels ||
+[`lang_map`](../../data-types.md) | Filter labels ||
 || **errorMessage** 
-[`lang_map`](../../../data-types.md) | Error message text ||
+[`lang_map`](../../data-types.md) | Error message text ||
 || **helpMessage** 
-[`lang_map`](../../../data-types.md) | Help text for the field ||
+[`lang_map`](../../data-types.md) | Help text for the field ||
 || **enum** 
 [`object[]`](../../../data-types.md) | Value options.
 

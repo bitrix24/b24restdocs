@@ -69,7 +69,7 @@ Default value is `b2c`
 || **DESCRIPTION**
 [`string`](../data-types.md) | Description of the parameter ||
 || **SORT**
-[`int`](../data-types.md) | Sorting order ||
+[`integer`](../data-types.md) | Sorting order ||
 || **GROUP**
 [`string`](../data-types.md) | Code of the group to which the parameter belongs ||
 || **DEFAULT**

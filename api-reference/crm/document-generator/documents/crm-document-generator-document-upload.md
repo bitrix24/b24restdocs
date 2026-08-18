@@ -20,7 +20,7 @@ The method `crm.documentgenerator.document.upload` uploads a prepared document a
 || **Name**
 `type` | **Description** ||
 || **fields**^*^
-[`object`](../../data-types.md) | Object with document upload parameters [(more details)](#fields) ||
+[`object`](../../../data-types.md) | Object with document upload parameters [(more details)](#fields) ||
 |#
 
 ### Parameter fields {#fields}
@@ -31,7 +31,7 @@ The method `crm.documentgenerator.document.upload` uploads a prepared document a
 || **Name**
 `type` | **Description** ||
 || **entityTypeId**^*^
-[`integer`](../../data-types.md) | Identifier of the CRM object type.
+[`integer`](../../../data-types.md) | Identifier of the CRM object type.
 
 Typical values:
 - `1` — lead
@@ -42,23 +42,23 @@ Typical values:
 
 For SPAs, their `entityTypeId` is passed, for example, `177` ||
 || **entityId**^*^
-[`integer`](../../data-types.md) | Identifier of the CRM object to which the document is attached ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object to which the document is attached ||
 || **fileContent**^*^
-[`string`](../../data-types.md) | Content of the DOCX file in base64 format.
+[`string`](../../../data-types.md) | Content of the DOCX file in base64 format.
 
 More details: [How to upload files](../../../files/how-to-upload-files.md) ||
 || **region**^*^
-[`string`](../../data-types.md) | Template region code, for example, `ru` ||
+[`string`](../../../data-types.md) | Template region code, for example, `ru` ||
 || **title**^*^
-[`string`](../../data-types.md) | Document name ||
+[`string`](../../../data-types.md) | Document name ||
 || **number**^*^
-[`string`](../../data-types.md) | Document number ||
+[`string`](../../../data-types.md) | Document number ||
 || **pdfContent**
-[`string`](../../data-types.md) | Content of the PDF file in base64 format.
+[`string`](../../../data-types.md) | Content of the PDF file in base64 format.
 
 More details: [How to upload files](../../../files/how-to-upload-files.md) ||
 || **imageContent**
-[`string`](../../data-types.md) | Content of the image in base64 format.
+[`string`](../../../data-types.md) | Content of the image in base64 format.
 
 More details: [How to upload files](../../../files/how-to-upload-files.md) ||
 |#
@@ -449,9 +449,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root object of the response. Contains the structure [`result`](#result) ||
+[`object`](../../../data-types.md) | Root object of the response. Contains the structure [`result`](#result) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Type {#result}
@@ -460,7 +460,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **document**
-[`object`](../../data-types.md) | Data of the uploaded document. Structure described in type [`document`](#document) ||
+[`object`](../../../data-types.md) | Data of the uploaded document. Structure described in type [`document`](#document) ||
 |#
 
 #### Document Type {#document}
@@ -469,65 +469,65 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Document identifier ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Document identifier ||
 || **title**
-[`string`](../../data-types.md) | Document name ||
+[`string`](../../../data-types.md) | Document name ||
 || **number**
-[`string`](../../data-types.md) | Document number ||
+[`string`](../../../data-types.md) | Document number ||
 || **createTime**
-[`datetime`](../../data-types.md) | Create date ||
+[`datetime`](../../../data-types.md) | Create date ||
 || **updateTime**
-[`datetime`](../../data-types.md) | Update date ||
+[`datetime`](../../../data-types.md) | Update date ||
 || **createdBy**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the user who created the document ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the user who created the document ||
 || **updatedBy**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) \| [`null`](../../data-types.md) | Identifier of the user who updated the document ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Identifier of the user who updated the document ||
 || **changeStampsEnabled**
-[`boolean`](../../data-types.md) | Can the stamp and signature inclusion be changed ||
+[`boolean`](../../../data-types.md) | Can the stamp and signature inclusion be changed ||
 || **changeStampsDisabledReason**
-[`string`](../../data-types.md) | Reason why the stamp and signature inclusion cannot be changed ||
+[`string`](../../../data-types.md) | Reason why the stamp and signature inclusion cannot be changed ||
 || **changeQrCodeEnabled**
-[`boolean`](../../data-types.md) | Can the QR code be enabled or disabled ||
+[`boolean`](../../../data-types.md) | Can the QR code be enabled or disabled ||
 || **qrCodeEnabled**
-[`boolean`](../../data-types.md) | Current state of the QR code ||
+[`boolean`](../../../data-types.md) | Current state of the QR code ||
 || **changeQrCodeDisabledReason**
-[`string`](../../data-types.md) | Reason why the QR code cannot be changed ||
+[`string`](../../../data-types.md) | Reason why the QR code cannot be changed ||
 || **products**
-[`object`](../../data-types.md) | Summary information about the document's products (`currencyId`, `totalSum`, `totalRows`) ||
+[`object`](../../../data-types.md) | Summary information about the document's products (`currencyId`, `totalSum`, `totalRows`) ||
 || **stampsEnabled**
-[`boolean`](../../data-types.md) | Stamp and signature inclusion flag ||
+[`boolean`](../../../data-types.md) | Stamp and signature inclusion flag ||
 || **downloadUrl**
-[`string`](../../data-types.md) | Link to download the document ||
+[`string`](../../../data-types.md) | Link to download the document ||
 || **downloadUrlMachine**
-[`string`](../../data-types.md) | Link to download the document for machine access ||
+[`string`](../../../data-types.md) | Link to download the document for machine access ||
 || **publicUrl**
-[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Public link to the document ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Public link to the document ||
 || **isTransformationError**
-[`boolean`](../../data-types.md) | Flag indicating a document conversion error ||
+[`boolean`](../../../data-types.md) | Flag indicating a document conversion error ||
 || **transformationErrorMessage**
-[`string`](../../data-types.md) | Text of the conversion error if `isTransformationError = true` ||
+[`string`](../../../data-types.md) | Text of the conversion error if `isTransformationError = true` ||
 || **transformationErrorCode**
-[`string`](../../data-types.md) | Code of the conversion error if `isTransformationError = true` ||
+[`string`](../../../data-types.md) | Code of the conversion error if `isTransformationError = true` ||
 || **templateId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the template ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the template ||
 || **pullTag**
-[`string`](../../data-types.md) | Event tag for document transformation ||
+[`string`](../../../data-types.md) | Event tag for document transformation ||
 || **emailDiskFile**
-[`integer`](../../data-types.md) | Identifier of the file in Drive for sending via email ||
+[`integer`](../../../data-types.md) | Identifier of the file in Drive for sending via email ||
 || **entityTypeId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the CRM object type ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object type ||
 || **entityId**
-[`integer`](../../data-types.md) \| [`string`](../../data-types.md) | Identifier of the CRM object ||
+[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the CRM object ||
 || **values**
-[`object`](../../data-types.md) \| [`null`](../../data-types.md) | Field values of the document ||
+[`object`](../../../data-types.md) \| [`null`](../../../data-types.md) | Field values of the document ||
 || **imageUrl**
-[`string`](../../data-types.md) | Link to the document image, if already created ||
+[`string`](../../../data-types.md) | Link to the document image, if already created ||
 || **pdfUrl**
-[`string`](../../data-types.md) | Link to the PDF file of the document, if already created ||
+[`string`](../../../data-types.md) | Link to the PDF file of the document, if already created ||
 || **imageUrlMachine**
-[`string`](../../data-types.md) | Link to the document image for machine access ||
+[`string`](../../../data-types.md) | Link to the document image for machine access ||
 || **pdfUrlMachine**
-[`string`](../../data-types.md) | Link to the PDF document for machine access ||
+[`string`](../../../data-types.md) | Link to the PDF document for machine access ||
 |#
 
 ## Error Handling

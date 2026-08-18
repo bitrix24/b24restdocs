@@ -26,7 +26,7 @@ The method `crm.productsection.get` [returns the product section](./crm-product-
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../data-types.md) | Product section ID ||
+[`integer`](../../../data-types.md) | Product section ID ||
 |#
 
 ## Code Examples

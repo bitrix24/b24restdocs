@@ -43,13 +43,13 @@ No more than two tags are allowed.
 || **title^*^**
 [`textWithTranslation`](./field-types.md#textwithtranslation) | Tag text ||
 || **type^*^**
-[`string`](../../../../data-types.md) | Tag type, for example `warning`. Defines its appearance ||
+[`string`](../../../../../data-types.md) | Tag type, for example `warning`. Defines its appearance ||
 || **action**
 [`ActionDto`](./action.md) | Action upon clicking the tag ||
 || **scope**
-[`string`](../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
+[`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 || **hideIfReadonly**
-[`boolean`](../../../../data-types.md) | Flag. Hides the tag if the user does not have edit access (default is `false`) ||
+[`boolean`](../../../../../data-types.md) | Flag. Hides the tag if the user does not have edit access (default is `false`) ||
 |#
 
 Possible values for the **type** field:

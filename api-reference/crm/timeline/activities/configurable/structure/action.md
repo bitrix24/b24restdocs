@@ -19,9 +19,9 @@ If a relative link to standard Bitrix24 objects that support opening in a slider
 #|
 || **Field** | **Description** ||
 || **type^*^**
-[`const`](../../../../data-types.md) | Value `redirect` ||
+[`string`](../../../../../data-types.md) | Value `redirect` ||
 || **uri**
-[`string`](../../../../data-types.md) | Valid link URI, for example `https://ya.com` or `/crm/deal/details/1/` ||
+[`string`](../../../../../data-types.md) | Valid link URI, for example `https://ya.com` or `/crm/deal/details/1/` ||
 |#
 
 ### Example
@@ -50,13 +50,13 @@ Calling the action will generate the event **onCrmTimelineItemAction**. When the
 #|
 || **Field** | **Description** ||
 || **type^*^**
-[`const`](../../../../data-types.md) | Value `restEvent` ||
+[`string`](../../../../../data-types.md) | Value `restEvent` ||
 || **id^*^**
-[`string`](../../../../data-types.md) | Event identifier. Any value can be specified, for example `resetButtonClick` ||
+[`string`](../../../../../data-types.md) | Event identifier. Any value can be specified, for example `resetButtonClick` ||
 || **actionParams**
-[`array`](../../../../data-types.md) | Array of arbitrary format, the data from which will be passed to the event handler ||
+[`array`](../../../../../data-types.md) | Array of arbitrary format, the data from which will be passed to the event handler ||
 || **animationType**
-[`string`](../../../../data-types.md) | Animation that will be shown during event processing, for example `disable` ||
+[`string`](../../../../../data-types.md) | Animation that will be shown during event processing, for example `disable` ||
 |#
 
 In some cases, sending the event implies that the handler of this event should change the appearance of the record in the timeline. For example, adding new blocks or changing the set of buttons.
@@ -102,9 +102,9 @@ Calling the action will open the slider of the application that created the time
 #|
 || **Field** | **Description** ||
 || **type^*^**
-[`const`](../../../../data-types.md) | Value `openRestApp` ||
+[`string`](../../../../../data-types.md) | Value `openRestApp` ||
 || **actionParams**
-[`array`](../../../../data-types.md) | Array of arbitrary format, the data from which will be passed to the event handler ||
+[`array`](../../../../../data-types.md) | Array of arbitrary format, the data from which will be passed to the event handler ||
 || **sliderParams**
 [ActionSliderParamsDto](#actionsliderparamsdto) | Options with which the slider is opened ||
 |#
@@ -132,11 +132,11 @@ Calling the action will open the slider of the application that created the time
 #|
 || **Field** | **Description** | **Additional** ||
 || **width**
-[`int`](../../../../data-types.md) | Slider width, `px` | Cannot be used simultaneously with `leftBoundary` ||
+[`integer`](../../../../../data-types.md) | Slider width, `px` | Cannot be used simultaneously with `leftBoundary` ||
 || **leftBoundary**
-[`int`](../../../../data-types.md) | Full-width slider for the browser window with a left margin, `px` | Cannot be used simultaneously with `width` ||
+[`integer`](../../../../../data-types.md) | Full-width slider for the browser window with a left margin, `px` | Cannot be used simultaneously with `width` ||
 || **title**
-[`string`](../../../../data-types.md) | Browser window title text when opening the slider | ||
+[`string`](../../../../../data-types.md) | Browser window title text when opening the slider | ||
 |#
 
 ## Continue Learning

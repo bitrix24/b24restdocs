@@ -48,7 +48,7 @@ The method `biconnector.dataset.fields.update` updates the fields of an existing
 - `id` — Identifier of the field, can be obtained using the method [biconnector.dataset.get](./biconnector-dataset-get.md)
 - `visible` — visibility of the field ||
 || **delete**
-[`int[]`](../../data-types.md) | Object containing an array of field identifiers for deletion. Field identifiers can be obtained using the method [biconnector.dataset.get](./biconnector-dataset-get.md) ||
+[`integer[]`](../../data-types.md) | Object containing an array of field identifiers for deletion. Field identifiers can be obtained using the method [biconnector.dataset.get](./biconnector-dataset-get.md) ||
 |#
 
 ## Code Examples

@@ -31,15 +31,15 @@ The `department.get` method is designed to retrieve a list of departments.
 - `ASC` — ascending
 - `DESC` — descending ||
 || **ID**
-[`int`](../data-types.md) | Filter by department identifier ||
+[`integer`](../data-types.md) | Filter by department identifier ||
 || **NAME**
 [`string`](../data-types.md) | Filter by department name. The full name of the department should be specified ||
 || **SORT**
-[`int`](../data-types.md) | Filter by sorting field ||
+[`integer`](../data-types.md) | Filter by sorting field ||
 || **PARENT**
-[`int`](../data-types.md) | Filter by parent department identifier ||
+[`integer`](../data-types.md) | Filter by parent department identifier ||
 || **UF_HEAD**
-[`int`](../data-types.md) | Filter by department head identifier ||
+[`integer`](../data-types.md) | Filter by department head identifier ||
 || **START**
 [`integer`](../data-types.md) | This parameter is used for pagination control.
 
@@ -379,13 +379,13 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`int`](../data-types.md) | Department identifier ||
+[`integer`](../data-types.md) | Department identifier ||
 || **NAME**
 [`string`](../data-types.md) | Department name ||
 || **SORT**
-[`int`](../data-types.md) | Department sorting field ||
+[`integer`](../data-types.md) | Department sorting field ||
 || **PARENT**
-[`int`](../data-types.md) | Parent department identifier ||
+[`integer`](../data-types.md) | Parent department identifier ||
 |#
 
 ## Error Handling

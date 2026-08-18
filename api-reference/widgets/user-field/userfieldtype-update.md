@@ -24,7 +24,7 @@ The method `userfieldtype.update` modifies the settings of a user field type reg
 - a-z0-9
 - must be unique ||
 || **HANDLER***
-[`URL`](../../data-types.md) | Address of the user type handler | 
+[`string`](../../data-types.md) | Address of the user type handler | 
 - in the same domain as the main application address
 - must be unique ||
 || **TITLE***

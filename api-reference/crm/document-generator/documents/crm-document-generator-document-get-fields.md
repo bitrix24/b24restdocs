@@ -20,9 +20,9 @@ The method `crm.documentgenerator.document.getfields` returns a detail form of t
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../data-types.md) | Document identifier ||
+[`integer`](../../../data-types.md) | Document identifier ||
 || **values**
-[`object`](../../data-types.md) | Object format:
+[`object`](../../../data-types.md) | Object format:
 
 ```
 {
@@ -52,21 +52,21 @@ The composition of the keys in `values` depends on the template used to create t
 || **Name**
 `type` | **Description** ||
 || **DocumentNumber**
-[`string`](../../data-types.md) | Document number ||
+[`string`](../../../data-types.md) | Document number ||
 || **DocumentCreateTime**
-[`string`](../../data-types.md) | Generation date ||
+[`string`](../../../data-types.md) | Generation date ||
 || **DocumentTitle**
-[`string`](../../data-types.md) | Document name ||
+[`string`](../../../data-types.md) | Document name ||
 || **ClientPhone**
-[`string`](../../data-types.md) | Client phone ||
+[`string`](../../../data-types.md) | Client phone ||
 || **ClientEmail**
-[`string`](../../data-types.md) | Client email ||
+[`string`](../../../data-types.md) | Client email ||
 || **ProductsProductName**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Product name ||
+[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Product name ||
 || **ProductsProductQuantity**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Quantity ||
+[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Quantity ||
 || **TotalSum**
-[`string`](../../data-types.md) | Total amount ||
+[`string`](../../../data-types.md) | Total amount ||
 |#
 
 ## Code Examples
@@ -386,9 +386,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains the object [`result`](#result) ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the object [`result`](#result) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Type {#result}
@@ -397,7 +397,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **documentFields**
-[`object`](../../data-types.md) | Object of document fields, where the key is the field code and the value is the structure [`documentField`](#documentfield) ||
+[`object`](../../../data-types.md) | Object of document fields, where the key is the field code and the value is the structure [`documentField`](#documentfield) ||
 |#
 
 #### documentField Type {#documentfield}
@@ -406,25 +406,25 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **title**
-[`string`](../../data-types.md) | Field name ||
+[`string`](../../../data-types.md) | Field name ||
 || **value**
-[`string`](../../data-types.md) \| [`array`](../../data-types.md) \| [`null`](../../data-types.md) | Current field value ||
+[`string`](../../../data-types.md) \| [`array`](../../../data-types.md) \| [`null`](../../../data-types.md) | Current field value ||
 || **default**
-[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Default field value ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Default field value ||
 || **required**
-[`char`](../../data-types.md) | Field mandatory indicator: `Y` or `N` ||
+[`char`](../../../data-types.md) | Field mandatory indicator: `Y` or `N` ||
 || **type**
-[`string`](../../data-types.md) | Field type, e.g., `IMAGE` ||
+[`string`](../../../data-types.md) | Field type, e.g., `IMAGE` ||
 || **group**
-[`array`](../../data-types.md) | Groups to which the field belongs ||
+[`array`](../../../data-types.md) | Groups to which the field belongs ||
 || **chain**
-[`string`](../../data-types.md) \| [`array`](../../data-types.md) | Path of the field in the data provider, e.g., `this.SOURCE.MY_COMPANY.UF_LOGO` ||
+[`string`](../../../data-types.md) \| [`array`](../../../data-types.md) | Path of the field in the data provider, e.g., `this.SOURCE.MY_COMPANY.UF_LOGO` ||
 || **format**
-[`object`](../../data-types.md) | Field formatting parameters, e.g., `{"currencyId":"USD","withZeros":true}` ||
+[`object`](../../../data-types.md) | Field formatting parameters, e.g., `{"currencyId":"USD","withZeros":true}` ||
 || **options**
-[`object`](../../data-types.md) | Additional field parameters, e.g., `{"isArray":true}` ||
+[`object`](../../../data-types.md) | Additional field parameters, e.g., `{"isArray":true}` ||
 || **hideRow**
-[`char`](../../data-types.md) | Service indicator for hiding the row: `Y` or `N` ||
+[`char`](../../../data-types.md) | Service indicator for hiding the row: `Y` or `N` ||
 |#
 
 ## Error Handling

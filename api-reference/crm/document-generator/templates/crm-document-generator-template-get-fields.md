@@ -20,13 +20,13 @@ The method `crm.documentgenerator.template.getfields` returns a card of template
 || **Name**
 `type` | **Description** ||
 || **id**^*^
-[`integer`](../../data-types.md) | Identifier of the template ||
+[`integer`](../../../data-types.md) | Identifier of the template ||
 || **entityTypeId**^*^
-[`integer`](../../data-types.md) | Identifier of the CRM object type. Needed to select the data provider ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object type. Needed to select the data provider ||
 || **entityId**
-[`integer`](../../data-types.md) | Identifier of the CRM object whose data will be used to compute field values ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object whose data will be used to compute field values ||
 || **values**
-[`object`](../../data-types.md) | Object format:
+[`object`](../../../data-types.md) | Object format:
 
 ```
 {
@@ -57,65 +57,65 @@ The composition of the `values` keys is determined by the template, data provide
 || **Name**
 `type` | **Description** ||
 || **MyCompanyRequisiteRqCompanyName**
-[`string`](../../data-types.md) | Short name of the organization ||
+[`string`](../../../data-types.md) | Short name of the organization ||
 || **MyCompanyRequisiteRegisteredAddressText**
-[`string`](../../data-types.md) | Full address ||
+[`string`](../../../data-types.md) | Full address ||
 || **MyCompanyPhone**
-[`string`](../../data-types.md) | Phone ||
+[`string`](../../../data-types.md) | Phone ||
 || **MyCompanyEmail**
-[`string`](../../data-types.md) | E-mail ||
+[`string`](../../../data-types.md) | E-mail ||
 || **MyCompanyWeb**
-[`string`](../../data-types.md) | Website ||
+[`string`](../../../data-types.md) | Website ||
 || **MyCompanyUfLogo**
-[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Logo ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Logo ||
 || **RequisiteRqCompanyName**
-[`string`](../../data-types.md) | Short name of the organization ||
+[`string`](../../../data-types.md) | Short name of the organization ||
 || **RequisiteRegisteredAddressText**
-[`string`](../../data-types.md) | Full address ||
+[`string`](../../../data-types.md) | Full address ||
 || **ClientPhone**
-[`string`](../../data-types.md) | Phone ||
+[`string`](../../../data-types.md) | Phone ||
 || **ClientEmail**
-[`string`](../../data-types.md) | Email ||
+[`string`](../../../data-types.md) | Email ||
 || **ClientWeb**
-[`string`](../../data-types.md) | Website ||
+[`string`](../../../data-types.md) | Website ||
 || **DocumentNumber**
-[`string`](../../data-types.md) | Number ||
+[`string`](../../../data-types.md) | Number ||
 || **DocumentCreateTime**
-[`string`](../../data-types.md) | Generation date ||
+[`string`](../../../data-types.md) | Generation date ||
 || **ProductsIndex**
-[`string`](../../data-types.md) | Current number ||
+[`string`](../../../data-types.md) | Current number ||
 || **ProductsProductName**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Name ||
+[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Name ||
 || **ProductsProductQuantity**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Quantity ||
+[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Quantity ||
 || **ProductsProductMeasureName**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Units of measure ||
+[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Units of measure ||
 || **ProductsProductPriceRaw**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Original price ||
+[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Original price ||
 || **ProductsProductPriceRawSum**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Total original price ||
+[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Total original price ||
 || **TotalRaw**
-[`string`](../../data-types.md) | Total original prices ||
+[`string`](../../../data-types.md) | Total original prices ||
 || **TaxesTaxTitle**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Heading ||
+[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Heading ||
 || **TaxesTaxRate**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Rate ||
+[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Rate ||
 || **TaxesTaxValue**
-[`array`](../../data-types.md) \| [`string`](../../data-types.md) | Amount ||
+[`array`](../../../data-types.md) \| [`string`](../../../data-types.md) | Amount ||
 || **TotalSum**
-[`string`](../../data-types.md) | Total amount ||
+[`string`](../../../data-types.md) | Total amount ||
 || **MyCompanyAssignedName**
-[`string`](../../data-types.md) | First Name ||
+[`string`](../../../data-types.md) | First Name ||
 || **MyCompanyAssignedLastName**
-[`string`](../../data-types.md) | Last Name ||
+[`string`](../../../data-types.md) | Last Name ||
 || **MyCompanyAssignedPersonalPhone**
-[`string`](../../data-types.md) | Phone ||
+[`string`](../../../data-types.md) | Phone ||
 || **MyCompanyAssignedEmail**
-[`string`](../../data-types.md) | E-Mail ||
+[`string`](../../../data-types.md) | E-Mail ||
 || **DocumentTitle**
-[`string`](../../data-types.md) | Document name ||
+[`string`](../../../data-types.md) | Document name ||
 || **MY_COMPANY**
-[`array`](../../data-types.md) | My company ||
+[`array`](../../../data-types.md) | My company ||
 |#
 
 ## Code Examples
@@ -448,9 +448,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains the [`templateFields`](#templatefields) object ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the [`templateFields`](#templatefields) object ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Type {#result}
@@ -459,7 +459,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **templateFields**
-[`object`](../../data-types.md) | Object of template fields, where the key is the field code and the value is the [`templateField`](#templatefield) structure ||
+[`object`](../../../data-types.md) | Object of template fields, where the key is the field code and the value is the [`templateField`](#templatefield) structure ||
 |#
 
 #### templateField Type {#templatefield}
@@ -468,19 +468,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **title**
-[`string`](../../data-types.md) | Field name ||
+[`string`](../../../data-types.md) | Field name ||
 || **value**
-[`string`](../../data-types.md) \| [`array`](../../data-types.md) | Current field value ||
+[`string`](../../../data-types.md) \| [`array`](../../../data-types.md) | Current field value ||
 || **default**
-[`string`](../../data-types.md) | Default field value ||
+[`string`](../../../data-types.md) | Default field value ||
 || **required**
-[`char`](../../data-types.md) | Field mandatory indicator: `Y` or `N` ||
+[`char`](../../../data-types.md) | Field mandatory indicator: `Y` or `N` ||
 || **type**
-[`string`](../../data-types.md) | Field type, e.g., `IMAGE` ||
+[`string`](../../../data-types.md) | Field type, e.g., `IMAGE` ||
 || **group**
-[`array`](../../data-types.md) | Groups to which the field belongs ||
+[`array`](../../../data-types.md) | Groups to which the field belongs ||
 || **chain**
-[`string`](../../data-types.md) | Path of the field in the data provider, e.g., `this.SOURCE.MY_COMPANY.UF_LOGO` ||
+[`string`](../../../data-types.md) | Path of the field in the data provider, e.g., `this.SOURCE.MY_COMPANY.UF_LOGO` ||
 |#
 
 ## Error Handling

@@ -20,7 +20,7 @@ The `sale.order.delete` method is designed to delete an order and its related ob
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order.id`](../../data-types.md) | Order identifier ||
+[`sale_order.id`](../data-types.md) | Order identifier ||
 |#
 
 ## Code Examples

@@ -74,7 +74,7 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 
 #|
 || **Parameter**
-[`type`](../../data-types.md) | **Description** ||
+`type` | **Description** ||
 || **dialogId***
 [`string`](../../data-types.md) | Identifier of the chat in whose sidebar the widget is opened: `chatNNN` for a group chat, the user identifier for a private conversation. The chat can be retrieved by this identifier with the [im.dialog.get](../../chats/im-dialog-get.md) method. For a private conversation, the data of the interlocutor is returned by the [user.get](../../user/user-get.md) method ||
 || **URI***

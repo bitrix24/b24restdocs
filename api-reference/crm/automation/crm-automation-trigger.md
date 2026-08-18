@@ -30,7 +30,7 @@ You can use the method not only via the incoming webhook but also in the context
 || **Name**
 `type` | **Description** ||
 || **target***
-[`string`](../../data-types.md) | Target object for automation, specified in the form of [`TYPENAME_ID`](../../data-types.md#object_type) (for example, `LEAD_25`)
+[`string`](../../data-types.md) | Target object for automation, specified in the form of [`TYPENAME_ID`](../data-types.md#object_type) (for example, `LEAD_25`)
 ||
 || **code**
 [`string`](../../data-types.md) | Unique symbolic code of the trigger configured in Automation for a specific status/stage of the document. The `code` parameter can be obtained from the trigger settings ||

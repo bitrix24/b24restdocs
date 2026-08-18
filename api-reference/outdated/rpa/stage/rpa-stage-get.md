@@ -26,7 +26,7 @@ This method retrieves information about a stage by its `id`.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`number`](../../../data-types.md) | Identifier of the stage ||
+[`integer`](../../../data-types.md) | Identifier of the stage ||
 |#
 
 ## Response Handling

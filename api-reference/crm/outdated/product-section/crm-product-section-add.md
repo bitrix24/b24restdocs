@@ -26,7 +26,7 @@ The method `crm.productsection.add` creates a new product section.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`array`](../../data-types.md) | A set of fields — an array in the format `array("field"=>"value"[, ...])`, containing the values of the product section fields. 
+[`array`](../../../data-types.md) | A set of fields — an array in the format `array("field"=>"value"[, ...])`, containing the values of the product section fields. 
 
 {% note info %}
 

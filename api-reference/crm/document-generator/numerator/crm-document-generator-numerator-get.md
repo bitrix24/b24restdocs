@@ -20,7 +20,7 @@ The method `crm.documentgenerator.numerator.get` returns information about the n
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | The identifier of the numerator ||
+[`integer`](../../../data-types.md) | The identifier of the numerator ||
 |#
 
 ## Code Examples
@@ -299,9 +299,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response. Contains the [`numerator`](#numerator) object ||
+[`object`](../../../data-types.md) | The root element of the response. Contains the [`numerator`](#numerator) object ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Numerator Type {#numerator}
@@ -310,15 +310,15 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | The identifier of the numerator ||
+[`string`](../../../data-types.md) | The identifier of the numerator ||
 || **name**
-[`string`](../../data-types.md) | The name of the numerator ||
+[`string`](../../../data-types.md) | The name of the numerator ||
 || **template**
-[`string`](../../data-types.md) | The number template ||
+[`string`](../../../data-types.md) | The number template ||
 || **code**
-[`string`](../../data-types.md) | The symbolic code of the numerator. Can be `null` ||
+[`string`](../../../data-types.md) | The symbolic code of the numerator. Can be `null` ||
 || **settings**
-[`object`](../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
+[`object`](../../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
 |#
 
 #### Settings Type {#settings}
@@ -327,19 +327,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **start**
-[`integer`](../../data-types.md) | The initial value of the counter ||
+[`integer`](../../../data-types.md) | The initial value of the counter ||
 || **step**
-[`integer`](../../data-types.md) | The increment step of the counter ||
+[`integer`](../../../data-types.md) | The increment step of the counter ||
 || **length**
-[`integer`](../../data-types.md) | The minimum length of the number ||
+[`integer`](../../../data-types.md) | The minimum length of the number ||
 || **padString**
-[`string`](../../data-types.md) | The left padding character ||
+[`string`](../../../data-types.md) | The left padding character ||
 || **periodicBy**
-[`string`](../../data-types.md) | The reset period for the counter: `null`, `day`, `month`, or `year` ||
+[`string`](../../../data-types.md) | The reset period for the counter: `null`, `day`, `month`, or `year` ||
 || **timezone**
-[`string`](../../data-types.md) | The timezone identifier for periodic reset. Can be `null` ||
+[`string`](../../../data-types.md) | The timezone identifier for periodic reset. Can be `null` ||
 || **isDirectNumeration**
-[`boolean`](../../data-types.md) | Indicator of direct numbering ||
+[`boolean`](../../../data-types.md) | Indicator of direct numbering ||
 |#
 
 ## Error Handling
