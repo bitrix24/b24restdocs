@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: CRM administrator (permission "Allow to change settings")
 
-The method `sale.cashbox.check.apply` saves the result of printing a receipt that was printed on a REST cash register. The UUID of the receipt is saved when it is printed from the `PRINT_URL` response specified when adding the handler (see [example of implementing a simple cash register on REST API](../../../tutorials/sale/cashbox-add-example.md)).
+The method `sale.cashbox.check.apply` saves the result of printing a receipt that was printed on a REST cash register. The UUID of the receipt is saved when it is printed from the `PRINT_URL` response specified when adding the handler. For a scenario example, see the [How to Connect a Cash Register to Bitrix24](../../../tutorials/sale/cashbox-add-example.md) tutorial.
 
 ## Method Parameters
 

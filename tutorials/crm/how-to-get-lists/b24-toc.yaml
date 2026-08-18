@@ -7,8 +7,8 @@ items:
     href: search-by-phone-and-email.md  
   - name: How to Get Activity List from Deals  
     href: get-activity-list-by-deals.md  
-  - name: How to Get Stages with Semantics for CRM Entities  
-    href: how-to-get-stages-with-semantics.md  
+  - name: How to Retrieve a List of Stages with Semantics for CRM Entities
+    href: how-to-get-stages-with-semantics.md
   - name: How to Get Deal Pipelines with Stages and Semantics
     href: how-to-get-deal-funnels.md
   - name: How to Get Client Address from CRM  

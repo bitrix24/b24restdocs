@@ -52,4 +52,4 @@ Chatbots in Open Channels help automate communication with customers by:
 
 ## Continue Your Learning
 
-- [Example of Creating a Chatbot for Open Channels](../../../../tutorials/chat-bots/open-lines-bot.md)
+- [How to Create a Chatbot for Open Channels](../../../../tutorials/chat-bots/open-lines-bot.md)

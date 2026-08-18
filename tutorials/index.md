@@ -1,61 +1,67 @@
 # Tutorials: Ready-to-Use REST API Scenarios
 
-Tutorials are a practical guide for developers working with the Bitrix24 REST API. Tutorials help solve common tasks: creating or modifying items, and configuring integrations with external systems.
-
 {% note tip "" %}
 
 If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
+A tutorial walks through a single practical task: which methods to call, in what order, what data to pass between the calls, and how to verify the result. Tutorials are grouped by common developer tasks: create or update an object, retrieve a list, embed an application interface, and connect Bitrix24 to an external service.
+
+A tutorial does not replace the reference. The parameters, response, and errors of each method are described in the [REST API Reference](../api-reference/index.md).
+
+> Quick navigation: [all tutorial categories](#categories)
+
+## What You Need Before You Start
+
+- **Method call option.** Methods are called through an [inbound webhook](../first-steps/first-rest-api-call.md) if the integration runs within a single Bitrix24, or from an [application](../settings/app-installation/index.md) if the solution is installed on different Bitrix24 accounts. Some scenarios work only in an application — for example, an Open Channels connector and an SMS provider. Their methods require the application context and return an error when called through a webhook
+- **Scopes and permissions.** The beginning of a tutorial lists the scopes the application needs and the permissions of the user on whose behalf the methods are executed. Without the required scope, a method returns an error. The full list is on the [Available Scopes in Bitrix24](../api-reference/scopes/permissions.md) page
+- **Data for the examples.** Many scenarios create, update, and delete objects. Run the examples on a test Bitrix24 or on test objects. How to substitute your own values in the example code is described on the [How to Use Examples in the Documentation](../first-steps/how-to-use-examples.md) page
+
 ## How to Use Tutorials
 
-- As educational material for making your first requests. This is suitable for developers who are starting to work with the Bitrix24 REST API. Tutorials will help you understand how to form requests and process responses. For example, the [How to Attach a Task to a SPA](./tasks/how-to-connect-task-to-spa.md) tutorial.
-
-- As templates for real-world scenarios. Tutorials can be used as a foundation for your own solutions: adapt the examples to your needs, and add error handling logic and logging. For example, the [How to Implement a Simple Cash Register via REST API](./sale/cashbox-add-example.md) tutorial.
-
-- For quickly solving specific tasks. Tutorials help you find ready-to-use code examples. For example, the [How to Configure Rounding for a Custom Numeric Field](./crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md) tutorial.
+- **As educational material.** Tutorials show how to form requests and process responses. Start with a simple scenario, such as [How to Filter Items by Stage Name](./crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md) — it only reads data, so the objects in Bitrix24 remain unchanged
+- **As a template for your own solution.** Adapt the example to your data, and add error handling and logging. For example, the [Setting Up a Delivery Service for CRM](./sale/delivery-in-crm.md) tutorial
+- **As a ready-to-use code snippet.** Find a scenario for a specific task and move the code into your project. For example, the [How to Configure Rounding for a Number Custom Field](./crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md) tutorial
 
 ## Tutorial Structure
 
-Tutorials consist of:
+Tutorials follow a common outline:
 
-- a brief description of the task being solved,
-- method examples in PHP and JavaScript,
-- descriptions of the parameters used,
-- examples of server responses in JSON format,
-- examples of boilerplate code for PHP and JavaScript applications,
-- explanations and tips,
-- links to related articles.
+- a brief description of the task, scopes, and permissions
+- a list of the scenario methods in call order
+- code examples in JS, PHP, and Python
+- a description of the parameters to pass
+- examples of server responses in JSON format
+- explanations, limitations, and links to related articles
 
-## Tips for Beginners
+## How to Get Started
 
-Study the [Getting Started](../first-steps/index.md) and [How to Make Your First Request](../first-steps/first-rest-api-call.md) sections to learn the basics of working with the Bitrix24 REST API.
+1. Select a category in the [Tutorial Categories](#categories) table
+2. Find the tutorial that solves your task
+3. Prepare the identifiers and other data the scenario requires
+4. Execute the methods in the order described in the tutorial
+5. Verify the result in the Bitrix24 interface
 
-Start with simple scenarios, such as filtering data in the [How to Filter Items by Stage Name](./crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md) tutorial. It does not use methods to modify or delete items, so the data within the items will remain safe.
-
-Example workflow for working with a section:
-
-1. Select a [category](#categories) of interest from the menu, such as CRM.
-2. Find the tutorial that corresponds to your task.
-3. Follow the step-by-step instructions and examples.
-4. Adapt the code to your needs.
-5. Verify the result and ensure everything works correctly.
-6. [Contact Bitrix24 Helpdesk](../bitrix-support.md) if you encounter any difficulties.
+If you have not made API requests yet, start with the [Where to Start](../first-steps/index.md) section.
 
 ## Tutorial Categories {#categories}
 
 #|
-|| [CRM](./crm/index.md) | How to work with CRM objects: contacts, deals, smart processes, custom fields, widgets, and Sales Intelligence ||
-|| [Online sales and Online store](./sale/index.md) | How to integrate trading functions: create product items, set up delivery, implement a cash register ||
-|| [Product catalog](./catalog/index.md) | How to create products, properties, prices, and other catalog data ||
-|| [Business processes](./bizproc/index.md) | How to embed an action, complete processes, configure robot parameters ||
-|| [Chatbots](./chat-bots/index.md) | How to create a chatbot, configure it for Open Channels, and create a support channel ||
-|| [Telephony](./telephony/index.md) | How to implement custom scenarios for integration with a call center ||
-|| [Tasks](./tasks/index.md) | How to create tasks with files, attach them to smart processes, and add comments ||
-|| [Open Channels](./openlines/example-connector.md) | How to create a connector for an online chat on a website and integrate it with Bitrix24 ||
+|| **Category** | **Tasks the Tutorials Cover** ||
+|| [CRM](./crm/index.md) | Add and update CRM objects, retrieve lists, pass Sales Intelligence data, embed an application interface into item cards and lists ||
+|| [Online Sales](./sale/index.md) | Add a line item with an arbitrary price to an order, set up a delivery service for CRM ||
+|| [Product Catalog](./catalog/index.md) | Create a product with custom property values and update those values ||
+|| [Business Processes](./bizproc/index.md) | Add a custom workflow action, embed an interface into automation rule parameters, terminate workflows in bulk ||
+|| [Chatbots](./chat-bots/index.md) | Create a chatbot, a bot for Open Channels, and a support channel ||
+|| [Message Providers](./messageservice/index.md) | Connect an SMS provider and update the message delivery status ||
+|| [Telephony](./telephony/index.md) | Integrate external telephony: register a call, display the call card, attach a call recording ||
+|| [Tasks](./tasks/index.md) | Create tasks with files, add comments with attachments, link a task to a smart process ||
+|| [Open Channels](./openlines/index.md) | Create a connector for website chat, find a CRM object by dialog ||
 |#
 
 ## How to Provide Feedback on Tutorials
 
-If you want to add your own scenario or improve an existing one, you can submit [Pull Requests and Issues](../feedback.md).
+If you want to add your own scenario or improve an existing one, submit a [Pull Request or an Issue](../feedback.md).
+
+[Contact Bitrix24 Helpdesk](../bitrix-support.md) if a scenario does not work.

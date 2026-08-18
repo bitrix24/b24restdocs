@@ -16,7 +16,7 @@ To add a new cash register, first create a cash register handler. It will connec
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [Implement a simple cash register using REST API](../../../tutorials/sale/cashbox-add-example.md)
+- [How to Connect a Cash Register to Bitrix24](../../../tutorials/sale/cashbox-add-example.md)
 
 {% endnote %}
 

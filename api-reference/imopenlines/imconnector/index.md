@@ -113,4 +113,4 @@ The methods `imconnector.*` in the current version do not support operation via 
 
 ## Continue Learning
 
-- [How to Create an Open Channels Connector for Online Chat on Your Website](../../../tutorials/openlines/example-connector.md)
+- [How to Create an Open Channels Connector for Website Chat](../../../tutorials/openlines/example-connector.md)
