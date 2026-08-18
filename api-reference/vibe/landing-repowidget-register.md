@@ -34,15 +34,15 @@ During the addition, a check is performed. If a widget with the code `code` has 
 #|
 || **Name**
 `type` | **Description** ||
-|| **NAME**
+|| **NAME***
 [`string`](../data-types.md) | Widget name ||
-|| **PREVIEW**
+|| **PREVIEW***
 [`string`](../data-types.md) | URL of the widget cover image for the widget selection slider ||
 || **DESCRIPTION**
 [`string`](../data-types.md) | Widget description ||
-|| **CONTENT**
+|| **CONTENT***
 [`string`](../data-types.md) | Widget markup using Vue constructs ||
-|| **SECTIONS**
+|| **SECTIONS***
 [`string`](../data-types.md) | Code of the section where the widget will be added. List of available sections:
 
 - `widgets_company_life` — Company Life
@@ -59,8 +59,8 @@ During the addition, a check is performed. If a widget with the code `code` has 
 - `widgets_text` — Text
 - `widgets_image` — Images
 - `widgets_video` — Video ||
-|| **WIDGET_PARAMS**
-[`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue templater. If absent, the block will remain as regular HTML code with `{{}}` ||
+|| **WIDGET_PARAMS***
+[`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue templater. Without them, the method returns the `REQUIRED_FIELD_NO_EXISTS` error ||
 || **ACTIVE**
 [`char`](../data-types.md) | Widget activity. Accepts values: 
 
@@ -502,6 +502,25 @@ HTTP status: **200**
 |#
 
 ## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error":"REQUIRED_FIELD_NO_EXISTS",
+    "error_description":"The required field is missing: CONTENT"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `REQUIRED_FIELD_NO_EXISTS` | A required field is not passed in the `fields` parameter: `NAME`, `PREVIEW`, `CONTENT`, `SECTIONS`, or `WIDGET_PARAMS`. The field name is substituted into the error text ||
+|| `REQUIRED_PARAM_NO_EXISTS` | A required parameter is not passed in the `WIDGET_PARAMS` parameter: `rootNode`, `handler`, or `demoData`. The parameter name is substituted into the error text ||
+|#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 

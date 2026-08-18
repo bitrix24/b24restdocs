@@ -31,8 +31,12 @@ The `user.userfield.add` method adds a custom field.
 || **Name**
 `type` | **Description** ||
 || **FIELD_NAME***
-[`string`](../../data-types.md)| Field name (code). Supplemented with prefix `UF_USR_`
- ||
+[`string`](../../data-types.md)| Field name (code). Bitrix24 converts it to uppercase and supplements it with the `UF_USR_` prefix:
+
+- `DEALS` and `UF_DEALS` become `UF_USR_DEALS`
+- `UF_USR_DEALS` remains unchanged
+
+The resulting field code is returned by the [user.userfield.list](./user-userfield-list.md) method ||
 || **USER_TYPE_ID***
 [`string`](../../data-types.md)| Custom field type. Possible values:
 - `string` — string
@@ -381,7 +385,7 @@ If it is necessary to create a custom field with an added custom type via the AP
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields": {
-            "FIELD_NAME": "UF_USER_DEALS",
+            "FIELD_NAME": "UF_USR_DEALS",
             "USER_TYPE_ID": "crm",
             "XML_ID": "UF_CRM_DEALS",
             "SORT": 100,
@@ -409,7 +413,7 @@ If it is necessary to create a custom field with an added custom type via the AP
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields": {
-            "FIELD_NAME": "UF_USER_DEALS",
+            "FIELD_NAME": "UF_USR_DEALS",
             "USER_TYPE_ID": "crm",
             "XML_ID": "UF_CRM_DEALS",
             "SORT": 100,
@@ -449,7 +453,7 @@ If it is necessary to create a custom field with an added custom type via the AP
         method: 'user.userfield.add',
         params: {
           fields: {
-            FIELD_NAME: 'UF_USER_DEALS',
+            FIELD_NAME: 'UF_USR_DEALS',
             USER_TYPE_ID: 'crm',
             XML_ID: 'UF_CRM_DEALS',
             SORT: 100,
@@ -498,7 +502,7 @@ If it is necessary to create a custom field with an added custom type via the AP
             method: 'user.userfield.add',
             params: {
               fields: {
-                FIELD_NAME: 'UF_USER_DEALS',
+                FIELD_NAME: 'UF_USR_DEALS',
                 USER_TYPE_ID: 'crm',
                 XML_ID: 'UF_CRM_DEALS',
                 SORT: 100,
@@ -547,7 +551,7 @@ If it is necessary to create a custom field with an added custom type via the AP
                 'user.userfield.add',
                 [
                     'fields' => [
-                        'FIELD_NAME' => 'UF_USER_DEALS',
+                        'FIELD_NAME' => 'UF_USR_DEALS',
                         'USER_TYPE_ID' => 'crm',
                         'XML_ID' => 'UF_CRM_DEALS',
                         'SORT' => 100,
@@ -587,7 +591,7 @@ If it is necessary to create a custom field with an added custom type via the AP
         'user.userfield.add', 
         {
             fields: {
-                FIELD_NAME: "UF_USER_DEALS",
+                FIELD_NAME: "UF_USR_DEALS",
                 USER_TYPE_ID: "crm",
                 XML_ID: "UF_CRM_DEALS",
                 SORT: 100,
@@ -624,7 +628,7 @@ If it is necessary to create a custom field with an added custom type via the AP
         'user.userfield.add',
         [
             'fields' => [
-                'FIELD_NAME' => 'UF_USER_DEALS',
+                'FIELD_NAME' => 'UF_USR_DEALS',
                 'USER_TYPE_ID' => 'crm',
                 'XML_ID' => 'UF_CRM_DEALS',
                 'SORT' => 100,
@@ -655,7 +659,7 @@ If it is necessary to create a custom field with an added custom type via the AP
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "user.userfield.add", b24.Params{
     	"fields": b24.Params{
-    		"FIELD_NAME":   "UF_USER_DEALS",
+    		"FIELD_NAME":   "UF_USR_DEALS",
     		"USER_TYPE_ID": "crm",
     		"XML_ID":       "UF_CRM_DEALS",
     		"SORT":         100,

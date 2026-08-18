@@ -6,9 +6,27 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-In Bitrix24, you can configure custom fields for employees. This allows you to supplement the standard information about users.
+In Bitrix24, you can configure custom fields for employees. This allows you to supplement the standard information about users — for example, add a list of skills or a hire date to the profile.
 
-> Quick navigation: [all methods](#all-methods) 
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [How to add custom fields to an employee profile](https://helpdesk.bitrix24.com/open/25556660/)
+
+## How to Work with Custom Fields
+
+1. Create a field using the [user.userfield.add](./user-userfield-add.md) method. In the `FIELD_NAME` parameter, pass the field code — Bitrix24 supplements it with the `UF_USR_` prefix, for example, `UF_USR_SKILLS`.
+2. Check the list of created fields and their codes using the [user.userfield.list](./user-userfield-list.md) method.
+3. Write the field value to the employee profile using the [user.update](../../user/user-update.md) method — pass the field code together with the user `ID`.
+4. Read the values using the [user.get](../../user/user-get.md) and [user.search](../../user/user-search.md) methods. To retrieve all custom fields, pass the `UF_*` mask in the `select` parameter.
+5. Change the settings or the name of the field using the [user.userfield.update](./user-userfield-update.md) method, and delete a field you no longer need using the [user.userfield.delete](./user-userfield-delete.md) method.
+
+The methods for working with the employee profile are described in the [Users](../index.md) section.
+
+{% note warning "" %}
+
+The `user.userfield.*` methods work in the `user.userfield` scope and can be executed only by an administrator. An application with the limited `user_brief` or `user_basic` scopes also needs the `user.userfield` scope to read the values of custom fields.
+
+{% endnote %}
 
 ## Types of Custom Fields
 
@@ -32,23 +50,17 @@ The type is set when creating the custom field and cannot be changed.
 
 **CRM.** Custom fields can be linked to CRM objects using two types.
 
--  CRM element binding — for linking with [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [contacts](../../crm/contacts/index.md), and [companies](../../crm/companies/index.md).
+- CRM element binding — for linking with [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [contacts](../../crm/contacts/index.md), and [companies](../../crm/companies/index.md).
 
--  CRM directory binding — for selection from the list of [CRM directories](../../crm/status/index.md).
-
-{% note tip "User Documentation" %}
-
-- [How to add custom fields to an employee profile](https://helpdesk.bitrix24.com/open/25556660/)
-
-{% endnote %}
+- CRM directory binding — for selection from the list of [CRM directories](../../crm/status/index.md).
 
 ## Errors When Working with Custom Fields
 
 When creating or deleting custom fields, the request may be interrupted with an [INTERNAL_SERVER_ERROR](../../../error-codes.md). This is an internal server error. The cause of the error can be found in the server logs at the time of the request.
 
--  Cloud Bitrix24 — contact [technical support](../../../bitrix-support.md) to get details about the error.
+- Cloud Bitrix24 — contact [technical support](../../../bitrix-support.md) to get details about the error.
 
--  On-premise Bitrix24 — request the server error log from the server or hosting administrator. Then, contact [technical support](../../../bitrix-support.md) and attach the log for analysis.
+- On-premise Bitrix24 — request the server error log from the server or hosting administrator. Then, contact [technical support](../../../bitrix-support.md) and attach the log for analysis.
 
 ### Common Causes of Server Errors
 
@@ -66,12 +78,12 @@ When creating or deleting custom fields, the request may be interrupted with an 
 
 > Scope: [`user.userfield`](../../scopes/permissions.md)
 >
-> Who can perform the method: depending on the method
+> Who can perform the method: administrator
 
 #|
 || **Method** | **Description** ||
 || [user.userfield.add](user-userfield-add.md) | Adds a custom field ||
 || [user.userfield.update](user-userfield-update.md) | Updates a custom field ||
-|| [user.userfield.delete](user-userfield-delete.md) | Deletes a custom field ||
 || [user.userfield.list](user-userfield-list.md) | Retrieves a list of custom fields ||
+|| [user.userfield.delete](user-userfield-delete.md) | Deletes a custom field ||
 |#

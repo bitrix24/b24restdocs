@@ -6,20 +6,25 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The user profile is a key object in Bitrix24. Without a user profile, an employee cannot utilize the corporate account and CRM. The user ID can be used to:
+The user profile is a key object in Bitrix24. Without a profile, an employee cannot work in Bitrix24 and CRM. The user ID can be used to:
+
 - configure access permissions,
 - assign tasks among employees,
 - retrieve information about employee actions.
 
 > Quick navigation: [all methods](#all-methods)
-> 
+>
 > User documentation: [How to invite employees to Bitrix24](https://helpdesk.bitrix24.com/open/21408738/)
 
 ## How to Work with Users
 
-Use the method:
+Use the methods:
 
-- [user.add](./user-add.md) to invite new users. The username must not exceed 25 characters.
+- [user.current](./user-current.md) to retrieve the profile of the user on whose behalf the request is executed,
+- [user.get](./user-get.md) to retrieve a list of employees by filter and find out the `ID` of the required user,
+- [user.search](./user-search.md) to find a user by personal data with accelerated search,
+- [user.fields](./user-fields.md) to retrieve a list of profile fields,
+- [user.add](./user-add.md) to invite new users,
 - [user.update](./user-update.md) to edit existing user profiles, terminate or reinstate an employee.
 
 {% note tip "User Documentation" %}
@@ -27,6 +32,14 @@ Use the method:
 - [How to terminate an employee in Bitrix24](https://helpdesk.bitrix24.com/open/25785571/)
 
 {% endnote %}
+
+## Custom Fields of the Profile
+
+You can add your own fields to an employee profile, for example, a list of skills or a hire date. The fields are managed by the [user.userfield.*](./userfields/index.md) methods — they work in the `user.userfield` scope and can be executed only by an administrator.
+
+- The code of a new field is supplemented with the `UF_USR_` prefix, for example, `UF_USR_SKILLS`.
+- The field value is written using the [user.update](./user-update.md) method — pass the field code together with the user `ID`.
+- The values are returned by the [user.get](./user-get.md) and [user.search](./user-search.md) methods. To retrieve all custom fields, pass the `UF_*` mask in the `select` parameter.
 
 ## Relationships with Other Objects
 
@@ -99,7 +112,7 @@ Use the user `ID` to configure access rights in the methods:
 
 ## Working with Extranet Users
 
-Extranet users are those who have limited access to Bitrix24 functionality. CRM is not available for extranet users, but chats, groups, and the calendar are accessible.
+Extranet users are external participants with limited access to Bitrix24. CRM is not available to them, but chats, groups, and the calendar are accessible.
 
 {% note tip "User Documentation" %}
 
@@ -114,12 +127,11 @@ To invite an extranet user, use the method [user.add](./user-add.md) with the pa
 
 When adding an extranet user to a group using the method [sonet_group.user.add](../sonet-group/members/sonet-group-user-add.md), the group automatically changes its type to external.
 
-## **Widgets**
+## Widgets
 
-An application can be embedded in the user profile. This allows the application to be used without leaving the user detail form.
+An application can be embedded in the user profile — then you can work with it without leaving the employee detail form.
 
 - [Context menu item in the profile](../widgets/user-profile/profile-menu.md) `USER_PROFILE_MENU`
-
 - [Context menu item for the top profile button](../widgets/user-profile/profile-toolbar.md) `USER_PROFILE_TOOLBAR`
 
 {% note tip " " %}
@@ -130,13 +142,15 @@ An application can be embedded in the user profile. This allows the application 
 
 ## User Data Access Levels
 
-To ensure the security of employee data, different versions of the User scope are available for applications and webhooks.
+To ensure the security of employee data, different versions of the `user` scope are available for applications and webhooks.
 
 - `user_brief` provides access to user information without contact details. This is sufficient for scenarios where displaying the user's full name in a third-party application interface is required.
 
 - `user_basic` opens basic information and contact details of users. This is required for scenarios related to making calls or sending e-mail messages.
 
 - `user` provides full access to user information, the ability to invite new users, and modify existing data.
+
+The [user.add](./user-add.md) and [user.update](./user-update.md) methods are not available in the `user_brief` and `user_basic` scopes, and the other methods return only the permitted set of fields.
 
 {% note tip " " %}
 
@@ -146,7 +160,7 @@ To ensure the security of employee data, different versions of the User scope ar
 
 ## Overview of Methods {#all-methods}
 
-> Scope: [`user`](../scopes/permissions.md)
+> Scope: [`user`](../scopes/permissions.md), [`user_basic`](../scopes/permissions.md), [`user_brief`](../scopes/permissions.md)
 >
 > Who can execute the method: depending on the method
 
@@ -154,8 +168,10 @@ To ensure the security of employee data, different versions of the User scope ar
 || **Method** | **Description** ||
 || [user.add](user-add.md) | Invites a user ||
 || [user.update](user-update.md) | Updates user data ||
-|| [user.current](user-current.md) | Retrieves information about the current user ||
 || [user.get](user-get.md) | Retrieves a filtered list of users ||
 || [user.search](user-search.md) | Retrieves a list of users with accelerated search by personal data ||
+|| [user.current](user-current.md) | Retrieves information about the current user ||
 || [user.fields](user-fields.md) | Retrieves a list of user profile fields ||
 |#
+
+The methods for working with custom profile fields are collected in the [Custom Fields](./userfields/index.md) subsection.
