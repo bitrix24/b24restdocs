@@ -26,7 +26,7 @@ To modify only one row, use the methods [crm.item.productrow.*](../universal/pro
 || **id^*^**
 [`integer`](../../data-types.md) | Identifier of the deal. Can be obtained using the method to retrieve the list of deals: [`crm.deal.list`](./crm-deal-list.md) or when creating a deal: [`crm.deal.add`](./crm-deal-add.md) ||
 || **rows**
-[`object[]`](#productrows) | Product rows
+[`object[]`](#parameter-rows) | Product rows
 
 An array of objects in the following format: 
 ```

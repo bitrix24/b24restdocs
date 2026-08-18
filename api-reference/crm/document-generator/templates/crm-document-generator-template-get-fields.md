@@ -448,7 +448,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. Contains the [`templateFields`](#templatefields) object ||
+[`object`](../../../data-types.md) | Root element of the response. Contains the [`templateFields`](#templatefield) object ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#

@@ -349,7 +349,7 @@ HTTP Code: **200**
 || **result**  
 [`object`](../../data-types.md) | The root element of the response ||  
 || **documentContractor**  
-[`catalog_documentContractor[]`](../data-types.md#catalog_documentContractor) | A list of contractor bindings; the response structure depends on the `select` parameter ||  
+[`catalog_documentContractor[]`](../data-types.md#catalog_documentcontractor) | A list of contractor bindings; the response structure depends on the `select` parameter ||  
 || **next**  
 [`integer`](../../data-types.md) | Offset pointer for the next page. Pass this value to the `start` parameter to retrieve the next 50 records ||  
 || **total**  

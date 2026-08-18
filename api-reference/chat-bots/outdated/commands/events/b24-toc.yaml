@@ -1,5 +1,4 @@
 title: Events  
-href: index.md  
 items:  
   - name: When the Command is Called  
     href: on-im-command-add.md

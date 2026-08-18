@@ -304,7 +304,7 @@ HTTP code: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **documentContractor**
-[`catalog_documentContractor`](../data-types.md#catalog_documentContractor) | Object with data of the created vendor binding to the inventory document ||  
+[`catalog_documentContractor`](../data-types.md#catalog_documentcontractor) | Object with data of the created vendor binding to the inventory document ||  
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

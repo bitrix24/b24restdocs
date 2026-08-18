@@ -254,8 +254,8 @@ HTTP Code: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **documentContractor**
-[`object`](../data-types.md#catalog_documentContractor) | Object describing the fields for binding a vendor to an inventory document.
-Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the field of the [`catalog_documentContractor`](../data-types.md#catalog_documentContractor) object, and `value` is an object of type [`rest_field_description`](../data-types.md) ||  
+[`object`](../data-types.md#catalog_documentcontractor) | Object describing the fields for binding a vendor to an inventory document.
+Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the field of the [`catalog_documentContractor`](../data-types.md#catalog_documentcontractor) object, and `value` is an object of type [`rest_field_description`](../data-types.md) ||  
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

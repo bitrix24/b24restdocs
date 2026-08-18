@@ -31,14 +31,14 @@ The method `booking.v1.booking.update` updates the booking information.
 || **Name**
 `type` | **Description** ||
 || **resourceIds**
-[`array`](../../data-types.md#array) | Array of resource identifiers. 
+[`array`](../../data-types.md#standart-types) | Array of resource identifiers. 
 Resource IDs can be obtained using the method [booking.v1.resource.list](../resource/booking-v1-resource-list.md) ||
 || **name**
 [`string`](../../data-types.md) | Booking name ||
 || **description**
 [`string`](../../data-types.md) | Booking description ||
 || **datePeriod**
-[`object`](../../data-types.md#object) | Object containing the booking time [(detailed description)](#datePeriod) ||
+[`object`](../../data-types.md#standart-types) | Object containing the booking time [(detailed description)](#datePeriod) ||
 |#
 
 ### Parameter datePeriod {#datePeriod}
@@ -47,9 +47,9 @@ Resource IDs can be obtained using the method [booking.v1.resource.list](../reso
 || **Name**
 `type` | **Description** ||
 || **from***
-[`object`](../../data-types.md#object) | Start time of the booking in the format `{"timestamp": "1723446900", "timezone": "Europe/Berlin"}` ||
+[`object`](../../data-types.md#standart-types) | Start time of the booking in the format `{"timestamp": "1723446900", "timezone": "Europe/Berlin"}` ||
 || **to***
-[`object`](../../data-types.md#object) | End time of the booking in the format `{"timestamp": "1723447800", "timezone": "Europe/Berlin"}` ||
+[`object`](../../data-types.md#standart-types) | End time of the booking in the format `{"timestamp": "1723447800", "timezone": "Europe/Berlin"}` ||
 |#
 
 ## Code Examples

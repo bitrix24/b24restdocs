@@ -60,7 +60,7 @@ Use the method when you need to change the settings of an element through attrib
 
 For instance, in the CRM form block, the method allows you to change the `data-b24form` attribute of the `.bitrix24forms` element and connect a different form. The acceptable values for such an attribute should be taken from the manifest of the specific block.
 
-Strings, numbers, and boolean values are saved as HTML attributes. If you pass an array or object, the method converts them into a JSON string. The data format must match the type of the attribute specified in the block's manifest. The method does not check whether the passed value is suitable for the logic of a specific block, so it is better to refer to the manifest. Examples of formats for different types of attributes can be found in the article [Attribute Types](../attributes.md).
+Strings, numbers, and boolean values are saved as HTML attributes. If you pass an array or object, the method converts them into a JSON string. The data format must match the type of the attribute specified in the block's manifest. The method does not check whether the passed value is suitable for the logic of a specific block, so it is better to refer to the manifest. Examples of formats for different types of attributes can be found in the article [Attribute Types](../attributes.md#attribute-types).
 
 For example, if a repeating element in the manifest allows the attribute `data-test-checkbox`, the request for the second card might look like this:
 

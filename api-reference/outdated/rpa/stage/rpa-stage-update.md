@@ -29,7 +29,7 @@ This method updates the stage by `id`.
 [`array`](../../../data-types.md) | Object with [fields](#fields) of the stage ||
 |#
 
-## Fields Parameters
+## Fields Parameters {#fields}
 
 #|
 || **Name**

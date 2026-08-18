@@ -489,7 +489,7 @@ HTTP Status: **200**
 || **Name** 
 `type` | **Description** ||
 || **checkListItems** 
-[`object`](../../../data-types.md) | Object where the key is the identifier of the checklist item and the value is the description of the checklist item [(detailed description)](#checklistitems).
+[`object`](../../../data-types.md) | Object where the key is the identifier of the checklist item and the value is the description of the checklist item [(detailed description)](#checklistitem).
 
 The set of fields in the response depends on the `select` parameter ||
 |#

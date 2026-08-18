@@ -312,7 +312,7 @@ HTTP Status: **200**
 || **id**
 [`integer`](../data-types.md) | Identifier of the log entry ||
 || **timestampX**
-[`datetime`](../data-types.md#datetime) | Date and time of the event ||
+[`datetime`](../data-types.md#standart-types) | Date and time of the event ||
 || **severity**
 [`string`](../data-types.md) | Importance level of the event ||
 || **auditTypeId**

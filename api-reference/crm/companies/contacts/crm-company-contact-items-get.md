@@ -307,7 +307,7 @@ HTTP status: **200**
 || **ROLE_ID**
 [`integer`](../../../data-types.md) | Role identifier, a system field ||
 || **IS_PRIMARY**
-[`char`](../../../data-types.md#char) | Indicates whether the binding is primary. Possible values:
+[`char`](../../../data-types.md#standart-types) | Indicates whether the binding is primary. Possible values:
 - `Y` — yes
 - `N` — no ||
 |#

@@ -35,7 +35,7 @@ You can obtain the template identifier after [creating a template](./document-ge
 || **name**
 [`string`](../../data-types.md) | Template name ||
 || **file**
-[`file`](../../data-types.md#file) | New template file. It can be passed in three ways:
+[`file`](../../data-types.md#standart-types) | New template file. It can be passed in three ways:
 - as a base64 string
 - as an array `["file_name.docx","base64_content"]`
 - as a file `multipart/form-data`

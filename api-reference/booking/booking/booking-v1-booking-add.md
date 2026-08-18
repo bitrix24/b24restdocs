@@ -29,7 +29,7 @@ The method `booking.v1.booking.add` adds a new booking for a resource.
 || **Name**
 `type` | **Description** ||
 || **resourceIds***
-[`array`](../../data-types.md#array) | An array of resource IDs for the booking. 
+[`array`](../../data-types.md#standart-types) | An array of resource IDs for the booking. 
 Resource IDs can be obtained using the method [booking.v1.resource.list](../resource/booking-v1-resource-list.md) ||
 || **name**
 [`string`](../../data-types.md) | The name of the booking. 
@@ -38,7 +38,7 @@ Default value is an empty string ||
 [`string`](../../data-types.md) | The description of the booking. 
 Default value is an empty string ||
 || **datePeriod***
-[`object`](../../data-types.md#object) | An object containing the booking time [(detailed description)](#datePeriod) ||
+[`object`](../../data-types.md#standart-types) | An object containing the booking time [(detailed description)](#datePeriod) ||
 |#
 
 ### Parameter datePeriod {#datePeriod}
@@ -47,9 +47,9 @@ Default value is an empty string ||
 || **Name**
 `type` | **Description** ||
 || **from***
-[`object`](../../data-types.md#object) | The start time of the booking in the format `{"timestamp": "1723446900", "timezone": "Europe/Berlin"}`||
+[`object`](../../data-types.md#standart-types) | The start time of the booking in the format `{"timestamp": "1723446900", "timezone": "Europe/Berlin"}`||
 || **to***
-[`object`](../../data-types.md#object) | The end time of the booking in the format `{"timestamp": "1723447800", "timezone": "Europe/Berlin"}` ||
+[`object`](../../data-types.md#standart-types) | The end time of the booking in the format `{"timestamp": "1723447800", "timezone": "Europe/Berlin"}` ||
 |#
 
 ## Code Examples

@@ -652,7 +652,7 @@ An empty array means there are no records that meet the filter criteria. ||
 || **DETAIL_TEXT**
 [`string`](../data-types.md) | Text of the message. ||
 || **DATE_PUBLISH**
-[`datetime`](../data-types.md#datetime) | Date and time of publication. ||
+[`datetime`](../data-types.md#standart-types) | Date and time of publication. ||
 || **CATEGORY_ID**
 [`string`](../data-types.md) | Comma-separated IDs of tags (categories). ||
 || **HAS_SOCNET_ALL**

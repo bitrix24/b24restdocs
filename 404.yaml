@@ -19,7 +19,7 @@ blocks:
       text: 'The information below may help:'
     items:
       - links:
-        - url: 'https://apidocs.bitrix24.com/api-reference/index.html#bitrix24-tool'
+        - url: 'https://apidocs.bitrix24.com/api-reference/index.html#all-methods'
           text: 'Find the REST API method'
           theme: 'normal'
           arrow: true

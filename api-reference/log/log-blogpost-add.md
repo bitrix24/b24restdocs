@@ -100,7 +100,7 @@ When specifying `FILES`, the `UF_BLOG_POST_FILE` parameter is ignored.
 
 Automatically filled when `IMPORTANT = 'Y'` ||
 || **UF_IMPRTANT_DATE_END**
-[`datetime`](../data-types.md#datetime) | Expiration date of the important message.
+[`datetime`](../data-types.md#standart-types) | Expiration date of the important message.
 
 Automatically filled when `IMPORTANT_DATE_END` is provided ||
 || **UF_BLOG_POST_URL_PRV**

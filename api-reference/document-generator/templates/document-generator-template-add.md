@@ -45,7 +45,7 @@ Use one of the methods to get the list of files:
 
 ||
 || **file***
-[`file`](../../data-types.md#file) | Template file, if it needs to be uploaded. Used instead of the `fileId` parameter.
+[`file`](../../data-types.md#standart-types) | Template file, if it needs to be uploaded. Used instead of the `fileId` parameter.
 
 The file can be passed in three ways:
 - as a base64 string

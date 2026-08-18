@@ -113,7 +113,7 @@ Can take values `WORK`, `MOBILE`, `FAX`, `HOME`, `PAGER`, `MAILING`, `OTHER` for
 || **ownerId**
 [`integer`](../data-types.md) | Identifier of the CRM object. ||
 || **ownerType**
-[`string`](../data-types.md) | Identifier of the [`CRM object type`](#tip-obuekta-crm). ||
+[`string`](../data-types.md) | Identifier of the [`CRM object type`](#object_type). ||
 || **productId**
 `catalog_product.id` | Identifier of the product from the catalog. ||
 || **productName**

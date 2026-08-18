@@ -40,7 +40,7 @@ The identifier can be obtained using the methods [crm.company.list](../crm-compa
 
 The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3` ||
 || **IS_PRIMARY**
-[`char`](../../../data-types.md#char) | Indicates whether the binding is primary. Possible values:
+[`char`](../../../data-types.md#standart-types) | Indicates whether the binding is primary. Possible values:
 - `Y` — yes
 - `N` — no
 

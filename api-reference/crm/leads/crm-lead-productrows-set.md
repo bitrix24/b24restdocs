@@ -30,7 +30,7 @@ To modify only a single row, use the methods [crm.item.productrow.*](../universa
 || **id^*^**
 [`integer`](../../data-types.md) | Lead identifier. Can be obtained using the method to retrieve the list of leads: [`crm.lead.list`](./crm-lead-list.md) or when creating a lead: [`crm.lead.add`](./crm-lead-add.md) ||
 || **rows**
-[`object[]`](#productrows) | Product rows
+[`object[]`](#parameter-rows) | Product rows
 
 An array of objects in the following format:
 ```
