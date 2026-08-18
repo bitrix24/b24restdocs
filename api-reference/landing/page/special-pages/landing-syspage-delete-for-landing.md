@@ -14,6 +14,8 @@ The method `landing.syspage.deleteForLanding` removes all bindings where the pag
 
 This method does not delete sites or pages. It only removes bindings of special pages. If the same page is designated as special for multiple sites, the method will delete all such bindings at once.
 
+To see which special pages are assigned to a site, use the [landing.syspage.get](./landing-syspage-get.md) method. To remove all bindings of a site rather than of a single page, use the [landing.syspage.deleteForSite](./landing-syspage-delete-for-site.md) method.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -21,6 +23,10 @@ This method does not delete sites or pages. It only removes bindings of special 
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal scope of the landing pages. It is not related to the REST scope `landing` in the method name.
+
+The value of `scope` must correspond to the type of site the page belongs to [(detailed description)](../../types.md) ||
 || **id***
 [`integer`](../../../data-types.md) | The identifier of the page for which all special bindings need to be removed.
 
@@ -243,7 +249,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | `true` if the REST call completed without error.
 
-This value does not confirm that the bindings were deleted. The method may return `true` without changes, for example, if the page is not found, the user does not have access permission for the page's site, or there are no special bindings for the page ||
+This value does not confirm that the bindings were deleted. The method may return `true` without changes, for example, if the page is not found, a suitable `scope` parameter is not passed, the user does not have access permission for the page's site, or there are no special bindings for the page ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
