@@ -346,7 +346,7 @@ HTTP status: **200**
         "basketItem": {
             "basePrice": 1234,
             "canBuy": "Y",
-            "catalogXmlId": "FUTURE-1C-CATALOG",
+            "catalogXmlId": "FUTURE-QUICKBOOKS-CATALOG",
             "currency": "USD",
             "customPrice": "N",
             "dateInsert": "2024-04-22T16:36:43+02:00",

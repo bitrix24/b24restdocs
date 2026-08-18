@@ -2,6 +2,10 @@
 
 ## 2026
 
+### August 18, 2026
+
+- Added the tutorial [How to Add a Line Item to an Order with an Arbitrary Price](./tutorials/sale/add-basket-item-to-order.md)
+
 ### August 14, 2026
 
 - Added the [onCrmTypeUserField*](./api-reference/crm/universal/userfieldconfig/events/index.md) events for custom fields of smart processes, invoices, and documents for signing

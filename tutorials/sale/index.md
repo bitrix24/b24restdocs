@@ -39,8 +39,7 @@ If the price is retrieved from the catalog and does not need to be set manually,
 #|
 || **If necessary** | **Open** ||
 || Connect an external cash register and transfer receipt printing data | [How to connect a cash register to Bitrix24](./cashbox-add-example.md) ||
-|| Add a product from the catalog to an order and specify an arbitrary price | [Create a line item with a product from the catalog in a quantity of 4 units with an arbitrary price](./example-position-with-custom-price.md) ||
-|| Add a line item to an order for a product that is not in the online store catalog | [Create a line item with a product that does not exist on the website](./example-position-that-is-not-on-the-site.md) ||
+|| Add a product from the catalog or a line item that is not in the catalog to an order and specify an arbitrary price | [How to add a line item to an order with an arbitrary price](./add-basket-item-to-order.md) ||
 || Register an external delivery service to work in CRM | [Configure a delivery service for CRM](./delivery-in-crm.md) ||
 || View the online store methods reference | [Internet store: section overview](../../api-reference/sale/index.md) ||
 |#

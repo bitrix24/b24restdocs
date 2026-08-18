@@ -984,7 +984,7 @@ The field is either empty or contains a serialized array with keys:
 - `N` — no 
 ||
 || **vatRate**
-[`double`](../data-types.md) | Amount of tax in percentage. Can be equal to `null` (“No VAT” — in case VAT rates are used) ||
+[`double`](../data-types.md) | Tax rate as a fraction of one: `0.1` means 10 %. Can be equal to `null` (“No VAT” — in case VAT rates are used) ||
 || **vatIncluded**
 [`string`](../data-types.md) | Is the tax included in the price:
 - `Y` — yes

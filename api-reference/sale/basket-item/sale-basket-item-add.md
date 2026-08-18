@@ -84,7 +84,7 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
 - `Y` — yes
 - `N` — no ||
 || **vatRate****
-[`double`](../../data-types.md) | Tax rate in percentage. To specify the rate "No VAT", an empty string must be passed ||
+[`double`](../../data-types.md) | Tax rate as a fraction of one: `0.1` means 10 %. To specify the rate "No VAT", an empty string must be passed ||
 || **vatIncluded****
 [`string`](../../data-types.md) | Flag indicating whether VAT or tax is included in the product price. Possible values:
 - `Y` — yes
@@ -357,8 +357,7 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [{#T}](../../../tutorials/sale/example-position-with-custom-price.md)
-- [{#T}](../../../tutorials/sale/example-position-that-is-not-on-the-site.md)
+- [{#T}](../../../tutorials/sale/add-basket-item-to-order.md)
 
 {% endnote %}
 

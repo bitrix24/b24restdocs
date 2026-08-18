@@ -6,9 +6,7 @@ items:
   - name: How to connect a cash register to Bitrix24
     href: cashbox-add-example.md
     hidden: true        
-  - name: Create a position with a product from the catalog in a quantity of 4 units with a custom price
-    href: example-position-with-custom-price.md
-  - name: Create a position with a product that does not exist on the site
-    href: example-position-that-is-not-on-the-site.md
+  - name: How to add a line item to an order with an arbitrary price
+    href: add-basket-item-to-order.md
   - name: Set up a delivery service for CRM
     href: delivery-in-crm.md

@@ -57,7 +57,7 @@ The method `sale.basketitem.update` modifies the position of the basket in an ex
 - `Y` — yes
 - `N` — no ||
 || **vatRate**
-[`double`](../../data-types.md) | Tax rate in percentage. To specify the "No VAT" rate, an empty string should be passed ||
+[`double`](../../data-types.md) | Tax rate as a fraction of one: `0.1` means 10 %. To specify the "No VAT" rate, an empty string should be passed ||
 || **vatIncluded**
 [`string`](../../data-types.md) | Flag indicating whether VAT or tax is included in the product price. Possible values:
 - `Y` — yes
