@@ -12,6 +12,10 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `task.checklistitem.complete` marks a checklist item as completed.
 
+The system sets the `IS_COMPLETE` field to `Y` and fills in the `TOGGLED_BY` and `TOGGLED_DATE` fields — who changed the item status and when. These two fields are updated only when the item status changes. A repeated call for an already completed item does not change the data and returns `true`.
+
+To mark the item as incomplete, use the [task.checklistitem.renew](./task-checklist-item-renew.md) method. To check the permissions for modifying the item, use the [task.checklistitem.isactionallowed](./task-checklist-item-is-action-allowed.md) method.
+
 ## Method Parameters
 
 {% note warning "" %}
@@ -34,6 +38,8 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 
 The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or by using the [get checklist item list](./task-checklist-item-get-list.md) method. ||
 |#
+
+The `TASKID` and `ITEMID` values must be greater than zero. The method locates the item by `ITEMID` and does not verify that the item belongs to the `TASKID` task.
 
 ## Code Examples
 
@@ -71,8 +77,11 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
 
     declare const $b24: B24Frame
 
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type CompleteResult = boolean
+
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      const response = await $b24.actions.v2.call.make<CompleteResult>({
         method: 'task.checklistitem.complete',
         params: {
           TASKID: 8017,
@@ -240,9 +249,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the checklist item is marked as completed.
+[`boolean`](../../data-types.md) | Returns `true` if the checklist item is marked as completed. A repeated call for an already completed item also returns `true`.
 
-Returns `false` if the specified `ITEMID` does not exist or if the parameters are passed in the wrong order. ||
+Returns `false` if an item with the `ITEMID` identifier does not exist. The same result is returned if the parameter order is violated: the method treats the `ITEMID` value as the task identifier. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
@@ -264,8 +273,10 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value**  ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::complete(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` or `ITEMID` is missing. ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::complete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `TASKID` or `ITEMID`. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) expected by method ctaskchecklistitem::complete(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` is missing. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::complete(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `ITEMID` is missing. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::complete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `TASKID`. For `ITEMID`, the message specifies `Param #1 (itemId)`. ||
+|| `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` or `ITEMID` value is less than or equal to zero. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
