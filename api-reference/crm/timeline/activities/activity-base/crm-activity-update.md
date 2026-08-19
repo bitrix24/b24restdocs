@@ -67,7 +67,7 @@ fields:
 || **DIRECTION**
 [`crm_enum_activitydirection`](../../../data-types.md#activity-enums) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
 || **END_TIME**
-[`datetime`](../../../../data-types.md) | End time of the activity | ||
+[`datetime`](../../../../data-types.md) | End time of the activity ||
 || **FILES**
 [`diskfile`](../../../data-types.md) | Files added to the activity ||
 || **LOCATION**

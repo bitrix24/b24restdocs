@@ -24,7 +24,7 @@ void BX24.im.openMessenger([String dialogId])
 || **Name**
 `type` | **Description** ||
 || **dialogId**
-`string` | Identifier of the dialog. Supported formats: `userId` or `chatXXX` for chat, `sgXXX` for group chat, `imol|XXXX` for Open Channels. If the parameter is not provided, the chat list interface will open. ||
+`string` | Identifier of the dialog. Supported formats: `userId` or `chatXXX` for chat, `sgXXX` for group chat, ```imol|XXXX``` for Open Channels. If the parameter is not provided, the chat list interface will open. ||
 |#
 
 ## Code Example

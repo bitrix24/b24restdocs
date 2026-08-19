@@ -209,15 +209,15 @@ The key of the object is the user identifier, and the value is the object with [
 - `C_XX` — contact
 - `CO_XX` — company
 - `SI_XX` — invoice
-- `TXX_XX` — SPA | ||
+- `TXX_XX` — SPA ||
 || **ufTaskWebdavFiles**
-[`array`](../data-types.md) | List of files from Drive | ||
+[`array`](../data-types.md) | List of files from Drive ||
 || **ufMailMessage**
-[`string`](../data-types.md) | e-mail | ||
+[`string`](../data-types.md) | e-mail ||
 || **UF_\***
 [`any`](../data-types.md) | Custom fields. 
 
-More details in the article [{#T}](./user-field/index.md) | ||
+More details in the article [{#T}](./user-field/index.md) ||
 |#
 
 {% note info "" %}

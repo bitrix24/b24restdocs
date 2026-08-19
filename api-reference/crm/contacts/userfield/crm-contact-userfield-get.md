@@ -705,11 +705,11 @@ Returned when the field type is custom ||
     || **DEFAULT_VALUE**
     [`string`](../../../data-types.md) | Default value.
 
-    The value of this field has the format: `{VALUE}\|{CURRENCY}`, where:
+    The value of this field has the format: ```{VALUE}|{CURRENCY}```, where:
     - `VALUE` — default amount of money
     - `CURRENCY` — string currency identifier
 
-    For example: `300\|USD` — 300 dollars
+    For example: ```300|USD``` — 300 dollars
 
     ||
     |#

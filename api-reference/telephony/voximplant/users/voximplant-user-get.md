@@ -22,7 +22,7 @@ For applications, calling the method requires [administrator confirmation](../..
 || **Name**
 `type` | **Description** ||
 || **USER_ID***
-[`integer \| integer[]`](../../../data-types.md#compound-types) | User ID or an array of user IDs.
+[```integer | integer[]```](../../../data-types.md#compound-types) | User ID or an array of user IDs.
 
 You can obtain the ID using the [user.get](../../../user/user-get.md) method. ||
 |#

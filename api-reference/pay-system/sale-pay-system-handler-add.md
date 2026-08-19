@@ -235,7 +235,7 @@ Represents an array of descriptions of fields displayed in the form and sent to 
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`string`|`object`](../data-types.md) | If the value of the `CODE` key is of type `string`, this value will be used to find a match between form fields and handler parameters (`CODES`). The name and value will be obtained from the handler parameters.
+[`string`\|`object`](../data-types.md) | If the value of the `CODE` key is of type `string`, this value will be used to find a match between form fields and handler parameters (`CODES`). The name and value will be obtained from the handler parameters.
 
 If an `object` is passed in the `CODE` key, a field will be added to the payment form according to the description in the array content (detailed description provided [below](#parametr-code))
 ||

@@ -232,7 +232,7 @@ HTTP Status: **200**
 || **isReactionsEnabled** 
 [`boolean`](../../../../data-types.md) | Reactions are enabled for bot messages ||
 || **backgroundId** 
-[`string|null`](../../../../data-types.md) | Chat background ID or `null` ||
+[```string|null```](../../../../data-types.md) | Chat background ID or `null` ||
 || **language** 
 [`string`](../../../../data-types.md) | Language of the bot ||
 || **moduleId** 

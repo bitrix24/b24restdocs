@@ -217,7 +217,7 @@ Parameters applicable to shipment properties of type `STRING`
 || **pattern**
 [`string`](../../data-types.md) | Regular expression for validating the shipment property value.
 Examples:
-Regular expression for validating a phone number ```^((8\|\+1)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$```
+Regular expression for validating a phone number ```^((8|\+1)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$```
 Regular expression for validating the date format DD/MM/YYYY:
 ```^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$``` ||
 || **multiline**

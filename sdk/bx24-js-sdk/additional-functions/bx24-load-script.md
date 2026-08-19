@@ -20,7 +20,7 @@ void BX24.loadScript(Array|String script[, Function callback])
 || **Name** 
 `type` | **Description** ||
 || **script*** 
-`array|string` | Path to the javascript file or an array of paths. When an array is provided, the files are loaded and executed in order ||
+```array|string``` | Path to the javascript file or an array of paths. When an array is provided, the files are loaded and executed in order ||
 || **callback** 
 `function` | A callback function that is executed after all files have been loaded ||
 |#

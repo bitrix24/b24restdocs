@@ -49,7 +49,7 @@ For more information on working with files, read the articles:
 || `function` | A function. Used in JavaScript examples and Bitrix24 js interfaces to describe a handler ||
 || `callable` | A callable handler, usually a callback function. In JavaScript, this can be a regular function or its shorthand notation using `=>` ||
 || `any` | Various data types can serve as parameter values ||
-|| `null` | The absence of a value. It is not used on its own — it is specified as the second type for fields that can return either a value or emptiness. For example, `string \| null` ||
+|| `null` | The absence of a value. It is not used on its own — it is specified as the second type for fields that can return either a value or emptiness. For example, ```string | null``` ||
 |#
 
 {% note tip "Date and Time Features" %}
@@ -65,7 +65,7 @@ In addition to single types, compound notations are found in the descriptions of
 #|
 || **Notation** | **Meaning** ||
 || `type[]` | An array of values of the specified type. For example, `string[]` is an array of strings, `integer[]` is an array of integers ||
-|| `type1 \| type2` | The field accepts a value of one of the listed types. For example, `string \| null` is a string or an empty value ||
+|| ```type1 | type2``` | The field accepts a value of one of the listed types. For example, ```string | null``` is a string or an empty value ||
 |#
 
 ## Data Types for Object References and Directories {#standart-objects}

@@ -254,7 +254,7 @@ Default value is set to `N`.
 Used only in [on-premise](../../../settings/cloud-and-on-premise/index.md) for content sales
  ||
 || **propertyN**
-[`object \| array`](../../data-types.md#compound-types) | The value of a product property, where `N` is the property identifier. There can be multiple properties.
+[```object | array```](../../data-types.md#compound-types) | The value of a product property, where `N` is the property identifier. There can be multiple properties.
 
 The value is specified in the following format:
 - `{valueId: valueId, value: value}` — for a single property

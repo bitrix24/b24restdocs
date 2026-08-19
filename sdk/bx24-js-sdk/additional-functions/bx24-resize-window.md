@@ -20,7 +20,7 @@ void BX24.resizeWindow(Integer width, Integer height[, Function callback])
 || **Name** 
 `type` | **Description** ||
 || **width*** 
-`integer|string` | The width of the frame in pixels. The string `'100%'` stretches the frame to the full available width. Other values are parsed using `parseInt`, and a non-numeric value falls back to `100` pixels ||
+```integer|string``` | The width of the frame in pixels. The string `'100%'` stretches the frame to the full available width. Other values are parsed using `parseInt`, and a non-numeric value falls back to `100` pixels ||
 || **height*** 
 `integer` | The height of the frame in pixels. Inside the method, the value is parsed using `parseInt` and is only used if greater than `0` ||
 || **callback** 

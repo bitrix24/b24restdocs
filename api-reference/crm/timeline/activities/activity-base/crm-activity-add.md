@@ -78,7 +78,7 @@ To create an activity with the type "task", use the [creation](../../../../tasks
 || **DIRECTION**
 [`crm_enum_activitydirection`](../../../data-types.md#activity-enums) | Direction of the activity: incoming/outgoing. Relevant for calls and emails, not used for meetings ||
 || **END_TIME**
-[`datetime`](../../../../data-types.md) | Activity completion time | ||
+[`datetime`](../../../../data-types.md) | Activity completion time ||
 || **FILES**
 [`diskfile`](../../../data-types.md) | Files added to the activity ||
 || **LOCATION**

@@ -26,7 +26,7 @@ void BX24.im.openHistory(String dialogId)
 || **Name** 
 `type` | **Description** ||
 || **dialogId*** 
-`string` | Identifier of the dialog. Supported formats: `userId` or `chatXXX` for chat, `imol|XXXX` for Open Channels ||
+`string` | Identifier of the dialog. Supported formats: `userId` or `chatXXX` for chat, ```imol|XXXX``` for Open Channels ||
 |#
 
 ## Code Example

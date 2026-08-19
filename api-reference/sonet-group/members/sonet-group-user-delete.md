@@ -24,7 +24,7 @@ The method `sonet_group.user.delete` removes participants from a workgroup or pr
 
 The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md) method. ||
 || **USER_ID***
-[`integer \| integer[]`](../../data-types.md#compound-types) | Identifier of the participant.
+[```integer | integer[]```](../../data-types.md#compound-types) | Identifier of the participant.
 
 The identifier can be obtained using the [sonet_group.user.get](./sonet-group-user-get.md) method. ||
 |#

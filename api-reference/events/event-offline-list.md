@@ -24,7 +24,7 @@ The method works only in the context of authorizing the [application](../../sett
 || **filter**
 [`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID`, `PROCESS_ID`, `ERROR` with standard operations like `=`, `>`, `<`, `<=`, etc. ||
 || **order**
-[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter; an array of the type `[field=>ASC|DESC]` is accepted as input. Default —`[ID:ASC]` ||
+[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter; an array of the type ```[field=>ASC|DESC]``` is accepted as input. Default —`[ID:ASC]` ||
 || **start**
 [`integer`](../data-types.md) | This parameter is used to control pagination.
 

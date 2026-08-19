@@ -24,7 +24,7 @@ The method `sonet_group.user.add` adds users to a workgroup or project without a
 
 The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md) method. ||
 || **USER_ID***
-[`integer \| integer[]`](../../data-types.md#compound-types) | User identifier.
+[```integer | integer[]```](../../data-types.md#compound-types) | User identifier.
 
 The identifier can be obtained using the [user.get](../../user/user-get.md) method.
 
