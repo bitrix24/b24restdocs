@@ -149,7 +149,7 @@ Each field type has its own set of keys in `settings`.
     || **Name**
 `type` | **Description** ||
     || **DEFAULT_VALUE** 
-[`string`](../../../data-types.md) | Default value in the format `{VALUE}|{CURRENCY}` ||
+[`string`](../../../data-types.md) | Default value in the format ```{VALUE}|{CURRENCY}``` ||
     |#
 
 - url

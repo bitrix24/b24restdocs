@@ -258,15 +258,15 @@ HTTP Status: **200**
 || **owner**
 [`integer`](../../../../data-types.md) | ID of the chat owner ||
 || **color**
-[`string\|null`](../../../../data-types.md) | Color of the chat in HEX format ||
+[```string|null```](../../../../data-types.md) | Color of the chat in HEX format ||
 || **avatar**
 [`string`](../../../../data-types.md) | URL of the chat avatar. Empty string if not set ||
 || **role**
 [`string`](../../../../data-types.md) | Role of the current user: `owner`, `manager`, `member`, `guest`, `none` ||
 || **dateCreate**
-[`string\|null`](../../../../data-types.md) | Creation date of the chat in ISO 8601 format ||
+[```string|null```](../../../../data-types.md) | Creation date of the chat in ISO 8601 format ||
 || **lastMessageId**
-[`integer\|null`](../../../../data-types.md) | ID of the last message ||
+[```integer|null```](../../../../data-types.md) | ID of the last message ||
 || **muteList**
 [`array`](../../../../data-types.md) | List of user IDs who have disabled notifications ||
 || **managerList**

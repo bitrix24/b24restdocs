@@ -80,7 +80,7 @@ The structure is described [below](#auth) ||
 - `T` (Trial) — trial version, time-limited
 - `P` (Paid) — paid application ||
 || **PAYMENT_EXPIRED***
-[`string`](../../data-types.md) | [Y|N] Flag indicating whether the paid period or trial period has expired ||
+[`string`](../../data-types.md) | [Y\|N] Flag indicating whether the paid period or trial period has expired ||
 || **DAYS***
 [`integer`](../../data-types.md) | Number of days remaining until the end of the paid period or trial period ||
 || **LANGUAGE_ID***

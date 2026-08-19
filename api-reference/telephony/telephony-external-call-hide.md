@@ -22,7 +22,7 @@ The method `telephony.externalCall.hide` hides the call card for a user or a lis
 || **CALL_ID***
 [`string`](../data-types.md) | Identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md). ||
 || **USER_ID**
-[`integer \| integer[]`](../data-types.md#compound-types) | Identifier of the user or an array of user identifiers.
+[```integer | integer[]```](../data-types.md#compound-types) | Identifier of the user or an array of user identifiers.
 
 Use the identifiers specified in the method [telephony.externalCall.show](./telephony-external-call-show.md)  ||
 |#

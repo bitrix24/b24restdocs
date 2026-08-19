@@ -36,7 +36,7 @@ If you need to remove event handlers set with an empty `auth_type` (authorized o
 {% endnote %} 
 ||
 || **event_type**
-[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
+[`string`](../data-types.md) | Values: ```online|offline```. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
 |#
 
 If no parameters are specified, all event handlers that meet the other requirements will be deleted.

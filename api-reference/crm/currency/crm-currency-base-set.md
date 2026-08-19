@@ -292,7 +292,7 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** |  ||
+|| **Code** | **Description** | **Value** ||
 || Empty string | Access denied. | Insufficient access rights. ||
 |#
 

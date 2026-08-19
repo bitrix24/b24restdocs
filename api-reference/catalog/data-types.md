@@ -340,7 +340,7 @@ Used only in the on-premise version for content sales ||
 Used only in the on-premise version for content sales
 ||
 || **propertyN**
-[`object\|array`](../data-types.md) | Value of the property of the main product, where `N` — identifier of the property. There can be multiple properties. 
+[```object|array```](../data-types.md) | Value of the property of the main product, where `N` — identifier of the property. There can be multiple properties. 
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
@@ -653,7 +653,7 @@ Not editable when inventory accounting is enabled.
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **propertyN**
-[`object\|array`](../data-types.md) | Value of the property of the parent product, where `N` — identifier of the property. There can be multiple properties. 
+[```object|array```](../data-types.md) | Value of the property of the parent product, where `N` — identifier of the property. There can be multiple properties. 
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
@@ -828,7 +828,7 @@ Used only in the on-premise version for content sales ||
 Used only in the on-premise version for content sales
 ||
 || **propertyN**
-[`object\|array`](../data-types.md) | Value of the property of the product variation, where `N` — identifier of the property. There can be multiple properties. 
+[```object|array```](../data-types.md) | Value of the property of the product variation, where `N` — identifier of the property. There can be multiple properties. 
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 
@@ -923,7 +923,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 - `7` — service
 ||
 || **propertyN**
-[`object\|array`](../data-types.md) | Value of the property of the service, where `N` — identifier of the property. There can be multiple properties. 
+[```object|array```](../data-types.md) | Value of the property of the service, where `N` — identifier of the property. There can be multiple properties. 
 
 The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
 

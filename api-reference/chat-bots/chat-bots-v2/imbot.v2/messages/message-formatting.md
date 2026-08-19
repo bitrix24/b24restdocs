@@ -64,7 +64,7 @@ For `size`, a range of `8-30px` is used. For `color`, HEX values of 3 or 6 chara
 || `[user=userId]...[/user]` | User mention | `[user=123]John[/user]` ||
 || `[user=all]...[/user]` | Mention all chat participants | `[user=all]Everyone[/user]` ||
 || `[chat=chatId]...[/chat]` | Chat mention | `[chat=456]Group[/chat]` ||
-|| `[chat=imol|ID]...[/chat]` | Mention open channel | `[chat=imol|789]Line[/chat]` ||
+|| ```[chat=imol|ID]...[/chat]``` | Mention open channel | ```[chat=imol|789]Line[/chat]``` ||
 || `[context=dialog/message]...[/context]` | Link to a message in a dialog | `[context=chat123/456]link[/context]` ||
 |#
 

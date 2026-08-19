@@ -43,7 +43,7 @@ When an application is deleted or updated, its actions will be removed. Therefor
 || **auth_type**
 [`integer`](../data-types.md) | Identifier of the user under whom the event handler is authorized. By default, the authorization of the user whose actions triggered the event will be used ||
 || **event_type**
-[`string`](../data-types.md) | Values: `online\|offline`. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
+[`string`](../data-types.md) | Values: ```online|offline```. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
 || **auth_connector**
 [`string`](../data-types.md) |  Source key. This parameter is intended for [offline events](./offline-events.md). It allows excluding false event triggers ||
 || **options**

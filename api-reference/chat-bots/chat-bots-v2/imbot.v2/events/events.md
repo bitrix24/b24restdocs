@@ -126,7 +126,7 @@ Webhook events are delivered through the Bitrix24 event system, which serializes
 || **Type** | **Value in FETCH** | **Value in Webhook** ||
 || `integer` | `789` | `"789"` ||
 || `boolean` | `true` / `false` | `"1"` / `"0"` ||
-|| `string|false` | `false` | `"0"` ||
+|| ```string|false``` | `false` | `"0"` ||
 || `null` | `null` | `""` ||
 |#
 

@@ -91,7 +91,7 @@ Possible values:
 
 Default is `0`. 
 
-In the method response, the value is returned as `true` | `false` ||
+In the method response, the value is returned as `true` \| `false` ||
 |#
 
 ## Code Examples

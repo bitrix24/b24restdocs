@@ -405,7 +405,7 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
+|| **Code** | **Description** | **Value** ||
 || `0` | wrong task id | The value of the `taskId` parameter is of an incorrect type. ||
 || `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | The required parameter `taskId` is missing. ||
 || `100` | Invalid value {} to match with parameter {select}. Should be value of type array. (internal error) | The `select` parameter is empty or contains invalid values. ||

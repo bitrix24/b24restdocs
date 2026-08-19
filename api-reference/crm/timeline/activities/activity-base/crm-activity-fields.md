@@ -678,7 +678,7 @@ HTTP status: **200**
 || **COMMUNICATIONS***
 [`crm_activity_communication`](../../../data-types.md) | [Description of communication](./crm-activity-communication-fields.md) | Multiple, required ||
 || **COMPLETED***
-[`char`](../../../../data-types.md) | Flag indicating whether the activity is completed (`Y`|`N`) | ||
+[`char`](../../../../data-types.md) | Flag indicating whether the activity is completed (`Y`\|`N`) | ||
 || **CREATED***
 [`datetime`](../../../../data-types.md) | Date and time the activity was created | ||
 || **DEADLINE**

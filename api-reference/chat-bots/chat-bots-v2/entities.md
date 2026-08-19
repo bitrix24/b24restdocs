@@ -54,19 +54,19 @@ A user of the system. Returned in the `user` fields and in the `users` collectio
 || **status**
 [`string`](../../data-types.md) | Status: `online`, `dnd` ||
 || **idle**
-[`string \| boolean`](../../data-types.md#compound-types) | Time of inactivity in ISO 8601 format, or `false` ||
+[```string | boolean```](../../data-types.md#compound-types) | Time of inactivity in ISO 8601 format, or `false` ||
 || **lastActivityDate**
-[`string \| boolean`](../../data-types.md#compound-types) | Date of last activity in ISO 8601 format, or `false` ||
+[```string | boolean```](../../data-types.md#compound-types) | Date of last activity in ISO 8601 format, or `false` ||
 || **mobileLastDate**
-[`string \| boolean`](../../data-types.md#compound-types) | Date of last mobile login in ISO 8601 format, or `false` ||
+[```string | boolean```](../../data-types.md#compound-types) | Date of last mobile login in ISO 8601 format, or `false` ||
 || **desktopLastDate**
-[`string \| boolean`](../../data-types.md#compound-types) | Date of last desktop login in ISO 8601 format, or `false` ||
+[```string | boolean```](../../data-types.md#compound-types) | Date of last desktop login in ISO 8601 format, or `false` ||
 || **absent**
-[`string \| boolean`](../../data-types.md#compound-types) | Date of absence start in ISO 8601 format, or `false` ||
+[```string | boolean```](../../data-types.md#compound-types) | Date of absence start in ISO 8601 format, or `false` ||
 || **departments**
 [`integer[]`](../../data-types.md) | Array of department IDs ||
 || **phones**
-[`object \| boolean`](../../data-types.md#compound-types) | Object with phone numbers (`personalPhone`, `workPhone`, etc.) or `false` ||
+[```object | boolean```](../../data-types.md#compound-types) | Object with phone numbers (`personalPhone`, `workPhone`, etc.) or `false` ||
 || **type**
 [`string`](../../data-types.md) | Type: `employee`, `extranet`, `email`, `collaber`, `bot` ||
 || **website**
@@ -129,7 +129,7 @@ It has two formats: brief (public) and extended (for the bot owner only).
 || **isReactionsEnabled**
 [`boolean`](../../data-types.md) | Are reactions to bot messages enabled? ||
 || **backgroundId**
-[`string\|null`](../../data-types.md) | ID of the bot chat background or `null` ||
+[```string|null```](../../data-types.md) | ID of the bot chat background or `null` ||
 || **language**
 [`string`](../../data-types.md) | Default language of the bot, e.g., `en`, `de` ||
 |#
@@ -194,7 +194,7 @@ Chat. Returned in the `chat` field of the responses from the methods [imbot.v2.C
 || **owner**
 [`integer`](../../data-types.md) | ID of the chat owner ||
 || **color**
-[`string\|null`](../../data-types.md) | Color of the chat in HEX format ||
+[```string|null```](../../data-types.md) | Color of the chat in HEX format ||
 || **avatar**
 [`string`](../../data-types.md) | URL of the chat avatar. An empty string if not set ||
 || **description**
@@ -220,19 +220,19 @@ Chat. Returned in the `chat` field of the responses from the methods [imbot.v2.C
 || **entityLink**
 [`object`](../../data-types.md) | Data link to an external object ||
 || **diskFolderId**
-[`integer\|null`](../../data-types.md) | ID of the folder on Drive for chat files ||
+[```integer|null```](../../data-types.md) | ID of the folder on Drive for chat files ||
 || **permissions**
 [`object`](../../data-types.md) | Access permissions for the current user ||
 || **parentChatId**
-[`integer\|null`](../../data-types.md) | ID of the parent chat for threads ||
+[```integer|null```](../../data-types.md) | ID of the parent chat for threads ||
 || **parentMessageId**
-[`integer\|null`](../../data-types.md) | ID of the parent message for threads ||
+[```integer|null```](../../data-types.md) | ID of the parent message for threads ||
 || **isNew**
 [`boolean`](../../data-types.md) | Is the chat newly created? ||
 || **textFieldEnabled**
 [`string`](../../data-types.md) | Is the text input field enabled: `Y` or `N` ||
 || **backgroundId**
-[`string\|null`](../../data-types.md) | ID of the chat background or `null` ||
+[```string|null```](../../data-types.md) | ID of the chat background or `null` ||
 |#
 
 ### Additional Fields (only in method responses)
@@ -243,11 +243,11 @@ Fields that are returned in method responses (e.g., [imbot.v2.Chat.get](./imbot.
 || **Field**
 `Type` | **Description** ||
 || **dateCreate**
-[`string\|null`](../../data-types.md) | Date of chat creation in ISO 8601 format ||
+[```string|null```](../../data-types.md) | Date of chat creation in ISO 8601 format ||
 || **lastMessageId**
-[`integer\|null`](../../data-types.md) | ID of the last message ||
+[```integer|null```](../../data-types.md) | ID of the last message ||
 || **lastId**
-[`integer\|null`](../../data-types.md) | ID of the last read message ||
+[```integer|null```](../../data-types.md) | ID of the last read message ||
 || **managerList**
 [`array`](../../data-types.md) | Array of chat manager IDs ||
 || **messageCount**
@@ -255,13 +255,13 @@ Fields that are returned in method responses (e.g., [imbot.v2.Chat.get](./imbot.
 || **userCounter**
 [`integer`](../../data-types.md) | Number of participants in the chat ||
 || **unreadId**
-[`integer\|null`](../../data-types.md) | ID of the first unread message ||
+[```integer|null```](../../data-types.md) | ID of the first unread message ||
 || **lastMessageViews**
 [`string`](../../data-types.md) | JSON string with data on views of the last message ||
 || **markedId**
-[`integer\|null`](../../data-types.md) | ID of the marked message ||
+[```integer|null```](../../data-types.md) | ID of the marked message ||
 || **public**
-[`object\|string`](../../data-types.md) | Public access settings ||
+[```object|string```](../../data-types.md) | Public access settings ||
 |#
 
 ### Example Chat Object
@@ -306,7 +306,7 @@ Message. Returned in the `message` field of method responses and event data.
 || **authorId**
 [`integer`](../../data-types.md) | ID of the author. `0` for system messages ||
 || **date**
-[`string\|null`](../../data-types.md) | Creation date in ISO 8601 format ||
+[```string|null```](../../data-types.md) | Creation date in ISO 8601 format ||
 || **text**
 [`string`](../../data-types.md) | Message text. Maximum length — 20,000 characters. Longer messages are truncated with the suffix ` (...)` ||
 || **isSystem**
@@ -314,7 +314,7 @@ Message. Returned in the `message` field of method responses and event data.
 || **uuid**
 [`string`](../../data-types.md) | UUID for deduplication ||
 || **forward**
-[`object\|null`](../../data-types.md) | Forwarding information: `{id, userId, chatId, date}` or `null` ||
+[```object|null```](../../data-types.md) | Forwarding information: `{id, userId, chatId, date}` or `null` ||
 || **params**
 [`object`](../../data-types.md) | Additional parameters: attach, keyboard, files, and others ||
 || **viewedByOthers**
@@ -361,7 +361,7 @@ File attached to a message. Returned in the `file` field of the response from th
 || **chatId**
 [`integer`](../../data-types.md) | ID of the chat ||
 || **date**
-[`string\|null`](../../data-types.md) | Upload date in ISO 8601 format ||
+[```string|null```](../../data-types.md) | Upload date in ISO 8601 format ||
 || **type**
 [`string`](../../data-types.md) | Content type: `file`, `image`, `video`, `audio` ||
 || **name**
@@ -371,7 +371,7 @@ File attached to a message. Returned in the `file` field of the response from th
 || **size**
 [`integer`](../../data-types.md) | File size in bytes ||
 || **image**
-[`object \| boolean`](../../data-types.md#compound-types) | Preview sizes for images: `{"height": 600, "width": 800}`, or `false` ||
+[```object | boolean```](../../data-types.md#compound-types) | Preview sizes for images: `{"height": 600, "width": 800}`, or `false` ||
 || **authorId**
 [`integer`](../../data-types.md) | ID of the user who uploaded the file ||
 || **authorName**

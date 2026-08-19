@@ -24,7 +24,7 @@ The method works only in the context of authorizing the [application](../../sett
 
 Important: the operation type is placed before the field name in the filter ||
 || **order**
-[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter; an array of the type `[field=>ASC\|DESC]` is accepted as input. Default is [TIMESTAMP_X:ASC] ||
+[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter; an array of the type ```[field=>ASC|DESC]``` is accepted as input. Default is [TIMESTAMP_X:ASC] ||
 || **limit**
 [`integer`](../data-types.md) | Number of records to select. Default is 50 ||
 |#
@@ -35,13 +35,13 @@ Important: the operation type is placed before the field name in the filter ||
 || **Name**
 `type` | **Description** ||
 || **clear**
-[`integer`](../data-types.md) |Values: `0\|1` — whether to delete selected records. Default is `1` ||
+[`integer`](../data-types.md) |Values: ```0|1``` — whether to delete selected records. Default is `1` ||
 || **process_id**
 [`string`](../data-types.md) | Process identifier. Used if you need to re-select any unprocessed records from the current process ||
 || **auth_connector**
 [`string`](../data-types.md) | Source key. Used if the `auth_connector` value was specified in the [event.bind](./event-bind.md) method ||
 || **error**
-[`integer`](../data-types.md) | Values: `0\|1` — whether to return erroneous records. Default is `0` ||
+[`integer`](../data-types.md) | Values: ```0|1``` — whether to return erroneous records. Default is `0` ||
 |#
 
 {% note info %}

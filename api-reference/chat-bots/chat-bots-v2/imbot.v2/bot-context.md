@@ -204,7 +204,7 @@ The event `ONIMBOTV2CONTEXTGET` should not immediately perform actions with side
 || **Parameter** | **Recommendation** ||
 || Format | 64 hexadecimal characters (256 bits), cryptographically random ||
 || Time to live (TTL) | ~10–15 minutes ||
-|| States | `pending → awaiting_confirm → confirmed \| declined \| expired` ||
+|| States | ```pending → awaiting_confirm → confirmed | declined | expired``` ||
 || One-time use | Change state in one atomic operation: `SELECT … FOR UPDATE` or `UPDATE … WHERE status=… RETURNING` ||
 || Protection against brute force | Unknown, expired, or foreign code → `200` without data leakage; delete expired records on a schedule ||
 |#
