@@ -2,135 +2,135 @@
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object with event fields ||
+[`object`](/api-reference/data-types.html) | Object with event fields ||
 || **ID**
-[`string`](../../data-types.md) | Event identifier ||
+[`string`](/api-reference/data-types.html) | Event identifier ||
 || **PARENT_ID**
-[`string`](../../data-types.md) | Identifier of the parent event ||
+[`string`](/api-reference/data-types.html) | Identifier of the parent event ||
 || **DELETED**
-[`string`](../../data-types.md) | Flag indicating whether the event is deleted. Possible values:
+[`string`](/api-reference/data-types.html) | Flag indicating whether the event is deleted. Possible values:
 - `Y` — event is deleted
 - `N` — event is not deleted ||
 || **CAL_TYPE**
-[`string`](../../data-types.md) | Type of calendar in which the event is located ||
+[`string`](/api-reference/data-types.html) | Type of calendar in which the event is located ||
 || **OWNER_ID**
-[`string`](../../data-types.md) | Identifier of the calendar owner:
+[`string`](/api-reference/data-types.html) | Identifier of the calendar owner:
 - `id` of the user for the calendar type `user`
 - `id` of the group for the calendar type `group` ||
 || **NAME**
-[`string`](../../data-types.md) | Event name ||
+[`string`](/api-reference/data-types.html) | Event name ||
 || **DATE_FROM**
-[`datetime`](../../data-types.md) | Start date of the event ||
+[`datetime`](/api-reference/data-types.html) | Start date of the event ||
 || **DATE_TO**
-[`datetime`](../../data-types.md) | End date of the event ||
+[`datetime`](/api-reference/data-types.html) | End date of the event ||
 || **ORIGINAL_DATE_FROM**
-[`datetime`](../../data-types.md) | Start date of the original event for recurring events ||
+[`datetime`](/api-reference/data-types.html) | Start date of the original event for recurring events ||
 || **TZ_FROM**
-[`string`](../../data-types.md) | Timezone of the event start date ||
+[`string`](/api-reference/data-types.html) | Timezone of the event start date ||
 || **TZ_TO**
-[`string`](../../data-types.md) | Timezone of the event end date ||
+[`string`](/api-reference/data-types.html) | Timezone of the event end date ||
 || **TZ_OFFSET_FROM**
-[`string`](../../data-types.md) | Time offset of the event start time relative to UTC in seconds ||
+[`string`](/api-reference/data-types.html) | Time offset of the event start time relative to UTC in seconds ||
 || **TZ_OFFSET_TO**
-[`string`](../../data-types.md) | Time offset of the event end time relative to UTC in seconds ||
+[`string`](/api-reference/data-types.html) | Time offset of the event end time relative to UTC in seconds ||
 || **DATE_FROM_TS_UTC**
-[`string`](../../data-types.md) | Start date and time of the event in UTC in timestamp format ||
+[`string`](/api-reference/data-types.html) | Start date and time of the event in UTC in timestamp format ||
 || **DATE_TO_TS_UTC**
-[`string`](../../data-types.md) | End date and time of the event in UTC in timestamp format ||
+[`string`](/api-reference/data-types.html) | End date and time of the event in UTC in timestamp format ||
 || **DT_SKIP_TIME**
-[`string`](../../data-types.md) | Flag indicating that the event lasts all day. Possible values: 
+[`string`](/api-reference/data-types.html) | Flag indicating that the event lasts all day. Possible values:
 - `Y` — all day
 - `N` — not all day ||
 || **DT_LENGTH**
-[`integer`](../../data-types.md) | Duration of the event in seconds ||
+[`integer`](/api-reference/data-types.html) | Duration of the event in seconds ||
 || **EVENT_TYPE**
-[`string`](../../data-types.md) | Type of event ||
+[`string`](/api-reference/data-types.html) | Type of event ||
 || **CREATED_BY**
-[`string`](../../data-types.md) | Identifier of the user who created the event ||
+[`string`](/api-reference/data-types.html) | Identifier of the user who created the event ||
 || **DATE_CREATE**
-[`datetime`](../../data-types.md) | Date the event was created ||
+[`datetime`](/api-reference/data-types.html) | Date the event was created ||
 || **TIMESTAMP_X**
-[`datetime`](../../data-types.md) | Date the event was modified ||
+[`datetime`](/api-reference/data-types.html) | Date the event was modified ||
 || **DESCRIPTION**
-[`string`](../../data-types.md) | Description of the event ||
+[`string`](/api-reference/data-types.html) | Description of the event ||
 || **PRIVATE_EVENT**
-[`string`](../../data-types.md) | Mark indicating that the event is private. Possible values:
+[`string`](/api-reference/data-types.html) | Mark indicating that the event is private. Possible values:
 
 - `Y` — private
 - `N` — not private ||
 || **ACCESSIBILITY**
-[`string`](../../data-types.md) | Availability of event participants ||
+[`string`](/api-reference/data-types.html) | Availability of event participants ||
 || **IMPORTANCE**
-[`string`](../../data-types.md) | Importance of the event ||
+[`string`](/api-reference/data-types.html) | Importance of the event ||
 || **IS_MEETING**
-[`boolean`](../../data-types.md) | Indicator of a meeting with event participants. Possible values: 
+[`boolean`](/api-reference/data-types.html) | Indicator of a meeting with event participants. Possible values:
 
 - `Y` — meeting with participants
 - `N` — meeting without participants ||
 || **MEETING_STATUS**
-[`string`](../../data-types.md) | Status of participation in the event. Possible values:
+[`string`](/api-reference/data-types.html) | Status of participation in the event. Possible values:
 - `Y` — accepted
 - `N` — declined
 - `Q` — invited but not yet responded
 - `H` — event organizer ||
 || **MEETING_HOST**
-[`string`](../../data-types.md) | Identifier of the user hosting the event ||
+[`string`](/api-reference/data-types.html) | Identifier of the user hosting the event ||
 || **MEETING**
-[`object`](../../data-types.md) | Object describing [meeting settings](#meeting) ||
+[`object`](/api-reference/data-types.html) | Object describing [meeting settings](#meeting) ||
 || **LOCATION**
-[`string`](../../data-types.md) | Identifier or name of the event location ||
+[`string`](/api-reference/data-types.html) | Identifier or name of the event location ||
 || **REMIND**
-[`array`](../../data-types.md) | Array of objects describing [event reminders](#remind) ||
+[`array`](/api-reference/data-types.html) | Array of objects describing [event reminders](#remind) ||
 || **COLOR**
-[`string`](../../data-types.md) | Background color of the event ||
+[`string`](/api-reference/data-types.html) | Background color of the event ||
 || **RRULE**
-[`object`](../../data-types.md) | Recurrence of the event in the form of an [object](#rrule) in terms of the iCalendar standard ||
+[`object`](/api-reference/data-types.html) | Recurrence of the event in the form of an [object](#rrule) in terms of the iCalendar standard ||
 || **EXDATE**
-[`string`](../../data-types.md) | List of exception dates from the recurrence rule ||
+[`string`](/api-reference/data-types.html) | List of exception dates from the recurrence rule ||
 || **DAV_XML_ID**
-[`string`](../../data-types.md) | Synchronization identifier ||
+[`string`](/api-reference/data-types.html) | Synchronization identifier ||
 || **G_EVENT_ID**
-[`string`](../../data-types.md) | Synchronization identifier ||
+[`string`](/api-reference/data-types.html) | Synchronization identifier ||
 || **CAL_DAV_LABEL**
-[`string`](../../data-types.md) | Synchronization identifier ||
+[`string`](/api-reference/data-types.html) | Synchronization identifier ||
 || **VERSION**
-[`string`](../../data-types.md) | Version of event changes ||
+[`string`](/api-reference/data-types.html) | Version of event changes ||
 || **ATTENDEES_CODES**
-[`array`](../../data-types.md) | Identifiers of event participants ||
+[`array`](/api-reference/data-types.html) | Identifiers of event participants ||
 || **RECURRENCE_ID**
-[`string`](../../data-types.md) | Identifier of the original event when editing only the current one ||
+[`string`](/api-reference/data-types.html) | Identifier of the original event when editing only the current one ||
 || **RELATIONS**
-[`object`](../../data-types.md) | Object for recurring events with information about relationships to the [original event](#relations) ||
+[`object`](/api-reference/data-types.html) | Object for recurring events with information about relationships to the [original event](#relations) ||
 || **SECTION_ID**
-[`string`](../../data-types.md) | Identifier of the calendar in which the event is located ||
+[`string`](/api-reference/data-types.html) | Identifier of the calendar in which the event is located ||
 || **SYNC_STATUS**
-[`string`](../../data-types.md) | Synchronization status of the event ||
+[`string`](/api-reference/data-types.html) | Synchronization status of the event ||
 || **UF_CRM_CAL_EVENT**
-[`array`](../../data-types.md) | Array of identifiers of CRM objects linked to the event ||
+[`array`](/api-reference/data-types.html) | Array of identifiers of CRM objects linked to the event ||
 || **UF_WEBDAV_CAL_EVENT**
-[`array`](../../data-types.md) | Array of identifiers of files linked to the event ||
+[`array`](/api-reference/data-types.html) | Array of identifiers of files linked to the event ||
 || **SECTION_DAV_XML_ID**
-[`array`](../../data-types.md) | Synchronization identifier of the event calendar ||
+[`array`](/api-reference/data-types.html) | Synchronization identifier of the event calendar ||
 || **DATE_FROM_FORMATTED**
-[`string`](../../data-types.md) | Formatted start date of the event ||
+[`string`](/api-reference/data-types.html) | Formatted start date of the event ||
 || **DATE_TO_FORMATTED**
-[`string`](../../data-types.md) | Formatted end date of the event ||
+[`string`](/api-reference/data-types.html) | Formatted end date of the event ||
 || **SECT_ID**
-[`string`](../../data-types.md) | Identifier of the calendar in which the event is located ||
+[`string`](/api-reference/data-types.html) | Identifier of the calendar in which the event is located ||
 || **ATTENDEE_LIST**
-[`array`](../../data-types.md) | Array of objects describing event participants and their participation statuses. The structure of the object is described [below](#attendee_list) ||
+[`array`](/api-reference/data-types.html) | Array of objects describing event participants and their participation statuses. The structure of the object is described [below](#attendee_list) ||
 || **COLLAB_ID**
-[`integer`](../../data-types.md) | Identifier of the collaboration in which the event was created ||
+[`integer`](/api-reference/data-types.html) | Identifier of the collaboration in which the event was created ||
 || **~RRULE_DESCRIPTION**
-[`string`](../../data-types.md) | Text description of the event recurrence rule ||
+[`string`](/api-reference/data-types.html) | Text description of the event recurrence rule ||
 || **attendeesEntityList**
-[`array`](../../data-types.md) | Array of objects describing users — [event participants](#attendeesEntityList) ||
+[`array`](/api-reference/data-types.html) | Array of objects describing users — [event participants](#attendeesEntityList) ||
 || **~DESCRIPTION**
-[`string`](../../data-types.md) | Description of the event ||
+[`string`](/api-reference/data-types.html) | Description of the event ||
 || **~USER_OFFSET_FROM**
-[`integer`](../../data-types.md) | Time offset of the event start time relative to the current user's timezone ||
+[`integer`](/api-reference/data-types.html) | Time offset of the event start time relative to the current user's timezone ||
 || **~USER_OFFSET_TO**
-[`integer`](../../data-types.md) | Time offset of the event end time relative to the current user's timezone ||
+[`integer`](/api-reference/data-types.html) | Time offset of the event end time relative to the current user's timezone ||
 |#
 
 ### MEETING Object {#meeting}
@@ -139,21 +139,21 @@
 || **Name**
 `type` | **Description** ||
 || **HOST_NAME**
-[`string`](../../data-types.md) | Name of the user hosting the event ||
+[`string`](/api-reference/data-types.html) | Name of the user hosting the event ||
 || **NOTIFY**
-[`boolean`](../../data-types.md) | Flag for notifying about confirmation or decline of participants ||
+[`boolean`](/api-reference/data-types.html) | Flag for notifying about confirmation or decline of participants ||
 || **REINVITE**
-[`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event ||
+[`boolean`](/api-reference/data-types.html) | Flag for requesting re-confirmation of participation when editing the event ||
 || **ALLOW_INVITE**
-[`boolean`](../../data-types.md) | Flag allowing participants to invite others to the event ||
+[`boolean`](/api-reference/data-types.html) | Flag allowing participants to invite others to the event ||
 || **HIDE_GUESTS**
-[`boolean`](../../data-types.md) | Flag for hiding the list of participants ||
+[`boolean`](/api-reference/data-types.html) | Flag for hiding the list of participants ||
 || **MEETING_CREATOR**
-[`integer`](../../data-types.md) | Identifier of the event creator ||
+[`integer`](/api-reference/data-types.html) | Identifier of the event creator ||
 || **LANGUAGE_ID**
-[`string`](../../data-types.md) | Language identifier for event notifications ||
+[`string`](/api-reference/data-types.html) | Language identifier for event notifications ||
 || **MAIL_FROM**
-[`string`](../../data-types.md) | Sender's address for notifications ||
+[`string`](/api-reference/data-types.html) | Sender's address for notifications ||
 |#
 
 ### REMIND Object {#remind}
@@ -162,12 +162,12 @@
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../../data-types.md) | Time type of the reminder
+[`string`](/api-reference/data-types.html) | Time type of the reminder
 - `min` — minutes
 - `hour` – hours
 - `day` — days ||
 || **count**
-[`integer`](../../data-types.md) | Numerical value of the time interval ||
+[`integer`](/api-reference/data-types.html) | Numerical value of the time interval ||
 |#
 
 ### RRULE Object {#rrule}
@@ -176,14 +176,14 @@
 || **Name**
 `type` | **Description** ||
 || **FREQ**
-[`string`](../../data-types.md) | Frequency of recurrence
+[`string`](/api-reference/data-types.html) | Frequency of recurrence
 - `DAILY` — daily
 - `WEEKLY` — weekly
 - `MONTHLY` — monthly
 - `YEARLY` — yearly
 ||
 ||**BYDAY**
-[`object`](../../data-types.md) | Days of the week
+[`object`](/api-reference/data-types.html) | Days of the week
 - `SU` — Sunday
 - `MO` — Monday
 - `TU` — Tuesday
@@ -192,13 +192,13 @@
 - `FR` — Friday
 - `SA` — Saturday ||
 || **INTERVAL**
-[`integer`](../../data-types.md) | Interval between recurrences ||
+[`integer`](/api-reference/data-types.html) | Interval between recurrences ||
 || **UNTIL**
-[`date`](../../data-types.md) | End date of recurrences ||
+[`date`](/api-reference/data-types.html) | End date of recurrences ||
 || **~UNTIL**
-[`date`](../../data-types.md) | End date of recurrences. Technical field ||
+[`date`](/api-reference/data-types.html) | End date of recurrences. Technical field ||
 || **UNTIL_TS**
-[`integer`](../../data-types.md) | End date of recurrences in timestamp format ||
+[`integer`](/api-reference/data-types.html) | End date of recurrences in timestamp format ||
 |#
 
 ### RELATIONS Object {#relations}
@@ -207,9 +207,9 @@
 || **Name**
 `type` | **Description** ||
 || **ORIGINAL_RECURSION_ID**
-[`integer`](../../data-types.md) | Identifier of the original event for recurring events created when editing ||
+[`integer`](/api-reference/data-types.html) | Identifier of the original event for recurring events created when editing ||
 || **COMMENT_XML_ID**
-[`string`](../../data-types.md) | Identifier of the original event for single events created when editing from recurring ones ||
+[`string`](/api-reference/data-types.html) | Identifier of the original event for single events created when editing from recurring ones ||
 |#
 
 ### ATTENDEE_LIST Objects {#attendee_list}
@@ -218,11 +218,11 @@
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | Identifier of the user ||
+[`integer`](/api-reference/data-types.html) | Identifier of the user ||
 || **entryId**
-[`string`](../../data-types.md) | Identifier of the event ||
+[`string`](/api-reference/data-types.html) | Identifier of the event ||
 || **status**
-[`string`](../../data-types.md) | Status of the event participant. Possible values:
+[`string`](/api-reference/data-types.html) | Status of the event participant. Possible values:
 - `Y` — accepted
 - `N` — declined
 - `Q` — invited but not yet responded
@@ -235,7 +235,7 @@
 || **Name**
 `type` | **Description** ||
 || **entityId**
-[`string`](../../data-types.md) | Event participant object type ||
+[`string`](/api-reference/data-types.html) | Event participant object type ||
 || **id**
-[`integer`](../../data-types.md) | Identifier of the event participant ||
+[`integer`](/api-reference/data-types.html) | Identifier of the event participant ||
 |#

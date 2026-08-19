@@ -1,1 +1,0 @@
-**Scope**: [`bizproc`](../../scopes/permissions.md) **Execution rights**: `administrator`
