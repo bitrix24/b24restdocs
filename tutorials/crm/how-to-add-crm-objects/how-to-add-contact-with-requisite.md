@@ -1,155 +1,337 @@
-# Add a Contact with Details via Web Form
+# Add a Contact with Requisites via Web Form
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to create contacts in CRM
+> Who can execute the methods: to complete the entire scenario, the strictest of the listed permissions is required — "Add|Import" for contacts
+>
+> - [crm.address.fields](../../../api-reference/crm/requisites/addresses/crm-address-fields.md) — any user
+> - [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) — a user with permission to read contacts and companies
+> - [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md) — a user with the "Add|Import" permission for contacts
+> - [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md) and [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md) — a user with permission to add the contact that owns the requisite
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../ai-tools/mcp.md) so that the assistant uses the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-You can place a form on your website to collect client data and details. When a client fills out the form, their data will be sent to the CRM, and you will be able to process the request.
+You can place a form on your website to collect client data and requisites. When a client fills out the form, the data is sent to a handler. The handler script creates objects in the CRM via the REST API.
 
-Setting up the form consists of two steps.
+As a result of the scenario, three linked objects appear in the CRM: a contact, its requisite, and the requisite address.
 
-1. Place the form on a PHP page. In the page code, retrieve a list of company detail templates and address fields for the form. Send the form data to a handler.
+The setup consists of two stages.
 
-2. Create a file to process the data. The handler will receive and prepare the data, then create a contact with company details.
+1. Prepare the fields and place the web form on the page. The set of form fields is taken from the [crm.address.fields](../../../api-reference/crm/requisites/addresses/crm-address-fields.md) and [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) methods
 
-## 1. Creating the Web Form
+2. Create a handler file that sequentially calls the [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md), [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md), and [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md) methods
 
-To generate the form fields, we will use data from Bitrix24. To obtain information about the detail settings, we will sequentially execute two methods:
+The order of the calls is set by the links between the objects: the requisite is created for an existing contact, and the address for an existing requisite.
 
-1. [crm.address.fields](../../../api-reference/crm/requisites/addresses/crm-address-fields.md) — retrieves a list of address fields. Save the result in `arAddressFields`,
+## Before You Start
 
-   {% list tabs %}
+- At least one requisite template is configured in Bitrix24. If there are no templates, the [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) method returns an empty list and there is nothing to build the form from
 
-   - JS
+- The webhook is created on behalf of a user who has the "Add|Import" permission for contacts
 
-       ```javascript
-       const arAddressFields = await $b24.actions.v2.call.make({
-           method: 'crm.address.fields', params: {}, requestId: 'address-fields'
-       })
-       ```
+- You have a server that serves the page with the form and accepts the form data using the `POST` method. In the examples, this is Express for JS, a PHP script, Flask for Python, and `net/http` for Go
 
-   - PHP
+- The webhook URL is stored in the environment, not in the page code. The page with the form is public, and the secret must not end up in it
 
-       ```php
-       $arAddressFields = $sb->getCRMScope()->address()->fields()->getFieldsDescription();
-       ```
+## 1. Create the Web Form
 
-   - Python
+To generate the fields, we use two methods:
 
-       ```python
-       ar_address_fields = client.crm.address.fields().result
-       ```
+- [crm.address.fields](../../../api-reference/crm/requisites/addresses/crm-address-fields.md) — retrieves a list of address fields. Save the result in the `$arAddressFields` array
 
-   - Go
-
-       ```go
-       res, err := core.Call(ctx, "crm.address.fields", nil, b24.WithIdempotent())
-       if err != nil {
-       	return fmt.Errorf("crm.address.fields: %w", err)
-       }
-
-       // The response is not a list but an object "field name -> description", hence a map.
-       var addressFields map[string]struct {
-       	Type       string `json:"type"`
-       	Title      string `json:"title"`
-       	IsReadOnly bool   `json:"isReadOnly"`
-       }
-       if err := json.Unmarshal(res.Result, &addressFields); err != nil {
-       	return fmt.Errorf("parse address fields: %w", err)
-       }
-
-       // Only string fields that are writable are taken into the form: TYPE_ID,
-       // ENTITY_ID and ENTITY_TYPE_ID also arrive in this response, but the handler
-       // substitutes them itself. Map keys in Go are unordered — sort them, otherwise the fields
-       // of the form will jump from run to run.
-       var addressNames []string
-       for name, f := range addressFields {
-       	if f.Type == "string" && !f.IsReadOnly {
-       		addressNames = append(addressNames, name)
-       	}
-       }
-       sort.Strings(addressNames)
-       ```
-
-   {% endlist %}
-
-2. [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) — requests a list of company detail templates. Use the `select` parameter to select the `ID` and `NAME` fields for each template. Save the result in `arRequisiteType`.
-
-   {% list tabs %}
-
-   - JS
-
-       ```javascript
-       const arRequisiteType = await $b24.actions.v2.call.make({
-           method: 'crm.requisite.preset.list',
-           params: { select: ['ID', 'NAME'] },
-           requestId: 'preset-list'
-       })
-       ```
-
-   - PHP
-
-       ```php
-       $arRequisiteType = $sb->getCRMScope()->requisitePreset()->list(
-           order: [], filter: [], select: ['ID', 'NAME']
-       )->getRequisitePresets();
-       ```
-
-   - Python
-
-       ```python
-       ar_requisite_type = client.crm.requisite.preset.list(select=["ID", "NAME"]).result
-       ```
-
-   - Go
-
-       ```go
-       res, err = core.Call(ctx, "crm.requisite.preset.list", b24.Params{
-       	"select": []string{"ID", "NAME"},
-       }, b24.WithIdempotent())
-       if err != nil {
-       	return fmt.Errorf("crm.requisite.preset.list: %w", err)
-       }
-
-       // Here the ID arrives AS A STRING ("1"), whereas crm.enum.* returns
-       // numbers. b24.ID parses both spellings.
-       var presets []struct {
-       	ID   b24.ID `json:"ID"`
-       	Name string `json:"NAME"`
-       }
-       if err := json.Unmarshal(res.Result, &presets); err != nil {
-       	return fmt.Errorf("parse requisite templates: %w", err)
-       }
-       if len(presets) == 0 {
-       	return fmt.Errorf("the portal has no requisite templates")
-       }
-       ```
-
-   {% endlist %}
-
-Add a web form to the website page with the following fields:
-
--  `REQ_TYPE` — a drop-down list with the company detail type from the `arRequisiteType` array, required,
-
--  `NAME` — contact name, required,
-
--  `LAST_NAME` — surname,
-
--  `PHONE` — phone,
-
--  `${addressFieldsInputs}` — address fields, which are created dynamically from the `arAddressFields` array.
-
-The form sends data to the handler using the `POST` method.
-
-### Full Page Code Example with Form
+- [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) — retrieves a list of requisite templates based on the `ID` and `NAME` fields. Save the result in the `$arPresets` array
 
 {% include [Note on examples](../../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    const arAddressFields = (await $b24.actions.v2.call.make({
+        method: 'crm.address.fields', params: {}, requestId: 'address-fields'
+    })).getData().result
+    const arPresets = (await $b24.actions.v2.call.make({
+        method: 'crm.requisite.preset.list', params: { select: ['ID', 'NAME'] }, requestId: 'preset-list'
+    })).getData().result
+    ```
+
+- PHP
+
+    ```php
+    $arAddressFields = $sb->getCRMScope()->address()->fields()->getFieldsDescription();
+    $arPresets = $sb->getCRMScope()->requisitePreset()->list(
+        order: [], filter: [], select: ["ID", "NAME"]
+    )->getRequisitePresets();
+    ```
+
+- Python
+
+    ```python
+    ar_address_fields = client.crm.address.fields().result
+    ar_presets = client.crm.requisite.preset.list(select=["ID", "NAME"]).result
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "crm.address.fields", nil, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.address.fields: %w", err)
+    }
+
+    // The response is not a list but an object "field name -> description", hence a map.
+    var addressFields map[string]struct {
+    	Type       string `json:"type"`
+    	Title      string `json:"title"`
+    	IsReadOnly bool   `json:"isReadOnly"`
+    }
+    if err := json.Unmarshal(res.Result, &addressFields); err != nil {
+    	return fmt.Errorf("parsing address fields: %w", err)
+    }
+
+    res, err = core.Call(ctx, "crm.requisite.preset.list", b24.Params{
+    	"select": []string{"ID", "NAME"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.preset.list: %w", err)
+    }
+
+    // Here the identifier arrives as a STRING ("1"), whereas crm.enum.* returns
+    // numbers. b24.ID parses both notations.
+    var presets []struct {
+    	ID   b24.ID `json:"ID"`
+    	Name string `json:"NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &presets); err != nil {
+    	return fmt.Errorf("parsing requisite templates: %w", err)
+    }
+    if len(presets) == 0 {
+    	return fmt.Errorf("there are no requisite templates in Bitrix24")
+    }
+    ```
+
+{% endlist %}
+
+The [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) method returns an array of objects, not identifier-name pairs. For the drop-down list, iterate over this array and take `ID` and `NAME` from each object.
+
+```json
+{
+    "result": [
+        { "ID": "1", "NAME": "Organization" },
+        { "ID": "3", "NAME": "Sole Proprietorship" },
+        { "ID": "5", "NAME": "Individual" }
+    ]
+}
+```
+
+The [crm.address.fields](../../../api-reference/crm/requisites/addresses/crm-address-fields.md) method returns an object where the key is the field code and the value is its description with the `isRequired` mandatory flag and the `title` name.
+
+```json
+{
+    "result": {
+        "TYPE_ID": {
+            "type": "integer",
+            "isRequired": true,
+            "isReadOnly": false,
+            "isImmutable": true,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "TYPE_ID"
+        },
+        "ADDRESS_1": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "Street, house, building, structure"
+        },
+        "CITY": {
+            "type": "string",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "title": "City"
+        }
+    }
+}
+```
+
+Remove unnecessary address fields from the `$arAddressFields` array so they are not displayed in the form. Three of them — `TYPE_ID`, `ENTITY_TYPE_ID`, and `ENTITY_ID` — are mandatory system fields that the client does not fill in; the handler substitutes them itself.
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    for (const f of ['TYPE_ID', 'ENTITY_TYPE_ID', 'ENTITY_ID', 'COUNTRY_CODE', 'ANCHOR_TYPE_ID', 'ANCHOR_ID']) {
+        delete arAddressFields[f]
+    }
+    ```
+
+- PHP
+
+    ```php
+    foreach (['TYPE_ID', 'ENTITY_TYPE_ID', 'ENTITY_ID', 'COUNTRY_CODE', 'ANCHOR_TYPE_ID', 'ANCHOR_ID'] as $field) {
+        unset($arAddressFields[$field]);
+    }
+    ```
+
+- Python
+
+    ```python
+    for f in ("TYPE_ID", "ENTITY_TYPE_ID", "ENTITY_ID", "COUNTRY_CODE", "ANCHOR_TYPE_ID", "ANCHOR_ID"):
+        ar_address_fields.pop(f, None)
+    ```
+
+- Go
+
+    ```go
+    // The form takes only the string fields that are available for writing: TYPE_ID,
+    // ENTITY_ID, and ENTITY_TYPE_ID also arrive in this response, but the handler
+    // substitutes them itself. Map keys in Go are unordered — sort them, otherwise
+    // the form fields will jump around from run to run.
+    var addressNames []string
+    for name, f := range addressFields {
+    	if f.Type == "string" && !f.IsReadOnly {
+    		addressNames = append(addressNames, name)
+    	}
+    }
+    sort.Strings(addressNames)
+    ```
+
+{% endlist %}
+
+Create an HTML form with the following fields:
+
+- `REQ_TYPE` — a drop-down list with requisite templates from the `$arPresets` array. Mandatory field
+
+- `NAME` — contact first name. Mandatory field
+
+- `LAST_NAME` — contact last name
+
+- `PHONE` — phone number
+
+- `ADDRESS` — address fields are created dynamically from `$arAddressFields`. If the field is mandatory, add the attribute `required`
+
+The form collects the data and sends it to the handler using the `POST` method. The form markup is shown below — the requisite drop-down list and the address fields are populated from the retrieved data.
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    // assemble the form string from the received data and insert it into the server response
+    const options = arPresets.map(p => `<option value="${p.ID}">${p.NAME}</option>`).join('')
+    const addressInputs = Object.entries(arAddressFields).map(([key, field]) =>
+        `<input type="text" name="ADDRESS[${key}]" placeholder="${field.title}" ${field.isRequired ? 'required' : ''}>`
+    ).join('')
+
+    const formHtml = `
+        <form id="form_to_crm">
+            <select name="REQ_TYPE" required>
+                <option value="" disabled selected>Select a requisite type</option>
+                ${options}
+            </select>
+            <input type="text" name="NAME" placeholder="First name" required>
+            <input type="text" name="LAST_NAME" placeholder="Last name">
+            <input type="text" name="PHONE" placeholder="Phone">
+            ${addressInputs}
+            <input type="submit" value="Submit">
+        </form>`
+    ```
+
+- PHP
+
+    ```html
+    <form id="form_to_crm">
+        <select name="REQ_TYPE" required>
+            <option value="" disabled selected>Select a requisite type</option>
+            <?php foreach($arPresets as $preset):?>
+                <option value="<?=$preset->ID?>"><?=$preset->NAME?></option>
+            <?php endforeach;?>
+        </select>
+        <input type="text" name="NAME" placeholder="First name" required>
+        <input type="text" name="LAST_NAME" placeholder="Last name">
+        <input type="text" name="PHONE" placeholder="Phone">
+        <?php if(is_array($arAddressFields)):?>
+            <?php foreach($arAddressFields as $key=>$arField):?>
+                <input type="text" name="ADDRESS[<?=$key?>]" placeholder="<?=$arField['title']?>" <?=($arField['isRequired'])?'required':'';?>>
+            <?php endforeach;?>
+        <?php endif;?>
+        <input type="submit" value="Submit">
+    </form>
+    ```
+
+- Python
+
+    ```python
+    # assemble the form string from the received data and insert it into the server response
+    from markupsafe import escape
+
+    options = "".join(
+        f'<option value="{escape(preset["ID"])}">{escape(preset["NAME"])}</option>'
+        for preset in ar_presets
+    )
+    address_inputs = "".join(
+        f'<input type="text" name="ADDRESS[{escape(key)}]" '
+        f'placeholder="{escape(field["title"])}" '
+        f'{"required" if field["isRequired"] else ""}>'
+        for key, field in ar_address_fields.items()
+    )
+
+    form_html = f"""
+        <form id="form_to_crm">
+            <select name="REQ_TYPE" required>
+                <option value="" disabled selected>Select a requisite type</option>
+                {options}
+            </select>
+            <input type="text" name="NAME" placeholder="First name" required>
+            <input type="text" name="LAST_NAME" placeholder="Last name">
+            <input type="text" name="PHONE" placeholder="Phone">
+            {address_inputs}
+            <input type="submit" value="Submit">
+        </form>"""
+    ```
+
+- Go
+
+    ```go
+    var form strings.Builder
+    form.WriteString(`<!doctype html>
+    <meta charset="utf-8">
+    <title>Request</title>
+    <form method="post" action="/form">
+    <p><label>Requisite type*<br><select name="REQ_TYPE" required>`)
+    for _, p := range presets {
+    	fmt.Fprintf(&form, `<option value="%d">%s</option>`, p.ID, html.EscapeString(p.Name))
+    }
+    form.WriteString(`</select></label></p>
+    <p><label>First name*<br><input name="NAME" required></label></p>
+    <p><label>Last name<br><input name="LAST_NAME"></label></p>
+    <p><label>Phone<br><input name="PHONE" type="tel"></label></p>`)
+    // The address fields are created dynamically: their set is defined by Bitrix24,
+    // not by the code. Names such as ADDRESS[CITY] — the handler parses them back.
+    for _, name := range addressNames {
+    	fmt.Fprintf(&form, "<p><label>%s<br><input name=\"ADDRESS[%s]\"></label></p>\n",
+    		html.EscapeString(addressFields[name].Title), name)
+    }
+    form.WriteString(`<p><button type="submit">Submit</button></p>
+    </form>`)
+    page := form.String()
+    ```
+
+{% endlist %}
+
+### Full Code Example of the Form Page
 
 {% list tabs %}
 
@@ -164,18 +346,17 @@ The form sends data to the handler using the `POST` method.
 
     const app = express()
 
-    // Form page: we receive data from Bitrix24 and render HTML
+    // Form page: retrieve data from Bitrix24 and render HTML
     app.get('/', async (req, res) => {
-        // Get the list of address fields and billing templates
         const arAddressFields = (await $b24.actions.v2.call.make({
             method: 'crm.address.fields', params: {}, requestId: 'address-fields'
         })).getData().result
-        const presets = (await $b24.actions.v2.call.make({
+        const arPresets = (await $b24.actions.v2.call.make({
             method: 'crm.requisite.preset.list', params: { select: ['ID', 'NAME'] }, requestId: 'preset-list'
         })).getData().result
 
-        if (!presets.length) {
-            res.send('<p>No available billing types.</p>')
+        if (!arPresets.length) {
+            res.send('<p>No requisite types available.</p>')
             return
         }
 
@@ -184,8 +365,8 @@ The form sends data to the handler using the `POST` method.
             delete arAddressFields[f]
         }
 
-        // Assemble the billing dropdown list and address fields
-        const options = presets.map(p => `<option value="${p.ID}">${p.NAME}</option>`).join('')
+        // Assemble the requisite drop-down list and the address fields
+        const options = arPresets.map(p => `<option value="${p.ID}">${p.NAME}</option>`).join('')
         const addressInputs = Object.entries(arAddressFields).map(([key, field]) =>
             `<input type="text" name="ADDRESS[${key}]" placeholder="${field.title}" ${field.isRequired ? 'required' : ''}>`
         ).join('')
@@ -193,11 +374,11 @@ The form sends data to the handler using the `POST` method.
         res.send(`
             <form id="form_to_crm">
                 <select name="REQ_TYPE" required>
-                    <option value="" disabled selected>Select billing type</option>
+                    <option value="" disabled selected>Select a requisite type</option>
                     ${options}
                 </select>
-                <input type="text" name="NAME" placeholder="First Name" required>
-                <input type="text" name="LAST_NAME" placeholder="Last Name">
+                <input type="text" name="NAME" placeholder="First name" required>
+                <input type="text" name="LAST_NAME" placeholder="Last name">
                 <input type="text" name="PHONE" placeholder="Phone">
                 ${addressInputs}
                 <input type="submit" value="Submit">
@@ -232,20 +413,16 @@ The form sends data to the handler using the `POST` method.
     use Psr\Log\NullLogger;
 
     $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
-    // Get the list of address fields and billing templates
+    // Retrieve the list of address fields and requisite templates
     $arAddressFields = $sb->getCRMScope()->address()->fields()->getFieldsDescription();
     $arPresets = $sb->getCRMScope()->requisitePreset()->list(
         order: [], filter: [], select: ["ID", "NAME"]
     )->getRequisitePresets();
 
     if (!empty($arPresets)):
-        $arRequisiteType = [];
-        foreach ($arPresets as $preset) {
-            $arRequisiteType[$preset->ID] = $preset->NAME;
-        }
-
         // Remove system and unused address fields
         $excludeFields = ['TYPE_ID', 'ENTITY_TYPE_ID', 'ENTITY_ID', 'COUNTRY_CODE', 'ANCHOR_TYPE_ID', 'ANCHOR_ID'];
         foreach ($excludeFields as $field) {
@@ -254,26 +431,26 @@ The form sends data to the handler using the `POST` method.
     ?>
         <form id="form_to_crm">
             <select name="REQ_TYPE" required>
-                <option value="" disabled selected>Select billing type</option>
-                <?php foreach ($arRequisiteType as $id => $name): ?>
-                    <option value="<?=$id?>"><?=$name?></option>
+                <option value="" disabled selected>Select a requisite type</option>
+                <?php foreach ($arPresets as $preset): ?>
+                    <option value="<?=$preset->ID?>"><?=$preset->NAME?></option>
                 <?php endforeach; ?>
             </select>
-            <input type="text" name="NAME" placeholder="First Name" required>
-            <input type="text" name="LAST_NAME" placeholder="Last Name">
+            <input type="text" name="NAME" placeholder="First name" required>
+            <input type="text" name="LAST_NAME" placeholder="Last name">
             <input type="text" name="PHONE" placeholder="Phone">
             <?php foreach ($arAddressFields as $key => $arField): ?>
-                <input type="text" name="ADDRESS[<?=$key?>]" 
-                       placeholder="<?=$arField['title']?>" 
+                <input type="text" name="ADDRESS[<?=$key?>]"
+                       placeholder="<?=$arField['title']?>"
                        <?=$arField['isRequired'] ? 'required' : ''?>>
             <?php endforeach; ?>
             <input type="submit" value="Submit">
         </form>
     <?php else: ?>
-        <p>No available billing types.</p>
+        <p>No requisite types available.</p>
     <?php endif; ?>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
     $(document).ready(function() {
         $('#form_to_crm').on('submit', function(el) {
@@ -281,7 +458,7 @@ The form sends data to the handler using the `POST` method.
             $.ajax({
                 method: 'POST',
                 dataType: 'json',
-                url: 'form.php',
+                url: 'form.php', // handler file from step 2
                 data: $(this).serialize(),
                 success: function(data) {
                     alert(data.message);
@@ -296,6 +473,8 @@ The form sends data to the handler using the `POST` method.
 
     ```python
     # pip install b24pysdk flask
+    import os
+
     from flask import Flask
     from markupsafe import escape
     from b24pysdk import BitrixWebhook, Client
@@ -303,19 +482,19 @@ The form sends data to the handler using the `POST` method.
     app = Flask(__name__)
 
     client = Client(BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
+        domain=os.environ["B24_DOMAIN"],  # your-domain.bitrix24.com
+        webhook_token=os.environ["B24_TOKEN"],  # user_id/token only, without https://
     ))
 
     # Page template: %(options)s and %(address_inputs)s are substituted from Python
     PAGE = """
         <form id="form_to_crm">
             <select name="REQ_TYPE" required>
-                <option value="" disabled selected>Select billing type</option>
+                <option value="" disabled selected>Select a requisite type</option>
                 %(options)s
             </select>
-            <input type="text" name="NAME" placeholder="First Name" required>
-            <input type="text" name="LAST_NAME" placeholder="Last Name">
+            <input type="text" name="NAME" placeholder="First name" required>
+            <input type="text" name="LAST_NAME" placeholder="Last name">
             <input type="text" name="PHONE" placeholder="Phone">
             %(address_inputs)s
             <input type="submit" value="Submit">
@@ -335,32 +514,32 @@ The form sends data to the handler using the `POST` method.
         </script>
     """
 
-    EMPTY_PAGE = "<p>No available billing types.</p>"
+    EMPTY_PAGE = "<p>No requisite types available.</p>"
+
 
     @app.route("/")
     def form_page():
-        # Get the list of address fields and billing templates
-        address_fields = client.crm.address.fields().result
-        presets = client.crm.requisite.preset.list(select=["ID", "NAME"]).result
+        # Retrieve the list of address fields and requisite templates
+        ar_address_fields = client.crm.address.fields().result
+        ar_presets = client.crm.requisite.preset.list(select=["ID", "NAME"]).result
 
-        requisite_types = {p["ID"]: p["NAME"] for p in presets}
-        if not requisite_types:
+        if not ar_presets:
             return EMPTY_PAGE
 
         # Remove system and unused address fields
         for f in ("TYPE_ID", "ENTITY_TYPE_ID", "ENTITY_ID", "COUNTRY_CODE", "ANCHOR_TYPE_ID", "ANCHOR_ID"):
-            address_fields.pop(f, None)
+            ar_address_fields.pop(f, None)
 
-        # Assemble the billing dropdown list and address fields
+        # Assemble the requisite drop-down list and the address fields
         options = "".join(
-            f'<option value="{escape(preset_id)}">{escape(name)}</option>'
-            for preset_id, name in requisite_types.items()
+            f'<option value="{escape(preset["ID"])}">{escape(preset["NAME"])}</option>'
+            for preset in ar_presets
         )
         address_inputs = "".join(
             f'<input type="text" name="ADDRESS[{escape(key)}]" '
             f'placeholder="{escape(field["title"])}" '
             f'{"required" if field["isRequired"] else ""}>'
-            for key, field in address_fields.items()
+            for key, field in ar_address_fields.items()
         )
 
         return PAGE % {"options": options, "address_inputs": address_inputs}
@@ -369,43 +548,35 @@ The form sends data to the handler using the `POST` method.
 - Go
 
     ```go
-    	var form strings.Builder
-    	form.WriteString(`<!doctype html>
-    <meta charset="utf-8">
-    <title>Request</title>
-    <form method="post" action="/form">
-    <p><label>Requisite type*<br><select name="REQ_TYPE" required>`)
-    	for _, p := range presets {
-    		fmt.Fprintf(&form, `<option value="%d">%s</option>`, p.ID, html.EscapeString(p.Name))
+    // The full code of the page and the handler is in the example below, in step 2:
+    // the same program assembles and serves the page, there is no separate file for
+    // the form.
+    mux := http.NewServeMux()
+    mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+    	fmt.Fprint(w, page)
+    })
+    mux.HandleFunc("/form", func(w http.ResponseWriter, r *http.Request) {
+    	if r.Method != http.MethodPost {
+    		reply(w, http.StatusMethodNotAllowed, "POST required", 0)
+    		return
     	}
-    	form.WriteString(`</select></label></p>
-    <p><label>First name*<br><input name="NAME" required></label></p>
-    <p><label>Last name<br><input name="LAST_NAME"></label></p>
-    <p><label>Phone<br><input name="PHONE" type="tel"></label></p>`)
-    	// The address fields are created dynamically: their set is defined by the portal, not by the code.
-    	// Names of the form ADDRESS[CITY] — the handler parses them back.
-    	for _, name := range addressNames {
-    		fmt.Fprintf(&form, "<p><label>%s<br><input name=\"ADDRESS[%s]\"></label></p>\n",
-    			html.EscapeString(addressFields[name].Title), name)
-    	}
-    	form.WriteString(`<p><button type="submit">Submit</button></p>
-    </form>`)
-    	page := form.String()
+    	handleForm(w, r, core)
+    })
+
+    log.Println("form and handler: http://localhost:3000/")
+    return http.ListenAndServe(":3000", mux)
     ```
 
 {% endlist %}
 
 ## 2. Create a Form Handler
 
-To process values from form fields and add a contact to the CRM, we will create a handler `form.php`.
+Create a file that accepts the form data and retains it in the CRM. In the PHP examples this is `form.php`; in the others it is the `/form` route handler.
 
-### Prepare the Data
+### Retrieve Data
 
-Retrieve and sanitize the data from the form:
-
-- Convert `REQ_TYPE` to a number,
-
-- Strip HTML tags from `NAME`, `LAST_NAME`, and `PHONE`.
+Retrieve and process the data from the form.
 
 {% list tabs %}
 
@@ -416,15 +587,23 @@ Retrieve and sanitize the data from the form:
     const sName = String(req.body.NAME ?? '')
     const sLastName = String(req.body.LAST_NAME ?? '')
     const sPhone = String(req.body.PHONE ?? '')
+    const arAddress = {}
+    for (const [key, val] of Object.entries(req.body.ADDRESS ?? {})) {
+        arAddress[key] = String(val)
+    }
     ```
 
 - PHP
 
     ```php
-    $iRequisitePresetID = intVal($_POST["REQ_TYPE"]);
-    $sName = htmlspecialchars($_POST["NAME"]);
-    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
-    $sPhone = htmlspecialchars($_POST["PHONE"]);
+    $iRequisitePresetID = intval($_POST["REQ_TYPE"] ?? 0);
+    $sName = htmlspecialchars($_POST["NAME"] ?? '');
+    $sLastName = htmlspecialchars($_POST["LAST_NAME"] ?? '');
+    $sPhone = htmlspecialchars($_POST["PHONE"] ?? '');
+    $arAddress = [];
+    foreach (($_POST["ADDRESS"] ?? []) as $key => $val) {
+        $arAddress[$key] = htmlspecialchars($val);
+    }
     ```
 
 - Python
@@ -434,15 +613,17 @@ Retrieve and sanitize the data from the form:
     s_name = request.form.get("NAME", "")
     s_last_name = request.form.get("LAST_NAME", "")
     s_phone = request.form.get("PHONE", "")
+    ar_address = {k[len("ADDRESS["):-1]: v for k, v in request.form.to_dict().items()
+                  if k.startswith("ADDRESS[")}
     ```
 
 - Go
 
     ```go
-    // The requisite type is converted to a number, the rest is stripped of HTML tags.
-    // The tags are STRIPPED rather than escaped: escaping is needed when rendering to
-    // a page, while in CRM it turns "Weber & Son" into
-    // "Weber &amp; Son".
+    // The requisite type is converted to a number, the rest is cleared of HTML tags.
+    // The tags are CUT OUT rather than escaped: escaping is needed when rendering to
+    // the page, and because of it the CRM would receive "Weber &amp; Son" instead of
+    // "Weber & Son".
     presetID, _ := strconv.Atoi(r.PostFormValue("REQ_TYPE"))
     name := stripTags(r.PostFormValue("NAME"))
     lastName := stripTags(r.PostFormValue("LAST_NAME"))
@@ -452,27 +633,39 @@ Retrieve and sanitize the data from the form:
     	reply(w, http.StatusBadRequest, "Fill in the requisite type and the first name", 0)
     	return
     }
+
+    // The address fields arrived with names such as ADDRESS[CITY] — parse them back.
+    address := b24.Params{}
+    for key, values := range r.PostForm {
+    	if inner, ok := addressKey(key); ok && len(values) > 0 && values[0] != "" {
+    		address[inner] = stripTags(values[0])
+    	}
+    }
     ```
 
 {% endlist %}
 
-Prepare the address fields and collect them into the `$arAddress` array.
+- `$iRequisitePresetID` — convert the requisite template identifier `REQ_TYPE` to an integer
 
-- Strip HTML tags from the form field values.
+- `$sName`, `$sLastName`, `$sPhone` — safely process the data from `NAME`, `LAST_NAME`, `PHONE` to prevent XSS attacks
 
-- Add the address type `TYPE_ID`. You can get address types using the [crm.enum.addresstype](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md) method. We will specify the value — `1`, which is the street address.
+- `$arAddress` — save the data from the array containing address fields `ADDRESS`
 
-- Add the [object type](../../../api-reference/crm/data-types.md#object_type) identifier `ENTITY_TYPE_ID`. You can get identifiers using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method. We will specify the value — `8`, which is the company details.
+### Prepare Data
+
+Add two mandatory system fields to the `$arAddress` array.
+
+- `TYPE_ID` — address type. We will specify `1` — actual address. You can retrieve the list of address types using the [crm.enum.addresstype](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md) method
+
+- `ENTITY_TYPE_ID` — [CRM object type identifier](../../../api-reference/crm/data-types.md#object_type). We pass `8` — requisite. You can retrieve the full list of object types using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method
+
+The third mandatory field, `ENTITY_ID`, is substituted later: it is the requisite identifier, and the requisite does not exist yet.
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    const arAddress = {}
-    for (const [key, val] of Object.entries(req.body.ADDRESS ?? {})) {
-        arAddress[key] = String(val)
-    }
     arAddress.TYPE_ID = 1
     arAddress.ENTITY_TYPE_ID = 8
     ```
@@ -480,10 +673,6 @@ Prepare the address fields and collect them into the `$arAddress` array.
 - PHP
 
     ```php
-    $arAddress = [];
-    foreach($_POST["ADDRESS"] as $key => $val) {
-        $arAddress[$key] = htmlspecialchars($val);
-    }
     $arAddress['TYPE_ID'] = 1;
     $arAddress['ENTITY_TYPE_ID'] = 8;
     ```
@@ -491,8 +680,6 @@ Prepare the address fields and collect them into the `$arAddress` array.
 - Python
 
     ```python
-    ar_address = {k[len("ADDRESS["):-1]: v for k, v in request.form.to_dict().items()
-                  if k.startswith("ADDRESS[")}
     ar_address["TYPE_ID"] = 1
     ar_address["ENTITY_TYPE_ID"] = 8
     ```
@@ -500,13 +687,6 @@ Prepare the address fields and collect them into the `$arAddress` array.
 - Go
 
     ```go
-    // The address fields arrived as names of the form ADDRESS[CITY] — parse them back.
-    address := b24.Params{}
-    for key, values := range r.PostForm {
-    	if inner, ok := addressKey(key); ok && len(values) > 0 && values[0] != "" {
-    		address[inner] = stripTags(values[0])
-    	}
-    }
     // The handler substitutes the address type and the owner type itself: they are not in the form.
     address["TYPE_ID"] = addressTypeActual
     address["ENTITY_TYPE_ID"] = typeRequisite
@@ -514,11 +694,13 @@ Prepare the address fields and collect them into the `$arAddress` array.
 
 {% endlist %}
 
-The system stores the phone as a [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) array of objects, so it must be converted to an array format.
+The system retains the phone number as a [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) array of objects, so the `$sPhone` value must be converted to an array format:
 
-1. Add the phone as the first item `VALUE` in the array, and specify the type `VALUE_TYPE` as the second value, for example, `WORK`.
+- in the first item `VALUE`, we write `$sPhone`
 
-2. Pass an empty array for an empty value.
+- in the second item `VALUE_TYPE`, we pass, for example, `WORK`
+
+If the `$sPhone` variable has no value, specify an empty array.
 
 {% list tabs %}
 
@@ -543,8 +725,9 @@ The system stores the phone as a [crm_multifield](../../../api-reference/crm/dat
 - Go
 
     ```go
-    // The phone is stored as a multifield — a list of objects, even when there is a single number.
-    // A row WITHOUT an ID adds a value; MultifieldAdd assembles it for you.
+    // The phone number is retained as a multifield — a list of objects, even when
+    // there is a single number. A row WITHOUT an ID adds a value; MultifieldAdd
+    // assembles it for you.
     phones := []map[string]any{}
     if phone != "" {
     	phones = append(phones, b24.MultifieldAdd(phone, "WORK"))
@@ -555,13 +738,13 @@ The system stores the phone as a [crm_multifield](../../../api-reference/crm/dat
 
 ### Add a Contact
 
-To create a contact, call the [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md) method. In the `fields` object, pass the following fields:
+To add a contact, use the [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md) method. You must pass the following data to it:
 
-- `NAME` — the contact name,
+- `NAME` — contact first name. We pass `$sName`, which was retrieved from the form
 
-- `LAST_NAME` — the surname,
+- `LAST_NAME` — contact last name. We pass `$sLastName`, which was retrieved from the form
 
-- `PHONE` — the phone.
+- `PHONE` — an array containing the phone number `$arPhone` retrieved from the form
 
 {% note warning "" %}
 
@@ -574,28 +757,28 @@ Check which mandatory fields are configured for contacts in your Bitrix24. All m
 - JS
 
     ```javascript
-    const result = await $b24.actions.v2.call.make({
+    const contactResponse = await $b24.actions.v2.call.make({
         method: 'crm.contact.add',
         params: { fields: { NAME: sName, LAST_NAME: sLastName, PHONE: arPhone } },
         requestId: 'contact-add'
     })
-    const contactId = result.getData()?.result
+    const iContactID = contactResponse.getData()?.result
     ```
 
 - PHP
 
     ```php
-    $contactId = $sb->getCRMScope()->contact()->add([
+    $iContactID = $sb->getCRMScope()->contact()->add([
         'NAME' => $sName,
         'LAST_NAME' => $sLastName,
-        'PHONE' => $arPhone
+        'PHONE' => $arPhone,
     ])->getId();
     ```
 
 - Python
 
     ```python
-    contact_id = client.crm.contact.add(fields={
+    i_contact_id = client.crm.contact.add(fields={
         "NAME": s_name,
         "LAST_NAME": s_last_name,
         "PHONE": ar_phone,
@@ -611,18 +794,18 @@ Check which mandatory fields are configured for contacts in your Bitrix24. All m
     		"LAST_NAME": lastName,
     		"PHONE":     phones,
     	},
-    }) // no WithIdempotent: a retry would create a second contact
+    }) // without WithIdempotent: a retry would create a second contact
     if err != nil {
-    	// The details go to the server log and are not shown to the visitor.
+    	// The details go to the server log, they are not shown to the visitor.
     	log.Println("crm.contact.add:", err)
     	reply(w, http.StatusBadGateway, "Failed to create the contact", 0)
     	return
     }
 
-    // There is no wrapper: result is the ID of the new contact itself.
+    // There is no wrapper: result is the identifier of the new contact right away.
     var contactID b24.ID
     if err := json.Unmarshal(res.Result, &contactID); err != nil {
-    	log.Println("parse contact ID:", err)
+    	log.Println("parsing the contact identifier:", err)
     	reply(w, http.StatusBadGateway, "Failed to create the contact", 0)
     	return
     }
@@ -630,70 +813,71 @@ Check which mandatory fields are configured for contacts in your Bitrix24. All m
 
 {% endlist %}
 
-As a result, you will receive the identifier of the new contact, for example, `23`.
+If the contact is successfully created, the method returns its identifier in `$iContactID`. Retain the value: the requisite needs it.
 
 ```json
 {
-	"result": 23
+    "result": 23
 }
 ```
 
-### Add Company Details to a Contact
+### Add Requisites to the Contact
 
-To add company details to a contact, call the [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md) method. In the `fields` object, pass the following fields:
+To add requisites, use the [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md) method. You must pass the following data to it:
 
-- `ENTITY_TYPE_ID` — the [object type](../../../api-reference/crm/data-types.md#object_type) identifier. You can retrieve identifiers using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method. In this example, we will specify the value `3`, which is the contact,
+- `ENTITY_TYPE_ID` — [CRM object type identifier](../../../api-reference/crm/data-types.md#object_type). We pass `3` — contact
 
-- `ENTITY_ID` — the contact identifier received in the previous request,
+- `ENTITY_ID` — contact identifier. We pass `$iContactID`, which was obtained during contact creation
 
-- `PRESET_ID` — the company details template identifier received from the form,
+- `PRESET_ID` — requisite template identifier. We specify `$iRequisitePresetID`, which was retrieved from the form
 
-- `ACTIVE` — the company details activity `Y`,
+- `NAME` — requisite name. We assemble it from the contact first and last name
 
-- `NAME` — the company details name, for example, by combining the contact's first and last name,
+- `ACTIVE` — an activity flag; we will specify `Y`
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    await $b24.actions.v2.call.make({
+    const requisiteResponse = await $b24.actions.v2.call.make({
         method: 'crm.requisite.add',
         params: {
             fields: {
                 ENTITY_TYPE_ID: 3,
-                ENTITY_ID: contactId,
+                ENTITY_ID: iContactID,
                 PRESET_ID: iRequisitePresetID,
                 ACTIVE: 'Y',
-                NAME: [sName, sLastName].join(' '),
+                NAME: [sName, sLastName].join(' ').trim(),
             }
         },
         requestId: 'requisite-add'
     })
+    const iRequisiteID = requisiteResponse.getData()?.result
     ```
 
 - PHP
 
     ```php
-    $sb->getCRMScope()->requisite()->add(
-        entityId: $contactId,
+    $iRequisiteID = $sb->getCRMScope()->requisite()->add(
+        entityId: $iContactID,
         entityTypeId: 3,
         requisitePresetId: $iRequisitePresetID,
-        requisiteName: implode(' ', [$sName, $sLastName]),
+        requisiteName: trim(implode(' ', [$sName, $sLastName])),
         fields: ['ACTIVE' => 'Y']
-    );
+    )->getId();
     ```
 
 - Python
 
     ```python
-    client.crm.requisite.add(fields={
+    i_requisite_id = client.crm.requisite.add(fields={
         "ENTITY_TYPE_ID": 3,
-        "ENTITY_ID": contact_id,
+        "ENTITY_ID": i_contact_id,
         "PRESET_ID": i_requisite_preset_id,
         "ACTIVE": "Y",
-        "NAME": " ".join([s_name, s_last_name]),
-    })
+        "NAME": " ".join([s_name, s_last_name]).strip(),
+    }).result
     ```
 
 - Go
@@ -709,82 +893,118 @@ To add company details to a contact, call the [crm.requisite.add](../../../api-r
     	},
     })
     if err != nil {
-    	// The contact is already created, so this is no reason to answer "nothing worked":
-    	// report that the requisite was not added and return the ID.
+    	// The contact has already been created, so this is no reason to answer
+    	// "nothing worked": report that the requisites were not added and return the
+    	// identifier.
     	log.Println("crm.requisite.add:", err)
-    	reply(w, http.StatusOK, "Contact created, failed to add the requisite", contactID)
+    	reply(w, http.StatusOK, "The contact was created, the requisites could not be added", contactID)
     	return
     }
     var requisiteID b24.ID
     if err := json.Unmarshal(res.Result, &requisiteID); err != nil {
-    	log.Println("parse requisite ID:", err)
-    	reply(w, http.StatusOK, "Contact created, failed to add the requisite", contactID)
+    	log.Println("parsing the requisite identifier:", err)
+    	reply(w, http.StatusOK, "The contact was created, the requisites could not be added", contactID)
     	return
     }
     ```
 
 {% endlist %}
 
-As a result, you will receive the company details identifier.
+If the requisites are successfully added, the method returns the record identifier in `$iRequisiteID`.
 
-```php
+```json
 {
     "result": 34
 }
 ```
 
-### Add an Address for Company Details
+{% note warning "" %}
 
-Add an address for the company details using the [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md) method if the company details were created successfully. In `$arAddress`, add `ENTITY_ID` with the `ID` of the company details from the previous request's response. In the `fields` object, pass the `$arAddress` array containing the address fields.
+The method does not check whether a template with the passed `PRESET_ID` exists. With a nonexistent identifier, the requisite is still created but remains without the template fields. Take `PRESET_ID` from the [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) response instead of substituting an arbitrary number.
 
-{% list tabs %}
+{% endnote %}
 
-- JS
+### Add an Address to the Requisite
 
-    ```javascript
-    if (requisiteId) {
-        arAddress.ENTITY_ID = requisiteId
-        await $b24.actions.v2.call.make({
-            method: 'crm.address.add',
-            params: { fields: arAddress },
-            requestId: 'address-add'
-        })
-    }
-    ```
+1. Add the `ENTITY_ID` field — the requisite identifier — to the `$arAddress` array. Pass the `$iRequisiteID` obtained during the creation of the requisite
 
-- PHP
+   {% list tabs %}
 
-    ```php
-    if (!empty($requisiteId)) {
-        $arAddress['ENTITY_ID'] = $requisiteId;
-        $sb->getCRMScope()->address()->add($arAddress);
-    }
-    ```
+   - JS
 
-- Python
+       ```javascript
+       arAddress.ENTITY_ID = iRequisiteID
+       ```
 
-    ```python
-    if requisite_id:
-        ar_address["ENTITY_ID"] = requisite_id
-        client.crm.address.add(fields=ar_address)
-    ```
+   - PHP
 
-- Go
+       ```php
+       $arAddress['ENTITY_ID'] = $iRequisiteID;
+       ```
 
-    ```go
-    // The address is bound to the REQUISITE rather than to the contact, so ENTITY_ID
-    // is filled in only now — the requisite ID did not exist earlier.
-    if requisiteID != 0 {
-    	address["ENTITY_ID"] = requisiteID
-    	if _, err := core.Call(ctx, "crm.address.add", b24.Params{"fields": address}); err != nil {
-    		log.Println("crm.address.add:", err)
-    		reply(w, http.StatusOK, "Contact and requisite created, failed to add the address", contactID)
-    		return
-    	}
-    }
-    ```
+   - Python
 
-{% endlist %}
+       ```python
+       ar_address["ENTITY_ID"] = i_requisite_id
+       ```
+
+   - Go
+
+       ```go
+       address["ENTITY_ID"] = requisiteID
+       ```
+
+   {% endlist %}
+
+2. Use the [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md) method. You must pass the `$arAddress` array to it
+
+   {% list tabs %}
+
+   - JS
+
+       ```javascript
+       const bAddressAdded = (await $b24.actions.v2.call.make({
+           method: 'crm.address.add', params: { fields: arAddress }, requestId: 'address-add'
+       })).getData().result
+       ```
+
+   - PHP
+
+       ```php
+       $bAddressAdded = $sb->getCRMScope()->address()->add($arAddress)->isSuccess();
+       ```
+
+   - Python
+
+       ```python
+       b_address_added = client.crm.address.add(fields=ar_address).result
+       ```
+
+   - Go
+
+       ```go
+       // The address is linked to the REQUISITE, not to the contact, so ENTITY_ID
+       // is filled in only now — the requisite identifier did not exist earlier.
+       if _, err := core.Call(ctx, "crm.address.add", b24.Params{"fields": address}); err != nil {
+       	log.Println("crm.address.add:", err)
+       	reply(w, http.StatusOK, "The contact and the requisites were created, the address could not be added", contactID)
+       	return
+       }
+       ```
+
+   {% endlist %}
+
+The method returns one of the following values in the `$bAddressAdded` variable:
+
+- `true` — the address was added
+
+- `false` — the address was not added
+
+```json
+{
+    "result": true
+}
+```
 
 ### Full Handler Code Example
 
@@ -799,63 +1019,64 @@ Add an address for the company details using the [crm.address.add](../../../api-
     // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
     export async function handler(req, res) {
-        // Get and clean form data
         const iRequisitePresetID = parseInt(req.body.REQ_TYPE, 10)
         const sName = String(req.body.NAME ?? '')
         const sLastName = String(req.body.LAST_NAME ?? '')
         const sPhone = String(req.body.PHONE ?? '')
 
-        // Prepare the address
         const arAddress = {}
         for (const [key, val] of Object.entries(req.body.ADDRESS ?? {})) {
             arAddress[key] = String(val)
         }
-        arAddress.TYPE_ID = 1 // Physical address
-        arAddress.ENTITY_TYPE_ID = 8 // Object type — billing detail
+        arAddress.TYPE_ID = 1 // 1 — actual address (crm.enum.addresstype)
+        arAddress.ENTITY_TYPE_ID = 8 // 8 — requisite (crm.enum.ownertype)
 
-        // Format phone for Bitrix24
         const arPhone = sPhone ? [{ VALUE: sPhone, VALUE_TYPE: 'WORK' }] : []
 
-        // Create contact
-        const result = await $b24.actions.v2.call.make({
-            method: 'crm.contact.add',
-            params: { fields: { NAME: sName, LAST_NAME: sLastName, PHONE: arPhone } },
-            requestId: 'contact-add'
-        })
+        try {
+            const contactResponse = await $b24.actions.v2.call.make({
+                method: 'crm.contact.add',
+                params: { fields: { NAME: sName, LAST_NAME: sLastName, PHONE: arPhone } },
+                requestId: 'contact-add'
+            })
+            const iContactID = contactResponse.getData()?.result
+            if (!iContactID) {
+                res.json({ message: 'Error: ' + contactResponse.getErrorMessages().join('; ') })
+                return
+            }
 
-        const contactId = result.getData()?.result
-        if (contactId) {
-            // Add billing details for the new contact
-            const resultRequisite = await $b24.actions.v2.call.make({
+            const requisiteResponse = await $b24.actions.v2.call.make({
                 method: 'crm.requisite.add',
                 params: {
                     fields: {
-                        ENTITY_TYPE_ID: 3, // Object type — contact
-                        ENTITY_ID: contactId,
+                        ENTITY_TYPE_ID: 3, // 3 — contact (crm.enum.ownertype)
+                        ENTITY_ID: iContactID,
                         PRESET_ID: iRequisitePresetID,
                         ACTIVE: 'Y',
-                        NAME: [sName, sLastName].join(' '),
+                        NAME: [sName, sLastName].join(' ').trim(),
                     }
                 },
                 requestId: 'requisite-add'
             })
+            const iRequisiteID = requisiteResponse.getData()?.result
 
-            // Add address if billing details were created successfully
-            const requisiteId = resultRequisite.getData()?.result
-            if (requisiteId) {
-                arAddress.ENTITY_ID = requisiteId
+            if (iRequisiteID) {
+                arAddress.ENTITY_ID = iRequisiteID
                 await $b24.actions.v2.call.make({
-                    method: 'crm.address.add',
-                    params: { fields: arAddress },
-                    requestId: 'address-add'
+                    method: 'crm.address.add', params: { fields: arAddress }, requestId: 'address-add'
                 })
             }
 
-            res.json({ message: 'Contact added successfully' })
-        } else {
-            res.json({ message: 'Error: ' + result.getErrorMessages().join('; ') })
+            res.json({ message: 'The contact has been added' })
+        } catch (e) {
+            res.json({ message: 'Error: ' + e.message })
         }
     }
+
+    // Attach the handler to the server from step 1. Without express.json()
+    // the request body is not parsed and req.body stays empty
+    // app.use(express.json())
+    // app.post('/form', handler)
     ```
 
 - PHP
@@ -870,49 +1091,48 @@ Add an address for the company details using the [crm.address.add](../../../api-
     use Psr\Log\NullLogger;
 
     $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+    $crm = $sb->getCRMScope();
 
-    // Get and clean form data
-    $iRequisitePresetID = intVal($_POST["REQ_TYPE"]);
-    $sName = htmlspecialchars($_POST["NAME"]);
-    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
-    $sPhone = htmlspecialchars($_POST["PHONE"]);
+    // Retrieve and sanitize the form data
+    $iRequisitePresetID = intval($_POST["REQ_TYPE"] ?? 0);
+    $sName = htmlspecialchars($_POST["NAME"] ?? '');
+    $sLastName = htmlspecialchars($_POST["LAST_NAME"] ?? '');
+    $sPhone = htmlspecialchars($_POST["PHONE"] ?? '');
 
     // Prepare the address
     $arAddress = [];
-    foreach ($_POST["ADDRESS"] as $key => $val) {
+    foreach (($_POST["ADDRESS"] ?? []) as $key => $val) {
         $arAddress[$key] = htmlspecialchars($val);
     }
-    $arAddress['TYPE_ID'] = 1; // Physical address
-    $arAddress['ENTITY_TYPE_ID'] = 8; // Object type — billing detail
+    $arAddress['TYPE_ID'] = 1; // 1 — actual address (crm.enum.addresstype)
+    $arAddress['ENTITY_TYPE_ID'] = 8; // 8 — requisite (crm.enum.ownertype)
 
-    // Format phone for Bitrix24
+    // Format the phone number into the crm_multifield format
     $arPhone = !empty($sPhone) ? [['VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK']] : [];
 
-    // Create contact
     try {
-        $contactId = $sb->getCRMScope()->contact()->add([
+        $iContactID = $crm->contact()->add([
             'NAME' => $sName,
             'LAST_NAME' => $sLastName,
-            'PHONE' => $arPhone
+            'PHONE' => $arPhone,
         ])->getId();
 
-        // Add billing details for the new contact
-        $requisiteId = $sb->getCRMScope()->requisite()->add(
-            entityId: $contactId,
-            entityTypeId: 3, // Object type — contact
+        $iRequisiteID = $crm->requisite()->add(
+            entityId: $iContactID,
+            entityTypeId: 3, // 3 — contact (crm.enum.ownertype)
             requisitePresetId: $iRequisitePresetID,
-            requisiteName: implode(' ', [$sName, $sLastName]),
+            requisiteName: trim(implode(' ', [$sName, $sLastName])),
             fields: ['ACTIVE' => 'Y']
         )->getId();
 
-        // Add address if billing details were created successfully
-        if (!empty($requisiteId)) {
-            $arAddress['ENTITY_ID'] = $requisiteId;
-            $sb->getCRMScope()->address()->add($arAddress);
+        if (!empty($iRequisiteID)) {
+            $arAddress['ENTITY_ID'] = $iRequisiteID;
+            $crm->address()->add($arAddress);
         }
 
-        echo json_encode(['message' => 'Contact added successfully']);
+        echo json_encode(['message' => 'The contact has been added']);
     } catch (\Throwable $e) {
         echo json_encode(['message' => 'Error: ' . $e->getMessage()]);
     }
@@ -921,58 +1141,57 @@ Add an address for the company details using the [crm.address.add](../../../api-
 - Python
 
     ```python
-    # pip install b24pysdk
+    # pip install b24pysdk flask
+    import os
+
     from flask import Flask, request, jsonify
     from b24pysdk import BitrixWebhook, Client
 
     app = Flask(__name__)
 
     client = Client(BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
+        domain=os.environ["B24_DOMAIN"],  # your-domain.bitrix24.com
+        webhook_token=os.environ["B24_TOKEN"],  # user_id/token only, without https://
     ))
 
-    @app.route("/form.php", methods=["POST"])
+
+    @app.route("/form", methods=["POST"])
     def handle_form():
-        # Get and clean form data
+        # Retrieve and sanitize the form data
         i_requisite_preset_id = int(request.form.get("REQ_TYPE", 0))
         s_name = request.form.get("NAME", "")
         s_last_name = request.form.get("LAST_NAME", "")
         s_phone = request.form.get("PHONE", "")
 
         # Prepare the address
-        ar_address = {key: val for key, val in request.form.to_dict().items()
-                      if key.startswith("ADDRESS[")}
-        ar_address = {k[len("ADDRESS["):-1]: v for k, v in ar_address.items()}
-        ar_address["TYPE_ID"] = 1  # Physical address
-        ar_address["ENTITY_TYPE_ID"] = 8  # Object type — billing detail
+        ar_address = {k[len("ADDRESS["):-1]: v for k, v in request.form.to_dict().items()
+                      if k.startswith("ADDRESS[")}
+        ar_address["TYPE_ID"] = 1  # 1 — actual address (crm.enum.addresstype)
+        ar_address["ENTITY_TYPE_ID"] = 8  # 8 — requisite (crm.enum.ownertype)
 
-        # Format phone for Bitrix24
+        # Format the phone number into the crm_multifield format
         ar_phone = [{"VALUE": s_phone, "VALUE_TYPE": "WORK"}] if s_phone else []
 
-        # Create contact
         try:
-            contact_id = client.crm.contact.add(fields={
+            i_contact_id = client.crm.contact.add(fields={
                 "NAME": s_name,
                 "LAST_NAME": s_last_name,
                 "PHONE": ar_phone,
             }).result
 
-            # Add billing details for the new contact
-            requisite_id = client.crm.requisite.add(fields={
-                "ENTITY_TYPE_ID": 3,  # Object type — contact
-                "ENTITY_ID": contact_id,
+            i_requisite_id = client.crm.requisite.add(fields={
+                "ENTITY_TYPE_ID": 3,  # 3 — contact (crm.enum.ownertype)
+                "ENTITY_ID": i_contact_id,
                 "PRESET_ID": i_requisite_preset_id,
                 "ACTIVE": "Y",
-                "NAME": " ".join([s_name, s_last_name]),
+                "NAME": " ".join([s_name, s_last_name]).strip(),
             }).result
 
-            # Add address if billing details were created successfully
-            if requisite_id:
-                ar_address["ENTITY_ID"] = requisite_id
+            if i_requisite_id:
+                ar_address["ENTITY_ID"] = i_requisite_id
                 client.crm.address.add(fields=ar_address)
 
-            return jsonify({"message": "Contact added successfully"})
+            return jsonify({"message": "The contact has been added"})
         except Exception as e:
             return jsonify({"message": f"Error: {e}"})
     ```
@@ -980,17 +1199,17 @@ Add an address for the company details using the [crm.address.add](../../../api-
 - Go
 
     ```go
-    // Setup in an empty directory — go get will not work without go mod init:
+    // Preparation in an empty directory — go get will not work without go mod init:
     //
     //	go mod init example && go get github.com/bitrix24/b24gosdk
     //
     // Run:
     //
-    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
+    //	export B24_WEBHOOK_URL='https://your-domain.bitrix24.com/rest/1/token/' && go run .
     //
-    // A separate file with the form is not needed: the page is built and served by the same
-    // program — it takes the address fields and the list of requisite templates from the portal.
-    // Open http://localhost:3000/
+    // A separate file with the form is not needed: the same program assembles and
+    // serves the page — it takes the address fields and the list of requisite
+    // templates from Bitrix24. Open http://localhost:3000/
     package main
 
     import (
@@ -1009,13 +1228,13 @@ Add an address for the company details using the [crm.address.add](../../../api-
     	b24 "github.com/bitrix24/b24gosdk"
     )
 
-    // The IDs of CRM object types from crm.enum.ownertype.
+    // CRM object type identifiers from crm.enum.ownertype.
     const (
     	typeContact   = 3
     	typeRequisite = 8
     )
 
-    // addressTypeActual is the actual address; the full list of types is returned by
+    // addressTypeActual — actual address; the full list of types is returned by
     // crm.enum.addresstype.
     const addressTypeActual = 1
 
@@ -1026,12 +1245,12 @@ Add an address for the company details using the [crm.address.add](../../../api-
     }
 
     func run(ctx context.Context) error {
-    	// The webhook path is a secret: it comes from the environment rather than from the code, and it
-    	// never reaches the public page with the form. The client is built ONCE
-    	// per portal: http.Server calls the handler from many goroutines.
+    	// The webhook URL is a secret: it comes from the environment, not from the
+    	// code, and never ends up on the public page with the form. The client is
+    	// built ONCE per Bitrix24: http.Server calls the handler from many goroutines.
     	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
 
-    	// --- build the form from the portal settings
+    	// --- assemble the form from the Bitrix24 settings
     	res, err := core.Call(ctx, "crm.address.fields", nil, b24.WithIdempotent())
     	if err != nil {
     		return fmt.Errorf("crm.address.fields: %w", err)
@@ -1044,13 +1263,13 @@ Add an address for the company details using the [crm.address.add](../../../api-
     		IsReadOnly bool   `json:"isReadOnly"`
     	}
     	if err := json.Unmarshal(res.Result, &addressFields); err != nil {
-    		return fmt.Errorf("parse address fields: %w", err)
+    		return fmt.Errorf("parsing address fields: %w", err)
     	}
 
-    	// Only string fields that are writable are taken into the form: TYPE_ID,
-    	// ENTITY_ID and ENTITY_TYPE_ID also arrive in this response, but the handler
-    	// substitutes them itself. Map keys in Go are unordered — sort them, otherwise the fields
-    	// of the form will jump from run to run.
+    	// The form takes only the string fields that are available for writing: TYPE_ID,
+    	// ENTITY_ID, and ENTITY_TYPE_ID also arrive in this response, but the handler
+    	// substitutes them itself. Map keys in Go are unordered — sort them, otherwise
+    	// the form fields will jump around from run to run.
     	var addressNames []string
     	for name, f := range addressFields {
     		if f.Type == "string" && !f.IsReadOnly {
@@ -1065,17 +1284,17 @@ Add an address for the company details using the [crm.address.add](../../../api-
     		return fmt.Errorf("crm.requisite.preset.list: %w", err)
     	}
 
-    	// Here the ID arrives AS A STRING ("1"), whereas crm.enum.* returns
-    	// numbers. b24.ID parses both spellings.
+    	// Here the identifier arrives as a STRING ("1"), whereas crm.enum.* returns
+    	// numbers. b24.ID parses both notations.
     	var presets []struct {
     		ID   b24.ID `json:"ID"`
     		Name string `json:"NAME"`
     	}
     	if err := json.Unmarshal(res.Result, &presets); err != nil {
-    		return fmt.Errorf("parse requisite templates: %w", err)
+    		return fmt.Errorf("parsing requisite templates: %w", err)
     	}
     	if len(presets) == 0 {
-    		return fmt.Errorf("the portal has no requisite templates")
+    		return fmt.Errorf("there are no requisite templates in Bitrix24")
     	}
     	// --- the page with the form
     	var form strings.Builder
@@ -1091,8 +1310,8 @@ Add an address for the company details using the [crm.address.add](../../../api-
     <p><label>First name*<br><input name="NAME" required></label></p>
     <p><label>Last name<br><input name="LAST_NAME"></label></p>
     <p><label>Phone<br><input name="PHONE" type="tel"></label></p>`)
-    	// The address fields are created dynamically: their set is defined by the portal, not by the code.
-    	// Names of the form ADDRESS[CITY] — the handler parses them back.
+    	// The address fields are created dynamically: their set is defined by Bitrix24,
+    	// not by the code. Names such as ADDRESS[CITY] — the handler parses them back.
     	for _, name := range addressNames {
     		fmt.Fprintf(&form, "<p><label>%s<br><input name=\"ADDRESS[%s]\"></label></p>\n",
     			html.EscapeString(addressFields[name].Title), name)
@@ -1107,7 +1326,7 @@ Add an address for the company details using the [crm.address.add](../../../api-
     	})
     	mux.HandleFunc("/form", func(w http.ResponseWriter, r *http.Request) {
     		if r.Method != http.MethodPost {
-    			reply(w, http.StatusMethodNotAllowed, "POST is required", 0)
+    			reply(w, http.StatusMethodNotAllowed, "POST required", 0)
     			return
     		}
     		handleForm(w, r, core)
@@ -1123,10 +1342,10 @@ Add an address for the company details using the [crm.address.add](../../../api-
     		reply(w, http.StatusBadRequest, "Failed to parse the form", 0)
     		return
     	}
-    	// The requisite type is converted to a number, the rest is stripped of HTML tags.
-    	// The tags are STRIPPED rather than escaped: escaping is needed when rendering to
-    	// a page, while in CRM it turns "Weber & Son" into
-    	// "Weber &amp; Son".
+    	// The requisite type is converted to a number, the rest is cleared of HTML tags.
+    	// The tags are CUT OUT rather than escaped: escaping is needed when rendering to
+    	// the page, and because of it the CRM would receive "Weber &amp; Son" instead of
+    	// "Weber & Son".
     	presetID, _ := strconv.Atoi(r.PostFormValue("REQ_TYPE"))
     	name := stripTags(r.PostFormValue("NAME"))
     	lastName := stripTags(r.PostFormValue("LAST_NAME"))
@@ -1136,7 +1355,7 @@ Add an address for the company details using the [crm.address.add](../../../api-
     		reply(w, http.StatusBadRequest, "Fill in the requisite type and the first name", 0)
     		return
     	}
-    	// The address fields arrived as names of the form ADDRESS[CITY] — parse them back.
+    	// The address fields arrived with names such as ADDRESS[CITY] — parse them back.
     	address := b24.Params{}
     	for key, values := range r.PostForm {
     		if inner, ok := addressKey(key); ok && len(values) > 0 && values[0] != "" {
@@ -1146,8 +1365,9 @@ Add an address for the company details using the [crm.address.add](../../../api-
     	// The handler substitutes the address type and the owner type itself: they are not in the form.
     	address["TYPE_ID"] = addressTypeActual
     	address["ENTITY_TYPE_ID"] = typeRequisite
-    	// The phone is stored as a multifield — a list of objects, even when there is a single number.
-    	// A row WITHOUT an ID adds a value; MultifieldAdd assembles it for you.
+    	// The phone number is retained as a multifield — a list of objects, even when
+    	// there is a single number. A row WITHOUT an ID adds a value; MultifieldAdd
+    	// assembles it for you.
     	phones := []map[string]any{}
     	if phone != "" {
     		phones = append(phones, b24.MultifieldAdd(phone, "WORK"))
@@ -1158,18 +1378,18 @@ Add an address for the company details using the [crm.address.add](../../../api-
     			"LAST_NAME": lastName,
     			"PHONE":     phones,
     		},
-    	}) // no WithIdempotent: a retry would create a second contact
+    	}) // without WithIdempotent: a retry would create a second contact
     	if err != nil {
-    		// The details go to the server log and are not shown to the visitor.
+    		// The details go to the server log, they are not shown to the visitor.
     		log.Println("crm.contact.add:", err)
     		reply(w, http.StatusBadGateway, "Failed to create the contact", 0)
     		return
     	}
 
-    	// There is no wrapper: result is the ID of the new contact itself.
+    	// There is no wrapper: result is the identifier of the new contact right away.
     	var contactID b24.ID
     	if err := json.Unmarshal(res.Result, &contactID); err != nil {
-    		log.Println("parse contact ID:", err)
+    		log.Println("parsing the contact identifier:", err)
     		reply(w, http.StatusBadGateway, "Failed to create the contact", 0)
     		return
     	}
@@ -1183,33 +1403,34 @@ Add an address for the company details using the [crm.address.add](../../../api-
     		},
     	})
     	if err != nil {
-    		// The contact is already created, so this is no reason to answer "nothing worked":
-    		// report that the requisite was not added and return the ID.
+    		// The contact has already been created, so this is no reason to answer
+    		// "nothing worked": report that the requisites were not added and return the
+    		// identifier.
     		log.Println("crm.requisite.add:", err)
-    		reply(w, http.StatusOK, "Contact created, failed to add the requisite", contactID)
+    		reply(w, http.StatusOK, "The contact was created, the requisites could not be added", contactID)
     		return
     	}
     	var requisiteID b24.ID
     	if err := json.Unmarshal(res.Result, &requisiteID); err != nil {
-    		log.Println("parse requisite ID:", err)
-    		reply(w, http.StatusOK, "Contact created, failed to add the requisite", contactID)
+    		log.Println("parsing the requisite identifier:", err)
+    		reply(w, http.StatusOK, "The contact was created, the requisites could not be added", contactID)
     		return
     	}
-    	// The address is bound to the REQUISITE rather than to the contact, so ENTITY_ID
-    	// is filled in only now — the requisite ID did not exist earlier.
+    	// The address is linked to the REQUISITE, not to the contact, so ENTITY_ID
+    	// is filled in only now — the requisite identifier did not exist earlier.
     	if requisiteID != 0 {
     		address["ENTITY_ID"] = requisiteID
     		if _, err := core.Call(ctx, "crm.address.add", b24.Params{"fields": address}); err != nil {
     			log.Println("crm.address.add:", err)
-    			reply(w, http.StatusOK, "Contact and requisite created, failed to add the address", contactID)
+    			reply(w, http.StatusOK, "The contact and the requisites were created, the address could not be added", contactID)
     			return
     		}
     	}
-    	log.Printf("contact %d created, requisite %d", contactID, requisiteID)
-    	reply(w, http.StatusOK, "Contact with requisites created", contactID)
+    	log.Printf("created contact %d, requisite %d", contactID, requisiteID)
+    	reply(w, http.StatusOK, "The contact with requisites has been created", contactID)
     }
 
-    // tagPattern strips HTML tags from the form value.
+    // tagPattern cuts HTML tags out of a form value.
     var tagPattern = regexp.MustCompile(`<[^>]*>`)
 
     func stripTags(s string) string {
@@ -1224,7 +1445,7 @@ Add an address for the company details using the [crm.address.add](../../../api-
     	return "", false
     }
 
-    // reply answers the page with the same JSON as the handlers in other languages.
+    // reply answers the page with the same JSON as the handlers in the other languages.
     func reply(w http.ResponseWriter, status int, message string, id b24.ID) {
     	w.Header().Set("Content-Type", "application/json; charset=utf-8")
     	w.WriteHeader(status)
@@ -1237,3 +1458,169 @@ Add an address for the company details using the [crm.address.add](../../../api-
     ```
 
 {% endlist %}
+
+## Verify the Result
+
+Open the created contact in Bitrix24. On the "Requisites" tab, the requisite with the address from the form is displayed.
+
+Through REST, the result is verified with two methods:
+
+- [crm.requisite.list](../../../api-reference/crm/requisites/universal/crm-requisite-list.md) with a filter by `ENTITY_TYPE_ID`: `3` and `ENTITY_ID` — the identifier of the created contact
+
+- [crm.address.list](../../../api-reference/crm/requisites/addresses/crm-address-list.md) with a filter by `ENTITY_TYPE_ID`: `8` and `ENTITY_ID` — the identifier of the created requisite
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    const requisites = (await $b24.actions.v2.call.make({
+        method: 'crm.requisite.list',
+        params: {
+            filter: { ENTITY_TYPE_ID: 3, ENTITY_ID: iContactID },
+            select: ['ID', 'ENTITY_TYPE_ID', 'ENTITY_ID', 'NAME']
+        },
+        requestId: 'requisite-list'
+    })).getData().result
+
+    const addresses = (await $b24.actions.v2.call.make({
+        method: 'crm.address.list',
+        params: { filter: { ENTITY_TYPE_ID: 8, ENTITY_ID: iRequisiteID } },
+        requestId: 'address-list'
+    })).getData().result
+
+    console.dir({ requisites, addresses })
+    ```
+
+- PHP
+
+    ```php
+    $requisites = $sb->getCRMScope()->requisite()->list(
+        [],
+        ['ENTITY_TYPE_ID' => 3, 'ENTITY_ID' => $iContactID],
+        ['ID', 'ENTITY_TYPE_ID', 'ENTITY_ID', 'NAME']
+    )->getRequisites();
+
+    $addresses = $sb->getCRMScope()->address()->list(
+        [],
+        ['ENTITY_TYPE_ID' => 8, 'ENTITY_ID' => $iRequisiteID],
+        []
+    )->getAddresses();
+
+    print_r($requisites);
+    print_r($addresses);
+    ```
+
+- Python
+
+    ```python
+    requisites = client.crm.requisite.list(
+        filter={"ENTITY_TYPE_ID": 3, "ENTITY_ID": i_contact_id},
+        select=["ID", "ENTITY_TYPE_ID", "ENTITY_ID", "NAME"],
+    ).result
+
+    addresses = client.crm.address.list(
+        filter={"ENTITY_TYPE_ID": 8, "ENTITY_ID": i_requisite_id},
+    ).result
+
+    print(requisites)
+    print(addresses)
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "crm.requisite.list", b24.Params{
+    	"filter": b24.Params{"ENTITY_TYPE_ID": 3, "ENTITY_ID": contactID},
+    	"select": []string{"ID", "ENTITY_TYPE_ID", "ENTITY_ID", "NAME"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.requisite.list: %w", err)
+    }
+    log.Println("contact requisites:", string(res.Result))
+
+    res, err = core.Call(ctx, "crm.address.list", b24.Params{
+    	"filter": b24.Params{"ENTITY_TYPE_ID": 8, "ENTITY_ID": requisiteID},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("crm.address.list: %w", err)
+    }
+    log.Println("requisite addresses:", string(res.Result))
+    ```
+
+{% endlist %}
+
+The scenario is complete if [crm.requisite.list](../../../api-reference/crm/requisites/universal/crm-requisite-list.md) returned the requisite with the `ID` from the "Add Requisites to the Contact" step, and [crm.address.list](../../../api-reference/crm/requisites/addresses/crm-address-list.md) returned the address with the same `ENTITY_ID`.
+
+```json
+{
+    "result": [
+        {
+            "ENTITY_TYPE_ID": "3",
+            "ENTITY_ID": "23",
+            "ID": "34",
+            "NAME": "Klaus Weber"
+        }
+    ],
+    "total": 1
+}
+```
+
+```json
+{
+    "result": [
+        {
+            "TYPE_ID": "1",
+            "ENTITY_TYPE_ID": "8",
+            "ENTITY_ID": "34",
+            "ADDRESS_1": "Tiergartenstraße 17",
+            "CITY": "Berlin",
+            "POSTAL_CODE": "10785"
+        }
+    ],
+    "total": 1
+}
+```
+
+## Errors and Diagnostics
+
+If the method returns an error, check the request data. The requisite and address methods return errors with an empty code, so rely on the text in `error_description`.
+
+#|
+|| **Error text** | **Reason and action** ||
+|| `Entity not found.` | An `ENTITY_ID` of a nonexistent contact was passed to [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md). Take the identifier from the [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md) response ||
+|| `ENTITY_TYPE_ID is not defined or invalid.` | The owner type was not passed or is incorrect. A contact requisite requires `3`, a requisite address requires `8` ||
+|| `ENTITY_ID is not defined or invalid.` | The owner identifier was not passed. In [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md), this is the requisite identifier, not the contact identifier ||
+|| `TYPE_ID is not defined or invalid.` | The address type was not passed to [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md). The list of values is returned by the [crm.enum.addresstype](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md) method ||
+|| `TypeAddress exists.` | The requisite already has an address of this type. One requisite retains one address of each type — modify the existing one with the [crm.address.update](../../../api-reference/crm/requisites/addresses/crm-address-update.md) method or pass a different `TYPE_ID` ||
+|| `Access denied.` | The user does not have permission to add or import contacts. Check which user the webhook was created on behalf of ||
+|#
+
+The scenario creates three objects in a row, and an error at any step leaves the previous objects in the CRM. Repeat the step that failed rather than the whole handler:
+
+- An error in [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md) — nothing has been created in the CRM, you can repeat the entire handler
+
+- An error in [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md) — the contact has already been created. Running the handler again creates a duplicate of it, so pass the existing `ENTITY_ID`
+
+- An error in [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md) — the contact and the requisite have already been created. Add the address with a separate call using the `ENTITY_ID` of the existing requisite
+
+## Key Considerations
+
+- An address has no identifier of its own: it is recognized by the `ENTITY_TYPE_ID` and `ENTITY_ID` pair plus `TYPE_ID`
+
+- The set of requisite fields depends on the template. For a contact, the individual template is usually selected, and it has no organization fields. The set of template fields is returned by the [crm.requisite.preset.field.list](../../../api-reference/crm/requisites/presets/fields/crm-requisite-preset-field-list.md) method. The value of a field that is not in the template is retained and returned by [crm.requisite.get](../../../api-reference/crm/requisites/universal/crm-requisite-get.md), but it is not displayed on the requisite card
+
+- Submitting the form again with the same data creates a new contact and a new requisite. Duplicates are not filtered out
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/contacts/crm-contact-add.md)
+- [{#T}](../../../api-reference/crm/requisites/universal/crm-requisite-add.md)
+- [{#T}](../../../api-reference/crm/requisites/addresses/crm-address-add.md)
+- [{#T}](../../../api-reference/crm/requisites/addresses/crm-address-fields.md)
+- [{#T}](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md)
+- [{#T}](../../../api-reference/crm/requisites/universal/crm-requisite-list.md)
+- [{#T}](../../../api-reference/crm/requisites/addresses/crm-address-list.md)
+- [{#T}](../../../api-reference/crm/auxiliary/enum/crm-enum-address-type.md)
+- [{#T}](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md)
+- [{#T}](how-to-add-company-with-requisite.md)
