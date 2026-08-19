@@ -1,4 +1,4 @@
-# Overview of Events When Working with the Connector
+# Overview of Events When Working with Open Channel Connectors
 
 {% note tip "" %}
 
@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Events allow applications to respond to changes in open line connectors: receiving notifications about new messages, their modifications, deletions, as well as the completion of dialogues and disconnection of lines.
+Open Channel connector events notify the application about external channel messages, the start and completion of dialogues, channel status disconnection, and line deletion.
 
 Detailed work with events is described in the article [Concept and Benefits of Event Handling](../../../events/index.md).
 
@@ -24,17 +24,17 @@ An example of a handler code for the event is described in the article [How to T
 
 ## Overview of Events {#all-events}
 
-> Scope: [`imconnector`](../../../scopes/permissions.md), [`imopenlines`](../../../scopes/permissions.md)  
+> Scope: [`imconnector`](../../../scopes/permissions.md), [`imopenlines`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
 #|
 || **Event** | **Triggered** ||
-|| [OnImConnectorMessageAdd](on-im-connector-message-add.md) | When messages are sent manually ||
-|| [OnImConnectorDialogStart](on-im-connector-dialog-start.md) | When a dialogue is created manually ||
-|| [OnImConnectorMessageUpdate](on-im-connector-message-update.md) | When a message is modified manually ||
-|| [OnImConnectorMessageDelete](on-im-connector-message-delete.md) | When a message is deleted manually ||
-|| [OnImConnectorDialogFinish](on-im-connector-dialog-finish.md) | When a dialogue is closed manually ||
-|| [OnImConnectorStatusDelete](on-im-connector-status-delete.md) | When an open line is disconnected manually ||
-|| [OnImConnectorLineDelete](on-im-connector-line-delete.md) | When an open line is deleted manually ||
+|| [OnImConnectorMessageAdd](on-im-connector-message-add.md) | When a message is sent from Bitrix24 to an external channel ||
+|| [OnImConnectorDialogStart](on-im-connector-dialog-start.md) | When a dialogue is created in an external channel ||
+|| [OnImConnectorMessageUpdate](on-im-connector-message-update.md) | When a message is modified in an external channel ||
+|| [OnImConnectorMessageDelete](on-im-connector-message-delete.md) | When a message is deleted in an external channel ||
+|| [OnImConnectorDialogFinish](on-im-connector-dialog-finish.md) | When a dialogue is closed in an external channel ||
+|| [OnImConnectorStatusDelete](on-im-connector-status-delete.md) | When a channel status is disconnected ||
+|| [OnImConnectorLineDelete](on-im-connector-line-delete.md) | When an open line is deleted ||
 |#

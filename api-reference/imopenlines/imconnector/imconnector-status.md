@@ -28,7 +28,7 @@ The method works only in the context of the [application](../../../settings/app-
 || **CONNECTOR***
 [`string`](../../data-types.md) | The string code of the connector specified in the `ID` parameter when calling [imconnector.register](./imconnector-register.md) ||
 || **LINE**
-[`string`](../../data-types.md) | The identifier of the open line ||
+[`integer`](../../data-types.md) | The identifier of the open line ||
 |#
 
 If the `LINE` parameter is not provided, the method automatically uses the value `0`. This affects the result of the check:
@@ -228,6 +228,17 @@ HTTP Status: **200**
 #|
 || **Name**
 `type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Connector status object [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **LINE**
 [`integer`](../../data-types.md) | The identifier of the open line ||
 || **CONNECTOR**
@@ -238,8 +249,6 @@ HTTP Status: **200**
 [`boolean`](../../data-types.md) | Indicates whether the connector is fully configured ||
 || **STATUS**
 [`boolean`](../../data-types.md) | The final status of the connector's availability ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -248,7 +257,7 @@ HTTP Status: **400**, **403**
 
 ```json
 {
-    "error": "CONNECTOR",
+    "error": "ERROR_ARGUMENT",
     "error_description": "Argument 'CONNECTOR' is null or empty"
 }
 ```
@@ -260,7 +269,7 @@ HTTP Status: **400**, **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method. Application context required | The method was called outside the application context of OAuth ||
-|| `400` | `CONNECTOR` | Argument 'CONNECTOR' is null or empty | The connector identifier `CONNECTOR` was not provided ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'CONNECTOR' is null or empty | The connector identifier `CONNECTOR` was not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

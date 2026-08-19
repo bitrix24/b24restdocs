@@ -8,19 +8,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Universal lists are a tool for creating and managing structured information. They allow you to create customizable tables with various types of fields: text, number, date, file, and others.
 
-Universal lists integrate with Bitrix24 modules, enabling data processing automation and access management. Imagine a list of employee vacation requests. A workflow is set up for the list, and access permissions are configured so that only the manager and HR department staff can modify the requests. As a result, when an employee submits a vacation request, the HR manager automatically receives a notification to review and approve or decline the request.
+Universal lists integrate with Bitrix24 modules, enabling data processing automation and access management. For example, a list of employee vacation requests can start an approval workflow and restrict changes to elements by access permissions.
 
 Each list represents an [information block](*iblock). Use the group of methods [lists.*](./lists/index.md) to work with lists.
 
-> Quick navigation: [all methods](#all-methods) 
+> Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [Create and configure a list](https://helpdesk.bitrix24.com/open/18128130/)
+> User documentation: [How to Create and Configure a List in Bitrix24](https://helpdesk.bitrix24.com/open/25744043/)
 
 ## Structure of a Universal List
 
 ### Sections
 
-Sections group items like folders. This helps establish a hierarchy. For example, the section "Legal Documents" -> subsection "Lease Agreements." To work with sections, use the methods [lists.section.*](./sections/index.md).
+Sections group items like folders. This helps establish a hierarchy. For example, the section "Legal Documents" — subsection "Lease Agreements." To work with sections, use the methods [lists.section.*](./sections/index.md).
 
 ### Items
 
@@ -40,8 +40,8 @@ The set of fields is unique for each list. All available types can be found in t
 
 Information in universal lists can be linked to CRM and Drive through fields of the following types:
 
--  Link to CRM entities,
--  File (Drive).
+- link to CRM entities
+- file (Drive)
 
 Read about the specifics of these types in the article [Universal List Fields: Overview of Methods](./fields/index.md).
 
@@ -67,7 +67,7 @@ The recommended order of working with a list:
 
 > Scope: [`lists`](../scopes/permissions.md)
 >
-> Who can execute the method: depends on the method
+> Who can execute the method: depending on the method
 
 ### Lists
 

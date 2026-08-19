@@ -584,6 +584,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `IM_NOT_INSTALLED` | Messenger is not installed. | The `im` module is not installed ||
 || `400` | `ACCESS_ERROR` | You do not have access to the specified dialog | Dialog not found or no access to it ||
 |#
 

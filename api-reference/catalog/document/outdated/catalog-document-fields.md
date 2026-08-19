@@ -69,7 +69,7 @@ No parameters.
     }
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
-    type DocumentFieldsResult = Record<string, DocumentField>
+    type DocumentFieldsResult = Record<string, DocumentField>[]
 
     try {
       const response = await $b24.actions.v2.call.make<DocumentFieldsResult>({
@@ -199,6 +199,70 @@ No parameters.
     ```
 
 {% endlist %}
+
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": [
+        {
+            "id": {
+                "type": "integer",
+                "isRequired": false,
+                "isReadOnly": true,
+                "isImmutable": false,
+                "isMultiple": false,
+                "isDynamic": false,
+                "title": "ID"
+            }
+        }
+    ],
+    "time": {
+        "start": 1759482402.511337,
+        "finish": 1759482402.642843,
+        "duration": 0.13150620460510254,
+        "processing": 0.02694106101989746,
+        "date_start": "2025-11-02T12:26:42+03:00",
+        "date_finish": "2025-11-02T12:26:42+03:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object[]`](../../../data-types.md) | Array with the document field descriptions ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "0",
+    "error_description": "Insufficient permissions to save the document"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `0` | Insufficient permissions to save the document | The user does not have view permission ||
+|#
+
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

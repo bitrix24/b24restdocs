@@ -1,4 +1,4 @@
-# Object Page: Overview of Methods
+# Pages: Overview of Methods
 
 {% note tip "" %}
 
@@ -8,15 +8,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Methods help manage the page and its associated actions. With these methods, you can:
 
-- modify the page,
-- manage its blocks,
-- assign a special role to the page on the site.
+- modify the page
+- manage its blocks
+- assign a special role to the page on the site
 
 For example, you can create a promotional page, fill it with blocks, and publish it. Once the promotion ends, you can unpublish the page, move it to another folder, or delete it.
 
 The fields of the page are described in a separate article [Page Fields](./fields.md).
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Create and configure your Bitrix24 site](https://helpdesk.bitrix24.com/open/25743741/)
 
 ## How to Work with the Page
 
@@ -24,9 +26,9 @@ Working with the page starts with the site. First, obtain the site ID using the 
 
 After that, choose a method to create the page:
 
-- [landing.landing.add](./methods/landing-landing-add.md) if you need a new page,
-- [landing.landing.addByTemplate](./methods/landing-landing-add-by-template.md) if you need a page with a predefined structure,
-- [landing.landing.copy](./methods/landing-landing-copy.md) if you want to base it on an existing page.
+- [landing.landing.add](./methods/landing-landing-add.md) if you need a new page
+- [landing.landing.addByTemplate](./methods/landing-landing-add-by-template.md) if you need a page with a predefined structure
+- [landing.landing.copy](./methods/landing-landing-copy.md) if you want to base it on an existing page
 
 Once the page is created, you can configure its parameters using the methods [landing.landing.update](./methods/landing-landing-update.md) and [landing.landing.move](./methods/landing-landing-move.md).
 
@@ -60,7 +62,7 @@ A page in Bitrix24 is always connected with other objects. The site sets the ove
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the methods: depending on the method
 
 ### Working with Pages
 

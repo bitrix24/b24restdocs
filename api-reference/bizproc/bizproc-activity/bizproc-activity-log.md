@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method logs information into the business process log. Event logging must be enabled in the business process template.
+The `bizproc.activity.log` method logs information into the business process log. Event logging must be enabled in the business process template.
 
 ## Method Parameters
 

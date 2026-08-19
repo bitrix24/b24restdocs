@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-Adds a new action for use in workflows.
+The `bizproc.activity.add` method adds a new action for use in workflows.
 
 The method works only in the context of an [application](../../../settings/app-installation/index.md).
 
@@ -143,7 +143,7 @@ Examples:
 [`boolean`](../../data-types.md) | Allows opening additional settings for the action in the application slider. Possible values:
 - `Y` — yes
 - `N` — no  ||
-|| **PLACEMENT_HANDLER*** 
+|| **PLACEMENT_HANDLER**
 [`string`](../../data-types.md) | URL of the placement handler on the application side. Required if `USE_PLACEMENT = 'Y'` ||
 |#
 

@@ -20,10 +20,10 @@ Automation Rules can be utilized in CRM automation, workflows, and Smart scripts
 
 ## What Tasks Do Application Automation Rules Solve
 
-- Perform external actions in CRM automation and workflows.
-- Return computed data to the process for subsequent steps.
-- Restrict availability based on document type and Bitrix24 edition.
-- Log messages during the execution of the script.
+- Perform external actions in CRM automation and workflows
+- Return computed data to the process for subsequent steps
+- Restrict availability based on document type and Bitrix24 edition
+- Log messages during the execution of the script
 
 ## How Result Waiting Works
 
@@ -31,10 +31,10 @@ If the Automation Rule needs to wait for a response from an external system, spe
 
 The script then operates as follows:
 
-1. The Automation Rule is triggered in the automation and sends data to the application handler `HANDLER`.
-2. The application receives a unique key `EVENT_TOKEN` and calculates the result.
-3. The application returns values to the process using the method [bizproc.event.send](./bizproc-event-send.md).
-4. If necessary, the application adds a note to the process log via `LOG_MESSAGE`.
+1. The Automation Rule is triggered in the automation and sends data to the application handler `HANDLER`
+2. The application receives a unique key `EVENT_TOKEN` and calculates the result
+3. The application returns values to the process using the method [bizproc.event.send](./bizproc-event-send.md)
+4. If necessary, the application adds a note to the process log via `LOG_MESSAGE`
 
 {% note tip "User Documentation" %}
 
@@ -44,21 +44,22 @@ The script then operates as follows:
 
 ## How to Get Started
 
-1. Register the Automation Rule using the method [bizproc.robot.add](./bizproc-robot-add.md).
-2. Place the Automation Rule in the desired CRM automation or workflow and start the script.
-3. Update the Automation Rule settings using the method [bizproc.robot.update](./bizproc-robot-update.md).
-4. Check the list of registered Automation Rules via [bizproc.robot.list](./bizproc-robot-list.md).
-5. Remove outdated Automation Rules using the method [bizproc.robot.delete](./bizproc-robot-delete.md).
+1. Register the Automation Rule using the method [bizproc.robot.add](./bizproc-robot-add.md)
+2. Place the Automation Rule in the desired CRM automation or workflow and start the script
+3. Update the Automation Rule settings using the method [bizproc.robot.update](./bizproc-robot-update.md)
+4. Check the list of registered Automation Rules via [bizproc.robot.list](./bizproc-robot-list.md)
+5. Remove outdated Automation Rules using the method [bizproc.robot.delete](./bizproc-robot-delete.md)
 
 ## Important Considerations
 
-- The methods for managing Automation Rules [bizproc.robot.add](./bizproc-robot-add.md), [bizproc.robot.update](./bizproc-robot-update.md), [bizproc.robot.list](./bizproc-robot-list.md), [bizproc.robot.delete](./bizproc-robot-delete.md) only work in the context of the installed application.
-- For [bizproc.event.send](./bizproc-event-send.md), a valid `EVENT_TOKEN` is required; otherwise, the method will return an access error.
+- The methods for managing Automation Rules [bizproc.robot.add](./bizproc-robot-add.md), [bizproc.robot.update](./bizproc-robot-update.md), [bizproc.robot.list](./bizproc-robot-list.md), [bizproc.robot.delete](./bizproc-robot-delete.md) only work in the context of the installed application
+- For [bizproc.event.send](./bizproc-event-send.md), a valid `EVENT_TOKEN` is required; otherwise, the method will return an access error
 
 ## Relationships with Other Objects
 
-- **CRM Objects.** Through `DOCUMENT_TYPE` and `FILTER`, the Automation Rule connects with leads, deals, and other document types where it should be available.
-- **Application Actions.** Automation Rules and actions use a common internal mechanism, so it is important to choose a primary path for new scenarios when designing the integration.
+**CRM Objects.** Through `DOCUMENT_TYPE` and `FILTER`, the Automation Rule connects with leads, deals, and other document types where it should be available.
+
+**Application Actions.** Automation Rules and actions use a common internal mechanism, so it is important to choose a primary path for new scenarios when designing the integration.
 
 ## Overview of Methods {#all-methods}
 

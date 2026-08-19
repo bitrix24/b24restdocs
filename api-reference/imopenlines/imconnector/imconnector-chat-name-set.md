@@ -36,7 +36,7 @@ The identifier can be obtained using the methods [imopenlines.config.get](../ope
 || **NAME***  
 [`string`](../../data-types.md) | New name for the chat ||
 || **USER_ID**  
-[`string`](../../data-types.md) | User identifier. This parameter is mandatory only for connectors without group chats from the external side. For such a connector, the `CHAT_GROUP` parameter in the [imconnector.register](./imconnector-register.md) method must be set to `N` ||
+[`string`](../../data-types.md) | User identifier. This parameter is mandatory only for connectors without group chats from the external side. For such a connector, the `CHAT_GROUP` parameter in the [imconnector.register](./imconnector-register.md) method must be set to `false` ||
 |#
 
 ## Code Examples
@@ -243,36 +243,35 @@ HTTP Status: **200**
 
 ```json
 {
-    "answer": {
-        "result": {
-            "SUCCESS": true,
-            "DATA": {
-                "RESULT": {}
-            }
-        },
-        "time": {
-            "start": 1732110908.525962,
-            "finish": 1732110908.879113,
-            "duration": 0.3531508445739746,
-            "processing": 0.07694888114929199,
-            "date_start": "2024-11-20T15:55:08+02:00",
-            "date_finish": "2024-11-20T15:55:08+02:00"
+    "result": {
+        "SUCCESS": true,
+        "DATA": {
+            "RESULT": {}
         }
     },
-    "query": {
-        "method": "imconnector.chat.name.set",
-        "data": {
-            "CONNECTOR": "newcustomconnector",
-            "LINE": "105",
-            "CHAT_ID": "1",
-            "NAME": "name"
-        }
-    },
-    "status": 200
+    "time": {
+        "start": 1732110908.525962,
+        "finish": 1732110908.879113,
+        "duration": 0.3531508445739746,
+        "processing": 0.07694888114929199,
+        "date_start": "2024-11-20T15:55:08+02:00",
+        "date_finish": "2024-11-20T15:55:08+02:00"
+    }
 }
 ```
 
 ### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Result of setting the chat name [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
 
 #|
 || **Name**

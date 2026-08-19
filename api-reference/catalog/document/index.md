@@ -11,18 +11,18 @@ Inventory accounting is a tool that allows you to track the available and reserv
 To add, move, or remove goods from the warehouse, use inventory accounting documents.
 
 > Quick navigation: [all methods](#all-methods)
-> 
-> User documentation: 
-> - [Bitrix24 Inventory Management](https://helpdesk.bitrix24.com/open/14821994/)
+>
+> User documentation: [Bitrix24 Inventory Management](https://helpdesk.bitrix24.com/open/14821994/)
 
 ## Inventory Accounting Documents
 
 The following types of documents are available in inventory accounting:
-- `A` – goods arrival at the warehouse,
-- `S` – goods receipt,
-- `M` – goods transfer between warehouses,
-- `R` – goods return,
-- `D` – goods write-off.
+
+- `A` — goods arrival at the warehouse
+- `S` — goods receipt
+- `M` — goods transfer between warehouses
+- `R` — goods return
+- `D` — goods write-off
 
 Set access permissions for each type of document. If access permissions are not configured, employees will see an error when attempting to open inventory accounting documents and will be unable to work with them.
 
@@ -37,13 +37,27 @@ Set access permissions for each type of document. If access permissions are not 
 
 {% endnote %}
 
+## Current API Version
+
+For new development, use the `catalog.document.*` and `catalog.document.element.*` methods. Deprecated methods [catalog.document.confirm](./outdated/catalog-document-confirm.md), [catalog.document.unconfirm](./outdated/catalog-document-unconfirm.md), [catalog.document.fields](./outdated/catalog-document-fields.md), and [catalog.document.element.fields](./outdated/catalog-document-element-fields.md) are kept only to support legacy integrations.
+
+Current replacements:
+
+#|
+|| **If a Legacy Integration Uses** | **Use Now** ||
+|| `catalog.document.confirm` | [catalog.document.conduct](./catalog-document-conduct.md) ||
+|| `catalog.document.unconfirm` | [catalog.document.cancel](./catalog-document-cancel.md) ||
+|| `catalog.document.fields` | [catalog.document.getFields](./catalog-document-get-fields.md) ||
+|| `catalog.document.element.fields` | [catalog.document.element.getFields](./document-element/catalog-document-element-get-fields.md) ||
+|#
+
 ## Linking Inventory Accounting Documents with Other Objects
 
 **Goods in the Inventory Accounting Document.** Specify the goods for the inventory accounting document using the methods [catalog.document.element.*](./document-element/index.md).
 
 **Warehouses.** Specify the warehouse for which you are creating the inventory accounting document. Use the methods [catalog.store.*](../store/index.md).
 
-**Custom Fields for Inventory Accounting Documents.** You can create additional fields for inventory accounting documents using the method [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md), where `moduleId` is catalog, and `entityId` is CAT_STORE_DOCUMENT_DocumentTypeIdentifier. To view additional fields or change their values, use the methods [catalog.userfield.document.*](../userfield-document/index.md).
+**Custom Fields for Inventory Accounting Documents.** You can create additional fields for inventory accounting documents using the method [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md). Pass `moduleId = catalog`, and specify the document type in `entityId` using the `CAT_STORE_DOCUMENT_<DOC_TYPE>` format, for example `CAT_STORE_DOCUMENT_A`. You can view additional fields and change their values using the methods [catalog.userfield.document.*](../userfield-document/index.md).
 
 ## Overview of Methods {#all-methods}
 
@@ -55,16 +69,16 @@ Set access permissions for each type of document. If access permissions are not 
 
 #| 
 || **Method** | **Description** ||
-|| [catalog.document.mode.status](./catalog-document-mode-status.md) | Checks if inventory accounting is enabled ||
 || [catalog.document.add](./catalog-document-add.md) | Adds an inventory accounting document ||
-|| [catalog.document.conduct](./catalog-document-conduct.md) | Conducts an inventory accounting document ||
-|| [catalog.document.conductList](./catalog-document-conduct-list.md) | Conducts a group of inventory accounting documents ||
-|| [catalog.document.cancel](./catalog-document-cancel.md) | Cancels the conduct of an inventory accounting document by its identifier ||
-|| [catalog.document.cancelList](./catalog-document-cancel-list.md) | Cancels the conduct of a group of inventory accounting documents ||
 || [catalog.document.update](./catalog-document-update.md) | Updates an inventory accounting document ||
 || [catalog.document.list](./catalog-document-list.md) | Returns a list of inventory accounting documents ||
 || [catalog.document.delete](./catalog-document-delete.md) | Deletes an inventory accounting document ||
 || [catalog.document.deleteList](./catalog-document-delete-list.md) | Deletes a group of inventory accounting documents ||
+|| [catalog.document.conduct](./catalog-document-conduct.md) | Conducts an inventory accounting document ||
+|| [catalog.document.conductList](./catalog-document-conduct-list.md) | Conducts a group of inventory accounting documents ||
+|| [catalog.document.cancel](./catalog-document-cancel.md) | Cancels the conduct of an inventory accounting document ||
+|| [catalog.document.cancelList](./catalog-document-cancel-list.md) | Cancels the conduct of a group of inventory accounting documents ||
+|| [catalog.document.mode.status](./catalog-document-mode-status.md) | Checks if inventory accounting is enabled ||
 || [catalog.document.getFields](./catalog-document-get-fields.md) | Returns available fields of the inventory accounting document ||
 |#
 

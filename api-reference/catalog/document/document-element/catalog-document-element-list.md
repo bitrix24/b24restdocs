@@ -398,8 +398,10 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **documentElement**
-[`catalog_document_element[]`](../../data-types.md#catalog_document_element) | Object with information about the document products, the response structure depends on the `select` parameter ||
+|| **documentElements**
+[`catalog_document_element[]`](../../data-types.md#catalog_document_element) | Array of objects with information about the document products, the response structure depends on the `select` parameter ||
+|| **next**
+[`integer`](../../../data-types.md) | Value for retrieving the next page ||
 || **total**
 [`integer`](../../../data-types.md) | Total number of records ||
 || **time**

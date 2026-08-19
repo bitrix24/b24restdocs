@@ -11,6 +11,8 @@ Embedding locations allow you to add an application to the interface of the "Sit
 For example, an application can be added to the page settings to open it from the editor. Another option is to display an action in the block menu, allowing users to work with a specific block without navigating to another section.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Site and page settings](https://helpdesk.bitrix24.com/open/21883080/)
 
 ## How to Work with Embedding Locations
 
@@ -45,7 +47,7 @@ To configure:
 3. For the menu, use the methods [landing.site.bindingToMenu](./knowledge-base/landing-site-binding-to-menu.md), [landing.site.getMenuBindings](./knowledge-base/landing-site-get-menu-bindings.md), [landing.site.unbindingFromMenu](./knowledge-base/landing-site-unbinding-from-menu.md).
 4. For the group, use the methods [landing.site.bindingToGroup](./knowledge-base/landing-site-binding-to-group.md), [landing.site.getGroupBindings](./knowledge-base/landing-site-get-group-bindings.md), [landing.site.unbindingFromGroup](./knowledge-base/landing-site-unbinding-from-group.md).
 
-## Relationships with Other Sections
+## Relationships with Other Objects
 
 **Sites and Pages.** The embedding location [LANDING_SETTINGS](./settings.md) works in the editor for [sites](../site/index.md) and [pages](../page/index.md). Therefore, the site and page identifiers are passed to the handler.
 
@@ -59,7 +61,7 @@ To configure:
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: depends on the method
+> Who can execute the methods: depends on the method
 
 ### Embedding Locations
 

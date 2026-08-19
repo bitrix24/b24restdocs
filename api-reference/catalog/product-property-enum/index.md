@@ -16,14 +16,16 @@ A property of type `List` has a set of permissible values. Each value is stored 
 - `sort` — sorting index
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Create and Configure Product Properties in CRM](https://helpdesk.bitrix24.com/open/25882983/)
 
 ## Considerations Before Calling Methods
 
-- Methods only work for properties of type `List`. If a property of another type is specified when adding a value, the method [catalog.productPropertyEnum.add](./catalog-product-property-enum-add.md) will return the error `Only list properties are supported`.
+- Methods only work for properties of type `List`. If a property of another type is specified when adding a value, the method [catalog.productPropertyEnum.add](./catalog-product-property-enum-add.md) will return the error `Only list properties are supported`
 
-- The `xmlId` field is mandatory and must be unique within a single property.
+- The `xmlId` field is mandatory and must be unique within a single property
 
-- To read list property values and delete them, you need the "View product catalog" access permission. For creating and updating, you additionally need permission to modify the information block property.
+- To read and delete list property values, you need the "View product catalog" access permission. For creating and updating, you additionally need permission to modify the information block property
 
 ## How to Work with List Property Values
 
@@ -35,7 +37,7 @@ A property of type `List` has a set of permissible values. Each value is stored 
 
 ## Relationship with Other Objects
 
-**Product or Variation Property.** The list value is associated with the property through `propertyId`. To work with properties, use the methods in the [catalog.productProperty.*](../product-property/index.md) section.
+**Product or Variation Property.** The list value is associated with the property through `propertyId`. Manage product or variation properties using the methods [catalog.productProperty.*](../product-property/index.md).
 
 **Product Card.** If a product or variation has a property of type `List`, the `id` of the required value is passed in the field of that property.
 
@@ -43,7 +45,7 @@ A property of type `List` has a set of permissible values. Each value is stored 
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute methods: depending on the method
 
 #| 
 || **Method** | **Description** ||

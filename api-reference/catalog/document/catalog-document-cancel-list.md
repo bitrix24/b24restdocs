@@ -255,6 +255,7 @@ HTTP Code: **400**
 || `0` | Error canceling the document: Document not found | A non-existent identifier was specified ||
 || `0` | An error occurred while canceling the document "document name": The document has not been processed yet | Cannot cancel the processing of a document if it is not in the processed status ||
 || `0` | Inventory accounting is not available on your plan | Inventory accounting is not available on your plan ||
+|| `0` | To process the document, inventory accounting must be enabled | Inventory accounting is disabled ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

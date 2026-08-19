@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method updates the fields of the Automation Rule registered by the application.
+The `bizproc.robot.update` method updates the fields of the Automation Rule registered by the application.
 
 It only works in the context of the [application](../../../settings/app-installation/index.md).
 
@@ -29,10 +29,12 @@ It only works in the context of the [application](../../../settings/app-installa
 
 ### FIELDS Parameter {#parametr-fields}
 
+Pass at least one field to update in `FIELDS`.
+
 #| 
 || **Name**
 `type` | **Description** ||
-|| **HANDLER*** 
+|| **HANDLER**
 [`string`](../../data-types.md) | URL to which the Automation Rule will send data via the Bitrix24 queue server.
 
 The link must have the same domain where the application is installed ||
@@ -43,7 +45,7 @@ The link must have the same domain where the application is installed ||
 - `Y` — yes
 - `N` — no
 ||
-|| **NAME*** 
+|| **NAME**
 [`string` \| `object`](../../data-types.md) | Name of the Automation Rule.
 
 Can be a string or an associative array of localized strings like:
@@ -131,8 +133,8 @@ Examples:
 [`boolean`](../../data-types.md) | Allows opening additional settings for the Automation Rule in the application slider. Possible values:
 - `Y` — yes
 - `N` — no  ||
-|| **PLACEMENT_HANDLER*** 
-[`string`](../../data-types.md) | URL of the placement handler on the application side. Required if `USE_PLACEMENT = 'Y'` ||
+|| **PLACEMENT_HANDLER**
+[`string`](../../data-types.md) | URL of the placement handler on the application side ||
 |#
 
 ### PROPERTY Object {#property}

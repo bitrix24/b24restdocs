@@ -140,7 +140,7 @@ In group mode, the incoming message CRM tracker is not launched. Because of this
     declare const $b24: B24Frame
 
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      const response = await $b24.actions.v2.call.make<{ result: boolean; error?: string; error_description?: string }>({
         method: 'imconnector.register',
         params: {
           ID: 'myconnector',
@@ -172,7 +172,7 @@ In group mode, the incoming message CRM tracker is not launched. Because of this
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Connector registered:', result)
+        console.info('Connector registered:', result.result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -225,7 +225,7 @@ In group mode, the incoming message CRM tracker is not launched. Because of this
           }
 
           const result = response.getData().result
-          console.info('Connector registered:', result)
+          console.info('Connector registered:', result.result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -377,15 +377,15 @@ HTTP status: **200**
 ```json
 {
     "result": {
-    "result": true
+        "result": true
     },
     "time": {
-    "start": 1738065600.11,
-    "finish": 1738065600.38,
-    "duration": 0.27,
-    "processing": 0.10,
-    "date_start": "2025-01-28T12:00:00+00:00",
-    "date_finish": "2025-01-28T12:00:00+00:00"
+        "start": 1738065600.11,
+        "finish": 1738065600.38,
+        "duration": 0.27,
+        "processing": 0.10,
+        "date_start": "2025-01-28T12:00:00+00:00",
+        "date_finish": "2025-01-28T12:00:00+00:00"
     }
 }
 ```
@@ -396,9 +396,22 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the connector was successfully registered ||
+[`object`](../../data-types.md) | Connector registration result [(detailed description)](#result) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | `true` if the connector was successfully registered. If registration fails, returns `false`, and the object includes the `error` and `error_description` fields ||
+|| **error**
+[`string`](../../data-types.md) | Error code. Returned when `result = false` ||
+|| **error_description**
+[`string`](../../data-types.md) | Error description. Returned when `result = false` ||
 |#
 
 ## Error Handling

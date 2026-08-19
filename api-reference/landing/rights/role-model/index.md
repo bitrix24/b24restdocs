@@ -42,7 +42,7 @@ The role-based access model works in conjunction with sites, access codes, and t
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: administrator or user with "full access" permission to the "Sites and Stores" section
+> Who can execute the methods: administrator or user with "Full access" permission to the "Sites and Stores" section
 
 #| 
 || **Method** | **Description** ||

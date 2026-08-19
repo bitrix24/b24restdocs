@@ -17,6 +17,8 @@ The parameter object includes:
 - `isEnabled` — indicator of the parameter's activity
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Create and Configure Product Properties in CRM](https://helpdesk.bitrix24.com/open/25882983/)
 
 ## Types of Property Parameters
 
@@ -29,9 +31,9 @@ Examples of `moduleId + featureId` combinations:
 
 ## Considerations Before Calling Methods
 
-- To read property parameters, you need the "View product catalog" access permission. To create and update, you additionally need the permission to modify the information block property.
+- To read property parameters, you need the "View product catalog" access permission. To create and update, you additionally need the permission to modify the information block property
 
-- The combination of `propertyId + moduleId + featureId` must be unique. If the record already exists, the method [catalog.productPropertyFeature.add](./catalog-product-property-feature-add.md) will return the error `Duplicate entry ... for key ...`.
+- The combination of `propertyId + moduleId + featureId` must be unique. If the record already exists, the method [catalog.productPropertyFeature.add](./catalog-product-property-feature-add.md) will return the error `Duplicate entry ... for key ...`
 
 ## How to Work with Property Parameters
 
@@ -44,13 +46,13 @@ Examples of `moduleId + featureId` combinations:
 
 ## Relationship of Parameters with Other Objects
 
-**Product or Variation Property.** The parameter is linked to the property via `propertyId`. To work with properties, use the methods in the [catalog.productProperty.*](../product-property/index.md) section.
+**Product or Variation Property.** The parameter is linked to the property via `propertyId`. Manage product or variation properties using the methods [catalog.productProperty.*](../product-property/index.md).
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute methods: depending on the method
 
 #| 
 || **Method** | **Description** ||

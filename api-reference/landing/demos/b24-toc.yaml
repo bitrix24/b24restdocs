@@ -1,4 +1,4 @@
-title: General Methods  
+title: Custom Templates
 href: index.md  
 items:  
   - name: Overview of Methods  
@@ -16,4 +16,4 @@ items:
   - name: Get a List of Registered Templates  
     href: landing-demos-get-list.md  
   - name: Unregister a Template  
-    href: landing-demos-unregister.md  
+    href: landing-demos-unregister.md

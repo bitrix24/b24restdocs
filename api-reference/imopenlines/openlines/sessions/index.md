@@ -11,11 +11,12 @@ Open Channels dialogs are chats with clients via messengers, social networks, or
 A dialog can consist of multiple sessions. Each session represents one cycle of handling requests: connecting an operator, exchanging messages, concluding, and evaluating.
 
 The methods in this section allow you to:
-- open a dialog based on external client data,
-- initiate and manage sessions,
-- connect operators,
-- change dialog modes,
-- transfer communication results to CRM.
+
+- open a dialog based on external client data
+- initiate and manage sessions
+- connect operators
+- change dialog modes
+- transfer communication results to CRM
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -91,9 +92,9 @@ Most methods in this section return a `result` object and a service block `time`
 
 When integrating, check:
 
-- HTTP response status,
-- `error` field and `error_description` text for status `400`,
-- method-specific error codes on the specific method page.
+- HTTP response status
+- `error` field and `error_description` text for status `400`
+- method-specific error codes on the specific method page
 
 For access errors and incorrect identifiers, first check the user's permissions for the dialog and the correctness of the values for `CHAT_ID`, `SESSION_ID`, `DIALOG_ID`, and `USER_CODE`.
 

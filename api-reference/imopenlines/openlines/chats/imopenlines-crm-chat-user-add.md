@@ -254,7 +254,7 @@ HTTP Status: **200**
 }
 ```
 
-### Returned Data
+## Returned Data
 
 #|
 || **Name**
@@ -286,16 +286,18 @@ HTTP Status: **400**, **403**
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `ACCESS_DENIED` | Access denied! You don't have access to join user to chat | The user executing the method does not have permission to add users to the CRM object chat ||
 || `403` | `ACCESS_DENIED` | Access denied! This user does not have access to the chat because he does not have access to this CRM object | The user `USER_ID` does not have access to the CRM object ||
-|| `400` | `ERROR_ARGUMENT` | Argument CRM_ENTITY_TYPE is null or empty | Required parameter `CRM_ENTITY_TYPE` is not provided ||
-|| `400` | `ERROR_ARGUMENT` | Argument CRM_ENTITY is null or empty | Required parameter `CRM_ENTITY` is not provided ||
-|| `400` | `ERROR_ARGUMENT` | The value of an argument `CRM_ENTITY` has an invalid type | The `CRM_ENTITY` parameter is provided in an incorrect format ||
-|| `400` | `ERROR_ARGUMENT` | Argument Empty USER_ID is null or empty | Required parameter `USER_ID` is not provided ||
-|| `400` | `IM_NOT_INSTALLED` | Module im is not installed | The `im` module is not installed ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'CRM_ENTITY_TYPE' is null or empty | Required parameter `CRM_ENTITY_TYPE` is not provided ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'CRM_ENTITY' is null or empty | Required parameter `CRM_ENTITY` is not provided ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | The `CRM_ENTITY` parameter is provided in an incorrect format ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'Empty USER_ID' is null or empty | Required parameter `USER_ID` is not provided ||
+|| `400` | `IM_NOT_INSTALLED` | Messenger is not installed. | The `im` module is not installed ||
 || `400` | `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM object being checked | The chat `CHAT_ID` is not associated with the CRM object ||
-|| `400` | `CRM_CHAT_USER_NOT_ACTIVE` | Current user has no access to users list outside open line | The current user does not have access to the user list outside the open line ||
+|| `400` | `CRM_CHAT_USER_NOT_ACTIVE` | User not active | User `USER_ID` is inactive or does not exist ||
+|| `403` | `ACCESS_DENIED` | Access denied! This user does not have access to the chat because he does not have access to this view chat history | User `USER_ID` does not have access to the chat history ||
+|| `400` | `WRONG_REQUEST` | You don't have access or user already member in chat | The user is already in the chat or is unavailable for adding ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

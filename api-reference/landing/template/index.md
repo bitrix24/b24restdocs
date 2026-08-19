@@ -28,9 +28,9 @@ Bitrix24 includes ready-made view templates. These define the structure of the p
 
 Each template has two identifiers:
 
--  `XML_ID` — the external code of the template. For example, `sidebar_right` is a template with a right sidebar, while `header_footer` is a template with a header and footer.
+- `XML_ID` — the external code of the template. For example, `sidebar_right` is a template with a right sidebar, while `header_footer` is a template with a header and footer
 
--  `ID` — the internal identifier of the template.
+- `ID` — the internal identifier of the template
 
 The table below lists the external codes `XML_ID` of the system templates. To obtain the internal `ID` of a template by its `XML_ID`, use [landing.template.getlist](./landing-template-get-list.md).
 
@@ -52,17 +52,17 @@ For example, you can create a separate page with a menu and a banner in the head
 
 In the template, each area is designated as `#AREA_N#`, where `N` is the area number. For example:
 
--  `#AREA_1#` — the first additional area,
+- `#AREA_1#` — the first additional area
 
--  `#AREA_2#` — the second additional area.
+- `#AREA_2#` — the second additional area
 
 To configure the areas, you need to know:
 
--  the identifier of the site or page for which the binding is saved, and the identifier of the page that needs to be inserted into the area. The site identifier can be obtained using the [landing.site.getList](../site/landing-site-get-list.md) method, while the page identifier can be obtained using the [landing.landing.getList](../page/methods/landing-landing-get-list.md) method,
+- the identifier of the site or page for which the binding is saved, and the identifier of the page that needs to be inserted into the area. The site identifier can be obtained using the [landing.site.getList](../site/landing-site-get-list.md) method, while the page identifier can be obtained using the [landing.landing.getList](../page/methods/landing-landing-get-list.md) method
 
--  the area number from the `CONTENT` of the template. The `CONTENT` field is returned by the [landing.template.getlist](./landing-template-get-list.md) method, and its structure is described in the article [Template Fields](./fields.md),
+- the area number from the `CONTENT` of the template. The `CONTENT` field is returned by the [landing.template.getlist](./landing-template-get-list.md) method, and its structure is described in the article [Template Fields](./fields.md)
 
--  the final set of bindings for reading or writing. The necessary methods are listed in the [overview below](#all-methods).
+- the final set of bindings for reading or writing. The necessary methods are listed in the [overview below](#all-methods)
 
 ## Overview of Methods {#all-methods}
 

@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Custom blocks are added to the application's repository for websites and pages.
 
-The group of methods `landing.repo.*` allows you to work with custom blocks. In this section, you can check the content, register a block in the repository, retrieve a list of custom blocks, and remove any unnecessary blocks.
+The `landing.repo.*` method group allows you to work with custom blocks. First, check the content, then register the block, retrieve the list of custom blocks, and delete the unnecessary block when it is no longer needed.
 
 > Quick Navigation: [All Methods](#all-methods)
 
@@ -51,7 +51,7 @@ Refer to the manifest structure in the method [landing.block.getManifestFile](..
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with View permission in the Sites section
+> Who can execute methods: user with View permission in the Sites and Stores section
 
 #| 
 || **Method** | **Description** ||

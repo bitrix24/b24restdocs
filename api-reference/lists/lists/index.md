@@ -1,4 +1,4 @@
-# Working with Universal Lists: Overview of Methods
+# Managing Universal Lists: Overview of Methods
 
 {% note tip "" %}
 
@@ -6,33 +6,34 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Universal lists can be used to keep track of any objects: documents, certificates, promotional materials, and more.
+Universal lists allow you to keep track of any objects: documents, certificates, promotional materials, and more.
 
 Only a Bitrix24 administrator can create lists. They also configure the permissions: specifying who among the employees can edit the list and who does not have access to it.
 
-> Quick navigation: [all methods](#all-methods) 
+> Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [Example of working with a list](https://helpdesk.bitrix24.com/open/16705502/)
+> User documentation: [How to Create and Configure a List in Bitrix24](https://helpdesk.bitrix24.com/open/25744043/)
+
+## Getting Started with a List
+
+1. Retrieve an available information block type using the [lists.get.iblock.type.id](./lists-get-iblock-type-id.md) method or select one of the standard types.
+2. Create a list using the [lists.add](./lists-add.md) method or retrieve parameters of an existing list using the [lists.get](./lists-get.md) method.
+3. Configure list fields using the [lists.field.*](../fields/index.md) methods.
+4. Add sections using the [lists.section.*](../sections/index.md) methods and elements using the [lists.element.*](../elements/index.md) methods.
 
 ## Types of Information Blocks for Lists
 
 In Bitrix24, three types of information blocks are used for lists:
 
--  `lists` — standard universal lists,
--  `lists_socnet` — lists for workgroups and projects,
--  `bitrix_processes` — a service type for business process data.
+- `lists` — standard universal lists
+- `lists_socnet` — lists for workgroups and projects
+- `bitrix_processes` — a service type for business process data
 
 To find out the type of an existing list, use the method [lists.get.iblock.type.id](./lists-get-iblock-type-id.md).
 
 ## Workgroups and Projects
 
 Universal lists are integrated [into workgroups and projects](../../sonet-group/sonet-group-create.md). You can create your lists within any group or project with various access levels for participants.
-
-{% note tip "User documentation" %}
-
-- [Create a list in a workgroup or project](https://helpdesk.bitrix24.com/open/25749275/)
-
-{% endnote %}
 
 ## Business Processes
 
@@ -48,7 +49,7 @@ Business process management is performed using the group of methods [bizproc.wor
 
 ## Access Permissions
 
-Permissions for the entire list are configured for users, groups, and departments. Set them when creating or updating the list through the `RIGHTS` parameter. In this parameter, specify an array where the key is the entity code, for example, `U{ID}` for a user, and the value is the letter code of the permission, for example, `W` for write access.
+Permissions for the entire list are configured for users, groups, and departments. Set them when creating or updating the list through the `RIGHTS` parameter. In this parameter, specify an array where the key is the access object code, for example, `U{ID}` for a user, and the value is the letter code of the permission, for example, `W` for write access.
 
 Permissions can conflict; for example, a user has a role with certain permissions, while the department they belong to has different ones. In this case, the maximum permissions are applied.
 
@@ -56,7 +57,7 @@ Permissions can conflict; for example, a user has a role with certain permission
 
 > Scope: [`lists`](../../scopes/permissions.md)
 >
-> Who can execute the method: depends on the method
+> Who can execute the method: depending on the method
 
 #|
 || **Method** | **Description** ||

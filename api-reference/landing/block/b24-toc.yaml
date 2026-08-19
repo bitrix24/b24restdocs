@@ -1,4 +1,4 @@
-title: Essence of Blocks  
+title: Blocks
 href: index.md  
 items:  
   - name: Overview of Methods  
@@ -24,4 +24,4 @@ items:
   - name: Methods for Working with Blocks  
     include:  
       path: methods/b24-toc.yaml  
-      mode: link  
+      mode: link

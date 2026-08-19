@@ -1,4 +1,4 @@
-# Object Blocks: Overview of Methods
+# Blocks: Overview of Methods
 
 {% note tip "" %}
 

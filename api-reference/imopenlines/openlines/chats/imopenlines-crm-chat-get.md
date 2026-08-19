@@ -265,7 +265,7 @@ HTTP Status: **200**
 }
 ```
 
-### Returned Data
+## Returned Data
 
 #|
 || **Name**
@@ -278,7 +278,7 @@ Returns an empty array `"result":[]` if no object with the specified `CRM_ENTITY
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Result Object {#result-item}
+### Result Object {#result-item}
 
 #|
 || **Name**
@@ -298,7 +298,7 @@ HTTP Status: **400**, **403**
 ```json
 {
     "error": "ERROR_ARGUMENT",
-    "error_description": "Argument CRM_ENTITY is null or empty"
+    "error_description": "Argument 'CRM_ENTITY' is null or empty"
 }
 ```
 
@@ -309,12 +309,12 @@ HTTP Status: **400**, **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `ACCESS_DENIED` | Access denied! You don't have access to this action | User does not have access to the CRM object ||
-|| `400` | `ERROR_ARGUMENT` | Argument CRM_ENTITY_TYPE is null or empty | Required parameter `CRM_ENTITY_TYPE` is not provided or is empty ||
-|| `400` | `ERROR_ARGUMENT` | Argument CRM_ENTITY is null or empty | Required parameter `CRM_ENTITY` is not provided or is empty ||
-|| `400` | `ERROR_ARGUMENT` | The value of an argument CRM_ENTITY has an invalid type | Parameter `CRM_ENTITY` is provided in an incorrect format ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'CRM_ENTITY_TYPE' is null or empty | Required parameter `CRM_ENTITY_TYPE` is not provided or is empty ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'CRM_ENTITY' is null or empty | Required parameter `CRM_ENTITY` is not provided or is empty ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | Parameter `CRM_ENTITY` is provided in an incorrect format ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

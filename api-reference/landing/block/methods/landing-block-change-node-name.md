@@ -382,7 +382,9 @@ HTTP Status: **400**
 || `MISSING_PARAMS` | Required parameter `lid`, `block`, or `data` is missing ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
 || `ACCESS_DENIED` | Insufficient rights to edit the site ||
-|| `TYPE_ERROR` | Parameter `data` is passed in an incorrect format or tag value is not a string ||
+|| `BLOCK_NOT_FOUND` | The block with identifier `block` was not found on page `lid` or is not available in the editable page version ||
+|| `NODES_NOT_FOUND` | No block changes are passed in the `data` parameter ||
+|| `TYPE_ERROR` | An incorrect type of one of the method parameters was passed, for example `data` in an invalid format ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
