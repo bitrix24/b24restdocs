@@ -1,4 +1,4 @@
-# General Recommendations
+# Performance Recommendations
 
 {% note tip "" %}
 
@@ -6,28 +6,54 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-There are certain [limits](./limits.md) when working with the REST API of the cloud version of Bitrix24. In the case of [on-premise installation](../cloud-and-on-premise/on-premise/index.md), the limitations depend on the specific server infrastructure settings on which Bitrix24 operates, meaning that the limits can vary both upwards and downwards.
+The load that an integration puts on Bitrix24 consists of two values: how many HTTP requests it sends and how many resources each called method consumes. The recommendations below help you keep both values within the limits and avoid losing events under peak load. The threshold values themselves and the error codes are described on the [REST API Limits](./limits.md) page.
 
-However, there are several general recommendations that, if followed, will reduce the risk of your applications hitting the REST API limits.
+In cloud Bitrix24, the limit thresholds depend on the plan. In the [self-hosted version](../cloud-and-on-premise/on-premise/index.md), the restrictions depend on the settings of the server Bitrix24 runs on, so they can be either stricter or looser than the cloud ones.
 
-## Requests to Bitrix24
+## How to Reduce the Number of Requests {#requests}
 
-1. Reduce the number of requests to Bitrix24:
-   1. Cache some data on your side to avoid unnecessary repeated requests that return the same data you have already received;
-   2. Use batch execution of requests with the [batch method](../how-to-call-rest-api/batch.md) (the limit on request intensity takes into account the number of hits to Bitrix24, and using batch allows you to make several actual REST API requests in one hit).
-2. Use the [start=-1 parameter](./huge-data.md) when calling list methods - this reduces the load on Bitrix24's server resources.
-3. Try to request only the data that is actually needed (specify the list of required fields in the `select` parameter for those methods that support it).
+The rate limit counts HTTP requests, not the number of records in the response. Reduce the number of calls to Bitrix24.
 
-## Event Handling and Outgoing Webhooks
+**Cache data on your side.** Field lists, dictionaries, and settings change rarely. Retain them on your side so that you do not request the same data again.
 
-As you know, the [event mechanism](../../api-reference/events/index.md) in Bitrix24 operates using a special service - the event queue - which invokes your handlers.
+**Combine calls into a batch.** The [batch](../how-to-call-rest-api/batch.md) method passes up to 50 method calls in a single HTTP request, so it consumes the rate limit as one request.
 
-It is important to consider that you cannot control the intensity of events.
+**Request only the fields you need.** Pass the list of fields in the `select` parameter for those methods that support it.
 
-Imagine that your application has registered a handler for [OnCRMDealUpdate](../../api-reference/crm/deals/events/on-crm-deal-update.md), and users on a specific Bitrix24 instance have massively (using a [workflow](../../api-reference/bizproc/index.md) or automation based on the REST API) updated 10K deals. The Bitrix24 event queue will immediately generate tasks to send 10K notifications to your handler.
+**Turn off counting the total.** When retrieving large volumes, pass `start = -1` and move to the next page by filtering on the last received identifier. The procedure is described in the article [How to Retrieve Large Volumes of Data](./huge-data.md).
 
-Therefore, your handler must be prepared for potential peak loads. It should respond as quickly as possible - if the event queue does not receive a response from your handler when sending the next event, or if your handler responds slowly, subsequent calls will be executed with lower priority, resulting in longer delays.
+## How to Reduce the Resource Intensity of Calls {#resources}
 
-Most importantly, if your handler cannot handle such a load and your server "crashes," you will simply not receive and will be unable to process some of the events sent to your handler. Bitrix24 does not resend events if the event handler does not respond at all or returns an error status from the web server.
+Bitrix24 counts not only the rate of requests but also their execution time. In the cloud version, a single request runs for no longer than 60 seconds, and the accumulated execution time of a method is limited separately for each application and webhook.
 
-Thus, we **strongly recommend** using the "[incoming queue](./queue.md)" for event processing. The concept of an “incoming queue” for handling HTTP requests implies that requests are not processed immediately upon arrival but are placed in a queue, from which they are subsequently retrieved and processed by your server or even a group of servers. This allows for better load management, increased stability, and scalability of the system.
+**Split mass operations.** Several small requests are safer than one heavy call that can be interrupted by a timeout.
+
+**Simplify filters and selections.** The execution time of a method depends directly on the volume of data and the complexity of the filter.
+
+**Watch the time in the response.** In the [`time`](../../api-reference/data-types.md#time) object, the `duration` field shows the time of the current request, and `operating` shows the accumulated time of calls to this method over the last 10 minutes.
+
+**Keep nested calls in mind.** The `batch` method reduces the number of HTTP requests but does not reduce the resource intensity of the methods inside the batch.
+
+If calls are already blocked by a limit, repeat them with an increasing delay. For the breakdown of the `QUERY_LIMIT_EXCEEDED` and `OPERATION_TIME_LIMIT` errors, see the article [REST API Limits](./limits.md#how-to-respond-to-limit-errors).
+
+## How to Handle Events and Outgoing Webhooks {#events}
+
+[Events](../../api-reference/events/index.md) are delivered by a separate service — the event queue. It calls the handler that your integration has registered. The rate of these calls is driven by user actions, and you cannot regulate it.
+
+For example, an application has registered a handler for the [OnCRMDealUpdate](../../api-reference/crm/deals/events/on-crm-deal-update.md) event, and users have massively updated 10,000 deals — with a [workflow](../../api-reference/bizproc/index.md) or automation based on the REST API. The event queue will immediately generate 10,000 tasks to call your handler.
+
+This leads to two requirements for the handler.
+
+**Respond quickly.** If the event queue receives no response or the handler responds slowly, subsequent calls are executed with lower priority and longer delays.
+
+**Withstand peak load.** Bitrix24 does not resend an event if the handler did not respond or returned an error status from the web server. Some of the events will be lost in this case.
+
+To meet both requirements, accept events into an [incoming queue](./queue.md). The handler immediately responds to Bitrix24 that the request has been accepted and retains the request data in your queue. Separate workers — one or several — process that queue. This design keeps the response time short, lets you manage the load on your side, and makes the processing scalable.
+
+## Continue Learning
+
+- [{#T}](./limits.md)
+- [{#T}](./huge-data.md)
+- [{#T}](./queue.md)
+- [{#T}](../how-to-call-rest-api/batch.md)
+- [{#T}](../../api-reference/events/index.md)
