@@ -2,6 +2,11 @@
 
 ## 2026
 
+### August 19, 2026
+
+- Updated the documentation for methods [landing.role.getRights](./api-reference/landing/rights/role-model/landing-role-get-rights.md), [landing.role.setRights](./api-reference/landing/rights/role-model/landing-role-set-rights.md), [landing.role.setAccessCodes](./api-reference/landing/rights/role-model/landing-role-set-access-codes.md), [landing.role.enable](./api-reference/landing/rights/landing-role-enable.md): documented the `scope` parameter and the `ROLE_SCOPE_MISMATCH` error
+- Updated the documentation for methods [bizproc.workflow.instances](./api-reference/bizproc/bizproc-workflow-instances.md), [bizproc.workflow.template.list](./api-reference/bizproc/template/bizproc-workflow-template-list.md), [bizproc.task.list](./api-reference/bizproc/bizproc-task/bizproc-task-list.md): documented the `=` and `!=` filtering types
+
 ### August 18, 2026
 
 - Added the tutorial [How to Add a Line Item to an Order with an Arbitrary Price](./tutorials/sale/add-basket-item-to-order.md)

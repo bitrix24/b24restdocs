@@ -48,11 +48,14 @@ Default value: `['ID', 'MODIFIED', 'OWNED_UNTIL']` ||
 The list of filterable fields is the same as for the `SELECT` parameter.
 
 You can specify the type of filtering before the name of the filtered field:
-- `!` — not equal
+- `=` — equal
+- `!` or `!=` — not equal
 - `<` — less than
 - `<=` — less than or equal to
 - `>` — greater than
-- `>=` — greater than or equal to | ||
+- `>=` — greater than or equal to
+
+Without a prefix, the filter compares the value for equality. The field name can be passed in any case | ||
 || **ORDER**
 [`object`](../data-types.md) | An object for sorting the list of running workflows in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 

@@ -8,9 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator or user with "full access" permission to the "Sites and Stores" section
+> Who can execute the method: administrator or user with "full access" permission to the "Sites and Stores" section. If the `scope` parameter is provided, the method is available only to the portal administrator
 
 The method `landing.role.enable` enables or disables the role-based access model for the "Sites and Stores" section.
+
+The access model is shared across the entire portal. The method changes it at once for all sections: sites and online stores, knowledge bases, group sites, and the main page.
 
 ## Method Parameters
 
@@ -19,6 +21,17 @@ The method `landing.role.enable` enables or disables the role-based access model
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../data-types.md) | The section the call is made from. This parameter is not related to the REST scope `landing` in the method name.
+
+The values `GROUP`, `KNOWLEDGE`, and `MAINPAGE` correspond to the types of sites described in the article [Working with Site Types and Scopes](../types.md).
+
+Possible values:
+`GROUP` - group sites
+`KNOWLEDGE` - knowledge bases
+`MAINPAGE` - the main page or vibe
+
+With any of these values, only the portal administrator can switch the access model. Without the `scope` parameter, the method works in the "Sites and Stores" section ||
 || **mode***
 [`integer`](../../data-types.md) | Access model mode. You can check the current model using the [landing.role.isEnabled](./landing-role-is-enabled.md) method. Possible values:
 - `1` - enable role-based access model
@@ -264,7 +277,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions to access the "Sites and Stores" section ||
-|| `IS_NOT_ADMIN` | The method requires administrator rights or "full access" permission to the "Sites and Stores" section ||
+|| `IS_NOT_ADMIN` | The method requires administrator rights or "full access" permission to the "Sites and Stores" section. The method also returns this error for a call with the `scope` parameter if it is made by a user other than the portal administrator ||
 || `FEATURE_NOT_AVAIL` | Managing permissions in the "Sites and Stores" section is not available on the current plan ||
 || `MISSING_PARAMS` | The required parameter `mode` is missing ||
 |#

@@ -19,6 +19,17 @@ The method `landing.role.getRights` returns the rights of the specified role for
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | The section the role belongs to. This parameter is not related to the REST scope `landing` in the method name.
+
+The values `GROUP`, `KNOWLEDGE`, and `MAINPAGE` correspond to the types of sites described in the article [Working with Site Types and Scopes](../../types.md).
+
+Possible values:
+`GROUP` - roles for group sites
+`KNOWLEDGE` - roles for knowledge bases
+`MAINPAGE` - roles for the main page or vibe
+
+If the parameter is not provided, the method works with roles for sites and online stores. For a role from another section, the method returns the error `ROLE_SCOPE_MISMATCH` ||
 || **id***
 [`integer`](../../../data-types.md) | Role identifier. You can obtain the identifier using the [landing.role.getList](./landing-role-get-list.md) method ||
 |#
@@ -247,7 +258,7 @@ HTTP Status: **200**
 || **result**
 [`array`](../../../data-types.md) | Array of role rights by sites, where the key is the site identifier and the value is an array of rights codes [(detailed description)](#result-item).
 
-If the role has no saved rights or a role with such `id` is not found, the method returns an empty array `[]` ||
+If the role has no saved rights, the method returns an empty array `[]` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -302,6 +313,7 @@ HTTP Status: **400**
 || `IS_NOT_ADMIN` | Administrator rights or "full access" permission to the "Sites and Stores" section are required for the method ||
 || `FEATURE_NOT_AVAIL` | Rights management in the "Sites and Stores" section is not available on the current plan ||
 || `MISSING_PARAMS` | Required parameter `id` is missing ||
+|| `ROLE_SCOPE_MISMATCH` | The role does not belong to the section specified in the `scope` parameter. The method returns this error both for a role from another section and for a role that does not exist ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

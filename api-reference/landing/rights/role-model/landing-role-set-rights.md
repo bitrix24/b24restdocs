@@ -19,12 +19,23 @@ The method `landing.role.setRights` sets role permissions for sites. You can spe
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | The section the role belongs to. This parameter is not related to the REST scope `landing` in the method name.
+
+The values `GROUP`, `KNOWLEDGE`, and `MAINPAGE` correspond to the types of sites described in the article [Working with Site Types and Scopes](../../types.md).
+
+Possible values:
+`GROUP` - roles for group sites
+`KNOWLEDGE` - roles for knowledge bases
+`MAINPAGE` - roles for the main page or vibe
+
+If the parameter is not provided, the method works with roles for sites and online stores. For a role from another section, the method returns the error `ROLE_SCOPE_MISMATCH` ||
 || **id***
 [`integer`](../../../data-types.md) | The identifier of the role for which permissions need to be updated.
 
 You can obtain the identifier using the [landing.role.getList](./landing-role-get-list.md) method.
 
-If you pass the identifier of a non-existent role, the method will not return a separate error. ||
+If you pass the identifier of a non-existent role, the method returns the error `ROLE_SCOPE_MISMATCH`. ||
 || **rights***
 [`object`](../../../data-types.md) \| [`array`](../../../data-types.md) | An object in the following format:
 
@@ -47,8 +58,12 @@ The method completely replaces previously saved role permissions for sites. ||
 
 **Possible values:**
 
-- `menu24` — show the "Sites and Stores" menu item for the role
-- `create` — allow creating new sites
+- `menu24` — show the menu item of the section for the role
+- `create` — allow creating new sites, knowledge bases, or pages in the section
+
+The codes depend on the section specified in the `scope` parameter. For knowledge bases, group sites, and the main page, the codes have a prefix — `knowledge_`, `group_`, and `vibe_` respectively. For example, for a knowledge base you need to pass `knowledge_create`.
+
+The method does not save codes that belong to another section.
 
 If the parameter is not passed, the current additional capabilities of the role will remain unchanged. ||
 |#
@@ -378,6 +393,7 @@ HTTP Status: **400**
 || `IS_NOT_ADMIN` | The method requires administrator rights or "full access" permission to the "Sites and Stores" section. ||
 || `FEATURE_NOT_AVAIL` | Permission management in the "Sites and Stores" section is not available on the current plan. ||
 || `MISSING_PARAMS` | The required parameter `id` or `rights` is missing. ||
+|| `ROLE_SCOPE_MISMATCH` | The role does not belong to the section specified in the `scope` parameter. The method returns this error both for a role from another section and for a role that does not exist. ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

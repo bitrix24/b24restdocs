@@ -19,6 +19,17 @@ The method `landing.role.setAccessCodes` specifies to whom the role is assigned:
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | The section the role belongs to. This parameter is not related to the REST scope `landing` in the method name.
+
+The values `GROUP`, `KNOWLEDGE`, and `MAINPAGE` correspond to the types of sites described in the article [Working with Site Types and Scopes](../../types.md).
+
+Possible values:
+`GROUP` - roles for group sites
+`KNOWLEDGE` - roles for knowledge bases
+`MAINPAGE` - roles for the main page or vibe
+
+If the parameter is not provided, the method works with roles for sites and online stores. For a role from another section, the method returns the error `ROLE_SCOPE_MISMATCH` ||
 || **id***
 [`integer`](../../../data-types.md) | Role identifier. You can obtain the identifier using the method [landing.role.getList](./landing-role-get-list.md) ||
 || **codes**
@@ -329,6 +340,7 @@ HTTP status: **400**
 || `FEATURE_NOT_AVAIL` | Managing permissions in the "Sites and Stores" section is not available on the current plan. ||
 || `MISSING_PARAMS` | The required parameter `id` is missing. ||
 || `ERROR_ARGUMENT` | The `codes` parameter is not passed in array format. ||
+|| `ROLE_SCOPE_MISMATCH` | The role does not belong to the section specified in the `scope` parameter. The method returns this error both for a role from another section and for a role that does not exist. ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

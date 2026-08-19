@@ -40,6 +40,16 @@ By default, it returns the fields `ENTITY`, `DOCUMENT_ID`, `ID`, `WORKFLOW_ID`, 
 - `field_N` — [field](#fields) of the task for filtering
 - `value_N` — value of the field
 
+You can specify the type of filtering before the name of the filtered field:
+- `=` — equal
+- `!` or `!=` — not equal
+- `<` — less than
+- `<=` — less than or equal to
+- `>` — greater than
+- `>=` — greater than or equal to
+
+Without a prefix, the filter compares the value for equality. The field name can be passed in any case.
+
 If `USER_ID` is present in the filter, user subordination is checked:
 - a manager can request a list of tasks for their subordinates
 - an administrator can request tasks of any users without restrictions 
