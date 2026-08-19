@@ -1,1 +1,0 @@
-**Scope**: [`socialnetwork`](../../scopes/permissions.md) | **Who can execute the method**: `any user`

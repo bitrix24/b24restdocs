@@ -4,39 +4,39 @@
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../../../data-types.md) | Identifier of the checklist item ||
+[`integer`](/api-reference/data-types.html) | Identifier of the checklist item ||
 || **copiedId**
-[`integer`](../../../../data-types.md) | Identifier of the original item when copied, if applicable ||
+[`integer`](/api-reference/data-types.html) | Identifier of the original item when copied, if applicable ||
 || **userId**
-[`integer`](../../../../data-types.md) | Identifier of the user in the context of which the object is created ||
+[`integer`](/api-reference/data-types.html) | Identifier of the user in the context of which the object is created ||
 || **createdBy**
-[`integer`](../../../../data-types.md) | Identifier of the item creator ||
+[`integer`](/api-reference/data-types.html) | Identifier of the item creator ||
 || **parentId**
-[`integer`](../../../../data-types.md) | Identifier of the parent item. A value of `0` indicates a root item ||
+[`integer`](/api-reference/data-types.html) | Identifier of the parent item. A value of `0` indicates a root item ||
 || **title**
-[`string`](../../../../data-types.md) | Text of the checklist item ||
+[`string`](/api-reference/data-types.html) | Text of the checklist item ||
 || **sortIndex**
-[`integer`](../../../../data-types.md) | Sorting index. The lower the value, the higher the item in the list or sublist ||
+[`integer`](/api-reference/data-types.html) | Sorting index. The lower the value, the higher the item in the list or sublist ||
 || **displaySortIndex**
-[`string`](../../../../data-types.md) | Auxiliary value for display order ||
+[`string`](/api-reference/data-types.html) | Auxiliary value for display order ||
 || **isComplete**
-[`boolean`](../../../../data-types.md) | Status of the item completion ||
+[`boolean`](/api-reference/data-types.html) | Status of the item completion ||
 || **isImportant**
-[`boolean`](../../../../data-types.md) | Importance flag of the item ||
+[`boolean`](/api-reference/data-types.html) | Importance flag of the item ||
 || **completedCount**
-[`integer`](../../../../data-types.md) | Number of completions of the item ||
+[`integer`](/api-reference/data-types.html) | Number of completions of the item ||
 || **members**
-[`array`](../../../../data-types.md) | Array of objects with [description of participants](#members).
+[`array`](/api-reference/data-types.html) | Array of objects with [description of participants](#members).
 
 If there is no data, an empty array `[]` is returned ||
 || **attachments**
-[`object`](../../../../data-types.md) | Object with [description of attachments](#attachments).
+[`object`](/api-reference/data-types.html) | Object with [description of attachments](#attachments).
 
 If there is no data, an empty array `[]` is returned ||
 || **nodeId**
-[`integer`](../../../../data-types.md) | Service identifier of the node, if used ||
+[`integer`](/api-reference/data-types.html) | Service identifier of the node, if used ||
 || **templateId**
-[`integer`](../../../../data-types.md) | Identifier of the task template ||
+[`integer`](/api-reference/data-types.html) | Identifier of the task template ||
 |#
 
 #### Object members {#members}
@@ -45,23 +45,23 @@ If there is no data, an empty array `[]` is returned ||
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../../../data-types.md) | Identifier of the user ||
+[`string`](/api-reference/data-types.html) | Identifier of the user ||
 || **type**
-[`string`](../../../../data-types.md) | Role of the user in the checklist item. Possible values:
+[`string`](/api-reference/data-types.html) | Role of the user in the checklist item. Possible values:
 - `A` — Participant
 - `U` — Observer ||
 || **name**
-[`string`](../../../../data-types.md) | User's name ||
+[`string`](/api-reference/data-types.html) | User's name ||
 || **personalPhoto**
-[`string`](../../../../data-types.md) | Identifier of the user's avatar file on Drive ||
+[`string`](/api-reference/data-types.html) | Identifier of the user's avatar file on Drive ||
 || **personalGender**
-[`string`](../../../../data-types.md) | Gender of the user. Possible values:
+[`string`](/api-reference/data-types.html) | Gender of the user. Possible values:
 - `M` — Male
 - `F` — Female ||
 || **image**
-[`string`](../../../../data-types.md) | Link to the user's avatar ||
+[`string`](/api-reference/data-types.html) | Link to the user's avatar ||
 || **isCollaber**
-[`boolean`](../../../../data-types.md) | Indicator that the user is an external participant ||
+[`boolean`](/api-reference/data-types.html) | Indicator that the user is an external participant ||
 |#
 
 #### Object attachments {#attachments}
@@ -70,5 +70,5 @@ If there is no data, an empty array `[]` is returned ||
 || **Name**
 `type` | **Description** ||
 || **attachmentId**
-[`string`](../../../../data-types.md) | Identifier of the file on Drive in the format `n<fileId>`, where the key is the identifier of the attachment ||
+[`string`](/api-reference/data-types.html) | Identifier of the file on Drive in the format `n<fileId>`, where the key is the identifier of the attachment ||
 |#
