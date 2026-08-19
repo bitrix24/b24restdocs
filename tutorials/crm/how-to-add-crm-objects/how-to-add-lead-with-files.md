@@ -2,7 +2,11 @@
 
 > Scope: [`crm`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with permission to create leads in CRM
+> Who can execute the methods: to complete the entire scenario, the strictest of the listed rights is required — CRM administrator. It is needed once, to create the custom fields for files
+>
+> - [crm.lead.userfield.add](../../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md) — CRM administrator
+> - [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) — a user with permission to create leads
+> - [crm.lead.get](../../../api-reference/crm/leads/crm-lead-get.md) — a user with permission to read leads
 
 {% note tip "" %}
 
@@ -12,33 +16,49 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 You can place a form on your website to collect data from potential clients. When a client fills out the form and attaches files, their data will be sent to the CRM, allowing you to process the request.
 
-Setting up the form consists of two steps.
+As a result of the scenario, a new lead appears in the CRM. The lead card has the first name, last name, company name, phone number, and email address filled in, and the custom fields of the "file" type hold the attachments the client added to the form.
 
-1. Place the form on an HTML page. It will send data to the handler.
+The setup consists of two stages:
 
-2. Create a file to process the data. The handler will receive and prepare the data, and then create a lead using the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method.
+1. Prepare the fields and place the form on the page
+
+2. Create a handler file. It receives and prepares the data, encodes the files in Base64, and creates a lead with the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method
+
+## Before You Start
+
+- Two custom fields of the "file" type are created for leads: one for a single file and one with the "multiple" flag for several files. Create them in Bitrix24 manually or with the [crm.lead.userfield.add](../../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md) method, using the `USER_TYPE_ID`: `file` parameter and `MULTIPLE`: `Y` for the multiple field
+
+- The webhook is created on behalf of a user with permission to create leads
+
+- You have a server that serves the page with the form and accepts the form data using the `POST` method in the `multipart/form-data` format. In the examples, this is Express with the `multer` package for JS, a PHP script, and Flask for Python
+
+- The webhook URL is stored in the environment, not in the page code. The form is on a public page, and the secret must not end up in it
 
 ## 1. Creating the Web Form
 
 In Bitrix24, a contact and a company can be automatically created from a lead. To make the form suitable for different scenarios, we will make it universal. For a contact, a first name and last name must be specified, and for a company, a name is required. We will create a web form on a website page with the following fields:
 
--  `NAME` — First Name, required,
+- `NAME` — First Name, a required field
 
--  `LAST_NAME` — Last Name,
+- `LAST_NAME` — Last Name
 
--  `COMPANY_TITLE` — Company Name,
+- `COMPANY_TITLE` — Company Name
 
--  `EMAIL` — Email,
+- `EMAIL` — Email
 
--  `PHONE` — Phone.
+- `PHONE` — Phone
 
 To allow the customer to upload files, we will add the following fields to the form:
 
--  `FILE` — for a single file,
+- `FILE` — for a single file
 
--  `FILES` — for adding multiple files.
+- `FILES` — for several files
 
-Upon submission, the form passes the data to the handler.
+The form passes the data to the handler using the `POST` method. The `enctype="multipart/form-data"` attribute is required: without it, the browser sends only the file names, not their content.
+
+### Full Code Example of the Form Page
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -177,15 +197,15 @@ Upon submission, the form passes the data to the handler.
 
 ## 2. Create a Form Handler
 
-To process values from form fields and add a lead to the CRM, we will create a handler.
+The handler accepts the form field values, prepares them for the method, and adds a lead to the CRM.
 
 ### Prepare Form Data
 
-To use data from the form in the lead creation method, you must prepare it.
+#### Retrieve Field Values
 
-#### Strip HTML Tags
+Read the `NAME`, `LAST_NAME`, `COMPANY_TITLE`, `PHONE`, and `EMAIL` fields and cast them to a string. If a field is empty, you get an empty string rather than `undefined` or `None`.
 
-Retrieve the form data and strip HTML tags.
+The form is filled out by a site visitor, so the values cannot be considered safe. In the PHP example, they are additionally passed through `htmlspecialchars`. If you return these values back to the page, escape them in the other examples as well.
 
 {% list tabs %}
 
@@ -226,16 +246,19 @@ Retrieve the form data and strip HTML tags.
 
 #### Prepare Files
 
-Prepare files for upload to Bitrix24. For each file, you must pass an array containing:
+The [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method accepts a file as an object with the `fileData` key. The key holds an array of two items:
 
-- the file name,
-- a string containing the file encoded in Base64.
+- the file name
 
-To encode a file, use the [base64_encode](https://www.php.net/manual/en/function.base64-encode.php) function.
+- the file content, encoded in Base64
+
+Pass such an object to the single-file field, and an array of such objects to the multiple-files field. To encode a file, use the `base64_encode` function in PHP, the `Buffer.toString('base64')` method in JS, and the `base64` module in Python.
 
 {% note tip "Documentation" %}
 
 - [How to Work with Files](../../../api-reference/files/index.md)
+
+- [How to Choose a Transfer Format](../../../api-reference/files/how-to-upload-files.md#formats)
 
 {% endnote %}
 
@@ -338,12 +361,9 @@ To encode a file, use the [base64_encode](https://www.php.net/manual/en/function
 
 The system stores phone and email as an array of [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) objects, so they must be converted to an array format.
 
-1. If a value exists, add it as the first item `VALUE` in the array, and specify the type `VALUE_TYPE` as the second value, for example:
+1. If a value exists, write it to the `VALUE` field, and pass the [type](../../../api-reference/crm/data-types.md#crm_multifield) in the `VALUE_TYPE` field, for example `WORK` for a phone number and `HOME` for an email address
 
-   - `WORK` — for phone,
-   - `HOME` — for email.
-
-2. If no value exists, pass an empty array.
+2. If no value exists, pass an empty array
 
 {% list tabs %}
 
@@ -417,16 +437,23 @@ Formulate the lead heading using the first and last name. For companies, add the
 
 To create a lead, use the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method. Pass the following fields in the `fields` object:
 
-- `TITLE` — lead heading,
-- `NAME` — lead first name,
-- `LAST_NAME` — last name,
-- `COMPANY_TITLE` — company name,
-- `PHONE` — phone number,
-- `EMAIL` — Email,
-- `UF_CRM_LEAD_FILES` — custom field for adding multiple files,
-- `UF_CRM_LEAD_FILE` — custom field for a file.
+- `TITLE` — lead heading from the `$sTitle` variable
 
-Custom fields `UF_CRM_*` must be created in Bitrix24 before creating the lead. Add them to the portal manually or via the [crm.lead.userfield.add](../../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md) method. In the example, replace `UF_CRM_LEAD_FILES` and `UF_CRM_LEAD_FILE` with your own field names.
+- `NAME` — first name from the `NAME` form field
+
+- `LAST_NAME` — last name from the `LAST_NAME` form field
+
+- `COMPANY_TITLE` — company name from the `COMPANY_TITLE` form field
+
+- `PHONE` — phone number in the `crm_multifield` format from the `$arPhone` variable
+
+- `EMAIL` — email address in the `crm_multifield` format from the `$arEmail` variable
+
+- `UF_CRM_LEAD_FILES` — custom field for several files, an array of `fileData` objects from the `$arFiles` variable
+
+- `UF_CRM_LEAD_FILE` — custom field for a single file, a `fileData` object from the `$arSingleFile` variable
+
+Bitrix24 assigns custom fields names such as `UF_CRM_1711610801`, so replace `UF_CRM_LEAD_FILES` and `UF_CRM_LEAD_FILE` with your own. You can view them with the [crm.lead.userfield.list](../../../api-reference/crm/leads/userfield/crm-lead-userfield-list.md) method.
 
 {% note warning "" %}
 
@@ -489,11 +516,11 @@ Check which required fields are configured for leads in your Bitrix24. All requi
 
 {% endlist %}
 
-As a result, you will receive the identifier of the new lead `5`.
+If the lead is created successfully, the method returns its identifier. Retain this value: you can use it to open the lead and verify the result.
 
 ```json
 {
-	"result": 5
+    "result": 5
 }
 ```
 
@@ -604,7 +631,8 @@ As a result, you will receive the identifier of the new lead `5`.
     $log->pushHandler(new StreamHandler('php://stdout'));
 
     $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
     // Get and sanitize data from the form
     $sName = htmlspecialchars($_POST["NAME"]);
@@ -673,8 +701,9 @@ As a result, you will receive the identifier of the new lead `5`.
 - Python
 
     ```python
-    # pip install b24pysdk
+    # pip install b24pysdk flask
     import base64
+    import os
     from flask import Flask, request, jsonify
     from b24pysdk import BitrixWebhook, Client
 
@@ -682,8 +711,9 @@ As a result, you will receive the identifier of the new lead `5`.
 
     client = Client(BitrixWebhook(
         domain="your-domain.bitrix24.com",
-        webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
+        webhook_token=os.environ["B24_HOOK_TOKEN"],
     ))
+    # B24_HOOK_TOKEN = 'USER_ID/TOKEN' — user_id and token only, without https://
 
     @app.route("/form", methods=["POST"])
     def handle_form():
@@ -745,3 +775,108 @@ As a result, you will receive the identifier of the new lead `5`.
     ```
 
 {% endlist %}
+
+## Verify the Result
+
+Open the created lead in Bitrix24. In the lead card, the custom fields for files show the attachments as links — the files can be downloaded.
+
+Through REST, the lead is checked with the [crm.lead.get](../../../api-reference/crm/leads/crm-lead-get.md) method using the identifier from the response of the previous step.
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    const checkResponse = await $b24.actions.v2.call.make({
+        method: 'crm.lead.get',
+        params: { id: 5 },
+        requestId: 'lead-get'
+    })
+
+    console.dir(checkResponse.getData().result)
+    ```
+
+- PHP
+
+    ```php
+    $lead = $sb->getCRMScope()->lead()->get(5)->lead();
+    ```
+
+- Python
+
+    ```python
+    lead = client.crm.lead.get(bitrix_id=5).result
+    ```
+
+{% endlist %}
+
+The scenario is complete if the response has:
+
+- `TITLE` starting with `From website:` — the lead came from the form
+
+- `PHONE` and `EMAIL` matching what the form submitted
+
+- the `UF_CRM_LEAD_FILE` and `UF_CRM_LEAD_FILES` fields filled in. The method returns in them not the Base64 string itself but the data of the uploaded file: `id`, `showUrl`, and `downloadUrl`. In the single field this is one object, in the multiple field it is an array of objects
+
+```json
+{
+    "result": {
+        "ID": "5",
+        "TITLE": "From website: Klaus Weber",
+        "UF_CRM_LEAD_FILE": {
+            "id": 37375,
+            "showUrl": "/bitrix/components/bitrix/crm.lead.show/show_file.php?ownerId=5&fieldName=UF_CRM_LEAD_FILE&dynamic=Y&fileId=37375",
+            "downloadUrl": "/bitrix/components/bitrix/crm.lead.show/show_file.php?auth=&ownerId=5&fieldName=UF_CRM_LEAD_FILE&dynamic=Y&fileId=37375"
+        },
+        "UF_CRM_LEAD_FILES": [
+            {
+                "id": 37377,
+                "showUrl": "/bitrix/components/bitrix/crm.lead.show/show_file.php?ownerId=5&fieldName=UF_CRM_LEAD_FILES&dynamic=Y&fileId=37377",
+                "downloadUrl": "/bitrix/components/bitrix/crm.lead.show/show_file.php?auth=&ownerId=5&fieldName=UF_CRM_LEAD_FILES&dynamic=Y&fileId=37377"
+            }
+        ]
+    }
+}
+```
+
+If the client did not attach any files, the multiple field is returned as an empty array, and the single field does not appear in the response at all. This is also a correct result.
+
+## Errors and Diagnostics
+
+If the method returns an error, check the request data.
+
+#|
+|| **Code** | **Reason and action** ||
+|| Empty value `Access denied` | The user does not have permission to create leads. Check which user the webhook was created on behalf of ||
+|#
+
+A lead may be created without an error but without files. The [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method does not report problems with files: it skips both an unknown field name and a value in an unsuitable format. Check the following in order:
+
+- The custom field name in the code does not match the name in Bitrix24. The method ignores an unknown field, and the lead is created without an error
+
+- The form has no `enctype="multipart/form-data"` attribute. In that case the browser sends only the file names, and the handler does not receive the content
+
+- `multer` is not connected in the JS handler, or the `FILE` and `FILES` fields are not listed in it. Without it, `req.files` remains empty
+
+- An array of `fileData` objects was passed to the single field. The method does not retain such a value at all — the single field takes one object
+
+- The request exceeded the size limit. The Base64 string is about a third longer than the original file, so check against the string size, not the file size. For more details, read the article [How to Upload Files](../../../api-reference/files/how-to-upload-files.md)
+
+Retrieving the list of fields and retrieving the lead do not create anything, so they can be executed any number of times. If [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) returned the error, the lead was not created: fix the `fields` and repeat only that call.
+
+## Key Considerations
+
+- The field for several files must be created with the "multiple" flag. The reverse substitution is safe: one `fileData` object in a multiple field is retained as an array of one file
+
+- Submitting the form again with the same data creates a new lead every time. Duplicates are not filtered out. To link repeat requests, use the [{#T}](./how-to-add-repeat-lead.md) scenario
+
+- Files go into the request in full, so large attachments increase the handler response time. If there are many files, transfer them in separate requests
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/leads/crm-lead-add.md)
+- [{#T}](../../../api-reference/crm/leads/crm-lead-get.md)
+- [{#T}](../../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md)
+- [{#T}](../../../api-reference/files/index.md)
+- [{#T}](../../../api-reference/files/how-to-upload-files.md)
+- [{#T}](../../../api-reference/crm/data-types.md)
