@@ -35,6 +35,8 @@ The methods can only be executed in the context of authorization of the [applica
 
 **Requesting values for documents.** When an e-Signature document is sent, Bitrix24 requests HR system field values using the `OnHumanResourcesHcmLinkFieldValueRequested` event. The event contains `jobId`, the company code, the employee list, and the field list. The application transfers values using [humanresources.hcmlink.field.value.set](./humanresources-hcmlink-field-value-set.md), then updates the job using [humanresources.hcmlink.job.update](./humanresources-hcmlink-job-update.md).
 
+**Retrieving a signed document.** After a document linked to HCM Link is signed, the application receives the [OnSignHcmLinkB2eDocumentSigned](../events/on-sign-hcm-link-b2e-document-signed.md) event. The event contains the signing participant identifier `data.id`. Use this identifier to retrieve signed file data with the [sign.b2e.hcmlink.document.get](../sign-b2e-hcmlink-document-get.md) method.
+
 ## Employee IDs
 
 The exchange uses two employee identifiers from the HR system:

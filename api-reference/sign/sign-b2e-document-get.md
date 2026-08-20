@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`sign.b2e`](../scopes/permissions.md), [`crm`](../scopes/permissions.md)
 >
-> Who can execute the method: a user with document viewing access permission in KEDO
+> Who can execute the method: a user with document viewing permission in e-Signature for HR
 
 The method `sign.b2e.document.get` returns information about the document and signing participants.
 
@@ -379,5 +379,7 @@ HTTP Status: **200**
 ## Continue Learning
 
 - [{#T}](./sign-b2e-document-send.md)
+- [{#T}](./sign-b2e-hcmlink-document-get.md)
 - [{#T}](./sign-b2e-company-provider-list.md)
+- [{#T}](./events/on-sign-hcm-link-b2e-document-signed.md)
 - [{#T}](./index.md)

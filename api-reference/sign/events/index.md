@@ -1,4 +1,4 @@
-# Overview of Events in KEDO
+# Overview of Events in e-Signature for HR
 
 {% note tip "" %}
 
@@ -28,10 +28,11 @@ An example of a handler code for the event is described in the article [How to T
 
 > Scope: [`sign.b2e`](../../scopes/permissions.md)
 >
-> Who can subscribe: a user with access to KEDO
+> Who can subscribe: a user with access to e-Signature for HR
 
 #| 
 || **Event** | **Triggered** ||
 || [OnSignB2eDocumentStatusChanged](./on-sign-b2e-document-status-changed.md) | When the status of a document changes ||
 || [OnSignB2eMemberStatusChanged](./on-sign-b2e-member-status-changed.md) | When the status of a signing participant changes ||
+|| [OnSignHcmLinkB2eDocumentSigned](./on-sign-hcm-link-b2e-document-signed.md) | When a document linked to HCM Link is signed ||
 |#

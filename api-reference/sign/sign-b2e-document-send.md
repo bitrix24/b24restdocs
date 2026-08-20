@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`sign.b2e`](../scopes/permissions.md), [`crm`](../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to create documents in KEDO
+> Who can execute the method: a user with permission to create documents in e-Signature for HR
 
 The method `sign.b2e.document.send` sends a document for signing on behalf of the company.
 
@@ -136,7 +136,7 @@ The `employeeCode` and `employeeId` fields are available only for companies link
 
 ### Parameter regionDocumentType {#region-document-type}
 
-The document type code depends on the license region. The list of available codes is formed on the Bitrix24 side, and validation is performed based on the portal's region.
+The document type code depends on the license region. The list of available codes is formed on the Bitrix24 side, and validation is performed based on the license region.
 
 If you do not know the code, use the value `12.999` as a safe default. This value passes validation by default when the list of codes for the region is empty or unknown.
 
@@ -652,5 +652,7 @@ HTTP Status: **200**
 ## Continue Learning
 
 - [{#T}](./sign-b2e-document-get.md)
+- [{#T}](./sign-b2e-hcmlink-document-get.md)
 - [{#T}](./sign-b2e-company-provider-list.md)
+- [{#T}](./events/on-sign-hcm-link-b2e-document-signed.md)
 - [{#T}](./index.md)

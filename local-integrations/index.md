@@ -33,7 +33,7 @@ Ready-made method sequences for these tasks are collected in the article [Local 
 
 #|
 || **Tool** | **Authorization** | **Capabilities** | **When to Choose** ||
-|| [Incoming webhook](./local-webhooks.md) | Permanent key in the request URL | Calls methods on behalf of the employee who created the webhook | An external system or script calls Bitrix24 methods ||
+|| [Incoming webhook](./local-webhooks.md) | Secret code in the request URL | Calls methods on behalf of the employee who created the webhook | An external system or script calls Bitrix24 methods ||
 || [Outgoing webhook](./local-webhooks.md) | Token that Bitrix24 passes to the handler in the `application_token` field | Sends a Bitrix24 event to your handler URL | An external system reacts to data changes in Bitrix24 ||
 || [Static application](./static-local-app.md) | Current employee's authorization, retrieved automatically by the JS SDK | Calls methods and displays its own page in the interface. Does not receive events | You need an interface inside Bitrix24 without your own server ||
 || [Server-side application with interface](./serverside-local-app-with-ui.md) | Simplified OAuth 2.0 in the context of the current employee | Calls methods, displays a page and [widgets](../api-reference/widgets/index.md), receives events | You need server-side processing and an interface inside Bitrix24 ||
@@ -44,7 +44,7 @@ Ready-made method sequences for these tasks are collected in the article [Local 
 
 [Webhooks](./local-webhooks.md) are suitable for quick integrations where complex authorization logic is not required.
 
-An incoming webhook is a permanent key that an employee retrieves in the Bitrix24 interface and inserts into the request URL. An outgoing webhook works in the opposite direction: when an event occurs, Bitrix24 sends the data to your handler URL.
+An incoming webhook is a secret code that an employee retrieves in the Bitrix24 interface and inserts into the request URL. An incoming webhook can be limited by an expiration date. An outgoing webhook works in the opposite direction: when an event occurs, Bitrix24 sends the data to your handler URL.
 
 Some methods are not available through webhooks because their logic requires an application context. These include methods for embedding applications into the Bitrix24 interface, telephony events, and some chat bot events. For such scenarios, a local application is required.
 
@@ -80,7 +80,7 @@ A static application does not receive Bitrix24 events — it has no server-side 
 - **Permissions.** The integration works within the permissions of the employee who created it and the list of [scopes](../api-reference/scopes/permissions.md) selected at creation. A method returns an error if the required `scope` is missing or the employee has no permissions for the object.
 - **REST API access.** A local integration works only if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md) — through a Market subscription, Trial mode, or an NFR key.
 - **Protocol.** Webhook requests are performed over HTTPS only. The handler of a server-side application must also be available over HTTPS before you add the application to Bitrix24.
-- **Secret code.** A webhook key has no expiration date, so a leaked URL grants access to Bitrix24 within the webhook's permissions. Do not pass the webhook URL to external systems and do not publish it in client-side code.
+- **Secret code.** A leaked URL grants access to Bitrix24 within the webhook's permissions until the webhook is deleted or expires. Do not pass the webhook URL to external systems and do not publish it in client-side code.
 - **Deletion.** An integration can be deleted by a Bitrix24 administrator or by the employee who created it. Secret codes of other users' webhooks are not available even to an administrator.
 
 ## Developer Resources

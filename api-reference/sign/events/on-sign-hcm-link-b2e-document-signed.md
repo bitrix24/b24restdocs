@@ -1,4 +1,4 @@
-# Event on Document Status Change OnSignB2eDocumentStatusChanged
+# Event When an HCM Link Document Is Signed OnSignHcmLinkB2eDocumentSigned
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can subscribe: a user with access to e-Signature for HR
 
-The `ONSIGNB2EDOCUMENTSTATUSCHANGED` event is triggered when a document status changes.
+The `ONSIGNHCMLINKB2EDOCUMENTSIGNED` event is triggered after an e-Signature for HR document linked to HCM Link is signed.
 
 {% note info "" %}
 
@@ -24,14 +24,13 @@ Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
-    "event": "ONSIGNB2EDOCUMENTSTATUSCHANGED",
-    "event_handler_id": "1213",
+    "event": "ONSIGNHCMLINKB2EDOCUMENTSIGNED",
+    "event_handler_id": "1215",
     "data": {
-        "documentUid": "R-LK-50JI-3AAK-WS1A",
-        "statusCode": "signing",
-        "statusName": "Signing in progress"
+        "id": 3942,
+        "company": "acme-hr"
     },
-    "ts": "1770374899",
+    "ts": "1786086930",
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": "3600",
@@ -48,24 +47,20 @@ Data is transmitted as a POST request {.b24-info}
 ```
 
 #|
-|| **parameter**
+|| **Parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../data-types.md) | Symbolic code of the event.
 
-In this case — `ONSIGNB2EDOCUMENTSTATUSCHANGED` ||
+In this case — `ONSIGNHCMLINKB2EDOCUMENTSIGNED` ||
 || **event_handler_id**
 [`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../data-types.md) | Object containing information about the document ||
-|| **data.documentUid**
-[`string`](../../data-types.md) | Unique document identifier ||
-|| **data.companyUid**
-[`string`](../../data-types.md) | Unique company identifier. Returned in the event if the document is signed with the company for which the integration was created ||
-|| **data.statusCode**
-[`string`](../../data-types.md) | Document status code ||
-|| **data.statusName**
-[`string`](../../data-types.md) | Document status name ||
+[`object`](../../data-types.md) | Object containing data about the signed HCM Link document ||
+|| **data.id**
+[`integer`](../../data-types.md) | Signing participant identifier. Pass it in the `id` parameter of the [sign.b2e.hcmlink.document.get](../sign-b2e-hcmlink-document-get.md) method to retrieve signed document data ||
+|| **data.company**
+[`string`](../../data-types.md) | HCM Link company code ||
 || **ts**
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
@@ -82,5 +77,6 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](../sign-b2e-hcmlink-document-get.md)
+- [{#T}](./on-sign-b2e-document-status-changed.md)
 - [{#T}](./on-sign-b2e-member-status-changed.md)
-- [{#T}](./on-sign-hcm-link-b2e-document-signed.md)

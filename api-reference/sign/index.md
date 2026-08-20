@@ -37,9 +37,9 @@ These methods can only be executed in the context of authorization of the [appli
 
 **HCM Link.** The integration with HR systems transfers companies, employees, and field values for e-Signature documents. If a document is sent using HCM Link data, the `sign.b2e.*` methods are linked to the [humanresources.hcmlink.*](./hcm-link/index.md) methods.
 
-**Document file.** The `sign.b2e.document.send` method accepts a PDF file in the `files[].fileContent` parameter, encoded in Base64. After signing, the file can be retrieved from the user's signed document lists or from the company safe.
+**Document file.** The `sign.b2e.document.send` method accepts a PDF file in the `files[].fileContent` parameter, encoded in Base64. After signing, the file can be retrieved from the user's signed document lists or from the company safe. If the document is linked to HCM Link, signed file data can be retrieved using the [sign.b2e.hcmlink.document.get](./sign-b2e-hcmlink-document-get.md) method by the signing participant identifier.
 
-**Signing statuses.** The `OnSignB2eDocumentStatusChanged` and `OnSignB2eMemberStatusChanged` events report changes in document and participant statuses. Document details can be retrieved using the [sign.b2e.document.get](./sign-b2e-document-get.md) method by `uid`.
+**Signing statuses.** The `OnSignB2eDocumentStatusChanged` and `OnSignB2eMemberStatusChanged` events report changes in document and participant statuses. The `OnSignHcmLinkB2eDocumentSigned` event reports that a document linked to HCM Link has been signed. Document details can be retrieved using the [sign.b2e.document.get](./sign-b2e-document-get.md) method by `uid`.
 
 ## Scope Features
 
@@ -71,6 +71,7 @@ These methods can only be executed in the context of authorization of the [appli
     || **Method** | **Description** ||
     || [sign.b2e.document.send](./sign-b2e-document-send.md) | Sends a document for signing ||
     || [sign.b2e.document.get](./sign-b2e-document-get.md) | Retrieves information about the document and signing participants ||
+    || [sign.b2e.hcmlink.document.get](./sign-b2e-hcmlink-document-get.md) | Retrieves data of a signed document linked to HCM Link ||
     || [sign.b2e.company.provider.list](./sign-b2e-company-provider-list.md) | Returns a list of the company's signing providers ||
     || [sign.b2e.personal.tail](./sign-b2e-personal-tail.md) | Returns a list of signed documents for the user ||
     || [sign.b2e.mysafe.tail](./sign-b2e-mysafe-tail.md) | Returns a list of signed documents in the company's safe ||
@@ -82,6 +83,7 @@ These methods can only be executed in the context of authorization of the [appli
     || **Event** | **Triggered** ||
     || [OnSignB2eDocumentStatusChanged](./events/on-sign-b2e-document-status-changed.md) | When the status of the document changes ||
     || [OnSignB2eMemberStatusChanged](./events/on-sign-b2e-member-status-changed.md) | When the status of a signing participant changes ||
+    || [OnSignHcmLinkB2eDocumentSigned](./events/on-sign-hcm-link-b2e-document-signed.md) | When a document linked to HCM Link is signed ||
     |#
 
 {% endlist %}

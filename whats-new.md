@@ -4,7 +4,9 @@
 
 ### August 20, 2026
 
+- Updated the [Incoming and Outgoing Webhooks](./local-integrations/local-webhooks.md) page: added webhook creation scenarios, GET request examples for quick method testing, and limitations for production integrations
 - Added the methods [crm.quote.contact.*](./api-reference/crm/quote/contacts/index.md) for linking contacts to an estimate
+- Added the [sign.b2e.hcmlink.document.get](./api-reference/sign/sign-b2e-hcmlink-document-get.md) method and the [OnSignHcmLinkB2eDocumentSigned](./api-reference/sign/events/on-sign-hcm-link-b2e-document-signed.md) event for retrieving signed HCM Link documents
 
 ### August 19, 2026
 

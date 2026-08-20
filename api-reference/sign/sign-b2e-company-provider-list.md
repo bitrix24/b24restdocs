@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`sign.b2e`](../scopes/permissions.md), [`crm`](../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to create KEDO documents
+> Who can execute the method: a user with permission to create e-Signature for HR documents
 
 The method `sign.b2e.company.provider.list` returns a list of signature providers for the selected company.
 
@@ -284,7 +284,7 @@ HTTP Status: **200**
         {
             "code": "ses-de",
             "uid": "d4f6b8a1-4c6d-4d8c-9c7c-2d1b1f6d0f2b",
-            "name": "Bitrix24 KEDO",
+            "name": "Bitrix24 e-Signature for HR",
             "date": "2025-02-18T10:15:30+01:00",
             "expires": "2026-02-18T10:15:30+01:00"
         }

@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`sign.b2e`](../../scopes/permissions.md)
 >
-> Who can subscribe: a user with access to KEDO
+> Who can subscribe: a user with access to e-Signature for HR
 
 The event `ONSIGNB2EMEMBERSTATUSCHANGED` is triggered when the status of a signing participant changes.
 
@@ -72,7 +72,7 @@ In this case — `ONSIGNB2EMEMBERSTATUSCHANGED` ||
 || **ts**
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
-[`object`](../../data-types.md) | Object with authorization parameters and portal data.
+[`object`](../../data-types.md) | Object with authorization parameters and Bitrix24 data.
 
 The structure is described [below](#auth) ||
 |#
@@ -86,3 +86,4 @@ The structure is described [below](#auth) ||
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
 - [{#T}](./on-sign-b2e-document-status-changed.md)
+- [{#T}](./on-sign-hcm-link-b2e-document-signed.md)
