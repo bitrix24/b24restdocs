@@ -2,6 +2,10 @@
 
 ## 2026
 
+### August 20, 2026
+
+- Added the methods [crm.quote.contact.*](./api-reference/crm/quote/contacts/index.md) for linking contacts to an estimate
+
 ### August 19, 2026
 
 - Updated the documentation for methods [landing.role.getRights](./api-reference/landing/rights/role-model/landing-role-get-rights.md), [landing.role.setRights](./api-reference/landing/rights/role-model/landing-role-set-rights.md), [landing.role.setAccessCodes](./api-reference/landing/rights/role-model/landing-role-set-access-codes.md), [landing.role.enable](./api-reference/landing/rights/landing-role-enable.md): documented the `scope` parameter and the `ROLE_SCOPE_MISMATCH` error

@@ -31,6 +31,7 @@ An estimate is one of the CRM object types, so it is managed by the [universal m
 || Delete an estimate | [crm.item.delete](../universal/crm-item-delete.md) ||
 || Retrieve the description of estimate fields | [crm.item.fields](../universal/crm-item-fields.md) ||
 || Manage the product items of an estimate | [crm.item.productrow.*](../universal/product-rows/index.md) with `ownerType = Q` ||
+|| Replace the entire set of estimate contacts | [crm.item.update](../universal/crm-item-update.md) with the `contactIds` field ||
 |#
 
 In the universal methods, field names are written in `camelCase`: `TITLE` becomes `title`, and `ASSIGNED_BY_ID` becomes `assignedById`. The conversion rules for custom fields are described in the section [Universal CRM Methods](../universal/index.md).
@@ -47,7 +48,7 @@ Some fields are named differently in the universal methods: the estimate stage `
 
 ## Connection of Estimates with Other CRM Entities
 
-**Client.** The company and contacts the estimate is addressed to. An estimate has a single company, and its identifier is passed in the field `COMPANY_ID`. There can be several contacts, and their identifiers are passed as an array in the multiple field `CONTACT_IDS`. You can find the required identifiers using the methods [crm.company.list](../companies/crm-company-list.md) and [crm.contact.list](../contacts/crm-contact-list.md).
+**Client.** The company and contacts the estimate is addressed to. An estimate has a single company, and its identifier is passed in the field `COMPANY_ID`. There can be several contacts, and their identifiers are passed as an array in the multiple field `CONTACT_IDS`. You can find the required identifiers using the methods [crm.company.list](../companies/crm-company-list.md) and [crm.contact.list](../contacts/crm-contact-list.md). To read and change the contacts of an estimate that already exists one by one, it is more convenient to use the group of methods [crm.quote.contact.*](./contacts/index.md): the `CONTACT_IDS` field is not returned by [crm.quote.get](./crm-quote-get.md) and [crm.quote.list](./crm-quote-list.md).
 
 **Deal.** An estimate can be created based on a deal and vice versa. The deal identifier is stored in the estimate field `DEAL_ID` and can be passed to the methods [crm.quote.add](./crm-quote-add.md) and [crm.quote.update](./crm-quote-update.md).
 
@@ -131,6 +132,18 @@ You can embed an application into the estimate detail form and work with it with
     |#
 
 {% endlist %}
+
+### Contacts
+
+#|
+|| **Method** | **Description** ||
+|| [crm.quote.contact.add](./contacts/crm-quote-contact-add.md) | Links a single contact to an estimate ||
+|| [crm.quote.contact.delete](./contacts/crm-quote-contact-delete.md) | Removes a single contact from an estimate ||
+|| [crm.quote.contact.items.get](./contacts/crm-quote-contact-items-get.md) | Returns the set of contacts linked to an estimate ||
+|| [crm.quote.contact.items.set](./contacts/crm-quote-contact-items-set.md) | Replaces the set of estimate contacts with the one you pass ||
+|| [crm.quote.contact.items.delete](./contacts/crm-quote-contact-items-delete.md) | Removes all contacts from an estimate ||
+|| [crm.quote.contact.fields](./contacts/crm-quote-contact-fields.md) | Returns the description of the fields for the estimate-contact link ||
+|#
 
 ### Custom Fields
 

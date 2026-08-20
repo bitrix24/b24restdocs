@@ -19,6 +19,10 @@ items:
     href: crm-quote-product-rows-get.md  
   - name: Create/Update Product Items of Estimate  
     href: crm-quote-product-rows-set.md  
+  - name: Contacts
+    include:
+      path: contacts/b24-toc.yaml
+      mode: link
   - name: Custom Fields  
     include:  
       path: user-field/b24-toc.yaml  
