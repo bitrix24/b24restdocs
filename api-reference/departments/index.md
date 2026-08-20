@@ -8,18 +8,45 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The company structure shows which departments make up the company and how they are connected. In departments and teams, you can define participant roles: head, deputy, and employees.
 
-In [REST 3.0](../rest-v3.md), the company structure is described by `humanresources.*` methods. They work with departments and teams, participants and roles, connected chats, channels, and collabs, employee search, and field schema methods (`*.field.list` / `*.field.get`). `department.*` methods belong to the previous API version and work with departments.
+Two groups of methods work with the company structure:
+
+- `humanresources.*` — [REST 3.0](../rest-v3.md) methods. They work with departments and teams, participants and roles, connected communications, and employee search
+- `department.*` — methods of the previous API version, REST v2. They work only with departments and their heads
 
 > Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [Company structure](https://helpdesk.bitrix24.com/open/18082492/)
 
+{% note info "" %}
+
+`humanresources.*` methods are called at an address that includes `/rest/api/`. SDKs do not support this address yet — use direct HTTP requests
+
+{% endnote %}
+
 ## How to Choose a Method Group
 
+Both groups of methods are available. Choose the section based on your task.
+
 #|
-|| **If you need to** | **Open** ||
-|| Work with departments, teams, participants, roles, and connected communications | `humanresources.*` REST 3.0 methods ||
-|| Work with departments from the previous API version | `department.*` methods ||
+|| **If you need to** | **Open the section** ||
+|| Create departments and teams, search them, and build a hierarchy | [Departments and Teams](./node/index.md) ||
+|| Manage the list of participants and their roles | [Participants of Departments and Teams](./node-member/index.md) ||
+|| Configure chats, channels, and collabs of a department or team | [Department and Team Communications](./node-communication/index.md) ||
+|| Find an employee, retrieve their subordinates or employees from multiple departments | [Employees](./employee/index.md) ||
+|| Work with departments through the previous API version | [`department.*` methods](#all-methods) ||
+|#
+
+### Correspondence of REST v2 and REST 3.0 Methods
+
+The table helps you choose a REST 3.0 method if your integration already runs on `department.*` methods.
+
+#|
+|| **REST v2 method** | **REST 3.0 method** ||
+|| [department.add](department-add.md) | [humanresources.node.add](./node/humanresources-node-add.md) ||
+|| [department.update](department-update.md) | [humanresources.node.edit](./node/humanresources-node-edit.md) ||
+|| [department.get](department-get.md) | [humanresources.node.list](./node/humanresources-node-list.md), [humanresources.node.get](./node/humanresources-node-get.md) ||
+|| [department.fields](department-fields.md) | [humanresources.node.field.list](./node/humanresources-node-field-list.md), [humanresources.node.field.get](./node/humanresources-node-field-get.md) ||
+|| [department.delete](department-delete.md) | There is no counterpart: a department or team cannot be deleted with REST 3.0 methods ||
 |#
 
 ## Getting Started
@@ -44,9 +71,12 @@ In [REST 3.0](../rest-v3.md), the company structure is described by `humanresour
 
 ## Limitations and Recommendations
 
-- Access to viewing and changing the company structure depends on the current user's permissions
+- Any user can read the company structure. Only a user with the permission to change the structure can modify it
+- Permissions for departments and for teams are configured separately
+- Departments and teams are retained in a single tree, so in `humanresources.node.*` methods the node kind is set by the `type` parameter: `DEPARTMENT` — department, `TEAM` — team
 - Departments and teams use different sets of participant roles
-- Field description methods help check available fields and their types before changing data
+- `department.*` methods work only with the `ID`, `NAME`, `SORT`, `PARENT`, and `UF_HEAD` fields
+- Check the available fields before changing data: use the `*.field.list` and `*.field.get` methods for REST 3.0 or [department.fields](department-fields.md) for the previous API version
 
 {% note tip "User documentation" %}
 
@@ -83,7 +113,7 @@ In [REST 3.0](../rest-v3.md), the company structure is described by `humanresour
 
 > Scope: [`humanresources`](../scopes/permissions.md)
 >
-> Who can execute the methods: depends on the method
+> Who can execute the method: depends on the method
 
 #### Departments and Teams
 
