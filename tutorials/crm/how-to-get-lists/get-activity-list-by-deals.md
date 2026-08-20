@@ -1,8 +1,12 @@
 # How to Retrieve a List of Activities from Deals
 
-> Scope: [`crm, user_brief`](../../../api-reference/scopes/permissions.md)
+> Scope: [`crm`, `user_brief`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: a user with read access to deals in CRM
+> Who can execute the methods: to complete the entire scenario, the strictest of the listed rights is required — read access to deals in CRM
+>
+> - [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) — a user with permission to read items of a CRM object
+> - [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) — any user
+> - [user.current](../../../api-reference/user/user-current.md) and [user.get](../../../api-reference/user/user-get.md) — any user
 
 {% note tip "" %}
 
@@ -10,15 +14,30 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The activity list allows you to track current activities and calls related to deals, deadlines, and responsible parties. To create an activity table, we will sequentially execute the following methods:
+Activities are calls, meetings, emails, and other actions on a CRM item. A list of incomplete activities shows what is left to do on an employee's deals, by when, and who is responsible for it.
 
-1. [user.current](../../../api-reference/user/user-current.md) — find the `ID` of the current user,
+There is no method that returns the activities for all of an employee's deals at once: activities are bound to CRM items, and they can be filtered only by those items or by the user responsible for the activity itself. The user responsible for an activity and the user responsible for the deal are different roles, so we will first find the employee's deals and then request the activities by the identifiers of those deals.
 
-2. [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) — retrieve the `ID` of all deals for which the employee is responsible,
+As a result of the scenario, we get a table of incomplete activities: the activity identifier, the deal title, the activity description, the deadline, and the name of the responsible user.
 
-3. [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) — generate a list of activities related to the deals,
+The scenario consists of four steps.
 
-4. [user.get](../../../api-reference/user/user-get.md) — obtain information about the individuals responsible for the activities.
+1. Find the `ID` of the current user using the [user.current](../../../api-reference/user/user-current.md) method
+2. Retrieve the `ID` of the deals the employee is responsible for using the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method
+3. Retrieve the activities for those deals using the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method
+4. Retrieve the names of the users responsible for the activities using the [user.get](../../../api-reference/user/user-get.md) method
+
+## Before You Start
+
+- The webhook is created on behalf of the employee whose deals and activities need to be retrieved. The methods return data according to that user's permissions: whatever they do not see in CRM does not get into the selection
+
+- The `crm` and `user_brief` scopes are selected in the webhook permissions
+
+- The employee has at least one deal with an incomplete activity, otherwise steps 3 and 4 return an empty result
+
+- The webhook URL grants full access within its scope. Retain the URL in an environment variable and never publish it in open code
+
+The identifiers in the examples — `29` for the user and `5111`, `5199`, and `5257` for the deals — are taken from one Bitrix24. In your Bitrix24 they will be different. Each subsequent step substitutes the values from the response of the previous one.
 
 ## 1. Retrieve the ID of the Current User
 
@@ -108,24 +127,28 @@ As a result, we will receive the user identifier `"ID": "29"`.
         "ACTIVE": true,
         "NAME": "Klaus",
         "LAST_NAME": "Weber",
-        ...
+        "EMAIL": "k.weber@example.com",
+        "WORK_POSITION": "Manager",
+        "USER_TYPE": "employee"
     }
 }
 ```
+
+The response is abridged: the method also returns the remaining profile fields. The identifier comes as a string, not as a number. Retain the value of the `ID` field — in step 2 it becomes the value of the `assignedById` filter.
 
 ## 2. Retrieve the List of Deal IDs for the Employee
 
 To obtain the identifiers of the deals assigned to the employee, we will call the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method. We will pass the following parameters:
 
--  `entityTypeId` — the identifier for the CRM object type. You can retrieve the identifiers using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method. We will specify the value — `2`, which corresponds to a deal.
+-  `entityTypeId` — the identifier of the CRM object type, a required parameter. We will specify `2` — a deal. The values for other objects are returned by the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method
 
--  `select` — an array of fields to select. We will specify `select: ['id','title']` to get the identifiers and titles of the deals.
+-  `select` — the fields to retrieve. We will specify `id` and `title`: the identifier is needed for step 3, the title — for the final table
 
--  `filter` — a selection filter. To filter deals by the `ID` of the responsible employee, we will specify the user identifier obtained in the previous request `assignedById: 29`.
+-  `filter` — the selection conditions. To select deals by the responsible user, we will specify `assignedById` with the `ID` value from step 1. In the example, `29`
 
 {% note info "" %}
 
-To make the request faster and return only relevant data, add a filter by stages `stageId`. For example, you can select deals in the *In Progress* stage.
+To narrow the selection, add a filter by stages `stageId`. For example, you can select only deals in the "In Progress" stage.
 
 [How to Filter Items by Stage Name](../../../tutorials/crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md)
 
@@ -227,29 +250,33 @@ As a result, we will receive an array `items` with deal identifiers like `"id": 
 }
 ```
 
+Here `id` comes as a number, unlike the `ID` from step 1. Retain two fields: `id` — the filter for step 3 is assembled from it, and `title` — it labels the rows of the final table.
+
+The list methods of the scenario — this one and [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) in step 3 — return no more than 50 records per call. If the `total` field is greater than 50, retrieve the remaining pages with repeated calls using the `start` parameter: `50`, `100`, and so on. In the code example below, the pages are iterated automatically.
+
 ## 3. Retrieve the List of Activities for the Found Deals
 
-To obtain the list of activities, we will use the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method.
+To retrieve the activities for the found deals, we will use the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method.
 
-To select activities from multiple deals, we will use the binding key `BINDINGS` in the `filter`. We will pass an array of objects, where each object contains:
+To select activities from several deals at once, we will use the `BINDINGS` key in the `filter` — it sets the binding to CRM items. We will pass an array of objects, where each object contains:
 
--  `OWNER_TYPE_ID` — the identifier for the CRM object type. You can retrieve the identifiers using the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method. We will specify the value — `2`, which corresponds to a deal.
+-  `OWNER_TYPE_ID` — the identifier of the CRM object type. We will specify `2` — the same deal type as in step 2
 
--  `OWNER_ID` — the identifier of the deal from the result of the previous request.
+-  `OWNER_ID` — the identifier of the deal from the `id` field of step 2
 
-We will also filter only active activities `COMPLETED: 'N'`.
+We will also filter only incomplete activities `COMPLETED: 'N'`.
 
-We will output the following fields in the `select`:
+In the `select` parameter, we will specify the following fields:
 
--  `ID` — the identifier of the activity,
+-  `ID` — the identifier of the activity
 
--  `OWNER_ID` — the identifier of the deal,
+-  `OWNER_ID` — the identifier of the deal
 
--  `SUBJECT` — the description of the activity,
+-  `SUBJECT` — the description of the activity
 
--  `DEADLINE` — the date and time of the deadline,
+-  `DEADLINE` — the date and time of the deadline
 
--  `RESPONSIBLE_ID` — the identifier of the user responsible for the activity.
+-  `RESPONSIBLE_ID` — the identifier of the user responsible for the activity
 
 {% list tabs %}
 
@@ -341,7 +368,7 @@ We will output the following fields in the `select`:
 
 {% endlist %}
 
-As a result, you will obtain a list of activities with a description for each activity.
+As a result, we get a list of incomplete activities for the specified deals.
 
 ```json
 {
@@ -360,15 +387,31 @@ As a result, you will obtain a list of activities with a description for each ac
             "DEADLINE": "2025-08-29T16:00:00+03:00",
             "RESPONSIBLE_ID": "47"
         },
-        ...
+        {
+            "ID": "10145",
+            "OWNER_ID": "5257",
+            "SUBJECT": "Approve delivery",
+            "DEADLINE": "9999-12-31T00:00:00+03:00",
+            "RESPONSIBLE_ID": "29"
+        }
     ],
-    "total": 5
+    "total": 3
 }
 ```
 
+The activity fields come in uppercase, and the values come as strings. This differs from step 2: the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method returns fields in camelCase and identifiers as numbers.
+
+What we take from the response next:
+
+-  `OWNER_ID` — links the activity to the deal from step 2 and substitutes the deal title into the table
+
+-  `RESPONSIBLE_ID` — the unique values are collected and passed to the filter in step 4
+
+An activity with no deadline comes with the date `9999-12-31`. This is not an error: this is how Bitrix24 retains the "no deadline set" flag. In the table, it is better to show such activities without a date.
+
 ## 4. Retrieve User Data by RESPONSIBLE_ID
 
-The individual responsible for an activity in a deal can be any user, not just the one responsible for the deal. To display the name and surname of the person responsible for the activity in the table, we will use the [user.get](../../../api-reference/user/user-get.md) method.
+To display the name and surname of the user responsible for the activity in the table, we will use the [user.get](../../../api-reference/user/user-get.md) method.
 
 Pass the assigned user identifiers `ID: [29, 47, ...]` in the `filter` filter.
 
@@ -448,14 +491,61 @@ As a result, we will receive information about the users.
             "ACTIVE": true,
             "NAME": "Peter",
             "LAST_NAME": "Schmidt"
-        },
-        ...
+        }
     ],
-    "total": 3,
+    "total": 2
 }
 ```
 
+The method returns only the users it found by the identifiers from the filter. Using the `ID` field, build an "identifier — first and last name" mapping and substitute the names into the table instead of the numbers from `RESPONSIBLE_ID`.
+
+## Verify the Result
+
+The scenario is complete if the table has a row with the deal, the deadline, and the name of the responsible user for every activity from step 3.
+
+What to check in the responses:
+
+-  The number of table rows matches the number of activities from step 3 after duplicates by the `ID` field are removed
+
+-  Every `OWNER_ID` value from step 3 is present among the `id` values of the deals from step 2. If a deal is not found, the activity is bound to something other than a deal — check that only `OWNER_TYPE_ID`: `2` is passed in `BINDINGS`
+
+-  Every `RESPONSIBLE_ID` value from step 3 is present among the `ID` values of the users from step 4. If a user is not found, they have been dismissed or deleted — show such activities with the identifier instead of the name
+
+You can check the data in the interface in the deal card: open the deal with the identifier from `OWNER_ID` and compare the activities in its timeline with the rows of the table. The table contains only incomplete activities — the same ones Bitrix24 shows in the card as pending.
+
+## Errors and Diagnostics
+
+If the method returned an error, check the request data.
+
+#|
+|| **Code** | **Cause and Action** ||
+|| `INVALID_ARG_VALUE` `Invalid filter: field 'field' is not allowed in filter` | In step 2, the `filter` holds a field that cannot be filtered by. The list of available fields is returned by the [crm.item.fields](../../../api-reference/crm/universal/crm-item-fields.md) method with the same `entityTypeId` ||
+|| `NOT_FOUND` | In step 2, `entityTypeId` holds a value that matches no CRM object. A deal requires `2` ||
+|| `allowed_only_intranet_user` | The webhook is created on behalf of an external user. The scenario is available to Bitrix24 employees only ||
+|| `INVALID_REQUEST` `Https required` | The request was sent over HTTP. Address Bitrix24 over HTTPS ||
+|#
+
+An empty result is not an error, but it means different things at different steps.
+
+- An empty `items` in step 2 — the employee has no deals, or they do not see their deals due to permissions. Check `assignedById`: in step 1 the identifier comes as a string, so cast it to a number, as in the code examples
+
+- An empty `result` in step 3 with a non-empty step 2 — there are no incomplete activities for the deals. Remove `COMPLETED`: `N` from the filter and repeat the call. If activities appear, they have all been completed already
+
+All four methods only read data, so after an error the scenario can be repeated from any step.
+
+## Key Considerations
+
+- `BINDINGS` is a filter, not a batch request. The entire array of bindings goes into a single call, so it is worth narrowing the deal selection in step 2 in advance
+
+- If an activity is bound to two deals from the selection at once, the [crm.activity.list](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md) method returns it twice — one row per binding. Discard duplicates by the activity `ID` field
+
+- To retrieve activities for another CRM object, replace `entityTypeId` in step 2 and `OWNER_TYPE_ID` in step 3. The values are returned by the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method: `1` — lead, `3` — contact, `4` — company
+
 ## Code Example
+
+The code goes through all four steps and prints the activity table. No identifiers are hardcoded: the user comes from [user.current](../../../api-reference/user/user-current.md), and the deals and responsible users come from the responses of the previous steps. The only thing to replace is the webhook URL in the environment variable.
+
+The Go example is self-contained: before step 2 it creates two deals of its own with activities, and deletes them at the end. The other examples change nothing.
 
 {% list tabs %}
 
@@ -1118,3 +1208,11 @@ As a result, we will receive information about the users.
     ```
 
 {% endlist %}
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/timeline/activities/activity-base/crm-activity-list.md)
+- [{#T}](../../../api-reference/crm/universal/crm-item-list.md)
+- [{#T}](../../../api-reference/user/user-get.md)
+- [{#T}](./how-to-get-elements-by-stage-filter.md)
+- [{#T}](../how-to-edit-crm-objects/how-to-move-activity.md)

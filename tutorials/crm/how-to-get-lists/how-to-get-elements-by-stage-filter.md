@@ -1,8 +1,13 @@
 # How to Filter Items by Stage Name
 
-> Scope: [`crm, user_brief`](../../../api-reference/scopes/permissions.md)
+> Scope: [`crm`, `user_brief`](../../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: a user with read access to CRM entities
+> Who can execute the methods: to complete the entire scenario, the strictest of the listed rights is required — permission to read items of a CRM object
+>
+> - [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) — a user with permission to read items of a CRM object
+> - [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) — any user
+> - [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) — a user with permission to read at least one CRM object
+> - [user.get](../../../api-reference/user/user-get.md) — any user
 
 {% note tip "" %}
 
@@ -10,16 +15,34 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The stage name is not stored in the "Stage" field of the CRM object. The "Stage" field contains an identifier. You can correlate the name and identifier of the stage using methods for working with [dictionaries](../../../api-reference/crm/status/index.md) — system fields of the "list" type. To search for items by stage name, we will sequentially execute three methods:
+The stage name is not stored in the CRM item. The "Stage" field holds an identifier of the form `C10:EXECUTING`, while the stage name is kept in a [directory](../../../api-reference/crm/status/index.md). That is why items cannot be filtered by the name directly: the stage identifier has to be retrieved first.
 
-1. [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) — retrieve the funnel identifier
-2. [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) — retrieve the stage identifier in the funnel
-3. [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) — retrieve the list of items at the stage
+The stage identifier depends on the funnel, so the funnel is located by its name as well. As a result, we get a list of items at the required stage with the names of the responsible employees.
+
+The scenario consists of four steps.
+
+1. Retrieve the `id` of the funnel by its name using the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method
+2. Retrieve the `STATUS_ID` of the stage by its name using the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) method
+3. Retrieve the items at that stage using the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method
+4. Retrieve the names of the responsible users using the [user.get](../../../api-reference/user/user-get.md) method
+
+## Before You Start
+
+- The webhook is created on behalf of a user who has permission to read the items of the required CRM object. Steps 1 and 3 take their permissions into account: they will see only the funnels and items available to them
+
+- The `crm` and `user_brief` scopes are selected in the webhook permissions
+
+- You know the names of the funnel and the stage exactly as they are spelled in the interface: the examples compare the names strictly, including case and spaces
+
+- The webhook URL grants full access within its scope. Retain the URL in an environment variable and never publish it in open code
+
+The examples below use deals — `entityTypeId`: `2`. The identifiers `10` for the funnel and `C10:PREPAYMENT_INVOIC` for the stage are taken from one Bitrix24. In your Bitrix24 they will be different: each step substitutes the value from the response of the previous one.
 
 ## 1. Retrieve the Funnel Identifier
 
-We will use the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with the following parameters:
-- `entityTypeId` — set to `2` for deals. This is the identifier for the [object type](../../../api-reference/crm/data-types.md#object_type). To find out the `entityTypeId` of the SPA, execute the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method without parameters.
+We will use the [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md) method with the following parameter:
+
+- `entityTypeId` — the [object type](../../../api-reference/crm/data-types.md#object_type) identifier, a required parameter. We will specify `2` — a deal. To find out the `entityTypeId` of a smart process, execute the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method without parameters
 
 {% include [Example Note](../../../_includes/examples.md) %}
 
@@ -43,6 +66,7 @@ We will use the [crm.category.list](../../../api-reference/crm/universal/categor
 - PHP
   
     ```php
+    // composer require bitrix24/b24phpsdk:"^3.0"
     require_once 'vendor/autoload.php';
 
     use Bitrix24\SDK\Services\ServiceBuilderFactory;
@@ -56,10 +80,11 @@ We will use the [crm.category.list](../../../api-reference/crm/universal/categor
     $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $logger))
         ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
+    // crm.category.list has no wrapper in the SDK — we call the method directly
     $result = $serviceBuilder->core->call(
         'crm.category.list',
         [
-            'entityTypeId' => 2
+            'entityTypeId' => 2 // 2 — a deal
         ]
     );
     ```
@@ -119,7 +144,7 @@ We will use the [crm.category.list](../../../api-reference/crm/universal/categor
 
 {% endlist %}
 
-As a result, we obtained the deal funnels. We will identify the required funnel by its name in the `name` field. The funnel identifier will be taken from the `id` field.
+As a result, we obtained the list of deal funnels. We will identify the required funnel by its name in the `name` field. The funnel identifier will be taken from the `id` field.
 
 ```json
 {
@@ -161,7 +186,7 @@ As a result, we obtained the deal funnels. We will identify the required funnel 
             }
         ]
     },
-    "total": 4,
+    "total": 4
 }
 ```
 
@@ -169,9 +194,15 @@ As a result, we obtained the deal funnels. We will identify the required funnel 
 
 We will use the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) method with the filter:
 
-- `ENTITY_ID` — set to `DEAL_STAGE_10`, where `10` is the funnel identifier obtained in step 1. 
-To obtain the stages of the SPA, use a formula of the form `DYNAMIC_185_STAGE_11`, where `185` is the `entityTypeId` of the SPA, and `11` is the funnel `ID`. 
-If the funnel `ID` is `0`, make the request for stages without adding `_ID`.
+- `ENTITY_ID` — the stage directory code. We will specify `DEAL_STAGE_10`, where `10` is the funnel identifier from step 1
+
+How to assemble the directory code:
+
+-  deals — `DEAL_STAGE_{id}`, where `{id}` is the funnel identifier
+
+-  smart processes — `DYNAMIC_{entityTypeId}_STAGE_{id}`, for example `DYNAMIC_185_STAGE_11`, where `185` is the `entityTypeId` of the smart process and `11` is the funnel identifier
+
+-  the default funnel with the identifier `0` — the code without the numeric part, `DEAL_STAGE`. There is no `DEAL_STAGE_0` code: with it, the method returns an empty list without an error
 
 {% list tabs %}
 
@@ -253,7 +284,9 @@ If the funnel `ID` is `0`, make the request for stages without adding `_ID`.
 
 {% endlist %}
 
-As a result, we obtained a list of stages. We will identify the required stage by its name in the `NAME` field. The stage identifier will be taken from the `STATUS_ID` field.
+As a result, we obtained a list of stages. We will identify the required stage by its name in the `NAME` field. The stage identifier will be taken from the `STATUS_ID` field — it is exactly what goes into the filter in step 3.
+
+Do not assemble `STATUS_ID` as a string in your own code. The value is limited to 21 characters, so in funnels with a two-digit identifier long codes get truncated: a stage with the standard code `PREPAYMENT_INVOICE` gets `C9:PREPAYMENT_INVOICE` in funnel `9`, but already `C10:PREPAYMENT_INVOIC` in funnel `10`, without the last letter. This does not affect the stage name: in the example below, the same stage is named "Approval".
 
 ```json
 {
@@ -266,7 +299,7 @@ As a result, we obtained a list of stages. We will identify the required stage b
             "NAME_INIT": "New",
             "SORT": "10",
             "SYSTEM": "Y",
-            "CATEGORY_ID": "5",
+            "CATEGORY_ID": "10",
             "COLOR": "#39A8EF",
             "SEMANTICS": null,
             "EXTRA": {
@@ -282,7 +315,7 @@ As a result, we obtained a list of stages. We will identify the required stage b
             "NAME_INIT": "",
             "SORT": "20",
             "SYSTEM": "N",
-            "CATEGORY_ID": "5",
+            "CATEGORY_ID": "10",
             "COLOR": "#2FC6F6",
             "SEMANTICS": null,
             "EXTRA": {
@@ -293,12 +326,12 @@ As a result, we obtained a list of stages. We will identify the required stage b
         {
             "ID": "335",
             "ENTITY_ID": "DEAL_STAGE_10",
-            "STATUS_ID": "C10:PREPAYMENT_INVOICE",
+            "STATUS_ID": "C10:PREPAYMENT_INVOIC",
             "NAME": "Approval",
             "NAME_INIT": "",
             "SORT": "30",
             "SYSTEM": "N",
-            "CATEGORY_ID": "5",
+            "CATEGORY_ID": "10",
             "COLOR": "#55d0e0",
             "SEMANTICS": null,
             "EXTRA": {
@@ -314,7 +347,7 @@ As a result, we obtained a list of stages. We will identify the required stage b
             "NAME_INIT": "",
             "SORT": "40",
             "SYSTEM": "N",
-            "CATEGORY_ID": "5",
+            "CATEGORY_ID": "10",
             "COLOR": "#47E4C2",
             "SEMANTICS": null,
             "EXTRA": {
@@ -330,7 +363,7 @@ As a result, we obtained a list of stages. We will identify the required stage b
             "NAME_INIT": "",
             "SORT": "50",
             "SYSTEM": "N",
-            "CATEGORY_ID": "5",
+            "CATEGORY_ID": "10",
             "COLOR": "#FFA900",
             "SEMANTICS": null,
             "EXTRA": {
@@ -346,7 +379,7 @@ As a result, we obtained a list of stages. We will identify the required stage b
             "NAME_INIT": "Deal successful",
             "SORT": "60",
             "SYSTEM": "Y",
-            "CATEGORY_ID": "5",
+            "CATEGORY_ID": "10",
             "COLOR": "#7BD500",
             "SEMANTICS": "S",
             "EXTRA": {
@@ -362,7 +395,7 @@ As a result, we obtained a list of stages. We will identify the required stage b
             "NAME_INIT": "Deal failed",
             "SORT": "70",
             "SYSTEM": "Y",
-            "CATEGORY_ID": "5",
+            "CATEGORY_ID": "10",
             "COLOR": "#FF5752",
             "SEMANTICS": "F",
             "EXTRA": {
@@ -378,7 +411,7 @@ As a result, we obtained a list of stages. We will identify the required stage b
             "NAME_INIT": "",
             "SORT": "80",
             "SYSTEM": "N",
-            "CATEGORY_ID": "5",
+            "CATEGORY_ID": "10",
             "COLOR": "#FF5752",
             "SEMANTICS": "F",
             "EXTRA": {
@@ -387,16 +420,19 @@ As a result, we obtained a list of stages. We will identify the required stage b
             }
         }
     ],
-    "total": 8,
+    "total": 8
 }
 ```
 
 ## 3. Retrieve the List of Items at the Stage
 
 Use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) method with the following parameters:
-- `entityTypeId` — specify `2` for deals. This is the [object type](../../../api-reference/crm/data-types.md#object_type) identifier. To find the `entityTypeId` of the SPA, call the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method without parameters.
-- `filter[stageId]` — specify `C10:PREPAYMENT_INVOICE`. This is the stage identifier obtained in step 2.
-- `select[]` — specify the item fields you wish to retrieve. Without the `select` parameter, all fields, including custom fields, will be returned.
+
+- `entityTypeId` — the [object type](../../../api-reference/crm/data-types.md#object_type) identifier, a required parameter. We will specify `2` — a deal. The value has to match the one passed in step 1
+
+- `filter[stageId]` — the stage identifier from the `STATUS_ID` field of step 2. In the example, `C10:PREPAYMENT_INVOIC`. The filter accepts both a single value and an array of values, if items from several stages at once are needed
+
+- `select` — the item fields to retrieve. Without this parameter, the method returns all fields, including custom ones, and the response becomes noticeably heavier
 
 {% list tabs %}
 
@@ -414,7 +450,7 @@ Use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) m
                 "opportunity",
             ],
             filter: {
-                "stageId": ["C10:PREPAYMENT_INVOICE"],
+                "stageId": ["C10:PREPAYMENT_INVOIC"],
             },
         }
     });
@@ -427,7 +463,7 @@ Use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) m
         2,
         [],
         [
-            "stageId" => ["C10:PREPAYMENT_INVOICE"],
+            "stageId" => ["C10:PREPAYMENT_INVOIC"],
         ],
         [
             "id",
@@ -445,7 +481,7 @@ Use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) m
         entity_type_id=2,
         select=["id", "title", "assignedById", "opportunity"],
         filter={
-            "stageId": ["C10:PREPAYMENT_INVOICE"],
+            "stageId": ["C10:PREPAYMENT_INVOIC"],
         },
     ).response.result
     ```
@@ -479,7 +515,7 @@ Use the [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) m
 
 {% endlist %}
 
-As a result, we obtained a list of items at the requested stage.
+As a result, we obtained a list of items at the requested stage. From the response, we take `assignedById` — the unique values of this field become the filter in step 4.
 
 ```json
 {
@@ -517,15 +553,15 @@ As a result, we obtained a list of items at the requested stage.
             }
         ]
     },
-    "total": 5,
+    "total": 5
 }
 ```
 
-## Retrieve Responsible Person's Data
+## 4. Retrieve Responsible Person's Data
 
-In the obtained result, the `ID` of the employee responsible for the item is indicated. To display the first and last name of the employee, we will use the [user.get](../../../api-reference/user/user-get.md) method with the filter:
+In the result of step 3, the responsible user is given as a number in the `assignedById` field. To display the first and last name, we will use the [user.get](../../../api-reference/user/user-get.md) method with the filter:
 
-- `ID` — set to the value from the `assignedById` parameter obtained in step 3.
+- `ID` — the `assignedById` values from step 3. We will collect the unique identifiers and pass them as an array: this way the data of all responsible users arrives in a single call instead of a separate call per item
 
 {% list tabs %}
 
@@ -535,7 +571,7 @@ In the obtained result, the `ID` of the employee responsible for the item is ind
     const result = await $b24.actions.v2.call.make({
         method: "user.get",
         params: {
-            "ID": 29
+            filter: { "ID": [1, 29] }
         }
     });
     ```
@@ -545,7 +581,7 @@ In the obtained result, the `ID` of the employee responsible for the item is ind
     ```php
     $result = $serviceBuilder->getUserScope()->user()->get(
         [],
-        ['ID' => 29]
+        ['ID' => [1, 29]]
     );
     ```
 
@@ -553,7 +589,7 @@ In the obtained result, the `ID` of the employee responsible for the item is ind
 
     ```python
     result = client.user.get(
-        filter={"ID": 29},
+        filter={"ID": [1, 29]},
     ).response.result
     ```
 
@@ -583,42 +619,94 @@ In the obtained result, the `ID` of the employee responsible for the item is ind
 
 {% endlist %}
 
-As a result, we will obtain the employee data, including the `NAME` and `LAST_NAME` fields.
+As a result, we obtained the employee data, including the `NAME` and `LAST_NAME` fields.
 
 ```json
-    {
-        "result": [
-            {
-                "ID": "29",
-                "ACTIVE": true,
-                "NAME": "Klaus",
-                "LAST_NAME": "Weber",
-                "SECOND_NAME": "",
-                "EMAIL": "v.r.valeev@bitrix.com",
-                "LAST_LOGIN": "2025-05-15T13:06:54+00:00",
-                "DATE_REGISTER": "2024-07-15T00:00:00+00:00",
-                "TIME_ZONE": "",
-                "IS_ONLINE": "Y",
-                "TIMESTAMP_X": {
-                },
-                "LAST_ACTIVITY_DATE": {
-                },
-                "PERSONAL_GENDER": "",
-                "PERSONAL_WWW": "",
-                "PERSONAL_BIRTHDAY": "2000-07-14T00:00:00+00:00",
-                "PERSONAL_MOBILE": "",
-                "PERSONAL_CITY": "",
-                "WORK_PHONE": "",
-                "WORK_POSITION": "",
-                "UF_EMPLOYMENT_DATE": "",
-                "UF_DEPARTMENT": [1],
-                "USER_TYPE": "employee"
-            },
-        ],
-    }
+{
+    "result": [
+        {
+            "ID": "1",
+            "ACTIVE": true,
+            "NAME": "Anna",
+            "LAST_NAME": "Fischer",
+            "SECOND_NAME": "",
+            "EMAIL": "a.fischer@example.com",
+            "WORK_POSITION": "Manager",
+            "UF_DEPARTMENT": [1],
+            "USER_TYPE": "employee"
+        },
+        {
+            "ID": "29",
+            "ACTIVE": true,
+            "NAME": "Klaus",
+            "LAST_NAME": "Weber",
+            "SECOND_NAME": "",
+            "EMAIL": "k.weber@example.com",
+            "WORK_POSITION": "Manager",
+            "UF_DEPARTMENT": [1],
+            "USER_TYPE": "employee"
+        }
+    ],
+    "total": 2
+}
 ```
 
+The response is abridged: the method also returns the remaining profile fields. The identifier comes as a string, while `assignedById` from step 3 comes as a number, so cast the values to the same type when matching an item with an employee.
+
+## Verify the Result
+
+The scenario is complete if the table has as many rows as there are items returned by step 3, and the name of the responsible user is filled in for every row.
+
+What to check in the responses:
+
+-  All items of step 3 are at the same stage. Add `stageId` to `select` and make sure the value matches the `STATUS_ID` from step 2
+
+-  The `total` field of step 3 matches the stage counter in the kanban. Open the CRM → Deals section, switch to the funnel from step 1, and look at the column with the stage name from step 2
+
+-  Every `assignedById` value from step 3 is present among the `ID` values from step 4. If an employee is not found, they have been dismissed or deleted — show such rows with the identifier instead of the name
+
+An empty `items` array with non-empty steps 1 and 2 is not considered an error. What it means is described in the "Errors and Diagnostics" section.
+
+## Errors and Diagnostics
+
+If the method returned an error, check the request data.
+
+#|
+|| **Code** | **Cause and Action** ||
+|| `NOT_FOUND` | In step 1 or 3, `entityTypeId` holds a value that matches no CRM object. A deal requires `2`; the identifier of a smart process is returned by the [crm.enum.ownertype](../../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) method ||
+|| `ENTITY_TYPE_NOT_SUPPORTED` | In step 1, a CRM object that has no funnels is passed. The stages of such an object are kept in a single directory without the numeric part ||
+|| `400` `Invalid parameters.` | In step 2, the `filter` holds invalid values. The set of fields available for filtering is returned by the [crm.status.fields](../../../api-reference/crm/status/crm-status-fields.md) method ||
+|| `400` `Access denied.` | In step 2 or 3, the webhook user has no permission to read the items of the CRM object. Check which user the webhook was created on behalf of ||
+|| `INVALID_ARG_VALUE` `Invalid filter: field 'field' is not allowed in filter` | In step 3, the `filter` holds a field that cannot be filtered by. The list of available fields is returned by the [crm.item.fields](../../../api-reference/crm/universal/crm-item-fields.md) method ||
+|#
+
+More often, the scenario breaks not with an error but with an empty response. Analyze it step by step.
+
+- An empty `categories` in step 1 — there is no funnel with such a name, or it is not available to the user. Call step 1 without searching by name and compare the spelling with the list
+
+- An empty `result` in step 2 — the directory code is incorrect, check it against the rules from step 2. For a smart process, the code uses `entityTypeId`, not the `id` from the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method
+
+- An empty `items` in step 3 with a non-empty step 2 — either the stage really has no items, or `stageId` was assembled as a string in the code and got truncated by length. Pass the value from the `STATUS_ID` field of the step 2 response
+
+All four methods only read data, so after an error the scenario can be repeated from any step.
+
+## Key Considerations
+
+- Every funnel has its own stage directory. Stage names in different funnels may coincide, while `STATUS_ID` values do not, so a stage has to be retained together with the funnel identifier
+
+- The names are compared by the example code, not by the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) method: the method returns all the stages of the directory. The comparison is strict, so an extra space or a different letter case leaves the required stage unfound in the response
+
+- The [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) and [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) methods return no more than 50 records per call. A funnel usually has fewer stages, but it may have more items — iterate over the pages with the `start` parameter
+
+- Do not look for the stage semantics — success, failure, or in progress — in the `SEMANTICS` field: for stages in progress it comes empty, and the real value is kept in `EXTRA.SEMANTICS`. For details, see the [How to Retrieve a List of Stages with Semantics for CRM Entities](./how-to-get-stages-with-semantics.md) scenario
+
+- To filter the items of another CRM object, replace `entityTypeId` in steps 1 and 3 and the directory code in step 2. The rest of the scenario logic does not change
+
 ## Code Example
+
+The code goes through all four steps: it finds the identifiers of the funnel and the stage by their names and prints a table of items with the responsible users. The only thing to replace is the webhook URL in the environment variable.
+
+The JS, PHP, and Python examples ask the user for the names, while in the Go example they are set by the `funnelName` and `stageName` constants. The Go example additionally creates a deal of its own at the selected stage and deletes it at the end, so that step 3 has something to find in an empty Bitrix24.
 
 {% list tabs %}
 
@@ -642,10 +730,10 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
     try {
         const rl = createInterface({ input: process.stdin, output: process.stdout });
 
-        // Step 1: Request funnel name from user
+        // Ask for the funnel name
         let funnelName = await rl.question("Enter deal funnel name: ");
 
-        // Step 2: Get list of funnels
+        // Step 1: Get the list of funnels and find the required one by name
         let categories = (await call("crm.category.list", { entityTypeId: 2 })).categories;
         let selectedFunnel = categories.find(cat => cat.name === funnelName);
 
@@ -655,11 +743,11 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
         } else {
             let funnelId = selectedFunnel.id;
 
-            // Step 3: Request stage name from user
+            // Ask for the stage name
             let stageName = await rl.question("Enter stage name: ");
             rl.close();
 
-            // Step 4: Get list of stages for the selected funnel
+            // Step 2: Get the funnel stages and find the required one by name
             let entityID = funnelId === 0 ? "DEAL_STAGE" : `DEAL_STAGE_${funnelId}`;
 
             let stages = await call("crm.status.list", { filter: { "ENTITY_ID": entityID } });
@@ -670,7 +758,7 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
             } else {
                 let stageId = selectedStage.STATUS_ID;
 
-                // Step 5: Get list of deals at the selected stage
+                // Step 3: Get the deals at the selected stage
                 let deals = (await call("crm.item.list", {
                     entityTypeId: 2,
                     select: ["id", "title", "assignedById", "opportunity"],
@@ -683,17 +771,19 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
 
                 let userMap = {};
 
-                // Step 6: Get user information
-                for (const userId of uniqueResponsibleIds) {
-                    let users = await call("user.get", { "ID": userId });
-                    let user = users[0];
-                    userMap[userId] = {
-                        name: user.NAME,
-                        lastName: user.LAST_NAME
-                    };
+                // Step 4: Get information about the responsible users
+                // One request for all of them at once, not one request per deal
+                if (uniqueResponsibleIds.length > 0) {
+                    let users = await call("user.get", { filter: { ID: uniqueResponsibleIds } });
+                    users.forEach(user => {
+                        userMap[Number(user.ID)] = {
+                            name: user.NAME,
+                            lastName: user.LAST_NAME
+                        };
+                    });
                 }
 
-                // Step 7: Output results to console as a text table
+                // Output the results to the console as a text table
                 let table = [];
 
                 // Header
@@ -729,6 +819,8 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
 - PHP
   
     ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
     require_once 'vendor/autoload.php';
 
     use Bitrix24\SDK\Services\ServiceBuilderFactory;
@@ -744,10 +836,10 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
 
     $crm = $serviceBuilder->getCRMScope();
 
-    // Step 1: Request funnel name from user
+    // Ask for the funnel name
     $funnelName = readline("Enter deal funnel name: ");
 
-    // Step 2: Get list of funnels
+    // Step 1: Get the list of funnels and find the required one by name
     $categories = $serviceBuilder->core->call(
         'crm.category.list',
         [
@@ -771,10 +863,10 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
 
     $funnelId = $selectedFunnel['id'];
 
-    // Step 3: Request stage name from user
+    // Ask for the stage name
     $stageName = readline("Enter stage name: ");
 
-    // Step 4: Get list of stages for the selected funnel
+    // Step 2: Get the funnel stages and find the required one by name
     $entityID = $funnelId === 0 ? "DEAL_STAGE" : "DEAL_STAGE_{$funnelId}";
 
     $stages = $crm->status()->list(
@@ -800,7 +892,7 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
 
     $stageId = $selectedStage->STATUS_ID;
 
-    // Step 5: Get list of deals at the selected stage
+    // Step 3: Get the deals at the selected stage
     $deals = $crm->item()->list(
         2,
         [],
@@ -822,25 +914,23 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
 
     $userMap = [];
 
-    // Step 6: Get user information
-    foreach ($uniqueResponsibleIds as $userId) {
+    // Step 4: Get information about the responsible users
+    // One request for all of them at once, not one request per deal
+    if (!empty($uniqueResponsibleIds)) {
         $users = $serviceBuilder->getUserScope()->user()->get(
             [],
-            ['ID' => $userId]
+            ['ID' => array_values($uniqueResponsibleIds)]
         )->getUsers();
 
-        if (empty($users)) {
-            continue;
+        foreach ($users as $user) {
+            $userMap[(int)$user->ID] = [
+                'name' => $user->NAME,
+                'lastName' => $user->LAST_NAME
+            ];
         }
-
-        $user = $users[0];
-        $userMap[$userId] = [
-            'name' => $user->NAME,
-            'lastName' => $user->LAST_NAME
-        ];
     }
 
-    // Step 7: Output results as a text table
+    // Output the results as a text table
     $table = [];
 
     // Header
@@ -1196,3 +1286,12 @@ As a result, we will obtain the employee data, including the `NAME` and `LAST_NA
     ```
 
 {% endlist %}
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/universal/crm-item-list.md)
+- [{#T}](../../../api-reference/crm/status/crm-status-list.md)
+- [{#T}](../../../api-reference/crm/universal/category/crm-category-list.md)
+- [{#T}](./how-to-get-stages-with-semantics.md)
+- [{#T}](./how-to-get-deal-funnels.md)
+- [{#T}](./get-activity-list-by-deals.md)

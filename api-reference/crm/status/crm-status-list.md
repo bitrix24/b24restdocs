@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with permission to read at least one CRM object
 
 The method `crm.status.list` returns a list of directory items based on the filter.
 
