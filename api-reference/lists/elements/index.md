@@ -6,11 +6,18 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Each list element consists of fields. You can add new fields and configure them using the methods [lists.field.*](../fields/index.md).
+Elements are records of a universal list. Each element stores list field values: text, numbers, dates, files, links to CRM, and other data. Fields can be added and configured using the methods [lists.field.*](../fields/index.md).
 
 > Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [How to add list elements](https://helpdesk.bitrix24.com/open/16701764/)
+
+## Getting Started with Elements
+
+1. Retrieve list parameters using the [lists.get](../lists/lists-get.md) method.
+2. Retrieve list fields using the [lists.field.get](../fields/lists-field-get.md) method to know the codes and value types.
+3. Create an element using the [lists.element.add](./lists-element-add.md) method.
+4. Retrieve, update, and delete elements using the [lists.element.get](./lists-element-get.md), [lists.element.update](./lists-element-update.md), and [lists.element.delete](./lists-element-delete.md) methods.
 
 ## Relationships with Other Objects
 
@@ -22,7 +29,7 @@ Each list element consists of fields. You can add new fields and configure them 
 
 For example, if you already have a list called Sizes with elements: XS, S, M, L, then in the Products list, you create a field of type Link to elements and specify the Sizes list. Now, when you add a product, you don't enter sizes manually but select the required elements from the list — for instance, S and M.
 
-To obtain the list identifier, use the method [lists.get](../lists/lists-get.md). The element identifier can be found using the method [lists.element.get](./lists-element-add.md).
+To obtain the list identifier, use the method [lists.get](../lists/lists-get.md). The element identifier can be retrieved using the method [lists.element.get](./lists-element-get.md).
 
 **CRM Objects.** The field type Link to CRM elements connects list elements with CRM objects: [leads](../../crm/leads/index.md), [deals](../../crm/deals/index.md), [SPAs](../../crm/universal/index.md), [contacts](../../crm/contacts/index.md), and [companies](../../crm/companies/index.md). In list elements, this field is displayed as a link to the CRM object, and in the CRM card itself, a tab with the list name appears.
 
@@ -38,17 +45,17 @@ The user identifier can be obtained using the method [user.get](../../user/user-
 
 **Drive.** The field type File (Drive) connects list elements with the Drive. To add a file to the element's field:
 
-- upload the file to the Drive using the methods [disk.folder.uploadfile](../../disk/folder/disk-folder-upload-file.md) or [disk.storage.uploadfile](../../disk/storage/disk-storage-upload-file.md),
+- upload the file to Drive using the methods [disk.folder.uploadfile](../../disk/folder/disk-folder-upload-file.md) or [disk.storage.uploadfile](../../disk/storage/disk-storage-upload-file.md)
 
-- obtain the `ID` of the uploaded file,
+- obtain the `ID` of the uploaded file
 
-- attach the file using the methods [lists.element.add](./lists-element-add.md) or [lists.element.update](./lists-element-update.md).
+- attach the file using the methods [lists.element.add](./lists-element-add.md) or [lists.element.update](./lists-element-update.md)
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`lists`](../../scopes/permissions.md)
 >
-> Who can execute the method: depends on the method
+> Who can execute the method: depending on the method
 
 #|
 || **Method** | **Description** ||

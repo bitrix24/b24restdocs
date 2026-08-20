@@ -249,7 +249,10 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of successful removal of the embedding placement ||
+[`boolean`](../../data-types.md) \| [`null`](../../data-types.md) | Result of removing the embedding placement
+
+- `true` — embedding placement is removed
+- `null` — the method completed without an error, but removal was not started, for example, if the current call is not linked to an application ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#

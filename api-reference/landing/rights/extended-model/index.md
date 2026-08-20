@@ -11,6 +11,8 @@ The extended rights model allows for configuring access separately for each site
 For example, you can grant the marketing department the right to edit the promotions site, while all other employees can only view it.
 
 > Quick Navigation: [all methods](#all-methods)
+>
+> User documentation: [Site access permissions](https://helpdesk.bitrix24.com/open/22057418/)
 
 ## How to Configure Rights in the Extended Model
 
@@ -36,7 +38,7 @@ The extended rights model is associated with sites, access codes, and the select
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: depends on the method
+> Who can execute the methods: depending on the method
 
 #| 
 || **Method** | **Description** ||

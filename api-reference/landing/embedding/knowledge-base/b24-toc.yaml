@@ -1,4 +1,4 @@
-title: Embedding Knowledge Bases  
+title: Knowledge Base Embedding Locations
 href: index.md  
 items:  
   - name: Overview of Methods  
@@ -14,4 +14,4 @@ items:
   - name: Retrieve Menu Bindings  
     href: landing-site-get-menu-bindings.md  
   - name: Unbind from Menu  
-    href: landing-site-unbinding-from-menu.md  
+    href: landing-site-unbinding-from-menu.md

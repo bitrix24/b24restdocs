@@ -10,7 +10,7 @@ Open channels in Bitrix24 consolidate requests from external channels into a sin
 
 The workflow operates in a chain: a customer writes to a connected channel, the system creates a chat and opens a session, after which the dialogue is assigned to an employee according to the channel's rules. Within the session, the operator responds to the customer, transfers the dialogue, connects a colleague, or concludes the request.
 
-This section describes the management of each step in this chain: configuring channels, working with chats and sessions, operator actions, messages, chatbots, and events.
+Open Channels methods and events manage each step in this chain: configuring channels, working with chats and sessions, operator actions, messages, chatbots, and events.
 
 > Quick navigation: [All Methods and Events](#all-methods)
 >
@@ -57,7 +57,7 @@ This section describes the management of each step in this chain: configuring ch
 
 {% note tip "User documentation" %}
 
-- [How to Work with Chats in Open Channels](https://helpdesk.bitrix24.com/open/25761311/)
+- [Use chats in Open Channels](https://helpdesk.bitrix24.com/open/25967455/)
 - [Canned Responses in Open Channels: How to Create and Configure](https://helpdesk.bitrix24.com/open/25760371/)
 - [Open Channels: How to Obtain Consent for Personal Data Processing](https://helpdesk.bitrix24.com/open/25828127/)
 

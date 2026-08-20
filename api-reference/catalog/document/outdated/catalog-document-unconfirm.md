@@ -206,6 +206,61 @@ The method `catalog.document.unconfirm` cancels the processing of a document.
 
 {% endlist %}
 
+## Response Handling
+
+HTTP status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1759482402.511337,
+        "finish": 1759482402.642843,
+        "duration": 0.13150620460510254,
+        "processing": 0.02694106101989746,
+        "date_start": "2025-11-02T12:26:42+03:00",
+        "date_finish": "2025-11-02T12:26:42+03:00",
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Returns `true` if document processing has been canceled ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "0",
+    "error_description": "Error canceling document processing: The document has not been processed yet"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `0` | Insufficient permissions to save the document | No access permission to the product catalog or inventory accounting, or no permission to cancel document processing ||
+|| `0` | Error canceling document processing: "error text" | The document was not found, has not been processed, or contains invalid data ||
+|| `0` | Inventory accounting is not available on your plan | Inventory accounting is not available on your plan ||
+|| `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
+|#
+
+{% include [System Errors](../../../../_includes/system-errors.md) %}
+
 ## Continue Learning 
 
 - [{#T}](./catalog-document-confirm.md)

@@ -1,4 +1,4 @@
-# Working with Sections: Overview of Methods
+# Universal List Sections: Overview of Methods
 
 {% note tip "" %}
 
@@ -10,23 +10,23 @@ Sections help organize data and simplify navigation within lists. They group rec
 
 > Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [How to create and configure a list in Bitrix24](https://helpdesk.bitrix24.com/open/25744043/)
+> User documentation: [List View Settings](https://helpdesk.bitrix24.com/open/18128266/)
+
+## Getting Started with Sections
+
+1. Retrieve list parameters using the [lists.get](../lists/lists-get.md) method.
+2. Create a section using the [lists.section.add](./lists-section-add.md) method.
+3. Retrieve, update, and delete sections using the [lists.section.get](./lists-section-get.md), [lists.section.update](./lists-section-update.md), and [lists.section.delete](./lists-section-delete.md) methods.
 
 ## Relationships with Other Objects
 
 **Universal lists.** Each section belongs to a specific list. To add a section to a list, you need to specify the parameters `IBLOCK_TYPE_ID`, `IBLOCK_ID`, and `IBLOCK_CODE`. Values can be obtained using the [lists.get](../lists/lists-get.md) method.
 
-{% note tip "User documentation" %}
-
-- [List view settings](https://helpdesk.bitrix24.com/open/18128266/)
-
-{% endnote %}
-
 ## Overview of Methods {#all-methods}
 
 > Scope: [`lists`](../../scopes/permissions.md)
 >
-> Who can execute the method: depends on the method
+> Who can execute the method: depending on the method
 
 #|
 || **Method** | **Description** ||

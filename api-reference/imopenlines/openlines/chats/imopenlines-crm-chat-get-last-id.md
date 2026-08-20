@@ -1,4 +1,4 @@
-# Get the Id of the Last Chat imopenlines.crm.chat.getLastId
+# Get the Identifier of the Last Chat imopenlines.crm.chat.getLastId
 
 {% note tip "" %}
 

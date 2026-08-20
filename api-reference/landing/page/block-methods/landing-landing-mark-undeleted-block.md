@@ -37,6 +37,10 @@ The page identifier can be obtained using the method [landing.landing.getList](.
 To restore a deleted block, request it using the method [landing.block.getList](../../block/methods/landing-block-get-list.md) with the parameters `params.edit_mode = 1` and `params.deleted = 1`.
 
 If you pass the identifier of a block from another page or a non-existent identifier, the method will return an error ||
+|| **preventHistory**
+[`boolean`](../../../data-types.md) | If `true`, the method does not add the action to the page change history.
+
+Default value: `false` ||
 |#
 
 ## Code Examples

@@ -16,6 +16,8 @@ Some data may be missing here — we will complete it shortly.
 
 {% note alert "TO-DO _not to be deployed to prod_" %}
 
+The page is hidden from the menu, the method does not work.
+
 - The required parameters are not specified
 - Examples are missing
 - Response on success is absent

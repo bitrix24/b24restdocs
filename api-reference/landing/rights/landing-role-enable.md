@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator or user with "full access" permission to the "Sites and Stores" section. If the `scope` parameter is provided, the method is available only to the portal administrator
+> Who can execute the method: administrator or user with "Full access" permission to the "Sites and Stores" section. If the `scope` parameter is provided, the method is available only to the Bitrix24 administrator
 
 The method `landing.role.enable` enables or disables the role-based access model for the "Sites and Stores" section.
 
@@ -31,11 +31,13 @@ Possible values:
 `KNOWLEDGE` - knowledge bases
 `MAINPAGE` - the main page or vibe
 
-With any of these values, only the portal administrator can switch the access model. Without the `scope` parameter, the method works in the "Sites and Stores" section ||
+With any of these values, only the Bitrix24 administrator can switch the access model. Without the `scope` parameter, the method works in the "Sites and Stores" section ||
 || **mode***
-[`integer`](../../data-types.md) | Access model mode. You can check the current model using the [landing.role.isEnabled](./landing-role-is-enabled.md) method. Possible values:
-- `1` - enable role-based access model
-- `0` - disable role-based access model and use the extended model ||
+[`boolean`](../../data-types.md) \| [`integer`](../../data-types.md) | Access model mode. You can check the current model using the [landing.role.isEnabled](./landing-role-is-enabled.md) method.
+
+Possible values:
+- `true` or `1` - enable role-based access model
+- `false` or `0` - disable role-based access model and use the extended model ||
 |#
 
 ## Code Examples
@@ -277,7 +279,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions to access the "Sites and Stores" section ||
-|| `IS_NOT_ADMIN` | The method requires administrator rights or "full access" permission to the "Sites and Stores" section. The method also returns this error for a call with the `scope` parameter if it is made by a user other than the portal administrator ||
+|| `IS_NOT_ADMIN` | The method requires administrator rights or "Full access" permission to the "Sites and Stores" section. The method also returns this error for a call with the `scope` parameter if it is made by a user other than the Bitrix24 administrator ||
 || `FEATURE_NOT_AVAIL` | Managing permissions in the "Sites and Stores" section is not available on the current plan ||
 || `MISSING_PARAMS` | The required parameter `mode` is missing ||
 |#

@@ -269,7 +269,7 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `MISSING_PARAMS` | Insufficient call parameters, missing: code | Method call without `code` ||
 || `ACCESS_DENIED` | Insufficient permissions | User did not pass general access checks ||
-|| `-` | Template deletion error | Failed to delete the template ||
+|| Empty value | Template deletion error | Failed to delete the template ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

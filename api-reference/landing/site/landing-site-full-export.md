@@ -666,6 +666,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `id` is missing ||
 || `ACCESS_DENIED` | Insufficient rights to access sites ||
+|| `AI_SITE_EXPORT_NOT_ALLOWED` | AI site export is not supported ||
 || `TYPE_ERROR` | Parameter of incorrect type was provided ||
 || `SYSTEM_ERROR` | Internal execution error, for example, `params.code` contains characters other than Latin letters and digits ||
 |#

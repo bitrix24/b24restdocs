@@ -3,11 +3,11 @@ href: index.md
 items:  
   - name: Overview of Methods  
     href: index.md  
-  - name: Get the ID of the Last CRM Object Chat  
+  - name: Get the Identifier of the Last CRM Object Chat
     href: imopenlines-crm-chat-get-last-id.md  
   - name: Retrieve Chats for the CRM Object  
     href: imopenlines-crm-chat-get.md  
   - name: Add a User to an Existing CRM Object Chat  
     href: imopenlines-crm-chat-user-add.md  
   - name: Remove a User from the CRM Object Chat  
-    href: imopenlines-crm-chat-user-delete.md  
+    href: imopenlines-crm-chat-user-delete.md

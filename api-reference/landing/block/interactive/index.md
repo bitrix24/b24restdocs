@@ -1,4 +1,4 @@
-# Interactive Blocks: Overview
+# Interactive Blocks: Scenario Overview
 
 {% note tip "" %}
 

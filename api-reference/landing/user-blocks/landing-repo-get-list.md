@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with View access permission in the Sites section
+> Who can execute the method: a user with View access permission in the Sites and Stores section
 
 The method `landing.repo.getList` retrieves a list of custom blocks.
 

@@ -121,7 +121,7 @@ Examples:
 [`boolean`](../../data-types.md) | Allows opening additional settings for the Automation rule in the application slider. Possible values:
 - `Y` — yes
 - `N` — no  ||
-|| **PLACEMENT_HANDLER*** 
+|| **PLACEMENT_HANDLER**
 [`string`](../../data-types.md) | URL of the placement handler on the application side. Required if `USE_PLACEMENT = 'Y'` ||
 |#
 

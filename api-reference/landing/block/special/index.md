@@ -1,4 +1,4 @@
-# Special Blocks: Overview
+# Special Blocks: Scenario Overview
 
 {% note tip "" %}
 
@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Special blocks in `landing` address specific scenarios rather than general layout tasks: page navigation, menus, search, maps, and embedding CRM forms. The behavior of these blocks depends on the context of the site, the page, and the available objects.
 
 > Quick Navigation: [All scenarios section](#all-scenarios)
+>
+> User documentation: [Create and configure your Bitrix24 site](https://helpdesk.bitrix24.com/open/25743741/)
 
 ## Related Scenarios
 
@@ -20,27 +22,27 @@ Special blocks in `landing` address specific scenarios rather than general layou
 
 ## Choosing a Scenario
 
-Open the subsection if you need to:
+Select a subsection for your task:
 
-- display the page title or navigation chain using system markers — [Navigation and Title](./navigation.md),
+- display the page title or navigation chain using system markers — [Navigation and Title](./navigation.md)
 
-- automatically populate the block with menu links — [Menu Blocks](./menu.md),
+- automatically populate the block with menu links — [Menu Blocks](./menu.md)
 
-- add a search form that submits a request to a separate page — [Search Forms](./search-forms.md),
+- add a search form that submits a request to a separate page — [Search Forms](./search-forms.md)
 
-- format a page that displays search results — [Search Results](./search.md),
+- format a page that displays search results — [Search Results](./search.md)
 
-- embed a map and prepare the block to work with the map provider — [Maps in Blocks](./maps.md),
+- embed a map and prepare the block to work with the map provider — [Maps in Blocks](./maps.md)
 
-- embed a CRM form in the block — [Forms in Blocks](./crm-forms.md).
+- embed a CRM form in the block — [Forms in Blocks](./crm-forms.md)
 
 ## Considerations When Choosing a Scenario
 
-- `search-forms` and `search` are usually used together: the first page describes the search form, while the second describes the results page.
+- `search-forms` and `search` are usually used together: the first page describes the search form, while the second describes the results page
 
-- `navigation` typically complements other scenarios, while `maps`, `crm-forms`, and `menu` more often address the primary task of the block.
+- `navigation` typically complements other scenarios, while `maps`, `crm-forms`, and `menu` more often address the primary task of the block
 
-- Scenarios for [Menu Blocks](./menu.md), [Maps in Blocks](./maps.md), [Search Forms](./search-forms.md), and [Forms in Blocks](./crm-forms.md) are defined through `subtype` in the manifest, while markers in HTML are used for [Navigation and Title](./navigation.md).
+- Scenarios for [Menu Blocks](./menu.md), [Maps in Blocks](./maps.md), [Search Forms](./search-forms.md), and [Forms in Blocks](./crm-forms.md) are defined through `subtype` in the manifest, while markers in HTML are used for [Navigation and Title](./navigation.md)
 
 ## Scenarios for Working with Special Blocks {#all-scenarios}
 

@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The `ai` section helps connect your own AI service to Bitrix24. The methods in this section allow you to register new services, retrieve their list, and remove selected ones.
+The `ai.engine.*` methods connect your own AI service to Bitrix24. You can use them to register new services, retrieve their list, and remove selected ones.
 
 {% note warning "Important" %}
 
@@ -18,23 +18,17 @@ Before registration, check the availability of the external handler URL in the `
 
 ## What to Consider Before Registration
 
-- Specify a valid URL in `completions_url` that returns an HTTP status of `200` upon verification.
-
-- For the `image` category, use asynchronous processing.
-
-- Choose the `category` value based on the service scenario: `text`, `image`, `audio`, or `call`.
-
-- Pass additional parameters in `settings`.
+- Specify a valid URL in `completions_url` that returns an HTTP status of `200` upon verification
+- For the `image` category, use asynchronous processing
+- Choose the `category` value based on the service scenario: `text`, `image`, `audio`, or `call`
+- Pass additional parameters in `settings`
 
 ## How to Get Started
 
-1. Prepare the external endpoint.
-
-2. Register the service via [ai.engine.register](./ai-engine-register.md).
-
-3. Verify the registration and service parameters through [ai.engine.list](./ai-engine-list.md).
-
-4. Remove the service via [ai.engine.unregister](./ai-engine-unregister.md) if it is no longer needed.
+1. Prepare the external endpoint
+2. Register the service via [ai.engine.register](./ai-engine-register.md)
+3. Verify the registration and service parameters through [ai.engine.list](./ai-engine-list.md)
+4. Remove the service via [ai.engine.unregister](./ai-engine-unregister.md) if it is no longer needed
 
 ## How Integration Works
 
@@ -56,7 +50,7 @@ You can use this template as a basis for your own service.
 
 **Webhook.** You can filter services by any `APP_CODE` through the webhook.
 
-## Overview of Methods   {#all-methods}
+## Overview of Methods {#all-methods}
 
 > Scope: [`ai_admin`](../scopes/permissions.md)
 >

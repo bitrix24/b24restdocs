@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method removes a robot registered by the application.
+The `bizproc.robot.delete` method removes a robot registered by the application.
 
 It only works in the context of the [application](../../../settings/app-installation/index.md).
 

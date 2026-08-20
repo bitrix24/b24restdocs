@@ -10,9 +10,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method returns a list of robots registered by the application.
+The `bizproc.robot.list` method returns a list of robots registered by the application.
 
 It works only in the context of the [application](../../../settings/app-installation/index.md).
+
+## Method Parameters
 
 No parameters.
 

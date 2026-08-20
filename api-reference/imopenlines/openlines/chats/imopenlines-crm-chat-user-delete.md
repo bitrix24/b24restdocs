@@ -254,7 +254,7 @@ HTTP Status: **200**
 }
 ```
 
-### Returned Data
+## Returned Data
 
 #|
 || **Name**
@@ -274,7 +274,7 @@ HTTP Status: **400**, **403**
 ```json
 {
     "error": "ERROR_ARGUMENT",
-    "error_description": "The value of an argument CRM_ENTITY has an invalid type"
+    "error_description": "The value of an argument 'CRM_ENTITY' has an invalid type"
 }
 ```
 
@@ -285,24 +285,22 @@ HTTP Status: **400**, **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `ACCESS_DENIED` | Access denied! You don't have access to join user to chat | Possible reasons:
-- invalid or non-existent `CRM_ENTITY_TYPE` specified 
+- invalid or non-existent `CRM_ENTITY_TYPE` specified
 - the user executing the method does not have access to the CRM object
 ||
-|| `400` | `CRM_CHAT_EMPTY_USER` | User identifier is not specified | Required parameter `USER_ID` is not specified ||
+|| `400` | `CRM_CHAT_EMPTY_USER` | Empty User ID | Required parameter `USER_ID` is not specified ||
 || `400` | `CRM_CHAT_EMPTY_CRM_DATA` | Empty CRM data | Required parameters `CRM_ENTITY_TYPE` and `CRM_ENTITY` are not provided ||
-|| `400` | `CRM_CHAT_EMPTY_CRM_DATA` | CRM data is not specified | CRM data is not provided ||
-|| `400` | `ERROR_ARGUMENT` | The value of an argument CRM_ENTITY has an invalid type | The parameter `CRM_ENTITY` is passed in an incorrect format ||
-|| `400` | `IM_NOT_INSTALLED` | Module im is not installed | The `im` module is not installed ||
+|| `400` | `ERROR_ARGUMENT` | The value of an argument 'CRM_ENTITY' has an invalid type | The parameter `CRM_ENTITY` is passed in an incorrect format ||
+|| `400` | `IM_NOT_INSTALLED` | Messenger is not installed. | The `im` module is not installed ||
 || `400` | `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM object being checked | Possible reasons:
 - the chat is not linked to the CRM object
 - the chat with the specified `CHAT_ID` does not exist ||
 || `403` | `CHAT_DELETE_USER_PERMISSION_DENIED` | You don't have access to delete a user from this chat | The user does not have permission to remove a participant from the chat ||
-|| `400` | `CRM_CHAT_USER_NOT_ACTIVE` | Chat user is not active | The user being removed with `USER_ID` is not active or does not exist ||
+|| `400` | `CRM_CHAT_USER_NOT_ACTIVE` | User not active | The user being removed with `USER_ID` is not active or does not exist ||
 || `400` | `WRONG_REQUEST` | You don't have access or user already not in chat | The user has already been removed from the chat or is unavailable for removal ||
-|| `400` | `USER_NOT_FOUND` | The specified user is not in the chat | The user with identifier `CHAT_ID` is not in the specified chat ||
 |#
 
-{% include [system errors](../../../../_includes/system-errors.md) %}
+{% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

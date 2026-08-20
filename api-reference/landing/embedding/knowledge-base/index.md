@@ -11,6 +11,8 @@ The Knowledge Base can be embedded into the Bitrix24 interface in two ways: by d
 For example, the department's Knowledge Base can be linked to a group so that employees can read instructions and regulations within the group's workspace. If the Knowledge Base is needed by all employees, it can be displayed in a specific menu.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Add a knowledge base to a section](https://helpdesk.bitrix24.com/open/19427378/)
 
 ## How to Manage Knowledge Base Embedding
 
@@ -50,7 +52,7 @@ To set up the link:
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: depends on the method
+> Who can execute the methods: depends on the method
 
 ### Linking to the Menu
 

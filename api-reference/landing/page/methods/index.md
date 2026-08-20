@@ -8,23 +8,25 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 A page is always associated with a website. It can be created at the root of the site or within a folder. The methods `landing.landing.*` are used to:
 
-- create, copy, and move pages,
-- retrieve a list of pages and metadata,
-- modify page parameters,
-- publish and unpublish a page,
-- restore and delete pages.
+- create, copy, and move pages
+- retrieve a list of pages and metadata
+- modify page parameters
+- publish and unpublish a page
+- restore and delete pages
 
 For example, you can create a promotional page within a store's website, publish it, and when the promotion ends, move it to another folder or unpublish it.
 
 > Quick Navigation: [All Methods](#all-methods)
+>
+> User documentation: [Create and configure your Bitrix24 site](https://helpdesk.bitrix24.com/open/25743741/)
 
 ## How to Create a Website Page
 
-1. Obtain the site ID using the methods [landing.site.getList](../../site/landing-site-get-list.md) or [landing.site.add](../../site/landing-site-add.md).
-2. If the page should reside in a folder, get the folder ID using the method [landing.site.getFolders](../../site/landing-site-get-folders.md).
-3. Create the page using the method [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), or [landing.landing.copy](./landing-landing-copy.md).
-4. To find the page and check its parameters, use [landing.landing.getList](./landing-landing-get-list.md), [landing.landing.getadditionalfields](./landing-landing-get-additional-fields.md), [landing.landing.getpreview](./landing-landing-get-preview.md), and [landing.landing.getpublicurl](./landing-landing-get-public-url.md).
-5. After configuration, publish the page using the method [landing.landing.publication](./landing-landing-publication.md). If you need to hide the page, use [landing.landing.unpublic](./landing-landing-unpublic.md).
+1. Obtain the site ID using the [landing.site.getList](../../site/landing-site-get-list.md) or [landing.site.add](../../site/landing-site-add.md) method
+2. If the page should reside in a folder, get the folder ID using the [landing.site.getFolders](../../site/landing-site-get-folders.md) method
+3. Create the page using the [landing.landing.add](./landing-landing-add.md), [landing.landing.addByTemplate](./landing-landing-add-by-template.md), or [landing.landing.copy](./landing-landing-copy.md) method
+4. To find the page and check its parameters, use [landing.landing.getList](./landing-landing-get-list.md), [landing.landing.getadditionalfields](./landing-landing-get-additional-fields.md), [landing.landing.getpreview](./landing-landing-get-preview.md), and [landing.landing.getpublicurl](./landing-landing-get-public-url.md)
+5. After configuration, publish the page using the [landing.landing.publication](./landing-landing-publication.md) method. If you need to hide the page, use [landing.landing.unpublic](./landing-landing-unpublic.md)
 
 ## Relationships with Other Objects
 
@@ -44,7 +46,7 @@ A page in Bitrix24 is linked to other objects. The site provides the overall con
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the methods: depending on the method
 
 ### Creating and Modifying a Page
 

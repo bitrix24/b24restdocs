@@ -12,11 +12,11 @@ The group of methods `landing.demos.*` helps manage custom templates. This secti
 
 > Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [How to prepare a custom template](./introduction.md)
+> User documentation: [Create and configure your Bitrix24 site](https://helpdesk.bitrix24.com/open/25743741/)
 
 ## Getting Started
 
-1. Prepare a site or page using the methods from the Sites section [Sites section](../site/index.md)
+1. Prepare a site or page using the methods from the [Sites](../site/index.md) section
 2. Export the site using the [landing.site.fullExport](../site/landing-site-full-export.md) method
 3. Save the exported array on the Bitrix24 application side
 4. Pass the exported array to [landing.demos.register](./landing-demos-register.md)
@@ -32,7 +32,7 @@ The group of methods `landing.demos.*` helps manage custom templates. This secti
 
 ## Relationship with Other Objects
 
-**Site.** A custom template is created based on an existing site or page using the methods from the [Sites section](../site/index.md). To do this, the site is first exported using the [landing.site.fullExport](../site/landing-site-full-export.md) method. Then, the exported array is passed to [landing.demos.register](./landing-demos-register.md).
+**Site.** A custom template is created based on an existing site or page using the methods from the [Sites](../site/index.md) section. To do this, the site is first exported using the [landing.site.fullExport](../site/landing-site-full-export.md) method. Then, the exported array is passed to [landing.demos.register](./landing-demos-register.md).
 
 **Localization.** The title, description, and string values in the supported fields of the template can be localized during registration. This is done using the `lang` and `lang_original` parameters. More details can be found in the article [Template Localization](./localization.md).
 
@@ -40,7 +40,7 @@ The group of methods `landing.demos.*` helps manage custom templates. This secti
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with View permission in the Sites section
+> Who can execute the methods: a user with View permission in the Sites section
 
 #| 
 || **Method** | **Description** ||

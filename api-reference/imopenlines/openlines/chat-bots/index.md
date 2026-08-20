@@ -6,21 +6,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Chatbots in Open Channels help automate communication with customers by:
-
-- automatically responding to customer messages,
-- redirecting conversations to operators,
-- collecting customer data, such as names and emails.
+Chatbots in open channels help automate dialog processing. A bot can send a message to a customer, switch a dialog to a free operator, transfer a request to a specific employee, or finish a session.
 
 > Quick Navigation: [All Methods](#all-methods)
+>
+> User documentation: [Create and configure Open Channels](https://helpdesk.bitrix24.com/open/25385203/)
 
 ## Connection of Chatbots with Other Entities
 
-**User**. You can obtain the user ID using the methods [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md).
+**User.** The employee identifier `USER_ID` is needed to transfer a dialog to a specific operator. It can be obtained using the [user.get](../../../user/user-get.md) and [user.search](../../../user/user-search.md) methods.
 
-**Chat**. The methods [imbot.message.*](../../../chat-bots/outdated/messages/index.md) assist in sending, modifying, and deleting messages.
+**Chat.** A bot works inside an open channel chat. For regular chatbot scenarios outside open channels, use the [imbot.*](../../../chat-bots/outdated/index.md) methods.
 
-**Open Channels**. Chatbots can transfer conversations to another line using [imopenlines.bot.session.transfer](./imopenlines-bot-session-transfer.md). Work with Open Channels should be done using the group of methods [imopenlines.*](../index.md).
+**Open Channels.** Chatbots use the current open channel session. Transfer a conversation to another line or employee using [imopenlines.bot.session.transfer](./imopenlines-bot-session-transfer.md), or finish a session using [imopenlines.bot.session.finish](./imopenlines-bot-session-finish.md).
 
 {% note tip "User Documentation" %}
 
@@ -30,17 +28,15 @@ Chatbots in Open Channels help automate communication with customers by:
 
 ## How to Use Chatbots in Open Channels
 
-1. Register the chatbot using the method [im.bot.register](../../../chat-bots/outdated/bots/imbot-register.md).
-   
-2. Set up automatic responses and scenarios.
-
-3. Connect the chatbot to Open Channels.
+1. Register the chatbot using the [im.bot.register](../../../chat-bots/outdated/bots/imbot-register.md) method
+2. Connect the chatbot to an open channel in the line settings
+3. Send messages and manage dialogs using `imopenlines.bot.session.*` methods
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`imopenlines`](../../../scopes/permissions.md), [`imbot`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the methods: any user
 
 #|
 || **Method** | **Description** ||

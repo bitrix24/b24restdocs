@@ -252,7 +252,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "LINE_NOT_FOUND",
+    "error": "NOT_FOUND",
     "error_description": "Line not found"
 }
 ```
@@ -265,7 +265,7 @@ HTTP Status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `CODE` | You entered an invalid code | Invalid code in parameter `CODE`, expected a string of 32 characters ||
 || `400` | `IMBOT_ERROR` | Module IMBOT is not installed | The imbot module is not installed ||
-|| `400` | `LINE_NOT_FOUND` | Line not found | Open channel not found ||
+|| `400` | `NOT_FOUND` | Line not found | Open channel not found ||
 || `400` | `INACTIVE` | Openline is inactive | The open channel is currently unavailable ||
 |#
 

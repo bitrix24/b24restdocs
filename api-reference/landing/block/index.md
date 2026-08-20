@@ -1,4 +1,4 @@
-# Object Blocks: Overview of Methods
+# Blocks: Overview of Methods
 
 {% note tip "" %}
 
@@ -17,6 +17,15 @@ The methods in this group allow you to:
 The structure of a block is described in articles about [attributes](./attributes.md), [node types](./node-types.md), [extended card descriptions](./extended-description.md), and the [manifest file](./manifest.md).
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Create and configure your Bitrix24 site](https://helpdesk.bitrix24.com/open/25743741/)
+
+## Getting Started with a Block
+
+1. Get page blocks using the [landing.block.getlist](./methods/landing-block-get-list.md) method or select a block template in the repository using [landing.block.getrepository](./methods/landing-block-get-repository.md)
+2. Get the block structure using [landing.block.getmanifest](./methods/landing-block-get-manifest.md) or [landing.block.getmanifestfile](./methods/landing-block-get-manifest-file.md)
+3. Change block content, attributes, styles, or cards using update methods
+4. Publish the page using [landing.landing.publication](../page/methods/landing-landing-publication.md) so that changes appear in the published version
 
 ## How a Block Relates to a Page and Repository
 
@@ -30,26 +39,13 @@ You can add blocks to a page using [landing.landing.addblock](../page/block-meth
 
 ## How a Block is Structured
 
-A block is not displayed on the page in its original form. During rendering, the system wraps it in a service container `<div id="anchor" class="block-wrapper block-code">...</div>`.
+A block is not displayed on the page in its original form. During rendering, the system adds a service container `<div id="anchor" class="block-wrapper block-code">...</div>`.
 
-```html
-<section class="landing-block">
-    <div class="text-center g-color-gray-dark-v3 g-pa-10">
-        <div class="g-width-600 mx-auto">
-            <div class="landing-block-node-text g-font-size-12 ">
-                <p>&copy; 2017 All rights reserved. Developed by
-                <a href="#" class="landing-block-node-link g-color-primary">Bitrix24</a></p>
-            </div>
-        </div>
-    </div>
-</section>
-```
+In the service container:
 
-In this wrapper:
-
-- **anchor** — the block's anchor. If the user has not manually changed it, it appears as `block123`, where `123` is the block ID.
-- **block-wrapper** — a common class for all blocks.
-- **block-code** — a class that depends on the block's code, where `code` is a safely transformed version of the block's code.
+- **anchor** — the block's anchor. If the user has not manually changed it, it appears as `block123`, where `123` is the block ID
+- **block-wrapper** — a common class for all blocks
+- **block-code** — a class that depends on the block's code, where `code` is a safely transformed version of the block's code
 
 {% note warning "" %}
 
@@ -61,7 +57,7 @@ In edit mode, the system creates copies of all blocks before they are published.
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: depends on the method
+> Who can execute the methods: depending on the method
 
 ### Reading Block Data on the Page
 

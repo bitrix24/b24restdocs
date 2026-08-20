@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-In Bitrix24, access to websites and stores can be managed using both extended and role-based access models. These methods allow you to check which model is currently enabled, switch between them if necessary, and configure access permissions as needed.
+In Bitrix24, access to websites and stores can be managed using extended and role-based access models. These methods allow you to check which model is currently enabled, switch between them if necessary, and configure access permissions as needed.
 
 If you need to set access rights specifically for a particular website, the [extended model](./extended-model/index.md) is suitable. In this model, access is defined at the website level. For example, you can allow a group of employees to edit one website while restricting others to view-only access.
 
@@ -16,7 +16,7 @@ The settings for the extended and role-based models are stored separately. When 
 
 {% note warning %}
 
-Access rights are set for the website and apply to all its pages. In the cloud version of Bitrix24, this setting is only available on paid plans. If you switch to a free plan, the access rights configuration will be automatically disabled, and all previously restricted objects will become accessible to all users.
+Access rights are set for the website and apply to all its pages. Access rights are not available on all plans. If the plan does not support access rights, previously restricted websites and stores may become available to all users.
 
 {% endnote %}
 
@@ -45,7 +45,7 @@ Access rights are set for the website and apply to all its pages. In the cloud v
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the methods: depends on the method
+> Who can execute the methods: depending on the method
 
 ### Switching the Access Rights Model
 

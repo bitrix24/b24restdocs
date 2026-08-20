@@ -217,7 +217,7 @@ The message identifier can be obtained using the [imopenlines.session.history.ge
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -247,7 +247,7 @@ HTTP Code: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -256,19 +256,19 @@ HTTP Status: **400**
 }
 ```
 
-{% include notitle [Error Handling](../../../../_includes/error-info.md) %}
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
 #|
 || **Code** | **Description** ||
-|| `CHAT_ID` | Invalid chat identifier provided. ||
-|| `CHAT_TYPE` | The specified chat is not an open line. ||
-|| `CANT_SAVE_QUICK_ANSWER` | Error saving quick answer. ||
-|| `ACCESS_DENIED` | Insufficient rights to open the specified chat. ||
+|| `CHAT_ID` | Invalid chat identifier provided ||
+|| `CHAT_TYPE` | The specified chat is not an open line ||
+|| `CANT_SAVE_QUICK_ANSWER` | Error saving quick answer ||
+|| `ACCESS_DENIED` | Insufficient rights to open the specified chat ||
 |#
 
-{% include [System Errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

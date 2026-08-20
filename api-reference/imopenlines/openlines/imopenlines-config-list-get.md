@@ -68,6 +68,8 @@ For `field_N`, use fields from the [Result Array Element](#result) table. The fi
 [`char`](../../data-types.md) | Return the line queue. Each queue element contains `ENTITY_TYPE` and `ENTITY_ID`. Possible values:
 - `Y` — yes
 - `N` — no ||
+|| **CHECK_PERMISSION**
+[`string`](../../data-types.md) | Check access to lines by the specified action from the open channels permission map ||
 |#
 
 ## Code Examples
@@ -747,9 +749,25 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `INVALID_FORMAT` | Unsupported PARAMS fields are passed: ... | `PARAMS` contains fields that are not in the `select`, `filter`, `order`, `limit`, `offset` list ||
 || `400` | `INVALID_FORMAT` | A wrong format for the PARAMS field 'select' is passed | The `PARAMS.select` field is not passed as an array ||
 || `400` | `INVALID_FORMAT` | A wrong format for the PARAMS field 'order' is passed | The `PARAMS.order` field is passed in an incorrect format ||
 || `400` | `INVALID_FORMAT` | A wrong format for the PARAMS field 'filter' is passed | The `PARAMS.filter` field is passed in an incorrect format ||
+|| `400` | `INVALID_FORMAT` | A non-negative integer is expected in the PARAMS field 'limit' | The `PARAMS.limit` field must be a non-negative integer ||
+|| `400` | `INVALID_FORMAT` | A non-negative integer is expected in the PARAMS field 'offset' | The `PARAMS.offset` field must be a non-negative integer ||
+|| `400` | `INVALID_FORMAT` | A wrong field name is passed in the PARAMS field 'select' | `PARAMS.select` contains an empty or invalid field name ||
+|| `400` | `INVALID_FORMAT` | A wrong field name is passed in the PARAMS field 'order' | `PARAMS.order` contains an empty or invalid field name ||
+|| `400` | `INVALID_FORMAT` | A wrong field name is passed in the PARAMS field 'filter' | `PARAMS.filter` contains an empty or invalid field name ||
+|| `400` | `INVALID_FORMAT` | An unknown field '...' is passed in the PARAMS field 'select' | `PARAMS.select` contains an unknown field ||
+|| `400` | `INVALID_FORMAT` | An unknown field '...' is passed in the PARAMS field 'order' | `PARAMS.order` contains an unknown field ||
+|| `400` | `INVALID_FORMAT` | An unknown field '...' is passed in the PARAMS field 'filter' | `PARAMS.filter` contains an unknown field ||
+|| `400` | `INVALID_FORMAT` | A wrong field alias is passed in the PARAMS field 'select' | `PARAMS.select` contains an invalid field alias ||
+|| `400` | `INVALID_FORMAT` | The alias '...' matches an existing field in the PARAMS field 'select' | The alias in `PARAMS.select` conflicts with an existing field ||
+|| `400` | `INVALID_FORMAT` | A wrong sorting direction is passed in the PARAMS field 'order' | `PARAMS.order` contains a sorting direction other than `ASC` or `DESC` ||
+|| `400` | `INVALID_FORMAT` | Unsupported OPTIONS fields are passed: ... | `OPTIONS` contains fields that are not in the `QUEUE`, `CONFIG_QUEUE`, `CHECK_PERMISSION` list ||
+|| `400` | `INVALID_FORMAT` | A wrong format for the OPTIONS field 'QUEUE' is passed | The `OPTIONS.QUEUE` field is not passed as a scalar value ||
+|| `400` | `INVALID_FORMAT` | A wrong format for the OPTIONS field 'CONFIG_QUEUE' is passed | The `OPTIONS.CONFIG_QUEUE` field is not passed as a scalar value ||
+|| `400` | `INVALID_FORMAT` | An unknown value for the OPTIONS field 'CHECK_PERMISSION' is passed | `OPTIONS.CHECK_PERMISSION` contains an unknown action ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

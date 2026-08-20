@@ -24,14 +24,14 @@ An example of a handler for the event is described in the article [How to Test Y
 
 ## Overview of Events {#all-events}
 
-> Scope: [`imopenlines`](../../../scopes/permissions.md) 
+> Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
 #|
 || **Event** | **Triggered** ||
 || [OnSessionStart](./on-session-start.md) | When creating an Open Channel session manually or using the [imopenlines.session.start](../sessions/imopenlines-session-start.md) method ||
-|| [OnOpenLineMessageAdd](./on-open-line-message-add.md) | When a message is added to the chat manually or by the method [imopenlines.crm.message.add](../messages/imopenlines-crm-message-add.md)||
+|| [OnOpenLineMessageAdd](./on-open-line-message-add.md) | When a message is added to the chat manually or by the method [imopenlines.crm.message.add](../messages/imopenlines-crm-message-add.md) ||
 || [OnOpenLineMessageUpdate](./on-open-line-message-update.md) | When a message in the chat is modified manually ||
 || [OnOpenLineMessageDelete](./on-open-line-message-delete.md) | When a message in the chat is deleted manually ||
 || [OnSessionFinish](./on-session-finish.md) | When closing an Open Channel session manually ||

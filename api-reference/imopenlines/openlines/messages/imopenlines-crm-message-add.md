@@ -250,7 +250,7 @@ You can obtain the chat ID using the method [imopenlines.crm.chat.get](../chats/
 
 ## Response Handling
 
-HTTP code: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -268,7 +268,7 @@ HTTP code: **200**
 }
 ```
 
-## Returned Result
+## Returned Data
 
 #|
 || **Name**
@@ -281,7 +281,7 @@ HTTP code: **200**
 
 ## Error Handling
 
-HTTP code: **400**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -292,16 +292,17 @@ HTTP code: **400**
 
 {% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `CHAT_NOT_IN_CRM`| Chat does not belong to the CRM entity being checked | Chat is not linked to the CRM ||
-|| `CANCELED`| You cannot send messages to the specified chat | The user does not have access to the chat ||
-|| `ACCESS_DENIED`| Access denied! User dont have access to this entity | User does not have access to the CRM object ||
+|| `CHAT_NOT_IN_CRM` | Chat does not belong to the CRM entity being checked | Chat is not linked to the CRM ||
+|| `CANCELED` | You cannot send messages to the specified chat | The user does not have access to the chat ||
+|| `ACCESS_DENIED` | Access denied! User don't have access to this entity | User does not have access to the CRM object ||
 || `ERROR_ARGUMENT` | Argument `CRM_ENTITY_TYPE` is null or empty | Invalid required parameter `CRM_ENTITY_TYPE` ||
 || `ERROR_ARGUMENT` | Argument `CRM_ENTITY` is null or empty | Invalid required parameter `CRM_ENTITY` ||
 || `ERROR_ARGUMENT` | Argument `USER_ID` is null or empty | Invalid required parameter `USER_ID` ||
+|| `ERROR_ARGUMENT` | Argument `CHAT_ID` is null or empty | Invalid required parameter `CHAT_ID` ||
 || `ERROR_ARGUMENT` | Argument `MESSAGE` is null or empty | Invalid required parameter `MESSAGE` ||
 |#
 

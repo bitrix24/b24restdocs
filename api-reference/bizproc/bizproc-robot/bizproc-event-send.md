@@ -10,14 +10,16 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-This method returns the output parameters to the Automation rule or action that were specified during the registration or update of the Automation rule or action.
+The `bizproc.event.send` method returns the output parameters to the Automation rule or action that were specified during the registration or update of the Automation rule or action.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description**||
-|| **EVENT_TOKEN**
+|| **EVENT_TOKEN***
 [`string`](../../data-types.md) | A special token that is sent to the application handler when the action or Automation rule is executed. The value of this token is received by the handler in the input data array.
 
 An event can be sent if the Automation rule or action is registered with `'USE_SUBSCRIPTION': 'Y'` ||
@@ -28,7 +30,7 @@ An event can be sent if the Automation rule or action is registered with `'USE_S
 || **LOG_MESSAGE**
 [`string`](../../data-types.md) | Text for the business process log.
 
-By default, it has the value "Received response from the application."
+If this parameter is not passed, the method sends an empty string.
 
 Event logging must be enabled in the business process template
 ||

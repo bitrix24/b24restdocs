@@ -20,9 +20,9 @@ Methods help assign a special type to a page, retrieve current bindings and addr
 
 1. Obtain the site ID using the methods [landing.site.getList](../../site/landing-site-get-list.md) or [landing.site.add](../../site/landing-site-add.md).
 2. Get the page ID using the methods [landing.landing.getList](../methods/landing-landing-get-list.md), [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), or [landing.landing.copy](../methods/landing-landing-copy.md).
-3. Assign the page as special using the method [landing.syspage.set](./landing-syspage-set.md). For this, specify the type of special page in the `type` parameter and the ID of the page to be bound.
+3. Assign the page as special using the method [landing.syspage.set](./landing-syspage-set.md). For this, specify the type of special page in the `type` parameter and the ID of the page to be bound
 4. Check current bindings using the method [landing.syspage.get](./landing-syspage-get.md) or retrieve the URL of a special page using the method [landing.syspage.getSpecialPage](./landing-syspage-get-special-page.md).
-5. If you need to remove bindings, use [landing.syspage.deleteForLanding](./landing-syspage-delete-for-landing.md) or [landing.syspage.deleteForSite](./landing-syspage-delete-for-site.md). The first method removes all bindings for a specific page, while the second clears all special pages for the site.
+5. If you need to remove bindings, use [landing.syspage.deleteForLanding](./landing-syspage-delete-for-landing.md) or [landing.syspage.deleteForSite](./landing-syspage-delete-for-site.md). The first method removes all bindings for a specific page, while the second clears all special pages for the site
 
 ## Codes of Special Pages
 

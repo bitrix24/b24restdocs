@@ -9,6 +9,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 Open channel operators work with dialogues: they accept them for processing, transfer them, complete them, or mark them as spam.
 
 > Quick Navigation: [All Methods](#all-methods)
+>
+> User documentation: [How to Set Up Employee Queues in Open Channels](https://helpdesk.bitrix24.com/open/25782447/)
 
 ## Operators' Interaction with Other Objects
 
@@ -26,27 +28,26 @@ Open channel operators work with dialogues: they accept them for processing, tra
 
 {% endnote %}
 
-## How to Use the Methods
+## Getting Started
 
-Choose a method based on your workflow:
-- start processing a new request — [imopenlines.operator.answer](./imopenlines-operator-answer.md)
-- complete your dialogue — [imopenlines.operator.finish](./imopenlines-operator-finish.md)
-- complete another operator's dialogue — [imopenlines.operator.another.finish](./imopenlines-operator-another-finish.md)
-- transfer the dialogue to a specific employee or another queue — [imopenlines.operator.transfer](./imopenlines-operator-transfer.md)
-- pass the dialogue to the next operator in the queue — [imopenlines.operator.skip](./imopenlines-operator-skip.md)
-- close an inappropriate request — [imopenlines.operator.spam](./imopenlines-operator-spam.md)
+1. Get the chat identifier `CHAT_ID` using the [imopenlines.session.open](../sessions/imopenlines-session-open.md) or [imopenlines.dialog.get](../sessions/imopenlines-dialog-get.md) method
+2. If the current operator starts processing a new request, call [imopenlines.operator.answer](./imopenlines-operator-answer.md)
+3. If the dialog needs to be transferred to another employee or queue, call [imopenlines.operator.transfer](./imopenlines-operator-transfer.md)
+4. If the operator cannot process the request, transfer it to the next operator using [imopenlines.operator.skip](./imopenlines-operator-skip.md)
+5. If the request is complete, close it using [imopenlines.operator.finish](./imopenlines-operator-finish.md)
+6. If the request is inappropriate, mark it as spam using [imopenlines.operator.spam](./imopenlines-operator-spam.md)
 
 ### Rules for Calling imopenlines.operator.transfer
 
-- Only pass one parameter: `TRANSFER_ID`, `USER_ID`, or `QUEUE_ID`. Do not pass `TRANSFER_ID` along with `USER_ID` or `QUEUE_ID` simultaneously.
-- Use `USER_ID` of the employee or a string in the format `queue<QUEUE_ID>` as `TRANSFER_ID`.
+- Only pass one parameter: `TRANSFER_ID`, `USER_ID`, or `QUEUE_ID`. Do not pass `TRANSFER_ID` along with `USER_ID` or `QUEUE_ID` simultaneously
+- Use the employee `USER_ID` or a string in the format `queue<QUEUE_ID>` as `TRANSFER_ID`
 
 ## Response Format of the Methods
 
 All methods in this section return the same response format:
 
-- `result` — status of the operation,
-- `time` — information about the execution time.
+- `result` — status of the operation
+- `time` — information about the execution time
 
 ```json
 {

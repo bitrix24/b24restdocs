@@ -1,4 +1,4 @@
-# Object Site: Overview of Methods
+# Sites: Overview of Methods
 
 {% note tip "" %}
 
@@ -6,40 +6,52 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The Object Site allows you to create and configure various web pages: a company business card, an online store, and much more.
+A site combines pages, folders, publication settings, addresses, and access rights. The `landing.site.*` methods create sites and folders, retrieve site lists, publish and unpublish content, and delete and restore sites.
 
 You can retrieve a list of all sites in Bitrix24 using the method [landing.site.getList](./landing-site-get-list.md). To add a new site, use the method [landing.site.add](./landing-site-add.md).
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Create and configure your Bitrix24 site](https://helpdesk.bitrix24.com/open/25743741/)
+
+## Getting Started with a Site
+
+1. Create a site using the [landing.site.add](./landing-site-add.md) method or get an existing site using [landing.site.getList](./landing-site-get-list.md)
+2. Add pages using [landing.landing.*](../page/methods/index.md) methods
+3. If needed, group pages into folders using [landing.site.addFolder](./landing-site-add-folder.md) and [landing.site.updateFolder](./landing-site-update-folder.md)
+4. Publish the site using [landing.site.publication](./landing-site-publication.md) and get the public address using [landing.site.getPublicUrl](./landing-site-get-public-url.md)
+5. Configure access rights using the methods in the [Access Rights in Websites and Stores](../rights/index.md) section
 
 ## Site Structure
 
-**Pages**. They store the site's content. Managed by a group of methods [landing.landing.*](../page/methods/index.md).
-**Folders**. Optional. Used to group site pages and simplify navigation:
-- create a new folder — method [landing.site.addFolder](./landing-site-add-folder.md),
-- change folder parameters — method [landing.site.updateFolder](./landing-site-update-folder.md),
-- get a list of all folders — method [landing.site.getFolders](./landing-site-get-folders.md).
+**Pages.** They store the site's content. Managed by [landing.landing.*](../page/methods/index.md) methods.
+
+**Folders.** Optional. Used to group site pages and simplify navigation:
+
+- create a new folder — method [landing.site.addFolder](./landing-site-add-folder.md)
+- change folder parameters — method [landing.site.updateFolder](./landing-site-update-folder.md)
+- get a list of folders — method [landing.site.getFolders](./landing-site-get-folders.md)
 
 {% note tip "User Documentation" %}
 
-- [How to create a multi-page site](https://helpdesk.bitrix24.com/open/7410781/)
+- [Create a multi-page website](https://helpdesk.bitrix24.com/open/25558484/)
 - [Site and page settings](https://helpdesk.bitrix24.com/open/21883080/)
 
 {% endnote %}
 
 ## Linking Sites to Other Objects
 
-**User**. The site is linked to users by numerical identifiers in the parameters `CREATED_BY_ID` and `MODIFIED_BY_ID`. You can obtain the user ID using the method [user.get](../../user/user-get.md).
+**User.** The site is linked to users by numerical identifiers in the parameters `CREATED_BY_ID` and `MODIFIED_BY_ID`. You can obtain the user ID using the [user.get](../../user/user-get.md) method.
 
 ## Actions with Sites
 
 Sites can be updated using the method [landing.site.update](./landing-site-update.md). This method changes the title, description, homepage, color palette, and other parameters.
 
-Site parameters can be exported to an array using the method [landing.site.fullExport](./landing-site-full-export.md). The resulting array should then be used in the method [landing.demos.register](../demos/landing-demos-register.md).
+Site data can be exported to an array using the [landing.site.fullExport](./landing-site-full-export.md) method. The resulting array is used in the [landing.demos.register](../demos/landing-demos-register.md) method.
 
 ## How to Publish Site Content
 
-To make the site accessible, call the method [landing.site.publication](./landing-site-publication.md). After publication, the site receives a unique URL, which can be obtained using the method [landing.site.getPublicUrl](./landing-site-get-public-url.md).
+To make the site accessible, call the [landing.site.publication](./landing-site-publication.md) method. After publication, the site receives a unique URL. You can obtain it using the [landing.site.getPublicUrl](./landing-site-get-public-url.md) method.
 
 When you need to publish a specific folder, use the method [landing.site.publicationFolder](./landing-site-publication-folder.md).
 
@@ -47,9 +59,9 @@ When you need to publish a specific folder, use the method [landing.site.publica
 
 You can unpublish:
 
-- the entire site using the method [landing.site.unpublic](./landing-site-unpublic.md),
-- a specific folder using the method [landing.site.unPublicFolder](./landing-site-unpublic-folder.md),
-- a specific page using the method [landing.landing.unpublic](../page/methods/landing-landing-unpublic.md).
+- the entire site using the [landing.site.unpublic](./landing-site-unpublic.md) method
+- a specific folder using the [landing.site.unPublicFolder](./landing-site-unpublic-folder.md) method
+- a specific page using the [landing.landing.unpublic](../page/methods/landing-landing-unpublic.md) method
 
 ## How to Delete Folders and a Site
 
@@ -65,9 +77,10 @@ To delete a site without the possibility of recovery, use the method [landing.si
 
 ## Site Permissions
 
-Access permissions allow you to control who can view and modify the site's content. Permissions are granted only by the portal administrator. Two permission models are supported:  
-- role-based — permissions are configured using the method [landing.role.setRights](../rights/role-model/landing-role-set-rights.md),
-- extended — permissions are configured using the method [landing.site.setRights](../rights/extended-model/landing-site-set-rights.md).
+Access permissions allow you to control who can view and modify the site's content. Permissions are granted only by the Bitrix24 administrator. Two permission models are supported:
+
+- role-based — permissions are configured using the [landing.role.setRights](../rights/role-model/landing-role-set-rights.md) method
+- extended — permissions are configured using the [landing.site.setRights](../rights/extended-model/landing-site-set-rights.md) method
 
 You can determine the model using the method [landing.role.isEnabled](../rights/landing-role-is-enabled.md).
 
@@ -81,7 +94,7 @@ You can determine the model using the method [landing.role.isEnabled](../rights/
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the methods: depending on the method
 
 #|
 || **Method** | **Description** | **Available since** ||
@@ -92,7 +105,7 @@ You can determine the model using the method [landing.role.isEnabled](../rights/
 || [landing.site.getFolders](./landing-site-get-folders.md) | Retrieves the site's folders | 21.800.0 ||
 || [landing.site.getList](./landing-site-get-list.md) | Retrieves a list of sites | ||
 || [landing.site.getPreview](./landing-site-get-preview.md) | Returns the preview image URL of the site | 21.800.0 ||
-|| [landing.site.getPublicUrl](./landing-site-get-public-url.md) | Returns the full URL of the sites | 18.7.500 ||
+|| [landing.site.getPublicUrl](./landing-site-get-public-url.md) | Returns the public URL of the site | 18.7.500 ||
 || [landing.site.getadditionalfields](./landing-site-get-additional-fields.md) | Retrieves additional fields of the site | ||
 || [landing.site.markDelete](./landing-site-mark-delete.md) | Marks the site as deleted | ||
 || [landing.site.markFolderDelete](./landing-site-mark-folder-delete.md) | Marks the folder as deleted | 21.800.0 ||
