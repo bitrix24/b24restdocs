@@ -47,13 +47,13 @@ An edit form is built from the field description rather than from a predefined l
 
 ## Changing Phone Numbers and Emails
 
-Phone numbers and email addresses are stored in fields of the [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) type — an array of objects with the `ID`, `TYPE_ID`, `VALUE`, and `VALUE_TYPE` fields.
+Phone numbers and email addresses are retained in the `fm` multifield — a set of entries of the [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) type. Every entry has its own `id`, which Bitrix24 assigns when the entry is created.
 
-A single value of a multiple field cannot be changed by a targeted request. First retrieve the current array with the object read method, then pass the modified array to the update method. To change an existing value, keep its `ID`. To delete a value, pass its `ID` with an empty `VALUE` or with the `DELETE: 'Y'` parameter.
+An entry cannot be found by the text of its value, so the object is read first to retrieve the identifiers, and only then the changes are sent. In the update method, the operation is determined by the key of an element in the `fm` object: a numeric `id` changes the entry, the same `id` with an empty `value` deletes it, and the keys `n0`, `n1` add new ones.
 
 #|
 || **Scenario** | **Main Methods** | **Result** ||
-|| [How to Change or Delete Phone Numbers and Emails](./how-to-change-email-or-phone.md) | [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md), [crm.contact.get](../../../api-reference/crm/contacts/crm-contact-get.md), [crm.contact.update](../../../api-reference/crm/contacts/crm-contact-update.md) | An updated or cleared list of phone numbers and emails in the contact card ||
+|| [How to Change or Delete Phone Numbers and Emails](./how-to-change-email-or-phone.md) | [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md), [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md), [crm.item.update](../../../api-reference/crm/universal/crm-item-update.md) | An updated or cleared list of phone numbers and emails in the contact card ||
 |#
 
 ## Moving Activities and Changing Deadlines
@@ -77,11 +77,11 @@ An activity is a record in the card timeline: a call, a meeting, an email, or a 
 
 The payment date is stored in the payment document, not in the deal. It is transferred to a custom field of the deal when the date is needed by an external system, a BI Builder report, an automation rule, or a workflow.
 
-The custom field is created in advance in the CRM settings. In requests it is addressed by a code of the `UF_CRM_*` form — the [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method returns this code in the `FIELD_NAME` field.
+The custom field is created in advance in the CRM settings. Its identifier is different in every Bitrix24, so the field is located by its name: the [crm.item.fields](../../../api-reference/crm/universal/crm-item-fields.md) method returns the set of deal fields, where the key is an identifier of the `ufCrm_*` form and `title` is the field name in the card.
 
 #|
 || **Scenario** | **Main Methods** | **Result** ||
-|| [How to Save the Payment Date in the Deal Field](./how-to-set-paid-date-to-deal.md) | [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md), [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm-item-payment-list.md), [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) | The payment date in a custom field of the deal ||
+|| [How to Save the Payment Date in the Deal Field](./how-to-set-paid-date-to-deal.md) | [crm.item.fields](../../../api-reference/crm/universal/crm-item-fields.md), [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm-item-payment-list.md), [crm.item.update](../../../api-reference/crm/universal/crm-item-update.md) | The payment date in a custom field of the deal ||
 |#
 
 ## Continue Learning
