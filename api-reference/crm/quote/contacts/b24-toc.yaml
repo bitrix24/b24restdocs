@@ -1,0 +1,17 @@
+title: Contacts
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add a Contact
+    href: crm-quote-contact-add.md
+  - name: Remove a Contact
+    href: crm-quote-contact-delete.md
+  - name: Get the Contact Set
+    href: crm-quote-contact-items-get.md
+  - name: Set the Contact Set
+    href: crm-quote-contact-items-set.md
+  - name: Remove the Contact Set
+    href: crm-quote-contact-items-delete.md
+  - name: Get Link Fields
+    href: crm-quote-contact-fields.md

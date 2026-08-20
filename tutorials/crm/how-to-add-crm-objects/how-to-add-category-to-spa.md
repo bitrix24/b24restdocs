@@ -6,7 +6,7 @@
 >
 > - [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) and [crm.category.add](../../../api-reference/crm/universal/category/crm-category-add.md) — a user with administrative access to the CRM section
 > - [crm.status.update](../../../api-reference/crm/status/crm-status-update.md) and [crm.status.add](../../../api-reference/crm/status/crm-status-add.md) — a user with the "Allow changing settings" permission in CRM
-> - [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) — any user
+> - [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) — a user with permission to read at least one CRM object
 
 {% note tip "" %}
 
