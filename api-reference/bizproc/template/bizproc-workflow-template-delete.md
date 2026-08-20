@@ -69,7 +69,7 @@ It allows you to remove templates that were created using the method [bizproc.wo
 
     ```php
     try {
-        $templateId = 123; // Replace with the actual template ID you want to delete
+        $templateId = 123; // Identifier of the template to delete
         $result = $serviceBuilder
             ->getBizProcScope()
             ->template()

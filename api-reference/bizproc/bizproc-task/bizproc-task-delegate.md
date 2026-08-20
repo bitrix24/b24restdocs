@@ -83,8 +83,6 @@ Who you can delegate to depends on the task settings: only subordinates, all emp
         
         const result = response.getData().result;
         console.log('Delegated tasks:', result);
-        
-        processResult(result);
     }
     catch( error )
     {
@@ -112,7 +110,6 @@ Who you can delegate to depends on the task settings: only subordinates, all emp
             ->getResult();
 
         echo 'Success: ' . print_r($result, true);
-        processData($result);
 
     } catch (Throwable $e) {
         error_log($e->getMessage());

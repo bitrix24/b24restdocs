@@ -10,17 +10,31 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-During the operation of Bitrix24, you may accumulate stuck workflows or processes that remain in the "In Progress" status for too long and become irrelevant.
+Bitrix24 can retain running workflows that are no longer needed: they are stuck, waiting for outdated data, or were launched before a process change. You can find them by launch date and remove them using the `bizproc.workflow.kill` method.
 
-To mass terminate old workflows, we will sequentially execute two methods:
-1. [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) — retrieve a filtered list of processes
-2. [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) — terminate workflows with data deletion. If you need to preserve the fact that the workflow was initiated, use the [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md) method. Both methods are called in the same way.
+The `bizproc.workflow.kill` method deletes the workflow together with its data. If you need to stop execution but keep the launch record, use [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md). Both methods accept the same workflow identifier.
 
-## 1. Retrieve the List of Processes {#workflow_id}
+The scenario consists of two steps.
 
-We will use the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) method with a filter:
+1. Retrieve the list of workflows using the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) method
+2. Remove the selected workflows using the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method
 
-- `<STARTED` — specify the launch date with the `<` prefix; only workflows launched before this date will be selected.
+## What You Need Before You Start
+
+- an administrator inbound webhook or an application with the `bizproc` scope
+- a date before which running workflows should be found. The examples use `2025-01-01T00:00:00Z`
+- a decision on what to do with the found workflows: delete them using `bizproc.workflow.kill` or stop them using `bizproc.workflow.terminate`
+
+Before deleting, make sure to verify the found `ID` values. Re-running the same filter may find different workflows if new launches with matching dates appear in the meantime.
+
+{% include [Note on examples](../../_includes/examples.md) %}
+
+## 1. Retrieve the List of Processes {#workflow-id}
+
+Use the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) method with the following parameters:
+
+- `filter[<STARTED]` — launch date. The `<` prefix selects workflows started before the specified time
+- `select` — the fields required by the scenario. It is enough to get `ID` and `STARTED`
 
 {% list tabs %}
 
@@ -29,40 +43,42 @@ We will use the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc
     ```js
     import { B24Hook } from '@bitrix24/b24jssdk'
 
-    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/')
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
     const response = await $b24.actions.v2.call.make({
         method: 'bizproc.workflow.instances',
         params: {
+            select: ['ID', 'STARTED'],
             filter: { '<STARTED': '2025-01-01T00:00:00Z' },
         },
         requestId: 'workflow-instances',
     })
 
     const instances = response.getData().result
+    const workflowIds = instances.map((instance) => instance.ID)
     ```
 
 - PHP
   
     ```php
-    <?php
     // composer require bitrix24/b24phpsdk:"^3.0"
     require_once 'vendor/autoload.php';
 
     use Bitrix24\SDK\Services\ServiceBuilderFactory;
     use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Monolog\Logger;
-    use Monolog\Handler\StreamHandler;
+    use Psr\Log\NullLogger;
 
-    $log = new Logger('b24');
-    $log->pushHandler(new StreamHandler('php://stdout'));
+    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
-    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/');
+    $response = $b24->core->call('bizproc.workflow.instances', [
+        'select' => ['ID', 'STARTED'],
+        'filter' => ['<STARTED' => '2025-01-01T00:00:00Z'],
+    ]);
 
-    $instances = $b24->getBizProcScope()->workflow()->instances(
-        filter: ['<STARTED' => '2025-01-01T00:00:00Z']
-    )->getInstances();
+    $instances = $response->getResponseData()->getResult();
+    $workflowIds = array_column($instances, 'ID');
     ```
 
 - Python
@@ -76,39 +92,78 @@ We will use the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc
     )
     client = Client(token)
 
-    response = client.bizproc.workflow.instances(
-        filter={
-            "<STARTED": "2025-01-01T00:00:00Z",
-        }
-    ).response
+    instances = client.bizproc.workflow.instances(
+        select=["ID", "STARTED"],
+        filter={"<STARTED": "2025-01-01T00:00:00Z"},
+    ).response.result
+
+    workflow_ids = [instance["ID"] for instance in instances]
+    ```
+
+- Go
+
+    ```go
+    import (
+        "context"
+        "encoding/json"
+        "log"
+        "os"
+
+        b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    ctx := context.Background()
+    core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    res, err := core.Call(ctx, "bizproc.workflow.instances", b24.Params{
+        "select": []string{"ID", "STARTED"},
+        "filter": b24.Params{"<STARTED": "2025-01-01T00:00:00Z"},
+    }, b24.WithIdempotent())
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    var instances []struct {
+        ID      string `json:"ID"`
+        Started string `json:"STARTED"`
+    }
+    if err := json.Unmarshal(res.Result, &instances); err != nil {
+        log.Fatal(err)
+    }
+
+    workflowIDs := make([]string, 0, len(instances))
+    for _, instance := range instances {
+        workflowIDs = append(workflowIDs, instance.ID)
+    }
     ```
 
 {% endlist %}
 
-As a result, we will obtain the `ID` of all active workflows that were initiated before the specified date.
+Store the `ID` values of the workflows that need to be deleted or stopped.
 
 ```json
 {
     "result": [
         {
             "ID": "660e559f34af10.95144732",
-            "MODIFIED": "2024-12-04T10:04:24+03:00",
-            "OWNED_UNTIL": null
+            "STARTED": "2024-12-04T10:04:24+03:00"
         },
         {
             "ID": "6639c7b59e9eb5.40607056",
-            "MODIFIED": "2024-12-04T09:52:40+03:00",
-            "OWNED_UNTIL": null
+            "STARTED": "2024-12-04T09:52:40+03:00"
         }
     ],
-    "total": 2,
+    "total": 2
 }
 ```
 
-## 2. Terminate Workflows 
+If `result` contains an empty array, there are no matching workflows. There is no need to proceed to the second step.
+
+## 2. Terminate Workflows
 
 Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method with the following parameter:
-- `ID` — the workflow identifier; pass the `ID` obtained in [step 1](#workflow_id).
+
+- `ID` — the workflow identifier from the response of [step 1](#workflow-id). Pass a string such as `660e559f34af10.95144732`
 
 {% list tabs %}
 
@@ -117,7 +172,7 @@ Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kil
     ```js
     const response = await $b24.actions.v2.call.make({
         method: 'bizproc.workflow.kill',
-        params: { ID: '660e559f34af10.95144732' },
+        params: { ID: workflowIds[0] },
         requestId: 'workflow-kill',
     })
 
@@ -128,123 +183,188 @@ Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kil
 
     ```php
     $isKilled = $b24->getBizProcScope()->workflow()
-        ->kill('660e559f34af10.95144732')
+        ->kill($workflowIds[0])
         ->isSuccess();
     ```
 
 - Python
 
     ```python
-    # Process ID is a string, so we call the method directly via token.call_method
-    # (typed client.bizproc.workflow.kill expects an int)
-    response = token.call_method(
+    token.call_method(
         "bizproc.workflow.kill",
-        {"ID": "660e559f34af10.95144732"},
+        {"ID": workflow_ids[0]},
     )
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "bizproc.workflow.kill", b24.Params{
+        "ID": workflowIDs[0],
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    var isKilled bool
+    if err := json.Unmarshal(res.Result, &isKilled); err != nil {
+        log.Fatal(err)
+    }
+    log.Println(isKilled)
     ```
 
 {% endlist %}
 
-As a result, we will receive `true`, indicating that the process was successfully deleted. If you encounter an `error`, refer to the documentation for possible errors in the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method.
+The successful response contains `true`.
 
 ```json
 {
-    "result": true,
+    "result": true
 }
 ```
 
 ## Code Example
 
-In the example, all found workflows are deleted within a loop. When deleting large volumes of data, request execution limits may apply. To optimize the code for your workload, use the recommendations in the [Performance](../../settings/performance/index.md) section.
+The example first prints all found workflows for review. To delete the workflows, run the example with the `--confirm` argument. For large volumes of data, keep REST limits and the [Performance](../../settings/performance/index.md) recommendations in mind.
 
 {% list tabs %}
 
 - JS
-  
+
     ```js
-    // npm install @bitrix24/b24jssdk
     import { B24Hook } from '@bitrix24/b24jssdk'
 
-    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/')
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
 
-    // Enter the date in dd.mm.yyyy format as an argument: node kill.mjs 01.01.2025
     const [day, month, year] = (process.argv[2] || '').split('.')
-    const isoDate = `${year}-${month}-${day}T00:00:00Z`
+    if (!day || !month || !year) {
+        throw new Error('Pass the date in dd.mm.yyyy format')
+    }
 
-    // callList iterates through all selection pages itself; getData() returns an array of elements
+    const isoDate = `${year}-${month}-${day}T00:00:00Z`
+    const confirmed = process.argv.includes('--confirm')
+
     const listResponse = await $b24.actions.v2.callList.make({
         method: 'bizproc.workflow.instances',
-        params: { filter: { '<STARTED': isoDate }, select: ['ID'] },
+        params: {
+            select: ['ID', 'STARTED'],
+            filter: { '<STARTED': isoDate },
+        },
         requestId: 'workflow-instances',
     })
 
     const instances = listResponse.getData()
+    const workflowIds = instances.map((instance) => instance.ID)
 
-    for (const instance of instances) {
-        const response = await $b24.actions.v2.call.make({
+    if (!workflowIds.length) {
+        console.log('No workflows found')
+        $b24.destroy()
+        process.exit(0)
+    }
+
+    console.log(`Found workflows: ${workflowIds.length}`)
+    for (const workflowId of workflowIds) {
+        console.log(`Workflow to delete: ${workflowId}`)
+    }
+
+    if (!confirmed) {
+        console.log('Review the list and rerun the example with the --confirm argument to delete the workflows')
+        $b24.destroy()
+        process.exit(0)
+    }
+
+    for (const workflowId of workflowIds) {
+        const killResponse = await $b24.actions.v2.call.make({
             method: 'bizproc.workflow.kill',
-            params: { ID: instance.ID },
-            requestId: `kill-${instance.ID}`,
+            params: { ID: workflowId },
+            requestId: `workflow-kill-${workflowId}`,
         })
-        console.log(response.isSuccess
-            ? `Process ${instance.ID} successfully deleted.`
-            : `Error deleting process ${instance.ID}: ${response.getErrorMessages().join('; ')}`)
+
+        console.log(killResponse.isSuccess
+            ? `Workflow ${workflowId} deleted`
+            : `Error deleting workflow ${workflowId}: ${killResponse.getErrorMessages().join('; ')}`)
     }
 
     $b24.destroy()
     ```
 
 - PHP
-  
+
     ```php
-    <?php
     // composer require bitrix24/b24phpsdk:"^3.0"
     require_once 'vendor/autoload.php';
 
     use Bitrix24\SDK\Services\ServiceBuilderFactory;
     use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Monolog\Logger;
-    use Monolog\Handler\StreamHandler;
+    use Psr\Log\NullLogger;
 
-    $log = new Logger('b24');
-    $log->pushHandler(new StreamHandler('php://stdout'));
-
-    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/');
+    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
     $userDateInput = readline('Enter the date in dd.mm.yyyy format: ');
+    if (!preg_match('/^\d{2}\.\d{2}\.\d{4}$/', $userDateInput)) {
+        throw new InvalidArgumentException('Enter the date in dd.mm.yyyy format');
+    }
+
     [$day, $month, $year] = explode('.', $userDateInput);
     $isoDate = "{$year}-{$month}-{$day}T00:00:00Z";
-
-    // The instances() method returns a single page. For pagination
-    // we call the method directly via the core and read the offset of the next page.
+    $confirmed = in_array('--confirm', $argv, true);
+    $workflowIds = [];
     $start = 0;
+
     do {
         $response = $b24->core->call('bizproc.workflow.instances', [
+            'select' => ['ID', 'STARTED'],
             'filter' => ['<STARTED' => $isoDate],
             'start' => $start,
         ]);
 
         foreach ($response->getResponseData()->getResult() as $instance) {
-            $isKilled = $b24->getBizProcScope()->workflow()->kill($instance['ID'])->isSuccess();
-            echo $isKilled
-                ? "Process {$instance['ID']} successfully deleted.\n"
-                : "Error deleting process {$instance['ID']}\n";
+            $workflowIds[] = $instance['ID'];
         }
 
         $start = $response->getResponseData()->getPagination()->getNextItem();
     } while ($start !== null);
+
+    if ($workflowIds === []) {
+        echo "No workflows found\n";
+        exit;
+    }
+
+    echo "Found workflows: " . count($workflowIds) . "\n";
+    foreach ($workflowIds as $workflowId) {
+        echo "Workflow to delete: {$workflowId}\n";
+    }
+
+    if (!$confirmed) {
+        echo "Review the list and rerun the example with the --confirm argument to delete the workflows\n";
+        exit;
+    }
+
+    foreach ($workflowIds as $workflowId) {
+        $isKilled = $b24->getBizProcScope()->workflow()->kill($workflowId)->isSuccess();
+        echo $isKilled
+            ? "Workflow {$workflowId} deleted\n"
+            : "Error deleting workflow {$workflowId}\n";
+    }
     ```
 
 - Python
 
     ```python
+    import re
+    import sys
+
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
     user_date_input = input("Enter the date in dd.mm.yyyy format: ")
+    if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", user_date_input):
+        raise ValueError("Enter the date in dd.mm.yyyy format")
+
     day, month, year = user_date_input.split(".")
     iso_date = f"{year}-{month}-{day}T00:00:00Z"
+    confirmed = "--confirm" in sys.argv
 
     token = BitrixWebhook(
         domain="your-domain.bitrix24.com",
@@ -253,26 +373,271 @@ In the example, all found workflows are deleted within a loop. When deleting lar
     client = Client(token)
 
     start = None
+    workflow_ids = []
     while True:
-        kwargs = {"filter": {"<STARTED": iso_date}}
+        params = {
+            "select": ["ID", "STARTED"],
+            "filter": {"<STARTED": iso_date},
+        }
         if start is not None:
-            kwargs["start"] = start
+            params["start"] = start
 
-        response = client.bizproc.workflow.instances(**kwargs).response
-        instances = response.result or []
-
-        for instance in instances:
-            instance_id = instance["ID"]
-            try:
-                token.call_method("bizproc.workflow.kill", {"ID": instance_id})
-            except BitrixAPIError as error:
-                print(f"Error deleting process {instance_id}: {error}")
-            else:
-                print(f"Process {instance_id} successfully deleted.")
+        response = client.bizproc.workflow.instances(**params).response
+        workflow_ids.extend(instance["ID"] for instance in response.result or [])
 
         if response.next is None:
             break
         start = response.next
+
+    if not workflow_ids:
+        print("No workflows found")
+        sys.exit(0)
+
+    print(f"Found workflows: {len(workflow_ids)}")
+    for workflow_id in workflow_ids:
+        print(f"Workflow to delete: {workflow_id}")
+
+    if not confirmed:
+        print("Review the list and rerun the example with the --confirm argument to delete the workflows")
+        sys.exit(0)
+
+    for workflow_id in workflow_ids:
+        try:
+            token.call_method("bizproc.workflow.kill", {"ID": workflow_id})
+        except BitrixAPIError as error:
+            print(f"Error deleting workflow {workflow_id}: {error}")
+        else:
+            print(f"Workflow {workflow_id} deleted")
+    ```
+
+- Go
+
+    ```go
+    // Setup in an empty directory:
+    //  go mod init example && go get github.com/bitrix24/b24gosdk
+    //
+    // Run:
+    //  B24_WEBHOOK_URL="https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/" go run main.go 01.01.2025
+    //  B24_WEBHOOK_URL="https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/" go run main.go 01.01.2025 --confirm
+
+    package main
+
+    import (
+        "context"
+        "encoding/json"
+        "fmt"
+        "os"
+        "strings"
+
+        b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    type workflowInstance struct {
+        ID      string `json:"ID"`
+        Started string `json:"STARTED"`
+    }
+
+    func main() {
+        if err := run(); err != nil {
+            fmt.Fprintf(os.Stderr, "%v\n", err)
+            os.Exit(1)
+        }
+    }
+
+    func run() error {
+        if len(os.Args) < 2 {
+            return fmt.Errorf("pass the date in dd.mm.yyyy format")
+        }
+
+        parts := strings.Split(os.Args[1], ".")
+        if len(parts) != 3 || len(parts[0]) != 2 || len(parts[1]) != 2 || len(parts[2]) != 4 {
+            return fmt.Errorf("pass the date in dd.mm.yyyy format")
+        }
+
+        isoDate := fmt.Sprintf("%s-%s-%sT00:00:00Z", parts[2], parts[1], parts[0])
+        confirmed := false
+        for _, arg := range os.Args[2:] {
+            if arg == "--confirm" {
+                confirmed = true
+            }
+        }
+
+        ctx := context.Background()
+        core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+        workflowIDs, err := getWorkflowIDs(ctx, core, isoDate)
+        if err != nil {
+            return err
+        }
+
+        if len(workflowIDs) == 0 {
+            fmt.Println("No workflows found")
+            return nil
+        }
+
+        fmt.Printf("Found workflows: %d\n", len(workflowIDs))
+        for _, workflowID := range workflowIDs {
+            fmt.Printf("Workflow to delete: %s\n", workflowID)
+        }
+
+        if !confirmed {
+            fmt.Println("Review the list and rerun the example with the --confirm argument to delete the workflows")
+            return nil
+        }
+
+        for _, workflowID := range workflowIDs {
+            if err := killWorkflow(ctx, core, workflowID); err != nil {
+                fmt.Printf("Error deleting workflow %s: %v\n", workflowID, err)
+                continue
+            }
+
+            fmt.Printf("Workflow %s deleted\n", workflowID)
+        }
+
+        return nil
+    }
+
+    func getWorkflowIDs(ctx context.Context, core *b24.Core, isoDate string) ([]string, error) {
+        workflowIDs := []string{}
+
+        for start := 0; ; start += 50 {
+            res, err := core.Call(ctx, "bizproc.workflow.instances", b24.Params{
+                "select": []string{"ID", "STARTED"},
+                "filter": b24.Params{"<STARTED": isoDate},
+                "start":  start,
+            }, b24.WithIdempotent())
+            if err != nil {
+                return nil, fmt.Errorf("bizproc.workflow.instances: %w", err)
+            }
+
+            var instances []workflowInstance
+            if err := json.Unmarshal(res.Result, &instances); err != nil {
+                return nil, fmt.Errorf("decode bizproc.workflow.instances: %w", err)
+            }
+
+            for _, instance := range instances {
+                workflowIDs = append(workflowIDs, instance.ID)
+            }
+
+            if len(instances) < 50 {
+                break
+            }
+        }
+
+        return workflowIDs, nil
+    }
+
+    func killWorkflow(ctx context.Context, core *b24.Core, workflowID string) error {
+        _, err := core.Call(ctx, "bizproc.workflow.kill", b24.Params{
+            "ID": workflowID,
+        })
+        if err != nil {
+            return fmt.Errorf("bizproc.workflow.kill: %w", err)
+        }
+
+        return nil
+    }
     ```
 
 {% endlist %}
+
+## Check the Result
+
+In the interface, open the list of running business processes and verify that the deleted processes are no longer present.
+
+Through REST, repeat the [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md) request with the same filter and verify that the deleted `ID` values are not returned.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    const checkResponse = await $b24.actions.v2.call.make({
+        method: 'bizproc.workflow.instances',
+        params: {
+            select: ['ID'],
+            filter: { '<STARTED': '2025-01-01T00:00:00Z' },
+        },
+        requestId: 'workflow-instances-check',
+    })
+
+    console.log(checkResponse.getData().result.map((instance) => instance.ID))
+    ```
+
+- PHP
+
+    ```php
+    $checkResponse = $b24->core->call('bizproc.workflow.instances', [
+        'select' => ['ID'],
+        'filter' => ['<STARTED' => '2025-01-01T00:00:00Z'],
+    ]);
+
+    foreach ($checkResponse->getResponseData()->getResult() as $instance) {
+        echo $instance['ID'] . PHP_EOL;
+    }
+    ```
+
+- Python
+
+    ```python
+    check_result = client.bizproc.workflow.instances(
+        select=["ID"],
+        filter={"<STARTED": "2025-01-01T00:00:00Z"},
+    ).response.result
+
+    print([instance["ID"] for instance in check_result])
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "bizproc.workflow.instances", b24.Params{
+        "select": []string{"ID"},
+        "filter": b24.Params{"<STARTED": "2025-01-01T00:00:00Z"},
+    }, b24.WithIdempotent())
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    var instances []struct {
+        ID string `json:"ID"`
+    }
+    if err := json.Unmarshal(res.Result, &instances); err != nil {
+        log.Fatal(err)
+    }
+
+    for _, instance := range instances {
+        log.Println(instance.ID)
+    }
+    ```
+
+{% endlist %}
+
+The scenario is complete if the response no longer contains the `ID` values that were passed to `bizproc.workflow.kill`.
+
+## Errors and Diagnostics
+
+If a method returns an error, verify the request data.
+
+#|
+|| **Error code or text** | **Cause and action** ||
+|| `ACCESS_DENIED` | The method was not called by an administrator or the webhook does not have the `bizproc` scope ||
+|| `ERROR_WRONG_WORKFLOW_ID` | `ID` is empty or has a non-string value ||
+|| Empty `result` array in step 1 | There are no running processes that match the `<STARTED` filter ||
+|| Errors with large volumes of data | Check the paging logic and the [Performance](../../settings/performance/index.md) recommendations ||
+|#
+
+Repeat the scenario from the step where the error occurred. If the error happens while deleting one process, verify its `ID` and continue processing the remaining processes.
+
+## What to Consider
+
+- `bizproc.workflow.kill` deletes the process together with its process data
+- `bizproc.workflow.terminate` stops the process and keeps the record of its launch
+- the business process `ID` is a string like `660e559f34af10.95144732`; do not convert it to a number
+- `bizproc.workflow.instances` returns 50 records per request, so mass processing requires pagination
+
+## Continue Learning
+
+- [Get the list of running business processes](../../api-reference/bizproc/bizproc-workflow-instances.md)
+- [Delete a running process](../../api-reference/bizproc/bizproc-workflow-kill.md)
+- [Terminate an active business process](../../api-reference/bizproc/bizproc-workflow-terminate.md)

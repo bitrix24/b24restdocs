@@ -501,7 +501,31 @@ HTTP Status: **200**
             "ENTITY": "BizprocDocument",
             "DOCUMENT_ID": "2237",
             "ID": "1471",
-            ...
+            "WORKFLOW_ID": "67a2fda6732f98.84769464",
+            "DOCUMENT_NAME": "Partner Conference",
+            "DESCRIPTION": "",
+            "NAME": "Approve Contractor",
+            "MODIFIED": "2025-02-05T08:58:14+03:00",
+            "WORKFLOW_STARTED": "2025-02-05T08:58:14+03:00",
+            "WORKFLOW_STARTED_BY": "1",
+            "OVERDUE_DATE": null,
+            "WORKFLOW_TEMPLATE_ID": "565",
+            "WORKFLOW_TEMPLATE_NAME": "Event Organization",
+            "WORKFLOW_STATE": "Waiting for Approval",
+            "STATUS": "0",
+            "USER_ID": "1",
+            "USER_STATUS": "0",
+            "MODULE_ID": "lists",
+            "ACTIVITY": "ApproveActivity",
+            "ACTIVITY_NAME": "A3651_68033_56029_16414",
+            "PARAMETERS": {
+                "CommentLabel": "Comment",
+                "CommentRequired": "N",
+                "ShowComment": "Y",
+                "StatusYesLabel": "Approve",
+                "StatusNoLabel": "Reject"
+            },
+            "DOCUMENT_URL": "/bizproc/processes/?livefeed=y&list_id=171&element_id=2237"
         }
     ],
     "total": 2,
@@ -524,7 +548,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response. 
+[`array`](../../data-types.md) | The root element of the response.
 
 Contains an array of objects with information about workflow tasks.
 
@@ -543,7 +567,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **ID**
 [`integer`](../../data-types.md) | Task identifier ||
 || **WORKFLOW_ID**
-[`integer`](../../data-types.md) | Workflow identifier ||
+[`string`](../../data-types.md) | Workflow identifier ||
 || **DOCUMENT_NAME**
 [`string`](../../data-types.md) | Document name ||
 || **DESCRIPTION**
@@ -600,7 +624,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **PARAMETERS**
 [`object`](../../data-types.md) | An object describing the [task parameters](#parameters) ||
 || **DOCUMENT_URL**
-[`object`](../../data-types.md) | Link to the document ||
+[`string`](../../data-types.md) | Link to the document ||
 |#
 
 #### PARAMETERS Object {#parameters}
@@ -673,7 +697,7 @@ Values depend on the parameter type. Examples:
 "Options": {
     "1": "First Option",
     "2": "Second Option",
-    "3": "Third Option",
+    "3": "Third Option"
 },
 ```
 - for the CRM binding type `'E:ECrm'`, these are the available object types
@@ -713,6 +737,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ACCESS_DENIED` | Access denied! | The method was called by a non-administrator or you cannot view the tasks of the specified employee ||
+|| `ERROR_SELECT_VALIDATION_FAILURE` | Invalid data in SELECT parameter | Invalid data was passed in the `SELECT` parameter ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

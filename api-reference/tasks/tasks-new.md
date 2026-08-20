@@ -6,23 +6,71 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The new task card has moved comments to chat. The old task methods continue to function, except for operations involving comments. Changes are available starting from module version `tasks 25.700.0`.
+The new task card moved comments to the task chat. This page helps you choose the current REST methods for working with comments, files, events, results, and widgets after switching to the new card.
 
-## What Remains Unchanged
+The changes are available starting from module version `tasks 25.700.0`. The old task methods continue to work, except for comment operations, which are now performed through chat methods.
 
-- The [task.*](index.md) methods for creating and updating tasks, files, and checklists work as before.
-- Adding a comment via [task.commentitem.add](./comment-item/task-comment-item-add.md) is still functional.
+## When to Use This Page
 
-## What Has Changed in Comments {#comments}
+Use this page if your integration:
 
-- Updating and deleting comments using the methods task.commentitem.update and task.commentitem.delete no longer work. Use the Chat methods instead:
-  - [im.message.update](../chats/messages/im-message-update.md) to change the text,
-  - [im.message.delete](../chats/messages/im-message-delete.md) to delete a message.
-- Retrieving the list of comments via task.commentitem.getlist is no longer functional. Get task chat messages through [im.dialog.messages.get](../chats/messages/im-dialog-messages-get.md).
-- Use the method [im.disk.file.commit](../chats/files/im-disk-file-commit.md) to send files in the task chat.
-- The chat associated with the task is returned in the response of [tasks.task.get](./tasks-task-get.md). Use its identifier for requests in chat methods.
+- retrieves, updates, or deletes task comments
+- sends a message or file to the task discussion
+- handles comment events
+- works with task results created from comments
+- places widgets in the task card
 
-### How to Get the Task Chat ID via tasks.task.get
+If the integration only creates, updates, retrieves, or deletes tasks without working with comments, use the methods in the [Tasks](index.md) section.
+
+## Operating Conditions
+
+#|
+|| **Condition** | **Description** ||
+|| Module version | New task card changes are available starting from `tasks 25.700.0` ||
+|| Call format | Old API methods are called through `/rest/`, REST 3.0 task methods through `/rest/api/` ||
+|| User permissions | The user must have access to the task and the chat linked to it ||
+|| Scope for tasks | For old task methods, use the [`task`](../scopes/permissions.md) scope, and for REST 3.0 task methods, the [`tasks`](../scopes/permissions.md) scope ||
+|| Scope for chats and files | For chat methods and sending files to the task chat, use the [`im`](../scopes/permissions.md) scope ||
+|#
+
+## New Task Card Workflow
+
+In the new card, a task has a linked chat. A task comment is stored as a message in that chat:
+
+1. Get the task chat identifier using the [tasks.task.get](./tasks-task-get.md) method
+2. Use the chat identifier in chat methods. If the method accepts `DIALOG_ID`, pass the value in the `chat{CHAT_ID}` format, for example `chat58`
+3. Use [tasks.task.chat.message.send](./tasks-task-chat-message-send.md) to send a new message
+4. Use the methods from the [Chats](../chats/index.md) section to update, delete, and retrieve messages
+
+## Identifier Mapping
+
+#|
+|| **Identifier** | **Returned Where** | **What It Is Used For** ||
+|| `CHAT_ID` | Old response format of [tasks.task.get](./tasks-task-get.md) | Task chat identifier for chat methods ||
+|| `chat.id` | New response format of [tasks.task.get](./tasks-task-get.md) through `/rest/api/` | Task chat identifier for chat methods ||
+|| `DIALOG_ID` | Formed from the chat identifier | Value for chat methods that work with a dialog. For a task chat, pass `chat{CHAT_ID}` ||
+|| `chat.entityId` | New response format of [tasks.task.get](./tasks-task-get.md) through `/rest/api/` | Identifier of the task linked to the chat ||
+|| `chat.entityType` | New response format of [tasks.task.get](./tasks-task-get.md) through `/rest/api/` | Type of the chat binding. For a task, the value is `TASKS_TASK` ||
+|| `MESSAGE_ID` | [OnTaskCommentAdd](./comment-item/events-comment/on-task-comment-add.md) event | Identifier of the message in the task chat ||
+|| `TASK_ID` | [OnTaskCommentAdd](./comment-item/events-comment/on-task-comment-add.md) event | Task identifier ||
+|| `commentId: 0` | [tasks.task.result.list](./result/tasks-task-result-list.md) response | Marker of a task result linked to the new card ||
+|#
+
+## Migration Quick Reference
+
+#|
+|| **Operation** | **Old Approach** | **Status in the New Card** | **New Approach** ||
+|| Add a comment | [task.commentitem.add](./comment-item/task-comment-item-add.md) | Works | Existing integrations can continue using the old method. For new integrations, use [tasks.task.chat.message.send](./tasks-task-chat-message-send.md) ||
+|| Update a comment | `task.commentitem.update` | Does not work | Use [im.message.update](../chats/messages/im-message-update.md) ||
+|| Delete a comment | `task.commentitem.delete` | Does not work | Use [im.message.delete](../chats/messages/im-message-delete.md) ||
+|| Retrieve the comment list | `task.commentitem.getlist` | Does not work | Get task chat messages using [im.dialog.messages.get](../chats/messages/im-dialog-messages-get.md) ||
+|| Send a file to the task chat | Task comment methods | Not suitable for the new card | Use [im.disk.file.commit](../chats/files/im-disk-file-commit.md) ||
+|| Retrieve a task result | [tasks.task.result.list](./result/tasks-task-result-list.md) | Works | Keep in mind that results for the new card are returned with `commentId: 0` ||
+|| Add a result from a comment | [tasks.task.result.addFromComment](./result/tasks-task-result-add-from-comment.md) | Does not work | Creating a result from a new-card comment is not available through the old method ||
+|| Delete a result from a comment | [tasks.task.result.deleteFromComment](./result/tasks-task-result-delete-from-comment.md) | Does not work | Removing the link between a result and a new-card comment is not available through the old method ||
+|#
+
+## How to Get the Task Chat Identifier
 
 #### Old API Version
 
@@ -40,16 +88,14 @@ Example response:
 {
     "result": {
         "task": {
-            "id": "3835",
+            "id": "51",
             "chatId": 2537,
             "favorite": "N",
             "group": [],
-            "action": {
-                ...
-            }
+            "action": {}
         }
     }
-}    
+}
 ```
 
 #### New API Version
@@ -85,7 +131,7 @@ Example response:
 
 Starting from module version `tasks 25.700.0`, some methods can be called in the new format.
 
-The new API call differs by the addition of the /api/ parameter in the request.
+The new API call differs by the addition of the `/api/` segment in the request.
 
 Old version:
 
@@ -95,23 +141,18 @@ New version:
 
 `https://{installation_address}/rest/api/{user_id}/{rest_app_password}/tasks.task.get`
 
-Documentation for the new version of the method call is available in OpenApi format. To obtain OpenApi, call the method `documentation`:
+Documentation for the new version of the method call is available in OpenAPI format. To get the OpenAPI description, call the `documentation` method:
 
 `https://{installation_address}/rest/api/{user_id}/{rest_app_password}/documentation`
 
 {% endnote %}
 
-## How to Send Messages to a Task
-
-- Old method [task.commentitem.add](./comment-item/task-comment-item-add.md).
-- New method [tasks.task.chat.message.send](./tasks-task-chat-message-send.md). To send a file in the task chat, use the method [im.disk.file.commit](../chats/files/im-disk-file-commit.md).
-
 ## Events
 
 - The event [OnTaskCommentAdd](./comment-item/events-comment/on-task-comment-add.md) works. When working with the new task card, the handler will receive parameters:
-    - `MESSAGE_ID` with the identifier of the message in the task chat,
-    - `TASK_ID` with the identifier of the task,
-    - `'ID' => 0` the identifier of the comment will equal zero.
+    - `MESSAGE_ID` with the identifier of the message in the task chat
+    - `TASK_ID` with the identifier of the task
+    - `'ID' => 0`, the comment identifier will be equal to zero
 
 - The events [OnTaskCommentUpdate](./comment-item/events-comment/on-task-comment-update.md) and [OnTaskCommentDelete](./comment-item/events-comment/on-task-comment-delete.md) do not work in the new task card.
 

@@ -242,7 +242,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Identifier of the added business process template ||
+[`integer`](../../data-types.md) | Identifier of the added business process template ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -254,7 +254,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ERROR_TEMPLATE_VALIDATION_FAILURE",
-    "error_description": "Incorrect field DOCUMENT_TYPE!",
+    "error_description": "Incorrect field DOCUMENT_TYPE!"
 }
 ```
 

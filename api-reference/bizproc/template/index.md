@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-A workflow template is a logical scheme. It implements business logic using actions and operations within the workflow designer.
+A workflow template defines automation logic through actions and operations in the workflow designer. The methods let you add a template from a `.bpt` file, update its parameters, retrieve the list of templates, and delete a template created by the application.
 
 {% note info "" %}
 
@@ -20,9 +20,16 @@ Methods for adding, updating, and deleting templates work only within the contex
 > - [How to Create a Sequential Workflow Template](https://helpdesk.bitrix24.com/open/6034961/)
 > - [How to Configure Template Parameters](https://helpdesk.bitrix24.com/open/22522520/)
 
-## Add a Workflow Template
+## How to Get Started
 
-The [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) method adds a template to Bitrix24 from a file with the `.bpt` extension. To obtain the file, configure a workflow template and export it.
+1. Add a template using the [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) method
+2. Retrieve the list of templates using the [bizproc.workflow.template.list](./bizproc-workflow-template-list.md) method
+3. Update the template using the [bizproc.workflow.template.update](./bizproc-workflow-template-update.md) method
+4. Delete an outdated template using the [bizproc.workflow.template.delete](./bizproc-workflow-template-delete.md) method
+
+## How to Prepare a Template File
+
+The [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) method adds a template from a file with the `.bpt` extension. To get the file, configure the workflow template in the designer and export it.
 
 ![Template Export](./_images/export-bp-template.png)
 
@@ -35,68 +42,50 @@ The resulting file can be used as a template in any Bitrix24 instance.
 
 {% endnote %}
 
-## Linking a Template to a Document
+## Document Type Identifier
 
-Each template is linked to a base object whose data it manages. For example, a template can be linked to CRM deals. In this case, the base object will be the specific deal for which the workflow is launched.
+`DOCUMENT_TYPE` is specified in the parameters of the [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) method when the application adds a template from a file. In the [bizproc.workflow.template.list](./bizproc-workflow-template-list.md) method, the `MODULE_ID`, `ENTITY`, and `DOCUMENT_TYPE` values are returned in the template fields and can be used for filtering.
 
-The link to the base object determines the launch context: you cannot launch a process for a lead using a template designed for a deal.
+`DOCUMENT_TYPE` is an array of three strings. It links the template to the document type for which the workflow will run:
 
-A template is linked to a document via the `DOCUMENT_TYPE` parameter, which is an array consisting of three items:
+- module identifier, for example `crm`
+- object identifier, for example `CCrmDocumentDeal`
+- document type, for example `DEAL`
 
-- module identifier
-- object type
-- document type
-
-For example, `['crm', 'CCrmDocumentLead', 'LEAD']`.
-
-The values in the array are interconnected. If the first item is `'crm'`, the remaining items must correspond to CRM. It is important to ensure the correctness of these values.
+The values in the array are interconnected: if the first item belongs to CRM, the remaining items must also describe a CRM object.
 
 ### Possible Values
 
-**Module Identifier.** Specifies the scope of application for the workflow template.
+#|
+|| **Module** | **Object Identifier** | **Document Type** | **Description** ||
+|| `crm` | `CCrmDocumentLead` | `LEAD` | Leads ||
+|| `crm` | `CCrmDocumentContact` | `CONTACT` | Contacts ||
+|| `crm` | `CCrmDocumentCompany` | `COMPANY` | Companies ||
+|| `crm` | `CCrmDocumentDeal` | `DEAL` | Deals ||
+|| `crm` | `Bitrix\Crm\Integration\BizProc\Document\Quote` | `QUOTE` | Quotes ||
+|| `crm` | `Bitrix\Crm\Integration\BizProc\Document\SmartInvoice` | `SMART_INVOICE` | Invoices ||
+|| `crm` | `Bitrix\Crm\Integration\BizProc\Document\Dynamic` | `DYNAMIC_XXX` | SPAs, where XXX is the SPA identifier ||
+|| `lists` | `BizprocDocument` | `iblock_XXX` | Processes in the news feed, where XXX is the information block identifier ||
+|| `lists` | `Bitrix\Lists\BizprocDocumentLists` | `iblock_XXX` | Lists in groups, where XXX is the information block identifier ||
+|| `disk` | `Bitrix\Disk\BizProcDocument` | `STORAGE_XXX` | Drive storage, where XXX is the storage identifier ||
+|#
 
-- `crm` — CRM
-- `lists` — Common Lists
-- `disk` — Bitrix24 Drive
+## What to Consider
 
-**Object Identifier.** An object within the specified module. For example, in CRM, an object could be a lead or a deal.
+- The [bizproc.workflow.template.add](./bizproc-workflow-template-add.md), [bizproc.workflow.template.update](./bizproc-workflow-template-update.md), and [bizproc.workflow.template.delete](./bizproc-workflow-template-delete.md) methods work only in the context of an installed application
+- You can update or delete only a template created by the same application
+- The document type is set by the `DOCUMENT_TYPE` parameter and determines for which objects the workflow can be launched
+- To get the application's templates, pass the `SYSTEM_CODE` field to the filter of the [bizproc.workflow.template.list](./bizproc-workflow-template-list.md) method, for example `"SYSTEM_CODE": "rest_app_5"`
 
-CRM
-- `CCrmDocumentLead` — leads
-- `CCrmDocumentContact` — contacts
-- `CCrmDocumentCompany` — companies
-- `CCrmDocumentDeal` — deals
-- `Bitrix\Crm\Integration\BizProc\Document\Quote` — quotes
-- `Bitrix\Crm\Integration\BizProc\Document\SmartInvoice` — invoices
-- `Bitrix\Crm\Integration\BizProc\Document\Dynamic` — SPAs
+## Relationship with Other Objects
 
-Lists
-- `BizprocDocument` — Workflows in Feed
-- `Bitrix\Lists\BizprocDocumentLists` — lists in queue groups
+**CRM.** A template can be linked to leads, contacts, companies, deals, quotes, invoices, and SPAs. The relation is defined through `DOCUMENT_TYPE`, for example `['crm', 'CCrmDocumentDeal', 'DEAL']`.
 
-Drive
-- `Bitrix\Disk\BizProcDocument`
+The relation to the base object determines the launch context: you cannot launch a process for a lead using a template designed for a deal.
 
-**Document Type.** A binding to a specific document of the specified object.
+**Common Lists.** A template can be linked to processes in the news feed or lists in groups. In `DOCUMENT_TYPE`, specify the `lists` module, the object type, and the information block identifier in the `iblock_XXX` format.
 
-CRM
-- `LEAD` — leads
-- `CONTACT` — contacts
-- `COMPANY` — companies
-- `DEAL` — deals
-- `QUOTE` — quotes
-- `SMART_INVOICE` — invoices
-- `DYNAMIC_XXX` — SPAs, where XXX is the SPA identifier
-
-Common Lists
-- `iblock_XXX` — information block, where XXX is the information block identifier
-
-Drive
-- `STORAGE_XXX` — drive data store, where XXX is the data store identifier
-
-## Retrieve a List of Templates
-
-To retrieve a list of all portal templates, use the [bizproc.workflow.template.list](./bizproc-workflow-template-list.md) method. To retrieve a list of application templates, specify the `SYSTEM_CODE` field in the `FILTER` parameter and the application symbolic code, for example, `"SYSTEM_CODE": "rest_app_5"`.
+**Drive.** A template can be linked to Drive storage. In `DOCUMENT_TYPE`, specify the `disk` module, the `Bitrix\Disk\BizProcDocument` object, and the storage identifier in the `STORAGE_XXX` format.
 
 ## Overview of Methods {#all-methods}
 
@@ -106,8 +95,8 @@ To retrieve a list of all portal templates, use the [bizproc.workflow.template.l
 
 #|
 || **Method** | **Description** ||
-|| [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) | Add a business process template from a file ||
-|| [bizproc.workflow.template.update](./bizproc-workflow-template-update.md) | Update a template ||
-|| [bizproc.workflow.template.list](./bizproc-workflow-template-list.md) | Get a list of templates ||
-|| [bizproc.workflow.template.delete](./bizproc-workflow-template-delete.md) | Delete a template ||
+|| [bizproc.workflow.template.add](./bizproc-workflow-template-add.md) | Adds a business process template from a file ||
+|| [bizproc.workflow.template.update](./bizproc-workflow-template-update.md) | Updates a template ||
+|| [bizproc.workflow.template.list](./bizproc-workflow-template-list.md) | Retrieves the list of templates ||
+|| [bizproc.workflow.template.delete](./bizproc-workflow-template-delete.md) | Deletes a template ||
 |#

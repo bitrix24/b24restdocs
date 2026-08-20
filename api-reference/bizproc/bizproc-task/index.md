@@ -19,25 +19,34 @@ There are four types of tasks:
 >
 > User documentation: [Workflow Assignments](https://helpdesk.bitrix24.com/open/11466058/)
 
-## Complete Task
+## How to Get Started
 
-You can complete a workflow task by its identifier using the [bizproc.task.complete](./bizproc-task-complete.md) method. To obtain the task identifier `TASK_ID`, use the [bizproc.task.list](./bizproc-task-list.md) method. You can only complete your own tasks.
+1. Retrieve the list of tasks using the [bizproc.task.list](./bizproc-task-list.md) method
+2. Find the identifier of the required task `TASK_ID`
+3. Complete the task using the [bizproc.task.complete](./bizproc-task-complete.md) method
+4. If needed, delegate the task to another employee using the [bizproc.task.delegate](./bizproc-task-delegate.md) method
 
-Tasks that request additional information contain fields that the user must fill out. To complete such a task, pass the field values in the `FIELDS` object in the format `{"field_1": "value_1", ... , "field_N": "value_N"}`
+## Task Fields
 
-- `field_N` — task field symbol identifier
-- `value_N` — field value
+Tasks that request additional information are completed using the [bizproc.task.complete](./bizproc-task-complete.md) method. Field values are passed in the `FIELDS` object in the format `{"field_1": "value_1", ... , "field_N": "value_N"}`:
 
-Which fields need to be filled out can be determined from the [bizproc.task.list](./bizproc-task-list.md) method response. The `"PARAMETERS": "Fields"` object contains descriptions of all task fields.
+- `field_N` — symbolic identifier of the task field
+- `value_N` — value of the field
 
-## Delegate Task
+You can find out which fields must be filled in from the response of the [bizproc.task.list](./bizproc-task-list.md) method. The `PARAMETERS.Fields` field contains descriptions of all task fields.
 
-A task can be delegated to another employee using the [bizproc.task.delegate](./bizproc-task-delegate.md) method. To do this, specify the task identifier `TASK_IDS` and the user identifiers:
+## What to Consider
 
-- current assignee `FROM_USER_ID`
-- new assignee `TO_USER_ID`
+- You can complete only your own tasks
+- To complete a task, you need the `TASK_ID` identifier, which can be obtained using the [bizproc.task.list](./bizproc-task-list.md) method
+- Tasks that request additional information contain fields that the user must fill in
+- To delegate a task, you need the task identifier `TASK_IDS`, the current assignee identifier `FROM_USER_ID`, and the new assignee identifier `TO_USER_ID`
 
-You can obtain the task identifier using the [bizproc.task.list](./bizproc-task-list.md) method, and the user identifier using the [user.get](../../user/user-get.md) method.
+## Relationship with Other Objects
+
+**User.** A task is linked to an assignee. To delegate it, pass the current assignee identifier `FROM_USER_ID` and the new assignee identifier `TO_USER_ID` to the [bizproc.task.delegate](./bizproc-task-delegate.md) method. You can get the user identifier using the [user.get](../../user/user-get.md) method.
+
+**Workflow.** A task is created while a workflow is running. You can retrieve the list of tasks available to the user and their parameters using the [bizproc.task.list](./bizproc-task-list.md) method.
 
 ## Overview of Methods {#all-methods}
 

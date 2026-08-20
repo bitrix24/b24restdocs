@@ -92,7 +92,7 @@ Lists
 Drive
 - `Bitrix\Disk\BizProcDocument` ||
 || **DOCUMENT_TYPE**
-[`integer`](../../data-types.md) | Document type. Possible values:
+[`string`](../../data-types.md) | Document type. Possible values:
 crm:
 - `LEAD` — leads
 - `CONTACT` — contacts
@@ -352,9 +352,10 @@ HTTP status: **200**
         },
         {
            "ID": "379",
-           ... 
+           "NAME": "App template",
+           "USER_ID": "503",
+           "SYSTEM_CODE": "rest_app_5"
         }
-        ...
     ],
     "total": 34,
     "time": {
@@ -376,7 +377,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response. 
+[`array`](../../data-types.md) | The root element of the response.
 
 Contains an array of objects with information about business process templates.
 
@@ -394,7 +395,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied!",
+    "error_description": "Access denied!"
 }
 ```
 

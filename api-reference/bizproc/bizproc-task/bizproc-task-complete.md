@@ -58,11 +58,10 @@ The requirement for this parameter depends on the task settings. ||
 - `field_N` — symbolic identifier of the task field
 - `value_N` — value of the field
 
-You can obtain field descriptions in the task using the [bizproc.task.list](./bizproc-task-list.md) method in the object `"PARAMETERS": "Fields"` of the response. The structure of the field object description:
+You can obtain field descriptions in the task using the [bizproc.task.list](./bizproc-task-list.md) method in the `PARAMETERS.Fields` field of the response. The structure of the field object description:
 
 ```json
 "PARAMETERS": {
-    ...
     "Fields": [
         {
             "Id": "field_id",
@@ -75,6 +74,8 @@ You can obtain field descriptions in the task using the [bizproc.task.list](./bi
             "Settings": null,
             "Default": "default_value"
         }
+    ]
+}
 ```
 
 `Id` — symbolic identifier of the task field.
@@ -108,7 +109,7 @@ More about working with files can be found in the article [{#T}](../../files/how
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASK_ID":1501,"STATUS":1,"COMMENT":"Added","Fields":{"contractor":"C_607","phone_number":"+19991234567"}}' \
+    -d '{"TASK_ID":1501,"STATUS":3,"COMMENT":"Added","FIELDS":{"contractor":"C_607","phone_number":"+19991234567"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/bizproc.task.complete
     ```
 
@@ -118,7 +119,7 @@ More about working with files can be found in the article [{#T}](../../files/how
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASK_ID":1501,"STATUS":1,"COMMENT":"Added","Fields":{"contractor":"C_607","phone_number":"+19991234567"},"auth":"**put_access_token_here**"}' \
+    -d '{"TASK_ID":1501,"STATUS":3,"COMMENT":"Added","FIELDS":{"contractor":"C_607","phone_number":"+19991234567"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/bizproc.task.complete
     ```
 
@@ -127,18 +128,18 @@ More about working with files can be found in the article [{#T}](../../files/how
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'bizproc.task.complete',
-    		{
-    			'TASK_ID': 1501,
-    			'STATUS': 1,
-    			'COMMENT': 'Added',
-    			"Fields": {
-    				'contractor': 'C_607',
-    				'phone_number': '+19991234567'
-    			}
-    		}
-    	);
+        const response = await $b24.callMethod(
+            'bizproc.task.complete',
+            {
+                'TASK_ID': 1501,
+                'STATUS': 3,
+                'COMMENT': 'Added',
+                'FIELDS': {
+                    'contractor': 'C_607',
+                    'phone_number': '+19991234567'
+                }
+            }
+        );
     	
     	const result = response.getData().result;
     	console.log(result);
@@ -159,9 +160,9 @@ More about working with files can be found in the article [{#T}](../../files/how
                 'bizproc.task.complete',
                 [
                     'TASK_ID' => 1501,
-                    'STATUS' => 1,
+                    'STATUS' => 3,
                     'COMMENT' => 'Added',
-                    'Fields' => [
+                    'FIELDS' => [
                         'contractor' => 'C_607',
                         'phone_number' => '+19991234567'
                     ]
@@ -191,9 +192,9 @@ More about working with files can be found in the article [{#T}](../../files/how
         'bizproc.task.complete',
         {
             'TASK_ID': 1501,
-            'STATUS': 1,
+            'STATUS': 3,
             'COMMENT': 'Added',
-            "Fields": {
+            'FIELDS': {
                 'contractor': 'C_607',
                 'phone_number': '+19991234567'
             }
@@ -217,9 +218,9 @@ More about working with files can be found in the article [{#T}](../../files/how
         'bizproc.task.complete',
         [
             'TASK_ID' => 1501,
-            'STATUS' => 1,
+            'STATUS' => 3,
             'COMMENT' => 'Added',
-            'Fields' => [
+            'FIELDS' => [
                 'contractor' => 'C_607',
                 'phone_number' => '+19991234567'
             ]
@@ -236,13 +237,13 @@ More about working with files can be found in the article [{#T}](../../files/how
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "bizproc.task.complete", b24.Params{
-    	"TASK_ID": 1501,
-    	"STATUS":  1,
-    	"COMMENT": "Added",
-    	"FIELDS": b24.Params{
-    		"contractor":   "C_607",
-    		"phone_number": "89991234567",
-    	},
+        "TASK_ID": 1501,
+        "STATUS":  3,
+        "COMMENT": "Added",
+        "FIELDS": b24.Params{
+            "contractor":   "C_607",
+            "phone_number": "89991234567",
+        },
     })
     if err != nil {
     	return fmt.Errorf("bizproc.task.complete: %w", err)

@@ -225,7 +225,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Identifier of the updated business process template ||
+[`integer`](../../data-types.md) | Identifier of the updated business process template ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -237,7 +237,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ERROR_TEMPLATE_NOT_OWNER",
-    "error_description": "You can update ONLY templates created by current application",
+    "error_description": "You can update ONLY templates created by current application"
 }
 ```
 

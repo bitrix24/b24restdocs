@@ -1,8 +1,12 @@
-# How to Complete Business Processes of a Terminated Employee
+# How to Terminate Workflows of a Dismissed Employee
 
-> Scope: [`user_brief, user_basic, user, bizproc`](../../api-reference/scopes/permissions.md)
-> 
-> Who can execute methods: administrator
+> Scope: [`user_brief`](../../api-reference/scopes/permissions.md), [`user_basic`](../../api-reference/scopes/permissions.md), [`user`](../../api-reference/scopes/permissions.md), [`bizproc`](../../api-reference/scopes/permissions.md)
+>
+> Who can execute the methods: administrator permissions are required to complete the whole scenario
+>
+> - [user.get](../../api-reference/user/user-get.md) — any user
+> - [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) — administrator, to view tasks of any user
+> - [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) and [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md) — administrator
 
 {% note tip "" %}
 
@@ -10,25 +14,33 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-When an employee is terminated in Bitrix24, there may be unfinished business processes for which they were responsible.
+After an employee is dismissed in Bitrix24, there may still be incomplete workflow tasks assigned to them. You can get the related `WORKFLOW_ID` values from those tasks and terminate the linked workflows.
 
-To complete the active business processes of a terminated employee, we will sequentially execute three methods:
+The `bizproc.workflow.kill` method deletes the workflow together with its data. If you need to stop execution but keep the record of the workflow launch, use [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md). Both methods accept the same workflow identifier.
 
-1. [user.get](../../api-reference/user/user-get.md) — retrieve the `ID` of the terminated employee
+The scenario consists of three steps.
 
-2. [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) — obtain a list of process tasks for which the terminated employee is responsible
+1. Get the dismissed employee `ID` using the [user.get](../../api-reference/user/user-get.md) method
+2. Get the employee's incomplete tasks using the [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) method
+3. Delete the related workflows using the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method
 
-3. [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) — complete the business processes while deleting data. If you need to retain the fact that the business process was initiated, use the method [bizproc.workflow.terminate](../../api-reference/bizproc/bizproc-workflow-terminate.md). Both methods are called in the same way.
+## Before You Start
 
-## 1. Retrieve the ID of the Terminated Employee {#user-id}
+- an administrator inbound webhook or an application with the `bizproc` scope and one of the user scopes: `user`, `user_basic`, or `user_brief`
+- the first and last name of the dismissed employee
+- a decision on what to do with the found workflows: delete them with `bizproc.workflow.kill` or stop them with `bizproc.workflow.terminate`
 
-We will use the method [user.get](../../api-reference/user/user-get.md) with the following filter:
+An administrator can retrieve tasks of any user. A regular user can see only their own tasks or the tasks of a subordinate, so administrator authorization is required for the full scenario.
 
-- `NAME` — specify the employee's first name
+{% include [Note on examples](../../_includes/examples.md) %}
 
-- `LAST_NAME` — specify the employee's last name
+## 1. Get the ID of the Dismissed Employee {#user-id}
 
-- `ACTIVE` — this parameter controls the search for active or terminated employees. If this parameter is not provided, the search will include all employees regardless of their status. Specify `0` to search only among terminated employees
+Use the [user.get](../../api-reference/user/user-get.md) method with the following filter:
+
+- `NAME` — the employee's first name
+- `LAST_NAME` — the employee's last name
+- `ACTIVE = 0` — search only among dismissed employees
 
 {% list tabs %}
 
@@ -37,14 +49,15 @@ We will use the method [user.get](../../api-reference/user/user-get.md) with the
     ```js
     import { B24Hook } from '@bitrix24/b24jssdk'
 
-    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/')
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
     const response = await $b24.actions.v2.call.make({
         method: 'user.get',
         params: {
             filter: {
-                NAME: "employee's name",
-                LAST_NAME: "employee's last name",
+                NAME: 'Klaus',
+                LAST_NAME: 'Weber',
                 ACTIVE: 0,
             },
         },
@@ -52,34 +65,32 @@ We will use the method [user.get](../../api-reference/user/user-get.md) with the
     })
 
     const users = response.getData().result
+    const userId = users.length ? Number(users[0].ID) : null
     ```
 
 - PHP
 
     ```php
-    <?php
     // composer require bitrix24/b24phpsdk:"^3.0"
     require_once 'vendor/autoload.php';
 
     use Bitrix24\SDK\Services\ServiceBuilderFactory;
     use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Monolog\Logger;
-    use Monolog\Handler\StreamHandler;
+    use Psr\Log\NullLogger;
 
-    $log = new Logger('b24');
-    $log->pushHandler(new StreamHandler('php://stdout'));
-
-    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/');
+    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
     $users = $b24->getUserScope()->user()->get(
         [],
         [
-            'NAME' => "employee's name",
-            'LAST_NAME' => "employee's last name",
+            'NAME' => 'Klaus',
+            'LAST_NAME' => 'Weber',
             'ACTIVE' => 0,
         ]
     )->getUsers();
+
+    $userId = $users === [] ? null : $users[0]->ID;
     ```
 
 - Python
@@ -93,50 +104,59 @@ We will use the method [user.get](../../api-reference/user/user-get.md) with the
     )
     client = Client(token)
 
-    result = client.user.get(
+    users = client.user.get(
         filter={
-            "NAME": "employee's name",
-            "LAST_NAME": "employee's last name",
+            "NAME": "Klaus",
+            "LAST_NAME": "Weber",
             "ACTIVE": 0,
         }
     ).response.result
+
+    user_id = int(users[0]["ID"]) if users else None
     ```
 
 - Go
 
     ```go
-    // ACTIVE: 0 selects only dismissed employees. Without this parameter, the search covers
-    // all employees regardless of status. The first and last names are set by the constants
-    // departedName and departedLastName at the top of the file; empty values are not put into
-    // the filter — an empty string matches nobody.
-    filter := b24.Params{"ACTIVE": 0}
-    if departedName != "" {
-    	filter["NAME"] = departedName
-    }
-    if departedLastName != "" {
-    	filter["LAST_NAME"] = departedLastName
-    }
+    import (
+        "context"
+        "encoding/json"
+        "log"
+        "os"
 
-    res, err := core.Call(ctx, "user.get", b24.Params{"filter": filter}, b24.WithIdempotent())
+        b24 "github.com/bitrix24/b24gosdk"
+    )
+
+    ctx := context.Background()
+    core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+
+    res, err := core.Call(ctx, "user.get", b24.Params{
+        "filter": b24.Params{
+            "NAME":      "Klaus",
+            "LAST_NAME": "Weber",
+            "ACTIVE":    0,
+        },
+    }, b24.WithIdempotent())
     if err != nil {
-    	return fmt.Errorf("user.get: %w", err)
+        log.Fatal(err)
     }
 
-    // user.get responds in UPPER_SNAKE and sends the ID AS A STRING ("29"):
-    // b24.ID parses both a number and a string containing a number.
     var users []struct {
-    	ID       b24.ID `json:"ID"`
-    	Name     string `json:"NAME"`
-    	LastName string `json:"LAST_NAME"`
+        ID string `json:"ID"`
     }
     if err := json.Unmarshal(res.Result, &users); err != nil {
-    	return fmt.Errorf("parse employees: %w", err)
+        log.Fatal(err)
+    }
+
+    userID := ""
+    if len(users) > 0 {
+        userID = users[0].ID
     }
     ```
 
 {% endlist %}
 
-As a result, we will obtain the `ID` of the terminated employee.
+Store the employee `ID` from the response. You need this value for the `USER_ID` filter in the next step.
 
 ```json
 {
@@ -144,28 +164,24 @@ As a result, we will obtain the `ID` of the terminated employee.
         {
             "ID": "29",
             "ACTIVE": false,
-            "NAME": "employee's name",
-            "LAST_NAME": "employee's last name",
-            "EMAIL": "employee_email@gmail.com",
-            "WORK_POSITION": "Manager",
-            "UF_DEPARTMENT": [
-                7,
-                1
-            ],
+            "NAME": "Klaus",
+            "LAST_NAME": "Weber",
+            "EMAIL": "employee@example.com",
             "USER_TYPE": "employee"
         }
     ],
-    "total": 1,
+    "total": 1
 }
 ```
 
-## 2. Retrieve the List of Process Tasks for Which the Terminated Employee is Responsible {#workflow_id}
+If `result` contains an empty array, the dismissed employee with the specified first and last name was not found. Verify the search data and repeat the first step.
 
-We will use the method [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) with the following filter:
+## 2. Get the Employee's Tasks {#workflow-id}
 
-- `USER_ID` — the employee identifier; pass the ID obtained in [step 1](#user-id)
+Use the [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) method with the following filter:
 
-- `STATUS` — this parameter handles the assignment status; specify `0` to select only uncompleted assignments
+- `USER_ID` — the employee identifier from [step 1](#user-id)
+- `STATUS = 0` — only incomplete tasks
 
 {% list tabs %}
 
@@ -175,8 +191,9 @@ We will use the method [bizproc.task.list](../../api-reference/bizproc/bizproc-t
     const response = await $b24.actions.v2.call.make({
         method: 'bizproc.task.list',
         params: {
+            select: ['ID', 'WORKFLOW_ID', 'NAME', 'DOCUMENT_NAME'],
             filter: {
-                USER_ID: 29,
+                USER_ID: userId,
                 STATUS: 0,
             },
         },
@@ -184,89 +201,97 @@ We will use the method [bizproc.task.list](../../api-reference/bizproc/bizproc-t
     })
 
     const tasks = response.getData().result
+    const workflowIds = [...new Set(tasks.map((task) => task.WORKFLOW_ID))]
     ```
 
 - PHP
 
     ```php
-    $tasks = $b24->getBizProcScope()->task()->list(
-        [],
-        [
-            'USER_ID' => 29,
+    $response = $b24->core->call('bizproc.task.list', [
+        'select' => ['ID', 'WORKFLOW_ID', 'NAME', 'DOCUMENT_NAME'],
+        'filter' => [
+            'USER_ID' => $userId,
             'STATUS' => 0,
-        ]
-    )->getTasks();
+        ],
+    ]);
+
+    $tasks = $response->getResponseData()->getResult();
+    $workflowIds = array_values(array_unique(array_column($tasks, 'WORKFLOW_ID')));
     ```
 
 - Python
 
     ```python
-    result = client.bizproc.task.list(
+    tasks = client.bizproc.task.list(
+        select=["ID", "WORKFLOW_ID", "NAME", "DOCUMENT_NAME"],
         filter={
-            "USER_ID": 29,
+            "USER_ID": user_id,
             "STATUS": 0,
-        }
+        },
     ).response.result
+
+    workflow_ids = list({task["WORKFLOW_ID"] for task in tasks})
     ```
 
 - Go
 
     ```go
-    // STATUS: 0 — only incomplete checklist items.
     res, err := core.Call(ctx, "bizproc.task.list", b24.Params{
-    	"filter": b24.Params{"USER_ID": userID, "STATUS": 0},
+        "select": []string{"ID", "WORKFLOW_ID", "NAME", "DOCUMENT_NAME"},
+        "filter": b24.Params{
+            "USER_ID": userID,
+            "STATUS":  0,
+        },
     }, b24.WithIdempotent())
     if err != nil {
-    	// bizproc.* is available only to the portal administrator and only on
-    	// paid plans. The code is compared with errors.Is rather than as a string:
-    	// a typo in the literal would compile and silently take a different branch.
-    	if errors.Is(err, b24.ErrMethodNotFound) {
-    		return fmt.Errorf("the business processes module is not available on this portal: %w", err)
-    	}
-    	return fmt.Errorf("bizproc.task.list: %w", err)
+        log.Fatal(err)
     }
 
-    // WORKFLOW_ID is NOT a number: "67e3db8e581121.72266518". Parsing it into
-    // int destroys the value, so the field stays a string from the list up to
-    // the termination command.
     var tasks []struct {
-    	ID           b24.ID `json:"ID"`
-    	WorkflowID   string `json:"WORKFLOW_ID"`
-    	Name         string `json:"NAME"`
-    	DocumentName string `json:"DOCUMENT_NAME"`
+        WorkflowID string `json:"WORKFLOW_ID"`
     }
     if err := json.Unmarshal(res.Result, &tasks); err != nil {
-    	return fmt.Errorf("parse workflow tasks: %w", err)
+        log.Fatal(err)
+    }
+
+    seen := map[string]struct{}{}
+    workflowIDs := []string{}
+    for _, task := range tasks {
+        if _, ok := seen[task.WorkflowID]; ok {
+            continue
+        }
+
+        seen[task.WorkflowID] = struct{}{}
+        workflowIDs = append(workflowIDs, task.WorkflowID)
     }
     ```
 
 {% endlist %}
 
-As a result, we will obtain a list of incomplete tasks. Each task has a `WORKFLOW_ID` parameter — this is the `ID` of the business process that we will complete in the next step.
+Store `WORKFLOW_ID` from the response. This is the string identifier of the workflow that must be passed to the `ID` parameter of the `bizproc.workflow.kill` method.
 
 ```json
 {
     "result": [
         {
-            "ENTITY": "CCrmDocumentContact",
-            "DOCUMENT_ID": "CONTACT_2437",
             "ID": "879",
             "WORKFLOW_ID": "67e3db8e581121.72266518",
-            "DOCUMENT_NAME": "widget contact",
-            "NAME": "Address",
-            "DOCUMENT_URL": "/crm/contact/details/2437/"
+            "DOCUMENT_NAME": "Client Contact",
+            "NAME": "Approve Address"
         }
     ],
-    "total": 1,
+    "total": 1
 }
 ```
+
+If `result` contains an empty array, the employee has no incomplete workflow tasks. There is nothing to terminate in this scenario.
 
 ## 3. Terminate the Workflows
 
 Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method with the following parameter:
 
-- `ID` — the process identifier; pass the `WORKFLOW_ID` obtained in [step 2](#workflow_id)
-  
+- `ID` — the workflow identifier. Pass `WORKFLOW_ID` from [step 2](#workflow-id)
+
 {% list tabs %}
 
 - JS
@@ -274,7 +299,7 @@ Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kil
     ```js
     const response = await $b24.actions.v2.call.make({
         method: 'bizproc.workflow.kill',
-        params: { ID: '67e3db8e581121.72266518' },
+        params: { ID: workflowIds[0] },
         requestId: 'bizproc-workflow-kill',
     })
 
@@ -285,69 +310,58 @@ Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kil
 
     ```php
     $isKilled = $b24->getBizProcScope()->workflow()
-        ->kill('67e3db8e581121.72266518')
+        ->kill($workflowIds[0])
         ->isSuccess();
     ```
 
 - Python
 
     ```python
-    # Business process ID — a string, rather than the typed client.bizproc.workflow.kill
-    # expects an int, so we call the method directly via token.call_method
-    result = token.call_method(
+    token.call_method(
         "bizproc.workflow.kill",
-        {"ID": "67e3db8e581121.72266518"},
+        {"ID": workflow_ids[0]},
     )
     ```
 
 - Go
 
     ```go
-    res, err := core.Call(ctx, "bizproc.workflow.kill", b24.Params{"ID": workflowID})
+    res, err := core.Call(ctx, "bizproc.workflow.kill", b24.Params{
+        "ID": workflowIDs[0],
+    })
     if err != nil {
-    	// An already finished workflow cannot be terminated — this is not a failure
-    	// of the scenario; the remaining workflows still have to be terminated.
-    	fmt.Fprintf(os.Stderr, "workflow %s: %v\n", workflowID, err)
-    	continue
+        log.Fatal(err)
     }
 
-    // The response is a bare boolean rather than an object.
-    var killed bool
-    if err := json.Unmarshal(res.Result, &killed); err != nil {
-    	return fmt.Errorf("parse the bizproc.workflow.kill response: %w", err)
+    var isKilled bool
+    if err := json.Unmarshal(res.Result, &isKilled); err != nil {
+        log.Fatal(err)
     }
-    fmt.Printf("workflow %s terminated: %v\n", workflowID, killed)
+    log.Println(isKilled)
     ```
 
 {% endlist %}
 
-{% note warning "" %}
-
-In b24pysdk, the typed method `client.bizproc.workflow.kill(bitrix_id=...)` expects an integer `bitrix_id`, but the business process identifier is a string like `67e3db8e581121.72266518`. Therefore, to terminate the process, use the universal call `token.call_method("bizproc.workflow.kill", {"ID": workflow_id})`, where `token` is the `BitrixWebhook` object.
-
-{% endnote %}
-
-As a result, you will obtain `true`, the process deletion was successful. If you received an error `error`, study the description of possible errors in the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method documentation.
+The successful response contains `true`.
 
 ```json
 {
-    "result": true,
+    "result": true
 }
 ```
 
 ## Code Example
 
-In the example, all found processes are deleted within a loop. If you need to delete a large volume of data, you may encounter request execution limits. To optimize the code for your workload, use the recommendations in the [Performance](../../settings/performance/index.md) section.
+The example first prints the found workflows for review. To delete the workflows, run the example with the `--confirm` argument.
 
 {% list tabs %}
 
 - JS
 
     ```js
-    // npm install @bitrix24/b24jssdk
     import { B24Hook } from '@bitrix24/b24jssdk'
 
-    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/')
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
 
     async function getUserId(firstName, lastName) {
         const response = await $b24.actions.v2.call.make({
@@ -355,61 +369,81 @@ In the example, all found processes are deleted within a loop. If you need to de
             params: { filter: { NAME: firstName, LAST_NAME: lastName, ACTIVE: 0 } },
             requestId: 'user-get',
         })
-        if (!response.isSuccess) throw new Error(response.getErrorMessages().join('; '))
+
         const users = response.getData().result
-        return users.length ? users[0].ID : null
+        return users.length ? Number(users[0].ID) : null
     }
 
     async function getWorkflowIds(userId) {
         const response = await $b24.actions.v2.call.make({
             method: 'bizproc.task.list',
-            params: { filter: { USER_ID: userId, STATUS: 0 } },
+            params: {
+                select: ['ID', 'WORKFLOW_ID', 'NAME', 'DOCUMENT_NAME'],
+                filter: { USER_ID: userId, STATUS: 0 },
+            },
             requestId: 'bizproc-task-list',
         })
-        if (!response.isSuccess) throw new Error(response.getErrorMessages().join('; '))
-        return response.getData().result.map((task) => task.WORKFLOW_ID)
+
+        return [...new Set(response.getData().result.map((task) => task.WORKFLOW_ID))]
     }
 
     async function killWorkflows(workflowIds) {
+        if (!workflowIds.length) {
+            console.log('No incomplete workflow tasks found')
+            return
+        }
+
+        console.log(`Found workflows: ${workflowIds.length}`)
+        for (const workflowId of workflowIds) {
+            console.log(`Workflow to delete: ${workflowId}`)
+        }
+
+        if (!process.argv.includes('--confirm')) {
+            console.log('Review the list and rerun the example with the --confirm argument to delete the workflows')
+            return
+        }
+
         for (const workflowId of workflowIds) {
             const response = await $b24.actions.v2.call.make({
                 method: 'bizproc.workflow.kill',
                 params: { ID: workflowId },
-                requestId: `kill-${workflowId}`,
+                requestId: `workflow-kill-${workflowId}`,
             })
+
             console.log(response.isSuccess
-                ? `Workflow ${workflowId} completed successfully.`
-                : `Error: ${response.getErrorMessages().join('; ')}`)
+                ? `Workflow ${workflowId} deleted`
+                : `Error deleting workflow ${workflowId}: ${response.getErrorMessages().join('; ')}`)
         }
     }
 
-    // Employee first and last name are passed as arguments: node kill.mjs Klaus Weber
     const [firstName, lastName] = process.argv.slice(2)
+    if (!firstName || !lastName) {
+        throw new Error('Pass the employee first and last name')
+    }
+
     const userId = await getUserId(firstName, lastName)
-    if (userId) {
+    if (userId === null) {
+        console.log('Dismissed employee not found')
+    } else {
         await killWorkflows(await getWorkflowIds(userId))
     }
+
     $b24.destroy()
     ```
 
 - PHP
 
     ```php
-    <?php
     // composer require bitrix24/b24phpsdk:"^3.0"
     require_once 'vendor/autoload.php';
 
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
     use Bitrix24\SDK\Services\ServiceBuilder;
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
     use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Monolog\Logger;
-    use Monolog\Handler\StreamHandler;
+    use Psr\Log\NullLogger;
 
-    $log = new Logger('b24');
-    $log->pushHandler(new StreamHandler('php://stdout'));
-
-    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/');
+    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
 
     function getUserId(ServiceBuilder $b24, string $firstName, string $lastName): ?int
     {
@@ -423,29 +457,49 @@ In the example, all found processes are deleted within a loop. If you need to de
 
     function getWorkflowIds(ServiceBuilder $b24, int $userId): array
     {
-        $tasks = $b24->getBizProcScope()->task()->list(
-            [],
-            ['USER_ID' => $userId, 'STATUS' => 0]
-        )->getTasks();
+        $response = $b24->core->call('bizproc.task.list', [
+            'select' => ['ID', 'WORKFLOW_ID', 'NAME', 'DOCUMENT_NAME'],
+            'filter' => ['USER_ID' => $userId, 'STATUS' => 0],
+        ]);
 
-        return array_map(static fn($task) => $task->WORKFLOW_ID, $tasks);
+        return array_values(array_unique(array_column(
+            $response->getResponseData()->getResult(),
+            'WORKFLOW_ID'
+        )));
     }
 
     function killWorkflows(ServiceBuilder $b24, array $workflowIds): void
     {
+        if ($workflowIds === []) {
+            echo "No incomplete workflow tasks found\n";
+            return;
+        }
+
+        echo "Found workflows: " . count($workflowIds) . "\n";
+        foreach ($workflowIds as $workflowId) {
+            echo "Workflow to delete: {$workflowId}\n";
+        }
+
+        if (!in_array('--confirm', $_SERVER['argv'], true)) {
+            echo "Review the list and rerun the example with the --confirm argument to delete the workflows\n";
+            return;
+        }
+
         foreach ($workflowIds as $workflowId) {
             $isKilled = $b24->getBizProcScope()->workflow()->kill($workflowId)->isSuccess();
             echo $isKilled
-                ? "Workflow {$workflowId} completed successfully.\n"
-                : "Error deleting process {$workflowId}\n";
+                ? "Workflow {$workflowId} deleted\n"
+                : "Error deleting workflow {$workflowId}\n";
         }
     }
 
-    $firstName = readline('Enter employee\'s first name: ');
-    $lastName = readline('Enter employee\'s last name: ');
+    $firstName = readline('Enter the employee first name: ');
+    $lastName = readline('Enter the employee last name: ');
 
     $userId = getUserId($b24, $firstName, $lastName);
-    if ($userId !== null) {
+    if ($userId === null) {
+        echo "Dismissed employee not found\n";
+    } else {
         killWorkflows($b24, getWorkflowIds($b24, $userId));
     }
     ```
@@ -453,55 +507,10 @@ In the example, all found processes are deleted within a loop. If you need to de
 - Python
 
     ```python
-    from typing import Optional
+    import sys
 
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
-
-    def get_user_id(client, first_name: str, last_name: str) -> Optional[int]:
-        try:
-            users = client.user.get(
-                filter={
-                    "NAME": first_name,
-                    "LAST_NAME": last_name,
-                    "ACTIVE": 0,
-                },
-            ).response.result
-        except BitrixAPIError as error:
-            print(f"Error: {error}")
-            return None
-
-        if not users:
-            return None
-        return int(users[0]["ID"])
-
-    def get_user_tasks(client, user_id: int) -> list[str]:
-        tasks = client.bizproc.task.list(
-            filter={
-                "USER_ID": user_id,
-                "STATUS": 0,
-            },
-        ).response.result
-
-        return [task["WORKFLOW_ID"] for task in tasks]
-
-    def kill_workflows(token, workflow_ids: list[str]) -> None:
-        # Process ID is a string, so we use the universal token.call_method,
-        # instead of the typed client.bizproc.workflow.kill (it expects an int)
-        for workflow_id in workflow_ids:
-            try:
-                token.call_method("bizproc.workflow.kill", {"ID": workflow_id})
-            except BitrixAPIError as error:
-                print(f"Error: {error}")
-            else:
-                print(f"Workflow {workflow_id} completed successfully.")
-
-    def process_employee_tasks(client, token, first_name: str, last_name: str) -> None:
-        user_id = get_user_id(client, first_name, last_name)
-        if user_id is None:
-            return
-        workflow_ids = get_user_tasks(client, user_id)
-        kill_workflows(token, workflow_ids)
 
     token = BitrixWebhook(
         domain="your-domain.bitrix24.com",
@@ -509,258 +518,321 @@ In the example, all found processes are deleted within a loop. If you need to de
     )
     client = Client(token)
 
-    first_name = input("Enter employee's first name: ")
-    last_name = input("Enter employee's last name: ")
+    def get_user_id(first_name: str, last_name: str) -> int | None:
+        users = client.user.get(
+            filter={
+                "NAME": first_name,
+                "LAST_NAME": last_name,
+                "ACTIVE": 0,
+            },
+        ).response.result
 
-    process_employee_tasks(client, token, first_name, last_name)
+        return int(users[0]["ID"]) if users else None
+
+    def get_workflow_ids(user_id: int) -> list[str]:
+        tasks = client.bizproc.task.list(
+            select=["ID", "WORKFLOW_ID", "NAME", "DOCUMENT_NAME"],
+            filter={"USER_ID": user_id, "STATUS": 0},
+        ).response.result
+
+        return list({task["WORKFLOW_ID"] for task in tasks})
+
+    def kill_workflows(workflow_ids: list[str]) -> None:
+        if not workflow_ids:
+            print("No incomplete workflow tasks found")
+            return
+
+        print(f"Found workflows: {len(workflow_ids)}")
+        for workflow_id in workflow_ids:
+            print(f"Workflow to delete: {workflow_id}")
+
+        if "--confirm" not in sys.argv:
+            print("Review the list and rerun the example with the --confirm argument to delete the workflows")
+            return
+
+        for workflow_id in workflow_ids:
+            try:
+                token.call_method("bizproc.workflow.kill", {"ID": workflow_id})
+            except BitrixAPIError as error:
+                print(f"Error deleting workflow {workflow_id}: {error}")
+            else:
+                print(f"Workflow {workflow_id} deleted")
+
+    first_name = input("Enter the employee first name: ")
+    last_name = input("Enter the employee last name: ")
+
+    user_id = get_user_id(first_name, last_name)
+    if user_id is None:
+        print("Dismissed employee not found")
+    else:
+        kill_workflows(get_workflow_ids(user_id))
     ```
 
 - Go
 
     ```go
-    // Setup in an empty directory — go get will not work without go mod init:
-    //
-    //	go mod init example && go get github.com/bitrix24/b24gosdk
+    // Setup in an empty directory:
+    //  go mod init example && go get github.com/bitrix24/b24gosdk
     //
     // Run:
-    //
-    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
-    //
-    // The example is self-contained and safe: it creates ITS OWN deal, terminates
-    // only the workflows that started on it, and deletes the deal afterwards.
-    // A dismissed employee cannot be created and "dismissed", so it performs steps 1 and 2
-    // for real and shows what it found, while it terminates only its own.
-    // It runs on any portal, nothing needs to be edited.
+    //  B24_WEBHOOK_URL="https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/" go run main.go Klaus Weber
+    //  B24_WEBHOOK_URL="https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/" go run main.go Klaus Weber --confirm
+
     package main
 
     import (
-    	"context"
-    	"encoding/json"
-    	"errors"
-    	"fmt"
-    	"log"
-    	"os"
-    	"time"
+        "context"
+        "encoding/json"
+        "fmt"
+        "os"
 
-    	b24 "github.com/bitrix24/b24gosdk"
+        b24 "github.com/bitrix24/b24gosdk"
     )
 
-    // The first and last name of the dismissed employee for step 1. Empty values mean
-    // "all dismissed employees": a specific person cannot be found on someone else's portal, and the example
-    // must run everywhere without edits.
-    const (
-    	departedName     = ""
-    	departedLastName = ""
-    )
+    type user struct {
+        ID string `json:"ID"`
+    }
+
+    type task struct {
+        WorkflowID string `json:"WORKFLOW_ID"`
+    }
 
     func main() {
-    	if err := run(context.Background()); err != nil {
-    		log.Fatal(err)
-    	}
+        if err := run(); err != nil {
+            fmt.Fprintf(os.Stderr, "%v\n", err)
+            os.Exit(1)
+        }
     }
 
-    func run(ctx context.Context) error {
-    	// The webhook path is a secret, so it comes from the environment, not from the code.
-    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
+    func run() error {
+        if len(os.Args) < 3 {
+            return fmt.Errorf("pass the employee first and last name")
+        }
 
-    	// --- setup: our own deal and the workflows started on it
+        firstName := os.Args[1]
+        lastName := os.Args[2]
+        confirmed := false
+        for _, arg := range os.Args[3:] {
+            if arg == "--confirm" {
+                confirmed = true
+            }
+        }
 
-    	dealID, err := addDeal(ctx, core)
-    	if err != nil {
-    		return err
-    	}
-    	// Deleting a deal also removes the unfinished workflows on it.
-    	defer del(ctx, core, "crm.deal.delete", b24.Params{"id": dealID})
+        ctx := context.Background()
+        core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
 
-    	// Workflows do not start instantly.
-    	time.Sleep(3 * time.Second)
+        userID, err := getUserID(ctx, core, firstName, lastName)
+        if err != nil {
+            return err
+        }
+        if userID == "" {
+            fmt.Println("Dismissed employee not found")
+            return nil
+        }
 
-    	mine, err := workflowsOfDeal(ctx, core, dealID)
-    	if err != nil {
-    		return err
-    	}
-    	fmt.Printf("workflows started on deal %d: %d\n", dealID, len(mine))
+        workflowIDs, err := getWorkflowIDs(ctx, core, userID)
+        if err != nil {
+            return err
+        }
+        if len(workflowIDs) == 0 {
+            fmt.Println("No incomplete workflow tasks found")
+            return nil
+        }
 
-    	// --- step 1: the ID of the dismissed employee
-    	// ACTIVE: 0 selects only dismissed employees. Without this parameter, the search covers
-    	// all employees regardless of status. The first and last names are set by the constants
-    	// departedName and departedLastName at the top of the file; empty values are not put into
-    	// the filter — an empty string matches nobody.
-    	filter := b24.Params{"ACTIVE": 0}
-    	if departedName != "" {
-    		filter["NAME"] = departedName
-    	}
-    	if departedLastName != "" {
-    		filter["LAST_NAME"] = departedLastName
-    	}
+        fmt.Printf("Found workflows: %d\n", len(workflowIDs))
+        for _, workflowID := range workflowIDs {
+            fmt.Printf("Workflow to delete: %s\n", workflowID)
+        }
 
-    	res, err := core.Call(ctx, "user.get", b24.Params{"filter": filter}, b24.WithIdempotent())
-    	if err != nil {
-    		return fmt.Errorf("user.get: %w", err)
-    	}
+        if !confirmed {
+            fmt.Println("Review the list and rerun the example with the --confirm argument to delete the workflows")
+            return nil
+        }
 
-    	// user.get responds in UPPER_SNAKE and sends the ID AS A STRING ("29"):
-    	// b24.ID parses both a number and a string containing a number.
-    	var users []struct {
-    		ID       b24.ID `json:"ID"`
-    		Name     string `json:"NAME"`
-    		LastName string `json:"LAST_NAME"`
-    	}
-    	if err := json.Unmarshal(res.Result, &users); err != nil {
-    		return fmt.Errorf("parse employees: %w", err)
-    	}
-    	fmt.Printf("dismissed employees found: %d\n", len(users))
+        for _, workflowID := range workflowIDs {
+            if err := killWorkflow(ctx, core, workflowID); err != nil {
+                fmt.Printf("Error deleting workflow %s: %v\n", workflowID, err)
+                continue
+            }
 
-    	// --- step 2: the workflow tasks the employee is responsible for
+            fmt.Printf("Workflow %s deleted\n", workflowID)
+        }
 
-    	// If there are no dismissed employees, request the tasks of the current user: the call itself
-    	// does not change because of it, and the scenario remains runnable on any portal.
-    	targets := make([]b24.ID, 0, len(users))
-    	for _, u := range users {
-    		targets = append(targets, u.ID)
-    	}
-    	if len(targets) == 0 {
-    		me, err := currentUser(ctx, core)
-    		if err != nil {
-    			return err
-    		}
-    		targets = append(targets, me)
-    	}
-
-    	for _, userID := range targets {
-    		// STATUS: 0 — only incomplete checklist items.
-    		res, err := core.Call(ctx, "bizproc.task.list", b24.Params{
-    			"filter": b24.Params{"USER_ID": userID, "STATUS": 0},
-    		}, b24.WithIdempotent())
-    		if err != nil {
-    			// bizproc.* is available only to the portal administrator and only on
-    			// paid plans. The code is compared with errors.Is rather than as a string:
-    			// a typo in the literal would compile and silently take a different branch.
-    			if errors.Is(err, b24.ErrMethodNotFound) {
-    				return fmt.Errorf("the business processes module is not available on this portal: %w", err)
-    			}
-    			return fmt.Errorf("bizproc.task.list: %w", err)
-    		}
-
-    		// WORKFLOW_ID is NOT a number: "67e3db8e581121.72266518". Parsing it into
-    		// int destroys the value, so the field stays a string from the list up to
-    		// the termination command.
-    		var tasks []struct {
-    			ID           b24.ID `json:"ID"`
-    			WorkflowID   string `json:"WORKFLOW_ID"`
-    			Name         string `json:"NAME"`
-    			DocumentName string `json:"DOCUMENT_NAME"`
-    		}
-    		if err := json.Unmarshal(res.Result, &tasks); err != nil {
-    			return fmt.Errorf("parse workflow tasks: %w", err)
-    		}
-    		fmt.Printf("employee %d, incomplete workflow tasks: %d\n", userID, len(tasks))
-    		for _, t := range tasks {
-    			fmt.Printf("  workflow task %d %q, workflow %s (%s)\n",
-    				t.ID, t.Name, t.WorkflowID, t.DocumentName)
-    		}
-    	}
-
-    	// --- step 3: terminate the workflows
-
-    	// On a production portal, the WORKFLOW_ID from step 2 is substituted here. The example
-    	// is limited to the workflows of ITS OWN deal: it has no right to terminate
-    	// someone else's workflow on your portal.
-    	if len(mine) == 0 {
-    		fmt.Println("no workflows started on the example deal — there is nothing to terminate")
-    		return nil
-    	}
-
-    	for _, workflowID := range mine {
-    		res, err := core.Call(ctx, "bizproc.workflow.kill", b24.Params{"ID": workflowID})
-    		if err != nil {
-    			// An already finished workflow cannot be terminated — this is not a failure
-    			// of the scenario; the remaining workflows still have to be terminated.
-    			fmt.Fprintf(os.Stderr, "workflow %s: %v\n", workflowID, err)
-    			continue
-    		}
-
-    		// The response is a bare boolean rather than an object.
-    		var killed bool
-    		if err := json.Unmarshal(res.Result, &killed); err != nil {
-    			return fmt.Errorf("parse the bizproc.workflow.kill response: %w", err)
-    		}
-    		fmt.Printf("workflow %s terminated: %v\n", workflowID, killed)
-    	}
-
-    	// bizproc.workflow.terminate stops the workflow but RETAINS the record of
-    	// it; kill deletes the workflow together with its data. They are called the same way.
-    	return nil
+        return nil
     }
 
-    // --- helpers: data setup and cleanup
+    func getUserID(ctx context.Context, core *b24.Core, firstName string, lastName string) (string, error) {
+        res, err := core.Call(ctx, "user.get", b24.Params{
+            "filter": b24.Params{
+                "NAME":      firstName,
+                "LAST_NAME": lastName,
+                "ACTIVE":    0,
+            },
+        }, b24.WithIdempotent())
+        if err != nil {
+            return "", fmt.Errorf("user.get: %w", err)
+        }
 
-    func addDeal(ctx context.Context, core *b24.Core) (b24.ID, error) {
-    	res, err := core.Call(ctx, "crm.deal.add", b24.Params{
-    		"fields": b24.Params{"TITLE": "Deal for the b24gosdk example"},
-    	})
-    	if err != nil {
-    		return 0, fmt.Errorf("crm.deal.add: %w", err)
-    	}
-    	var id b24.ID
-    	return id, json.Unmarshal(res.Result, &id)
+        var users []user
+        if err := json.Unmarshal(res.Result, &users); err != nil {
+            return "", fmt.Errorf("decode user.get: %w", err)
+        }
+
+        if len(users) == 0 {
+            return "", nil
+        }
+
+        return users[0].ID, nil
     }
 
-    // workflowsOfDeal returns the IDs of the workflows started on the deal.
-    func workflowsOfDeal(ctx context.Context, core *b24.Core, dealID b24.ID) ([]string, error) {
-    	// bizproc.workflow.instances accepts parameters in UPPERCASE. SELECT
-    	// here is not decoration: by default the method returns only ID, MODIFIED, and
-    	// OWNED_UNTIL, while a missing field silently unmarshals into a zero value.
-    	res, err := core.Call(ctx, "bizproc.workflow.instances", b24.Params{
-    		"SELECT": []string{"ID", "TEMPLATE_ID", "DOCUMENT_ID", "STARTED"},
-    		"FILTER": b24.Params{"DOCUMENT_ID": fmt.Sprintf("DEAL_%d", dealID)},
-    	}, b24.WithIdempotent())
-    	if err != nil {
-    		if errors.Is(err, b24.ErrAccessDenied) {
-    			return nil, fmt.Errorf("bizproc.* is available only to the portal administrator: %w", err)
-    		}
-    		if errors.Is(err, b24.ErrMethodNotFound) {
-    			return nil, fmt.Errorf("the business processes module is not available on this portal: %w", err)
-    		}
-    		return nil, fmt.Errorf("bizproc.workflow.instances: %w", err)
-    	}
-    	var instances []struct {
-    		ID string `json:"ID"`
-    	}
-    	if err := json.Unmarshal(res.Result, &instances); err != nil {
-    		return nil, fmt.Errorf("parse workflows: %w", err)
-    	}
-    	ids := make([]string, 0, len(instances))
-    	for _, i := range instances {
-    		if i.ID != "" {
-    			ids = append(ids, i.ID)
-    		}
-    	}
-    	return ids, nil
+    func getWorkflowIDs(ctx context.Context, core *b24.Core, userID string) ([]string, error) {
+        res, err := core.Call(ctx, "bizproc.task.list", b24.Params{
+            "select": []string{"ID", "WORKFLOW_ID", "NAME", "DOCUMENT_NAME"},
+            "filter": b24.Params{
+                "USER_ID": userID,
+                "STATUS":  0,
+            },
+        }, b24.WithIdempotent())
+        if err != nil {
+            return nil, fmt.Errorf("bizproc.task.list: %w", err)
+        }
+
+        var tasks []task
+        if err := json.Unmarshal(res.Result, &tasks); err != nil {
+            return nil, fmt.Errorf("decode bizproc.task.list: %w", err)
+        }
+
+        seen := map[string]struct{}{}
+        workflowIDs := []string{}
+        for _, task := range tasks {
+            if _, ok := seen[task.WorkflowID]; ok {
+                continue
+            }
+
+            seen[task.WorkflowID] = struct{}{}
+            workflowIDs = append(workflowIDs, task.WorkflowID)
+        }
+
+        return workflowIDs, nil
     }
 
-    func currentUser(ctx context.Context, core *b24.Core) (b24.ID, error) {
-    	res, err := core.Call(ctx, "user.current", nil, b24.WithIdempotent())
-    	if err != nil {
-    		return 0, fmt.Errorf("user.current: %w", err)
-    	}
-    	var u struct {
-    		ID b24.ID `json:"ID"`
-    	}
-    	if err := json.Unmarshal(res.Result, &u); err != nil {
-    		return 0, err
-    	}
-    	return u.ID, nil
-    }
+    func killWorkflow(ctx context.Context, core *b24.Core, workflowID string) error {
+        _, err := core.Call(ctx, "bizproc.workflow.kill", b24.Params{
+            "ID": workflowID,
+        })
+        if err != nil {
+            return fmt.Errorf("bizproc.workflow.kill: %w", err)
+        }
 
-    // del removes what was created. A cleanup error is printed but not returned: it must not
-    // mask the real error of the scenario.
-    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
-    	if _, err := core.Call(ctx, method, params); err != nil {
-    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
-", method, err)
-    	}
+        return nil
     }
     ```
 
 {% endlist %}
+
+## Check the Result
+
+In the interface, check the dismissed employee's tasks: the tasks of deleted workflows must no longer be present. If you used `bizproc.workflow.terminate` instead of deletion, the workflow must stop, but the workflow launch record must remain.
+
+Through REST, repeat the [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) request with the same `USER_ID` and `STATUS = 0`.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    const checkResponse = await $b24.actions.v2.call.make({
+        method: 'bizproc.task.list',
+        params: {
+            select: ['ID', 'WORKFLOW_ID'],
+            filter: { USER_ID: userId, STATUS: 0 },
+        },
+        requestId: 'bizproc-task-list-check',
+    })
+
+    console.log(checkResponse.getData().result.map((task) => task.WORKFLOW_ID))
+    ```
+
+- PHP
+
+    ```php
+    $checkResponse = $b24->core->call('bizproc.task.list', [
+        'select' => ['ID', 'WORKFLOW_ID'],
+        'filter' => ['USER_ID' => $userId, 'STATUS' => 0],
+    ]);
+
+    foreach ($checkResponse->getResponseData()->getResult() as $task) {
+        echo $task['WORKFLOW_ID'] . PHP_EOL;
+    }
+    ```
+
+- Python
+
+    ```python
+    check_result = client.bizproc.task.list(
+        select=["ID", "WORKFLOW_ID"],
+        filter={"USER_ID": user_id, "STATUS": 0},
+    ).response.result
+
+    print([task["WORKFLOW_ID"] for task in check_result])
+    ```
+
+- Go
+
+    ```go
+    res, err := core.Call(ctx, "bizproc.task.list", b24.Params{
+        "select": []string{"ID", "WORKFLOW_ID"},
+        "filter": b24.Params{
+            "USER_ID": userID,
+            "STATUS":  0,
+        },
+    }, b24.WithIdempotent())
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    var tasks []struct {
+        WorkflowID string `json:"WORKFLOW_ID"`
+    }
+    if err := json.Unmarshal(res.Result, &tasks); err != nil {
+        log.Fatal(err)
+    }
+
+    for _, task := range tasks {
+        log.Println(task.WorkflowID)
+    }
+    ```
+
+{% endlist %}
+
+The scenario is successful if the response does not contain the `WORKFLOW_ID` values that were passed to `bizproc.workflow.kill`.
+
+## Errors and Diagnostics
+
+If the method returns an error, check the request data.
+
+#|
+|| **Error Code or Message** | **Cause and action** ||
+|| `ACCESS_DENIED` | The method was called by a user without the required permissions, or the webhook does not have the required scope ||
+|| `ERROR_WRONG_WORKFLOW_ID` | An empty value or a non-string value was passed in `ID` ||
+|| An empty `result` array in `user.get` | The dismissed employee with the specified first and last name was not found ||
+|| An empty `result` array in `bizproc.task.list` | The employee has no incomplete workflow tasks ||
+|| `bizproc.*` methods are unavailable | Verify that business processes are available in Bitrix24 and that the request is executed by an administrator ||
+|#
+
+Repeat the scenario from the step where the error occurred. If the error occurred while deleting one workflow, verify its `WORKFLOW_ID` and continue processing the rest.
+
+## What to Consider
+
+- `bizproc.workflow.kill` deletes the workflow together with its data
+- `bizproc.workflow.terminate` stops the workflow and keeps the record of its launch
+- the user identifier from [user.get](../../api-reference/user/user-get.md) is passed as `USER_ID` to the [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) method
+- `WORKFLOW_ID` from [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md) is passed as `ID` to the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) method
+- `WORKFLOW_ID` is a string like `67e3db8e581121.72266518`; do not convert it to a number
+
+## Continue Learning
+
+- [Get the List of Users by Filter](../../api-reference/user/user-get.md)
+- [Get the List of Workflow Tasks](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md)
+- [Delete a Running Workflow](../../api-reference/bizproc/bizproc-workflow-kill.md)
+- [Stop an Active Workflow](../../api-reference/bizproc/bizproc-workflow-terminate.md)

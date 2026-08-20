@@ -1,34 +1,58 @@
 # How to Create a Task with an Attached File
 
-> Scope: [`disk`, `tasks`](../../api-reference/scopes/permissions.md)
+> Scope: [`disk`](../../api-reference/scopes/permissions.md), [`task`](../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: users with access to the Drive and Task sections
+> Who can execute the methods: to complete the whole scenario, you need permission to add a file to a Drive folder and create a task
+>
+> - [disk.folder.uploadFile](../../api-reference/disk/folder/disk-folder-upload-file.md) — a user with the Add permission for the Drive folder
+> - [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) — any user
+> - [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) — a user with access to the task
+> - [disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md) — a user with the Read permission for the file
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../ai-tools/mcp.md) so that the assistant uses the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-Bitrix24 has two types of file fields: 
+Bitrix24 has two types of file fields:
 
-* **File.** This field is not linked to Drive; files are uploaded directly via a [Base64 format string](../../api-reference/files/how-to-upload-files.md)
-* **File (Drive).** This field is linked to Drive and stores a Drive object ID. Base64 format is not processed in this field, so the file must first be uploaded to Bitrix24 Drive
+- **File.** This field is not linked to Drive. Files are uploaded directly through a [Base64 format string](../../api-reference/files/how-to-upload-files.md)
+- **File (Drive).** This field is linked to Drive. The field stores the Drive object ID. Base64 format is not processed in this field, so the file must first be uploaded to Bitrix24 Drive
 
-To create a task with a file, perform the following two methods sequentially:
+To create a task with a file, perform these two methods in sequence:
 
-1. [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) — uploads a file to Drive
+1. [disk.folder.uploadFile](../../api-reference/disk/folder/disk-folder-upload-file.md) — uploads a file to Drive
 2. [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) — creates a task
-   
-## 1. Upload a File to Bitrix24 Drive
 
-To upload a file to Drive, use the [disk.folder.uploadfile](../../api-reference/disk/folder/disk-folder-upload-file.md) method with the following parameters:
+## Before You Start
 
-* `id` — specify the value of `1739` — the Drive folder ID where the file will be uploaded
-* `data` — specify the filename `NAME`; the file will be saved on Bitrix24 Drive with this name
-* `fileContent` — pass the file in the format `['filename.extension', 'file as a Base64 encoded string']`
+You need the following to run the example:
 
-Uploading a file to Drive is a required step because the `UF_TASK_WEBDAV_FILES` field in tasks only accepts Drive file IDs.
+- an inbound webhook with the `disk` and `task` scopes
+- the Drive folder identifier `folderId` where the file should be uploaded. You can get a folder using [disk.storage.getchildren](../../api-reference/disk/storage/disk-storage-get-children.md) or [disk.folder.getchildren](../../api-reference/disk/folder/disk-folder-get-children.md)
+- the task assignee identifier `RESPONSIBLE_ID`
+- the file to attach to the task
+- the file name with an extension, for example `ava555.jpg`
+- the file content in Base64 format without the `data:*/*;base64,` prefix
+
+The webhook executes requests with the permissions of the user who created it. Do not publish the webhook secret in client-side code or repositories. Store it in environment variables.
+
+For server-side JS examples with `B24Hook`, use Node.js 18, 20, 22, or later. For new projects, use 22 or later. B24JsSDK is an ES module: save the code in a `.mjs` file or add `"type": "module"` to `package.json`.
+
+For b24pysdk examples, use Python 3.9 or later.
+
+The Go examples assume that `ctx` and `core` are already created, the file has been read into the `content` variable, `folderID` and `userID` are known, and `base64`, `encoding/json`, `fmt`, `strconv`, and `github.com/bitrix24/b24gosdk` are imported.
+
+## 1. Upload the File to Bitrix24 Drive
+
+Use the [disk.folder.uploadFile](../../api-reference/disk/folder/disk-folder-upload-file.md) method with the following parameters:
+
+- `id` — specify the value `1739`, the identifier of the Drive folder where the file is uploaded
+- `data` — specify the file name in `NAME`. The file will be saved in Bitrix24 Drive with this name
+- `fileContent` — pass the file in the format `['file_name.extension', 'file as a Base64-encoded string']`
+
+Uploading the file to Drive is required because the `UF_TASK_WEBDAV_FILES` field in tasks accepts only Drive file IDs.
 
 {% include [Note on examples](../../_includes/examples.md) %}
 
@@ -39,10 +63,11 @@ Uploading a file to Drive is a required step because the `UF_TASK_WEBDAV_FILES` 
     ```javascript
     import { B24Hook } from '@bitrix24/b24jssdk'
 
-    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
 
     const response = await $b24.actions.v2.call.make({
-        method: 'disk.folder.uploadfile',
+        method: 'disk.folder.uploadFile',
         params: {
             id: 1739,
             data: {
@@ -93,12 +118,11 @@ Uploading a file to Drive is a required step because the `UF_TASK_WEBDAV_FILES` 
     ```python
     from b24pysdk import BitrixWebhook, Client
 
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="user_id/webhook_key",
     )
+    client = Client(token)
 
     result = client.disk.folder.uploadfile(
         bitrix_id=1739,
@@ -115,75 +139,64 @@ Uploading a file to Drive is a required step because the `UF_TASK_WEBDAV_FILES` 
 - Go
 
     ```go
-    // fileContent is the file transport in Bitrix24: an array of two elements,
-    // [file name, content in base64]. The request body is JSON anyway, so a regular
-    // []string is serialized exactly as the method expects: neither multipart nor manual
-    // url encoding is needed. Base64 inflates the data by about a third —
-    // this path is for small files.
-    res, err := core.Call(ctx, "disk.folder.uploadfile", b24.Params{
-    	"id":          folderID,
-    	"data":        b24.Params{"NAME": "ava555.jpg"},
-    	"fileContent": []string{"ava555.jpg", base64.StdEncoding.EncodeToString(content)},
-    	// Re-running the example must not fail because of a name collision.
-    	"generateUniqueName": true,
+    // fileContent is the Bitrix24 file transport: an array with two elements,
+    // [file name, Base64 content]. The request body is already JSON, so a regular
+    // []string is serialized exactly as the method expects: no multipart or manual
+    // URL encoding is required. Base64 increases the data size by about one third,
+    // so use this path for small files.
+    res, err := core.Call(ctx, "disk.folder.uploadFile", b24.Params{
+        "id":          folderID,
+        "data":        b24.Params{"NAME": "report.txt"},
+        "fileContent": []string{"report.txt", base64.StdEncoding.EncodeToString(content)},
+        // Rerunning the example should not fail because of matching names.
+        "generateUniqueName": true,
     })
     if err != nil {
-    	return fmt.Errorf("disk.folder.uploadfile: %w", err)
+        return fmt.Errorf("disk.folder.uploadFile: %w", err)
     }
 
     var file struct {
-    	// ID is the ID of the DRIVE OBJECT, and it is exactly what fields of type
-    	// "file (Drive)" accept.
-    	ID b24.ID `json:"ID"`
-    	// FILE_ID is the internal file ID. If you substitute it into a field
-    	// of the task, the file either will not attach or the wrong one will.
-    	FileID b24.ID `json:"FILE_ID"`
-    	Name   string `json:"NAME"`
+        // ID is the Drive object identifier accepted by fields of the File (Drive) type.
+        ID b24.ID `json:"ID"`
+        // FILE_ID is the internal file identifier. If it is passed to the task field,
+        // the file will either not be attached or a different file will be attached.
+        FileID b24.ID `json:"FILE_ID"`
+        Name   string `json:"NAME"`
     }
     if err := json.Unmarshal(res.Result, &file); err != nil {
-    	return fmt.Errorf("parse the uploaded file: %w", err)
+        return fmt.Errorf("decode uploaded file: %w", err)
     }
     ```
 
 {% endlist %}
 
-As a result of uploading the file to Drive, you will receive two different file ID values:
+As a result of uploading the file to Drive, you get two different file ID values:
 
-* `FILE_ID`: `28073` — the internal file ID value
-* `ID`: `6687` — the Drive object ID; use this value in methods when working with "File (Drive)" type fields. If you pass the value `FILE_ID` in a request to change a "File (Drive)" field, the file will either not be attached to the task because no Drive object exists with that ID, or the wrong file will be attached
+- `FILE_ID`: `28073` — the internal file ID
+- `ID`: `6687` — the Drive object ID. Use this value when working with File (Drive) fields
+
+If you pass `FILE_ID` instead of `ID` in a request that updates a File (Drive) field, the file will either not be attached because there is no Drive object with that ID, or a different file will be attached.
 
 ```json
 {
     "result": {
         "ID": 6687,
         "NAME": "ava555.jpg",
-        "CODE": null,
-        "STORAGE_ID": "1",
         "TYPE": "file",
         "PARENT_ID": "1739",
-        "DELETED_TYPE": 0,
-        "GLOBAL_CONTENT_VERSION": 1,
         "FILE_ID": 28073,
-        "SIZE": "405559",
-        "CREATE_TIME": "2024-11-01T17:00:55+03:00",
-        "UPDATE_TIME": "2024-11-01T17:00:55+03:00",
-        "DELETE_TIME": null,
-        "CREATED_BY": "1",
-        "UPDATED_BY": "1",
-        "DELETED_BY": null,
-        "DOWNLOAD_URL": "https://your-domain.bitrix24.com/rest/download.json?sessid=9dd90ed5a58ccc41af81f5f0043739db&token=disk%7CaWQ9NjY4NyZfPTJ5ZXdvN2Fsb09SMGw1b0FHTkRMSGR5MFJkN1pLTjNS%7CImRvd25sb2FkfGRpc2t8YVdROU5qWTROeVpmUFRKNVpYZHZOMkZzYjA5U01HdzFiMEZIVGtSTVNHUjVNRkprTjFwTFRqTlN8OWRkOTBlZDVhNThjY2M0MWFmODFmNWYwMDQzNzM5ZGIi.Lup1vDbibL6twiCPfCMFnLSoDLleNX0cfMHGv5PFaJw%3D",
-        "DETAIL_URL": "https://your-domain.bitrix24.com/company/personal/user/1/disk/file/Created files/New folder for process test/ava555.jpg"
+        "SIZE": "405559"
     }
 }
 ```
-## 2. Create a Task with a File
 
-To create a task, use the [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) method with the following parameters:
+## 2. Create the Task with the File
 
-* `UF_TASK_WEBDAV_FILES` — specify the value of `n6687`. This is the file ID from the previous method's result, to which we add a prefix `n` to upload the file to the field
-* `TITLE` — the task name, a required field. The task will not be created without a name
-* `CREATED_BY` — the task creator ID; this field cannot be empty. If left blank, the person sending the request will automatically become the creator
-* `RESPONSIBLE_ID` — the task assignee ID, a required field. The task will not be created without an assignee
+Use the [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) method with the following parameters:
+
+- `UF_TASK_WEBDAV_FILES` — specify the value `n6687`. This is the file ID from the result of the previous method with the `n` prefix added for uploading the file into the field
+- `TITLE` — the task title, a required field. The task will not be created without a title
+- `RESPONSIBLE_ID` — the assignee ID, a required field. The task will not be created without an assignee
 
 {% list tabs %}
 
@@ -249,594 +262,233 @@ To create a task, use the [tasks.task.add](../../api-reference/tasks/tasks-task-
 - Go
 
     ```go
-    // The "n" prefix before a Drive object ID means "attach exactly
-    // this existing object". The method will not accept a bare number. The field is always
-    // an array, even when there is a single file.
+    // The "n" prefix before the Drive object identifier means "attach this existing
+    // object". The method will not accept a bare number. The field is always an
+    // array, even when there is only one file.
     res, err = core.Call(ctx, "tasks.task.add", b24.Params{
-    	"fields": b24.Params{
-    		"TITLE":                "task for test",
-    		"CREATED_BY":           userID,
-    		"RESPONSIBLE_ID":       userID,
-    		"UF_TASK_WEBDAV_FILES": []string{"n" + strconv.FormatInt(int64(file.ID), 10)},
-    	},
+        "fields": b24.Params{
+            "TITLE":                "Task with file (b24gosdk)",
+            "RESPONSIBLE_ID":       userID,
+            "UF_TASK_WEBDAV_FILES": []string{"n" + strconv.FormatInt(int64(file.ID), 10)},
+        },
     })
     if err != nil {
-    	return fmt.Errorf("tasks.task.add: %w", err)
+        return fmt.Errorf("tasks.task.add: %w", err)
     }
 
-    // tasks.* wraps the response in an object with the task key — unlike crm.*.add,
-    // which responds with a bare ID. And here the ID arrives
-    // AS A STRING ("3711"): b24.ID parses both spellings, a plain int does not.
+    // tasks.* wraps the response in a task object, unlike crm.*.add, which returns
+    // a bare identifier. The identifier is returned as a string ("3711"): b24.ID
+    // handles both formats, while a regular int does not.
     var out struct {
-    	Task struct {
-    		ID    b24.ID `json:"id"`
-    		Title string `json:"title"`
-    	} `json:"task"`
+        Task struct {
+            ID    b24.ID `json:"id"`
+            Title string `json:"title"`
+        } `json:"task"`
     }
     if err := json.Unmarshal(res.Result, &out); err != nil {
-    	return fmt.Errorf("parse the created task: %w", err)
+        return fmt.Errorf("decode created task: %w", err)
     }
     ```
 
 {% endlist %}
 
-We have created a task with ID `3711`. 
+The task is created with ID `3711`.
 
 ```json
 {
     "result": {
         "task": {
             "id": "3711",
-            "parentId": null,
             "title": "task for test",
-            "description": "",
-            "mark": null,
-            "priority": "1",
-            "multitask": "N",
-            "notViewed": "N",
-            "replicate": "N",
-            "stageId": "0",
-            "createdBy": "1",
-            "createdDate": "2024-11-02T10:06:08+02:00",
             "responsibleId": "1",
-            "changedBy": "1",
-            "changedDate": "2024-11-02T10:06:08+02:00",
-            "statusChangedBy": null,
-            "closedBy": null,
-            "closedDate": null,
-            "activityDate": "2024-11-02T10:06:08+02:00",
-            "dateStart": null,
-            "deadline": null,
-            "startDatePlan": null,
-            "endDatePlan": null,
-            "guid": "{c2794da9-c7fe-404d-a709-ddab4578717a}",
-            "xmlId": null,
-            "commentsCount": null,
-            "serviceCommentsCount": null,
-            "allowChangeDeadline": "N",
-            "allowTimeTracking": "N",
-            "taskControl": "N",
-            "addInReport": "N",
-            "forkedByTemplateId": null,
-            "timeEstimate": "0",
-            "timeSpentInLogs": null,
-            "matchWorkTime": "N",
-            "forumTopicId": null,
-            "forumId": null,
-            "siteId": "s1",
-            "subordinate": "Y",
-            "exchangeModified": null,
-            "exchangeId": null,
-            "outlookVersion": "1",
-            "viewedDate": null,
-            "sorting": null,
-            "durationFact": null,
-            "isMuted": "N",
-            "isPinned": "N",
-            "isPinnedInGroup": "N",
-            "flowId": null,
-            "descriptionInBbcode": "Y",
-            "status": "2",
-            "statusChangedDate": "2024-11-02T10:06:08+02:00",
-            "durationPlan": null,
-            "durationType": "days",
-            "favorite": "N",
-            "groupId": "0",
-            "auditors": [],
-            "accomplices": [],
-            "checklist": [],
-            "group": [],
-            "creator": {
-                "id": "1",
-                "name": "Viola",
-                "link": "/company/personal/user/1/",
-                "icon": "https://your-domain.bitrix24.com/b13743910/resize_cache/2267/c0120a8d7c10d63c83e32398d1ec4d9e/main/c7b/c7bd44b1babaa5448125dd97d038ce1b/d5fb56b94dc2c3cd8c006a2c595a4895.jpg",
-                "workPosition": ""
-            },
-            "responsible": {
-                "id": "1",
-                "name": "Viola",
-                "link": "/company/personal/user/1/",
-                "icon": "https://your-domain.bitrix24.com/b13743910/resize_cache/2267/c0120a8d7c10d63c83e32398d1ec4d9e/main/c7b/c7bd44b1babaa5448125dd97d038ce1b/d5fb56b94dc2c3cd8c006a2c595a4895.jpg",
-                "workPosition": ""
-            },
-            "accomplicesData": [],
-            "auditorsData": [],
-            "newCommentsCount": 0,
-            "action": {
-                "accept": false,
-                "decline": false,
-                "complete": true,
-                "approve": false,
-                "disapprove": false,
-                "start": true,
-                "pause": false,
-                "delegate": true,
-                "remove": true,
-                "edit": true,
-                "defer": true,
-                "renew": false,
-                "create": true,
-                "changeDeadline": true,
-                "checklistAddItems": true,
-                "addFavorite": true,
-                "deleteFavorite": false,
-                "rate": true,
-                "edit.originator": false,
-                "checklist.reorder": true,
-                "elapsedtime.add": true,
-                "dayplan.timer.toggle": false,
-                "edit.plan": true,
-                "checklist.add": true,
-                "favorite.add": true,
-                "favorite.delete": false
-            },
-            "checkListTree": {
-                "nodeId": 0,
-                "fields": {
-                    "id": null,
-                    "copiedId": null,
-                    "entityId": null,
-                    "userId": 1,
-                    "createdBy": null,
-                    "parentId": null,
-                    "title": "",
-                    "sortIndex": null,
-                    "displaySortIndex": "",
-                    "isComplete": false,
-                    "isImportant": false,
-                    "completedCount": 0,
-                    "members": [],
-                    "attachments": []
-                },
-                "action": [],
-                "descendants": []
-            },
-            "checkListCanAdd": true
+            "status": "2"
         }
     }
 }
 ```
-The resulting output does not contain information about the task's files. To verify whether the file was successfully attached to the task, call the [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) method, specifying the `UF_TASK_WEBDAV_FILES` field in `SELECT`.
 
-As a result of [tasks.task.get](../../api-reference/tasks/tasks-task-get.md), you will receive the ID of the record representing the attachment of the Drive file to the task — this is the link ID that connects the task and the Drive file. To retrieve information about the file using the link ID, use the [disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md) method. 
+The response does not contain task file details. To verify that the file was attached successfully, call the [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) method with the `UF_TASK_WEBDAV_FILES` field in `SELECT`.
 
-## Code Example
+The [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) method returns the ID of the record that represents the link between the Drive file and the task. To get file data by that link ID, use the [disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md) method.
+
+## Check the Result
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    import { B24Hook } from '@bitrix24/b24jssdk'
+    const checkResponse = await $b24.actions.v2.call.make({
+        method: 'tasks.task.get',
+        params: {
+            taskId: 3711,
+            select: ['ID', 'TITLE', 'UF_TASK_WEBDAV_FILES']
+        },
+        requestId: 'task-get-check'
+    })
 
-    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/')
-
-    // Function for uploading a file
-    async function uploadFileToDisk() {
-        // Folder ID where you want to upload the file
-        const folderId = 'your_folder_ID';
-        // File name and its content in Base64 format
-        const fileName = 'your_file_name';
-        const fileContentBase64 = 'your_file_content_Base64';
-
-        // Calling the disk.folder.uploadfile method
-        const response = await $b24.actions.v2.call.make({
-            method: 'disk.folder.uploadfile',
-            params: {
-                id: folderId,
-                data: {
-                    NAME: fileName
-                },
-                fileContent: [
-                    fileName,
-                    fileContentBase64
-                ]
-            },
-            requestId: 'disk-uploadfile'
-        });
-
-        if (!response.isSuccess) {
-            console.error('Error while uploading the file:', response.getErrorMessages().join('; '));
-            return;
-        }
-
-        console.log('File uploaded successfully!', response.getData().result);
-        const fileId = response.getData().result.ID; // Using the ID from the result
-        await createTaskWithFile(fileId);
+    if (!checkResponse.isSuccess) {
+        throw new Error(checkResponse.getErrorMessages().join('; '))
     }
 
-    // Function for creating a task with an attached file
-    async function createTaskWithFile(fileId) {
-        // Task parameters
-        const taskTitle = 'your_task_name';
-        const taskDescription = 'your_task_description';
-        const responsibleId = 'your_responsible_ID';
+    const task = checkResponse.getData().result.task
+    const attachmentId = task.ufTaskWebdavFiles[0]
 
-        // Calling the tasks.task.add method
-        const response = await $b24.actions.v2.call.make({
-            method: 'tasks.task.add',
-            params: {
-                fields: {
-                    TITLE: taskTitle,
-                    DESCRIPTION: taskDescription,
-                    RESPONSIBLE_ID: responsibleId,
-                    UF_TASK_WEBDAV_FILES: ['n' + fileId] // Adding prefix 'n' to the file ID
-                }
-            },
-            requestId: 'task-add'
-        });
+    const fileResponse = await $b24.actions.v2.call.make({
+        method: 'disk.attachedObject.get',
+        params: {
+            id: attachmentId
+        },
+        requestId: 'disk-attached-object-get'
+    })
 
-        if (!response.isSuccess) {
-            console.error('Error while creating the task:', response.getErrorMessages().join('; '));
-            return;
-        }
-
-        console.log('Task created successfully!', response.getData().result);
+    if (!fileResponse.isSuccess) {
+        throw new Error(fileResponse.getErrorMessages().join('; '))
     }
 
-    // Calling the function to upload a file and create a task
-    await uploadFileToDisk();
-
-    $b24.destroy();
+    console.log(fileResponse.getData().result)
     ```
 
 - PHP
 
     ```php
-    require_once 'vendor/autoload.php';
+    $task = $serviceBuilder->core->call(
+        'tasks.task.get',
+        [
+            'taskId' => 3711,
+            'select' => ['ID', 'TITLE', 'UF_TASK_WEBDAV_FILES']
+        ]
+    )->getResponseData()->getResult()['task'];
 
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Bitrix24\SDK\Core\Exceptions\BaseException;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
+    $attachmentId = $task['ufTaskWebdavFiles'][0];
 
-    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+    $file = $serviceBuilder->core->call(
+        'disk.attachedObject.get',
+        [
+            'id' => $attachmentId
+        ]
+    )->getResponseData()->getResult();
 
-    // Function for uploading a file
-    function uploadFileToDisk($serviceBuilder) {
-        // Folder ID where you want to upload the file
-        $folderId = 'your_folder_ID';
-        // File name that you want to upload
-        $fileName = 'your_file_name';
-        // Path to the file on your file system
-        $filePath = '/path/to/your/file';
-
-        // Reading the file content and encoding it in Base64
-        $fileContentBase64 = base64_encode(file_get_contents($filePath));
-
-        // Calling the disk.folder.uploadfile method
-        try {
-            $result = $serviceBuilder->getDiskScope()->folder()->uploadFile(
-                (int)$folderId,
-                ['NAME' => $fileName],
-                [
-                    $fileName,
-                    $fileContentBase64
-                ]
-            );
-        } catch (BaseException $e) {
-            echo 'Error while uploading the file: ' . $e->getMessage();
-            return;
-        }
-
-        echo 'File uploaded successfully!';
-        $fileId = $result->getId(); // Using the ID from the result
-        createTaskWithFile($serviceBuilder, $fileId);
-    }
-
-    // Function for creating a task with an attached file
-    function createTaskWithFile($serviceBuilder, $fileId) {
-        // Task parameters
-        $taskTitle = 'your_task_name';
-        $taskDescription = 'your_task_description';
-        $responsibleId = 'your_responsible_ID';
-
-        // Calling the tasks.task.add method
-        try {
-            $serviceBuilder->core->call(
-                'tasks.task.add',
-                [
-                    'fields' => [
-                        'TITLE' => $taskTitle,
-                        'DESCRIPTION' => $taskDescription,
-                        'RESPONSIBLE_ID' => $responsibleId,
-                        'UF_TASK_WEBDAV_FILES' => ['n' . $fileId] // Adding prefix 'n' to the file ID
-                    ]
-                ]
-            );
-        } catch (BaseException $e) {
-            echo 'Error while creating the task: ' . $e->getMessage();
-            return;
-        }
-
-        echo 'Task created successfully!';
-    }
-
-    // Calling the function to upload a file and create a task
-    uploadFileToDisk($serviceBuilder);
+    print_r($file);
     ```
 
 - Python
 
     ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
+    task = client.tasks.task.get(
+        bitrix_id=3711,
+        select=["ID", "TITLE", "UF_TASK_WEBDAV_FILES"],
+    ).response.result["task"]
 
-    def upload_file_to_drive(client):
-        folder_id = "your_folder_ID"
-        file_name = "your_file_name"
-        file_content_base64 = "your_file_content_Base64"
+    attachment_id = task["ufTaskWebdavFiles"][0]
 
-        try:
-            result = client.disk.folder.uploadfile(
-                bitrix_id=folder_id,
-                data={"NAME": file_name},
-                file_content=[file_name, file_content_base64],
-            ).response.result
-        except BitrixAPIError as error:
-            print(f"File upload error: {error}")
-        else:
-            print("File uploaded successfully!")
-            file_id = result["ID"]
-            create_task_with_file(client, file_id)
+    file = token.call_method(
+        "disk.attachedObject.get",
+        {
+            "id": attachment_id,
+        },
+    )["result"]
 
-    def create_task_with_file(client, file_id):
-        task_title = "your_task_name"
-        task_description = "your_task_description"
-        responsible_id = "your_responsible_ID"
-
-        try:
-            client.tasks.task.add(
-                fields={
-                    "TITLE": task_title,
-                    "DESCRIPTION": task_description,
-                    "RESPONSIBLE_ID": responsible_id,
-                    "UF_TASK_WEBDAV_FILES": [f"n{file_id}"],
-                },
-            ).response
-        except BitrixAPIError as error:
-            print(f"Task creation error: {error}")
-        else:
-            print("Task created successfully!")
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    upload_file_to_drive(client)
+    print(file)
     ```
 
 - Go
 
     ```go
-    // Setup in an empty directory — go get will not work without go mod init:
-    //
-    //	go mod init example && go get github.com/bitrix24/b24gosdk
-    //
-    // Run:
-    //
-    //	export B24_WEBHOOK_URL='https://your-portal.bitrix24.com/rest/1/token/' && go run .
-    //
-    // The example is self-contained: it finds a folder on Drive itself, uploads a file there,
-    // creates a task with this file, verifies the attachment, and cleans up after itself.
-    // It runs on any portal, nothing needs to be edited.
-    package main
-
-    import (
-    	"context"
-    	"encoding/base64"
-    	"encoding/json"
-    	"fmt"
-    	"log"
-    	"os"
-    	"strconv"
-
-    	b24 "github.com/bitrix24/b24gosdk"
-    )
-
-    func main() {
-    	if err := run(context.Background()); err != nil {
-    		log.Fatal(err)
-    	}
+    res, err = core.Call(ctx, "tasks.task.get", b24.Params{
+        "taskId": out.Task.ID,
+        "select": []string{"ID", "TITLE", "UF_TASK_WEBDAV_FILES"},
+    })
+    if err != nil {
+        return fmt.Errorf("tasks.task.get: %w", err)
     }
 
-    func run(ctx context.Context) error {
-    	// The webhook path is a secret, so it comes from the environment, not from the code.
-    	core := b24.NewClient(os.Getenv("B24_WEBHOOK_URL")).Core()
-
-    	// --- setup: whose Drive and which folder
-
-    	userID, err := currentUser(ctx, core)
-    	if err != nil {
-    		return err
-    	}
-    	folderID, err := rootFolder(ctx, core, userID)
-    	if err != nil {
-    		return err
-    	}
-
-    	// --- step 1: upload the file to Drive
-
-    	content := []byte("Quarterly report.\nCreated by the b24gosdk example.\n")
-    	// fileContent is the file transport in Bitrix24: an array of two elements,
-    	// [file name, content in base64]. The request body is JSON anyway, so a regular
-    	// []string is serialized exactly as the method expects: neither multipart nor manual
-    	// url encoding is needed. Base64 inflates the data by about a third —
-    	// this path is for small files.
-    	res, err := core.Call(ctx, "disk.folder.uploadfile", b24.Params{
-    		"id":          folderID,
-    		"data":        b24.Params{"NAME": "ava555.jpg"},
-    		"fileContent": []string{"ava555.jpg", base64.StdEncoding.EncodeToString(content)},
-    		// Re-running the example must not fail because of a name collision.
-    		"generateUniqueName": true,
-    	})
-    	if err != nil {
-    		return fmt.Errorf("disk.folder.uploadfile: %w", err)
-    	}
-
-    	var file struct {
-    		// ID is the ID of the DRIVE OBJECT, and it is exactly what fields of type
-    		// "file (Drive)" accept.
-    		ID b24.ID `json:"ID"`
-    		// FILE_ID is the internal file ID. If you substitute it into a field
-    		// of the task, the file either will not attach or the wrong one will.
-    		FileID b24.ID `json:"FILE_ID"`
-    		Name   string `json:"NAME"`
-    	}
-    	if err := json.Unmarshal(res.Result, &file); err != nil {
-    		return fmt.Errorf("parse the uploaded file: %w", err)
-    	}
-    	defer del(ctx, core, "disk.file.delete", b24.Params{"id": file.ID})
-    	fmt.Printf("file %q uploaded: ID=%d, FILE_ID=%d\n", file.Name, file.ID, file.FileID)
-
-    	// --- step 2: create a task with this file
-    	// The "n" prefix before a Drive object ID means "attach exactly
-    	// this existing object". The method will not accept a bare number. The field is always
-    	// an array, even when there is a single file.
-    	res, err = core.Call(ctx, "tasks.task.add", b24.Params{
-    		"fields": b24.Params{
-    			"TITLE":                "task for test",
-    			"CREATED_BY":           userID,
-    			"RESPONSIBLE_ID":       userID,
-    			"UF_TASK_WEBDAV_FILES": []string{"n" + strconv.FormatInt(int64(file.ID), 10)},
-    		},
-    	})
-    	if err != nil {
-    		return fmt.Errorf("tasks.task.add: %w", err)
-    	}
-
-    	// tasks.* wraps the response in an object with the task key — unlike crm.*.add,
-    	// which responds with a bare ID. And here the ID arrives
-    	// AS A STRING ("3711"): b24.ID parses both spellings, a plain int does not.
-    	var out struct {
-    		Task struct {
-    			ID    b24.ID `json:"id"`
-    			Title string `json:"title"`
-    		} `json:"task"`
-    	}
-    	if err := json.Unmarshal(res.Result, &out); err != nil {
-    		return fmt.Errorf("parse the created task: %w", err)
-    	}
-    	defer del(ctx, core, "tasks.task.delete", b24.Params{"taskId": out.Task.ID})
-    	fmt.Printf("task %d %q created\n", out.Task.ID, out.Task.Title)
-
-    	// --- check: the file is actually attached
-
-    	return checkAttachment(ctx, core, out.Task.ID)
+    var taskCheck struct {
+        Task struct {
+            ID                b24.ID   `json:"id"`
+            Title             string   `json:"title"`
+            UfTaskWebdavFiles []b24.ID `json:"ufTaskWebdavFiles"`
+        } `json:"task"`
+    }
+    if err := json.Unmarshal(res.Result, &taskCheck); err != nil {
+        return fmt.Errorf("decode task: %w", err)
+    }
+    if len(taskCheck.Task.UfTaskWebdavFiles) == 0 {
+        return fmt.Errorf("the task has no attached files")
     }
 
-    // --- helpers: data setup, verification, and cleanup
-
-    func currentUser(ctx context.Context, core *b24.Core) (b24.ID, error) {
-    	res, err := core.Call(ctx, "user.current", nil, b24.WithIdempotent())
-    	if err != nil {
-    		return 0, fmt.Errorf("user.current: %w", err)
-    	}
-    	var u struct {
-    		ID b24.ID `json:"ID"`
-    	}
-    	if err := json.Unmarshal(res.Result, &u); err != nil {
-    		return 0, err
-    	}
-    	return u.ID, nil
+    res, err = core.Call(ctx, "disk.attachedObject.get", b24.Params{
+        "id": taskCheck.Task.UfTaskWebdavFiles[0],
+    })
+    if err != nil {
+        return fmt.Errorf("disk.attachedObject.get: %w", err)
     }
 
-    // rootFolder returns the root folder of the user's personal storage, and if
-    // it does not exist — the shared portal storage. The page substitutes a ready-made number here
-    // for the folder; on someone else's portal such a number does not exist, so the example looks it up.
-    func rootFolder(ctx context.Context, core *b24.Core, userID b24.ID) (b24.ID, error) {
-    	for _, filter := range []b24.Params{
-    		{"ENTITY_TYPE": "user", "ENTITY_ID": userID},
-    		{"ENTITY_TYPE": "common"},
-    	} {
-    		res, err := core.Call(ctx, "disk.storage.getlist",
-    			b24.Params{"filter": filter}, b24.WithIdempotent())
-    		if err != nil {
-    			return 0, fmt.Errorf("disk.storage.getlist: %w", err)
-    		}
-    		var storages []struct {
-    			Name         string `json:"NAME"`
-    			RootObjectID b24.ID `json:"ROOT_OBJECT_ID"`
-    		}
-    		if err := json.Unmarshal(res.Result, &storages); err != nil {
-    			return 0, err
-    		}
-    		for _, s := range storages {
-    			if s.RootObjectID != 0 {
-    				fmt.Printf("storage %q, root folder %d\n", s.Name, s.RootObjectID)
-    				return s.RootObjectID, nil
-    			}
-    		}
-    	}
-    	return 0, fmt.Errorf("the webhook cannot see any storage on Drive")
+    var attachment struct {
+        ID         b24.ID `json:"ID"`
+        ObjectID   b24.ID `json:"OBJECT_ID"`
+        EntityType string `json:"ENTITY_TYPE"`
+        EntityID   b24.ID `json:"ENTITY_ID"`
+        Name       string `json:"NAME"`
     }
-
-    // checkAttachment demonstrates what the page describes: in the tasks.task.add response
-    // there is no information about the files, it has to be requested separately.
-    func checkAttachment(ctx context.Context, core *b24.Core, taskID b24.ID) error {
-    	res, err := core.Call(ctx, "tasks.task.get", b24.Params{
-    		"taskId": taskID,
-    		"select": []string{"ID", "TITLE", "UF_TASK_WEBDAV_FILES"},
-    	}, b24.WithIdempotent())
-    	if err != nil {
-    		return fmt.Errorf("tasks.task.get: %w", err)
-    	}
-
-    	// The portal responds with a different name than the one requested: UF_TASK_WEBDAV_FILES
-    	// arrives as ufTaskWebdavFiles. UnwrapFold compares names ignoring
-    	// case and underscores, so renaming does not break it.
-    	raw, ok := b24.UnwrapFold(res.Result, "task", "UF_TASK_WEBDAV_FILES")
-    	if !ok || b24.IsEmpty(raw) {
-    		return fmt.Errorf("the file was not attached to task %d", taskID)
-    	}
-
-    	// The value is the list of IDs of the LINK between the task and the Drive file, not
-    	// the IDs of the files themselves.
-    	var attachIDs []b24.ID
-    	if err := json.Unmarshal(raw, &attachIDs); err != nil {
-    		return fmt.Errorf("parse attachments: %w", err)
-    	}
-    	fmt.Printf("attachments attached to the task: %d (link IDs %v)\n",
-    		len(attachIDs), attachIDs)
-    	return nil
-    }
-
-    // del removes what was created. A cleanup error is printed but not returned: it must not
-    // mask the real error of the scenario.
-    func del(ctx context.Context, core *b24.Core, method string, params b24.Params) {
-    	if _, err := core.Call(ctx, method, params); err != nil {
-    		fmt.Fprintf(os.Stderr, "cleanup, %s: %v
-", method, err)
-    	}
+    if err := json.Unmarshal(res.Result, &attachment); err != nil {
+        return fmt.Errorf("decode attached file: %w", err)
     }
     ```
 
 {% endlist %}
 
+The `ufTaskWebdavFiles` field contains the identifiers of links between the task and Drive files. This is not the file `ID` itself, but the attachment `ID`.
+
+```json
+{
+    "result": {
+        "task": {
+            "id": "3711",
+            "title": "task for test",
+            "ufTaskWebdavFiles": [
+                423
+            ]
+        }
+    }
+}
+```
+
+To get file data, pass the value `423` to the `id` parameter of the [disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md) method. The scenario is successful if these response fields are returned:
+
+- `ID` — the file attachment identifier
+- `OBJECT_ID` — the file identifier in Drive
+- `ENTITY_TYPE` — the object type to which the file is attached. For a task, this value is `tasks_task`
+- `ENTITY_ID` — the task identifier
+- `NAME` — the attached file name
+
+## Errors and Diagnostics
+
+If the method returns an error, check the request data.
+
+#|
+|| **Error** | **Cause and solution** ||
+|| `ERROR_NOT_FOUND` in [disk.folder.uploadFile](../../api-reference/disk/folder/disk-folder-upload-file.md) | The folder with the specified `id` was not found ||
+|| `DISK_BASE_SERVICE_22001` | The file name was not passed in `data.NAME` ||
+|| `ERROR_COULD_NOT_SAVE_FILE` | The file could not be saved. Check free space in Drive and the Base64 data ||
+|| `ACCESS_DENIED` | The webhook user does not have permission to add the file to the folder ||
+|| `ERROR_CORE` in [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) | Check `TITLE`, `RESPONSIBLE_ID`, and required custom task fields ||
+|| An empty `UF_TASK_WEBDAV_FILES` value during verification | `FILE_ID` was passed instead of the Drive object `ID`, or the `n` prefix was not added ||
+|#
+
+Repeat the scenario from the step that returned the error. If the file has already been uploaded to Drive, do not upload it again: fix the task parameters and repeat only the [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) call.
+
+## What to Consider
+
+- In the `UF_TASK_WEBDAV_FILES` field, pass the Drive object `ID` from the [disk.folder.uploadFile](../../api-reference/disk/folder/disk-folder-upload-file.md) response, not `FILE_ID`
+- When creating the task, add the `n` prefix to the Drive object `ID`, for example `n6687`
+- The `UF_TASK_WEBDAV_FILES` field is always passed as an array, even if there is only one file
+- Re-running the example creates a new task and can upload a new file with the same name if unique names are enabled in the upload request
+
 ## Continue Learning
 
-* [How to Upload a File to a Task](./how-to-upload-file-to-task.md)
+- [How to Upload a File to a Task](./how-to-upload-file-to-task.md)
+- [Upload a File to a Drive Folder disk.folder.uploadFile](../../api-reference/disk/folder/disk-folder-upload-file.md)
+- [Get Folder Contents disk.folder.getchildren](../../api-reference/disk/folder/disk-folder-get-children.md)
+- [Create a Task tasks.task.add](../../api-reference/tasks/tasks-task-add.md)
+- [Get an Attached Object disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md)

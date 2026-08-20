@@ -1,6 +1,6 @@
-# Setting Up a Delivery Service for CRM
+# How to Set Up a Delivery Service for CRM
 
-> Scope: [`sale`](../../api-reference/scopes/permissions.md)
+> Scope: [`delivery`](../../api-reference/scopes/permissions.md), [`sale`](../../api-reference/scopes/permissions.md)
 >
 > Who can execute methods: administrator
 
@@ -12,17 +12,25 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 External delivery services can be connected to Bitrix24. This allows a manager to work with the delivery service within CRM cards: calculating costs and tracking status.
 
-To configure a delivery service, perform the following methods in sequence:
+As a result of the scenario, a delivery service with profiles, shipment address properties, and an extra service will appear in CRM.
 
-1. [sale.delivery.handler.add](../../api-reference/sale/delivery/handler/sale-delivery-handler-add.md) — register a delivery handler,
+The scenario consists of five steps.
 
-2. [sale.delivery.add](../../api-reference/sale/delivery/delivery/sale-delivery-add.md) — create the parent service and profiles linked to the handler,
+1. Register a delivery handler using the [sale.delivery.handler.add](../../api-reference/sale/delivery/handler/sale-delivery-handler-add.md) method
+2. Create the parent service and profiles using the [sale.delivery.add](../../api-reference/sale/delivery/delivery/sale-delivery-add.md) method
+3. Add shipment properties for addresses using the [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md) method
+4. Link properties to delivery profiles using the [sale.propertyRelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) method
+5. Connect an extra service using the [sale.delivery.extra.service.add](../../api-reference/sale/delivery/extra-service/sale-delivery-extra-service-add.md) method
 
-3. [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md) — add shipment properties for addresses,
+## Before You Start
 
-4. [sale.propertyrelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) — link properties to delivery profiles.
+Prepare the values used in the examples.
 
-5. [sale.delivery.extra.service.add](../../api-reference/sale/delivery/extra-service/sale-delivery-extra-service-add.md) — connect additional services.
+- an inbound webhook or OAuth token of a user with administrator permissions
+- public HTTPS handler URLs: `CALCULATE_URL`, `CREATE_DELIVERY_REQUEST_URL`, `CANCEL_DELIVERY_REQUEST_URL`
+- a unique delivery handler code, for example `uber`
+- the payer type identifier `personTypeId`. You can retrieve the list of types using the [sale.persontype.list](../../api-reference/sale/person-type/sale-person-type-list.md) method
+- the property group identifier `propsGroupId`. You can retrieve the list of groups using the [sale.propertygroup.list](../../api-reference/sale/property-group/sale-property-group-list.md) method
 
 ## 1. Create a Delivery Handler
 
@@ -172,12 +180,11 @@ For more details on the request and response format, see the [Webhooks for Worki
     from b24pysdk import BitrixWebhook, Client
     from b24pysdk.errors import BitrixAPIError
 
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="user_id/webhook_key",
     )
+    client = Client(token)
 
     try:
         response = client.sale.delivery.handler.add(
@@ -221,19 +228,11 @@ For more details on the request and response format, see the [Webhooks for Worki
 
 {% endlist %}
 
-If the handler is successfully added, the method returns its identifier. If you receive error `error`, review the possible errors described in the [sale.delivery.handler.add](../../api-reference/sale/delivery/handler/sale-delivery-handler-add.md) method documentation.
+If the handler is successfully added, the method returns its identifier.
 
 ```json
 {
-    "result": 23,
-    "time": {
-        "start": 1714736790.260814,
-        "finish": 1714736791.896773,
-        "duration": 1.6359591484069824,
-        "processing": 0.03880000114440918,
-        "date_start": "2024-05-03T14:46:30+03:00",
-        "date_finish": "2024-05-03T14:46:31+03:00"
-    }
+    "result": 23
 }
 ```
 
@@ -245,7 +244,7 @@ Create a delivery service using the [sale.delivery.add](../../api-reference/sale
 
 - `NAME` — the name of the delivery service, for example, `Uber Taxi`.
 
-- `CURRENCY` — the symbolic code of the currency. We will pass `RUB`. You can retrieve a list of currencies using the [crm.currency.list](../../api-reference/crm/currency/crm-currency-list.md) method.
+- `CURRENCY` — the symbolic code of the currency. We will pass `EUR`. You can retrieve a list of currencies using the [crm.currency.list](../../api-reference/crm/currency/crm-currency-list.md) method.
 
 - `ACTIVE` — the delivery service activity flag. We will specify `Y`.
 
@@ -316,7 +315,7 @@ Create a delivery service using the [sale.delivery.add](../../api-reference/sale
         response = client.sale.delivery.add(
             rest_code="uber",
             name="Uber Taxi",
-            currency="RUB",
+            currency="EUR",
             active=True,
             config=[
                 {
@@ -336,58 +335,41 @@ Create a delivery service using the [sale.delivery.add](../../api-reference/sale
 
 {% endlist %}
 
-If the delivery service is successfully created, the method returns a parent service object and an array of profiles. If you receive error `error`, review the description of possible errors in the [sale.delivery.add](../../api-reference/sale/delivery/delivery/sale-delivery-add.md) method documentation.
+If the delivery service is successfully created, the method returns a parent service object and an array of profiles. Retain the profile identifiers from the `profiles` array: they are required to link shipment properties and extra services.
 
 ```json
 {
-"result":{
-    "parent":{
-        "NAME":"Uber Taxi",
-        "ACTIVE":"Y",
-        "DESCRIPTION":"",
-        "CURRENCY":"EUR",
-        "ID":226,
-        "PARENT_ID":null,
-        "SORT":100,
-        "LOGOTYPE":null
-    },
-    "profiles":[
-        {
-            "NAME":"Taxi",
-            "ACTIVE":"Y",
-            "DESCRIPTION":"Taxi Delivery",
-            "CURRENCY":"EUR",
-            "ID":227,
-            "PARENT_ID":226,
-            "SORT":100,
-            "LOGOTYPE":null
+    "result": {
+        "parent": {
+            "NAME": "Uber Taxi",
+            "ACTIVE": "Y",
+            "CURRENCY": "EUR",
+            "ID": 226,
+            "PARENT_ID": null
         },
-        {
-            "NAME":"Cargo",
-            "ACTIVE":"Y",
-            "DESCRIPTION":"Cargo Delivery",
-            "CURRENCY":"EUR",
-            "ID":228,
-            "PARENT_ID":226,
-            "SORT":100,
-            "LOGOTYPE":null
-        }
-    ]
-},
-"time":{
-    "start":1714737122.600765,
-    "finish":1714737122.894801,
-    "duration":0.2940359115600586,
-    "processing":0.0942530632019043,
-    "date_start":"2024-05-03T14:52:02+03:00",
-    "date_finish":"2024-05-03T14:52:02+03:00"
-}
+        "profiles": [
+            {
+                "NAME": "Taxi",
+                "ACTIVE": "Y",
+                "ID": 227,
+                "PARENT_ID": 226
+            },
+            {
+                "NAME": "Cargo",
+                "ACTIVE": "Y",
+                "ID": 228,
+                "PARENT_ID": 226
+            }
+        ]
+    }
 }
 ```
 
 ## 3. Create Shipment Properties {#third}
 
 In a shipment, a manager specifies the origin address and the delivery address. We will sequentially create two properties, `Address From` and `Address To`, using the [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md) method.
+
+The examples use `personTypeId: 3` and `propsGroupId: 6`. If your Bitrix24 has different payer types or property groups, substitute the values retrieved by the [sale.persontype.list](../../api-reference/sale/person-type/sale-person-type-list.md) and [sale.propertygroup.list](../../api-reference/sale/property-group/sale-property-group-list.md) methods.
 
 ### Address from Property
 
@@ -480,38 +462,19 @@ Pass the `fields` object to the method with the values for the `Address From` pr
 
 {% endlist %}
 
-If the property is successfully added, the method returns an `property` object containing the property identifier. If you receive error `error`, review the description of possible errors in the [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md) method documentation.
+If the property is successfully added, the method returns a `property` object with the property identifier. Retain the `property.id` value: it is required to link the property to delivery profiles.
 
 ```json
 {
-"result":{
-    "property":{
-        "active":"Y",
-        "code":"",
-        "defaultValue":"",
-        "description":"",
-        "id":102,
-        "isAddressFrom":"Y",
-        "isAddressTo":"N",
-        "maxLength":"",
-        "name":"Address From",
-        "personTypeId":3,
-        "propsGroupId":6,
-        "required":"Y",
-        "settings":[],
-        "sort":100,
-        "type":"ADDRESS",
-        "xmlId":""
+    "result": {
+        "property": {
+            "id": 102,
+            "name": "Address From",
+            "isAddressFrom": "Y",
+            "isAddressTo": "N",
+            "type": "ADDRESS"
+        }
     }
-},
-"time":{
-    "start":1714741422.531968,
-    "finish":1714741422.644666,
-    "duration":0.11269783973693848,
-    "processing":0.06191205978393555,
-    "date_start":"2024-05-03T15:43:42+03:00",
-    "date_finish":"2024-05-03T15:43:42+03:00"
-}
 }
 ```
 
@@ -590,44 +553,25 @@ In the `fields` object for the `Address To` property, we pass the name `Address 
 
 {% endlist %}
 
-If the property is successfully added, the method returns an `property` object containing the property identifier. If you receive error `error`, review the description of possible errors in the [sale.shipmentproperty.add](../../api-reference/sale/shipment-property/sale-shipment-property-add.md) method documentation.
+If the property is successfully added, the method returns a `property` object with the property identifier. Retain the `property.id` value: it is required to link the property to delivery profiles.
 
 ```json
 {
-"result":{
-    "property":{
-        "active":"Y",
-        "code":"",
-        "defaultValue":"",
-        "description":"",
-        "id":103,
-        "isAddressFrom":"N",
-        "isAddressTo":"Y",
-        "maxLength":"",
-        "name":"Address To",
-        "personTypeId":3,
-        "propsGroupId":6,
-        "required":"Y",
-        "settings":[],
-        "sort":100,
-        "type":"ADDRESS",
-        "xmlId":""
+    "result": {
+        "property": {
+            "id": 103,
+            "name": "Address To",
+            "isAddressFrom": "N",
+            "isAddressTo": "Y",
+            "type": "ADDRESS"
+        }
     }
-},
-"time":{
-    "start":1714741719.195657,
-    "finish":1714741719.368018,
-    "duration":0.17236113548278809,
-    "processing":0.0712430477142334,
-    "date_start":"2024-05-03T15:48:39+03:00",
-    "date_finish":"2024-05-03T15:48:39+03:00"
-}
 }
 ```
 
 ## 4. Link Shipment Properties to a Delivery Service
 
-To link properties `Address From` and `Address To` to profiles `Taxi` and `Cargo`, we will call the method [sale.propertyrelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) four times. We will pass the `fields` object to the method with field values for linking the properties.
+To link properties `Address From` and `Address To` to profiles `Taxi` and `Cargo`, we will call the [sale.propertyRelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) method four times. We will pass the `fields` object to the method with field values for linking the properties.
 
 - `entityId` — the delivery profile identifier. For profile `Taxi` we will pass `227`, and for `Cargo` — `228`, which were obtained [in the second step](#second).
 
@@ -635,13 +579,15 @@ To link properties `Address From` and `Address To` to profiles `Taxi` and `Cargo
 
 - `propertyId` — the property identifier. For `Address From` we will specify `102`, and for `Address To` — `103`, which were obtained [in the third step](#third).
 
+The values `227`, `228`, `102`, and `103` are examples. In a production scenario, substitute the identifiers from the responses of the `sale.delivery.add` and `sale.shipmentproperty.add` methods.
+
 {% list tabs %}
 
 - JS
 
     ```js
     const response = await $b24.actions.v2.call.make({
-        method: 'sale.propertyrelation.add',
+        method: 'sale.propertyRelation.add',
         params: {
             fields: {
                 entityId: 227,
@@ -687,7 +633,7 @@ To link properties `Address From` and `Address To` to profiles `Taxi` and `Cargo
 
 {% endlist %}
 
-Call the [sale.propertyrelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) method sequentially.
+Call the [sale.propertyRelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) method sequentially.
 
 1. Service `Taxi`, property `Address From` — pass `entityId: 227, propertyId: 102`.
 
@@ -697,7 +643,7 @@ Call the [sale.propertyrelation.add](../../api-reference/sale/property-relation/
 
 4. Service `Cargo`, property `Address To` — pass `entityId: 228, propertyId: 103`.
 
-If the links are successfully added, the method will return objects containing information about them. If you receive error `error`, review the description of possible errors in the [sale.propertyrelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) method documentation.
+If the links are successfully added, the method returns objects with information about them.
 
 ```json
 {
@@ -707,14 +653,6 @@ If the links are successfully added, the method will return objects containing i
             "entityType": "D",
             "propertyId": 102
         }
-    },
-    "time": {
-        "start": 1712244475.495277,
-        "finish": 1712244476.402808,
-        "duration": 0.9075310230255127,
-        "processing": 0.08538603782653809,
-        "date_start": "2024-05-03T18:27:55+03:00",
-        "date_finish": "2024-05-03T18:27:56+03:00"
     }
 }
 ```
@@ -802,19 +740,11 @@ To add an extra service to a delivery service, call the [sale.delivery.extra.ser
 
 {% endlist %}
 
-If the service is added, the method returns the identifier in the `result` parameter. If an error is received `error`, review the description of possible errors in the [sale.delivery.extra.service.add](../../api-reference/sale/delivery/extra-service/sale-delivery-extra-service-add.md) method documentation.
+If the service is added, the method returns the identifier in the `result` parameter.
 
 ```json
 {
-    "result": 140,
-    "time": {
-        "start": 1714739042.228152,
-        "finish": 1714739042.50093,
-        "duration": 0.2727780342102051,
-        "processing": 0.09131193161010742,
-        "date_start": "2024-05-03T15:24:02+03:00",
-        "date_finish": "2024-05-03T15:24:02+03:00"
-    }
+    "result": 140
 }
 ```
 
@@ -828,3 +758,155 @@ To send notifications regarding the progress of a delivery, you can use the [sal
 || [sale.delivery.request.sendmessage](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-send-message.md) | Sends a message to the manager or recipient about the current status of the delivery order ||
 || [sale.delivery.request.delete](../../api-reference/sale/delivery/delivery-request/sale-delivery-request-delete.md) | Reports the cancellation of a delivery order on the external system side and attempts to cancel the delivery order on the Bitrix24 side ||
 |#
+
+## Check the Result
+
+Open a CRM card with a shipment and verify that the `Uber Taxi` delivery service, its `Taxi` and `Cargo` profiles, the `Address From` and `Address To` shipment properties, and the `Door Delivery` extra service are available.
+
+Through REST, check the created objects using the [sale.delivery.getlist](../../api-reference/sale/delivery/delivery/sale-delivery-get-list.md), [sale.shipmentproperty.list](../../api-reference/sale/shipment-property/sale-shipment-property-list.md), [sale.propertyRelation.list](../../api-reference/sale/property-relation/sale-property-relation-list.md), and [sale.delivery.extra.service.get](../../api-reference/sale/delivery/extra-service/sale-delivery-extra-service-get.md) methods.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    const deliveryResponse = await $b24.actions.v2.call.make({
+        method: 'sale.delivery.getlist',
+        params: {
+            SELECT: ['ID', 'NAME', 'PARENT_ID', 'ACTIVE'],
+            FILTER: { '=NAME': 'Uber Taxi' },
+        },
+        requestId: 'delivery-getlist-check',
+    })
+
+    const propertyResponse = await $b24.actions.v2.call.make({
+        method: 'sale.shipmentproperty.list',
+        params: {
+            select: ['id', 'name', 'isAddressFrom', 'isAddressTo'],
+            filter: { '=name': ['Address From', 'Address To'] },
+        },
+        requestId: 'shipmentproperty-list-check',
+    })
+
+    const relationResponse = await $b24.actions.v2.call.make({
+        method: 'sale.propertyRelation.list',
+        params: {
+            select: ['entityId', 'entityType', 'propertyId'],
+            filter: { entityId: 227, entityType: 'D' },
+        },
+        requestId: 'propertyrelation-list-check',
+    })
+
+    const extraServiceResponse = await $b24.actions.v2.call.make({
+        method: 'sale.delivery.extra.service.get',
+        params: { DELIVERY_ID: 227 },
+        requestId: 'delivery-extra-service-get-check',
+    })
+
+    console.log(deliveryResponse.getData().result)
+    console.log(propertyResponse.getData().result)
+    console.log(relationResponse.getData().result)
+    console.log(extraServiceResponse.getData().result)
+    ```
+
+- PHP
+
+    ```php
+    $deliveryResponse = $sb->core->call('sale.delivery.getlist', [
+        'SELECT' => ['ID', 'NAME', 'PARENT_ID', 'ACTIVE'],
+        'FILTER' => ['=NAME' => 'Uber Taxi'],
+    ]);
+
+    $propertyResponse = $sb->core->call('sale.shipmentproperty.list', [
+        'select' => ['id', 'name', 'isAddressFrom', 'isAddressTo'],
+        'filter' => ['=name' => ['Address From', 'Address To']],
+    ]);
+
+    $relationResponse = $sb->core->call('sale.propertyRelation.list', [
+        'select' => ['entityId', 'entityType', 'propertyId'],
+        'filter' => ['entityId' => 227, 'entityType' => 'D'],
+    ]);
+
+    $extraServiceResponse = $sb->core->call('sale.delivery.extra.service.get', [
+        'DELIVERY_ID' => 227,
+    ]);
+
+    print_r($deliveryResponse->getResponseData()->getResult());
+    print_r($propertyResponse->getResponseData()->getResult());
+    print_r($relationResponse->getResponseData()->getResult());
+    print_r($extraServiceResponse->getResponseData()->getResult());
+    ```
+
+- Python
+
+    ```python
+    deliveries = token.call_method(
+        "sale.delivery.getlist",
+        {
+            "SELECT": ["ID", "NAME", "PARENT_ID", "ACTIVE"],
+            "FILTER": {"=NAME": "Uber Taxi"},
+        },
+    )
+    properties = token.call_method(
+        "sale.shipmentproperty.list",
+        {
+            "select": ["id", "name", "isAddressFrom", "isAddressTo"],
+            "filter": {"=name": ["Address From", "Address To"]},
+        },
+    )
+    relations = token.call_method(
+        "sale.propertyRelation.list",
+        {
+            "select": ["entityId", "entityType", "propertyId"],
+            "filter": {"entityId": 227, "entityType": "D"},
+        },
+    )
+    extra_services = token.call_method(
+        "sale.delivery.extra.service.get",
+        {"DELIVERY_ID": 227},
+    )
+
+    print(deliveries)
+    print(properties)
+    print(relations)
+    print(extra_services)
+    ```
+
+{% endlist %}
+
+The scenario is successful if the method responses confirm these results:
+
+- `sale.delivery.add` returned the parent service in the `parent` object and the profiles in the `profiles` array
+- `sale.shipmentproperty.add` returned the identifiers of the `Address From` and `Address To` properties
+- `sale.propertyRelation.add` returned the links between the properties and the delivery profiles
+- `sale.delivery.extra.service.add` returned the identifier of the extra service
+
+## Errors and Diagnostics
+
+If a method returns an error, verify the request data and the values passed between the steps.
+
+#|
+|| **Error code or text** | **Cause and action** ||
+|| `ACCESS_DENIED` | The method was called by a user without administrator permissions ||
+|| `ERROR_CHECK_FAILURE` | A required parameter is missing or a value failed validation. Check `CODE`, `NAME`, `SETTINGS`, `PROFILES`, `REST_CODE`, `CURRENCY`, `fields`, and `DELIVERY_ID` ||
+|| `ERROR_HANDLER_ALREADY_EXIST` | A handler with this `CODE` already exists. Specify a different code or reuse the existing handler ||
+|| `ERROR_HANDLER_NOT_FOUND` | The delivery service is being created with a `REST_CODE` that has no handler. Check that `REST_CODE` matches the `CODE` from step 1 ||
+|| `ERROR_DELIVERY_ADD`, `ERROR_HANDLER_ADD`, `ERROR_EXTRA_SERVICE_ADD` | An error occurred while adding the service, handler, or extra service. Review `error_description` for details ||
+|| `ERROR_DELIVERY_NOT_FOUND` | No delivery service was found for the specified `DELIVERY_ID`. For an extra service, pass the delivery profile identifier ||
+|| `Required fields: entityId` | The property relation request does not include the delivery profile identifier. Take it from the `profiles` array returned by `sale.delivery.add` ||
+|| `201650000001` | This property relation already exists. You do not need to create it again when rerunning the example ||
+|| `201650000002` | The property was not found. Check the `propertyId` value returned by `sale.shipmentproperty.add` ||
+|#
+
+## What to Consider
+
+- rerunning the example with the same `CODE` may fail because the handler code must be unique
+- delivery profiles are created in step 2; save their identifiers before you configure properties and extra services
+- the external service must accept requests on the HTTPS endpoints specified in the handler settings
+
+## Continue Learning
+
+- [Webhooks for Working with Deliveries](../../api-reference/sale/delivery/webhooks/index.md)
+- [Delivery Services](../../api-reference/sale/delivery/delivery/index.md)
+- [Shipment Properties](../../api-reference/sale/shipment-property/index.md)
+- [Extra Services of Delivery Services](../../api-reference/sale/delivery/extra-service/index.md)

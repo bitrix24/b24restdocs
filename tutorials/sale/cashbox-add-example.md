@@ -1,6 +1,6 @@
 # How to Connect a Cash Register to Bitrix24
 
-> Scope: [`sale`](../../api-reference/scopes/permissions.md), [`cashbox`](../../api-reference/scopes/permissions.md)
+> Scope: [`cashbox`](../../api-reference/scopes/permissions.md)
 >
 > Who can execute methods: administrator
 
@@ -10,15 +10,29 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-In Bitrix24, you can connect an external cash register and automatically print receipts. When a customer pays for an order, the account sends the receipt data to a specified URL. An external service then generates and registers the fiscal receipt.
+In Bitrix24, you can connect an external cash register and automatically print receipts. When a customer pays for an order, Bitrix24 sends the receipt data to the specified URL. An external service then generates and registers the fiscal receipt.
 
-To connect a cash register, perform the following methods in sequence:
+As a result of the scenario, a REST cash register will appear in the Sales Center, and the external service will be able to accept receipt-print requests and return the print status.
 
-1. [sale.cashbox.handler.add](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md) — add a cash register handler,
+The scenario consists of three steps.
 
-2. [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md) — create a cash register and link it to the handler.
+1. Add a cash register handler using the [sale.cashbox.handler.add](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md) method
+2. Create a cash register and link it to the handler using the [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md) method
+3. Pass the receipt print result using the [sale.cashbox.check.apply](../../api-reference/sale/cashbox/sale-cashbox-check-apply.md) method if the status must be retained manually
 
-## 1\. Add the Cash Register Handler
+## Before You Start
+
+Prepare the values used in the examples:
+
+- an inbound webhook or an OAuth token of a user with administrator permissions
+- a public HTTPS address of the receipt print page `PRINT_URL`
+- a public HTTPS address of the receipt status page `CHECK_URL`
+- a unique cash register handler code, for example `my_rest_cashbox`
+- the authorization data of the external cash register that the administrator will enter in the cash register settings
+
+Do not place login credentials, passwords, or access tokens in public code. Pass secrets through environment variables or secure application storage.
+
+## 1. Add the Cash Register Handler
 
 Register a handler using [sale.cashbox.handler.add](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md). Pass the handler configurations and the addresses to which the account sends requests for printing and checking the receipt status to the method.
 
@@ -30,9 +44,9 @@ Register a handler using [sale.cashbox.handler.add](../../api-reference/sale/cas
 
 - `SETTINGS` — the handler settings object.
 
-    - `PRINT_URL` — the address to which the account sends data for printing the receipt. We will specify `http://example.com/rest_print.php`.
+    - `PRINT_URL` — the address to which Bitrix24 sends the receipt data for printing. We will specify `https://example.com/rest_print.php`.
 
-    - `CHECK_URL` — the address used to check the receipt status. We will pass `http://example.com/rest_check.php`.
+    - `CHECK_URL` — the address used to check the receipt status. We will pass `https://example.com/rest_check.php`.
 
     - `CONFIG` — the fields that need to be created for the handler. An Administrator fills in these fields when configuring the cash register. We will create three blocks: `AUTH` — authorization via login and password, `COMPANY` — company details, `INTERACTION` — cash register operation mode.
 
@@ -55,8 +69,8 @@ Register a handler using [sale.cashbox.handler.add](../../api-reference/sale/cas
            NAME: 'My REST cash register',
            SORT: 100,
            SETTINGS: {
-               PRINT_URL: 'http://example.com/rest_print.php',
-               CHECK_URL: 'http://example.com/rest_check.php',
+               PRINT_URL: 'https://example.com/rest_print.php',
+               CHECK_URL: 'https://example.com/rest_check.php',
                CONFIG: {
                    AUTH: {
                        LABEL: 'Authorization',
@@ -88,6 +102,7 @@ Register a handler using [sale.cashbox.handler.add](../../api-reference/sale/cas
                        ITEMS: {
                            MODE: {
                                TYPE: 'ENUM',
+                               REQUIRED: 'N',
                                LABEL: 'Cash register operating mode',
                                OPTIONS: {
                                    ACTIVE: 'production',
@@ -131,8 +146,8 @@ Register a handler using [sale.cashbox.handler.add](../../api-reference/sale/cas
        'my_rest_cashbox',
        'My REST cash register',
        [
-           'PRINT_URL' => 'http://example.com/rest_print.php',
-           'CHECK_URL' => 'http://example.com/rest_check.php',
+           'PRINT_URL' => 'https://example.com/rest_print.php',
+           'CHECK_URL' => 'https://example.com/rest_check.php',
            'CONFIG' => [
                'AUTH' => [
                    'LABEL' => 'Authorization',
@@ -164,6 +179,7 @@ Register a handler using [sale.cashbox.handler.add](../../api-reference/sale/cas
                    'ITEMS' => [
                        'MODE' => [
                            'TYPE' => 'ENUM',
+                           'REQUIRED' => 'N',
                            'LABEL' => 'Cash register operating mode',
                            'OPTIONS' => [
                                'ACTIVE' => 'production',
@@ -189,62 +205,62 @@ Register a handler using [sale.cashbox.handler.add](../../api-reference/sale/cas
    from b24pysdk.errors import BitrixAPIError
 
 
-   client = Client(
-       BitrixWebhook(
-           domain="your-domain.bitrix24.com",
-           webhook_token="user_id/webhook_key",
-       )
+   token = BitrixWebhook(
+       domain="your-domain.bitrix24.com",
+       webhook_token="user_id/webhook_key",
    )
+   client = Client(token)
 
    try:
        response = client.sale.cashbox.handler.add(
-       code="my_rest_cashbox",
-       name="My REST cash register",
-       sort=100,
-       settings={
-           "PRINT_URL": "http://example.com/rest_print.php",
-           "CHECK_URL": "http://example.com/rest_check.php",
-           "CONFIG": {
-               "AUTH": {
-                   "LABEL": "Authorization",
-                   "ITEMS": {
-                       "LOGIN": {
-                           "TYPE": "STRING",
-                           "REQUIRED": "Y",
-                           "LABEL": "Login",
-                       },
-                       "PASSWORD": {
-                           "TYPE": "STRING",
-                           "REQUIRED": "Y",
-                           "LABEL": "Password",
-                       },
-                   },
-               },
-               "COMPANY": {
-                   "LABEL": "Organization data",
-                   "ITEMS": {
-                       "INN": {
-                           "TYPE": "STRING",
-                           "REQUIRED": "Y",
-                           "LABEL": "Tax ID of the organization",
-                       }
-                   },
-               },
-               "INTERACTION": {
-                   "LABEL": "Cash register interaction settings",
-                   "ITEMS": {
-                       "MODE": {
-                           "TYPE": "ENUM",
-                           "LABEL": "Cash register operating mode",
-                           "OPTIONS": {
-                               "ACTIVE": "production",
-                               "TEST": "test",
+           code="my_rest_cashbox",
+           name="My REST cash register",
+           sort=100,
+           settings={
+               "PRINT_URL": "https://example.com/rest_print.php",
+               "CHECK_URL": "https://example.com/rest_check.php",
+               "CONFIG": {
+                   "AUTH": {
+                       "LABEL": "Authorization",
+                       "ITEMS": {
+                           "LOGIN": {
+                               "TYPE": "STRING",
+                               "REQUIRED": "Y",
+                               "LABEL": "Login",
                            },
-                       }
+                           "PASSWORD": {
+                               "TYPE": "STRING",
+                               "REQUIRED": "Y",
+                               "LABEL": "Password",
+                           },
+                       },
+                   },
+                   "COMPANY": {
+                       "LABEL": "Organization data",
+                       "ITEMS": {
+                           "INN": {
+                               "TYPE": "STRING",
+                               "REQUIRED": "Y",
+                               "LABEL": "Tax ID of the organization",
+                           }
+                       },
+                   },
+                   "INTERACTION": {
+                       "LABEL": "Cash register interaction settings",
+                       "ITEMS": {
+                           "MODE": {
+                               "TYPE": "ENUM",
+                               "REQUIRED": "N",
+                               "LABEL": "Cash register operating mode",
+                               "OPTIONS": {
+                                   "ACTIVE": "production",
+                                   "TEST": "test",
+                               },
+                           }
+                       },
                    },
                },
            },
-       },
        ).response
        print(response.result)
    except BitrixAPIError as error:
@@ -253,21 +269,11 @@ Register a handler using [sale.cashbox.handler.add](../../api-reference/sale/cas
 
 {% endlist %}
 
-If the handler is successfully added, the method will return its identifier. If you receive an `error`, check the description of possible errors in the documentation for the method [sale.cashbox.handler.add](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md).
+If the handler is added successfully, the method returns its identifier. Store the `result` value: you will need it to find the handler in the list.
 
 ```json
 {
-    "result": 1,
-    "time": {
-        "start":1761744611,
-        "finish":1761744611.243273,
-        "duration":0.24327301979064941,
-        "processing":0,
-        "date_start":"2025-10-29T16:30:11+03:00",
-        "date_finish":"2025-10-29T16:30:11+03:00",
-        "operating_reset_at":1761745211,
-        "operating":0
-    }
+    "result": 1
 }
 ```
 
@@ -374,25 +380,25 @@ Add a cashbox using [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cas
    ```python
    try:
        response = client.sale.cashbox.add(
-       rest_code="my_rest_cashbox",
-       name="REST cash register",
-       email="owner@example.com",
-       number_kkm="1",
-       ofd="bx_firstofd",
-       use_offline=True,
-       active=True,
-       settings={
-           "AUTH": {
-               "LOGIN": "rest_login",
-               "PASSWORD": "rest_password",
+           rest_code="my_rest_cashbox",
+           name="REST cash register",
+           email="owner@example.com",
+           number_kkm="1",
+           ofd="bx_firstofd",
+           use_offline=True,
+           active=True,
+           settings={
+               "AUTH": {
+                   "LOGIN": "rest_login",
+                   "PASSWORD": "rest_password",
+               },
+               "COMPANY": {
+                   "INN": "1234567890",
+               },
+               "INTERACTION": {
+                   "MODE": "ACTIVE",
+               },
            },
-           "COMPANY": {
-               "INN": "1234567890",
-           },
-           "INTERACTION": {
-               "MODE": "ACTIVE",
-           },
-       },
        ).response
        print(response.result)
    except BitrixAPIError as error:
@@ -401,21 +407,11 @@ Add a cashbox using [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cas
 
 {% endlist %}
 
-If the cashbox is successfully added, the method returns its identifier. If you receive error `error`, review the description of possible errors in the [sale.cashbox.add](../../api-reference/sale/cashbox/sale-cashbox-add.md) method documentation.
+If the cashbox is added successfully, the method returns its identifier. Store the `result` value: you will need it to verify the cashbox in the list.
 
 ```json
 {
-    "result": 1,
-    "time": {
-        "start":1761771262,
-        "finish":1761771262.111383,
-        "duration":0.11138296127319336,
-        "processing":0,
-        "date_start":"2025-10-29T16:54:22+03:00",
-        "date_finish":"2025-10-29T16:54:22+03:00",
-        "operating_reset_at":1761771862,
-        "operating":0
-    }
+    "result": 1
 }
 ```
 
@@ -429,9 +425,55 @@ The cash register uses two addresses. The account sends printing data to `PRINT_
 
 ### PRINT_URL Page
 
-The `PRINT_URL` page is the address to which the account sends data to print a receipt. For the request structure, see the [PRINT_URL Page](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md#print_url) section of the `sale.cashbox.handler.add` method.
+The `PRINT_URL` page is the address to which Bitrix24 sends the receipt data for printing. For the request structure, see the [PRINT_URL Page](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md#print_url) section of the `sale.cashbox.handler.add` method.
 
 Input data processing, document generation, and the return of the printing result occur at `PRINT_URL`.
+
+Minimum `PRINT_URL` page logic:
+
+1. Receive receipt data from Bitrix24
+2. Verify that the request contains receipt data
+3. Pass the receipt to the external cash register
+4. Return `UUID` if the receipt is accepted for printing, or an `ERRORS` array if printing is impossible
+5. Store the relation between `UUID` and the order or receipt in the external system so that the `CHECK_URL` page can return the status
+
+Example `PRINT_URL` handler in Node.js:
+
+```js
+import express from 'express'
+import { randomUUID } from 'crypto'
+
+const app = express()
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+const checks = new Map()
+
+app.post('/rest_print.php', async (req, res) => {
+    const payload = req.body
+
+    if (!payload || Object.keys(payload).length === 0) {
+        res.json({
+            ERRORS: ['Receipt data was not passed']
+        })
+        return
+    }
+
+    const uuid = randomUUID()
+
+    checks.set(uuid, {
+        status: 'WAIT',
+        createdAt: Date.now(),
+        payload
+    })
+
+    res.json({
+        UUID: uuid
+    })
+})
+```
+
+In a production service, store `UUID`, the status, and the receipt data in a database rather than in process memory.
 
 - If printing fails, the JSON array looks like this:
 
@@ -460,6 +502,59 @@ The `CHECK_URL` page is the address used by the account to check if the receipt 
 A request to `CHECK_URL` is performed upon a manager's request or is triggered automatically after a certain amount of time following a successful receipt print. For the request structure, see the [CHECK_URL Page](../../api-reference/sale/cashbox/sale-cashbox-handler-add.md#check_url) section of the `sale.cashbox.handler.add` method.
 
 A request to `CHECK_URL` returns data about the receipt, error data if a printing error occurred, or an "idle" status.
+
+Minimum `CHECK_URL` page logic:
+
+1. Receive the receipt `UUID`
+2. Find the receipt in the external system
+3. If the receipt is still printing, return `STATUS: WAIT`
+4. If printing finished with an error, return `STATUS: ERROR` and the error text
+5. If the receipt is printed, return `STATUS: DONE` and the fiscal details
+
+Example `CHECK_URL` handler in Node.js:
+
+```js
+app.post('/rest_check.php', async (req, res) => {
+    const uuid = req.body.UUID
+
+    if (!uuid || !checks.has(uuid)) {
+        res.json({
+            STATUS: 'ERROR',
+            ERROR: 'Receipt with this UUID was not found'
+        })
+        return
+    }
+
+    const check = checks.get(uuid)
+
+    if (check.status === 'WAIT') {
+        res.json({
+            STATUS: 'WAIT'
+        })
+        return
+    }
+
+    if (check.status === 'ERROR') {
+        res.json({
+            STATUS: 'ERROR',
+            ERROR: check.error
+        })
+        return
+    }
+
+    res.json({
+        STATUS: 'DONE',
+        UUID: uuid,
+        REG_NUMBER_KKT: '000111222333',
+        FISCAL_DOC_ATTR: '33445500',
+        FISCAL_DOC_NUMBER: 123,
+        FISCAL_RECEIPT_NUMBER: 10,
+        FN_NUMBER: '0011223344556677',
+        SHIFT_NUMBER: 12,
+        PRINT_END_TIME: Math.floor(Date.now() / 1000)
+    })
+})
+```
 
 - Data format in case of a printing error:
 
@@ -496,7 +591,7 @@ A request to `CHECK_URL` returns data about the receipt, error data if a printin
 
 The full list of fields matches the parameters of the [sale.cashbox.check.apply](../../api-reference/sale/cashbox/sale-cashbox-check-apply.md) method.
 
-Data from `CHECK_URL` is retained on the account and used to generate a link to the receipt.
+Data from `CHECK_URL` is retained in Bitrix24 and used to generate a link to the receipt.
 
 ### Manually Submit Print Result
 
@@ -571,14 +666,14 @@ Prepare the fields for `sale.cashbox.check.apply`.
     ```python
     try:
         response = client.sale.cashbox.check.apply(
-        uuid="00112233-4455-6677-8899-aabbccddeeff",
-        print_end_time="1609459200",
-        reg_number_kkt="000111222333",
-        fiscal_doc_attr="33445500",
-        fiscal_doc_number="123",
-        fiscal_receipt_number="10",
-        fn_number="0011223344556677",
-        shift_number="12",
+            uuid="00112233-4455-6677-8899-aabbccddeeff",
+            print_end_time="1609459200",
+            reg_number_kkt="000111222333",
+            fiscal_doc_attr="33445500",
+            fiscal_doc_number="123",
+            fiscal_receipt_number="10",
+            fn_number="0011223344556677",
+            shift_number="12",
         ).response
         print(response.result)
     except BitrixAPIError as error:
@@ -587,20 +682,105 @@ Prepare the fields for `sale.cashbox.check.apply`.
 
 {% endlist %}
 
-If the receipt is successfully saved, the method will return `true`. If you receive an `error`, check the description of possible errors in the documentation for the method [sale.cashbox.check.apply](../../api-reference/sale/cashbox/sale-cashbox-check-apply.md).
+If the receipt is successfully saved, the method returns `true`.
 
 ```json
 {
-    "result": true,
-    "time": {
-        "start": 1712165362.026851,
-        "finish": 1712165362.111383,
-        "duration": 0.3808310031890869,
-        "processing": 0.0336611270904541,
-        "date_start": "2025-10-03T11:08:55+02:00",
-        "date_finish": "2025-10-03T11:08:55+02:00",
-        "operating_reset_at": 1705765533,
-        "operating": 3.3076241016387939
-    }
+    "result": true
 }
 ```
+
+## Check the Result
+
+After configuring the cash register, open the Sales Center and verify that the REST cash register is available in the list of cash registers. After a test payment, verify that the external service received the request to `PRINT_URL`, returned `UUID`, and that Bitrix24 received the status through `CHECK_URL` or the `sale.cashbox.check.apply` method.
+
+Through REST, check the handler and the cash register using the [sale.cashbox.handler.list](../../api-reference/sale/cashbox/sale-cashbox-handler-list.md) and [sale.cashbox.list](../../api-reference/sale/cashbox/sale-cashbox-list.md) methods.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    const handlerResponse = await $b24.actions.v2.call.make({
+        method: 'sale.cashbox.handler.list',
+        params: {},
+        requestId: 'cashbox-handler-list',
+    })
+
+    const cashboxResponse = await $b24.actions.v2.call.make({
+        method: 'sale.cashbox.list',
+        params: {
+            SELECT: ['ID', 'NAME', 'ACTIVE', 'EMAIL'],
+            FILTER: { '=NAME': 'REST cash register' },
+        },
+        requestId: 'cashbox-list',
+    })
+
+    console.log(handlerResponse.getData().result)
+    console.log(cashboxResponse.getData().result)
+    ```
+
+- PHP
+
+    ```php
+    $handlerResponse = $sb->core->call('sale.cashbox.handler.list', []);
+
+    $cashboxResponse = $sb->core->call('sale.cashbox.list', [
+        'SELECT' => ['ID', 'NAME', 'ACTIVE', 'EMAIL'],
+        'FILTER' => ['=NAME' => 'REST cash register'],
+    ]);
+
+    print_r($handlerResponse->getResponseData()->getResult());
+    print_r($cashboxResponse->getResponseData()->getResult());
+    ```
+
+- Python
+
+    ```python
+    handlers = token.call_method("sale.cashbox.handler.list", {})
+    cashboxes = token.call_method(
+        "sale.cashbox.list",
+        {
+            "SELECT": ["ID", "NAME", "ACTIVE", "EMAIL"],
+            "FILTER": {"=NAME": "REST cash register"},
+        },
+    )
+
+    print(handlers)
+    print(cashboxes)
+    ```
+
+{% endlist %}
+
+The scenario is successful if three results are confirmed:
+
+- the `sale.cashbox.handler.add` method returned the handler identifier
+- the `sale.cashbox.add` method returned the cash register identifier
+- the `sale.cashbox.check.apply` method returned `true` if the print result was submitted manually
+
+## Errors and Diagnostics
+
+If a method returns an error, verify the request data and the external service state.
+
+#|
+|| **Error code or text** | **Cause and action** ||
+|| `ACCESS_DENIED` | The method was called by a user without CRM administrator permissions to change settings ||
+|| `ERROR_CHECK_FAILURE` | A required field is missing or a field value failed validation. Check `CODE`, `NAME`, `SETTINGS`, `REST_CODE`, `EMAIL`, and `UUID` ||
+|| `ERROR_HANDLER_ALREADY_EXIST` | A handler with this `CODE` already exists. Specify a different code or reuse the existing handler ||
+|| `ERROR_CHECK_NOT_FOUND` | The receipt with the specified `UUID` was not found. Check that `UUID` matches the value returned by the `PRINT_URL` page ||
+|| `ERROR_HANDLER_ADD`, `ERROR_CASHBOX_ADD`, `ERROR_CHECK_APPLY` | An error occurred while adding the handler, creating the cash register, or saving the print result. Review `error_description` for details ||
+|| Print error at `PRINT_URL` | Return the `ERRORS` array and retain the error text in the external service logs ||
+|| `WAIT` status at `CHECK_URL` | The receipt has not been printed yet. Repeat the status check after the receipt is processed by the external cash register ||
+|#
+
+## What to Consider
+
+- rerunning the example with the same `CODE` may fail because the handler code must be unique
+- `PRINT_URL` and `CHECK_URL` must be publicly available over HTTPS
+- store cash register settings data, such as login and password, on the application side and do not display it in the interface without masking
+
+## Continue Learning
+
+- [Cash Register Handlers](../../api-reference/sale/cashbox/sale-cashbox-handler-list.md)
+- [Cash Registers](../../api-reference/sale/cashbox/sale-cashbox-list.md)
+- [Saving the Receipt Print Result](../../api-reference/sale/cashbox/sale-cashbox-check-apply.md)

@@ -1,77 +1,57 @@
 # How to Integrate External Telephony with Bitrix24
 
+> Scope: [`telephony`](../../api-reference/scopes/permissions.md)
+>
+> Who can execute methods: to complete the full scenario, you need an installed application with OAuth authorization
+>
+> - [telephony.externalLine.add](../../api-reference/telephony/telephony-external-line-add.md), [telephony.externalCall.register](../../api-reference/telephony/telephony-external-call-register.md), [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md), and [event.bind](../../api-reference/events/event-bind.md) — the user under whom the application received OAuth authorization
+> - [telephony.externalCall.searchCrmEntities](../../api-reference/telephony/telephony-external-call-search-crm-entities.md), [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md), [telephony.externalCall.hide](../../api-reference/telephony/telephony-external-call-hide.md), [telephony.externalCall.attachRecord](../../api-reference/telephony/telephony-external-call-attach-record.md), and [telephony.call.attachTranscription](../../api-reference/telephony/telephony-call-attach-transcription.md) — any user
+
 {% note tip "" %}
 
 If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-External telephony transmits call data from the PBX to Bitrix24: client number, user, line, call status, and recording. Bitrix24 displays the call detail form to the employee, links the call to the CRM, and saves the result in the statistics.
+External telephony transmits call data from the PBX to Bitrix24: client number, user, line, call status, and recording. Bitrix24 displays the call card to the employee, links the call to the CRM, and retains the result in statistics.
 
-To integrate external telephony, follow these six steps:
+The scenario consists of six steps.
 
 1. Assemble the application and handlers for the PBX and Bitrix24
 2. Register an incoming call
 3. Display the call card to an employee group
 4. Route the call to the customer's responsible person
 5. Process an outgoing call from the CRM
-6. Complete the call and save the result
+6. Finish the call and retain the result
 
 We will separately examine a scenario where a call must be recorded without displaying a card.
 
 {% note info "" %}
 
-REST methods `telephony.externalCall.*` and `telephony.externalLine.*` work both via an incoming webhook and within the context of an application. The [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) event (step 5) is sent only to an installed application—it is received by your web server.
+The `telephony.externalLine.add`, `telephony.externalCall.register`, and `telephony.externalCall.finish` methods work only in the application context. An inbound webhook is not suitable for them. The [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) event (step 5) is received by your web server.
 
 In PHP, telephony methods are called directly through the core (`$b24->core->call(...)`). Typed analogs are available in `getTelephonyScope()->externalCall()` (`show`, `hide`, `register`, `finishForUserId`) and `->externalLine()`, but they require value objects (`CallType`, `TelephonyCallStatusCode`, `Money`, `CarbonImmutable`).
 
 {% endnote %}
 
+## Before You Start
+
+Before you begin, make sure you have:
+
+- a local or mass-market application with the `telephony` scope and retained OAuth authorization
+- a public HTTPS application handler if you need to receive the `ONEXTERNALCALLSTART` event. An inbound webhook does not receive this event
+- the employee identifier `USER_ID` to whom the call card will be shown
+- the external line number `LINE_NUMBER`, for example `line-1`
+- the unique call identifier on the PBX side, `EXTERNAL_CALL_ID`
+- a public URL of the call recording if the recording is passed using the `telephony.externalCall.attachRecord` method
+
+Replace `your-domain.bitrix24.com`, `1269`, `1270`, `1271`, `line-1`, `asterisk-1773130778.18441`, and the recording URL with the data of your Bitrix24, employees, lines, and PBX.
+
+{% include [Note on examples](../../_includes/examples.md) %}
+
 ## SDK Initialization
 
-{% list tabs %}
-
-- JS
-
-    ```js
-    // npm install @bitrix24/b24jssdk
-    import { B24Hook } from '@bitrix24/b24jssdk'
-
-    const $b24 = B24Hook.fromWebhookUrl('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/')
-    ```
-
-- PHP
-
-    ```php
-    <?php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Monolog\Logger;
-    use Monolog\Handler\StreamHandler;
-
-    $log = new Logger('b24');
-    $log->pushHandler(new StreamHandler('php://stdout'));
-
-    $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/');
-    ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-    from b24pysdk import Client, BitrixWebhook
-
-    client = Client(BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="1/xxxxxxxxxxxxxxxx",
-    ))
-    ```
-
-{% endlist %}
+In the examples below, `$b24` for JS, `$b24` for PHP, and `client` for Python are initialized clients with the OAuth token of the installed application. Receiving, storing, and refreshing OAuth tokens are described in [Full OAuth 2.0 Authorization Protocol](../../settings/oauth/index.md).
 
 ## 1. Assemble the Application
 
@@ -85,7 +65,7 @@ A working integration typically consists of a server-side application and handle
 6. Create an [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) handler for outgoing calls
 7. If the call recording appears after completion, attach it using the [telephony.externalCall.attachRecord](../../api-reference/telephony/telephony-external-call-attach-record.md) method
 
-Registering an external line:
+Registering an external line creates a number that links calls to the application. Pass this number in `LINE_NUMBER` when registering a call.
 
 {% list tabs %}
 
@@ -115,6 +95,61 @@ Registering an external line:
     ```
 
 {% endlist %}
+
+The successful response contains the identifier of the created line.
+
+```json
+{
+    "result": {
+        "ID": 7
+    }
+}
+```
+
+If you need to handle outgoing calls from the CRM, subscribe the application to the `ONEXTERNALCALLSTART` event. Pass the public HTTPS URL of your handler in `handler`.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    await $b24.actions.v2.call.make({
+        method: 'event.bind',
+        params: {
+            event: 'ONEXTERNALCALLSTART',
+            handler: 'https://your-domain.example/events',
+        },
+        requestId: 'event-bind',
+    })
+    ```
+
+- PHP
+
+    ```php
+    $b24->core->call('event.bind', [
+        'event' => 'ONEXTERNALCALLSTART',
+        'handler' => 'https://your-domain.example/events',
+    ]);
+    ```
+
+- Python
+
+    ```python
+    client.event.bind(
+        event="ONEXTERNALCALLSTART",
+        handler="https://your-domain.example/events",
+    ).response
+    ```
+
+{% endlist %}
+
+Successful subscription returns `true`.
+
+```json
+{
+    "result": true
+}
+```
 
 ## 2. Register an Incoming Call
 
@@ -181,6 +216,20 @@ The method returns `CALL_ID` for further actions (`show`, `hide`, `finish`, `att
 
 {% endlist %}
 
+The successful response contains `CALL_ID`. Retain it: this identifier is required to show, hide, and finish the call and attach the recording.
+
+```json
+{
+    "result": {
+        "CALL_ID": "externalCall.716f1cb73def9700a23842adf9c4c568.1773130779",
+        "CRM_CREATED_LEAD": null,
+        "CRM_CREATED_ENTITIES": [],
+        "CRM_ENTITY_TYPE": "CONTACT",
+        "CRM_ENTITY_ID": 797
+    }
+}
+```
+
 ## 3. Showing a Call to an Employee Group
 
 **Simultaneous Queue.** Pass an array of employee identifiers to the `USER_ID` parameter of the [telephony.externalCall.show](../../api-reference/telephony/telephony-external-call-show.md) method. When the operator answers, hide the card for the others using the [telephony.externalCall.hide](../../api-reference/telephony/telephony-external-call-hide.md) method.
@@ -243,87 +292,135 @@ In the example, the card is shown to three employees, and then, when employee `1
 
 {% endlist %}
 
-**Sequential Queue.** Show the card to the first employee using method `show`. If he does not answer within the time specified in the PBX, hide the card using method `hide` and show it to the next employee using method `show`.
+The `show` and `hide` methods return `true` if the command to show or hide the card was sent.
+
+```json
+{
+    "result": true
+}
+```
+
+**Sequential Queue.** Show the card to the first employee using method `show`. If the employee does not answer within the time specified in the PBX, hide the card using method `hide` and show it to the next employee using method `show`.
 
 ## 4. Routing a Call to the Customer's Responsible Person
 
-To show a call to the responsible manager, register the call with `SHOW = 0`. Bitrix24 will find the CRM object by number and return `CRM_ENTITY_TYPE` and `CRM_ENTITY_ID`. Get the responsible person from the object and pass it to `telephony.externalCall.show`.
+To show a call to the responsible manager, first find the customer by phone number using the [telephony.externalCall.searchCrmEntities](../../api-reference/telephony/telephony-external-call-search-crm-entities.md) method. The method returns the found CRM entities and `ASSIGNED_BY_ID`, the identifier of the responsible employee.
+
+Then register the call using `telephony.externalCall.register` with the following parameters:
+
+- `USER_ID` — `ASSIGNED_BY_ID` from the search result
+- `PHONE_NUMBER` — the customer number
+- `TYPE = 2` — an incoming call
+- `LINE_NUMBER` — the external line number
+- `EXTERNAL_CALL_ID` — the unique call identifier on the PBX side
+- `SHOW = 0` — do not show the card immediately after registration
+
+After registration, pass `CALL_ID` and `ASSIGNED_BY_ID` to `telephony.externalCall.show`.
 
 {% list tabs %}
 
 - JS
 
     ```js
+    const crmSearch = await $b24.actions.v2.call.make({
+        method: 'telephony.externalCall.searchCrmEntities',
+        params: { PHONE_NUMBER: '499062195047' },
+        requestId: 'crm-search',
+    })
+
+    const crmEntities = crmSearch.getData().result
+    if (!crmEntities.length) {
+        throw new Error('Customer with this phone number was not found in the CRM')
+    }
+
+    const assignedById = Number(crmEntities[0].ASSIGNED_BY_ID)
+
     const reg = await $b24.actions.v2.call.make({
         method: 'telephony.externalCall.register',
-        params: { PHONE_NUMBER: '499062195047', TYPE: 2, LINE_NUMBER: 'line-1', SHOW: 0 },
+        params: {
+            USER_ID: assignedById,
+            PHONE_NUMBER: '499062195047',
+            TYPE: 2,
+            LINE_NUMBER: 'line-1',
+            EXTERNAL_CALL_ID: 'asterisk-1773130778.18441-manager',
+            SHOW: 0,
+        },
         requestId: 'call-register',
     })
-    const { CALL_ID, CRM_ENTITY_TYPE, CRM_ENTITY_ID } = reg.getData().result
 
-    let assignedById
-    if (CRM_ENTITY_TYPE === 'CONTACT' && CRM_ENTITY_ID) {
-        const contact = await $b24.actions.v2.call.make({
-            method: 'crm.contact.get', params: { id: CRM_ENTITY_ID }, requestId: 'contact-get',
-        })
-        assignedById = contact.getData().result.ASSIGNED_BY_ID
-    }
+    const callId = reg.getData().result.CALL_ID
 
-    if (assignedById) {
-        await $b24.actions.v2.call.make({
-            method: 'telephony.externalCall.show',
-            params: { CALL_ID, USER_ID: assignedById },
-            requestId: 'call-show',
-        })
-    }
+    await $b24.actions.v2.call.make({
+        method: 'telephony.externalCall.show',
+        params: { CALL_ID: callId, USER_ID: assignedById },
+        requestId: 'call-show',
+    })
     ```
 
 - PHP
 
     ```php
-    $reg = $b24->core->call('telephony.externalCall.register', [
-        'PHONE_NUMBER' => '499062195047', 'TYPE' => 2, 'LINE_NUMBER' => 'line-1', 'SHOW' => 0,
+    $crmEntities = $b24->core->call('telephony.externalCall.searchCrmEntities', [
+        'PHONE_NUMBER' => '499062195047',
     ])->getResponseData()->getResult();
 
-    $assignedById = null;
-    if (($reg['CRM_ENTITY_TYPE'] ?? '') === 'CONTACT' && !empty($reg['CRM_ENTITY_ID'])) {
-        $contact = $b24->getCRMScope()->contact()->get((int)$reg['CRM_ENTITY_ID'])->contact();
-        $assignedById = $contact->ASSIGNED_BY_ID;
+    if (empty($crmEntities)) {
+        throw new \RuntimeException('Customer with this phone number was not found in the CRM');
     }
 
-    if ($assignedById) {
-        $b24->core->call('telephony.externalCall.show', [
-            'CALL_ID' => $reg['CALL_ID'],
-            'USER_ID' => [$assignedById],
-        ]);
-    }
+    $assignedById = (int)$crmEntities[0]['ASSIGNED_BY_ID'];
+
+    $reg = $b24->core->call('telephony.externalCall.register', [
+        'USER_ID' => $assignedById,
+        'PHONE_NUMBER' => '499062195047',
+        'TYPE' => 2,
+        'LINE_NUMBER' => 'line-1',
+        'EXTERNAL_CALL_ID' => 'asterisk-1773130778.18441-manager',
+        'SHOW' => 0,
+    ])->getResponseData()->getResult();
+
+    $b24->core->call('telephony.externalCall.show', [
+        'CALL_ID' => $reg['CALL_ID'],
+        'USER_ID' => $assignedById,
+    ]);
     ```
 
 - Python
 
     ```python
-    reg = client.telephony.external_call.register(
-        phone_number="499062195047", call_type=2, line_number="line-1", show=0,
+    crm_entities = client.telephony.external_call.search_crm_entities(
+        phone_number="499062195047",
     ).response.result
 
-    assigned_by_id = None
-    if reg.get("CRM_ENTITY_TYPE") == "CONTACT" and reg.get("CRM_ENTITY_ID"):
-        contact = client.crm.contact.get(bitrix_id=reg["CRM_ENTITY_ID"]).response.result
-        assigned_by_id = contact["ASSIGNED_BY_ID"]
+    if not crm_entities:
+        raise RuntimeError("Customer with this phone number was not found in the CRM")
 
-    if assigned_by_id:
-        client.telephony.external_call.show(call_id=reg["CALL_ID"], user_id=assigned_by_id).response
+    assigned_by_id = int(crm_entities[0]["ASSIGNED_BY_ID"])
+
+    reg = client.telephony.external_call.register(
+        phone_number="499062195047",
+        call_type=2,
+        user_id=assigned_by_id,
+        line_number="line-1",
+        external_call_id="asterisk-1773130778.18441-manager",
+        show=0,
+    ).response.result
+
+    client.telephony.external_call.show(
+        call_id=reg["CALL_ID"],
+        user_id=assigned_by_id,
+    ).response
     ```
 
 {% endlist %}
 
-To find a customer by phone number without registering a call, use [telephony.externalCall.searchCrmEntities](../../api-reference/telephony/telephony-external-call-search-crm-entities.md).
+Store `CALL_ID` from the `register` response. You need it to finish the call and attach the recording.
 
 ## 5. Handling an Outgoing Call from the CRM
 
 When an employee clicks on a number in the CRM, Bitrix24 registers the call and sends the [ONEXTERNALCALLSTART](../../api-reference/telephony/events/on-external-call-start.md) event to the application with fields `CALL_ID`, `PHONE_NUMBER`, `USER_ID`, `LINE_NUMBER`, `CRM_ENTITY_TYPE`, `CRM_ENTITY_ID`, and `CALL_LIST_ID`.
 
-Your web server receives the event (the SDK only performs outgoing calls). After initiating the call on the PBX, complete the same `CALL_ID` using method `finish`.
+Your web server receives the event. After initiating the call on the PBX, complete the same `CALL_ID` using the `finish` method. The `CALL_ID` field arrives in the event, so you do not need to call `register` again for an outgoing call.
 
 {% list tabs %}
 
@@ -388,6 +485,8 @@ Your web server receives the event (the SDK only performs outgoing calls). After
 
 {% endlist %}
 
+The handler must return the HTTP response `200`. After that, Bitrix24 treats the event as delivered.
+
 ## 6. Finishing a Call and Retaining the Result
 
 After the conversation, call [telephony.externalCall.finish](../../api-reference/telephony/telephony-external-call-finish.md): the method hides the card, retains the call in statistics, and creates a CRM activity. Pass `CALL_ID`, `USER_ID`, `DURATION` (sec), and `STATUS_CODE` (`200` — successful, `304` — missed).
@@ -399,7 +498,7 @@ If the recording is not yet ready, call `finish` without a recording, and attach
 - JS
 
     ```js
-    await $b24.actions.v2.call.make({
+    const finishResponse = await $b24.actions.v2.call.make({
         method: 'telephony.externalCall.finish',
         params: { CALL_ID: callId, USER_ID: 1270, DURATION: 95, STATUS_CODE: '200', ADD_TO_CHAT: 1 },
         requestId: 'call-finish',
@@ -416,7 +515,7 @@ If the recording is not yet ready, call `finish` without a recording, and attach
 - PHP
 
     ```php
-    $b24->core->call('telephony.externalCall.finish', [
+    $finishResponse = $b24->core->call('telephony.externalCall.finish', [
         'CALL_ID' => $callId, 'USER_ID' => 1270, 'DURATION' => 95, 'STATUS_CODE' => '200', 'ADD_TO_CHAT' => 1,
     ]);
 
@@ -429,7 +528,7 @@ If the recording is not yet ready, call `finish` without a recording, and attach
 - Python
 
     ```python
-    client.telephony.external_call.finish(
+    finish_response = client.telephony.external_call.finish(
         call_id=call_id, user_id=1270, duration=95, status_code="200", add_to_chat=1,
     ).response
 
@@ -441,9 +540,38 @@ If the recording is not yet ready, call `finish` without a recording, and attach
 
 {% endlist %}
 
+The successful `finish` response contains the call statistics record. The `CALL_STATUS`, `CALL_FAILED_CODE`, `CRM_ACTIVITY_ID`, `CRM_ENTITY_TYPE`, and `CRM_ENTITY_ID` fields help verify that the call is finished and linked to the CRM.
+
+```json
+{
+    "result": {
+        "CALL_ID": "externalCall.716f1cb73def9700a23842adf9c4c568.1773130779",
+        "PORTAL_USER_ID": 1270,
+        "PHONE_NUMBER": "499062195047",
+        "CALL_DURATION": 95,
+        "CALL_STATUS": 1,
+        "CALL_FAILED_CODE": "200",
+        "CRM_ACTIVITY_ID": 7943,
+        "CRM_ENTITY_TYPE": "CONTACT",
+        "CRM_ENTITY_ID": 797,
+        "ID": 7
+    }
+}
+```
+
+If the recording is attached by `RECORD_URL`, the `attachRecord` method returns the file identifier.
+
+```json
+{
+    "result": {
+        "FILE_ID": 9079
+    }
+}
+```
+
 ## Recording a Call Without Showing a Card
 
-If the connection between the PBX and Bitrix24 was unavailable, save the fact of the call without a card after connectivity is restored: call `register` with `SHOW = 0`, then `finish` with the actual data. The scenario does not show the call in real time, but it retains the history, statistics, and CRM activity.
+If the connection between the PBX and Bitrix24 was unavailable, record the call without a card after connectivity is restored: call `register` with `SHOW = 0`, then `finish` with the actual data. The scenario does not show the call in real time, but it retains the history, statistics, and CRM activity.
 
 {% list tabs %}
 
@@ -452,7 +580,14 @@ If the connection between the PBX and Bitrix24 was unavailable, save the fact of
     ```js
     const reg = await $b24.actions.v2.call.make({
         method: 'telephony.externalCall.register',
-        params: { USER_ID: 1269, PHONE_NUMBER: '499062195047', TYPE: 2, LINE_NUMBER: 'line-1', SHOW: 0 },
+        params: {
+            USER_ID: 1269,
+            PHONE_NUMBER: '499062195047',
+            TYPE: 2,
+            LINE_NUMBER: 'line-1',
+            EXTERNAL_CALL_ID: 'asterisk-1773130778.18441-offline',
+            SHOW: 0,
+        },
         requestId: 'call-register',
     })
     const callId = reg.getData().result.CALL_ID
@@ -468,7 +603,12 @@ If the connection between the PBX and Bitrix24 was unavailable, save the fact of
 
     ```php
     $callId = $b24->core->call('telephony.externalCall.register', [
-        'USER_ID' => 1269, 'PHONE_NUMBER' => '499062195047', 'TYPE' => 2, 'LINE_NUMBER' => 'line-1', 'SHOW' => 0,
+        'USER_ID' => 1269,
+        'PHONE_NUMBER' => '499062195047',
+        'TYPE' => 2,
+        'LINE_NUMBER' => 'line-1',
+        'EXTERNAL_CALL_ID' => 'asterisk-1773130778.18441-offline',
+        'SHOW' => 0,
     ])->getResponseData()->getResult()['CALL_ID'];
 
     $b24->core->call('telephony.externalCall.finish', [
@@ -480,7 +620,12 @@ If the connection between the PBX and Bitrix24 was unavailable, save the fact of
 
     ```python
     call_id = client.telephony.external_call.register(
-        phone_number="499062195047", call_type=2, user_id=1269, line_number="line-1", show=0,
+        phone_number="499062195047",
+        call_type=2,
+        user_id=1269,
+        line_number="line-1",
+        external_call_id="asterisk-1773130778.18441-offline",
+        show=0,
     ).response.result["CALL_ID"]
 
     client.telephony.external_call.finish(
@@ -489,6 +634,97 @@ If the connection between the PBX and Bitrix24 was unavailable, save the fact of
     ```
 
 {% endlist %}
+
+## Check the Result
+
+Verify that the integration processed the call:
+
+- during an incoming call, the call card opened for the required employee
+- after the operator answered, the card was hidden for the remaining employees in the queue
+- after `finish`, the call appeared in telephony statistics
+- a call activity was created in the CRM if the call is linked to a contact, company, lead, or deal
+- after `attachRecord`, the call recording is available in the call activity
+
+Through REST, the successful result is confirmed by the `finish` response fields: `ID`, `CALL_STATUS`, `CALL_FAILED_CODE`, `CRM_ACTIVITY_ID`, `CRM_ENTITY_TYPE`, and `CRM_ENTITY_ID`.
+
+Output these fields from the `finish` response received in step 6.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    const finishResult = finishResponse.getData().result
+
+    console.table({
+        ID: finishResult.ID,
+        CALL_STATUS: finishResult.CALL_STATUS,
+        CALL_FAILED_CODE: finishResult.CALL_FAILED_CODE,
+        CRM_ACTIVITY_ID: finishResult.CRM_ACTIVITY_ID,
+        CRM_ENTITY_TYPE: finishResult.CRM_ENTITY_TYPE,
+        CRM_ENTITY_ID: finishResult.CRM_ENTITY_ID,
+    })
+    ```
+
+- PHP
+
+    ```php
+    $finishResult = $finishResponse->getResponseData()->getResult();
+
+    echo 'ID: ' . $finishResult['ID'] . PHP_EOL;
+    echo 'CALL_STATUS: ' . $finishResult['CALL_STATUS'] . PHP_EOL;
+    echo 'CALL_FAILED_CODE: ' . $finishResult['CALL_FAILED_CODE'] . PHP_EOL;
+    echo 'CRM_ACTIVITY_ID: ' . $finishResult['CRM_ACTIVITY_ID'] . PHP_EOL;
+    echo 'CRM_ENTITY_TYPE: ' . $finishResult['CRM_ENTITY_TYPE'] . PHP_EOL;
+    echo 'CRM_ENTITY_ID: ' . $finishResult['CRM_ENTITY_ID'] . PHP_EOL;
+    ```
+
+- Python
+
+    ```python
+    finish_result = finish_response.result
+
+    for field in [
+        "ID",
+        "CALL_STATUS",
+        "CALL_FAILED_CODE",
+        "CRM_ACTIVITY_ID",
+        "CRM_ENTITY_TYPE",
+        "CRM_ENTITY_ID",
+    ]:
+        print(field, finish_result.get(field))
+    ```
+
+{% endlist %}
+
+## Errors and Diagnostics
+
+If the method returns an error, check the request data and the authorization context.
+
+#|
+|| **Error Code or Message** | **Cause and action** ||
+|| `WRONG_AUTH_TYPE` | The method was called outside the application context. Verify the application's OAuth authorization and the `telephony` scope ||
+|| `USER_ID or USER_PHONE_INNER should be set` | No employee was passed to `register` or `finish`. Pass an active `USER_ID` or the employee's internal number ||
+|| `Unknown TYPE` | An invalid call type was passed to `register`. For an incoming call, use `TYPE = 2` ||
+|| `Unsupported phone number format` | The customer number was not recognized. Pass the phone number in international format without letters ||
+|| `Line already exists` | A line with this `NUMBER` is already registered. Use an existing `LINE_NUMBER` or change the line number ||
+|| `CALL_ID must be a string` | An invalid `CALL_ID` type was passed to `finish`. Pass the string returned by `register` or the `ONEXTERNALCALLSTART` event ||
+|| `Call is not found` | The call was not found or is already finished. Verify that `CALL_ID` was stored from the current call ||
+|| `Call is not found in the statistic table. Looks like it is not finished yet.` | The recording is being attached before the call is finished. Call `finish` first, then `attachRecord` ||
+|| `Required parameters are not set. Request should contain or URL or FILENAME parameter` | `RECORD_URL` or `FILENAME` was not passed to `attachRecord` ||
+|| `Wrong file extension. Only wav and mp3 are allowed` | The recording was passed in an unsupported format. Use a `wav` or `mp3` file ||
+|| `ERROR_EVENT_NOT_FOUND` | An invalid event was passed to `event.bind`. Pass `ONEXTERNALCALLSTART` ||
+|#
+
+Repeat the scenario from the step where the error occurred. If the error occurs after a successful `register`, keep using the same `CALL_ID` until the call is finished.
+
+## What to Consider
+
+- Outgoing calls from the CRM require an installed `ONEXTERNALCALLSTART` handler. An incoming webhook does not receive this event
+- Pass a unique `EXTERNAL_CALL_ID` for each physical call so that a repeated `register` call does not return an existing `CALL_ID`
+- Store the application's OAuth tokens on the server and do not expose them in public client-side code
+- The event handler must be reachable over HTTPS and accept POST requests from Bitrix24
+- Attach the call recording after `finish`, when the call is already saved in statistics
 
 ## Continue Learning
 
