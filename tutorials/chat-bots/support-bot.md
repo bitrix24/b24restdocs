@@ -33,7 +33,7 @@ In the user's Bitrix24, prepare a local application without a user interface.
 1. Prepare a handler address accessible from the internet, for example `https://example.com/handler`
 2. Create a [local application with an installation handler](../../settings/app-installation/local-apps/installation-callback.md) and enable the "Uses API only" option.
 3. In the "Initial installation path" field, specify the handler address and grant the application the [`imopenlines`](../../api-reference/scopes/permissions.md) permission.
-4. In the handler, retrieve the authorization data `auth` and [initialize the SDK](./index.md#initializing-the-sdk-using-event-data).
+4. In the handler, retrieve the authorization data `auth` and [initialize the SDK](./index.md#sdk-init).
 
 ### Configure the Open Channel
 
@@ -54,7 +54,7 @@ The `CODE` parameter contains only the connector code. In the examples below, th
 
 ### Initialize the SDK
 
-Prepare the initialization functions following the [event data processing example](./index.md#initializing-the-sdk-using-event-data). In the installation handler, create an SDK client from the authorization data `auth`.
+Prepare the initialization functions following the [event data processing example](./index.md#sdk-init). In the installation handler, create an SDK client from the authorization data `auth`.
 
 {% include [Note on examples](../../_includes/examples.md) %}
 
