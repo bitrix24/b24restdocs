@@ -23,7 +23,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Quick navigation: [All Methods](#all-methods)
 >
-> User documentation: [Timeline in the CRM Card](https://helpdesk.bitrix24.com/open/23960160/)
+> User documentation: [Timeline in CRM item form](https://helpdesk.bitrix24.com/open/25816403/)
 
 ## Getting Started
 
