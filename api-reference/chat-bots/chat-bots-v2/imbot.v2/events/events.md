@@ -359,12 +359,12 @@ The bot has been removed from the system. This is the last event the bot will re
 
 ## ONIMBOTV2CONTEXTGET {#onimbotv2contextget}
 
-The user has opened a dialogue with the bot, passing arbitrary context data. The context is set by the calling party — for example, when navigating via a link with the `botContextData` parameter.
+The user has opened a dialogue with the bot, passing arbitrary context data. The context is set by the calling party — for example, when navigating via a link with the `BOT_CONTEXT` parameter. For more details, refer to the article [{#T}](../bot-context.md).
 
 #|
 || **Field** | **Type** | **Description** ||
 || **bot** | `object` | [Bot object](#bot-format) ||
-|| **dialogId** | `string` | ID of the dialog (e.g., `chat5`) ||
+|| **dialogId** | `string` | ID of the dialog from which the context was received. In a private chat with the bot — the numeric ID of the user, in a group chat — `chat5` ||
 || **context** | `object` | Arbitrary data passed when opening the dialog ||
 || **chat** | [`Chat`](../../entities.md#chat) | The chat ||
 || **user** | [`User`](../../entities.md#user) | The user who opened the dialog ||
@@ -391,7 +391,7 @@ The user has opened a dialogue with the bot, passing arbitrary context data. The
         "countChat": 12,
         "countUser": 45
     },
-    "dialogId": "chat5",
+    "dialogId": "1",
     "context": {
         "entityId": 164,
         "entityType": "task",
@@ -399,11 +399,11 @@ The user has opened a dialogue with the bot, passing arbitrary context data. The
     },
     "chat": {
         "id": 5,
-        "dialogId": "chat5",
-        "type": "chat",
-        "name": "Support Chat",
+        "dialogId": "1",
+        "type": "private",
+        "name": "",
         "entityType": "",
-        "owner": 1,
+        "owner": 456,
         "avatar": "",
         "color": "#ab7761"
     },

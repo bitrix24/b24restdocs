@@ -6,14 +6,14 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The mechanism for passing the initial context to the bot when opening a chat. The user follows a special link from an external site, via a QR code, or a deep link from the application, the messenger opens a dialog with the bot, and the bot immediately receives arbitrary JSON data—without any additional steps.
+The mechanism for passing the initial context to the bot when opening a chat. The user follows a special link from an external site or a QR code, the messenger opens a dialog with the bot, and the bot immediately receives arbitrary JSON data—without any additional steps.
 
 With this data, the bot instantly understands why the user has arrived: it opens the required detail form, launches the adaptation workflow, issues a coupon, or starts the authorization procedure.
 
 ## How the Mechanism Works
 
-1. The user follows the link `?IM_DIALOG={dialogId}&BOT_CONTEXT={json}` or the native `bx` deep link.
-2. The Bitrix24 web interface opens a chat with the bot.
+1. The user follows the link `?IM_DIALOG={dialogId}&BOT_CONTEXT={json}` or the `bx` deep link of the desktop application.
+2. Bitrix24 opens a chat with the bot.
 3. After initializing the dialog, the client sends a request `im.v2.Chat.Bot.sendContext` with `{dialogId, context}`.
 4. The platform forwards the context to the bot—through a PHP handler (modular bots) **and** through the event `ONIMBOTV2CONTEXTGET` (REST bots).
 5. The bot responds with its own method calls: sends a message, displays a keyboard, and so on.
@@ -26,9 +26,9 @@ The `BOT_CONTEXT` parameter is automatically removed from the browser's address 
 
 ## Link Formats
 
-The context can be passed in two ways: through the browser or via a `bx` deep link for desktop and mobile applications. Both methods deliver the same data, so the logic for processing in the bot does not depend on the chosen method.
+The context can be passed in two ways: through the browser or via a `bx` deep link of the desktop application. Both methods deliver the same data, so the logic for processing in the bot does not depend on the chosen method.
 
-It is not possible to determine from the integration side whether the user has the application installed. Recommended approaches in the UI:
+It is not possible to determine from the integration side whether the user has the desktop application installed. Recommended approaches in the UI:
 
 - **Two buttons**—“Open in App” (`bx` link) and “Open in Browser” (http link), allowing the user to choose.
 - **Landing page**—automatically attempts to open the `bx` link. If the application does not intercept the transition within the allotted time, it shows a fallback button with the http link.
@@ -53,9 +53,9 @@ Example link:
 https://portal.bitrix24.com/online/?IM_DIALOG=1459503&BOT_CONTEXT=%7B%22pairCode%22%3A%2213bd812901b295c50adbc%22%7D
 ```
 
-### Application: bx Deep Link
+### Desktop Application: bx Deep Link
 
-Deep link for the desktop and mobile Bitrix24 application. Opens a chat with the bot directly through the `bx://` protocol handler:
+Deep link of the Bitrix24 desktop application. Opens a chat with the bot directly through the `bx://` protocol handler:
 
 ```
 bx://v2/{portal}/botContext/dialogId/{dialogId}/context/{urlEncodedJson}
@@ -76,6 +76,18 @@ Example:
 bx://v2/portal.bitrix24.com/botContext/dialogId/1459503/context/%7B%22pairCode%22%3A%2213bd812901b295c50adbc%22%7D
 ```
 
+### Mobile Applications: No Dedicated Deep Link
+
+The `bx://` protocol belongs to the desktop application. The Bitrix24 mobile applications for Android and iOS do not handle it.
+
+A link with the `BOT_CONTEXT` parameter works only when the user taps it inside the mobile application—in a chat, for example. The application opens the dialog with the bot and passes the context the same way the web interface does.
+
+{% note warning "" %}
+
+There is no way to open the mobile application directly on the required chat from a link on an external site—no such deep link exists. The `bitrix24://` protocol brings the application to the foreground but does not parse the address inside it. A regular http link to cloud Bitrix24 opens in the phone browser. Design your scenario around the web link and the `bx` deep link of the desktop application.
+
+{% endnote %}
+
 ## JS API
 
 If the chat is opened programmatically from within the Bitrix24 page, use the JS API:
@@ -94,6 +106,8 @@ Messenger.openChatWithBotContext(dialogId, { pairCode: '13bd812901b295c50adbc' }
 
 The method creates an internal context service, subscribes to `onDialogInited`, and after initializing the dialog, sends a request `im.v2.Chat.Bot.sendContext`.
 
+The same request is available via REST. Call `im.v2.Chat.Bot.sendContext` with the `dialogId` and `context` parameters to reproduce the context delivery while debugging the bot, without following a link.
+
 ## Event ONIMBOTV2CONTEXTGET
 
 The main point for processing context for the bot. The event is delivered in the same mode that was chosen when registering the bot via [imbot.v2.Bot.register](./bots/bot-register.md)—no separate subscription is required.
@@ -108,7 +122,7 @@ Complete descriptions of all fields, delivery modes, and data examples can be fo
 #| 
 || **Field** | **Type** | **Description** ||
 || `bot` | `object` | Recipient bot. Format depends on the mode: in fetch — full bot object, in webhook — `{id, code, auth}` ||
-|| `dialogId` | `string` | Identifier of the dialog, for example `"chat5"` ||
+|| `dialogId` | `string` | Identifier of the dialog from which the context was received. In a private chat with the bot — the numeric ID of the user, for example `"274"`, in a group chat — `"chat5"` ||
 || `context` | `object` | Arbitrary JSON passed when opening the chat ||
 || `chat` | `object` | Chat object ||
 || `user` | `object` | User who initiated the opening ||
@@ -240,9 +254,9 @@ Messenger.openChatWithBotContext('1234', {
     "type": "ONIMBOTV2CONTEXTGET",
     "data": {
         "bot": { "id": 456, "code": "my_bot", "eventMode": "fetch" },
-        "dialogId": "chat5",
+        "dialogId": "274",
         "context": { "action": "openTask", "taskId": 456 },
-        "chat": { "id": 5, "dialogId": "chat5", "type": "chat" },
+        "chat": { "id": 4511, "dialogId": "274", "type": "private" },
         "user": { "id": 274, "name": "John Smith" },
         "language": "en"
     }
