@@ -31,7 +31,7 @@ Possible values:
 - `CALENDAR` — chat related to a calendar event
 - `MAIL` — chat related to email correspondence
 - `CRM` — system chat "for discussion" of a CRM object. The method will not return IDs of other chats related to the CRM object
-- `SONET_GROUP` — social network group chat
+- `SONET_GROUP` — system group or project chat
 - `TASKS_TASK` — task chat in the [new task card](../tasks/tasks-new.md)
 - `TASKS` — system task chat in the old task card
 - `CALL` — chat related to a call
@@ -49,10 +49,17 @@ Supported formats for common types:
 - `CALENDAR` — calendar event identifier
 - `SONET_GROUP` — group identifier
 
-For other `ENTITY_TYPE`, the format is defined by the module or integration. It can be an arbitrary string.
-
-When [creating a chat](./im-chat-add.md), you can pass an arbitrary pair of `ENTITY_TYPE` and `ENTITY_ID`. The method `im.chat.get` will return the chat if called with the same pair of values ||
+For other `ENTITY_TYPE`, the format is defined by the module or integration.
+||
 |#
+
+## Specifics of Searching Group and Project Chats
+
+The method is designed to search by a unique pair of `ENTITY_TYPE` and `ENTITY_ID`. If Bitrix24 has multiple chats with the same pair of values, the method returns one of the found chats.
+
+To retrieve the ID of the standard group or project chat, pass `ENTITY_TYPE` with the `SONET_GROUP` value and `ENTITY_ID` with the group identifier value.
+
+If a duplicate system chat was created for the group using [im.chat.add](./im-chat-add.md), the search becomes ambiguous: `im.chat.get` can return the standard chat, while `im.dialog.get` with `DIALOG_ID=sg<group identifier>` can return another chat.
 
 ## Code Examples
 

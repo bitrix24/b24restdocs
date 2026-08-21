@@ -81,7 +81,7 @@ Possible values:
 - `CALENDAR` — chat related to a calendar event
 - `MAIL` — chat related to email correspondence
 - `CRM` — chat related to a CRM object
-- `SONET_GROUP` — social network group chat
+- `SONET_GROUP` — system group or project chat. Do not use this value to create an additional chat within an existing group
 - `TASKS` — chat related to a task
 - `CALL` — chat related to a call
 
@@ -97,11 +97,9 @@ Supported formats for common types:
 - `LIVECHAT` — `<connectorId>`\|`<lineId>`
 - `TASKS` — task identifier, for example `8293`
 - `CALENDAR` — calendar event identifier
-- `SONET_GROUP` — group identifier
+- `SONET_GROUP` — group identifier. The pair of `ENTITY_TYPE` with the `SONET_GROUP` value and `ENTITY_ID` with the group identifier value must refer only to the standard chat of this group
 
-For other `ENTITY_TYPE`, the format is defined by the module or integration. It can be an arbitrary string.
-
-When creating a chat, you can pass any pair of `ENTITY_TYPE` and `ENTITY_ID`. The method [get chat identifier](./im-chat-get.md) will return the chat if called with the same pair of values
+For other `ENTITY_TYPE`, the format is defined by the module or integration.
 ||
 || **COPILOT_MAIN_ROLE**
 [`string`](../data-types.md) | Code of the main role for BitrixGPT.
@@ -110,6 +108,28 @@ Possible values:
 - `copilot_assistant` — universal default role
 - any code of an available BitrixGPT role from the AI library ||
 |#
+
+## Specifics of Group and Project Chats
+
+The system chat of a group or project uses this pair of parameters:
+
+```json
+{
+    "ENTITY_TYPE": "SONET_GROUP",
+    "ENTITY_ID": "133"
+}
+```
+
+The `ENTITY_TYPE` parameter receives the `SONET_GROUP` string value. The `ENTITY_ID` parameter receives the group or project identifier.
+
+Do not pass this pair to `im.chat.add` with the identifier of an existing group or project to create an additional chat within the group. This call can create a second system chat with the same binding.
+
+A duplicate system chat can disrupt task chats in this group:
+
+- `tasks.task.add` creates a task without `chatId` and can return the `ERROR_UNKNOWN_ADD_TASK_ERROR: There was an error while saving task chat` error
+- `tasks.task.update` and `tasks.task.delete` for this task can return the `0: There was an error while creating new task chat` error
+
+Chats with the `SONET_GROUP` binding are used as standard group and project chats. They cannot be renamed, deleted, left, or rebound using standard chat management methods.
 
 ## Code Examples
 
