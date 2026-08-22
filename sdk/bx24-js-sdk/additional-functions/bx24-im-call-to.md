@@ -2,15 +2,11 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-{% note warning "DEPRECATED" %}
-
-The development of this method has been halted. Please use [Messenger.startVideoCall](../messenger-start-video-call.md).
-
-{% endnote %}
+{% include notitle [iframe context](../../../_includes/app-runs-in-iframe.md) %}
 
 The method `BX24.im.callTo` sends a command to call a Bitrix24 user via internal communication.
 
@@ -20,7 +16,7 @@ void BX24.im.callTo(Integer userId[, Boolean video])
 
 ## Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name** 
@@ -28,12 +24,12 @@ void BX24.im.callTo(Integer userId[, Boolean video])
 || **userId*** 
 `integer` | The identifier of the Bitrix24 user to be called ||
 || **video** 
-`boolean` | Type of call: `true` - video call, `false` - audio call ||
+`boolean` | Type of call: `true` — video call, `false` — audio call ||
 |#
 
 ## Code Example
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 ```js
 BX24.init(function () {
