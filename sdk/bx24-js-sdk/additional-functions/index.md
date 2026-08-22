@@ -6,6 +6,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
+{% include notitle [iframe context](../../../_includes/app-runs-in-iframe.md) %}
+
 Additional methods manage the interface of the embedded application in Bitrix24. They allow you to resize frames, open sliders and windows, handle page events, and invoke messenger methods.
 
 > Quick navigation: [all methods](#all-methods)
@@ -13,7 +15,7 @@ Additional methods manage the interface of the embedded application in Bitrix24.
 ## How to Choose the Right Method
 
 1. If you need to manage the application window or frame, start with [BX24.resizeWindow](./bx24-resize-window.md), [BX24.fitWindow](./bx24-fit-window.md), [BX24.setTitle](./bx24-set-title.md), [BX24.openApplication](./bx24-open-application.md), and [BX24.closeApplication](./bx24-close-application.md).
-2. If you need to open a section of Bitrix24, a chat, or a call from the application interface, use [BX24.openPath](./bx24-open-path.md), [Messenger.openChat](./messenger-open-chat.md), [Messenger.startVideoCall](./messenger-start-video-call.md), or [Messenger.startPhoneCall](./messenger-start-phone-call.md).
+2. If you need to open a section of Bitrix24, start a call, or open a chat from the application interface, use [BX24.openPath](./bx24-open-path.md), [BX24.im.callTo](./bx24-im-call-to.md), [BX24.im.phoneTo](./bx24-im-phone-to.md), [BX24.im.openMessenger](./bx24-im-open-messenger.md), or [BX24.im.openHistory](./bx24-im-open-history.md).
 3. If you need to wait for the DOM structure of the page to be ready or bind an event handler, use [BX24.ready](./bx24-ready.md), [BX24.isReady](./bx24-is-ready.md), [BX24.bind](./bx24-bind.md), [BX24.unbind](./bx24-unbind.md), [BX24.proxy](./bx24-proxy.md), and [BX24.proxyContext](./bx24-proxy-context.md).
 4. If you need to retrieve runtime environment data, check [BX24.isAdmin](./bx24-is-admin.md), [BX24.getLang](./bx24-get-lang.md), [BX24.getDomain](./bx24-get-domain.md), and [BX24.getScrollSize](./bx24-get-scroll-size.md).
 5. If you need to connect an external JavaScript file on the application page, use [BX24.loadScript](./bx24-load-script.md).
@@ -23,13 +25,13 @@ Additional methods manage the interface of the embedded application in Bitrix24.
 - The methods work only inside the application frame and are called after [BX24.init](../system-functions/bx24-init.md). The exceptions are [BX24.ready](./bx24-ready.md) and [BX24.loadScript](./bx24-load-script.md): they depend on the readiness of the page, not the library
 - Most of the methods do not return data. They send a command to the Bitrix24 interface, and the result arrives in a callback function
 - Environment data — [BX24.isAdmin](./bx24-is-admin.md), [BX24.getLang](./bx24-get-lang.md), [BX24.getDomain](./bx24-get-domain.md), [BX24.getScrollSize](./bx24-get-scroll-size.md), [BX24.isReady](./bx24-is-ready.md), [BX24.proxy](./bx24-proxy.md), [BX24.proxyContext](./bx24-proxy-context.md) — is returned immediately, without a callback
-- The `Messenger.*` methods return a `Promise`. This is the current way to work with the messenger and telephony from an application
+- The `BX24.im.*` methods are an exception: they take no callback at all and return no data (`void`). The command is posted to the parent window and nothing comes back, so a successful call means only that the command was sent — not that the call started or the chat opened
 - [BX24.openPath](./bx24-open-path.md) does not work in the mobile application. The method reports this and an unavailable path with the codes `METHOD_NOT_SUPPORTED_ON_DEVICE` and `PATH_NOT_AVAILABLE` in the callback. The methods of this section return no other error codes
 - The methods require no scope of their own: they manage the interface instead of calling the REST API
 
 ## Interaction with Other Objects
 
-**System Interface of Bitrix24.** The method [BX24.openPath](./bx24-open-path.md) opens pages and object detail forms in the built-in Bitrix24 slider. The path is passed as a relative one, from the root of Bitrix24: for example, `/crm/deal/details/5/` for a deal. The methods [Messenger.openChat](./messenger-open-chat.md), [Messenger.startVideoCall](./messenger-start-video-call.md), and [Messenger.startPhoneCall](./messenger-start-phone-call.md) launch a chat, a video call, and a call to a phone number in the messenger and telephony interface.
+**System Interface of Bitrix24.** The method [BX24.openPath](./bx24-open-path.md) opens pages and object detail forms in the built-in Bitrix24 slider. The path is passed as a relative one, from the root of Bitrix24: for example, `/crm/deal/details/5/` for a deal. The methods [BX24.im.callTo](./bx24-im-call-to.md) and [BX24.im.phoneTo](./bx24-im-phone-to.md) start a call via internal communication and a call to a phone number, while [BX24.im.openMessenger](./bx24-im-open-messenger.md) and [BX24.im.openHistory](./bx24-im-open-history.md) open the messenger window and the message history of a dialog.
 
 **Embedding Locations.** For scenarios involving embeddings, register a handler via [placement.bind](../../../api-reference/widgets/placement-bind.md) and select an appropriate embedding location from the [list of embedding locations](../../../api-reference/widgets/placements.md). This is particularly important for the methods [BX24.reloadWindow](./bx24-reload-window.md) and [BX24.scrollParentWindow](./bx24-scroll-parent-window.md), which depend on the context of the application's placement.
 
@@ -78,7 +80,8 @@ Additional methods manage the interface of the embedded application in Bitrix24.
 #|
 || **Method** | **Description** ||
 || [BX24.openPath](./bx24-open-path.md) | Opens a path within Bitrix24 in the slider ||
-|| [Messenger.startVideoCall](./messenger-start-video-call.md) | Initiates a video call from the Bitrix24 interface ||
-|| [Messenger.startPhoneCall](./messenger-start-phone-call.md) | Initiates a phone call from the Bitrix24 interface ||
-|| [Messenger.openChat](./messenger-open-chat.md) | Opens a chat, message history, or chat list ||
+|| [BX24.im.callTo](./bx24-im-call-to.md) | Calls a Bitrix24 user via internal communication ||
+|| [BX24.im.phoneTo](./bx24-im-phone-to.md) | Calls a phone number ||
+|| [BX24.im.openMessenger](./bx24-im-open-messenger.md) | Opens the messenger window or the chat list ||
+|| [BX24.im.openHistory](./bx24-im-open-history.md) | Opens the message history window of a dialog ||
 |#

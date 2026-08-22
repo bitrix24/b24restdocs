@@ -41,13 +41,11 @@ items:
     href: bx24-get-scroll-size.md  
   - name: Run JavaScript File  
     href: bx24-load-script.md  
-  - name: Start Video Call  
-    href: messenger-start-video-call.md  
-  - name: Start Call to Phone Number  
-    href: messenger-start-phone-call.md  
-  - name: Open Chat  
-    href: messenger-open-chat.md  
-  - name: Deprecated Methods  
-    include:  
-      path: outdated/b24-toc.yaml  
-      mode: link  
+  - name: Call via Internal Communication  
+    href: bx24-im-call-to.md  
+  - name: Call a Phone Number  
+    href: bx24-im-phone-to.md  
+  - name: Open Messenger Window  
+    href: bx24-im-open-messenger.md  
+  - name: Open History Window  
+    href: bx24-im-open-history.md  

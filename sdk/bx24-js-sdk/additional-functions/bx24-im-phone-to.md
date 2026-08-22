@@ -2,15 +2,11 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-{% note warning "DEPRECATED" %}
-
-The development of this method has been halted. Please use [Messenger.startPhoneCall](../messenger-start-phone-call.md).
-
-{% endnote %}
+{% include notitle [iframe context](../../../_includes/app-runs-in-iframe.md) %}
 
 The method `BX24.im.phoneTo` sends a command to make a call to a phone number.
 
@@ -20,7 +16,7 @@ void BX24.im.phoneTo(String phone)
 
 ## Parameters
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
 || **Name** 
@@ -31,7 +27,7 @@ void BX24.im.phoneTo(String phone)
 
 ## Code Example
 
-{% include [Note on examples](../../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 ```js
 BX24.init(function () {
