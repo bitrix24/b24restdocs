@@ -92,7 +92,7 @@ There is no way to open the mobile application directly on the required chat fro
 
 {% include notitle [same-origin context](../../../../_includes/messenger-same-origin.md) %}
 
-If the chat is opened programmatically from within the Bitrix24 page, use the JS API:
+If the chat is opened programmatically from code hosted on the Bitrix24 domain, use the JS API:
 
 ```js
 import { Messenger } from 'im.public';

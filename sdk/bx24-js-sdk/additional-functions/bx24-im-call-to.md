@@ -24,7 +24,7 @@ void BX24.im.callTo(Integer userId[, Boolean video])
 || **userId*** 
 `integer` | The identifier of the Bitrix24 user to be called ||
 || **video** 
-`boolean` | Type of call: `true` - video call, `false` - audio call ||
+`boolean` | Type of call: `true` — video call, `false` — audio call ||
 |#
 
 ## Code Example

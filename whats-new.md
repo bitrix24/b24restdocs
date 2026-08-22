@@ -2,6 +2,14 @@
 
 ## 2026
 
+### August 22, 2026
+
+- Separated the execution contexts in the [Interface, Navigation, and Context](./sdk/bx24-js-sdk/additional-functions/index.md) section. The `Messenger` object is available only to code running on the Bitrix24 domain. An application runs in its own iframe, on a different origin, where there is no Bitrix24 runtime, so neither `Messenger.*` nor `BX.Runtime.loadExtension` can be called from it
+- Restored the methods [BX24.im.callTo](./sdk/bx24-js-sdk/additional-functions/bx24-im-call-to.md), [BX24.im.phoneTo](./sdk/bx24-js-sdk/additional-functions/bx24-im-phone-to.md), [BX24.im.openMessenger](./sdk/bx24-js-sdk/additional-functions/bx24-im-open-messenger.md), and [BX24.im.openHistory](./sdk/bx24-js-sdk/additional-functions/bx24-im-open-history.md) and removed their DEPRECATED status: for an application in an iframe these are the only way to start a call or open a chat, and they have no replacement
+- Removed the `Messenger.startVideoCall`, `Messenger.startPhoneCall`, and `Messenger.openChat` pages from the BX24 JS SDK section. They described an API unavailable to an application in an iframe and offered it as a replacement for the `BX24.im.*` methods — code written from those examples did not work in an application
+- Added notes about the context boundary: on the `BX24.im.*` method pages and in the section overview — about an application running in an iframe; in [Passing Context to the Bot When Opening a Chat](./api-reference/chat-bots/chat-bots-v2/imbot.v2/bot-context.md) — about the `Messenger` object being available only to code on the Bitrix24 domain
+- Described the deprecation notice the portal prints in its console when `BX24.im.*` is called: it recommends switching to `Messenger.*` and is wrong for an application in an iframe, because those methods belong to the top window and are not reachable from a frame
+
 ### August 20, 2026
 
 - Updated the [Incoming and Outgoing Webhooks](./local-integrations/local-webhooks.md) page: added webhook creation scenarios, GET request examples for quick method testing, and limitations for production integrations

@@ -41,3 +41,4 @@ The method does not return data (`void`).
 
 - [{#T}](./bx24-im-open-history.md)
 - [{#T}](./bx24-im-call-to.md)
+- [{#T}](./bx24-open-path.md)

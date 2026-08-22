@@ -43,3 +43,4 @@ The method does not return any data (`void`).
 
 - [{#T}](./bx24-im-open-messenger.md)
 - [{#T}](./bx24-im-call-to.md)
+- [{#T}](./bx24-open-path.md)
