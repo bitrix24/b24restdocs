@@ -246,7 +246,7 @@ HTTP status: **200**
     - `T` (Trial) — trial version (time-limited)
     - `P` (Paid) — paid application
     - `L` (Local) — local application 
-- `INSTALLED` — [true\|false] status of the application's installation. If the application is not installed, it is only available to Bitrix24 administrators and should signal the end of installation by calling [BX24.installFinish](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md). While the value is `false`, the portal does not deliver events to the application and does not show its placements, even if [event.bind](../../events/event-bind.md) and [placement.bind](../../widgets/placement-bind.md) succeeded
+- `INSTALLED` — [true\|false] status of the application's installation. If the application is not installed, it is only available to Bitrix24 administrators and should signal the end of installation by calling [BX24.installFinish](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md). While the value is `false`, Bitrix24 does not deliver events to the application and does not show its placements, even if [event.bind](../../events/event-bind.md) and [placement.bind](../../widgets/placement-bind.md) succeeded
 - `PAYMENT_EXPIRED` — [Y\|N] flag indicating whether the paid period or trial period has expired
 - `DAYS` — number of days remaining until the end of the paid period or trial period
 - `LICENSE` — designation of the plan with the region indicated as a prefix. Consists of the base language of Bitrix24 and the identifier of the plan. In cases where the composition of the plans has changed while retaining the public name (such as CRM+, Team, and Company), it is not possible to determine which plan is active based on this field. Examples of possible values:

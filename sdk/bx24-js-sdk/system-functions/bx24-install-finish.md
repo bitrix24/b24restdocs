@@ -14,21 +14,21 @@ The function `BX24.installFinish` indicates the completion of the installer or a
 
 If the function is called during the installer startup phase, the page will reload and the application will launch. If called during the setup phase, it will trigger the handlers for [BX24.init](./bx24-init.md). In other cases, there will be no effect from the call.
 
-{% note warning "" %}
-
-Until `installFinish` is called, an application with an interface stays half-installed, and the portal does not deliver events to it: chat-bot handlers, handlers registered with [event.bind](../../../api-reference/events/event-bind.md), and other outgoing calls never reach your endpoints. Placements registered with [placement.bind](../../../api-reference/widgets/placement-bind.md) will not appear in the interface either.
-
-Nothing fails loudly. Registration succeeds, the methods return a result, the handlers are listed when queried — and no traffic arrives. Every visible signal says the setup is correct, which is why this is usually debugged at the wrong layer: nginx, tunnels, TLS, routing.
-
-Call `installFinish` once, from the application setup page, as the last step of the install flow — after you have registered the placements and subscribed to the events.
-
-To check an application after the fact, use [app.info](../../../api-reference/common/system/app-info.md): the `INSTALLED` field set to `false` means `installFinish` was never executed.
-
-{% endnote %}
-
-An application without an interface that uses only the API does not need the call: its installation completes automatically, and the method itself works only inside the application interface frame in the browser. Details are in [{#T}](../../../settings/app-installation/installation-finish.md).
+An application without an interface that uses only the API does not need the call: its installation completes automatically. Details are in [{#T}](../../../settings/app-installation/installation-finish.md).
 
 No parameters.
+
+{% note warning "" %}
+
+Until `installFinish` is called, an application with an interface is considered not installed, and Bitrix24 does not deliver events to it: chat-bot handlers and handlers registered with [event.bind](../../../api-reference/events/event-bind.md) receive no requests. Placements registered with [placement.bind](../../../api-reference/widgets/placement-bind.md) will not appear in the interface.
+
+Nothing fails loudly: registration succeeds, the handlers are listed when queried, but no traffic arrives.
+
+Call `installFinish` as the last step of the install flow — after you have registered the placements and subscribed to the events.
+
+To check the installation status, use [app.info](../../../api-reference/common/system/app-info.md): the value `false` in the `INSTALLED` field means `installFinish` was never executed.
+
+{% endnote %}
 
 ## Example
 
