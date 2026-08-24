@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% include notitle [iframe context](../../../_includes/app-runs-in-iframe.md) %}
 
-Additional methods manage the interface of the embedded application in Bitrix24. They allow you to resize frames, open sliders and windows, handle page events, and invoke messenger methods.
+Additional methods manage the interface of the embedded application in Bitrix24. They allow you to resize frames, open sliders and windows, handle page events, and send commands to the messenger and telephony.
 
 > Quick navigation: [all methods](#all-methods)
 
