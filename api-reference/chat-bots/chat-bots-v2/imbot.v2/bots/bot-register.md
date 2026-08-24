@@ -14,6 +14,12 @@ The method `imbot.v2.Bot.register` registers a new chat bot.
 
 The method is idempotent: a repeated call with the same `fields.code` from the same application returns the existing bot without updating the data. To update, use [imbot.v2.Bot.update](./bot-update.md).
 
+{% note info "" %}
+
+If the bot runs as part of an application, events will not be sent to the application until the installation is complete. [Check the application installation](../../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../../_includes/required.md) %}

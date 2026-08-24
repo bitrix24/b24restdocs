@@ -18,6 +18,12 @@ Development of this method has been halted. Please use [imbot.v2.Bot.register](.
 
 The method `imbot.register` registers a chat-bot and binds event handlers of the application.
 
+{% note info "" %}
+
+If the bot runs as part of an application, events will not be sent to the application until the installation is complete. [Check the application installation](../../../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}

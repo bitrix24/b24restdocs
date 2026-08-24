@@ -29,6 +29,12 @@ When an application is deleted or updated, its actions will be removed. Therefor
 
 {% endnote %}
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
