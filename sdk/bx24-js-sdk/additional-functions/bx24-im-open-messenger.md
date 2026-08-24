@@ -2,15 +2,11 @@
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
-{% note warning "DEPRECATED" %}
-
-The development of this method has been halted. Please use [Messenger.openChat](../messenger-open-chat.md).
-
-{% endnote %}
+{% include notitle [iframe context](../../../_includes/app-runs-in-iframe.md) %}
 
 The method `BX24.im.openMessenger` sends a command to open the messenger window.
 
@@ -29,7 +25,7 @@ void BX24.im.openMessenger([String dialogId])
 
 ## Code Example
 
-{% include [Example Note](../../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 ```js
 BX24.init(function () {
@@ -45,3 +41,4 @@ The method does not return data (`void`).
 
 - [{#T}](./bx24-im-open-history.md)
 - [{#T}](./bx24-im-call-to.md)
+- [{#T}](./bx24-open-path.md)
