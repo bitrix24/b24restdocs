@@ -20,6 +20,12 @@ The handler URL must be accessible from the external network. Do not use address
 
 {% endnote %}
 
+{% note info "" %}
+
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../settings/app-installation/installation-finish.md)
+
+{% endnote %}
+
 > Quick navigation: [All Methods and Events](#all-methods)
 
 ## How Events Work
