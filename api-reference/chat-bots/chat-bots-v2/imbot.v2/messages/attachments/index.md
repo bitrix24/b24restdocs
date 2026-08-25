@@ -61,6 +61,20 @@ A full description of the parameters of each block is available in [ATTACH Block
     }
     ```
 
+- Python
+
+    ```python
+    attach = {
+        "ID": 1,
+        "COLOR_TOKEN": "secondary",
+        "COLOR": "#29619b",
+        "BLOCKS": [
+            Ellipsis,
+            Ellipsis,
+        ],
+    }
+    ```
+
 - PHP
 
     ```php
@@ -145,6 +159,44 @@ A full description of the parameters of each block is available in [ATTACH Block
     } catch (error) {
       console.error(error);
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.imbot.v2.chat.message.send(
+            bot_id=456,
+            dialog_id="chat20921",
+            fields={
+                "message": "Attachment with the primary color",
+                "attach": {
+                    "ID": 1,
+                    "COLOR_TOKEN": "primary",
+                    "COLOR": "#29619b",
+                    "BLOCKS": [
+                        {
+                            "MESSAGE": "The API will be available in the [B]im 24.0.0[/B] update",
+                        },
+                    ],
+                },
+            },
+        ).response
+        result = bitrix_response.result["id"]
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - PHP
@@ -264,6 +316,15 @@ If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can dir
     ]
     ```
 
+- Python
+
+    ```python
+    attach = [
+        Ellipsis,
+        Ellipsis,
+    ]
+    ```
+
 - PHP
 
     ```php
@@ -323,6 +384,39 @@ If attachment metadata (`ID`, `COLOR_TOKEN`, `COLOR`) is not needed, you can dir
     } catch (error) {
       console.error(error);
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.imbot.v2.chat.message.send(
+            bot_id=456,
+            dialog_id="chat20921",
+            fields={
+                "message": "Text block",
+                "attach": [
+                    {
+                        "MESSAGE": "The API will be available in the [B]im 24.0.0[/B] update",
+                    },
+                ],
+            },
+        ).response
+        result = bitrix_response.result["id"]
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - PHP

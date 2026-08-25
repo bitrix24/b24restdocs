@@ -84,6 +84,31 @@ We will use the [crm.category.list](../../../api-reference/crm/universal/categor
     console.log(result.getData().result);
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    # the b24pysdk wrapper accepts only entity_type_id, so we select the pipeline by code in the response
+    result = client.crm.category.list(
+        entity_type_id=3,  # 3 — a contact
+    ).response.result
+    categories = [
+        category
+        for category in result.get("categories", [])
+        if category.get("code") == "CATALOG_CONTRACTOR_CONTACT"
+    ]
+    print(categories)
+    ```
+
+
 - PHP
   
     ```php
@@ -112,31 +137,6 @@ We will use the [crm.category.list](../../../api-reference/crm/universal/categor
         ]
     );
     ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    # the b24pysdk wrapper accepts only entity_type_id, so we select the pipeline by code in the response
-    result = client.crm.category.list(
-        entity_type_id=3,  # 3 — a contact
-    ).response.result
-    categories = [
-        category
-        for category in result.get("categories", [])
-        if category.get("code") == "CATALOG_CONTRACTOR_CONTACT"
-    ]
-    print(categories)
-    ```
-
 {% endlist %}
 
 As a result, we get the pipeline identifier. In the example, `id`: `15`. In your Bitrix24 the value will be different — do not carry `15` over into working code, request the identifier with this step.
@@ -197,19 +197,6 @@ We will filter the items using the [crm.item.list](../../../api-reference/crm/un
     console.log(result.getData().result);
     ```
 
-- PHP
-  
-    ```php
-    $result = $serviceBuilder->getCRMScope()->item()->list(
-        3,
-        [],
-        [
-            'categoryId' => 15
-        ],
-        ['id', 'name', 'lastName', 'categoryId']
-    );
-    ```
-
 - Python
 
     ```python
@@ -222,6 +209,19 @@ We will filter the items using the [crm.item.list](../../../api-reference/crm/un
     ).response.result
     ```
 
+
+- PHP
+  
+    ```php
+    $result = $serviceBuilder->getCRMScope()->item()->list(
+        3,
+        [],
+        [
+            'categoryId' => 15
+        ],
+        ['id', 'name', 'lastName', 'categoryId']
+    );
+    ```
 {% endlist %}
 
 As a result, we get a list of vendor contacts.
@@ -345,6 +345,56 @@ The code goes through both steps and prints the list of vendors. The only things
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    entity_type_id = 3  # 3 — a contact; for a company specify 4
+
+    category_code = (
+        "CATALOG_CONTRACTOR_CONTACT"
+        if entity_type_id == 3
+        else "CATALOG_CONTRACTOR_COMPANY"
+    )
+
+    try:
+        categories_response = client.crm.category.list(
+            entity_type_id=entity_type_id,
+        ).response.result.get("categories", [])
+        categories = [
+            category
+            for category in categories_response
+            if category.get("code") == category_code
+        ]
+    except BitrixAPIError as error:
+        print(error)
+    else:
+        if not categories:
+            print("Vendor pipeline not found")
+        else:
+            try:
+                items_result = client.crm.item.list(
+                    entity_type_id=entity_type_id,
+                    select=["id", "name", "lastName", "categoryId"],
+                    filter={"categoryId": categories[0]["id"]},
+                    order={"id": "DESC"},
+                ).response.result
+            except BitrixAPIError as error:
+                print(error)
+            else:
+                print(items_result)
+    ```
+
+
 - PHP
   
     ```php
@@ -401,56 +451,6 @@ The code goes through both steps and prints the list of vendors. The only things
         echo $e->getMessage();
     }
     ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    entity_type_id = 3  # 3 — a contact; for a company specify 4
-
-    category_code = (
-        "CATALOG_CONTRACTOR_CONTACT"
-        if entity_type_id == 3
-        else "CATALOG_CONTRACTOR_COMPANY"
-    )
-
-    try:
-        categories_response = client.crm.category.list(
-            entity_type_id=entity_type_id,
-        ).response.result.get("categories", [])
-        categories = [
-            category
-            for category in categories_response
-            if category.get("code") == category_code
-        ]
-    except BitrixAPIError as error:
-        print(error)
-    else:
-        if not categories:
-            print("Vendor pipeline not found")
-        else:
-            try:
-                items_result = client.crm.item.list(
-                    entity_type_id=entity_type_id,
-                    select=["id", "name", "lastName", "categoryId"],
-                    filter={"categoryId": categories[0]["id"]},
-                    order={"id": "DESC"},
-                ).response.result
-            except BitrixAPIError as error:
-                print(error)
-            else:
-                print(items_result)
-    ```
-
 {% endlist %}
 
 ## Continue Learning

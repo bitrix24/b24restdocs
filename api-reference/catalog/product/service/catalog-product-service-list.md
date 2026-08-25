@@ -313,6 +313,70 @@ To retrieve service prices, use the [catalog.price.*](../../price/index.md) meth
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.catalog.product.service.list(
+            select=[
+                "id",
+                "iblockId",
+                "name",
+                "active",
+                "available",
+                "bundle",
+                "code",
+                "createdBy",
+                "dateActiveFrom",
+                "dateActiveTo",
+                "dateCreate",
+                "detailPicture",
+                "detailText",
+                "detailTextType",
+                "iblockSectionId",
+                "modifiedBy",
+                "previewPicture",
+                "previewText",
+                "previewTextType",
+                "sort",
+                "timestampX",
+                "type",
+                "vatId",
+                "vatIncluded",
+                "xmlId",
+                "property94",
+                "property95",
+            ],
+            filter={
+                "iblockId": 23,
+                ">id": 10,
+                "vatId": [
+                    1,
+                    2,
+                ],
+            },
+            order={
+                "id": "desc",
+            },
+            start=0,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

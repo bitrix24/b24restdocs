@@ -164,6 +164,43 @@ The fields and value types correspond to the description on the [Task Template F
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "TITLE": "Preparing and approving the weekly project status",
+        "DESCRIPTION": "An updated task template for preparing the weekly project status and the final approval before sending",
+        "PRIORITY": 1,
+        "TASK_CONTROL": "Y",
+        "ADD_IN_REPORT": "Y",
+        "UF_CRM_TASK": [
+            "L_1179",
+            "D_1833",
+        ],
+    }
+
+    try:
+        bitrix_response = client.tasks.template.update(
+            template_id=139,
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

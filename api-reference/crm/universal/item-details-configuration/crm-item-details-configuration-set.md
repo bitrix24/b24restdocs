@@ -373,98 +373,13 @@ For a user with `id = 1`, set the following configuration for item cards
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'crm.item.details.configuration.set',
-                [
-                    'entityTypeId' => 3,
-                    'userId'       => 1,
-                    'data'         => [
-                        [
-                            'name'     => "section_1",
-                            'title'    => "Personal Data",
-                            'type'     => "section",
-                            'elements' => [
-                                [
-                                    'name'        => "NAME",
-                                    'optionFlags' => 1,
-                                ],
-                                [
-                                    'name'        => "LAST_NAME",
-                                    'optionFlags' => 1,
-                                ],
-                                [
-                                    'name' => "SECOND_NAME",
-                                ],
-                                [
-                                    'name' => "BIRTHDATE",
-                                ],
-                                [
-                                    'name'     => "PHONE",
-                                    'optionFlags' => 1,
-                                    'options'  => [
-                                        'defaultCountry' => "GB",
-                                    ],
-                                ],
-                                [
-                                    'name'     => "ADDRESS",
-                                    'optionFlags' => 1,
-                                    'options'  => [
-                                        'defaultAddressType' => 4,
-                                    ],
-                                ],
-                            ],
-                        ],
-                        [
-                            'name'     => "section_2",
-                            'title'    => "Basic Information",
-                            'type'     => "section",
-                            'elements' => [
-                                ['name' => "TYPE_ID"],
-                                ['name' => "SOURCE_ID"],
-                                ['name' => "POST"],
-                            ],
-                        ],
-                        [
-                            'name'     => "section_3",
-                            'title'    => "Additional Information",
-                            'type'     => "section",
-                            'elements' => [
-                                ['name' => "PHOTO"],
-                                ['name' => "COMMENTS"],
-                                ['name' => "UF_CRM_1720697698689"],
-                            ],
-                        ],
-                    ],
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error setting details configuration: ' . $e->getMessage();
-    }
-    ```
-
 - Python
 
     Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.item.details.configuration.set(
@@ -553,6 +468,89 @@ For a user with `id = 1`, set the following configuration for item cards
         print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected Error: {error}")
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.details.configuration.set',
+                [
+                    'entityTypeId' => 3,
+                    'userId'       => 1,
+                    'data'         => [
+                        [
+                            'name'     => "section_1",
+                            'title'    => "Personal Data",
+                            'type'     => "section",
+                            'elements' => [
+                                [
+                                    'name'        => "NAME",
+                                    'optionFlags' => 1,
+                                ],
+                                [
+                                    'name'        => "LAST_NAME",
+                                    'optionFlags' => 1,
+                                ],
+                                [
+                                    'name' => "SECOND_NAME",
+                                ],
+                                [
+                                    'name' => "BIRTHDATE",
+                                ],
+                                [
+                                    'name'     => "PHONE",
+                                    'optionFlags' => 1,
+                                    'options'  => [
+                                        'defaultCountry' => "GB",
+                                    ],
+                                ],
+                                [
+                                    'name'     => "ADDRESS",
+                                    'optionFlags' => 1,
+                                    'options'  => [
+                                        'defaultAddressType' => 4,
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'name'     => "section_2",
+                            'title'    => "Basic Information",
+                            'type'     => "section",
+                            'elements' => [
+                                ['name' => "TYPE_ID"],
+                                ['name' => "SOURCE_ID"],
+                                ['name' => "POST"],
+                            ],
+                        ],
+                        [
+                            'name'     => "section_3",
+                            'title'    => "Additional Information",
+                            'type'     => "section",
+                            'elements' => [
+                                ['name' => "PHOTO"],
+                                ['name' => "COMMENTS"],
+                                ['name' => "UF_CRM_1720697698689"],
+                            ],
+                        ],
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error setting details configuration: ' . $e->getMessage();
+    }
     ```
 
 - BX24.js

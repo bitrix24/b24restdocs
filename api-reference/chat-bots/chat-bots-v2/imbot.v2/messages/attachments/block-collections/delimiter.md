@@ -38,6 +38,17 @@ The `DELIMITER` block adds a visual separator between parts of an attachment.
     }
     ```
 
+- Python
+
+    ```python
+    attach = {
+        "DELIMITER": {
+            "SIZE": 200,
+            "COLOR": "#c6c6c6",
+        },
+    }
+    ```
+
 - PHP
 
     ```php

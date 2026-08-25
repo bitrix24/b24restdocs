@@ -540,6 +540,90 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    settings = {
+        "CURRENCY": [
+            "RUB",
+        ],
+        "CLIENT_TYPE": "b2c",
+        "FORM_DATA": {
+            "ACTION_URI": "http://example.com/payment_form.php",
+            "METHOD": "POST",
+            "FIELDS": {
+                "phone": {
+                    "VISIBLE": "Y",
+                    "CODE": {
+                        "NAME": "Phone number",
+                        "TYPE": "STRING",
+                    },
+                },
+                "selection": {
+                    "VISIBLE": "Y",
+                    "CODE": {
+                        "NAME": "Illusion of choice",
+                        "INPUT": {
+                            "TYPE": "Y/N",
+                        },
+                    },
+                },
+                "paymentId": {
+                    "CODE": "PAYMENT_ID",
+                    "VISIBLE": "Y",
+                },
+                "serviceid": {
+                    "CODE": "REST_SERVICE_ID",
+                },
+            },
+        },
+        "CODES": {
+            "REST_SERVICE_ID": {
+                "NAME": "Shop ID",
+                "DESCRIPTION": "Shop ID",
+                "SORT": "100",
+            },
+            "REST_SERVICE_KEY": {
+                "NAME": "Secret key",
+                "DESCRIPTION": "Secret key",
+                "SORT": "300",
+            },
+            "PAYMENT_ID": {
+                "NAME": "Payment number",
+                "SORT": "400",
+                "GROUP": "PAYMENT",
+                "DEFAULT": {
+                    "PROVIDER_KEY": "PAYMENT",
+                    "PROVIDER_VALUE": "ACCOUNT_NUMBER",
+                },
+            },
+        },
+    }
+
+    try:
+        bitrix_response = client.sale.paysystem.handler.add(
+            name="Rest handler FORM",
+            code="resthandlerform",
+            sort=100,
+            settings=settings,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -1123,6 +1207,72 @@ If nothing is returned, the default error `Error registering order in payment sy
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.sale.paysystem.handler.add(
+            name='Handler.Rest CHECKOUT',
+            code='resthandlercheckout',
+            settings={
+                "CURRENCY": [
+                    "RUB",
+                ],
+                "CLIENT_TYPE": "b2c",
+                "CHECKOUT_DATA": {
+                    "ACTION_URI": 'http://example.com/payment_checkout.php',
+                    "FIELDS": {
+                        "serviceKey": {
+                            "CODE": 'REST_SERVICE_KEY_CHECKOUT',
+                        },
+                        "serviceid": {
+                            "CODE": 'REST_SERVICE_ID_CHECKOUT',
+                        },
+                    },
+                },
+                "CODES": {
+                    'REST_SERVICE_ID_CHECKOUT': {
+                        "NAME": "Service key",
+                        "DESCRIPTION": "Service key",
+                        "SORT": "100",
+                    },
+                    'REST_SERVICE_KEY_CHECKOUT': {
+                        "NAME": "Identifier",
+                        "DESCRIPTION": "Identifier",
+                        "SORT": "300",
+                    },
+                    'PS_WORK_MODE_CHECKOUT': {
+                        "NAME": "Payment system operating mode",
+                        "SORT": "1100",
+                        "INPUT": {
+                            "TYPE": "ENUM",
+                            "OPTIONS": {
+                                "TEST": "Test",
+                                "REGULAR": "Live",
+                            },
+                        },
+                    },
+                },
+            },
+            sort=100,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -1569,6 +1719,72 @@ document.addEventListener("DOMContentLoaded", function() {
 
       document.addEventListener('DOMContentLoaded', addPaySystemHandlerIframe)
     </script>
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.sale.paysystem.handler.add(
+            name='Handler.Rest IFrame',
+            code='resthandleriframe',
+            settings={
+                "CURRENCY": [
+                    "RUB",
+                ],
+                "CLIENT_TYPE": "b2c",
+                "IFRAME_DATA": {
+                    "ACTION_URI": 'http://example.com/payment_iframe.php',
+                    "FIELDS": {
+                        "serviceKey": {
+                            "CODE": 'REST_SERVICE_KEY_IFRAME',
+                        },
+                        "serviceid": {
+                            "CODE": 'REST_SERVICE_ID_IFRAME',
+                        },
+                    },
+                },
+                "CODES": {
+                    'REST_SERVICE_ID_IFRAME': {
+                        "NAME": "Service key",
+                        "DESCRIPTION": "Service key",
+                        "SORT": "100",
+                    },
+                    'REST_SERVICE_KEY_IFRAME': {
+                        "NAME": "Identifier",
+                        "DESCRIPTION": "Identifier",
+                        "SORT": "300",
+                    },
+                    'PS_WORK_MODE_IFRAME': {
+                        "NAME": "Payment system operating mode",
+                        "SORT": "1100",
+                        "INPUT": {
+                            "TYPE": "ENUM",
+                            "OPTIONS": {
+                                "TEST": "Test",
+                                "REGULAR": "Live",
+                            },
+                        },
+                    },
+                },
+            },
+            sort=100,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - PHP

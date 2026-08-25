@@ -81,6 +81,34 @@ The method returns a `fields` object: the key is the field identifier, the value
     );
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
+        )
+    )
+
+    fields = client.crm.item.fields(
+        2,  # 2 — deal
+    ).response.result["fields"]
+
+    field_name = next(
+        (
+            key
+            for key, settings in fields.items()
+            if settings["title"] == "Payment Date" and settings["type"] in ("date", "datetime")
+        ),
+        None,
+    )
+    ```
+
+
 - PHP
 
     ```php
@@ -111,34 +139,6 @@ The method returns a `fields` object: the key is the field identifier, the value
         }
     }
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-    from b24pysdk import BitrixWebhook, Client
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
-        )
-    )
-
-    fields = client.crm.item.fields(
-        2,  # 2 — deal
-    ).response.result["fields"]
-
-    field_name = next(
-        (
-            key
-            for key, settings in fields.items()
-            if settings["title"] == "Payment Date" and settings["type"] in ("date", "datetime")
-        ),
-        None,
-    )
-    ```
-
 {% endlist %}
 
 Retain the identifier you found — step 3 needs it. In the example it is `ufCrm_1746431727372`. The response is shortened to a single field: the method returns the entire set of deal fields.
@@ -198,6 +198,16 @@ Use the [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm
     const payments = resultPayments.getData().result;
     ```
 
+- Python
+
+    ```python
+    payments = client.crm.item.payment.list(
+        entity_type_id=2,
+        entity_id=6917,
+    ).response.result
+    ```
+
+
 - PHP
 
     ```php
@@ -212,16 +222,6 @@ Use the [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm
 
     $payments = $resultPayments->getResponseData()->getResult();
     ```
-
-- Python
-
-    ```python
-    payments = client.crm.item.payment.list(
-        entity_type_id=2,
-        entity_id=6917,
-    ).response.result
-    ```
-
 {% endlist %}
 
 The method returns an array of the deal payments. Take the payment date from the `datePaid` field, and use the `paid` field to check that the payment is actually completed: an unpaid document has `paid` equal to `N` and an empty `datePaid`.
@@ -273,19 +273,6 @@ Use the [crm.item.update](../../../api-reference/crm/universal/crm-item-update.m
     });
     ```
 
-- PHP
-
-    ```php
-    $resultUpdate = $sb->getCRMScope()->item()->update(
-        2,
-        6917,
-        [
-            // the key is the field identifier from step 1, the value is datePaid from step 2
-            $fieldName => $payments[0]['datePaid']
-        ]
-    );
-    ```
-
 - Python
 
     ```python
@@ -299,6 +286,19 @@ Use the [crm.item.update](../../../api-reference/crm/universal/crm-item-update.m
     ).response.result["item"]
     ```
 
+
+- PHP
+
+    ```php
+    $resultUpdate = $sb->getCRMScope()->item()->update(
+        2,
+        6917,
+        [
+            // the key is the field identifier from step 1, the value is datePaid from step 2
+            $fieldName => $payments[0]['datePaid']
+        ]
+    );
+    ```
 {% endlist %}
 
 The method returns the entire deal with the new field value, so a separate request to check the write is not required. The response is shortened to the fields that confirm the write.
@@ -349,18 +349,18 @@ Over REST, the field value is returned by the [crm.item.get](../../../api-refere
     console.log(checkResult.getData().result.item[fieldName]);
     ```
 
-- PHP
-
-    ```php
-    echo $sb->getCRMScope()->item()->get(2, 6917)->item()->{$fieldName};
-    ```
-
 - Python
 
     ```python
     print(client.crm.item.get(2, 6917).response.result["item"][field_name])
     ```
 
+
+- PHP
+
+    ```php
+    echo $sb->getCRMScope()->item()->get(2, 6917)->item()->{$fieldName};
+    ```
 {% endlist %}
 
 The scenario is complete if the `ufCrm_1746431727372` field in the response holds the payment date rather than `null` or an empty string.
@@ -494,6 +494,77 @@ The script finds a custom deal field by its name, reads the date of a completed 
     setPaidDate();
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
+        )
+    )
+
+    ENTITY_TYPE_ID = 2  # 2 — deal
+    DEAL_ID = 6917  # specify your own deal
+    FIELD_TITLE = "Payment Date"  # the field name in the deal card
+
+    try:
+        # Step 1: find the field identifier by its name and type
+        fields = client.crm.item.fields(
+            ENTITY_TYPE_ID,
+        ).response.result["fields"]
+
+        field_name = next(
+            (
+                key
+                for key, settings in fields.items()
+                if settings["title"] == FIELD_TITLE and settings["type"] in ("date", "datetime")
+            ),
+            None,
+        )
+
+        if field_name is None:
+            print(f'The "{FIELD_TITLE}" field of the "Date" type is not found in the deal card')
+        else:
+            print(f"Field identifier: {field_name}")
+
+            # Step 2: read the date of the completed payment
+            payments = client.crm.item.payment.list(
+                entity_type_id=ENTITY_TYPE_ID,
+                entity_id=DEAL_ID,
+            ).response.result
+
+            dates = [
+                payment["datePaid"]
+                for payment in payments
+                if payment["paid"] == "Y" and payment["datePaid"]
+            ]
+
+            if not dates:
+                print(f"Deal {DEAL_ID} has no completed payments")
+            else:
+                # take the latest payment rather than the first one in the array
+                date_paid = max(dates)
+                print(f"Payment date: {date_paid}")
+
+                # Step 3: write the date to the deal field
+                updated = client.crm.item.update(
+                    ENTITY_TYPE_ID,
+                    DEAL_ID,
+                    {field_name: date_paid},
+                ).response.result["item"]
+
+                # a field of the "Date" type discards the time, so check the value in the response
+                print(f"Written to the deal: {updated[field_name]}")
+    except BitrixAPIError as error:
+        print(f"The payment date is not written: {error}")
+    ```
+
+
 - PHP
 
     ```php
@@ -573,77 +644,6 @@ The script finds a custom deal field by its name, reads the date of a completed 
         echo 'The payment date is not written: ' . $e->getMessage();
     }
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
-        )
-    )
-
-    ENTITY_TYPE_ID = 2  # 2 — deal
-    DEAL_ID = 6917  # specify your own deal
-    FIELD_TITLE = "Payment Date"  # the field name in the deal card
-
-    try:
-        # Step 1: find the field identifier by its name and type
-        fields = client.crm.item.fields(
-            ENTITY_TYPE_ID,
-        ).response.result["fields"]
-
-        field_name = next(
-            (
-                key
-                for key, settings in fields.items()
-                if settings["title"] == FIELD_TITLE and settings["type"] in ("date", "datetime")
-            ),
-            None,
-        )
-
-        if field_name is None:
-            print(f'The "{FIELD_TITLE}" field of the "Date" type is not found in the deal card')
-        else:
-            print(f"Field identifier: {field_name}")
-
-            # Step 2: read the date of the completed payment
-            payments = client.crm.item.payment.list(
-                entity_type_id=ENTITY_TYPE_ID,
-                entity_id=DEAL_ID,
-            ).response.result
-
-            dates = [
-                payment["datePaid"]
-                for payment in payments
-                if payment["paid"] == "Y" and payment["datePaid"]
-            ]
-
-            if not dates:
-                print(f"Deal {DEAL_ID} has no completed payments")
-            else:
-                # take the latest payment rather than the first one in the array
-                date_paid = max(dates)
-                print(f"Payment date: {date_paid}")
-
-                # Step 3: write the date to the deal field
-                updated = client.crm.item.update(
-                    ENTITY_TYPE_ID,
-                    DEAL_ID,
-                    {field_name: date_paid},
-                ).response.result["item"]
-
-                # a field of the "Date" type discards the time, so check the value in the response
-                print(f"Written to the deal: {updated[field_name]}")
-    except BitrixAPIError as error:
-        print(f"The payment date is not written: {error}")
-    ```
-
 {% endlist %}
 
 ## Continue Learning

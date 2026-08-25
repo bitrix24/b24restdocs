@@ -49,6 +49,22 @@ Initialize the SDK before the first call.
     const botToken = process.env.BOT_TOKEN
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+    import os
+    from b24pysdk import BitrixWebhook, Client
+
+    token = BitrixWebhook(
+        domain=os.environ["B24_DOMAIN"],
+        webhook_token=os.environ["B24_WEBHOOK_TOKEN"],
+    )
+    client = Client(token)
+    bot_token = os.environ["BOT_TOKEN"]
+    ```
+
+
 - PHP
 
     ```php
@@ -68,22 +84,6 @@ Initialize the SDK before the first call.
 
     $botToken = getenv('BOT_TOKEN');
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-    import os
-    from b24pysdk import BitrixWebhook, Client
-
-    token = BitrixWebhook(
-        domain=os.environ["B24_DOMAIN"],
-        webhook_token=os.environ["B24_WEBHOOK_TOKEN"],
-    )
-    client = Client(token)
-    bot_token = os.environ["BOT_TOKEN"]
-    ```
-
 {% endlist %}
 
 ## 1. Register the Bot for Open Channels
@@ -121,27 +121,6 @@ For hybrid mode, where the bot works in group chats, private chats, and Open Cha
     })
     ```
 
-- PHP
-
-    ```php
-    // There is no typed wrapper for imbot.v2, so the method is called directly through the SDK core.
-    $b24->core->call('imbot.v2.Bot.register', [
-        'fields' => [
-            'code' => 'open_line_bot',
-            'botToken' => $botToken,
-            'type' => 'bot',
-            'isSupportOpenline' => true,
-            'eventMode' => 'webhook',
-            'webhookUrl' => $handlerUrl,
-            'properties' => [
-                'name' => 'Support line',
-                'workPosition' => 'First line',
-                'color' => 'GREEN',
-            ],
-        ],
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -166,6 +145,27 @@ For hybrid mode, where the bot works in group chats, private chats, and Open Cha
     )
     ```
 
+
+- PHP
+
+    ```php
+    // There is no typed wrapper for imbot.v2, so the method is called directly through the SDK core.
+    $b24->core->call('imbot.v2.Bot.register', [
+        'fields' => [
+            'code' => 'open_line_bot',
+            'botToken' => $botToken,
+            'type' => 'bot',
+            'isSupportOpenline' => true,
+            'eventMode' => 'webhook',
+            'webhookUrl' => $handlerUrl,
+            'properties' => [
+                'name' => 'Support line',
+                'workPosition' => 'First line',
+                'color' => 'GREEN',
+            ],
+        ],
+    ]);
+    ```
 {% endlist %}
 
 In a successful response, save `result.bot.id`. You will need it if the application works with several bots.
@@ -218,15 +218,6 @@ Save `data.message.chatId` from the event to the `chatId` variable. This value i
     }
     ```
 
-- PHP
-
-    ```php
-    if (($event['data']['chat']['entityType'] ?? '') === 'LINES') {
-        $chatId = (int)$event['data']['message']['chatId'];
-        // Message from an Open Channel
-    }
-    ```
-
 - Python
 
     ```python
@@ -236,6 +227,15 @@ Save `data.message.chatId` from the event to the `chatId` variable. This value i
         ...
     ```
 
+
+- PHP
+
+    ```php
+    if (($event['data']['chat']['entityType'] ?? '') === 'LINES') {
+        $chatId = (int)$event['data']['message']['chatId'];
+        // Message from an Open Channel
+    }
+    ```
 {% endlist %}
 
 ## 3. Manage the Session
@@ -275,21 +275,6 @@ When calling `imopenlines.bot.session.transfer` and `imopenlines.bot.session.fin
     })
     ```
 
-- PHP
-
-    ```php
-    $b24->core->call('imopenlines.bot.session.operator', ['CHAT_ID' => $chatId]);
-    $b24->core->call('imopenlines.bot.session.transfer', [
-        'CHAT_ID' => $chatId,
-        'USER_ID' => $operatorId,
-        'CLIENT_ID' => $botToken,
-    ]);
-    $b24->core->call('imopenlines.bot.session.finish', [
-        'CHAT_ID' => $chatId,
-        'CLIENT_ID' => $botToken,
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -304,6 +289,21 @@ When calling `imopenlines.bot.session.transfer` and `imopenlines.bot.session.fin
     )
     ```
 
+
+- PHP
+
+    ```php
+    $b24->core->call('imopenlines.bot.session.operator', ['CHAT_ID' => $chatId]);
+    $b24->core->call('imopenlines.bot.session.transfer', [
+        'CHAT_ID' => $chatId,
+        'USER_ID' => $operatorId,
+        'CLIENT_ID' => $botToken,
+    ]);
+    $b24->core->call('imopenlines.bot.session.finish', [
+        'CHAT_ID' => $chatId,
+        'CLIENT_ID' => $botToken,
+    ]);
+    ```
 {% endlist %}
 
 Successful response for each session management method:

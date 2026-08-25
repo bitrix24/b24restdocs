@@ -80,6 +80,37 @@ Call [catalog.product.list](../../api-reference/catalog/product/catalog-product-
     }
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from b24pysdk import BitrixWebhook
+
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="USER_ID/TOKEN",
+    )
+
+    def call_method(method: str, params: dict):
+        return token.call_method(method, params)["result"]
+
+    def get_products(iblock_id: int):
+        result = call_method("catalog.product.list", {
+            "select": ["id", "iblockId", "name"],
+            "filter": {
+                "iblockId": iblock_id,
+                "active": "Y",
+            },
+            "order": {
+                "id": "ASC",
+            },
+            "start": 0,
+        })
+
+        return result["products"]
+    ```
+
+
 - PHP
 
     ```php
@@ -117,37 +148,6 @@ Call [catalog.product.list](../../api-reference/catalog/product/catalog-product-
         return $result['products'];
     }
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-    from b24pysdk import BitrixWebhook
-
-    token = BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="USER_ID/TOKEN",
-    )
-
-    def call_method(method: str, params: dict):
-        return token.call_method(method, params)["result"]
-
-    def get_products(iblock_id: int):
-        result = call_method("catalog.product.list", {
-            "select": ["id", "iblockId", "name"],
-            "filter": {
-                "iblockId": iblock_id,
-                "active": "Y",
-            },
-            "order": {
-                "id": "ASC",
-            },
-            "start": 0,
-        })
-
-        return result["products"]
-    ```
-
 {% endlist %}
 
 Shortened response:
@@ -189,6 +189,18 @@ Call [catalog.product.get](../../api-reference/catalog/product/catalog-product-g
     }
     ```
 
+- Python
+
+    ```python
+    def get_product(product_id: int):
+        result = call_method("catalog.product.get", {
+            "id": product_id,
+        })
+
+        return result["product"]
+    ```
+
+
 - PHP
 
     ```php
@@ -201,18 +213,6 @@ Call [catalog.product.get](../../api-reference/catalog/product/catalog-product-g
         return $result['product'];
     }
     ```
-
-- Python
-
-    ```python
-    def get_product(product_id: int):
-        result = call_method("catalog.product.get", {
-            "id": product_id,
-        })
-
-        return result["product"]
-    ```
-
 {% endlist %}
 
 Shortened response:
@@ -285,6 +285,29 @@ Next, in the example, select properties where `userType` is not equal to `BoolEn
     }
     ```
 
+- Python
+
+    ```python
+    def get_product_properties(iblock_id: int):
+        result = call_method("catalog.productProperty.list", {
+            "select": ["id", "iblockId", "name", "propertyType", "userType", "multiple"],
+            "filter": {
+                "iblockId": iblock_id,
+                "propertyType": "L",
+            },
+            "order": {
+                "id": "ASC",
+            },
+            "start": 0,
+        })
+
+        return [
+            property for property in result["productProperties"]
+            if property.get("userType") != "BoolEnum"
+        ]
+    ```
+
+
 - PHP
 
     ```php
@@ -308,29 +331,6 @@ Next, in the example, select properties where `userType` is not equal to `BoolEn
         ));
     }
     ```
-
-- Python
-
-    ```python
-    def get_product_properties(iblock_id: int):
-        result = call_method("catalog.productProperty.list", {
-            "select": ["id", "iblockId", "name", "propertyType", "userType", "multiple"],
-            "filter": {
-                "iblockId": iblock_id,
-                "propertyType": "L",
-            },
-            "order": {
-                "id": "ASC",
-            },
-            "start": 0,
-        })
-
-        return [
-            property for property in result["productProperties"]
-            if property.get("userType") != "BoolEnum"
-        ]
-    ```
-
 {% endlist %}
 
 Short response:
@@ -388,6 +388,25 @@ Call [catalog.productPropertyEnum.list](../../api-reference/catalog/product-prop
     }
     ```
 
+- Python
+
+    ```python
+    def get_property_enum_values(property_id: int):
+        result = call_method("catalog.productPropertyEnum.list", {
+            "select": ["id", "propertyId", "value", "sort"],
+            "filter": {
+                "propertyId": property_id,
+            },
+            "order": {
+                "id": "ASC",
+            },
+            "start": 0,
+        })
+
+        return result["productPropertyEnums"]
+    ```
+
+
 - PHP
 
     ```php
@@ -407,25 +426,6 @@ Call [catalog.productPropertyEnum.list](../../api-reference/catalog/product-prop
         return $result['productPropertyEnums'];
     }
     ```
-
-- Python
-
-    ```python
-    def get_property_enum_values(property_id: int):
-        result = call_method("catalog.productPropertyEnum.list", {
-            "select": ["id", "propertyId", "value", "sort"],
-            "filter": {
-                "propertyId": property_id,
-            },
-            "order": {
-                "id": "ASC",
-            },
-            "start": 0,
-        })
-
-        return result["productPropertyEnums"]
-    ```
-
 {% endlist %}
 
 Short response:
@@ -502,6 +502,46 @@ For a multiple property, pass an array of objects. If you need to retain an exis
     }
     ```
 
+- Python
+
+    ```python
+    def build_property_update_fields(
+        product: dict,
+        single_property_id: int,
+        single_enum_id: int,
+        multiple_property_id: int,
+        multiple_enum_ids: list,
+    ):
+        single_property_name = f"property{single_property_id}"
+        multiple_property_name = f"property{multiple_property_id}"
+
+        current_multiple_values = product.get(multiple_property_name) or []
+        multiple_values = []
+        for index, enum_id in enumerate(multiple_enum_ids):
+            current_value = current_multiple_values[index] if index < len(current_multiple_values) else {}
+            multiple_values.append({
+                "valueId": current_value.get("valueId"),
+                "value": enum_id,
+            })
+
+        return {
+            single_property_name: {
+                "valueId": (product.get(single_property_name) or {}).get("valueId"),
+                "value": single_enum_id,
+            },
+            multiple_property_name: multiple_values,
+        }
+
+    def update_product_properties(product_id: int, fields: dict):
+        result = call_method("catalog.product.update", {
+            "id": product_id,
+            "fields": fields,
+        })
+
+        return result["element"]
+    ```
+
+
 - PHP
 
     ```php
@@ -542,46 +582,6 @@ For a multiple property, pass an array of objects. If you need to retain an exis
         return $result['element'];
     }
     ```
-
-- Python
-
-    ```python
-    def build_property_update_fields(
-        product: dict,
-        single_property_id: int,
-        single_enum_id: int,
-        multiple_property_id: int,
-        multiple_enum_ids: list,
-    ):
-        single_property_name = f"property{single_property_id}"
-        multiple_property_name = f"property{multiple_property_id}"
-
-        current_multiple_values = product.get(multiple_property_name) or []
-        multiple_values = []
-        for index, enum_id in enumerate(multiple_enum_ids):
-            current_value = current_multiple_values[index] if index < len(current_multiple_values) else {}
-            multiple_values.append({
-                "valueId": current_value.get("valueId"),
-                "value": enum_id,
-            })
-
-        return {
-            single_property_name: {
-                "valueId": (product.get(single_property_name) or {}).get("valueId"),
-                "value": single_enum_id,
-            },
-            multiple_property_name: multiple_values,
-        }
-
-    def update_product_properties(product_id: int, fields: dict):
-        result = call_method("catalog.product.update", {
-            "id": product_id,
-            "fields": fields,
-        })
-
-        return result["element"]
-    ```
-
 {% endlist %}
 
 Short response:
@@ -662,42 +662,6 @@ After adding the functions from the previous steps, replace:
     console.log(updatedProduct)
     ```
 
-- PHP
-
-    ```php
-    $iblockId = 23;
-    $singlePropertyId = 258;
-    $multiplePropertyId = 259;
-    $singleEnumId = 435;
-    $multipleEnumIds = [439, 441];
-
-    $products = getProducts($b24, $iblockId);
-    if (empty($products)) {
-        throw new RuntimeException('There are no active products in the catalog');
-    }
-
-    $productId = (int)$products[0]['id'];
-    $product = getProduct($b24, $productId);
-    $properties = getProductProperties($b24, $iblockId);
-    $singleEnumValues = getPropertyEnumValues($b24, $singlePropertyId);
-    $multipleEnumValues = getPropertyEnumValues($b24, $multiplePropertyId);
-
-    print_r($properties);
-    print_r($singleEnumValues);
-    print_r($multipleEnumValues);
-
-    $fields = buildPropertyUpdateFields(
-        $product,
-        $singlePropertyId,
-        $singleEnumId,
-        $multiplePropertyId,
-        $multipleEnumIds
-    );
-
-    $updatedProduct = updateProductProperties($b24, $productId, $fields);
-    print_r($updatedProduct);
-    ```
-
 - Python
 
     ```python
@@ -733,6 +697,42 @@ After adding the functions from the previous steps, replace:
     print(updated_product)
     ```
 
+
+- PHP
+
+    ```php
+    $iblockId = 23;
+    $singlePropertyId = 258;
+    $multiplePropertyId = 259;
+    $singleEnumId = 435;
+    $multipleEnumIds = [439, 441];
+
+    $products = getProducts($b24, $iblockId);
+    if (empty($products)) {
+        throw new RuntimeException('There are no active products in the catalog');
+    }
+
+    $productId = (int)$products[0]['id'];
+    $product = getProduct($b24, $productId);
+    $properties = getProductProperties($b24, $iblockId);
+    $singleEnumValues = getPropertyEnumValues($b24, $singlePropertyId);
+    $multipleEnumValues = getPropertyEnumValues($b24, $multiplePropertyId);
+
+    print_r($properties);
+    print_r($singleEnumValues);
+    print_r($multipleEnumValues);
+
+    $fields = buildPropertyUpdateFields(
+        $product,
+        $singlePropertyId,
+        $singleEnumId,
+        $multiplePropertyId,
+        $multipleEnumIds
+    );
+
+    $updatedProduct = updateProductProperties($b24, $productId, $fields);
+    print_r($updatedProduct);
+    ```
 {% endlist %}
 
 ## Verify the Result

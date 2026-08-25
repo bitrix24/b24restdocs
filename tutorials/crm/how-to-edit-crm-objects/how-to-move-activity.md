@@ -65,6 +65,31 @@ Without the `select` parameter, the method returns all activity fields. To reduc
     });
     ```
 
+- Python
+
+    ```python
+    import os
+
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token=os.environ["B24_HOOK_TOKEN"],
+        )
+    )
+    # B24_HOOK_TOKEN = 'user_id/webhook_key'
+
+    result = client.crm.activity.list(
+        filter={
+            "OWNER_TYPE_ID": 1,
+            "OWNER_ID": 1000977,
+        },
+        select=["ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION"],
+    ).response.result
+    ```
+
+
 - PHP
 
     ```php
@@ -94,31 +119,6 @@ Without the `select` parameter, the method returns all activity fields. To reduc
         0
     )->getActivities();
     ```
-
-- Python
-
-    ```python
-    import os
-
-    from b24pysdk import BitrixWebhook, Client
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token=os.environ["B24_HOOK_TOKEN"],
-        )
-    )
-    # B24_HOOK_TOKEN = 'user_id/webhook_key'
-
-    result = client.crm.activity.list(
-        filter={
-            "OWNER_TYPE_ID": 1,
-            "OWNER_ID": 1000977,
-        },
-        select=["ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION"],
-    ).response.result
-    ```
-
 {% endlist %}
 
 As a result, you will retrieve all activities associated with the specified item.
@@ -179,20 +179,6 @@ The method must include all mandatory fields for leads in your Bitrix24; otherwi
     });
     ```
 
-- PHP
-
-    ```php
-    $newLeadId = $serviceBuilder->getCRMScope()->lead()->add(
-        [
-            'TITLE' => 'Second lead',
-            'ASSIGNED_BY_ID' => 1,
-        ],
-        [
-            'REGISTER_SONET_EVENT' => 'Y',
-        ]
-    )->getId();
-    ```
-
 - Python
 
     ```python
@@ -207,6 +193,20 @@ The method must include all mandatory fields for leads in your Bitrix24; otherwi
     ).response.result
     ```
 
+
+- PHP
+
+    ```php
+    $newLeadId = $serviceBuilder->getCRMScope()->lead()->add(
+        [
+            'TITLE' => 'Second lead',
+            'ASSIGNED_BY_ID' => 1,
+        ],
+        [
+            'REGISTER_SONET_EVENT' => 'Y',
+        ]
+    )->getId();
+    ```
 {% endlist %}
 
 As a result, you will receive the ID of the created lead. Pass this value to the `targetEntityId` parameter in step 3.
@@ -250,6 +250,19 @@ In this example, both object types are equal to `1` — the activity is moved fr
     });
     ```
 
+- Python
+
+    ```python
+    result = client.crm.activity.binding.move(
+        activity_id=7687,
+        source_entity_type_id=1,
+        source_entity_id=1000977,
+        target_entity_type_id=1,
+        target_entity_id=1000979,
+    ).response.result
+    ```
+
+
 - PHP
 
     ```php
@@ -265,19 +278,6 @@ In this example, both object types are equal to `1` — the activity is moved fr
         ]
     );
     ```
-
-- Python
-
-    ```python
-    result = client.crm.activity.binding.move(
-        activity_id=7687,
-        source_entity_type_id=1,
-        source_entity_id=1000977,
-        target_entity_type_id=1,
-        target_entity_id=1000979,
-    ).response.result
-    ```
-
 {% endlist %}
 
 As a result, you will receive `true`, indicating the activity move was successful.
@@ -365,6 +365,82 @@ As a result, you will receive `true`, indicating the activity move was successfu
         console.error(error.message);
     }
     ```
+
+- Python
+
+    ```python
+    import os
+
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    def transfer_activity(client, first_lead_id, search_phrase):
+        try:
+            activities = client.crm.activity.list(
+                filter={
+                    "OWNER_TYPE_ID": 1,
+                    "OWNER_ID": first_lead_id,
+                },
+                select=["ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION"],
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+            return
+
+        target_activity = None
+        for activity in activities:
+            if search_phrase in str(activity.get("DESCRIPTION") or ""):
+                target_activity = activity
+                break
+
+        if target_activity is None:
+            print(f"Task with description containing '{search_phrase}' not found.")
+            return
+
+        activity_id = int(target_activity["ID"])
+
+        try:
+            new_lead_id = client.crm.lead.add(
+                fields={
+                    "TITLE": "Second lead",
+                    "ASSIGNED_BY_ID": 1,
+                },
+                params={
+                    "REGISTER_SONET_EVENT": "Y",
+                },
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+            return
+
+        try:
+            result = client.crm.activity.binding.move(
+                activity_id=activity_id,
+                source_entity_type_id=1,
+                source_entity_id=first_lead_id,
+                target_entity_type_id=1,
+                target_entity_id=new_lead_id,
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error: {error}")
+        else:
+            if result:
+                print("Task successfully moved.")
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token=os.environ["B24_HOOK_TOKEN"],
+        )
+    )
+    # B24_HOOK_TOKEN = 'user_id/webhook_key'
+
+    first_lead_id = int(input("Enter the first lead's ID: "))
+    search_phrase = input("Enter the phrase to search in the email body: ")
+
+    transfer_activity(client, first_lead_id, search_phrase)
+    ```
+
 
 - PHP
 
@@ -455,82 +531,6 @@ As a result, you will receive `true`, indicating the activity move was successfu
     // Running the function
     transferActivity($serviceBuilder, $firstLeadId, $searchPhrase);
     ```
-
-- Python
-
-    ```python
-    import os
-
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    def transfer_activity(client, first_lead_id, search_phrase):
-        try:
-            activities = client.crm.activity.list(
-                filter={
-                    "OWNER_TYPE_ID": 1,
-                    "OWNER_ID": first_lead_id,
-                },
-                select=["ID", "OWNER_TYPE_ID", "OWNER_ID", "SUBJECT", "DESCRIPTION"],
-            ).response.result
-        except BitrixAPIError as error:
-            print(f"Error: {error}")
-            return
-
-        target_activity = None
-        for activity in activities:
-            if search_phrase in str(activity.get("DESCRIPTION") or ""):
-                target_activity = activity
-                break
-
-        if target_activity is None:
-            print(f"Task with description containing '{search_phrase}' not found.")
-            return
-
-        activity_id = int(target_activity["ID"])
-
-        try:
-            new_lead_id = client.crm.lead.add(
-                fields={
-                    "TITLE": "Second lead",
-                    "ASSIGNED_BY_ID": 1,
-                },
-                params={
-                    "REGISTER_SONET_EVENT": "Y",
-                },
-            ).response.result
-        except BitrixAPIError as error:
-            print(f"Error: {error}")
-            return
-
-        try:
-            result = client.crm.activity.binding.move(
-                activity_id=activity_id,
-                source_entity_type_id=1,
-                source_entity_id=first_lead_id,
-                target_entity_type_id=1,
-                target_entity_id=new_lead_id,
-            ).response.result
-        except BitrixAPIError as error:
-            print(f"Error: {error}")
-        else:
-            if result:
-                print("Task successfully moved.")
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token=os.environ["B24_HOOK_TOKEN"],
-        )
-    )
-    # B24_HOOK_TOKEN = 'user_id/webhook_key'
-
-    first_lead_id = int(input("Enter the first lead's ID: "))
-    search_phrase = input("Enter the phrase to search in the email body: ")
-
-    transfer_activity(client, first_lead_id, search_phrase)
-    ```
-
 {% endlist %}
 
 ## Verifying the Result

@@ -314,6 +314,61 @@ The new API call differs by adding the `/api/` segment to the request URL:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    user_ids = {
+        "MEMBER_HEAD": [
+            7,
+        ],
+        "MEMBER_EMPLOYEE": [
+            12,
+            15,
+        ],
+    }
+
+    settings = {
+        "BUSINESS_PROC_AUTHORITY": [
+            "HEAD",
+            "DEPUTY_HEAD",
+        ],
+        "REPORTS_AUTHORITY": [
+            "HEAD",
+        ],
+    }
+
+    try:
+        bitrix_response = client.humanresources.node.add(
+            type='DEPARTMENT',
+            name='Marketing department',
+            parent_id=1,
+            description='Responsible for promotion',
+            user_ids=user_ids,
+            move_users_to_node=True,
+            create_chat=True,
+            binding_chat_ids=[
+                31,
+            ],
+            create_channel=False,
+            create_collab=False,
+            settings=settings,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.

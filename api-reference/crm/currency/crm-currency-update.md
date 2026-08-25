@@ -217,33 +217,11 @@ Refer to the [crm_currency_localization](../data-types.md#crm_currency_localizat
         </script>
         ```
 
-    - PHP
-
-        ```php
-        require_once('crest.php');
-
-        $result = CRest::call(
-            'crm.currency.update',
-            [
-                'ID' => 'CNY',
-                'fields' => [
-                    'AMOUNT' => 15.3449,
-                ]
-            ]
-        );
-
-        echo '<PRE>';
-        print_r($result);
-        echo '</PRE>';
-        ```
-
     - Python
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.currency.update(
@@ -265,6 +243,26 @@ Refer to the [crm_currency_localization](../data-types.md#crm_currency_localizat
             print(f"Bitrix SDK Error: {error.message}")
         except Exception as error:
             print(f"Unexpected error: {error}")
+        ```
+
+    - PHP
+
+        ```php
+        require_once('crest.php');
+
+        $result = CRest::call(
+            'crm.currency.update',
+            [
+                'ID' => 'CNY',
+                'fields' => [
+                    'AMOUNT' => 15.3449,
+                ]
+            ]
+        );
+
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
         ```
 
     - Go
@@ -429,50 +427,11 @@ Refer to the [crm_currency_localization](../data-types.md#crm_currency_localizat
         </script>
         ```
 
-    - PHP
-
-        ```php
-        require_once('crest.php');
-
-        $result = CRest::call(
-            'crm.currency.update',
-            [
-                'ID' => 'USD',
-                'fields' => [
-                    'LANG' => [
-                        'en' => [
-                            'DECIMALS' => 2,
-                            'DEC_POINT' => '.',
-                            'FORMAT_STRING' => '$#',
-                            'FULL_NAME' => 'US Dollar',
-                            'HIDE_ZERO' => 'Y',
-                            'THOUSANDS_VARIANT' => 'S',
-                        ],
-                        'de' => [
-                            'DECIMALS' => 2,
-                            'DEC_POINT' => '.',
-                            'FORMAT_STRING' => '# $',
-                            'FULL_NAME' => 'US-Dollar',
-                            'HIDE_ZERO' => 'Y',
-                            'THOUSANDS_VARIANT' => 'C',
-                        ]
-                    ]
-                ]
-            ]
-        );
-
-        echo '<PRE>';
-        print_r($result);
-        echo '</PRE>';
-        ```
-
     - Python
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.currency.update(
@@ -511,6 +470,43 @@ Refer to the [crm_currency_localization](../data-types.md#crm_currency_localizat
             print(f"Bitrix SDK Error: {error.message}")
         except Exception as error:
             print(f"Unexpected error: {error}")
+        ```
+
+    - PHP
+
+        ```php
+        require_once('crest.php');
+
+        $result = CRest::call(
+            'crm.currency.update',
+            [
+                'ID' => 'USD',
+                'fields' => [
+                    'LANG' => [
+                        'en' => [
+                            'DECIMALS' => 2,
+                            'DEC_POINT' => '.',
+                            'FORMAT_STRING' => '$#',
+                            'FULL_NAME' => 'US Dollar',
+                            'HIDE_ZERO' => 'Y',
+                            'THOUSANDS_VARIANT' => 'S',
+                        ],
+                        'de' => [
+                            'DECIMALS' => 2,
+                            'DEC_POINT' => '.',
+                            'FORMAT_STRING' => '# $',
+                            'FULL_NAME' => 'US-Dollar',
+                            'HIDE_ZERO' => 'Y',
+                            'THOUSANDS_VARIANT' => 'C',
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
         ```
 
     - Go

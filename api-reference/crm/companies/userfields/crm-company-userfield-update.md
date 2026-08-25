@@ -454,43 +454,13 @@ For a multiple field, several `DEF = Y` are allowed. For a non-multiple field, t
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $result = $serviceBuilder
-            ->getCRMScope()
-            ->companyUserfield()
-            ->update(
-                536,
-                [
-                    'MANDATORY' => 'N',
-                    'SHOW_FILTER' => 'N',
-                    'SETTINGS' => [
-                        'DEFAULT_VALUE' => 'Hello, world! Default value (changed)',
-                        'ROWS' => 10,
-                    ],
-                    'SORT' => 2000,
-                    'EDIT_IN_LIST' => 'N',
-                    'LIST_FILTER_LABEL' => 'Hello, world! Filter (changed)',
-                ]
-            );
-
-        print($result->isSuccess() ? 'Updated' : 'Failed');
-    } catch (Throwable $e) {
-        print('Error: ' . $e->getMessage());
-    }
-    ```
-
 - Python
 
     Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.company.userfield.update(
@@ -540,6 +510,34 @@ For a multiple field, several `DEF = Y` are allowed. For a non-multiple field, t
         print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->companyUserfield()
+            ->update(
+                536,
+                [
+                    'MANDATORY' => 'N',
+                    'SHOW_FILTER' => 'N',
+                    'SETTINGS' => [
+                        'DEFAULT_VALUE' => 'Hello, world! Default value (changed)',
+                        'ROWS' => 10,
+                    ],
+                    'SORT' => 2000,
+                    'EDIT_IN_LIST' => 'N',
+                    'LIST_FILTER_LABEL' => 'Hello, world! Filter (changed)',
+                ]
+            );
+
+        print($result->isSuccess() ? 'Updated' : 'Failed');
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
     ```
 
 - BX24.js

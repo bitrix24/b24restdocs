@@ -192,6 +192,49 @@ If you attempt to register a placement in other widgets, you will receive the er
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.placement.bind(
+            placement="PLACEMENT_CODE",
+            handler="http://myapp.com/handler/?type=1",
+            options={
+                "errorHandlerUrl": "http://myapp.com/error/",
+            },
+            title="title",
+            description="description",
+            group_name="group",
+            lang_all={
+                "en": {
+                    "TITLE": "title",
+                    "DESCRIPTION": "description",
+                    "GROUP_NAME": "group",
+                },
+                "ru": {
+                    "TITLE": "title",
+                    "DESCRIPTION": "description",
+                    "GROUP_NAME": "group",
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

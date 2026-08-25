@@ -368,6 +368,88 @@ To retrieve variation prices, use the [catalog.price.*](../../price/index.md) me
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.catalog.product.offer.list(
+            select=[
+                "id",
+                "iblockId",
+                "name",
+                "active",
+                "available",
+                "barcodeMulti",
+                "bundle",
+                "canBuyZero",
+                "code",
+                "createdBy",
+                "dateActiveFrom",
+                "dateActiveTo",
+                "dateCreate",
+                "detailPicture",
+                "detailText",
+                "detailTextType",
+                "height",
+                "iblockSectionId",
+                "length",
+                "measure",
+                "modifiedBy",
+                "previewPicture",
+                "previewText",
+                "previewTextType",
+                "purchasingCurrency",
+                "purchasingPrice",
+                "quantity",
+                "quantityReserved",
+                "quantityTrace",
+                "recurSchemeLength",
+                "recurSchemeType",
+                "sort",
+                "subscribe",
+                "timestampX",
+                "trialPriceId",
+                "type",
+                "vatId",
+                "vatIncluded",
+                "weight",
+                "width",
+                "withoutOrder",
+                "xmlId",
+                "parentId",
+                "property258",
+                "property259",
+            ],
+            filter={
+                "iblockId": 24,
+                ">id": 10,
+                "vatId": [
+                    1,
+                    2,
+                ],
+            },
+            order={
+                "id": "desc",
+            },
+            start=0,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

@@ -56,20 +56,6 @@ The step examples follow one another. The SDK is initialized once here; subseque
     // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
     ```
 
-- PHP
-  
-    ```php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Psr\Log\NullLogger;
-
-    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
-    ```
-
 - Python
 
     ```python
@@ -82,6 +68,20 @@ The step examples follow one another. The SDK is initialized once here; subseque
             webhook_token="user_id/webhook_key",
         )
     )
+    ```
+
+- PHP
+  
+    ```php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
     ```
 
 - Go
@@ -155,6 +155,31 @@ To create a custom field, use the [userfieldconfig.add](../../../api-reference/c
     console.log(createdField.id, createdField.settings.PRECISION);
     ```
 
+- Python
+
+    ```python
+    try:
+        created_field = client.userfieldconfig.add(
+            module_id="crm",
+            field={
+                "entityId": "CRM_DEAL",
+                "fieldName": "UF_CRM_DEAL_NEW_DOUBLE_FIELD",
+                "userTypeId": "double",
+                "editFormLabel": {
+                    "de": "Number with rounding",
+                    "en": "PRECISION double",
+                },
+                "settings": {
+                    "PRECISION": 3,
+                },
+            },
+        ).response.result["field"]
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
+    else:
+        print(created_field["id"], created_field["settings"]["PRECISION"])
+    ```
+
 - PHP
   
     ```php
@@ -179,31 +204,6 @@ To create a custom field, use the [userfieldconfig.add](../../../api-reference/c
     )->getResponseData()->getResult()['field'];
 
     echo $createdField['id'] . ': ' . $createdField['settings']['PRECISION'];
-    ```
-
-- Python
-
-    ```python
-    try:
-        created_field = client.userfieldconfig.add(
-            module_id="crm",
-            field={
-                "entityId": "CRM_DEAL",
-                "fieldName": "UF_CRM_DEAL_NEW_DOUBLE_FIELD",
-                "userTypeId": "double",
-                "editFormLabel": {
-                    "de": "Number with rounding",
-                    "en": "PRECISION double",
-                },
-                "settings": {
-                    "PRECISION": 3,
-                },
-            },
-        ).response.result["field"]
-    except BitrixAPIError as error:
-        print(f"Error: {error}")
-    else:
-        print(created_field["id"], created_field["settings"]["PRECISION"])
     ```
 
 - Go
@@ -355,6 +355,26 @@ The method returns fields in UPPER_SNAKE case — keep this in mind when [ compa
     }
     ```
 
+- Python
+
+    ```python
+    fields = client.crm.deal.userfield.list(
+        filter={
+            "LANG": "de",
+            "USER_TYPE_ID": "double",
+        }
+    ).response.result
+
+    # Select the required field by name — replace with your field name
+    target_field = next(
+        (field for field in fields if field["EDIT_FORM_LABEL"] == "Amount to return"),
+        None,
+    )
+
+    if target_field is None:
+        raise RuntimeError("Field with the specified name not found")
+    ```
+
 - PHP
   
     ```php
@@ -378,26 +398,6 @@ The method returns fields in UPPER_SNAKE case — keep this in mind when [ compa
     if ($targetField === null) {
         throw new \RuntimeException('Field with the specified name not found');
     }
-    ```
-
-- Python
-
-    ```python
-    fields = client.crm.deal.userfield.list(
-        filter={
-            "LANG": "de",
-            "USER_TYPE_ID": "double",
-        }
-    ).response.result
-
-    # Select the required field by name — replace with your field name
-    target_field = next(
-        (field for field in fields if field["EDIT_FORM_LABEL"] == "Amount to return"),
-        None,
-    )
-
-    if target_field is None:
-        raise RuntimeError("Field with the specified name not found")
     ```
 
 - Go
@@ -555,6 +555,23 @@ See the full set of type configurations in the `settings` of any `userfieldconfi
     console.log(updatedField.id, updatedField.settings.PRECISION);
     ```
 
+- Python
+
+    ```python
+    updated_field = client.userfieldconfig.update(
+        module_id="crm",
+        bitrix_id=int(target_field["ID"]),
+        field={
+            "settings": {
+                **target_field["SETTINGS"],  # Transfer current settings from step 1
+                "PRECISION": 3,
+            }
+        },
+    ).response.result["field"]
+
+    print(updated_field["id"], updated_field["settings"]["PRECISION"])
+    ```
+
 - PHP
   
     ```php
@@ -574,23 +591,6 @@ See the full set of type configurations in the `settings` of any `userfieldconfi
     )->getResponseData()->getResult()['field'];
 
     echo $updatedField['id'] . ': ' . $updatedField['settings']['PRECISION'];
-    ```
-
-- Python
-
-    ```python
-    updated_field = client.userfieldconfig.update(
-        module_id="crm",
-        bitrix_id=int(target_field["ID"]),
-        field={
-            "settings": {
-                **target_field["SETTINGS"],  # Transfer current settings from step 1
-                "PRECISION": 3,
-            }
-        },
-    ).response.result["field"]
-
-    print(updated_field["id"], updated_field["settings"]["PRECISION"])
     ```
 
 - Go
@@ -749,6 +749,61 @@ The example assembles the second scenario in its entirety: it finds a deal field
     updateUserField();
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    FIELD_LABEL = "Amount to return"  # Field name to be changed
+    PRECISION = 3  # Number of decimal places
+
+    def update_user_field(client, field_label: str, precision: int) -> None:
+        try:
+            # Step 1: get deal user fields of type double
+            fields = client.crm.deal.userfield.list(
+                filter={
+                    "LANG": "de",
+                    "USER_TYPE_ID": "double",
+                }
+            ).response.result
+
+            # The crm.deal.userfield.list response comes in UPPER_SNAKE
+            target_field = next(
+                (field for field in fields if field["EDIT_FORM_LABEL"] == field_label),
+                None,
+            )
+
+            if target_field is None:
+                raise RuntimeError("Field with the specified name not found")
+
+            # Step 2: update settings of the found field
+            updated_field = client.userfieldconfig.update(
+                module_id="crm",
+                bitrix_id=int(target_field["ID"]),
+                field={
+                    "settings": {
+                        **target_field["SETTINGS"],  # Transfer current field settings
+                        "PRECISION": precision,
+                    }
+                },
+            ).response.result["field"]
+        except (BitrixAPIError, RuntimeError) as error:
+            print(f"Error: {error}")
+        else:
+            # The userfieldconfig.update response comes in camelCase
+            print("Field precision:", updated_field["settings"]["PRECISION"])
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    update_user_field(client, FIELD_LABEL, PRECISION)
+    ```
+
 - PHP
   
     ```php
@@ -815,61 +870,6 @@ The example assembles the second scenario in its entirety: it finds a deal field
     }
 
     updateUserField($sb, FIELD_LABEL, PRECISION);
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    FIELD_LABEL = "Amount to return"  # Field name to be changed
-    PRECISION = 3  # Number of decimal places
-
-    def update_user_field(client, field_label: str, precision: int) -> None:
-        try:
-            # Step 1: get deal user fields of type double
-            fields = client.crm.deal.userfield.list(
-                filter={
-                    "LANG": "de",
-                    "USER_TYPE_ID": "double",
-                }
-            ).response.result
-
-            # The crm.deal.userfield.list response comes in UPPER_SNAKE
-            target_field = next(
-                (field for field in fields if field["EDIT_FORM_LABEL"] == field_label),
-                None,
-            )
-
-            if target_field is None:
-                raise RuntimeError("Field with the specified name not found")
-
-            # Step 2: update settings of the found field
-            updated_field = client.userfieldconfig.update(
-                module_id="crm",
-                bitrix_id=int(target_field["ID"]),
-                field={
-                    "settings": {
-                        **target_field["SETTINGS"],  # Transfer current field settings
-                        "PRECISION": precision,
-                    }
-                },
-            ).response.result["field"]
-        except (BitrixAPIError, RuntimeError) as error:
-            print(f"Error: {error}")
-        else:
-            # The userfieldconfig.update response comes in camelCase
-            print("Field precision:", updated_field["settings"]["PRECISION"])
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    update_user_field(client, FIELD_LABEL, PRECISION)
     ```
 
 - Go

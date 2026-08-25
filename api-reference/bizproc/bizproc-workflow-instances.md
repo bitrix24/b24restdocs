@@ -141,6 +141,46 @@ The formula for calculating the value of the `start` parameter:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.bizproc.workflow.instances(
+            select=[
+                "ID",
+                "MODIFIED",
+                "OWNED_UNTIL",
+                "MODULE_ID",
+                "ENTITY",
+                "DOCUMENT_ID",
+                "STARTED",
+                "STARTED_BY",
+                "TEMPLATE_ID",
+            ],
+            order={
+                "STARTED": "DESC",
+            },
+            filter={
+                ">STARTED_BY": 0,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

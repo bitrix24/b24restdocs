@@ -259,6 +259,55 @@ Access permissions can only be assigned to users or departments that do not alre
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "NAME": "Updated task list",
+        "DESCRIPTION": "Updated description: a list for managing daily tasks",
+        "SORT": 600,
+        "BIZPROC": "N",
+    }
+    messages = {
+        "ELEMENTS_NAME": "Items",
+        "ELEMENT_NAME": "Item",
+        "ELEMENT_ADD": "Create an item",
+        "ELEMENT_EDIT": "Edit the item",
+        "ELEMENT_DELETE": "Delete the item",
+        "SECTIONS_NAME": "Categories",
+        "SECTION_NAME": "Category",
+        "SECTION_ADD": "Add a category",
+        "SECTION_EDIT": "Edit the category",
+        "SECTION_DELETE": "Delete the category",
+    }
+    rights = {
+        "D15": "W",
+    }
+
+    try:
+        bitrix_response = client.lists.update(
+            iblock_type_id="lists",
+            iblock_id=109,
+            fields=fields,
+            messages=messages,
+            rights=rights,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

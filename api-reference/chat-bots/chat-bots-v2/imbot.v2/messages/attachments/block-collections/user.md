@@ -51,6 +51,18 @@ The `USER` block displays the user's card within the attachment: name, avatar, a
     }
     ```
 
+- Python
+
+    ```python
+    attach = {
+        "USER": {
+            "NAME": "Stefan Meier",
+            "AVATAR": "https://files.shelenkov.com/bitrix/images/avatar.png",
+            "LINK": "https://shelenkov.com",
+        },
+    }
+    ```
+
 - PHP
 
     ```php

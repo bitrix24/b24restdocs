@@ -222,6 +222,51 @@ By default, empty ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    settings = {
+        "AUTH": {
+            "KEYWORD": "top_secret!",
+            "PREFERENCE": "SECOND",
+        },
+        "INTERACTION": {
+            "MODE": "ACTIVE",
+        },
+    }
+
+    try:
+        bitrix_response = client.sale.cashbox.add(
+            name="Rest cash register",
+            rest_code="restcashbox01",
+            email="user@example.com",
+            number_kkm="123",
+            active=True,
+            sort=100,
+            ofd="bx_ofdruofd",
+            ofd_settings={
+                "OFD_MODE": {
+                    "IS_TEST": "N",
+                },
+            },
+            settings=settings,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

@@ -90,33 +90,6 @@ Use the [crm.documentgenerator.numerator.add](../../../api-reference/crm/documen
     const numeratorId = resNum.getData().result.numerator.id;
     ```
 
-- PHP
-
-    ```php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Psr\Log\NullLogger;
-
-    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
-
-    $templatePath = __DIR__ . '/template.docx'; // path to the template file
-    $templateName = 'Demonstration product implementation'; // template name
-    $dealId = 8287; // deal identifier
-
-    $resNum = $sb->getCRMScope()->documentgeneratorNumerator()->add(
-        [
-            'name' => 'Numerator from REST', // Numerator name
-            'template' => '{NUMBER}', // Document number template
-        ]
-    );
-
-    $numeratorId = $resNum->getId();
-    ```
-
 - Python
 
     ```python
@@ -143,6 +116,33 @@ Use the [crm.documentgenerator.numerator.add](../../../api-reference/crm/documen
     numerator_id = numerator["id"]
     ```
 
+
+- PHP
+
+    ```php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $templatePath = __DIR__ . '/template.docx'; // path to the template file
+    $templateName = 'Demonstration product implementation'; // template name
+    $dealId = 8287; // deal identifier
+
+    $resNum = $sb->getCRMScope()->documentgeneratorNumerator()->add(
+        [
+            'name' => 'Numerator from REST', // Numerator name
+            'template' => '{NUMBER}', // Document number template
+        ]
+    );
+
+    $numeratorId = $resNum->getId();
+    ```
 {% endlist %}
 
 In the response, the method returns a `numerator` object. Retain the `id` — it has to be passed to step 2. In the example, `id`: `1095`.
@@ -220,25 +220,6 @@ The method accepts a `fields` object with the following parameters:
     const templateId = resTemplate.getData().result.template.id;
     ```
 
-- PHP
-
-    ```php
-    $fileContent = base64_encode(file_get_contents($templatePath));
-
-    $resTemplate = $sb->getCRMScope()->documentgeneratorTemplate()->add(
-        [
-            'name' => $templateName, // Template name
-            'numeratorId' => $numeratorId, // Numerator identifier from step 1
-            'region' => 'de', // Template region
-            'users' => ['UA'], // Access permissions: all authorized users
-            'entityTypeId' => ['2'], // 2 — deal
-            'file' => [basename($templatePath), $fileContent] // File name and content in Base64
-        ]
-    );
-
-    $templateId = $resTemplate->getId();
-    ```
-
 - Python
 
     ```python
@@ -262,6 +243,25 @@ The method accepts a `fields` object with the following parameters:
     template_id = int(template["id"])
     ```
 
+
+- PHP
+
+    ```php
+    $fileContent = base64_encode(file_get_contents($templatePath));
+
+    $resTemplate = $sb->getCRMScope()->documentgeneratorTemplate()->add(
+        [
+            'name' => $templateName, // Template name
+            'numeratorId' => $numeratorId, // Numerator identifier from step 1
+            'region' => 'de', // Template region
+            'users' => ['UA'], // Access permissions: all authorized users
+            'entityTypeId' => ['2'], // 2 — deal
+            'file' => [basename($templatePath), $fileContent] // File name and content in Base64
+        ]
+    );
+
+    $templateId = $resTemplate->getId();
+    ```
 {% endlist %}
 
 In the response, the method returns a `template` object. Retain the `id` — it has to be passed to step 3. In the example, `id`: `249`.
@@ -337,18 +337,6 @@ The method does not check whether the object exists. If the `entityId` of a non-
     const documentId = resDoc.getData().result.document.id;
     ```
 
-- PHP
-
-    ```php
-    $resDoc = $sb->getCRMScope()->documentgeneratorDocument()->add(
-        $templateId, // Template identifier from step 2
-        2, // 2 — deal
-        $dealId // Deal identifier
-    );
-
-    $documentId = $resDoc->getId();
-    ```
-
 - Python
 
     ```python
@@ -361,6 +349,18 @@ The method does not check whether the object exists. If the `entityId` of a non-
     document_id = document["id"]
     ```
 
+
+- PHP
+
+    ```php
+    $resDoc = $sb->getCRMScope()->documentgeneratorDocument()->add(
+        $templateId, // Template identifier from step 2
+        2, // 2 — deal
+        $dealId // Deal identifier
+    );
+
+    $documentId = $resDoc->getId();
+    ```
 {% endlist %}
 
 In the response, the method returns a `document` object. The response is shortened, showing the fields that confirm the result.
@@ -412,14 +412,6 @@ Through REST, the document is returned by the [crm.documentgenerator.document.ge
     console.dir(checkResult.getData().result.document);
     ```
 
-- PHP
-
-    ```php
-    $checkResult = $sb->getCRMScope()->documentgeneratorDocument()->get($documentId);
-
-    print_r($checkResult->document());
-    ```
-
 - Python
 
     ```python
@@ -430,6 +422,14 @@ Through REST, the document is returned by the [crm.documentgenerator.document.ge
     print(check_result)
     ```
 
+
+- PHP
+
+    ```php
+    $checkResult = $sb->getCRMScope()->documentgeneratorDocument()->get($documentId);
+
+    print_r($checkResult->document());
+    ```
 {% endlist %}
 
 The scenario is complete if the response contains non-empty `id` and `downloadUrl` fields and the `templateId` matches the template identifier from step 2. The `number` field shows the number issued by the numerator: for the first document it is `1`, for the next one `2`.
@@ -534,6 +534,63 @@ The script sequentially creates the numerator, uploads the template, and builds 
     createDocument();
     ```
 
+- Python
+
+    ```python
+    import base64
+    from pathlib import Path
+
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    template_path = "template.docx"  # path to the template file
+    template_name = "Demonstration product implementation"  # template name
+    deal_id = 8287  # deal identifier
+
+    try:
+        with open(template_path, "rb") as file:
+            file_content = base64.b64encode(file.read()).decode("ascii")
+    except OSError as error:
+        print(f"Template file not read: {error}")
+    else:
+        try:
+            numerator = client.crm.documentgenerator.numerator.add(
+                fields={
+                    "name": "Numerator from REST",
+                    "template": "{NUMBER}",
+                },
+            ).response.result["numerator"]
+
+            template = client.crm.documentgenerator.template.add(
+                fields={
+                    "name": template_name,
+                    "numeratorId": numerator["id"],
+                    "region": "de",
+                    "users": ["UA"],
+                    "entityTypeId": ["2"],
+                    "file": [Path(template_path).name, file_content],
+                },
+            ).response.result["template"]
+
+            document = client.crm.documentgenerator.document.add(
+                template_id=int(template["id"]),
+                entity_type_id=2,
+                entity_id=deal_id,
+            ).response.result["document"]
+        except BitrixAPIError as error:
+            print(f"Document not created: {error}")
+        else:
+            print(f"Document created: {document['title']} {document['downloadUrl']}")
+    ```
+
+
 - PHP
 
     ```php
@@ -593,63 +650,6 @@ The script sequentially creates the numerator, uploads the template, and builds 
         echo 'Document not created: ' . $e->getMessage();
     }
     ```
-
-- Python
-
-    ```python
-    import base64
-    from pathlib import Path
-
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    template_path = "template.docx"  # path to the template file
-    template_name = "Demonstration product implementation"  # template name
-    deal_id = 8287  # deal identifier
-
-    try:
-        with open(template_path, "rb") as file:
-            file_content = base64.b64encode(file.read()).decode("ascii")
-    except OSError as error:
-        print(f"Template file not read: {error}")
-    else:
-        try:
-            numerator = client.crm.documentgenerator.numerator.add(
-                fields={
-                    "name": "Numerator from REST",
-                    "template": "{NUMBER}",
-                },
-            ).response.result["numerator"]
-
-            template = client.crm.documentgenerator.template.add(
-                fields={
-                    "name": template_name,
-                    "numeratorId": numerator["id"],
-                    "region": "de",
-                    "users": ["UA"],
-                    "entityTypeId": ["2"],
-                    "file": [Path(template_path).name, file_content],
-                },
-            ).response.result["template"]
-
-            document = client.crm.documentgenerator.document.add(
-                template_id=int(template["id"]),
-                entity_type_id=2,
-                entity_id=deal_id,
-            ).response.result["document"]
-        except BitrixAPIError as error:
-            print(f"Document not created: {error}")
-        else:
-            print(f"Document created: {document['title']} {document['downloadUrl']}")
-    ```
-
 {% endlist %}
 
 ## Continue Learning

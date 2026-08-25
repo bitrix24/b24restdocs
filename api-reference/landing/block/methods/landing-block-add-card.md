@@ -171,6 +171,32 @@ Default is `false` ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.landing.block.addcard(
+            lid=351,
+            block=6428,
+            selector=".landing-block-node-menu-list-item@0",
+            content='<li class="landing-block-node-menu-list-item nav-item"><a href="#services" class="landing-block-node-menu-list-item-link nav-link">Services</a></li>',
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

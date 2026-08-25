@@ -161,6 +161,38 @@ The method `sale.propertyvariant.update` updates the value variant of a property
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "name": "Red",
+        "value": "red",
+        "sort": 10,
+        "description": "New description of the value for the red color",
+    }
+
+    try:
+        bitrix_response = client.sale.propertyvariant.update(
+            bitrix_id=5,
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

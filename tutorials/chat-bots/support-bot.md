@@ -66,12 +66,6 @@ Prepare the initialization functions following the [event data processing exampl
     const $b24 = makeClient(auth)
     ```
 
-- PHP
-
-    ```php
-    $b24 = makeServiceBuilder($request);
-    ```
-
 - Python
 
     ```python
@@ -80,6 +74,12 @@ Prepare the initialization functions following the [event data processing exampl
     client, token = make_client(auth)
     ```
 
+
+- PHP
+
+    ```php
+    $b24 = makeServiceBuilder($request);
+    ```
 {% endlist %}
 
 The PHP client initialization example specifies the scope `imbot,im,task`. For the support scenario, replace it with `imopenlines`.
@@ -111,20 +111,6 @@ Pass the connector code into the `CODE` parameter of the [imopenlines.network.jo
     }
     ```
 
-- PHP
-
-    ```php
-    $connectorCode = 'a588e1a88baaf301b9d0b0b33b1eefc2';
-
-    try {
-        $response = $b24->core->call('imopenlines.network.join', [
-            'CODE' => $connectorCode,
-        ]);
-    } catch (Throwable $e) {
-        echo $e->getMessage();
-    }
-    ```
-
 - Python
 
     ```python
@@ -138,6 +124,20 @@ Pass the connector code into the `CODE` parameter of the [imopenlines.network.jo
         print(f"Open line connection error: {error}")
     ```
 
+
+- PHP
+
+    ```php
+    $connectorCode = 'a588e1a88baaf301b9d0b0b33b1eefc2';
+
+    try {
+        $response = $b24->core->call('imopenlines.network.join', [
+            'CODE' => $connectorCode,
+        ]);
+    } catch (Throwable $e) {
+        echo $e->getMessage();
+    }
+    ```
 {% endlist %}
 
 Successful response:
@@ -183,24 +183,6 @@ Pass the same connector code, the User ID, and the text to the [imopenlines.netw
     }
     ```
 
-- PHP
-
-    ```php
-    $connectorCode = 'a588e1a88baaf301b9d0b0b33b1eefc2';
-    $userId = (int)$request->request->all('auth')['user_id'];
-    $message = 'Thanks for installing! If you have any questions, write to this chat. Have a nice day! :)';
-
-    try {
-        $response = $b24->core->call('imopenlines.network.message.add', [
-            'CODE' => $connectorCode,
-            'MESSAGE' => $message,
-            'USER_ID' => $userId,
-        ]);
-    } catch (Throwable $e) {
-        echo $e->getMessage();
-    }
-    ```
-
 - Python
 
     ```python
@@ -218,6 +200,24 @@ Pass the same connector code, the User ID, and the text to the [imopenlines.netw
         print(f"Message sending error: {error}")
     ```
 
+
+- PHP
+
+    ```php
+    $connectorCode = 'a588e1a88baaf301b9d0b0b33b1eefc2';
+    $userId = (int)$request->request->all('auth')['user_id'];
+    $message = 'Thanks for installing! If you have any questions, write to this chat. Have a nice day! :)';
+
+    try {
+        $response = $b24->core->call('imopenlines.network.message.add', [
+            'CODE' => $connectorCode,
+            'MESSAGE' => $message,
+            'USER_ID' => $userId,
+        ]);
+    } catch (Throwable $e) {
+        echo $e->getMessage();
+    }
+    ```
 {% endlist %}
 
 Successful response:

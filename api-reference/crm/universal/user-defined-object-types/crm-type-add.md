@@ -360,6 +360,69 @@ Let's create an SPA with the following conditions:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+    try:
+        bitrix_response = client.crm.type.add(fields={
+            "title": "Documents",
+            "code": "documents",
+            "isCategoriesEnabled": "Y",
+            "isStagesEnabled": "Y",
+            "isClientEnabled": "Y",
+            "isLinkWithProductsEnabled": "Y",
+            "isMycompanyEnabled": "Y",
+            "isDocumentsEnabled": "Y",
+            "isAutomationEnabled": "Y",
+            "isBizProcEnabled": "Y",
+            "entityTypeId": 2024,
+            "isBeginCloseDatesEnabled": "Y",
+            "isObserversEnabled": "Y",
+            "isRecyclebinEnabled": "Y",
+            "isSetOpenPermissions": "Y",
+            "isSourceEnabled": "Y",
+            "isUseInUserfieldEnabled": "Y",
+            "linkedUserFields": {
+                "CALENDAR_EVENT|UF_CRM_CAL_EVENT": "true",
+                "TASKS_TASK|UF_CRM_TASK": "true",
+            },
+            "relations": {
+                "parent": [
+                    {
+                        "entityTypeId": 1,
+                        "isChildrenListEnabled": "true",
+                    },
+                    {
+                        "entityTypeId": 2,
+                        "isChildrenListEnabled": "true",
+                    },
+                    {
+                        "entityTypeId": 31,
+                        "isChildrenListEnabled": "true",
+                    },
+                ],
+                "child": [
+                    {
+                        "entityTypeId": 3,
+                        "isChildrenListEnabled": "true",
+                    },
+                    {
+                        "entityTypeId": 4,
+                    },
+                ],
+            },
+        }).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

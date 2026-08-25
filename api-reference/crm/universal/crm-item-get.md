@@ -174,6 +174,35 @@ Retrieve information about a lead with `id = 250`
     </script>
     ```
 
+- Python
+
+    Example
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.item.get(
+            entity_type_id=1,
+            bitrix_id=250,
+            use_original_uf_names=False,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php        
@@ -226,37 +255,6 @@ Retrieve information about a lead with `id = 250`
     } catch (Throwable $e) {
         print("Error: " . $e->getMessage() . PHP_EOL);
     }
-    ```
-
-- Python
-
-    Example
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.item.get(
-            entity_type_id=1,
-            bitrix_id=250,
-            use_original_uf_names=False,
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js

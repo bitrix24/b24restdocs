@@ -212,6 +212,36 @@ Notifications are sorted first by descending creation date, then by descending i
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.im.notify.history.search(
+            search_text="Klaus",
+            search_type="tasks|task_update",
+            search_date="2026-03-03T16:52:29+03:00",
+            last_id=1500,
+            limit=20,
+            convert_text=True,
+            group_tag="TASK|42",
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

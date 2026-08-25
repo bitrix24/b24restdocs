@@ -68,6 +68,28 @@ Use the [user.get](../../api-reference/user/user-get.md) method with the followi
     const userId = users.length ? Number(users[0].ID) : null
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="user_id/webhook_key",
+    )
+    client = Client(token)
+
+    users = client.user.get(
+        filter={
+            "NAME": "Klaus",
+            "LAST_NAME": "Weber",
+            "ACTIVE": 0,
+        }
+    ).response.result
+
+    user_id = int(users[0]["ID"]) if users else None
+    ```
+
 - PHP
 
     ```php
@@ -91,28 +113,6 @@ Use the [user.get](../../api-reference/user/user-get.md) method with the followi
     )->getUsers();
 
     $userId = $users === [] ? null : $users[0]->ID;
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-
-    token = BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="user_id/webhook_key",
-    )
-    client = Client(token)
-
-    users = client.user.get(
-        filter={
-            "NAME": "Klaus",
-            "LAST_NAME": "Weber",
-            "ACTIVE": 0,
-        }
-    ).response.result
-
-    user_id = int(users[0]["ID"]) if users else None
     ```
 
 - Go
@@ -204,6 +204,20 @@ Use the [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-tas
     const workflowIds = [...new Set(tasks.map((task) => task.WORKFLOW_ID))]
     ```
 
+- Python
+
+    ```python
+    tasks = client.bizproc.task.list(
+        select=["ID", "WORKFLOW_ID", "NAME", "DOCUMENT_NAME"],
+        filter={
+            "USER_ID": user_id,
+            "STATUS": 0,
+        },
+    ).response.result
+
+    workflow_ids = list({task["WORKFLOW_ID"] for task in tasks})
+    ```
+
 - PHP
 
     ```php
@@ -217,20 +231,6 @@ Use the [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-tas
 
     $tasks = $response->getResponseData()->getResult();
     $workflowIds = array_values(array_unique(array_column($tasks, 'WORKFLOW_ID')));
-    ```
-
-- Python
-
-    ```python
-    tasks = client.bizproc.task.list(
-        select=["ID", "WORKFLOW_ID", "NAME", "DOCUMENT_NAME"],
-        filter={
-            "USER_ID": user_id,
-            "STATUS": 0,
-        },
-    ).response.result
-
-    workflow_ids = list({task["WORKFLOW_ID"] for task in tasks})
     ```
 
 - Go
@@ -306,14 +306,6 @@ Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kil
     const isKilled = response.getData().result
     ```
 
-- PHP
-
-    ```php
-    $isKilled = $b24->getBizProcScope()->workflow()
-        ->kill($workflowIds[0])
-        ->isSuccess();
-    ```
-
 - Python
 
     ```python
@@ -321,6 +313,14 @@ Use the [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kil
         "bizproc.workflow.kill",
         {"ID": workflow_ids[0]},
     )
+    ```
+
+- PHP
+
+    ```php
+    $isKilled = $b24->getBizProcScope()->workflow()
+        ->kill($workflowIds[0])
+        ->isSuccess();
     ```
 
 - Go
@@ -431,6 +431,70 @@ The example first prints the found workflows for review. To delete the workflows
     $b24.destroy()
     ```
 
+- Python
+
+    ```python
+    import sys
+
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="user_id/webhook_key",
+    )
+    client = Client(token)
+
+    def get_user_id(first_name: str, last_name: str) -> int | None:
+        users = client.user.get(
+            filter={
+                "NAME": first_name,
+                "LAST_NAME": last_name,
+                "ACTIVE": 0,
+            },
+        ).response.result
+
+        return int(users[0]["ID"]) if users else None
+
+    def get_workflow_ids(user_id: int) -> list[str]:
+        tasks = client.bizproc.task.list(
+            select=["ID", "WORKFLOW_ID", "NAME", "DOCUMENT_NAME"],
+            filter={"USER_ID": user_id, "STATUS": 0},
+        ).response.result
+
+        return list({task["WORKFLOW_ID"] for task in tasks})
+
+    def kill_workflows(workflow_ids: list[str]) -> None:
+        if not workflow_ids:
+            print("No incomplete workflow tasks found")
+            return
+
+        print(f"Found workflows: {len(workflow_ids)}")
+        for workflow_id in workflow_ids:
+            print(f"Workflow to delete: {workflow_id}")
+
+        if "--confirm" not in sys.argv:
+            print("Review the list and rerun the example with the --confirm argument to delete the workflows")
+            return
+
+        for workflow_id in workflow_ids:
+            try:
+                token.call_method("bizproc.workflow.kill", {"ID": workflow_id})
+            except BitrixAPIError as error:
+                print(f"Error deleting workflow {workflow_id}: {error}")
+            else:
+                print(f"Workflow {workflow_id} deleted")
+
+    first_name = input("Enter the employee first name: ")
+    last_name = input("Enter the employee last name: ")
+
+    user_id = get_user_id(first_name, last_name)
+    if user_id is None:
+        print("Dismissed employee not found")
+    else:
+        kill_workflows(get_workflow_ids(user_id))
+    ```
+
 - PHP
 
     ```php
@@ -502,70 +566,6 @@ The example first prints the found workflows for review. To delete the workflows
     } else {
         killWorkflows($b24, getWorkflowIds($b24, $userId));
     }
-    ```
-
-- Python
-
-    ```python
-    import sys
-
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    token = BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="user_id/webhook_key",
-    )
-    client = Client(token)
-
-    def get_user_id(first_name: str, last_name: str) -> int | None:
-        users = client.user.get(
-            filter={
-                "NAME": first_name,
-                "LAST_NAME": last_name,
-                "ACTIVE": 0,
-            },
-        ).response.result
-
-        return int(users[0]["ID"]) if users else None
-
-    def get_workflow_ids(user_id: int) -> list[str]:
-        tasks = client.bizproc.task.list(
-            select=["ID", "WORKFLOW_ID", "NAME", "DOCUMENT_NAME"],
-            filter={"USER_ID": user_id, "STATUS": 0},
-        ).response.result
-
-        return list({task["WORKFLOW_ID"] for task in tasks})
-
-    def kill_workflows(workflow_ids: list[str]) -> None:
-        if not workflow_ids:
-            print("No incomplete workflow tasks found")
-            return
-
-        print(f"Found workflows: {len(workflow_ids)}")
-        for workflow_id in workflow_ids:
-            print(f"Workflow to delete: {workflow_id}")
-
-        if "--confirm" not in sys.argv:
-            print("Review the list and rerun the example with the --confirm argument to delete the workflows")
-            return
-
-        for workflow_id in workflow_ids:
-            try:
-                token.call_method("bizproc.workflow.kill", {"ID": workflow_id})
-            except BitrixAPIError as error:
-                print(f"Error deleting workflow {workflow_id}: {error}")
-            else:
-                print(f"Workflow {workflow_id} deleted")
-
-    first_name = input("Enter the employee first name: ")
-    last_name = input("Enter the employee last name: ")
-
-    user_id = get_user_id(first_name, last_name)
-    if user_id is None:
-        print("Dismissed employee not found")
-    else:
-        kill_workflows(get_workflow_ids(user_id))
     ```
 
 - Go
@@ -753,6 +753,17 @@ Through REST, repeat the [bizproc.task.list](../../api-reference/bizproc/bizproc
     console.log(checkResponse.getData().result.map((task) => task.WORKFLOW_ID))
     ```
 
+- Python
+
+    ```python
+    check_result = client.bizproc.task.list(
+        select=["ID", "WORKFLOW_ID"],
+        filter={"USER_ID": user_id, "STATUS": 0},
+    ).response.result
+
+    print([task["WORKFLOW_ID"] for task in check_result])
+    ```
+
 - PHP
 
     ```php
@@ -764,17 +775,6 @@ Through REST, repeat the [bizproc.task.list](../../api-reference/bizproc/bizproc
     foreach ($checkResponse->getResponseData()->getResult() as $task) {
         echo $task['WORKFLOW_ID'] . PHP_EOL;
     }
-    ```
-
-- Python
-
-    ```python
-    check_result = client.bizproc.task.list(
-        select=["ID", "WORKFLOW_ID"],
-        filter={"USER_ID": user_id, "STATUS": 0},
-    ).response.result
-
-    print([task["WORKFLOW_ID"] for task in check_result])
     ```
 
 - Go

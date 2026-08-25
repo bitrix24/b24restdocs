@@ -230,6 +230,64 @@ The new API call differs by adding the `/api/` segment to the request URL:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    filter = [
+        [
+            "userId",
+            1,
+        ],
+        [
+            "startTime",
+            "between",
+            [
+                "2026-06-01T00:00:00+03:00",
+                "2026-06-30T23:59:59+03:00",
+            ],
+        ],
+    ]
+
+    select = [
+        "id",
+        "startTime",
+        "endTime",
+        "duration",
+    ]
+
+    order = {
+        "startTime": "DESC",
+    }
+
+    pagination = {
+        "page": 1,
+        "limit": 20,
+        "offset": 0,
+    }
+
+    try:
+        bitrix_response = client.timeman.record.list(
+            filter=filter,
+            select=select,
+            order=order,
+            pagination=pagination,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.

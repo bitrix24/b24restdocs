@@ -422,10 +422,8 @@ For a multiple field, several `DEF = Y` are allowed. For a non-multiple field, t
 - Python
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.deal.userfield.update(

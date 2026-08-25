@@ -218,6 +218,44 @@ Currently, the field does not actually affect anything ||
     </script>
     ```
 
+- Python
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.requisite.bankdetail.add(
+            fields={
+                "ENTITY_ID": 27,
+                "COUNTRY_ID": 1,
+                "NAME": "Superbank",
+                "RQ_BANK_NAME": "Ltd. Superbank",
+                "RQ_BANK_ADDR": "117312, New York, 19 Miller St.",
+                "RQ_BIK": "044525225",
+                "RQ_ACC_NUM": "40702810938000060473",
+                "RQ_ACC_CURRENCY": "USD",
+                "RQ_COR_ACC_NUM": "30101810400000000225",
+                "XML_ID": "1e4641fd-2dd9-31e6-b2f2-105056c00008",
+                "ACTIVE": "Y",
+                "SORT": 600,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -316,46 +354,6 @@ Currently, the field does not actually affect anything ||
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.requisite.bankdetail.add(
-            fields={
-                "ENTITY_ID": 27,
-                "COUNTRY_ID": 1,
-                "NAME": "Superbank",
-                "RQ_BANK_NAME": "Ltd. Superbank",
-                "RQ_BANK_ADDR": "117312, New York, 19 Miller St.",
-                "RQ_BIK": "044525225",
-                "RQ_ACC_NUM": "40702810938000060473",
-                "RQ_ACC_CURRENCY": "USD",
-                "RQ_COR_ACC_NUM": "30101810400000000225",
-                "XML_ID": "1e4641fd-2dd9-31e6-b2f2-105056c00008",
-                "ACTIVE": "Y",
-                "SORT": 600,
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - Go

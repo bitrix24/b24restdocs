@@ -219,6 +219,48 @@ If not provided and a **productId** is provided, the unit of measurement from th
     </script>
     ```
 
+- Python
+
+    Example
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.item.productrow.set(
+            owner_type="D",
+            owner_id=13143,
+            product_rows=[
+                {
+                    "productId": 9621,
+                    "price": 99999.99,
+                    "quantity": 1,
+                    "sort": 10,
+                },
+                {
+                    "productId": 9623,
+                    "price": 15900,
+                    "quantity": 2,
+                    "sort": 10,
+                },
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -257,50 +299,6 @@ If not provided and a **productId** is provided, the unit of measurement from th
         error_log($e->getMessage());
         echo 'Error setting product rows: ' . $e->getMessage();
     }
-    ```
-
-- Python
-
-    Example
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.item.productrow.set(
-            owner_type="D",
-            owner_id=13143,
-            product_rows=[
-                {
-                    "productId": 9621,
-                    "price": 99999.99,
-                    "quantity": 1,
-                    "sort": 10,
-                },
-                {
-                    "productId": 9623,
-                    "price": 15900,
-                    "quantity": 2,
-                    "sort": 10,
-                },
-            ],
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js

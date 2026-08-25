@@ -239,6 +239,76 @@ In the timeline record with `id = 8`, linked to a deal with `id = 4`, we will se
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    layout = {
+        "blocks": {
+            "block_1": {
+                "type": "text",
+                "properties": {
+                    "value": "Hello!\nWe are starting.",
+                    "multiline": True,
+                    "bold": True,
+                    "color": "base_90",
+                },
+            },
+            "block_2": {
+                "type": "largeText",
+                "properties": {
+                    "value": "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on it.\nWe are continuing.\nWe are close to the result.\nGoodbye.",
+                },
+            },
+            "block_3": {
+                "type": "link",
+                "properties": {
+                    "text": "Open the deal",
+                    "bold": True,
+                    "action": {
+                        "type": "redirect",
+                        "uri": "/crm/deal/details/123/",
+                    },
+                },
+            },
+            "block_4": {
+                "type": "withTitle",
+                "properties": {
+                    "title": "Title",
+                    "block": {
+                        "type": "text",
+                        "properties": {
+                            "value": "Some value",
+                        },
+                    },
+                },
+            },
+        },
+    }
+
+    try:
+        bitrix_response = client.crm.timeline.layout.blocks.set(
+            entity_type_id=2,
+            entity_id=4,
+            timeline_id=8,
+            layout=layout,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

@@ -74,25 +74,6 @@ To obtain the type identifier, we use the [crm.type.list](../../../api-reference
     });
     ```
 
-- PHP
-
-    ```php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Psr\Log\NullLogger;
-
-    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
-
-    $result = $sb->getCRMScope()->type()->list(
-        order: [],
-        filter: ['title' => 'Equipment procurement']
-    );
-    ```
-
 - Python
 
     ```python
@@ -110,6 +91,25 @@ To obtain the type identifier, we use the [crm.type.list](../../../api-reference
             "title": "Equipment procurement",
         }
     ).response
+    ```
+
+- PHP
+
+    ```php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $sb->getCRMScope()->type()->list(
+        order: [],
+        filter: ['title' => 'Equipment procurement']
+    );
     ```
 
 - Go
@@ -220,18 +220,6 @@ To add a comment, use the [crm.timeline.comment.add](../../../api-reference/crm/
     });
     ```
 
-- PHP
-
-    ```php
-    $result = $sb->getCRMScope()->timelineComment()->add(
-        [
-            'ENTITY_ID' => 19,
-            'ENTITY_TYPE' => 'DYNAMIC_177',
-            'COMMENT' => 'Confirm the purchase via email!',
-        ]
-    );
-    ```
-
 - Python
 
     ```python
@@ -242,6 +230,18 @@ To add a comment, use the [crm.timeline.comment.add](../../../api-reference/crm/
             "COMMENT": "Confirm the purchase via email!",
         }
     ).response
+    ```
+
+- PHP
+
+    ```php
+    $result = $sb->getCRMScope()->timelineComment()->add(
+        [
+            'ENTITY_ID' => 19,
+            'ENTITY_TYPE' => 'DYNAMIC_177',
+            'COMMENT' => 'Confirm the purchase via email!',
+        ]
+    );
     ```
 
 - Go
@@ -306,6 +306,19 @@ Through REST, the item comments are returned by the [crm.timeline.comment.list](
     console.dir(checkResponse.getData().result);
     ```
 
+- Python
+
+    ```python
+    comments = client.crm.timeline.comment.list(
+        filter={
+            "ENTITY_ID": 19,
+            "ENTITY_TYPE": "DYNAMIC_177",
+        },
+        order={"ID": "DESC"},
+    ).response.result
+    ```
+
+
 - PHP
 
     ```php
@@ -321,19 +334,6 @@ Through REST, the item comments are returned by the [crm.timeline.comment.list](
         ]
     )->getResponseData()->getResult();
     ```
-
-- Python
-
-    ```python
-    comments = client.crm.timeline.comment.list(
-        filter={
-            "ENTITY_ID": 19,
-            "ENTITY_TYPE": "DYNAMIC_177",
-        },
-        order={"ID": "DESC"},
-    ).response.result
-    ```
-
 {% endlist %}
 
 The scenario is complete if the response contains an object with the `ID` from step 2, and its `COMMENT` field matches the text you sent.
@@ -454,6 +454,58 @@ Repeat the scenario from the step that returned the error. Step 1 does not creat
     findSPA();
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    def find_spa(client):
+        spa_title = "your_smart_process_name"
+
+        try:
+            resp = client.crm.type.list(
+                filter={"title": spa_title},
+            ).response
+        except BitrixAPIError as error:
+            print(f"Error searching for the smart process: {error}")
+            return
+
+        types = resp.result["types"]
+        if types:
+            spa_id = types[0]["entityTypeId"]
+            print(f"Smart process found: {spa_id}")
+            create_comment(client, spa_id)
+        else:
+            print("Smart process not found or data is empty")
+
+    def create_comment(client, spa_id):
+        element_id = "your_element_ID"
+        comment_text = "your_comment"
+
+        try:
+            client.crm.timeline.comment.add(
+                fields={
+                    "ENTITY_ID": element_id,
+                    "ENTITY_TYPE": f"DYNAMIC_{spa_id}",
+                    "COMMENT": comment_text,
+                },
+            ).response
+        except BitrixAPIError as error:
+            print(f"Error creating the comment: {error}")
+        else:
+            print("Comment added")
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    find_spa(client)
+    ```
+
 - PHP
 
     ```php
@@ -517,58 +569,6 @@ Repeat the scenario from the step that returned the error. Step 1 does not creat
 
     // Calling the function to search for the smart process and add a comment
     findSPA($sb);
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    def find_spa(client):
-        spa_title = "your_smart_process_name"
-
-        try:
-            resp = client.crm.type.list(
-                filter={"title": spa_title},
-            ).response
-        except BitrixAPIError as error:
-            print(f"Error searching for the smart process: {error}")
-            return
-
-        types = resp.result["types"]
-        if types:
-            spa_id = types[0]["entityTypeId"]
-            print(f"Smart process found: {spa_id}")
-            create_comment(client, spa_id)
-        else:
-            print("Smart process not found or data is empty")
-
-    def create_comment(client, spa_id):
-        element_id = "your_element_ID"
-        comment_text = "your_comment"
-
-        try:
-            client.crm.timeline.comment.add(
-                fields={
-                    "ENTITY_ID": element_id,
-                    "ENTITY_TYPE": f"DYNAMIC_{spa_id}",
-                    "COMMENT": comment_text,
-                },
-            ).response
-        except BitrixAPIError as error:
-            print(f"Error creating the comment: {error}")
-        else:
-            print("Comment added")
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    find_spa(client)
     ```
 
 - Go

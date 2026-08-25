@@ -178,6 +178,35 @@ The method `catalog.document.update` modifies the fields of an existing warehous
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.catalog.document.update(
+            bitrix_id=142,
+            fields={
+                "title": "Receipt from Vendor-1 (adjustment)",
+                "commentary": "Updated the person responsible",
+                "responsibleId": 21,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

@@ -150,6 +150,36 @@ Set a common detail form for deals in the pipeline with `id = 9`
     </script>
     ```
 
+- Python
+
+    Example
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.item.details.configuration.force_common_scope_for_all(
+            entity_type_id=2,
+            extras={
+                "dealCategoryId": 9,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -181,38 +211,6 @@ Set a common detail form for deals in the pipeline with `id = 9`
         error_log($e->getMessage());
         echo 'Error: ' . $e->getMessage();
     }
-    ```
-
-- Python
-
-    Example
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.item.details.configuration.force_common_scope_for_all(
-            entity_type_id=2,
-            extras={
-                "dealCategoryId": 9,
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js

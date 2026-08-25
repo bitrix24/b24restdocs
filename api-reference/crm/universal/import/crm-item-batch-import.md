@@ -76,10 +76,8 @@ Default is `N`. ||
         Example
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.item.batch_import(
@@ -689,6 +687,65 @@ Default is `N`. ||
 
           document.addEventListener('DOMContentLoaded', batchImportItems)
         </script>
+        ```
+
+    - Python
+
+        ```python
+
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.item.batch_import(
+                entity_type_id=1302,
+                data=[
+                    {
+                    "ufCrm44_1721812760630": "String for a custom field of the String type",
+                    "ufCrm44_1721812814433": 81,
+                    "ufCrm44_1721812853419": "2024-08-21",
+                    "ufCrm44_1721812885588": [
+                        "example.com",
+                        "second-example.com",
+                    ],
+                    "ufCrm44_1721812898903": [
+                        "green_pixel.png",
+                        "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==",
+                    ],
+                    "ufCrm44_1721812915476": "300|RUB",
+                    "ufCrm44_1721812935209": "Y",
+                    "ufCrm44_1721812948498": 9999.9,
+                },
+                    {
+                    "ufCrm44_1721812760630": "String for a custom field of the String type",
+                    "ufCrm44_1721812814433": 45,
+                    "ufCrm44_1721812853419": "2024-08-21",
+                    "ufCrm44_1721812885588": [
+                        "example.com",
+                        "second-example.com",
+                    ],
+                    "ufCrm44_1721812898903": [
+                        "green_pixel2.png",
+                        "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==",
+                    ],
+                    "ufCrm44_1721812915476": "300|RUB",
+                    "ufCrm44_1721812935209": "Y",
+                    "ufCrm44_1721812948498": 9999.9,
+                },
+                ],
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
         ```
 
     - PHP

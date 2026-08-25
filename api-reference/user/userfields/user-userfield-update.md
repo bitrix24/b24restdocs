@@ -462,6 +462,34 @@ Each type of custom field has its own set of additional configurations.
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.user.userfield.update(
+            bitrix_id=42,
+            fields={
+                "SORT": 150,
+                "LIST_FILTER_LABEL": "New Title",
+                "LIST_COLUMN_LABEL": "New List Title",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

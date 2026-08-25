@@ -164,6 +164,46 @@ Minimum value — `1` ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    messages = [
+        {
+            "SIDE": "User",
+            "START_TIME": 1,
+            "STOP_TIME": 3,
+            "MESSAGE": "Hello",
+        },
+        {
+            "SIDE": "Client",
+            "START_TIME": 4,
+            "STOP_TIME": 7,
+            "MESSAGE": "Hi there",
+        },
+    ]
+
+    try:
+        bitrix_response = client.telephony.call.attach_transcription(
+            call_id="externalCall.716f1cb73def9700a23842adf9c4c568.1773130779",
+            messages=messages,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

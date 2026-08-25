@@ -175,6 +175,39 @@ This method updates the calendar.
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.calendar.section.update(
+            type="user",
+            owner_id=2,
+            bitrix_id="325",
+            name="Changed Section Name",
+            description="New description for section",
+            color="#9cbeAA",
+            text_color="#283099",
+            export={
+                "ALLOW": False,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

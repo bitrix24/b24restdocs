@@ -324,6 +324,45 @@ Below are examples of `PROPERTY` objects for different parameter types.
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.bizproc.activity.update(
+            code="action_test_code",
+            fields={
+                "AUTH_USER_ID": 1,
+                "USE_SUBSCRIPTION": "N",
+                "FILTER": {
+                    "INCLUDE": [
+                        [
+                            "lists",
+                        ],
+                        [
+                            "crm",
+                            "CCrmDocumentDeal",
+                        ],
+                    ],
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

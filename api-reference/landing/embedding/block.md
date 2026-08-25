@@ -181,6 +181,34 @@ For `LANDING_BLOCK_<CODE>`, the following keys are passed in the context:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "PLACEMENT": "LANDING_BLOCK_04.1.one_col_fix_with_title",
+        "PLACEMENT_HANDLER": "https://your-domain.com/widgets/landing-block-handler.php",
+        "TITLE": "Block action",
+    }
+
+    try:
+        bitrix_response = client.landing.repo.bind(fields=fields).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -376,6 +404,33 @@ If the application needs a single handler for all blocks, use the code `LANDING_
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.landing.repo.bind(
+            fields={
+                "PLACEMENT": "LANDING_BLOCK_*",
+                "PLACEMENT_HANDLER": "https://your-domain.com/widgets/landing-block-handler.php",
+                "TITLE": "My widget for the block",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php
@@ -560,6 +615,33 @@ After working with the block, the application can update it using the `refreshBl
 
       document.addEventListener('DOMContentLoaded', refreshBlock)
     </script>
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.placement.call(
+            placement="refreshBlock",
+            params={
+                "id": 123,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - PHP

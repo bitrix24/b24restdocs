@@ -221,6 +221,36 @@ Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbo
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "NAME": "My REST cash register with a new name",
+        "SORT": 200,
+        "ACTIVE": "production",
+    }
+
+    try:
+        bitrix_response = client.sale.cashbox.handler.update(
+            bitrix_id=1,
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

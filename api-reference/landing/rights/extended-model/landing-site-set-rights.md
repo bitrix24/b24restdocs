@@ -192,6 +192,40 @@ If access is needed only for authorized users, use `AU`. The code `UA` opens acc
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.landing.site.set_rights(
+            bitrix_id=645,
+            rights={
+                "AU": [
+                    "read",
+                ],
+                "U3": [
+                    "read",
+                    "edit",
+                    "sett",
+                    "public",
+                ],
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

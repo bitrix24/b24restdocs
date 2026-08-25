@@ -186,6 +186,38 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.humanresources.node.communication.edit(
+            node_id=15,
+            communication_type='CHAT',
+            ids=[
+                21,
+            ],
+            remove_ids=[
+                18,
+            ],
+            create_default=False,
+            with_children=False,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.

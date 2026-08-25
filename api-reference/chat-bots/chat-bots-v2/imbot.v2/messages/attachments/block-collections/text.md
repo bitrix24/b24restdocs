@@ -50,6 +50,14 @@ The `MESSAGE` block displays the text portion of the attachment.
     }
     ```
 
+- Python
+
+    ```python
+    attach = {
+        "MESSAGE": "The API will be available in the [B]im 24.0.0[/B] update",
+    }
+    ```
+
 - PHP
 
     ```php

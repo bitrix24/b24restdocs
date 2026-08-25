@@ -551,61 +551,13 @@ By default `N` ||
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $userfieldItemFields = [
-            'FIELD_NAME' => 'HELLO_WORLD',
-            'USER_TYPE_ID' => 'string',
-            'SORT' => 1000,
-            'MULTIPLE' => 'Y',
-            'MANDATORY' => 'Y',
-            'SHOW_FILTER' => 'Y',
-            'EDIT_IN_LIST' => 'Y',
-            'LIST_FILTER_LABEL' => 'Hello, world! Filter',
-            'LIST_COLUMN_LABEL' => [
-                'en' => 'Hello, World! Column',
-                'de' => 'Hallo, Welt! Spalte',
-            ],
-            'EDIT_FORM_LABEL' => [
-                'en' => 'Hello, World! Edit',
-                'de' => 'Hallo, Welt! Bearbeiten',
-            ],
-            'ERROR_MESSAGE' => [
-                'en' => 'Hello, World! Error',
-                'de' => 'Hallo, Welt! Fehler',
-            ],
-            'HELP_MESSAGE' => [
-                'en' => 'Hello, World! Help',
-                'de' => 'Hallo, Welt! Hilfe',
-            ],
-            'SETTINGS' => [
-                'DEFAULT_VALUE' => 'Hello, world! Default value',
-                'ROWS' => 3,
-            ],
-        ];
-
-        $result = $serviceBuilder
-            ->getCRMScope()
-            ->companyUserfield()
-            ->add($userfieldItemFields);
-
-        print($result->getId());
-    } catch (Throwable $e) {
-        print('Error: ' . $e->getMessage());
-    }
-    ```
-
 - Python
 
     Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.company.userfield.add(
@@ -654,6 +606,52 @@ By default `N` ||
         print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $userfieldItemFields = [
+            'FIELD_NAME' => 'HELLO_WORLD',
+            'USER_TYPE_ID' => 'string',
+            'SORT' => 1000,
+            'MULTIPLE' => 'Y',
+            'MANDATORY' => 'Y',
+            'SHOW_FILTER' => 'Y',
+            'EDIT_IN_LIST' => 'Y',
+            'LIST_FILTER_LABEL' => 'Hello, world! Filter',
+            'LIST_COLUMN_LABEL' => [
+                'en' => 'Hello, World! Column',
+                'de' => 'Hallo, Welt! Spalte',
+            ],
+            'EDIT_FORM_LABEL' => [
+                'en' => 'Hello, World! Edit',
+                'de' => 'Hallo, Welt! Bearbeiten',
+            ],
+            'ERROR_MESSAGE' => [
+                'en' => 'Hello, World! Error',
+                'de' => 'Hallo, Welt! Fehler',
+            ],
+            'HELP_MESSAGE' => [
+                'en' => 'Hello, World! Help',
+                'de' => 'Hallo, Welt! Hilfe',
+            ],
+            'SETTINGS' => [
+                'DEFAULT_VALUE' => 'Hello, world! Default value',
+                'ROWS' => 3,
+            ],
+        ];
+
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->companyUserfield()
+            ->add($userfieldItemFields);
+
+        print($result->getId());
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
     ```
 
 - BX24.js
@@ -894,47 +892,13 @@ By default `N` ||
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $userfieldItemFields = [
-            'LABEL' => 'Custom field (list)',
-            'USER_TYPE_ID' => 'enumeration',
-            'FIELD_NAME' => 'ENUMERATION_EXAMPLE',
-            'MULTIPLE' => 'N',
-            'MANDATORY' => 'N',
-            'SHOW_FILTER' => 'Y',
-            'LIST' => [
-                ['VALUE' => 'List item #1', 'DEF' => 'Y', 'XML_ID' => 'XML_ID_1', 'SORT' => 100],
-                ['VALUE' => 'List item #2', 'XML_ID' => 'XML_ID_2', 'SORT' => 200],
-                ['VALUE' => 'List item #3', 'XML_ID' => 'XML_ID_3', 'SORT' => 300],
-                ['VALUE' => 'List item #4', 'XML_ID' => 'XML_ID_4', 'SORT' => 400],
-            ],
-            'SETTINGS' => ['DISPLAY' => 'UI', 'LIST_HEIGHT' => 2],
-            'SORT' => 2000,
-        ];
-
-        $result = $serviceBuilder
-            ->getCRMScope()
-            ->companyUserfield()
-            ->add($userfieldItemFields);
-
-        print($result->getId());
-    } catch (Throwable $e) {
-        print('Error: ' . $e->getMessage());
-    }
-    ```
-
 - Python
 
     Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.company.userfield.add(
@@ -988,6 +952,38 @@ By default `N` ||
         print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $userfieldItemFields = [
+            'LABEL' => 'Custom field (list)',
+            'USER_TYPE_ID' => 'enumeration',
+            'FIELD_NAME' => 'ENUMERATION_EXAMPLE',
+            'MULTIPLE' => 'N',
+            'MANDATORY' => 'N',
+            'SHOW_FILTER' => 'Y',
+            'LIST' => [
+                ['VALUE' => 'List item #1', 'DEF' => 'Y', 'XML_ID' => 'XML_ID_1', 'SORT' => 100],
+                ['VALUE' => 'List item #2', 'XML_ID' => 'XML_ID_2', 'SORT' => 200],
+                ['VALUE' => 'List item #3', 'XML_ID' => 'XML_ID_3', 'SORT' => 300],
+                ['VALUE' => 'List item #4', 'XML_ID' => 'XML_ID_4', 'SORT' => 400],
+            ],
+            'SETTINGS' => ['DISPLAY' => 'UI', 'LIST_HEIGHT' => 2],
+            'SORT' => 2000,
+        ];
+
+        $result = $serviceBuilder
+            ->getCRMScope()
+            ->companyUserfield()
+            ->add($userfieldItemFields);
+
+        print($result->getId());
+    } catch (Throwable $e) {
+        print('Error: ' . $e->getMessage());
+    }
     ```
 
 - BX24.js

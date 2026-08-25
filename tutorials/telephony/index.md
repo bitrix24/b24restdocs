@@ -79,6 +79,13 @@ Registering an external line creates a number that links calls to the applicatio
     })
     ```
 
+- Python
+
+    ```python
+    client.telephony.external_line.add(number="line-1", name="External line").response
+    ```
+
+
 - PHP
 
     ```php
@@ -87,13 +94,6 @@ Registering an external line creates a number that links calls to the applicatio
         'NAME' => 'External line',
     ]);
     ```
-
-- Python
-
-    ```python
-    client.telephony.external_line.add(number="line-1", name="External line").response
-    ```
-
 {% endlist %}
 
 The successful response contains the identifier of the created line.
@@ -123,15 +123,6 @@ If you need to handle outgoing calls from the CRM, subscribe the application to 
     })
     ```
 
-- PHP
-
-    ```php
-    $b24->core->call('event.bind', [
-        'event' => 'ONEXTERNALCALLSTART',
-        'handler' => 'https://your-domain.example/events',
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -141,6 +132,15 @@ If you need to handle outgoing calls from the CRM, subscribe the application to 
     ).response
     ```
 
+
+- PHP
+
+    ```php
+    $b24->core->call('event.bind', [
+        'event' => 'ONEXTERNALCALLSTART',
+        'handler' => 'https://your-domain.example/events',
+    ]);
+    ```
 {% endlist %}
 
 Successful subscription returns `true`.
@@ -185,21 +185,6 @@ The method returns `CALL_ID` for further actions (`show`, `hide`, `finish`, `att
     const callId = response.getData().result.CALL_ID
     ```
 
-- PHP
-
-    ```php
-    $response = $b24->core->call('telephony.externalCall.register', [
-        'USER_ID' => 1269,
-        'PHONE_NUMBER' => '499062195047',
-        'TYPE' => 2,
-        'LINE_NUMBER' => 'line-1',
-        'EXTERNAL_CALL_ID' => 'asterisk-1773130778.18441',
-        'SHOW' => 1,
-    ]);
-
-    $callId = $response->getResponseData()->getResult()['CALL_ID'];
-    ```
-
 - Python
 
     ```python
@@ -214,6 +199,21 @@ The method returns `CALL_ID` for further actions (`show`, `hide`, `finish`, `att
     call_id = bitrix_response.result["CALL_ID"]
     ```
 
+
+- PHP
+
+    ```php
+    $response = $b24->core->call('telephony.externalCall.register', [
+        'USER_ID' => 1269,
+        'PHONE_NUMBER' => '499062195047',
+        'TYPE' => 2,
+        'LINE_NUMBER' => 'line-1',
+        'EXTERNAL_CALL_ID' => 'asterisk-1773130778.18441',
+        'SHOW' => 1,
+    ]);
+
+    $callId = $response->getResponseData()->getResult()['CALL_ID'];
+    ```
 {% endlist %}
 
 The successful response contains `CALL_ID`. Retain it: this identifier is required to show, hide, and finish the call and attach the recording.
@@ -259,6 +259,18 @@ In the example, the card is shown to three employees, and then, when employee `1
     })
     ```
 
+- Python
+
+    ```python
+    queue = [1269, 1270, 1271]
+    client.telephony.external_call.show(call_id=call_id, user_id=queue).response
+
+    answered_user_id = 1270
+    users_to_hide = [uid for uid in queue if uid != answered_user_id]
+    client.telephony.external_call.hide(call_id=call_id, user_id=users_to_hide).response
+    ```
+
+
 - PHP
 
     ```php
@@ -278,18 +290,6 @@ In the example, the card is shown to three employees, and then, when employee `1
         'USER_ID' => $usersToHide,
     ]);
     ```
-
-- Python
-
-    ```python
-    queue = [1269, 1270, 1271]
-    client.telephony.external_call.show(call_id=call_id, user_id=queue).response
-
-    answered_user_id = 1270
-    users_to_hide = [uid for uid in queue if uid != answered_user_id]
-    client.telephony.external_call.hide(call_id=call_id, user_id=users_to_hide).response
-    ```
-
 {% endlist %}
 
 The `show` and `hide` methods return `true` if the command to show or hide the card was sent.
@@ -357,34 +357,6 @@ After registration, pass `CALL_ID` and `ASSIGNED_BY_ID` to `telephony.externalCa
     })
     ```
 
-- PHP
-
-    ```php
-    $crmEntities = $b24->core->call('telephony.externalCall.searchCrmEntities', [
-        'PHONE_NUMBER' => '499062195047',
-    ])->getResponseData()->getResult();
-
-    if (empty($crmEntities)) {
-        throw new \RuntimeException('Customer with this phone number was not found in the CRM');
-    }
-
-    $assignedById = (int)$crmEntities[0]['ASSIGNED_BY_ID'];
-
-    $reg = $b24->core->call('telephony.externalCall.register', [
-        'USER_ID' => $assignedById,
-        'PHONE_NUMBER' => '499062195047',
-        'TYPE' => 2,
-        'LINE_NUMBER' => 'line-1',
-        'EXTERNAL_CALL_ID' => 'asterisk-1773130778.18441-manager',
-        'SHOW' => 0,
-    ])->getResponseData()->getResult();
-
-    $b24->core->call('telephony.externalCall.show', [
-        'CALL_ID' => $reg['CALL_ID'],
-        'USER_ID' => $assignedById,
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -412,6 +384,34 @@ After registration, pass `CALL_ID` and `ASSIGNED_BY_ID` to `telephony.externalCa
     ).response
     ```
 
+
+- PHP
+
+    ```php
+    $crmEntities = $b24->core->call('telephony.externalCall.searchCrmEntities', [
+        'PHONE_NUMBER' => '499062195047',
+    ])->getResponseData()->getResult();
+
+    if (empty($crmEntities)) {
+        throw new \RuntimeException('Customer with this phone number was not found in the CRM');
+    }
+
+    $assignedById = (int)$crmEntities[0]['ASSIGNED_BY_ID'];
+
+    $reg = $b24->core->call('telephony.externalCall.register', [
+        'USER_ID' => $assignedById,
+        'PHONE_NUMBER' => '499062195047',
+        'TYPE' => 2,
+        'LINE_NUMBER' => 'line-1',
+        'EXTERNAL_CALL_ID' => 'asterisk-1773130778.18441-manager',
+        'SHOW' => 0,
+    ])->getResponseData()->getResult();
+
+    $b24->core->call('telephony.externalCall.show', [
+        'CALL_ID' => $reg['CALL_ID'],
+        'USER_ID' => $assignedById,
+    ]);
+    ```
 {% endlist %}
 
 Store `CALL_ID` from the `register` response. You need it to finish the call and attach the recording.
@@ -446,23 +446,6 @@ Your web server receives the event. After initiating the call on the PBX, comple
     })
     ```
 
-- PHP
-
-    ```php
-    <?php
-    // ONEXTERNALCALLSTART event handler
-    if (($_REQUEST['event'] ?? '') === 'ONEXTERNALCALLSTART') {
-        $data = $_REQUEST['data'];
-        // ... initiate call to PBX via $data['PHONE_NUMBER'] ...
-        $b24->core->call('telephony.externalCall.finish', [
-            'CALL_ID' => $data['CALL_ID'],
-            'USER_ID' => $data['USER_ID'],
-            'DURATION' => 95,
-            'STATUS_CODE' => '200',
-        ]);
-    }
-    ```
-
 - Python
 
     ```python
@@ -483,6 +466,23 @@ Your web server receives the event. After initiating the call on the PBX, comple
         return "ok"
     ```
 
+
+- PHP
+
+    ```php
+    <?php
+    // ONEXTERNALCALLSTART event handler
+    if (($_REQUEST['event'] ?? '') === 'ONEXTERNALCALLSTART') {
+        $data = $_REQUEST['data'];
+        // ... initiate call to PBX via $data['PHONE_NUMBER'] ...
+        $b24->core->call('telephony.externalCall.finish', [
+            'CALL_ID' => $data['CALL_ID'],
+            'USER_ID' => $data['USER_ID'],
+            'DURATION' => 95,
+            'STATUS_CODE' => '200',
+        ]);
+    }
+    ```
 {% endlist %}
 
 The handler must return the HTTP response `200`. After that, Bitrix24 treats the event as delivered.
@@ -512,19 +512,6 @@ If the recording is not yet ready, call `finish` without a recording, and attach
     })
     ```
 
-- PHP
-
-    ```php
-    $finishResponse = $b24->core->call('telephony.externalCall.finish', [
-        'CALL_ID' => $callId, 'USER_ID' => 1270, 'DURATION' => 95, 'STATUS_CODE' => '200', 'ADD_TO_CHAT' => 1,
-    ]);
-
-    // later, when the recording is ready
-    $b24->core->call('telephony.externalCall.attachRecord', [
-        'CALL_ID' => $callId, 'FILENAME' => 'record.mp3', 'RECORD_URL' => 'https://your-domain.example/record.mp3',
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -538,6 +525,19 @@ If the recording is not yet ready, call `finish` without a recording, and attach
     ).response
     ```
 
+
+- PHP
+
+    ```php
+    $finishResponse = $b24->core->call('telephony.externalCall.finish', [
+        'CALL_ID' => $callId, 'USER_ID' => 1270, 'DURATION' => 95, 'STATUS_CODE' => '200', 'ADD_TO_CHAT' => 1,
+    ]);
+
+    // later, when the recording is ready
+    $b24->core->call('telephony.externalCall.attachRecord', [
+        'CALL_ID' => $callId, 'FILENAME' => 'record.mp3', 'RECORD_URL' => 'https://your-domain.example/record.mp3',
+    ]);
+    ```
 {% endlist %}
 
 The successful `finish` response contains the call statistics record. The `CALL_STATUS`, `CALL_FAILED_CODE`, `CRM_ACTIVITY_ID`, `CRM_ENTITY_TYPE`, and `CRM_ENTITY_ID` fields help verify that the call is finished and linked to the CRM.
@@ -599,23 +599,6 @@ If the connection between the PBX and Bitrix24 was unavailable, record the call 
     })
     ```
 
-- PHP
-
-    ```php
-    $callId = $b24->core->call('telephony.externalCall.register', [
-        'USER_ID' => 1269,
-        'PHONE_NUMBER' => '499062195047',
-        'TYPE' => 2,
-        'LINE_NUMBER' => 'line-1',
-        'EXTERNAL_CALL_ID' => 'asterisk-1773130778.18441-offline',
-        'SHOW' => 0,
-    ])->getResponseData()->getResult()['CALL_ID'];
-
-    $b24->core->call('telephony.externalCall.finish', [
-        'CALL_ID' => $callId, 'USER_ID' => 1269, 'DURATION' => 0, 'STATUS_CODE' => '304',
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -633,6 +616,23 @@ If the connection between the PBX and Bitrix24 was unavailable, record the call 
     ).response
     ```
 
+
+- PHP
+
+    ```php
+    $callId = $b24->core->call('telephony.externalCall.register', [
+        'USER_ID' => 1269,
+        'PHONE_NUMBER' => '499062195047',
+        'TYPE' => 2,
+        'LINE_NUMBER' => 'line-1',
+        'EXTERNAL_CALL_ID' => 'asterisk-1773130778.18441-offline',
+        'SHOW' => 0,
+    ])->getResponseData()->getResult()['CALL_ID'];
+
+    $b24->core->call('telephony.externalCall.finish', [
+        'CALL_ID' => $callId, 'USER_ID' => 1269, 'DURATION' => 0, 'STATUS_CODE' => '304',
+    ]);
+    ```
 {% endlist %}
 
 ## Check the Result
@@ -666,19 +666,6 @@ Output these fields from the `finish` response received in step 6.
     })
     ```
 
-- PHP
-
-    ```php
-    $finishResult = $finishResponse->getResponseData()->getResult();
-
-    echo 'ID: ' . $finishResult['ID'] . PHP_EOL;
-    echo 'CALL_STATUS: ' . $finishResult['CALL_STATUS'] . PHP_EOL;
-    echo 'CALL_FAILED_CODE: ' . $finishResult['CALL_FAILED_CODE'] . PHP_EOL;
-    echo 'CRM_ACTIVITY_ID: ' . $finishResult['CRM_ACTIVITY_ID'] . PHP_EOL;
-    echo 'CRM_ENTITY_TYPE: ' . $finishResult['CRM_ENTITY_TYPE'] . PHP_EOL;
-    echo 'CRM_ENTITY_ID: ' . $finishResult['CRM_ENTITY_ID'] . PHP_EOL;
-    ```
-
 - Python
 
     ```python
@@ -695,6 +682,19 @@ Output these fields from the `finish` response received in step 6.
         print(field, finish_result.get(field))
     ```
 
+
+- PHP
+
+    ```php
+    $finishResult = $finishResponse->getResponseData()->getResult();
+
+    echo 'ID: ' . $finishResult['ID'] . PHP_EOL;
+    echo 'CALL_STATUS: ' . $finishResult['CALL_STATUS'] . PHP_EOL;
+    echo 'CALL_FAILED_CODE: ' . $finishResult['CALL_FAILED_CODE'] . PHP_EOL;
+    echo 'CRM_ACTIVITY_ID: ' . $finishResult['CRM_ACTIVITY_ID'] . PHP_EOL;
+    echo 'CRM_ENTITY_TYPE: ' . $finishResult['CRM_ENTITY_TYPE'] . PHP_EOL;
+    echo 'CRM_ENTITY_ID: ' . $finishResult['CRM_ENTITY_ID'] . PHP_EOL;
+    ```
 {% endlist %}
 
 ## Errors and Diagnostics

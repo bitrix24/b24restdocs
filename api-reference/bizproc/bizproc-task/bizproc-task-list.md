@@ -244,6 +244,173 @@ The formula for calculating the `start` parameter value:
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.bizproc.task.list(
+            select=[
+                "ID",
+                "WORKFLOW_ID",
+                "DOCUMENT_NAME",
+                "DESCRIPTION",
+                "NAME",
+                "MODIFIED",
+                "WORKFLOW_STARTED",
+                "WORKFLOW_STARTED_BY",
+                "OVERDUE_DATE",
+                "WORKFLOW_TEMPLATE_ID",
+                "WORKFLOW_TEMPLATE_NAME",
+                "WORKFLOW_STATE",
+                "STATUS",
+                "USER_ID",
+                "USER_STATUS",
+                "MODULE_ID",
+                "ENTITY",
+                "DOCUMENT_ID",
+                "ACTIVITY",
+                "ACTIVITY_NAME",
+                "DOCUMENT_URL",
+                "PARAMETERS",
+            ],
+            order={
+                "ID": "DESC",
+            },
+            filter={
+                "USER_ID": 1,
+                "STATUS": 0,
+                "ACTIVITY": "RequestInformationOptionalActivity",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list`
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.bizproc.task.list(
+            select=[
+                "ID",
+                "WORKFLOW_ID",
+                "DOCUMENT_NAME",
+                "DESCRIPTION",
+                "NAME",
+                "MODIFIED",
+                "WORKFLOW_STARTED",
+                "WORKFLOW_STARTED_BY",
+                "OVERDUE_DATE",
+                "WORKFLOW_TEMPLATE_ID",
+                "WORKFLOW_TEMPLATE_NAME",
+                "WORKFLOW_STATE",
+                "STATUS",
+                "USER_ID",
+                "USER_STATUS",
+                "MODULE_ID",
+                "ENTITY",
+                "DOCUMENT_ID",
+                "ACTIVITY",
+                "ACTIVITY_NAME",
+                "DOCUMENT_URL",
+                "PARAMETERS",
+            ],
+            order={
+                "ID": "DESC",
+            },
+            filter={
+                "USER_ID": 1,
+                "STATUS": 0,
+                "ACTIVITY": "RequestInformationOptionalActivity",
+            },
+        ).as_list().response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
+    Example `as_list_fast`
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.bizproc.task.list(
+            select=[
+                "ID",
+                "WORKFLOW_ID",
+                "DOCUMENT_NAME",
+                "DESCRIPTION",
+                "NAME",
+                "MODIFIED",
+                "WORKFLOW_STARTED",
+                "WORKFLOW_STARTED_BY",
+                "OVERDUE_DATE",
+                "WORKFLOW_TEMPLATE_ID",
+                "WORKFLOW_TEMPLATE_NAME",
+                "WORKFLOW_STATE",
+                "STATUS",
+                "USER_ID",
+                "USER_STATUS",
+                "MODULE_ID",
+                "ENTITY",
+                "DOCUMENT_ID",
+                "ACTIVITY",
+                "ACTIVITY_NAME",
+                "DOCUMENT_URL",
+                "PARAMETERS",
+            ],
+            order={
+                "ID": "DESC",
+            },
+            filter={
+                "USER_ID": 1,
+                "STATUS": 0,
+                "ACTIVITY": "RequestInformationOptionalActivity",
+            },
+        ).as_list_fast(descending=True).response
+        result = bitrix_response.result
+        for item in result:
+            print(item)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

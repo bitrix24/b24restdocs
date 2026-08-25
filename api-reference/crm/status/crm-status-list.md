@@ -190,46 +190,13 @@ The list of fields for filtering can be found using the method [crm.status.field
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'crm.status.list',
-                [
-                    'order' => ['SORT' => 'ASC'],
-                    'filter' => ['ENTITY_ID' => 'DEAL_STAGE'],
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error fetching status list: ' . $e->getMessage();
-    }
-    ```
-
 - Python
 
     Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.status.list(
@@ -258,10 +225,8 @@ The list of fields for filtering can be found using the method [crm.status.field
     Example `as_list`
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.status.list(
@@ -291,10 +256,8 @@ The list of fields for filtering can be found using the method [crm.status.field
     Example `as_list_fast`
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.status.list(
@@ -319,6 +282,37 @@ The list of fields for filtering can be found using the method [crm.status.field
         print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.status.list',
+                [
+                    'order' => ['SORT' => 'ASC'],
+                    'filter' => ['ENTITY_ID' => 'DEAL_STAGE'],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching status list: ' . $e->getMessage();
+    }
     ```
 
 - BX24.js

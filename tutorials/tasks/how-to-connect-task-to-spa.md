@@ -81,22 +81,6 @@ To retrieve an SPA identifier, use the [crm.enum.ownertype](../../api-reference/
     const ownerTypes = ownerTypeResponse.getData().result
     ```
 
-- PHP
-
-    ```php
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Psr\Log\NullLogger;
-
-    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook(getenv('B24_HOOK'));
-    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
-
-    $result = $serviceBuilder->getCRMScope()->enum()->ownerType()->getItems();
-    ```
-
 - Python
 
     ```python
@@ -113,6 +97,22 @@ To retrieve an SPA identifier, use the [crm.enum.ownertype](../../api-reference/
     # B24_HOOK_TOKEN = 'user_id/webhook_key'
 
     result = client.crm.enum.ownertype().response.result
+    ```
+
+- PHP
+
+    ```php
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    $result = $serviceBuilder->getCRMScope()->enum()->ownerType()->getItems();
     ```
 
 - Go
@@ -281,6 +281,18 @@ To retrieve the SPA item ID, use the [crm.item.list](../../api-reference/crm/uni
     const items = itemResponse.getData().result.items
     ```
 
+- Python
+
+    ```python
+    result = client.crm.item.list(
+        entity_type_id=177,
+        select=["id", "title"],
+        filter={
+            "title": "Washing machine",
+        },
+    ).response.result
+    ```
+
 - PHP
   
     ```php
@@ -295,18 +307,6 @@ To retrieve the SPA item ID, use the [crm.item.list](../../api-reference/crm/uni
             'title',
         ]
     )->getItems();
-    ```
-
-- Python
-
-    ```python
-    result = client.crm.item.list(
-        entity_type_id=177,
-        select=["id", "title"],
-        filter={
-            "title": "Washing machine",
-        },
-    ).response.result
     ```
 
 - Go
@@ -404,6 +404,20 @@ To create a task, use the [tasks.task.add](../../api-reference/tasks/tasks-task-
     const task = taskResponse.getData().result.task
     ```
 
+- Python
+
+    ```python
+    result = client.tasks.task.add(
+        fields={
+            "TITLE": "task for test",
+            "RESPONSIBLE_ID": 1,
+            "UF_CRM_TASK": [
+                "Tb1_29",
+            ],
+        }
+    ).response.result
+    ```
+
 - PHP
   
     ```php
@@ -419,20 +433,6 @@ To create a task, use the [tasks.task.add](../../api-reference/tasks/tasks-task-
             ]
         ]
     )->getResponseData()->getResult();
-    ```
-
-- Python
-
-    ```python
-    result = client.tasks.task.add(
-        fields={
-            "TITLE": "task for test",
-            "RESPONSIBLE_ID": 1,
-            "UF_CRM_TASK": [
-                "Tb1_29",
-            ],
-        }
-    ).response.result
     ```
 
 - Go
@@ -589,6 +589,79 @@ The script executes all three steps consecutively: finds the SPA by name, finds 
     $b24.destroy();
     ```
 
+- Python
+
+    ```python
+    import os
+
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    smart_process_name = "smart_process_name"
+    item_name = "element_name"
+    responsible_id = 1
+    task_title = "task_name"
+
+    def create_task_with_smart_process(client, smart_process_name, item_name, responsible_id, task_title):
+        try:
+            result = client.crm.enum.ownertype().response.result
+        except BitrixAPIError as error:
+            print(f"Error getting entity types: {error}")
+            return
+
+        smart_process = None
+        for process in result:
+            if process["NAME"] == smart_process_name:
+                smart_process = process
+                break
+
+        if smart_process is None:
+            print("Smart process not found")
+            return
+
+        symbol_code_short = smart_process["SYMBOL_CODE_SHORT"]
+
+        try:
+            item_result = client.crm.item.list(
+                entity_type_id=int(smart_process["ID"]),
+                select=["id", "title"],
+                filter={"title": item_name},
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error getting smart process elements: {error}")
+            return
+
+        if len(item_result["items"]) == 0:
+            print("Smart process element not found")
+            return
+
+        item_id = item_result["items"][0]["id"]
+
+        try:
+            task_result = client.tasks.task.add(
+                fields={
+                    "TITLE": task_title,
+                    "RESPONSIBLE_ID": responsible_id,
+                    "UF_CRM_TASK": [f"{symbol_code_short}_{item_id}"],
+                }
+            ).response.result
+        except BitrixAPIError as error:
+            print(f"Error creating task: {error}")
+        else:
+            print("Task created successfully!")
+            print(task_result)
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token=os.environ["B24_HOOK_TOKEN"],
+        )
+    )
+    # B24_HOOK_TOKEN = 'user_id/webhook_key'
+
+    create_task_with_smart_process(client, smart_process_name, item_name, responsible_id, task_title)
+    ```
+
 - PHP
   
     ```php
@@ -675,79 +748,6 @@ The script executes all three steps consecutively: finds the SPA by name, finds 
 
     // Calling the function to create a task
     createTaskWithSmartProcess($serviceBuilder, $smartProcessName, $itemName, $responsibleId, $taskTitle);
-    ```
-
-- Python
-
-    ```python
-    import os
-
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    smart_process_name = "smart_process_name"
-    item_name = "element_name"
-    responsible_id = 1
-    task_title = "task_name"
-
-    def create_task_with_smart_process(client, smart_process_name, item_name, responsible_id, task_title):
-        try:
-            result = client.crm.enum.ownertype().response.result
-        except BitrixAPIError as error:
-            print(f"Error getting entity types: {error}")
-            return
-
-        smart_process = None
-        for process in result:
-            if process["NAME"] == smart_process_name:
-                smart_process = process
-                break
-
-        if smart_process is None:
-            print("Smart process not found")
-            return
-
-        symbol_code_short = smart_process["SYMBOL_CODE_SHORT"]
-
-        try:
-            item_result = client.crm.item.list(
-                entity_type_id=int(smart_process["ID"]),
-                select=["id", "title"],
-                filter={"title": item_name},
-            ).response.result
-        except BitrixAPIError as error:
-            print(f"Error getting smart process elements: {error}")
-            return
-
-        if len(item_result["items"]) == 0:
-            print("Smart process element not found")
-            return
-
-        item_id = item_result["items"][0]["id"]
-
-        try:
-            task_result = client.tasks.task.add(
-                fields={
-                    "TITLE": task_title,
-                    "RESPONSIBLE_ID": responsible_id,
-                    "UF_CRM_TASK": [f"{symbol_code_short}_{item_id}"],
-                }
-            ).response.result
-        except BitrixAPIError as error:
-            print(f"Error creating task: {error}")
-        else:
-            print("Task created successfully!")
-            print(task_result)
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token=os.environ["B24_HOOK_TOKEN"],
-        )
-    )
-    # B24_HOOK_TOKEN = 'user_id/webhook_key'
-
-    create_task_with_smart_process(client, smart_process_name, item_name, responsible_id, task_title)
     ```
 
 - Go
@@ -1045,6 +1045,15 @@ Via REST, the binding is verified using the [tasks.task.get](../../api-reference
     const checkedTask = checkResponse.getData().result.task
     ```
 
+- Python
+
+    ```python
+    result = client.tasks.task.get(
+        bitrix_id=3731,
+        select=["ID", "UF_CRM_TASK"],
+    ).response.result
+    ```
+
 - PHP
   
     ```php
@@ -1055,15 +1064,6 @@ Via REST, the binding is verified using the [tasks.task.get](../../api-reference
             'select' => ['ID', 'UF_CRM_TASK'] // selectable fields
         ]
     )->getResponseData()->getResult();
-    ```
-
-- Python
-
-    ```python
-    result = client.tasks.task.get(
-        bitrix_id=3731,
-        select=["ID", "UF_CRM_TASK"],
-    ).response.result
     ```
 
 - Go

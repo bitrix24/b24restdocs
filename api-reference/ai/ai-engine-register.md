@@ -320,6 +320,38 @@ Example structure of a message for a GPT-like model:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.ai.engine.register(
+            name='Acme GPT',
+            code='acme_gpt',
+            category='text',
+            completions_url='https://api.example.com/bitrix24/ai/completions',
+            settings={
+                "code_alias": "ChatGPT",
+                "model_context_type": "token",
+                "model_context_limit": 15666,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

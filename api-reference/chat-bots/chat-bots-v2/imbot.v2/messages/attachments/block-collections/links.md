@@ -64,6 +64,21 @@ If you specifically need the format of an expanded link preview, use `RICH_LINK`
     }
     ```
 
+- Python
+
+    ```python
+    attach = {
+        "LINK": {
+            "PREVIEW": "https://api.bitrix24.com/bitrix/templates/1c-bitrix-new/images/logo.png",
+            "WIDTH": 1000,
+            "HEIGHT": 638,
+            "NAME": 'Ticket #12345: new API for the "Web Messenger" module',
+            "DESC": "Must be implemented by the release!",
+            "LINK": "https://api.bitrix24.com/",
+        },
+    }
+    ```
+
 - PHP
 
     ```php

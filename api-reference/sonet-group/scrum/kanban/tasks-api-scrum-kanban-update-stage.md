@@ -151,6 +151,35 @@ This method changes the stage of the Scrum Kanban.
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.tasks.api.scrum.kanban.update_stage(
+            stage_id=65,
+            fields={
+                "name": "Updated stage",
+                "type": "WORK",
+                "color": "00C4FB",
+                "sort": 100,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

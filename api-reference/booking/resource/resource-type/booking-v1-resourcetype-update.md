@@ -230,6 +230,52 @@ Can be obtained from the methods [booking.v1.resourceType.add](./booking-v1-reso
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.booking.v1.resource_type.update(
+            bitrix_id=10,
+            fields={
+                "name": "New title",
+                "code": "Updated code",
+                "isInfoNotificationOn": "Y",
+                "templateTypeInfo": "inanimate",
+                "isConfirmationNotificationOn": "Y",
+                "templateTypeConfirmation": "animate",
+                "isReminderNotificationOn": "Y",
+                "templateTypeReminder": "base",
+                "isFeedbackNotificationOn": "N",
+                "templateTypeFeedback": "animate",
+                "isDelayedNotificationOn": "N",
+                "templateTypeDelayed": "animate",
+                "infoDelay": 300,
+                "reminderDelay": -1,
+                "delayedDelay": 300,
+                "delayedCounterDelay": 7200,
+                "confirmationDelay": 86400,
+                "confirmationRepetitions": 0,
+                "confirmationRepetitionsInterval": 0,
+                "confirmationCounterDelay": 7200,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

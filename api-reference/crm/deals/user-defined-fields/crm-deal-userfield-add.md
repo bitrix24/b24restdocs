@@ -561,10 +561,8 @@ Default is `N` ||
 - Python
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.deal.userfield.add(
@@ -622,10 +620,8 @@ Default is `N` ||
 - Python
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.deal.userfield.add(
@@ -783,65 +779,11 @@ Default is `N` ||
     );
     ```
 
-- PHP CRest
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.deal.userfield.add',
-        [
-            'fields' => [
-                'LABEL' => "Custom field (list)",
-                'USER_TYPE_ID' => "enumeration",
-                'FIELD_NAME' => "ENUMERATION_EXAMPLE",
-                'MULTIPLE' => "N",
-                'MANDATORY' => "N",
-                'SHOW_FILTER' => "Y",
-                'LIST' => [
-                    [
-                        'VALUE' => "List item #1",
-                        'DEF' => "Y",
-                        'XML_ID' => "XML_ID_1",
-                        'SORT' => 100,
-                    ],
-                    [
-                        'VALUE' => "List item #2",
-                        'XML_ID' => "XML_ID_2",
-                        'SORT' => 200,
-                    ],
-                    [
-                        'VALUE' => "List item #3",
-                        'XML_ID' => "XML_ID_3",
-                        'SORT' => 300,
-                    ],
-                    [
-                        'VALUE' => "List item #4",
-                        'XML_ID' => "XML_ID_4",
-                        'SORT' => 400,
-                    ],
-                ],
-                'SETTINGS' => [
-                    'DISPLAY' => "UI",
-                    'LIST_HEIGHT' => 2,
-                ],
-                'SORT' => 2000,
-            ]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
 - Python
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.deal.userfield.add(
@@ -895,6 +837,58 @@ Default is `N` ||
         print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'crm.deal.userfield.add',
+        [
+            'fields' => [
+                'LABEL' => "Custom field (list)",
+                'USER_TYPE_ID' => "enumeration",
+                'FIELD_NAME' => "ENUMERATION_EXAMPLE",
+                'MULTIPLE' => "N",
+                'MANDATORY' => "N",
+                'SHOW_FILTER' => "Y",
+                'LIST' => [
+                    [
+                        'VALUE' => "List item #1",
+                        'DEF' => "Y",
+                        'XML_ID' => "XML_ID_1",
+                        'SORT' => 100,
+                    ],
+                    [
+                        'VALUE' => "List item #2",
+                        'XML_ID' => "XML_ID_2",
+                        'SORT' => 200,
+                    ],
+                    [
+                        'VALUE' => "List item #3",
+                        'XML_ID' => "XML_ID_3",
+                        'SORT' => 300,
+                    ],
+                    [
+                        'VALUE' => "List item #4",
+                        'XML_ID' => "XML_ID_4",
+                        'SORT' => 400,
+                    ],
+                ],
+                'SETTINGS' => [
+                    'DISPLAY' => "UI",
+                    'LIST_HEIGHT' => 2,
+                ],
+                'SORT' => 2000,
+            ]
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
     ```
 
 - Go

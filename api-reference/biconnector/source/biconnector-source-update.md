@@ -193,6 +193,39 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.biconnector.source.update(
+            bitrix_id=4,
+            fields={
+                "title": "New source title",
+                "description": "Updated source description",
+                "active": False,
+                "settings": {
+                    "login": "new_admin",
+                    "password": "new_password",
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
 

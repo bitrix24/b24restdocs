@@ -299,6 +299,73 @@ To enable a setting, use `Y`, to disable it — `N`. ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "NAME": "Task status",
+        "SORT": "50",
+        "IS_REQUIRED": "N",
+        "MULTIPLE": "N",
+        "TYPE": "L",
+        "LIST": {
+            "1669": {
+                "VALUE": "Planning",
+                "SORT": 10,
+            },
+            "1671": {
+                "VALUE": "In active work",
+                "SORT": 20,
+            },
+            "1673": {
+                "VALUE": "Testing",
+                "SORT": 30,
+            },
+            "1675": {
+                "VALUE": "Completed",
+                "SORT": 40,
+            },
+            "1677": {
+                "VALUE": "Postponed",
+                "SORT": 50,
+            },
+        },
+        "LIST_TEXT_VALUES": "Archive",
+        "LIST_DEF": [
+            "1671",
+        ],
+        "SETTINGS": {
+            "SHOW_ADD_FORM": "Y",
+            "SHOW_EDIT_FORM": "Y",
+            "ADD_READ_ONLY_FIELD": "N",
+            "EDIT_READ_ONLY_FIELD": "Y",
+            "SHOW_FIELD_PREVIEW": "N",
+        },
+    }
+
+    try:
+        bitrix_response = client.lists.field.update(
+            iblock_type_id="lists",
+            iblock_id=123,
+            field_id="PROPERTY_1151",
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

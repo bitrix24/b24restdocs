@@ -188,6 +188,38 @@ If the value is `0`, `null`, empty, or the parameter is not provided, the folder
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.landing.site.update_folder(
+            site_id=1817,
+            folder_id=736,
+            fields={
+                "TITLE": "Services Catalog",
+                "CODE": "services-catalog",
+                "PARENT_ID": 0,
+                "INDEX_ID": 987,
+                "ACTIVE": "Y",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

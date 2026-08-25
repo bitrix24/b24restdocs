@@ -228,6 +228,50 @@ The formula for calculating the value of the `start` parameter:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.sale.shipmentitem.list(
+            select=[
+                "id",
+                "orderDeliveryId",
+                "basketId",
+                "quantity",
+                "xmlId",
+                "dateInsert",
+                "reservedQuantity",
+            ],
+            filter={
+                "<id": 10,
+                "@orderDeliveryId": [
+                    2431,
+                    2430,
+                ],
+                "basketId": 2716,
+            },
+            order={
+                "id": "desc",
+            },
+            start='1712819741.592596',
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

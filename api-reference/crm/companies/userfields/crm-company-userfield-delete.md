@@ -120,34 +120,13 @@ The identifier can be obtained using the methods [crm.company.userfield.add](./c
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $userfieldId = 123; // Replace with the actual userfield ID you want to delete
-        $result = $serviceBuilder
-            ->getCRMScope()`r `n            ->companyUserfield()
-            ->delete($userfieldId);
-
-        if ($result->isSuccess()) {
-            print("Userfield deleted successfully.");
-        } else {
-            print("Failed to delete userfield.");
-        }
-    } catch (Throwable $e) {
-        print("An error occurred: " . $e->getMessage());
-    }
-    ```
-
 - Python
 
     Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.company.userfield.delete(
@@ -166,6 +145,25 @@ The identifier can be obtained using the methods [crm.company.userfield.add](./c
         print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $userfieldId = 123; // Replace with the actual userfield ID you want to delete
+        $result = $serviceBuilder
+            ->getCRMScope()`r `n            ->companyUserfield()
+            ->delete($userfieldId);
+
+        if ($result->isSuccess()) {
+            print("Userfield deleted successfully.");
+        } else {
+            print("Failed to delete userfield.");
+        }
+    } catch (Throwable $e) {
+        print("An error occurred: " . $e->getMessage());
+    }
     ```
 
 - BX24.js

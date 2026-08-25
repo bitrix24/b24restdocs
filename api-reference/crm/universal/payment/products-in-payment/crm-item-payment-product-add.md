@@ -130,6 +130,35 @@ Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/pro
     </script>
     ```
 
+- Python
+
+    Example
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.item.payment.product.add(
+            payment_id=1039,
+            row_id=17587,
+            quantity=2,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected Error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -155,37 +184,6 @@ Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/pro
         error_log($e->getMessage());
         echo 'Error adding payment product: ' . $e->getMessage();
     }
-    ```
-
-- Python
-
-    Example
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.item.payment.product.add(
-            payment_id=1039,
-            row_id=17587,
-            quantity=2,
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected Error: {error}")
     ```
 
 - BX24.js

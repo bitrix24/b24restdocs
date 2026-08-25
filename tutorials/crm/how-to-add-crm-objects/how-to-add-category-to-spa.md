@@ -72,6 +72,26 @@ Use the [crm.type.list](../../../api-reference/crm/universal/user-defined-object
     const entityTypeId = types.length ? types[0].entityTypeId : null;
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    types = client.crm.type.list(
+        filter={"title": "Equipment procurement"},  # Smart process name
+    ).response.result["types"]
+
+    entity_type_id = int(types[0]["entityTypeId"]) if types else None
+    ```
+
+
 - PHP
 
     ```php
@@ -92,26 +112,6 @@ Use the [crm.type.list](../../../api-reference/crm/universal/user-defined-object
 
     $entityTypeId = $types[0]->entityTypeId ?? null;
     ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    types = client.crm.type.list(
-        filter={"title": "Equipment procurement"},  # Smart process name
-    ).response.result["types"]
-
-    entity_type_id = int(types[0]["entityTypeId"]) if types else None
-    ```
-
 {% endlist %}
 
 In the response, the method returns a `types` array. Retain the `entityTypeId` — it has to be passed to steps 2, 3, and 5. In the example, `entityTypeId`: `177`.
@@ -192,6 +192,21 @@ Use the [crm.category.add](../../../api-reference/crm/universal/category/crm-cat
     const categoryId = result.getData().result.category.id;
     ```
 
+- Python
+
+    ```python
+    category = client.crm.category.add(
+        entity_type_id=entity_type_id,  # Type identifier from step 1
+        fields={
+            "name": "New funnel",  # Funnel name
+            "sort": 100,  # Sorting index
+        },
+    ).response.result["category"]
+
+    category_id = int(category["id"])
+    ```
+
+
 - PHP
 
     ```php
@@ -209,21 +224,6 @@ Use the [crm.category.add](../../../api-reference/crm/universal/category/crm-cat
 
     $categoryId = $result->getResponseData()->getResult()['category']['id'];
     ```
-
-- Python
-
-    ```python
-    category = client.crm.category.add(
-        entity_type_id=entity_type_id,  # Type identifier from step 1
-        fields={
-            "name": "New funnel",  # Funnel name
-            "sort": 100,  # Sorting index
-        },
-    ).response.result["category"]
-
-    category_id = int(category["id"])
-    ```
-
 {% endlist %}
 
 In the response, the method returns a `category` object. Retain the `id` — it has to be passed to steps 3 and 5. In the example, `id`: `87`.
@@ -280,19 +280,6 @@ Use the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) 
     const firstStageId = stages[0].ID; // First stage of the "In Progress" group
     ```
 
-- PHP
-
-    ```php
-    $entityId = "DYNAMIC_{$entityTypeId}_STAGE_{$categoryId}";
-
-    $stages = $sb->getCRMScope()->status()->list(
-        order: ['SORT' => 'ASC'], // Stages in ascending order of the sorting index
-        filter: ['ENTITY_ID' => $entityId] // Stage directory of this funnel
-    )->getStatuses();
-
-    $firstStageId = $stages[0]->ID; // First stage of the "In Progress" group
-    ```
-
 - Python
 
     ```python
@@ -306,6 +293,19 @@ Use the [crm.status.list](../../../api-reference/crm/status/crm-status-list.md) 
     first_stage_id = int(stages[0]["ID"])  # First stage of the "In Progress" group
     ```
 
+
+- PHP
+
+    ```php
+    $entityId = "DYNAMIC_{$entityTypeId}_STAGE_{$categoryId}";
+
+    $stages = $sb->getCRMScope()->status()->list(
+        order: ['SORT' => 'ASC'], // Stages in ascending order of the sorting index
+        filter: ['ENTITY_ID' => $entityId] // Stage directory of this funnel
+    )->getStatuses();
+
+    $firstStageId = $stages[0]->ID; // First stage of the "In Progress" group
+    ```
 {% endlist %}
 
 In the response, the method returns an array of stages sorted by the `SORT` field. Retain the `ID` of the first stage — it has to be passed to step 4. In the example, `ID`: `1073`. As in step 1, make sure the array is not empty before the next call.
@@ -417,17 +417,6 @@ The first stage is marked with `SYSTEM`: `Y`. System stages can be renamed freel
     });
     ```
 
-- PHP
-
-    ```php
-    $result = $sb->getCRMScope()->status()->update(
-        $firstStageId, // Stage identifier from step 3
-        [
-            'NAME' => 'First stage' // New stage name
-        ]
-    );
-    ```
-
 - Python
 
     ```python
@@ -439,6 +428,17 @@ The first stage is marked with `SYSTEM`: `Y`. System stages can be renamed freel
     ).response
     ```
 
+
+- PHP
+
+    ```php
+    $result = $sb->getCRMScope()->status()->update(
+        $firstStageId, // Stage identifier from step 3
+        [
+            'NAME' => 'First stage' // New stage name
+        ]
+    );
+    ```
 {% endlist %}
 
 In the response, the method returns `true` — the stage has been renamed.
@@ -487,6 +487,21 @@ In the kanban, the stages are lined up in ascending order of `SORT`: first "In P
     const newStageId = result.getData().result;
     ```
 
+- Python
+
+    ```python
+    new_stage_id = client.crm.status.add(
+        fields={
+            "ENTITY_ID": entity_id,  # Stage directory from step 3
+            "STATUS_ID": f"DT{entity_type_id}_{category_id}:MY_STAGE",  # Stage code
+            "NAME": "My stage",  # Stage name
+            "SORT": 60,  # Sorting index
+            "SEMANTICS": "F",  # "Failure" group
+        },
+    ).response.result
+    ```
+
+
 - PHP
 
     ```php
@@ -502,21 +517,6 @@ In the kanban, the stages are lined up in ascending order of `SORT`: first "In P
 
     $newStageId = $result->getId();
     ```
-
-- Python
-
-    ```python
-    new_stage_id = client.crm.status.add(
-        fields={
-            "ENTITY_ID": entity_id,  # Stage directory from step 3
-            "STATUS_ID": f"DT{entity_type_id}_{category_id}:MY_STAGE",  # Stage code
-            "NAME": "My stage",  # Stage name
-            "SORT": 60,  # Sorting index
-            "SEMANTICS": "F",  # "Failure" group
-        },
-    ).response.result
-    ```
-
 {% endlist %}
 
 In the response, the method returns the identifier of the created stage. In the example, `1083`.
@@ -554,19 +554,6 @@ Through REST, the set of stages is returned by the same [crm.status.list](../../
     })));
     ```
 
-- PHP
-
-    ```php
-    $checkResult = $sb->getCRMScope()->status()->list(
-        order: ['SORT' => 'ASC'],
-        filter: ['ENTITY_ID' => $entityId]
-    )->getStatuses();
-
-    foreach ($checkResult as $stage) {
-        echo $stage->NAME . ' | ' . $stage->SORT . ' | ' . $stage->SEMANTICS . PHP_EOL;
-    }
-    ```
-
 - Python
 
     ```python
@@ -579,6 +566,19 @@ Through REST, the set of stages is returned by the same [crm.status.list](../../
         print(stage["NAME"], stage["SORT"], stage["SEMANTICS"])
     ```
 
+
+- PHP
+
+    ```php
+    $checkResult = $sb->getCRMScope()->status()->list(
+        order: ['SORT' => 'ASC'],
+        filter: ['ENTITY_ID' => $entityId]
+    )->getStatuses();
+
+    foreach ($checkResult as $stage) {
+        echo $stage->NAME . ' | ' . $stage->SORT . ' | ' . $stage->SEMANTICS . PHP_EOL;
+    }
+    ```
 {% endlist %}
 
 The scenario is complete if the response contains six stages: the stage with `SORT`: `10` has the `NAME` field equal to `First stage`, and the array contains a stage with `STATUS_ID`: `DT177_87:MY_STAGE` and `SEMANTICS`: `F`.
@@ -779,6 +779,100 @@ The script creates a funnel in a smart process, renames the first pre-installed 
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    process_title = "Equipment procurement"  # Name of your smart process
+
+
+    def print_stages_table(stages):
+        columns = {"In Progress": [], "Success": [], "Failure": []}
+
+        for stage in stages:
+            if stage["SEMANTICS"] == "S":
+                columns["Success"].append(stage["NAME"])
+            elif stage["SEMANTICS"] == "F":
+                columns["Failure"].append(stage["NAME"])
+            else:
+                columns["In Progress"].append(stage["NAME"])
+
+        max_rows = max(len(column) for column in columns.values())
+
+        print("Stage table:")
+        for index in range(max_rows):
+            row = [
+                columns[group][index] if index < len(columns[group]) else ""
+                for group in ("In Progress", "Success", "Failure")
+            ]
+            print(f"In Progress: {row[0]} | Success: {row[1]} | Failure: {row[2]}")
+
+
+    try:
+        # 1. Retrieve the entityTypeId by the smart process name
+        types = client.crm.type.list(
+            filter={"title": process_title},
+        ).response.result["types"]
+        if not types:
+            raise SystemExit(f'Smart process "{process_title}" not found')
+        entity_type_id = int(types[0]["entityTypeId"])
+
+        # 2. Create the funnel
+        category_id = int(
+            client.crm.category.add(
+                entity_type_id=entity_type_id,
+                fields={"name": "New funnel", "sort": 100},
+            ).response.result["category"]["id"]
+        )
+        entity_id = f"DYNAMIC_{entity_type_id}_STAGE_{category_id}"
+
+        # 3. Retrieve the pre-installed stages
+        stages = client.crm.status.list(
+            filter={"ENTITY_ID": entity_id},
+            order={"SORT": "ASC"},
+        ).response.result
+
+        if not stages:
+            raise SystemExit(f"Stages not found: check the {entity_id} directory")
+
+        # 4. Rename the first stage
+        client.crm.status.update(
+            int(stages[0]["ID"]),
+            fields={"NAME": "First stage"},
+        ).response
+
+        # 5. Add your own stage to the "Failure" group
+        client.crm.status.add(
+            fields={
+                "ENTITY_ID": entity_id,
+                "STATUS_ID": f"DT{entity_type_id}_{category_id}:MY_STAGE",
+                "NAME": "My stage",
+                "SORT": 60,
+                "SEMANTICS": "F",
+            },
+        ).response
+
+        # Verify the result
+        final_stages = client.crm.status.list(
+            filter={"ENTITY_ID": entity_id},
+            order={"SORT": "ASC"},
+        ).response.result
+    except BitrixAPIError as error:
+        print(f"Error: {error}")
+    else:
+        print_stages_table(final_stages)
+    ```
+
+
 - PHP
 
     ```php
@@ -875,100 +969,6 @@ The script creates a funnel in a smart process, renames the first pre-installed 
             . ' | Failure: ' . ($columns['Failure'][$i] ?? '') . "\n";
     }
     ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    process_title = "Equipment procurement"  # Name of your smart process
-
-
-    def print_stages_table(stages):
-        columns = {"In Progress": [], "Success": [], "Failure": []}
-
-        for stage in stages:
-            if stage["SEMANTICS"] == "S":
-                columns["Success"].append(stage["NAME"])
-            elif stage["SEMANTICS"] == "F":
-                columns["Failure"].append(stage["NAME"])
-            else:
-                columns["In Progress"].append(stage["NAME"])
-
-        max_rows = max(len(column) for column in columns.values())
-
-        print("Stage table:")
-        for index in range(max_rows):
-            row = [
-                columns[group][index] if index < len(columns[group]) else ""
-                for group in ("In Progress", "Success", "Failure")
-            ]
-            print(f"In Progress: {row[0]} | Success: {row[1]} | Failure: {row[2]}")
-
-
-    try:
-        # 1. Retrieve the entityTypeId by the smart process name
-        types = client.crm.type.list(
-            filter={"title": process_title},
-        ).response.result["types"]
-        if not types:
-            raise SystemExit(f'Smart process "{process_title}" not found')
-        entity_type_id = int(types[0]["entityTypeId"])
-
-        # 2. Create the funnel
-        category_id = int(
-            client.crm.category.add(
-                entity_type_id=entity_type_id,
-                fields={"name": "New funnel", "sort": 100},
-            ).response.result["category"]["id"]
-        )
-        entity_id = f"DYNAMIC_{entity_type_id}_STAGE_{category_id}"
-
-        # 3. Retrieve the pre-installed stages
-        stages = client.crm.status.list(
-            filter={"ENTITY_ID": entity_id},
-            order={"SORT": "ASC"},
-        ).response.result
-
-        if not stages:
-            raise SystemExit(f"Stages not found: check the {entity_id} directory")
-
-        # 4. Rename the first stage
-        client.crm.status.update(
-            int(stages[0]["ID"]),
-            fields={"NAME": "First stage"},
-        ).response
-
-        # 5. Add your own stage to the "Failure" group
-        client.crm.status.add(
-            fields={
-                "ENTITY_ID": entity_id,
-                "STATUS_ID": f"DT{entity_type_id}_{category_id}:MY_STAGE",
-                "NAME": "My stage",
-                "SORT": 60,
-                "SEMANTICS": "F",
-            },
-        ).response
-
-        # Verify the result
-        final_stages = client.crm.status.list(
-            filter={"ENTITY_ID": entity_id},
-            order={"SORT": "ASC"},
-        ).response.result
-    except BitrixAPIError as error:
-        print(f"Error: {error}")
-    else:
-        print_stages_table(final_stages)
-    ```
-
 {% endlist %}
 
 ## Continue Learning

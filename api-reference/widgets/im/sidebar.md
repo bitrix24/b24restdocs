@@ -275,6 +275,46 @@ Possible values:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.placement.bind(
+            placement='IM_SIDEBAR',
+            handler='https://your-domain.com/widgets/im-sidebar-handler.php',
+            title='My sidebar item',
+            lang_all={
+                "ru": {
+                    "TITLE": "My sidebar item",
+                },
+                "en": {
+                    "TITLE": "My sidebar item",
+                },
+            },
+            options={
+                "iconName": "chat-tools",
+                "context": "ALL",
+                "role": "USER",
+                "extranet": "N",
+                "color": "LIGHT_BLUE",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

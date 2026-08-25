@@ -128,6 +128,104 @@ A system message with a task card, a link, and tables with parameters.
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.imbot.v2.chat.message.send(
+            bot_id=456,
+            dialog_id="chat20921",
+            fields={
+                "message": "Task card",
+                "attach": [
+                    {
+                        "USER": {
+                            "NAME": "Mantis notifications",
+                            "AVATAR": "https://files.shelenkov.com/bitrix/images/mantis2.jpg",
+                            "LINK": "https://shelenkov.com/",
+                        },
+                    },
+                    {
+                        "LINK": {
+                            "NAME": "Open Mantis from an external network",
+                            "LINK": "https://shelenkov.com/",
+                        },
+                    },
+                    {
+                        "DELIMITER": {
+                            "SIZE": 200,
+                            "COLOR": "#c6c6c6",
+                        },
+                    },
+                    {
+                        "GRID": [
+                            {
+                                "NAME": "Project",
+                                "VALUE": "BUGS",
+                                "DISPLAY": "LINE",
+                                "WIDTH": 100,
+                            },
+                            {
+                                "NAME": "Category",
+                                "VALUE": "im",
+                                "DISPLAY": "LINE",
+                                "WIDTH": 100,
+                            },
+                            {
+                                "NAME": "Summary",
+                                "VALUE": "We need to implement the ability to add structured entities to messenger messages and notifications.",
+                                "DISPLAY": "BLOCK",
+                            },
+                        ],
+                    },
+                    {
+                        "DELIMITER": {
+                            "SIZE": 200,
+                            "COLOR": "#c6c6c6",
+                        },
+                    },
+                    {
+                        "GRID": [
+                            {
+                                "NAME": "New ticket",
+                                "VALUE": "",
+                                "DISPLAY": "ROW",
+                                "WIDTH": 100,
+                            },
+                            {
+                                "NAME": "Assigned",
+                                "VALUE": "Thomas Schneider",
+                                "DISPLAY": "ROW",
+                                "WIDTH": 100,
+                            },
+                            {
+                                "NAME": "Deadline",
+                                "VALUE": "04.11.2015 17:50:43",
+                                "DISPLAY": "ROW",
+                                "WIDTH": 100,
+                            },
+                        ],
+                    },
+                ],
+            },
+        ).response
+        result = bitrix_response.result["id"]
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -466,6 +564,48 @@ A short informational text and an image as part of a single attachment.
     } catch (error) {
         console.error(error);
     }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.imbot.v2.chat.message.send(
+            bot_id=456,
+            dialog_id="chat20921",
+            fields={
+                "message": "You have a new notification",
+                "attach": {
+                    "ID": 1,
+                    "COLOR": "#29619b",
+                    "BLOCKS": [
+                        {
+                            "MESSAGE": "Team, the im 16.0.0 update has been tested and is ready for release. The tag needs to be set. Nothing else goes into this update.",
+                        },
+                        {
+                            "IMAGE": {
+                                "LINK": "https://files.shelenkov.com/bitrix/images/win.jpg",
+                            },
+                        },
+                    ],
+                },
+            },
+        ).response
+        result = bitrix_response.result["id"]
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 - PHP

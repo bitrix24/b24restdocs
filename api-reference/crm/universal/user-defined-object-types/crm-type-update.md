@@ -240,6 +240,45 @@ For example, if you need to disable document printing functionality for the SPA 
         </script>
         ```
 
+    - Python
+
+        ```python
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.type.update(
+                bitrix_id=20,
+                fields={
+                    "relations": {
+                        "parent": [],
+                        "child": [
+                            {
+                                "entityTypeId": 1,
+                                "isChildrenListEnabled": "true",
+                            },
+                            {
+                                "entityTypeId": 2,
+                                "isChildrenListEnabled": "false",
+                            },
+                        ],
+                    },
+                },
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
     - PHP
 
         ```php
@@ -463,6 +502,45 @@ For example, if you need to disable document printing functionality for the SPA 
 
           document.addEventListener('DOMContentLoaded', updateSmartProcessRelations)
         </script>
+        ```
+
+    - Python
+
+        ```python
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.type.update(
+                bitrix_id=20,
+                fields={
+                    "relations": {
+                        "parent": [],
+                        "child": [
+                            {
+                                "entityTypeId": 1,
+                                "isChildrenListEnabled": "true",
+                            },
+                            {
+                                "entityTypeId": 2,
+                                "isChildrenListEnabled": "false",
+                            },
+                        ],
+                    },
+                },
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
         ```
 
     - PHP

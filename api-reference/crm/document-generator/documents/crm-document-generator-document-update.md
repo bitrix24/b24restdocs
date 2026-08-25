@@ -198,6 +198,35 @@ Example of updating a document where:
     </script>
     ```
 
+- Python
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.update(
+            bitrix_id=61,
+            values={
+                "DocumentNumber": "2026-002",
+            },
+            stamps_enabled=1,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -227,37 +256,6 @@ Example of updating a document where:
         error_log($e->getMessage());
         echo 'Error updating document: ' . $e->getMessage();
     }
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.documentgenerator.document.update(
-            bitrix_id=61,
-            values={
-                "DocumentNumber": "2026-002",
-            },
-            stamps_enabled=1,
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js

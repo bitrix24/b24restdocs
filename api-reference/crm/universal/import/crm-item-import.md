@@ -1228,10 +1228,8 @@ To upload a file, the value of the custom field must be an array where the first
         Example
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.item.import_(

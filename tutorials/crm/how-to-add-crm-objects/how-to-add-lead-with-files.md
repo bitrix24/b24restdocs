@@ -97,54 +97,6 @@ The form passes the data to the handler using the `POST` method. The `enctype="m
     </script>
     ```
 
-- PHP
-
-    ```html
-    <form id="form_to_crm" method="POST" action="form.php" enctype="multipart/form-data">
-        <!-- First Name (required field) -->
-        <input type="text" name="NAME" placeholder="First Name" required>
-        <!-- Last Name -->
-        <input type="text" name="LAST_NAME" placeholder="Last Name">
-        <!-- Company Name -->
-        <input type="text" name="COMPANY_TITLE" placeholder="Company Name">
-        <!-- Email -->
-        <input type="text" name="EMAIL" placeholder="Email">
-        <!-- Phone -->
-        <input type="text" name="PHONE" placeholder="Phone">
-        <!-- Single file field -->
-        <input type="file" name="FILE">
-        <!-- Multiple files field -->
-        <input type="file" name="FILES" multiple>
-        <!-- Submit button -->
-        <input type="submit" value="Submit">
-    </form>
-
-    <!-- Include jQuery for the AJAX request -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#form_to_crm').on('submit', function(el) {
-                el.preventDefault();
-                var formData = new FormData(this); // Collect form data including files
-                $.ajax({
-                    method: 'POST',
-                    url: 'form.php',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    dataType: 'json',
-                    success: function(data) {
-                        alert(data.message);
-                    },
-                    error: function() {
-                        alert('Error during form submission');
-                    }
-                });
-            });
-        });
-    </script>
-    ```
-
 - Python
 
     ```html
@@ -193,6 +145,54 @@ The form passes the data to the handler using the `POST` method. The `enctype="m
     </script>
     ```
 
+
+- PHP
+
+    ```html
+    <form id="form_to_crm" method="POST" action="form.php" enctype="multipart/form-data">
+        <!-- First Name (required field) -->
+        <input type="text" name="NAME" placeholder="First Name" required>
+        <!-- Last Name -->
+        <input type="text" name="LAST_NAME" placeholder="Last Name">
+        <!-- Company Name -->
+        <input type="text" name="COMPANY_TITLE" placeholder="Company Name">
+        <!-- Email -->
+        <input type="text" name="EMAIL" placeholder="Email">
+        <!-- Phone -->
+        <input type="text" name="PHONE" placeholder="Phone">
+        <!-- Single file field -->
+        <input type="file" name="FILE">
+        <!-- Multiple files field -->
+        <input type="file" name="FILES" multiple>
+        <!-- Submit button -->
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Include jQuery for the AJAX request -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#form_to_crm').on('submit', function(el) {
+                el.preventDefault();
+                var formData = new FormData(this); // Collect form data including files
+                $.ajax({
+                    method: 'POST',
+                    url: 'form.php',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function(data) {
+                        alert(data.message);
+                    },
+                    error: function() {
+                        alert('Error during form submission');
+                    }
+                });
+            });
+        });
+    </script>
+    ```
 {% endlist %}
 
 ## 2. Create a Form Handler
@@ -220,17 +220,6 @@ The form is filled out by a site visitor, so the values cannot be considered saf
     const sEmail = String(req.body.EMAIL ?? '')
     ```
 
-- PHP
-
-    ```php
-    // Get and sanitize data from the form
-    $sName = htmlspecialchars($_POST["NAME"]);
-    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
-    $sCompanyTitle = htmlspecialchars($_POST["COMPANY_TITLE"]);
-    $sPhone = htmlspecialchars($_POST["PHONE"]);
-    $sEmail = htmlspecialchars($_POST["EMAIL"]);
-    ```
-
 - Python
 
     ```python
@@ -242,6 +231,17 @@ The form is filled out by a site visitor, so the values cannot be considered saf
     s_email = request.form.get("EMAIL", "")
     ```
 
+
+- PHP
+
+    ```php
+    // Get and sanitize data from the form
+    $sName = htmlspecialchars($_POST["NAME"]);
+    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
+    $sCompanyTitle = htmlspecialchars($_POST["COMPANY_TITLE"]);
+    $sPhone = htmlspecialchars($_POST["PHONE"]);
+    $sEmail = htmlspecialchars($_POST["EMAIL"]);
+    ```
 {% endlist %}
 
 #### Prepare Files
@@ -293,6 +293,37 @@ Pass such an object to the single-file field, and an array of such objects to th
     }
     ```
 
+- Python
+
+    ```python
+    import base64
+
+    # Create variables for arrays with files
+    ar_files = []
+    ar_single_file = []
+
+    # Process the FILES field with multiple files
+    for file in request.files.getlist("FILES"):
+        if file and file.filename:
+            ar_files.append({
+                "fileData": [
+                    file.filename,  # filename
+                    base64.b64encode(file.read()).decode(),  # file content, encoded in base64
+                ]
+            })
+
+    # Process the FILE field with a single file
+    single = request.files.get("FILE")
+    if single and single.filename:
+        ar_single_file = {
+            "fileData": [
+                single.filename,  # filename
+                base64.b64encode(single.read()).decode(),  # file content, encoded in base64
+            ]
+        }
+    ```
+
+
 - PHP
 
     ```php
@@ -324,37 +355,6 @@ Pass such an object to the single-file field, and an array of such objects to th
         ];
     }
     ```
-
-- Python
-
-    ```python
-    import base64
-
-    # Create variables for arrays with files
-    ar_files = []
-    ar_single_file = []
-
-    # Process the FILES field with multiple files
-    for file in request.files.getlist("FILES"):
-        if file and file.filename:
-            ar_files.append({
-                "fileData": [
-                    file.filename,  # filename
-                    base64.b64encode(file.read()).decode(),  # file content, encoded in base64
-                ]
-            })
-
-    # Process the FILE field with a single file
-    single = request.files.get("FILE")
-    if single and single.filename:
-        ar_single_file = {
-            "fileData": [
-                single.filename,  # filename
-                base64.b64encode(single.read()).decode(),  # file content, encoded in base64
-            ]
-        }
-    ```
-
 {% endlist %}
 
 #### Format Phone and Email
@@ -375,14 +375,6 @@ The system stores phone and email as an array of [crm_multifield](../../../api-r
     const arEmail = sEmail ? [{ VALUE: sEmail, VALUE_TYPE: 'HOME' }] : []
     ```
 
-- PHP
-
-    ```php
-    // Format phone and email for Bitrix24 into crm_multifield format
-    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
-    $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
-    ```
-
 - Python
 
     ```python
@@ -391,6 +383,14 @@ The system stores phone and email as an array of [crm_multifield](../../../api-r
     ar_email = [{"VALUE": s_email, "VALUE_TYPE": "HOME"}] if s_email else []
     ```
 
+
+- PHP
+
+    ```php
+    // Format phone and email for Bitrix24 into crm_multifield format
+    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
+    $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
+    ```
 {% endlist %}
 
 #### Formulate the Lead Heading
@@ -410,17 +410,6 @@ Formulate the lead heading using the first and last name. For companies, add the
     }
     ```
 
-- PHP
-
-    ```php
-    // Form the lead title from first and last name
-    $sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
-    // If there is a company name — add it via a hyphen after the first and last name
-    if (!empty($sCompanyTitle)) {
-        $sTitle .= ' — ' . $sCompanyTitle;
-    }
-    ```
-
 - Python
 
     ```python
@@ -431,6 +420,17 @@ Formulate the lead heading using the first and last name. For companies, add the
         s_title += " — " + s_company_title
     ```
 
+
+- PHP
+
+    ```php
+    // Form the lead title from first and last name
+    $sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
+    // If there is a company name — add it via a hyphen after the first and last name
+    if (!empty($sCompanyTitle)) {
+        $sTitle .= ' — ' . $sCompanyTitle;
+    }
+    ```
 {% endlist %}
 
 ### Create a Lead
@@ -484,21 +484,6 @@ Check which required fields are configured for leads in your Bitrix24. All requi
     })
     ```
 
-- PHP
-
-    ```php
-    $sb->getCRMScope()->lead()->add([
-        'TITLE' => $sTitle, // Lead title
-        'NAME' => $sName, // First name
-        'LAST_NAME' => $sLastName, // Last name
-        'COMPANY_TITLE' => $sCompanyTitle, // Company name
-        'PHONE' => $arPhone, // Phone number
-        'EMAIL' => $arEmail, // Email
-        'UF_CRM_LEAD_FILES' => $arFiles, // Field for adding multiple files
-        'UF_CRM_LEAD_FILE' => $arSingleFile, // File field
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -514,6 +499,21 @@ Check which required fields are configured for leads in your Bitrix24. All requi
     })
     ```
 
+
+- PHP
+
+    ```php
+    $sb->getCRMScope()->lead()->add([
+        'TITLE' => $sTitle, // Lead title
+        'NAME' => $sName, // First name
+        'LAST_NAME' => $sLastName, // Last name
+        'COMPANY_TITLE' => $sCompanyTitle, // Company name
+        'PHONE' => $arPhone, // Phone number
+        'EMAIL' => $arEmail, // Email
+        'UF_CRM_LEAD_FILES' => $arFiles, // Field for adding multiple files
+        'UF_CRM_LEAD_FILE' => $arSingleFile, // File field
+    ]);
+    ```
 {% endlist %}
 
 If the lead is created successfully, the method returns its identifier. Retain this value: you can use it to open the lead and verify the result.
@@ -615,6 +615,83 @@ If the lead is created successfully, the method returns its identifier. Retain t
     app.listen(3000)
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk flask
+    import base64
+    import os
+    from flask import Flask, request, jsonify
+    from b24pysdk import BitrixWebhook, Client
+
+    app = Flask(__name__)
+
+    client = Client(BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token=os.environ["B24_HOOK_TOKEN"],
+    ))
+    # B24_HOOK_TOKEN = 'USER_ID/TOKEN' — user_id and token only, without https://
+
+    @app.route("/form", methods=["POST"])
+    def handle_form():
+        # Get data from the form
+        s_name = request.form.get("NAME", "")
+        s_last_name = request.form.get("LAST_NAME", "")
+        s_company_title = request.form.get("COMPANY_TITLE", "")
+        s_phone = request.form.get("PHONE", "")
+        s_email = request.form.get("EMAIL", "")
+
+        # Create variables for arrays with files
+        ar_files = []
+        ar_single_file = []
+
+        # Process the FILES field with multiple files
+        for file in request.files.getlist("FILES"):
+            if file and file.filename:
+                ar_files.append({
+                    "fileData": [
+                        file.filename,  # filename
+                        base64.b64encode(file.read()).decode(),  # file content, encoded in base64
+                    ]
+                })
+
+        # Process the FILE field with a single file
+        single = request.files.get("FILE")
+        if single and single.filename:
+            ar_single_file = {
+                "fileData": [
+                    single.filename,  # filename
+                    base64.b64encode(single.read()).decode(),  # file content, encoded in base64
+                ]
+            }
+
+        # Format phone and email for Bitrix24 into crm_multifield format
+        ar_phone = [{"VALUE": s_phone, "VALUE_TYPE": "WORK"}] if s_phone else []
+        ar_email = [{"VALUE": s_email, "VALUE_TYPE": "HOME"}] if s_email else []
+
+        # Form the lead title from first and last name
+        s_title = "From website: " + f"{s_name} {s_last_name}".strip()
+        if s_company_title:
+            s_title += " — " + s_company_title
+
+        # Sending data to Bitrix24
+        try:
+            client.crm.lead.add(fields={
+                "TITLE": s_title,  # Lead title
+                "NAME": s_name,  # First name
+                "LAST_NAME": s_last_name,  # Last name
+                "COMPANY_TITLE": s_company_title,  # Company name
+                "PHONE": ar_phone,  # Phone number
+                "EMAIL": ar_email,  # Email
+                "UF_CRM_LEAD_FILES": ar_files,  # Field for adding multiple files
+                "UF_CRM_LEAD_FILE": ar_single_file,  # File field
+            })
+            return jsonify({"message": "Lead added successfully"})
+        except Exception as e:
+            return jsonify({"message": f"Lead not added: {e}"})
+    ```
+
+
 - PHP
 
     ```php
@@ -697,83 +774,6 @@ If the lead is created successfully, the method returns its identifier. Retain t
         echo json_encode(['message' => 'Lead not added: ' . $e->getMessage()]);
     }
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk flask
-    import base64
-    import os
-    from flask import Flask, request, jsonify
-    from b24pysdk import BitrixWebhook, Client
-
-    app = Flask(__name__)
-
-    client = Client(BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token=os.environ["B24_HOOK_TOKEN"],
-    ))
-    # B24_HOOK_TOKEN = 'USER_ID/TOKEN' — user_id and token only, without https://
-
-    @app.route("/form", methods=["POST"])
-    def handle_form():
-        # Get data from the form
-        s_name = request.form.get("NAME", "")
-        s_last_name = request.form.get("LAST_NAME", "")
-        s_company_title = request.form.get("COMPANY_TITLE", "")
-        s_phone = request.form.get("PHONE", "")
-        s_email = request.form.get("EMAIL", "")
-
-        # Create variables for arrays with files
-        ar_files = []
-        ar_single_file = []
-
-        # Process the FILES field with multiple files
-        for file in request.files.getlist("FILES"):
-            if file and file.filename:
-                ar_files.append({
-                    "fileData": [
-                        file.filename,  # filename
-                        base64.b64encode(file.read()).decode(),  # file content, encoded in base64
-                    ]
-                })
-
-        # Process the FILE field with a single file
-        single = request.files.get("FILE")
-        if single and single.filename:
-            ar_single_file = {
-                "fileData": [
-                    single.filename,  # filename
-                    base64.b64encode(single.read()).decode(),  # file content, encoded in base64
-                ]
-            }
-
-        # Format phone and email for Bitrix24 into crm_multifield format
-        ar_phone = [{"VALUE": s_phone, "VALUE_TYPE": "WORK"}] if s_phone else []
-        ar_email = [{"VALUE": s_email, "VALUE_TYPE": "HOME"}] if s_email else []
-
-        # Form the lead title from first and last name
-        s_title = "From website: " + f"{s_name} {s_last_name}".strip()
-        if s_company_title:
-            s_title += " — " + s_company_title
-
-        # Sending data to Bitrix24
-        try:
-            client.crm.lead.add(fields={
-                "TITLE": s_title,  # Lead title
-                "NAME": s_name,  # First name
-                "LAST_NAME": s_last_name,  # Last name
-                "COMPANY_TITLE": s_company_title,  # Company name
-                "PHONE": ar_phone,  # Phone number
-                "EMAIL": ar_email,  # Email
-                "UF_CRM_LEAD_FILES": ar_files,  # Field for adding multiple files
-                "UF_CRM_LEAD_FILE": ar_single_file,  # File field
-            })
-            return jsonify({"message": "Lead added successfully"})
-        except Exception as e:
-            return jsonify({"message": f"Lead not added: {e}"})
-    ```
-
 {% endlist %}
 
 ## Verify the Result
@@ -796,18 +796,18 @@ Through REST, the lead is checked with the [crm.lead.get](../../../api-reference
     console.dir(checkResponse.getData().result)
     ```
 
-- PHP
-
-    ```php
-    $lead = $sb->getCRMScope()->lead()->get(5)->lead();
-    ```
-
 - Python
 
     ```python
     lead = client.crm.lead.get(bitrix_id=5).result
     ```
 
+
+- PHP
+
+    ```php
+    $lead = $sb->getCRMScope()->lead()->get(5)->lead();
+    ```
 {% endlist %}
 
 The scenario is complete if the response has:

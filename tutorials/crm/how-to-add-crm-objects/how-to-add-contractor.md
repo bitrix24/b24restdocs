@@ -89,6 +89,32 @@ Use the [crm.category.list](../../../api-reference/crm/universal/category/crm-ca
     const categoryId = categories.length ? categories[0].id : null;
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    # the b24pysdk wrapper accepts only entity_type_id, so the category is selected by code in the response
+    categories = client.crm.category.list(
+        entity_type_id=3,  # 3 — contact
+    ).response.result["categories"]
+
+    contractor_categories = [
+        category
+        for category in categories
+        if category["code"] == "CATALOG_CONTRACTOR_CONTACT"
+    ]
+    category_id = contractor_categories[0]["id"] if contractor_categories else None
+    ```
+
+
 - PHP
 
     ```php
@@ -116,32 +142,6 @@ Use the [crm.category.list](../../../api-reference/crm/universal/category/crm-ca
     $categories = $result->getResponseData()->getResult()['categories'] ?? [];
     $categoryId = $categories[0]['id'] ?? null;
     ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    # the b24pysdk wrapper accepts only entity_type_id, so the category is selected by code in the response
-    categories = client.crm.category.list(
-        entity_type_id=3,  # 3 — contact
-    ).response.result["categories"]
-
-    contractor_categories = [
-        category
-        for category in categories
-        if category["code"] == "CATALOG_CONTRACTOR_CONTACT"
-    ]
-    category_id = contractor_categories[0]["id"] if contractor_categories else None
-    ```
-
 {% endlist %}
 
 In the response, the method returns a `categories` array. Retain the `id` of the first element — it has to be passed to step 2. In the example, `id`: `15`.
@@ -222,27 +222,6 @@ Bitrix24 retains phone numbers and email addresses as multifields rather than as
     const contractorId = resultItem.getData().result.item.id;
     ```
 
-- PHP
-
-    ```php
-    $result = $sb->getCRMScope()->item()->add(
-        3, // 3 — contact
-        [
-            'name' => 'Klaus', // First name
-            'lastName' => 'Weber', // Last name
-            'categoryId' => $categoryId, // Category identifier from step 1
-            'fm' => [ // Phone numbers and email addresses
-                [ 'typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => '+49 900 000 00 00' ],
-                [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+49 495 111 22 33' ],
-                [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'supplier@example.com' ]
-            ],
-            'comments' => 'Electronics supplier' // Comment
-        ]
-    );
-
-    $contractorId = $result->item()->id;
-    ```
-
 - Python
 
     ```python
@@ -264,6 +243,27 @@ Bitrix24 retains phone numbers and email addresses as multifields rather than as
     contractor_id = item["id"]
     ```
 
+
+- PHP
+
+    ```php
+    $result = $sb->getCRMScope()->item()->add(
+        3, // 3 — contact
+        [
+            'name' => 'Klaus', // First name
+            'lastName' => 'Weber', // Last name
+            'categoryId' => $categoryId, // Category identifier from step 1
+            'fm' => [ // Phone numbers and email addresses
+                [ 'typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => '+49 900 000 00 00' ],
+                [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+49 495 111 22 33' ],
+                [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'supplier@example.com' ]
+            ],
+            'comments' => 'Electronics supplier' // Comment
+        ]
+    );
+
+    $contractorId = $result->item()->id;
+    ```
 {% endlist %}
 
 In the response, the method returns an `item` object with the full set of contact fields. The response is shortened, showing the fields that confirm the result.
@@ -340,19 +340,6 @@ Through REST, vendors are returned by the [crm.item.list](../../../api-reference
     console.dir(checkResult.getData().result.items);
     ```
 
-- PHP
-
-    ```php
-    $checkResult = $sb->getCRMScope()->item()->list(
-        3,
-        [],
-        ['categoryId' => $categoryId, 'id' => $contractorId],
-        ['id', 'name', 'lastName', 'categoryId']
-    );
-
-    print_r($checkResult->getItems());
-    ```
-
 - Python
 
     ```python
@@ -365,6 +352,19 @@ Through REST, vendors are returned by the [crm.item.list](../../../api-reference
     print(check_result)
     ```
 
+
+- PHP
+
+    ```php
+    $checkResult = $sb->getCRMScope()->item()->list(
+        3,
+        [],
+        ['categoryId' => $categoryId, 'id' => $contractorId],
+        ['id', 'name', 'lastName', 'categoryId']
+    );
+
+    print_r($checkResult->getItems());
+    ```
 {% endlist %}
 
 The scenario is complete if the `items` array contains an element with the `id` from step 2 and its `categoryId` matches the identifier of the system category.
@@ -480,6 +480,57 @@ The script retrieves the identifier of the system vendor category and creates a 
     createContractor();
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    entity_type_id = 3  # 3 — contact, for a company specify 4
+    category_code = "CATALOG_CONTRACTOR_CONTACT"  # for a company specify CATALOG_CONTRACTOR_COMPANY
+    name_fields = {"name": "Klaus", "lastName": "Weber"}  # for a company specify {"title": "Elektronik GmbH"}
+
+    try:
+        # the b24pysdk wrapper accepts only entity_type_id, so the category is selected by code in the response
+        categories = client.crm.category.list(
+            entity_type_id=entity_type_id,
+        ).response.result["categories"]
+
+        contractor_categories = [
+            category
+            for category in categories
+            if category["code"] == category_code
+        ]
+        if not contractor_categories:
+            print("Vendor category not found: check inventory management and the access of the webhook user")
+        else:
+            item = client.crm.item.add(
+                entity_type_id,
+                {
+                    **name_fields,
+                    "categoryId": contractor_categories[0]["id"],
+                    "fm": [
+                        {"typeId": "PHONE", "valueType": "WORK", "value": "+49 900 000 00 00"},
+                        {"typeId": "PHONE", "valueType": "MOBILE", "value": "+49 495 111 22 33"},
+                        {"typeId": "EMAIL", "valueType": "WORK", "value": "supplier@example.com"},
+                    ],
+                    "comments": "Electronics supplier",
+                },
+            ).response.result["item"]
+
+            print(f"Vendor created, id: {item['id']}")
+    except BitrixAPIError as error:
+        print(f"Vendor not created: {error}")
+    ```
+
+
 - PHP
 
     ```php
@@ -536,57 +587,6 @@ The script retrieves the identifier of the system vendor category and creates a 
         echo 'Vendor not created: ' . $e->getMessage();
     }
     ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    entity_type_id = 3  # 3 — contact, for a company specify 4
-    category_code = "CATALOG_CONTRACTOR_CONTACT"  # for a company specify CATALOG_CONTRACTOR_COMPANY
-    name_fields = {"name": "Klaus", "lastName": "Weber"}  # for a company specify {"title": "Elektronik GmbH"}
-
-    try:
-        # the b24pysdk wrapper accepts only entity_type_id, so the category is selected by code in the response
-        categories = client.crm.category.list(
-            entity_type_id=entity_type_id,
-        ).response.result["categories"]
-
-        contractor_categories = [
-            category
-            for category in categories
-            if category["code"] == category_code
-        ]
-        if not contractor_categories:
-            print("Vendor category not found: check inventory management and the access of the webhook user")
-        else:
-            item = client.crm.item.add(
-                entity_type_id,
-                {
-                    **name_fields,
-                    "categoryId": contractor_categories[0]["id"],
-                    "fm": [
-                        {"typeId": "PHONE", "valueType": "WORK", "value": "+49 900 000 00 00"},
-                        {"typeId": "PHONE", "valueType": "MOBILE", "value": "+49 495 111 22 33"},
-                        {"typeId": "EMAIL", "valueType": "WORK", "value": "supplier@example.com"},
-                    ],
-                    "comments": "Electronics supplier",
-                },
-            ).response.result["item"]
-
-            print(f"Vendor created, id: {item['id']}")
-    except BitrixAPIError as error:
-        print(f"Vendor not created: {error}")
-    ```
-
 {% endlist %}
 
 ## Continue Learning

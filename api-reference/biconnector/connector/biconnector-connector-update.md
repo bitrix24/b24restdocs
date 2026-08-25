@@ -252,6 +252,52 @@ The method `biconnector.connector.update` updates an existing connector.
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.biconnector.connector.update(
+            bitrix_id=4,
+            fields={
+                "title": "UPDATED REST CONNECTOR",
+                "logo": "data:image/svg+xml;base64,NEWLOGODATA",
+                "description": "Updated description",
+                "urlCheck": "http://example.com/api/new_check",
+                "urlTableList": "http://example.com/api/new_table_list",
+                "urlTableDescription": "http://example.com/api/new_table_description",
+                "urlData": "http://example.com/api/new_data",
+                "settings": [
+                    {
+                        "name": "Employee ID",
+                        "type": "STRING",
+                        "code": "id",
+                    },
+                    {
+                        "name": "Password",
+                        "type": "STRING",
+                        "code": "password",
+                    },
+                ],
+                "sort": 200,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

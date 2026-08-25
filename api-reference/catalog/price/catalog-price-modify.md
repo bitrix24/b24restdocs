@@ -219,6 +219,52 @@ The method `catalog.price.modify` updates the product price collection. It allow
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.catalog.price.modify(
+            fields={
+                "product": {
+                    "id": 8,
+                    "prices": [
+                        {
+                            "catalogGroupId": 1,
+                            "currency": "RUB",
+                            "price": 2001,
+                        },
+                        {
+                            "catalogGroupId": 3,
+                            "currency": "RUB",
+                            "price": 2001,
+                        },
+                        {
+                            "catalogGroupId": 5,
+                            "currency": "RUB",
+                            "price": 2001,
+                            "id": 122,
+                        },
+                    ],
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

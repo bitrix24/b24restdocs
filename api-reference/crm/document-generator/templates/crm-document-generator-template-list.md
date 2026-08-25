@@ -229,43 +229,11 @@ Example of retrieving a list of templates where:
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'crm.documentgenerator.template.list',
-                [
-                    'select' => ['id', 'name', 'region', 'entityTypeId', 'users'],
-                    'order' => ['id' => 'desc'],
-                    'filter' => ['region' => 'de', 'active' => 'Y'],
-                    'start' => 0,
-                ]
-            );
-
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-
-        echo '<pre>';
-        print_r($result);
-        echo '</pre>';
-
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting templates list: ' . $e->getMessage();
-    }
-    ```
-
 - Python
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.documentgenerator.template.list(
@@ -295,10 +263,8 @@ Example of retrieving a list of templates where:
     `as_list` Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.documentgenerator.template.list(
@@ -328,10 +294,8 @@ Example of retrieving a list of templates where:
     `as_list_fast` Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.documentgenerator.template.list(
@@ -356,6 +320,36 @@ Example of retrieving a list of templates where:
         print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.documentgenerator.template.list',
+                [
+                    'select' => ['id', 'name', 'region', 'entityTypeId', 'users'],
+                    'order' => ['id' => 'desc'],
+                    'filter' => ['region' => 'de', 'active' => 'Y'],
+                    'start' => 0,
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        echo '<pre>';
+        print_r($result);
+        echo '</pre>';
+
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error getting templates list: ' . $e->getMessage();
+    }
     ```
 
 - BX24.js

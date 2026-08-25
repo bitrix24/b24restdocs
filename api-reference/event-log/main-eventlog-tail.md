@@ -214,6 +214,50 @@ The new API call differs by adding the `/api/` segment to the request URL:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    select = [
+        "id",
+        "timestampX",
+        "severity",
+        "auditTypeId",
+        "moduleId",
+        "itemId",
+        "userId",
+        "description",
+    ]
+
+    filter = []
+
+    cursor = {
+        "field": "id",
+        "value": 446313,
+        "order": "ASC",
+    }
+
+    try:
+        bitrix_response = client.main.eventlog.tail(
+            select=select,
+            filter=filter,
+            cursor=cursor,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.

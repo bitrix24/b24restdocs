@@ -210,6 +210,54 @@ Required fields for creating a template:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "PARENT_ID": 8131,
+        "TITLE": "Preparing the weekly project status",
+        "DESCRIPTION": "A task template for preparing and approving the weekly project status with the team and the manager",
+        "PRIORITY": 2,
+        "CREATED_BY": 101,
+        "RESPONSIBLE_ID": 102,
+        "REPLICATE": "Y",
+        "START_DATE_PLAN_AFTER": "32400",
+        "END_DATE_PLAN_AFTER": "97200",
+        "REPLICATE_PARAMS": {
+            "PERIOD": "weekly",
+            "EVERY_WEEK": 1,
+            "WEEK_DAYS": [
+                2,
+            ],
+            "TIME": "11:00",
+            "REPEAT_TILL": "endless",
+            "START_DATE": "16.03.2026 00:00:00",
+        },
+        "UF_CRM_TASK": [
+            "L_1179",
+            "D_1833",
+        ],
+    }
+
+    try:
+        bitrix_response = client.tasks.template.add(fields=fields).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

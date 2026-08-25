@@ -169,32 +169,6 @@ The handler receives a POST request at the address specified in the `handlerUrl`
     app.listen(3000)
     ```
 
-- PHP
-
-    ```php
-    <?php
-    // composer require bitrix24/b24phpsdk:"^3.3"
-    // form.php and form.html are located in the public directory, vendor — above it
-    // Local run: php -S localhost:3000 -t public
-    require_once __DIR__ . '/../vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-
-    header('Content-Type: application/json; charset=utf-8');
-
-    // Value length limit: the form is public
-    const MAX_LENGTH = 100;
-
-    // The handler accepts POST requests only
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        http_response_code(405);
-        echo json_encode(['message' => 'Method not supported']);
-        exit;
-    }
-
-    $sb = ServiceBuilderFactory::createServiceBuilderFromWebhook(getenv('B24_HOOK'));
-    ```
-
 - Python
 
     ```python
@@ -228,6 +202,32 @@ The handler receives a POST request at the address specified in the `handlerUrl`
     # Run: python handler.py
     if __name__ == "__main__":
         app.run(port=3000)
+    ```
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.3"
+    // form.php and form.html are located in the public directory, vendor — above it
+    // Local run: php -S localhost:3000 -t public
+    require_once __DIR__ . '/../vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+
+    header('Content-Type: application/json; charset=utf-8');
+
+    // Value length limit: the form is public
+    const MAX_LENGTH = 100;
+
+    // The handler accepts POST requests only
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['message' => 'Method not supported']);
+        exit;
+    }
+
+    $sb = ServiceBuilderFactory::createServiceBuilderFromWebhook(getenv('B24_HOOK'));
     ```
 
 - Go
@@ -305,6 +305,27 @@ In REST, we pass the values as is. Do not apply `htmlspecialchars` or other HTML
     }
     ```
 
+- Python
+
+    ```python
+    # Getting the data from the form
+    s_name = request.form.get("NAME", "").strip()
+    s_last_name = request.form.get("LAST_NAME", "").strip()
+    s_company_title = request.form.get("COMPANY_TITLE", "").strip()
+    s_phone = request.form.get("PHONE", "").strip()
+    s_email = request.form.get("EMAIL", "").strip()
+
+    # Validating the data before calling the method
+    if not s_name:
+        return jsonify({"message": "Enter the first name"}), 400
+
+    if s_email and not EMAIL_PATTERN.fullmatch(s_email):
+        return jsonify({"message": "Check the email address"}), 400
+
+    if any(len(value) > MAX_LENGTH for value in (s_name, s_last_name, s_company_title, s_phone, s_email)):
+        return jsonify({"message": "One of the fields is too long"}), 400
+    ```
+
 - PHP
 
     ```php
@@ -335,27 +356,6 @@ In REST, we pass the values as is. Do not apply `htmlspecialchars` or other HTML
             exit;
         }
     }
-    ```
-
-- Python
-
-    ```python
-    # Getting the data from the form
-    s_name = request.form.get("NAME", "").strip()
-    s_last_name = request.form.get("LAST_NAME", "").strip()
-    s_company_title = request.form.get("COMPANY_TITLE", "").strip()
-    s_phone = request.form.get("PHONE", "").strip()
-    s_email = request.form.get("EMAIL", "").strip()
-
-    # Validating the data before calling the method
-    if not s_name:
-        return jsonify({"message": "Enter the first name"}), 400
-
-    if s_email and not EMAIL_PATTERN.fullmatch(s_email):
-        return jsonify({"message": "Check the email address"}), 400
-
-    if any(len(value) > MAX_LENGTH for value in (s_name, s_last_name, s_company_title, s_phone, s_email)):
-        return jsonify({"message": "One of the fields is too long"}), 400
     ```
 
 - Go
@@ -429,6 +429,19 @@ In the [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield)
     }
     ```
 
+- Python
+
+    ```python
+    # Collecting the phone and email into multifields
+    ar_fm = []
+
+    if s_phone:
+        ar_fm.append({"typeId": "PHONE", "valueType": "WORK", "value": s_phone})
+
+    if s_email:
+        ar_fm.append({"typeId": "EMAIL", "valueType": "HOME", "value": s_email})
+    ```
+
 - PHP
 
     ```php
@@ -442,19 +455,6 @@ In the [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield)
     if ($sEmail !== '') {
         $arFm[] = ['typeId' => 'EMAIL', 'valueType' => 'HOME', 'value' => $sEmail];
     }
-    ```
-
-- Python
-
-    ```python
-    # Collecting the phone and email into multifields
-    ar_fm = []
-
-    if s_phone:
-        ar_fm.append({"typeId": "PHONE", "valueType": "WORK", "value": s_phone})
-
-    if s_email:
-        ar_fm.append({"typeId": "EMAIL", "valueType": "HOME", "value": s_email})
     ```
 
 - Go
@@ -493,6 +493,18 @@ We compose the title from the first name and last name. If the visitor specified
     }
     ```
 
+- Python
+
+    ```python
+    # Creating the lead title from the first and last name
+    s_title = "From the website: " + f"{s_name} {s_last_name}".strip()
+
+    # If there is a company name — add it via a dash after the first and last name
+
+    if s_company_title:
+        s_title += " — " + s_company_title
+    ```
+
 - PHP
 
     ```php
@@ -504,18 +516,6 @@ We compose the title from the first name and last name. If the visitor specified
     if ($sCompanyTitle !== '') {
         $sTitle .= ' — ' . $sCompanyTitle;
     }
-    ```
-
-- Python
-
-    ```python
-    # Creating the lead title from the first and last name
-    s_title = "From the website: " + f"{s_name} {s_last_name}".strip()
-
-    # If there is a company name — add it via a dash after the first and last name
-
-    if s_company_title:
-        s_title += " — " + s_company_title
     ```
 
 - Go
@@ -575,30 +575,6 @@ We pass the prepared values in the `fields` of the [crm.item.add](../../../api-r
     }
     ```
 
-- PHP
-
-    ```php
-    // Sending the data to Bitrix24
-    try {
-        $result = $sb->getCRMScope()->item()->add(1, [ // 1 — the "Lead" CRM object type
-            'title' => $sTitle, // Lead title
-            'name' => $sName, // First name
-            'lastName' => $sLastName, // Last name
-            'companyTitle' => $sCompanyTitle, // Company name
-            'fm' => $arFm, // Phone and email
-        ]);
-
-        $leadId = $result->item()->id; // Identifier of the created lead
-        error_log('Lead created with ID ' . $leadId);
-        echo json_encode(['message' => 'Lead created', 'id' => $leadId]);
-    } catch (\Throwable $e) {
-        // We write the error details to the log and do not show them to the visitor
-        error_log($e->getMessage());
-        http_response_code(502);
-        echo json_encode(['message' => 'Could not create the lead, try again later']);
-    }
-    ```
-
 - Python
 
     ```python
@@ -621,6 +597,30 @@ We pass the prepared values in the `fields` of the [crm.item.add](../../../api-r
         # We write the error details to the log and do not show them to the visitor
         app.logger.error(error)
         return jsonify({"message": "Could not create the lead, try again later"}), 502
+    ```
+
+- PHP
+
+    ```php
+    // Sending the data to Bitrix24
+    try {
+        $result = $sb->getCRMScope()->item()->add(1, [ // 1 — the "Lead" CRM object type
+            'title' => $sTitle, // Lead title
+            'name' => $sName, // First name
+            'lastName' => $sLastName, // Last name
+            'companyTitle' => $sCompanyTitle, // Company name
+            'fm' => $arFm, // Phone and email
+        ]);
+
+        $leadId = $result->item()->id; // Identifier of the created lead
+        error_log('Lead created with ID ' . $leadId);
+        echo json_encode(['message' => 'Lead created', 'id' => $leadId]);
+    } catch (\Throwable $e) {
+        // We write the error details to the log and do not show them to the visitor
+        error_log($e->getMessage());
+        http_response_code(502);
+        echo json_encode(['message' => 'Could not create the lead, try again later']);
+    }
     ```
 
 - Go
@@ -792,6 +792,91 @@ The handler returns `{ "message": "Lead created", "id": 3465 }` to the page. The
     app.listen(3000)
     ```
 
+- Python
+
+    ```python
+    # pip install flask b24pysdk
+    import os
+    import re
+
+    from flask import Flask, request, jsonify
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    # We place the form.html page in the static folder
+    app = Flask(__name__)
+
+    client = Client(BitrixWebhook(
+        domain=os.environ["B24_DOMAIN"],  # your-domain.bitrix24.com
+        webhook_token=os.environ["B24_WEBHOOK_TOKEN"],  # user_id/token only, without https://
+    ))
+
+    # Pattern for validating the email address
+    EMAIL_PATTERN = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s]+")
+    # Value length limit: the form is public
+    MAX_LENGTH = 100
+
+
+    @app.route("/form", methods=["POST"])
+    def handle_form():
+        # Getting the data from the form
+        s_name = request.form.get("NAME", "").strip()
+        s_last_name = request.form.get("LAST_NAME", "").strip()
+        s_company_title = request.form.get("COMPANY_TITLE", "").strip()
+        s_phone = request.form.get("PHONE", "").strip()
+        s_email = request.form.get("EMAIL", "").strip()
+
+        # Validating the data before calling the method
+        if not s_name:
+            return jsonify({"message": "Enter the first name"}), 400
+
+        if s_email and not EMAIL_PATTERN.fullmatch(s_email):
+            return jsonify({"message": "Check the email address"}), 400
+
+        if any(len(value) > MAX_LENGTH for value in (s_name, s_last_name, s_company_title, s_phone, s_email)):
+            return jsonify({"message": "One of the fields is too long"}), 400
+
+        # Collecting the phone and email into multifields
+        ar_fm = []
+
+        if s_phone:
+            ar_fm.append({"typeId": "PHONE", "valueType": "WORK", "value": s_phone})
+
+        if s_email:
+            ar_fm.append({"typeId": "EMAIL", "valueType": "HOME", "value": s_email})
+
+        # Creating the lead title from the first and last name
+        s_title = "From the website: " + f"{s_name} {s_last_name}".strip()
+        # If there is a company name — add it via a dash after the first and last name
+        if s_company_title:
+            s_title += " — " + s_company_title
+
+        # Sending the data to Bitrix24
+        try:
+            bitrix_response = client.crm.item.add(
+                entity_type_id=1,  # CRM object type — lead
+                fields={
+                    "title": s_title,  # Lead title
+                    "name": s_name,  # First name
+                    "lastName": s_last_name,  # Last name
+                    "companyTitle": s_company_title,  # Company name
+                    "fm": ar_fm,  # Phone and email
+                },
+            ).response
+            lead_id = bitrix_response.result["item"]["id"]  # Identifier of the created lead
+            app.logger.info("Lead created with ID %s", lead_id)
+            return jsonify({"message": "Lead created", "id": lead_id})
+        except (BitrixAPIError, BitrixSDKException) as error:
+            # We write the error details to the log and do not show them to the visitor
+            app.logger.error(error)
+            return jsonify({"message": "Could not create the lead, try again later"}), 502
+
+
+    # Run: python handler.py
+    if __name__ == "__main__":
+        app.run(port=3000)
+    ```
+
 - PHP
 
     ```php
@@ -882,91 +967,6 @@ The handler returns `{ "message": "Lead created", "id": 3465 }` to the page. The
         http_response_code(502);
         echo json_encode(['message' => 'Could not create the lead, try again later']);
     }
-    ```
-
-- Python
-
-    ```python
-    # pip install flask b24pysdk
-    import os
-    import re
-
-    from flask import Flask, request, jsonify
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    # We place the form.html page in the static folder
-    app = Flask(__name__)
-
-    client = Client(BitrixWebhook(
-        domain=os.environ["B24_DOMAIN"],  # your-domain.bitrix24.com
-        webhook_token=os.environ["B24_WEBHOOK_TOKEN"],  # user_id/token only, without https://
-    ))
-
-    # Pattern for validating the email address
-    EMAIL_PATTERN = re.compile(r"[^@\s]+@[^@\s]+\.[^@\s]+")
-    # Value length limit: the form is public
-    MAX_LENGTH = 100
-
-
-    @app.route("/form", methods=["POST"])
-    def handle_form():
-        # Getting the data from the form
-        s_name = request.form.get("NAME", "").strip()
-        s_last_name = request.form.get("LAST_NAME", "").strip()
-        s_company_title = request.form.get("COMPANY_TITLE", "").strip()
-        s_phone = request.form.get("PHONE", "").strip()
-        s_email = request.form.get("EMAIL", "").strip()
-
-        # Validating the data before calling the method
-        if not s_name:
-            return jsonify({"message": "Enter the first name"}), 400
-
-        if s_email and not EMAIL_PATTERN.fullmatch(s_email):
-            return jsonify({"message": "Check the email address"}), 400
-
-        if any(len(value) > MAX_LENGTH for value in (s_name, s_last_name, s_company_title, s_phone, s_email)):
-            return jsonify({"message": "One of the fields is too long"}), 400
-
-        # Collecting the phone and email into multifields
-        ar_fm = []
-
-        if s_phone:
-            ar_fm.append({"typeId": "PHONE", "valueType": "WORK", "value": s_phone})
-
-        if s_email:
-            ar_fm.append({"typeId": "EMAIL", "valueType": "HOME", "value": s_email})
-
-        # Creating the lead title from the first and last name
-        s_title = "From the website: " + f"{s_name} {s_last_name}".strip()
-        # If there is a company name — add it via a dash after the first and last name
-        if s_company_title:
-            s_title += " — " + s_company_title
-
-        # Sending the data to Bitrix24
-        try:
-            bitrix_response = client.crm.item.add(
-                entity_type_id=1,  # CRM object type — lead
-                fields={
-                    "title": s_title,  # Lead title
-                    "name": s_name,  # First name
-                    "lastName": s_last_name,  # Last name
-                    "companyTitle": s_company_title,  # Company name
-                    "fm": ar_fm,  # Phone and email
-                },
-            ).response
-            lead_id = bitrix_response.result["item"]["id"]  # Identifier of the created lead
-            app.logger.info("Lead created with ID %s", lead_id)
-            return jsonify({"message": "Lead created", "id": lead_id})
-        except (BitrixAPIError, BitrixSDKException) as error:
-            # We write the error details to the log and do not show them to the visitor
-            app.logger.error(error)
-            return jsonify({"message": "Could not create the lead, try again later"}), 502
-
-
-    # Run: python handler.py
-    if __name__ == "__main__":
-        app.run(port=3000)
     ```
 
 - Go
@@ -1232,24 +1232,6 @@ Run the verification with a separate script: it does not depend on the handler a
     console.info(response.getData().result.item)
     ```
 
-- PHP
-
-    ```php
-    <?php
-    // Save to the check.php file in the project root next to the vendor directory
-    // Run: B24_HOOK='https://your-domain.bitrix24.com/rest/1/TOKEN/' php check.php
-    require_once __DIR__ . '/vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-
-    $sb = ServiceBuilderFactory::createServiceBuilderFromWebhook(getenv('B24_HOOK'));
-    $leadId = 3465; // Identifier from the handler response
-
-    $result = $sb->getCRMScope()->item()->get(1, $leadId);
-
-    print_r($result->item());
-    ```
-
 - Python
 
     ```python
@@ -1268,6 +1250,24 @@ Run the verification with a separate script: it does not depend on the handler a
     bitrix_response = client.crm.item.get(entity_type_id=1, bitrix_id=lead_id).response
 
     print(bitrix_response.result["item"])
+    ```
+
+- PHP
+
+    ```php
+    <?php
+    // Save to the check.php file in the project root next to the vendor directory
+    // Run: B24_HOOK='https://your-domain.bitrix24.com/rest/1/TOKEN/' php check.php
+    require_once __DIR__ . '/vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+
+    $sb = ServiceBuilderFactory::createServiceBuilderFromWebhook(getenv('B24_HOOK'));
+    $leadId = 3465; // Identifier from the handler response
+
+    $result = $sb->getCRMScope()->item()->get(1, $leadId);
+
+    print_r($result->item());
     ```
 
 - Go

@@ -209,6 +209,45 @@ Default is N ||
     </script>
     ```
 
+- Python
+
+    Example
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.item.productrow.add(
+            fields={
+                "ownerId": 13142,
+                "ownerType": "D",
+                "productId": 9621,
+                "price": 80000,
+                "quantity": 2,
+                "discountTypeId": 2,
+                "discountRate": 20,
+                "taxRate": 20,
+                "taxIncluded": "Y",
+                "measureCode": 796,
+                "sort": 10,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -244,47 +283,6 @@ Default is N ||
         error_log($e->getMessage());
         echo 'Error adding product row: ' . $e->getMessage();
     }
-    ```
-
-- Python
-
-    Example
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.item.productrow.add(
-            fields={
-                "ownerId": 13142,
-                "ownerType": "D",
-                "productId": 9621,
-                "price": 80000,
-                "quantity": 2,
-                "discountTypeId": 2,
-                "discountRate": 20,
-                "taxRate": 20,
-                "taxIncluded": "Y",
-                "measureCode": 796,
-                "sort": 10,
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js

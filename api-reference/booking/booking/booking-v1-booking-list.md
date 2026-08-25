@@ -229,6 +229,46 @@ If the object is provided, all parameters within it are required ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+    try:
+        bitrix_response = client.booking.v1.booking.list(filter={
+            "resourceId": 1,
+            "within": {
+                "dateFrom": 0,
+                "dateTo": 1739262600,
+            },
+            "client": {
+                "entities": [
+                    {
+                        "code": "CONTACT",
+                        "module": "crm",
+                        "id": "1",
+                    },
+                    {
+                        "code": "COMPANY",
+                        "module": "crm",
+                        "id": "1",
+                    },
+                ],
+            },
+        }, order={
+            "id": "desc",
+            "dateFrom": "DESC",
+            "dateTo": "ASC",
+        }).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

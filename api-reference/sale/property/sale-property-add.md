@@ -474,6 +474,57 @@ If not provided, the default value is `N` ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "personTypeId": 3,
+        "propsGroupId": 6,
+        "name": "Phone (to contact the courier)",
+        "type": "STRING",
+        "code": "PHONE",
+        "active": "Y",
+        "util": "N",
+        "userProps": "Y",
+        "isFiltered": "N",
+        "sort": 500,
+        "description": "property description",
+        "required": "Y",
+        "multiple": "N",
+        "settings": {
+            "multiline": "Y",
+            "maxlength": 100,
+        },
+        "xmlId": "",
+        "defaultValue": "",
+        "isProfileName": "Y",
+        "isPayer": "Y",
+        "isEmail": "N",
+        "isPhone": "N",
+        "isZip": "N",
+        "isAddress": "N",
+    }
+
+    try:
+        bitrix_response = client.sale.property.add(
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
 

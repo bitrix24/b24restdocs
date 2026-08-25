@@ -49,6 +49,22 @@ The `IMAGE` block displays one or more images within an attachment.
     }
     ```
 
+- Python
+
+    ```python
+    attach = {
+        "IMAGE": [
+            {
+                "NAME": "This is Mantis",
+                "LINK": "https://files.shelenkov.com/bitrix/images/mantis.jpg",
+                "PREVIEW": "https://files.shelenkov.com/bitrix/images/mantis.jpg",
+                "WIDTH": 1000,
+                "HEIGHT": 638,
+            },
+        ],
+    }
+    ```
+
 - PHP
 
     ```php

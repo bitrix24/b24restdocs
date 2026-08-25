@@ -91,26 +91,6 @@ A provider is registered using the [messageservice.sender.add](../../api-referen
     );
     ```
 
-- PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'messageservice.sender.add',
-        [
-            'CODE' => 'provider1',
-            'TYPE' => 'SMS',
-            'HANDLER' => 'https://provider.example/api/handler',
-            'NAME' => 'SMS provider',
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
 - Python
 
     ```python
@@ -135,6 +115,26 @@ A provider is registered using the [messageservice.sender.add](../../api-referen
     print(result["result"])
     ```
 
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'messageservice.sender.add',
+        [
+            'CODE' => 'provider1',
+            'TYPE' => 'SMS',
+            'HANDLER' => 'https://provider.example/api/handler',
+            'NAME' => 'SMS provider',
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
 {% endlist %}
 
 If the provider is successfully registered, the method returns `true`.
@@ -242,25 +242,6 @@ If an external service returns a delivery result, the application can display it
     );
     ```
 
-- PHP
-
-    ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'messageservice.message.status.update',
-        [
-            'CODE' => 'provider1',
-            'MESSAGE_ID' => '65575980fa531ac284c2ee68f81ebebd',
-            'STATUS' => 'delivered',
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
 - Python
 
     ```python
@@ -284,6 +265,25 @@ If an external service returns a delivery result, the application can display it
     print(result["result"])
     ```
 
+
+- PHP
+
+    ```php
+    require_once('crest.php');
+
+    $result = CRest::call(
+        'messageservice.message.status.update',
+        [
+            'CODE' => 'provider1',
+            'MESSAGE_ID' => '65575980fa531ac284c2ee68f81ebebd',
+            'STATUS' => 'delivered',
+        ]
+    );
+
+    echo '<PRE>';
+    print_r($result);
+    echo '</PRE>';
+    ```
 {% endlist %}
 
 If the status is successfully updated, the method returns `true`.

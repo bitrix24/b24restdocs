@@ -98,6 +98,37 @@ Pass the product identifier in `productId` and set the price manually. The name,
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    try:
+        result = client.sale.basketitem.add(
+            fields={
+                "orderId": 891,
+                "productId": 7075,
+                "quantity": 4,
+                "currency": "EUR",
+                "customPrice": "Y",  # we set the price ourselves, the catalog price is not applied
+                "basePrice": 1030,  # product price in the catalog
+                "price": 1100,  # selling price
+                "discountPrice": -70,  # markup, therefore the value is negative
+            },
+        ).response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(error)
+    ```
+
 - PHP
 
     ```php
@@ -130,37 +161,6 @@ Pass the product identifier in `productId` and set the price manually. The name,
     echo '<PRE>';
     print_r($result->getId());
     echo '</PRE>';
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    try:
-        result = client.sale.basketitem.add(
-            fields={
-                "orderId": 891,
-                "productId": 7075,
-                "quantity": 4,
-                "currency": "EUR",
-                "customPrice": "Y",  # we set the price ourselves, the catalog price is not applied
-                "basePrice": 1030,  # product price in the catalog
-                "price": 1100,  # selling price
-                "discountPrice": -70,  # markup, therefore the value is negative
-            },
-        ).response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(error)
     ```
 
 - Go
@@ -482,6 +482,49 @@ For a one-time service or contract work there is no product in the catalog, so p
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    try:
+        result = client.sale.basketitem.add(
+            fields={
+                "orderId": 891,
+                "productId": 0,  # the line item is not in the catalog
+                "name": "Equipment setup",
+                "quantity": 2,
+                "currency": "EUR",
+                "customPrice": "Y",
+                "basePrice": 1000,  # price without a discount
+                "price": 900,  # selling price
+                "discountPrice": 100,  # discount, therefore the value is positive
+                "canBuy": "Y",
+                "weight": 40,
+                "measureCode": "796",
+                "measureName": "pcs",
+                "sort": 400,
+                "xmlId": "service-setup-1",
+                "dimensions": 'a:3:{s:5:"WIDTH";i:244;s:6:"HEIGHT";i:100;s:6:"LENGTH";i:31;}',  # serialized array
+                "vatRate": 0.1,  # rate of 10 %
+                "vatIncluded": "Y",
+                "productXmlId": "service-setup",
+            },
+        ).response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(error)
+    ```
+
+
 - PHP
 
     ```php
@@ -526,49 +569,6 @@ For a one-time service or contract work there is no product in the catalog, so p
     print_r($result->getId());
     echo '</PRE>';
     ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    try:
-        result = client.sale.basketitem.add(
-            fields={
-                "orderId": 891,
-                "productId": 0,  # the line item is not in the catalog
-                "name": "Equipment setup",
-                "quantity": 2,
-                "currency": "EUR",
-                "customPrice": "Y",
-                "basePrice": 1000,  # price without a discount
-                "price": 900,  # selling price
-                "discountPrice": 100,  # discount, therefore the value is positive
-                "canBuy": "Y",
-                "weight": 40,
-                "measureCode": "796",
-                "measureName": "pcs",
-                "sort": 400,
-                "xmlId": "service-setup-1",
-                "dimensions": 'a:3:{s:5:"WIDTH";i:244;s:6:"HEIGHT";i:100;s:6:"LENGTH";i:31;}',  # serialized array
-                "vatRate": 0.1,  # rate of 10 %
-                "vatIncluded": "Y",
-                "productXmlId": "service-setup",
-            },
-        ).response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(error)
-    ```
-
 {% endlist %}
 
 Response:
@@ -644,19 +644,6 @@ The line items of an order are returned by the method [sale.basketitem.list](../
     }
     ```
 
-- PHP
-
-    ```php
-    $result = $sb->getSaleScope()->basketItem()->list(
-        ['id', 'productId', 'name', 'quantity', 'basePrice', 'price', 'discountPrice', 'customPrice'],
-        ['=orderId' => 891]
-    );
-
-    echo '<PRE>';
-    print_r($result->getBasketItems());
-    echo '</PRE>';
-    ```
-
 - Python
 
     ```python
@@ -670,6 +657,19 @@ The line items of an order are returned by the method [sale.basketitem.list](../
         print(error)
     ```
 
+
+- PHP
+
+    ```php
+    $result = $sb->getSaleScope()->basketItem()->list(
+        ['id', 'productId', 'name', 'quantity', 'basePrice', 'price', 'discountPrice', 'customPrice'],
+        ['=orderId' => 891]
+    );
+
+    echo '<PRE>';
+    print_r($result->getBasketItems());
+    echo '</PRE>';
+    ```
 {% endlist %}
 
 Response:

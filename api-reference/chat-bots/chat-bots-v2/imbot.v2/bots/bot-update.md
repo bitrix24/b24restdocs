@@ -150,6 +150,36 @@ When calling `Bot.update`, the bot's subscriptions to events `ONIMBOTV2*` are au
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.imbot.v2.bot.update(
+            bot_id=456,
+            fields={
+                "properties": {
+                    "name": "Updated Bot",
+                },
+                "isHidden": True,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

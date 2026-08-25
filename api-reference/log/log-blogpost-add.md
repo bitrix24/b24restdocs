@@ -249,6 +249,46 @@ When creating a new survey, use a random identifier with the prefix `n` ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.log.blogpost.add(
+            post_title="New regulation",
+            post_message="As of November 1, the approval process is being updated.",
+            dest=[
+                "UA",
+            ],
+            tags="regulation,approval,update",
+            important="Y",
+            files=[
+                [
+                    "first-image.jpg",
+                    "iVBORw0KGgoAAAANSUhEUgAAAAUA...",
+                ],
+                [
+                    "second-image.jpg",
+                    "iVBORw0KGgoAAAANSUhEUgAAAAUA...",
+                ],
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

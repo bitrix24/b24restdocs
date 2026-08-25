@@ -148,28 +148,6 @@ Check which mandatory fields are configured for contacts and deals in your Bitri
     const contactId = contactResponse.getData().result.item.id
     ```
 
-- PHP
-
-    ```php
-    <?php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-
-    $webhookUrl = 'https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/';
-    $b24 = ServiceBuilderFactory::createServiceBuilderFromWebhook($webhookUrl);
-
-    // $name, $lastName, $phone are received from form data
-    $contactId = $b24->getCRMScope()->item()->add(3, [
-        'name' => $name,
-        'lastName' => $lastName,
-        'fm' => [
-            ['typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => $phone],
-        ],
-    ])->item()->id;
-    ```
-
 - Python
 
     ```python
@@ -195,6 +173,28 @@ Check which mandatory fields are configured for contacts and deals in your Bitri
     contact_id = bitrix_response.result["item"]["id"]
     ```
 
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+
+    $webhookUrl = 'https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/';
+    $b24 = ServiceBuilderFactory::createServiceBuilderFromWebhook($webhookUrl);
+
+    // $name, $lastName, $phone are received from form data
+    $contactId = $b24->getCRMScope()->item()->add(3, [
+        'name' => $name,
+        'lastName' => $lastName,
+        'fm' => [
+            ['typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => $phone],
+        ],
+    ])->item()->id;
+    ```
 {% endlist %}
 
 Shortened response:
@@ -241,15 +241,6 @@ Pass an array of linked contact identifiers in the `contactIds` field. In this s
     const dealId = dealResponse.getData().result.item.id
     ```
 
-- PHP
-
-    ```php
-    $dealId = $b24->getCRMScope()->item()->add(2, [
-        'title' => 'Inquiry from website: ' . $name . ' ' . $lastName,
-        'contactIds' => [$contactId],
-    ])->item()->id;
-    ```
-
 - Python
 
     ```python
@@ -263,6 +254,15 @@ Pass an array of linked contact identifiers in the `contactIds` field. In this s
     deal_id = bitrix_response.result["item"]["id"]
     ```
 
+
+- PHP
+
+    ```php
+    $dealId = $b24->getCRMScope()->item()->add(2, [
+        'title' => 'Inquiry from website: ' . $name . ' ' . $lastName,
+        'contactIds' => [$contactId],
+    ])->item()->id;
+    ```
 {% endlist %}
 
 The response has the same structure as when creating a contact. Retain the deal's `result.item.id`. There are now two identifiers for the `ENTITIES` parameter: `contactId` and `dealId`.
@@ -302,19 +302,6 @@ In [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-tra
     const traceId = traceResponse.getData().result
     ```
 
-- PHP
-
-    ```php
-    // crm.tracking.* is not among the typed services — calling via core
-    $b24->core->call('crm.tracking.trace.add', [
-        'TRACE' => $trace,
-        'ENTITIES' => [
-            ['TYPE' => 'CONTACT', 'ID' => $contactId],
-            ['TYPE' => 'DEAL', 'ID' => $dealId],
-        ],
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -327,6 +314,19 @@ In [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-tra
     ).response.result
     ```
 
+
+- PHP
+
+    ```php
+    // crm.tracking.* is not among the typed services — calling via core
+    $b24->core->call('crm.tracking.trace.add', [
+        'TRACE' => $trace,
+        'ENTITIES' => [
+            ['TYPE' => 'CONTACT', 'ID' => $contactId],
+            ['TYPE' => 'DEAL', 'ID' => $dealId],
+        ],
+    ]);
+    ```
 {% endlist %}
 
 The method will return the numeric identifier of the created trace. The JS and Python examples retain it in a variable. In PHP, a successful call execution is sufficient: the SDK core will throw an exception if the REST API returns an error.
@@ -510,127 +510,6 @@ Below is the complete scenario code for each SDK.
     app.listen(3000, () => console.log('http://localhost:3000'))
     ```
 
-- PHP
-
-    ```php
-    <?php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-
-    $message = '';
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $name = trim((string)($_POST['NAME'] ?? ''));
-        $lastName = trim((string)($_POST['LAST_NAME'] ?? ''));
-        $phone = trim((string)($_POST['PHONE'] ?? ''));
-        $trace = trim((string)($_POST['TRACE'] ?? ''));
-
-        if ($name === '' || $lastName === '' || $phone === '') {
-            $message = 'Please fill in your first name, last name, and phone number';
-        } elseif ($trace === '') {
-            $message = 'Failed to retrieve end-to-end analytics trace';
-        } else {
-            json_decode($trace, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                $message = 'End-to-end analytics trace contains invalid JSON';
-            } else {
-                $webhookUrl = 'https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/';
-                $b24 = ServiceBuilderFactory::createServiceBuilderFromWebhook($webhookUrl);
-
-                $contactId = 0;
-                $dealId = 0;
-
-                try {
-                    $contactId = $b24->getCRMScope()->item()->add(3, [
-                        'name' => $name,
-                        'lastName' => $lastName,
-                        'fm' => [
-                            ['typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => $phone],
-                        ],
-                    ])->item()->id;
-
-                    $dealId = $b24->getCRMScope()->item()->add(2, [
-                        'title' => 'Inquiry from website: ' . $name . ' ' . $lastName,
-                        'contactIds' => [$contactId],
-                    ])->item()->id;
-
-                    // crm.tracking.* is not among the typed services — calling via core
-                    $b24->core->call('crm.tracking.trace.add', [
-                        'TRACE' => $trace,
-                        'ENTITIES' => [
-                            ['TYPE' => 'CONTACT', 'ID' => $contactId],
-                            ['TYPE' => 'DEAL', 'ID' => $dealId],
-                        ],
-                    ]);
-
-                    $message = 'Contact ' . $contactId . ' and deal ' . $dealId
-                        . ' created and linked to end-to-end analytics';
-                } catch (\Throwable $error) {
-                    if ($dealId > 0) {
-                        $message = 'Contact ' . $contactId . ' and deal ' . $dealId
-                            . ' created, but trace is not linked: ' . $error->getMessage();
-                    } elseif ($contactId > 0) {
-                        $message = 'Contact ' . $contactId
-                            . ' created, but deal was not created: ' . $error->getMessage();
-                    } else {
-                        $message = 'Contact not created: ' . $error->getMessage();
-                    }
-                }
-            }
-        }
-    }
-    ?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Feedback</title>
-    </head>
-    <body>
-        <h1>Feedback</h1>
-
-        <p id="message" aria-live="polite">
-            <?= htmlspecialchars($message, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
-        </p>
-
-        <form id="feedback-form" method="post">
-            <input type="hidden" id="form-trace" name="TRACE">
-            <label>First Name <input type="text" name="NAME" required></label>
-            <label>Last Name <input type="text" name="LAST_NAME" required></label>
-            <label>Phone <input type="tel" name="PHONE" required></label>
-            <button type="submit">Send</button>
-        </form>
-
-        <!-- The Bitrix24 end-to-end analytics script must be installed on the page -->
-        <script>
-            const form = document.getElementById('feedback-form');
-            const traceInput = document.getElementById('form-trace');
-            const message = document.getElementById('message');
-
-            form.addEventListener('submit', function(event) {
-                const tracker = window.b24Tracker && window.b24Tracker.guest;
-                if (!tracker || typeof tracker.getTrace !== 'function') {
-                    event.preventDefault();
-                    message.textContent = 'Failed to retrieve end-to-end analytics data';
-                    return;
-                }
-
-                const trace = tracker.getTrace();
-                if (!trace) {
-                    event.preventDefault();
-                    message.textContent = 'End-to-end analytics trace is empty';
-                    return;
-                }
-
-                traceInput.value = trace;
-            });
-        </script>
-    </body>
-    </html>
-    ```
-
 - Python
 
     ```python
@@ -769,6 +648,127 @@ Below is the complete scenario code for each SDK.
         app.run(host="0.0.0.0", port=3000)
     ```
 
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+
+    $message = '';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name = trim((string)($_POST['NAME'] ?? ''));
+        $lastName = trim((string)($_POST['LAST_NAME'] ?? ''));
+        $phone = trim((string)($_POST['PHONE'] ?? ''));
+        $trace = trim((string)($_POST['TRACE'] ?? ''));
+
+        if ($name === '' || $lastName === '' || $phone === '') {
+            $message = 'Please fill in your first name, last name, and phone number';
+        } elseif ($trace === '') {
+            $message = 'Failed to retrieve end-to-end analytics trace';
+        } else {
+            json_decode($trace, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $message = 'End-to-end analytics trace contains invalid JSON';
+            } else {
+                $webhookUrl = 'https://your-domain.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/';
+                $b24 = ServiceBuilderFactory::createServiceBuilderFromWebhook($webhookUrl);
+
+                $contactId = 0;
+                $dealId = 0;
+
+                try {
+                    $contactId = $b24->getCRMScope()->item()->add(3, [
+                        'name' => $name,
+                        'lastName' => $lastName,
+                        'fm' => [
+                            ['typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => $phone],
+                        ],
+                    ])->item()->id;
+
+                    $dealId = $b24->getCRMScope()->item()->add(2, [
+                        'title' => 'Inquiry from website: ' . $name . ' ' . $lastName,
+                        'contactIds' => [$contactId],
+                    ])->item()->id;
+
+                    // crm.tracking.* is not among the typed services — calling via core
+                    $b24->core->call('crm.tracking.trace.add', [
+                        'TRACE' => $trace,
+                        'ENTITIES' => [
+                            ['TYPE' => 'CONTACT', 'ID' => $contactId],
+                            ['TYPE' => 'DEAL', 'ID' => $dealId],
+                        ],
+                    ]);
+
+                    $message = 'Contact ' . $contactId . ' and deal ' . $dealId
+                        . ' created and linked to end-to-end analytics';
+                } catch (\Throwable $error) {
+                    if ($dealId > 0) {
+                        $message = 'Contact ' . $contactId . ' and deal ' . $dealId
+                            . ' created, but trace is not linked: ' . $error->getMessage();
+                    } elseif ($contactId > 0) {
+                        $message = 'Contact ' . $contactId
+                            . ' created, but deal was not created: ' . $error->getMessage();
+                    } else {
+                        $message = 'Contact not created: ' . $error->getMessage();
+                    }
+                }
+            }
+        }
+    }
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Feedback</title>
+    </head>
+    <body>
+        <h1>Feedback</h1>
+
+        <p id="message" aria-live="polite">
+            <?= htmlspecialchars($message, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>
+        </p>
+
+        <form id="feedback-form" method="post">
+            <input type="hidden" id="form-trace" name="TRACE">
+            <label>First Name <input type="text" name="NAME" required></label>
+            <label>Last Name <input type="text" name="LAST_NAME" required></label>
+            <label>Phone <input type="tel" name="PHONE" required></label>
+            <button type="submit">Send</button>
+        </form>
+
+        <!-- The Bitrix24 end-to-end analytics script must be installed on the page -->
+        <script>
+            const form = document.getElementById('feedback-form');
+            const traceInput = document.getElementById('form-trace');
+            const message = document.getElementById('message');
+
+            form.addEventListener('submit', function(event) {
+                const tracker = window.b24Tracker && window.b24Tracker.guest;
+                if (!tracker || typeof tracker.getTrace !== 'function') {
+                    event.preventDefault();
+                    message.textContent = 'Failed to retrieve end-to-end analytics data';
+                    return;
+                }
+
+                const trace = tracker.getTrace();
+                if (!trace) {
+                    event.preventDefault();
+                    message.textContent = 'End-to-end analytics trace is empty';
+                    return;
+                }
+
+                traceInput.value = trace;
+            });
+        </script>
+    </body>
+    </html>
+    ```
 {% endlist %}
 
 ## Verify the Result

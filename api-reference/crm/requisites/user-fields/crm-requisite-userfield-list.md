@@ -256,45 +256,13 @@ The purpose of the field may change by the final developer ||
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'crm.requisite.userfield.list',
-                [
-                    'order' => ['SORT' => 'ASC'],
-                    'filter' => ['MANDATORY' => 'N', 'LANG' => 'de']
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-    
-        if ($result->more()) {
-            $result->next();
-        }
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error listing requisite user fields: ' . $e->getMessage();
-    }
-    ```
-
 - Python
 
     Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.requisite.userfield.list(
@@ -324,10 +292,8 @@ The purpose of the field may change by the final developer ||
     Example `as_list`
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.requisite.userfield.list(
@@ -358,10 +324,8 @@ The purpose of the field may change by the final developer ||
     Example `as_list_fast`
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.requisite.userfield.list(
@@ -387,6 +351,36 @@ The purpose of the field may change by the final developer ||
         print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.requisite.userfield.list',
+                [
+                    'order' => ['SORT' => 'ASC'],
+                    'filter' => ['MANDATORY' => 'N', 'LANG' => 'de']
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+        if ($result->more()) {
+            $result->next();
+        }
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing requisite user fields: ' . $e->getMessage();
+    }
     ```
 
 - BX24.js

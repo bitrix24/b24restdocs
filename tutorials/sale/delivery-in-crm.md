@@ -116,6 +116,59 @@ For more details on the request and response format, see the [Webhooks for Worki
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="user_id/webhook_key",
+    )
+    client = Client(token)
+
+    try:
+        response = client.sale.delivery.handler.add(
+            code="uber",
+            name="Uber",
+            settings={
+                "CALCULATE_URL": "https://gateway.bx/calculate.php",
+                "CREATE_DELIVERY_REQUEST_URL": "https://gateway.bx/create_delivery_request.php",
+                "CANCEL_DELIVERY_REQUEST_URL": "https://gateway.bx/cancel_delivery_request.php",
+                "HAS_CALLBACK_TRACKING_SUPPORT": "Y",
+                "CONFIG": [
+                    {
+                        "TYPE": "STRING",
+                        "CODE": "MY_FIRST_SETTING",
+                        "NAME": "My first setting",
+                    },
+                    {
+                        "TYPE": "STRING",
+                        "CODE": "MY_SECOND_SETTING",
+                        "NAME": "My second setting",
+                    },
+                ],
+            },
+            profiles=[
+                {
+                    "NAME": "Taxi",
+                    "CODE": "TAXI",
+                    "DESCRIPTION": "Taxi Delivery",
+                },
+                {
+                    "NAME": "Cargo",
+                    "CODE": "CARGO",
+                    "DESCRIPTION": "Cargo Delivery",
+                },
+            ],
+        ).response
+        print(response.result)
+    except BitrixAPIError as error:
+        print(error)
+    ```
+
+
 - PHP
 
     ```php
@@ -173,59 +226,6 @@ For more details on the request and response format, see the [Webhooks for Worki
     print_r($result->getId());
     echo '</PRE>';
     ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    token = BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="user_id/webhook_key",
-    )
-    client = Client(token)
-
-    try:
-        response = client.sale.delivery.handler.add(
-            code="uber",
-            name="Uber",
-            settings={
-                "CALCULATE_URL": "https://gateway.bx/calculate.php",
-                "CREATE_DELIVERY_REQUEST_URL": "https://gateway.bx/create_delivery_request.php",
-                "CANCEL_DELIVERY_REQUEST_URL": "https://gateway.bx/cancel_delivery_request.php",
-                "HAS_CALLBACK_TRACKING_SUPPORT": "Y",
-                "CONFIG": [
-                    {
-                        "TYPE": "STRING",
-                        "CODE": "MY_FIRST_SETTING",
-                        "NAME": "My first setting",
-                    },
-                    {
-                        "TYPE": "STRING",
-                        "CODE": "MY_SECOND_SETTING",
-                        "NAME": "My second setting",
-                    },
-                ],
-            },
-            profiles=[
-                {
-                    "NAME": "Taxi",
-                    "CODE": "TAXI",
-                    "DESCRIPTION": "Taxi Delivery",
-                },
-                {
-                    "NAME": "Cargo",
-                    "CODE": "CARGO",
-                    "DESCRIPTION": "Cargo Delivery",
-                },
-            ],
-        ).response
-        print(response.result)
-    except BitrixAPIError as error:
-        print(error)
-    ```
-
 {% endlist %}
 
 If the handler is successfully added, the method returns its identifier.
@@ -283,31 +283,6 @@ Create a delivery service using the [sale.delivery.add](../../api-reference/sale
     }
     ```
 
-- PHP
-
-    ```php
-    $result = $sb->getSaleScope()->delivery()->add([
-        'REST_CODE' => 'uber',
-        'NAME' => 'Uber Taxi',
-        'CURRENCY' => 'EUR',
-        'ACTIVE' => 'Y',
-        'CONFIG' => [
-            [
-                'CODE' => 'MY_FIRST_SETTING',
-                'VALUE' => 'My first setting value',
-            ],
-            [
-                'CODE' => 'MY_SECOND_SETTING',
-                'VALUE' => 'My second setting value',
-            ],
-        ]
-    ]);
-
-    echo '<PRE>';
-    print_r($result->getParent()->ID);
-    echo '</PRE>';
-    ```
-
 - Python
 
     ```python
@@ -333,6 +308,31 @@ Create a delivery service using the [sale.delivery.add](../../api-reference/sale
         print(error)
     ```
 
+
+- PHP
+
+    ```php
+    $result = $sb->getSaleScope()->delivery()->add([
+        'REST_CODE' => 'uber',
+        'NAME' => 'Uber Taxi',
+        'CURRENCY' => 'EUR',
+        'ACTIVE' => 'Y',
+        'CONFIG' => [
+            [
+                'CODE' => 'MY_FIRST_SETTING',
+                'VALUE' => 'My first setting value',
+            ],
+            [
+                'CODE' => 'MY_SECOND_SETTING',
+                'VALUE' => 'My second setting value',
+            ],
+        ]
+    ]);
+
+    echo '<PRE>';
+    print_r($result->getParent()->ID);
+    echo '</PRE>';
+    ```
 {% endlist %}
 
 If the delivery service is successfully created, the method returns a parent service object and an array of profiles. Retain the profile identifiers from the `profiles` array: they are required to link shipment properties and extra services.
@@ -420,25 +420,6 @@ Pass the `fields` object to the method with the values for the `Address From` pr
     }
     ```
 
-- PHP
-
-    ```php
-    $result = $sb->getSaleScope()->shipmentProperty()->add([
-        'personTypeId' => 3,
-        'propsGroupId' => 6,
-        'name' => 'Address From',
-        'active' => 'Y',
-        'sort' => '100',
-        'type' => 'ADDRESS',
-        'required' => 'Y',
-        'isAddressFrom' => 'Y'
-    ]);
-
-    echo '<PRE>';
-    print_r($result->getId());
-    echo '</PRE>';
-    ```
-
 - Python
 
     ```python
@@ -460,6 +441,25 @@ Pass the `fields` object to the method with the values for the `Address From` pr
         print(error)
     ```
 
+
+- PHP
+
+    ```php
+    $result = $sb->getSaleScope()->shipmentProperty()->add([
+        'personTypeId' => 3,
+        'propsGroupId' => 6,
+        'name' => 'Address From',
+        'active' => 'Y',
+        'sort' => '100',
+        'type' => 'ADDRESS',
+        'required' => 'Y',
+        'isAddressFrom' => 'Y'
+    ]);
+
+    echo '<PRE>';
+    print_r($result->getId());
+    echo '</PRE>';
+    ```
 {% endlist %}
 
 If the property is successfully added, the method returns a `property` object with the property identifier. Retain the `property.id` value: it is required to link the property to delivery profiles.
@@ -511,25 +511,6 @@ In the `fields` object for the `Address To` property, we pass the name `Address 
     }
     ```
 
-- PHP
-
-    ```php
-    $result = $sb->getSaleScope()->shipmentProperty()->add([
-        'personTypeId' => 3,
-        'propsGroupId' => 6,
-        'name' => 'Address To',
-        'active' => 'Y',
-        'sort' => '100',
-        'type' => 'ADDRESS',
-        'required' => 'Y',
-        'isAddressTo' => 'Y'
-    ]);
-
-    echo '<PRE>';
-    print_r($result->getId());
-    echo '</PRE>';
-    ```
-
 - Python
 
     ```python
@@ -551,6 +532,25 @@ In the `fields` object for the `Address To` property, we pass the name `Address 
         print(error)
     ```
 
+
+- PHP
+
+    ```php
+    $result = $sb->getSaleScope()->shipmentProperty()->add([
+        'personTypeId' => 3,
+        'propsGroupId' => 6,
+        'name' => 'Address To',
+        'active' => 'Y',
+        'sort' => '100',
+        'type' => 'ADDRESS',
+        'required' => 'Y',
+        'isAddressTo' => 'Y'
+    ]);
+
+    echo '<PRE>';
+    print_r($result->getId());
+    echo '</PRE>';
+    ```
 {% endlist %}
 
 If the property is successfully added, the method returns a `property` object with the property identifier. Retain the `property.id` value: it is required to link the property to delivery profiles.
@@ -605,16 +605,6 @@ The values `227`, `228`, `102`, and `103` are examples. In a production scenario
     }
     ```
 
-- PHP
-
-    ```php
-    $result = $sb->getSaleScope()->propertyRelation()->add([
-        'entityId' => 227,
-        'entityType' => 'D',
-        'propertyId' => 102
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -631,6 +621,16 @@ The values `227`, `228`, `102`, and `103` are examples. In a production scenario
         print(error)
     ```
 
+
+- PHP
+
+    ```php
+    $result = $sb->getSaleScope()->propertyRelation()->add([
+        'entityId' => 227,
+        'entityType' => 'D',
+        'propertyId' => 102
+    ]);
+    ```
 {% endlist %}
 
 Call the [sale.propertyRelation.add](../../api-reference/sale/property-relation/sale-property-relation-add.md) method sequentially.
@@ -704,23 +704,6 @@ To add an extra service to a delivery service, call the [sale.delivery.extra.ser
     }
     ```
 
-- PHP
-
-    ```php
-    $result = $sb->getSaleScope()->deliveryExtraService()->add([
-        'DELIVERY_ID' => 227,
-        'ACTIVE' => 'Y',
-        'CODE' => 'door_delivery',
-        'NAME' => 'Door Delivery',
-        'TYPE' => 'checkbox',
-        'PRICE' => 1000,
-    ]);
-
-    echo '<PRE>';
-    print_r($result->getId());
-    echo '</PRE>';
-    ```
-
 - Python
 
     ```python
@@ -738,6 +721,23 @@ To add an extra service to a delivery service, call the [sale.delivery.extra.ser
         print(error)
     ```
 
+
+- PHP
+
+    ```php
+    $result = $sb->getSaleScope()->deliveryExtraService()->add([
+        'DELIVERY_ID' => 227,
+        'ACTIVE' => 'Y',
+        'CODE' => 'door_delivery',
+        'NAME' => 'Door Delivery',
+        'TYPE' => 'checkbox',
+        'PRICE' => 1000,
+    ]);
+
+    echo '<PRE>';
+    print_r($result->getId());
+    echo '</PRE>';
+    ```
 {% endlist %}
 
 If the service is added, the method returns the identifier in the `result` parameter.
@@ -809,34 +809,6 @@ Through REST, check the created objects using the [sale.delivery.getlist](../../
     console.log(extraServiceResponse.getData().result)
     ```
 
-- PHP
-
-    ```php
-    $deliveryResponse = $sb->core->call('sale.delivery.getlist', [
-        'SELECT' => ['ID', 'NAME', 'PARENT_ID', 'ACTIVE'],
-        'FILTER' => ['=NAME' => 'Uber Taxi'],
-    ]);
-
-    $propertyResponse = $sb->core->call('sale.shipmentproperty.list', [
-        'select' => ['id', 'name', 'isAddressFrom', 'isAddressTo'],
-        'filter' => ['=name' => ['Address From', 'Address To']],
-    ]);
-
-    $relationResponse = $sb->core->call('sale.propertyRelation.list', [
-        'select' => ['entityId', 'entityType', 'propertyId'],
-        'filter' => ['entityId' => 227, 'entityType' => 'D'],
-    ]);
-
-    $extraServiceResponse = $sb->core->call('sale.delivery.extra.service.get', [
-        'DELIVERY_ID' => 227,
-    ]);
-
-    print_r($deliveryResponse->getResponseData()->getResult());
-    print_r($propertyResponse->getResponseData()->getResult());
-    print_r($relationResponse->getResponseData()->getResult());
-    print_r($extraServiceResponse->getResponseData()->getResult());
-    ```
-
 - Python
 
     ```python
@@ -872,6 +844,34 @@ Through REST, check the created objects using the [sale.delivery.getlist](../../
     print(extra_services)
     ```
 
+
+- PHP
+
+    ```php
+    $deliveryResponse = $sb->core->call('sale.delivery.getlist', [
+        'SELECT' => ['ID', 'NAME', 'PARENT_ID', 'ACTIVE'],
+        'FILTER' => ['=NAME' => 'Uber Taxi'],
+    ]);
+
+    $propertyResponse = $sb->core->call('sale.shipmentproperty.list', [
+        'select' => ['id', 'name', 'isAddressFrom', 'isAddressTo'],
+        'filter' => ['=name' => ['Address From', 'Address To']],
+    ]);
+
+    $relationResponse = $sb->core->call('sale.propertyRelation.list', [
+        'select' => ['entityId', 'entityType', 'propertyId'],
+        'filter' => ['entityId' => 227, 'entityType' => 'D'],
+    ]);
+
+    $extraServiceResponse = $sb->core->call('sale.delivery.extra.service.get', [
+        'DELIVERY_ID' => 227,
+    ]);
+
+    print_r($deliveryResponse->getResponseData()->getResult());
+    print_r($propertyResponse->getResponseData()->getResult());
+    print_r($relationResponse->getResponseData()->getResult());
+    print_r($extraServiceResponse->getResponseData()->getResult());
+    ```
 {% endlist %}
 
 The scenario is successful if the method responses confirm these results:

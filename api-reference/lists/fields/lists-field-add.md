@@ -306,6 +306,60 @@ Default — `30` ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "NAME": "Project",
+        "IS_REQUIRED": "Y",
+        "MULTIPLE": "N",
+        "TYPE": "L",
+        "SORT": "10",
+        "CODE": "PROJECT",
+        "LIST": {
+            "10": {
+                "VALUE": "Planning",
+                "SORT": 10,
+                "DEF": "Y",
+            },
+            "20": {
+                "VALUE": "In development",
+                "SORT": 20,
+                "DEF": "N",
+            },
+        },
+        "LIST_TEXT_VALUES": "Testing\nCompleted\nPostponed",
+        "SETTINGS": {
+            "SHOW_ADD_FORM": "Y",
+            "SHOW_EDIT_FORM": "Y",
+            "ADD_READ_ONLY_FIELD": "N",
+            "EDIT_READ_ONLY_FIELD": "N",
+            "SHOW_FIELD_PREVIEW": "N",
+        },
+    }
+
+    try:
+        bitrix_response = client.lists.field.add(
+            iblock_type_id="lists",
+            iblock_id=123,
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

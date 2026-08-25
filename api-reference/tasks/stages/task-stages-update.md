@@ -163,6 +163,36 @@ When updating a group stage with insufficient permission levels, an access error
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "TITLE": "New stage",
+        "SORT": 200,
+        "COLOR": "FF5733",
+    }
+
+    try:
+        bitrix_response = client.task.stages.update(
+            bitrix_id=5,
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

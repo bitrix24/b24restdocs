@@ -43,6 +43,20 @@ The `FILE` block displays a file as an attachment element with its name and size
     }
     ```
 
+- Python
+
+    ```python
+    attach = {
+        "FILE": [
+            {
+                "NAME": "mantis.jpg",
+                "LINK": "https://files.shelenkov.com/bitrix/images/mantis.jpg",
+                "SIZE": 1500000,
+            },
+        ],
+    }
+    ```
+
 - PHP
 
     ```php

@@ -193,6 +193,46 @@ The method `sale.shipmentpropertyvalue.modify` updates the shipment property val
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "shipment": {
+            "id": 4120,
+            "propertyValues": [
+                {
+                    "shipmentPropsId": 105,
+                    "value": "Comments value",
+                },
+                {
+                    "shipmentPropsId": 106,
+                    "value": "Description value",
+                },
+            ],
+        },
+    }
+
+    try:
+        bitrix_response = client.sale.shipmentpropertyvalue.modify(
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

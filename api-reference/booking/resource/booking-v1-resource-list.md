@@ -215,6 +215,29 @@ Use either `searchQuery` for substring search or `name` for exact match search.
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+    try:
+        bitrix_response = client.booking.v1.resource.list(filter={
+            "typeId": 1,
+            "searchQuery": "auto",
+            "isMain": "Y",
+        }, order={
+            "id": "desc",
+            "name": "DESC",
+        }).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

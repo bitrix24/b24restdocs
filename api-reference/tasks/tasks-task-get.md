@@ -174,6 +174,40 @@ The `CHAT_ID` field, which is the chat ID for the [new task card](tasks-new.md),
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.tasks.task.get(
+            bitrix_id=8017,
+            select=[
+                "ID",
+                "TITLE",
+                "DESCRIPTION",
+                "CREATED_BY",
+                "RESPONSIBLE_ID",
+                "DEADLINE",
+                "UF_CRM_TASK",
+                "UF_TASK_WEBDAV_FILES",
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

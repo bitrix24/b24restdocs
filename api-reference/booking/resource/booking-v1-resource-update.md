@@ -243,6 +243,45 @@ The list of available types can be found using the method [booking.v1.resourceTy
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+    try:
+        bitrix_response = client.booking.v1.resource.update(bitrix_id=123, fields={
+            "name": "Updated name",
+            "description": "Updated description",
+            "typeId": 1,
+            "isMain": "N",
+            "isInfoNotificationOn": "Y",
+            "templateTypeInfo": "inanimate",
+            "isConfirmationNotificationOn": "Y",
+            "templateTypeConfirmation": "animate",
+            "isReminderNotificationOn": "Y",
+            "templateTypeReminder": "base",
+            "isFeedbackNotificationOn": "N",
+            "templateTypeFeedback": "animate",
+            "isDelayedNotificationOn": "N",
+            "templateTypeDelayed": "animate",
+            "infoDelay": 300,
+            "reminderDelay": -1,
+            "delayedDelay": 300,
+            "delayedCounterDelay": 7200,
+            "confirmationDelay": 86400,
+            "confirmationRepetitions": 0,
+            "confirmationRepetitionsInterval": 0,
+            "confirmationCounterDelay": 7200,
+        }).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

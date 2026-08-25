@@ -217,6 +217,51 @@ The option with `APP_ID` and `APP_PARAMS` parameters is used in chats of [Open C
   }
   ```
 
+- Python
+
+  ```python
+  from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+  try:
+      bitrix_response = client.imbot.v2.chat.message.send(
+          bot_id=456,
+          dialog_id="chat2725",
+          fields={
+              "message": "Select an action",
+              "keyboard": {
+                  "BOT_ID": 456,
+                  "BUTTONS": [
+                      {
+                          "TEXT": "Open the website",
+                          "LINK": "https://www.example.com/",
+                      },
+                      {
+                          "TYPE": "NEWLINE",
+                      },
+                      {
+                          "TEXT": "Insert the command",
+                          "ACTION": "PUT",
+                          "ACTION_VALUE": "/help",
+                      },
+                  ],
+              },
+          },
+      ).response
+      result = bitrix_response.result["id"]
+      print(result)
+  except BitrixAPIError as error:
+      print(
+          "Bitrix API error",
+          f"error: {error.error}",
+          f"error_description: {error.error_description}",
+          sep="\n",
+      )
+  except BitrixSDKException as error:
+      print(f"Bitrix SDK error: {error.message}")
+  except Exception as error:
+      print(f"Unexpected error: {error}")
+  ```
+
 - PHP
 
   ```php

@@ -333,6 +333,87 @@ The formula for calculating the `start` parameter value:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.sale.shipment.list(
+            select=[
+                "id",
+                "accountNumber",
+                "allowDelivery",
+                "basePriceDelivery",
+                "canceled",
+                "comments",
+                "companyId",
+                "currency",
+                "customPriceDelivery",
+                "dateAllowDelivery",
+                "dateCanceled",
+                "dateDeducted",
+                "dateInsert",
+                "dateMarked",
+                "dateResponsibleId",
+                "deducted",
+                "deliveryDocDate",
+                "deliveryDocNum",
+                "deliveryId",
+                "deliveryName",
+                "deliveryXmlId",
+                "discountPrice",
+                "empAllowDeliveryId",
+                "empCanceledId",
+                "empDeductedId",
+                "empMarkedId",
+                "empResponsibleId",
+                "externalDelivery",
+                "id1c",
+                "marked",
+                "orderId",
+                "priceDelivery",
+                "reasonMarked",
+                "reasonUndoDeducted",
+                "responsibleId",
+                "statusId",
+                "statusXmlId",
+                "system",
+                "trackingDescription",
+                "trackingLastCheck",
+                "trackingNumber",
+                "trackingStatus",
+                "updated1c",
+                "version1c",
+                "xmlId",
+            ],
+            filter={
+                "@orderId": [
+                    2069,
+                    2070,
+                ],
+                ">=id": 2464,
+            },
+            order={
+                "id": "desc",
+            },
+            start='1712847615.641893',
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

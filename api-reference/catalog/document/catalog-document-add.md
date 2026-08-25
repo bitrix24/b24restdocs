@@ -202,6 +202,37 @@ To fill in product data, use the method [catalog.document.element.add](./documen
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.catalog.document.add(
+            fields={
+                "docType": "A",
+                "currency": "RUB",
+                "responsibleId": 29,
+                "docNumber": "IN-00042",
+                "title": "Receipt from Vendor-1",
+                "commentary": "Scheduled warehouse replenishment",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

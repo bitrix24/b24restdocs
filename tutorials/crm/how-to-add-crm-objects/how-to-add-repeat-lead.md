@@ -84,37 +84,6 @@ The form sends data to the handler using the `POST` method.
     </script>
     ```
 
-- PHP
-
-    ```html
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-    $(document).ready(function() {
-        $('#form_to_crm').on( 'submit', function(el) {//event submit form
-            el.preventDefault();//the default action of the event will not be triggered
-            var formData = $(this).serialize();
-            $.ajax({
-                'method': 'POST',
-                'dataType': 'json',
-                'url': 'form.php', // file for saving filled forms
-                'data': formData,
-                success: function(data){//success callback
-                    alert(data.message);
-                }
-            });
-        });
-    });
-    </script>
-
-    <form id="form_to_crm">
-        <input type="text" name="NAME" placeholder="Name" required>
-        <input type="text" name="LAST_NAME" placeholder="Last name">
-        <input type="text" name="PHONE" placeholder="Phone">
-        <input type="text" name="EMAIL" placeholder="E-mail">
-        <input type="submit" value="Submit">
-    </form>
-    ```
-
 - Python
 
     ```html
@@ -146,6 +115,37 @@ The form sends data to the handler using the `POST` method.
     </form>
     ```
 
+
+- PHP
+
+    ```html
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#form_to_crm').on( 'submit', function(el) {//event submit form
+            el.preventDefault();//the default action of the event will not be triggered
+            var formData = $(this).serialize();
+            $.ajax({
+                'method': 'POST',
+                'dataType': 'json',
+                'url': 'form.php', // file for saving filled forms
+                'data': formData,
+                success: function(data){//success callback
+                    alert(data.message);
+                }
+            });
+        });
+    });
+    </script>
+
+    <form id="form_to_crm">
+        <input type="text" name="NAME" placeholder="Name" required>
+        <input type="text" name="LAST_NAME" placeholder="Last name">
+        <input type="text" name="PHONE" placeholder="Phone">
+        <input type="text" name="EMAIL" placeholder="E-mail">
+        <input type="submit" value="Submit">
+    </form>
+    ```
 {% endlist %}
 
 ## 2. Creating a Form Handler
@@ -167,15 +167,6 @@ Retrieve and safely process data from the `NAME`, `LAST_NAME`, `PHONE`, and `EMA
     const sEmail = String(req.body.EMAIL ?? '')
     ```
 
-- PHP
-
-    ```php
-    $sName = htmlspecialchars($_POST["NAME"]);
-    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
-    $sPhone = htmlspecialchars($_POST["PHONE"]);
-    $sEmail = htmlspecialchars($_POST["EMAIL"]);
-    ```
-
 - Python
 
     ```python
@@ -185,6 +176,15 @@ Retrieve and safely process data from the `NAME`, `LAST_NAME`, `PHONE`, and `EMA
     s_email = request.form.get("EMAIL", "")
     ```
 
+
+- PHP
+
+    ```php
+    $sName = htmlspecialchars($_POST["NAME"]);
+    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
+    $sPhone = htmlspecialchars($_POST["PHONE"]);
+    $sEmail = htmlspecialchars($_POST["EMAIL"]);
+    ```
 {% endlist %}
 
 Form an `$arFields` array with the new lead data.
@@ -203,18 +203,6 @@ Form an `$arFields` array with the new lead data.
     }
     ```
 
-- PHP
-
-    ```php
-    $arFields = [
-        'TITLE' => 'From the site: ' . implode(' ', [$sName, $sLastName]),
-        'NAME' => (!empty($sName)) ? $sName : 'Empty name',
-        'LAST_NAME' => $sLastName,
-        'PHONE' => (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'HOME')) : array(),
-        'EMAIL' => (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array()
-    ];
-    ```
-
 - Python
 
     ```python
@@ -227,6 +215,18 @@ Form an `$arFields` array with the new lead data.
     }
     ```
 
+
+- PHP
+
+    ```php
+    $arFields = [
+        'TITLE' => 'From the site: ' . implode(' ', [$sName, $sLastName]),
+        'NAME' => (!empty($sName)) ? $sName : 'Empty name',
+        'LAST_NAME' => $sLastName,
+        'PHONE' => (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'HOME')) : array(),
+        'EMAIL' => (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array()
+    ];
+    ```
 {% endlist %}
 
 Form the lead heading as `From the site: First Name Last Name`.
@@ -271,22 +271,6 @@ Searching by phone, `"type" => "PHONE"`.
     }
     ```
 
-- PHP
-
-    ```php
-    $arLeadDuplicate = [];
-
-    if (!empty($sPhone)) {
-        $result = $sb->getCRMScope()->duplicate()->findByPhone(
-            [$sPhone],
-            \Bitrix24\SDK\Services\CRM\Duplicates\Service\EntityType::Lead
-        )->getCoreResponse()->getResponseData()->getResult();
-        if (!empty($result['LEAD'])) {
-            $arLeadDuplicate = array_merge($arLeadDuplicate, $result['LEAD']);
-        }
-    }
-    ```
-
 - Python
 
     ```python
@@ -303,6 +287,22 @@ Searching by phone, `"type" => "PHONE"`.
             ar_lead_duplicate += found
     ```
 
+
+- PHP
+
+    ```php
+    $arLeadDuplicate = [];
+
+    if (!empty($sPhone)) {
+        $result = $sb->getCRMScope()->duplicate()->findByPhone(
+            [$sPhone],
+            \Bitrix24\SDK\Services\CRM\Duplicates\Service\EntityType::Lead
+        )->getCoreResponse()->getResponseData()->getResult();
+        if (!empty($result['LEAD'])) {
+            $arLeadDuplicate = array_merge($arLeadDuplicate, $result['LEAD']);
+        }
+    }
+    ```
 {% endlist %}
 
 Searching for duplicates by email, `"type" => "EMAIL"`.
@@ -323,6 +323,19 @@ Searching for duplicates by email, `"type" => "EMAIL"`.
     }
     ```
 
+- Python
+
+    ```python
+    if s_email:
+        result_duplicate = client.crm.duplicate.findbycomm(
+            type="EMAIL", values=[s_email], entity_type="LEAD",
+        ).result
+        found = (result_duplicate or {}).get("LEAD")
+        if found:
+            ar_lead_duplicate += found
+    ```
+
+
 - PHP
 
     ```php
@@ -336,19 +349,6 @@ Searching for duplicates by email, `"type" => "EMAIL"`.
         }
     }
     ```
-
-- Python
-
-    ```python
-    if s_email:
-        result_duplicate = client.crm.duplicate.findbycomm(
-            type="EMAIL", values=[s_email], entity_type="LEAD",
-        ).result
-        found = (result_duplicate or {}).get("LEAD")
-        if found:
-            ar_lead_duplicate += found
-    ```
-
 {% endlist %}
 
 If matches are found, the method returns an object with the `LEAD` key and an array of identifiers.
@@ -411,6 +411,24 @@ The `CONVERTED` status selects only those leads that have already been converted
     }
     ```
 
+- Python
+
+    ```python
+    if ar_lead_duplicate:
+        ar_duplicate_lead = client.crm.lead.list(
+            filter={"=ID": ar_lead_duplicate, "STATUS_ID": "CONVERTED"},
+            select=["ID", "COMPANY_ID", "CONTACT_ID"],
+        ).as_list().result
+
+        company = next((r["COMPANY_ID"] for r in ar_duplicate_lead if int(r["COMPANY_ID"] or 0) > 0), None)
+        contact = next((r["CONTACT_ID"] for r in ar_duplicate_lead if int(r["CONTACT_ID"] or 0) > 0), None)
+        if company:
+            ar_fields["COMPANY_ID"] = company
+        if contact:
+            ar_fields["CONTACT_ID"] = contact
+    ```
+
+
 - PHP
 
     ```php
@@ -434,24 +452,6 @@ The `CONVERTED` status selects only those leads that have already been converted
         }
     }
     ```
-
-- Python
-
-    ```python
-    if ar_lead_duplicate:
-        ar_duplicate_lead = client.crm.lead.list(
-            filter={"=ID": ar_lead_duplicate, "STATUS_ID": "CONVERTED"},
-            select=["ID", "COMPANY_ID", "CONTACT_ID"],
-        ).as_list().result
-
-        company = next((r["COMPANY_ID"] for r in ar_duplicate_lead if int(r["COMPANY_ID"] or 0) > 0), None)
-        contact = next((r["CONTACT_ID"] for r in ar_duplicate_lead if int(r["CONTACT_ID"] or 0) > 0), None)
-        if company:
-            ar_fields["COMPANY_ID"] = company
-        if contact:
-            ar_fields["CONTACT_ID"] = contact
-    ```
-
 {% endlist %}
 
 The method returns identifiers as strings, and empty links as `null`. That is why we check the values before moving them into `$arFields`.
@@ -491,18 +491,18 @@ Check which mandatory fields are configured for leads in your Bitrix24. All mand
     })
     ```
 
-- PHP
-
-    ```php
-    $sb->getCRMScope()->lead()->add($arFields);
-    ```
-
 - Python
 
     ```python
     client.crm.lead.add(fields=ar_fields)
     ```
 
+
+- PHP
+
+    ```php
+    $sb->getCRMScope()->lead()->add($arFields);
+    ```
 {% endlist %}
 
 If the lead is created successfully, the method will return its identifier. If you receive error `error`, review the possible error descriptions in the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method documentation.
@@ -533,18 +533,18 @@ Through REST, the lead is checked with the [crm.lead.get](../../../api-reference
     console.dir(checkResponse.getData().result)
     ```
 
-- PHP
-
-    ```php
-    $lead = $sb->getCRMScope()->lead()->get(3289)->lead();
-    ```
-
 - Python
 
     ```python
     lead = client.crm.lead.get(bitrix_id=3289).result
     ```
 
+
+- PHP
+
+    ```php
+    $lead = $sb->getCRMScope()->lead()->get(3289)->lead();
+    ```
 {% endlist %}
 
 The scenario is complete if the response has:
@@ -675,6 +675,75 @@ Repeat the scenario from the step that returned the error. Duplicate search and 
     app.listen(3000)
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk flask
+    from flask import Flask, request, jsonify
+    from b24pysdk import BitrixWebhook, Client
+
+    app = Flask(__name__)
+
+    client = Client(BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
+    ))
+
+
+    def find_lead_duplicates(comm_type: str, value: str) -> list:
+        """Returns the identifiers of leads with a matching phone number or email address.
+
+        If there are no matches, the method returns an empty array rather than an object,
+        so cast the result to a dictionary before accessing the key.
+        """
+        result = client.crm.duplicate.findbycomm(
+            type=comm_type, values=[value], entity_type="LEAD",
+        ).result
+        return (result or {}).get("LEAD") or []
+
+
+    @app.route("/form", methods=["POST"])
+    def handle_form():
+        s_name = request.form.get("NAME", "")
+        s_last_name = request.form.get("LAST_NAME", "")
+        s_phone = request.form.get("PHONE", "")
+        s_email = request.form.get("EMAIL", "")
+
+        ar_fields = {
+            "TITLE": "From the site: " + " ".join([s_name, s_last_name]),
+            "NAME": s_name or "Empty name",
+            "LAST_NAME": s_last_name,
+            "PHONE": [{"VALUE": s_phone, "VALUE_TYPE": "HOME"}] if s_phone else [],
+            "EMAIL": [{"VALUE": s_email, "VALUE_TYPE": "HOME"}] if s_email else [],
+        }
+
+        ar_lead_duplicate = []
+        if s_phone:  # search for duplicates by phone number
+            ar_lead_duplicate += find_lead_duplicates("PHONE", s_phone)
+
+        if s_email:  # search for duplicates by email
+            ar_lead_duplicate += find_lead_duplicates("EMAIL", s_email)
+
+        if ar_lead_duplicate:  # get lead duplicate with fields of associated contact and company
+            ar_duplicate_lead = client.crm.lead.list(
+                filter={"=ID": ar_lead_duplicate, "STATUS_ID": "CONVERTED"},
+                select=["ID", "COMPANY_ID", "CONTACT_ID"],
+            ).as_list().result
+            company = next((r["COMPANY_ID"] for r in ar_duplicate_lead if int(r["COMPANY_ID"] or 0) > 0), None)
+            contact = next((r["CONTACT_ID"] for r in ar_duplicate_lead if int(r["CONTACT_ID"] or 0) > 0), None)
+            if company:
+                ar_fields["COMPANY_ID"] = company
+            if contact:
+                ar_fields["CONTACT_ID"] = contact
+
+        try:
+            client.crm.lead.add(fields=ar_fields)  # create repeat lead
+            return jsonify({"message": "Lead add"})
+        except Exception as e:
+            return jsonify({"message": f"Lead not added: {e}"})
+    ```
+
+
 - PHP
 
     ```php
@@ -746,75 +815,6 @@ Repeat the scenario from the step that returned the error. Duplicate search and 
         echo json_encode(['message' => 'Lead not added: ' . $e->getMessage()]);
     }
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk flask
-    from flask import Flask, request, jsonify
-    from b24pysdk import BitrixWebhook, Client
-
-    app = Flask(__name__)
-
-    client = Client(BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
-    ))
-
-
-    def find_lead_duplicates(comm_type: str, value: str) -> list:
-        """Returns the identifiers of leads with a matching phone number or email address.
-
-        If there are no matches, the method returns an empty array rather than an object,
-        so cast the result to a dictionary before accessing the key.
-        """
-        result = client.crm.duplicate.findbycomm(
-            type=comm_type, values=[value], entity_type="LEAD",
-        ).result
-        return (result or {}).get("LEAD") or []
-
-
-    @app.route("/form", methods=["POST"])
-    def handle_form():
-        s_name = request.form.get("NAME", "")
-        s_last_name = request.form.get("LAST_NAME", "")
-        s_phone = request.form.get("PHONE", "")
-        s_email = request.form.get("EMAIL", "")
-
-        ar_fields = {
-            "TITLE": "From the site: " + " ".join([s_name, s_last_name]),
-            "NAME": s_name or "Empty name",
-            "LAST_NAME": s_last_name,
-            "PHONE": [{"VALUE": s_phone, "VALUE_TYPE": "HOME"}] if s_phone else [],
-            "EMAIL": [{"VALUE": s_email, "VALUE_TYPE": "HOME"}] if s_email else [],
-        }
-
-        ar_lead_duplicate = []
-        if s_phone:  # search for duplicates by phone number
-            ar_lead_duplicate += find_lead_duplicates("PHONE", s_phone)
-
-        if s_email:  # search for duplicates by email
-            ar_lead_duplicate += find_lead_duplicates("EMAIL", s_email)
-
-        if ar_lead_duplicate:  # get lead duplicate with fields of associated contact and company
-            ar_duplicate_lead = client.crm.lead.list(
-                filter={"=ID": ar_lead_duplicate, "STATUS_ID": "CONVERTED"},
-                select=["ID", "COMPANY_ID", "CONTACT_ID"],
-            ).as_list().result
-            company = next((r["COMPANY_ID"] for r in ar_duplicate_lead if int(r["COMPANY_ID"] or 0) > 0), None)
-            contact = next((r["CONTACT_ID"] for r in ar_duplicate_lead if int(r["CONTACT_ID"] or 0) > 0), None)
-            if company:
-                ar_fields["COMPANY_ID"] = company
-            if contact:
-                ar_fields["CONTACT_ID"] = contact
-
-        try:
-            client.crm.lead.add(fields=ar_fields)  # create repeat lead
-            return jsonify({"message": "Lead add"})
-        except Exception as e:
-            return jsonify({"message": f"Lead not added: {e}"})
-    ```
-
 {% endlist %}
 
 ## Continue Learning

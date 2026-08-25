@@ -104,6 +104,30 @@ Register the handler using the `placement.bind` method. Pass the following param
     console.info('Registered tab')
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+    # client is built on the app token — see scenario
+    # "How to embed a widget into a lead as a custom field"
+    from b24pysdk.errors import BitrixAPIError
+
+    try:
+        bitrix_response = client.placement.bind(
+            placement="CRM_DEAL_DETAIL_TAB",
+            handler="https://your-domain.example/deal-tab.php",
+            title="Deal data",
+            lang_all={
+                "de": {"TITLE": "Deal data"},
+                "en": {"TITLE": "Deal data"},
+            },
+        ).response
+        print("Registered tab:", bitrix_response.result)
+    except BitrixAPIError as error:
+        print(error)
+    ```
+
+
 - PHP
 
     ```php
@@ -133,30 +157,6 @@ Register the handler using the `placement.bind` method. Pass the following param
         echo $exception->getMessage();
     }
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-    # client is built on the app token — see scenario
-    # "How to embed a widget into a lead as a custom field"
-    from b24pysdk.errors import BitrixAPIError
-
-    try:
-        bitrix_response = client.placement.bind(
-            placement="CRM_DEAL_DETAIL_TAB",
-            handler="https://your-domain.example/deal-tab.php",
-            title="Deal data",
-            lang_all={
-                "de": {"TITLE": "Deal data"},
-                "en": {"TITLE": "Deal data"},
-            },
-        ).response
-        print("Registered tab:", bitrix_response.result)
-    except BitrixAPIError as error:
-        print(error)
-    ```
-
 {% endlist %}
 
 If the handler is successfully registered, the method will return `true`.
@@ -268,6 +268,52 @@ The method is executed with the authorization of the user who opened the tab:
     </html>
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk flask
+    from flask import Flask, request
+    from b24pysdk import BitrixApp, BitrixToken, Client
+    from b24pysdk.errors import BitrixAPIError
+    import json
+
+    app = Flask(__name__)
+
+    bitrix_app = BitrixApp(
+        client_id="local.xxxxxxxx.xxxxxxxx",
+        client_secret="yyyyyyyy",
+    )
+
+    @app.post("/deal-tab")
+    def deal_tab():
+        placement = request.form.get("PLACEMENT", "")
+        options = json.loads(request.form.get("PLACEMENT_OPTIONS", "{}") or "{}")
+        deal_id = int(options.get("ID", 0))
+
+        if placement != "CRM_DEAL_DETAIL_TAB" or deal_id <= 0:
+            return "Failed to get call context"
+
+        # Bitrix24 passes the domain and user token to the handler
+        client = Client(
+            BitrixToken(
+                domain=request.args.get("DOMAIN", ""),
+                auth_token=request.form.get("AUTH_ID", ""),
+                bitrix_app=bitrix_app,
+            )
+        )
+
+        try:
+            deal = client.crm.item.get(
+                entity_type_id=2,
+                bitrix_id=deal_id,
+            ).response.result["item"]
+        except BitrixAPIError as error:
+            return str(error)
+
+        return f"{deal.get('title', 'Deal without title')} — stage: {deal.get('stageId', '')}"
+    ```
+
+
 - PHP
 
     ```php
@@ -336,52 +382,6 @@ The method is executed with the authorization of the user who opened the tab:
         </body>
     </html>
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk flask
-    from flask import Flask, request
-    from b24pysdk import BitrixApp, BitrixToken, Client
-    from b24pysdk.errors import BitrixAPIError
-    import json
-
-    app = Flask(__name__)
-
-    bitrix_app = BitrixApp(
-        client_id="local.xxxxxxxx.xxxxxxxx",
-        client_secret="yyyyyyyy",
-    )
-
-    @app.post("/deal-tab")
-    def deal_tab():
-        placement = request.form.get("PLACEMENT", "")
-        options = json.loads(request.form.get("PLACEMENT_OPTIONS", "{}") or "{}")
-        deal_id = int(options.get("ID", 0))
-
-        if placement != "CRM_DEAL_DETAIL_TAB" or deal_id <= 0:
-            return "Failed to get call context"
-
-        # Bitrix24 passes the domain and user token to the handler
-        client = Client(
-            BitrixToken(
-                domain=request.args.get("DOMAIN", ""),
-                auth_token=request.form.get("AUTH_ID", ""),
-                bitrix_app=bitrix_app,
-            )
-        )
-
-        try:
-            deal = client.crm.item.get(
-                entity_type_id=2,
-                bitrix_id=deal_id,
-            ).response.result["item"]
-        except BitrixAPIError as error:
-            return str(error)
-
-        return f"{deal.get('title', 'Deal without title')} — stage: {deal.get('stageId', '')}"
-    ```
-
 {% endlist %}
 
 The method returns a `item` object containing the deal data available to the user whose authorization is used in the request.

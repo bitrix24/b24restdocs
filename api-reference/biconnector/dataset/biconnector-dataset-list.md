@@ -235,6 +235,45 @@ For clarity, select only the necessary fields:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.biconnector.dataset.list(
+            select=[
+                "id",
+                "name",
+                "description",
+            ],
+            filter={
+                "%=name": "Sales%",
+                "!description": "",
+                "@sourceId": [
+                    2,
+                    4,
+                ],
+            },
+            order={
+                "dateCreate": "DESC",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

@@ -197,10 +197,8 @@ If not specified, the current user's ID is used
         Example
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.contact.details.configuration.get(

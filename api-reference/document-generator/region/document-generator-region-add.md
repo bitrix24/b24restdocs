@@ -223,6 +223,42 @@ Examples:
     </script>
     ```
 
+- Python
+
+  ```python
+  from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+  region_fields = {
+      "title": "Germany (Custom)",
+      "languageId": "ru",
+      "formatDate": "DD.MM.YYYY",
+      "formatDatetime": "DD.MM.YYYY HH:MI:SS",
+      "formatName": "#LAST_NAME# #NAME# #SECOND_NAME#",
+      "phrases": {
+          "TAX_INCLUDED": "VAT included in the price",
+          "TAX_NOT_INCLUDED": "VAT not included in the price",
+      },
+  }
+
+  try:
+      bitrix_response = client.documentgenerator.region.add(
+          fields=region_fields,
+      ).response
+      result = bitrix_response.result
+      print(result)
+  except BitrixAPIError as error:
+      print(
+          "Bitrix API error",
+          f"error: {error.error}",
+          f"error_description: {error.error_description}",
+          sep="\n",
+      )
+  except BitrixSDKException as error:
+      print(f"Bitrix SDK error: {error.message}")
+  except Exception as error:
+      print(f"Unexpected error: {error}")
+  ```
+
 - PHP
 
   ```php

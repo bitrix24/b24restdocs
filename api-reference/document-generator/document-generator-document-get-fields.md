@@ -161,6 +161,39 @@ If `values` is not provided, the method will return a structure of fields with c
     </script>
     ```
 
+- Python
+
+  ```python
+  from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+  try:
+      bitrix_response = client.documentgenerator.document.getfields(
+          bitrix_id=51,
+          values={
+              "DocumentNumber": "DG-2026-001",
+              "CurrentDate": "2026-03-18T00:00:00+03:00",
+              "ClientName": "Müller GmbH",
+              "ClientPhone": "+7 999 123-45-67",
+              "Total": "125000",
+              "Comment": "Payment within 5 business days after signing",
+              "UserName": "Klaus Weber",
+          },
+      ).response
+      result = bitrix_response.result
+      print(result)
+  except BitrixAPIError as error:
+      print(
+          "Bitrix API error",
+          f"error: {error.error}",
+          f"error_description: {error.error_description}",
+          sep="\n",
+      )
+  except BitrixSDKException as error:
+      print(f"Bitrix SDK error: {error.message}")
+  except Exception as error:
+      print(f"Unexpected error: {error}")
+  ```
+
 - PHP
 
   ```php

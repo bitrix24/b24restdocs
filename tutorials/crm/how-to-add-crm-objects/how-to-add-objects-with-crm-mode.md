@@ -108,46 +108,6 @@ The form passes the data to the handler using the `POST` method.
     </script>
     ```
 
-- PHP
-
-    ```html
-    <form id="form_to_crm" method="POST" action="form.php">
-        <!-- First Name (required field) -->
-        <input type="text" name="NAME" placeholder="First Name" required>
-        <!-- Last Name -->
-        <input type="text" name="LAST_NAME" placeholder="Last Name">
-        <!-- Company Name -->
-        <input type="text" name="COMPANY_TITLE" placeholder="Company Name">
-        <!-- Email -->
-        <input type="text" name="EMAIL" placeholder="Email">
-        <!-- Phone -->
-        <input type="text" name="PHONE" placeholder="Phone">
-        <!-- Submit Button -->
-        <input type="submit" value="Submit">
-    </form>
-
-    <!-- Including jQuery for the AJAX request -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#form_to_crm').on('submit', function(el) {
-                el.preventDefault(); // Preventing default form submission
-                var formData = $(this).serialize(); // Collecting form data
-                // Sending data to the server
-                $.ajax({
-                    'method': 'POST',
-                    'dataType': 'json',
-                    'url': 'form.php', // Handler file
-                    'data': formData,
-                    success: function(data) {
-                        alert(data.message); // Showing the result
-                    }
-                });
-            });
-        });
-    </script>
-    ```
-
 - Python
 
     ```html
@@ -188,6 +148,46 @@ The form passes the data to the handler using the `POST` method.
     </script>
     ```
 
+
+- PHP
+
+    ```html
+    <form id="form_to_crm" method="POST" action="form.php">
+        <!-- First Name (required field) -->
+        <input type="text" name="NAME" placeholder="First Name" required>
+        <!-- Last Name -->
+        <input type="text" name="LAST_NAME" placeholder="Last Name">
+        <!-- Company Name -->
+        <input type="text" name="COMPANY_TITLE" placeholder="Company Name">
+        <!-- Email -->
+        <input type="text" name="EMAIL" placeholder="Email">
+        <!-- Phone -->
+        <input type="text" name="PHONE" placeholder="Phone">
+        <!-- Submit Button -->
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Including jQuery for the AJAX request -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#form_to_crm').on('submit', function(el) {
+                el.preventDefault(); // Preventing default form submission
+                var formData = $(this).serialize(); // Collecting form data
+                // Sending data to the server
+                $.ajax({
+                    'method': 'POST',
+                    'dataType': 'json',
+                    'url': 'form.php', // Handler file
+                    'data': formData,
+                    success: function(data) {
+                        alert(data.message); // Showing the result
+                    }
+                });
+            });
+        });
+    </script>
+    ```
 {% endlist %}
 
 ## 2. Create a Form Handler
@@ -213,17 +213,6 @@ The form is filled out by a site visitor, so the values cannot be considered saf
     const sEmail = String(req.body.EMAIL ?? '')
     ```
 
-- PHP
-
-    ```php
-    // Getting and sanitizing data from the form
-    $sName = htmlspecialchars($_POST["NAME"]);
-    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
-    $sCompanyTitle = htmlspecialchars($_POST["COMPANY_TITLE"]);
-    $sPhone = htmlspecialchars($_POST["PHONE"]);
-    $sEmail = htmlspecialchars($_POST["EMAIL"]);
-    ```
-
 - Python
 
     ```python
@@ -235,6 +224,17 @@ The form is filled out by a site visitor, so the values cannot be considered saf
     s_email = request.form.get("EMAIL", "")
     ```
 
+
+- PHP
+
+    ```php
+    // Getting and sanitizing data from the form
+    $sName = htmlspecialchars($_POST["NAME"]);
+    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
+    $sCompanyTitle = htmlspecialchars($_POST["COMPANY_TITLE"]);
+    $sPhone = htmlspecialchars($_POST["PHONE"]);
+    $sEmail = htmlspecialchars($_POST["EMAIL"]);
+    ```
 {% endlist %}
 
 The system stores phone and email as an array of [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) objects, so they must be converted to an array format.
@@ -253,14 +253,6 @@ The system stores phone and email as an array of [crm_multifield](../../../api-r
     const arEmail = sEmail ? [{ VALUE: sEmail, VALUE_TYPE: 'HOME' }] : []
     ```
 
-- PHP
-
-    ```php
-    // Formatting phone and email for Bitrix24 into crm_multifield format
-    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
-    $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
-    ```
-
 - Python
 
     ```python
@@ -269,6 +261,14 @@ The system stores phone and email as an array of [crm_multifield](../../../api-r
     ar_email = [{"VALUE": s_email, "VALUE_TYPE": "HOME"}] if s_email else []
     ```
 
+
+- PHP
+
+    ```php
+    // Formatting phone and email for Bitrix24 into crm_multifield format
+    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
+    $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
+    ```
 {% endlist %}
 
 Form the lead heading from the first and last name. For companies, add the company name to the heading.
@@ -286,17 +286,6 @@ Form the lead heading from the first and last name. For companies, add the compa
     }
     ```
 
-- PHP
-
-    ```php
-    // Creating the lead title from first and last name
-    $sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
-    // If company name exists — add it via a dash after the first and last name
-    if (!empty($sCompanyTitle)) {
-        $sTitle .= ' — ' . $sCompanyTitle;
-    }
-    ```
-
 - Python
 
     ```python
@@ -307,6 +296,17 @@ Form the lead heading from the first and last name. For companies, add the compa
         s_title += " — " + s_company_title
     ```
 
+
+- PHP
+
+    ```php
+    // Creating the lead title from first and last name
+    $sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
+    // If company name exists — add it via a dash after the first and last name
+    if (!empty($sCompanyTitle)) {
+        $sTitle .= ' — ' . $sCompanyTitle;
+    }
+    ```
 {% endlist %}
 
 ### Create a Lead and Retrieve Lead Data
@@ -357,19 +357,6 @@ Check which mandatory fields are configured for leads in your Bitrix24. All mand
     const leadId = addLead.getData().result
     ```
 
-- PHP
-
-    ```php
-    $leadId = $sb->getCRMScope()->lead()->add([
-        'TITLE' => $sTitle, // Lead title
-        'NAME' => $sName, // First Name
-        'LAST_NAME' => $sLastName, // Last Name
-        'COMPANY_TITLE' => $sCompanyTitle, // Company Name
-        'PHONE' => $arPhone, // Phone
-        'EMAIL' => $arEmail, // Email
-    ])->getId();
-    ```
-
 - Python
 
     ```python
@@ -383,6 +370,19 @@ Check which mandatory fields are configured for leads in your Bitrix24. All mand
     }).result
     ```
 
+
+- PHP
+
+    ```php
+    $leadId = $sb->getCRMScope()->lead()->add([
+        'TITLE' => $sTitle, // Lead title
+        'NAME' => $sName, // First Name
+        'LAST_NAME' => $sLastName, // Last Name
+        'COMPANY_TITLE' => $sCompanyTitle, // Company Name
+        'PHONE' => $arPhone, // Phone
+        'EMAIL' => $arEmail, // Email
+    ])->getId();
+    ```
 {% endlist %}
 
 To retrieve lead data, use the [crm.lead.get](../../../api-reference/crm/leads/crm-lead-get.md) method. Pass the lead identifier obtained from the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method result into the `ID` parameter.
@@ -400,13 +400,6 @@ To retrieve lead data, use the [crm.lead.get](../../../api-reference/crm/leads/c
     const leadStatus = getLead.getData().result.STATUS_ID
     ```
 
-- PHP
-
-    ```php
-    $lead = $sb->getCRMScope()->lead()->get($leadId)->lead(); // ID from the crm.lead.add result
-    $leadStatus = $lead->STATUS_ID;
-    ```
-
 - Python
 
     ```python
@@ -414,6 +407,13 @@ To retrieve lead data, use the [crm.lead.get](../../../api-reference/crm/leads/c
     lead_status = lead["STATUS_ID"]
     ```
 
+
+- PHP
+
+    ```php
+    $lead = $sb->getCRMScope()->lead()->get($leadId)->lead(); // ID from the crm.lead.add result
+    $leadStatus = $lead->STATUS_ID;
+    ```
 {% endlist %}
 
 As a result, the [crm.lead.add](../../../api-reference/crm/leads/crm-lead-add.md) method will return the identifier of the new lead, and the [crm.lead.get](../../../api-reference/crm/leads/crm-lead-get.md) method will return the lead data, including the `STATUS_ID` field.
@@ -473,6 +473,16 @@ The lead itself is no longer needed — we will add the activity to the deal. To
     const deals = resultDeal.getData().result
     ```
 
+- Python
+
+    ```python
+    # Simple mode: looking for a deal created from a lead
+    deals = client.crm.deal.list(
+        filter={"LEAD_ID": lead_id}, select=["ID"],
+    ).as_list().result
+    ```
+
+
 - PHP
 
     ```php
@@ -483,16 +493,6 @@ The lead itself is no longer needed — we will add the activity to the deal. To
         select: ['ID']
     )->getDeals();
     ```
-
-- Python
-
-    ```python
-    # Simple mode: looking for a deal created from a lead
-    deals = client.crm.deal.list(
-        filter={"LEAD_ID": lead_id}, select=["ID"],
-    ).as_list().result
-    ```
-
 {% endlist %}
 
 As a result, you will obtain an array of deals. One lead produces one deal, so we take the first item.
@@ -532,22 +532,6 @@ We add the activity to the deal: pass `2` in `ownerTypeId` and the deal identifi
     }
     ```
 
-- PHP
-
-    ```php
-    if (!empty($deals)) {
-        $dealId = $deals[0]->ID;
-        // Linking a task to a deal — there is no wrapper for crm.activity.todo.add in the SDK, so we call it directly
-        $sb->core->call('crm.activity.todo.add', [
-            'ownerTypeId' => 2, // object type — deal
-            'ownerId' => $dealId, // deal identifier
-            'deadline' => date("Y-m-d H:i:s", time() + 3600), // current time + 1 hour
-            'title' => 'Call client',
-            'description' => 'Filled out a request on the website',
-        ]);
-    }
-    ```
-
 - Python
 
     ```python
@@ -566,6 +550,22 @@ We add the activity to the deal: pass `2` in `ownerTypeId` and the deal identifi
         })
     ```
 
+
+- PHP
+
+    ```php
+    if (!empty($deals)) {
+        $dealId = $deals[0]->ID;
+        // Linking a task to a deal — there is no wrapper for crm.activity.todo.add in the SDK, so we call it directly
+        $sb->core->call('crm.activity.todo.add', [
+            'ownerTypeId' => 2, // object type — deal
+            'ownerId' => $dealId, // deal identifier
+            'deadline' => date("Y-m-d H:i:s", time() + 3600), // current time + 1 hour
+            'title' => 'Call client',
+            'description' => 'Filled out a request on the website',
+        ]);
+    }
+    ```
 {% endlist %}
 
 #### Classic Mode
@@ -593,19 +593,6 @@ We add the activity to the lead: pass `1` in `ownerTypeId` and the identifier of
     })
     ```
 
-- PHP
-
-    ```php
-    // Classic mode: linking a task to a lead
-    $sb->core->call('crm.activity.todo.add', [
-        'ownerTypeId' => 1, // object type — lead
-        'ownerId' => $leadId, // lead identifier
-        'deadline' => date("Y-m-d H:i:s", time() + 3600), // current time + 1 hour
-        'title' => 'Call client',
-        'description' => 'Filled out a request on the website',
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -622,6 +609,19 @@ We add the activity to the lead: pass `1` in `ownerTypeId` and the identifier of
     })
     ```
 
+
+- PHP
+
+    ```php
+    // Classic mode: linking a task to a lead
+    $sb->core->call('crm.activity.todo.add', [
+        'ownerTypeId' => 1, // object type — lead
+        'ownerId' => $leadId, // lead identifier
+        'deadline' => date("Y-m-d H:i:s", time() + 3600), // current time + 1 hour
+        'title' => 'Call client',
+        'description' => 'Filled out a request on the website',
+    ]);
+    ```
 {% endlist %}
 
 The method returns the identifier of the created activity.
@@ -731,75 +731,6 @@ The method returns the identifier of the created activity.
     app.listen(3000)
     ```
 
-- PHP
-
-    ```php
-    <?php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Psr\Log\NullLogger;
-
-    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook(getenv('B24_HOOK'));
-    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
-    $crm = $sb->getCRMScope();
-
-    // Getting and sanitizing data from the form
-    $sName = htmlspecialchars($_POST["NAME"]);
-    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
-    $sCompanyTitle = htmlspecialchars($_POST["COMPANY_TITLE"]);
-    $sPhone = htmlspecialchars($_POST["PHONE"]);
-    $sEmail = htmlspecialchars($_POST["EMAIL"]);
-
-    // Formatting phone and email for Bitrix24 into crm_multifield format
-    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
-    $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
-
-    // Creating the lead title from first and last name
-    $sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
-    if (!empty($sCompanyTitle)) {
-        $sTitle .= ' — ' . $sCompanyTitle;
-    }
-
-    try {
-        // Creating a lead
-        $leadId = $crm->lead()->add([
-            'TITLE' => $sTitle, 'NAME' => $sName, 'LAST_NAME' => $sLastName,
-            'COMPANY_TITLE' => $sCompanyTitle, 'PHONE' => $arPhone, 'EMAIL' => $arEmail,
-        ])->getId();
-
-        // Getting lead data
-        $leadStatus = $crm->lead()->get($leadId)->lead()->STATUS_ID;
-
-        $deadline = date("Y-m-d H:i:s", time() + 3600); // current time + 1 hour
-
-        if ($leadStatus == 'CONVERTED') {
-            // Simple mode: looking for a deal created from a lead
-            $deals = $crm->deal()->list(order: [], filter: ['LEAD_ID' => $leadId], select: ['ID'])->getDeals();
-            if (!empty($deals)) {
-                // Adding a task to a deal — crm.activity.todo.add has no wrapper, so we call it directly
-                $sb->core->call('crm.activity.todo.add', [
-                    'ownerTypeId' => 2, 'ownerId' => $deals[0]->ID, 'deadline' => $deadline,
-                    'title' => 'Call client', 'description' => 'Filled out a request on the website',
-                ]);
-            }
-        } else {
-            // Classic mode: adding a task to a new lead
-            $sb->core->call('crm.activity.todo.add', [
-                'ownerTypeId' => 1, 'ownerId' => $leadId, 'deadline' => $deadline,
-                'title' => 'Call client', 'description' => 'Filled out a request on the website',
-            ]);
-        }
-
-        echo json_encode(['message' => 'Task added to lead or deal']);
-    } catch (\Throwable $e) {
-        echo json_encode(['message' => $e->getMessage()]);
-    }
-    ```
-
 - Python
 
     ```python
@@ -869,6 +800,75 @@ The method returns the identifier of the created activity.
             return jsonify({"message": str(e)})
     ```
 
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook(getenv('B24_HOOK'));
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+    $crm = $sb->getCRMScope();
+
+    // Getting and sanitizing data from the form
+    $sName = htmlspecialchars($_POST["NAME"]);
+    $sLastName = htmlspecialchars($_POST["LAST_NAME"]);
+    $sCompanyTitle = htmlspecialchars($_POST["COMPANY_TITLE"]);
+    $sPhone = htmlspecialchars($_POST["PHONE"]);
+    $sEmail = htmlspecialchars($_POST["EMAIL"]);
+
+    // Formatting phone and email for Bitrix24 into crm_multifield format
+    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
+    $arEmail = (!empty($sEmail)) ? array(array('VALUE' => $sEmail, 'VALUE_TYPE' => 'HOME')) : array();
+
+    // Creating the lead title from first and last name
+    $sTitle = 'From website: ' . trim($sName . ' ' . $sLastName);
+    if (!empty($sCompanyTitle)) {
+        $sTitle .= ' — ' . $sCompanyTitle;
+    }
+
+    try {
+        // Creating a lead
+        $leadId = $crm->lead()->add([
+            'TITLE' => $sTitle, 'NAME' => $sName, 'LAST_NAME' => $sLastName,
+            'COMPANY_TITLE' => $sCompanyTitle, 'PHONE' => $arPhone, 'EMAIL' => $arEmail,
+        ])->getId();
+
+        // Getting lead data
+        $leadStatus = $crm->lead()->get($leadId)->lead()->STATUS_ID;
+
+        $deadline = date("Y-m-d H:i:s", time() + 3600); // current time + 1 hour
+
+        if ($leadStatus == 'CONVERTED') {
+            // Simple mode: looking for a deal created from a lead
+            $deals = $crm->deal()->list(order: [], filter: ['LEAD_ID' => $leadId], select: ['ID'])->getDeals();
+            if (!empty($deals)) {
+                // Adding a task to a deal — crm.activity.todo.add has no wrapper, so we call it directly
+                $sb->core->call('crm.activity.todo.add', [
+                    'ownerTypeId' => 2, 'ownerId' => $deals[0]->ID, 'deadline' => $deadline,
+                    'title' => 'Call client', 'description' => 'Filled out a request on the website',
+                ]);
+            }
+        } else {
+            // Classic mode: adding a task to a new lead
+            $sb->core->call('crm.activity.todo.add', [
+                'ownerTypeId' => 1, 'ownerId' => $leadId, 'deadline' => $deadline,
+                'title' => 'Call client', 'description' => 'Filled out a request on the website',
+            ]);
+        }
+
+        echo json_encode(['message' => 'Task added to lead or deal']);
+    } catch (\Throwable $e) {
+        echo json_encode(['message' => $e->getMessage()]);
+    }
+    ```
 {% endlist %}
 
 ## Verify the Result
@@ -894,6 +894,16 @@ Through REST, the activities of an object are checked with the [crm.activity.lis
     console.dir(checkResponse.getData().result)
     ```
 
+- Python
+
+    ```python
+    activities = client.crm.activity.list(
+        filter={"OWNER_TYPE_ID": 1, "OWNER_ID": lead_id},
+        select=["ID", "SUBJECT", "OWNER_TYPE_ID", "OWNER_ID"],
+    ).response.result
+    ```
+
+
 - PHP
 
     ```php
@@ -904,16 +914,6 @@ Through REST, the activities of an object are checked with the [crm.activity.lis
         0
     )->getActivities();
     ```
-
-- Python
-
-    ```python
-    activities = client.crm.activity.list(
-        filter={"OWNER_TYPE_ID": 1, "OWNER_ID": lead_id},
-        select=["ID", "SUBJECT", "OWNER_TYPE_ID", "OWNER_ID"],
-    ).response.result
-    ```
-
 {% endlist %}
 
 The scenario is complete if:

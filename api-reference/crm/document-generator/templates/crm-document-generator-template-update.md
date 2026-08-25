@@ -227,6 +227,42 @@ Example of updating a document template where:
     </script>
     ```
 
+- Python
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.documentgenerator.template.update(
+            bitrix_id=41,
+            fields={
+                "name": "Template from file (updated)",
+                "file": ["template-updated.docx", "**base64_encoded_content**"],
+                "numeratorId": 49,
+                "region": "de",
+                "entityTypeId": ["2"],
+                "users": ["UA"],
+                "active": "Y",
+                "withStamps": "N",
+                "sort": 500,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -266,44 +302,6 @@ Example of updating a document template where:
         error_log($e->getMessage());
         echo 'Error updating template: ' . $e->getMessage();
     }
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.documentgenerator.template.update(
-            bitrix_id=41,
-            fields={
-                "name": "Template from file (updated)",
-                "file": ["template-updated.docx", "**base64_encoded_content**"],
-                "numeratorId": 49,
-                "region": "de",
-                "entityTypeId": ["2"],
-                "users": ["UA"],
-                "active": "Y",
-                "withStamps": "N",
-                "sort": 500,
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js

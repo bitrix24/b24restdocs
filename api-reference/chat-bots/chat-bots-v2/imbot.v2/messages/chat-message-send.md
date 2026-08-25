@@ -106,6 +106,41 @@ The bot can only forward messages from chats where it is a participant. Maximum 
     }
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.imbot.v2.chat.message.send(
+            bot_id=456,
+            dialog_id="chat5",
+            fields={
+                "message": "Hello from bot!",
+                "keyboard": [
+                    {
+                        "TEXT": "Open",
+                        "LINK": "https://example.com",
+                        "BG_COLOR_TOKEN": "primary",
+                    },
+                ],
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

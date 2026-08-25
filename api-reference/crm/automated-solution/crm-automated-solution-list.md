@@ -186,34 +186,13 @@ The formula for calculating the `start` parameter value:
         </script>
         ```
 
-    - PHP
-
-        ```php
-        require_once('crest.php');
-
-        $result = CRest::call(
-            'crm.automatedsolution.list',
-            [
-                'order' => [
-                    'id' => 'DESC'
-                ]
-            ]
-        );
-
-        echo '<PRE>';
-        print_r($result);
-        echo '</PRE>';
-        ```
-
     - Python
 
         Example
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.automatedsolution.list(
@@ -238,10 +217,8 @@ The formula for calculating the `start` parameter value:
         Example `as_list`
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.automatedsolution.list(
@@ -266,10 +243,8 @@ The formula for calculating the `start` parameter value:
         Example `as_list_fast`
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.automatedsolution.list(
@@ -290,15 +265,32 @@ The formula for calculating the `start` parameter value:
         except Exception as error:
             print(f"Unexpected error: {error}")
         ```
+    - PHP
+
+        ```php
+        require_once('crest.php');
+
+        $result = CRest::call(
+            'crm.automatedsolution.list',
+            [
+                'order' => [
+                    'id' => 'DESC'
+                ]
+            ]
+        );
+
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
+        ```
+
     - Python
 
         Example
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.automatedsolution.list(
@@ -325,10 +317,8 @@ The formula for calculating the `start` parameter value:
         Example
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.automatedsolution.list(
@@ -507,6 +497,100 @@ The formula for calculating the `start` parameter value:
         </script>
         ```
 
+    - Python
+
+        Example
+
+        ```python
+
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.automatedsolution.list(
+                filter={
+                    "%=title": "HR%",
+                },
+                order={
+                    "title": "ASC",
+                },
+                start=0,
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
+        Example `as_list`
+
+        ```python
+
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.automatedsolution.list(
+                filter={
+                    "%=title": "HR%",
+                },
+                order={
+                    "title": "ASC",
+                },
+            ).as_list().response
+            result = bitrix_response.result
+            for item in result:
+                print(item)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
+        Example `as_list_fast`
+
+        ```python
+
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.automatedsolution.list(
+                filter={
+                    "%=title": "HR%",
+                },
+                order={
+                    "title": "ASC",
+                },
+            ).as_list_fast(descending=True).response
+            result = bitrix_response.result
+            for item in result:
+                print(item)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
     - PHP
 
         ```php
@@ -691,6 +775,127 @@ The formula for calculating the `start` parameter value:
         </script>
         ```
 
+    - Python
+
+        Example
+
+        ```python
+
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.automatedsolution.list(
+                order={
+                    "title": "ASC",
+                },
+                filter={
+                    ">id": 100,
+                    "0": {
+                        "logic": "OR",
+                        "0": {
+                            "%=title": "HR%",
+                        },
+                        "1": {
+                            "%=title": "Customer%",
+                        },
+                    },
+                },
+                start=0,
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
+        Example `as_list`
+
+        ```python
+
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.automatedsolution.list(
+                order={
+                    "title": "ASC",
+                },
+                filter={
+                    ">id": 100,
+                    "0": {
+                        "logic": "OR",
+                        "0": {
+                            "%=title": "HR%",
+                        },
+                        "1": {
+                            "%=title": "Customer%",
+                        },
+                    },
+                },
+            ).as_list().response
+            result = bitrix_response.result
+            for item in result:
+                print(item)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
+        Example `as_list_fast`
+
+        ```python
+
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.automatedsolution.list(
+                order={
+                    "title": "ASC",
+                },
+                filter={
+                    ">id": 100,
+                    "0": {
+                        "logic": "OR",
+                        "0": {
+                            "%=title": "HR%",
+                        },
+                        "1": {
+                            "%=title": "Customer%",
+                        },
+                    },
+                },
+            ).as_list_fast(descending=True).response
+            result = bitrix_response.result
+            for item in result:
+                print(item)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
     - PHP
 
         ```php

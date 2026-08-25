@@ -178,6 +178,35 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
         </script>
         ```
 
+    - Python
+
+        Example
+
+        ```python
+
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.automatedsolution.update(
+                bitrix_id=238,
+                fields={
+                    "title": "HR and Customer Success",
+                },
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
     - PHP
 
         ```php
@@ -204,41 +233,8 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
         Example
 
         ```python
-        from b24pysdk.client import BaseClient
+
         from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-        client: BaseClient
-
-        try:
-            bitrix_response = client.crm.automatedsolution.update(
-                bitrix_id=238,
-                fields={
-                    "title": "HR and Customer Success",
-                },
-            ).response
-            result = bitrix_response.result
-            print(result)
-        except BitrixAPIError as error:
-            print(
-                "Bitrix API error",
-                f"error: {error.error}",
-                f"error_description: {error.error_description}",
-                sep="\n",
-            )
-        except BitrixSDKException as error:
-            print(f"Bitrix SDK error: {error.message}")
-        except Exception as error:
-            print(f"Unexpected error: {error}")
-        ```
-    - Python
-
-        Example
-
-        ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-        client: BaseClient
 
         try:
             bitrix_response = client.crm.automatedsolution.update(
@@ -266,10 +262,8 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
         Example
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.automatedsolution.update(
@@ -435,6 +429,36 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
         </script>
         ```
 
+    - Python
+
+        ```python
+
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.automatedsolution.update(
+                bitrix_id=238,
+                fields={
+                    "typeIds": [
+                        14,
+                    ],
+                },
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
     - PHP
 
         ```php
@@ -596,6 +620,34 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
 
           document.addEventListener('DOMContentLoaded', updateAutomatedSolution)
         </script>
+        ```
+
+    - Python
+
+        ```python
+
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            bitrix_response = client.crm.automatedsolution.update(
+                bitrix_id=238,
+                fields={
+                    "typeIds": [],
+                },
+            ).response
+            result = bitrix_response.result
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
         ```
 
     - PHP

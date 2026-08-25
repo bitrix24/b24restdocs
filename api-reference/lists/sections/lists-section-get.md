@@ -276,6 +276,60 @@ To retrieve data for a single section, specify its identifier in FILTER. Without
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    filter = {
+        "ID": 169,
+        "ACTIVE": "Y",
+        "NAME": "%marketing%",
+        "<=DATE_CREATE": "2025-12-31",
+        ">=DATE_CREATE": "2025-01-01",
+    }
+
+    select = [
+        "ID",
+        "CODE",
+        "XML_ID",
+        "EXTERNAL_ID",
+        "IBLOCK_SECTION_ID",
+        "TIMESTAMP_X",
+        "SORT",
+        "NAME",
+        "ACTIVE",
+        "GLOBAL_ACTIVE",
+        "LEFT_MARGIN",
+        "RIGHT_MARGIN",
+        "DEPTH_LEVEL",
+        "SEARCHABLE_CONTENT",
+        "MODIFIED_BY",
+        "DATE_CREATE",
+        "CREATED_BY",
+    ]
+
+    try:
+        bitrix_response = client.lists.section.get(
+            iblock_type_id='lists',
+            iblock_id=95,
+            filter=filter,
+            select=select,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

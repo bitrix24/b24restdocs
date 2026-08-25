@@ -67,6 +67,29 @@ Bitrix24 passes authorization in requests to application handlers. Use the `auth
     const $b24 = makeClient(req.body.auth)
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk flask
+    from flask import request
+    from b24pysdk import BitrixApp, BitrixToken, Client
+
+    APP = BitrixApp(client_id="local.xxxxxxxx.xxxxxxxx", client_secret="yyyyyyyy")
+
+    def make_client(auth: dict) -> tuple[Client, BitrixToken]:
+        token = BitrixToken(
+            domain=auth["domain"],
+            auth_token=auth["access_token"],
+            refresh_token=auth.get("refresh_token", ""),
+            bitrix_app=APP,
+        )
+        return Client(token), token
+
+    auth = request.json["auth"]  # auth dictionary from the handler request body
+    client, token = make_client(auth)
+    ```
+
+
 - PHP
 
     ```php
@@ -99,29 +122,6 @@ Bitrix24 passes authorization in requests to application handlers. Use the `auth
     $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
         ->init($appProfile, $authToken, $domain, DefaultOAuthServerUrl::default());
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk flask
-    from flask import request
-    from b24pysdk import BitrixApp, BitrixToken, Client
-
-    APP = BitrixApp(client_id="local.xxxxxxxx.xxxxxxxx", client_secret="yyyyyyyy")
-
-    def make_client(auth: dict) -> tuple[Client, BitrixToken]:
-        token = BitrixToken(
-            domain=auth["domain"],
-            auth_token=auth["access_token"],
-            refresh_token=auth.get("refresh_token", ""),
-            bitrix_app=APP,
-        )
-        return Client(token), token
-
-    auth = request.json["auth"]  # auth dictionary from the handler request body
-    client, token = make_client(auth)
-    ```
-
 {% endlist %}
 
 ## Architecture
@@ -190,6 +190,30 @@ In `imconnector.register`, pass: `ID` - the connector identifier, `NAME` - the n
     }
     ```
 
+- Python
+
+    ```python
+    # client is built on an application token
+    connector_id = "example_site_chat"
+    handler_url = "https://your-domain.example/handler"
+    icon = {
+        "DATA_IMAGE": "data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2070%2071%22%3E%3C/svg%3E",
+        "COLOR": "#a6ffa3", "SIZE": "100%", "POSITION": "center",
+    }
+
+    reg = client.imconnector.register(
+        bitrix_id=connector_id,
+        name="ExampleSiteChat",
+        icon=icon,
+        placement_handler=handler_url,
+        icon_disabled={**icon, "COLOR": "#ffb3a3"},
+    ).response
+
+    if reg.result:
+        client.event.bind(event="OnImConnectorMessageAdd", handler=handler_url).response
+    ```
+
+
 - PHP
 
     ```php
@@ -218,30 +242,6 @@ In `imconnector.register`, pass: `ID` - the connector identifier, `NAME` - the n
         ]);
     }
     ```
-
-- Python
-
-    ```python
-    # client is built on an application token
-    connector_id = "example_site_chat"
-    handler_url = "https://your-domain.example/handler"
-    icon = {
-        "DATA_IMAGE": "data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2070%2071%22%3E%3C/svg%3E",
-        "COLOR": "#a6ffa3", "SIZE": "100%", "POSITION": "center",
-    }
-
-    reg = client.imconnector.register(
-        bitrix_id=connector_id,
-        name="ExampleSiteChat",
-        icon=icon,
-        placement_handler=handler_url,
-        icon_disabled={**icon, "COLOR": "#ffb3a3"},
-    ).response
-
-    if reg.result:
-        client.event.bind(event="OnImConnectorMessageAdd", handler=handler_url).response
-    ```
-
 {% endlist %}
 
 After successful connector registration and event subscription, the methods return `true`.
@@ -286,21 +286,6 @@ In the `DATA` parameter of `imconnector.connector.data.set`, pass the external c
     })
     ```
 
-- PHP
-
-    ```php
-    $options = json_decode($_REQUEST['PLACEMENT_OPTIONS'], true);
-    $line = (string)(int)$options['LINE'];
-
-    $b24->getIMOpenLinesScope()->connector()->activate($connectorId, $line, (int)$options['ACTIVE_STATUS']);
-
-    $b24->getIMOpenLinesScope()->connector()->setData($connectorId, $line, [
-        'ID' => $connectorId . '_line_' . $line,
-        'URL_IM' => $widgetUri,
-        'NAME' => $widgetName,
-    ]);
-    ```
-
 - Python
 
     ```python
@@ -317,6 +302,21 @@ In the `DATA` parameter of `imconnector.connector.data.set`, pass the external c
     ).response
     ```
 
+
+- PHP
+
+    ```php
+    $options = json_decode($_REQUEST['PLACEMENT_OPTIONS'], true);
+    $line = (string)(int)$options['LINE'];
+
+    $b24->getIMOpenLinesScope()->connector()->activate($connectorId, $line, (int)$options['ACTIVE_STATUS']);
+
+    $b24->getIMOpenLinesScope()->connector()->setData($connectorId, $line, [
+        'ID' => $connectorId . '_line_' . $line,
+        'URL_IM' => $widgetUri,
+        'NAME' => $widgetName,
+    ]);
+    ```
 {% endlist %}
 
 After activating the connector and saving channel settings, the methods return `true`.
@@ -356,6 +356,26 @@ To confirm delivery, use the `im` object from the event. It contains the interna
     }
     ```
 
+- Python
+
+    ```python
+    import time
+
+    if request.form.get("event") == "ONIMCONNECTORMESSAGEADD":
+        for message in messages:  # data[MESSAGES] from the event body
+            message_id = save_message(message["chat"]["id"], message)  # local storage
+            client.imconnector.send.status.delivery(
+                connector=connector_id,
+                line=get_line(),
+                messages=[{
+                    "im": {"chat_id": message["im"]["chat_id"], "message_id": message["im"]["message_id"]},
+                    "message": {"id": [message_id], "date": int(time.time())},
+                    "chat": {"id": message["chat"]["id"]},
+                }],
+            ).response
+    ```
+
+
 - PHP
 
     ```php
@@ -376,26 +396,6 @@ To confirm delivery, use the `im` object from the event. It contains the interna
         }
     }
     ```
-
-- Python
-
-    ```python
-    import time
-
-    if request.form.get("event") == "ONIMCONNECTORMESSAGEADD":
-        for message in messages:  # data[MESSAGES] from the event body
-            message_id = save_message(message["chat"]["id"], message)  # local storage
-            client.imconnector.send.status.delivery(
-                connector=connector_id,
-                line=get_line(),
-                messages=[{
-                    "im": {"chat_id": message["im"]["chat_id"], "message_id": message["im"]["message_id"]},
-                    "message": {"id": [message_id], "date": int(time.time())},
-                    "chat": {"id": message["chat"]["id"]},
-                }],
-            ).response
-    ```
-
 {% endlist %}
 
 A successful delivery confirmation returns `SUCCESS: true`.
@@ -433,18 +433,6 @@ The `MESSAGES[]` message structure consists of `user` (`id`, `name`), `message` 
     })
     ```
 
-- PHP
-
-    ```php
-    $arMessage = [
-        'user' => ['id' => $chatID, 'name' => htmlspecialchars($_POST['name'])],
-        'message' => ['id' => $messageId, 'date' => time(), 'text' => htmlspecialchars($_POST['message'])],
-        'chat' => ['id' => $chatID, 'url' => htmlspecialchars($_SERVER['HTTP_REFERER'])],
-    ];
-
-    $b24->getIMOpenLinesScope()->connector()->sendMessages($connectorId, $lineId, [$arMessage]);
-    ```
-
 - Python
 
     ```python
@@ -458,6 +446,18 @@ The `MESSAGES[]` message structure consists of `user` (`id`, `name`), `message` 
     client.imconnector.send.messages(connector=connector_id, line=line_id, messages=[ar_message]).response
     ```
 
+
+- PHP
+
+    ```php
+    $arMessage = [
+        'user' => ['id' => $chatID, 'name' => htmlspecialchars($_POST['name'])],
+        'message' => ['id' => $messageId, 'date' => time(), 'text' => htmlspecialchars($_POST['message'])],
+        'chat' => ['id' => $chatID, 'url' => htmlspecialchars($_SERVER['HTTP_REFERER'])],
+    ];
+
+    $b24->getIMOpenLinesScope()->connector()->sendMessages($connectorId, $lineId, [$arMessage]);
+    ```
 {% endlist %}
 
 In the response, save `session.CHAT_ID` and `session.ID`. They confirm that the message reached the Open Channel.

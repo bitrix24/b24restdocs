@@ -240,6 +240,40 @@ Chats with the `SONET_GROUP` binding are used as standard group and project chat
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.im.chat.add(
+            users=[
+                103,
+                547,
+            ],
+            type="CHAT",
+            title="Deal chat",
+            description="Here we discuss the deal",
+            color="PINK",
+            message="Welcome to the deal chat",
+            entity_type="CRM",
+            entity_id="DEAL|1663",
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

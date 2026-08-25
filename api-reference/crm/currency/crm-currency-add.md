@@ -255,54 +255,11 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         </script>
         ```
 
-    - PHP
-
-        ```php
-        require_once('crest.php');
-
-        $result = CRest::call(
-            'crm.currency.add',
-            [
-                'fields' => [
-                    'CURRENCY' => 'CNY',
-                    'BASE' => 'N',
-                    'AMOUNT' => 12.2251,
-                    'AMOUNT_CNT' => 1,
-                    'SORT' => 9000,
-                    'LANG' => [
-                        'de' => [
-                            'DECIMALS' => 2,
-                            'DEC_POINT' => '.',
-                            'FORMAT_STRING' => '# CNY',
-                            'FULL_NAME' => 'yuan',
-                            'HIDE_ZERO' => 'Y',
-                            'THOUSANDS_VARIANT' => 'S',
-                        ],
-                        'en' => [
-                            'DECIMALS' => 2,
-                            'DEC_POINT' => ',',
-                            'FORMAT_STRING' => '# CNY',
-                            'FULL_NAME' => 'yuan',
-                            'HIDE_ZERO' => 'Y',
-                            'THOUSANDS_SEP' => '.',
-                        ],
-                    ],
-                ]
-            ]
-        );
-
-        echo '<PRE>';
-        print_r($result);
-        echo '</PRE>';
-        ```
-
     - Python
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.currency.add(
@@ -345,6 +302,47 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
             print(f"Bitrix SDK Error: {error.message}")
         except Exception as error:
             print(f"Unexpected error: {error}")
+        ```
+
+    - PHP
+
+        ```php
+        require_once('crest.php');
+
+        $result = CRest::call(
+            'crm.currency.add',
+            [
+                'fields' => [
+                    'CURRENCY' => 'CNY',
+                    'BASE' => 'N',
+                    'AMOUNT' => 12.2251,
+                    'AMOUNT_CNT' => 1,
+                    'SORT' => 9000,
+                    'LANG' => [
+                        'de' => [
+                            'DECIMALS' => 2,
+                            'DEC_POINT' => '.',
+                            'FORMAT_STRING' => '# CNY',
+                            'FULL_NAME' => 'yuan',
+                            'HIDE_ZERO' => 'Y',
+                            'THOUSANDS_VARIANT' => 'S',
+                        ],
+                        'en' => [
+                            'DECIMALS' => 2,
+                            'DEC_POINT' => ',',
+                            'FORMAT_STRING' => '# CNY',
+                            'FULL_NAME' => 'yuan',
+                            'HIDE_ZERO' => 'Y',
+                            'THOUSANDS_SEP' => '.',
+                        ],
+                    ],
+                ]
+            ]
+        );
+
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
         ```
 
     - Go
@@ -534,53 +532,11 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         </script>
         ```
 
-    - PHP
-
-        ```php
-        require_once('crest.php');
-
-        $result = CRest::call(
-            'crm.currency.add',
-            [
-                'fields' => [
-                    'CURRENCY' => 'IDR',
-                    'AMOUNT' => 54.8738,
-                    'AMOUNT_CNT' => 10000,
-                    'SORT' => 8000,
-                    'LANG' => [
-                        'de' => [
-                            'DECIMALS' => 2,
-                            'DEC_POINT' => '.',
-                            'FORMAT_STRING' => 'Rp#',
-                            'FULL_NAME' => 'rupee',
-                            'HIDE_ZERO' => 'Y',
-                            'THOUSANDS_VARIANT' => 'C',
-                        ],
-                        'en' => [
-                            'DECIMALS' => 2,
-                            'DEC_POINT' => '.',
-                            'FORMAT_STRING' => 'Rp#',
-                            'FULL_NAME' => 'rupee',
-                            'HIDE_ZERO' => 'Y',
-                            'THOUSANDS_VARIANT' => 'C',
-                        ]
-                    ]
-                ]
-            ]
-        );
-
-        echo '<PRE>';
-        print_r($result);
-        echo '</PRE>';
-        ```
-
     - Python
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.currency.add(
@@ -622,6 +578,46 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
             print(f"Bitrix SDK Error: {error.message}")
         except Exception as error:
             print(f"Unexpected error: {error}")
+        ```
+
+    - PHP
+
+        ```php
+        require_once('crest.php');
+
+        $result = CRest::call(
+            'crm.currency.add',
+            [
+                'fields' => [
+                    'CURRENCY' => 'IDR',
+                    'AMOUNT' => 54.8738,
+                    'AMOUNT_CNT' => 10000,
+                    'SORT' => 8000,
+                    'LANG' => [
+                        'de' => [
+                            'DECIMALS' => 2,
+                            'DEC_POINT' => '.',
+                            'FORMAT_STRING' => 'Rp#',
+                            'FULL_NAME' => 'rupee',
+                            'HIDE_ZERO' => 'Y',
+                            'THOUSANDS_VARIANT' => 'C',
+                        ],
+                        'en' => [
+                            'DECIMALS' => 2,
+                            'DEC_POINT' => '.',
+                            'FORMAT_STRING' => 'Rp#',
+                            'FULL_NAME' => 'rupee',
+                            'HIDE_ZERO' => 'Y',
+                            'THOUSANDS_VARIANT' => 'C',
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
         ```
 
     - Go

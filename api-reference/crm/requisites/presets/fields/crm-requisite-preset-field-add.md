@@ -160,6 +160,41 @@ The alternative name is displayed in various forms for filling out requisites. D
     </script>
     ```
 
+- Python
+
+    Example
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.requisite.preset.field.add(
+            preset={
+                "ID": 27,
+            },
+            fields={
+                "FIELD_NAME": "RQ_NAME",
+                "FIELD_TITLE": "TEST",
+                "IN_SHORT_LIST": "N",
+                "SORT": 580,
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -191,43 +226,6 @@ The alternative name is displayed in various forms for filling out requisites. D
         error_log($e->getMessage());
         echo 'Error adding custom field: ' . $e->getMessage();
     }
-    ```
-
-- Python
-
-    Example
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.requisite.preset.field.add(
-            preset={
-                "ID": 27,
-            },
-            fields={
-                "FIELD_NAME": "RQ_NAME",
-                "FIELD_TITLE": "TEST",
-                "IN_SHORT_LIST": "N",
-                "SORT": 580,
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js

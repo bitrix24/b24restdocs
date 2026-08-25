@@ -79,6 +79,32 @@ Use the following parameters:
     const dialogId = `chat${chatId}`
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="user_id/webhook_key",
+    )
+    client = Client(token)
+
+    try:
+        task = client.tasks.task.get(
+            bitrix_id=3711,
+            select=["ID", "CHAT_ID"],
+        ).response.result["task"]
+    except BitrixAPIError as error:
+        print(f"Error retrieving the task: {error}")
+        raise
+
+    chat_id = task["chatId"]
+    dialog_id = f"chat{chat_id}"
+    ```
+
+
 - PHP
 
     ```php
@@ -107,32 +133,6 @@ Use the following parameters:
     $chatId = $task['chatId'];
     $dialogId = 'chat' . $chatId;
     ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    token = BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="user_id/webhook_key",
-    )
-    client = Client(token)
-
-    try:
-        task = client.tasks.task.get(
-            bitrix_id=3711,
-            select=["ID", "CHAT_ID"],
-        ).response.result["task"]
-    except BitrixAPIError as error:
-        print(f"Error retrieving the task: {error}")
-        raise
-
-    chat_id = task["chatId"]
-    dialog_id = f"chat{chat_id}"
-    ```
-
 {% endlist %}
 
 As a result, you get the task chat `chatId`. Convert the value `861` into `dialogId`: `chat861`.
@@ -187,30 +187,6 @@ Use the following parameters:
     $b24.destroy()
     ```
 
-- PHP
-
-    ```php
-    try {
-        $response = $serviceBuilder->core->call(
-            'im.v2.File.upload',
-            [
-                'dialogId' => $dialogId,
-                'fields' => [
-                    'name' => 'file.pdf',
-                    'content' => base64_encode(file_get_contents('/path/to/file.pdf')),
-                    'message' => 'Comment with a file',
-                ],
-            ]
-        );
-    } catch (BaseException $e) {
-        echo 'Error sending the comment with a file: ' . $e->getMessage();
-        return;
-    }
-
-    $result = $response->getResponseData()->getResult();
-    echo 'Comment created, MESSAGE_ID: ' . $result['messageId'];
-    ```
-
 - Python
 
     ```python
@@ -238,6 +214,30 @@ Use the following parameters:
     print(result["messageId"], result["file"]["id"])
     ```
 
+
+- PHP
+
+    ```php
+    try {
+        $response = $serviceBuilder->core->call(
+            'im.v2.File.upload',
+            [
+                'dialogId' => $dialogId,
+                'fields' => [
+                    'name' => 'file.pdf',
+                    'content' => base64_encode(file_get_contents('/path/to/file.pdf')),
+                    'message' => 'Comment with a file',
+                ],
+            ]
+        );
+    } catch (BaseException $e) {
+        echo 'Error sending the comment with a file: ' . $e->getMessage();
+        return;
+    }
+
+    $result = $response->getResponseData()->getResult();
+    echo 'Comment created, MESSAGE_ID: ' . $result['messageId'];
+    ```
 {% endlist %}
 
 The method returns the message identifier `messageId`, the chat identifier `chatId`, the dialog identifier `dialogId`, and file data in the `file` object.
@@ -306,6 +306,28 @@ Through REST, verify that the task is linked to the same chat where the file was
     console.log(fileResponse.getData().result)
     ```
 
+- Python
+
+    ```python
+    task = client.tasks.task.get(
+        bitrix_id=3711,
+        select=["ID", "CHAT_ID"],
+    ).response.result["task"]
+
+    print(task["chatId"])
+
+    file = token.call_method(
+        "im.v2.File.download",
+        {
+            "dialogId": result["dialogId"],
+            "fileId": result["file"]["id"],
+        },
+    )["result"]
+
+    print(file)
+    ```
+
+
 - PHP
 
     ```php
@@ -329,28 +351,6 @@ Through REST, verify that the task is linked to the same chat where the file was
 
     print_r($file);
     ```
-
-- Python
-
-    ```python
-    task = client.tasks.task.get(
-        bitrix_id=3711,
-        select=["ID", "CHAT_ID"],
-    ).response.result["task"]
-
-    print(task["chatId"])
-
-    file = token.call_method(
-        "im.v2.File.download",
-        {
-            "dialogId": result["dialogId"],
-            "fileId": result["file"]["id"],
-        },
-    )["result"]
-
-    print(file)
-    ```
-
 {% endlist %}
 
 The scenario is successful if the task `chatId` matches the `result.chatId` value returned by [im.v2.File.upload](../../api-reference/chat-bots/chat-bots-v2/im.v2/files/file-upload.md), and the upload response contains the following fields:

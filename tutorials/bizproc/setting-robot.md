@@ -68,6 +68,29 @@ In the examples, replace:
     const $b24 = await initializeB24Frame()
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from flask import request
+    from b24pysdk import BitrixApp, BitrixToken, Client
+
+    APP = BitrixApp(client_id="local.xxxxxxxx.xxxxxxxx", client_secret="yyyyyyyy")
+
+    def make_client(auth: dict) -> tuple[Client, BitrixToken]:
+        token = BitrixToken(
+            domain=auth["domain"],
+            auth_token=auth["access_token"],
+            refresh_token=auth.get("refresh_token", ""),
+            bitrix_app=APP,
+        )
+        return Client(token), token
+
+    auth = request.json["auth"]  # auth dictionary from the handler request body
+    client, token = make_client(auth)
+    ```
+
+
 - PHP
 
     ```php
@@ -100,29 +123,6 @@ In the examples, replace:
     $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
         ->init($appProfile, $authToken, $domain, DefaultOAuthServerUrl::default());
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-    from flask import request
-    from b24pysdk import BitrixApp, BitrixToken, Client
-
-    APP = BitrixApp(client_id="local.xxxxxxxx.xxxxxxxx", client_secret="yyyyyyyy")
-
-    def make_client(auth: dict) -> tuple[Client, BitrixToken]:
-        token = BitrixToken(
-            domain=auth["domain"],
-            auth_token=auth["access_token"],
-            refresh_token=auth.get("refresh_token", ""),
-            bitrix_app=APP,
-        )
-        return Client(token), token
-
-    auth = request.json["auth"]  # auth dictionary from the handler request body
-    client, token = make_client(auth)
-    ```
-
 {% endlist %}
 
 ## 1. Register the Automation Rule
@@ -166,6 +166,27 @@ To make parameters configurable through the application, pass `USE_PLACEMENT = '
     console.log(response.getData().result)
     ```
 
+- Python
+
+    ```python
+    # client is built on the application token
+    result = client.bizproc.robot.add(
+        code="robot",
+        handler="https://your-domain.example/handler.php",
+        name="Embedded Automation rule example",
+        auth_user_id=1,
+        use_placement=True,
+        placement_handler="https://your-domain.example/handler.php",
+        properties={
+            "string": {"Name": "Parameter 1", "Type": "string"},
+            "stringm": {"Name": "Parameter 2", "Type": "string", "Multiple": "Y", "Default": ["value 1", "value 2"]},
+        },
+    ).response
+
+    print(result.result)
+    ```
+
+
 - PHP
 
     ```php
@@ -189,27 +210,6 @@ To make parameters configurable through the application, pass `USE_PLACEMENT = '
 
     var_dump($response->getResponseData()->getResult());
     ```
-
-- Python
-
-    ```python
-    # client is built on the application token
-    result = client.bizproc.robot.add(
-        code="robot",
-        handler="https://your-domain.example/handler.php",
-        name="Embedded Automation rule example",
-        auth_user_id=1,
-        use_placement=True,
-        placement_handler="https://your-domain.example/handler.php",
-        properties={
-            "string": {"Name": "Parameter 1", "Type": "string"},
-            "stringm": {"Name": "Parameter 2", "Type": "string", "Multiple": "Y", "Default": ["value 1", "value 2"]},
-        },
-    ).response
-
-    print(result.result)
-    ```
-
 {% endlist %}
 
 A successful call returns `true`.
@@ -295,16 +295,6 @@ To retrieve a list of installed Automation rules and delete an Automation rule:
     })
     ```
 
-- PHP
-
-    ```php
-    // Application Automation rule list
-    $codes = $b24->getBizProcScope()->robot()->list()->getRobots();
-
-    // Delete Automation rule by code
-    $b24->getBizProcScope()->robot()->delete('robot');
-    ```
-
 - Python
 
     ```python
@@ -316,6 +306,16 @@ To retrieve a list of installed Automation rules and delete an Automation rule:
     client.bizproc.robot.delete(code="robot").response
     ```
 
+
+- PHP
+
+    ```php
+    // Application Automation rule list
+    $codes = $b24->getBizProcScope()->robot()->list()->getRobots();
+
+    // Delete Automation rule by code
+    $b24->getBizProcScope()->robot()->delete('robot');
+    ```
 {% endlist %}
 
 The `bizproc.robot.list` method returns an array of application Automation rule codes.
@@ -367,42 +367,6 @@ The handler renders a form from the `properties` list and saves values with the 
     document.body.appendChild(form)
     ```
 
-- PHP
-
-    ```php
-    <?php
-    // The server returns the handler's HTML page. PLACEMENT_OPTIONS arrives as a JSON string.
-    $options = json_decode($_POST['PLACEMENT_OPTIONS'] ?? '{}', true) ?: [];
-    ?>
-    <!DOCTYPE html>
-    <html>
-        <body>
-            <form name="props">
-            <?php foreach (($options['properties'] ?? []) as $id => $property):
-                $multiple = ($property['Multiple'] ?? false) === true || ($property['Multiple'] ?? '') === 'Y' || ($property['MULTIPLE'] ?? '') === 'Y';
-                $values = (array)($options['current_values'][$id] ?? '');
-                $name = $multiple ? $id . '[]' : $id; ?>
-                <label><?=htmlspecialchars($property['Name'] ?? $property['NAME'])?>:</label>
-                <?php foreach ($values as $v): ?>
-                    <input name="<?=$name?>" value="<?=htmlspecialchars((string)$v)?>"
-                           onchange="setPropertyValue('<?=$id?>', this.name, <?=(int)$multiple?>)">
-                <?php endforeach; ?>
-            <?php endforeach; ?>
-            </form>
-            <script type="module">
-                // b24jssdk is connected via an ESM build or compiled by a bundler
-                import { initializeB24Frame } from 'https://esm.sh/@bitrix24/b24jssdk'
-                const $b24 = await initializeB24Frame()
-                window.setPropertyValue = (id, inputName, multiple) => {
-                    const data = new FormData(document.forms.props)
-                    const value = multiple ? data.getAll(inputName) : data.get(inputName)
-                    $b24.placement.call('setPropertyValue', { [id]: value })
-                }
-            </script>
-        </body>
-    </html>
-    ```
-
 - Python
 
     ```python
@@ -440,6 +404,42 @@ The handler renders a form from the `properties` list and saves values with the 
     page = f"<!DOCTYPE html><html><body>\n{form_html}\n" + script + "</body></html>"
     ```
 
+
+- PHP
+
+    ```php
+    <?php
+    // The server returns the handler's HTML page. PLACEMENT_OPTIONS arrives as a JSON string.
+    $options = json_decode($_POST['PLACEMENT_OPTIONS'] ?? '{}', true) ?: [];
+    ?>
+    <!DOCTYPE html>
+    <html>
+        <body>
+            <form name="props">
+            <?php foreach (($options['properties'] ?? []) as $id => $property):
+                $multiple = ($property['Multiple'] ?? false) === true || ($property['Multiple'] ?? '') === 'Y' || ($property['MULTIPLE'] ?? '') === 'Y';
+                $values = (array)($options['current_values'][$id] ?? '');
+                $name = $multiple ? $id . '[]' : $id; ?>
+                <label><?=htmlspecialchars($property['Name'] ?? $property['NAME'])?>:</label>
+                <?php foreach ($values as $v): ?>
+                    <input name="<?=$name?>" value="<?=htmlspecialchars((string)$v)?>"
+                           onchange="setPropertyValue('<?=$id?>', this.name, <?=(int)$multiple?>)">
+                <?php endforeach; ?>
+            <?php endforeach; ?>
+            </form>
+            <script type="module">
+                // b24jssdk is connected via an ESM build or compiled by a bundler
+                import { initializeB24Frame } from 'https://esm.sh/@bitrix24/b24jssdk'
+                const $b24 = await initializeB24Frame()
+                window.setPropertyValue = (id, inputName, multiple) => {
+                    const data = new FormData(document.forms.props)
+                    const value = multiple ? data.getAll(inputName) : data.get(inputName)
+                    $b24.placement.call('setPropertyValue', { [id]: value })
+                }
+            </script>
+        </body>
+    </html>
+    ```
 {% endlist %}
 
 ## Check the Result

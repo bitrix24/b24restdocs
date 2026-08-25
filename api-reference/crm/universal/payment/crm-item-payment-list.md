@@ -157,44 +157,13 @@ Retrieves a list of payments for a specific CRM object.
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'crm.item.payment.list',
-                [
-                    'entityId'     => 13123,
-                    'entityTypeId' => 2,
-                    'filter'       => [
-                        "@id" => [1036, 1037]
-                    ],
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error fetching payment list: ' . $e->getMessage();
-    }
-    ```
-
 - Python
 
     Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.item.payment.list(
@@ -222,10 +191,8 @@ Retrieves a list of payments for a specific CRM object.
     Example `as_list`
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.item.payment.list(
@@ -254,10 +221,8 @@ Retrieves a list of payments for a specific CRM object.
     Example `as_list_fast`
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.item.payment.list(
@@ -281,6 +246,35 @@ Retrieves a list of payments for a specific CRM object.
         print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.payment.list',
+                [
+                    'entityId'     => 13123,
+                    'entityTypeId' => 2,
+                    'filter'       => [
+                        "@id" => [1036, 1037]
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error fetching payment list: ' . $e->getMessage();
+    }
     ```
 
 - BX24.js

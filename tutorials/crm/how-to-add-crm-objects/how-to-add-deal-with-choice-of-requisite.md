@@ -61,6 +61,14 @@ To generate the fields, we use two methods:
     })).getData().result
     ```
 
+- Python
+
+    ```python
+    ar_address_fields = client.crm.address.fields().result
+    ar_presets = client.crm.requisite.preset.list(select=["ID", "NAME"]).result
+    ```
+
+
 - PHP
 
     ```php
@@ -69,14 +77,6 @@ To generate the fields, we use two methods:
         order: [], filter: [], select: ["ID", "NAME"]
     )->getRequisitePresets();
     ```
-
-- Python
-
-    ```python
-    ar_address_fields = client.crm.address.fields().result
-    ar_presets = client.crm.requisite.preset.list(select=["ID", "NAME"]).result
-    ```
-
 {% endlist %}
 
 The [crm.requisite.preset.list](../../../api-reference/crm/requisites/presets/crm-requisite-preset-list.md) method returns an array of objects, not identifier-name pairs. For the drop-down list, iterate over this array and take `ID` and `NAME` from each object.
@@ -139,14 +139,6 @@ Remove unnecessary address fields from the `$arAddressFields` array so they are 
     }
     ```
 
-- PHP
-
-    ```php
-    foreach (['TYPE_ID', 'ENTITY_TYPE_ID', 'ENTITY_ID', 'COUNTRY_CODE', 'ANCHOR_TYPE_ID', 'ANCHOR_ID'] as $field) {
-        unset($arAddressFields[$field]);
-    }
-    ```
-
 - Python
 
     ```python
@@ -154,6 +146,14 @@ Remove unnecessary address fields from the `$arAddressFields` array so they are 
         ar_address_fields.pop(f, None)
     ```
 
+
+- PHP
+
+    ```php
+    foreach (['TYPE_ID', 'ENTITY_TYPE_ID', 'ENTITY_ID', 'COUNTRY_CODE', 'ANCHOR_TYPE_ID', 'ANCHOR_ID'] as $field) {
+        unset($arAddressFields[$field]);
+    }
+    ```
 {% endlist %}
 
 Create an HTML form with the following fields:
@@ -195,28 +195,6 @@ The form collects the data and sends it to the handler using the `POST` method. 
         </form>`
     ```
 
-- PHP
-
-    ```html
-    <form id="form_to_crm">
-        <select name="REQ_TYPE" required>
-            <option value="" disabled selected>Select</option>
-            <?php foreach($arPresets as $preset):?>
-                <option value="<?=$preset->ID?>"><?=$preset->NAME?></option>
-            <?php endforeach;?>
-        </select>
-        <input type="text" name="TITLE" placeholder="Org name" required>
-        <input type="text" name="INN" placeholder="INN">
-        <input type="text" name="PHONE" placeholder="Phone">
-        <?php if(is_array($arAddressFields)):?>
-            <?php foreach($arAddressFields as $key=>$arField):?>
-                <input type="text" name="ADDRESS[<?=$key?>]" placeholder="<?=$arField['title']?>" <?=($arField['isRequired'])?'required':'';?>>
-            <?php endforeach;?>
-        <?php endif;?>
-        <input type="submit" value="Submit">
-    </form>
-    ```
-
 - Python
 
     ```python
@@ -248,6 +226,28 @@ The form collects the data and sends it to the handler using the `POST` method. 
         </form>"""
     ```
 
+
+- PHP
+
+    ```html
+    <form id="form_to_crm">
+        <select name="REQ_TYPE" required>
+            <option value="" disabled selected>Select</option>
+            <?php foreach($arPresets as $preset):?>
+                <option value="<?=$preset->ID?>"><?=$preset->NAME?></option>
+            <?php endforeach;?>
+        </select>
+        <input type="text" name="TITLE" placeholder="Org name" required>
+        <input type="text" name="INN" placeholder="INN">
+        <input type="text" name="PHONE" placeholder="Phone">
+        <?php if(is_array($arAddressFields)):?>
+            <?php foreach($arAddressFields as $key=>$arField):?>
+                <input type="text" name="ADDRESS[<?=$key?>]" placeholder="<?=$arField['title']?>" <?=($arField['isRequired'])?'required':'';?>>
+            <?php endforeach;?>
+        <?php endif;?>
+        <input type="submit" value="Submit">
+    </form>
+    ```
 {% endlist %}
 
 ### Full Code Example
@@ -317,75 +317,6 @@ The form collects the data and sends it to the handler using the `POST` method. 
     })
 
     app.listen(3000)
-    ```
-
-- PHP
-
-    ```php
-    <?php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Psr\Log\NullLogger;
-
-    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
-
-    $arAddressFields = $sb->getCRMScope()->address()->fields()->getFieldsDescription();
-
-    $arPresets = $sb->getCRMScope()->requisitePreset()->list(
-        order: [], filter: [], select: ["ID", "NAME"]
-    )->getRequisitePresets();
-    if(!empty($arPresets)):
-        //unset system address fields
-        unset($arAddressFields['TYPE_ID']);
-        unset($arAddressFields['ENTITY_TYPE_ID']);
-        unset($arAddressFields['ENTITY_ID']);
-        //unset uninteresting address fields
-        unset($arAddressFields['COUNTRY_CODE']);
-        unset($arAddressFields['ANCHOR_TYPE_ID']);
-        unset($arAddressFields['ANCHOR_ID']);
-        ?>
-        <form id="form_to_crm">
-            <select name="REQ_TYPE" required>
-                <option value="" disabled selected>Select</option>
-                <?php foreach($arPresets as $preset):?>
-                    <option value="<?=$preset->ID?>"><?=$preset->NAME?></option>
-                <?php endforeach;?>
-            </select>
-            <input type="text" name="TITLE" placeholder="Org name" required>
-            <input type="text" name="INN" placeholder="INN">
-            <input type="text" name="PHONE" placeholder="Phone">
-            <?php if(is_array($arAddressFields)):?>
-                <?php foreach($arAddressFields as $key=>$arField):?>
-                    <input type="text" name="ADDRESS[<?=$key?>]" placeholder="<?=$arField['title']?>" <?=($arField['isRequired'])?'required':'';?>>
-                <?php endforeach;?>
-            <?php endif;?>
-            <input type="submit" value="Submit">
-        </form>
-    <?php else:?>
-        No requisite types.
-    <?php endif;?>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-    $(document).ready(function() {
-        $('#form_to_crm').on( 'submit', function(el) {//event submit form
-            el.preventDefault();//the default action of the event will not be triggered
-            var formData = $(this).serialize();
-            $.ajax({
-                'method': 'POST',
-                'dataType': 'json',
-                'url': 'form.php', // file for saving completed forms
-                'data': formData,
-                success: function(data){//success callback
-                    alert(data.message);
-                }
-            });
-        });
-    });
-    </script>
     ```
 
 - Python
@@ -458,6 +389,75 @@ The form collects the data and sends it to the handler using the `POST` method. 
             </form>""" + SCRIPT
     ```
 
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $arAddressFields = $sb->getCRMScope()->address()->fields()->getFieldsDescription();
+
+    $arPresets = $sb->getCRMScope()->requisitePreset()->list(
+        order: [], filter: [], select: ["ID", "NAME"]
+    )->getRequisitePresets();
+    if(!empty($arPresets)):
+        //unset system address fields
+        unset($arAddressFields['TYPE_ID']);
+        unset($arAddressFields['ENTITY_TYPE_ID']);
+        unset($arAddressFields['ENTITY_ID']);
+        //unset uninteresting address fields
+        unset($arAddressFields['COUNTRY_CODE']);
+        unset($arAddressFields['ANCHOR_TYPE_ID']);
+        unset($arAddressFields['ANCHOR_ID']);
+        ?>
+        <form id="form_to_crm">
+            <select name="REQ_TYPE" required>
+                <option value="" disabled selected>Select</option>
+                <?php foreach($arPresets as $preset):?>
+                    <option value="<?=$preset->ID?>"><?=$preset->NAME?></option>
+                <?php endforeach;?>
+            </select>
+            <input type="text" name="TITLE" placeholder="Org name" required>
+            <input type="text" name="INN" placeholder="INN">
+            <input type="text" name="PHONE" placeholder="Phone">
+            <?php if(is_array($arAddressFields)):?>
+                <?php foreach($arAddressFields as $key=>$arField):?>
+                    <input type="text" name="ADDRESS[<?=$key?>]" placeholder="<?=$arField['title']?>" <?=($arField['isRequired'])?'required':'';?>>
+                <?php endforeach;?>
+            <?php endif;?>
+            <input type="submit" value="Submit">
+        </form>
+    <?php else:?>
+        No requisite types.
+    <?php endif;?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#form_to_crm').on( 'submit', function(el) {//event submit form
+            el.preventDefault();//the default action of the event will not be triggered
+            var formData = $(this).serialize();
+            $.ajax({
+                'method': 'POST',
+                'dataType': 'json',
+                'url': 'form.php', // file for saving completed forms
+                'data': formData,
+                success: function(data){//success callback
+                    alert(data.message);
+                }
+            });
+        });
+    });
+    </script>
+    ```
 {% endlist %}
 
 ## 2. Create a Form Handler
@@ -483,6 +483,18 @@ Retrieve and process the data from the form.
     }
     ```
 
+- Python
+
+    ```python
+    i_requisite_preset_id = int(request.form.get("REQ_TYPE", 0))
+    s_title = request.form.get("TITLE", "")
+    s_inn = request.form.get("INN", "")
+    s_phone = request.form.get("PHONE", "")
+    ar_address = {k[len("ADDRESS["):-1]: v for k, v in request.form.to_dict().items()
+                  if k.startswith("ADDRESS[")}
+    ```
+
+
 - PHP
 
     ```php
@@ -495,18 +507,6 @@ Retrieve and process the data from the form.
         $arAddress[$key] = htmlspecialchars($val);
     }
     ```
-
-- Python
-
-    ```python
-    i_requisite_preset_id = int(request.form.get("REQ_TYPE", 0))
-    s_title = request.form.get("TITLE", "")
-    s_inn = request.form.get("INN", "")
-    s_phone = request.form.get("PHONE", "")
-    ar_address = {k[len("ADDRESS["):-1]: v for k, v in request.form.to_dict().items()
-                  if k.startswith("ADDRESS[")}
-    ```
-
 {% endlist %}
 
 - `$iRequisitePresetID` — convert the requisite template identifier `REQ_TYPE` to an integer
@@ -534,13 +534,6 @@ The third mandatory field, `ENTITY_ID`, is substituted later: it is the requisit
     arAddress.ENTITY_TYPE_ID = 8
     ```
 
-- PHP
-
-    ```php
-    $arAddress['TYPE_ID'] = 1;
-    $arAddress['ENTITY_TYPE_ID'] = 8;
-    ```
-
 - Python
 
     ```python
@@ -548,6 +541,13 @@ The third mandatory field, `ENTITY_ID`, is substituted later: it is the requisit
     ar_address["ENTITY_TYPE_ID"] = 8
     ```
 
+
+- PHP
+
+    ```php
+    $arAddress['TYPE_ID'] = 1;
+    $arAddress['ENTITY_TYPE_ID'] = 8;
+    ```
 {% endlist %}
 
 The system stores the phone number as a [crm_multifield](../../../api-reference/crm/data-types.md#crm_multifield) array of objects, so the `$sPhone` value must be converted to an array format:
@@ -566,18 +566,18 @@ If the `$sPhone` variable has no value, specify an empty array.
     const arPhone = sPhone ? [{ VALUE: sPhone, VALUE_TYPE: 'WORK' }] : []
     ```
 
-- PHP
-
-    ```php
-    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
-    ```
-
 - Python
 
     ```python
     ar_phone = [{"VALUE": s_phone, "VALUE_TYPE": "WORK"}] if s_phone else []
     ```
 
+
+- PHP
+
+    ```php
+    $arPhone = (!empty($sPhone)) ? array(array('VALUE' => $sPhone, 'VALUE_TYPE' => 'WORK')) : array();
+    ```
 {% endlist %}
 
 ### Add a Company
@@ -609,16 +609,6 @@ Check which mandatory fields are configured for companies in your Bitrix24. All 
     const iCompanyID = companyResponse.getData()?.result
     ```
 
-- PHP
-
-    ```php
-    $iCompanyID = $sb->getCRMScope()->company()->add([
-        'TITLE' => $sTitle,
-        'COMPANY_TYPE' => 'CUSTOMER',
-        'PHONE' => $arPhone,
-    ])->getId();
-    ```
-
 - Python
 
     ```python
@@ -629,6 +619,16 @@ Check which mandatory fields are configured for companies in your Bitrix24. All 
     }).result
     ```
 
+
+- PHP
+
+    ```php
+    $iCompanyID = $sb->getCRMScope()->company()->add([
+        'TITLE' => $sTitle,
+        'COMPANY_TYPE' => 'CUSTOMER',
+        'PHONE' => $arPhone,
+    ])->getId();
+    ```
 {% endlist %}
 
 If the company is successfully created, the method returns its identifier in `$iCompanyID`. Retain the value: both the requisite and the deal need it.
@@ -677,18 +677,6 @@ To add Company details, use the [crm.requisite.add](../../../api-reference/crm/r
     const iRequisiteID = requisiteResponse.getData()?.result
     ```
 
-- PHP
-
-    ```php
-    $iRequisiteID = $sb->getCRMScope()->requisite()->add(
-        entityId: $iCompanyID,
-        entityTypeId: 4,
-        requisitePresetId: $iRequisitePresetID,
-        requisiteName: $sTitle,
-        fields: ['ACTIVE' => 'Y', 'RQ_INN' => $sINN]
-    )->getId();
-    ```
-
 - Python
 
     ```python
@@ -702,6 +690,18 @@ To add Company details, use the [crm.requisite.add](../../../api-reference/crm/r
     }).result
     ```
 
+
+- PHP
+
+    ```php
+    $iRequisiteID = $sb->getCRMScope()->requisite()->add(
+        entityId: $iCompanyID,
+        entityTypeId: 4,
+        requisitePresetId: $iRequisitePresetID,
+        requisiteName: $sTitle,
+        fields: ['ACTIVE' => 'Y', 'RQ_INN' => $sINN]
+    )->getId();
+    ```
 {% endlist %}
 
 If the Company details are successfully added, the method returns the record identifier in `$iRequisiteID`.
@@ -730,18 +730,18 @@ The method does not check whether a template with the passed `PRESET_ID` exists.
        arAddress.ENTITY_ID = iRequisiteID
        ```
 
-   - PHP
-
-       ```php
-       $arAddress['ENTITY_ID'] = $iRequisiteID;
-       ```
-
    - Python
 
        ```python
        ar_address["ENTITY_ID"] = i_requisite_id
        ```
 
+
+   - PHP
+
+       ```php
+       $arAddress['ENTITY_ID'] = $iRequisiteID;
+       ```
    {% endlist %}
 
 2. Use the [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md) method. You must pass the `$arAddress` array to it
@@ -756,18 +756,18 @@ The method does not check whether a template with the passed `PRESET_ID` exists.
        })).getData().result
        ```
 
-   - PHP
-
-       ```php
-       $bAddressAdded = $sb->getCRMScope()->address()->add($arAddress)->isSuccess();
-       ```
-
    - Python
 
        ```python
        b_address_added = client.crm.address.add(fields=ar_address).result
        ```
 
+
+   - PHP
+
+       ```php
+       $bAddressAdded = $sb->getCRMScope()->address()->add($arAddress)->isSuccess();
+       ```
    {% endlist %}
 
 The method returns one of the following values in the `$bAddressAdded` variable:
@@ -798,6 +798,13 @@ Create a `$arDealFields` array with the deal data.
     const arDealFields = { TITLE: sTitle, COMPANY_ID: iCompanyID }
     ```
 
+- Python
+
+    ```python
+    ar_deal_fields = {"TITLE": s_title, "COMPANY_ID": i_company_id}
+    ```
+
+
 - PHP
 
     ```php
@@ -806,13 +813,6 @@ Create a `$arDealFields` array with the deal data.
         'COMPANY_ID' => $iCompanyID
     ];
     ```
-
-- Python
-
-    ```python
-    ar_deal_fields = {"TITLE": s_title, "COMPANY_ID": i_company_id}
-    ```
-
 {% endlist %}
 
 You do not need to pass the requisite to the deal separately. The deal takes the requisite from the linked company: Bitrix24 substitutes the client requisite automatically when a deal is created with `COMPANY_ID`.
@@ -836,18 +836,18 @@ To add a deal, use the [crm.deal.add](../../../api-reference/crm/deals/crm-deal-
     const iDealID = dealResponse.getData()?.result
     ```
 
-- PHP
-
-    ```php
-    $iDealID = $sb->getCRMScope()->deal()->add($arDealFields)->getId();
-    ```
-
 - Python
 
     ```python
     i_deal_id = client.crm.deal.add(fields=ar_deal_fields).result
     ```
 
+
+- PHP
+
+    ```php
+    $iDealID = $sb->getCRMScope()->deal()->add($arDealFields)->getId();
+    ```
 {% endlist %}
 
 If the deal is successfully created, the method returns its identifier.
@@ -882,6 +882,16 @@ Through REST, the link between the deal and the requisite is checked with the [c
     console.dir(linkResponse.getData().result)
     ```
 
+- Python
+
+    ```python
+    link = client.crm.requisite.link.get(
+        entity_type_id=2,
+        entity_id=i_deal_id,
+    ).result
+    ```
+
+
 - PHP
 
     ```php
@@ -894,16 +904,6 @@ Through REST, the link between the deal and the requisite is checked with the [c
         ]
     )->getResponseData()->getResult();
     ```
-
-- Python
-
-    ```python
-    link = client.crm.requisite.link.get(
-        entity_type_id=2,
-        entity_id=i_deal_id,
-    ).result
-    ```
-
 {% endlist %}
 
 The scenario is complete if `REQUISITE_ID` in the response matches the requisite identifier from the "Add Requisites" step.
@@ -1034,6 +1034,66 @@ If the deal was created but the requisite was not linked to it, the company has 
     }
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk flask
+    from flask import Flask, request, jsonify
+    from b24pysdk import BitrixWebhook, Client
+
+    app = Flask(__name__)
+
+    client = Client(BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
+    ))
+
+    @app.route("/form", methods=["POST"])
+    def handle_form():
+        i_requisite_preset_id = int(request.form.get("REQ_TYPE", 0))
+        s_title = request.form.get("TITLE", "")
+        s_inn = request.form.get("INN", "")
+        s_phone = request.form.get("PHONE", "")
+
+        ar_address = {k[len("ADDRESS["):-1]: v for k, v in request.form.to_dict().items()
+                      if k.startswith("ADDRESS[")}
+        ar_address["TYPE_ID"] = 1  # 1 — actual address (crm.enum.addresstype)
+        ar_address["ENTITY_TYPE_ID"] = 8  # 8 — attribute (crm.enum.ownertype)
+
+        ar_phone = [{"VALUE": s_phone, "VALUE_TYPE": "WORK"}] if s_phone else []
+
+        try:
+            i_company_id = client.crm.company.add(fields={
+                "TITLE": s_title,
+                "COMPANY_TYPE": "CUSTOMER",  # client (crm.status.list ENTITY_ID=COMPANY_TYPE)
+                "PHONE": ar_phone,
+            }).result
+
+            i_requisite_id = client.crm.requisite.add(fields={
+                "ENTITY_TYPE_ID": 4,  # 4 — company (crm.enum.ownertype)
+                "ENTITY_ID": i_company_id,
+                "PRESET_ID": i_requisite_preset_id,
+                "ACTIVE": "Y",
+                "NAME": s_title,
+                "RQ_INN": s_inn,
+            }).result
+
+            if i_requisite_id:
+                ar_address["ENTITY_ID"] = i_requisite_id
+                client.crm.address.add(fields=ar_address)
+
+            # We do not pass the requisite to the deal: a deal has no REQUISITE_ID field,
+            # Bitrix24 substitutes the requisite of the linked company itself
+            client.crm.deal.add(fields={
+                "TITLE": s_title,
+                "COMPANY_ID": i_company_id,
+            })
+            return jsonify({"message": "add"})
+        except Exception as e:
+            return jsonify({"message": f"not added: {e}"})
+    ```
+
+
 - PHP
 
     ```php
@@ -1094,66 +1154,6 @@ If the deal was created but the requisite was not linked to it, the company has 
         echo json_encode(['message' => 'not added: ' . $e->getMessage()]);
     }
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk flask
-    from flask import Flask, request, jsonify
-    from b24pysdk import BitrixWebhook, Client
-
-    app = Flask(__name__)
-
-    client = Client(BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="USER_ID/TOKEN",  # user_id/token only, without https://
-    ))
-
-    @app.route("/form", methods=["POST"])
-    def handle_form():
-        i_requisite_preset_id = int(request.form.get("REQ_TYPE", 0))
-        s_title = request.form.get("TITLE", "")
-        s_inn = request.form.get("INN", "")
-        s_phone = request.form.get("PHONE", "")
-
-        ar_address = {k[len("ADDRESS["):-1]: v for k, v in request.form.to_dict().items()
-                      if k.startswith("ADDRESS[")}
-        ar_address["TYPE_ID"] = 1  # 1 — actual address (crm.enum.addresstype)
-        ar_address["ENTITY_TYPE_ID"] = 8  # 8 — attribute (crm.enum.ownertype)
-
-        ar_phone = [{"VALUE": s_phone, "VALUE_TYPE": "WORK"}] if s_phone else []
-
-        try:
-            i_company_id = client.crm.company.add(fields={
-                "TITLE": s_title,
-                "COMPANY_TYPE": "CUSTOMER",  # client (crm.status.list ENTITY_ID=COMPANY_TYPE)
-                "PHONE": ar_phone,
-            }).result
-
-            i_requisite_id = client.crm.requisite.add(fields={
-                "ENTITY_TYPE_ID": 4,  # 4 — company (crm.enum.ownertype)
-                "ENTITY_ID": i_company_id,
-                "PRESET_ID": i_requisite_preset_id,
-                "ACTIVE": "Y",
-                "NAME": s_title,
-                "RQ_INN": s_inn,
-            }).result
-
-            if i_requisite_id:
-                ar_address["ENTITY_ID"] = i_requisite_id
-                client.crm.address.add(fields=ar_address)
-
-            # We do not pass the requisite to the deal: a deal has no REQUISITE_ID field,
-            # Bitrix24 substitutes the requisite of the linked company itself
-            client.crm.deal.add(fields={
-                "TITLE": s_title,
-                "COMPANY_ID": i_company_id,
-            })
-            return jsonify({"message": "add"})
-        except Exception as e:
-            return jsonify({"message": f"not added: {e}"})
-    ```
-
 {% endlist %}
 
 ## Continue Learning

@@ -193,6 +193,42 @@ You can get data about the list fields using the [lists.field.get](../fields/lis
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "NAME": "Test item",
+        "PROPERTY_951": [
+            "1269",
+            "1271",
+        ],
+        "PROPERTY_1003": "2024-12-31 23:59:59",
+    }
+
+    try:
+        bitrix_response = client.lists.element.add(
+            iblock_type_id="lists",
+            iblock_id=47,
+            element_code="test_element",
+            list_element_url="#list_id#/element/#section_id#/#element_id#/",
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

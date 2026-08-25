@@ -205,6 +205,36 @@ The method `sale.basketitem.update` modifies the position of the basket in an ex
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    fields = {
+        "quantity": 7,
+        "price": 10,
+        "discountPrice": 990,
+    }
+
+    try:
+        bitrix_response = client.sale.basketitem.update(
+            bitrix_id=6791,
+            fields=fields,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

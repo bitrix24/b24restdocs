@@ -88,6 +88,29 @@ Uploading the file to Drive is required because the `UF_TASK_WEBDAV_FILES` field
     const result = response.getData().result
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="user_id/webhook_key",
+    )
+    client = Client(token)
+
+    result = client.disk.folder.uploadfile(
+        bitrix_id=1739,
+        data={
+            "NAME": "ava555.jpg",
+        },
+        file_content=[
+            "avatar.jpg",
+            "/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAQDAwQDAwQEAwQ///+dAYq6YFKoAv/AFnAa6ArKv8AAtFJVppxCEAulxQ2DWgfMR//2Q==",
+        ],
+    ).response.result
+    ```
+
 - PHP
 
     ```php
@@ -111,29 +134,6 @@ Uploading the file to Drive is required because the `UF_TASK_WEBDAV_FILES` field
     echo '<PRE>';
     print_r($result->getFile());
     echo '</PRE>';
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-
-    token = BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="user_id/webhook_key",
-    )
-    client = Client(token)
-
-    result = client.disk.folder.uploadfile(
-        bitrix_id=1739,
-        data={
-            "NAME": "ava555.jpg",
-        },
-        file_content=[
-            "avatar.jpg",
-            "/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAQDAwQDAwQEAwQ///+dAYq6YFKoAv/AFnAa6ArKv8AAtFJVppxCEAulxQ2DWgfMR//2Q==",
-        ],
-    ).response.result
     ```
 
 - Go
@@ -224,6 +224,20 @@ Use the [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) method wit
     const result = response.getData().result
     ```
 
+- Python
+
+    ```python
+    result = client.tasks.task.add(
+        fields={
+            "TITLE": "task for test",
+            "RESPONSIBLE_ID": 1,
+            "UF_TASK_WEBDAV_FILES": [
+                "n6687",
+            ],
+        }
+    ).response.result
+    ```
+
 - PHP
 
     ```php
@@ -243,20 +257,6 @@ Use the [tasks.task.add](../../api-reference/tasks/tasks-task-add.md) method wit
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-    ```
-
-- Python
-
-    ```python
-    result = client.tasks.task.add(
-        fields={
-            "TITLE": "task for test",
-            "RESPONSIBLE_ID": 1,
-            "UF_TASK_WEBDAV_FILES": [
-                "n6687",
-            ],
-        }
-    ).response.result
     ```
 
 - Go
@@ -349,6 +349,26 @@ The [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) method returns
     console.log(fileResponse.getData().result)
     ```
 
+- Python
+
+    ```python
+    task = client.tasks.task.get(
+        bitrix_id=3711,
+        select=["ID", "TITLE", "UF_TASK_WEBDAV_FILES"],
+    ).response.result["task"]
+
+    attachment_id = task["ufTaskWebdavFiles"][0]
+
+    file = token.call_method(
+        "disk.attachedObject.get",
+        {
+            "id": attachment_id,
+        },
+    )["result"]
+
+    print(file)
+    ```
+
 - PHP
 
     ```php
@@ -370,26 +390,6 @@ The [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) method returns
     )->getResponseData()->getResult();
 
     print_r($file);
-    ```
-
-- Python
-
-    ```python
-    task = client.tasks.task.get(
-        bitrix_id=3711,
-        select=["ID", "TITLE", "UF_TASK_WEBDAV_FILES"],
-    ).response.result["task"]
-
-    attachment_id = task["ufTaskWebdavFiles"][0]
-
-    file = token.call_method(
-        "disk.attachedObject.get",
-        {
-            "id": attachment_id,
-        },
-    )["result"]
-
-    print(file)
     ```
 
 - Go

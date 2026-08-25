@@ -180,6 +180,48 @@ Default value is an empty string ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.booking.v1.booking.add(
+            fields={
+                "name": "Name",
+                "description": "Description",
+                "resourceIds": [
+                    1,
+                    2,
+                    3,
+                ],
+                "datePeriod": {
+                    "from": {
+                        "timestamp": 1723446900,
+                        "timezone": "Europe/Moscow",
+                    },
+                    "to": {
+                        "timestamp": 1723447800,
+                        "timezone": "Europe/Moscow",
+                    },
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

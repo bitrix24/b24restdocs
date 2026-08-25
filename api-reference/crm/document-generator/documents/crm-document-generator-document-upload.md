@@ -223,6 +223,40 @@ Example of uploading a document where:
     </script>
     ```
 
+- Python
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.documentgenerator.document.upload(
+            fields={
+                "entityTypeId": 2,
+                "entityId": 101,
+                "fileContent": "**base64_docx_content**",
+                "region": "de",
+                "title": "Product demonstration",
+                "number": "2026-001",
+                "pdfContent": "**base64_pdf_content**",
+                "imageContent": "**base64_image_content**",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -257,42 +291,6 @@ Example of uploading a document where:
         error_log($e->getMessage());
         echo 'Error uploading document: ' . $e->getMessage();
     }
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.documentgenerator.document.upload(
-            fields={
-                "entityTypeId": 2,
-                "entityId": 101,
-                "fileContent": "**base64_docx_content**",
-                "region": "de",
-                "title": "Product demonstration",
-                "number": "2026-001",
-                "pdfContent": "**base64_pdf_content**",
-                "imageContent": "**base64_image_content**",
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js

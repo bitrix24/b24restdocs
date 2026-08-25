@@ -79,6 +79,28 @@ The handler receives authorization in the request from Bitrix24. Use `auth` to c
     const $b24 = makeClient(req.body.auth)
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from b24pysdk import BitrixApp, BitrixToken, Client
+
+    APP = BitrixApp(client_id="local.xxxxxxxx.xxxxxxxx", client_secret="yyyyyyyy")
+
+    def make_client(auth: dict) -> tuple[Client, BitrixToken]:
+        token = BitrixToken(
+            domain=auth["domain"],
+            auth_token=auth["access_token"],
+            refresh_token=auth.get("refresh_token", ""),
+            bitrix_app=APP,
+        )
+        return Client(token), token
+
+    auth = request.json["auth"]  # auth dictionary from the handler request body
+    client, token = make_client(auth)
+    ```
+
+
 - PHP
 
     ```php
@@ -111,28 +133,6 @@ The handler receives authorization in the request from Bitrix24. Use `auth` to c
     $b24 = (new ServiceBuilderFactory(new EventDispatcher(), $log))
         ->init($appProfile, $authToken, $domain, DefaultOAuthServerUrl::default());
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-    from b24pysdk import BitrixApp, BitrixToken, Client
-
-    APP = BitrixApp(client_id="local.xxxxxxxx.xxxxxxxx", client_secret="yyyyyyyy")
-
-    def make_client(auth: dict) -> tuple[Client, BitrixToken]:
-        token = BitrixToken(
-            domain=auth["domain"],
-            auth_token=auth["access_token"],
-            refresh_token=auth.get("refresh_token", ""),
-            bitrix_app=APP,
-        )
-        return Client(token), token
-
-    auth = request.json["auth"]  # auth dictionary from the handler request body
-    client, token = make_client(auth)
-    ```
-
 {% endlist %}
 
 ## 1. Register the Action
@@ -193,6 +193,44 @@ In the example, the action receives two parameters:
     console.info(response.getData().result) // true
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+
+    # client is built on the installed application token.
+    result = client.bizproc.activity.add(
+        code="create_smart_invoice",
+        handler="https://your-domain.example/bp-handler",
+        auth_user_id=1,
+        name="Create smart invoice",
+        description="Creates a smart invoice from lead or deal data",
+        properties={
+            "invoice_title": {
+                "Name": "Invoice title",
+                "Type": "string",
+                "Required": "Y",
+                "Default": "Invoice for CRM document",
+            },
+            "mycompany_id": {
+                "Name": "Your company ID",
+                "Type": "int",
+                "Required": "Y",
+                "Default": "1",
+            },
+        },
+        filter={
+            "INCLUDE": [
+                ["crm", "CCrmDocumentDeal"],
+                ["crm", "CCrmDocumentLead"],
+            ],
+        },
+    ).response.result
+
+    print(result)  # True
+    ```
+
+
 - PHP
 
     ```php
@@ -233,44 +271,6 @@ In the example, the action receives two parameters:
 
     print_r($response->getResponseData()->getResult()); // true
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-
-    # client is built on the installed application token.
-    result = client.bizproc.activity.add(
-        code="create_smart_invoice",
-        handler="https://your-domain.example/bp-handler",
-        auth_user_id=1,
-        name="Create smart invoice",
-        description="Creates a smart invoice from lead or deal data",
-        properties={
-            "invoice_title": {
-                "Name": "Invoice title",
-                "Type": "string",
-                "Required": "Y",
-                "Default": "Invoice for CRM document",
-            },
-            "mycompany_id": {
-                "Name": "Your company ID",
-                "Type": "int",
-                "Required": "Y",
-                "Default": "1",
-            },
-        },
-        filter={
-            "INCLUDE": [
-                ["crm", "CCrmDocumentDeal"],
-                ["crm", "CCrmDocumentLead"],
-            ],
-        },
-    ).response.result
-
-    print(result)  # True
-    ```
-
 {% endlist %}
 
 If you need to add an Automation rule for CRM automation, replace `bizproc.activity.add` with [bizproc.robot.add](../../api-reference/bizproc/bizproc-robot/bizproc-robot-add.md). The `CODE`, `HANDLER`, `AUTH_USER_ID`, `NAME`, `DESCRIPTION`, `PROPERTIES`, and `FILTER` parameters are used the same way.
@@ -320,6 +320,25 @@ From `document_id`, save:
     const properties = req.body.properties || {}
     ```
 
+- Python
+
+    ```python
+    def parse_document_id(document_id: list[str]) -> dict:
+        for value in document_id:
+            if value.startswith("DEAL_"):
+                return {"entityTypeId": 2, "ownerType": "D", "id": int(value[5:])}
+
+            if value.startswith("LEAD_"):
+                return {"entityTypeId": 1, "ownerType": "L", "id": int(value[5:])}
+
+        raise ValueError("The action was started neither from a lead nor from a deal")
+
+    payload = request.json
+    source = parse_document_id(payload.get("document_id", []))
+    properties = payload.get("properties", {})
+    ```
+
+
 - PHP
 
     ```php
@@ -342,25 +361,6 @@ From `document_id`, save:
     $source = parseDocumentId((array)($_REQUEST['document_id'] ?? []));
     $properties = $_REQUEST['properties'] ?? [];
     ```
-
-- Python
-
-    ```python
-    def parse_document_id(document_id: list[str]) -> dict:
-        for value in document_id:
-            if value.startswith("DEAL_"):
-                return {"entityTypeId": 2, "ownerType": "D", "id": int(value[5:])}
-
-            if value.startswith("LEAD_"):
-                return {"entityTypeId": 1, "ownerType": "L", "id": int(value[5:])}
-
-        raise ValueError("The action was started neither from a lead nor from a deal")
-
-    payload = request.json
-    source = parse_document_id(payload.get("document_id", []))
-    properties = payload.get("properties", {})
-    ```
-
 {% endlist %}
 
 ## 3. Get the CRM Object and Products
@@ -403,6 +403,23 @@ Get product rows using [crm.item.productrow.list](../../api-reference/crm/univer
     const sourceRows = sourceRowsResult.productRows
     ```
 
+- Python
+
+    ```python
+    source_item = token.call_method("crm.item.get", {
+        "entityTypeId": source["entityTypeId"],
+        "id": source["id"],
+    })["result"]["item"]
+
+    source_rows = token.call_method("crm.item.productrow.list", {
+        "filter": {
+            "=ownerType": source["ownerType"],
+            "=ownerId": source["id"],
+        },
+    })["result"]["productRows"]
+    ```
+
+
 - PHP
 
     ```php
@@ -425,23 +442,6 @@ Get product rows using [crm.item.productrow.list](../../api-reference/crm/univer
         ->getResponseData()
         ->getResult()['productRows'];
     ```
-
-- Python
-
-    ```python
-    source_item = token.call_method("crm.item.get", {
-        "entityTypeId": source["entityTypeId"],
-        "id": source["id"],
-    })["result"]["item"]
-
-    source_rows = token.call_method("crm.item.productrow.list", {
-        "filter": {
-            "=ownerType": source["ownerType"],
-            "=ownerId": source["id"],
-        },
-    })["result"]["productRows"]
-    ```
-
 {% endlist %}
 
 From the `crm.item.get` response, save `item.companyId`, `item.contactId`, or `item.contactIds`. These fields are needed for the smart invoice customer. From the `crm.item.productrow.list` response, save the `productRows` array: it must be prepared and passed to the smart invoice.
@@ -511,6 +511,54 @@ Then pass product rows to the created smart invoice using [crm.item.productrow.s
     console.info(`Created smart invoice ${invoiceId}`)
     ```
 
+- Python
+
+    ```python
+    def prepare_product_rows(rows: list[dict]) -> list[dict]:
+        return [
+            {
+                "productId": row.get("productId"),
+                "productName": row.get("productName"),
+                "price": row.get("price"),
+                "quantity": row.get("quantity", 1),
+                "discountTypeId": row.get("discountTypeId"),
+                "discountRate": row.get("discountRate"),
+                "discountSum": row.get("discountSum"),
+                "taxRate": row.get("taxRate"),
+                "taxIncluded": row.get("taxIncluded"),
+                "measureCode": row.get("measureCode"),
+                "sort": row.get("sort", (index + 1) * 10),
+            }
+            for index, row in enumerate(rows)
+        ]
+
+    fields = {
+        "title": properties.get("invoice_title", "Invoice for CRM document"),
+        "companyId": int(source_item.get("companyId") or 0),
+        "contactId": int(source_item.get("contactId") or 0),
+        "contactIds": source_item.get("contactIds") or [],
+        "mycompanyId": int(properties.get("mycompany_id") or 0),
+    }
+
+    if source["entityTypeId"] == 2:
+        fields["parentId2"] = source["id"]
+
+    invoice = token.call_method("crm.item.add", {
+        "entityTypeId": 31,
+        "fields": fields,
+    })["result"]["item"]
+
+    if source_rows:
+        token.call_method("crm.item.productrow.set", {
+            "ownerType": "SI",
+            "ownerId": invoice["id"],
+            "productRows": prepare_product_rows(source_rows),
+        })
+
+    print(f"Created smart invoice {invoice['id']}")
+    ```
+
+
 - PHP
 
     ```php
@@ -568,54 +616,6 @@ Then pass product rows to the created smart invoice using [crm.item.productrow.s
 
     echo 'Created smart invoice ' . $invoice['id'];
     ```
-
-- Python
-
-    ```python
-    def prepare_product_rows(rows: list[dict]) -> list[dict]:
-        return [
-            {
-                "productId": row.get("productId"),
-                "productName": row.get("productName"),
-                "price": row.get("price"),
-                "quantity": row.get("quantity", 1),
-                "discountTypeId": row.get("discountTypeId"),
-                "discountRate": row.get("discountRate"),
-                "discountSum": row.get("discountSum"),
-                "taxRate": row.get("taxRate"),
-                "taxIncluded": row.get("taxIncluded"),
-                "measureCode": row.get("measureCode"),
-                "sort": row.get("sort", (index + 1) * 10),
-            }
-            for index, row in enumerate(rows)
-        ]
-
-    fields = {
-        "title": properties.get("invoice_title", "Invoice for CRM document"),
-        "companyId": int(source_item.get("companyId") or 0),
-        "contactId": int(source_item.get("contactId") or 0),
-        "contactIds": source_item.get("contactIds") or [],
-        "mycompanyId": int(properties.get("mycompany_id") or 0),
-    }
-
-    if source["entityTypeId"] == 2:
-        fields["parentId2"] = source["id"]
-
-    invoice = token.call_method("crm.item.add", {
-        "entityTypeId": 31,
-        "fields": fields,
-    })["result"]["item"]
-
-    if source_rows:
-        token.call_method("crm.item.productrow.set", {
-            "ownerType": "SI",
-            "ownerId": invoice["id"],
-            "productRows": prepare_product_rows(source_rows),
-        })
-
-    print(f"Created smart invoice {invoice['id']}")
-    ```
-
 {% endlist %}
 
 Example of a successful `crm.item.add` response:

@@ -341,6 +341,49 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
     </script>
     ```
 
+- Python
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.requisite.add(
+            fields={
+                "ENTITY_TYPE_ID": 4,
+                "ENTITY_ID": 1,
+                "PRESET_ID": 1,
+                "NAME": "Organization",
+                "ACTIVE": "Y",
+                "ADDRESS_ONLY": "N",
+                "SORT": 500,
+                "RQ_COMPANY_NAME": "Ltd. \"QuickBooks and other similar platforms\"",
+                "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
+                "RQ_COMPANY_REG_DATE": "06.04.2007",
+                "RQ_DIRECTOR": "SMITH JOHN",
+                "RQ_INN": "1717586110",
+                "RQ_KPP": "770501001",
+                "RQ_OGRN": "5077746476209",
+                "UF_CRM_1707997209": "56",
+                "UF_CRM_1708012333": "Category 1",
+                "XML_ID": "5e4641fd-1dd9-11e6-b2f2-005056c00008",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -454,51 +497,6 @@ When creating a requisite, only those fields with the prefix `RQ_` that are pres
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
-    ```
-
-- Python
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.requisite.add(
-            fields={
-                "ENTITY_TYPE_ID": 4,
-                "ENTITY_ID": 1,
-                "PRESET_ID": 1,
-                "NAME": "Organization",
-                "ACTIVE": "Y",
-                "ADDRESS_ONLY": "N",
-                "SORT": 500,
-                "RQ_COMPANY_NAME": "Ltd. \"QuickBooks and other similar platforms\"",
-                "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
-                "RQ_COMPANY_REG_DATE": "06.04.2007",
-                "RQ_DIRECTOR": "SMITH JOHN",
-                "RQ_INN": "1717586110",
-                "RQ_KPP": "770501001",
-                "RQ_OGRN": "5077746476209",
-                "UF_CRM_1707997209": "56",
-                "UF_CRM_1708012333": "Category 1",
-                "XML_ID": "5e4641fd-1dd9-11e6-b2f2-005056c00008",
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - Go

@@ -246,6 +246,37 @@ Can be used to synchronize the current warehouse with a similar position in an e
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.catalog.store.update(
+            bitrix_id=1,
+            fields={
+                "address": "Moscow Ave, 52",
+                "title": "Warehouse 1",
+                "active": "Y",
+                "phone": "8 (495) 212 85 06",
+                "xmlId": "",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

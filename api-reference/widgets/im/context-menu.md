@@ -254,6 +254,44 @@ Possible values:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.placement.bind(
+            placement='IM_CONTEXT_MENU',
+            handler='https://your-domain.com/widgets/im-context-menu-handler.php',
+            title='My menu item',
+            lang_all={
+                "ru": {
+                    "TITLE": "My menu item",
+                },
+                "en": {
+                    "TITLE": "My menu item",
+                },
+            },
+            options={
+                "context": "ALL",
+                "role": "USER",
+                "extranet": "N",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

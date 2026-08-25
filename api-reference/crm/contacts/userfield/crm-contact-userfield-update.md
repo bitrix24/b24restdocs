@@ -513,10 +513,8 @@ For a multiple field, multiple `DEF = Y` is allowed. For a non-multiple field, t
 - Python
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.contact.userfield.update(
@@ -772,10 +770,8 @@ Modify it as follows:
 - Python
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.contact.userfield.update(

@@ -285,6 +285,50 @@ Default is `null`, meaning no notifications ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    flow_data = {
+        "name": "Unique Flow Name",
+        "description": "Flow description",
+        "plannedCompletionTime": 7200,
+        "distributionType": "manually",
+        "responsibleList": [
+            [
+                "user",
+                "3",
+            ],
+        ],
+        "taskCreators": [
+            [
+                "meta-user",
+                "all-users",
+            ],
+        ],
+        "matchWorkTime": 1,
+        "notifyAtHalfTime": 0,
+    }
+
+    try:
+        bitrix_response = client.tasks.flow.flow.create(
+            flow_data=flow_data,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

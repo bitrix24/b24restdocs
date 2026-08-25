@@ -156,6 +156,32 @@ If both `FILENAME` and `FILE_CONTENT` (or `RECORD_URL`) are provided, the file i
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.telephony.external_call.attach_record(
+            call_id="externalCall.716f1cb73def9700a23842adf9c4c568.1773130779",
+            filename="call-001.mp3",
+            file_content="SUQzAwAAAAAiVVRJVDI...AAAAAAAAAAAAP8=",
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

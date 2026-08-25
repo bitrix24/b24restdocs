@@ -67,13 +67,16 @@ https://**put_your_bitrix24_address**/rest/api/tasks.task.chat.message.send
 #|
 || **SDK** | **REST 3.0 support** ||
 || [b24gosdk](../sdk/b24gosdk/index.md), Go | Yes. Pass a base address that contains the `/rest/api/` segment, nothing else needs to be configured ||
+|| [b24pysdk](../sdk/b24pysdk/index.md), Python | Yes. Pass the `prefer_version=3` parameter when creating the client: `Client(..., prefer_version=3)`.
+
+Only the methods that the SDK recognizes as available in the new version are sent to REST 3.0. The client sends the remaining calls to the previous version of REST, and no error is raised ||
 || [b24jssdk](../sdk/b24jssdk/index.md), JS and TS | Yes. Call the methods through the `$b24.actions.v3` namespace instead of `$b24.actions.v2` ||
 || b24phpsdk, BX24.js, PHP CRest | No. Use direct HTTP requests, for example, via `curl` or `fetch` ||
 |#
 
 {% note warning "" %}
 
-List traversal and `batch` in b24gosdk work only with the previous version of REST. On REST 3.0, call these methods through a regular method call.
+List traversal and `batch` in b24gosdk and b24pysdk work only with the previous version of REST. On REST 3.0, call these methods through a regular method call.
 
 {% endnote %}
 

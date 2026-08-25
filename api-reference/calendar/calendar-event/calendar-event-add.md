@@ -390,6 +390,75 @@ Priority of timezone parameter processing:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.calendar.event.add(
+            type="user",
+            owner_id=2,
+            name="New Event Name",
+            description="Description for event",
+            from_date="2024-06-14",
+            to="2024-06-14",
+            skip_time="Y",
+            section=5,
+            color="#9cbe1c",
+            text_color="#283033",
+            accessibility="absent",
+            importance="normal",
+            is_meeting="Y",
+            private_event="N",
+            remind=[
+                {
+                    "type": "min",
+                    "count": 20,
+                },
+            ],
+            location="London",
+            attendees=[
+                1,
+                2,
+                3,
+            ],
+            host=2,
+            meeting={
+                "notify": True,
+                "reinvite": False,
+                "allow_invite": False,
+                "hide_guests": False,
+            },
+            rrule={
+                "FREQ": "WEEKLY",
+                "BYDAY": [
+                    "MO",
+                    "WE",
+                ],
+                "COUNT": 10,
+                "INTERVAL": 1,
+            },
+            crm_fields=[
+                "C_5",
+                "L_11",
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
 
@@ -763,6 +832,72 @@ Priority of timezone parameter processing:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.calendar.event.add(
+            type="company_calendar",
+            owner_id="",
+            from_date="2025-01-31T18:00:00",
+            to="2025-01-31T20:00:00",
+            section=1,
+            name="Important meeting",
+            attendees=[
+                29,
+                93,
+            ],
+            host=1,
+            skip_time="N",
+            timezone_from="Europe/Moscow",
+            timezone_to="Europe/Moscow",
+            description="Event description",
+            color="#FF0000",
+            text_color="#000000",
+            accessibility="busy",
+            importance="high",
+            private_event="N",
+            is_meeting="Y",
+            location="Conference room",
+            remind=[
+                {
+                    "type": "min",
+                    "count": 30,
+                },
+            ],
+            meeting={
+                "notify": True,
+                "reinvite": False,
+                "allow_invite": True,
+                "hide_guests": False,
+            },
+            rrule={
+                "FREQ": "WEEKLY",
+                "COUNT": 10,
+                "INTERVAL": 1,
+                "BYDAY": [
+                    "MO",
+                    "WE",
+                    "FR",
+                ],
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
 

@@ -141,6 +141,33 @@ Check which mandatory fields are configured for leads in your Bitrix24. All mand
     const leadId = leadResponse.getData().result.item.id
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from b24pysdk import Client, BitrixWebhook
+
+    client = Client(BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="1/xxxxxxxxxxxxxxxx",
+    ))
+
+    #  name, last_name, phone come from the form data
+    bitrix_response = client.crm.item.add(
+        fields={
+            "title": f"Feedback page: {name} {last_name}",
+            "name": name,
+            "lastName": last_name,
+            "fm": [
+                {"typeId": "PHONE", "valueType": "WORK", "value": phone},
+            ],
+        },
+        entity_type_id=1,
+    ).response
+    lead_id = bitrix_response.result["item"]["id"]
+    ```
+
+
 - PHP
 
     ```php
@@ -169,33 +196,6 @@ Check which mandatory fields are configured for leads in your Bitrix24. All mand
         ],
     ])->item()->id;
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-    from b24pysdk import Client, BitrixWebhook
-
-    client = Client(BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="1/xxxxxxxxxxxxxxxx",
-    ))
-
-    #  name, last_name, phone come from the form data
-    bitrix_response = client.crm.item.add(
-        fields={
-            "title": f"Feedback page: {name} {last_name}",
-            "name": name,
-            "lastName": last_name,
-            "fm": [
-                {"typeId": "PHONE", "valueType": "WORK", "value": phone},
-            ],
-        },
-        entity_type_id=1,
-    ).response
-    lead_id = bitrix_response.result["item"]["id"]
-    ```
-
 {% endlist %}
 
 The [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) method returns the lead identifier in the `result.item.id` field.
@@ -246,6 +246,19 @@ Pass the following parameters to the [crm.tracking.trace.add](../../../api-refer
     }
     ```
 
+- Python
+
+    ```python
+    if trace:
+        client.crm.tracking.trace.add(
+            trace=trace,
+            entities=[
+                {"TYPE": "LEAD", "ID": lead_id},
+            ],
+        ).response
+    ```
+
+
 - PHP
 
     ```php
@@ -259,19 +272,6 @@ Pass the following parameters to the [crm.tracking.trace.add](../../../api-refer
         ]);
     }
     ```
-
-- Python
-
-    ```python
-    if trace:
-        client.crm.tracking.trace.add(
-            trace=trace,
-            entities=[
-                {"TYPE": "LEAD", "ID": lead_id},
-            ],
-        ).response
-    ```
-
 {% endlist %}
 
 If `TRACE` is empty, the lead will be created without a link to Sales Intelligence.
@@ -377,6 +377,85 @@ In the examples below, the backend serves an HTML page with a form and processes
     app.listen(3000, () => console.log('http://localhost:3000'))
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk flask
+    from flask import Flask, request
+    from b24pysdk import Client, BitrixWebhook
+
+    WEBHOOK_DOMAIN = "your-domain.bitrix24.com"
+    WEBHOOK_TOKEN = "1/xxxxxxxxxxxxxxxx"
+
+    app = Flask(__name__)
+
+    def form_page(message: str = "") -> str:
+        return f"""<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+        </head>
+        <body class="container">
+            <h1>Feedback</h1>
+            <div class="col-12"><p>{message}</p></div>
+            <form method="post" action="/">
+                <input type="hidden" id="FORM_TRACE" name="TRACE">
+                <div class="row"><div class="col-4 mt-3"><label>Name*</label></div>
+                    <div class="col-6 mt-3"><input type="text" name="NAME" required></div></div>
+                <div class="row"><div class="col-4 mt-3"><label>Last name*</label></div>
+                    <div class="col-6 mt-3"><input type="text" name="LAST_NAME" required></div></div>
+                <div class="row"><div class="col-4 mt-3"><label>Phone*</label></div>
+                    <div class="col-6 mt-3"><input type="text" name="PHONE" required></div></div>
+                <div class="row"><div class="col-sm-10">
+                    <input type="submit" name="SAVE" class="btn btn-primary" value="Send"></div></div>
+            </form>
+            <!-- The Bitrix24 end-to-end analytics script must be installed on the page -->
+            <script>
+                window.onload = function() {{
+                    var traceInput = document.getElementById('FORM_TRACE');
+                    if (traceInput && typeof b24Tracker !== 'undefined'
+                        && b24Tracker.guest && typeof b24Tracker.guest.getTrace === 'function') {{
+                        traceInput.value = b24Tracker.guest.getTrace();
+                    }}
+                }}
+            </script>
+        </body>
+    </html>"""
+
+    @app.get("/")
+    def index():
+        return form_page()
+
+    @app.post("/")
+    def submit():
+        client = Client(BitrixWebhook(domain=WEBHOOK_DOMAIN, webhook_token=WEBHOOK_TOKEN))
+        name = request.form.get("NAME", "")
+        last_name = request.form.get("LAST_NAME", "")
+        phone = request.form.get("PHONE", "")
+        trace = request.form.get("TRACE", "")
+        try:
+            bitrix_response = client.crm.item.add(
+                fields={
+                    "title": f"Feedback page: {name} {last_name}",
+                    "name": name,
+                    "lastName": last_name,
+                    "fm": [{"typeId": "PHONE", "valueType": "WORK", "value": phone}],
+                },
+                entity_type_id=1,
+            ).response
+            lead_id = bitrix_response.result["item"]["id"]
+            if trace:
+                client.crm.tracking.trace.add(
+                    trace=trace,
+                    entities=[{"TYPE": "LEAD", "ID": lead_id}],
+                ).response
+                return form_page("Lead created")
+            return form_page("Lead created without trace")
+        except Exception as error:
+            return form_page(f"Lead not created: {error}")
+    ```
+
+
 - PHP
 
     ```php
@@ -460,85 +539,6 @@ In the examples below, the backend serves an HTML page with a form and processes
         </body>
     </html>
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk flask
-    from flask import Flask, request
-    from b24pysdk import Client, BitrixWebhook
-
-    WEBHOOK_DOMAIN = "your-domain.bitrix24.com"
-    WEBHOOK_TOKEN = "1/xxxxxxxxxxxxxxxx"
-
-    app = Flask(__name__)
-
-    def form_page(message: str = "") -> str:
-        return f"""<!DOCTYPE html>
-    <html lang="en">
-        <head>
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
-        </head>
-        <body class="container">
-            <h1>Feedback</h1>
-            <div class="col-12"><p>{message}</p></div>
-            <form method="post" action="/">
-                <input type="hidden" id="FORM_TRACE" name="TRACE">
-                <div class="row"><div class="col-4 mt-3"><label>Name*</label></div>
-                    <div class="col-6 mt-3"><input type="text" name="NAME" required></div></div>
-                <div class="row"><div class="col-4 mt-3"><label>Last name*</label></div>
-                    <div class="col-6 mt-3"><input type="text" name="LAST_NAME" required></div></div>
-                <div class="row"><div class="col-4 mt-3"><label>Phone*</label></div>
-                    <div class="col-6 mt-3"><input type="text" name="PHONE" required></div></div>
-                <div class="row"><div class="col-sm-10">
-                    <input type="submit" name="SAVE" class="btn btn-primary" value="Send"></div></div>
-            </form>
-            <!-- The Bitrix24 end-to-end analytics script must be installed on the page -->
-            <script>
-                window.onload = function() {{
-                    var traceInput = document.getElementById('FORM_TRACE');
-                    if (traceInput && typeof b24Tracker !== 'undefined'
-                        && b24Tracker.guest && typeof b24Tracker.guest.getTrace === 'function') {{
-                        traceInput.value = b24Tracker.guest.getTrace();
-                    }}
-                }}
-            </script>
-        </body>
-    </html>"""
-
-    @app.get("/")
-    def index():
-        return form_page()
-
-    @app.post("/")
-    def submit():
-        client = Client(BitrixWebhook(domain=WEBHOOK_DOMAIN, webhook_token=WEBHOOK_TOKEN))
-        name = request.form.get("NAME", "")
-        last_name = request.form.get("LAST_NAME", "")
-        phone = request.form.get("PHONE", "")
-        trace = request.form.get("TRACE", "")
-        try:
-            bitrix_response = client.crm.item.add(
-                fields={
-                    "title": f"Feedback page: {name} {last_name}",
-                    "name": name,
-                    "lastName": last_name,
-                    "fm": [{"typeId": "PHONE", "valueType": "WORK", "value": phone}],
-                },
-                entity_type_id=1,
-            ).response
-            lead_id = bitrix_response.result["item"]["id"]
-            if trace:
-                client.crm.tracking.trace.add(
-                    trace=trace,
-                    entities=[{"TYPE": "LEAD", "ID": lead_id}],
-                ).response
-                return form_page("Lead created")
-            return form_page("Lead created without trace")
-        except Exception as error:
-            return form_page(f"Lead not created: {error}")
-    ```
-
 {% endlist %}
 
 ## Verifying the Result

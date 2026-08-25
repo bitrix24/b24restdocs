@@ -222,6 +222,47 @@ External identifiers `message.id` and `chat.id` do not replace `im.message_id` a
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.imconnector.send.status.reading(
+            connector="myconnector",
+            line=107,
+            messages=[
+                {
+                    "im": {
+                        "chat_id": 323,
+                        "message_id": 85911,
+                    },
+                    "message": {
+                        "id": [
+                            "ext-msg-1007",
+                        ],
+                    },
+                    "chat": {
+                        "id": "channel-123",
+                    },
+                },
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

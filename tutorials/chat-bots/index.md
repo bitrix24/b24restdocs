@@ -117,6 +117,35 @@ All the code below runs on the server only: `client_secret` and the tokens must 
     }
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk flask
+    import os
+
+    from b24pysdk import BitrixApp, BitrixToken, Client
+
+    APP = BitrixApp(
+        client_id=os.environ["B24_CLIENT_ID"],
+        client_secret=os.environ["B24_CLIENT_SECRET"],
+    )
+
+    # store — your storage: a database, a file, or a secrets manager
+
+
+    # auth — the authorization dictionary from the body of the installation event
+    def make_client(auth: dict) -> tuple:
+        token = BitrixToken(
+            domain=auth["domain"],
+            auth_token=auth["access_token"],
+            refresh_token=auth["refresh_token"],
+            expires_in=int(auth["expires_in"]),
+            bitrix_app=APP,
+        )
+        return Client(token), token
+    ```
+
+
 - PHP
 
     ```php
@@ -156,35 +185,6 @@ All the code below runs on the server only: `client_secret` and the tokens must 
             ->init($appProfile, $authToken, (string)$auth['domain'], DefaultOAuthServerUrl::default());
     }
     ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk flask
-    import os
-
-    from b24pysdk import BitrixApp, BitrixToken, Client
-
-    APP = BitrixApp(
-        client_id=os.environ["B24_CLIENT_ID"],
-        client_secret=os.environ["B24_CLIENT_SECRET"],
-    )
-
-    # store — your storage: a database, a file, or a secrets manager
-
-
-    # auth — the authorization dictionary from the body of the installation event
-    def make_client(auth: dict) -> tuple:
-        token = BitrixToken(
-            domain=auth["domain"],
-            auth_token=auth["access_token"],
-            refresh_token=auth["refresh_token"],
-            expires_in=int(auth["expires_in"]),
-            bitrix_app=APP,
-        )
-        return Client(token), token
-    ```
-
 {% endlist %}
 
 ## Receive the Event in the Handler
@@ -234,41 +234,6 @@ Verify the request authenticity by the `application_token` from the **top level*
     })
 
     app.listen(3000)
-    ```
-
-- PHP
-
-    ```php
-    <?php
-    // handler.php
-    require_once 'vendor/autoload.php';
-
-    $event = (string)($_POST['event'] ?? '');
-    $data = (array)($_POST['data'] ?? []);
-    $auth = (array)($_POST['auth'] ?? []);
-
-    $handlerUrl = getenv('HANDLER_URL');
-    $botCode = 'overdue_tasks_bot';
-
-    if ($event !== 'ONAPPINSTALL' && $store->loadAuth($auth['application_token'] ?? '') === null) {
-        http_response_code(403);
-        exit;
-    }
-
-    try {
-        match ($event) {
-            'ONAPPINSTALL' => handleInstall($auth),
-            'ONIMBOTV2JOINCHAT' => handleJoinChat($auth, $data),
-            'ONIMBOTV2MESSAGEADD' => handleMessage($auth, $data),
-            'ONIMBOTV2DELETE' => handleBotDelete($auth, $data),
-            default => null,
-        };
-    } catch (Throwable $exception) {
-        error_log($event . ': ' . $exception->getMessage());
-    }
-
-    // The platform expects a 200 response, repeated delivery of an event is not guaranteed
-    http_response_code(200);
     ```
 
 - Python
@@ -323,6 +288,41 @@ Verify the request authenticity by the `application_token` from the **top level*
         return "", 200
     ```
 
+
+- PHP
+
+    ```php
+    <?php
+    // handler.php
+    require_once 'vendor/autoload.php';
+
+    $event = (string)($_POST['event'] ?? '');
+    $data = (array)($_POST['data'] ?? []);
+    $auth = (array)($_POST['auth'] ?? []);
+
+    $handlerUrl = getenv('HANDLER_URL');
+    $botCode = 'overdue_tasks_bot';
+
+    if ($event !== 'ONAPPINSTALL' && $store->loadAuth($auth['application_token'] ?? '') === null) {
+        http_response_code(403);
+        exit;
+    }
+
+    try {
+        match ($event) {
+            'ONAPPINSTALL' => handleInstall($auth),
+            'ONIMBOTV2JOINCHAT' => handleJoinChat($auth, $data),
+            'ONIMBOTV2MESSAGEADD' => handleMessage($auth, $data),
+            'ONIMBOTV2DELETE' => handleBotDelete($auth, $data),
+            default => null,
+        };
+    } catch (Throwable $exception) {
+        error_log($event . ': ' . $exception->getMessage());
+    }
+
+    // The platform expects a 200 response, repeated delivery of an event is not guaranteed
+    http_response_code(200);
+    ```
 {% endlist %}
 
 Place the step functions from the examples below in the same file — the handler calls them by the event name.
@@ -374,6 +374,34 @@ With OAuth authorization, the `botToken` parameter is not needed: the bot is lin
     }
     ```
 
+- Python
+
+    ```python
+    def handle_install(auth: dict) -> None:
+        store.save_auth(auth["application_token"], auth)
+
+        _, token = make_client(auth)
+        # There is no typed wrapper for imbot.v2, so the method is called through the SDK core
+        response = token.call_method(
+            "imbot.v2.Bot.register",
+            {
+                "fields": {
+                    "code": BOT_CODE,
+                    "type": "bot",
+                    "eventMode": "webhook",
+                    "webhookUrl": HANDLER_URL,
+                    "properties": {
+                        "name": "Reporter",
+                        "workPosition": "I report on overdue tasks",
+                        "color": "aqua",
+                    },
+                },
+            },
+        )
+        store.save_bot(response["result"]["bot"]["id"])
+    ```
+
+
 - PHP
 
     ```php
@@ -402,34 +430,6 @@ With OAuth authorization, the `botToken` parameter is not needed: the bot is lin
         $store->saveBot((int)$result['bot']['id']);
     }
     ```
-
-- Python
-
-    ```python
-    def handle_install(auth: dict) -> None:
-        store.save_auth(auth["application_token"], auth)
-
-        _, token = make_client(auth)
-        # There is no typed wrapper for imbot.v2, so the method is called through the SDK core
-        response = token.call_method(
-            "imbot.v2.Bot.register",
-            {
-                "fields": {
-                    "code": BOT_CODE,
-                    "type": "bot",
-                    "eventMode": "webhook",
-                    "webhookUrl": HANDLER_URL,
-                    "properties": {
-                        "name": "Reporter",
-                        "workPosition": "I report on overdue tasks",
-                        "color": "aqua",
-                    },
-                },
-            },
-        )
-        store.save_bot(response["result"]["bot"]["id"])
-    ```
-
 {% endlist %}
 
 A successful response contains the bot object. Retain `result.bot.id` — you will need it if the application registers several bots.
@@ -493,25 +493,6 @@ In the greeting text we use the `[send=text]label[/send]` [BB code](../../api-re
     }
     ```
 
-- PHP
-
-    ```php
-    function handleJoinChat(array $auth, array $data): void
-    {
-        global $store;
-
-        $b24 = makeServiceBuilder($store->loadAuth((string)$auth['application_token']));
-
-        $b24->core->call('imbot.v2.Chat.Message.send', [
-            'botId' => (int)$data['bot']['id'],
-            'dialogId' => (string)$data['dialogId'],
-            'fields' => [
-                'message' => 'Hello! I am Reporter. Ask [send=what\'s burning]What\'s burning?[/send]',
-            ],
-        ]);
-    }
-    ```
-
 - Python
 
     ```python
@@ -530,6 +511,25 @@ In the greeting text we use the `[send=text]label[/send]` [BB code](../../api-re
         )
     ```
 
+
+- PHP
+
+    ```php
+    function handleJoinChat(array $auth, array $data): void
+    {
+        global $store;
+
+        $b24 = makeServiceBuilder($store->loadAuth((string)$auth['application_token']));
+
+        $b24->core->call('imbot.v2.Chat.Message.send', [
+            'botId' => (int)$data['bot']['id'],
+            'dialogId' => (string)$data['dialogId'],
+            'fields' => [
+                'message' => 'Hello! I am Reporter. Ask [send=what\'s burning]What\'s burning?[/send]',
+            ],
+        ]);
+    }
+    ```
 {% endlist %}
 
 A successful response contains the ID of the sent message:
@@ -622,46 +622,6 @@ In the response, the task fields are named in lowercase: `id`, `title`, `deadlin
     }
     ```
 
-- PHP
-
-    ```php
-    function handleMessage(array $auth, array $data): void
-    {
-        global $store;
-
-        $b24 = makeServiceBuilder($store->loadAuth((string)$auth['application_token']));
-
-        $text = mb_strtolower(trim((string)($data['message']['text'] ?? '')));
-        $message = 'I don\'t understand what you want to know. Ask [send=what\'s burning]What\'s burning?[/send]';
-
-        if ($text === 'what\'s burning') {
-            $result = $b24->core->call('tasks.task.list', [
-                'filter' => [
-                    'RESPONSIBLE_ID' => (int)$data['user']['id'],
-                    '<DEADLINE' => date('c'),
-                    '!REAL_STATUS' => [4, 5],
-                ],
-                'select' => ['ID', 'TITLE', 'DEADLINE'],
-                'order' => ['DEADLINE' => 'asc'],
-            ])->getResponseData()->getResult();
-
-            $tasks = $result['tasks'] ?? [];
-            $message = $tasks
-                ? 'Overdue tasks:[br]' . implode('[br]', array_map(
-                    static fn(array $task): string => '- ' . $task['title'],
-                    $tasks,
-                ))
-                : 'You are working brilliantly! Not a single overdue task.';
-        }
-
-        $b24->core->call('imbot.v2.Chat.Message.send', [
-            'botId' => (int)$data['bot']['id'],
-            'dialogId' => (string)$data['chat']['dialogId'],
-            'fields' => ['message' => $message],
-        ]);
-    }
-    ```
-
 - Python
 
     ```python
@@ -701,6 +661,46 @@ In the response, the task fields are named in lowercase: `id`, `title`, `deadlin
         )
     ```
 
+
+- PHP
+
+    ```php
+    function handleMessage(array $auth, array $data): void
+    {
+        global $store;
+
+        $b24 = makeServiceBuilder($store->loadAuth((string)$auth['application_token']));
+
+        $text = mb_strtolower(trim((string)($data['message']['text'] ?? '')));
+        $message = 'I don\'t understand what you want to know. Ask [send=what\'s burning]What\'s burning?[/send]';
+
+        if ($text === 'what\'s burning') {
+            $result = $b24->core->call('tasks.task.list', [
+                'filter' => [
+                    'RESPONSIBLE_ID' => (int)$data['user']['id'],
+                    '<DEADLINE' => date('c'),
+                    '!REAL_STATUS' => [4, 5],
+                ],
+                'select' => ['ID', 'TITLE', 'DEADLINE'],
+                'order' => ['DEADLINE' => 'asc'],
+            ])->getResponseData()->getResult();
+
+            $tasks = $result['tasks'] ?? [];
+            $message = $tasks
+                ? 'Overdue tasks:[br]' . implode('[br]', array_map(
+                    static fn(array $task): string => '- ' . $task['title'],
+                    $tasks,
+                ))
+                : 'You are working brilliantly! Not a single overdue task.';
+        }
+
+        $b24->core->call('imbot.v2.Chat.Message.send', [
+            'botId' => (int)$data['bot']['id'],
+            'dialogId' => (string)$data['chat']['dialogId'],
+            'fields' => ['message' => $message],
+        ]);
+    }
+    ```
 {% endlist %}
 
 The `tasks.task.list` response is reduced to the fields that the bot uses:
@@ -735,6 +735,14 @@ The [ONIMBOTV2DELETE](../../api-reference/chat-bots/chat-bots-v2/imbot.v2/events
     }
     ```
 
+- Python
+
+    ```python
+    def handle_bot_delete(auth: dict, data: dict) -> None:
+        store.remove_bot(int(data["bot"]["id"]))
+    ```
+
+
 - PHP
 
     ```php
@@ -745,14 +753,6 @@ The [ONIMBOTV2DELETE](../../api-reference/chat-bots/chat-bots-v2/imbot.v2/events
         $store->removeBot((int)$data['bot']['id']);
     }
     ```
-
-- Python
-
-    ```python
-    def handle_bot_delete(auth: dict, data: dict) -> None:
-        store.remove_bot(int(data["bot"]["id"]))
-    ```
-
 {% endlist %}
 
 ## Check the Result

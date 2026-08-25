@@ -198,34 +198,13 @@ Formula for calculating the `start` parameter value:
         </script>
         ```
 
-    - PHP
-
-        ```php
-        require_once('crest.php');
-
-        $result = CRest::call(
-            'crm.requisite.list',
-            [
-                'order' => ["DATE_CREATE" => "ASC"],
-                'filter' => ["PRESET_ID" => "1"],
-                'select' => ["ENTITY_TYPE_ID", "ENTITY_ID", "ID", "NAME"]
-            ]
-        );
-
-        echo '<PRE>';
-        print_r($result);
-        echo '</PRE>';
-        ```
-
     - Python
 
         Example
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.requisite.list(
@@ -252,10 +231,8 @@ Formula for calculating the `start` parameter value:
         Example `as_list`
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.requisite.list(
@@ -282,10 +259,8 @@ Formula for calculating the `start` parameter value:
         Example `as_list_fast`
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.requisite.list(
@@ -309,6 +284,25 @@ Formula for calculating the `start` parameter value:
             print(f"Unexpected error: {error}")
         ```
 
+
+    - PHP
+
+        ```php
+        require_once('crest.php');
+
+        $result = CRest::call(
+            'crm.requisite.list',
+            [
+                'order' => ["DATE_CREATE" => "ASC"],
+                'filter' => ["PRESET_ID" => "1"],
+                'select' => ["ENTITY_TYPE_ID", "ENTITY_ID", "ID", "NAME"]
+            ]
+        );
+
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
+        ```
     {% endlist %}
 
 2. Retrieving the value of a custom field in company details
@@ -425,32 +419,11 @@ Formula for calculating the `start` parameter value:
         </script>
         ```
 
-    - PHP
-
-        ```php
-        require_once('crest.php');
-
-        $result = CRest::call(
-            'crm.requisite.list',
-            [
-                'order' => [],
-                'filter' => ['ID' => '51'],
-                'select' => ['UF_CRM_1707997209']
-            ]
-        );
-
-        echo '<PRE>';
-        print_r($result);
-        echo '</PRE>';
-        ```
-
     - Python
 
         ```python
-        from b24pysdk.client import BaseClient
-        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-        client: BaseClient
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
             bitrix_response = client.crm.requisite.list(
@@ -473,6 +446,25 @@ Formula for calculating the `start` parameter value:
             print(f"Unexpected error: {error}")
         ```
 
+
+    - PHP
+
+        ```php
+        require_once('crest.php');
+
+        $result = CRest::call(
+            'crm.requisite.list',
+            [
+                'order' => [],
+                'filter' => ['ID' => '51'],
+                'select' => ['UF_CRM_1707997209']
+            ]
+        );
+
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
+        ```
     {% endlist %}
 
 ## Response Handling

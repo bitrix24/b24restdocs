@@ -64,25 +64,6 @@ To retrieve the SPA ID, use the [crm.type.list](../../../api-reference/crm/unive
     });
     ```
 
-- PHP
-
-    ```php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Psr\Log\NullLogger;
-
-    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
-
-    $result = $sb->getCRMScope()->type()->list(
-        order: [],
-        filter: ['title' => 'Equipment procurement'] // smart process name
-    );
-    ```
-
 - Python
 
     ```python
@@ -102,6 +83,25 @@ To retrieve the SPA ID, use the [crm.type.list](../../../api-reference/crm/unive
     ).response.result
     ```
 
+
+- PHP
+
+    ```php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $result = $sb->getCRMScope()->type()->list(
+        order: [],
+        filter: ['title' => 'Equipment procurement'] // smart process name
+    );
+    ```
 {% endlist %}
 
 As a result, you will receive an `id` — this is the sequential number of the SPA in Bitrix24. In the example `id`: `7`.
@@ -200,6 +200,37 @@ To create a custom field, use the [userfieldconfig.add](../../../api-reference/c
     });
     ```
 
+- Python
+
+    ```python
+    field = client.userfieldconfig.add(
+        module_id="crm",  # Module ID
+        field={
+            "entityId": "CRM_7",  # Object ID
+            "fieldName": "UF_CRM_7_NEW_REST_LIST",  # Field code
+            "userTypeId": "enumeration",  # Field type ID
+            "multiple": "Y",  # Multiple flag
+            "editFormLabel": {
+                "de": "List of characteristics",  # Field name in German
+                "en": "List of characteristics",  # Field name in English
+            },
+            "enum": [  # List field values
+                {
+                    "value": "Characteristic 1",  # Option value
+                    "def": "N",  # Default value flag
+                    "sort": 100,  # Sort index
+                },
+                {
+                    "value": "Characteristic 2",
+                    "def": "Y",  # This option will be the default value
+                    "sort": 200,
+                },
+            ],
+        },
+    ).response.result["field"]
+    ```
+
+
 - PHP
 
     ```php
@@ -233,37 +264,6 @@ To create a custom field, use the [userfieldconfig.add](../../../api-reference/c
         ]
     );
     ```
-
-- Python
-
-    ```python
-    field = client.userfieldconfig.add(
-        module_id="crm",  # Module ID
-        field={
-            "entityId": "CRM_7",  # Object ID
-            "fieldName": "UF_CRM_7_NEW_REST_LIST",  # Field code
-            "userTypeId": "enumeration",  # Field type ID
-            "multiple": "Y",  # Multiple flag
-            "editFormLabel": {
-                "de": "List of characteristics",  # Field name in German
-                "en": "List of characteristics",  # Field name in English
-            },
-            "enum": [  # List field values
-                {
-                    "value": "Characteristic 1",  # Option value
-                    "def": "N",  # Default value flag
-                    "sort": 100,  # Sort index
-                },
-                {
-                    "value": "Characteristic 2",
-                    "def": "Y",  # This option will be the default value
-                    "sort": 200,
-                },
-            ],
-        },
-    ).response.result["field"]
-    ```
-
 {% endlist %}
 
 As a result, you will receive the data for the created field. Retain the `id` — you will need it to modify the field using the [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method or to delete it using the [userfieldconfig.delete](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md) method.
@@ -364,6 +364,16 @@ Through REST, the set of smart process fields is returned by the [userfieldconfi
     console.dir(checkResult.getData().result.fields);
     ```
 
+- Python
+
+    ```python
+    fields = client.userfieldconfig.list(
+        module_id="crm",
+        filter={"entityId": "CRM_7"},
+    ).response.result["fields"]
+    ```
+
+
 - PHP
 
     ```php
@@ -376,16 +386,6 @@ Through REST, the set of smart process fields is returned by the [userfieldconfi
         ]
     )->getResponseData()->getResult();
     ```
-
-- Python
-
-    ```python
-    fields = client.userfieldconfig.list(
-        module_id="crm",
-        filter={"entityId": "CRM_7"},
-    ).response.result["fields"]
-    ```
-
 {% endlist %}
 
 The scenario is complete if the `fields` array contains an object with `fieldName`: `UF_CRM_7_NEW_REST_LIST`, its `userTypeId` equals `enumeration`, and `multiple` equals `Y`.
@@ -492,6 +492,70 @@ Step 1 does not create anything, so it can be repeated any number of times. If s
     getCrmTypeAndAddUserField();
     ```
 
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    def get_crm_type_and_add_user_field(client):
+        process_title = input("Enter the smart process name to search for: ")
+
+        try:
+            resp = client.crm.type.list(
+                filter={"title": process_title},
+            ).response
+        except BitrixAPIError as error:
+            print(f"Error retrieving the smart process: {error}")
+            return
+
+        print("Smart process successfully retrieved:")
+        print(resp.result)
+
+        types = resp.result.get("types") or []
+        if types:
+            spa_id = int(types[0]["id"])  # using the id, not the entityTypeId
+            add_user_field(client, spa_id)
+        else:
+            print("Smart process not found.")
+
+    def add_user_field(client, spa_id):
+        try:
+            result = client.userfieldconfig.add(
+                module_id="crm",
+                field={
+                    "entityId": f"CRM_{spa_id}",
+                    # the field code starts with UF_ + object ID
+                    "fieldName": f"UF_CRM_{spa_id}_NEW_REST_LIST",
+                    "userTypeId": "enumeration",
+                    "multiple": "Y",
+                    "editFormLabel": {
+                        "de": "List of characteristics",
+                        "en": "List of characteristics",
+                    },
+                    "enum": [
+                        {"value": "Characteristic 1", "def": "N", "sort": 100},
+                        {"value": "Characteristic 2", "def": "Y", "sort": 200},
+                    ],
+                },
+            ).response
+        except BitrixAPIError as error:
+            print(f"Error creating custom field: {error}")
+        else:
+            print("Custom field successfully created:")
+            print(result.result)
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    get_crm_type_and_add_user_field(client)
+    ```
+
+
 - PHP
 
     ```php
@@ -566,70 +630,6 @@ Step 1 does not create anything, so it can be repeated any number of times. If s
     $processTitle = readline("Enter the smart process name to search for: ");
     getCrmTypeAndAddUserField($sb, $processTitle);
     ```
-
-- Python
-
-    ```python
-    from b24pysdk import BitrixWebhook, Client
-    from b24pysdk.errors import BitrixAPIError
-
-    def get_crm_type_and_add_user_field(client):
-        process_title = input("Enter the smart process name to search for: ")
-
-        try:
-            resp = client.crm.type.list(
-                filter={"title": process_title},
-            ).response
-        except BitrixAPIError as error:
-            print(f"Error retrieving the smart process: {error}")
-            return
-
-        print("Smart process successfully retrieved:")
-        print(resp.result)
-
-        types = resp.result.get("types") or []
-        if types:
-            spa_id = int(types[0]["id"])  # using the id, not the entityTypeId
-            add_user_field(client, spa_id)
-        else:
-            print("Smart process not found.")
-
-    def add_user_field(client, spa_id):
-        try:
-            result = client.userfieldconfig.add(
-                module_id="crm",
-                field={
-                    "entityId": f"CRM_{spa_id}",
-                    # the field code starts with UF_ + object ID
-                    "fieldName": f"UF_CRM_{spa_id}_NEW_REST_LIST",
-                    "userTypeId": "enumeration",
-                    "multiple": "Y",
-                    "editFormLabel": {
-                        "de": "List of characteristics",
-                        "en": "List of characteristics",
-                    },
-                    "enum": [
-                        {"value": "Characteristic 1", "def": "N", "sort": 100},
-                        {"value": "Characteristic 2", "def": "Y", "sort": 200},
-                    ],
-                },
-            ).response
-        except BitrixAPIError as error:
-            print(f"Error creating custom field: {error}")
-        else:
-            print("Custom field successfully created:")
-            print(result.result)
-
-    client = Client(
-        BitrixWebhook(
-            domain="your-domain.bitrix24.com",
-            webhook_token="user_id/webhook_key",
-        )
-    )
-
-    get_crm_type_and_add_user_field(client)
-    ```
-
 {% endlist %}
 
 ## Continue Learning

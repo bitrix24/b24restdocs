@@ -217,6 +217,35 @@ For example, if you pass ` H1 `, the method will save the tag as `h1`. If anothe
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.landing.block.change_node_name(
+            lid=311,
+            block=6058,
+            data={
+                ".landing-block-node-title@0": "h1",
+                ".landing-block-node-text@2": "p",
+            },
+            prevent_history=True,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

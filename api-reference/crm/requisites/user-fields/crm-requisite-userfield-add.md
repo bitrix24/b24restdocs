@@ -227,6 +227,45 @@ Defaults to `N`
     </script>
     ```
 
+- Python
+
+    Example
+
+    ```python
+
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.crm.requisite.userfield.add(
+            fields={
+                "USER_TYPE_ID": "string",
+                "ENTITY_ID": "CRM_REQUISITE",
+                "SORT": 100,
+                "MULTIPLE": "N",
+                "MANDATORY": "N",
+                "SHOW_FILTER": "E",
+                "SHOW_IN_LIST": "Y",
+                "EDIT_FORM_LABEL": "PP - Line",
+                "LIST_COLUMN_LABEL": "PP - Line",
+                "LIST_FILTER_LABEL": "PP - Line",
+                "FIELD_NAME": "NEWTECH_v1_STRING",
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API Error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK Error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -262,47 +301,6 @@ Defaults to `N`
         error_log($e->getMessage());
         echo 'Error adding user field: ' . $e->getMessage();
     }
-    ```
-
-- Python
-
-    Example
-
-    ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    client: BaseClient
-
-    try:
-        bitrix_response = client.crm.requisite.userfield.add(
-            fields={
-                "USER_TYPE_ID": "string",
-                "ENTITY_ID": "CRM_REQUISITE",
-                "SORT": 100,
-                "MULTIPLE": "N",
-                "MANDATORY": "N",
-                "SHOW_FILTER": "E",
-                "SHOW_IN_LIST": "Y",
-                "EDIT_FORM_LABEL": "PP - Line",
-                "LIST_COLUMN_LABEL": "PP - Line",
-                "LIST_FILTER_LABEL": "PP - Line",
-                "FIELD_NAME": "NEWTECH_v1_STRING",
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
     ```
 
 - BX24.js

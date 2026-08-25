@@ -259,6 +259,38 @@ The fields of the `SETTINGS` object depend on the `USER_TYPE_ID` type.
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    data = {
+        "EDIT_FORM_LABEL": {
+            "ru": "Client request description",
+            "en": "Description of client request",
+        },
+        "MANDATORY": "N",
+    }
+
+    try:
+        bitrix_response = client.task.item.userfield.update(
+            bitrix_id=1325,
+            data=data,
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
 - PHP
 
     ```php

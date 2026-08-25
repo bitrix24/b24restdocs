@@ -96,6 +96,36 @@ Call [catalog.product.list](../../../api-reference/catalog/product/catalog-produ
     }
     ```
 
+- Python
+
+    ```python
+    # pip install b24pysdk
+    from b24pysdk import BitrixWebhook
+
+    token = BitrixWebhook(
+        domain="your-domain.bitrix24.com",
+        webhook_token="USER_ID/TOKEN",
+    )
+
+    def call_method(method: str, params: dict):
+        return token.call_method(method, params)["result"]
+
+    def get_products(iblock_id: int):
+        result = call_method("catalog.product.list", {
+            "select": ["id", "iblockId", "name"],
+            "filter": {
+                "iblockId": iblock_id,
+                "active": "Y",
+            },
+            "order": {
+                "id": "ASC",
+            },
+            "start": 0,
+        })
+
+        return result["products"]
+    ```
+
 - PHP
 
     ```php
@@ -132,36 +162,6 @@ Call [catalog.product.list](../../../api-reference/catalog/product/catalog-produ
 
         return $result['products'];
     }
-    ```
-
-- Python
-
-    ```python
-    # pip install b24pysdk
-    from b24pysdk import BitrixWebhook
-
-    token = BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="USER_ID/TOKEN",
-    )
-
-    def call_method(method: str, params: dict):
-        return token.call_method(method, params)["result"]
-
-    def get_products(iblock_id: int):
-        result = call_method("catalog.product.list", {
-            "select": ["id", "iblockId", "name"],
-            "filter": {
-                "iblockId": iblock_id,
-                "active": "Y",
-            },
-            "order": {
-                "id": "ASC",
-            },
-            "start": 0,
-        })
-
-        return result["products"]
     ```
 
 - Go
@@ -258,6 +258,37 @@ The product price is stored separately from the product card. For each found pro
     }
     ```
 
+- Python
+
+    ```python
+    def get_first_price(product_id: int):
+        result = call_method("catalog.price.list", {
+            "select": ["id", "productId", "price", "currency"],
+            "filter": {
+                "productId": product_id,
+                ">price": 0,
+            },
+            "order": {
+                "id": "ASC",
+            },
+            "start": 0,
+        })
+
+        return result["prices"][0] if result["prices"] else None
+
+    def find_product_with_price(iblock_id: int):
+        for product in get_products(iblock_id):
+            price = get_first_price(int(product["id"]))
+
+            if price:
+                return {
+                    "product": product,
+                    "price": price,
+                }
+
+        raise RuntimeError("There is no active product in the catalog with a price greater than zero")
+    ```
+
 - PHP
 
     ```php
@@ -293,37 +324,6 @@ The product price is stored separately from the product card. For each found pro
 
         throw new RuntimeException('There is no active product in the catalog with a price greater than zero');
     }
-    ```
-
-- Python
-
-    ```python
-    def get_first_price(product_id: int):
-        result = call_method("catalog.price.list", {
-            "select": ["id", "productId", "price", "currency"],
-            "filter": {
-                "productId": product_id,
-                ">price": 0,
-            },
-            "order": {
-                "id": "ASC",
-            },
-            "start": 0,
-        })
-
-        return result["prices"][0] if result["prices"] else None
-
-    def find_product_with_price(iblock_id: int):
-        for product in get_products(iblock_id):
-            price = get_first_price(int(product["id"]))
-
-            if price:
-                return {
-                    "product": product,
-                    "price": price,
-                }
-
-        raise RuntimeError("There is no active product in the catalog with a price greater than zero")
     ```
 
 - Go
@@ -403,6 +403,21 @@ Call [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md). Pass:
     }
     ```
 
+- Python
+
+    ```python
+    def create_crm_item(entity_type_id: int, title: str, currency: str) -> int:
+        result = call_method("crm.item.add", {
+            "entityTypeId": entity_type_id,
+            "fields": {
+                "title": title,
+                "currencyId": currency,
+            },
+        })
+
+        return int(result["item"]["id"])
+    ```
+
 - PHP
 
     ```php
@@ -418,21 +433,6 @@ Call [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md). Pass:
 
         return (int)$result['item']['id'];
     }
-    ```
-
-- Python
-
-    ```python
-    def create_crm_item(entity_type_id: int, title: str, currency: str) -> int:
-        result = call_method("crm.item.add", {
-            "entityTypeId": entity_type_id,
-            "fields": {
-                "title": title,
-                "currencyId": currency,
-            },
-        })
-
-        return int(result["item"]["id"])
     ```
 
 - Go
@@ -557,6 +557,57 @@ The [crm.item.productrow.set](../../../api-reference/crm/universal/product-rows/
     }
     ```
 
+- Python
+
+    ```python
+    def build_product_rows(product_id: int, base_price: float):
+        fixed_discount = min(100, base_price / 2)
+
+        return [
+            {
+                "productId": product_id,
+                "price": base_price,
+                "taxRate": 20,
+                "taxIncluded": "N",
+                "quantity": 1,
+                "sort": 10,
+            },
+            {
+                "productId": product_id,
+                "price": base_price * 1.2,
+                "taxRate": 20,
+                "taxIncluded": "Y",
+                "quantity": 1,
+                "sort": 20,
+            },
+            {
+                "productId": product_id,
+                "price": base_price - fixed_discount,
+                "discountTypeId": 1,
+                "discountSum": fixed_discount,
+                "quantity": 1,
+                "sort": 30,
+            },
+            {
+                "productId": product_id,
+                "price": base_price * 0.9,
+                "discountTypeId": 2,
+                "discountRate": 10,
+                "quantity": 1,
+                "sort": 40,
+            },
+        ]
+
+    def set_product_rows(owner_type: str, owner_id: int, product_rows: list):
+        result = call_method("crm.item.productrow.set", {
+            "ownerType": owner_type,
+            "ownerId": owner_id,
+            "productRows": product_rows,
+        })
+
+        return result["productRows"]
+    ```
+
 - PHP
 
     ```php
@@ -610,57 +661,6 @@ The [crm.item.productrow.set](../../../api-reference/crm/universal/product-rows/
 
         return $result['productRows'];
     }
-    ```
-
-- Python
-
-    ```python
-    def build_product_rows(product_id: int, base_price: float):
-        fixed_discount = min(100, base_price / 2)
-
-        return [
-            {
-                "productId": product_id,
-                "price": base_price,
-                "taxRate": 20,
-                "taxIncluded": "N",
-                "quantity": 1,
-                "sort": 10,
-            },
-            {
-                "productId": product_id,
-                "price": base_price * 1.2,
-                "taxRate": 20,
-                "taxIncluded": "Y",
-                "quantity": 1,
-                "sort": 20,
-            },
-            {
-                "productId": product_id,
-                "price": base_price - fixed_discount,
-                "discountTypeId": 1,
-                "discountSum": fixed_discount,
-                "quantity": 1,
-                "sort": 30,
-            },
-            {
-                "productId": product_id,
-                "price": base_price * 0.9,
-                "discountTypeId": 2,
-                "discountRate": 10,
-                "quantity": 1,
-                "sort": 40,
-            },
-        ]
-
-    def set_product_rows(owner_type: str, owner_id: int, product_rows: list):
-        result = call_method("crm.item.productrow.set", {
-            "ownerType": owner_type,
-            "ownerId": owner_id,
-            "productRows": product_rows,
-        })
-
-        return result["productRows"]
     ```
 
 - Go
@@ -763,6 +763,35 @@ After adding the functions from the previous steps, select the required object t
     console.log(savedRows)
     ```
 
+- Python
+
+    ```python
+    crm_entity = {
+        "entityTypeId": 2,
+        "ownerType": "D",
+        "title": "Deal with products",
+    }
+
+    iblock_id = 23
+
+    product_with_price = find_product_with_price(iblock_id)
+    product = product_with_price["product"]
+    price = product_with_price["price"]
+
+    item_id = create_crm_item(
+        crm_entity["entityTypeId"],
+        crm_entity["title"],
+        price["currency"],
+    )
+
+    product_rows = build_product_rows(int(product["id"]), float(price["price"]))
+    saved_rows = set_product_rows(crm_entity["ownerType"], item_id, product_rows)
+
+    print("CRM object created #%s" % item_id)
+    print("Product: %s" % product["name"])
+    print(saved_rows)
+    ```
+
 - PHP
 
     ```php
@@ -791,35 +820,6 @@ After adding the functions from the previous steps, select the required object t
     print('CRM object created #' . $itemId . PHP_EOL);
     print('Product: ' . $product['name'] . PHP_EOL);
     print_r($savedRows);
-    ```
-
-- Python
-
-    ```python
-    crm_entity = {
-        "entityTypeId": 2,
-        "ownerType": "D",
-        "title": "Deal with products",
-    }
-
-    iblock_id = 23
-
-    product_with_price = find_product_with_price(iblock_id)
-    product = product_with_price["product"]
-    price = product_with_price["price"]
-
-    item_id = create_crm_item(
-        crm_entity["entityTypeId"],
-        crm_entity["title"],
-        price["currency"],
-    )
-
-    product_rows = build_product_rows(int(product["id"]), float(price["price"]))
-    saved_rows = set_product_rows(crm_entity["ownerType"], item_id, product_rows)
-
-    print("CRM object created #%s" % item_id)
-    print("Product: %s" % product["name"])
-    print(saved_rows)
     ```
 
 - Go

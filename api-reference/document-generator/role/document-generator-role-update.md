@@ -281,6 +281,45 @@ If keys are provided in lowercase, the role permissions will be reset to empty v
     </script>
     ```
 
+- Python
+
+  ```python
+  from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+  try:
+      bitrix_response = client.documentgenerator.role.update(
+          bitrix_id=9,
+          fields={
+              "name": "Editors of their own templates",
+              "permissions": {
+                  "SETTINGS": {
+                      "MODIFY": "",
+                  },
+                  "TEMPLATES": {
+                      "MODIFY": "A",
+                  },
+                  "DOCUMENTS": {
+                      "MODIFY": "X",
+                      "VIEW": "X",
+                  },
+              },
+          },
+      ).response
+      result = bitrix_response.result
+      print(result)
+  except BitrixAPIError as error:
+      print(
+          "Bitrix API error",
+          f"error: {error.error}",
+          f"error_description: {error.error_description}",
+          sep="\n",
+      )
+  except BitrixSDKException as error:
+      print(f"Bitrix SDK error: {error.message}")
+  except Exception as error:
+      print(f"Unexpected error: {error}")
+  ```
+
 - PHP
 
   ```php

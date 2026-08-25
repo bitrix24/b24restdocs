@@ -112,37 +112,6 @@ Use the [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) met
     const contactId = resultAdd.getData().result.item.id;
     ```
 
-- PHP
-
-    ```php
-    <?php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Psr\Log\NullLogger;
-
-    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
-
-    $resultAdd = $sb->getCRMScope()->item()->add(
-        3, // 3 — contact
-        [
-            'name' => 'Klaus',
-            'lastName' => 'Weber',
-            'fm' => [
-                [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'work_email@nomail.com' ],
-                [ 'typeId' => 'EMAIL', 'valueType' => 'HOME', 'value' => 'home_email@nomail.com' ],
-                [ 'typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => '+493012345678' ],
-                [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+493076543210' ]
-            ]
-        ]
-    );
-
-    $contactId = $resultAdd->item()->id;
-    ```
-
 - Python
 
     ```python
@@ -173,6 +142,37 @@ Use the [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) met
     contact_id = item["id"]
     ```
 
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $resultAdd = $sb->getCRMScope()->item()->add(
+        3, // 3 — contact
+        [
+            'name' => 'Klaus',
+            'lastName' => 'Weber',
+            'fm' => [
+                [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'work_email@nomail.com' ],
+                [ 'typeId' => 'EMAIL', 'valueType' => 'HOME', 'value' => 'home_email@nomail.com' ],
+                [ 'typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => '+493012345678' ],
+                [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+493076543210' ]
+            ]
+        ]
+    );
+
+    $contactId = $resultAdd->item()->id;
+    ```
 {% endlist %}
 
 The method returns an `item` object with the full set of contact fields. The response is shortened to the fields that confirm the result. Retain the `id` of the contact — steps 2 and 3 need it. In the example, `id`: `2653`.
@@ -245,12 +245,6 @@ Use the [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md) met
     const multifields = resultGet.getData().result.item.fm;
     ```
 
-- PHP
-
-    ```php
-    $multifields = $sb->getCRMScope()->item()->get(3, $contactId)->item()->fm;
-    ```
-
 - Python
 
     ```python
@@ -260,6 +254,12 @@ Use the [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md) met
     ).response.result["item"]["fm"]
     ```
 
+
+- PHP
+
+    ```php
+    $multifields = $sb->getCRMScope()->item()->get(3, $contactId)->item()->fm;
+    ```
 {% endlist %}
 
 In the `fm` array, locate the entries you need by the `typeId` and `valueType` pair and retain their `id` values. In the example, the work email is `8553`, the personal email is `8555`, and the mobile phone is `8559`.
@@ -351,23 +351,6 @@ The work phone `8557` is not mentioned in the request, so it remains as it was.
     });
     ```
 
-- PHP
-
-    ```php
-    $resultUpdate = $sb->getCRMScope()->item()->update(
-        3,
-        $contactId,
-        [
-            'fm' => [
-                // the key is the entry id from step 2
-                8553 => [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'new_work_email@nomail.com' ], // change the work email
-                8555 => [ 'typeId' => 'EMAIL', 'value' => '' ], // an empty value deletes the personal email
-                8559 => [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+493055544433' ] // change the mobile phone
-            ]
-        ]
-    );
-    ```
-
 - Python
 
     ```python
@@ -385,6 +368,23 @@ The work phone `8557` is not mentioned in the request, so it remains as it was.
     ).response.result["item"]
     ```
 
+
+- PHP
+
+    ```php
+    $resultUpdate = $sb->getCRMScope()->item()->update(
+        3,
+        $contactId,
+        [
+            'fm' => [
+                // the key is the entry id from step 2
+                8553 => [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'new_work_email@nomail.com' ], // change the work email
+                8555 => [ 'typeId' => 'EMAIL', 'value' => '' ], // an empty value deletes the personal email
+                8559 => [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+493055544433' ] // change the mobile phone
+            ]
+        ]
+    );
+    ```
 {% endlist %}
 
 The method returns the entire contact with the new set of entries, so a separate request to check the result is not required. The response is shortened.
@@ -444,18 +444,18 @@ Over REST, the set of multifields is returned by the [crm.item.get](../../../api
     console.dir(checkResult.getData().result.item.fm);
     ```
 
-- PHP
-
-    ```php
-    print_r($sb->getCRMScope()->item()->get(3, $contactId)->item()->fm);
-    ```
-
 - Python
 
     ```python
     print(client.crm.item.get(3, contact_id).response.result["item"]["fm"])
     ```
 
+
+- PHP
+
+    ```php
+    print_r($sb->getCRMScope()->item()->get(3, $contactId)->item()->fm);
+    ```
 {% endlist %}
 
 The scenario is complete if the `fm` array holds three entries: `8553` has a new email address, `8559` has a new phone number, entry `8555` is gone, and `8557` is unchanged.
@@ -615,82 +615,6 @@ The script creates a contact with two email addresses and two phone numbers, rea
     changeContacts();
     ```
 
-- PHP
-
-    ```php
-    <?php
-    // composer require bitrix24/b24phpsdk:"^3.0"
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-    use Psr\Log\NullLogger;
-
-    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
-
-    $entityTypeId = 3; // 3 — contact, company — 4, lead — 1
-    $item = $sb->getCRMScope()->item();
-
-    // finds the id of a multifield entry by its type and value subtype
-    $findId = static function (array $multifields, string $typeId, string $valueType) {
-        foreach ($multifields as $field) {
-            if ($field['typeId'] === $typeId && $field['valueType'] === $valueType) {
-                return $field['id'];
-            }
-        }
-        return null;
-    };
-
-    try {
-        // Step 1: create a contact with an email and phone numbers
-        $contactId = $item->add(
-            $entityTypeId,
-            [
-                'name' => 'Klaus',
-                'lastName' => 'Weber',
-                'fm' => [
-                    [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'work_email@nomail.com' ],
-                    [ 'typeId' => 'EMAIL', 'valueType' => 'HOME', 'value' => 'home_email@nomail.com' ],
-                    [ 'typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => '+493012345678' ],
-                    [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+493076543210' ]
-                ]
-            ]
-        )->item()->id;
-        echo 'Contact created, id: ' . $contactId . PHP_EOL;
-
-        // Step 2: read the identifiers of the multifield entries
-        $multifields = $item->get($entityTypeId, $contactId)->item()->fm;
-
-        $workEmailId = $findId($multifields, 'EMAIL', 'WORK');
-        $homeEmailId = $findId($multifields, 'EMAIL', 'HOME');
-        $mobilePhoneId = $findId($multifields, 'PHONE', 'MOBILE');
-        if ($workEmailId === null || $homeEmailId === null || $mobilePhoneId === null) {
-            echo 'The contact does not have the required multifield entries';
-            return;
-        }
-
-        // Step 3: change some values and delete others
-        // typeId is required in every element, otherwise the operation is silently skipped
-        $updated = $item->update(
-            $entityTypeId,
-            $contactId,
-            [
-                'fm' => [
-                    $workEmailId => [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'new_work_email@nomail.com' ],
-                    $homeEmailId => [ 'typeId' => 'EMAIL', 'value' => '' ],
-                    $mobilePhoneId => [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+493055544433' ]
-                ]
-            ]
-        );
-
-        echo 'Contact details updated:' . PHP_EOL;
-        print_r($updated->item()->fm);
-    } catch (\Throwable $e) {
-        echo 'Contact details not updated: ' . $e->getMessage();
-    }
-    ```
-
 - Python
 
     ```python
@@ -767,6 +691,82 @@ The script creates a contact with two email addresses and two phone numbers, rea
         print(f"Contact details not updated: {error}")
     ```
 
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Psr\Log\NullLogger;
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), new NullLogger()))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $entityTypeId = 3; // 3 — contact, company — 4, lead — 1
+    $item = $sb->getCRMScope()->item();
+
+    // finds the id of a multifield entry by its type and value subtype
+    $findId = static function (array $multifields, string $typeId, string $valueType) {
+        foreach ($multifields as $field) {
+            if ($field['typeId'] === $typeId && $field['valueType'] === $valueType) {
+                return $field['id'];
+            }
+        }
+        return null;
+    };
+
+    try {
+        // Step 1: create a contact with an email and phone numbers
+        $contactId = $item->add(
+            $entityTypeId,
+            [
+                'name' => 'Klaus',
+                'lastName' => 'Weber',
+                'fm' => [
+                    [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'work_email@nomail.com' ],
+                    [ 'typeId' => 'EMAIL', 'valueType' => 'HOME', 'value' => 'home_email@nomail.com' ],
+                    [ 'typeId' => 'PHONE', 'valueType' => 'WORK', 'value' => '+493012345678' ],
+                    [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+493076543210' ]
+                ]
+            ]
+        )->item()->id;
+        echo 'Contact created, id: ' . $contactId . PHP_EOL;
+
+        // Step 2: read the identifiers of the multifield entries
+        $multifields = $item->get($entityTypeId, $contactId)->item()->fm;
+
+        $workEmailId = $findId($multifields, 'EMAIL', 'WORK');
+        $homeEmailId = $findId($multifields, 'EMAIL', 'HOME');
+        $mobilePhoneId = $findId($multifields, 'PHONE', 'MOBILE');
+        if ($workEmailId === null || $homeEmailId === null || $mobilePhoneId === null) {
+            echo 'The contact does not have the required multifield entries';
+            return;
+        }
+
+        // Step 3: change some values and delete others
+        // typeId is required in every element, otherwise the operation is silently skipped
+        $updated = $item->update(
+            $entityTypeId,
+            $contactId,
+            [
+                'fm' => [
+                    $workEmailId => [ 'typeId' => 'EMAIL', 'valueType' => 'WORK', 'value' => 'new_work_email@nomail.com' ],
+                    $homeEmailId => [ 'typeId' => 'EMAIL', 'value' => '' ],
+                    $mobilePhoneId => [ 'typeId' => 'PHONE', 'valueType' => 'MOBILE', 'value' => '+493055544433' ]
+                ]
+            ]
+        );
+
+        echo 'Contact details updated:' . PHP_EOL;
+        print_r($updated->item()->fm);
+    } catch (\Throwable $e) {
+        echo 'Contact details not updated: ' . $e->getMessage();
+    }
+    ```
 {% endlist %}
 
 ## Continue Learning

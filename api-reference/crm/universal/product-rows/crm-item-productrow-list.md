@@ -225,47 +225,13 @@ The formula for calculating the `start` parameter value:
     </script>
     ```
 
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'crm.item.productrow.list',
-                [
-                    'filter' => [
-                        "=ownerType" => 'D',
-                        "=ownerId"   => 13142,
-                        ">price"     => 5000,
-                    ],
-                    'order'  => [
-                        'price' => "desc"
-                    ],
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error listing product rows: ' . $e->getMessage();
-    }
-    ```
-
 - Python
 
     Example
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.item.productrow.list(
@@ -296,10 +262,8 @@ The formula for calculating the `start` parameter value:
     Example `as_list`
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.item.productrow.list(
@@ -331,10 +295,8 @@ The formula for calculating the `start` parameter value:
     Example `as_list_fast`
 
     ```python
-    from b24pysdk.client import BaseClient
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    client: BaseClient
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.item.productrow.list(
@@ -361,6 +323,38 @@ The formula for calculating the `start` parameter value:
         print(f"Bitrix SDK Error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.item.productrow.list',
+                [
+                    'filter' => [
+                        "=ownerType" => 'D',
+                        "=ownerId"   => 13142,
+                        ">price"     => 5000,
+                    ],
+                    'order'  => [
+                        'price' => "desc"
+                    ],
+                ]
+            );
+    
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+    
+        echo 'Success: ' . print_r($result, true);
+    
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error listing product rows: ' . $e->getMessage();
+    }
     ```
 
 - BX24.js

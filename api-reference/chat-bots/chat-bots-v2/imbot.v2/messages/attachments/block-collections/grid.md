@@ -149,6 +149,27 @@ Do not mix different display formats within a single `GRID` entry. If different 
     }
     ```
 
+- Python
+
+    ```python
+    attach = {
+        "GRID": [
+            {
+                "NAME": "Description",
+                "VALUE": "We need to implement the ability to add structured entities to messenger messages and notifications.",
+                "DISPLAY": "BLOCK",
+                "WIDTH": 250,
+            },
+            {
+                "NAME": "Category",
+                "VALUE": "Preferences",
+                "DISPLAY": "BLOCK",
+                "WIDTH": 100,
+            },
+        ],
+    }
+    ```
+
 - PHP
 
     ```php
@@ -206,6 +227,28 @@ In the mobile version, elements are displayed one below the other.
     }
     ```
 
+- Python
+
+    ```python
+    attach = {
+        "GRID": [
+            {
+                "NAME": "Priority",
+                "VALUE": "High",
+                "COLOR_TOKEN": "alert",
+                "COLOR": "#ff0000",
+                "DISPLAY": "LINE",
+                "WIDTH": 250,
+            },
+            {
+                "NAME": "Category",
+                "VALUE": "Preferences",
+                "DISPLAY": "LINE",
+            },
+        ],
+    }
+    ```
+
 - PHP
 
     ```php
@@ -256,6 +299,26 @@ In the mobile version, elements are displayed one below the other.
                 DISPLAY: 'ROW'
             }
         ]
+    }
+    ```
+
+- Python
+
+    ```python
+    attach = {
+        "GRID": [
+            {
+                "NAME": "Priority",
+                "VALUE": "High",
+                "DISPLAY": "ROW",
+                "WIDTH": 250,
+            },
+            {
+                "NAME": "Category",
+                "VALUE": "Preferences",
+                "DISPLAY": "ROW",
+            },
+        ],
     }
     ```
 
@@ -310,6 +373,30 @@ In the mobile version, elements are displayed one below the other.
                 DISPLAY: 'TABLE'
             }
         ]
+    }
+    ```
+
+- Python
+
+    ```python
+    attach = {
+        "GRID": [
+            {
+                "NAME": "Project",
+                "VALUE": "BUGS",
+                "DISPLAY": "TABLE",
+            },
+            {
+                "NAME": "Category",
+                "VALUE": "im",
+                "DISPLAY": "TABLE",
+            },
+            {
+                "NAME": "Deadline",
+                "VALUE": "24.06.2026 17:50:43",
+                "DISPLAY": "TABLE",
+            },
+        ],
     }
     ```
 
