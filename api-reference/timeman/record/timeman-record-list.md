@@ -38,7 +38,7 @@ Available fields:
 
 For `startTime`, the following operators are supported: `=`, `>`, `>=`, `<`, `<=`, `between`.
 
-[More about filtering in REST 3.0](../index.md#filter) ||
+[More about filtering in REST 3.0](../../rest-v3.md#filter) ||
 || **select**
 [`array`](../../data-types.md) | List of fields to return in the response.
 

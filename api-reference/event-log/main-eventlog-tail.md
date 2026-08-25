@@ -49,7 +49,7 @@ Available fields:
 
 Available fields are similar to those in `select`.
   
-[More about filtering in REST 3.0](../index.md#filter) ||
+[More about filtering in REST 3.0](../rest-v3.md#filter) ||
 || **cursor**
 [`object`](../data-types.md) | Reference point for retrieving new records: 
 

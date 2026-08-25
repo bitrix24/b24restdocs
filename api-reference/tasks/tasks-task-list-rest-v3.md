@@ -41,7 +41,7 @@ Field names for `select` match the keys of the task object from the [Task object
 
 In REST 3.0, filtering by the `id` field is supported for tasks.
 
-[More details about filtering in REST 3.0](index.md#filter) ||
+[More details about filtering in REST 3.0](../rest-v3.md#filter) ||
 || **order**
 [`object`](../data-types.md) | Sorting of results in the `{ "field": "value" }` format.
 

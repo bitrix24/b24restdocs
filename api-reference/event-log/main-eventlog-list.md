@@ -49,7 +49,7 @@ Available fields:
 
 Available fields are similar to those in `select`.
   
-[More about filtering in REST 3.0](../index.md#filter) ||
+[More about filtering in REST 3.0](../rest-v3.md#filter) ||
 || **order**
 [`object`](../data-types.md) | Sorting results in the format `{ "field": "value" }`.
 
