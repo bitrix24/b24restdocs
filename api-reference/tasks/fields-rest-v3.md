@@ -100,7 +100,7 @@ Has a value of `null` if there is no parent task ||
 || **numberOfReminders**
 [`integer`](../data-types.md) | Number of reminders for the task. The field is automatically updated ||
 || **chatId**
-[`integer`](../data-types.md) | Task chat identifier. To work with the task chat, use the methods [im.message.*](./tasks-new.md#comments) ||
+[`integer`](../data-types.md) | Task chat identifier. To work with the task chat, use the [chat message methods](../chats/messages/index.md). For more details, see [{#T}](./tasks-new.md) ||
 || **chat**
 [`object`](#task-chat) | Task chat. An object of type [task chat](#task-chat). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **plannedDuration**
