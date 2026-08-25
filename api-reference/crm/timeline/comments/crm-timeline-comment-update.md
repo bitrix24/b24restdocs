@@ -177,8 +177,6 @@ Starting from version crm 23.100.0, only parameters with the key `fields` in low
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

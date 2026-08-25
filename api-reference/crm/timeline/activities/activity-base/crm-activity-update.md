@@ -213,8 +213,6 @@ fields:
 
 - Python
 
-    Example
-
     ```python
 
     from datetime import datetime, timedelta

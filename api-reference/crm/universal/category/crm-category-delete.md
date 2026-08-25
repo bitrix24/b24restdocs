@@ -133,8 +133,6 @@ Delete the funnel with `id = 5`, located in deals.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

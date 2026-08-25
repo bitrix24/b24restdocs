@@ -128,8 +128,6 @@ The method `crm.calllist.get` returns information about the call list by its ide
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -173,8 +173,6 @@ Reset the personal configuration of the deal card for the user with `id = 1` in 
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -148,8 +148,6 @@ Get product rows for the lead with `id = 5`
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

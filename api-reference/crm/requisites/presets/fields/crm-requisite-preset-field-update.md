@@ -168,8 +168,6 @@ The alternative name is displayed in various forms for filling out requisites. D
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

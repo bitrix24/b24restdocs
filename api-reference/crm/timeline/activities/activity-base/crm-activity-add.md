@@ -270,8 +270,6 @@ For activities of type `e-mail`:
 
 - Python
 
-    Example
-
     ```python
 
     from datetime import datetime, timedelta

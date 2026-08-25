@@ -182,8 +182,6 @@ For the correct operation of status stages, the sorting must follow this order:
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

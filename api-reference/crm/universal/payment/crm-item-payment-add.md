@@ -124,8 +124,6 @@ Creates a payment for a CRM object.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -188,8 +188,6 @@ If at least one string field is specified, only the specified fields will be sav
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

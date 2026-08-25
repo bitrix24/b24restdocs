@@ -158,8 +158,6 @@ The method `crm.activity.todo.add` adds a universal activity to the timeline.
 
 - Python
 
-    Example
-
     ```python
 
     from datetime import datetime, timedelta

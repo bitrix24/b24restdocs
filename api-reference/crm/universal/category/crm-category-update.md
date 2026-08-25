@@ -189,8 +189,6 @@ How to update a funnel with `id = 4` in an SPA with `entityTypeId = 1152`
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

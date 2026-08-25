@@ -171,8 +171,6 @@ Reset the shared configuration for deal cards in the pipeline with `id = 9` for 
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

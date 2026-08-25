@@ -185,8 +185,6 @@ The value can be obtained using the method [`crm.item.list`](../../universal/crm
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

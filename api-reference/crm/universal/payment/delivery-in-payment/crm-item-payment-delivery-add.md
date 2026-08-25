@@ -126,8 +126,6 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

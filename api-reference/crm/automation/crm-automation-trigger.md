@@ -147,8 +147,6 @@ It is also worth noting that triggers have "Conditions" and the option "Allow tr
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -127,8 +127,6 @@ The method returns information about the digital workplace with the identifier `
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -132,8 +132,6 @@ Example of retrieving all associated companies for a contact with `id = 54`
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

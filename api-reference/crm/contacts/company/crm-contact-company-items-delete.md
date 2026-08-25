@@ -124,8 +124,6 @@ Example of deleting all linked companies for a contact with `id = 54`
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

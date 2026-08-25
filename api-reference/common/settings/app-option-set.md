@@ -137,8 +137,6 @@ The `app.option.set` method binds data to the application.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

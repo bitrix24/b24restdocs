@@ -221,8 +221,6 @@ If not provided and a **productId** is provided, the unit of measurement from th
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -122,8 +122,6 @@ The method can only be executed in the application context.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

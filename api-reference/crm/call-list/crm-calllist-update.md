@@ -149,8 +149,6 @@ The method overwrites the `WEBFORM_ID` field. If the `WEBFORM_ID` field is not p
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

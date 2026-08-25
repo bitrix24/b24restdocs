@@ -128,8 +128,6 @@ The method `crm.activity.binding.delete` removes the connection of a deal with a
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

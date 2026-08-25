@@ -145,8 +145,6 @@ The result will contain only the items for which the current user has read acces
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

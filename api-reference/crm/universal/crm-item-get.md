@@ -176,8 +176,6 @@ Retrieve information about a lead with `id = 250`
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

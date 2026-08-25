@@ -361,8 +361,6 @@ Required only for administrators when requesting others' personal settings. If n
 
     - Python
 
-        Example
-
         ```python
 
         from b24pysdk.errors import BitrixAPIError, BitrixSDKException

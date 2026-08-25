@@ -119,8 +119,6 @@ The method `crm.activity.badge.get` will return an array containing [badge field
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

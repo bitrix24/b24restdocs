@@ -152,8 +152,6 @@ Set a common detail form for deals in the pipeline with `id = 9`
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

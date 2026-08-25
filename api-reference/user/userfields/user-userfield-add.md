@@ -307,10 +307,7 @@ Each custom field type has its own set of additional configurations.
 
 - Python
 
-    Example
-
     ```python
-    from b24pysdk.client import BaseClient
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     fields = {

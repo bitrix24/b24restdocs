@@ -130,8 +130,6 @@ You can obtain identifiers using the [`crm.timeline.logmessage.list`](./crm-time
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

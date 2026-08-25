@@ -125,8 +125,6 @@ The method `crm.deal.recurring.expose` creates a new deal based on the template 
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

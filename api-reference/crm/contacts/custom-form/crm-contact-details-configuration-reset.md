@@ -187,8 +187,6 @@ If not specified, the `id` of the current user is used
 
     - Python
 
-        Example
-
         ```python
 
         from b24pysdk.errors import BitrixAPIError, BitrixSDKException

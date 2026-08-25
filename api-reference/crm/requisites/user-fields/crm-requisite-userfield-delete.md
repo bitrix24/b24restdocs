@@ -120,8 +120,6 @@ Deletes a custom field of the company details.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

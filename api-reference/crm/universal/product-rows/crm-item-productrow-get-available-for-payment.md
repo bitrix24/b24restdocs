@@ -152,8 +152,6 @@ The method retrieves product rows of the CRM object for which the customer has n
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

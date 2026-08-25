@@ -120,8 +120,6 @@ This method deletes the contact list from a lead.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

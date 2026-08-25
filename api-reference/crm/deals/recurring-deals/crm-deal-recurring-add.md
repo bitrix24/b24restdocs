@@ -251,8 +251,6 @@ If any other value is passed, it will be converted to `N` ||
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

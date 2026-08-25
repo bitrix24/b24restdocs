@@ -120,8 +120,6 @@ Deletes a payment.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

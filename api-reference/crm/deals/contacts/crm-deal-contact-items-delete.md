@@ -124,8 +124,6 @@ Example of removing all associated contacts from the deal with `id = 1875`.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

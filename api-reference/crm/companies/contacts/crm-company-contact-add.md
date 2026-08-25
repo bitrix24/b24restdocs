@@ -175,8 +175,6 @@ Defaults to `i + 10`, where `i` is the maximum sort index of existing links for 
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

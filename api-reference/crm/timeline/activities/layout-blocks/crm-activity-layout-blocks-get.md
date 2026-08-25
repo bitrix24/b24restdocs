@@ -142,8 +142,6 @@ Get a set of additional content blocks in the activity with `id = 8`, linked to 
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

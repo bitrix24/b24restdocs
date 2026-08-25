@@ -375,8 +375,6 @@ For a user with `id = 1`, set the following configuration for item cards
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -177,8 +177,6 @@ You can obtain the identifier using the [mailservice.list](./mailservice-list.md
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

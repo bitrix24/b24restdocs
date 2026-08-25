@@ -134,8 +134,6 @@ The identifier can be obtained using the methods [crm.company.userfield.add](./c
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

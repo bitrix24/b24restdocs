@@ -1129,8 +1129,6 @@ Update a deal with `id = 351`
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

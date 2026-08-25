@@ -203,7 +203,6 @@ A key can be assigned an additional prefix to specify the filter behavior. Possi
     Example
 
     ```python
-    from b24pysdk.client import BaseClient
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     order = {
@@ -238,7 +237,6 @@ A key can be assigned an additional prefix to specify the filter behavior. Possi
     Example `as_list`
 
     ```python
-    from b24pysdk.client import BaseClient
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     order = {
@@ -272,7 +270,6 @@ A key can be assigned an additional prefix to specify the filter behavior. Possi
     Example `as_list_fast`
 
     ```python
-    from b24pysdk.client import BaseClient
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     order = {

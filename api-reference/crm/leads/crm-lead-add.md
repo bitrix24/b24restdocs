@@ -341,8 +341,6 @@ When adding a lead, you cannot explicitly set the indicator for a repeat lead (t
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

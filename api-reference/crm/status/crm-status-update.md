@@ -143,8 +143,6 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

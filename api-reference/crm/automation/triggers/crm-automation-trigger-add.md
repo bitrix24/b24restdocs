@@ -128,8 +128,6 @@ If an existing trigger identifier `CODE` is provided, the trigger name `NAME` wi
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

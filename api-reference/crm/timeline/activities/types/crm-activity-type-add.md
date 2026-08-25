@@ -159,8 +159,6 @@ A detailed description is provided [below](#parametr-fields)
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -128,8 +128,6 @@ This method is similar to [crm.status.list](crm-status-list.md), except that the
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

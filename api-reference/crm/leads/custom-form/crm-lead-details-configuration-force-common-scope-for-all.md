@@ -147,8 +147,6 @@ Settings for repeat leads may differ from those for simple leads. To switch betw
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

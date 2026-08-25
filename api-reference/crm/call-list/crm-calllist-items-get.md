@@ -134,8 +134,6 @@ You can get the status code values using the method [crm.calllist.statuslist](./
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

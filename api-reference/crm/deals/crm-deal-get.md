@@ -155,8 +155,6 @@ The identifier can be obtained using the methods [crm.deal.list](./crm-deal-list
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -128,8 +128,6 @@ This method retrieves a list of contacts associated with a lead.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

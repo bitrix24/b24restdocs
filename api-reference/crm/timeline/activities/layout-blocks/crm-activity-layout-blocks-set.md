@@ -232,8 +232,6 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

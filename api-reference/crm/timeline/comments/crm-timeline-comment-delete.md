@@ -134,8 +134,6 @@ When specifying `ownerTypeId` and `ownerId`, if the comment is linked to multipl
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

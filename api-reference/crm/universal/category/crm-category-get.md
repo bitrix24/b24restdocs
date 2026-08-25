@@ -139,8 +139,6 @@ How to get information about the funnel with `id` = `1`, located in deals.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

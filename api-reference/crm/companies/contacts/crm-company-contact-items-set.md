@@ -183,8 +183,6 @@ If an existing binding is provided without the `SORT` parameter, the default val
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

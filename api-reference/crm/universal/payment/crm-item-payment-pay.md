@@ -120,8 +120,6 @@ Changes the payment status to "Paid".
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

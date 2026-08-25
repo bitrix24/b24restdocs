@@ -151,8 +151,6 @@ This method attaches a list of contacts to the specified lead.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

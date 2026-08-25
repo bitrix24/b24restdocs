@@ -122,8 +122,6 @@ Retrieves a list of fields for the contact-company link
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -146,8 +146,6 @@ Retrieve the product rows of the deal with `id = 5`
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

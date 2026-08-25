@@ -124,8 +124,6 @@ If there are SPAs, they must first be unbound or reassigned to another workplace
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

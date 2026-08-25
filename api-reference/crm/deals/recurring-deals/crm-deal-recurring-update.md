@@ -242,8 +242,6 @@ The list of available funnels can be obtained using the method [crm.category.lis
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -180,8 +180,6 @@ Example of adding a contact-company link, where:
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

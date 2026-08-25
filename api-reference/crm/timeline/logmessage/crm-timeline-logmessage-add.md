@@ -177,8 +177,6 @@ A list of available codes can be obtained using the method [crm.timeline.icon.li
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

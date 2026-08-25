@@ -110,8 +110,6 @@ The `crm.activity.type.delete` method deletes a custom activity type.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

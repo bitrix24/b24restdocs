@@ -128,8 +128,6 @@ Fields with the prefix `UF_` in the response are custom fields (see [methods](..
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

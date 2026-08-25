@@ -142,8 +142,6 @@ Retrieves a user field of the company details by its identifier.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -124,8 +124,6 @@ This method changes the quantity of a product in a payment line item.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

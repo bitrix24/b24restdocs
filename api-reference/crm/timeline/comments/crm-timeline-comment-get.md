@@ -143,8 +143,6 @@ Retrieves information about a comment type deal.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

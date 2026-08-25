@@ -456,8 +456,6 @@ For a multiple field, several `DEF = Y` are allowed. For a non-multiple field, t
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

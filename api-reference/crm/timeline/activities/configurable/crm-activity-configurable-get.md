@@ -137,8 +137,6 @@ The method can only be called in the context of an [application](https://helpdes
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

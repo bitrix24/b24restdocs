@@ -126,10 +126,7 @@ To get custom field identifiers, use the [user.userfield.list](./user-userfield-
 
 - Python
 
-    Example
-
     ```python
-    from b24pysdk.client import BaseClient
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     bitrix_id = 176

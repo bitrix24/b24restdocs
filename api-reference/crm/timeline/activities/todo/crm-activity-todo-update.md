@@ -160,8 +160,6 @@ The `crm.activity.todo.update` method updates a universal activity.
 
 - Python
 
-    Example
-
     ```python
 
     from datetime import datetime, timedelta

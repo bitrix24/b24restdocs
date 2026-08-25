@@ -122,8 +122,6 @@ The identifier can be obtained using the methods [crm.company.list](../crm-compa
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

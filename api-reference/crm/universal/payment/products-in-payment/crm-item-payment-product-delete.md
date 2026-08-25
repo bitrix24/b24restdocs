@@ -123,8 +123,6 @@ Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universa
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

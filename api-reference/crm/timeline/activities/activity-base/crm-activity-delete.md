@@ -120,8 +120,6 @@ The method `crm.activity.delete` removes an activity of any type.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

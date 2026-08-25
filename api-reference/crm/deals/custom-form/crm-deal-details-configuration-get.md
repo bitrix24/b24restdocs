@@ -184,8 +184,6 @@ Example of retrieving the general configuration of the deal card for the funnel 
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -131,8 +131,6 @@ The method `crm.activity.badge.add` adds a new badge for a configurable activity
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

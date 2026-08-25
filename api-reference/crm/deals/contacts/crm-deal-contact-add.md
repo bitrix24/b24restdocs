@@ -175,8 +175,6 @@ Example of adding a deal-contact link, where:
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

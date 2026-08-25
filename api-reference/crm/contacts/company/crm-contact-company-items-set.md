@@ -188,8 +188,6 @@ Set the following associated companies for the contact with `id = 82`:
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

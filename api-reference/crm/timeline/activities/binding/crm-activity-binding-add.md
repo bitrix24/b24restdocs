@@ -135,8 +135,6 @@ The maximum number of bindings for a single deal is 100 CRM entities.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

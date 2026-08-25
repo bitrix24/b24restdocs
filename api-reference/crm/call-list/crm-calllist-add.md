@@ -129,8 +129,6 @@ The `ID` can be found in the list of forms in Bitrix24 https://your-domain.com/c
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

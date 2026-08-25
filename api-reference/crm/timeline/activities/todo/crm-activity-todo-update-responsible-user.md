@@ -137,8 +137,6 @@ The method `crm.activity.todo.updateResponsibleUser` updates the responsible use
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

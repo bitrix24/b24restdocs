@@ -141,8 +141,6 @@ Template identifiers can be obtained using the [crm.requisite.preset.list](../cr
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

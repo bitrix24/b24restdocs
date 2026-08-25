@@ -144,8 +144,6 @@ Example of removing the contact-company link, where:
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

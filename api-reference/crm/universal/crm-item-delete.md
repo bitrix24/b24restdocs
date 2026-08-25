@@ -131,8 +131,6 @@ Deleting an item with `id = 1`, belonging to the SPA with `entityTypeId = 1268`.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

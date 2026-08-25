@@ -185,8 +185,6 @@ Set the following linked contacts for the deal with `id = 1875`:
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

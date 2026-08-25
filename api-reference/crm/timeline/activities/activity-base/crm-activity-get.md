@@ -163,8 +163,6 @@ The method `crm.activity.get` returns information about the activity by its ID.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -289,8 +289,6 @@ Set personal configuration for the deal card for the user with `id = 1` in the f
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

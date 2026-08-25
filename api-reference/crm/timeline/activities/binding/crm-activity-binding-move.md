@@ -136,8 +136,6 @@ The `crm.activity.binding.move` method updates the link between an activity and 
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

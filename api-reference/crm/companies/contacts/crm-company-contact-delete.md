@@ -140,8 +140,6 @@ If the primary binding is removed, the first available binding will become the n
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

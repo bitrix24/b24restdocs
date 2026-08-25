@@ -134,8 +134,6 @@ The method `crm.status.get` returns the parameters of a directory item by its ID
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

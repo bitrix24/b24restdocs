@@ -122,8 +122,6 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

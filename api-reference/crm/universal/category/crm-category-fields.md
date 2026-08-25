@@ -136,8 +136,6 @@ The method retrieves information about the fields of the sales funnels (directio
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

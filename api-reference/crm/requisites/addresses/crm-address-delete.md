@@ -155,8 +155,6 @@ Searching for addresses linked to the Detail type:
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

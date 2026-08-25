@@ -92,8 +92,6 @@ The method `department.add` adds a new department to the company's structure.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -132,8 +132,6 @@ This method retrieves brief information about the delivery.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

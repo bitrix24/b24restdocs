@@ -133,8 +133,6 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

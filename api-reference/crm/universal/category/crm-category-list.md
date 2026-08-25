@@ -153,8 +153,6 @@ Get the list of funnels for deals.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

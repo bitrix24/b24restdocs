@@ -245,8 +245,6 @@ The default value is `0`. ||
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

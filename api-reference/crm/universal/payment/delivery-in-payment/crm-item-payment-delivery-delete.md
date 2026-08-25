@@ -121,8 +121,6 @@ Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-p
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

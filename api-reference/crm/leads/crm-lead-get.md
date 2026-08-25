@@ -152,8 +152,6 @@ The identifier can be obtained using the methods [crm.lead.list](./crm-lead-list
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

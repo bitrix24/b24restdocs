@@ -140,8 +140,6 @@ The method `crm.activity.todo.updateColor` updates the color of the universal de
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

@@ -191,8 +191,6 @@ The purpose of the field may change by the final developer ||
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

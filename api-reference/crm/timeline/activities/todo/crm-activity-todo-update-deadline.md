@@ -137,8 +137,6 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
 
 - Python
 
-    Example
-
     ```python
 
     from datetime import datetime, timedelta

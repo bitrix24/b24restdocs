@@ -153,8 +153,6 @@ Set a common deal detail form for all users in the Sales Funnel with `id = 32`
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

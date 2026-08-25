@@ -132,8 +132,6 @@ Example of retrieving all linked contacts for a deal with `id = 1875`.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException

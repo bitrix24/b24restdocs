@@ -331,8 +331,6 @@ For example, the field `PARENT_ID_153` — link to the smart process `entityType
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
