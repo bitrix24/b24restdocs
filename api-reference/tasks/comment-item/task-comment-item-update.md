@@ -77,7 +77,8 @@ The field is completely overwritten. To add a file to already uploaded ones, pas
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"TASKID":8017,"ITEMID":3167,"FIELDS":{"POST_MESSAGE":"Comment updated","UF_FORUM_MESSAGE_DOC":["n4755"]}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.comm
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.commentitem.update
+    ```
 
 - cURL (OAuth)
 
