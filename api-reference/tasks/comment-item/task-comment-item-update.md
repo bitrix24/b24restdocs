@@ -245,6 +245,29 @@ The field is completely overwritten. To add a file to already uploaded ones, pas
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "task.commentitem.update", b24.Params{
+    	"TASKID": 8017,
+    	"ITEMID": 3167,
+    	"FIELDS": b24.Params{
+    		"POST_MESSAGE":         "Comment updated",
+    		"UF_FORUM_MESSAGE_DOC": []string{"n4755"},
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("task.commentitem.update: %w", err)
+    }
+
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
+    ```
+
 {% endlist %}
 
 ## Response Handling

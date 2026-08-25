@@ -186,9 +186,9 @@ Required only for administrators when requesting others' personal settings. If n
         }
         ```
 
-   - BX24.js
+    - BX24.js
 
-       ```js
+        ```js
         BX24.callMethod(
             'crm.company.details.configuration.get',
             {
@@ -202,11 +202,11 @@ Required only for administrators when requesting others' personal settings. If n
                 ;
             },
         );
-       ```
+        ```
 
-   - PHP CRest
+    - PHP CRest
 
-       ```php
+        ```php
         require_once('crest.php');
 
         $result = CRest::call(
@@ -220,7 +220,7 @@ Required only for administrators when requesting others' personal settings. If n
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
-       ```
+        ```
 
     - Go
 

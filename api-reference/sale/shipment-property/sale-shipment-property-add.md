@@ -659,6 +659,63 @@ If not provided, the default value is `N` ||
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "sale.shipmentproperty.add", b24.Params{
+    	"fields": b24.Params{
+    		"personTypeId": 3,
+    		"propsGroupId": 6,
+    		"name":         "Phone (for contacting the courier)",
+    		"type":         "STRING",
+    		"code":         "PHONE",
+    		"active":       "Y",
+    		"util":         "N",
+    		"userProps":    "Y",
+    		"isFiltered":   "N",
+    		"sort":         500,
+    		"description":  "property description",
+    		"required":     "Y",
+    		"multiple":     "N",
+    		"settings": b24.Params{
+    			"multiline": "Y",
+    			"maxlength": 100,
+    		},
+    		"xmlId":         "",
+    		"defaultValue":  "",
+    		"isProfileName": "Y",
+    		"isPayer":       "Y",
+    		"isEmail":       "N",
+    		"isPhone":       "N",
+    		"isZip":         "N",
+    		"isAddress":     "N",
+    	},
+    })
+    if err != nil {
+    	return fmt.Errorf("sale.shipmentproperty.add: %w", err)
+    }
+
+    // The method wraps the response in an object with the "property" key.
+    raw, ok := b24.Unwrap(res.Result, "property")
+    if !ok {
+    	return fmt.Errorf("no property key in the response")
+    }
+
+    var item struct {
+    	Active             string `json:"active"`
+    	Code               string `json:"code"`
+    	DefaultValue       string `json:"defaultValue"`
+    	Description        string `json:"description"`
+    	ID                 b24.ID `json:"id"`
+    	InputFieldLocation string `json:"inputFieldLocation"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println(item.Active, item.Code)
+    ```
+
 {% endlist %}
 
 ## Successful Response

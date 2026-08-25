@@ -226,9 +226,9 @@ The default value is `'P'` ||
         }
         ```
 
-   - BX24.js
+    - BX24.js
 
-       ```js
+        ```js
         BX24.callMethod(
             'crm.lead.details.configuration.get',
             {
@@ -242,11 +242,11 @@ The default value is `'P'` ||
                 ;
             },
         );
-       ```
+        ```
 
-   - PHP CRest
+    - PHP CRest
 
-       ```php
+        ```php
         require_once('crest.php');
 
         $result = CRest::call(
@@ -260,7 +260,7 @@ The default value is `'P'` ||
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
-       ```
+        ```
 
     - Go
 

@@ -617,41 +617,6 @@ Default is `N` ||
         print(f"Unexpected error: {error}")
     ```
 
-- Python
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.deal.userfield.add(
-            fields={
-                "FIELD_NAME": "UF_CRM_DEAL_COMMENT_TEXT",
-                "USER_TYPE_ID": "string",
-                "XML_ID": "deal_comment_text",
-                "SORT": 100,
-                "MULTIPLE": "N",
-                "MANDATORY": "N",
-                "SHOW_FILTER": "Y",
-                "EDIT_FORM_LABEL": {"de": "Deal comment"},
-                "LIST_COLUMN_LABEL": {"de": "Deal comment"},
-                "LIST_FILTER_LABEL": {"de": "Deal comment"},
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
 
 - Go
 
