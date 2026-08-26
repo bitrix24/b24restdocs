@@ -63,6 +63,7 @@ In REST 3.0, the task card structure remains the same, but the data model and wo
 - [Checklists in Tasks](https://helpdesk.bitrix24.com/open/17740572/)
   - [Time tracking in tasks](https://helpdesk.bitrix24.com/open/18009084/)
   - [Additional task features](https://helpdesk.bitrix24.com/open/17876766/)
+  - [Gantt chart](https://helpdesk.bitrix24.com/open/18144752/)
 
 {% endnote %}
 
@@ -217,6 +218,7 @@ To work with messages, also use messenger methods:
     || [tasks.task.get](./tasks-task-get-rest-v3.md) | Gets information about a task by `id` v 3.0 ||
     || [tasks.task.list](./tasks-task-list.md) | Gets a list of tasks ||
     || [tasks.task.list](./tasks-task-list-rest-v3.md) | Gets a list of tasks v 3.0 ||
+    || [tasks.task.gantt.link.list](./tasks-task-gantt-link-list.md) | Gets a list of task Gantt links ||
     || [tasks.task.delete](./tasks-task-delete.md) | Deletes a task ||
     || [tasks.task.delete](./tasks-task-delete-rest-v3.md) | Deletes a task v 3.0 ||
     || [tasks.task.getFields](./tasks-task-get-fields.md) | Gets a list of task fields ||

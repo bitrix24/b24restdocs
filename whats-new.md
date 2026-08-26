@@ -4,6 +4,7 @@
 
 ### August 26, 2026
 
+- Added the [tasks.task.gantt.link.list](./api-reference/tasks/tasks-task-gantt-link-list.md) method: retrieves task Gantt links with the link type and supports pagination
 - Added the [CRM Field Length Limits](./api-reference/crm/field-length-limits.md) page: maximum length of standard fields of main CRM objects and how to get custom field limits
 - Added the [How to Download Files](./api-reference/files/how-to-download-files.md) article: types of file fields, download links, and retrieving files from the CRM, Drive, tasks, feed, chats, catalog, and other sections
 

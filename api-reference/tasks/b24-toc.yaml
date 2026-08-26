@@ -25,6 +25,8 @@ items:
     href: tasks-task-list.md
   - name: Get Task List v 3.0
     href: tasks-task-list-rest-v3.md
+  - name: Get Task Gantt Link List
+    href: tasks-task-gantt-link-list.md
   - name: Delete Task
     href: tasks-task-delete.md
   - name: Delete Task v 3.0
