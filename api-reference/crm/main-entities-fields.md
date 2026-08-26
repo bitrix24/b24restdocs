@@ -6,7 +6,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-> **Attention!** A more complete list of fields can be found on the pages of methods that return the description of object fields. Such methods are named **crm.object_name.fields**.
+The full list of fields for main CRM objects is returned by methods named `crm.object_name.fields`.
+
+Field length limits are described in the article [CRM Field Length Limits](./field-length-limits.md).
 
 ## Deals
 

@@ -59,7 +59,7 @@ If no parameters are specified, all event handlers that meet the other requireme
         "auth": "**put_access_token_here**"
     }' \
     https://**put_your_bitrix24_address**/rest/event.unbind
-        ```
+    ```
 
 - JS (TS)
 
@@ -167,7 +167,7 @@ If no parameters are specified, all event handlers that meet the other requireme
 
 - PHP
 
-    ```php        
+    ```php
     try {
         $eventCode = 'your_event_code'; // Replace with your actual event code
         $handlerUrl = 'https://your.handler.url'; // Replace with your actual handler URL

@@ -20,6 +20,8 @@ The sections for each object type provide lists of standard fields specific to t
 
 Use the method [crm.item.fields](./crm-item-fields.md) with the specified [object type](../data-types.md#object_type) in `entityTypeId` to get a complete list of fields for the object, including custom fields.
 
+Field length limits are described in the article [CRM Field Length Limits](../field-length-limits.md).
+
 ## Common Fields {#common}
 
   #|

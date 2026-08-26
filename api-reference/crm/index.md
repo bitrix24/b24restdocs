@@ -41,7 +41,7 @@ Field names differ between the two branches of methods: universal methods use `c
 
 A CRM card combines the entity's data, the stage of work with it, and the history of interactions.
 
-**Fields.** The card stores the entity's data, the composition of which depends on its type. A list of available fields can be obtained using the [crm.item.fields](./universal/crm-item-fields.md) method. Common fields are described in the article [Fields of Main CRM Entities](./main-entities-fields.md). Custom fields are configured using the [userfieldconfig.add](./universal/userfieldconfig/userfieldconfig-add.md) or [userfieldconfig.update](./universal/userfieldconfig/userfieldconfig-update.md) methods — they require the `userfieldconfig` scope and the module scope from `moduleId`, which is `crm` for CRM, as well as the "Allow to modify settings" access permission.
+**Fields.** The card stores the entity's data, the composition of which depends on its type. A list of available fields can be obtained using the [crm.item.fields](./universal/crm-item-fields.md) method. Common fields are described in the article [Fields of Main CRM Entities](./main-entities-fields.md), and length limits are described in the article [CRM Field Length Limits](./field-length-limits.md). Custom fields are configured using the [userfieldconfig.add](./universal/userfieldconfig/userfieldconfig-add.md) or [userfieldconfig.update](./universal/userfieldconfig/userfieldconfig-update.md) methods — they require the `userfieldconfig` scope and the module scope from `moduleId`, which is `crm` for CRM, as well as the "Allow to modify settings" access permission.
 
 **Funnel and Stage.** For deals and Smart Processes, the card shows which funnel the entity is in and at what stage. To work with funnels, you need `categoryId`, which can be retrieved using [crm.category.list](./universal/category/crm-category-list.md). Stages are returned by [crm.status.list](./status/crm-status-list.md) with a filter by the `ENTITY_ID` directory: `DEAL_STAGE` — the stages of the main deal funnel, `DEAL_STAGE_1` — the stages of the funnel with `categoryId = 1`. The stage code is returned in the `STATUS_ID` field: for the main funnel it is `NEW` or `PREPARATION`, and for an additional one it carries the funnel prefix, for example `C1:NEW`. This code is passed in the `stageId` field of universal methods or in `STAGE_ID` of entity methods.
 
@@ -119,6 +119,7 @@ CRM entities are linked to Bitrix24 users, tasks, the product catalog, and telep
 || **Article** | **Description** ||
 || [Data Types and Structure of Objects in the REST API CRM](./data-types.md) | What is `entityTypeId`, what identifiers exist, and how CRM entities are structured ||
 || [Fields of Main CRM Entities](./main-entities-fields.md) | Fields of key CRM entities in one place ||
+|| [CRM Field Length Limits](./field-length-limits.md) | Maximum length of standard CRM fields and how to get custom field limits ||
 || [Typical Use-Cases and Tutorials](./tutorials.md) | Practical scenarios and examples of using CRM ||
 |#
 

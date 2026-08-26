@@ -2,6 +2,10 @@
 
 ## 2026
 
+### August 26, 2026
+
+- Added the [CRM Field Length Limits](./api-reference/crm/field-length-limits.md) page: maximum length of standard fields of main CRM objects and how to get custom field limits
+
 ### August 22, 2026
 
 - Separated the execution contexts in the [Interface, Navigation, and Context](./sdk/bx24-js-sdk/additional-functions/index.md) section. The `Messenger` object is available only to code running on the Bitrix24 domain. An application runs in its own iframe, on a different origin, where there is no Bitrix24 runtime, so neither `Messenger.*` nor `BX.Runtime.loadExtension` can be called from it
