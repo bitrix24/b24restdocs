@@ -109,7 +109,7 @@ Currently, the field does not actually affect anything ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Superbank","RQ_BANK_NAME":"Ltd. Superbank","RQ_BANK_ADDR":"117312, New York, 19 Miller St.","RQ_BIK":"044525225","RQ_ACC_NUM":"40702810938000060473","RQ_ACC_CURRENCY":"USD","RQ_COR_ACC_NUM":"30101810400000000225","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600}}' \
+    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Superbank","RQ_BANK_NAME":"Ltd. Superbank","RQ_BANK_ADDR":"10001, New York, 19 Miller St.","RQ_BIK":"123456789","RQ_ACC_NUM":"9876543210","RQ_ACC_CURRENCY":"USD","RQ_COR_ACC_NUM":"1234567890","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.requisite.bankdetail.add
     ```
 
@@ -119,7 +119,7 @@ Currently, the field does not actually affect anything ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Superbank","RQ_BANK_NAME":"Ltd. Superbank","RQ_BANK_ADDR":"117312, New York, 19 Miller St.","RQ_BIK":"044525225","RQ_ACC_NUM":"40702810938000060473","RQ_ACC_CURRENCY":"USD","RQ_COR_ACC_NUM":"30101810400000000225","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"ENTITY_ID":27,"COUNTRY_ID":1,"NAME":"Superbank","RQ_BANK_NAME":"Ltd. Superbank","RQ_BANK_ADDR":"10001, New York, 19 Miller St.","RQ_BIK":"123456789","RQ_ACC_NUM":"9876543210","RQ_ACC_CURRENCY":"USD","RQ_COR_ACC_NUM":"1234567890","XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008","ACTIVE":"Y","SORT":600},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.requisite.bankdetail.add
     ```
 
@@ -142,11 +142,11 @@ Currently, the field does not actually affect anything ||
             COUNTRY_ID: 1,           // Country code
             NAME: 'Superbank',       // Bank detail name
             RQ_BANK_NAME: 'JSC Superbank',  // Bank name
-            RQ_BANK_ADDR: '117312, New York, 19 Miller St.',
-            RQ_BIK: '044525225',
-            RQ_ACC_NUM: '40702810938000060473',
+            RQ_BANK_ADDR: '10001, New York, 19 Miller St.',
+            RQ_BIK: '123456789',
+            RQ_ACC_NUM: '9876543210',
             RQ_ACC_CURRENCY: 'USD',
-            RQ_COR_ACC_NUM: '30101810400000000225',
+            RQ_COR_ACC_NUM: '1234567890',
             XML_ID: '1e4641fd-2dd9-31e6-b2f2-105056c00008',
             ACTIVE: 'Y',
             SORT: 600,
@@ -187,11 +187,11 @@ Currently, the field does not actually affect anything ||
                 COUNTRY_ID: 1,           // Country code
                 NAME: 'Superbank',       // Bank detail name
                 RQ_BANK_NAME: 'JSC Superbank',  // Bank name
-                RQ_BANK_ADDR: '117312, New York, 19 Miller St.',
-                RQ_BIK: '044525225',
-                RQ_ACC_NUM: '40702810938000060473',
+                RQ_BANK_ADDR: '10001, New York, 19 Miller St.',
+                RQ_BIK: '123456789',
+                RQ_ACC_NUM: '9876543210',
                 RQ_ACC_CURRENCY: 'USD',
-                RQ_COR_ACC_NUM: '30101810400000000225',
+                RQ_COR_ACC_NUM: '1234567890',
                 XML_ID: '1e4641fd-2dd9-31e6-b2f2-105056c00008',
                 ACTIVE: 'Y',
                 SORT: 600,
@@ -231,11 +231,11 @@ Currently, the field does not actually affect anything ||
                 "COUNTRY_ID": 1,
                 "NAME": "Superbank",
                 "RQ_BANK_NAME": "Ltd. Superbank",
-                "RQ_BANK_ADDR": "117312, New York, 19 Miller St.",
-                "RQ_BIK": "044525225",
-                "RQ_ACC_NUM": "40702810938000060473",
+                "RQ_BANK_ADDR": "10001, New York, 19 Miller St.",
+                "RQ_BIK": "123456789",
+                "RQ_ACC_NUM": "9876543210",
                 "RQ_ACC_CURRENCY": "USD",
-                "RQ_COR_ACC_NUM": "30101810400000000225",
+                "RQ_COR_ACC_NUM": "1234567890",
                 "XML_ID": "1e4641fd-2dd9-31e6-b2f2-105056c00008",
                 "ACTIVE": "Y",
                 "SORT": 600,
@@ -270,11 +270,11 @@ Currently, the field does not actually affect anything ||
                         'COUNTRY_ID'      => 1,
                         'NAME'            => 'Superbank',
                         'RQ_BANK_NAME'    => 'Ltd. Superbank',
-                        'RQ_BANK_ADDR'    => '117312, New York, 19 Miller St.',
-                        'RQ_BIK'          => '044525225',
-                        'RQ_ACC_NUM'      => '40702810938000060473',
+                        'RQ_BANK_ADDR'    => '10001, New York, 19 Miller St.',
+                        'RQ_BIK'          => '123456789',
+                        'RQ_ACC_NUM'      => '9876543210',
                         'RQ_ACC_CURRENCY' => 'USD',
-                        'RQ_COR_ACC_NUM'  => '30101810400000000225',
+                        'RQ_COR_ACC_NUM'  => '1234567890',
                         'XML_ID'          => '1e4641fd-2dd9-31e6-b2f2-105056c00008',
                         'ACTIVE'          => 'Y',
                         'SORT'            => 600,
@@ -306,11 +306,11 @@ Currently, the field does not actually affect anything ||
                 "COUNTRY_ID": 1,                 // Country code (USA)
                 "NAME": "Superbank",              // Name of the bank detail
                 "RQ_BANK_NAME": "Ltd. Superbank",  // Bank name
-                "RQ_BANK_ADDR": "117312, New York, 19 Miller St.",
-                "RQ_BIK": "044525225",
-                "RQ_ACC_NUM": "40702810938000060473",
+                "RQ_BANK_ADDR": "10001, New York, 19 Miller St.",
+                "RQ_BIK": "123456789",
+                "RQ_ACC_NUM": "9876543210",
                 "RQ_ACC_CURRENCY": "USD",
-                "RQ_COR_ACC_NUM": "30101810400000000225",
+                "RQ_COR_ACC_NUM": "1234567890",
                 "XML_ID":"1e4641fd-2dd9-31e6-b2f2-105056c00008",
                 "ACTIVE":"Y",
                 "SORT":600
@@ -339,11 +339,11 @@ Currently, the field does not actually affect anything ||
                 'COUNTRY_ID' => 1,
                 'NAME' => 'Superbank',
                 'RQ_BANK_NAME' => 'Ltd. Superbank',
-                'RQ_BANK_ADDR' => '117312, New York, 19 Miller St.',
-                'RQ_BIK' => '044525225',
-                'RQ_ACC_NUM' => '40702810938000060473',
+                'RQ_BANK_ADDR' => '10001, New York, 19 Miller St.',
+                'RQ_BIK' => '123456789',
+                'RQ_ACC_NUM' => '9876543210',
                 'RQ_ACC_CURRENCY' => 'USD',
-                'RQ_COR_ACC_NUM' => '30101810400000000225',
+                'RQ_COR_ACC_NUM' => '1234567890',
                 'XML_ID' => '1e4641fd-2dd9-31e6-b2f2-105056c00008',
                 'ACTIVE' => 'Y',
                 'SORT' => 600
@@ -366,11 +366,11 @@ Currently, the field does not actually affect anything ||
     		"COUNTRY_ID":      1,
     		"NAME":            "Superbank",
     		"RQ_BANK_NAME":    "Ltd. Superbank",
-    		"RQ_BANK_ADDR":    "117312, New York, 19 Miller St.",
-    		"RQ_BIK":          "044525225",
-    		"RQ_ACC_NUM":      "40702810938000060473",
-    		"RQ_ACC_CURRENCY": "RUR",
-    		"RQ_COR_ACC_NUM":  "30101810400000000225",
+    		"RQ_BANK_ADDR":    "10001, New York, 19 Miller St.",
+    		"RQ_BIK":          "123456789",
+    		"RQ_ACC_NUM":      "9876543210",
+    		"RQ_ACC_CURRENCY": "USD",
+    		"RQ_COR_ACC_NUM":  "1234567890",
     		"XML_ID":          "1e4641fd-2dd9-31e6-b2f2-105056c00008",
     		"ACTIVE":          "Y",
     		"SORT":            600,

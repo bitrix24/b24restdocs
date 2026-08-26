@@ -1,4 +1,4 @@
-# Loading and Using CRest PHP SDK
+# CRest PHP SDK: Installation and First Call
 
 {% note tip "" %}
 
@@ -6,163 +6,120 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Using the REST API allows for relatively straightforward solutions to many integration tasks with external sources or systems in Bitrix24, transferring data into Bitrix24, and much more. We have provided examples for the most common tasks that you can use as templates and modify to suit your needs.
+CRest PHP SDK is a set of PHP files for calling Bitrix24 methods from a server-side application. You place the files on your own web server, include `crest.php` in your code, and call methods through `CRest::call`.
 
-All examples in this section are written using PHP, so you need to place this code on a server accessible to you while adhering to the following technical requirements:
+To let CRest reach Bitrix24, select a connection scenario: an incoming webhook, a local application, or a mass-market application. The table below helps you choose the right option.
 
-1. The examples use the cURL module to perform REST requests. Learn [how to enable the cURL module](http://php.net/manual/en/book.curl.php) on your server.
-2. A valid SSL certificate must be installed on your web server.
-3. The examples use the basic SDK in the form of the *CRest* class to perform requests and extend authorization tokens. Take the [class code](https://github.com/bitrix-tools/crest), make the necessary changes related to authorization in the **settings.php** file, and place it on your server, inserting the example you need from the documentation.
-4. If you encounter issues with the SDK, you can open the **checkserver.php** file in your browser, which will perform a minimal check of the server settings for the CRest class to function.
+| If You Need to                                            | Select the Option                        |
+|-----------------------------------------------------------|------------------------------------------|
+| Set up an internal integration without creating an application | [Incoming Webhook](#incoming-webhook)     |
+| Create an application for a single Bitrix24               | [Local Application](#local-app)           |
+| Install the application on different Bitrix24 accounts    | [Mass-Market Application](#market-app)    |
 
-If the CRest class is used in the project and the encoding differs from UTF-8, two additional actions are required:
+## Getting Started
 
-1. Open the files from the archive and change their encoding to the required one.
-2. In the **settings.php** file, declare the constant `C_REST_CURRENT_ENCODING`. For example, if the project is in windows-1251 encoding, the constant should look like this: `define('C_REST_CURRENT_ENCODING','windows-1251');`
+First prepare the server, then set up one connection option from the table and make the first call, which is the same for all options.
 
-## Option 1. Calling REST Using Incoming [Webhook](../../local-integrations/local-webhooks.md)
+### Prepare the Server
 
-1. Specify the webhook URL in the define `C_REST_WEB_HOOK_URL` in the **settings.php** file:
+1. Download the [CRest files](https://github.com/bitrix-tools/crest)
+2. Place the contents of the `src` folder on your web server — it contains all the CRest files
+3. Make sure the [cURL](https://www.php.net/manual/en/book.curl.php) module is available on the server and a valid SSL certificate is installed
+4. Open the `checkserver.php` page in a browser at your site address, for example `https://your-domain.com/checkserver.php` — the script verifies that the cURL module is available and that CRest can retain its files
 
-    ```php
-    <?
-    define('C_REST_WEB_HOOK_URL','https://xxx.bitrix24.com/rest/1/douasdqkjxgc3mgc1/');
-    ```
+### Set Up an Incoming Webhook {#incoming-webhook}
 
-2. Insert the example text into the **index.php** file:
+An incoming webhook is a link with an access key that you can use to call Bitrix24 methods. A webhook is suitable for an internal integration without an application.
 
-    ```php
-    <?
-    require_once('crest.php');
-    // put an example below
-    echo '<PRE>';
-    print_r(CRest::call(
-        'crm.lead.add',
-        [
-            'fields' =>[
-                'TITLE' => 'Lead Title', // Title*[string]
-                'NAME' => 'First Name', // First Name[string]
-                'LAST_NAME' => 'Last Name', // Last Name[string]
-            ]
-        ])
-    );
-    echo '</PRE>';
-    ```
+Create an [incoming webhook](../../local-integrations/local-webhooks.md) in Bitrix24 and select its permissions — the example in this article requires CRM. Copy the full webhook URL into the `C_REST_WEB_HOOK_URL` constant in the `settings.php` file:
 
-3. Enter the URL in the browser's address bar, for example, *https://mydomain.xxx/index.php* to see the result of the example.
+```php
+<?php
 
-## Option 2. Calling REST from a Local Application
+define(
+    'C_REST_WEB_HOOK_URL',
+    'https://example.bitrix24.com/rest/1/your-webhook-code/'
+);
+```
 
-1. In the **settings.php** file:
+### Set Up a Local Application {#local-app}
 
-    ```php
-    <?
-    define('C_REST_CLIENT_ID','app.87816165165.35984727');
-    define('C_REST_CLIENT_SECRET','g5dlcj3d2772h8g5jhzou907jojage');
-    ```
+A local application works within a single Bitrix24 and uses the OAuth 2.0 protocol. When the application is installed, Bitrix24 issues it tokens — access keys with a limited lifetime. CRest renews them automatically.
 
-2. Insert the example text into the **index.php** file:
+Select an [installation scenario for a local application](../../settings/app-installation/local-apps/index.md) and fill in the application card. If the application has a main page, specify its URL. In the "Path for initial installation" field, specify the URL of the `install.php` file — this file, included with CRest, retrieves the tokens when the application is installed and retains them. Copy `client_id` and `client_secret` from the card into the `settings.php` file:
 
-    ```php
-    <?
-    require_once('crest.php');
-    // put an example below
-    echo '<PRE>';
-    print_r(CRest::call(
-        'crm.lead.add',
-        [
-            'fields' =>[
-                'TITLE' => 'Lead Title', // Title*[string]
-                'NAME' => 'First Name', // First Name[string]
-                'LAST_NAME' => 'Last Name', // Last Name[string]
-            ]
-        ])
-    );
-    echo '</PRE>';
-    ```
+```php
+<?php
 
-3. In the local application card, specify the URL of your application *https://mydomain.xxx/index.php* and the installation script URL *https://mydomain.xxx/install.php*.
+define('C_REST_CLIENT_ID', 'your-client-id');
+define('C_REST_CLIENT_SECRET', 'your-client-secret');
+```
 
-4. Specify the values for the **client_id** and **client_secret** parameters for OAuth 2.0 authorization in the define `C_REST_CLIENT_ID` and `C_REST_CLIENT_SECRET` in the **settings.php** file, taking these values from the local application card.
+If you entered `client_id` and `client_secret` in `settings.php` after the application was already installed, reinstall it — `install.php` will then run again and retain the tokens.
 
-    ```php
-    <?
-    require_once('crest.php');
-    // put an example below
-    echo '<PRE>';
-    print_r(CRest::call(
-        'crm.lead.add',
-        [
-            'fields' =>[
-                'TITLE' => 'Lead Title', // Title*[string]
-                'NAME' => 'First Name', // First Name[string]
-                'LAST_NAME' => 'Last Name', // Last Name[string]
-            ]
-        ])
-    );
-    echo '</PRE>';
-    ```
+### Set Up a Mass-Market Application {#market-app}
 
-5. In the list of local applications, right-click on your local application and select "Reinstall." This is necessary for **install.php** to work correctly after you have inserted the correct values for `C_REST_CLIENT_ID` and `C_REST_CLIENT_SECRET`.
+A mass-market application is intended for installation on different Bitrix24 accounts and also uses OAuth 2.0. Create the application in the partner account and save it to obtain `client_id` and `client_secret`. Specify these values in the `settings.php` file:
 
-6. After installation, you will see the result of the example. If the example demonstrates embedding widgets into other Bitrix24 tools, you need to navigate to those tools.
+```php
+<?php
 
-## Option 3. Calling REST from a Mass-Market Application
+define('C_REST_CLIENT_ID', 'your-client-id');
+define('C_REST_CLIENT_SECRET', 'your-client-secret');
+```
 
-1. In the **settings.php** file:
+Select an [installation scenario for a mass-market application](../../settings/app-installation/mass-market-apps/index.md). The scenario you choose determines which field of the version card takes the URL of the `install.php` file:
 
-    ```php
-    <?
-    define('C_REST_CLIENT_ID','app.87816165165.35984727');
-    define('C_REST_CLIENT_SECRET','g5dlcj3d2772h8g5jhzou907jojage');
-    ```
+- the application has an interface — select the scenario with an installation wizard and specify the URL of the `install.php` file in the "Application installer URL" field
+- the application has no interface — select the scenario with a callback handler and specify the URL of the `install.php` file as the handler. Bitrix24 calls it automatically during installation
 
-2. Insert the example text into the **index.php** file:
+If the application has an interface, specify the URL of its main page in the version card. After saving the version, install the application on a Bitrix24 available to you and check that it works.
 
-    ```php
-    <?
-    require_once('crest.php');
-    // put an example below
-    echo '<PRE>';
-    print_r(CRest::call(
-        'crm.lead.add',
-        [
-            'fields' =>[
-                'TITLE' => 'Lead Title', // Title*[string]
-                'NAME' => 'First Name', // First Name[string]
-                'LAST_NAME' => 'Last Name', // Last Name[string]
-            ]
-        ])
-    );
-    echo '</PRE>';
-    ```
+### Make the First Call
 
-3. Add the mass-market application in the partner account to obtain `client_id` and `client_secret` and save the application.
+Once authorization is set up, open the `index.php` file — it is included with CRest and sits next to `crest.php` and `settings.php`. Replace its contents with the code of the first call, or create the file if it does not exist.
 
-4. Specify the values for the **client_id** and **client_secret** parameters for OAuth 2.0 authorization in the define `C_REST_CLIENT_ID` and `C_REST_CLIENT_SECRET` in the **settings.php** file.
+The code includes `crest.php` and calls a method through `CRest::call`:
 
-    ```php
-    <?
-    require_once('crest.php');
-    // put an example below
-    echo '<PRE>';
-    print_r(CRest::call(
-        'crm.lead.add',
-        [
-            'fields' =>[
-                'TITLE' => 'Lead Title', // Title*[string]
-                'NAME' => 'First Name', // First Name[string]
-                'LAST_NAME' => 'Last Name', // Last Name[string]
-            ]
-        ])
-    );
-    echo '</PRE>';
-    ```
+```php
+<?php
 
-5. In the application card, add a version and specify the URL of your application *https://mydomain.xxx/index.php* and the installation script URL *https://mydomain.xxx/install.php* in the version card.
+require_once __DIR__ . '/crest.php';
 
-6. After saving the version, open the version card and click on the "Install on your Bitrix24" link to install your application on any available Bitrix24.
+$result = CRest::call(
+    'crm.item.add',
+    [
+        'entityTypeId' => 3,
+        'fields' => [
+            'name' => 'Klaus',
+            'lastName' => 'Weber',
+        ],
+    ]
+);
 
-7. After installation, you will see the result of the example (if the example demonstrates embedding widgets into other Bitrix24 tools, you need to navigate to those tools).
+if (isset($result['error']))
+{
+    print_r($result);
+}
+else
+{
+    echo 'Contact created with the identifier ' . $result['result']['item']['id'];
+}
+```
 
-8. For a real mass-market application, you need to inherit the CRest class, overriding the *getSettingData/setSettingData* methods, which handle obtaining/saving authorization tokens to a text file. These methods are not intended for operating the application on multiple Bitrix24 instances simultaneously.
+To make the call, open `index.php` in a browser at your site address, for example `https://your-domain.com/index.php`.
+
+The [`crm.item.add`](../../api-reference/crm/universal/crm-item-add.md) method creates a CRM item. The item type is set by the `entityTypeId` parameter: the value `3` is a contact. The method returns the created item in the response, so the identifier of the new contact arrives in `$result['result']['item']['id']`. If an error arrives instead, check the permissions first: the webhook or the application must have access to CRM.
+
+## Integration With Other Tools
+
+**User context.** The authorization method determines on whose behalf CRest performs requests. An incoming webhook performs requests on behalf of the user who created the webhook. Local and mass-market applications use the tokens of the user who installed the application by default. If you need to perform requests on behalf of the user who opened the application, set up [operation in the context of the current user](./using-in-users-context.md).
+
+**Other SDKs.** To compare CRest with other libraries, see the [SDK Overview](../index.md). For PHP, [B24PhpSDK](../b24phpsdk/index.md) is also available.
+
+## Key Considerations
+
+- Do not publish the incoming webhook URL, `client_secret`, or authorization tokens
+- Data access depends on the permissions of the user on whose behalf the request is performed. In addition, every method requires its own scope — a permission to work with a specific Bitrix24 section. See scope values in the [Permissions](../../api-reference/scopes/permissions.md) guide
+- If the project encoding differs from UTF-8, you may need to change the encoding of the SDK files and declare the `C_REST_CURRENT_ENCODING` constant in `settings.php`, for example `define('C_REST_CURRENT_ENCODING', 'windows-1251');`
+- For a mass-market application running on several Bitrix24 accounts, provide your own token storage. To do this, override the `getSettingData` and `setSettingData` methods: the basic implementation retains the tokens of a single Bitrix24 in the `settings.json` file and is not intended for this scenario. An example of inheriting the CRest class with an overridden method is on the page about [operation in the context of the current user](./using-in-users-context.md)

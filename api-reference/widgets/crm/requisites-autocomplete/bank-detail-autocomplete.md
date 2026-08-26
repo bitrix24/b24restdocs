@@ -130,7 +130,7 @@ BX24.placement.call(
     {
         data: [
             {
-                id: 'bank-044525225',
+                id: 'bank-123456789',
                 name: 'Ltd. Superbank',
                 phone: '+49 30 000-00-00',
                 web: 'https://bank.example.com'
@@ -171,9 +171,9 @@ BX24.placement.bindEvent('onCrmEntityIsNeedToCreate', function (eventData) {
             fields: {
                 NAME: selectedTitle,
                 RQ_BANK_NAME: selectedTitle,
-                RQ_BIK: '044525225',
+                RQ_BIK: '123456789',
                 RQ_BANK_ADDR: 'Berlin',
-                RQ_COR_ACC_NUM: '30101810400000000225',
+                RQ_COR_ACC_NUM: '1234567890',
                 RQ_SWIFT: 'EXAMPLEDE'
             }
         }
