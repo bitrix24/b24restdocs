@@ -52,7 +52,7 @@ where
 
 Each CRM entity type has its own set of fields. This means that the set of fields for modifying a Lead does not have to match the set of fields for modifying a Contact or Smart Process.
 
-The list of available fields for each entity type is described [below](#parametr-fields).
+The list of available fields for each entity type is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored.
 
@@ -206,7 +206,7 @@ Default is `N` ||
     fm: {
         "15": {
             "valueType": "WORK",
-            "value": "+79999999",
+            "value": "+499999999",
             "typeId": "PHONE"
         },
         "16": {

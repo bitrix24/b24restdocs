@@ -23,7 +23,7 @@ The method `sale.delivery.config.update` updates the delivery service settings.
 [`sale_delivery_service.ID`](../../data-types.md) | Identifier of the delivery service.
  ||
 || **CONFIG**
-[`object[]`](../../../data-types.md) | Values of the delivery service settings (detailed description provided [below](#parameter-config)).
+[`object[]`](../../../data-types.md) | Values of the delivery service settings (detailed description provided [below](#config-parameter)).
 The structure of the settings (code, name, data type) is defined when creating or updating the delivery service handler using the methods:
 - [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md)
 - [sale.delivery.handler.update](../handler/sale-delivery-handler-update.md)||

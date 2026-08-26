@@ -20,7 +20,7 @@ The method `sale.cashbox.update` updates an existing cash register.
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_cashbox.ID`](../data-types.md#sale_cashbox) | Identifier of the cash register being updated ||
+`sale_cashbox.ID` | Identifier of the cash register being updated ||
 || **FIELDS***
 [`object`](../../data-types.md) | Values of the fields to be updated (detailed description provided [below](#fields)) ||
 |#

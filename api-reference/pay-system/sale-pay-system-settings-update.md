@@ -26,7 +26,7 @@ This method updates the payment system settings. The structure of the settings i
 [`sale_person_type.id`](../sale/data-types.md) | Identifier of the payer type for which settings need to be retrieved
 ||
 || **SETTINGS***
-[`object`](../data-types.md) | Settings to be updated. The keys are the names of the settings, and the values are objects whose structure is described [below](#parametr-settings)
+[`object`](../data-types.md) | Settings to be updated. The keys are the names of the settings, and the values are objects whose structure is described [below](#settings-parameter)
 ||
 |#
 

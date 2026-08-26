@@ -22,7 +22,7 @@ This method removes the binding of a contact to the specified lead.
 || **id***
 [`integer`](../../../data-types.md) | Identifier of the lead from which to remove the contact binding. The lead identifier can be obtained using the [get lead list](../crm-lead-list.md) method. ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a contact to the lead in the form of a structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a contact to the lead in the form of a structure:
 
 ```js
 fields:

@@ -20,7 +20,7 @@ This method creates a new SPA.
 || **Name**
 `type`         | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new SPA ||
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a new SPA ||
 |#
 
 ### Parameter fields

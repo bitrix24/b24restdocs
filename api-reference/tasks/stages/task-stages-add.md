@@ -22,7 +22,7 @@ The method `task.stages.add` adds a Kanban or "My Plan" stage.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new stage ||
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a new stage ||
 || **isAdmin**
 [`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an administrator of the account ||
 |#

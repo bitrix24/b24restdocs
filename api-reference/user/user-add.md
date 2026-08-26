@@ -112,7 +112,7 @@ If you need to add an extranet user, you must pass the following fields: `EXTRAN
 || **UF_LINKEDIN**
 [`string`](../data-types.md) | LinkedIn ||
 || **UF_FACEBOOK**
-[`string`](../data-types.md) | Facebook** ||
+[`string`](../data-types.md) | Facebook ||
 || **UF_TWITTER**
 [`string`](../data-types.md) | Twitter ||
 || **UF_SKYPE**
@@ -122,9 +122,6 @@ If you need to add an extranet user, you must pass the following fields: `EXTRAN
 || **UF_PHONE_INNER**
 [`string`](../data-types.md) | Extension ||
 |#
-
-\
-**Belongs to Meta Platforms, Inc.*
 
 ## Code Examples
 

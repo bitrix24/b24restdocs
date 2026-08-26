@@ -418,7 +418,7 @@ Defaults to `N` ||
         "psStatusDescription": "",
         "psStatusMessage": "",
         "psSum": 100,
-        "psCurrency": "RUB",
+        "psCurrency": "USD",
         "psResponseDate": "2024-04-10T10:00:00",
         "payVoucherNum": "",
         "payVoucherDate": "2024-04-10T10:00:00",

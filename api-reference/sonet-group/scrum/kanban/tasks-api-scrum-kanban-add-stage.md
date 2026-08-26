@@ -24,7 +24,7 @@ Use this method only for active sprints, meaning with the field `"status": "acti
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Fields corresponding to the available list of fields [tasks.api.scrum.kanban.getFields](./tasks-api-scrum-kanban-get-fields.md) (detailed description provided [below](#parametr-fields)) ||
+[`object`](../../../data-types.md) | Fields corresponding to the available list of fields [tasks.api.scrum.kanban.getFields](./tasks-api-scrum-kanban-get-fields.md) (detailed description provided [below](#parameter-fields)) ||
 |#
 
 ### Parameter fields

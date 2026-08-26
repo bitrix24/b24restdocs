@@ -386,7 +386,7 @@ HTTP Status: **200**
                 "absent": false,
                 "departments": [1, 7],
                 "phones": {
-                    "personal_mobile": "81234567890",
+                    "personal_mobile": "+491234567890",
                     "work_phone": "19123456789",
                     "inner_phone": "78"
                 },

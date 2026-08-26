@@ -169,7 +169,7 @@ The method `catalog.price.add` adds a new price for a product.
         bitrix_response = client.catalog.price.add(
             fields={
                 "catalogGroupId": 1,
-                "currency": "RUB",
+                "currency": "EUR",
                 "price": 2000,
                 "productId": 1,
             },

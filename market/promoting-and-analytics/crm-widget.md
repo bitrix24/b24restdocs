@@ -4,7 +4,7 @@ People are used to communicating with companies online — using online chat, so
 
 To set up the widget, go to Bitrix24, open the window for obtaining the code, copy the URL and paste it into the CRM widget field in your solution details (it may take some time for the solution’s public page cache to refresh).
 
-![alt-текст](_images/crm_widget_2.jpg)
+![alt text](_images/crm_widget_2.jpg)
 
 **Important rules for using the widget**
 

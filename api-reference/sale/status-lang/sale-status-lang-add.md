@@ -20,7 +20,7 @@ The method `sale.statusLang.add` adds localization for the order or delivery sta
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding status localization in the form of a structure:
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding status localization in the form of a structure:
 
 ```js
 fields: {

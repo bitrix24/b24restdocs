@@ -196,11 +196,11 @@ Resource IDs can be obtained using the method [booking.v1.resource.list](../reso
                 "datePeriod": {
                     "from": {
                         "timestamp": 1723446900,
-                        "timezone": "Europe/Moscow",
+                        "timezone": "Europe/Berlin",
                     },
                     "to": {
                         "timestamp": 1723447800,
-                        "timezone": "Europe/Moscow",
+                        "timezone": "Europe/Berlin",
                     },
                 },
             },

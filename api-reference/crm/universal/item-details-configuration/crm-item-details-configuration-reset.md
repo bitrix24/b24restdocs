@@ -39,7 +39,7 @@ Required only when requesting personal settings
 
 By default, the value is `'P'` ||
 || **extras**
-[`object`](../../../data-types.md) | Additional parameters. Possible values and their structure are described [below](#extras) ||
+[`object`](../../../data-types.md) | Additional parameters. Possible values and their structure are described [below](#parameter-extras) ||
 |#
 
 ### Parameter extras

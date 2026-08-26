@@ -184,7 +184,7 @@ Currently, the field does not actually affect anything ||
             params: {
               fields: {
                 ENTITY_ID: 27,           // Requisite ID
-                COUNTRY_ID: 1,           // Country code (Russia)
+                COUNTRY_ID: 1,           // Country code
                 NAME: 'Superbank',       // Bank detail name
                 RQ_BANK_NAME: 'JSC Superbank',  // Bank name
                 RQ_BANK_ADDR: '117312, New York, 19 Miller St.',

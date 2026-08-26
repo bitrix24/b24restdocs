@@ -305,7 +305,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_cashbox_handler[]`](../data-types.md#sale_cashbox_handler) | List of handlers registered in the system  ||
+`sale_cashbox_handler[]` | List of handlers registered in the system  ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

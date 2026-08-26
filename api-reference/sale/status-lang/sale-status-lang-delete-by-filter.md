@@ -20,7 +20,7 @@ The method `sale.statusLang.deleteByFilter` deletes the localization records of 
 || **Name**
 `type`| **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Values of the filter fields (detailed description provided [below](#parametr-fields)) for deleting the localization record in the form of a structure:
+[`object`](../../data-types.md) | Values of the filter fields (detailed description provided [below](#parameter-fields)) for deleting the localization record in the form of a structure:
 
 ```js
 fields: {

@@ -22,7 +22,7 @@ This method updates the REST handler for the payment system.
 || **ID*** 
 [`sale_paysystem_handler.ID`](../sale/data-types.md) | Identifier of the REST handler ||
 || **FIELDS*** 
-[`object`](../data-types.md) | Set of values for updating (detailed description provided [below](#parametr-fields)) ||
+[`object`](../data-types.md) | Set of values for updating (detailed description provided [below](#fields-parameter)) ||
 |#
 
 ### FIELDS Parameter
@@ -274,8 +274,8 @@ This method updates the REST handler for the payment system.
         "SORT": 200,
         "SETTINGS": {
             "CURRENCY": [
-                "RUB",
-                "BYN",
+                "EUR",
+                "CHF",
             ],
             "FORM_DATA": {
                 "ACTION_URI": "http://example.com/payment_form.php",

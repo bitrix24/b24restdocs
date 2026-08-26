@@ -162,7 +162,7 @@ More about working with files can be found in the article [{#T}](../../files/how
             comment="Added",
             fields={
                 "contractor": "C_607",
-                "phone_number": "89991234567",
+                "phone_number": "+19991234567",
             },
         ).response
         result = bitrix_response.result
@@ -272,7 +272,7 @@ More about working with files can be found in the article [{#T}](../../files/how
         "COMMENT": "Added",
         "FIELDS": b24.Params{
             "contractor":   "C_607",
-            "phone_number": "89991234567",
+            "phone_number": "+19991234567",
         },
     })
     if err != nil {

@@ -22,7 +22,7 @@ This method changes the stage of the Scrum Kanban.
 || **stageId***
 [`integer`](../../../data-types.md) | Identifier of the stage. You can obtain the identifier using the method [tasks.api.scrum.kanban.getStages](./tasks-api-scrum-kanban-get-stages.md) ||
 || **fields***
-[`object`](../../../data-types.md) | Fields corresponding to the available list of fields [tasks.api.scrum.kanban.getFields](./tasks-api-scrum-kanban-get-fields.md) (detailed description provided [below](#parametr-fields)) ||
+[`object`](../../../data-types.md) | Fields corresponding to the available list of fields [tasks.api.scrum.kanban.getFields](./tasks-api-scrum-kanban-get-fields.md) (detailed description provided [below](#parameter-fields)) ||
 |#
 
 ### Parameter fields

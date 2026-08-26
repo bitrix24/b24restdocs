@@ -20,7 +20,7 @@ The method `sale.paymentItemShipment.add` adds a payment binding to a shipment.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for creating a payment binding to a shipment in the form of a structure:
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for creating a payment binding to a shipment in the form of a structure:
 
 ```js
 fields: {

@@ -18,11 +18,11 @@ The method `sale.cashbox.list` retrieves a list of configured cash registers.
 || **Name**
 `type` | **Description** ||
 || **SELECT**
-[`array`](../../data-types.md) | An array with the list of fields to select (see fields of the [sale_cashbox](../data-types.md#sale_cashbox) object) ||
+[`array`](../../data-types.md) | An array with the list of fields to select (see fields of the `sale_cashbox` object) ||
 || **FILTER**
 [`object`](../../data-types.md) | An object for filtering selected cash registers in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [sale_cashbox](../data-types.md#sale_cashbox) object.
+Possible values for `field` correspond to the fields of the `sale_cashbox` object.
 
 When specifying multiple fields, the `AND` logic is used.
 
@@ -52,7 +52,7 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
 || **ORDER**
 [`object`](../../data-types.md) | An object for sorting selected records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the [sale_cashbox](../data-types.md#sale_cashbox) object.
+Possible values for `field` correspond to the fields of the `sale_cashbox` object.
 
 Possible values for `order`:
 - `asc` — in ascending order
@@ -439,7 +439,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_cashbox[]`](../data-types.md#sale_cashbox) | An array of cash registers registered in the system  ||
+`sale_cashbox[]` | An array of cash registers registered in the system  ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#

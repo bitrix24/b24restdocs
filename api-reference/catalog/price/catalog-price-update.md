@@ -165,7 +165,7 @@ The method `catalog.price.update` updates the price of a product.
         bitrix_response = client.catalog.price.update(
             bitrix_id=1,
             fields={
-                "currency": "RUB",
+                "currency": "USD",
                 "price": 5000,
             },
         ).response

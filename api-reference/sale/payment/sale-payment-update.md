@@ -22,7 +22,7 @@ The method `sale.payment.update` is used to update fields of the payment collect
 || **id***
 [`sale_order_payment.id`](../data-types.md) | Payment identifier ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for creating a payment in the form of a structure:
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for creating a payment in the form of a structure:
 
 ```js
 fields: {
@@ -413,7 +413,7 @@ Defaults to `N` ||
         "empPaidId": 1,
         "psStatus": "Y",
         "psSum": 100,
-        "psCurrency": "RUB",
+        "psCurrency": "USD",
         "psResponseDate": "2024-04-10T10:00:00",
         "sum": 100,
         "companyId": 1,

@@ -20,7 +20,7 @@ Removes the link between a timeline record and a CRM item.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for unbinding the timeline record from the CRM entity in the form of a structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for unbinding the timeline record from the CRM entity in the form of a structure:
 
 ```js
 fields: {

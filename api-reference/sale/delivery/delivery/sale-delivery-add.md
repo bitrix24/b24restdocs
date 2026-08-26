@@ -241,7 +241,7 @@ The structure of the settings (code, name, data type) is defined when creating o
         bitrix_response = client.sale.delivery.add(
             rest_code='uber',
             name='Uber Taxi',
-            currency='RUB',
+            currency='USD',
             description='Uber Taxi Description',
             sort=500,
             active=True,

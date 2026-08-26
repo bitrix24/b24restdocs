@@ -70,7 +70,7 @@ Value examples:
 - `SectionAuto` — link to sections with auto-search
 - `HTML` — value in HTML format
 - `map_google` — coordinates and address on Google Maps
-- `map_yandex` — coordinates and address on Yandex Maps
+- `map_yandex` — coordinates and address on a maps service
 - `DiskFile` — link to a file from Bitrix24.Drive
 - `ECrm` — link to CRM elements
 - `BoolEnum` — checkbox based on a list; use this value together with `propertyType = L` ||

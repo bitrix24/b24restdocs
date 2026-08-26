@@ -419,7 +419,7 @@ When adding a parent product, the property value can be specified as a string, n
                 },
                 "previewText": "",
                 "previewTextType": "text",
-                "purchasingCurrency": "RUB",
+                "purchasingCurrency": "USD",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "sort": 100,

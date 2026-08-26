@@ -26,7 +26,7 @@ The method can also be used to move a stage from one position to another. To do 
 || **id*** 
 [`integer`](../../data-types.md) | Identifier of the stage ||
 || **fields*** 
-[`array`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the Kanban stage or "My Plan" ||
+[`array`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for updating the Kanban stage or "My Plan" ||
 || **isAdmin** 
 [`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an administrator of the account ||
 |#

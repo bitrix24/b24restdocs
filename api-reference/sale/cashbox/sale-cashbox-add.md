@@ -22,7 +22,7 @@ The method `sale.cashbox.add` adds a cash register.
 || **NAME***
 [`string`](../../data-types.md) | Name of the cash register ||
 || **REST_CODE***
-[`sale_cashbox_handler.CODE`](../data-types.md#sale_cashbox_handler) | REST handler code for the cash register. Specified when adding the handler in the method [sale.cashbox.handler.add](./sale-cashbox-handler-add.md) in the `CODE` parameter ||
+`sale_cashbox_handler.CODE` | REST handler code for the cash register. Specified when adding the handler in the method [sale.cashbox.handler.add](./sale-cashbox-handler-add.md) in the `CODE` parameter ||
 || **EMAIL***
 [`string`](../../data-types.md) | Email address to which notifications will be sent in case of errors during receipt printing ||
 || **OFD**
@@ -471,7 +471,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_cashbox.ID`](../data-types.md#sale_cashbox) | Identifier of the added cash register ||
+`sale_cashbox.ID` | Identifier of the added cash register ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

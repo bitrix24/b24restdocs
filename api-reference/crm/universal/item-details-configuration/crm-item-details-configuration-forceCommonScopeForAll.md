@@ -24,7 +24,7 @@ The method `crm.item.details.configuration.forceCommonScopeForAll` enforces a co
 || **entityTypeId***
 [`integer`](../../../data-types.md) | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
 || **extras**
-[`object`](../../../data-types.md) | Additional parameters. Possible values and their structure are described [below](#extras) ||
+[`object`](../../../data-types.md) | Additional parameters. Possible values and their structure are described [below](#parameter-extras) ||
 |#
 
 ### Parameter extras

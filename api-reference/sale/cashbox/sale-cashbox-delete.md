@@ -20,7 +20,7 @@ The method `sale.cashbox.delete` deletes a cash register.
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_cashbox.ID`](../cashbox/#sale_cashbox) | Identifier of the cash register to be deleted ||
+`sale_cashbox.ID` | Identifier of the cash register to be deleted ||
 |#
 
 ## Code Examples

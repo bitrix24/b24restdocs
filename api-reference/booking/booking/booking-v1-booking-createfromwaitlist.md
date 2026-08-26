@@ -192,11 +192,11 @@ Default value is an empty string ||
             "datePeriod": {
                 "from": {
                     "timestamp": 1723446900,
-                    "timezone": "Europe/Moscow",
+                    "timezone": "Europe/Berlin",
                 },
                 "to": {
                     "timestamp": 1723447800,
-                    "timezone": "Europe/Moscow",
+                    "timezone": "Europe/Berlin",
                 },
             },
         }).response

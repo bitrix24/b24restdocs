@@ -986,8 +986,8 @@ Formula for calculating the value of the `start` parameter:
         bitrix_response = client.user.get(
             filter={
                 "@PERSONAL_CITY": [
-                    "Moscow",
-                    "Saint Petersburg",
+                    "New York",
+                    "Los Angeles",
                 ],
             },
         ).response

@@ -22,7 +22,7 @@ If there are cashboxes linked to the handler, it will not be deleted — you mus
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_cashbox_handler.ID`](../data-types.md#sale_cashbox_handler) | Identifier of the cashbox handler to be deleted ||
+`sale_cashbox_handler.ID` | Identifier of the cashbox handler to be deleted ||
 |#
 
 ## Code Examples

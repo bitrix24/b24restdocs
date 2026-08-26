@@ -22,7 +22,7 @@ The method `sale.basketproperties.update` modifies the property for an item (pos
 || **id***
 [`sale_basket_item_property.id`](../data-types.md#sale_basket_item_property) | Identifier of the order item ||
 || **fields***
-[`object`](../../data-types.md) | Values of the fields to be modified (detailed description is provided [below](#parametr-fields)) for the basket item (position) property:
+[`object`](../../data-types.md) | Values of the fields to be modified (detailed description is provided [below](#parameter-fields)) for the basket item (position) property:
 
 ```js
 fields: {

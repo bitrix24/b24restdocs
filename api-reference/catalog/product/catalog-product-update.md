@@ -25,7 +25,7 @@ This method updates a product in the trade catalog.
 To obtain product identifiers, use the [catalog.product.list](./catalog-product-list.md)
  ||
 || **fields***
-[`object`](../../data-types.md)| Field values (detailed description provided [below](#parametr-fields)) for updating the product in the form of a structure:
+[`object`](../../data-types.md)| Field values (detailed description provided [below](#parameter-fields)) for updating the product in the form of a structure:
 
 ```js
 'fields': {
@@ -584,7 +584,7 @@ To change the product price, use the [catalog.price.*](../price/index.md) method
                 },
                 "previewText": "",
                 "previewTextType": "text",
-                "purchasingCurrency": "RUB",
+                "purchasingCurrency": "EUR",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "quantityReserved": 1,

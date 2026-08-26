@@ -239,17 +239,17 @@ Possible values:
 
 Can be used to synchronize the shipment with an external system ||
 || **externalDelivery** 
-[`string`](../data-types.md) | Indicator of whether the shipment was uploaded from an external system (e.g., 1C)
+[`string`](../data-types.md) | Indicator of whether the shipment was uploaded from an external system (e.g., an ERP)
 
 Possible values:
 - `Y` — yes
 - `N` — no ||
 || **id1c** 
-[`string`](../data-types.md) | Identifier of the shipment in 1C ||
+[`string`](../data-types.md) | Identifier of the shipment in the ERP ||
 || **updated1c** 
-[`string`](../data-types.md) | Indicator of whether this shipment has been synchronized (updated) with 1C ||
+[`string`](../data-types.md) | Indicator of whether this shipment has been synchronized (updated) with the ERP ||
 || **version1c** 
-[`string`](../data-types.md) | Version of 1C (if the shipment was updated from 1C) ||
+[`string`](../data-types.md) | Version of the ERP (if the shipment was updated from the ERP) ||
 || **shipmentItems** 
 [`sale_order_shipment_item[]`](#sale_order_shipment_item) | Array containing the shipment line items ||
 |#
@@ -711,7 +711,7 @@ Identifier of the user who locked the order. The order is locked in the admin pa
 || **affiliateId**
 [`integer`](../data-types.md) | Relevant only for the on-premise version. Identifier of the affiliate ||
 || **updated1c**
-[`string`](../data-types.md) | Whether the order was updated through 1C:
+[`string`](../data-types.md) | Whether the order was updated through an ERP:
 - `Y` — yes
 - `N` — no 
 ||
@@ -722,11 +722,11 @@ Identifier of the user who locked the order. The order is locked in the admin pa
 || **statusXmlId**
 [`string`](../data-types.md) | External identifier of the status ||
 || **id1c**
-[`string`](../data-types.md) | Identifier in 1C ||
+[`string`](../data-types.md) | Identifier in the ERP ||
 || **version**
 [`integer`](../data-types.md) | Document version ||
 || **version1c**
-[`string`](../data-types.md) | Version in 1C ||
+[`string`](../data-types.md) | Version in the ERP ||
 || **externalOrder**
 [`string`](../data-types.md) | Whether the order is from an external system or not
 - `Y` — yes
@@ -889,14 +889,14 @@ Possible values:
 || **comments**
 [`string`](../data-types.md) | Comments on the payment ||
 || **updated1c**
-[`string`](../data-types.md) | Whether the payment was updated through 1C:
+[`string`](../data-types.md) | Whether the payment was updated through an ERP:
 - `Y` — yes
 - `N` — no 
 ||
 || **id1c**
-[`string`](../data-types.md) | Identifier in 1C ||
+[`string`](../data-types.md) | Identifier in the ERP ||
 || **version1c**
-[`string`](../data-types.md) | Version of the payment document from 1C ||
+[`string`](../data-types.md) | Version of the payment document from the ERP ||
 || **externalPayment**
 [`string`](../data-types.md) | Whether the payment is external:
 - `Y` — yes
@@ -944,7 +944,7 @@ Possible values:
 || **xmlId**
 [`string`](../data-types.md) | External code of the basket item.
 If not specified, it will be generated automatically.
-Used for synchronization with external systems (e.g., 1C)
+Used for synchronization with external systems (e.g., an ERP)
  ||
 || **dateInsert**
 [`datetime`](../data-types.md) | Date of adding the basket item ||
@@ -1008,12 +1008,12 @@ It is strongly not recommended to set this manually
 || **catalogXmlId**
 [`string`](../data-types.md) | External identifier of the catalog.
 
-Used for synchronization with external systems (e.g., 1C)
+Used for synchronization with external systems (e.g., an ERP)
  ||
 || **productXmlId**
 [`string`](../data-types.md) | External identifier of the product.
 
-Used for synchronization with external systems (e.g., 1C) ||
+Used for synchronization with external systems (e.g., an ERP) ||
 || **reservations**
 [`sale_basket_item_reservation[]`](#sale_basket_item_reservation) | Reservations of the basket item ||
 |#
@@ -1368,7 +1368,7 @@ For system payment systems, this is the code of the system payment system handle
 - `N` — no
 ||
 || **AUTO_CHANGE_1C**
-[`string`](../data-types.md) | Flag for the setting "Allow automatic payment change when importing from 1C". Available values: 
+[`string`](../data-types.md) | Flag for the setting "Allow automatic payment change when importing from an ERP". Available values: 
 - `Y` — yes
 - `N` — no
 ||

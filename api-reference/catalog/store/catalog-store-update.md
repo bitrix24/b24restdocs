@@ -255,7 +255,7 @@ Can be used to synchronize the current warehouse with a similar position in an e
         bitrix_response = client.catalog.store.update(
             bitrix_id=1,
             fields={
-                "address": "Moscow Ave, 52",
+                "address": "Flowers Ave. 52",
                 "title": "Warehouse 1",
                 "active": "Y",
                 "phone": "8 (495) 212 85 06",

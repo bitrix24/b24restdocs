@@ -24,7 +24,7 @@ This method updates an epic in Scrum.
 
 You can obtain epic identifiers using the [`tasks.api.scrum.epic.list`](./tasks-api-scrum-epic-list.md) method. ||
 || **fields***
-[`array`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new epic in the form of a structure:
+[`array`](../../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a new epic in the form of a structure:
 
 ```js
 fields: {

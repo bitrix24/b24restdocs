@@ -555,7 +555,7 @@ Example:
                 "WORKTIME_ENABLE": "Y",
                 "WORKTIME_FROM": "09:00",
                 "WORKTIME_TO": "21:00",
-                "WORKTIME_TIMEZONE": "Europe/Kaliningrad",
+                "WORKTIME_TIMEZONE": "Europe/Berlin",
                 "WORKTIME_DAYOFF": [
                     "SA",
                     "SU",
@@ -776,7 +776,7 @@ Example:
     		"WORKTIME_ENABLE":      "Y",
     		"WORKTIME_FROM":        "09:00",
     		"WORKTIME_TO":          "21:00",
-    		"WORKTIME_TIMEZONE":    "Europe/Kaliningrad",
+    		"WORKTIME_TIMEZONE":    "Europe/Berlin",
     		"WORKTIME_DAYOFF":      []string{"SA", "SU"},
     		"WORKTIME_DAYOFF_RULE": "text",
     		"WORKTIME_DAYOFF_TEXT": "The line is currently closed. Please write, and we will respond during working hours",

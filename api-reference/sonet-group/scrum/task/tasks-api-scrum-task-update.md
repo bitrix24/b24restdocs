@@ -29,7 +29,7 @@ You can obtain the group identifier using the [create new group](../../sonet-gro
 || **id***
 [`integer`](../../../data-types.md) | Task identifier ||
 || **fields***
-[`object`](../../../data-types.md) | An object containing records about the Scrum task (detailed description provided [below](#parametr-fields)) in the following structure:
+[`object`](../../../data-types.md) | An object containing records about the Scrum task (detailed description provided [below](#parameter-fields)) in the following structure:
 
 ```js
 fields: {

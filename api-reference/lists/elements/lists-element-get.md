@@ -130,7 +130,7 @@ Sorting of multiple properties, as well as properties of the following types, is
 - `PREVIEW_TEXT`
 - `DETAIL_TEXT`
 - `S:ECrm` — binding to CRM elements
-- `S:map_yandex` — binding to Yandex.Map
+- `S:map_yandex` — binding to a maps service
 - `S:DiskFile` — File type (Drive)
 - `IBLOCK_SECTION_ID` ||
 || **start**

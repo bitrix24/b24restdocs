@@ -338,7 +338,7 @@ Defaults to `N` ||
     fields = {
         "lid": "s1",
         "personTypeId": 1,
-        "currency": "RUB",
+        "currency": "USD",
         "price": 100,
         "discountValue": 10,
         "statusId": "N",

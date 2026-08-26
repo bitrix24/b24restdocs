@@ -20,7 +20,7 @@ This method adds a new log entry to the timeline.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a new log entry in the form of a structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a new log entry in the form of a structure:
 
 ```js
 fields:

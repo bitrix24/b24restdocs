@@ -26,7 +26,7 @@ This method adds a REST handler for the payment system.
 || **CODE***
 [`string`](../data-types.md) | Code of the REST handler. Must be unique among all handlers ||
 || **SETTINGS***
-[`object`](../data-types.md) | Handler settings (detailed description provided [below](#parametr-settings)) ||
+[`object`](../data-types.md) | Handler settings (detailed description provided [below](#settings-parameter)) ||
 |#
 
 ### SETTINGS Parameter
@@ -39,7 +39,7 @@ Depending on the operating mode used, at least one of the following parameters m
 || **Name**
 `type` | **Description** ||
 || **CODES***
-[`object`](../data-types.md) | List of handler parameters. Keys are parameter codes (`string`), values are parameter descriptions (detailed description provided [below](#parametr-codes)).
+[`object`](../data-types.md) | List of handler parameters. Keys are parameter codes (`string`), values are parameter descriptions (detailed description provided [below](#codes-parameter)).
 
 Parameter values will be available to the administrator for filling in the settings of the created payment system. They can be specified when adding the payment system in the method [sale.paysystem.add](./sale-pay-system-add.md) in the `SETTINGS` parameter and modified using the method [sale.paysystem.settings.update](./sale-pay-system-settings-update.md) ||
 || **FORM_DATA**
@@ -73,7 +73,7 @@ Default value is `b2c`
 || **GROUP**
 [`string`](../data-types.md) | Code of the group to which the parameter belongs ||
 || **DEFAULT**
-[`object`](../data-types.md) | Description of the default value (detailed description provided [below](#parametr-default))
+[`object`](../data-types.md) | Description of the default value (detailed description provided [below](#default-parameter))
 ||
 || **INPUT**
 [`object`](../data-types.md) | Object describing the input field. The structure of the object contains the `TYPE` parameter — the type of the field. Supported fields: 
@@ -89,9 +89,9 @@ Default value is `b2c`
 || **Name**
 `type` | **Description** ||
 || **PROVIDER_KEY**
-[`string`](../data-types.md) | Key of the provider from which the default value will be taken. Possible key values are listed [below](#vozmozhnye-znacheniya-klyucha-provider_key) ||
+[`string`](../data-types.md) | Key of the provider from which the default value will be taken. Possible key values are listed [below](#possible-values-for-provider_key) ||
 || **PROVIDER_VALUE**
-[`string`](../data-types.md) | Code of the value that will be taken from the provider. Possible key values are listed [below](#vozmozhnye-znacheniya-klyucha-provider_value) ||
+[`string`](../data-types.md) | Code of the value that will be taken from the provider. Possible key values are listed [below](#possible-values-for-provider_value) ||
 |#
 
 ### Possible Values for PROVIDER_KEY 
@@ -213,7 +213,7 @@ Form data (the `FIELDS` values from `FORM_DATA`) will be sent to `ACTION_URI`. I
 || **METHOD**
 [`string`](../data-types.md) | HTTP method used when submitting the form. Default is empty, in which case the GET method is used ||
 || **FIELDS**
-[`object`](../data-types.md) | Description of form fields (detailed description provided [below](#parametr-fields)) ||
+[`object`](../data-types.md) | Description of form fields (detailed description provided [below](#fields-parameter)) ||
 || **PARAMS**
 [`object`](../data-types.md) | Description of form fields. This parameter is deprecated; it is recommended to use the `FIELDS` parameter.
 
@@ -237,7 +237,7 @@ Represents an array of descriptions of fields displayed in the form and sent to 
 || **CODE***
 [`string`\|`object`](../data-types.md) | If the value of the `CODE` key is of type `string`, this value will be used to find a match between form fields and handler parameters (`CODES`). The name and value will be obtained from the handler parameters.
 
-If an `object` is passed in the `CODE` key, a field will be added to the payment form according to the description in the array content (detailed description provided [below](#parametr-code))
+If an `object` is passed in the `CODE` key, a field will be added to the payment form according to the description in the array content (detailed description provided [below](#code-parameter))
 ||
 || **VISIBLE**
 [`string`](../data-types.md) | Whether the field is displayed in the form for input. Available values: 
@@ -547,7 +547,7 @@ Default value is `N`, the field is displayed in the form as `hidden` ||
 
     settings = {
         "CURRENCY": [
-            "RUB",
+            "USD",
         ],
         "CLIENT_TYPE": "b2c",
         "FORM_DATA": {
@@ -1218,7 +1218,7 @@ If nothing is returned, the default error `Error registering order in payment sy
             code='resthandlercheckout',
             settings={
                 "CURRENCY": [
-                    "RUB",
+                    "USD",
                 ],
                 "CLIENT_TYPE": "b2c",
                 "CHECKOUT_DATA": {
@@ -1732,7 +1732,7 @@ document.addEventListener("DOMContentLoaded", function() {
             code='resthandleriframe',
             settings={
                 "CURRENCY": [
-                    "RUB",
+                    "USD",
                 ],
                 "CLIENT_TYPE": "b2c",
                 "IFRAME_DATA": {

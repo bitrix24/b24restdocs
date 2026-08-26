@@ -22,7 +22,7 @@ This method updates the payment system.
 || **ID*** 
 [`sale_paysystem.ID`](../sale/data-types.md) | Identifier of the payment system ||
 || **FIELDS** 
-[`object`](../data-types.md) | Object containing new field values (detailed description provided [below](#parametr-fields)) ||
+[`object`](../data-types.md) | Object containing new field values (detailed description provided [below](#fields-parameter)) ||
 |#
 
 ### FIELDS Parameter

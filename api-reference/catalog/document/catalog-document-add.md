@@ -211,7 +211,7 @@ To fill in product data, use the method [catalog.document.element.add](./documen
         bitrix_response = client.catalog.document.add(
             fields={
                 "docType": "A",
-                "currency": "RUB",
+                "currency": "USD",
                 "responsibleId": 29,
                 "docNumber": "IN-00042",
                 "title": "Receipt from Vendor-1",

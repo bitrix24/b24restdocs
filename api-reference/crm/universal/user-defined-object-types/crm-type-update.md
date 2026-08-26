@@ -22,7 +22,7 @@ This method updates an existing SPA by its identifier `id`.
 || **id***
 [`integer`](../../../data-types.md) | Identifier of the SPA. Can be obtained using the methods: [`crm.type.list`](./crm-type-list.md), [`crm.type.add`](./crm-type-add.md) ||
 || **fields**
-[`object`](../../../data-types.md)  | Field values (detailed description provided [below](#parametr-fields)) for updating the SPA ||
+[`object`](../../../data-types.md)  | Field values (detailed description provided [below](#parameter-fields)) for updating the SPA ||
 |#
 
 ### Parameter fields

@@ -263,7 +263,7 @@ Default is `N` ||
     try:
         bitrix_response = client.catalog.store.add(
             fields={
-                "address": "Moscow Ave., 52",
+                "address": "Main St. 52",
                 "title": "Warehouse 1",
                 "active": "Y",
                 "phone": "8 (495) 212 85 06",

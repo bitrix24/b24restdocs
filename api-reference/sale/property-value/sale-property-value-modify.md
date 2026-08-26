@@ -71,7 +71,7 @@ The method `sale.propertyvalue.modify` updates the property values of an order.
 || **id***
 [`sale_order.id`](../data-types.md) | Order identifier ||
 || **propertyValues***
-[`object[]`](../../data-types.md) | An array of objects (see the description of the `propertyValues` object [below](#parametr-propertyvalues)), containing the order property identifier and property value ||
+[`object[]`](../../data-types.md) | An array of objects (see the description of the `propertyValues` object [below](#parameter-propertyvalues)), containing the order property identifier and property value ||
 |#
 
 ### Parameter propertyValues

@@ -299,7 +299,7 @@ Example of creating a numerator:
                       "length": 8,
                       "padString": "0",
                       "periodicBy": "",
-                      "timezone": "Europe/Moscow",
+                      "timezone": "Europe/Berlin",
                   },
               },
           },

@@ -20,11 +20,11 @@ The method `sale.cashbox.handler.update` updates the data of the REST cash regis
 || **Name**
 `type` | **Description** ||
 || **ID*** 
-[`sale_cashbox_handler.ID`](../data-types.md#sale_cashbox_handler) | Identifier of the handler being updated ||
+`sale_cashbox_handler.ID` | Identifier of the handler being updated ||
 || **FIELDS*** 
 [`object`](../../data-types.md) | Values of the fields to be updated.
 
-Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields [sale_cashbox_handler](../data-types.md#sale_cashbox_handler)) 
+Fields available for update: `NAME`, `SORT`, `SETTINGS` (see fields `sale_cashbox_handler`) 
 ||
 |#
 

@@ -241,7 +241,7 @@ It is recommended to use the value from `DATA.URL` ||
                 url: 'https://example.com/users/42',
                 gender: 'male',
                 email: 'john@example.com',
-                phone: '+79990000000',
+                phone: '+499990000000',
                 skip_phone_validate: 'Y',
               },
               message: {
@@ -301,7 +301,7 @@ It is recommended to use the value from `DATA.URL` ||
                     url: 'https://example.com/users/42',
                     gender: 'male',
                     email: 'john@example.com',
-                    phone: '+79990000000',
+                    phone: '+499990000000',
                     skip_phone_validate: 'Y',
                   },
                   message: {
@@ -361,7 +361,7 @@ It is recommended to use the value from `DATA.URL` ||
                         "url": "https://example.com/users/42",
                         "gender": "male",
                         "email": "john@example.com",
-                        "phone": "+79990000000",
+                        "phone": "+499990000000",
                         "skip_phone_validate": "Y",
                     },
                     "message": {

@@ -22,7 +22,7 @@ This method adds a "Comment" type activity to the timeline.
 || **id***
 [`integer`](../../../data-types.md) | Integer identifier of the "Comment" type deal (e.g., `1`). Identifiers can be obtained using the [`crm.timeline.comment.list`](./crm-timeline-comment-list.md) method ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the "Comment" type deal in the following structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for updating the "Comment" type deal in the following structure:
 
 ```js
 fields:

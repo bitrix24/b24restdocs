@@ -232,17 +232,17 @@ The method `catalog.price.modify` updates the product price collection. It allow
                     "prices": [
                         {
                             "catalogGroupId": 1,
-                            "currency": "RUB",
+                            "currency": "USD",
                             "price": 2001,
                         },
                         {
                             "catalogGroupId": 3,
-                            "currency": "RUB",
+                            "currency": "USD",
                             "price": 2001,
                         },
                         {
                             "catalogGroupId": 5,
-                            "currency": "RUB",
+                            "currency": "USD",
                             "price": 2001,
                             "id": 122,
                         },

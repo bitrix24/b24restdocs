@@ -24,7 +24,7 @@ This method updates the funnel (direction) with the identifier `id`, setting new
 || **id***
 [`integer`](../../../data-types.md) | Identifier of the funnel. It can be obtained using the [`crm.category.list`](./crm-category-list.md) method or when creating a funnel with the [`crm.category.add`](./crm-category-add.md) method ||
 || **fields***
-[`object`](../../../data-types.md)  |  Field values (detailed description provided [below](#parametr-fields)) for updating the funnel fields in the form of a structure:
+[`object`](../../../data-types.md)  |  Field values (detailed description provided [below](#parameter-fields)) for updating the funnel fields in the form of a structure:
 
 ```js
 fields: {

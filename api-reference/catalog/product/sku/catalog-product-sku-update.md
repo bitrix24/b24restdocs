@@ -422,7 +422,7 @@ If `valueId` is not specified, the existing value will be removed from the datab
                 },
                 "previewText": "",
                 "previewTextType": "text",
-                "purchasingCurrency": "RUB",
+                "purchasingCurrency": "USD",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "sort": 100,

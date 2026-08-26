@@ -34,7 +34,7 @@ This method adds a payment system.
 
 If not provided, defaults to `N` ||
 || **SETTINGS**
-[`object`](../data-types.md) | List of handler settings values in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the name of the setting and `value` is an object containing keys [TYPE](#possible-values-of-key-type) and [VALUE](#possible-values-of-key-value) (see description below).
+[`object`](../data-types.md) | List of handler settings values in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the name of the setting and `value` is an object containing keys [TYPE](#possible-values-of-the-type-key) and [VALUE](#possible-values-of-the-value-key) (see description below).
 
 The structure of settings is defined when adding the payment system handler in the [sale.paysystem.handler.add](./sale-pay-system-handler-add.md) method under the `CODES` key of the `SETTINGS` parameter ||
 || **ENTITY_REGISTRY_TYPE**

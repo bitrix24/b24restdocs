@@ -22,7 +22,7 @@ This method adds a contact binding to the specified lead.
 || **id***
 [`integer`](../../../data-types.md) | The identifier of the lead to which the contact should be added. The lead identifier can be obtained using the [get lead list method](../crm-lead-list.md)  ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for adding a contact to the lead in the form of a structure:
+[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a contact to the lead in the form of a structure:
 
 ```js
 fields:

@@ -116,7 +116,7 @@ The `user.update` method updates user data. This is only possible on behalf of a
 || **UF_LINKEDIN**
 [`string`](../data-types.md) | LinkedIn ||
 || **UF_FACEBOOK**
-[`string`](../data-types.md) | Facebook** ||
+[`string`](../data-types.md) | Facebook ||
 || **UF_TWITTER**
 [`string`](../data-types.md) | Twitter ||
 || **UF_SKYPE**
@@ -126,9 +126,6 @@ The `user.update` method updates user data. This is only possible on behalf of a
 || **UF_PHONE_INNER**
 [`string`](../data-types.md) | Extension number ||
 |#
-
-\
-**Belongs to Meta Platforms, Inc., which is recognized as extremist and banned in the Russian Federation.*
 
 ## Code Examples
 

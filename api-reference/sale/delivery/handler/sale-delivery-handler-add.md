@@ -28,9 +28,9 @@ The method `sale.delivery.handler.add` adds a delivery service handler.
 || **DESCRIPTION**
 [`integer`](../../../data-types.md) | Description of the delivery service handler ||
 || **SETTINGS***
-[`object`](../../../data-types.md) | Object containing information about the settings of the delivery service handler (detailed description provided [below](#parametr-settings)) ||
+[`object`](../../../data-types.md) | Object containing information about the settings of the delivery service handler (detailed description provided [below](#settings-parameter)) ||
 || **PROFILES***
-[`object[]`](../../../data-types.md) | Array containing a list of delivery profile objects (detailed description provided [below](#parametr-profiles)).
+[`object[]`](../../../data-types.md) | Array containing a list of delivery profile objects (detailed description provided [below](#profiles-parameter)).
 
 It is implied that the delivery service handler must have at least 1 profile ||
 |#
@@ -70,7 +70,7 @@ Possible values:
 - `N` — no support
  ||
  || **CONFIG**
-[`object[]`](../../../data-types.md) | Array of objects with available settings for the delivery service created using this handler (detailed description provided [below](#parametr-config)) ||
+[`object[]`](../../../data-types.md) | Array of objects with available settings for the delivery service created using this handler (detailed description provided [below](#config-parameter)) ||
 |#
 
 ### CONFIG Parameter

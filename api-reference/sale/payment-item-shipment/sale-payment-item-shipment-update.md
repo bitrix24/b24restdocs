@@ -22,7 +22,7 @@ The method `sale.paymentItemShipment.update` changes the binding of payment to s
 || **id***
 [`sale_payment_item_shipment.id`](../data-types.md) | Identifier of the payment binding to the shipment ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for creating the payment binding to the shipment in the form of a structure:
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for creating the payment binding to the shipment in the form of a structure:
 
 ```js
 fields: {

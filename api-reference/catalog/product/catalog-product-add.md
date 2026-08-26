@@ -20,7 +20,7 @@ This method adds a product to the trading catalog.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md)| Field values (a detailed description is provided [below](#parametr-fields)) for adding a new product as a structure:
+[`object`](../../data-types.md)| Field values (a detailed description is provided [below](#parameter-fields)) for adding a new product as a structure:
 
 ```js
 'fields': {
@@ -551,7 +551,7 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
                 },
                 "previewText": "",
                 "previewTextType": "text",
-                "purchasingCurrency": "RUB",
+                "purchasingCurrency": "EUR",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "quantityReserved": 1,

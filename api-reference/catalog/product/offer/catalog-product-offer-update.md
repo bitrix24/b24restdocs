@@ -461,7 +461,7 @@ To change the price of a variation, use the methods [catalog.price.*](../../pric
                 },
                 "previewText": "",
                 "previewTextType": "text",
-                "purchasingCurrency": "RUB",
+                "purchasingCurrency": "USD",
                 "purchasingPrice": 1000,
                 "quantity": 10,
                 "quantityReserved": 1,

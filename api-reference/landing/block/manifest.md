@@ -148,7 +148,7 @@ Possible node types:
 
 More details: [Node Types](./node-types.md).
 
-### Key cards
+### Key cards {#cards}
 
 The `cards` key describes cards. Cards are used for repeatable content, such as lists of services, employees, or gallery items.
 

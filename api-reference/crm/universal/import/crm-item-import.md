@@ -64,7 +64,7 @@ For multi-fields, such as `PHONE`, `EMAIL`, provide data in the [crm_multifield]
 
 Each CRM object has its own set of fields. This means that the set of fields for creating a Lead does not have to match the set of fields for creating a Contact or SPA.
 
-The list of available fields for each type of object is described [below](#parametr-fields).
+The list of available fields for each type of object is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored.
 

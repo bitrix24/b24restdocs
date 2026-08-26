@@ -58,7 +58,7 @@ where
 
 Each CRM entity type has its own set of fields. This means that the set of fields for creating a Lead does not necessarily match the set of fields for creating a Contact or SPA.
 
-The list of available fields for each entity type is described [below](#parametr-fields).
+The list of available fields for each entity type is described [below](#parameter-fields).
 
 An incorrect field in `fields` will be ignored
 ||
@@ -266,7 +266,7 @@ Default is `N` ||
     fm: [
       {
         "valueType": "WORK",
-        "value": "+79999999",
+        "value": "+499999999",
         "typeId": "PHONE"
       },
       {
@@ -620,7 +620,7 @@ Default is `N` ||
     fm: [
       {
         "valueType": "WORK",
-        "value": "+79999999",
+        "value": "+499999999",
         "typeId": "PHONE"
       },
       {
@@ -785,7 +785,7 @@ Default is `N` ||
     fm: [
       {
         "valueType": "WORK",
-        "value": "+79999999",
+        "value": "+499999999",
         "typeId": "PHONE"
       },
       {
@@ -1880,7 +1880,7 @@ Default is `N` ||
                     "green_pixel.png",
                     "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=="
                 ],
-                "ufCrm44_1721812915476": "300|RUB",
+                "ufCrm44_1721812915476": "300|EUR",
                 "ufCrm44_1721812935209": "Y",
                 "ufCrm44_1721812948498": 9999.9
             }
@@ -1908,7 +1908,7 @@ Default is `N` ||
                     "green_pixel.png",
                     "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=="
                 ],
-                "ufCrm44_1721812915476": "300|RUB",
+                "ufCrm44_1721812915476": "300|EUR",
                 "ufCrm44_1721812935209": "Y",
                 "ufCrm44_1721812948498": 9999.9
             },
@@ -1956,7 +1956,7 @@ Default is `N` ||
                   'green_pixel.png',
                   greenPixelInBase64,
                 ],
-                ufCrm44_1721812915476: '300|RUB',
+                ufCrm44_1721812915476: '300|EUR',
                 ufCrm44_1721812935209: 'Y',
                 ufCrm44_1721812948498: 9999.9,
               },
@@ -2006,7 +2006,7 @@ Default is `N` ||
                       'green_pixel.png',
                       greenPixelInBase64,
                     ],
-                    ufCrm44_1721812915476: '300|RUB',
+                    ufCrm44_1721812915476: '300|EUR',
                     ufCrm44_1721812935209: 'Y',
                     ufCrm44_1721812948498: 9999.9,
                   },
@@ -2053,7 +2053,7 @@ Default is `N` ||
                         "green_pixel.png",
                         "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==",
                     ],
-                    "ufCrm44_1721812915476": "300|RUB",
+                    "ufCrm44_1721812915476": "300|EUR",
                     "ufCrm44_1721812935209": "Y",
                     "ufCrm44_1721812948498": 9999.9,
                 },
@@ -2094,7 +2094,7 @@ Default is `N` ||
                         "green_pixel.png",
                         "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==",
                     ],
-                    'ufCrm44_1721812915476' => "300|RUB",
+                    'ufCrm44_1721812915476' => "300|EUR",
                     'ufCrm44_1721812935209' => "Y",
                     'ufCrm44_1721812948498' => 9999.9,
                 ],

@@ -25,7 +25,7 @@ Corresponds to the ISO 4217 standard.
 The identifier can be obtained using the [crm.currency.list](./crm-currency-list.md) method.
  ||
 || **fields**
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parametr-fields)) for updating the currency in the following structure:
+[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for updating the currency in the following structure:
 
 ```js
 fields: {

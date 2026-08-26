@@ -671,7 +671,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_cashbox_handler.ID`](../data-types.md#sale_cashbox_handler) | Identifier of the created handler ||
+`sale_cashbox_handler.ID` | Identifier of the created handler ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#

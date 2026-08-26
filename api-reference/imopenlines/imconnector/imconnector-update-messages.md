@@ -216,7 +216,7 @@ For acceptable formatting, refer to the article [Formatting](../../chats/message
                 url: 'https://example.com/users/42',
                 gender: 'male',
                 email: 'ivan@example.com',
-                phone: '+79990000000',
+                phone: '+499990000000',
               },
               message: {
                 id: 'ext-msg-1001',
@@ -273,7 +273,7 @@ For acceptable formatting, refer to the article [Formatting](../../chats/message
                     url: 'https://example.com/users/42',
                     gender: 'male',
                     email: 'ivan@example.com',
-                    phone: '+79990000000',
+                    phone: '+499990000000',
                   },
                   message: {
                     id: 'ext-msg-1001',
@@ -330,7 +330,7 @@ For acceptable formatting, refer to the article [Formatting](../../chats/message
                         "url": "https://example.com/users/42",
                         "gender": "male",
                         "email": "ivan@example.com",
-                        "phone": "+79990000000",
+                        "phone": "+499990000000",
                     },
                     "message": {
                         "id": "ext-msg-1001",

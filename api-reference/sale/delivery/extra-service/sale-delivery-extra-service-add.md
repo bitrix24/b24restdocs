@@ -51,7 +51,7 @@ If the value is not provided, `N` is used by default.
 This field is relevant only for services of type `single service (checkbox)` and `quantitative service (quantity)`.
 ||
 || **ITEMS***
-[`object[]`](../../../data-types.md) | List of available options for selection (detailed description provided [below](#parametr-items)).
+[`object[]`](../../../data-types.md) | List of available options for selection (detailed description provided [below](#items-parameter)).
 
 This field is relevant only for services of type `list (enum)`.
 ||

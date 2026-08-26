@@ -179,7 +179,7 @@ Example of setting time slots for a resource:
                 {
                     "from": 540,
                     "to": 1080,
-                    "timezone": "Europe/Kaliningrad",
+                    "timezone": "Europe/Berlin",
                     "weekDays": [
                         "Mon",
                         "Tue",
@@ -306,7 +306,7 @@ Example of setting time slots for a resource:
     		{
     			"from":     540,
     			"to":       1080,
-    			"timezone": "Europe/Kaliningrad",
+    			"timezone": "Europe/Berlin",
     			"weekDays": []string{"Mon", "Tue", "Wed", "Thu", "Fri"},
     			"slotSize": 30,
     		},

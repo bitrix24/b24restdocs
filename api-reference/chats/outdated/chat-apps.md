@@ -22,7 +22,7 @@ If the application fails to load the image, a default icon labeled **Chat Applic
 
 Chat applications come in two types — **JS command** or **IFRAME application**.
 
-### JS Command
+### JS Command {#js-command}
 
 When the icon is clicked, a command for the chatbot is inserted into the input field, which can either send a command to the chat, initiate a phone call, or open an Open Channel for support.
 
@@ -32,7 +32,7 @@ An example of such a command for the chatbot Marta is an icon for playing tic-ta
 
 ![JS Command](./_images/im_apps2.png)
 
-### IFRAME Application
+### IFRAME Application {#iframe-app}
 
 This is an enhanced format. When the icon is clicked, an IFRAME application will open, allowing the developer to implement any functions. The application can interact with the chat using JS commands:
 
@@ -60,7 +60,7 @@ You can add the postfix `-admin` to each context — then the icon will be shown
 
 {% endnote %}
 
-## Contextual Applications
+## Contextual Applications {#context-apps}
 
 Contextual applications are designed to assist users in interacting with the chatbot within a specific dialogue (message).
 
