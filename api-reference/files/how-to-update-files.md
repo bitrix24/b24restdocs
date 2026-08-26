@@ -8,6 +8,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 Replacing a file in a Bitrix24 field, deleting a single file from a multiple field, and retaining the rest of the files are all done by the `*.update` methods of the object that owns the file. Passing a new file is covered in the [How to Upload Files](./how-to-upload-files.md) article.
 
+If you need to download a file before replacing or deleting it, retrieve the link using the [How to Download Files](./how-to-download-files.md) guide.
+
 There is no single rule for all methods. Some methods delete the old files as soon as the field is passed in the request, others keep them and delete a file only on an explicit command. Before updating, check the [How Methods Handle Files](#behavior) table: an incorrect request format does not raise a method error — the files simply disappear from the field.
 
 Updating a file means updating the object, so you need permissions to modify the object rather than the file itself. The permissions and the `scope` of every method are specified on its page.
@@ -1455,6 +1457,8 @@ Clearing the field detaches the files from the task but does not delete them fro
 ## Next Steps
 
 - [How to Upload Files](./how-to-upload-files.md) — file transfer formats and uploading multiple files to a multiple field
+
+- [How to Download Files](./how-to-download-files.md) — retrieving a file link and downloading it with a separate `GET` request
 
 - [How to Work with Files](./index.md) — a section overview: field types, linking files to Bitrix24 objects, and the core Drive methods
 

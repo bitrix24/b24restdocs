@@ -1,9 +1,11 @@
 title: Working with Files
 href: index.md
 items:
-  - name: How to Work with Files  
-    href: index.md  
-  - name: How to Upload Files  
-    href: how-to-upload-files.md  
-  - name: How to Update and Delete Files  
-    href: how-to-update-files.md  
+  - name: How to Work with Files
+    href: index.md
+  - name: How to Upload Files
+    href: how-to-upload-files.md
+  - name: How to Update and Delete Files
+    href: how-to-update-files.md
+  - name: How to Download Files
+    href: how-to-download-files.md

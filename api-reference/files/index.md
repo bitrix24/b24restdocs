@@ -6,9 +6,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-A file reaches Bitrix24 in one of two main ways: it is passed as a Base64 string directly into a method field, or it is uploaded to Drive and the `ID` of the Drive object is passed into the field. For large files, Drive offers a third way — an upload to a separate `UploadUrl` address. The way depends on the field type and on the method that accepts the file.
+A file reaches Bitrix24 in one of two main ways: it is passed as a Base64 string directly into a method field, or it is uploaded to Drive and the `ID` of the Drive object is passed into the field. For large files, Drive offers a third way — an upload to a separate `UploadUrl` address. The way depends on the field type and on the method that accepts the file. An already uploaded file is downloaded using a link from the response of an object read method.
 
-The choice is determined by the field type, the shape of the method response, the permissions, and the request limitations. The format of a specific request, as well as updating and deleting files, are covered in separate articles.
+The choice is determined by the field type, the shape of the method response, the permissions, and the request limitations. The format of a specific request, downloading, updating, and deleting files are covered in separate articles.
 
 > Quick Navigation: [choose tutorial](#choose-tutorial)
 
@@ -84,7 +84,7 @@ The shape of a file field in the response differs from tool to tool.
 
 The table covers the common cases; for other tools, check the shape of the file field on the method's page. A link to a file in a chat is returned by dedicated methods — [im.v2.File.download](../chat-bots/chat-bots-v2/im.v2/files/file-download.md) and [imbot.v2.File.download](../chat-bots/chat-bots-v2/imbot.v2/files/file-download.md).
 
-Sample responses and the rules for downloading via a signed link are in the [Response Content](./how-to-upload-files.md#response-content) section. The `urlMachine` and `DOWNLOAD_URL` links contain an authorization token: do not publish them and do not record them in logs.
+Sample responses and the rules for downloading via a signed link are in the [How to Download Files](./how-to-download-files.md) article. The `urlMachine` and `DOWNLOAD_URL` links contain an authorization token: do not publish them and do not record them in logs.
 
 If a file does not appear in the field, the method usually returns no error — the field stays empty or loses its previous files. How a method handles old files is shown in the [How Methods Handle Files](./how-to-update-files.md#behavior) table, and the general shape of an error response is described in [Error Codes](../../error-codes.md).
 
@@ -118,7 +118,7 @@ Some methods have stricter limits: [im.v2.File.upload](../chat-bots/chat-bots-v2
 
 4. Upload the file to Drive and pass the `ID` of the object if the method expects a ready-made `ID`. The list of available storages is returned by the [disk.storage.getList](../disk/storage/disk-storage-get-list.md) method, and the application's own storage is returned by [disk.storage.getForApp](../disk/storage/disk-storage-get-for-app.md), which an administrator calls in the application context. The `ID` of a folder inside a storage is returned by the [disk.storage.getChildren](../disk/storage/disk-storage-get-children.md) and [disk.folder.getChildren](../disk/folder/disk-folder-get-children.md) methods.
 
-5. Request the object with a read method to retrieve the `ID` of the files and the download links. These `ID` will be required when the files need to be updated or deleted.
+5. Request the object with a read method to retrieve the `ID` of the files and [download links](./how-to-download-files.md). These `ID` will be required when the files need to be updated or deleted.
 
 ## Drive Methods for Working with Files
 
@@ -142,6 +142,6 @@ A file on Drive is a standalone object, and it is handled by Drive methods rathe
 || To pass a new file to a Bitrix24 field or upload it to Drive | [How to Upload Files](./how-to-upload-files.md) ||
 || To replace a file, delete a file, or retain the other files in a multiple field | [How to Update and Delete Files](./how-to-update-files.md) ||
 || To pass a file in a GET request or via cURL | [Data Encoding](../../settings/how-to-call-rest-api/data-encoding.md) — the Base64 string has to be URL-encoded ||
-|| To download a file by the link from the response | [Response Content](./how-to-upload-files.md#response-content) ||
+|| To download a file by the link from the response | [How to Download Files](./how-to-download-files.md) ||
 || To troubleshoot a method error | [Error Codes](../../error-codes.md) ||
 |#

@@ -10,7 +10,7 @@ A new file reaches Bitrix24 in the request body: it is encoded in Base64 and pas
 
 There is no single format for all methods: some accept a Base64 string, others accept an array containing a filename and such a string, and others use a separate parameter. Before making a call, check the [How to Choose a Format](#formats) table.
 
-Updating, replacing, and deleting files are described in the [How to Update and Delete Files](./how-to-update-files.md) article. To retrieve an already uploaded file, see the page for the relevant method.
+Updating, replacing, and deleting files are described in the [How to Update and Delete Files](./how-to-update-files.md) article. Downloading already uploaded files is described in the [How to Download Files](./how-to-download-files.md) article.
 
 The User permissions and [scope](../scopes/permissions.md) required for the call are specified at the beginning of each method's page — check them before uploading a file.
 
@@ -1520,7 +1520,7 @@ Methods that upload a file to an object field return the identifier of the creat
 
 These `ID` will be required when you need to [update or delete files](./how-to-update-files.md).
 
-To download a file using `DOWNLOAD_URL` or `urlMachine`, send a separate `GET` request. Pass the `User-Agent`, `Accept`, `Accept-Language`, and `Referer` headers according to the rules in [How a Request Is Executed](../../settings/how-to-call-rest-api/general-principles.md#headers). If the HTTP client does not pass these headers or inserts a technical `User-Agent`, the file may fail to download even if the link is signed correctly.
+To download a file using `DOWNLOAD_URL` or `urlMachine`, send a separate `GET` request. The download procedure and link selection are described in the [How to Download Files](./how-to-download-files.md) article.
 
 ## Limitations When Working with Files
 
@@ -1537,6 +1537,8 @@ To download a file using `DOWNLOAD_URL` or `urlMachine`, send a separate `GET` r
 ## Next Steps
 
 - [How to Update and Delete Files](./how-to-update-files.md) — replacing a file, deleting, and retaining other files in a multiple field
+
+- [How to Download Files](./how-to-download-files.md) — retrieving a file link and downloading it with a separate `GET` request
 
 - [How to Work with Files](./index.md) — a section overview: field types, linking files to Bitrix24 objects, and core methods
 
