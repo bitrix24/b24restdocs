@@ -33,7 +33,7 @@ The badge is displayed on the kanban of the object to which the activity is link
 4. Specify the badge code in the `badgeCode` field of the configurable activity.
 5. Delete a badge you no longer need with the [crm.activity.badge.delete](./crm-activity-badge-delete.md) method.
 
-## Badge Record Fields {#badge-fields}
+## Badge Record Fields
 
 #|
 || **Field** | **Description** ||

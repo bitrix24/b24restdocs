@@ -118,7 +118,7 @@ Do not mix different display formats within a single `GRID` entry. If different 
 
 {% include [Examples Note](../../../../../../../_includes/examples.md) %}
 
-### Block Representation {#block-view}
+### Block Representation
 
 `DISPLAY: 'BLOCK'` displays elements one below the other.
 
@@ -193,7 +193,7 @@ Do not mix different display formats within a single `GRID` entry. If different 
 
 {% endlist %}
 
-### Line Representation {#inline-view}
+### Line Representation
 
 `DISPLAY: 'LINE'` displays elements in a line, wrapping to the next line when there is insufficient space.
 
@@ -273,7 +273,7 @@ In the mobile version, elements are displayed one below the other.
 
 {% endlist %}
 
-### Two-Column Representation {#two-column-view}
+### Two-Column Representation
 
 `DISPLAY: 'ROW'` displays data in two columns.
 

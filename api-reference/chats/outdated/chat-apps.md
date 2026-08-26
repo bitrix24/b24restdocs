@@ -32,7 +32,7 @@ An example of such a command for the chatbot Marta is an icon for playing tic-ta
 
 ![JS Command](./_images/im_apps2.png)
 
-### IFRAME Application {#iframe-app}
+### IFRAME Application
 
 This is an enhanced format. When the icon is clicked, an IFRAME application will open, allowing the developer to implement any functions. The application can interact with the chat using JS commands:
 
@@ -60,7 +60,7 @@ You can add the postfix `-admin` to each context — then the icon will be shown
 
 {% endnote %}
 
-## Contextual Applications {#context-apps}
+## Contextual Applications
 
 Contextual applications are designed to assist users in interacting with the chatbot within a specific dialogue (message).
 
