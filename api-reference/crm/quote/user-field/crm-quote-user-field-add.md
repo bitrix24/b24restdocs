@@ -317,7 +317,7 @@ Each type of custom fields has its own set of additional settings. This method o
     - `Y` — yes
     - `N` — no
 
-Default `N` ||
+    Default `N` ||
     |#
 
 - crm_status

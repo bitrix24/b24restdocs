@@ -293,7 +293,7 @@ Each type of custom field has its own set of additional settings. This method on
 
     Default `''` ||
     || **IBLOCK_ID**
-[`string`](../../../data-types.md) | Information block identifier.
+    [`string`](../../../data-types.md) | Information block identifier.
 
     Default `0` ||
     || **DEFAULT_VALUE**
@@ -302,22 +302,22 @@ Each type of custom field has its own set of additional settings. This method on
     Default `''` ||
     || **DISPLAY**
     [`string`](../../../data-types.md) | Appearance. Possible values:
-- `DIALOG` — dialog
+    - `DIALOG` — dialog
     - `UI` — editable list
     - `LIST` — list
     - `CHECKBOX` — checkboxes
 
     Default `LIST` ||
     || **LIST_HEIGHT**
-[`integer`](../../../data-types.md) | List height. Must be greater than 0.
+    [`integer`](../../../data-types.md) | List height. Must be greater than 0.
 
     Default `1` ||
     || **ACTIVE_FILTER**
-[`boolean`](../../../data-types.md) | Whether to show elements with the activity flag enabled. Possible values:
-- `Y` — yes
-- `N` — no
+    [`boolean`](../../../data-types.md) | Whether to show elements with the activity flag enabled. Possible values:
+    - `Y` — yes
+    - `N` — no
 
-Default `N` ||
+    Default `N` ||
     |#
 
 - crm_status
@@ -326,9 +326,9 @@ Default `N` ||
     || **Name**
     `type` | **Description** ||
     || **ENTITY_TYPE**
-[`string`](../../../data-types.md) | Directory type identifier.
+    [`string`](../../../data-types.md) | Directory type identifier.
 
-Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find possible values.
+    Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find possible values.
 
     Default `''` ||
     |#
@@ -341,29 +341,29 @@ Use [`crm.status.entity.types`](../../status/crm-status-entity-types.md) to find
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-[`boolean`](../../../data-types.md) | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
-- `Y` — yes
-- `N` — no
+    [`boolean`](../../../data-types.md) | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
+    - `Y` — yes
+    - `N` — no
 
-Default `N` ||
+    Default `N` ||
     || **CONTACT**
-[`boolean`](../../../data-types.md) | Whether binding to [Contacts](../../contacts/index.md) is enabled. Possible values:
-- `Y` — yes
-- `N` — no
+    [`boolean`](../../../data-types.md) | Whether binding to [Contacts](../../contacts/index.md) is enabled. Possible values:
+    - `Y` — yes
+    - `N` — no
 
-Default `N` ||
+    Default `N` ||
     || **COMPANY**
-[`boolean`](../../../data-types.md) | Whether binding to [Companies](../index.md) is enabled. Possible values:
-- `Y` — yes
-- `N` — no
+    [`boolean`](../../../data-types.md) | Whether binding to [Companies](../index.md) is enabled. Possible values:
+    - `Y` — yes
+    - `N` — no
 
-Default `N` ||
+    Default `N` ||
     || **DEAL**
-[`boolean`](../../../data-types.md) | Whether binding to [Deals](../../deals/index.md) is enabled. Possible values:
-- `Y` — yes
-- `N` — no
+    [`boolean`](../../../data-types.md) | Whether binding to [Deals](../../deals/index.md) is enabled. Possible values:
+    - `Y` — yes
+    - `N` — no
 
-Default `N` ||
+    Default `N` ||
     |#
 
 {% endlist %}

@@ -34,7 +34,7 @@ The page identifier can be obtained using the [landing.landing.getlist](../../pa
 
 The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method with the parameter `params.edit_mode = 1`. If you pass the block identifier from the published version of the page, the method may return an error ||
 || **selector*** 
-[`string`](../../../data-types.md) | Selector of the card from the [cards section of the block manifest](../manifest.md#key-cards)
+[`string`](../../../data-types.md) | Selector of the card from the [cards section of the block manifest](../manifest.md#cards)
 
 The method searches for cards using this selector and removes the one whose index is specified after `@<index>`. The index is counted only among the found cards. The numbering starts from `0`: 
 - `.landing-block-card@0` removes the first found card, 

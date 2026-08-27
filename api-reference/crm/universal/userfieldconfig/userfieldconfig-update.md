@@ -66,203 +66,203 @@ Each field type has its own set of keys in `settings`.
 
 - string
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **DEFAULT_VALUE** 
-[`string`](../../../data-types.md) | Default value ||
-    || **ROWS** 
-[`integer`](../../../data-types.md) | Number of rows in the input field, must be greater than 0 ||
-    || **SIZE** 
-[`integer`](../../../data-types.md) | Width of the input field ||
-    || **REGEXP** 
-[`string`](../../../data-types.md) | Regular expression for validation ||
-    || **MIN_LENGTH** 
-[`integer`](../../../data-types.md) | Minimum string length ||
-    || **MAX_LENGTH** 
-[`integer`](../../../data-types.md) | Maximum string length ||
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`string`](../../../data-types.md) | Default value ||
+    || **ROWS**
+    [`integer`](../../../data-types.md) | Number of rows in the input field, must be greater than 0 ||
+    || **SIZE**
+    [`integer`](../../../data-types.md) | Width of the input field ||
+    || **REGEXP**
+    [`string`](../../../data-types.md) | Regular expression for validation ||
+    || **MIN_LENGTH**
+    [`integer`](../../../data-types.md) | Minimum string length ||
+    || **MAX_LENGTH**
+    [`integer`](../../../data-types.md) | Maximum string length ||
     |#
 
 - integer
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **DEFAULT_VALUE** 
-[`integer`](../../../data-types.md) | Default value ||
-    || **SIZE** 
-[`integer`](../../../data-types.md) | Width of the input field ||
-    || **MIN_VALUE** 
-[`integer`](../../../data-types.md) | Minimum value ||
-    || **MAX_VALUE** 
-[`integer`](../../../data-types.md) | Maximum value ||
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`integer`](../../../data-types.md) | Default value ||
+    || **SIZE**
+    [`integer`](../../../data-types.md) | Width of the input field ||
+    || **MIN_VALUE**
+    [`integer`](../../../data-types.md) | Minimum value ||
+    || **MAX_VALUE**
+    [`integer`](../../../data-types.md) | Maximum value ||
     |#
 
 - double
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **DEFAULT_VALUE** 
-[`double`](../../../data-types.md) | Default value ||
-    || **PRECISION** 
-[`integer`](../../../data-types.md) | Number precision, must be greater than or equal to 0 ||
-    || **SIZE** 
-[`integer`](../../../data-types.md) | Width of the input field ||
-    || **MIN_VALUE** 
-[`double`](../../../data-types.md) | Minimum value ||
-    || **MAX_VALUE** 
-[`double`](../../../data-types.md) | Maximum value ||
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`double`](../../../data-types.md) | Default value ||
+    || **PRECISION**
+    [`integer`](../../../data-types.md) | Number precision, must be greater than or equal to 0 ||
+    || **SIZE**
+    [`integer`](../../../data-types.md) | Width of the input field ||
+    || **MIN_VALUE**
+    [`double`](../../../data-types.md) | Minimum value ||
+    || **MAX_VALUE**
+    [`double`](../../../data-types.md) | Maximum value ||
     |#
 
 - boolean
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **DEFAULT_VALUE** 
-[`integer`](../../../data-types.md) | Default value, where `1` = yes and `0` = no ||
-    || **DISPLAY** 
-[`string`](../../../data-types.md) | Appearance, possible values: `CHECKBOX`, `RADIO`, `DROPDOWN` ||
-    || **LABEL** 
-[`string`](../../../data-types.md) | Label for the Yes value ||
-    || **LABEL_CHECKBOX** 
-[`string`](../../../data-types.md) | Label for `CHECKBOX` mode ||
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`integer`](../../../data-types.md) | Default value, where `1` = yes and `0` = no ||
+    || **DISPLAY**
+    [`string`](../../../data-types.md) | Appearance, possible values: `CHECKBOX`, `RADIO`, `DROPDOWN` ||
+    || **LABEL**
+    [`string`](../../../data-types.md) | Label for the Yes value ||
+    || **LABEL_CHECKBOX**
+    [`string`](../../../data-types.md) | Label for `CHECKBOX` mode ||
     |#
 
 - date|datetime
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **DEFAULT_VALUE** 
-[`object`](../../../data-types.md) | Default value in the format `{VALUE, TYPE}`, where `TYPE`: `NONE`, `NOW`, `FIXED` ||
-    || **USE_SECOND** 
-[`boolean`](../../../data-types.md) | Use seconds in the `datetime` field ||
-    || **USE_TIMEZONE** 
-[`boolean`](../../../data-types.md) | Use timezone in the `datetime` field ||
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`object`](../../../data-types.md) | Default value in the format `{VALUE, TYPE}`, where `TYPE`: `NONE`, `NOW`, `FIXED` ||
+    || **USE_SECOND**
+    [`boolean`](../../../data-types.md) | Use seconds in the `datetime` field ||
+    || **USE_TIMEZONE**
+    [`boolean`](../../../data-types.md) | Use timezone in the `datetime` field ||
     |#
 
 - money
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **DEFAULT_VALUE** 
-[`string`](../../../data-types.md) | Default value in the format ```{VALUE}|{CURRENCY}``` ||
+    `type` | **Description** ||
+    || **DEFAULT_VALUE**
+    [`string`](../../../data-types.md) | Default value in the format ```{VALUE}|{CURRENCY}``` ||
     |#
 
 - url
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **POPUP** 
-[`boolean`](../../../data-types.md) | Open link in a new window ||
-    || **SIZE** 
-[`integer`](../../../data-types.md) | Width of the input field ||
-    || **MIN_LENGTH** 
-[`integer`](../../../data-types.md) | Minimum length of the value ||
-    || **MAX_LENGTH** 
-[`integer`](../../../data-types.md) | Maximum length of the value ||
-    || **DEFAULT_VALUE** 
-[`string`](../../../data-types.md) | Default value ||
-    || **ROWS** 
-[`integer`](../../../data-types.md) | Number of rows in the input field ||
+    `type` | **Description** ||
+    || **POPUP**
+    [`boolean`](../../../data-types.md) | Open link in a new window ||
+    || **SIZE**
+    [`integer`](../../../data-types.md) | Width of the input field ||
+    || **MIN_LENGTH**
+    [`integer`](../../../data-types.md) | Minimum length of the value ||
+    || **MAX_LENGTH**
+    [`integer`](../../../data-types.md) | Maximum length of the value ||
+    || **DEFAULT_VALUE**
+    [`string`](../../../data-types.md) | Default value ||
+    || **ROWS**
+    [`integer`](../../../data-types.md) | Number of rows in the input field ||
     |#
 
 - address
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **SHOW_MAP** 
-[`boolean`](../../../data-types.md) | Show map for the address ||
+    `type` | **Description** ||
+    || **SHOW_MAP**
+    [`boolean`](../../../data-types.md) | Show map for the address ||
     |#
 
 - file
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **SIZE** 
-[`integer`](../../../data-types.md) | Width of the input field ||
-    || **LIST_WIDTH** 
-[`integer`](../../../data-types.md) | Width of the preview in the list ||
-    || **LIST_HEIGHT** 
-[`integer`](../../../data-types.md) | Height of the preview in the list ||
-    || **MAX_SHOW_SIZE** 
-[`integer`](../../../data-types.md) | Maximum file size for display ||
-    || **MAX_ALLOWED_SIZE** 
-[`integer`](../../../data-types.md) | Maximum allowed file size ||
-    || **EXTENSIONS** 
-[`string[]`](../../../data-types.md) | List of allowed extensions ||
-    || **TARGET_BLANK** 
-[`boolean`](../../../data-types.md) | Open file in a new tab ||
+    `type` | **Description** ||
+    || **SIZE**
+    [`integer`](../../../data-types.md) | Width of the input field ||
+    || **LIST_WIDTH**
+    [`integer`](../../../data-types.md) | Width of the preview in the list ||
+    || **LIST_HEIGHT**
+    [`integer`](../../../data-types.md) | Height of the preview in the list ||
+    || **MAX_SHOW_SIZE**
+    [`integer`](../../../data-types.md) | Maximum file size for display ||
+    || **MAX_ALLOWED_SIZE**
+    [`integer`](../../../data-types.md) | Maximum allowed file size ||
+    || **EXTENSIONS**
+    [`string[]`](../../../data-types.md) | List of allowed extensions ||
+    || **TARGET_BLANK**
+    [`boolean`](../../../data-types.md) | Open file in a new tab ||
     |#
 
 - enumeration
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **DISPLAY** 
-[`string`](../../../data-types.md) | Appearance, possible values: `LIST`, `UI`, `CHECKBOX`, `DIALOG` ||
-    || **LIST_HEIGHT** 
-[`integer`](../../../data-types.md) | Height of the list, must be greater than 0 ||
-    || **CAPTION_NO_VALUE** 
-[`string`](../../../data-types.md) | Label for empty value ||
-    || **SHOW_NO_VALUE** 
-[`boolean`](../../../data-types.md) | Show empty value ||
+    `type` | **Description** ||
+    || **DISPLAY**
+    [`string`](../../../data-types.md) | Appearance, possible values: `LIST`, `UI`, `CHECKBOX`, `DIALOG` ||
+    || **LIST_HEIGHT**
+    [`integer`](../../../data-types.md) | Height of the list, must be greater than 0 ||
+    || **CAPTION_NO_VALUE**
+    [`string`](../../../data-types.md) | Label for empty value ||
+    || **SHOW_NO_VALUE**
+    [`boolean`](../../../data-types.md) | Show empty value ||
     |#
 
 - iblock_section|iblock_element
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **DISPLAY** 
-[`string`](../../../data-types.md) | Appearance, possible values: `DIALOG`, `UI`, `LIST`, `CHECKBOX` ||
-    || **LIST_HEIGHT** 
-[`integer`](../../../data-types.md) | Height of the list, must be greater than 0 ||
-    || **IBLOCK_ID** 
-[`integer`](../../../data-types.md) | Identifier of the information block ||
-    || **DEFAULT_VALUE** 
-[`string`](../../../data-types.md) | Default value ||
-    || **ACTIVE_FILTER** 
-[`boolean`](../../../data-types.md) | Use only active elements ||
+    `type` | **Description** ||
+    || **DISPLAY**
+    [`string`](../../../data-types.md) | Appearance, possible values: `DIALOG`, `UI`, `LIST`, `CHECKBOX` ||
+    || **LIST_HEIGHT**
+    [`integer`](../../../data-types.md) | Height of the list, must be greater than 0 ||
+    || **IBLOCK_ID**
+    [`integer`](../../../data-types.md) | Identifier of the information block ||
+    || **DEFAULT_VALUE**
+    [`string`](../../../data-types.md) | Default value ||
+    || **ACTIVE_FILTER**
+    [`boolean`](../../../data-types.md) | Use only active elements ||
     |#
 
 - crm_status
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-|| **ENTITY_TYPE** 
-[`string`](../../../data-types.md) | Identifier of the CRM reference type. Possible values can be obtained using the method [`crm.status.entity.types`](../../status/crm-status-entity-types.md) ||
+    `type` | **Description** ||
+    || **ENTITY_TYPE**
+    [`string`](../../../data-types.md) | Identifier of the CRM reference type. Possible values can be obtained using the method [`crm.status.entity.types`](../../status/crm-status-entity-types.md) ||
     |#
 
 - crm
 
-    #| 
+    #|
     || **Name**
-`type` | **Description** ||
-    || **LEAD** 
-[`boolean`](../../../data-types.md) | Enable binding to leads ||
-    || **CONTACT** 
-[`boolean`](../../../data-types.md) | Enable binding to contacts ||
-    || **COMPANY** 
-[`boolean`](../../../data-types.md) | Enable binding to companies ||
-    || **DEAL** 
-[`boolean`](../../../data-types.md) | Enable binding to deals ||
-    || **QUOTE** 
-[`boolean`](../../../data-types.md) | Enable binding to estimates ||
-    || **ORDER** 
-[`boolean`](../../../data-types.md) | Enable binding to orders ||
-    || **SMART_INVOICE** 
-[`boolean`](../../../data-types.md) | Enable binding to invoices ||
-    || **DYNAMIC_*** 
-[`boolean`](../../../data-types.md) | Enable binding to SPA with a specific `typeId` ||
+    `type` | **Description** ||
+    || **LEAD**
+    [`boolean`](../../../data-types.md) | Enable binding to leads ||
+    || **CONTACT**
+    [`boolean`](../../../data-types.md) | Enable binding to contacts ||
+    || **COMPANY**
+    [`boolean`](../../../data-types.md) | Enable binding to companies ||
+    || **DEAL**
+    [`boolean`](../../../data-types.md) | Enable binding to deals ||
+    || **QUOTE**
+    [`boolean`](../../../data-types.md) | Enable binding to estimates ||
+    || **ORDER**
+    [`boolean`](../../../data-types.md) | Enable binding to orders ||
+    || **SMART_INVOICE**
+    [`boolean`](../../../data-types.md) | Enable binding to invoices ||
+    || **DYNAMIC_***
+    [`boolean`](../../../data-types.md) | Enable binding to SPA with a specific `typeId` ||
     |#
 
 - employee

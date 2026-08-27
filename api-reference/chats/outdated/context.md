@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-You can read about what contextual applications are [here](./chat-apps.md#contextual-applications).
+You can read about what contextual applications are [here](./chat-apps.md#context-apps).
 
 To work with the context, follow these steps:
 

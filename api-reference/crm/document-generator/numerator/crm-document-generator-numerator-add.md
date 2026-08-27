@@ -61,9 +61,8 @@ The list of fields is [below](#parameter-fields) ||
 [`object`](../../../data-types.md) | Settings for sequential numbering. Parameter descriptions are [below](#parameter-sequent-settings) ||
 |#
 
-#### Parameters {#parameter-sequent-settings}
+#### Parameters of Bitrix_Main_Numerator_Generator_SequentNumberGenerator {#parameter-sequent-settings}
 
-Bitrix_Main_Numerator_Generator_SequentNumberGenerator
 #|
 || **Name**
 `type` | **Description** ||

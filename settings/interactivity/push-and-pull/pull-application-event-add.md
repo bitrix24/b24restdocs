@@ -30,7 +30,7 @@ The method works only in the context of the [application](../../app-installation
 
 The parameter accepts any command value as long as it adheres to the format.
 
-Allowed characters: `A-Z`, `a-z`, `0-9`, `_`, `:`, `|`, `.`, `-` ||
+Allowed characters: `A-Z`, `a-z`, `0-9`, `_`, `:`, `\|`, `.`, `-` ||
 || **PARAMS**
 [`object`](../../../api-reference/data-types.md) | Event parameters in the format:
 

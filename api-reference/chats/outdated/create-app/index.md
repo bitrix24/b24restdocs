@@ -6,6 +6,6 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Applications are divided into two types: [JS Command](../chat-apps.md#js-command) and [IFRAME Application](../chat-apps.md#iframe-application).
+Applications are divided into two types: [JS Command](../chat-apps.md#js-command) and [IFRAME Application](../chat-apps.md#iframe-app).
 
 This section describes the API methods for working with them.

@@ -471,9 +471,8 @@ HTTP status: **200**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Fields Describing The {#fields}
+### Fields Describing the Customizable Field of the Requisites Template {#fields}
 
-Customizable Field of the Requisites Template
 #|
 ||  **Name**
 `type` | **Description** ||

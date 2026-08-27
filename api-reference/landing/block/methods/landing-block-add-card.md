@@ -34,7 +34,7 @@ The page identifier can be obtained using the [landing.landing.getlist](../../pa
 
 The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method with the parameter `params.edit_mode = 1` ||
 || **selector*** 
-[`string`](../../../data-types.md) | Selector of the card from the [key `cards` of the block manifest](../manifest.md#key-cards)
+[`string`](../../../data-types.md) | Selector of the card from the [key `cards` of the block manifest](../manifest.md#cards)
 
 After the selector, you can specify an index using `@<index>`. For example, `@0` will add a new card after the first found one, while `@2` will add it after the third.
 
@@ -44,7 +44,7 @@ After adding a card, the indices change. If you are adding multiple cards in suc
 
 If the selector is not present in the manifest, there are no cards in the block for this selector, or a non-existent index is specified, the method will return an error.
 
-For more details on card selectors and the structure of the manifest, refer to the article [Block Manifest](../manifest.md#key-cards) ||
+For more details on card selectors and the structure of the manifest, refer to the article [Block Manifest](../manifest.md#cards) ||
 || **content*** 
 [`string`](../../../data-types.md) | HTML of the new card.
 

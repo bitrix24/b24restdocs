@@ -246,8 +246,8 @@ Each field type has its own set of keys in `settings`.
     #|
     || **Name**
     `type` | **Description** ||
-|| **ENTITY_TYPE**
-[`string`](../../../data-types.md) | Identifier of the CRM reference type. Possible values can be obtained using the [`crm.status.entity.types`](../../status/crm-status-entity-types.md) method ||
+    || **ENTITY_TYPE**
+    [`string`](../../../data-types.md) | Identifier of the CRM reference type. Possible values can be obtained using the [`crm.status.entity.types`](../../status/crm-status-entity-types.md) method ||
     |#
 
 - crm

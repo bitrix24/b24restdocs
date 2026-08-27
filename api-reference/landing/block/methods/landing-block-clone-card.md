@@ -34,7 +34,7 @@ The page identifier can be obtained using the [landing.landing.getlist](../../pa
 
 The block identifier can be obtained using the [landing.block.getlist](./landing-block-get-list.md) method with the parameter `params.edit_mode = 1` ||
 || **selector*** 
-[`string`](../../../data-types.md) | Selector of the card from the [cards key of the block manifest](../manifest.md#key-cards).
+[`string`](../../../data-types.md) | Selector of the card from the [cards key of the block manifest](../manifest.md#cards).
 
 After the selector, you can specify the position using `@<index>`. `@0` copies the first found card, `@2` — the third.
 

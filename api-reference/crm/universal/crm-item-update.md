@@ -87,7 +87,7 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **title**
-  [`string`](../../data-types.md) | Name of the item 
+  [`string`](../../data-types.md) | Name of the item
   ||
   || **honorific**
   [`crm_status`](../data-types.md) | String identifier of the lead request (e.g., `'HNR_DE_1' = 'Mr.'`).
@@ -175,7 +175,7 @@ Default is `N` ||
   || **utmTerm**
   [`string`](../../data-types.md) | Campaign search term. For example, keywords for contextual advertising ||
   || **ufCrm...**
-  [`crm_userfield`](../data-types.md) | Custom field. 
+  [`crm_userfield`](../data-types.md) | Custom field.
   
   Read the [{#T}](./user-defined-fields/index.md) section for information about custom fields.
   
@@ -186,7 +186,7 @@ Default is `N` ||
   || **parentId...**
   [`crm_entity`](../data-types.md) | Parent field. An item of another CRM object type that is linked to this item.
 
-  Each such field has a `parentId + {parentEntityTypeId}` code 
+  Each such field has a `parentId + {parentEntityTypeId}` code
   ||
   || **fm**
   [`crm_multifield[]`](../data-types.md#crm_multifield) | Array of multipools.
@@ -238,7 +238,7 @@ Default is `N` ||
   || **categoryId**
   [`integer`](../../data-types.md) | Identifier of the deal [direction](./category/index.md) (pipeline) ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier of the item stage. 
+  [`crm_status`](../data-types.md) | String identifier of the item stage.
   
   For example, `'NEW' = 'Unprocessed'`.
 
@@ -296,7 +296,7 @@ Default is `N` ||
   || **assignedById**
   [`user`](../../data-types.md) | Identifier of the person responsible for the item ||
   || **sourceId**
-  [`crm_status`](../data-types.md) | String identifier of the source. 
+  [`crm_status`](../data-types.md) | String identifier of the source.
   
   For example, `'CALL' = 'Call'`.
   
@@ -337,7 +337,7 @@ Default is `N` ||
   || **parentId...**
   [`crm_entity`](../data-types.md) | Parent field. An item of another CRM object type that is linked to this item.
 
-  Each such field has a `parentId + {parentEntityTypeId}` code 
+  Each such field has a `parentId + {parentEntityTypeId}` code
   ||
   |#
 
@@ -349,7 +349,7 @@ Default is `N` ||
   || **Name**
   `type` | **Description** ||
   || **honorific**
-  [`crm_status`](../data-types.md) | String identifier of the contact request. 
+  [`crm_status`](../data-types.md) | String identifier of the contact request.
   
   For example, `'HNR_DE_1' = 'Mr.'`.
 
@@ -494,7 +494,7 @@ Default is `N` ||
   || **bankingDetails**
   [`string`](../../data-types.md) | Banking Details ||
   || **industry**
-  [`crm_status`](../data-types.md) | String identifier of the industry type. 
+  [`crm_status`](../data-types.md) | String identifier of the industry type.
   
   For example `'IT' = 'Information Technology'`.
   
@@ -664,7 +664,7 @@ Default is `N` ||
   || **taxValue**
   [`double`](../../data-types.md) | Tax amount ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier of the item stage. 
+  [`crm_status`](../data-types.md) | String identifier of the item stage.
   
   For example `'DRAFT' = 'New'`.
 
@@ -745,7 +745,7 @@ Default is `N` ||
   || **observers**
   [`user[]`](../../data-types.md) | Array of user identifiers who will be Observers in the item ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier of the item stage. 
+  [`crm_status`](../data-types.md) | String identifier of the item stage.
   
   For example `'DT31_13:N' = 'New'`.
 
@@ -844,13 +844,13 @@ Default is `N` ||
 
   Available only if the `isObserversEnabled` setting is enabled for the corresponding SPA ||
   || **categoryId**
-  [`crm_category`](../data-types.md) | SPA item pipeline identifier. 
+  [`crm_category`](../data-types.md) | SPA item pipeline identifier.
 
   If the identifier is not specified, the SPA will be moved to the main pipeline.
 
   The list of available pipelines can be found using [`crm.category.list`](category/crm-category-list.md) by applying the corresponding `entityTypeId` ||
   || **stageId**
-  [`crm_status`](../data-types.md) | String identifier of the item stage. 
+  [`crm_status`](../data-types.md) | String identifier of the item stage.
   
   For example, `'DT1220_30:NEW' = 'Start'`.
 
@@ -893,7 +893,7 @@ Default is `N` ||
   || **mycompanyId**
   [`crm_company`](../data-types.md) | My company identifier.
 
- Available only when the `isMycompanyEnabled` setting is enabled for the corresponding SPA ||
+  Available only when the `isMycompanyEnabled` setting is enabled for the corresponding SPA ||
   || **ufCrm...**
   [`crm_userfield`](../data-types.md) | Custom field. See section [{#T}](./user-defined-fields/index.md).
 

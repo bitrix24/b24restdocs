@@ -281,9 +281,8 @@ HTTP status: **200**
 [`time`](../../../../api-reference/data-types.md) | Information about the request execution time ||
 |#
 
-### Key Result. {#sale_order_payment_crm_simple}
+### Key Result. Object of Type sale_order_payment_crm_simple {#sale_order_payment_crm_simple}
 
-Object of type sale_order_payment_crm_simple
 #|
 || **Name**
 `type` | **Description** ||

@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: any user
 
-The method `crm.activity.badge.get` will return an array containing [badge fields](./index.md#badge-record-fields).
+The method `crm.activity.badge.get` will return an array containing [badge fields](./index.md#badge-fields).
 
 ## Method Parameters
 

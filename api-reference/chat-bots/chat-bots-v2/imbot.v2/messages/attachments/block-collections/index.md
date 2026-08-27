@@ -68,17 +68,17 @@ Adds a visual separator between parts of the attachment. Helps to distinguish me
 
 Forms a tabular structure from pairs of "name-value". Suitable for cards with properties and parameters.
 
-1. [Block Representation (BLOCK)](./grid.md#block-representation)
+1. [Block Representation (BLOCK)](./grid.md#block-view)
 
    ![Block Construction](./_images/grid1.png){width=420}
 
-2. [Line Representation (LINE)](./grid.md#line-representation)
+2. [Line Representation (LINE)](./grid.md#inline-view)
 
    ![Line Construction](./_images/grid2.png){width=420}
 
    In the mobile version, blocks are displayed one below the other.
 
-3. [Two-Column Representation (ROW)](./grid.md#two-column-representation)
+3. [Two-Column Representation (ROW)](./grid.md#two-column-view)
 
    ![Two-Column Construction](./_images/grid3.png){width=420}
 
