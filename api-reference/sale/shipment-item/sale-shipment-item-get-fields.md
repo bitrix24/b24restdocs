@@ -26,8 +26,8 @@ No parameters required.
     -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":7}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.shipmentitem.get
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.shipmentitem.getFields
     ```
 
 - cURL (OAuth)
@@ -36,8 +36,8 @@ No parameters required.
     -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":7,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/sale.shipmentitem.get
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/sale.shipmentitem.getFields
     ```
 
 - JS (TS)
