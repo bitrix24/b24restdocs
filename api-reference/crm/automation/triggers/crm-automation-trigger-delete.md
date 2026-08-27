@@ -1,4 +1,4 @@
-# Delete Trigger ctrigger.delete
+# Delete Trigger crm.automation.trigger.delete
 
 {% note tip "" %}
 

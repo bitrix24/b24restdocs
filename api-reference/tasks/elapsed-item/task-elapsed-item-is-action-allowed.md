@@ -1,4 +1,4 @@
-# Check Action Permission for task.elapseditem.isActionAllowed
+# Check Action Permission for task.elapseditem.isactionallowed
 
 {% note tip "" %}
 

@@ -1,4 +1,4 @@
-# Get Fields of Shipment Item from sale.shipmentitem.getfields
+# Get Fields of Shipment Item from sale.shipmentitem.getFields
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `sale.shipmentitem.getfields` retrieves a list of available fields for shipment item table entries.
+The method `sale.shipmentitem.getFields` retrieves a list of available fields for shipment item table entries.
 
 No parameters required.
 
@@ -64,7 +64,7 @@ No parameters required.
 
     try {
       const response = await $b24.actions.v2.call.make<GetFieldsResult>({
-        method: 'sale.shipmentitem.getfields',
+        method: 'sale.shipmentitem.getFields',
         params: {},
         requestId: Text.getUuidRfc4122()
       })
@@ -94,7 +94,7 @@ No parameters required.
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'sale.shipmentitem.getfields',
+            method: 'sale.shipmentitem.getFields',
             params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -146,7 +146,7 @@ No parameters required.
         $response = $b24Service
             ->core
             ->call(
-                'sale.shipmentitem.getfields',
+                'sale.shipmentitem.getFields',
                 []
             );
     
@@ -170,7 +170,7 @@ No parameters required.
 
     ```js
     BX24.callMethod(
-        "sale.shipmentitem.getfields", {},
+        "sale.shipmentitem.getFields", {},
         function(result) {
             if (result.error()) {
                 console.error(result.error());
@@ -187,7 +187,7 @@ No parameters required.
     require_once('crest.php');
 
     $result = CRest::call(
-        'sale.shipmentitem.getfields',
+        'sale.shipmentitem.getFields',
         []
     );
 
@@ -200,9 +200,9 @@ No parameters required.
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "sale.shipmentitem.getfields", nil, b24.WithIdempotent())
+    res, err := client.Core().Call(ctx, "sale.shipmentitem.getFields", nil, b24.WithIdempotent())
     if err != nil {
-    	return fmt.Errorf("sale.shipmentitem.getfields: %w", err)
+    	return fmt.Errorf("sale.shipmentitem.getFields: %w", err)
     }
 
     // The method wraps the response in an object with the "shipmentItem" key.

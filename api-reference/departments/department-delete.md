@@ -1,4 +1,4 @@
-# Delete department.department.delete
+# Delete Department department.delete
 
 {% note tip "" %}
 

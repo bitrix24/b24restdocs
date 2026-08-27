@@ -1,4 +1,4 @@
-# Pin a Chat at the Top of the im.recent List
+# Pin a Chat at the Top of the List im.recent.pin
 
 {% note tip "" %}
 

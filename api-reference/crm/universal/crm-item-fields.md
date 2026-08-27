@@ -1,4 +1,4 @@
-# Retrieve Fields of CRM Item
+# Retrieve Fields of CRM Item crm.item.fields
 
 {% note tip "" %}
 

@@ -1,4 +1,4 @@
-# Get Parameters of CRM Item Detail Configuration
+# Get Parameters of CRM Item Detail Configuration crm.item.details.configuration.get
 
 {% note tip "" %}
 

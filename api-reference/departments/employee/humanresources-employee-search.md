@@ -1,4 +1,4 @@
-# Find Employess humanresourses.employee.search
+# Find Employees humanresources.employee.search
 
 {% note tip "" %}
 

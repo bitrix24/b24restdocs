@@ -1,4 +1,4 @@
-# Get Available Fields of Shipment Property Values sale.shipmentpropertyvalue.getfields
+# Get Available Fields of Shipment Property Values sale.shipmentpropertyvalue.getFields
 
 {% note tip "" %}
 
@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `sale.shipmentpropertyvalue.getfields` retrieves the available fields of shipment property values.
+The method `sale.shipmentpropertyvalue.getFields` retrieves the available fields of shipment property values.
 
 No parameters.
 
@@ -27,7 +27,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.shipmentpropertyvalue.getfields
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.shipmentpropertyvalue.getFields
     ```
 
 - cURL (OAuth)
@@ -37,7 +37,7 @@ No parameters.
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/sale.shipmentpropertyvalue.getfields
+    https://**put_your_bitrix24_address**/rest/sale.shipmentpropertyvalue.getFields
     ```
 
 - JS (TS)
@@ -64,7 +64,7 @@ No parameters.
 
     try {
       const response = await $b24.actions.v2.call.make<GetFieldsResult>({
-        method: 'sale.shipmentpropertyvalue.getfields',
+        method: 'sale.shipmentpropertyvalue.getFields',
         params: {},
         requestId: Text.getUuidRfc4122()
       })
@@ -94,7 +94,7 @@ No parameters.
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'sale.shipmentpropertyvalue.getfields',
+            method: 'sale.shipmentpropertyvalue.getFields',
             params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -146,7 +146,7 @@ No parameters.
         $response = $b24Service
             ->core
             ->call(
-                'sale.shipmentpropertyvalue.getfields',
+                'sale.shipmentpropertyvalue.getFields',
                 []
             );
     
@@ -168,7 +168,7 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        "sale.shipmentpropertyvalue.getfields", {},
+        "sale.shipmentpropertyvalue.getFields", {},
         function(result) {
             if (result.error()) {
                 console.error(result.error());
@@ -185,7 +185,7 @@ No parameters.
     require_once('crest.php');
 
     $result = CRest::call(
-        'sale.shipmentpropertyvalue.getfields',
+        'sale.shipmentpropertyvalue.getFields',
         []
     );
 
@@ -198,9 +198,9 @@ No parameters.
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "sale.shipmentpropertyvalue.getfields", nil, b24.WithIdempotent())
+    res, err := client.Core().Call(ctx, "sale.shipmentpropertyvalue.getFields", nil, b24.WithIdempotent())
     if err != nil {
-    	return fmt.Errorf("sale.shipmentpropertyvalue.getfields: %w", err)
+    	return fmt.Errorf("sale.shipmentpropertyvalue.getFields: %w", err)
     }
 
     // The method wraps the response in an object with the "propertyValue" key.
