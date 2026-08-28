@@ -26,7 +26,7 @@ Payments contain information about payments for orders: payment system, status a
 
 ## How to Get Started
 
-1. Create an order using [sale.order.add](../order/sale-order-add.md) or find an existing order using [sale.order.list](../order/sale-order-list.md).
+1. Create an order using [sale.order.add](../order/sale-order-add.md) or find an existing order using [sale.order.get](../order/sale-order-get.md) or [sale.order.list](../order/sale-order-list.md).
 2. Create a payment using [sale.payment.add](./sale-payment-add.md) and specify the order ID.
 3. Link the payment to cart items using [sale.paymentitembasket.*](../payment-item-basket/index.md) or to shipments using [sale.paymentItemShipment.*](../payment-item-shipment/index.md).
 4. Check payment data using [sale.payment.get](./sale-payment-get.md) or [sale.payment.list](./sale-payment-list.md).

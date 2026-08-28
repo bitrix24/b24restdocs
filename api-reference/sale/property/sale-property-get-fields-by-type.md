@@ -391,6 +391,19 @@ HTTP Status: **200**
 }
 ```
 
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **property**
+[`sale_order_property`](../data-types.md#sale_order_property) | Description of the fields and settings of the order property for the selected type ||
+|| **time**
+[`time`](../../data-types.md) | Information about the execution time of the request ||
+|#
+
 ## Error Handling
 
 HTTP Status: **400**

@@ -50,9 +50,7 @@ The same applies to the authorization server `oauth.bitrix.info`. If network acc
 
 **Recommendation number 3** — if you are implementing a solution with a client, ensure that the required Bitrix24 servers are whitelisted. Current server addresses and firewall configuration rules are collected in the article [Required Network Access](../network-access.md).
 
-There is an alternative option — specifically for a particular client, you can connect a custom authorization and event mechanism on the side of their self-hosted Bitrix24 instance. For more details, see the article [Application Authorization in an Isolated Bitrix24 Self-Hosted Instance](custom-auth-provider.md) and the report by Maxim Sidorenko:
-
-<iframe width="720" height="405" src="https://rutube.com/play/embed/0becef7c826427edd5e05e55ffb24144/?p=6tgNGVLNFCycVzj1phG1xg" frameBorder="0" allow="clipboard-write; autoplay" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+There is an alternative option — specifically for a particular client, you can connect a custom authorization and event mechanism on the side of their self-hosted Bitrix24 instance. For more details, see the article [Application Authorization in an Isolated Bitrix24 Self-Hosted Instance](custom-auth-provider.md).
 
 ## What's Next
 

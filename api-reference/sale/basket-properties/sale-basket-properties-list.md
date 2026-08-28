@@ -14,6 +14,8 @@ The method `sale.basketproperties.list` retrieves a set of properties for the it
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

@@ -22,6 +22,13 @@ The tables below help you select a scenario by task, main methods, and result. S
 
 The exact permissions and scope of a specific scenario are listed in the header of its page.
 
+## How to Start
+
+1. Choose a scenario in the table of the appropriate group
+2. Create an [incoming webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) or an application with the required scopes and check the user permissions
+3. Execute the methods in the order described in the scenario
+4. Use the retrieved identifiers in subsequent CRM or inventory management requests
+
 ## Finding Clients and Their Data
 
 **Duplicates.** A single client can be entered in CRM several times — as a lead, a contact, and a company. The [crm.duplicate.findbycomm](../../../api-reference/crm/duplicates/crm-duplicate-find-by-comm.md) method searches for matches by phone or email and returns identifiers grouped by object type. The data itself is then retrieved with the list methods of [leads](../../../api-reference/crm/leads/index.md), [contacts](../../../api-reference/crm/contacts/index.md), and [companies](../../../api-reference/crm/companies/index.md).

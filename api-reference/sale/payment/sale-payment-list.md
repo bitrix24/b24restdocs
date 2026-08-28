@@ -72,6 +72,8 @@ The formula for calculating the `start` parameter value:
 
 ## Code Examples
 
+{% include [Note on examples](../../../_includes/examples.md) %}
+
 {% list tabs %}
 
 - cURL (Webhook)

@@ -14,6 +14,8 @@ The method `sale.basketproperties.delete` removes a property for an item (positi
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

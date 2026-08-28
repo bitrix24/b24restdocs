@@ -414,5 +414,5 @@ HTTP Status: **403**
 
 - [{#T}](./tasks-task-result-add.md)
 - [{#T}](./tasks-task-result-update.md)
-- [{#T}](./tasks-task-result-list.md)
+- [{#T}](./tasks-task-result-list-rest-v3.md)
 - [{#T}](./tasks-task-result-delete.md)

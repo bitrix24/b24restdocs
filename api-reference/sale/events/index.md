@@ -26,6 +26,7 @@ An example of a handler code for an event is described in the article [How to Te
 ## Limitations and Features of Event Delivery
 
 - Events are not sent to the application until the application installation is complete. More details can be found in the article [Check Application Installation](../../../settings/app-installation/installation-finish.md).
+- The handler receives the identifier of the modified object. Request the complete information about the object using a dedicated method: [sale.order.get](../order/sale-order-get.md), [sale.payment.get](../payment/sale-payment-get.md), [sale.shipment.get](../shipment/sale-shipment-get.md), or the methods of the [Property Values](../property-value/index.md) section.
 
 ## Server Availability for Sending and Receiving Events
 

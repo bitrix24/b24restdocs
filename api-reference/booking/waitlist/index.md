@@ -28,7 +28,7 @@ Add clients to the waitlist when all booking slots are full. This helps:
 
 **Client.** You can attach a [contact](../../crm/contacts/index.md) or [company](../../crm/companies/index.md) from CRM to a waitlist entry. Pass the `id` of the contact or company in the [booking.v1.waitlist.client.*](./client/index.md) methods.
 
-**Deal.** You can attach a CRM deal to a waitlist entry. Pass the `id` of the deal in the [booking.v1.waitlist.externalData.*](./external-data/index.md) methods.
+**Deal.** You can attach a CRM [deal](../../crm/deals/index.md) to a waitlist entry. Pass the `id` of the deal in the [booking.v1.waitlist.externalData.*](./external-data/index.md) methods.
 
 ## Overview of Methods {#all-methods}
 

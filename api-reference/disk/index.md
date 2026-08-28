@@ -61,7 +61,7 @@ You can find out the version of a file using the method [disk.version.get](./ver
 
 ## Relationships with Other Objects {#diskconnection}
 
-**CRM.** Files can be attached to deals and estimates. The group of methods [crm.activity.*](../crm/timeline/activities/index.md) is responsible for working with activities, while [crm.quote.*](../crm/quote/crm-quote-add.md) handles estimates.
+**CRM.** Files can be attached to deals and estimates. The group of methods [crm.activity.*](../crm/timeline/activities/index.md) is responsible for working with activities, while [crm.quote.*](../crm/quote/index.md) handles estimates.
 
 **Workflows.** You can initiate workflows for documents in the shared drive. Workflow management is performed using the methods [bizproc.workflow.*](../bizproc/index.md).
 

@@ -12,6 +12,13 @@ You can store text documents, spreadsheets, presentations, images, and other inf
 
 ## How to Start
 
+1. Retrieve the folder to upload to using the [disk.folder.get](../folder/disk-folder-get.md) or [disk.storage.getChildren](../storage/disk-storage-get-children.md) method
+2. Upload the file using the [disk.folder.uploadFile](../folder/disk-folder-upload-file.md) method
+3. Retrieve the file parameters using the [disk.file.get](./disk-file-get.md) method
+4. If necessary, move, copy, rename, or delete the file
+
+## How to Manage Files
+
 A new file should be uploaded using the [disk.folder.uploadFile](../folder/disk-folder-upload-file.md) method to a folder by its identifier.
 
 You can change the location of files within the Drive structure: move them using the [disk.file.moveTo](./disk-file-move-to.md) method or copy them to other folders using the [disk.file.copyTo](./disk-file-copy-to.md) method.

@@ -10,7 +10,7 @@ A workflow template defines automation logic through actions and operations in t
 
 {% note info "" %}
 
-Methods for adding, updating, and deleting templates work only within the context of an ../../../settings/app-installation/index.md application. Only the application that created a template can update or delete it.
+Methods for adding, updating, and deleting templates work only within the context of an [application](../../../settings/app-installation/index.md). Only the application that created a template can update or delete it.
 
 {% endnote %}
 

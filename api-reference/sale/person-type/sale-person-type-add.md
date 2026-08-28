@@ -397,3 +397,11 @@ HTTP status: **400**
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./sale-person-type-update.md)
+- [{#T}](./sale-person-type-get.md)
+- [{#T}](./sale-person-type-list.md)
+- [{#T}](./sale-person-type-delete.md)
+- [{#T}](./sale-person-type-get-fields.md)

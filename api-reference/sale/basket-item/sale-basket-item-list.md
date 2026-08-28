@@ -14,6 +14,8 @@ The method `sale.basketitem.list` retrieves a set of items (positions) in the ca
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #| 
 || **Name**
 `type` | **Description** ||

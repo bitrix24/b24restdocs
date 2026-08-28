@@ -19,3 +19,5 @@ It is expected that the application should save these tokens on its side to upda
 In the case of the installation callback handler, the application **must not** call the JS method [BX24.installFinish()](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md) as is required for local applications with the [installation wizard](./installation-master.md).
 
 However, even if you try to do this, it will not work, since this JS method belongs to a library that operates only within the frames of the application's interface in the browser, while the application's callback handler is invoked from the Bitrix24 backend. No browser is involved in this process.
+
+You can read more about creating a callback application with a configuration wizard in the article [Configuration wizard for REST-only applications](rest-only-installation-master.md).
