@@ -38,6 +38,7 @@ Scenarios are linked to Automation rules, workflow actions, tasks, running proce
 
 #|
 || **If needed** | **Open** ||
+|| Create your own workflow action and return the result from a handler | [How to create your own workflow action](./how-to-create-custom-activity.md) ||
 || Create a workflow action or Automation rule that generates an invoice based on a lead or a deal | [How to add an action to create an invoice based on a lead or a deal](./activity.md) ||
 || Add an application interface to the Automation rule settings and save parameters via `BX24.placement.call` | [How to embed your own UI into Automation rule parameters](./setting-robot.md) ||
 || Find tasks of a terminated employee and complete associated workflows | [How to complete the workflows of a terminated employee](./how-to-kill-workflows.md) ||

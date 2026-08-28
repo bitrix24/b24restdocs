@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-A scenario describes a single practical task and the sequence of methods required to perform it. In these tasks, scenarios show how to create a task, attach a file from Drive to it, add a comment with an attachment, and link a task to an SPA item.
+A scenario describes a single practical task and the sequence of methods required to perform it. In these tasks, scenarios show how to create a task, attach a file from Drive to it, add a comment with an attachment, link a task to an SPA item, and calculate time spent by employee.
 
 > Quick links: [all scenarios](#choose-tutorial)
 >
@@ -29,7 +29,7 @@ Scenarios are built around a task and its related objects: Drive files, comments
 
 ## Getting Started
 
-1. Define the scenario: create a task with a file, attach a file to an existing task, add a comment with a file, or link a task to an SPA
+1. Define the scenario: create a task with a file, attach a file to an existing task, add a comment with a file, link a task to an SPA, or calculate time spent by employee
 2. Select a scenario in the [How to choose a scenario](#choose-tutorial) table
 3. Check which permissions and scopes are specified in the selected scenario
 4. Prepare the task, Drive file, user, or CRM item identifiers required for the scenario
@@ -43,5 +43,6 @@ Scenarios are built around a task and its related objects: Drive files, comments
 || Upload a file to the Drive and attach it to an existing task | [How to upload a file to a task](./how-to-upload-file-to-task.md) ||
 || Add a comment with a file to a task through the task chat | [How to create a comment in a task and attach a file to it](./how-to-create-comment-with-file.md) ||
 || Create a task linked to an SPA item | [How to link a task to an SPA](./how-to-connect-task-to-spa.md) ||
+|| Calculate time spent on tasks separately for each employee | [How to calculate time spent on tasks for each employee](./how-to-calculate-employee-time-by-tasks.md) ||
 || View the full task methods reference | [Tasks: methods overview](../../api-reference/tasks/index.md) ||
 |#

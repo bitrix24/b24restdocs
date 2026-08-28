@@ -17,25 +17,25 @@ The method `task.elapseditem.getlist` returns a list of time tracking records fo
 #| 
 || **Name**
 `type` | **Description** ||
-|| **TASKID**
+|| **taskId**
 [`integer`](../../data-types.md) | Task identifier.
 
 The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
-|| **ORDER**
+|| **order**
 [`object`](../../data-types.md) | Object for sorting the result (detailed description provided below) ||
-|| **FILTER**
+|| **filter**
 [`object`](../../data-types.md) | Object for filtering the result (detailed description provided below) ||
-|| **SELECT**
+|| **select**
 [`array`](../../data-types.md) | Array of fields of records that will be returned by the method. You can specify only the fields you need. If the array contains the value `"*"`, all available fields will be returned.
 
 By default, all fields of the main request table will be returned ||
-|| **PARAMS**
+|| **params**
 [`object`](../../data-types.md) | Object for call options. The element is an object `NAV_PARAMS` of the form `{'call option': 'value' [, ...]}` (detailed description provided below) in structure ||
 |#
 
 {% note warning %}
 
-It is mandatory to follow the specified order of parameters in the request as shown in the table. Otherwise, the request will execute with errors.
+The method accepts parameters positionally. Follow the order from the table: `taskId`, `order`, `filter`, `select`, `params`. If you pass `order`, `filter`, `select`, and `params` as named fields of a single object, the request will fail.
 
 {% endnote %}
 
@@ -48,7 +48,7 @@ Features of manually adding information about work time that was actually perfor
 
 {% endnote %}
 
-### ORDER Parameter
+### order Parameter
 
 #| 
 || **Name**
@@ -83,7 +83,7 @@ Features of manually adding information about work time that was actually perfor
 - `desc` — descending ||
 |#
 
-### FILTER Parameter
+### filter Parameter
 
 #| 
 || **Name**
@@ -132,7 +132,7 @@ Before the name of the filtered field, you can specify the type of filtering:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '[{"ID": "desc"},{">=CREATED_DATE": "2024-02-16"}]' \
+    -d '[3839,{"ID":"asc"},{"USER_ID":1},["ID","TASK_ID","USER_ID","SECONDS","MINUTES","COMMENT_TEXT","CREATED_DATE"],{"NAV_PARAMS":{"nPageSize":2,"iNumPage":1}}]' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.elapseditem.getlist
     ```
 
@@ -142,8 +142,8 @@ Before the name of the filtered field, you can specify the type of filtering:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{[{"ID": "desc"},{">=CREATED_DATE": "2024-02-16"}],"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/task.elapseditem.getlist
+    -d '[3839,{"ID":"asc"},{"USER_ID":1},["ID","TASK_ID","USER_ID","SECONDS","MINUTES","COMMENT_TEXT","CREATED_DATE"],{"NAV_PARAMS":{"nPageSize":2,"iNumPage":1}}]' \
+    https://**put_your_bitrix24_address**/rest/task.elapseditem.getlist?auth=**put_access_token_here**
     ```
 
 - JS (TS)
@@ -174,16 +174,16 @@ Before the name of the filtered field, you can specify the type of filtering:
       // use a list helper: $b24.actions.v2.callList.make() returns every record as one
       // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
       // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // passing it is a TS error) — keep this call.make variant when sort matters.
       const response = await $b24.actions.v2.call.make<ElapsedItem[]>({
         method: 'task.elapseditem.getlist',
-        params: {
-          TASKID: 1,
-          ORDER: { ID: 'desc' },
-          FILTER: { '>=CREATED_DATE': '2024-02-16' },
-          SELECT: ['ID', 'TASK_ID'],
-          PARAMS: { NAV_PARAMS: { nPageSize: 2 } },
-        },
+        params: [
+          3839,
+          { ID: 'asc' },
+          { USER_ID: 1 },
+          ['ID', 'TASK_ID', 'USER_ID', 'SECONDS', 'MINUTES', 'COMMENT_TEXT', 'CREATED_DATE'],
+          { NAV_PARAMS: { nPageSize: 2, iNumPage: 1 } },
+        ],
         requestId: Text.getUuidRfc4122()
       })
 
@@ -215,16 +215,16 @@ Before the name of the filtered field, you can specify the type of filtering:
           // use a list helper: $b24.actions.v2.callList.make() returns every record as one
           // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
           // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // passing it is a TS error) — keep this call.make variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'task.elapseditem.getlist',
-            params: {
-              TASKID: 1,
-              ORDER: { ID: 'desc' },
-              FILTER: { '>=CREATED_DATE': '2024-02-16' },
-              SELECT: ['ID', 'TASK_ID'],
-              PARAMS: { NAV_PARAMS: { nPageSize: 2 } },
-            },
+            params: [
+              3839,
+              { ID: 'asc' },
+              { USER_ID: 1 },
+              ['ID', 'TASK_ID', 'USER_ID', 'SECONDS', 'MINUTES', 'COMMENT_TEXT', 'CREATED_DATE'],
+              { NAV_PARAMS: { nPageSize: 2, iNumPage: 1 } },
+            ],
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -252,17 +252,25 @@ Before the name of the filtered field, you can specify the type of filtering:
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     order = {
-        "ID": "desc",
+        "ID": "asc",
     }
 
     filter = {
-        ">=CREATED_DATE": "2024-02-16",
+        "USER_ID": 1,
     }
 
     try:
         bitrix_response = client.task.elapseditem.getlist(
+            taskid=3839,
             order=order,
             filter=filter,
+            select=["ID", "TASK_ID", "USER_ID", "SECONDS", "MINUTES", "COMMENT_TEXT", "CREATED_DATE"],
+            params={
+                "NAV_PARAMS": {
+                    "nPageSize": 2,
+                    "iNumPage": 1,
+                },
+            },
         ).response
         result = bitrix_response.result
         print(result)
@@ -282,54 +290,30 @@ Before the name of the filtered field, you can specify the type of filtering:
 
     ```php
     try {
-        // Get all time tracking records sorted by ID in descending order.
-        // Only records with ID less than 50 will be filtered.
-        $response1 = $b24Service
+        $response = $b24Service
             ->core
             ->call(
                 'task.elapseditem.getlist',
                 [
-                    1,
-                    ['ID' => 'desc'],
-                    ['<ID' => 50],
-                ]
-            );
-    
-        $result1 = $response1
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result1, true);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting elapsed time records: ' . $e->getMessage();
-    }
-    
-    try {
-        // Get a sample of time tracking based on general filtering conditions. For example, select data on labor costs from a specified date:
-        $response2 = $b24Service
-            ->core
-            ->call(
-                'task.elapseditem.getlist',
-                [
-                    ['ID' => 'desc'],
-                    ['>=CREATED_DATE' => '2024-02-16'],
-                    ['ID', 'TASK_ID'],
+                    3839,
+                    ['ID' => 'asc'],
+                    ['USER_ID' => 1],
+                    ['ID', 'TASK_ID', 'USER_ID', 'SECONDS', 'MINUTES', 'COMMENT_TEXT', 'CREATED_DATE'],
                     [
                         'NAV_PARAMS' => [
                             'nPageSize' => 2,
+                            'iNumPage' => 1,
                         ],
                     ],
                 ]
             );
-    
-        $result2 = $response2
+
+        $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result2, true);
-    
+
+        echo 'Success: ' . print_r($result, true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting elapsed time records: ' . $e->getMessage();
@@ -339,32 +323,16 @@ Before the name of the filtered field, you can specify the type of filtering:
 - BX24.js
 
     ```js
-    // Get all time tracking records sorted by ID in descending order.
-    // Only records with ID less than 50 will be filtered.
     BX24.callMethod(
         'task.elapseditem.getlist',
         [
-            1, 
-            {'ID': 'desc'},
-            {'<ID': 50}
-        ],
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
-        }
-    );
-    // Get a sample of time tracking based on general filtering conditions. For example, select data on labor costs from a specified date:
-    BX24.callMethod(
-        'task.elapseditem.getlist',
-        [
-            {'ID': 'desc'}, 
-            {'>=CREATED_DATE': '2024-02-16'},
-            ['ID', 'TASK_ID'],
+            3839,
+            {'ID': 'asc'},
+            {'USER_ID': 1},
+            ['ID', 'TASK_ID', 'USER_ID', 'SECONDS', 'MINUTES', 'COMMENT_TEXT', 'CREATED_DATE'],
             {"NAV_PARAMS":{
-                    "nPageSize":2
+                    "nPageSize":2,
+                    "iNumPage":1
                 }
             },
         ],
@@ -386,13 +354,15 @@ Before the name of the filtered field, you can specify the type of filtering:
     $result = CRest::call(
         'task.elapseditem.getlist',
         [
-            "ORDER" => ["ID" => "DESC"],            // Sort by ID - descending
-            "FILTER" => [">ID" => 1],               // Filter
-            "SELECT" => ['ID', 'TASK_ID'],          // Selection - only ID of the record and task
-            "PARAMS" => ['NAV_PARAMS' => [          // Pagination
-                    "nPageSize" => 2,                   // 2 items per page
-                    'iNumPage' => 2                     // page number 2
-                ]
+            3839,
+            ['ID' => 'asc'],
+            ['USER_ID' => 1],
+            ['ID', 'TASK_ID', 'USER_ID', 'SECONDS', 'MINUTES', 'COMMENT_TEXT', 'CREATED_DATE'],
+            [
+                'NAV_PARAMS' => [
+                    'nPageSize' => 2,
+                    'iNumPage' => 1,
+                ],
             ],
         ]
     );
@@ -406,13 +376,21 @@ Before the name of the filtered field, you can specify the type of filtering:
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "task.elapseditem.getlist", []b24.Params{
-    	{
-    		"ID": "desc",
-    	},
-    	{
-    		">=CREATED_DATE": "2024-02-16",
-    	},
+    res, err := client.Core().Call(ctx, "task.elapseditem.getlist", []any{
+        3839,
+        b24.Params{
+            "ID": "asc",
+        },
+        b24.Params{
+            "USER_ID": 1,
+        },
+        []string{"ID", "TASK_ID", "USER_ID", "SECONDS", "MINUTES", "COMMENT_TEXT", "CREATED_DATE"},
+        b24.Params{
+            "NAV_PARAMS": b24.Params{
+                "nPageSize": 2,
+                "iNumPage": 1,
+            },
+        },
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("task.elapseditem.getlist: %w", err)
@@ -444,26 +422,34 @@ HTTP Status: **200**
 {
     "result":[
         {
-            "ID": "1",
-            "TASK_ID": "691",
+            "ID": "153",
+            "TASK_ID": "3839",
             "USER_ID": "1",
-            "COMMENT_TEXT": "1",
-            "SECONDS": "3600",
-            "MINUTES": "60",
-            "SOURCE": "2",
-            "CREATED_DATE": "2024-05-16T10:33:00+02:00",
-            "DATE_START": "2024-05-16T10:33:15+02:00",
-            "DATE_STOP": "2024-05-16T10:33:15+02:00"
+            "COMMENT_TEXT": "",
+            "SECONDS": "5100",
+            "MINUTES": "85",
+            "CREATED_DATE": "2025-12-18T14:16:51+02:00"
+        },
+        {
+            "ID": "155",
+            "TASK_ID": "3839",
+            "USER_ID": "1",
+            "COMMENT_TEXT": "",
+            "SECONDS": "23",
+            "MINUTES": "0",
+            "CREATED_DATE": "2025-12-18T14:16:37+02:00"
         }
     ],
-    "total": 1,
+    "total": 2,
     "time":{
-        "start":1712137817.343984,
-        "finish":1712137817.605804,
-        "duration":0.26182007789611816,
-        "processing":0.018325090408325195,
-        "date_start":"2024-04-03T12:50:17+02:00",
-        "date_finish":"2024-04-03T12:50:17+02:00"
+        "start":1787829762,
+        "finish":1787829762.985642,
+        "duration":0.9856419563293457,
+        "processing":0,
+        "date_start":"2026-08-27T14:22:42+02:00",
+        "date_finish":"2026-08-27T14:22:42+02:00",
+        "operating_reset_at":1787830362,
+        "operating":0.11980605125427246
     }
 }
 ```
@@ -502,11 +488,12 @@ HTTP Status: **400**
 || `0x000004` | Action not allowed ||
 || `0x000040` | Unknown error ||
 || `0x000100` | Invalid method parameters provided ||
+|| `ERROR_CORE` | Error executing the action. Check task access and the order of the method's positional parameters ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./task-elapsed-item-add.md)

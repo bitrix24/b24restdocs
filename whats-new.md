@@ -2,6 +2,11 @@
 
 ## 2026
 
+### August 28, 2026
+
+- Added the tutorial [How to Create Your Own Workflow Action](./tutorials/bizproc/how-to-create-custom-activity.md)
+- Added the tutorial [How to Calculate Time Spent on Tasks for Each Employee](./tutorials/tasks/how-to-calculate-employee-time-by-tasks.md)
+
 ### August 26, 2026
 
 - Added the [tasks.task.gantt.link.list](./api-reference/tasks/tasks-task-gantt-link-list.md) method: retrieves task Gantt links with the link type and supports pagination
