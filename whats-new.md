@@ -6,6 +6,7 @@
 
 - Added the tutorial [How to Create Your Own Workflow Action](./tutorials/bizproc/how-to-create-custom-activity.md)
 - Added the tutorial [How to Calculate Time Spent on Tasks for Each Employee](./tutorials/tasks/how-to-calculate-employee-time-by-tasks.md)
+- Updated the documentation: [Widgets Embedded in the Interface of Custom CRM Object Types](./api-reference/crm/universal/widgets.md), [Local Applications](./local-integrations/local-apps.md), [Typical use-cases and scenarios for REST API in CRM and tutorials](./api-reference/crm/tutorials.md), [Components and Templates](./api-reference/widgets/ui-kit/components.md), [Installation of Industry-Specific CRMs](./settings/app-installation/vertical-crm-installation.md)
 
 ### August 26, 2026
 

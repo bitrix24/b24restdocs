@@ -10,6 +10,8 @@ This page helps you choose a tutorial for CRM Integration: creating a customer o
 
 Tutorials help you select a working scenario so you do not have to assemble a chain of methods manually. Each scenario specifies access permissions, the request order, identifiers to pass between methods, a code sample, and the result to verify.
 
+The REST API reference groups the same directions on the [{#T}](../../api-reference/crm/tutorials.md) page, where the scenarios are listed alongside the related method groups.
+
 > Quick links: [How to Choose a Direction](#choose-section) and [Common Scenarios](#popular-tutorials)
 > 
 > User documentation: [How to Start Working with CRM in Bitrix24](https://helpdesk.bitrix24.com/open/25766191/)
