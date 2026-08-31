@@ -1,0 +1,19 @@
+title: Open Channels Statistics
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Data Types
+    href: data-types.md
+  - name: Get Aggregate Statistics
+    href: imopenlines-v2-stat-get.md
+  - name: Get Operators with Load
+    href: imopenlines-v2-operator-list.md
+  - name: Get Sessions
+    href: imopenlines-v2-session-list.md
+  - name: Get Session Metrics
+    href: imopenlines-v2-session-stat-get.md
+  - name: Get Ratings
+    href: imopenlines-v2-session-rating-list.md
+  - name: Get Transfer History
+    href: imopenlines-v2-session-transfer-list.md

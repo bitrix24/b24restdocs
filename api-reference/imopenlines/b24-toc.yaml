@@ -11,3 +11,7 @@ items:
     include:
       path: openlines/b24-toc.yaml
       mode: link
+  - name: Open Channels Statistics
+    include:
+      path: statistics/b24-toc.yaml
+      mode: link

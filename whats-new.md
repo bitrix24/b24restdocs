@@ -2,6 +2,10 @@
 
 ## 2026
 
+### August 31, 2026
+
+- Added the [imopenlines.v2.*](./api-reference/imopenlines/statistics/index.md) methods for Open Channels statistics: aggregates, session list, session metrics, ratings, transfers, and operator load
+
 ### August 28, 2026
 
 - Added the tutorial [How to Create Your Own Workflow Action](./tutorials/bizproc/how-to-create-custom-activity.md)
