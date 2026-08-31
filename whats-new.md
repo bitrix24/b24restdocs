@@ -5,6 +5,7 @@
 ### August 31, 2026
 
 - Added the [imopenlines.v2.*](./api-reference/imopenlines/statistics/index.md) methods for Open Channels statistics: aggregates, session list, session metrics, ratings, transfers, and operator load
+- Added the tutorial [How to Automatically Fill a Dependent CRM Field After the Main Field Changes](./tutorials/crm/how-to-edit-crm-objects/how-to-autofill-dependent-field.md)
 
 ### August 28, 2026
 

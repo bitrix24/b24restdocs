@@ -56,6 +56,15 @@ An entry cannot be found by the text of its value, so the object is read first t
 || [How to Change or Delete Phone Numbers and Emails](./how-to-change-email-or-phone.md) | [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md), [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md), [crm.item.update](../../../api-reference/crm/universal/crm-item-update.md) | An updated or cleared list of phone numbers and emails in the contact card ||
 |#
 
+## Fill Dependent Fields Automatically
+
+A dependent field can be updated after a card is saved. The application receives the update event, reads the current field values, checks the condition, and writes a new value to another field.
+
+#|
+|| **Scenario** | **Main Methods** | **Result** ||
+|| [How to Automatically Fill a Dependent CRM Field After the Main Field Changes](./how-to-autofill-dependent-field.md) | [event.bind](../../../api-reference/events/event-bind.md), [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md), [crm.item.update](../../../api-reference/crm/universal/crm-item-update.md) | The dependent field value is updated after the deal is saved ||
+|#
+
 ## Moving Activities and Changing Deadlines
 
 An activity is a record in the card timeline: a call, a meeting, an email, or a planned action. Activities are linked to CRM items through bindings. An activity can have several bindings, but the last one cannot be deleted — the method returns the `LAST_BINDING_CANNOT_BE_DELETED` error.

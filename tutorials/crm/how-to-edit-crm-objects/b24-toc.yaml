@@ -15,6 +15,8 @@ items:
     href: how-to-generate-edit-form-for-deal.md
   - name: How to Change or Delete Phone Numbers and Emails
     href: how-to-change-email-or-phone.md
+  - name: How to Automatically Fill a Dependent CRM Field After the Main Field Changes
+    href: how-to-autofill-dependent-field.md
   - name: How to Move an Activity Between Items of the Same Type
     href: how-to-move-activity.md
   - name: How to Move an Activity from One Object Type to Another
