@@ -41,6 +41,7 @@ Scenarios are built around a task and its related objects: Drive files, comments
 || **If necessary** | **Open** ||
 || Create a task and immediately attach a file from the Drive to it | [How to create a task with an attached file](./how-to-create-task-with-file.md) ||
 || Upload a file to the Drive and attach it to an existing task | [How to upload a file to a task](./how-to-upload-file-to-task.md) ||
+|| Transfer a file from a deal file field to an existing task | [How to transfer a file from a CRM field to a task](./how-to-transfer-file-from-crm-to-task.md) ||
 || Add a comment with a file to a task through the task chat | [How to create a comment in a task and attach a file to it](./how-to-create-comment-with-file.md) ||
 || Create a task linked to an SPA item | [How to link a task to an SPA](./how-to-connect-task-to-spa.md) ||
 || Calculate time spent on tasks separately for each employee | [How to calculate time spent on tasks for each employee](./how-to-calculate-employee-time-by-tasks.md) ||

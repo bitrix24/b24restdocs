@@ -2,6 +2,10 @@
 
 ## 2026
 
+### September 1, 2026
+
+- Added the tutorial [How to Transfer a File from a CRM Field to a Task](./tutorials/tasks/how-to-transfer-file-from-crm-to-task.md)
+
 ### August 31, 2026
 
 - Added the [imopenlines.v2.*](./api-reference/imopenlines/statistics/index.md) methods for Open Channels statistics: aggregates, session list, session metrics, ratings, transfers, and operator load

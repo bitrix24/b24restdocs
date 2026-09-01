@@ -7,6 +7,8 @@ items:
     href: how-to-create-task-with-file.md  
   - name: How to upload a file to a task  
     href: how-to-upload-file-to-task.md  
+  - name: How to transfer a file from a CRM field to a task
+    href: how-to-transfer-file-from-crm-to-task.md
   - name: How to create a comment in a task and attach a file to it  
     href: how-to-create-comment-with-file.md  
   - name: How to attach a task to an SPA
