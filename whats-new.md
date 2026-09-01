@@ -7,6 +7,7 @@
 - Added the tutorial [How to Transfer a File from a CRM Field to a Task](./tutorials/tasks/how-to-transfer-file-from-crm-to-task.md)
 - Added the tutorial [How to Send an E-mail from a Connected Mailbox](./tutorials/mail/how-to-send-email-from-mailbox.md)
 - Added the tutorial [How to Create a CRM Activity from an Incoming E-mail](./tutorials/mail/how-to-create-crm-activity-from-email.md)
+- Added the tutorial [How to Work with the Binding to CRM Elements Field](./tutorials/crm/how-to-add-crm-objects/how-to-use-crm-binding-field.md)
 
 ### August 31, 2026
 

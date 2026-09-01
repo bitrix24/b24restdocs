@@ -37,6 +37,8 @@ items:
     href: how-to-add-user-field-to-spa.md
   - name: Configure Rounding for Number Type Custom Field
     href: how-to-add-precision-to-user-field.md
+  - name: How to Work with the Binding to CRM Elements Field
+    href: how-to-use-crm-binding-field.md
   - name: How to Create a New Pipeline with Stages in a Smart Process
     href: how-to-add-category-to-spa.md
 
