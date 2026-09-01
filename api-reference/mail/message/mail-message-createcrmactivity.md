@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`mail`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the mailbox where the e-mail is located
+> Who can execute the method: a user with access to the mailbox where the e-mail is located and access to CRM
 
 {% note info "" %}
 
@@ -76,7 +76,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     declare const $b24: B24Frame
 
     try {
-      const response = await $b24.actions.v3.call.make<boolean>({
+      const response = await $b24.actions.v3.call.make<{result: boolean}>({
         method: 'mail.message.createcrmactivity',
         params: {
           messageId: 15,
@@ -231,11 +231,13 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	return fmt.Errorf("mail.message.createcrmactivity: %w", err)
     }
 
-    var ok bool
-    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    var item struct {
+        Result bool `json:"result"`
+    }
+    if err := json.Unmarshal(res.Result, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println("done:", ok)
+    fmt.Println("done:", item.Result)
     ```
 
 {% endlist %}
@@ -246,7 +248,9 @@ HTTP status: **200**
 
 ```json
 {
-    "result": true,
+    "result": {
+        "result": true
+    },
     "time": {
         "start": 1779819678,
         "finish": 1779819678.84803,
@@ -266,6 +270,8 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
+[`object`](../../data-types.md) | Object with the result of creating the CRM activity ||
+|| **result.result**
 [`boolean`](../../data-types.md) | `true`, if the CRM activity was created successfully ||
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
@@ -310,7 +316,7 @@ Error code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to fix** ||
-|| `-` | Access denied | Check user permissions and the `mail` scope ||
+|| `-` | Access denied | Check user permissions, CRM access, and the `mail` scope ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

@@ -55,6 +55,7 @@ If you have not made API requests yet, start with the [Where to Start](../first-
 || [Business Processes](./bizproc/index.md) | Add a custom workflow action, embed an interface into automation rule parameters, terminate workflows in bulk ||
 || [Chatbots](./chat-bots/index.md) | Create a chatbot, a bot for Open Channels, and a support channel ||
 || [Message Providers](./messageservice/index.md) | Connect an SMS provider and update the message delivery status ||
+|| [Mail](./mail/index.md) | Send an e-mail from a connected mailbox, find an incoming e-mail, and create a CRM activity from it ||
 || [Telephony](./telephony/index.md) | Integrate external telephony: register a call, display the call card, attach a call recording ||
 || [Tasks](./tasks/index.md) | Create tasks with files, add comments with attachments, link a task to a smart process ||
 || [Open Channels](./openlines/index.md) | Create a connector for website chat, find a CRM object by dialog ||

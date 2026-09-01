@@ -1,0 +1,9 @@
+title: Typical Use-Cases and Scenarios in Mail
+href: index.md
+items:
+  - name: Common REST API Use Cases in Mail
+    href: index.md
+  - name: How to Send an E-mail from a Connected Mailbox
+    href: how-to-send-email-from-mailbox.md
+  - name: How to Create a CRM Activity from an Incoming E-mail
+    href: how-to-create-crm-activity-from-email.md

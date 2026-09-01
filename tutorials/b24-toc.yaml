@@ -27,6 +27,10 @@ items:
     include:
       path: messageservice/b24-toc.yaml
       mode: link
+  - name: Mail
+    include:
+      path: mail/b24-toc.yaml
+      mode: link
   - name: Telephony
     include:
       path: telephony/b24-toc.yaml
