@@ -14,6 +14,8 @@ The application uses a simplified OAuth 2.0 flow and is displayed as an addition
 
 You can install a local application either from the **Developer resources** section (*Applications > Developer resources, Ready-made scenarios tab > Other > Local application*), or by following this path: Applications (1) — Developer resources (2) — Other (3) — Local application (4):
 
+If the *Local application* item is missing, ask the administrator to [configure access to application creation](./local-apps.md#local-app-access).
+
 ![Adding an application](./_images/local_add_sm.jpg)
 
 ![](./_images/local_add_4.jpg)

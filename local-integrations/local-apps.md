@@ -30,7 +30,7 @@ This page helps you choose the type of application and create it on your own Bit
 
 ## How to Get Started
 
-1. Check the conditions. A local application works only if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md) — under a Marketplace subscription, in trial mode, or with an NFR key. The application can be created by a Bitrix24 administrator or by an employee who has been granted the permission to install applications.
+1. Check the conditions. A local application works only if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md) — under a Marketplace subscription, in trial mode, or with an NFR key. The application can be created by a Bitrix24 administrator or by an employee who has been granted the permission to create applications.
 
 2. Decide whether the application needs an interface inside Bitrix24 and a server of its own. This determines the type of application — select it in the [How to Choose the Application Type](#choose-app) table.
 
@@ -43,6 +43,20 @@ This page helps you choose the type of application and create it on your own Bit
 6. Save the application. It will appear in the *Applications > Developer resources > Integrations* list.
 
 7. Enable the *Application uses API only* option if the application needs no interface, and store the application code and the secret key in the code on your server — Bitrix24 shows them after the form is saved.
+
+If the *Local application* item is missing, the permission to create applications is disabled. Ask the administrator to configure access to application creation.
+
+## How to Configure Access to Application Creation for Employees {#local-app-access}
+
+An employee without administrator permissions cannot grant this access to themselves. An administrator can allow application creation for all employees or selected users.
+
+1. Open *Settings > Bitrix24 settings*. The section is available only to employees with administrator permissions.
+2. In the new window, go to *Security > Bitrix24 integrations*.
+3. Configure permissions:
+   - in the *Who can create apps for everyone* field, click *Add* and select all employees or selected users
+   - in the *Who can create their own apps* field, click *Add* and select all employees or selected users
+
+![Configure Access to Application Creation](../first-steps/_images/webhook.png)
 
 ## What to Keep in Mind
 

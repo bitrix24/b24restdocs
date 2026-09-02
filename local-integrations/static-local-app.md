@@ -34,7 +34,7 @@ The archive with the example contains one file and represents a ready-made appli
 
 You can install the local application either from the **Developer resources** section (*Applications > Developer resources, tab "Ready-made scenarios" > Other > Local application*), or by following this path: Applications (1) — Developer resources (2) — Other (3) — Local application (4):
 
-
+If the *Local application* item is missing, ask the administrator to [configure access to application creation](./local-apps.md#local-app-access).
 
 In the opened form, fill in the basic fields, upload the archive, and specify the necessary permissions (for our example, user management permissions are required):
 

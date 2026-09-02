@@ -29,7 +29,8 @@ Choose an incoming webhook for internal integrations and quick checks when:
 
 Incoming webhook permissions are defined by the employee who created it and the selected `scope` list:
 
-- any Bitrix24 user can create an incoming webhook if the Bitrix24 account has [access to the REST API](../first-steps/access-to-rest-api.md)
+- an incoming webhook can be created by an administrator or by an employee for whom the administrator has allowed webhook creation
+- the Bitrix24 account must have [access to the REST API](../first-steps/access-to-rest-api.md)
 - requests are executed within the [scope](../api-reference/scopes/permissions.md) selected in the webhook settings
 - requests are executed with the permissions of the employee who created the webhook
 - the webhook secret code is available only to the employee who created it. If an administrator edits another user's webhook, the secret code is updated and the administrator becomes the webhook owner
@@ -48,11 +49,7 @@ Create webhooks in *Applications > Developer resources*. If a ready-made scenari
 
 In the request generator, you can select a method, view the method and parameter descriptions, fill in parameters, execute the request, and download a ready-made PHP code example.
 
-{% note tip "User Documentation" %}
-
-- [Create webhooks and apps in Bitrix24](https://helpdesk.bitrix24.com/open/21133100/)
-
-{% endnote %}
+If the *Incoming webhook* item is missing, the permission to create webhooks is disabled. Ask the administrator to [grant access to webhook creation](#webhook-access).
 
 ### Webhook URL Structure
 
@@ -75,6 +72,22 @@ The URL consists of several parts:
 {% note warning "" %}
 
 The webhook secret code grants access to methods within the webhook permissions. Do not pass the webhook URL to third parties or publish it in client-side code.
+
+{% endnote %}
+
+### How to Configure Access to Webhook Creation for Employees {#webhook-access}
+
+An employee without administrator permissions cannot grant this access to themselves. An administrator can allow webhook creation for all employees or selected users.
+
+1. Open *Settings > Bitrix24 settings*. The section is available only to employees with administrator permissions.
+2. In the new window, go to *Security > Bitrix24 integrations*.
+3. In the *Who can create incoming webhooks* field, click *Add* and select all employees or selected users
+
+![Configure Access to Incoming Webhook Creation](../first-steps/_images/webhook.png)
+
+{% note tip "User Documentation" %}
+
+- [Create webhooks and apps in Bitrix24](https://helpdesk.bitrix24.com/open/21133100/)
 
 {% endnote %}
 
