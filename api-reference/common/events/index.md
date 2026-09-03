@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Events allow applications to respond to changes in near real-time: receiving notifications about installation, updates, deletions, and payments of the application, adding users, and the administrator's decision regarding requests for access to methods requiring confirmation.
+Events allow applications to respond to changes in near real-time: receiving notifications about installation, system user creation, updates, deletions, and payments of the application, adding users, and the administrator's decision regarding requests for access to methods requiring confirmation.
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../events/index.md).
 
@@ -46,6 +46,7 @@ An example of a handler code for the event is described in the article [How to T
 #| 
 || **Event** | **Triggered** ||
 || [onAppInstall](./on-app-install.md) | When the application is successfully installed ||
+|| [ONAPPUSERREADY](./on-app-user-ready.md) | When an application system user is created or reactivated ||
 || [onAppUpdate](./on-app-update.md) | When the application is updated ||
 || [onAppUninstall](./on-app-uninstall.md) | When the application is uninstalled ||
 || [onAppMethodConfirm](./on-app-method-confirm.md) | When receiving the administrator's decision regarding a request for access to methods requiring confirmation ||

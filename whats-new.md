@@ -2,6 +2,10 @@
 
 ## 2026
 
+### September 3, 2026
+
+- Added the [ONAPPUSERREADY](./api-reference/common/events/on-app-user-ready.md) event for receiving long-lived authorization for an application system user after installation
+
 ### September 1, 2026
 
 - Added the tutorial [How to Transfer a File from a CRM Field to a Task](./tutorials/tasks/how-to-transfer-file-from-crm-to-task.md)

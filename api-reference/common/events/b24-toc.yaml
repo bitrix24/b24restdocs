@@ -5,6 +5,8 @@ items:
     href: index.md
   - name: After Successful Application Installation
     href: on-app-install.md
+  - name: When Creating an Application System User
+    href: on-app-user-ready.md
   - name: After Application Update
     href: on-app-update.md
   - name: When Uninstalling the Application
