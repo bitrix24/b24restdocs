@@ -316,7 +316,8 @@ HTTP status: **200**
                 "uuid": "0c42a08f-4235-49fc-994f-c9bccd499ac1",
                 "replaces": [],
                 "params": {
-                    "LIKE": [547]
+                    "LIKE": [547],
+                    "FILE_ID": [5255]
                 },
                 "disappearing_date": null
             },
@@ -414,7 +415,7 @@ HTTP status: **200**
             {
                 "id": 5255,
                 "chatId": 1489,
-                "date": "2026-03-02T16:10:00+03:00",
+                "date": "2026-03-04T09:43:27+03:00",
                 "type": "image",
                 "name": "image.png",
                 "extension": "png",
@@ -539,6 +540,8 @@ The set of fields in the object depends on the type of message: regular or syste
 - `CHAT_LEAVE` — user left the chat ||
 || **NOTIFY**
 [`string`](../../data-types.md) | Indicator of notification sending. Value `N` — notification is not sent ||
+|| **FILE_ID**
+[`array`](../../data-types.md) | Identifiers of files attached to the message ||
 |#
 
 #### User Object {#user}

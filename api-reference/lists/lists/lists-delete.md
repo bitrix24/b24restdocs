@@ -20,10 +20,14 @@ The method `lists.delete` removes a universal list.
 || **Name**
 `type` | **Description** ||
 || **IBLOCK_TYPE_ID***
-[`string`](../../data-types.md) | Identifier of the information block type. Possible values: 
-- `lists` — list information block type 
-- `bitrix_processes` — processes information block type 
-- `lists_socnet` — group lists information block type
+[`string`](../../data-types.md) | Information block type ID.
+
+Standard types:
+- `lists` — universal lists
+- `bitrix_processes` — processes
+- `lists_socnet` — group lists
+
+In the on-premise version, you can also specify the ID of any existing custom information block type. `IBLOCK_ID` or `IBLOCK_CODE` must point to an information block of this type. Access to the operation is determined by the user's standard permissions for the information block, section, or element
 
 The identifier can be obtained using the method [lists.get.iblock.type.id](./lists-get-iblock-type-id.md) ||
 || **IBLOCK_ID***

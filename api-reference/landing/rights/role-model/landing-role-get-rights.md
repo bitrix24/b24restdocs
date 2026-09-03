@@ -29,7 +29,7 @@ Possible values:
 `KNOWLEDGE` - roles for knowledge bases
 `MAINPAGE` - roles for the main page or vibe
 
-If the parameter is not provided, the method works with roles for sites and online stores. For a role from another section, the method returns the error `ROLE_SCOPE_MISMATCH` ||
+If the parameter is not provided, the method works with roles for sites and online stores. For a role from another section or a non-existent role, the method returns the error `ROLE_SCOPE_MISMATCH` ||
 || **id***
 [`integer`](../../../data-types.md) | Role identifier. You can obtain the identifier using the [landing.role.getList](./landing-role-get-list.md) method ||
 |#
