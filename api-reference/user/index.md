@@ -66,6 +66,8 @@ Use the methods [sale.order.*](../sale/order/index.md), [sale.payment.*](../sale
 
 **Chats.** Use user `IDs` in the methods [im.chat.*](../chats/index.md), [im.chat.user.*](../chats/chat-users/index.md), [im.user.*](../chats/users/index.md) to assign a chat owner, edit the list of participants, or retrieve information about chat participants.
 
+**Mail.** The [mail.*](../mail/index.md) methods work with emails and mailboxes available to the current user. Employee recipients can be found using the [mail.recipient.listemployees](../mail/recipient/mail-recipient-listemployees.md) method. Practical scenarios are collected in the [Mail: Common Use Cases](../../tutorials/mail/index.md) section.
+
 **Open Channels.** Use user `IDs`:
 
 - to configure the queue of responsible employees in the methods [imopenlines.config.*](../imopenlines/openlines/index.md),

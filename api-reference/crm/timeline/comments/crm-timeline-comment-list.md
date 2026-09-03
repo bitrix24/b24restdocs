@@ -63,7 +63,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"ENTITY_ID":10,"ENTITY_TYPE":"deal"},"select":["ID","CREATED","ENTITY_ID","ENTITY_TYPE","AUTHOR_ID","COMMENT","FILES"]}' \
+    -d '{"filter":{"ENTITY_ID":10,"ENTITY_TYPE":"deal"},"select":["ID","CREATED","ENTITY_ID","ENTITY_TYPE","AUTHOR_ID","COMMENT","FILES"],"start":50}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.timeline.comment.list
     ```
 
@@ -73,7 +73,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"ENTITY_ID":10,"ENTITY_TYPE":"deal"},"select":["ID","CREATED","ENTITY_ID","ENTITY_TYPE","AUTHOR_ID","COMMENT","FILES"],"auth":"**put_access_token_here**"}' \
+    -d '{"filter":{"ENTITY_ID":10,"ENTITY_TYPE":"deal"},"select":["ID","CREATED","ENTITY_ID","ENTITY_TYPE","AUTHOR_ID","COMMENT","FILES"],"start":50,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.timeline.comment.list
     ```
 
@@ -134,7 +134,7 @@ The formula for calculating the `start` parameter value:
             'COMMENT',
             'FILES',
           ],
-          start: 0,
+          start: 50,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -184,7 +184,7 @@ The formula for calculating the `start` parameter value:
                 'COMMENT',
                 'FILES',
               ],
-              start: 0,
+              start: 50,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -344,6 +344,7 @@ The formula for calculating the `start` parameter value:
                         'COMMENT',
                         'FILES',
                     ],
+                    'start' => 50,
                 ]
             );
     
@@ -383,6 +384,7 @@ The formula for calculating the `start` parameter value:
                 "COMMENT", 
                 "FILES",
             ],
+            start: 50,
         },
         result => {
             if (result.error())
@@ -413,7 +415,8 @@ The formula for calculating the `start` parameter value:
                 'AUTHOR_ID',
                 'COMMENT',
                 'FILES',
-            ]
+            ],
+            'start' => 50,
         ]
     );
 
@@ -432,6 +435,7 @@ The formula for calculating the `start` parameter value:
     		"ENTITY_TYPE": "deal",
     	},
     	"select": []string{"ID", "CREATED", "ENTITY_ID", "ENTITY_TYPE", "AUTHOR_ID", "COMMENT", "FILES"},
+	"start": 50,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("crm.timeline.comment.list: %w", err)

@@ -35,8 +35,8 @@ The method `crm.status.list` returns a list of directory items based on the filt
 - `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
-- 
- The list of fields for sorting can be found using the method [crm.status.fields](./crm-status-fields.md) ||
+
+The list of fields for sorting can be found using the method [crm.status.fields](./crm-status-fields.md) ||
 || **filter** 
 [`object`](../../data-types.md) | Object format:
 
@@ -51,6 +51,8 @@ The method `crm.status.list` returns a list of directory items based on the filt
 
 - `field_n` — the name of the field by which the selection of items will be filtered
 - `value_n` — the filter value
+
+For the `ENTITY_ID`, `STATUS_ID`, `SORT`, and `SEMANTICS` fields, pass a string. Arrays are not supported in these fields.
 
 The list of fields for filtering can be found using the method [crm.status.fields](./crm-status-fields.md) ||
 |#
@@ -110,11 +112,6 @@ The list of fields for filtering can be found using the method [crm.status.field
     }
 
     try {
-      // crm.status.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<CrmStatusListItem[]>({
         method: 'crm.status.list',
         params: {
@@ -124,7 +121,6 @@ The list of fields for filtering can be found using the method [crm.status.field
           filter: {
             ENTITY_ID: 'DEAL_STAGE',
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -153,11 +149,6 @@ The list of fields for filtering can be found using the method [crm.status.field
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.status.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'crm.status.list',
             params: {
@@ -167,7 +158,6 @@ The list of fields for filtering can be found using the method [crm.status.field
               filter: {
                 ENTITY_ID: 'DEAL_STAGE',
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -368,12 +358,20 @@ The list of fields for filtering can be found using the method [crm.status.field
     }
 
     var items []struct {
-    	ID       b24.ID `json:"ID"`
-    	EntityID string `json:"ENTITY_ID"`
-    	StatusID string `json:"STATUS_ID"`
-    	Name     string `json:"NAME"`
-    	NameInit string `json:"NAME_INIT"`
-    	Sort     string `json:"SORT"`
+        ID         string  `json:"ID"`
+        EntityID   string  `json:"ENTITY_ID"`
+        StatusID   string  `json:"STATUS_ID"`
+        Name       string  `json:"NAME"`
+        NameInit   string  `json:"NAME_INIT"`
+        Sort       string  `json:"SORT"`
+        System     string  `json:"SYSTEM"`
+        CategoryID *string `json:"CATEGORY_ID"`
+        Color      string  `json:"COLOR"`
+        Semantics  *string `json:"SEMANTICS"`
+        Extra      struct {
+            Semantics string `json:"SEMANTICS"`
+            Color     string `json:"COLOR"`
+        } `json:"EXTRA"`
     }
     if err := json.Unmarshal(res.Result, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -547,11 +545,58 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array of objects with information about directory items ||
+[`array`](../../data-types.md) | An array of objects with information about directory items [(detailed description)](#result) ||
 || **total**
 [`integer`](../../data-types.md) | The total number of found items ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### `result` Object Fields {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Directory item ID ||
+|| **ENTITY_ID**
+[`string`](../../data-types.md) | ID of the object that the directory is linked to ||
+|| **STATUS_ID**
+[`string`](../../data-types.md) | Status value code ||
+|| **NAME**
+[`string`](../../data-types.md) | Name ||
+|| **NAME_INIT**
+[`string`](../../data-types.md) | Initial name ||
+|| **SORT**
+[`string`](../../data-types.md) | Sorting ||
+|| **SYSTEM**
+[`string`](../../data-types.md) | System value flag:
+
+- `Y` — system value
+- `N` — custom value ||
+|| **CATEGORY_ID**
+[`string`](../../data-types.md) | ID of the pipeline that the status is linked to. Returns `null` for statuses without a pipeline ||
+|| **COLOR**
+[`string`](../../data-types.md) | Status color for Kanban in HEX format ||
+|| **SEMANTICS**
+[`string`](../../data-types.md) | Stage group:
+
+- `S` — successful stage
+- `F` — failed stage
+- `null` — stage in progress ||
+|| **EXTRA**
+[`object`](../../data-types.md) | Additional status fields [(detailed description)](#extra) ||
+|#
+
+#### EXTRA Object {#extra}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **SEMANTICS**
+[`string`](../../data-types.md) | Stage semantics for the interface. Possible values: `process`, `success`, `failure`, `apology` ||
+|| **COLOR**
+[`string`](../../data-types.md) | Stage color for the interface in HEX format ||
 |#
 
 ## Error Handling
@@ -560,8 +605,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "Invalid parameters.",
-    "error_description": "Incorrect parameters passed."
+    "error": "",
+    "error_description": "Filter by ENTITY_ID must be a string"
 }
 ```
 
@@ -570,9 +615,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400`     | `Access denied.` | No permission to perform the operation ||
-|| `400`     | `Invalid parameters.` | Invalid parameters were provided ||
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `400` | Empty value | `Access denied.` | No permission to perform the operation ||
+|| `400` | Empty value | `Filter by ENTITY_ID must be a string` | An array was passed in the `ENTITY_ID` filter ||
+|| `400` | Empty value | `Filter by STATUS_ID must be a string` | An array was passed in the `STATUS_ID` filter ||
+|| `400` | Empty value | `Filter by SORT must be a string` | An array was passed in the `SORT` filter ||
+|| `400` | Empty value | `Filter by SEMANTICS must be a string` | An array was passed in the `SEMANTICS` filter ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
