@@ -2,6 +2,10 @@
 
 ## 2026
 
+### September 4, 2026
+
+- Updated the documentation: [Available Scopes in Bitrix24](./api-reference/scopes/permissions.md), [Attachments in Messages](./api-reference/chats/messages/attachments.md), [Integration of UI Kit with REST API and Business Logic](./api-reference/widgets/ui-kit/app-logic.md), [Working in the Context of the Current User](./sdk/crest-php-sdk/using-in-users-context.md), [Installing Smart Scripts](./settings/app-installation/smart-scripts-installation.md), [Installation Callback](./settings/app-installation/mass-market-apps/installation-callback.md)
+
 ### September 3, 2026
 
 - Added the [ONAPPUSERREADY](./api-reference/common/events/on-app-user-ready.md) event for receiving long-lived authorization for an application system user after installation

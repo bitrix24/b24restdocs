@@ -15,7 +15,7 @@ items:
     href: installation-finish.md     
   - name: Industry CRM Installation
     href: vertical-crm-installation.md
-  - name: Installing Smart Scenarios
+  - name: Installing Smart Scripts
     href: smart-scripts-installation.md
   - name: Installing Site Templates
     href: site-templates-installation.md
