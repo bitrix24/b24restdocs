@@ -14,7 +14,7 @@ The `bizproc.robot.delete` method removes a robot registered by the application.
 
 It only works in the context of the [application](../../../settings/app-installation/index.md).
 
-When the application is deleted or updated, the associated robots are removed from the list of robots. If the robot is in use, it is blocked and can only be removed from the workflow. Upon reinstalling the application, the robot becomes available again.
+When an application is deleted or updated, Bitrix24 removes only the robots registered by this application from the list of available robots. Robots of other applications and standard robots are not affected. If a robot is already used in an automation rule, it remains in the rule as unavailable: it can be removed but cannot be configured or executed as an available robot. Here, update means updating the application, not calling the [bizproc.robot.update](./bizproc-robot-update.md) method. Upon reinstalling the application, the robot with the same code becomes available again.
 
 ## Method Parameters
 
