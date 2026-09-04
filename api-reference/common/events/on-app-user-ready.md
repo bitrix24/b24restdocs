@@ -117,7 +117,10 @@ The structure is described [below](#auth) ||
 Possible values:
 
 - `L` — local application
-- `S`, `T`, `D`, `P` — mass-market application variants
+- `F` — free mass-market application
+- `D` — demo version of a mass-market application
+- `T` — trial version of a mass-market application, time-limited
+- `P` — paid mass-market application
 ||
 || **LANGUAGE_ID***
 [`string`](../../data-types.md) | Bitrix24 language at the time of application installation ||
@@ -160,7 +163,10 @@ The `APP_ID` field is not passed in `data`. The application identifies itself by
 Possible values:
 
 - `L` — local application
-- `S`, `T`, `D`, `P` — mass-market application variants
+- `F` — free mass-market application
+- `D` — demo version of a mass-market application
+- `T` — trial version of a mass-market application, time-limited
+- `P` — paid mass-market application
 ||
 || **application_token***
 [`string`](../../data-types.md) | Token for secure event handling ||
