@@ -10,7 +10,9 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-This method retrieves a list of business process templates.
+This method retrieves a list of business process templates created in the workflow designer.
+
+Templates of automation rules configured at the stages of CRM items and smart processes, or in tasks, are not returned by this method. Such templates are not available in the REST API.
 
 ## Method Parameters
 

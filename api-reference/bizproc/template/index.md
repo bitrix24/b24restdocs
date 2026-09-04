@@ -8,6 +8,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 A workflow template defines automation logic through actions and operations in the workflow designer. The methods let you add a template from a `.bpt` file, update its parameters, retrieve the list of templates, and delete a template created by the application.
 
+The methods work only with templates from the workflow designer. Templates of automation rules configured at the stages of CRM items and smart processes, or in tasks, are not available in the REST API: you cannot retrieve, update, or delete them.
+
 {% note info "" %}
 
 Methods for adding, updating, and deleting templates work only within the context of an [application](../../../settings/app-installation/index.md). Only the application that created a template can update or delete it.
