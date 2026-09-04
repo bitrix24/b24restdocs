@@ -6,6 +6,40 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
+A scope is a code for a group of methods. It defines which Bitrix24 tools an application or a webhook can access through the REST API. To find out how to select scopes for an application scenario and how a scope differs from user permissions, see [Access Permissions for Methods and Scopes](./index.md).
+
+> Quick navigation: [Scope Codes](#codes)
+
+## Where to Specify a Scope
+
+For an application, scopes are selected when it is added, and the place depends on the solution type.
+
+- A mass-market solution is added in the Developer's Area. Scopes are specified in the technical specifications as the system sections the application interacts with. The procedure is described in the article [How to Add a Solution in the Developer's Area](../../market/preparing-to-publish/how-to-add-app.md).
+- A local application is added in Bitrix24, in *Applications > Developer resources*. The procedure is described in the article [Local Applications](../../local-integrations/local-apps.md).
+
+For a webhook, scopes are selected when it is created, at the *Specify access permissions* step. Requests run within the selected scopes and with the permissions of the employee who created the webhook. For details, see [Incoming and Outgoing Webhooks](../../local-integrations/local-webhooks.md).
+
+## What Happens if a Method Is Called Outside the Granted Scope
+
+If an application or a webhook calls a method whose scope has not been granted, Bitrix24 returns the `insufficient_scope` error and does not execute the request. Response to a call from an application:
+
+```json
+{
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the access token"
+}
+```
+
+For a webhook, only `error_description` differs — it contains `provided by the webhook token`.
+
+To make the call succeed, add the required scope to the application or webhook settings. Other system errors are collected in the article [Error Codes](../../error-codes.md).
+
+## When a Scope Alone Is Not Enough
+
+Some methods work only in the application context. When a webhook calls such a method, Bitrix24 returns the `WRONG_AUTH_TYPE` error with the `Application context required` description. The [placement.bind](../widgets/placement-bind.md) method behaves this way, for example.
+
+## Scope Codes {#codes}
+
 #|
 || **Scope Code** | **Scope Name**| **Bitrix24 Tool**||
 || **ai_admin** | [Channel for registering a user service to process requests](../ai/index.md)| Copilot ||
@@ -44,13 +78,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 || **sale** | [Online store](../sale/index.md) | Online store ||
 || **salescenter** | [CRM. Payment](../crm/universal/payment/index.md) | Chat sales ||
 || **sign.b2e** | [e-Signature](../sign/index.md) | e-Signature ||
-|| **sonet_group, socialnetwork** | [Social Network Working Groups](../sonet-group/sonet-group-create.md) | Social Network Working Groups ||
-|| **task** | [Tasks](../tasks/index.md) | Tasks ||
+|| **[sonet_group](*key_sonet)** | [Social Network Working Groups](../sonet-group/sonet-group-create.md) | Social Network Working Groups ||
+|| **[task](*key_task)** | [Tasks](../tasks/index.md) | Tasks ||
 || **telephony** | [Telephony](../telephony/index.md) | Telephony ||
 || **timeman** | [Time Tracking](../timeman/index.md) | Time Tracking ||
-|| **user** | [Users](../user/index.md) 
-Versions: 
-- **user_brief** — Users (minimal) 
+|| **user** | [Users](../user/index.md)
+Versions:
+- **user_brief** — Users (minimal)
 - **user_basic** — Users (basic) | Users ||
 || **user.userfield** | [User custom fields](../user/userfields/index.md) | Custom fields ||
 || **userfieldconfig** | [Custom field settings](../crm/universal/userfieldconfig/index.md) | Custom field settings ||
@@ -59,3 +93,5 @@ Versions:
 |#
 
 [*key_task]: Additionally, three deprecated scopes are available — tasks, tasks_extended, tasksmobile. They should not be used.
+
+[*key_sonet]: The socialnetwork scope does not grant access to any method. To work with working groups, specify sonet_group.
