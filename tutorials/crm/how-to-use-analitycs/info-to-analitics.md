@@ -23,6 +23,21 @@ To pass data to Sales Intelligence, choose a method:
 || Link one trace to several or to already created objects | `TRACE` and an array of `ENTITIES` objects | [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-trace-add.md) ||
 |#
 
+The scenario consists of four steps.
+
+1. Choose whether UTM fields are sufficient or a full trace is required
+2. Retrieve the `TRACE` string using `b24Tracker.guest.getTrace()` if you need to pass the full customer journey
+3. Pass `TRACE` when creating an object if the creation method supports this field, or link the trace to existing objects using [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-trace-add.md)
+4. Retain the trace identifier from `result` if you need to delete it later using [crm.tracking.trace.delete](../../../api-reference/crm/tracking/crm-tracking-trace-delete.md)
+
+## Before You Start
+
+- an incoming webhook or a local application with scope [`crm`](../../../api-reference/scopes/permissions.md)
+- user permissions to create or edit the CRM object that should receive Sales Intelligence data
+- the Bitrix24 Sales Intelligence script is installed on the website pages where the customer journey is collected
+- REST calls are executed on the server side if you use a webhook: the webhook path must not be exposed in the browser or a public repository
+- identifiers of already created CRM objects if the trace needs to be linked using [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-trace-add.md)
+
 ## 1. Pass the UTM source
 
 If the advertising source is sufficient for the report, pass `UTM_SOURCE` when creating a CRM object. The value must match the configured source in Sales Intelligence.
@@ -182,6 +197,8 @@ The method returns the identifier of the created trace. You can retain this iden
 }
 ```
 
+Retain the `result` value. In this example, it is `341`: the identifier that must be passed in the `id` parameter of [crm.tracking.trace.delete](../../../api-reference/crm/tracking/crm-tracking-trace-delete.md) if you need to delete the trace.
+
 ## Deleting a trace
 
 Delete a trace if it was erroneously linked to an object or if you need to clear test data.
@@ -223,3 +240,50 @@ To delete a trace, use the [crm.tracking.trace.delete](../../../api-reference/cr
     $isDeleted = $response->getResponseData()->getResult()[0];
     ```
 {% endlist %}
+
+If deletion is successful, the method returns `null` in the `result` field.
+
+```json
+{
+    "result": null
+}
+```
+
+## Check the Result
+
+Verification depends on the selected data transfer method.
+
+#|
+|| **Method** | **How to Check** ||
+|| UTM fields when creating an object | Open the created CRM object and check that the UTM fields are filled with values from the form or integration ||
+|| `TRACE` when creating an object | Open the created CRM object and check the *Sales Intelligence* field ||
+|| [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-trace-add.md) | Make sure the method returned a numeric `result`. Then open the objects from `ENTITIES` and check the *Sales Intelligence* field ||
+|| [crm.tracking.trace.delete](../../../api-reference/crm/tracking/crm-tracking-trace-delete.md) | Make sure the method returned `result: null` and the *Sales Intelligence* field value was cleared in the linked object ||
+|#
+
+If the object was created but the trace was not linked, the scenario completed partially. Check the object before running the scenario again to avoid creating a duplicate.
+
+## Error Handling
+
+The [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-trace-add.md) method returns code `ERROR_CORE` in the `error` field if validation of the `TRACE` parameter, `ENTITIES` parameter, or object permissions fails. The specific reason is passed in the `error_description` field.
+
+| `error_description` | Reason | What to Check | Which Step to Repeat |
+|---|---|---|---|
+| ``Parameter `TRACE` required.`` | The trace was not passed | Loading of the Sales Intelligence script, the `b24Tracker.guest.getTrace()` call, and passing the value to the server | From step 2 |
+| ``Can not parse JSON in parameter `TRACE`.`` | `TRACE` is not a valid JSON string | Make sure `TRACE` contains the result of `b24Tracker.guest.getTrace()` without format changes | From step 2 |
+| ``Wrong TYPE in parameter `ENTITIES`. Allowed types: COMPANY,CONTACT,DEAL,LEAD,QUOTE`` | An unsupported object type was passed | `TYPE` values: `COMPANY`, `CONTACT`, `DEAL`, `LEAD`, `QUOTE` are available | From step 3 |
+| ``Wrong ID in parameter `ENTITIES`.`` | An empty, non-numeric, or non-positive object identifier was passed | Object identifiers from responses of CRM creation or retrieval methods | From step 3 |
+| ``You have no access to entity `CONTACT` with ID `123`.`` | No permission to edit the object from `ENTITIES` | Permissions of the user on whose behalf the REST call is executed | After configuring permissions, repeat step 3 |
+
+In the last message, `CONTACT` and `123` are examples. The method inserts the actual object type and identifier.
+
+The [crm.tracking.trace.delete](../../../api-reference/crm/tracking/crm-tracking-trace-delete.md) method returns the `ERROR_CORE` error with description ``Parameter `id` required.`` if the trace identifier is missing or an empty value is passed. Check that `id` is taken from the `result` field of [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-trace-add.md), and repeat the deletion.
+
+System REST errors for authorization, permissions, and limits may have other codes. If a REST call returns an error, do not repeat the whole scenario immediately: first check which objects have already been created and whether a trace was created.
+
+## Continue Learning
+
+- [{#T}](../../../api-reference/crm/tracking/crm-tracking-trace-add.md)
+- [{#T}](../../../api-reference/crm/tracking/crm-tracking-trace-delete.md)
+- [{#T}](./use-analitics-for-add-lead.md)
+- [{#T}](./use-analitics-for-add-contact.md)

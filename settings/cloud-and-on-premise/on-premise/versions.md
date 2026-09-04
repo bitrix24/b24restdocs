@@ -6,18 +6,37 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-When developing applications, it's important to consider that the REST methods and events available for use in cloud Bitrix24 may not be accessible in specific on-premise installations.
+When developing applications, consider that REST methods and events available in Bitrix24 Cloud may be unavailable in specific self-hosted installations.
 
-Firstly, the release schedule for updates in Bitrix24 for the on-premise version differs from that of the cloud version, as these updates require a separate testing cycle, among other considerations.
+This happens for two reasons:
 
-Secondly, obtaining updates in on-premise installations occurs "at the initiative" of the specific on-premise installation. In other words, this process is initiated by the administrator of that particular on-premise Bitrix24, meaning that new features already available in cloud Bitrix24 may not "reach" the specific on-premise installation by the time your application is installed on it.
+- updates for the self-hosted version are released later than cloud updates because they require separate compatibility testing
+- updates are installed by the administrator of a specific self-hosted Bitrix24, so an installation may not be running the latest module versions
 
-If users of your application encounter issues during operation on their on-premise version of Bitrix24 due to the absence of existing REST API functionality, and you, as the developer, do not have administrative access to that on-premise installation, you can refer to our documentation to provide users with information on which updates they need to download.
+Before installing an application, check the availability of the required REST API tools in a specific Bitrix24 account:
 
-If you are the administrator of the on-premise installation, you can independently update Bitrix24 to the latest available version.
+1. Retrieve the list of available methods using the [methods](../../../api-reference/common/system/methods.md) method. To check one method, use [method.get](../../../api-reference/common/system/method-get.md): it shows whether the method exists in this Bitrix24 and whether it is available with the current application permissions
+2. Retrieve the list of available events using the [events](../../../api-reference/events/events.md) method. The method works in the context of application authorization and returns events that can be used in Bitrix24
+3. Compare the result with the methods and events required by your application. If the required method or event is missing, check the version of the module the REST API tool belongs to
 
-You can find the list of versions for all modules in the on-premise version in the administrative section: Settings > Product Settings > Modules.
+The list of versions for all modules of a self-hosted Bitrix24 is available in the administrative section: *Settings > Product Settings > Modules*.
+
+## What to Do If a Method or Event Is Unavailable
+
+If you do not have administrative access to the self-hosted Bitrix24, provide the administrator with:
+
+- the name of the unavailable REST method or event
+- the name of the module the method or event belongs to
+- the minimum module version, if it is specified in the documentation for the method, event, or section
+
+The administrator should update the required module or the entire self-hosted installation to the latest version. Updates are installed through SiteUpdate, the built-in update system in the Bitrix24 administrative section: *Marketplace > Platform Update*. In the *Install updates* section, the administrator can install recommended updates, and on the *Updates* tab, select specific updates. For details about updating a self-hosted Bitrix24, see [Update Bitrix24 On-Premise](https://helpdesk.bitrix24.com/open/24875124/).
+
+After the update, check method availability again using [methods](../../../api-reference/common/system/methods.md) or [method.get](../../../api-reference/common/system/method-get.md), and event availability using [events](../../../api-reference/events/events.md).
+
+If the method or event is still unavailable after the update, check whether the corresponding module is installed and whether the application has the required [access permissions](../../../api-reference/scopes/permissions.md).
 
 ## Continue Learning
 
-- [Bitrix24 On-Premise Documentation](https://helpdesk.bitrix24.com/open/5756737/)
+- [{#T}](index.md)
+- [{#T}](../../../api-reference/common/system/methods.md)
+- [{#T}](../../../api-reference/events/events.md)
