@@ -24,11 +24,11 @@ Dialogs do not return data directly. The selection result arrives in the `callba
 || **Method** | **What the `callback` Receives** ||
 || [BX24.selectUser](./bx24-select-user.md) | An object `{id, name}` of the selected user ||
 || [BX24.selectUsers](./bx24-select-users.md) | An array of `{id, name}` objects ||
-|| [BX24.selectAccess](./bx24-select-access.md) | An array of `{id, name}` objects, where `id` is an access code such as `U1`, `SG4`, `AU` ||
+|| [BX24.selectAccess](./bx24-select-access.md) | An array of `{provider, id, name}` objects, where `id` is an access code such as `U1`, `SG4_K`, `AU` ||
 || [BX24.selectCRM](./bx24-select-crm.md) | An object with the keys `lead`, `contact`, `company`, `deal`, `quote`. Each key holds an array of the selected entities ||
 |#
 
-The handler is triggered only when the selection is confirmed. If the user closes the dialog without selecting anything, the handler is not called. Dialogs return no error codes.
+The handler is triggered only when the selection is confirmed. If the user closes the dialog without selecting anything, the handler is not called. There is one exception — [BX24.selectAccess](./bx24-select-access.md): when an empty selection is confirmed, the handler receives an empty array. Dialogs return no error codes.
 
 ## Key Considerations
 
@@ -41,7 +41,7 @@ The handler is triggered only when the selection is confirmed. If the user close
 
 **User.** The methods [BX24.selectUser](./bx24-select-user.md) and [BX24.selectUsers](./bx24-select-users.md) return the numeric `id` of an employee. This identifier is passed to Bitrix24 methods that expect a `USER_ID`: for example, to [user.get](../../../api-reference/user/user-get.md) to retrieve employee details, or to the person responsible field when creating objects.
 
-**Access Permissions.** The method [BX24.selectAccess](./bx24-select-access.md) returns access codes — `U1` for a user, `SG4` for a workgroup, `AU` for all authorized users. Such codes are accepted by the visibility and permission parameters of other Bitrix24 objects, where the list of recipients is defined by a set of codes rather than by a single user.
+**Access Permissions.** The method [BX24.selectAccess](./bx24-select-access.md) returns access codes — `U1` for a user, `SG4_K` for the members of a workgroup, `AU` for all authorized users. Such codes are accepted by the visibility and permission parameters of other Bitrix24 objects, where the list of recipients is defined by a set of codes rather than by a single user.
 
 **CRM.** The method [BX24.selectCRM](./bx24-select-crm.md) returns the selected leads, contacts, companies, deals, and quotes. The numeric part of `id` is passed to the methods of the corresponding CRM entity, for example to [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md), and the entity type is taken from the response key.
 

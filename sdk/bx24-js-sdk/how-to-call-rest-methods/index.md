@@ -23,7 +23,7 @@ The library is not available for external applications and webhooks.
 
 - The required scope depends on the method being called. See scope values in the [Permissions](../../../api-reference/scopes/permissions.md) guide
 - Data access also depends on the permissions of the user on whose behalf the request is performed
-- If you call [`BX24.callMethod`](./bx24-call-method.md) or [`BX24.callBatch`](./bx24-call-batch.md) before `BX24.init`, the library defers the request until initialization completes
+- If you call [`BX24.callMethod`](./bx24-call-method.md), [`BX24.callBatch`](./bx24-call-batch.md), [`BX24.callBind`](./bx24-call-bind.md), or [`BX24.callUnbind`](./bx24-call-unbind.md) before `BX24.init`, the library defers the request until initialization completes
 - In the on-premise version of Bitrix24, use [`BX.rest.callMethod()`](./bx24-call-method.md) instead of [`BX24.callMethod()`](./bx24-call-method.md)
 - You can register and remove online event handlers using [`BX24.callBind`](./bx24-call-bind.md) and [`BX24.callUnbind`](./bx24-call-unbind.md)
 
