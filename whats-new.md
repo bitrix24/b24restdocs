@@ -2,6 +2,11 @@
 
 ## 2026
 
+### September 8, 2026
+
+- Added the tutorial [How to Delegate Incomplete Tasks of a Terminated Employee](./tutorials/tasks/how-to-delegate-fired-employee-tasks.md)
+- Added the tutorial [How to Transfer or Complete Activities of a Terminated Employee](./tutorials/crm/how-to-edit-crm-objects/how-to-transfer-fired-employee-activities.md)
+
 ### September 4, 2026
 
 - Updated the documentation: [Available Scopes in Bitrix24](./api-reference/scopes/permissions.md), [Attachments in Messages](./api-reference/chats/messages/attachments.md), [Integration of UI Kit with REST API and Business Logic](./api-reference/widgets/ui-kit/app-logic.md), [Working in the Context of the Current User](./sdk/crest-php-sdk/using-in-users-context.md), [Installing Smart Scripts](./settings/app-installation/smart-scripts-installation.md), [Installation Callback](./settings/app-installation/mass-market-apps/installation-callback.md)
