@@ -78,7 +78,7 @@ A static application does not receive Bitrix24 events — it has no server-side 
 ## Access Permissions and Security {#rights}
 
 - **Permissions.** The integration works within the permissions of the employee who created it and the list of [scopes](../api-reference/scopes/permissions.md) selected at creation. A method returns an error if the required `scope` is missing or the employee has no permissions for the object.
-- **REST API access.** A local integration works only if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md) — through a Market subscription, Trial mode, or an NFR key.
+- **REST API access.** A local integration works only if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md).
 - **Protocol.** Webhook requests are performed over HTTPS only. The handler of a server-side application must also be available over HTTPS before you add the application to Bitrix24.
 - **Secret code.** A leaked URL grants access to Bitrix24 within the webhook's permissions until the webhook is deleted or expires. Do not pass the webhook URL to external systems and do not publish it in client-side code.
 - **Deletion.** An integration can be deleted by a Bitrix24 administrator or by the employee who created it. Secret codes of other users' webhooks are not available even to an administrator.

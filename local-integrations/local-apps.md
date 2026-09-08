@@ -30,7 +30,7 @@ This page helps you choose the type of application and create it on your own Bit
 
 ## How to Get Started
 
-1. Check the conditions. A local application works only if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md) — under a Marketplace subscription, in trial mode, or with an NFR key. The application can be created by a Bitrix24 administrator or by an employee who has been granted the permission to create applications.
+1. Check the conditions. A local application works only if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md). The application can be created by a Bitrix24 administrator or by an employee who has been granted the permission to create applications.
 
 2. Decide whether the application needs an interface inside Bitrix24 and a server of its own. This determines the type of application — select it in the [How to Choose the Application Type](#choose-app) table.
 
