@@ -45,5 +45,6 @@ Scenarios are built around a task and its related objects: Drive files, comments
 || Add a comment with a file to a task through the task chat | [How to create a comment in a task and attach a file to it](./how-to-create-comment-with-file.md) ||
 || Create a task linked to an SPA item | [How to link a task to an SPA](./how-to-connect-task-to-spa.md) ||
 || Calculate time spent on tasks separately for each employee | [How to calculate time spent on tasks for each employee](./how-to-calculate-employee-time-by-tasks.md) ||
+|| Delegate incomplete tasks of a terminated employee to another responsible person | [How to Delegate Incomplete Tasks of a Terminated Employee](./how-to-delegate-fired-employee-tasks.md) ||
 || View the full task methods reference | [Tasks: methods overview](../../api-reference/tasks/index.md) ||
 |#

@@ -5,6 +5,8 @@ items:
     href: index.md
   - name: How to Reschedule a Planned Activity
     href: how-to-change-date-in-activity.md
+  - name: How to Transfer or Complete Activities of a Terminated Employee
+    href: how-to-transfer-fired-employee-activities.md
   - name: How to Create Your Own Lead Edit Card
     href: how-to-generate-edit-form-for-lead.md
   - name: How to Create Your Own Contact Edit Card
