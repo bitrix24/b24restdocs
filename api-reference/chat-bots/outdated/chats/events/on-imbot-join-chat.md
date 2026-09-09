@@ -234,13 +234,13 @@ The structure is described [below](#user) ||
 #|
 || **Parameter**
 `type` | **Description** ||
-|| **/{BOT_ID/}**
+|| **\{BOT_ID\}**
 [`object`](../../../../data-types.md) | Data object of a specific bot. The key corresponds to the bot identifier, for example `571`.
 
 The structure is described [below](#bot-item) ||
 |#
 
-#### Element /{BOT_ID/} {#bot-item}
+#### Element \{BOT_ID\} {#bot-item}
 
 #|
 || **Parameter**

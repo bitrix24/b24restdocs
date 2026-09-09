@@ -174,7 +174,7 @@ HTTP Code: **200**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Element /{BOT_ID/} {#bot-item}
+### Element \{BOT_ID\} {#bot-item}
 
 #|
 || **Name**

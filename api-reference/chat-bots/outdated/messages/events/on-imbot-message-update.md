@@ -272,7 +272,7 @@ The structure is described [below](#user) ||
 The structure is described [below](#bot-item) ||
 |#
 
-#### Element /{BOT_ID/} {#bot-item}
+#### Element \{BOT_ID\} {#bot-item}
 
 #|
 || **Parameter**

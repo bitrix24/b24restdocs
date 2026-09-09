@@ -229,7 +229,7 @@ while (true) {
 
 Recommended interval: **5–30 seconds** when there are no new events. If `hasMore = true` — the next request should have a minimum pause of two seconds.
 
-### Webhook Handler (webhook mode) {#webhook}
+### Webhook Handler (webhook mode) {#webhook-handler}
 
 Example handler for receiving events in `eventMode: "webhook"`. The handler URL is passed in the `fields.webhookUrl` parameter when registering the bot.
 

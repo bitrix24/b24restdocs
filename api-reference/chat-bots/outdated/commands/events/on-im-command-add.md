@@ -302,7 +302,7 @@ The structure is described [below](#user) ||
 The structure is described [below](#command-item) ||
 |#
 
-#### Element /{COMMAND_ID/} {#command-item}
+#### Element \{COMMAND_ID\} {#command-item}
 
 #|
 || **Parameter**

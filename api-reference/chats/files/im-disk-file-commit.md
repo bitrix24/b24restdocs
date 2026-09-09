@@ -461,7 +461,7 @@ HTTP Status: **200**
 [`object`](../../data-types.md) | File object, where `id` — identifier of the upload file [(detailed description)](#files-upload-item) ||
 |#
 
-#### Object FILES.upload{id} {#files-upload-item}
+#### Object FILES.upload\{id\} {#files-upload-item}
 
 #|
 || **Name**
@@ -571,7 +571,7 @@ HTTP Status: **200**
 [`object`](../../data-types.md) | File model object, where `id` — identifier of the upload file [(detailed description)](#file-models-upload-item) ||
 |#
 
-#### Object FILE_MODELS.upload{id} {#file-models-upload-item}
+#### Object FILE_MODELS.upload\{id\} {#file-models-upload-item}
 
 #|
 || **Name**
