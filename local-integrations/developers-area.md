@@ -1,4 +1,4 @@
-# Developer Resources in Bitrix24
+# Developer resources in Bitrix24
 
 {% note tip "" %}
 
@@ -6,81 +6,97 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-In the **Developer Resources** section (*Applications > Developer Resources*), you'll find convenient tools to simplify the integration and enhancement of your Bitrix24:
+The *Applications > Developer resources* page contains tools for creating local integrations: [webhooks](./local-webhooks.md), [local applications](./local-apps.md), сommon use cases, and REST load monitoring.
+
+For quick REST API calls in one Bitrix24 account, choose an incoming webhook. To send Bitrix24 events to an external handler, create an outgoing webhook. If the integration needs its own interface or application event handling, create a local application.
+
+Webhooks and applications can be created if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md). Permanent use requires a BitrixGPT + Market subscription; trial mode can be enabled for testing.
+
+By default, only a Bitrix24 administrator can create applications for all users, while all users can create incoming webhooks and their own applications. An administrator can change these settings.
 
 ![Developer Resources Section](./_images/dev_menu-n-sm.png)
 
-The following tools are available:
+## Common use cases
 
-- Ready-made scenarios
-- Integrations
-- Statistics
+On the *Common use cases* tab, you can select an integration example or create a webhook or local application.
 
-Let's take a closer look at each of these tools.
+### Import and export data
 
-## Ready-made Scenarios
+Import customer data, employees or tasks from an external source, or export data from your Bitrix24.
 
-This tab features ready-made scenarios for integration and enhancement, complete with code examples and pre-set parameters based on webhooks and local applications.
+- Import counterparties
+- Export counterparties
+- Other—implement your own scenarios for adding widgets to Bitrix24
 
-In the settings of each scenario, there is a REST request generator (1) that allows you to select the necessary parameter values for further use in external systems:
+### Third-party system integration
 
-![Ready-made Scenario Settings](./_images/dev_generator-sm.png)
+Collect leads from a website form, synchronize customer contact information with a warehousing or accounting software.
 
-In the request generator, you can choose the REST API method, read the method description, download a ready-made code example (which already includes the necessary parameters for executing requests), and add your own parameters. You can also execute the request itself and get the result, checking the webhook's functionality.
+- Synchronize counterparties
+- Add leads
 
-The access permission settings (2) allow you to restrict request execution to specific Bitrix24 tools.
+### Automate sales
 
-After saving, the created applications and webhooks will be displayed in the **Integrations** tab.
+Automate lead and deal progress along the sales funnel and validate CRM data.
 
-### List of Ready-made Scenarios
+- Move a lead through the pipeline
+- Move a deal through the pipeline
 
-Ready-made scenarios are categorized as follows:
+### Automate task management
 
-- **Import/Export Data** (copy client data, employee lists, tasks from any external source, or transfer data accumulated in Bitrix24 to an external system):
-    - Import counterparties
-    - Export counterparties
-    - Other (implement your own scenarios for adding widgets to Bitrix24)
+Auto create tasks and assign them to the employees; submit reports to the management; publish reports to the Activity Stream.
 
-- **Integrate with External Systems** (automate lead collection from a website form, synchronize changes in client contact details with inventory or accounting systems):
-    - Synchronize counterparties
-    - Add leads
+- Send a notification
+- Publish a report in the feed
 
-- **Automate Sales** (automatically move leads and deals through the Sales Funnel and verify data accuracy in CRM):
-    - Move lead through the Sales Funnel
-    - Move deal through the Sales Funnel
+### Add a widget
 
-- **Automate Management** (automatically assign tasks to employees, inform management about emerging issues, and publish reports in the live feed):
-    - Assign a task
-    - Send a notification
-    - Publish a report in the live feed
-    - Monitor tasks
+Customize your Bitrix24 to show relevant information right in the client details form; add sales scripts to the phone call details form.
 
-- **Embed Widget** (customize the Bitrix24 interface: display your information directly in the client card, sales scripts in the call card):
-    - Display your data in the CRM card
-    - Add your action to the CRM card
-    - Add sales script to the call card
-    - Generate invoice based on task labor costs
+- Display your data in the CRM form
+- Add your action to the CRM form
+- Add a sales script to the call form
+- Generate an invoice based on task labor costs
 
-- **Add Chatbot** (create chatbots that will send notifications and reports to employees directly in the messenger):
-    - Inform employees in chat
-    - Forward messages from chat to the bot
+### Add a chat bot
 
-- **Other** (create an incoming webhook, outgoing webhook, or local application):
-    - Local application
-    - Outgoing webhook
-    - Incoming webhook
+Create chat bots to send notifications and reports directly to the employee messengers.
+
+- Notify employees in chat
+- Forward chat messages to the bot
+
+### Other
+
+Create inbound or outbound webhooks, or a local app.
+
+- Local application
+- Outbound webhook
+- Inbound webhook
+
+### How to Configure a Scenario
+
+Select a scenario and open its settings. The available fields depend on the integration type.
+
+For incoming webhook scenarios, a REST request builder is available. Use it to select a method, add parameters, execute the request, and download a code example.
+
+In the *Assign permissions* section, select the Bitrix24 tools the integration will work with. Permission codes and `scope` selection are described in [{#T}](../api-reference/scopes/index.md).
+
+After saving, the integration appears on the *Integrations* tab.
 
 ## Integrations
 
-All created integrations (webhooks and applications) in the Bitrix24 account are displayed in a single list on the page:
+All created integrations are displayed in one list: incoming and outgoing webhooks, local applications, and their associated event handlers, widgets, and chatbots.
 
 ![Integrations](./_images/dev_list-sm.png)
 
-This list shows the following information about integrations:
+The Bitrix24 administrator sees all created webhooks and applications. Regular users see only the integrations they created.
 
-- Creator
+The list displays the following integration information:
+
+- ID
+- User
 - Name
-- Access permissions
+- Permissions
 - Events
 - Widgets
 
@@ -88,30 +104,23 @@ You can customize the displayed fields by clicking the gear icon in the upper le
 
 From this list, you can also edit the integration settings or delete it.
 
-An integration can be deleted by the Bitrix24 administrator or by the employee who created it. The integration is deleted as a whole, together with all of its parts: the incoming webhook, event handlers, the local application and its widgets, and the chat bot.
+An integration can be deleted by the Bitrix24 administrator or the employee who created it. The associated webhook, event handlers, local application, widgets, and chatbot are deleted with it.
 
-> **Important!** The secret codes of **other people's** webhooks are not accessible even to the administrator. If an administrator edits someone else's webhook, the secret code will be reset, and the administrator will become the owner of that webhook.
+{% note warning "" %}
 
-### More About the Secret Code in the URL
+The secret codes of other users' webhooks are not available even to the administrator. If an administrator edits another user's webhook, the secret code is refreshed and the administrator becomes the webhook owner.
 
-![Secret Code](./_images/dev_url.png)
-
-The URL consists of:
-
-- **doc-test-b24.bitrix24.com** — your Bitrix24 address
-- **/rest** — indicating that the work is being done through REST with webhooks
-- **/1** — the identifier of the user who created the webhook
-- **/173glortu42lvpju** — the secret code
-- **/crm.contact.get** — the invoked REST API method. In this case, the method that returns a contact by identifier
-- **.json** — an optional parameter ("transport"). When creating new webhooks, it can be omitted (by default, `.json` will be used). In the ready-made solutions constructor, `.json` is explicitly included
-- **?ID=42** — parameters required for the specific method. In this case, the identifier. Parameters are specified after the question mark and separated by the `&` symbol
+{% endnote %}
 
 ## Statistics
 
-This section displays the total number of daily REST requests for your Bitrix24, along with detailed statistics for each webhook, external integration, or application:
+On the *Statistics* tab, the Bitrix24 administrator can view the number of REST requests for each webhook and application. Data can be filtered for a period of up to 14 days. For more information, see [Developer resources: Check REST load in Bitrix24](https://helpdesk.bitrix24.com/open/21001036/).
 
 ![Normal REST Usage Statistics](./_images/dev_statistic_ok-sm.jpg)
 
-## Continue Learning
+## Continue Exploring
 
-- [Evaluate the REST load in Bitrix24](https://helpdesk.bitrix24.com/open/21001036/)
+- [{#T}](./local-webhooks.md)
+- [{#T}](./local-apps.md)
+- [{#T}](./use-cases.md)
+- [{#T}](../api-reference/scopes/index.md)

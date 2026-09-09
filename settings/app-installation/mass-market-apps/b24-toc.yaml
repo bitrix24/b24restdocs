@@ -3,7 +3,7 @@ href: index.md
 items: 
   - name: Overview 
     href: index.md
-  - name: Installation Wizard 
+  - name: Mass-market Application Installation Wizard
     href: installation-master.md
   - name: REST-only Application Setup Wizard
     href: rest-only-installation-master.md

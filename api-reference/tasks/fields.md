@@ -6,7 +6,19 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The recording and modification of fields are carried out according to business logic and user permissions. This means it depends on the user's role, group access permissions, hierarchy, task status, and certain flags in the task, such as `allowChangeDeadline`.
+This page describes the fields returned by [tasks.task.get](./tasks-task-get.md) and [tasks.task.list](./tasks-task-list.md). To retrieve field metadata, use [tasks.task.getFields](./tasks-task-get-fields.md).
+
+Choose the source based on your task:
+
+- `tasks.task.getFields`—retrieve field types, allowed values, and required status
+- `tasks.task.get`—retrieve one task and calculated data available to the current user
+- `tasks.task.list`—retrieve multiple tasks and specify the required fields in the `select` parameter
+
+Metadata and response values serve different purposes. For example, metadata can define an identifier as `integer`, while the JSON response returns its value as a string. The tables below describe the values returned by task retrieval methods.
+
+Field modification availability depends on the user's role, group permissions, hierarchy, task status, and task settings such as `allowChangeDeadline`. Before updating a task, check the `action` object: its boolean fields indicate which actions are available to the current user.
+
+## Task Fields
 
 #|
 || **Name**
@@ -161,13 +173,16 @@ In the [create](./tasks-task-add.md) and [update](./tasks-task-update.md) method
 - `3` — in progress
 - `4` — awaiting control
 - `5` — completed
-- `6` — postponed ||
+- `6` — postponed
+- `7` — declined. This status is defined in the task model but may be absent from the `values` list returned by `tasks.task.getFields` ||
 || **statusChangedDate**
 [`string`](../data-types.md) | Date of status change in `ISO 8601` format ||
 || **durationPlan**
 [`string`](../data-types.md) | Planned duration ||
 || **durationType**
-[`string`](../data-types.md) | Unit of planned duration. Possible values: `secs`, `mins`, `hours`, `days`, `weeks`, `monts`, `years` ||
+[`string`](../data-types.md) | Unit of planned duration. Possible values: `secs`, `mins`, `hours`, `days`, `weeks`, `monts`, `years`.
+
+The value `monts` is fixed in the API contract. Pass it without correcting it to `months` ||
 || **favorite**
 [`string`](../data-types.md) | Indicator of "favorite." Possible values: 
 - `Y` — added to favorites
@@ -187,9 +202,11 @@ In the [create](./tasks-task-add.md) and [update](./tasks-task-update.md) method
 || **responsible**
 [`object`](../data-types.md) | Object with [user description](#user) — responsible for the task ||
 || **accomplicesData**
-[`array`](../data-types.md) | Object with descriptions of users — Participants. 
+[`object`](../data-types.md) | Object with descriptions of users — Participants.
 
-The key of the object is the user identifier, and the value is the object with [user description](#user) ||
+The object key is the user identifier, and the value is an object with the [user description](#user).
+
+If there are no participants, the field may contain an empty array `[]` ||
 || **auditorsData**
 [`object`](../data-types.md) | Object with descriptions of users — task observers. 
 
@@ -204,7 +221,7 @@ The key of the object is the user identifier, and the value is the object with [
 [`boolean`](../data-types.md) | Can add checklist items ||
 || **ufCrmTask**
 [`array`](../data-types.md) | List of bindings to CRM entities in the format:
-- `L_XX` — lead,
+- `L_XX` — lead
 - `D_XX` — deal
 - `C_XX` — contact
 - `CO_XX` — company
@@ -220,13 +237,11 @@ The key of the object is the user identifier, and the value is the object with [
 More details in the article [{#T}](./user-field/index.md) ||
 |#
 
-{% note info "" %}
+## Custom Fields
 
 To retrieve custom fields of the task, use the selection methods [tasks.task.get](./tasks-task-get.md) and [tasks.task.list](./tasks-task-list.md). Specify the required fields in the `SELECT` parameter.
 
 System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are not returned by default. Specify one of these fields in `SELECT` — all three will be returned. In the response, the fields are returned in camelCase: `ufCrmTask`, `ufTaskWebdavFiles`, `ufMailMessage`.
-
-{% endnote %}
 
 ## Object checklist.item {#checklist-item}
 
@@ -434,3 +449,9 @@ System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are n
 || **nodeId**
 [`string`](../data-types.md) | Identifier of the node ||
 |#
+
+## Continue Exploring
+
+- [Retrieve Task Field Metadata](./tasks-task-get-fields.md)
+- [Retrieve a Task](./tasks-task-get.md)
+- [Retrieve a List of Tasks](./tasks-task-list.md)

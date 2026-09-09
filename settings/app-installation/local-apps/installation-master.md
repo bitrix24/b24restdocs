@@ -6,24 +6,91 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-When a local application is added to Bitrix24 for the first time and the user, who is by definition the same Bitrix24 administrator that added the local application, accesses it, Bitrix24 initially displays the URL specified in the "Path for initial installation" field within the application slider.
+A local application needs an installation wizard if initial setup is required before use. The wizard can display a form, retain settings, register event handlers and widgets, or prepare other objects in Bitrix24.
 
-The user interface implemented at this URL serves as the application's "installation wizard" with any necessary business logic. This could be a configuration form for the application, an informational interface, etc.
+For a server-side application, the wizard opens if the *Initial installation path* field is filled in and the *Application completes installation itself* option is disabled. If you enable this option, Bitrix24 sends the installation data to the specified URL in the [`ONAPPINSTALL`](../../../api-reference/common/events/on-app-install.md) event and immediately marks the application as installed. This scenario is described in [Installation Callback](./installation-callback.md).
 
-Additionally, this URL can be used to initialize and create the required objects in Bitrix24. For example, you can:
+## When the Installation Wizard Opens
 
-- set up [event handlers](../../../api-reference/events/index.md);
-- register [widgets](../../../api-reference/widgets/index.md) in the necessary embedding locations;
-- add a [payment system provider](../../../api-reference/pay-system/index.md);
-- register an [SMS messaging provider](../../../api-reference/messageservice/index.md);
-- etc.
+After a server-side local application is added, the first time it is opened, Bitrix24 displays a slider with the URL from the *Initial installation path* field. The installation page is available to an administrator or a user with permission to install the application. Other users see a message that the application is not installed.
 
-In other words, the "installation wizard" URL can be used to perform one-time operations related to adding the application to the account, as after a successful addition, the URL specified in the "Path for initial installation" field will no longer be called.
+The page at this URL serves as the installation wizard. It can perform one-time actions:
 
-However, your application must explicitly "notify" Bitrix24 that the installation has been successfully completed. To do this, you need to call the JS method [BX24.installFinish()](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md). Until this method is called, Bitrix24 considers the application not installed (not configured by the user), and each time the user navigates to the application, it will display the URL specified in the "Path for initial installation" field in the slider.
+- display an application settings form
+- retain application settings on your server
+- register [event handlers](../../../api-reference/events/index.md)
+- register [widgets](../../../api-reference/widgets/index.md) in the required placements
+- add a [payment system provider](../../../api-reference/pay-system/index.md)
+- register an [SMS messaging provider](../../../api-reference/messageservice/index.md)
 
-## Features of Installing a Static Local Application
+## Where to Configure the Installation Wizard
 
-Since when uploading a static application, you are uploading an archive of the entire solution rather than specifying paths to your own server, Bitrix24 uses the install.html file from the solution archive as the URL for the "installation wizard." Otherwise, the logic remains the same—you can use JS functions in this file to perform the necessary requests, and to notify about the successful completion of the "wizard," you need to call the method [BX24.installFinish()](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md).
+In Bitrix24, open *Applications > Developer resources > Other > Local application* and select the application type.
 
-If install.html is not present in the root of the archive, Bitrix24 assumes that the "installation wizard" procedure is unnecessary and immediately accesses index.html from the same archive.
+### Server-side Application
+
+Select *Server-side* and fill in the *Initial installation path* field.
+
+Specify the public URL of the installation page on your server, for example, `https://example.com/install.php`. The file can have any name. You can specify an HTTP or HTTPS URL, but use HTTPS for a production application.
+
+Specify the application's main URL separately in the *Handler path* field. After installation is complete, Bitrix24 opens this URL instead of the wizard page.
+
+If the *Initial installation path* field is empty, Bitrix24 immediately considers the local application installed and does not open the wizard.
+
+Do not enable *Application completes installation itself* if the specified URL must open a wizard page. When the option is enabled, this URL is used as the installation callback, and the application immediately receives the installed status.
+
+### Static Application
+
+Select *Static* and upload the application ZIP archive. The *Initial installation path* and *Handler path* fields are not displayed for this type.
+
+Bitrix24 uses the `install.html` file from the archive root as the installation wizard. If this file is absent, the wizard does not open: Bitrix24 immediately opens `index.html` from the same archive.
+
+## Requirements and Permissions
+
+- the user must have permission to install local applications
+- for a static application, `install.html` must be located in the ZIP archive root
+- the application form must include the permissions required for installation REST API calls
+- the server-side application wizard URL must be accessible over the network
+
+Do not place secrets or tokens in the HTML or other client-side code of the installation page. For a server-side application, retain them in secure storage on your side.
+
+## How to Complete Installation
+
+The wizard must explicitly notify Bitrix24 that installation completed successfully. To do this, call the [BX24.installFinish()](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md) JS method on the server-side application installation page or in the static application's `install.html` file.
+
+Call `BX24.installFinish()` as the last step, after retaining settings, registering event handlers and widgets, and completing other required operations. Until the method is called, Bitrix24 considers the application not installed. When a user with installation permission opens the server-side application again, Bitrix24 opens the URL from *Initial installation path*. For a static application, it opens `install.html`. Other users see a message that installation is incomplete.
+
+Until installation is complete, events are not delivered and placements do not appear in the interface, even if [event.bind](../../../api-reference/events/event-bind.md) and [placement.bind](../../../api-reference/widgets/placement-bind.md) completed successfully.
+
+You can check the installation status using [app.info](../../../api-reference/common/system/app-info.md). A value of `false` in the `INSTALLED` field means installation is not complete.
+
+Minimal wizard page example:
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Application Installation</title>
+    <script src="//api.bitrix24.com/api/v1"></script>
+</head>
+<body>
+    <button id="finish-install">Complete Installation</button>
+
+    <script>
+        BX24.init(function() {
+            document.getElementById("finish-install").addEventListener("click", function() {
+                // Perform the required installation actions here.
+                BX24.installFinish();
+            });
+        });
+    </script>
+</body>
+</html>
+```
+
+## Continue Exploring
+
+- [{#T}](../installation-finish.md)
+- [{#T}](./installation-callback.md)
+- [{#T}](../../../sdk/bx24-js-sdk/system-functions/bx24-install-finish.md)

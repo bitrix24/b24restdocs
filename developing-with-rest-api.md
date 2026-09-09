@@ -1,18 +1,22 @@
 # What the Bitrix24 REST API Allows
 
-Bitrix24 provides developers with tools to extend functionality and integrate with external services through the REST API.
-
-With the REST API, you can:
-
-- create your own solutions
-- automate processes
-- enhance interactions with clients and employees
-
 {% note tip "" %}
 
 If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](ai-tools/mcp.md) so the assistant can utilize the official REST documentation.
 
 {% endnote %}
+
+Bitrix24 provides developers with tools to extend functionality and integrate with external services through the REST API.
+
+An application or webhook authenticates with Bitrix24 and calls REST API methods. Method and data availability depends on the user's permissions and the selected `scope`. To respond to changes in Bitrix24, configure an event handler: Bitrix24 will send data to it when the selected event occurs.
+
+To get started, choose an authentication method:
+
+- incoming webhook—for personal and internal scenarios where requests are made on behalf of a single user
+- local application with OAuth 2.0—for a solution that runs on one Bitrix24 account on behalf of different users
+- mass-market application with OAuth 2.0—for a solution installed on different Bitrix24 accounts and published in Bitrix24 Market
+
+Access conditions and the effect of the plan, user permissions, and `scope` are described in [How to Get Access to the REST API](./first-steps/access-to-rest-api.md). Authentication methods are compared in [How to Make Requests to the REST API](./settings/how-to-call-rest-api/index.md).
 
 Below are the key capabilities for development on the platform.
 
@@ -26,7 +30,7 @@ Add your own automation tools to Bitrix24: Automation rules, triggers, workflows
 
 [Triggers](./api-reference/crm/automation/index.md) monitor client actions and activate automation rules. For example, a trigger can move a deal to the next stage immediately after payment is made through an external service.
 
-## Workflows
+### Workflows
 
 [Workflows](./api-reference/bizproc/index.md) automate the approval of documents, such as vacation requests. This speeds up the processing of requests and improves work organization.
 
@@ -127,3 +131,8 @@ Developers create dashboards to track projects, tasks, finances — any aspect o
 Widgets integrate external services: e-mail, calendar, time tracking. Data is synchronized, and processes are managed from a single interface.
 
 Built-in solutions personalize the workspace for companies. Developers who understand business needs create in-demand applications.  
+
+## What's Next
+
+- [Get access to the REST API](./first-steps/access-to-rest-api.md): choose permanent, trial, or partner access
+- [Make your first API request](./first-steps/first-rest-api-call.md): create an incoming webhook, configure permissions, and test a method in the request builder

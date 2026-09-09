@@ -10,7 +10,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: administrator
 
-The method `userfieldtype.update` modifies the settings of a user field type registered by the application. It returns _true_ or an error with a description of the reason.
+The `userfieldtype.update` method modifies the settings of a user field type previously registered by the application. It updates the handler URL, name, description, and field height, but does not change the type code.
+
+A field of this type is displayed in the CRM item form. When a user opens the form, Bitrix24 loads the URL from `HANDLER` in a frame within the field. The general workflow and handler data format are described in [User Field Types](./index.md).
+
+The method returns `true` if the settings are updated.
+
+{% note info "" %}
+
+The method works only in the [application](../../../settings/app-installation/index.md) context.
+
+{% endnote %}
 
 ## Method parameters
 
@@ -20,45 +30,31 @@ The method `userfieldtype.update` modifies the settings of a user field type reg
 || **Name**
 `type` | **Description** | **Restrictions** ||
 || **USER_TYPE_ID***
-[`string`](../../data-types.md) | String code of the type | 
-- a-z0-9
-- must be unique ||
-|| **HANDLER***
-[`string`](../../data-types.md) | Address of the user type handler | 
-- in the same domain as the main application address
-- must be unique ||
-|| **TITLE***
+[`string`](../../data-types.md) | Short code of the previously registered user field type. Retrieve the code using [userfieldtype.list](./userfieldtype-list.md) | ||
+|| **HANDLER**
+[`string`](../../data-types.md) | New handler URL for the user field type. Bitrix24 loads this URL in a frame within the field | Absolute URLs with the `http` or `https` protocol are allowed ||
+|| **TITLE**
 [`string`](../../data-types.md) | Text name of the type. Will be displayed in the administrative interface for user field settings | ||
 || **DESCRIPTION**
 [`string`](../../data-types.md) | Text description of the type. Will be displayed in the administrative interface for user field settings | ||
 || **OPTIONS**
-[`array`](../../data-types.md) | Additional settings. Currently, one key is available: `height` — specifies the height of the user field in pixels. Any positive value will apply.
+[`object`](../../data-types.md) | Additional settings. Currently, one key is available: `height`—specifies the height of the user field in pixels. The value is converted to an integer.
 Default is `0`. If `0` is specified, the standard height for displaying this widget will be used | ||
+|| **LANG_ALL**
+[`object`](../../data-types.md) | Type name and description for different languages. The object key is the language code, and the value is an object with the `TITLE` and `DESCRIPTION` fields | ||
 |#
+
+{% note info "" %}
+
+In addition to `USER_TYPE_ID`, pass at least one parameter with new settings: `HANDLER`, `TITLE`, `DESCRIPTION`, `OPTIONS`, or `LANG_ALL`.
+
+{% endnote %}
 
 ## Code examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "USER_TYPE_ID": "test_type",
-        "HANDLER": "https://www.myapplication.com/handler/",
-        "TITLE": "Updated test type",
-        "DESCRIPTION": "Test userfield type for documentation with updated description",
-        "OPTIONS": {
-            "height": 60
-        }
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/userfieldtype.update
-    ```
 
 - cURL (OAuth)
 
@@ -318,7 +314,7 @@ HTTP status: **200**
 
 ## Error handling
 
-HTTP status: **400**
+HTTP status: **400 or 403**
 
 ```json
 {
@@ -333,15 +329,22 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error message** | **Description** ||
-|| `ERROR_CORE` | Unable to set placement handler: Handler already binded | `HANDLER` is already occupied by another user field type of this application or `USER_TYPE_ID` is already used by another application ||
+|| `ERROR_CORE` | Unable to update User Field Type: Handler already binded | `HANDLER` is already occupied by another user field type of this application ||
 || `ERROR_ARGUMENT` | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not specified ||
-|| `ERROR_NOT_FOUND` | User Field Type not found | User field with the specified `USER_TYPE_ID` not found ||
+|| `ERROR_ARGUMENT` | Argument 'HANDLER\|TITLE\|DESCRIPTION' is null or empty | No settings to update were passed: `HANDLER`, `TITLE`, `DESCRIPTION`, `OPTIONS`, or `LANG_ALL` ||
+|| `ERROR_NOT_FOUND` | User Field Type not found | No registered user field type with the specified `USER_TYPE_ID` was found ||
+|| `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | `HANDLER` uses a protocol other than `http` or `https` ||
+|| `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | `HANDLER` contains an invalid absolute URL ||
+|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called outside the application context ||
+|| `ACCESS_DENIED` | Access denied! | The method was called by a user without administrator permissions ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue learning
+## Continue Exploring
 
+- [{#T}](./index.md)
 - [{#T}](./userfieldtype-add.md)
 - [{#T}](./userfieldtype-list.md)
 - [{#T}](./userfieldtype-delete.md)
+- [{#T}](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md)

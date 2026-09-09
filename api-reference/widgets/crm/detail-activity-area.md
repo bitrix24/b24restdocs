@@ -10,17 +10,50 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can work with the widget: a user with access permission to modify the CRM object
 
-With additional parameters, you can set the Bitrix24 interface for your menu item in the timeline.
+The `CRM_XXX_DETAIL_ACTIVITY` and `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY` placements add an application item above the timeline in a CRM item form. Instead of a custom interface in an iframe, the application can display the standard Bitrix24 interface in this item: text, links, input fields, lists, and buttons.
 
 To register the widget, use the [placement.bind](../placement-bind.md) method. The basic capabilities of the placement are described in the article [Button Above the Timeline of the CRM object](./detail-activity.md).
 
 [Download an example application using this placement.](https://helpdesk.bitrix24.com/examples/timeline_activity_placement_einvoice.zip)
+
+## Widget Location
+
+#|
+|| **Placement Code** | **Location** ||
+|| `CRM_XXX_DETAIL_ACTIVITY` | An item above the timeline in a standard CRM object form. Replace `XXX` with the object type, for example, `DEAL` ||
+|| `CRM_DYNAMIC_XXX_DETAIL_ACTIVITY` | An item above the timeline in a custom CRM object type form. Replace `XXX` with the numeric object type identifier ||
+|#
+
+The user opens the application item in the object form. If `useBuiltInInterface: Y` was passed during registration, the application first loads in a hidden iframe and then builds the interface by calling `setLayout`.
 
 ## OPTIONS Parameter
 
 The built-in interface is enabled by the `useBuiltInInterface` parameter when the placement is registered. The full list of the `OPTIONS` parameters is described on the [{#T}](./detail-activity.md) page.
 
 When `useBuiltInInterface = Y`, the interface is built from the [LayoutDto](#LayoutDto) structure, and the process of working with it is described [below](#Interface).
+
+## Handler Data
+
+When the application loads, Bitrix24 passes the current item context in `placementOptions`:
+
+```json
+{
+  "entityTypeId": 2,
+  "entityId": 123,
+  "useBuiltInInterface": "Y"
+}
+```
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **entityTypeId**
+[`integer`](../../data-types.md) | CRM object type identifier ||
+|| **entityId**
+[`integer`](../../data-types.md) | Identifier of the CRM item whose form contains the open widget ||
+|| **useBuiltInInterface**
+[`string`](../../data-types.md) | Indicates whether the standard interface is used. For the scenario described on this page, the value is `Y` ||
+|#
 
 ## Registration Example 
 
@@ -115,7 +148,7 @@ Interaction occurs through the method [BX24.placement.call](../ui-interaction/bx
 || **Name**
 `type` | **Description** ||
 || **blocks**
-[`ContentBlockDto[]`](#contentblockdto) | Associative array of objects describing content blocks. The keys of the array are the block identifiers. Minimum 1 element ||
+[`ContentBlockDto[]`](#contentblockdto) | Associative array of objects describing content blocks. The array keys are block identifiers ||
 || **primaryButton**
 [`ButtonDto`](#buttondto) | Primary button. Usually completes data processing, saves it ||
 || **secondaryButton**
@@ -124,8 +157,8 @@ Interaction occurs through the method [BX24.placement.call](../ui-interaction/bx
 
 Clicking on active buttons triggers callbacks: 
 
-- `primaryButton` — callback `BX24.placement.call('bindPrimaryButtonClickCallback', null, callback)`,
-- `secondaryButton` — callback `BX24.placement.call('bindSecondaryButtonClickCallback', null, callback)`.
+- `primaryButton` — callback `BX24.placement.call('bindPrimaryButtonClickCallback', null, callback)`
+- `secondaryButton` — callback `BX24.placement.call('bindSecondaryButtonClickCallback', null, callback)`
 
 ### ContentBlockDto {#contentblockdto}
 
@@ -160,7 +193,7 @@ General structure of a block:
 | `list` | [Unordered List](#list) |
 | `section` | [Section](#section) |
 
-##### Text {#text}
+#### Text {#text}
 
 A block displaying formatted text.
 
@@ -170,7 +203,7 @@ A block displaying formatted text.
 || **Name**
 `type` | **Description** ||
 || **value***
-[`string`](../../data-types.md) | Text ||
+[`string`](../../data-types.md) \| [`double`](../../data-types.md) | Text or number ||
 || **multiline**
 [`boolean`](../../data-types.md) | Line break handling. If `true`, `\n` characters will be replaced with `<br>`. Default is `false` ||
 || **bold**
@@ -210,7 +243,7 @@ A block displaying formatted text.
 
 ![text](_images/text.png)
 
-##### Link {#link}
+#### Link {#link}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -238,7 +271,7 @@ A block displaying formatted text.
   "type": "link",
   "properties": {
     "text": "Open Deal",
-    "action": { "type": "redirect", "uri": "/crm/deal/details/123/" },
+    "action": { "type": "redirect", "value": "/crm/deal/details/123/" },
     "bold": true
   }
 }
@@ -246,7 +279,7 @@ A block displaying formatted text.
 
 ![link](_images/link.png)
 
-##### Block with Title {#withTitle}
+#### Block with Title {#withTitle}
 
 The block displays a title and a value. Another content block can be used as the value.
 
@@ -300,7 +333,7 @@ Example with a link content block:
         "text": "Open Deal",
         "action": {
           "type": "redirect",
-          "uri": "/crm/deal/details/123/"
+          "value": "/crm/deal/details/123/"
         }
       }
     },
@@ -311,9 +344,9 @@ Example with a link content block:
 
 ![withTitle2](_images/withTitle2.png)
 
-##### Multiple Content Blocks in One Line {#lineOfBlocks}
+#### Multiple Content Blocks in One Line {#lineOfBlocks}
 
-The block displays multiple content blocks of type text or link in one line. This allows displaying text with different formatting and links in a single line.
+The block displays multiple content blocks of type text, link, or dropdown list in one line. This allows displaying text with different formatting, links, and lists in a single line.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -321,7 +354,7 @@ The block displays multiple content blocks of type text or link in one line. Thi
 || **Name**
 `type` | **Description** ||
 || **blocks***
-[`ContentBlockDto[]`](#contentblockdto) | Associative array of content blocks. Blocks of types `text`, `link` are supported ||
+[`ContentBlockDto[]`](#contentblockdto) | Associative array of content blocks. Blocks of types `text`, `link`, and `dropdownMenu` are supported ||
 |#
 
 ```json
@@ -341,7 +374,7 @@ The block displays multiple content blocks of type text or link in one line. Thi
           "text": "link",
           "action": {
             "type": "redirect",
-            "uri": "/crm/deal/details/123/"
+          "value": "/crm/deal/details/123/"
           }
         }
       },
@@ -359,7 +392,7 @@ The block displays multiple content blocks of type text or link in one line. Thi
 
 ![lineOfBlocks](_images/lineOfBlocks.png)
 
-##### Dropdown Menu {#dropdownMenu}
+#### Dropdown Menu {#dropdownMenu}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -395,7 +428,7 @@ To track value changes, register a callback:
 
 When the value changes, the callback will receive the `id` of the dropdown block and its current value: `{id: "clientMenu", value: "client"}`.
 
-##### Text Input Field {#input}
+#### Text Input Field {#input}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -435,7 +468,7 @@ To track value changes, register a callback:
 
 When the value changes, the callback will receive the `id` of the text input field and its current value: `{id: "email", value: "aaa@mail.domain"}`.
 
-##### Multiline Text Input Field {#textarea}
+#### Multiline Text Input Field {#textarea}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -473,7 +506,7 @@ To track value changes, register a callback:
 
 When the value changes, the callback will receive the `id` of the text input field and its current value:  `{id: "description", value: "Go through the gate\nTurn left"}`.
 
-##### Input Field with List Selection {#select}
+#### Input Field with List Selection {#select}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -516,7 +549,7 @@ To track value changes, register a callback:
 
 When the value changes, the callback will receive the `id` of the field and its current value: `{id: "city", value: "nyc"}`.
 
-##### Unordered List {#list}
+#### Unordered List {#list}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -524,7 +557,7 @@ When the value changes, the callback will receive the `id` of the field and its 
 || **Name**
 `type` | **Description** ||
 || **blocks***
-[`ContentBlockDto[]`](#contentblockdto) | Associative array of content blocks. Blocks of types `text`, `link`, `lineOfBlocks` are supported. Minimum 1 element ||
+[`ContentBlockDto[]`](#contentblockdto) | Associative array of content blocks. Blocks of types `text`, `link`, and `lineOfBlocks` are supported ||
 |#
 
 ```json
@@ -564,7 +597,7 @@ When the value changes, the callback will receive the `id` of the field and its 
 
 ![list](_images/list.png)
 
-##### Section {#section}
+#### Section {#section}
 
 The block displays a grouped set of blocks. An option with an image is possible.
 
@@ -574,7 +607,7 @@ The block displays a grouped set of blocks. An option with an image is possible.
 || **Name**
 `type` | **Description** ||
 || **blocks***
-[`ContentBlockDto[]`](#contentblockdto) | Associative array of content blocks. Any types of blocks are supported. Minimum 1 element, maximum 20 ||
+[`ContentBlockDto[]`](#contentblockdto) | Associative array of content blocks. All block types except `section` are supported ||
 || **imageSrc**
 [`string`](../../data-types.md) | Full path to the image ||
 || **imageSize**
@@ -680,19 +713,21 @@ A button at the bottom of the interface.
 [`string`](../../data-types.md) | Button text ||
 || **state**
 [`string`](../../data-types.md) | State. Available values: 
-- `normal` — default,
+- `loading` — displays a loading indicator
 - `disabled` ||
 |#
 
-#### Actions with Button ActionDto {#actiondto}
+The button is active by default, so the `state` parameter can be omitted.
+
+### ActionDto {#actiondto}
 
 An action defines the response to a click on a specific element. Available types of actions:
 
-- [redirect](#click),
-- [JS event](#js),
-- [open application slider](#slider).
+- [redirect](#click)
+- [JS event](#js)
+- [open application slider](#slider)
 
-##### Redirect {#click}
+#### Redirect {#click}
 
 Redirecting is possible in two variants:
 
@@ -717,7 +752,7 @@ Redirecting is possible in two variants:
 }
 ```
 
-##### JS Event {#js}
+#### JS Event {#js}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -741,12 +776,12 @@ Calling the action triggers the handler registered via `BX24.placement.call('bin
 
 The handler will receive the `value` of the action and the `id` of the block that triggered the action: `{id: "myLink", value: "clicked"}`.
 
-##### Opening Application Slider {#slider}
+#### Opening Application Slider {#slider}
 
 Calling the action will open the slider of the application that registered the widget. The context will be passed to the slider:
 
-* `entityTypeId` is the identifier of the object type to which the deal is linked,
-* `entityId` is the identifier of the element.
+- `entityTypeId` — identifier of the object type to which the activity is linked
+- `entityId` — item identifier
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -756,12 +791,12 @@ Calling the action will open the slider of the application that registered the w
 || **type***
 `const` | Action type. Must have the value `openRestApp` ||
 || **value**
-[`array`](../../data-types.md) | An array of arbitrary format, the data from which will be passed to the application slider ||
+[`object`](../../data-types.md) \| [`string`](../../data-types.md) | Data to pass to the application slider. A string value is available in the `value` parameter ||
 || **sliderParams**
 [`ActionSliderParamsDto`](#actionsliderparamsdto) | Parameters for opening the slider ||
 |#
 
-###### ActionSliderParamsDto {#actionsliderparamsdto}
+##### ActionSliderParamsDto {#actionsliderparamsdto}
 
 #|
 || **Name**
@@ -771,7 +806,13 @@ Calling the action will open the slider of the application that registered the w
 || **leftBoundary**
 [`integer`](../../data-types.md) | Slider full width of the browser window with a left margin, px. Cannot be used simultaneously with `width` ||
 || **title**
-[`string`](../../data-types.md) | Text of the browser window title when opening the slider ||
+[`string`](../../data-types.md) | Application slider title ||
+|| **labelText**
+[`string`](../../data-types.md) | Label text in the slider header ||
+|| **labelColor**
+[`string`](../../data-types.md) | Label text color in the slider header ||
+|| **labelBgColor**
+[`string`](../../data-types.md) | Label background color in the slider header ||
 |#
 
 ```json
@@ -877,7 +918,17 @@ Calling the action will open the slider of the application that registered the w
 
 ![example3](_images/example3.png)
 
-## Continue Learning
+## Common Errors
+
+#|
+|| **Problem** | **How to Fix It** ||
+|| The application item opens as a regular iframe without the standard interface | Pass `useBuiltInInterface: Y` in the `OPTIONS` object when registering the placement ||
+|| The item is open, but no content appears | After the application loads, call `BX24.placement.call('setLayout', LayoutDto, callback)` and pass a non-empty `blocks` object ||
+|| Clicking a link with the `layoutEvent` action is not handled | Register a callback using `bindLayoutEventCallback`. Pass the event identifier in the action's `value` field ||
+|| The item remains open after the scenario is complete | Call `BX24.placement.call('finish')` when the user completes or cancels the action ||
+|#
+
+## Continue Exploring
 
 - [{#T}](./index.md)
 - [{#T}](../placement-bind.md)

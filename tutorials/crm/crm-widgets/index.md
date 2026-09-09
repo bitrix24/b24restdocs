@@ -28,9 +28,15 @@ Both scenarios require a handler — an application page with a public URL. Bitr
 ## How to choose a scenario {#choose-tutorial}
 
 #|
-|| **If necessary** | **Open** ||
-|| Show the application interface inside the lead custom field | [Embed a widget into a lead as a custom property](./widget-as-field-in-lead-page.md) ||
-|| Add a tab to a CRM card using a deal as an example | [Embed a widget into a CRM item tab](./widget-as-detail-tab.md) ||
-|| Clarify tab codes and the data received by the handler | [Tab in CRM card CRM_XXX_DETAIL_TAB](../../../api-reference/widgets/crm/detail-tab.md) ||
-|| Learn how custom CRM field types work | [Custom field types in CRM](../../../api-reference/crm/universal/user-defined-fields/userfield-type.md) ||
+|| **If necessary** | **Primary Method** | **Placement Code** | **Open** ||
+|| Show the application interface inside the lead custom field | [userfieldtype.add](../../../api-reference/widgets/user-field/userfieldtype-add.md), [crm.lead.userfield.add](../../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md) | `USERFIELD_TYPE` | [Embed a widget into a lead as a custom property](./widget-as-field-in-lead-page.md) ||
+|| Add a tab to a CRM card using a deal as an example | [placement.bind](../../../api-reference/widgets/placement-bind.md) | `CRM_DEAL_DETAIL_TAB` | [Embed a widget into a CRM item tab](./widget-as-detail-tab.md) ||
+|| Clarify tab codes and the data received by the handler | [placement.bind](../../../api-reference/widgets/placement-bind.md) | `CRM_XXX_DETAIL_TAB` | [Tab in CRM card CRM_XXX_DETAIL_TAB](../../../api-reference/widgets/crm/detail-tab.md) ||
+|| Learn how custom CRM field types work | [userfieldtype.add](../../../api-reference/widgets/user-field/userfieldtype-add.md) | `USERFIELD_TYPE` | [Custom field types in CRM](../../../api-reference/crm/universal/user-defined-fields/userfield-type.md) ||
 |#
+
+## Continue Exploring
+
+- [{#T}](../../../api-reference/widgets/index.md)
+- [{#T}](../../../api-reference/widgets/crm/index.md)
+- [{#T}](../../../api-reference/widgets/user-field/index.md)

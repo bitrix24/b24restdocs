@@ -25,7 +25,7 @@ Dialogs do not return data directly. The selection result arrives in the `callba
 || [BX24.selectUser](./bx24-select-user.md) | An object `{id, name}` of the selected user ||
 || [BX24.selectUsers](./bx24-select-users.md) | An array of `{id, name}` objects ||
 || [BX24.selectAccess](./bx24-select-access.md) | An array of `{provider, id, name}` objects, where `id` is an access code such as `U1`, `SG4_K`, `AU` ||
-|| [BX24.selectCRM](./bx24-select-crm.md) | An object with the keys `lead`, `contact`, `company`, `deal`, `quote`. Each key holds an array of the selected entities ||
+|| [BX24.selectCRM](./bx24-select-crm.md) | An object with the keys `lead`, `contact`, `company`, `deal`, `quote`. Each key holds an object containing the selected items under numeric keys ||
 |#
 
 The handler is triggered only when the selection is confirmed. If the user closes the dialog without selecting anything, the handler is not called. There is one exception — [BX24.selectAccess](./bx24-select-access.md): when an empty selection is confirmed, the handler receives an empty array. Dialogs return no error codes.

@@ -7,7 +7,7 @@ items:
     href: bx24-call-method.md
   - name: Send Batch of Requests
     href: bx24-call-batch.md
-  - name: Call Event Handler Registration Interface
+  - name: Register an Event Handler
     href: bx24-call-bind.md
   - name: Call Event Handler Deletion Interface
     href: bx24-call-unbind.md

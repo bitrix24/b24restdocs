@@ -9,5 +9,5 @@ items:
     href: bx24-select-users.md
   - name: Show Access Permission Selection Dialog
     href: bx24-select-access.md
-  - name: Invoke CRM Entity Selection Dialog
+  - name: Invoke CRM Object Selection Dialog
     href: bx24-select-crm.md
