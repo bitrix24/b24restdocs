@@ -1,4 +1,4 @@
-# onOfflineEvent Queue Change Event
+# Event on New Entries in the Offline Event Queue onOfflineEvent
 
 {% note tip "" %}
 
@@ -6,16 +6,17 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
+> Scope: [`basic`](../scopes/permissions.md)
+>
 > Who can subscribe: any user
 
-The `onOfflineEvent` event notifies about the occurrence of new offline events at certain intervals.
+The `ONOFFLINEEVENT` event is triggered when new entries appear in the [offline event](./offline-events.md) queue.
 
-The application can subscribe to two types of events.
+The event replaces polling the queue on a timer: the application receives a signal and retrieves the accumulated entries using the [event.offline.get](./event-offline-get.md) or [event.offline.list](./event-offline-list.md) methods.
 
-- Regular: the event triggers an external URL and executes an action defined by that address.
-- Offline: instead of calling an external URL, events are locally stored on the account, from where they can later be retrieved using the [event.offline.*](./index.md#all-methods) methods.
+Subscribe to `ONOFFLINEEVENT` only as a regular event — with the handler URL in the `handler` parameter of the [event.bind](./event-bind.md) method. Subscribing with `event_type = offline` returns the `ERROR_ARGUMENT` error with the text `Offline event cannot be registered for this event`: the queue notification itself is not placed into the queue.
 
-For the `onOfflineEvent`, the necessity of sending a notification is determined based on the local storage, and then it is sent as a regular event to the external URL.
+Any user can subscribe, but only from an application: `event.bind` works with OAuth 2.0 authorization only and rejects a webhook call. Entries can be retrieved from the queue using the `event.offline.*` methods only by an administrator and, again, only in the application context. Read more in the article [{#T}](./offline-events.md).
 
 {% note info "" %}
 
@@ -25,27 +26,26 @@ Events will not be sent to the application until the installation is complete. [
 
 ## What the Handler Receives
 
-The event notifies about new entries in the offline event queue. The data of modified objects is not transmitted — retrieve them using the [event.offline.get](./event-offline-get.md) or [event.offline.list](./event-offline-list.md) methods.
-
 Data is transmitted as a POST request {.b24-info}
 
-```
+```json
 {
-  "event": "ONOFFLINEEVENT",
-  "data": [],
-  "ts": "1466439714",
-  "auth": {
-    "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
-    "expires_in": "3600",
-    "scope": "task",
-    "domain": "some-domain.bitrix24.com",
-    "server_endpoint": "https://oauth.bitrix.info/rest/", 
-    "status": "F",
-    "client_endpoint": "https://some-domain.bitrix24.com/rest/", 
-    "member_id": "a223c6b3710f85df22e9377d6c4f7553",
-    "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
-    "application_token": "51856fefc120afa4b628cc82d3935cce"
-  }
+    "event": "ONOFFLINEEVENT",
+    "event_handler_id": "185",
+    "data": [],
+    "ts": "1466439714",
+    "auth": {
+        "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
+        "expires_in": "3600",
+        "scope": "crm,task",
+        "domain": "some-domain.bitrix24.com",
+        "server_endpoint": "https://oauth.bitrix.info/rest/",
+        "status": "F",
+        "client_endpoint": "https://some-domain.bitrix24.com/rest/",
+        "member_id": "a223c6b3710f85df22e9377d6c4f7553",
+        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
+        "application_token": "51856fefc120afa4b628cc82d3935cce"
+    }
 }
 ```
 
@@ -58,74 +58,70 @@ Data is transmitted as a POST request {.b24-info}
 `type` | **Description** ||
 || **event*** 
 [`string`](../data-types.md) | Symbolic event code — `ONOFFLINEEVENT` ||
+|| **event_handler_id*** 
+[`integer`](../data-types.md) | Identifier of the event handler ||
 || **data*** 
-[`array`](../data-types.md) | Arrives empty. More details [below](#data) ||
+[`array`](../data-types.md) | Arrives empty.
+
+More details [below](#data) ||
 || **ts*** 
-[`timestamp`](../data-types.md) | Date and time of event sending ||
+[`timestamp`](../data-types.md) | Date and time the notification was sent from the common [event queue](./index.md) ||
 || **auth*** 
-[`array`](../data-types.md) | Authorization and account data.
+[`object`](../data-types.md) | Object containing authorization parameters and data about the Bitrix24 account where the event occurred.
+
+The `scope` value is the list of permissions granted to the application. The event is basic and does not require a separate scope.
 
 The structure is described [below](#auth) ||
 |#
 
 ### Parameter data {#data}
 
-The parameter arrives empty. The event does not transmit data about specific changes but only signals the occurrence of new entries in the queue. To retrieve events, call [event.offline.get](./event-offline-get.md) or [event.offline.list](./event-offline-list.md).
+The event does not transmit data about specific changes but only reports that new entries have appeared in the queue. It carries no payload, so `data` arrives empty — do not build the handler around parsing this parameter.
+
+To retrieve the events themselves, call [event.offline.get](./event-offline-get.md) or [event.offline.list](./event-offline-list.md). The structure of a queue entry is described on the pages of these methods.
 
 ### Parameter auth {#auth}
 
-{% include [Note on required parameters](../../_includes/required.md) %}
-
-#| 
-|| **Name**
-`type` | **Description** ||
-|| **access_token*** 
-[`string`](../data-types.md) | Token for API access ||
-|| **expires_in*** 
-[`integer`](../data-types.md) | Time in seconds until the token expires ||
-|| **scope*** 
-[`string`](../data-types.md) | [Scope](../scopes/permissions.md) within which the event occurred ||
-|| **domain*** 
-[`string`](../data-types.md) | Bitrix24 address where the event occurred ||
-|| **server_endpoint*** 
-[`string`](../data-types.md) | Bitrix24 authorization server address needed for refreshing OAuth 2.0 tokens ||
-|| **status*** 
-[`string`](../data-types.md) | Status of the application that subscribed to this event:
-
-- `L` — [local](../../local-integrations/local-apps.md) application
-- `F` — [free mass-market](../../market/index.md) application
-- `D` — demo version of a mass-market application
-- `T` — trial version of a mass-market application, time-limited
-- `P` — paid mass-market application
-
-||
-|| **client_endpoint*** 
-[`string`](../data-types.md) | General path for API method calls for Bitrix24 where the event occurred ||
-|| **member_id*** 
-[`string`](../data-types.md) | Identifier of Bitrix24 where the event occurred ||
-|| **refresh_token*** 
-[`string`](../data-types.md) | Token for extending authorization [OAuth 2.0](../../settings/oauth/index.md) ||
-|| **application_token*** 
-[`string`](../data-types.md) | Token for secure event processing ||
-|#
-
-offline_event — the application is not always able to receive events. It may be hidden behind firewalls, reside in an internal network, and so on. In this case, the offline event mechanism is used, where the application subscribes to events but does not specify a handler URL.
+{% include notitle [Table with keys in the auth array](../../_includes/auth-params-in-events.md) %}
 
 ## Notification Frequency {#min-timeout}
 
-The interval between notifications is set by the `minTimeout` parameter in the `options` object when subscribing using the [event.bind](./event-bind.md) method. The value is specified in seconds, defaulting to 1. Parameter values:
-- `0` — within a single call to Bitrix24, only one notification is sent to the handler address, regardless of the number of events added to the queue
-- greater than `0` — upon the first trigger, one notification is sent, and the next will not be sent until the specified number of seconds has passed
+Bitrix24 does not send a separate notification for every queue entry. The minimum interval between notifications is set by the `minTimeout` parameter in the `options` object when subscribing with the [event.bind](./event-bind.md) method.
+
+This is the only `options` parameter that `ONOFFLINEEVENT` supports.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **minTimeout**
+[`integer`](../data-types.md) | Minimum interval between notifications, in seconds. Defaults to 1.
+
+`0` — the handler receives one notification per request to Bitrix24, no matter how many entries that request added to the queue.
+
+Greater than `0` — the first trigger sends a notification immediately, the next one is sent no earlier than after the specified number of seconds ||
+|#
+
+Body of the `event.bind` request for a subscription with a 60-second interval:
+
+```json
+{
+    "event": "ONOFFLINEEVENT",
+    "handler": "https://example.com/handler.php",
+    "options": {
+        "minTimeout": 60
+    }
+}
+```
 
 ## Continue Exploring
 
-- [{#T}](./events.md)
+- [{#T}](./index.md)
 - [{#T}](./event-bind.md)
 - [{#T}](./event-get.md)
 - [{#T}](./event-unbind.md)
-- [{#T}](./safe-event-handlers.md)
 - [{#T}](./offline-events.md)
-- [{#T}](./event-offline-list.md)
 - [{#T}](./event-offline-get.md)
+- [{#T}](./event-offline-list.md)
 - [{#T}](./event-offline-clear.md)
 - [{#T}](./event-offline-error.md)
+- [{#T}](./safe-event-handlers.md)

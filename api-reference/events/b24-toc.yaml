@@ -25,5 +25,5 @@ items:
     href: event-offline-clear.md
   - name: Register Queue Processing Errors
     href: event-offline-error.md
-  - name: Queue Change Event
+  - name: Event on New Entries in the Offline Event Queue
     href: on-offline-event.md
