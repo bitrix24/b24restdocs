@@ -1,4 +1,4 @@
-# Update the imbot.v2.Bot.update
+# Update a Bot imbot.v2.Bot.update
 
 {% note tip "" %}
 

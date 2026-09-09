@@ -1,4 +1,4 @@
-# List of Bots in the imbot.v2.Bot.list Application
+# List of Application Bots imbot.v2.Bot.list
 
 {% note tip "" %}
 

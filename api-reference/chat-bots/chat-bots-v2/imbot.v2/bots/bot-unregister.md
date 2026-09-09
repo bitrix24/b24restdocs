@@ -1,4 +1,4 @@
-# Delete the bot imbot.v2.Bot.unregister
+# Unregister a Bot imbot.v2.Bot.unregister
 
 {% note tip "" %}
 

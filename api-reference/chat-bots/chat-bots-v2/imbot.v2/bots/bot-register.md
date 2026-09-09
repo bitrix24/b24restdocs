@@ -1,4 +1,4 @@
-# Register the Automation rule imbot.v2.Bot.register
+# Register a Bot imbot.v2.Bot.register
 
 {% note tip "" %}
 
