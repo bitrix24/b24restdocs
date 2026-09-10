@@ -504,8 +504,8 @@ Each item in the `result_error` field contains information about the sub-request
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `405` | `ERROR_BATCH_METHOD_NOT_ALLOWED` | Method is not allowed for batch usage | The method cannot be called inside `batch`: this is a file upload or download or a nested `batch` ||
-|| `400` | `ERROR_BATCH_LENGTH_EXCEEDED` | Max batch length exceeded | More than 50 subqueries were passed in the batch ||
+|| `200` | `ERROR_BATCH_METHOD_NOT_ALLOWED` | Method is not allowed for batch usage | The method cannot be called inside `batch`: this is a file upload or download or a nested `batch` ||
+|| `200` | `ERROR_BATCH_LENGTH_EXCEEDED` | Max batch length exceeded | More than 50 subqueries were passed in the batch. The first 50 are executed, and every subquery beyond that returns this error ||
 |#
 
 When designing a command chain, do not neglect the `halt` key — with a value of `1`, it will interrupt the execution of the chain if one request in the chain returns an error.

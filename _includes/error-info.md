@@ -4,7 +4,7 @@
 || **Name**
 `type` | **Description** ||
 || **error**
-`string`| String error code. It may consist of digits, Latin letters, and underscores ||
+`string` | String error code. It consists of digits, Latin letters, and underscores. It may arrive empty — in that case only `error_description` shows the reason ||
 || **error_description**
-`error_description`| Textual description of the error. The description is not intended to be shown to the end user in its raw form ||
+`string` | Error message for the developer. Do not show it to the end user without processing ||
 |#
