@@ -25,3 +25,5 @@ items:
     href: how-to-move-activity-between-objects.md
   - name: How to Enter the Payment Date in the Deal Field
     href: how-to-set-paid-date-to-deal.md
+  - name: How to Save the Paid Amount in the Deal Field
+    href: how-to-set-paid-sum-to-deal.md

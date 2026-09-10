@@ -2,6 +2,14 @@
 
 ## 2026
 
+### September 10, 2026
+
+- Added the tutorial [How to Work with the Binding to CRM Directories Field](./tutorials/crm/how-to-add-crm-objects/how-to-use-crm-status-field.md)
+- Added the tutorial [How to Work with the Binding to Information Block Elements Field](./tutorials/crm/how-to-add-crm-objects/how-to-use-iblock-binding-field.md)
+- Added the tutorial [How to Work with the Binding to Information Block Sections Field](./tutorials/crm/how-to-add-crm-objects/how-to-use-iblock-section-binding-field.md)
+- Added the tutorial [How to Work with the List Field Type](./tutorials/crm/how-to-add-crm-objects/how-to-use-enumeration-field.md)
+- Added the tutorial [How to Save the Paid Amount in the Deal Field](./tutorials/crm/how-to-edit-crm-objects/how-to-set-paid-sum-to-deal.md)
+
 ### September 8, 2026
 
 - Added the tutorial [How to Delegate Incomplete Tasks of a Terminated Employee](./tutorials/tasks/how-to-delegate-fired-employee-tasks.md)

@@ -92,6 +92,7 @@ The custom field is created in advance in the CRM settings. Its identifier is di
 #|
 || **Scenario** | **Main Methods** | **Result** ||
 || [How to Save the Payment Date in the Deal Field](./how-to-set-paid-date-to-deal.md) | [crm.item.fields](../../../api-reference/crm/universal/crm-item-fields.md), [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm-item-payment-list.md), [crm.item.update](../../../api-reference/crm/universal/crm-item-update.md) | The payment date in a custom field of the deal ||
+|| [How to Save the Paid Amount in the Deal Field](./how-to-set-paid-sum-to-deal.md) | [crm.deal.userfield.add](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md), [crm.item.payment.list](../../../api-reference/crm/universal/payment/crm-item-payment-list.md), [crm.item.update](../../../api-reference/crm/universal/crm-item-update.md) | The paid amount and currency in a Money field of the deal ||
 |#
 
 ## Continue Learning
