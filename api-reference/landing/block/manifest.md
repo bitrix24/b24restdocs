@@ -456,6 +456,8 @@ Recommendations:
 - set `lang_original` according to the actual language of the manifest
 - use the same phrase keys in `lang` as in the original manifest
 
+Only the values of `name` keys are translated. For the list of such labels, see [Which Labels Are Translated](./localization.md#translatable-keys).
+
 More details: [Block Localization](./localization.md).
 
 ### Key menu

@@ -10,6 +10,8 @@ Localization determines how a template displays its title, description, and othe
 
 This article explains the structure of the `lang` and `lang_original` parameters. It also describes how the system selects translations and how to verify the saved localization through [landing.demos.getList](./landing-demos-get-list.md).
 
+Custom blocks have parameters with the same names, but that is a separate mechanism with a different set of translatable fields. It is described in the [Block Localization](../block/localization.md) article.
+
 ## How to Add Localization
 
 1. Prepare the original phrases of the template in one language.

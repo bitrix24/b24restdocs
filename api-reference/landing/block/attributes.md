@@ -186,7 +186,7 @@ Fields for specific types:
 - `useLink` — enable link mode, for `dynamic_source`
 - `linkType` — link type, for `dynamic_source`
 
-The necessity of fields depends on `type` and scenario. Generally, `attribute` is required, and for list types, `items` is necessary. The `name` field is recommended for proper display in the interface.
+The necessity of fields depends on `type` and scenario. Generally, `attribute` is required, and for list types, `items` is necessary. The `name` field is recommended for proper display in the interface. The `name` value takes part in manifest translation, see [Which Labels Are Translated](./localization.md#translatable-keys) for details.
 
 If `type` is not specified, `text` is used by default.
 

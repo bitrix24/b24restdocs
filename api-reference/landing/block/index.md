@@ -14,7 +14,7 @@ The methods in this group allow you to:
 - modify the composition and design of a block
 - work with cards and block templates
 
-The structure of a block is described in articles about [attributes](./attributes.md), [node types](./node-types.md), [extended card descriptions](./extended-description.md), and the [manifest file](./manifest.md).
+The structure of a block is described in articles about [attributes](./attributes.md), [node types](./node-types.md), [extended card descriptions](./extended-description.md), and the [manifest file](./manifest.md). Translations of block labels for different languages are described in the [Block Localization](./localization.md) article.
 
 > Quick navigation: [all methods](#all-methods)
 >
