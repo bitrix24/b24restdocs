@@ -6,20 +6,20 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-To make your first request to the REST API, create an incoming webhook. This is a ready-to-use tool for calling API methods with the permissions of the user who created the webhook.
+To make your first request to the REST API, create an inbound webhook. This is a ready-to-use tool for calling API methods with the permissions of the user who created the webhook.
 
 On this page, you will learn how to configure a webhook, perform a test request, and choose the appropriate authorization method for your integration.
 
-## How to Create an Incoming Webhook
+## How to Create an Inbound Webhook
 
 1. In the Bitrix24 left menu, open the *Applications > Developer resources* section.
-2. Go to the *Scenarios > Other > Incoming webhook* tab. A slider will appear containing the pre-generated webhook code.
+2. Go to the *Common use cases > Other > Inbound webhook* tab. A slider will appear containing the pre-generated webhook code.
 
-If the *Incoming webhook* item is missing, the permission to create webhooks is disabled. Ask the administrator to [grant access to webhook creation](#webhook-app-access).
+If the *Inbound webhook* item is missing, the permission to create webhooks is disabled. Ask the administrator to [grant access to webhook creation](#webhook-app-access).
 
-## Request Generator
+## Request Builder
 
-Below the webhook code is the *Request Generator* block. You can use it to select the required method and parameter values.
+Below the webhook code is the *Request builder* block. You can use it to select the required method and parameter values.
 
 1. Select a method from the list. If the required method is not in the list:
    - Set the necessary scopes in the Permission settings block and save the webhook.
@@ -76,15 +76,15 @@ An employee without administrator permissions cannot grant this access to themse
 
 1. Open *Settings > Bitrix24 settings*. The section is available only to employees with administrator permissions.
 2. In the new window, go to *Security > Bitrix24 integrations*.
-3. In the *Who can create incoming webhooks* field, click *Add* and select all employees or selected users
+3. In the *Who can create inbound webhooks* field, click *Add* and select all employees or selected users
 
 ![Configure Access to Webhook and App Creation](_images/webhook.png)
 
 ## Other Ways to Work with the API
 
-Incoming webhooks are suitable for personal use and internal scenarios where requests are executed on behalf of a single user. For local applications that will run for different users, use OAuth 2.0. For commercial solutions that will be listed in the Bitrix24 Market, OAuth 2.0 and solution registration are also required.
+Inbound webhooks are suitable for personal use and internal scenarios where requests are executed on behalf of a single user. For local applications that will run for different users, use OAuth 2.0. For commercial solutions that will be listed in the Bitrix24 Market, OAuth 2.0 and solution registration are also required.
 
-- To register local applications, go to the *Scenarios > Other > Local application* tab. If the *Local application* item is missing, ask the administrator to configure access to application creation in the same way as access to webhook creation.
+- To register local applications, go to the *Common use cases > Other > Local application* tab. If the *Local application* item is missing, ask the administrator to configure access to application creation in the same way as access to webhook creation.
 - To list solutions in the Market, you must become a partner program member. To do this, fill out the application form on the [developer portal website](https://vendors.bitrix24.com/technology-partnership/).
 
 {% note tip "" %}

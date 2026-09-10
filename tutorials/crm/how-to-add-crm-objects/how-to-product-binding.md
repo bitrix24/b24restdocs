@@ -28,7 +28,7 @@ The scenario consists of four steps.
 
 To run this example, you need:
 
-- an incoming webhook with scopes `crm` and `catalog`
+- an inbound webhook with scopes `crm` and `catalog`
 - the commercial catalog identifier `iblockId`. This can be retrieved using the [catalog.catalog.list](../../../api-reference/catalog/catalog/catalog-catalog-list.md) method
 - the CRM object type to which the products should be linked
 

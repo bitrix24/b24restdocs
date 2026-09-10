@@ -121,7 +121,7 @@ Bitrix24 issues the application ID and the secret key only after the form is sav
 
 5. Specify the addresses of the pages on your server: in the *Initial installation path* field — the address of `install.php`, in the *Your handler path* field — the address of `index.php`. Bitrix24 contacts the first address when installing the application and opens the application in a frame at the second one.
 
-6. Fill in *Menu item text* — it is how the application is found in the Bitrix24 interface. In the example it is "Full Name". Names in other languages are filled in if the application is used not only in English.
+6. Fill in *Menu item text English (en)* — it is how the application is found in the Bitrix24 interface. In the example it is "Full Name". Names in other languages are filled in if the application is used not only in English.
 
 7. Select the application scopes in the *Assign permissions* block. Any of the user scopes will do for the example: *Users* — `user`, *Users (basic)* — `user_basic`, *Users (minimum)* — `user_brief`. The selected scope determines which fields `user.current` returns. The remaining scopes are listed in the article [{#T}](../api-reference/scopes/permissions.md).
 

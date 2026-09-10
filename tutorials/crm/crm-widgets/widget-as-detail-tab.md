@@ -55,7 +55,7 @@ The handler URL must be accessible from an external network. Do not use `localho
 
 {% endnote %}
 
-The `placement.bind` method works only within the application context. An incoming webhook is not suitable for registering a tab.
+The `placement.bind` method works only within the application context. An inbound webhook is not suitable for registering a tab.
 
 ## 2. Register the Tab
 

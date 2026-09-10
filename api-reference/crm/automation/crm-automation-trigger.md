@@ -10,7 +10,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 >
 > Who can execute the method: a user with access permission to modify the target object `target`
 
-Bitrix24 allows users to create a special custom trigger "Track Incoming Webhook." The user is provided with a ready-made URL of the form 
+Bitrix24 allows users to create a special custom trigger "Track Inbound Webhook." The user is provided with a ready-made URL of the form
 
 ```bash
 https://mydomain.bitrix24.com/rest/1/not_var{{PASSWORD}}/crm.automation.trigger/?target=DEAL_not_var{{ID}}&code=nwly5
@@ -18,9 +18,9 @@ https://mydomain.bitrix24.com/rest/1/not_var{{PASSWORD}}/crm.automation.trigger/
 
 A call to this URL from an external source will trigger the automation and transition the CRM object to another stage in the Sales Funnel.
 
-As you can see from the format of this URL, a [local incoming webhook](../../../local-integrations/local-webhooks.md) is effectively created within Bitrix24, which calls the `crm.automation.trigger` method, specifying a specific CRM object and the unique symbolic code of the trigger that was created by Bitrix24 itself (in the example above, this is `nwly5`).
+As you can see from the format of this URL, a [local inbound webhook](../../../local-integrations/local-webhooks.md) is effectively created within Bitrix24, which calls the `crm.automation.trigger` method, specifying a specific CRM object and the unique symbolic code of the trigger that was created by Bitrix24 itself (in the example above, this is `nwly5`).
 
-You can use the method not only via the incoming webhook but also in the context of [local](../../../local-integrations/local-apps.md) and [mass-market](../../../market/index.md) applications. However, to invoke your own triggers created by your application, you need to use the method [crm.automation.trigger.execute](./triggers/crm-automation-trigger-execute.md)
+You can use the method not only via the inbound webhook but also in the context of [local](../../../local-integrations/local-apps.md) and [mass-market](../../../market/index.md) applications. However, to invoke your own triggers created by your application, you need to use the method [crm.automation.trigger.execute](./triggers/crm-automation-trigger-execute.md)
 
 ## Method Parameters
 

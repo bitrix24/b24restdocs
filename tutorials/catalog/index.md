@@ -23,7 +23,7 @@ The scenario consists of three steps.
 Before running the examples, prepare the environment:
 
 - Install the SDK for your language: `npm install @bitrix24/b24jssdk`, `composer require bitrix24/b24phpsdk:"^3.0"`, or `pip install b24pysdk`
-- The examples are executed on a server and authorized via an [incoming webhook](../../local-integrations/local-webhooks.md) with the `catalog` permission. Replace the webhook address with your own
+- The examples are executed on a server and authorized via an [inbound webhook](../../local-integrations/local-webhooks.md) with the `catalog` permission. Replace the webhook address with your own
 - Files to be uploaded must be accessible to the example code via a path on the server
 
 ## 1. Prepare Properties

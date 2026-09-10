@@ -58,12 +58,12 @@ The common path for method calls is passed in the `client_endpoint` field, for e
 
 Retain the `client_endpoint` value under the `member_id` key and overwrite it with every new set of tokens. The application then calls the address from the latest authorization data instead of the address written in the code.
 
-### Incoming Webhook {#webhook}
+### Inbound Webhook {#webhook}
 
-The address is embedded in the webhook URL in the format `https://mycompany.bitrix24.com/rest/1/8g9l071eismy9q2l/crm.deal.add`, and an incoming webhook does not pass a new address. Take the new address in one of two ways:
+The address is embedded in the webhook URL in the format `https://mycompany.bitrix24.com/rest/1/8g9l071eismy9q2l/crm.deal.add`, and an inbound webhook does not pass a new address. Take the new address in one of two ways:
 
 - from the `Location` header in the response with the redirect. The header is available only if the client does not follow the redirect on its own — as in the [examples below](#manual)
-- from the [incoming webhook](../../local-integrations/local-webhooks.md) settings. Open your webhook and copy the URL again — it already contains the new address
+- from the [inbound webhook](../../local-integrations/local-webhooks.md) settings. Open your webhook and copy the URL again — it already contains the new address
 
 {% note warning %}
 

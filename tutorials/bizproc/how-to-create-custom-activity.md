@@ -25,7 +25,7 @@ The scenario consists of three steps.
 
 ## Before You Start
 
-The `bizproc.activity.add` method works only in the context of an [application](../../settings/app-installation/index.md). An incoming webhook is not suitable: the method returns the `ACCESS_DENIED` error with the `Application context required` description.
+The `bizproc.activity.add` method works only in the context of an [application](../../settings/app-installation/index.md). An inbound webhook is not suitable: the method returns the `ACCESS_DENIED` error with the `Application context required` description.
 
 Before you start, prepare:
 

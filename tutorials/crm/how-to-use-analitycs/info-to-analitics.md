@@ -32,7 +32,7 @@ The scenario consists of four steps.
 
 ## Before You Start
 
-- an incoming webhook or a local application with scope [`crm`](../../../api-reference/scopes/permissions.md)
+- an inbound webhook or a local application with scope [`crm`](../../../api-reference/scopes/permissions.md)
 - user permissions to create or edit the CRM object that should receive Sales Intelligence data
 - the Bitrix24 Sales Intelligence script is installed on the website pages where the customer journey is collected
 - REST calls are executed on the server side if you use a webhook: the webhook path must not be exposed in the browser or a public repository

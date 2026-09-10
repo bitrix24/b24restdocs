@@ -16,7 +16,7 @@ Icon and logo codes in the examples are taken from the general timeline lists. Y
 
 {% note warning %}
 
-The [crm.activity.configurable.add](../crm-activity-configurable-add.md) and [crm.activity.configurable.update](../crm-activity-configurable-update.md) methods work only within the context of an [app](../../../../../../settings/app-installation/index.md). Calling them via an incoming webhook will return error `ERROR_WRONG_CONTEXT`.
+The [crm.activity.configurable.add](../crm-activity-configurable-add.md) and [crm.activity.configurable.update](../crm-activity-configurable-update.md) methods work only within the context of an [app](../../../../../../settings/app-installation/index.md). Calling them via an inbound webhook will return error `ERROR_WRONG_CONTEXT`.
 
 {% endnote %}
 

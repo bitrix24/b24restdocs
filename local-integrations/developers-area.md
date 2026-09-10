@@ -6,13 +6,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-The *Applications > Developer resources* page contains tools for creating local integrations: [webhooks](./local-webhooks.md), [local applications](./local-apps.md), сommon use cases, and REST load monitoring.
+The *Applications > Developer resources* page contains tools for creating local integrations: [webhooks](./local-webhooks.md), [local applications](./local-apps.md), common use cases, and REST load monitoring.
 
-For quick REST API calls in one Bitrix24 account, choose an incoming webhook. To send Bitrix24 events to an external handler, create an outgoing webhook. If the integration needs its own interface or application event handling, create a local application.
+For quick REST API calls in one Bitrix24 account, choose an inbound webhook. To send Bitrix24 events to an external handler, create an outbound webhook. If the integration needs its own interface or application event handling, create a local application.
 
 Webhooks and applications can be created if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md). Permanent use requires a BitrixGPT + Market subscription; trial mode can be enabled for testing.
 
-By default, only a Bitrix24 administrator can create applications for all users, while all users can create incoming webhooks and their own applications. An administrator can change these settings.
+By default, only a Bitrix24 administrator can create applications for all users, while all users can create inbound webhooks and their own applications. An administrator can change these settings.
 
 ![Developer Resources Section](./_images/dev_menu-n-sm.png)
 
@@ -77,7 +77,7 @@ Create inbound or outbound webhooks, or a local app.
 
 Select a scenario and open its settings. The available fields depend on the integration type.
 
-For incoming webhook scenarios, a REST request builder is available. Use it to select a method, add parameters, execute the request, and download a code example.
+For inbound webhook scenarios, a REST request builder is available. Use it to select a method, add parameters, execute the request, and download a code example.
 
 In the *Assign permissions* section, select the Bitrix24 tools the integration will work with. Permission codes and `scope` selection are described in [{#T}](../api-reference/scopes/index.md).
 
@@ -85,7 +85,7 @@ After saving, the integration appears on the *Integrations* tab.
 
 ## Integrations
 
-All created integrations are displayed in one list: incoming and outgoing webhooks, local applications, and their associated event handlers, widgets, and chatbots.
+All created integrations are displayed in one list: inbound and outbound webhooks, local applications, and their associated event handlers, widgets, and chatbots.
 
 ![Integrations](./_images/dev_list-sm.png)
 

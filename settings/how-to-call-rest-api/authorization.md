@@ -28,12 +28,12 @@ Moreover, REST API methods are always called "on behalf of" a specific user of t
 
 There are two options for passing authorization data in requests to the REST API:
 
-- Specifying a permanent incoming local webhook code;
+- Specifying a permanent inbound local webhook code;
 - Specifying a temporary OAuth 2.0 authorization token, which is used in local and mass-market applications.
 
-## Local Incoming Webhooks
+## Local Inbound Webhooks
 
-Example of accessing the REST API using an incoming local webhook:
+Example of accessing the REST API using an inbound local webhook:
 
 ```bash
 curl -X POST \

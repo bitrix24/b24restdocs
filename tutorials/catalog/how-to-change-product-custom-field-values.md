@@ -26,7 +26,7 @@ The scenario consists of five steps:
 
 To perform this example, you need:
 
-- an incoming webhook with scope `catalog`
+- an inbound webhook with scope `catalog`
 - the Commercial catalog identifier `iblockId`. This can be obtained using the [catalog.catalog.list](../../api-reference/catalog/catalog/catalog-catalog-list.md) method
 
 In this example, two properties are being changed:

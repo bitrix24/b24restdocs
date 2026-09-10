@@ -23,7 +23,7 @@ The exact permissions and scope of a specific scenario are listed in the header 
 ## Getting Started
 
 1. Select a scenario from the table of the relevant group.
-2. Create an [incoming webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) or an application with the required scopes, and check the user permissions.
+2. Create an [inbound webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) or an application with the required scopes, and check the user permissions.
 3. Retrieve the identifiers the scenario starts with: a CRM item, an activity, a custom field, or a payment.
 4. Execute the methods in the order described in the scenario.
 

@@ -20,7 +20,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 **If the webhook trigger is already configured in Bitrix24:**
 
-1. Retrieve the `code` value from the URL of the "Track Incoming Webhook" trigger in the CRM automation settings.
+1. Retrieve the `code` value from the URL of the "Track Inbound Webhook" trigger in the CRM automation settings.
 2. Construct the `target` for the target object, for example, `DEAL_25`.
 3. Call [crm.automation.trigger](./crm-automation-trigger.md), passing the `target` and `code`.
 4. If necessary, check the result using the [crm.item.get](../universal/crm-item-get.md) method.

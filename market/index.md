@@ -1,6 +1,6 @@
 # Overview of Mass-Market Applications
 
-The key difference between a mass-market solution and a custom local integration is that a mass-market application can be used across multiple Bitrix24 accounts simultaneously. Therefore, in such an application, it is no longer possible to use simple [incoming or outgoing webhooks](../local-integrations/local-webhooks.md), which we discussed earlier.
+The key difference between a mass-market solution and a custom local integration is that a mass-market application can be used across multiple Bitrix24 accounts simultaneously. Therefore, in such an application, it is no longer possible to use simple [inbound or outbound webhooks](../local-integrations/local-webhooks.md), which we discussed earlier.
 
 For mass-market solutions, it is important to understand how the [OAuth 2.0](../settings/oauth/index.md) authorization protocol works.
 

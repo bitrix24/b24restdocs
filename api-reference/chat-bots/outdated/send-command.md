@@ -138,12 +138,12 @@ If you are using your own PHP wrapper for REST, it can replicate the logic of th
 
 There are two main scenarios for calling methods:
 
-1. Incoming Webhook
+1. Inbound Webhook
 2. OAuth Authorization
 
-### Incoming Webhook
+### Inbound Webhook
 
-If you are calling methods via an incoming webhook, there is no need to update the OAuth token. For methods of deprecated chatbots in the webhook scenario, the `CLIENT_ID` specified during bot registration is also passed.
+If you are calling methods via an inbound webhook, there is no need to update the OAuth token. For methods of deprecated chatbots in the webhook scenario, the `CLIENT_ID` specified during bot registration is also passed.
 
 ### OAuth
 

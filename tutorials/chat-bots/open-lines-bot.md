@@ -21,7 +21,7 @@ Verifiable result: the customer writes to an Open Channel, the bot replies with 
 
 Three objects take part in the scenario:
 
-- an incoming webhook with the `imbot` and `imopenlines` permissions
+- an inbound webhook with the `imbot` and `imopenlines` permissions
 - a registered chatbot with Open Channels support
 - an Open Channel this bot is connected to
 
@@ -42,9 +42,9 @@ The order is set by the platform: the chat identifier for session management app
 
 ## Prepare the Data
 
-The examples on this page work through an incoming webhook: it does not require installing an application, and the bot is registered in Bitrix24 right away. The differences of the scenario for an application with OAuth authorization are collected in the [Important Notes](#important) block.
+The examples on this page work through an inbound webhook: it does not require installing an application, and the bot is registered in Bitrix24 right away. The differences of the scenario for an application with OAuth authorization are collected in the [Important Notes](#important) block.
 
-1. Create an incoming webhook with the `imbot` and `imopenlines` permissions
+1. Create an inbound webhook with the `imbot` and `imopenlines` permissions
 2. Host the event handler on a public HTTPS URL, for example `https://example.com/handler`
 3. Set up an Open Channel and connect a communication channel to it — the website live chat or a messenger
 
@@ -54,7 +54,7 @@ Prepare the values that you need to replace with your own:
 
 #|
 || **Value** | **Where to take it from** ||
-|| `B24_WEBHOOK_URL` | Incoming webhook URL in the form `https://example.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/` ||
+|| `B24_WEBHOOK_URL` | Inbound webhook URL in the form `https://example.bitrix24.com/rest/1/xxxxxxxxxxxxxxxx/` ||
 || `BOT_TOKEN` | Come up with a unique bot token up to 40 characters long. It is bound to the bot during the registration ||
 || `HANDLER_URL` | Public HTTPS address of the event handler. In the JS and Python examples the handler listens on the `/handler` path, in the PHP example it is the `handler.php` file ||
 || `OPERATOR_ID` | ID of the employee the bot transfers the conversation to. You can see it in the URL of the employee profile or in the response of the [user.get](../../api-reference/user/user-get.md) and [user.search](../../api-reference/user/user-search.md) methods — these two methods need a separate `user` permission, the scenario itself does not require it ||
@@ -64,7 +64,7 @@ You do not need to substitute the chat identifier: it arrives in the `data.chat.
 
 {% note warning "" %}
 
-The incoming webhook URL and the bot token are secrets. The URL grants the whole access of the webhook, and the token allows managing sessions on behalf of the bot. Retain both values in the server environment variables and do not place them in code that runs in the browser.
+The inbound webhook URL and the bot token are secrets. The URL grants the whole access of the webhook, and the token allows managing sessions on behalf of the bot. Retain both values in the server environment variables and do not place them in code that runs in the browser.
 
 {% endnote %}
 
@@ -155,7 +155,7 @@ This code is needed both by the one-time registration script from step 1 and by 
 In [imbot.v2.Bot.register](../../api-reference/chat-bots/chat-bots-v2/imbot.v2/bots/bot-register.md), the bot parameters are passed in the `fields` object:
 
 - `code` — bot code, unique within the webhook or the application
-- `botToken` — bot token, required when authorizing through an incoming webhook
+- `botToken` — bot token, required when authorizing through an inbound webhook
 - `type` — bot type
 - `isSupportOpenline` — Open Channels support
 - `eventMode` — event delivery mode, the `webhook` value sends the events to the handler URL, and a separate subscription with the `event.bind` method is not needed
@@ -279,7 +279,7 @@ Take two values from the [ONIMBOTV2MESSAGEADD](../../api-reference/chat-bots/cha
 - `data.chat.id` — chat identifier, it has to be passed to the `CHAT_ID` parameter of the session management methods
 - `data.message.text` — text of the customer message, the bot chooses the reply by it
 
-Verify the request authenticity by the `auth.application_token` from the top level, not by the token from `data.bot.auth`. For a bot registered through an incoming webhook, `auth.application_token` equals the `custom` string glued together with `botToken`, without a separator.
+Verify the request authenticity by the `auth.application_token` from the top level, not by the token from `data.bot.auth`. For a bot registered through an inbound webhook, `auth.application_token` equals the `custom` string glued together with `botToken`, without a separator.
 
 ```json
 {

@@ -10,7 +10,7 @@ Configurable activities are CRM activities created by an application. An applica
 
 {% note warning %}
 
-Methods `crm.activity.configurable.add`, `crm.activity.configurable.update`, and `crm.activity.configurable.get` work only within the context of an [application](../../../../../settings/app-installation/index.md). Calling them via an incoming webhook will return error `ERROR_WRONG_CONTEXT`.
+Methods `crm.activity.configurable.add`, `crm.activity.configurable.update`, and `crm.activity.configurable.get` work only within the context of an [application](../../../../../settings/app-installation/index.md). Calling them via an inbound webhook will return error `ERROR_WRONG_CONTEXT`.
 
 {% endnote %}
 

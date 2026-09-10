@@ -37,7 +37,7 @@ A contact does not have a separate card title field. The `name` and `lastName` f
 
 ## 1. Prepare the Environment
 
-Create an [Incoming Webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) with the `crm` and `user_brief` permissions.
+Create an [Inbound Webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) with the `crm` and `user_brief` permissions.
 
 {% note warning "Keep the Webhook Secret" %}
 

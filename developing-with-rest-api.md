@@ -12,7 +12,7 @@ An application or webhook authenticates with Bitrix24 and calls REST API methods
 
 To get started, choose an authentication method:
 
-- incoming webhook—for personal and internal scenarios where requests are made on behalf of a single user
+- inbound webhook—for personal and internal scenarios where requests are made on behalf of a single user
 - local application with OAuth 2.0—for a solution that runs on one Bitrix24 account on behalf of different users
 - mass-market application with OAuth 2.0—for a solution installed on different Bitrix24 accounts and published in Bitrix24 Market
 
@@ -135,4 +135,4 @@ Built-in solutions personalize the workspace for companies. Developers who under
 ## What's Next
 
 - [Get access to the REST API](./first-steps/access-to-rest-api.md): choose permanent, trial, or partner access
-- [Make your first API request](./first-steps/first-rest-api-call.md): create an incoming webhook, configure permissions, and test a method in the request builder
+- [Make your first API request](./first-steps/first-rest-api-call.md): create an inbound webhook, configure permissions, and test a method in the request builder

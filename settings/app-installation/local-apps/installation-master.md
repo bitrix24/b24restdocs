@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 A local application needs an installation wizard if initial setup is required before use. The wizard can display a form, retain settings, register event handlers and widgets, or prepare other objects in Bitrix24.
 
-For a server-side application, the wizard opens if the *Initial installation path* field is filled in and the *Application completes installation itself* option is disabled. If you enable this option, Bitrix24 sends the installation data to the specified URL in the [`ONAPPINSTALL`](../../../api-reference/common/events/on-app-install.md) event and immediately marks the application as installed. This scenario is described in [Installation Callback](./installation-callback.md).
+For a server-side application, the wizard opens if the *Initial installation path* field is filled in and the *Application completes the installation itself* option is disabled. If you enable this option, Bitrix24 sends the installation data to the specified URL in the [`ONAPPINSTALL`](../../../api-reference/common/events/on-app-install.md) event and immediately marks the application as installed. This scenario is described in [Installation Callback](./installation-callback.md).
 
 ## When the Installation Wizard Opens
 
@@ -27,21 +27,21 @@ The page at this URL serves as the installation wizard. It can perform one-time 
 
 In Bitrix24, open *Applications > Developer resources > Other > Local application* and select the application type.
 
-### Server-side Application
+### Server Application
 
-Select *Server-side* and fill in the *Initial installation path* field.
+Select *Server* and fill in the *Initial installation path* field.
 
 Specify the public URL of the installation page on your server, for example, `https://example.com/install.php`. The file can have any name. You can specify an HTTP or HTTPS URL, but use HTTPS for a production application.
 
-Specify the application's main URL separately in the *Handler path* field. After installation is complete, Bitrix24 opens this URL instead of the wizard page.
+Specify the application's main URL separately in the *Your handler path* field. After installation is complete, Bitrix24 opens this URL instead of the wizard page.
 
 If the *Initial installation path* field is empty, Bitrix24 immediately considers the local application installed and does not open the wizard.
 
-Do not enable *Application completes installation itself* if the specified URL must open a wizard page. When the option is enabled, this URL is used as the installation callback, and the application immediately receives the installed status.
+Do not enable *Application completes the installation itself* if the specified URL must open a wizard page. When the option is enabled, this URL is used as the installation callback, and the application immediately receives the installed status.
 
 ### Static Application
 
-Select *Static* and upload the application ZIP archive. The *Initial installation path* and *Handler path* fields are not displayed for this type.
+Select *Static* and upload the ZIP archive in the *Archive containing your application (zip)* field. The *Initial installation path* and *Your handler path* fields are not displayed for this type.
 
 Bitrix24 uses the `install.html` file from the archive root as the installation wizard. If this file is absent, the wizard does not open: Bitrix24 immediately opens `index.html` from the same archive.
 

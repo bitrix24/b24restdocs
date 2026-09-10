@@ -14,7 +14,7 @@ The example consists of the [CRest SDK](https://github.com/bitrix-tools/crest/) 
 
 [Download archive](https://helpdesk.bitrix24.com/examples/server-no-ui-crest.zip)
 
-You can install a local application either from the **Developer resources** section (*Applications > Developer resources, "Ready-made scenarios" tab > Other > Local application*), or by following this path: Applications (1) — Developer resources (2) — Other (3) — Local application (4):
+You can install a local application either from the **Developer resources** section (*Applications > Developer resources, "Common use cases" tab > Other > Local application*), or by following this path: Applications (1) — Developer resources (2) — Other (3) — Local application (4):
 
 If the *Local application* item is missing, ask the administrator to [configure access to application creation](./local-apps.md#local-app-access).
 
@@ -22,7 +22,7 @@ If the *Local application* item is missing, ask the administrator to [configure 
 
 ![](./_images/local_add_4.jpg)
 
-In the form that opens, fill in the basic fields and specify the permissions required for the application (for our example, user management permissions are required), specifying your **Handler path** (this means that your application must already be physically accessible via an HTTPS URL before you add it to your Bitrix24).
+In the form that opens, fill in the *Your handler path* field and specify the permissions required for the application. For this example, user management permissions are required. The application must already be accessible via a public HTTPS URL before you add it to Bitrix24.
 
 ![Add application form](./_images/local-server-no-ui-form_new.png)
 

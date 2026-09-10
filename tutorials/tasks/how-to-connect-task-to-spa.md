@@ -34,7 +34,7 @@ As a result, you will have a task where the SPA item is specified in the "CRM it
 
 To perform this example, you need:
 
-- An incoming webhook with scopes `crm` and `task`
+- An inbound webhook with scopes `crm` and `task`
 - A created SPA and at least one of its items
 - The identifier of the user who will be assigned as the task assignee. This can be retrieved using the [user.get](../../api-reference/user/user-get.md) and [user.current](../../api-reference/user/user-current.md) methods
 - The list of required task fields. If mandatory custom fields are configured on the portal, they must also be passed in `tasks.task.add` — check the list using the [tasks.task.getFields](../../api-reference/tasks/tasks-task-get-fields.md) method
@@ -1124,7 +1124,7 @@ If the method returns an error, check the request data.
 || `ENTITY_TYPE_NOT_SUPPORTED` | A value that does not belong to smart processes was passed in `entityTypeId`. Take `ID` from the [crm.enum.ownertype](../../api-reference/crm/auxiliary/enum/crm-enum-owner-type.md) response instead of using an arbitrary number ||
 || `ERROR_CORE` | A mandatory field value was not entered. Mandatory custom task fields are configured on the portal — get their composition using the [tasks.task.getFields](../../api-reference/tasks/tasks-task-get-fields.md) method and pass them to `fields` ||
 || `INVALID_ARG_VALUE` | The field is unavailable for filtering or an incorrect value was passed to it. Check `filter` in [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) ||
-|| `allowed_only_intranet_user` | The action in [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) is allowed only for intranet users. Check which user the incoming webhook was created for ||
+|| `allowed_only_intranet_user` | The action in [crm.item.list](../../api-reference/crm/universal/crm-item-list.md) is allowed only for intranet users. Check which user the inbound webhook was created for ||
 || `ERROR_CORE` | Task name or assignee is not specified. Fill in `TITLE` and `RESPONSIBLE_ID` ||
 || `ERROR_CORE` | The user specified in the "Assignee" field was not found. An identifier for a non-existent user was passed in `RESPONSIBLE_ID` ||
 || `100` | Mandatory parameters were not passed. Check `fields` in [tasks.task.add](../../api-reference/tasks/tasks-task-add.md), as well as `taskId` and `select` in [tasks.task.get](../../api-reference/tasks/tasks-task-get.md) ||

@@ -124,7 +124,7 @@ The `$server` object provides access to the request and authorization data:
 | `getScope()` | The scope in which the called method was found |
 | `getMethod()` | The name of the called method in lowercase |
 | `getQuery()` | The same array of call parameters that arrives in the handler as the first parameter |
-| `getAuthType()` | The authorization type of the call: `oauth` — an application, `apauth` — an incoming webhook, `sessionauth` — a call authorized by the session of the current user |
+| `getAuthType()` | The authorization type of the call: `oauth` — an application, `apauth` — an inbound webhook, `sessionauth` — a call authorized by the session of the current user |
 | `getAppId()` | The identifier of the application on behalf of which the call is made. Returns `null` for a webhook |
 
 The handler function can:
@@ -170,7 +170,7 @@ If the core generated an old-style error through `$APPLICATION->ThrowException()
 
 ## Step 3. Grant Access to Your Scope {#step-scope}
 
-Your scope appears in the list of permissions when a [local application](../../../local-integrations/local-apps.md) or an [incoming webhook](../../../local-integrations/local-webhooks.md) is created — in the *Applications > Developer resources* section. It is displayed by its code, `mycompany` for example: it has no title in the interface language.
+Your scope appears in the list of permissions when a [local application](../../../local-integrations/local-apps.md) or an [inbound webhook](../../../local-integrations/local-webhooks.md) is created — in the *Applications > Developer resources* section. It is displayed by its code, `mycompany` for example: it has no title in the interface language.
 
 The list of scopes is cached for seven days. The cache is force-reset only when modules are installed or removed, and an event handler in `init.php` is not a module. Therefore, after adding a new scope, reset the cache by calling `\Bitrix\Rest\Engine\ScopeManager::cleanCache()`.
 

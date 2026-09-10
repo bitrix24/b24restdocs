@@ -6,15 +6,15 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-An incoming queue helps receive [REST API events](../../api-reference/events/index.md) and outgoing webhooks without overloading the handler. The handler verifies the request source, stores the data in a queue, and responds to Bitrix24. Separate workers perform resource-intensive business logic asynchronously. This approach complements the general [performance recommendations](./index.md).
+An incoming queue helps receive [REST API events](../../api-reference/events/index.md) and outbound webhooks without overloading the handler. The handler verifies the request source, stores the data in a queue, and responds to Bitrix24. Separate workers perform resource-intensive business logic asynchronously. This approach complements the general [performance recommendations](./index.md).
 
 ## Basic Principle
 
 1. **Requests arrive at the server.** When Bitrix24 sends an HTTP request, it reaches the server or load balancer. Verify the request source using `auth.application_token`:
    - for an application event, compare it with the token retained by the application during installation
-   - for an outgoing webhook, compare it with the value of the *Application token* field in the webhook settings
+   - for an outbound webhook, compare it with the value of the *Application token* field in the webhook settings
 
-   For details, see [Security in Event Handlers](../../api-reference/events/safe-event-handlers.md). Outgoing webhook setup is described in [Incoming and Outgoing Webhooks](../../local-integrations/local-webhooks.md).
+   For details, see [Security in Event Handlers](../../api-reference/events/safe-event-handlers.md). Outbound webhook setup is described in [Inbound and Outbound Webhooks](../../local-integrations/local-webhooks.md).
 2. **Requests are added to the queue.** Store the request data in a database or message queue. Return a successful HTTP response only after the data has been stored reliably. Perform resource-intensive business logic asynchronously after responding.
 3. **Requests are retrieved from the queue.** One or more workers retrieve and process requests sequentially or in parallel, depending on available resources.
 

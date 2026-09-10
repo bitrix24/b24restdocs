@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-In event handlers for applications and outgoing webhooks, verify that the request was sent by Bitrix24 rather than a third-party service. For this check, Bitrix24 passes `auth.application_token` to the handler.
+In event handlers for applications and outbound webhooks, verify that the request was sent by Bitrix24 rather than a third-party service. For this check, Bitrix24 passes `auth.application_token` to the handler.
 
 For an application, the parameter is first passed to the [`ONAPPINSTALL`](../common/events/on-app-install.md) event handler together with the authorization data of the user who installed the application. The `ONAPPINSTALL` event handler can verify the received `access_token` and retain `application_token`. Other event handlers must then compare the incoming `auth.application_token` with the retained value.
 
@@ -14,7 +14,7 @@ If the application receives the [`ONAPPUPDATE`](../common/events/on-app-update.m
 
 It is especially important to verify the token in the [`ONAPPUNINSTALL`](../common/events/on-app-uninstall.md) event handler, because no authorization data is passed to it: the application has already been removed from Bitrix24. For `ONAPPUNINSTALL`, comparing `application_token` with the retained value becomes the only way to make sure that the event handler was called by Bitrix24.
 
-For an outgoing webhook, the token is created in the Bitrix24 interface after the webhook is saved. Retain the value of the *Application token* field in the outgoing webhook form and compare it with `auth.application_token` in incoming requests.
+For an outbound webhook, the token is created in the Bitrix24 interface after the webhook is saved. Retain the value of the *Application token* field in the outbound webhook form and compare it with `auth.application_token` in incoming requests.
 
 ## Where application_token Is Passed
 
@@ -51,7 +51,7 @@ Retain the `auth` keys required to verify incoming events.
 || **Key**
 `type` | **What to Retain** | **How to Use** ||
 || **auth.application_token**
-[`string`](../data-types.md) | For an application, retain the value when handling the [`ONAPPINSTALL`](../common/events/on-app-install.md) event and update it when handling the [`ONAPPUPDATE`](../common/events/on-app-update.md) event. For an outgoing webhook, retain the value of the *Application token* field | Compare it with `auth.application_token`, which is passed to each event handler ||
+[`string`](../data-types.md) | For an application, retain the value when handling the [`ONAPPINSTALL`](../common/events/on-app-install.md) event and update it when handling the [`ONAPPUPDATE`](../common/events/on-app-update.md) event. For an outbound webhook, retain the value of the *Application token* field | Compare it with `auth.application_token`, which is passed to each event handler ||
 || **auth.member_id**
 [`string`](../data-types.md) | Retain the Bitrix24 ID together with the token | Use it to find the retained token if one handler receives events from several Bitrix24 accounts ||
 |#

@@ -10,7 +10,7 @@ Applications can register custom activity types: upload a custom icon and specif
 
 {% note warning %}
 
-Methods `crm.activity.type.add`, `crm.activity.type.list`, and `crm.activity.type.delete` work only within the context of an [application](../../../../../settings/app-installation/index.md) and are available to the administrator. Calling them via an incoming webhook will return error `Application context required`.
+Methods `crm.activity.type.add`, `crm.activity.type.list`, and `crm.activity.type.delete` work only within the context of an [application](../../../../../settings/app-installation/index.md) and are available to the administrator. Calling them via an inbound webhook will return error `Application context required`.
 
 {% endnote %}
 

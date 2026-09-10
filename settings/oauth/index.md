@@ -30,7 +30,7 @@ If at least one statement is false, choose another way to obtain tokens.
 || Complete OAuth 2.0 protocol | The application operates outside the Bitrix24 interface and walks the user through authorization itself ||
 || [Simplified Version](simple-way.md) | The application opens in a frame inside the Bitrix24 interface and receives ready-made tokens every time it opens ||
 || [Installation Callback](../app-installation/local-apps/installation-callback.md) | The application has no interface, and the tokens arrive at a handler right after installation ||
-|| [Incoming Webhook](../../local-integrations/local-webhooks.md) | The integration works in a single Bitrix24 and is not distributed to other users ||
+|| [Inbound Webhook](../../local-integrations/local-webhooks.md) | The integration works in a single Bitrix24 and is not distributed to other users ||
 |#
 
 ## How the Protocol Works

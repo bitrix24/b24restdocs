@@ -43,7 +43,7 @@ Next, we will break down this scenario step by step: prepare the application, re
 
 To test the scenario, create an [application](../../settings/app-installation/index.md) or a [Local application](../../settings/app-installation/local-apps/index.md). The application requires the [`messageservice`](../../api-reference/scopes/permissions.md) scope, saved authorization data after installation, and a handler on an external server.
 
-The [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md) and [messageservice.message.status.update](../../api-reference/messageservice/messageservice-message-status-update.md) methods only work within the context of an installed application. Call them from the application interface via the JS SDK or from the application server using an OAuth token. An incoming webhook is not suitable for this scenario: the methods will return error `Application context required`.
+The [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md) and [messageservice.message.status.update](../../api-reference/messageservice/messageservice-message-status-update.md) methods only work within the context of an installed application. Call them from the application interface via the JS SDK or from the application server using an OAuth token. An inbound webhook is not suitable for this scenario: the methods will return error `Application context required`.
 
 If an application with an interface performs configuration in the installation wizard, complete the installation according to the rules on the [Completing Application Installation](../../settings/app-installation/installation-finish.md) page.
 

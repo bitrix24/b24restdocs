@@ -26,7 +26,7 @@ The document file and links to it are not passed in the event. To retrieve `pdfU
 
 You can subscribe to document events through:
 
-- [outgoing webhook](../../../../../local-integrations/local-webhooks.md)
+- [outbound webhook](../../../../../local-integrations/local-webhooks.md)
 - [application](../../../../../settings/app-installation/index.md) and the method [event.bind](../../../../events/event-bind.md)
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Event Processing in Bitrix24](../../../../events/test-handler.md).

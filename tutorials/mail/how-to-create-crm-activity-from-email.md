@@ -32,7 +32,7 @@ As a result, the e-mail will have a link in the `bindings` field, and a CRM acti
 
 Before running the tutorial, check that:
 
-- an incoming webhook is created with the `mail` scope
+- an inbound webhook is created with the `mail` scope
 - the webhook user has access to the mailbox with the incoming e-mail
 - CRM is enabled and configured, and the webhook user has CRM access
 - the e-mail is available to the current user and has not been deleted

@@ -22,7 +22,7 @@ Four different tokens are encountered in bot calls. Only `access_token` must be 
 
 #|
 || **Token** | **Where it is passed** | **Where it comes from** | **Lifespan** ||
-|| Webhook code — denoted as `{webhook_token}` in URL schemes | In the request path: `/rest/{user_id}/{webhook_token}/{method}`, where `{user_id}` is the ID of the user who created the webhook | Created in the Bitrix24 interface when setting up an [incoming webhook](../../local-integrations/local-webhooks.md) | Valid until the webhook is deleted ||
+|| Webhook code — denoted as `{webhook_token}` in URL schemes | In the request path: `/rest/{user_id}/{webhook_token}/{method}`, where `{user_id}` is the ID of the user who created the webhook | Created in the Bitrix24 interface when setting up an [inbound webhook](../../local-integrations/local-webhooks.md) | Valid until the webhook is deleted ||
 || `botToken` | As a request parameter along with `botId` | Set by you in `fields.botToken` when registering a bot using the [imbot.v2.Bot.register](./chat-bots-v2/imbot.v2/bots/bot-register.md) method | Valid until you change it using the [imbot.v2.Bot.update](./chat-bots-v2/imbot.v2/bots/bot-update.md) method ||
 || `access_token` | As the `auth` parameter | Issued by the [OAuth server](../../settings/oauth/index.md) upon application installation and again with each [token pair refresh](#refresh). An application with a UI receives a ready-to-use token in the `AUTH_ID` parameter upon each opening — this is a [simplified way to obtain tokens](../../settings/oauth/simple-way.md) | One hour ||
 || `refresh_token` | Not passed in method calls — only in the request to refresh the token pair | Issued by the OAuth server along with `access_token` | 180 days ||
@@ -33,14 +33,14 @@ Four different tokens are encountered in bot calls. Only `access_token` must be 
 ## How to Choose an Authorization Method {#auth-modes}
 
 #|
-|| **Criterion** | **Incoming webhook** | **OAuth** ||
+|| **Criterion** | **Inbound webhook** | **OAuth** ||
 || When to use | Local integration, AI agent, testing within a single Bitrix24 | Market application or an internal application working across multiple Bitrix24 instances ||
 || Request format | `POST https://{portal}/rest/{user_id}/{webhook_token}/{method}` | `POST https://{portal}/rest/{method}` with parameter `auth`. The token can also be passed in the query string — `?auth={access_token}`, and in the request body ||
 || `botToken` parameter | Mandatory for all `imbot.v2` methods, except for [imbot.v2.Revision.get](./chat-bots-v2/imbot.v2/revision-get.md). In [imbot.v2.Bot.register](./chat-bots-v2/imbot.v2/bots/bot-register.md), it is passed inside `fields.botToken`, in other methods — as a top-level parameter | Not needed: the bot is linked to the application via `client_id` ||
 || Token refresh | Not required | Required when `access_token` has expired ||
 |#
 
-Calls via an incoming webhook are performed only via the HTTPS protocol: if accessed via HTTP, an error `INVALID_REQUEST` with the description `Https required` will be returned. Such calls are performed with the permissions of the user who created the webhook and within the scope selected for the webhook.
+Calls via an inbound webhook are performed only via the HTTPS protocol: if accessed via HTTP, an error `INVALID_REQUEST` with the description `Https required` will be returned. Such calls are performed with the permissions of the user who created the webhook and within the scope selected for the webhook.
 
 A detailed description of both methods is available in the [Authorization](./chat-bots-v2/index.md#auth) section.
 

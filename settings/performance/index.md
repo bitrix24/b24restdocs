@@ -36,7 +36,7 @@ Bitrix24 counts not only the rate of requests but also their execution time. In 
 
 If calls are already blocked by a limit, repeat them with an increasing delay. For the breakdown of the `QUERY_LIMIT_EXCEEDED` and `OPERATION_TIME_LIMIT` errors, see the article [REST API Limits](./limits.md#how-to-respond-to-limit-errors).
 
-## How to Handle Events and Outgoing Webhooks {#events}
+## How to Handle Events and Outbound Webhooks {#events}
 
 [Events](../../api-reference/events/index.md) are delivered by a separate service — the event queue. It calls the handler that your integration has registered. The rate of these calls is driven by user actions, and you cannot regulate it.
 

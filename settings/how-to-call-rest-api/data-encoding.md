@@ -8,7 +8,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 When sending REST requests, special characters in parameters can disrupt the URL structure. This can lead to errors or incorrect data.
 
-For example, if you need to create a lead with the name `John&Martin` via an incoming webhook, according to the documentation for the method [crm.lead.add](../../api-reference/crm/leads/crm-lead-add.md), the request URL should look like this:
+For example, if you need to create a lead with the name `John&Martin` via an inbound webhook, according to the documentation for the method [crm.lead.add](../../api-reference/crm/leads/crm-lead-add.md), the request URL should look like this:
 
 ```curl
 https://b24-abcdef.bitrix24.com/rest/1/xxxxxxx/crm.lead.add?fields[TITLE]=John&Martin

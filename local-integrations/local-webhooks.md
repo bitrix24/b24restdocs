@@ -1,4 +1,4 @@
-# Incoming and Outgoing Webhooks
+# Inbound and Outbound Webhooks
 
 {% note tip "" %}
 
@@ -6,50 +6,50 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Webhooks are suitable for local integrations in a single Bitrix24 account. An incoming webhook calls REST API methods on behalf of the employee who created it. An outgoing webhook sends a Bitrix24 event to your handler URL.
+Webhooks are suitable for local integrations in a single Bitrix24 account. An inbound webhook calls REST API methods on behalf of the employee who created it. An outbound webhook sends a Bitrix24 event to your handler URL.
 
 ## What to Choose
 
 #|
 || **Tool** | **What It Does** | **When It Fits** | **What to Consider** ||
-|| Incoming webhook | Calls REST API methods through a secret URL | Quick integrations, tests, scripts, and data exchange with an external system | Works within the `scope` and employee permissions. Some methods require the application context and are not available through a webhook ||
-|| Outgoing webhook | Sends a Bitrix24 event to your handler URL | Reacting to data changes, starting synchronization, and notifying an external system | The handler must be available from the external network. To retrieve full object data, an additional method call is usually required ||
+|| Inbound webhook | Calls REST API methods through a secret URL | Quick integrations, tests, scripts, and data exchange with an external system | Works within the `scope` and employee permissions. Some methods require the application context and are not available through a webhook ||
+|| Outbound webhook | Sends a Bitrix24 event to your handler URL | Reacting to data changes, starting synchronization, and notifying an external system | The handler must be available from the external network. To retrieve full object data, an additional method call is usually required ||
 |#
 
-## Incoming Webhook {#incoming-webhook}
+## Inbound Webhook {#incoming-webhook}
 
-Choose an incoming webhook for internal integrations and quick checks when:
+Choose an inbound webhook for internal integrations and quick checks when:
 
-- you need to quickly test a method call in the browser, request generator, or with `curl`
+- you need to quickly test a method call in the browser, request builder, or with `curl`
 - the integration works with only one Bitrix24 account
 - requests must be executed on behalf of a specific employee
 - you do not need an application interface, event handler, or solution installation on other Bitrix24 accounts
 
-### How an Incoming Webhook Works
+### How an Inbound Webhook Works
 
-Incoming webhook permissions are defined by the employee who created it and the selected `scope` list:
+Inbound webhook permissions are defined by the employee who created it and the selected `scope` list:
 
-- an incoming webhook can be created by an administrator or by an employee for whom the administrator has allowed webhook creation
+- an inbound webhook can be created by an administrator or by an employee for whom the administrator has allowed webhook creation
 - the Bitrix24 account must have [access to the REST API](../first-steps/access-to-rest-api.md)
 - requests are executed within the [scope](../api-reference/scopes/permissions.md) selected in the webhook settings
 - requests are executed with the permissions of the employee who created the webhook
 - the webhook secret code is available only to the employee who created it. If an administrator edits another user's webhook, the secret code is updated and the administrator becomes the webhook owner
 - some methods are not available through a webhook because they require the application context. For example, widget embedding methods such as [placement.bind](../api-reference/widgets/placement-bind.md), some [telephony](../api-reference/telephony/index.md) methods, and some [chatbot](../api-reference/chat-bots/index.md) scenarios
-- the incoming webhook mechanism supports an expiration date. If the expiration date has passed, the request stops working and returns an authorization error
+- the inbound webhook mechanism supports an expiration date. If the expiration date has passed, the request stops working and returns an authorization error
 
-### How to Create an Incoming Webhook
+### How to Create an Inbound Webhook
 
-Create webhooks in *Applications > Developer resources*. If a ready-made scenario fits your case, select it on the *Ready-made scenarios* tab and open its settings. If there is no suitable scenario, create an incoming webhook on the *Ready-made scenarios > Other* tab.
+Create webhooks in *Applications > Developer resources*. If a ready-made scenario fits your case, select it on the *Common use cases* tab and open its settings. If there is no suitable scenario, create an inbound webhook on the *Common use cases > Other* tab.
 
 1. Open *Applications > Developer resources*
-2. Go to *Ready-made scenarios > Other > Incoming webhook*
-3. In the request generator, select a method and fill in parameters if required
+2. Go to *Common use cases > Other > Inbound webhook*
+3. In the request builder, select a method and fill in parameters if required
 4. Click *Execute* to test the call
-5. Specify access permissions and click *Create*
+5. In the *Assign permissions* section, select the required permissions and click *Create*
 
-In the request generator, you can select a method, view the method and parameter descriptions, fill in parameters, execute the request, and download a ready-made PHP code example.
+In the request builder, you can select a method, view the method and parameter descriptions, fill in parameters, execute the request, and download a ready-made PHP code example.
 
-If the *Incoming webhook* item is missing, the permission to create webhooks is disabled. Ask the administrator to [grant access to webhook creation](#webhook-access).
+If the *Inbound webhook* item is missing, the permission to create webhooks is disabled. Ask the administrator to [grant access to webhook creation](#webhook-access).
 
 ### Webhook URL Structure
 
@@ -81,9 +81,9 @@ An employee without administrator permissions cannot grant this access to themse
 
 1. Open *Settings > Bitrix24 settings*. The section is available only to employees with administrator permissions.
 2. In the new window, go to *Security > Bitrix24 integrations*.
-3. In the *Who can create incoming webhooks* field, click *Add* and select all employees or selected users
+3. In the *Who can create inbound webhooks* field, click *Add* and select all employees or selected users
 
-![Configure Access to Incoming Webhook Creation](../first-steps/_images/webhook.png)
+![Configure Access to Inbound Webhook Creation](../first-steps/_images/webhook.png)
 
 {% note tip "User Documentation" %}
 
@@ -93,7 +93,7 @@ An employee without administrator permissions cannot grant this access to themse
 
 ### How to Quickly Test a Method with a GET Request
 
-On REST API method pages, webhook calls are shown as POST requests. A GET request can be executed in the browser address bar or in the request generator when creating an incoming webhook.
+On REST API method pages, webhook calls are shown as POST requests. A GET request can be executed in the browser address bar or in the request builder when creating an inbound webhook.
 
 This format is suitable when you need to quickly test a simple call and see how parameters look in the URL.
 
@@ -141,34 +141,34 @@ Before production launch, check that:
 - your Bitrix24 account has [access to the REST API](../first-steps/access-to-rest-api.md)
 - requests are sent over HTTPS
 
-## Outgoing Webhook {#outgoing-webhook}
+## Outbound Webhook {#outgoing-webhook}
 
-Choose an outgoing webhook when:
+Choose an outbound webhook when:
 
 - an external system must automatically learn about changes in Bitrix24
 - synchronization must start after an object is created or changed
 - it is enough to receive the event and object identifier, and detailed data can be requested with a separate method
 
-### How an Outgoing Webhook Works
+### How an Outbound Webhook Works
 
-An outgoing webhook does not call a method by itself. It passes an event to your handler, and the handler decides whether an additional REST API request is required:
+An outbound webhook does not call a method by itself. It passes an event to your handler, and the handler decides whether an additional REST API request is required:
 
 - you select an event and handler URL
 - when the event occurs, Bitrix24 sends a POST request to this URL
 - the handler receives the event name, basic object data, and service authorization fields
-- if full object data is required, the handler usually calls the corresponding method through an incoming webhook or an application
+- if full object data is required, the handler usually calls the corresponding method through an inbound webhook or an application
 
-### How to Create an Outgoing Webhook
+### How to Create an Outbound Webhook
 
 1. Open *Applications > Developer resources*
-2. Go to *Ready-made scenarios > Other > Outgoing webhook*
+2. Go to *Common use cases > Other > Outbound webhook*
 3. Specify your handler URL
 4. Select the event the webhook should react to
 5. Click *Create* and test the call after a test data change
 
 The handler URL must be public and available from the external network. Do not specify `localhost`, local network addresses, or handlers with a self-signed SSL certificate.
 
-When you create an outgoing webhook, Bitrix24 shows a token. It is required so that the handler can verify that the request actually came from your Bitrix24 account.
+When you create an outbound webhook, Bitrix24 shows a token. It is required so that the handler can verify that the request actually came from your Bitrix24 account.
 
 ### What the Handler Receives
 
@@ -201,7 +201,7 @@ Request parameters:
 
 #|
 || **Parameter** | **Type** | **Description** ||
-|| `event` | [`string`](../api-reference/data-types.md) | Name of the event that triggered the outgoing webhook ||
+|| `event` | [`string`](../api-reference/data-types.md) | Name of the event that triggered the outbound webhook ||
 || `data` | [`object`](../api-reference/data-types.md) | Event data. For CRM events, the object identifier usually comes in `data[FIELDS][ID]` ||
 || `ts` | [`integer`](../api-reference/data-types.md) | Event sending time in Unix timestamp format ||
 || `auth` | [`object`](../api-reference/data-types.md) | Service authorization data, including `domain`, `member_id`, and `application_token` ||
@@ -211,14 +211,14 @@ In a typical scenario, the handler takes the deal identifier from `data[FIELDS][
 
 ### How to Verify Request Authenticity
 
-Compare the `auth[application_token]` value in the request with the token value shown in the outgoing webhook settings. If the values do not match, the request cannot be considered trusted.
+Compare the `auth[application_token]` value in the request with the token value shown in the outbound webhook settings. If the values do not match, the request cannot be considered trusted.
 
-### Outgoing Webhook Limitations
+### Outbound Webhook Limitations
 
-Before configuring an outgoing webhook, consider that:
+Before configuring an outbound webhook, consider that:
 
-- in the on-premise version of Bitrix24, an active license is required for an outgoing webhook
-- outgoing webhooks are not available in demo modes
+- in the on-premise version of Bitrix24, an active license is required for an outbound webhook
+- outbound webhooks are not available in demo modes
 - the handler URL must be available from the external network and accept POST requests
 - for the on-premise version, you need to open the required [network access](../settings/cloud-and-on-premise/network-access.md)
 

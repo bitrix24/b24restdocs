@@ -49,7 +49,7 @@ Upon saving, the server checks whether `stageId` belongs to the selected pipelin
 
 ## 1. Prepare the Environment
 
-Create an [Incoming webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) with `crm` and `user_brief` permissions.
+Create an [Inbound webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) with `crm` and `user_brief` permissions.
 
 {% note warning "Keep the webhook secret" %}
 
@@ -1257,7 +1257,7 @@ For additional verification, call [crm.item.get](../../../api-reference/crm/univ
 
 #|
 || Symptom | Cause | What to check and how to proceed ||
-|| Requests end with an authorization error | Webhook address is incorrect or the webhook has been deleted | Check the domain and `USER_ID/TOKEN`, if necessary create a new incoming webhook and retry opening the form ||
+|| Requests end with an authorization error | Webhook address is incorrect or the webhook has been deleted | Check the domain and `USER_ID/TOKEN`, if necessary create a new inbound webhook and retry opening the form ||
 || `The request requires higher privileges than provided by the webhook token.` | The webhook lacks the `user_brief` scope required for [user.get](../../../api-reference/user/user-get.md) | Add the `user_brief` scope to the webhook permissions and reload the form page ||
 || `ACCESS_DENIED` or `Access denied.` when opening or saving the form | The webhook user lacks permissions for the deal or access to CRM settings for [crm.currency.list](../../../api-reference/crm/currency/crm-currency-list.md) | Grant read, add, and edit permissions for deals and access to CRM settings, then retry opening or saving the form ||
 || Deal does not open via `ID` | Identifier does not exist or the deal is unavailable to the user | Verify the identifier using the [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md) method as the same user, then open the form with an available `ID` ||

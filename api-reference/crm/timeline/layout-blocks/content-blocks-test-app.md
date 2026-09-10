@@ -49,7 +49,7 @@ To verify, prepare the following:
 - A deal where a test comment can be created to test the second mode
 - Browser access to the jsDelivr CDN and the address `api.bitrix24.com`
 
-../activities/layout-blocks/index.md ([Additional Activity Block Methods]) and ./index.md ([Additional Timeline Block Methods]) work only within the context of an installed application. An incoming webhook is not suitable for this example.
+../activities/layout-blocks/index.md ([Additional Activity Block Methods]) and ./index.md ([Additional Timeline Block Methods]) work only within the context of an installed application. An inbound webhook is not suitable for this example.
 
 The application supplements the list of CRM types using the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method. This method requires administrative access to the CRM. If permissions are insufficient, the application will display an error but will retain the standard types in the list: leads, deals, contacts, companies, estimates, and invoices.
 

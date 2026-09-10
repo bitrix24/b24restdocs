@@ -6,7 +6,7 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-B24PySDK is the official Python SDK for the Bitrix24 REST API. It provides a convenient Python interface to API methods, supports authorization via incoming webhooks and the OAuth protocol, validates request types and parameters before sending, returns data in standard Python structures, and unifies REST API error handling.
+B24PySDK is the official Python SDK for the Bitrix24 REST API. It provides a convenient Python interface to API methods, supports authorization via inbound webhooks and the OAuth protocol, validates request types and parameters before sending, returns data in standard Python structures, and unifies REST API error handling.
 
 The SDK includes integrations for Django, FastAPI, and Flask: these help validate data sent by Bitrix24 when opening an application, calling event handlers, or working with workflows.
 
@@ -19,7 +19,7 @@ Use B24PySDK if:
 
 B24PySDK supports:
 
-1. Authorization via [incoming webhooks](../../local-integrations/local-webhooks.md) and the [OAuth protocol](../../settings/oauth/index.md);
+1. Authorization via [inbound webhooks](../../local-integrations/local-webhooks.md) and the [OAuth protocol](../../settings/oauth/index.md);
 2. Type hints and IDE autocompletion for available methods and parameters;
 3. Argument type validation before sending a request;
 4. Pagination for list methods via `.as_list()` and `.as_list_fast()`;
@@ -79,9 +79,9 @@ pip install "b24pysdk[flask]"
 
 The SDK repository is available on GitHub: [bitrix24/b24pysdk](https://github.com/bitrix24/b24pysdk).
 
-## Using with Incoming Webhooks
+## Using with Inbound Webhooks
 
-To connect the SDK to an incoming webhook, provide the account domain and the webhook code in the `user_id/webhook_key` format. For example, for a webhook `https://example.bitrix24.com/rest/1/abcdef/` the domain will be `example.bitrix24.com`, and the webhook code is `1/abcdef`.
+To connect the SDK to an inbound webhook, provide the account domain and the webhook code in the `user_id/webhook_key` format. For example, for a webhook `https://example.bitrix24.com/rest/1/abcdef/` the domain will be `example.bitrix24.com`, and the webhook code is `1/abcdef`.
 
 ```python
 from b24pysdk import BitrixWebhook, Client

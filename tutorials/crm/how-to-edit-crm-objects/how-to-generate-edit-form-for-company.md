@@ -42,7 +42,7 @@ The form takes the following from the responses and field descriptions:
 
 ## 1. Prepare the Environment
 
-Create an [incoming webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) with `crm` and `user_brief` permissions. For the first run, you can create a webhook on behalf of an administrator. This is a recommendation rather than a REST requirement: the webhook user needs "read" permission for CRM object items, "add" permission for CRM object items, "write" permission for CRM object items, and access to CRM settings.
+Create an [inbound webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) with `crm` and `user_brief` permissions. For the first run, you can create a webhook on behalf of an administrator. This is a recommendation rather than a REST requirement: the webhook user needs "read" permission for CRM object items, "add" permission for CRM object items, "write" permission for CRM object items, and access to CRM settings.
 
 A webhook executes requests with the permissions of the user who created it. Do not publish files containing the webhook value in public repositories.
 

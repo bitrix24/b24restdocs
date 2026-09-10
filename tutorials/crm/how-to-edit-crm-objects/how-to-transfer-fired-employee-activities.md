@@ -38,7 +38,7 @@ As a result, the responsible person will change for regular, system, and univers
 
 Check access conditions and prepare the input data:
 
-- an incoming webhook is created for a user who can see the terminated employee's activities and can modify the CRM items to which these activities are linked
+- an inbound webhook is created for a user who can see the terminated employee's activities and can modify the CRM items to which these activities are linked
 - the webhook permissions include the `crm` and `user_basic` scopes
 - you know the name, last name, e-mail, or another attribute of the terminated employee
 - if the activities must be transferred, you know the name, last name, e-mail, or identifier of the new responsible person
@@ -551,7 +551,7 @@ After splitting, the code has three local arrays: `base`, `todos`, and `configur
 
 ### If the List Contains App Activities
 
-Do not pass activities from the `configurable` array to the update methods in this scenario. An incoming webhook cannot update activities with `PROVIDER_ID: CONFIGURABLE_REST_APP`, because such activities are modified only by the application that created them.
+Do not pass activities from the `configurable` array to the update methods in this scenario. An inbound webhook cannot update activities with `PROVIDER_ID: CONFIGURABLE_REST_APP`, because such activities are modified only by the application that created them.
 
 Store these activities separately:
 

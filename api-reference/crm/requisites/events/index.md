@@ -16,7 +16,7 @@ Detailed information on working with events is described in the article [Concept
 
 You can subscribe to requisite events through:
 
-- an [outgoing webhook](../../../../local-integrations/local-webhooks.md)
+- an [outbound webhook](../../../../local-integrations/local-webhooks.md)
 - an [application](../../../../settings/app-installation/index.md) and the [event.bind](../../../events/event-bind.md) method
 
 An example of a handler code for an event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).

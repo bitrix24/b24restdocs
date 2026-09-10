@@ -25,7 +25,7 @@ The scenario consists of four steps.
 
 {% note info "" %}
 
-`bizproc.robot.*` methods work only within an [application](../../settings/app-installation/index.md) context. An incoming webhook will return the `ACCESS_DENIED` error with the description `Application context required`.
+`bizproc.robot.*` methods work only within an [application](../../settings/app-installation/index.md) context. An inbound webhook will return the `ACCESS_DENIED` error with the description `Application context required`.
 
 {% endnote %}
 

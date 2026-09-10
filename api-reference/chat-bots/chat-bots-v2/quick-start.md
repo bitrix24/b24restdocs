@@ -18,11 +18,11 @@ Before you begin, check the [API imbot.v2 Change Log](./change-log.md). It conta
 
 {% endnote %}
 
-## Creating an Incoming Webhook {#webhook-create}
+## Creating an Inbound Webhook {#webhook-create}
 
-To get started quickly, create an incoming webhook in the Bitrix24 interface:
+To get started quickly, create an inbound webhook in the Bitrix24 interface:
 
-1. Go to `Developer resources -> Other -> Incoming Webhook`.
+1. Go to `Developer resources -> Other -> Inbound Webhook`.
 2. In the permissions, select the scope `imbot`.
 3. Save and copy the webhook URL.
 

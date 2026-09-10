@@ -32,7 +32,7 @@ As a result, the responsible person will change for tasks where the user who cre
 
 Check access conditions and prepare the input data:
 
-- an incoming webhook is created for a user who can see the terminated employee's tasks and has permission to delegate these tasks
+- an inbound webhook is created for a user who can see the terminated employee's tasks and has permission to delegate these tasks
 
 - the webhook permissions include the `task` and `user_basic` scopes
 

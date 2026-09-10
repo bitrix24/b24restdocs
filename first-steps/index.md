@@ -32,7 +32,7 @@ Choose a path based on your task:
 Before you start, make sure that:
 
 - you have a Bitrix24 account where the REST API is available. If you do not have access, start with [How to Access the REST API](./access-to-rest-api.md)
-- an authorization method is selected: an incoming webhook, a local application, or a mass-market application. The settings are described in [Configuring and Using the REST API](../settings/index.md)
+- an authorization method is selected: an inbound webhook, a local application, or a mass-market application. The settings are described in [Configuring and Using the REST API](../settings/index.md)
 - access permissions are configured for the Bitrix24 tools your integration needs. The list of [available scopes](../api-reference/scopes/permissions.md) depends on the methods the application will call
 - webhook secrets, tokens, and application keys are not exposed in public code or logs
 - the integration accounts for [REST API limits](../settings/performance/limits.md) on the number of requests
@@ -65,7 +65,7 @@ The section also includes the article [Configuring Access: Cloud and On-Premise 
 
 ## Your First API Request {#first-call}
 
-The [How to Make Your First API Request](./first-rest-api-call.md) section explains how to create an incoming webhook and perform your first REST API method call. This allows you to verify the API functionality and the correctness of your settings.
+The [How to Make Your First API Request](./first-rest-api-call.md) section explains how to create an inbound webhook and perform your first REST API method call. This allows you to verify the API functionality and the correctness of your settings.
 
 ## Code Examples {#examples}
 

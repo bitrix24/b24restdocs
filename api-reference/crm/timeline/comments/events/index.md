@@ -16,7 +16,7 @@ Detailed information on working with events is described in the article [Concept
 
 You can subscribe to timeline comment events through:
 
-- [outgoing webhook](../../../../../local-integrations/local-webhooks.md)
+- [outbound webhook](../../../../../local-integrations/local-webhooks.md)
 - [application](../../../../../settings/app-installation/index.md) and the [event.bind](../../../../events/event-bind.md) method
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../../events/test-handler.md).

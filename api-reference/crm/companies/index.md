@@ -108,7 +108,7 @@ An application can react to changes in companies in almost real time. The events
 - [company events](./events/index.md) — creation, update, and deletion of a company
 - [company custom field events](./userfields/events/index.md) — creation, update, and deletion of a field, as well as a change in the set of values of a list field
 
-You can subscribe to the events through an outgoing webhook or through an application and the method [event.bind](../../events/event-bind.md).
+You can subscribe to the events through an outbound webhook or through an application and the method [event.bind](../../events/event-bind.md).
 
 ## Overview of Methods and Events {#all-methods}
 

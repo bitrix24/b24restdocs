@@ -24,7 +24,7 @@ Configuring the firewall itself, NAT, and the proxy remains the responsibility o
 
 An event travels from the on-premise Bitrix24 to the authorization server, and then a queue server sends a POST request to the handler. That is why the on-premise Bitrix24 does not need separate access to the queue servers: outgoing access to the authorization server is enough. On the application side, incoming requests from the queue servers are required. The mechanism is described in the [Events](../../api-reference/events/index.md) section.
 
-Handlers of [outgoing webhooks](../../local-integrations/local-webhooks.md) are called from the same queue servers — there is no need to open separate directions for them.
+Handlers of [outbound webhooks](../../local-integrations/local-webhooks.md) are called from the same queue servers — there is no need to open separate directions for them.
 
 The scheme changes if the on-premise Bitrix24 uses a [custom authorization provider](./on-premise/custom-auth-provider.md). In this case the Bitrix24 authorization server drops out of the scheme, and events are sent as a direct POST request from the on-premise Bitrix24 itself. Access to the authorization server and to the queue servers is not required, and the application server opens incoming requests from the on-premise Bitrix24.
 
@@ -39,7 +39,7 @@ Access from employee workstations to the application server is not covered here 
 || `oauth.bitrix.info` | Outgoing https | Application mechanism: installation, issuing and refreshing tokens, sending events to the queue | The application is not installed, tokens are not issued or refreshed, events do not reach the handlers ||
 || `*.bitrixsoft.com` | Outgoing http and https | Developer resources section, where integrations and webhooks are created | The Developer resources section does not work, an integration or a webhook cannot be created ||
 || `https://util.bitrixsoft.com/` | Outgoing https | Operation of the application storefront — the list of Bitrix24 Market applications in the on-premise Bitrix24. The address falls under the `*.bitrixsoft.com` mask, so a separate entry is not required when access is granted by mask | The application storefront does not work ||
-|| `https://www.bitrix24.*/util/` | Outgoing https | Event names in the outgoing webhook creation interface. Choose the domain that matches the region of your Bitrix24 | Event names are not displayed in the outgoing webhook creation interface ||
+|| `https://www.bitrix24.*/util/` | Outgoing https | Event names in the outbound webhook creation interface. Choose the domain that matches the region of your Bitrix24 | Event names are not displayed in the outbound webhook creation interface ||
 || Application servers | Incoming https | REST method calls from the application | The application cannot call REST methods ||
 |#
 

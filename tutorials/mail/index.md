@@ -26,7 +26,7 @@ Mail methods belong to REST 3.0. They must be called using an address with the `
 
 ## How to Get Started
 
-1. Create an [incoming webhook](../../local-integrations/local-webhooks.md#incoming-webhook) or an application with the `mail` scope
+1. Create an [inbound webhook](../../local-integrations/local-webhooks.md#incoming-webhook) or an application with the `mail` scope
 2. Check that the webhook user can see the required mailbox
 3. If you need to create an activity from an e-mail, check the user's CRM access
 4. Choose a tutorial in the [How to Choose a Tutorial](#choose-tutorial) table

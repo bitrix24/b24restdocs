@@ -14,7 +14,7 @@ Use B24JsSDK if:
 
 - the application opens within the Bitrix24 interface
 - the integration runs on a Node.js server
-- authorization via [incoming webhooks](../../local-integrations/local-webhooks.md) or the [OAuth protocol](../../settings/oauth/index.md) is required
+- authorization via [inbound webhooks](../../local-integrations/local-webhooks.md) or the [OAuth protocol](../../settings/oauth/index.md) is required
 - [batch requests](../../settings/how-to-call-rest-api/batch.md) and reading large lists in chunks are required
 
 [BX24.js](../bx24-js-sdk/index.md) solves a more specific task — it works only within the Bitrix24 interface and authorizes via the OAuth protocol. Other Bitrix24 libraries are described in the [SDK overview](../index.md).
@@ -26,7 +26,7 @@ The SDK provides three connection classes. The choice depends on where the code 
 #|
 || **Scenario** | **Class** | **Authorization** ||
 || The application opens inside the Bitrix24 interface | `B24Frame` | Current user token, the SDK receives it from Bitrix24 ||
-|| Server-side application with persistent access | `B24Hook` | Incoming webhook key ||
+|| Server-side application with persistent access | `B24Hook` | Inbound webhook key ||
 || Server-side application with OAuth authorization | `B24OAuth` | OAuth tokens, the SDK updates them automatically ||
 |#
 
@@ -34,7 +34,7 @@ The SDK provides three connection classes. The choice depends on where the code 
 
 {% note warning "" %}
 
-An incoming webhook URL contains a secret access key. Use `B24Hook` only on the server and store the URL in an environment variable. In a browser, any user can see the key — use `B24Frame` on the client side.
+An inbound webhook URL contains a secret access key. Use `B24Hook` only on the server and store the URL in an environment variable. In a browser, any user can see the key — use `B24Frame` on the client side.
 
 {% endnote %}
 
@@ -150,7 +150,7 @@ The page must open as an [application](../../settings/app-installation/index.md)
 
 ## First Call on the Server via Webhook
 
-Create an [incoming webhook](../../local-integrations/local-webhooks.md) in the **Developer resources** section and copy a URL such as `https://example.bitrix24.com/rest/1/webhook_key/`. Save the URL in an environment variable — the secret key should not be in the code.
+Create an [inbound webhook](../../local-integrations/local-webhooks.md) in the **Developer resources** section and copy a URL such as `https://example.bitrix24.com/rest/1/webhook_key/`. Save the URL in an environment variable — the secret key should not be in the code.
 
 The example uses `import` and `await` at the top level, so the file must be an ESM module: specify `"type": "module"` in `package.json` or use the `.mjs` file extension.
 
@@ -392,7 +392,7 @@ Error codes and the exception hierarchy are described in the [B24JsSDK documenta
 Ready-to-use examples are collected in the [b24sdk-examples](https://github.com/bitrix24/b24sdk-examples/tree/main/js) repository:
 
 - creating a Bitrix24-style interface
-- working via incoming webhooks
+- working via inbound webhooks
 - authorization via the OAuth protocol
 - connecting the UMD version in a browser
 - using the SDK on a Node.js server

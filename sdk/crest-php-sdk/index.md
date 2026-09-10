@@ -8,11 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 CRest PHP SDK is a set of PHP files for calling Bitrix24 methods from a server-side application. You place the files on your own web server, include `crest.php` in your code, and call methods through `CRest::call`.
 
-To let CRest reach Bitrix24, select a connection scenario: an incoming webhook, a local application, or a mass-market application. The table below helps you choose the right option.
+To let CRest reach Bitrix24, select a connection scenario: an inbound webhook, a local application, or a mass-market application. The table below helps you choose the right option.
 
 | If You Need to                                            | Select the Option                        |
 |-----------------------------------------------------------|------------------------------------------|
-| Set up an internal integration without creating an application | [Incoming Webhook](#incoming-webhook)     |
+| Set up an internal integration without creating an application | [Inbound Webhook](#incoming-webhook)     |
 | Create an application for a single Bitrix24               | [Local Application](#local-app)           |
 | Install the application on different Bitrix24 accounts    | [Mass-Market Application](#market-app)    |
 
@@ -27,11 +27,11 @@ First prepare the server, then set up one connection option from the table and m
 3. Make sure the [cURL](https://www.php.net/manual/en/book.curl.php) module is available on the server and a valid SSL certificate is installed
 4. Open the `checkserver.php` page in a browser at your site address, for example `https://your-domain.com/checkserver.php` — the script verifies that the cURL module is available and that CRest can retain its files
 
-### Set Up an Incoming Webhook {#incoming-webhook}
+### Set Up an Inbound Webhook {#incoming-webhook}
 
-An incoming webhook is a link with an access key that you can use to call Bitrix24 methods. A webhook is suitable for an internal integration without an application.
+An inbound webhook is a link with an access key that you can use to call Bitrix24 methods. A webhook is suitable for an internal integration without an application.
 
-Create an [incoming webhook](../../local-integrations/local-webhooks.md) in Bitrix24 and select its permissions — the example in this article requires CRM. Copy the full webhook URL into the `C_REST_WEB_HOOK_URL` constant in the `settings.php` file:
+Create an [inbound webhook](../../local-integrations/local-webhooks.md) in Bitrix24 and select its permissions — the example in this article requires CRM. Copy the full webhook URL into the `C_REST_WEB_HOOK_URL` constant in the `settings.php` file:
 
 ```php
 <?php
@@ -113,13 +113,13 @@ The [`crm.item.add`](../../api-reference/crm/universal/crm-item-add.md) method c
 
 ## Integration With Other Tools
 
-**User context.** The authorization method determines on whose behalf CRest performs requests. An incoming webhook performs requests on behalf of the user who created the webhook. Local and mass-market applications use the tokens of the user who installed the application by default. If you need to perform requests on behalf of the user who opened the application, set up [operation in the context of the current user](./using-in-users-context.md).
+**User context.** The authorization method determines on whose behalf CRest performs requests. An inbound webhook performs requests on behalf of the user who created the webhook. Local and mass-market applications use the tokens of the user who installed the application by default. If you need to perform requests on behalf of the user who opened the application, set up [operation in the context of the current user](./using-in-users-context.md).
 
 **Other SDKs.** To compare CRest with other libraries, see the [SDK Overview](../index.md). For PHP, [B24PhpSDK](../b24phpsdk/index.md) is also available.
 
 ## Key Considerations
 
-- Do not publish the incoming webhook URL, `client_secret`, or authorization tokens
+- Do not publish the inbound webhook URL, `client_secret`, or authorization tokens
 - Data access depends on the permissions of the user on whose behalf the request is performed. In addition, every method requires its own scope — a permission to work with a specific Bitrix24 section. See scope values in the [Permissions](../../api-reference/scopes/permissions.md) guide
 - If the project encoding differs from UTF-8, you may need to change the encoding of the SDK files and declare the `C_REST_CURRENT_ENCODING` constant in `settings.php`, for example `define('C_REST_CURRENT_ENCODING', 'windows-1251');`
 - For a mass-market application running on several Bitrix24 accounts, provide your own token storage. To do this, override the `getSettingData` and `setSettingData` methods: the basic implementation retains the tokens of a single Bitrix24 in the `settings.json` file and is not intended for this scenario. An example of inheriting the CRest class with an overridden method is on the page about [operation in the context of the current user](./using-in-users-context.md)

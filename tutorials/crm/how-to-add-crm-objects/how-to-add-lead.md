@@ -27,7 +27,7 @@ After that, we verify the result with the [crm.item.get](../../../api-reference/
 
 To run this example, you need:
 
-- an [incoming webhook](../../../local-integrations/local-webhooks.md) with the `crm` scope. The handler runs on the server: the page with the form does not use the webhook
+- an [inbound webhook](../../../local-integrations/local-webhooks.md) with the `crm` scope. The handler runs on the server: the page with the form does not use the webhook
 
 - permissions for the user on whose behalf the webhook is created: to add leads — for step 2, and to read leads — for the verification step
 
@@ -136,7 +136,7 @@ We retrieve the field values from the form. Each action of the handler is descri
 
 ### Receiving the Request and Connecting the SDK
 
-The handler receives a POST request at the address specified in the `handlerUrl` variable on the page with the form. We work with Bitrix24 through an incoming webhook.
+The handler receives a POST request at the address specified in the `handlerUrl` variable on the page with the form. We work with Bitrix24 through an inbound webhook.
 
 {% list tabs %}
 

@@ -34,7 +34,7 @@ The example consists of two files:
 
 ## 1. Prepare the Environment
 
-Create an [incoming webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) with `crm` and `user_brief` permissions. The webhook user requires permissions to read, add, and edit leads, read companies and contacts, and access CRM settings.
+Create an [inbound webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) with `crm` and `user_brief` permissions. The webhook user requires permissions to read, add, and edit leads, read companies and contacts, and access CRM settings.
 
 {% note warning "Keep the webhook secret" %}
 

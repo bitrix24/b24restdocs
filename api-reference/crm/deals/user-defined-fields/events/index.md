@@ -18,7 +18,7 @@ Detailed information on working with events is described in the article [Concept
 
 You can subscribe to events for custom deal fields through:
 
-- [Outgoing webhook](../../../../../local-integrations/local-webhooks.md)
+- [Outbound webhook](../../../../../local-integrations/local-webhooks.md)
 - [Application](../../../../../settings/app-installation/index.md) and the [event.bind](../../../../events/event-bind.md) method
 
 An example of a handler for the event is described in the article [How to Test Your Handler for Processing Events in Bitrix24](../../../../events/test-handler.md).

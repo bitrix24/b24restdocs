@@ -70,9 +70,9 @@ The example uses [BX24.js](../sdk/bx24-js-sdk/index.md). When the application op
     ![](./_images/local_add_4.jpg)
 2. Select *Static*
     ![Application creation form](./_images/static-local-added_new.png)
-3. Upload the application ZIP archive
+3. Upload the application ZIP archive in the *Archive containing your application (zip)* field
 4. Enable *Supports BitrixMobile* if the application must work in the Bitrix24 mobile app
-5. Specify a menu item name for at least one language
+5. Fill in the *Menu item text English (en)* field
 6. In the *Assign permissions* section, select the permissions required for the application's REST API calls
 7. Click *Create*
 

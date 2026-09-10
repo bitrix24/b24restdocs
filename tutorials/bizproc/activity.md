@@ -29,7 +29,7 @@ The scenario consists of four steps.
 
 ## Prepare the Application
 
-`bizproc.activity.add` and `bizproc.robot.add` work only within an [application](../../settings/app-installation/index.md) context. An incoming webhook will not work: the method will return the `ACCESS_DENIED` error with the description `Application context required`.
+`bizproc.activity.add` and `bizproc.robot.add` work only within an [application](../../settings/app-installation/index.md) context. An inbound webhook will not work: the method will return the `ACCESS_DENIED` error with the description `Application context required`.
 
 Before you start, prepare:
 

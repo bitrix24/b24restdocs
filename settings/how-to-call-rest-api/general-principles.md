@@ -18,7 +18,7 @@ https://your-domain.bitrix24.com/rest/method-name?param1=value1&param2=value2...
 
 ```
 
-In a real request, in addition to the method parameters, [authorization data](./authorization.md) is passed — either an incoming webhook code or an application OAuth token. Without them, the request will be rejected.
+In a real request, in addition to the method parameters, [authorization data](./authorization.md) is passed — either an inbound webhook code or an application OAuth token. Without them, the request will be rejected.
 
 The full address depends on the authorization method:
 

@@ -30,7 +30,7 @@ Events will not be sent to the application until the installation is complete. [
 
 ## How Events Work
 
-1. The application registers a handler for the desired event using the [event.bind](./event-bind.md) method, while an outgoing webhook is registered in the Bitrix24 interface.
+1. The application registers a handler for the desired event using the [event.bind](./event-bind.md) method, while an outbound webhook is registered in the Bitrix24 interface.
 2. The user performs an action in Bitrix24, such as modifying a task.
 3. Bitrix24 sends a notification to the handler URL via the queue server.
 
@@ -51,14 +51,14 @@ There are two ways to subscribe to an event.
 #|
 || **Subscription Method** | **How to Subscribe** | **Available Events** ||
 || [Application](../../settings/app-installation/index.md) | The [event.bind](./event-bind.md) method in the application code | All events, including [offline events](./offline-events.md) ||
-|| [Outgoing webhook](../../local-integrations/local-webhooks.md) | The list of events in the Bitrix24 interface | Only online events available in the webhook list ||
+|| [Outbound webhook](../../local-integrations/local-webhooks.md) | The list of events in the Bitrix24 interface | Only online events available in the webhook list ||
 |#
 
 The `event.bind` method works only in the context of application authorization. The list of events available to the application is returned by the [events](./events.md) method.
 
-### Subscribing via an Outgoing Webhook
+### Subscribing via an Outbound Webhook
 
-1. In Bitrix24, go to *Developer resources > Other > Outgoing webhook*.
+1. In Bitrix24, go to *Developer resources > Other > Outbound webhook*.
 2. Specify the handler URL.
 3. Select one or more events from the list, such as `OnCrmDealAdd`.
 4. Save the webhook. The *Application Token* field will be generated automatically.
@@ -97,7 +97,7 @@ Bitrix24 sends a request with content-type `application/x-www-form-urlencoded`. 
     }
     ```
 
-- Event Sent to an Outgoing Webhook
+- Event Sent to an Outbound Webhook
 
     ```json
     {
@@ -148,7 +148,7 @@ An event reports only the fact of a change. To retrieve the object data itself, 
 
 OAuth 2.0 tokens are tied to the user whose action triggered the event and inherit that user's permissions. A different user can be set in the `auth_type` parameter of the [event.bind](./event-bind.md) method.
 
-The set of `auth` keys depends on the subscription method. An outgoing webhook receives only `domain`, `client_endpoint`, `server_endpoint`, `member_id`, and `application_token` — OAuth 2.0 tokens and application data are not passed to a webhook.
+The set of `auth` keys depends on the subscription method. An outbound webhook receives only `domain`, `client_endpoint`, `server_endpoint`, `member_id`, and `application_token` — OAuth 2.0 tokens and application data are not passed to a webhook.
 
 Tokens are also not passed to an application if the action was performed not by a user but by an automation rule, workflow, or agent. In this case, Bitrix24 cannot determine on whose behalf to issue a token.
 

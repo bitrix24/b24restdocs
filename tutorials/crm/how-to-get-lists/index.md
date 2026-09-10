@@ -25,7 +25,7 @@ The exact permissions and scope of a specific scenario are listed in the header 
 ## How to Start
 
 1. Choose a scenario in the table of the appropriate group
-2. Create an [incoming webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) or an application with the required scopes and check the user permissions
+2. Create an [inbound webhook](../../../local-integrations/local-webhooks.md#incoming-webhook) or an application with the required scopes and check the user permissions
 3. Execute the methods in the order described in the scenario
 4. Use the retrieved identifiers in subsequent CRM or inventory management requests
 

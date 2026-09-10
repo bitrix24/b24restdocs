@@ -22,7 +22,7 @@ The approach and the logic of a solution stay relevant, but methods, parameters,
 || Build a custom widget for the Bitrix24 Vibe start page | [Episode 8. Bitrix24 Vibe: Custom Widgets for the Start Page](#vibe-widgets) ||
 || Keep OAuth tokens in a local application between requests | [Episode 7. Quick Start: Local Application with Token Storage](#local-app-token-storage) ||
 || Build a local application that reads its token from the request | [Episode 6. Quick Start: Local Application](#local-app) ||
-|| Make a first REST call without registering an application | [Episode 5. Quick Start with an Incoming Webhook](#incoming-webhook) ||
+|| Make a first REST call without registering an application | [Episode 5. Quick Start with an Inbound Webhook](#incoming-webhook) ||
 || Receive changes from Bitrix24 while your service is offline | [Episode 4. Offline Events](#offline-events) ||
 || Register your own automation rules and triggers | [Episode 3. Automation Rules and Triggers](#automation-rules) ||
 || Embed your application into the Bitrix24 interface | [Episode 2. Widgets, Tips, and Tricks](#widgets) ||
@@ -67,12 +67,12 @@ Materials:
 
 @[youtube](https://www.youtube.com/watch?v=bgbzmq63EsM)
 
-## Episode 5. Quick Start with an Incoming Webhook {#incoming-webhook}
+## Episode 5. Quick Start with an Inbound Webhook {#incoming-webhook}
 
 Materials:
 
 - [PHP example on GitHub](https://github.com/bitrix24/b24sdk-examples/tree/main/php/quick-start/simple/02a-webhook-demo) — webhook demo built with the SDK
-- [Incoming and Outgoing Webhooks](./local-integrations/local-webhooks.md) — how to create a webhook and what it can access
+- [Inbound and Outbound Webhooks](./local-integrations/local-webhooks.md) — how to create a webhook and what it can access
 - [Episode 6. Quick Start: Local Application](#local-app) — next step in the same track: a local application instead of a webhook
 
 @[youtube](https://www.youtube.com/watch?v=H5rBky_DJ4c)

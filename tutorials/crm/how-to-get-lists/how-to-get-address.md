@@ -33,7 +33,7 @@ The second method is described in the [Address From a Custom Field](#userfield) 
 
 The following are required for the scenario:
 
-- An incoming webhook with `crm` permission — the examples use it for authorization. Store the webhook URL in an environment variable rather than in the code.
+- An inbound webhook with `crm` permission — the examples use it for authorization. Store the webhook URL in an environment variable rather than in the code.
 - A customer identifier. The examples use a contact with `ID` `2429`. You can retrieve the identifier using the [crm.contact.list](../../../api-reference/crm/contacts/crm-contact-list.md) method with a filter on any known contact field, or for a company, using the [crm.company.list](../../../api-reference/crm/companies/crm-company-list.md) method. If only a phone number or Webmail is known, use the [“Search for Duplicates by Phone Number”](./search-by-phone-and-email.md) tutorial.
 
 ## 1. Retrieve Company Details Linked to a Contact

@@ -29,7 +29,7 @@ To embed a widget into a lead field, perform the following methods and commands 
 
 {% note info "" %}
 
-The scenario requires an [application](../../../settings/app-installation/index.md) context: the `userfieldtype.*` methods will register the field type, and `app.info` will return the application's `ID`. An incoming webhook will not work.
+The scenario requires an [application](../../../settings/app-installation/index.md) context: the `userfieldtype.*` methods will register the field type, and `app.info` will return the application's `ID`. An inbound webhook will not work.
 
 {% endnote %}
 

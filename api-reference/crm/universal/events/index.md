@@ -18,7 +18,7 @@ Detailed information on working with events is described in the article [Concept
 
 You can subscribe to events of smart process elements through:
 
-- [outgoing webhook](../../../../local-integrations/local-webhooks.md)
+- [outbound webhook](../../../../local-integrations/local-webhooks.md)
 - [application](../../../../settings/app-installation/index.md) and the method [event.bind](../../../events/event-bind.md)
 
 An example of a handler code for an event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).
@@ -47,7 +47,7 @@ For example, for a smart process with `entityTypeId = 147`, the event for creati
 Before subscribing, check if such an event is available:
 
 - for the application — using the method [events](../../../events/events.md)
-- for the outgoing webhook — in the [outgoing webhook builder](../../../../local-integrations/local-webhooks.md)
+- for the outbound webhook — in the [outbound webhook builder](../../../../local-integrations/local-webhooks.md)
 
 If the event with the suffix is not available, subscribe to the basic event [onCrmDynamicItemAdd](./on-crm-dynamic-item-add.md), [onCrmDynamicItemUpdate](./on-crm-dynamic-item-update.md), or [onCrmDynamicItemDelete](./on-crm-dynamic-item-delete.md). In the handler, check the `data.FIELDS.ENTITY_TYPE_ID` field: it contains the `entityTypeId` of the smart process to which the element belongs.
 

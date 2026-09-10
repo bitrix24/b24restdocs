@@ -26,7 +26,7 @@ The result is a table where each employee row contains only that employee's time
 
 ## Before You Start
 
-- an incoming webhook is created for a user who can see the required tasks and time tracking records. Task methods respect this user's permissions: the user will receive only accessible tasks
+- an inbound webhook is created for a user who can see the required tasks and time tracking records. Task methods respect this user's permissions: the user will receive only accessible tasks
 
 - the webhook permissions include the `task` and `user_brief` scopes
 

@@ -24,7 +24,7 @@ If this is your first call, start with authorization and the general request sch
 
 #| 
 || **Scenario** | **What to Choose** ||
-|| Quick first call, method check, or local integration without an application | Incoming webhook ||
+|| Quick first call, method check, or local integration without an application | Inbound webhook ||
 || Local or mass-market application, working on behalf of different users, access management | OAuth 2.0 ||
 |#
 
@@ -106,7 +106,7 @@ If the authorization data is incorrect or the user lacks permissions, an error d
 
 #| 
 || **Material** | **Description** ||
-|| [Authorization in REST](./authorization.md) | Explains how to call REST via incoming webhooks and OAuth 2.0 ||
+|| [Authorization in REST](./authorization.md) | Explains how to call REST via inbound webhooks and OAuth 2.0 ||
 || [How a Request is Made](./general-principles.md) | Shows the URL structure, parameter transmission formats, and the general response format ||
 || [Data Encoding](./data-encoding.md) | Discusses URL encoding, passing complex structures, and parameter order ||
 || [How to Execute a Batch Request](./batch.md) | Demonstrates how to execute related commands in one call ||

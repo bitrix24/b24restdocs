@@ -28,7 +28,7 @@ At step 3, the [mail.message.send](../../api-reference/mail/message/mail-message
 
 Before running the tutorial, check that:
 
-- an incoming webhook is created with the `mail` scope
+- an inbound webhook is created with the `mail` scope
 - the webhook user has access to at least one connected mailbox
 - the recipient exists in the address book or you know their e-mail address
 - the webhook path is stored in an environment variable and contains the `/rest/api/` segment

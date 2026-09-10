@@ -16,14 +16,14 @@ How an HTTP request to the Bitrix24 REST API is structured — including the add
 
 #|
 || **Tab** | **Tool** | **Where code is executed** | **Authorization** ||
-|| `cURL (Webhook)` | Without libraries | Any environment with curl: terminal, script, request testing service | [incoming webhook](../local-integrations/local-webhooks.md) ||
+|| `cURL (Webhook)` | Without libraries | Any environment with curl: terminal, script, request testing service | [inbound webhook](../local-integrations/local-webhooks.md) ||
 || `cURL (OAuth)` | Without libraries | Any environment with curl: terminal, script, request testing service | [OAuth 2.0](../settings/oauth/index.md) ||
-|| `JS (TS)` | [B24JsSDK](../sdk/b24jssdk/index.md) | Project with a bundler or Node.js, code in TypeScript | [incoming webhook](../local-integrations/local-webhooks.md) or [OAuth 2.0](../settings/oauth/index.md), depending on the connection type ||
+|| `JS (TS)` | [B24JsSDK](../sdk/b24jssdk/index.md) | Project with a bundler or Node.js, code in TypeScript | [inbound webhook](../local-integrations/local-webhooks.md) or [OAuth 2.0](../settings/oauth/index.md), depending on the connection type ||
 || `JS (UMD)` | [B24JsSDK](../sdk/b24jssdk/index.md), UMD build | HTML page without a bundler | [OAuth 2.0](../settings/oauth/index.md): in examples, `B24Frame` is created ||
 || `BX24.js` | [BX24.js](../sdk/bx24-js-sdk/index.md) | Only an application opened in a frame within the Bitrix24 interface | [OAuth 2.0](../settings/oauth/index.md), the library provides the data automatically ||
-|| `PHP` | [B24PhpSDK](../sdk/b24phpsdk/index.md) | Server-side PHP, typed services for each scope | [incoming webhook](../local-integrations/local-webhooks.md) or [OAuth 2.0](../settings/oauth/index.md) ||
-|| `PHP CRest` | [CRest PHP SDK](../sdk/crest-php-sdk/index.md) | Server-side PHP, calls via a single `CRest::call` method | [incoming webhook](../local-integrations/local-webhooks.md) or [OAuth 2.0](../settings/oauth/index.md) ||
-|| `Python` | [B24PySDK](../sdk/b24pysdk/index.md) | Server-side Python | [incoming webhook](../local-integrations/local-webhooks.md) or [OAuth 2.0](../settings/oauth/index.md) ||
+|| `PHP` | [B24PhpSDK](../sdk/b24phpsdk/index.md) | Server-side PHP, typed services for each scope | [inbound webhook](../local-integrations/local-webhooks.md) or [OAuth 2.0](../settings/oauth/index.md) ||
+|| `PHP CRest` | [CRest PHP SDK](../sdk/crest-php-sdk/index.md) | Server-side PHP, calls via a single `CRest::call` method | [inbound webhook](../local-integrations/local-webhooks.md) or [OAuth 2.0](../settings/oauth/index.md) ||
+|| `Python` | [B24PySDK](../sdk/b24pysdk/index.md) | Server-side Python | [inbound webhook](../local-integrations/local-webhooks.md) or [OAuth 2.0](../settings/oauth/index.md) ||
 |#
 
 The set of tabs varies across different pages. Each page only contains examples prepared for that specific method.
@@ -46,15 +46,15 @@ Instead of real values, examples use placeholders highlighted with double asteri
 #|
 || **Placeholder** | **What to replace it with** | **Where to get the value** ||
 || `**put_your_bitrix24_address**` | Your Bitrix24 address, for example `your-company.bitrix24.com` | Browser address bar ||
-|| `**put_your_user_id_here**` | User identifier who created the webhook | incoming webhook URL ||
-|| `**put_your_webhook_here**` | incoming webhook secret code | incoming webhook URL ||
+|| `**put_your_user_id_here**` | User identifier who created the webhook | inbound webhook URL ||
+|| `**put_your_webhook_here**` | inbound webhook secret code | inbound webhook URL ||
 || `**put_access_token_here**` | Valid application access token | [OAuth 2.0](../settings/oauth/index.md) ||
 || `**put_your_client_id_here**`, `**put_your_client_secret_here**` | Application identifier and secret key | Application card ||
 || `**your_handler_url_here**` | Your handler address, accessible from the internet via HTTPS | Your web server ||
 || Other placeholders, for example `**put_id_here**`, `**put_attach_id**`, `**put_file_name**` | Method parameter value | Your data in Bitrix24 ||
 |#
 
-An incoming webhook URL looks like this: `https://your-company.bitrix24.com/rest/1/8v5m0dmbxs2ky7wq/`. Here `1` is the user identifier, and `8v5m0dmbxs2ky7wq` is the secret code.
+An inbound webhook URL looks like this: `https://your-company.bitrix24.com/rest/1/8v5m0dmbxs2ky7wq/`. Here `1` is the user identifier, and `8v5m0dmbxs2ky7wq` is the secret code.
 
 {% note warning "" %}
 

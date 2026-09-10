@@ -26,31 +26,31 @@ Ready-made method sequences for these tasks are collected in the article [Local 
 1. Define the integration task and choose a tool in the [table](#choose-tool).
 2. Check the [access permissions](#rights): the required `scope` and the permissions of the employee on whose behalf the integration will access Bitrix24.
 3. Create the integration in the [Developer resources](./developers-area.md) section — *Applications > Developer resources*. For a server-side application, place the handler on your server in advance and make it available over HTTPS.
-4. Test the first request in the request generator or follow the [How to Make Your First API Request](../first-steps/first-rest-api-call.md) guide.
+4. Test the first request in the request builder or follow the [How to Make Your First API Request](../first-steps/first-rest-api-call.md) guide.
 5. Review a ready-made scenario from the article [Local Integrations: Use Case Scenarios](./use-cases.md) and build your own sequence of methods.
 
 ## How to Choose a Tool {#choose-tool}
 
 #|
 || **Tool** | **Authorization** | **Capabilities** | **When to Choose** ||
-|| [Incoming webhook](./local-webhooks.md) | Secret code in the request URL | Calls methods on behalf of the employee who created the webhook | An external system or script calls Bitrix24 methods ||
-|| [Outgoing webhook](./local-webhooks.md) | Token that Bitrix24 passes to the handler in the `application_token` field | Sends a Bitrix24 event to your handler URL | An external system reacts to data changes in Bitrix24 ||
+|| [Inbound webhook](./local-webhooks.md) | Secret code in the request URL | Calls methods on behalf of the employee who created the webhook | An external system or script calls Bitrix24 methods ||
+|| [Outbound webhook](./local-webhooks.md) | Token that Bitrix24 passes to the handler in the `application_token` field | Sends a Bitrix24 event to your handler URL | An external system reacts to data changes in Bitrix24 ||
 || [Static application](./static-local-app.md) | Current employee's authorization, retrieved automatically by the JS SDK | Calls methods and displays its own page in the interface. Does not receive events | You need an interface inside Bitrix24 without your own server ||
 || [Server-side application with interface](./serverside-local-app-with-ui.md) | Simplified OAuth 2.0 in the context of the current employee | Calls methods, displays a page and [widgets](../api-reference/widgets/index.md), receives events | You need server-side processing and an interface inside Bitrix24 ||
 || [Server-side application without interface](./serverside-local-app-with-no-ui.md) | Full OAuth 2.0 protocol, tokens are retained by the [ONAPPINSTALL](../api-reference/common/events/on-app-install.md) event handler | Calls methods and receives events, is not displayed in the interface | Background synchronization and automated tasks ||
 |#
 
-## Incoming and Outgoing Webhooks
+## Inbound and Outbound Webhooks
 
 [Webhooks](./local-webhooks.md) are suitable for quick integrations where complex authorization logic is not required.
 
-An incoming webhook is a secret code that an employee retrieves in the Bitrix24 interface and inserts into the request URL. An incoming webhook can be limited by an expiration date. An outgoing webhook works in the opposite direction: when an event occurs, Bitrix24 sends the data to your handler URL.
+An inbound webhook is a secret code that an employee retrieves in the Bitrix24 interface and inserts into the request URL. An inbound webhook can be limited by an expiration date. An outbound webhook works in the opposite direction: when an event occurs, Bitrix24 sends the data to your handler URL.
 
 Some methods are not available through webhooks because their logic requires an application context. These include methods for embedding applications into the Bitrix24 interface, telephony events, and some chat bot events. For such scenarios, a local application is required.
 
 {% note warning "" %}
 
-To use outgoing webhooks in the on-premise version of Bitrix24, an active license is required; outgoing webhooks are not available in demo modes.
+To use outbound webhooks in the on-premise version of Bitrix24, an active license is required; outbound webhooks are not available in demo modes.
 
 {% endnote %}
 
@@ -71,7 +71,7 @@ Applications are divided into static and server-side. A static application runs 
 
 {% note info "" %}
 
-A static application does not receive Bitrix24 events — it has no server-side handler for Bitrix24 to pass them to. If the integration needs to react to data changes, choose a server-side application or an outgoing webhook
+A static application does not receive Bitrix24 events — it has no server-side handler for Bitrix24 to pass them to. If the integration needs to react to data changes, choose a server-side application or an outbound webhook
 
 {% endnote %}
 
@@ -87,9 +87,9 @@ A static application does not receive Bitrix24 events — it has no server-side 
 
 The [Developer resources](./developers-area.md) section brings together tools for working with local integrations. You can open it through the left menu in Bitrix24 by navigating to *Applications > Developer resources*.
 
-### Ready-made Scenarios
+### Common use cases
 
-Templates for typical tasks with code examples and pre-set parameters based on webhooks and local applications. The request generator is also located here: it selects method parameters, runs the request, and provides a ready-made code sample.
+Templates for typical tasks with code examples and pre-set parameters based on webhooks and local applications. The request builder is also located here: it selects method parameters, runs the request, and provides a ready-made code sample.
 
 ### Integrations
 

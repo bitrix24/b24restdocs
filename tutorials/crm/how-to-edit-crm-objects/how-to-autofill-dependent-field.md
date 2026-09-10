@@ -52,7 +52,7 @@ The fragments in steps 2–4 show separate operations inside the handler. The fu
 
 The [event.bind](../../../api-reference/events/event-bind.md) method registers an event handler. In the `event` parameter, pass the event code `ONCRMDEALUPDATE`; in `handler`, pass the public HTTPS URL of the handler.
 
-The method works only in the application context. An incoming webhook is not suitable for registering an event using `event.bind`.
+The method works only in the application context. An inbound webhook is not suitable for registering an event using `event.bind`.
 
 In the examples below, `$b24` for JS, `$b24` for PHP, and `client` for Python are already initialized clients with the application OAuth token. Retrieving, storing, and refreshing OAuth tokens are described in [Full OAuth 2.0 Authorization Protocol](../../../settings/oauth/index.md).
 

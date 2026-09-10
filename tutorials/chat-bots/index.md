@@ -22,7 +22,7 @@ Three objects take part in the scenario: an application with OAuth authorization
 
 {% note info "" %}
 
-A chatbot is an [application](../../settings/app-installation/index.md) with OAuth authorization, not an incoming webhook. The application registers the bot, and Bitrix24 sends the bot events as HTTP requests to a public handler URL.
+A chatbot is an [application](../../settings/app-installation/index.md) with OAuth authorization, not an inbound webhook. The application registers the bot, and Bitrix24 sends the bot events as HTTP requests to a public handler URL.
 
 SDKs perform outgoing REST calls. Incoming events are received by your web server — Express, PHP, or Flask.
 

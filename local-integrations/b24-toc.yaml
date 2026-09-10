@@ -5,7 +5,7 @@ items:
     href: index.md
   - name: "Local Integrations: Use Case Scenarios"
     href: use-cases.md
-  - name: Incoming and Outgoing Webhooks
+  - name: Inbound and Outbound Webhooks
     href: local-webhooks.md
   - name: Local Applications
     href: local-apps.md

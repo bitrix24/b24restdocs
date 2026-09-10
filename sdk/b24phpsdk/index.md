@@ -8,11 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 B24PhpSDK is the official PHP library for server-side applications and integrations with Bitrix24. Without an SDK, a developer has to send HTTP requests to the methods manually, pass authorization data, and parse JSON responses. B24PhpSDK wraps these actions into PHP classes and methods.
 
-To let the SDK reach Bitrix24, select a connection scenario: an incoming webhook, a local application, or a mass-market application. The table below helps you choose the right option.
+To let the SDK reach Bitrix24, select a connection scenario: an inbound webhook, a local application, or a mass-market application. The table below helps you choose the right option.
 
 | If You Need to | Select the Option |
 |---|---|
-| Set up an internal integration without creating an application | [Incoming Webhook](#incoming-webhook) |
+| Set up an internal integration without creating an application | [Inbound Webhook](#incoming-webhook) |
 | Create an application for a single Bitrix24 | [Local Application](#local-app) |
 | Install the application on different Bitrix24 accounts | [Mass-Market Application](#market-app) |
 
@@ -66,11 +66,11 @@ For a web application, it is convenient to keep public files separate from the c
 
 The web server must expose only the `public` directory or its equivalent. `vendor`, `src`, `var`, `composer.json`, and `composer.lock` must not be accessible from the browser.
 
-### Connect the SDK Through an Incoming Webhook {#incoming-webhook}
+### Connect the SDK Through an Inbound Webhook {#incoming-webhook}
 
-An incoming webhook is a URL with an access key that you can use to call Bitrix24 methods. A webhook is suitable for an internal integration without an application.
+An inbound webhook is a URL with an access key that you can use to call Bitrix24 methods. A webhook is suitable for an internal integration without an application.
 
-Create an [incoming webhook](../../local-integrations/local-webhooks.md) in Bitrix24 and select its permissions. The deal example requires CRM. Copy the full webhook URL and pass it to `ServiceBuilderFactory::createServiceBuilderFromWebhook`:
+Create an [inbound webhook](../../local-integrations/local-webhooks.md) in Bitrix24 and select its permissions. The deal example requires CRM. Copy the full webhook URL and pass it to `ServiceBuilderFactory::createServiceBuilderFromWebhook`:
 
 ```php
 <?php
@@ -184,11 +184,11 @@ A universal call is convenient for methods that do not yet have a dedicated wrap
 
 The text scenarios above show the minimal path to the first call. You can use the videos as an additional walkthrough after the setup.
 
-### Incoming Webhook
+### Inbound Webhook
 
 @[youtube](https://youtu.be/H5rBky_DJ4c?si=YPzS64M0JaVDABIJ)
 
-[Download the incoming webhook example](https://helpdesk.bitrix24.com/examples/b24phpsdk-webhook-example.zip)
+[Download the inbound webhook example](https://helpdesk.bitrix24.com/examples/b24phpsdk-webhook-example.zip)
 
 ### Local Application
 
@@ -204,13 +204,13 @@ The text scenarios above show the minimal path to the first call. You can use th
 
 **Other SDKs.** To compare B24PhpSDK with other libraries, see the [SDK Overview](../index.md). If you need a minimal starter set of PHP files without typed services, see [CRest PHP SDK](../crest-php-sdk/index.md).
 
-**Authorization.** For an internal integration, use an [incoming webhook](../../local-integrations/local-webhooks.md). For applications with OAuth 2.0, see the [application installation scenarios](../../settings/app-installation/index.md) and the [OAuth description](../../settings/oauth/index.md).
+**Authorization.** For an internal integration, use an [inbound webhook](../../local-integrations/local-webhooks.md). For applications with OAuth 2.0, see the [application installation scenarios](../../settings/app-installation/index.md) and the [OAuth description](../../settings/oauth/index.md).
 
 **Permissions.** The scope depends on the methods that the application or the webhook calls. See scope values in the [Permissions](../../api-reference/scopes/permissions.md) guide.
 
 ## Key Considerations
 
-- Do not publish the incoming webhook URL, `client_secret`, the access token, or the refresh token
+- Do not publish the inbound webhook URL, `client_secret`, the access token, or the refresh token
 - Data access depends on the permissions of the user on whose behalf the request is performed, and on the scope of the webhook or the application
 - B24PhpSDK adds the `X-Request-ID` request identifier and, for most methods, the `bx24_request_id` parameter to simplify request diagnostics
 - When the access token expires, the SDK can renew the token and raise the `AuthTokenRenewedEvent` event; the application has to retain the new token in its own storage

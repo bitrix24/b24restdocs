@@ -720,7 +720,7 @@ Repeat the scenario from the step where the error occurred. If the error occurs 
 
 ## What to Consider
 
-- Outgoing calls from the CRM require an installed `ONEXTERNALCALLSTART` handler. An incoming webhook does not receive this event
+- Outgoing calls from the CRM require an installed `ONEXTERNALCALLSTART` handler. An inbound webhook does not receive this event
 - Pass a unique `EXTERNAL_CALL_ID` for each physical call so that a repeated `register` call does not return an existing `CALL_ID`
 - Store the application's OAuth tokens on the server and do not expose them in public client-side code
 - The event handler must be reachable over HTTPS and accept POST requests from Bitrix24
