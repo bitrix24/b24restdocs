@@ -3,5 +3,5 @@ href: index.md
 items:  
   - name: Installation and Usage  
     href: index.md  
-  - name: Messenger Input Field in iFrame  
+  - name: Interaction of the Widget with the Messenger Input Field
     href: iframe-messenger-textarea.md  

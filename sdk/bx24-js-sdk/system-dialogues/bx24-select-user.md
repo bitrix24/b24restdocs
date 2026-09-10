@@ -22,9 +22,9 @@ The `BX24.selectUser` method displays the standard single user selection dialog.
 || **callback***
 [`callable`](../../../api-reference/data-types.md) | Callback function.
 
-The `callback` handler will receive an object of the form `{id: integer, name: string}`, where: 
-- `id` — user identifier
-- `name` — formatted user name ||
+The `callback` handler will receive an object of the selected employee — with the same fields as the elements of the array in [BX24.selectUsers](./bx24-select-users.md#callback):
+- `id` — identifier of the employee, arrives as a string
+- `name` — formatted name of the employee ||
 |#
 
 ## Code Example

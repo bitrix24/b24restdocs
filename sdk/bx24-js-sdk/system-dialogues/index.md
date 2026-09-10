@@ -23,18 +23,18 @@ Dialogs do not return data directly. The selection result arrives in the `callba
 #|
 || **Method** | **What the `callback` Receives** ||
 || [BX24.selectUser](./bx24-select-user.md) | An object `{id, name}` of the selected user ||
-|| [BX24.selectUsers](./bx24-select-users.md) | An array of `{id, name}` objects ||
+|| [BX24.selectUsers](./bx24-select-users.md) | An array of objects with employee data: identifier, name, position, avatar, and subordination flags [(list of fields)](./bx24-select-users.md#callback) ||
 || [BX24.selectAccess](./bx24-select-access.md) | An array of `{provider, id, name}` objects, where `id` is an access code such as `U1`, `SG4_K`, `AU` ||
 || [BX24.selectCRM](./bx24-select-crm.md) | An object with the keys `lead`, `contact`, `company`, `deal`, `quote`. Each key holds an object containing the selected items under numeric keys ||
 |#
 
-The handler is triggered only when the selection is confirmed. If the user closes the dialog without selecting anything, the handler is not called. There is one exception — [BX24.selectAccess](./bx24-select-access.md): when an empty selection is confirmed, the handler receives an empty array. Dialogs return no error codes.
+The handler is triggered only when the selection is confirmed. If the user closes the dialog without selecting anything, the handler is not called. For the multiple selection dialogs — [BX24.selectUsers](./bx24-select-users.md) and [BX24.selectAccess](./bx24-select-access.md) — a confirmed empty selection yields an empty array, so check the length of the array. Dialogs return no error codes.
 
 ## Key Considerations
 
 - A dialog can be invoked only from an application embedded in Bitrix24, and only after [BX24.init](../system-functions/bx24-init.md)
 - Dialogs require no scope of their own: they open the Bitrix24 interface instead of calling the REST API. Permissions and scope are checked in the methods you call with the identifiers you receive
-- In a dialog, the user sees only the objects they have access to
+- In the dialogs [BX24.selectAccess](./bx24-select-access.md) and [BX24.selectCRM](./bx24-select-crm.md), the user sees only the objects they have access to. The user selection dialogs show the whole organizational structure
 - The `id` of a CRM entity arrives as a composite value with a type prefix, for example `L_1348` for a lead and `C_2` for a contact. Use the numeric part as the object identifier in CRM methods
 
 ## Relationships with Other Objects
