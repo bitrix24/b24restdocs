@@ -900,7 +900,7 @@ The field description is returned by the method [crm.address.fields](./requisite
 || **TYPE_ID**
 [`integer`](../data-types.md) | Address type identifier. "Address type" enumeration item.
 
-"Address type" enumeration items can be obtained using the [crm.enum.addresstype](./auxiliary/enum/crm-enum-address-type.md) method. | Yes | Yes  ||
+"Address type" enumeration items can be obtained using the [crm.enum.addresstype](./auxiliary/enum/crm-enum-address-type.md) method ||
 || **ENTITY_TYPE_ID**
 [`integer`](../data-types.md) | Parent object type identifier.
 
