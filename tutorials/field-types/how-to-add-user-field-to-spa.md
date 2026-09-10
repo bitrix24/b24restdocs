@@ -1,16 +1,16 @@
 # How to Create a Custom Field in a Smart Process
 
-> Scope: [`crm`, `userfieldconfig`](../../../api-reference/scopes/permissions.md)
+> Scope: [`crm`, `userfieldconfig`](../../api-reference/scopes/permissions.md)
 >
 > Who can execute the methods: to complete the entire scenario, the strictest of the listed rights is required — administrative access to the CRM section
 >
-> - [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — a user with administrative access to the CRM section
-> - [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) — a user with the "Allow changing settings" permission in CRM
-> - [userfieldconfig.list](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-list.md) — a user with permission to read smart process items
+> - [crm.type.list](../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) — a user with administrative access to the CRM section
+> - [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) — a user with the "Allow changing settings" permission in CRM
+> - [userfieldconfig.list](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-list.md) — a user with permission to read smart process items
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -24,24 +24,24 @@ The custom field code and the object identifier are built from the sequential nu
 
 The scenario consists of two steps.
 
-1. Retrieve the `id` of the smart process using the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method.
-2. Create the custom field using the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method, building the object identifier and the field code from `id`.
+1. Retrieve the `id` of the smart process using the [crm.type.list](../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method.
+2. Create the custom field using the [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method, building the object identifier and the field code from `id`.
 
 ## Before You Start
 
 - The smart process is already created in Bitrix24, and you know its name.
 
-- The webhook is created on behalf of a user with administrative access to the CRM section. Without it, the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method returns an error.
+- The webhook is created on behalf of a user with administrative access to the CRM section. Without it, the [crm.type.list](../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method returns an error.
 
-- Both scopes are selected in the webhook permissions: `crm` and `userfieldconfig`. The [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method requires the `userfieldconfig` scope and the scope of the module passed in `moduleId`.
+- Both scopes are selected in the webhook permissions: `crm` and `userfieldconfig`. The [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method requires the `userfieldconfig` scope and the scope of the module passed in `moduleId`.
 
 ## 1. Retrieve the Smart Process ID {#spa-id}
 
-To retrieve the SPA ID, use the [crm.type.list](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method with a filter:
+To retrieve the SPA ID, use the [crm.type.list](../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md) method with a filter:
 
 - `title` — specify the SPA name. Replace `Equipment procurement` with the name of your own smart process.
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -144,13 +144,13 @@ As a result, you will receive an `id` — this is the sequential number of the S
 
 {% note warning "" %}
 
-From here on, you need exactly the `id`, not the `entityTypeId`. These are different numbers: for a smart process with `id`: `7`, the type identifier is `177`. If you substitute `entityTypeId`, the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method rejects the request with the message "You cannot create custom fields".
+From here on, you need exactly the `id`, not the `entityTypeId`. These are different numbers: for a smart process with `id`: `7`, the type identifier is `177`. If you substitute `entityTypeId`, the [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method rejects the request with the message "You cannot create custom fields".
 
 {% endnote %}
 
 ## 2. Create a Custom Field in an SPA
 
-To create a custom field, use the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method with the following parameters:
+To create a custom field, use the [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method with the following parameters:
 
 - `moduleId` — the module identifier where the method will create the field, a required parameter. The SPA module is `crm`.
 
@@ -158,7 +158,7 @@ To create a custom field, use the [userfieldconfig.add](../../../api-reference/c
 
 - `field[fieldName]` — the field code according to the formula `UF_ + {object_id} + _ + {arbitrary string in UPPERCASE}`. The code length limit is 50 characters, a required parameter. In the example, we will specify `UF_CRM_7_NEW_REST_LIST`.
 
-- `field[userTypeId]` — the [field type](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md) identifier, a required parameter. In the example, we will specify `enumeration` to create a list type field; the value options for the list field will be passed in a separate `enum` array.
+- `field[userTypeId]` — the [field type](../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md) identifier, a required parameter. In the example, we will specify `enumeration` to create a list type field; the value options for the list field will be passed in a separate `enum` array.
 
 - `field[multiple]` — a multiple field flag, an optional parameter. The multiplicity flag cannot be changed after the field is created.
 
@@ -266,7 +266,7 @@ To create a custom field, use the [userfieldconfig.add](../../../api-reference/c
     ```
 {% endlist %}
 
-As a result, you will receive the data for the created field. Retain the `id` — you will need it to modify the field using the [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method or to delete it using the [userfieldconfig.delete](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md) method.
+As a result, you will receive the data for the created field. Retain the `id` — you will need it to modify the field using the [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method or to delete it using the [userfieldconfig.delete](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md) method.
 
 ```json
 {
@@ -341,7 +341,7 @@ As a result, you will receive the data for the created field. Retain the `id` �
 
 Open the card of any smart process item in Bitrix24. The new field is displayed in the card under the name from `editFormLabel` — "List of characteristics". The "Characteristic 2" value is set by default because it has `def`: `Y`.
 
-Through REST, the set of smart process fields is returned by the [userfieldconfig.list](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-list.md) method with the following parameters:
+Through REST, the set of smart process fields is returned by the [userfieldconfig.list](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-list.md) method with the following parameters:
 
 - `moduleId` — `crm`
 
@@ -392,14 +392,14 @@ The scenario is complete if the `fields` array contains an object with `fieldNam
 
 ## Errors and Diagnostics
 
-If the method returns an error, check the request data. The [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method returns errors with an empty code, so rely on the text in `error_description`.
+If the method returns an error, check the request data. The [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method returns errors with an empty code, so rely on the text in `error_description`.
 
 #|
 || **Error text** | **Reason and action** ||
 || `You cannot create custom fields` | Either `field[entityId]` contains an object identifier that does not exist, or `field[fieldName]` does not start with `UF_{entityId}_`. A common cause is `entityTypeId` instead of `id`: a smart process with `id`: `7` needs `CRM_7`, not `CRM_177`. For the `CRM_7` object, the code must start with `UF_CRM_7_` ||
-|| `Field ... already exists` | A field with this `field[fieldName]` has already been created for this object. Choose another code or modify the existing field using the [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method ||
+|| `Field ... already exists` | A field with this `field[fieldName]` has already been created for this object. Choose another code or modify the existing field using the [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method ||
 || `The 'FIELD_NAME' field is not found` | The required `field[fieldName]` was not passed ||
-|| `The 'USER_TYPE_ID' field is not found` | The required `field[userTypeId]` was not passed. The list of allowed values is returned by the [userfieldconfig.getTypes](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-get-types.md) method ||
+|| `The 'USER_TYPE_ID' field is not found` | The required `field[userTypeId]` was not passed. The list of allowed values is returned by the [userfieldconfig.getTypes](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-get-types.md) method ||
 || `Access denied` | The user does not have the "Allow changing settings" permission in CRM. Check which user the webhook was created on behalf of ||
 || `Fail to save enumeration field values` | The list options were not retained. Check the `enum` array: each option requires a non-empty `value`, and `def` accepts only `Y` or `N` ||
 |#
@@ -410,13 +410,13 @@ Step 1 does not create anything, so it can be repeated any number of times. If s
 
 ## Key Considerations
 
-- The `multiple` flag cannot be changed after the field is created. To make a field multiple, delete it using the [userfieldconfig.delete](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md) method and create it again
+- The `multiple` flag cannot be changed after the field is created. To make a field multiple, delete it using the [userfieldconfig.delete](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md) method and create it again
 
 - The method does not check whether `field[entityId]` belongs to a smart process. The `CRM_ + {id}` formula works only for smart processes; leads, deals, and other CRM objects have different object identifiers
 
 - Running the example again with the same `fieldName` returns the "Field ... already exists" error, and no new field is created
 
-- The list options are returned in the `enum` array with their own `id` values. To add or modify an option later, pass these `id` values to the [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method
+- The list options are returned in the `enum` array with their own `id` values. To add or modify an option later, pass these `id` values to the [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method
 
 ## Code Example
 
@@ -634,10 +634,10 @@ Step 1 does not create anything, so it can be repeated any number of times. If s
 
 ## Continue Learning
 
-- [{#T}](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md)
-- [{#T}](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-list.md)
-- [{#T}](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md)
-- [{#T}](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md)
-- [{#T}](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-get-types.md)
-- [{#T}](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md)
-- [{#T}](../../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md)
+- [{#T}](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md)
+- [{#T}](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-list.md)
+- [{#T}](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md)
+- [{#T}](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md)
+- [{#T}](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-get-types.md)
+- [{#T}](../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md)
+- [{#T}](../../api-reference/crm/universal/user-defined-object-types/crm-type-list.md)

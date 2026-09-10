@@ -779,5 +779,5 @@ HTTP status: **400**
 - [{#T}](./crm-deal-userfield-update.md)
 - [{#T}](./crm-deal-userfield-get.md)
 - [{#T}](./crm-deal-userfield-delete.md)
-- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)
+- [{#T}](../../../../tutorials/field-types/how-to-add-precision-to-user-field.md)
 - [{#T}](../../../../tutorials/crm/how-to-edit-crm-objects/how-to-set-paid-date-to-deal.md)

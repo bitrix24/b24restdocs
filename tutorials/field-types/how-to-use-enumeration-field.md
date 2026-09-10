@@ -1,18 +1,18 @@
 # How to Work with the List Field Type
 
-> Scope: [`crm`](../../../api-reference/scopes/permissions.md)
+> Scope: [`crm`](../../api-reference/scopes/permissions.md)
 >
 > Who can execute the methods: to complete the entire scenario, the strictest of the listed rights is required — administrative access to the CRM section
 >
-> - [crm.deal.userfield.add](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) and [crm.deal.userfield.update](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md) — a CRM administrator
-> - [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) — a user with permission to read deals
-> - [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) — a user with permission to modify deals
-> - [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md) and [crm.deal.list](../../../api-reference/crm/deals/crm-deal-list.md) — a user with permission to read deals
-> - [crm.deal.fields](../../../api-reference/crm/deals/crm-deal-fields.md) — any user
+> - [crm.deal.userfield.add](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) and [crm.deal.userfield.update](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md) — a CRM administrator
+> - [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) — a user with permission to read deals
+> - [crm.deal.update](../../api-reference/crm/deals/crm-deal-update.md) — a user with permission to modify deals
+> - [crm.deal.get](../../api-reference/crm/deals/crm-deal-get.md) and [crm.deal.list](../../api-reference/crm/deals/crm-deal-list.md) — a user with permission to read deals
+> - [crm.deal.fields](../../api-reference/crm/deals/crm-deal-fields.md) — any user
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -24,11 +24,11 @@ Let us walk through the scenario with deals. Create two fields: a single-value R
 
 The scenario consists of five steps.
 
-1. Create the fields using the [crm.deal.userfield.add](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) method
-2. Retrieve the option identifiers using the [crm.deal.fields](../../../api-reference/crm/deals/crm-deal-fields.md) and [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) methods
-3. Write the values using the [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) method
-4. Filter deals by value using the [crm.deal.list](../../../api-reference/crm/deals/crm-deal-list.md) method
-5. Change the set of options using the [crm.deal.userfield.update](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md) method
+1. Create the fields using the [crm.deal.userfield.add](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) method
+2. Retrieve the option identifiers using the [crm.deal.fields](../../api-reference/crm/deals/crm-deal-fields.md) and [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) methods
+3. Write the values using the [crm.deal.update](../../api-reference/crm/deals/crm-deal-update.md) method
+4. Filter deals by value using the [crm.deal.list](../../api-reference/crm/deals/crm-deal-list.md) method
+5. Change the set of options using the [crm.deal.userfield.update](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md) method
 
 As a result, both fields in the deal are filled in, filtering by value returns only the required deals, and renaming an option does not break the references already stored to it.
 
@@ -46,11 +46,11 @@ For server-side JS examples with `B24Hook`, Node.js 18, 20, 22 or newer is requi
 
 Store the webhook URL in an environment variable and do not publish it in open code.
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Example Note](../../_includes/examples.md) %}
 
 ## 1. Create the Fields with a Set of Options
 
-The [crm.deal.userfield.add](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) method creates a custom field for all deals. Pass the parameters:
+The [crm.deal.userfield.add](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) method creates a custom field for all deals. Pass the parameters:
 
 - `FIELD_NAME` — field code. The parameter is required. If the code does not start with `UF_CRM_`, the prefix is added automatically
 - `USER_TYPE_ID` — field type, `enumeration` for a list
@@ -253,9 +253,9 @@ The option identifiers are retrieved in the next step.
 
 Two methods return the option identifiers, choose the one that fits your task.
 
-The [crm.deal.fields](../../../api-reference/crm/deals/crm-deal-fields.md) method returns the description of all deal fields. A List field has an `items` array with `ID` and `VALUE` pairs, which is enough to map the option text to its identifier. The method is available to any user.
+The [crm.deal.fields](../../api-reference/crm/deals/crm-deal-fields.md) method returns the description of all deal fields. A List field has an `items` array with `ID` and `VALUE` pairs, which is enough to map the option text to its identifier. The method is available to any user.
 
-The [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method returns custom fields only and the full description of the options in the `LIST` array: it contains `SORT`, the default value flag `DEF`, and `XML_ID`. Pass `filter` with `USER_TYPE_ID` or `FIELD_NAME` so that you do not have to parse all the fields.
+The [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method returns custom fields only and the full description of the options in the `LIST` array: it contains `SORT`, the default value flag `DEF`, and `XML_ID`. Pass `filter` with `USER_TYPE_ID` or `FIELD_NAME` so that you do not have to parse all the fields.
 
 {% list tabs %}
 
@@ -353,7 +353,7 @@ The [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fiel
 
 {% endlist %}
 
-Abbreviated response of [crm.deal.fields](../../../api-reference/crm/deals/crm-deal-fields.md) for a single field:
+Abbreviated response of [crm.deal.fields](../../api-reference/crm/deals/crm-deal-fields.md) for a single field:
 
 ```json
 {
@@ -373,7 +373,7 @@ Abbreviated response of [crm.deal.fields](../../../api-reference/crm/deals/crm-d
 }
 ```
 
-Abbreviated response of [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md):
+Abbreviated response of [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md):
 
 ```json
 {
@@ -400,7 +400,7 @@ Save the identifiers of the required options: `3897` for the single-value field 
 
 ## 3. Write the Values to the Deal
 
-The [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) method writes values to the deal fields. Pass the parameters:
+The [crm.deal.update](../../api-reference/crm/deals/crm-deal-update.md) method writes values to the deal fields. Pass the parameters:
 
 - `id` — deal identifier
 - `fields` — object with field codes. Pass the option identifier as a number to the single-value field and an array of identifiers to the multiple field
@@ -474,7 +474,7 @@ Pass the option identifier rather than its text. For a string such as `"Website"
 
 {% endlist %}
 
-Response of [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md):
+Response of [crm.deal.update](../../api-reference/crm/deals/crm-deal-update.md):
 
 ```json
 {
@@ -482,7 +482,7 @@ Response of [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.m
 }
 ```
 
-Abbreviated response of [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md):
+Abbreviated response of [crm.deal.get](../../api-reference/crm/deals/crm-deal-get.md):
 
 ```json
 {
@@ -499,7 +499,7 @@ A single-value field comes as a string with the identifier, a multiple field as 
 
 ## 4. Filter Deals by Value
 
-The [crm.deal.list](../../../api-reference/crm/deals/crm-deal-list.md) method selects deals by filter. A filter on a List field also takes the option identifier.
+The [crm.deal.list](../../api-reference/crm/deals/crm-deal-list.md) method selects deals by filter. A filter on a List field also takes the option identifier.
 
 For a multiple field, a filter by one identifier finds all deals where that option is selected, even if other options are selected as well.
 
@@ -597,7 +597,7 @@ The `total` value indicates that the filter worked correctly: with a filter by t
 
 ## 5. Change the Set of Options
 
-The [crm.deal.userfield.update](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md) method changes the field description. The set of options is defined by the same `LIST` array, and the action depends on the keys you pass:
+The [crm.deal.userfield.update](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md) method changes the field description. The set of options is defined by the same `LIST` array, and the action depends on the keys you pass:
 
 - `ID` and `VALUE` — rename an option. The identifier is kept, deals keep referencing it and show the new text
 - `VALUE` only — add a new option, Bitrix24 assigns a new identifier to it
@@ -715,8 +715,8 @@ What to check in the responses:
 
 - `UF_CRM_ENUM_ONE` contains a string with the option identifier rather than `"0"`
 - `UF_CRM_ENUM_MULTI` contains an array of identifiers
-- [crm.deal.list](../../../api-reference/crm/deals/crm-deal-list.md) with a filter by identifier returned the deal, and `total` matches the expected number
-- after the option is renamed, [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md) returns the same identifier
+- [crm.deal.list](../../api-reference/crm/deals/crm-deal-list.md) with a filter by identifier returned the deal, and `total` matches the expected number
+- after the option is renamed, [crm.deal.get](../../api-reference/crm/deals/crm-deal-get.md) returns the same identifier
 
 Open the deal card in the interface: the Request Source and Client Interests fields show the selected options.
 
@@ -726,27 +726,27 @@ If the method returns an error, check the request data.
 
 #|
 || **Code or Error Text** | **Reason and Action** ||
-|| `The 'FIELD_NAME' field is not found.` | The field code is not passed to [crm.deal.userfield.add](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md). Pass `FIELD_NAME` ||
-|| `ERROR_NOT_FOUND`, `The entity with ID '...' is not found.` | The identifier of a nonexistent field is passed to [crm.deal.userfield.update](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md). Retrieve it with the [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method ||
+|| `The 'FIELD_NAME' field is not found.` | The field code is not passed to [crm.deal.userfield.add](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md). Pass `FIELD_NAME` ||
+|| `ERROR_NOT_FOUND`, `The entity with ID '...' is not found.` | The identifier of a nonexistent field is passed to [crm.deal.userfield.update](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md). Retrieve it with the [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method ||
 |#
 
-The errors of this scenario are almost always silent: the method returns success while the result is wrong. Check the stored value with the [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md) method.
+The errors of this scenario are almost always silent: the method returns success while the result is wrong. Check the stored value with the [crm.deal.get](../../api-reference/crm/deals/crm-deal-get.md) method.
 
 - The value `"0"` means that the option text was passed to the field instead of the identifier
 - There is a value but the card is empty: an identifier that is not among the field options was passed. Such an identifier is stored without an error
 - The filter returned too many deals with an empty field: the option text was passed to the filter instead of the identifier
-- There is nothing to select in the field: it was created without `LIST` or with an empty array. Add the options with the [crm.deal.userfield.update](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md) method
+- There is nothing to select in the field: it was created without `LIST` or with an empty array. Add the options with the [crm.deal.userfield.update](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md) method
 
 To clear a single-value field, pass an empty string to it.
 
 ## Key Points
 
 - The field stores the option identifier. The option text lives in the field description and changes independently of the deals
-- Option identifiers are unique to a specific Bitrix24. They cannot be carried into code as constants: retrieve them with the [crm.deal.fields](../../../api-reference/crm/deals/crm-deal-fields.md) or [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method before writing
+- Option identifiers are unique to a specific Bitrix24. They cannot be carried into code as constants: retrieve them with the [crm.deal.fields](../../api-reference/crm/deals/crm-deal-fields.md) or [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method before writing
 - A single-value field is returned as a string, a multiple field as an array of numbers
 - The order of options in the response is not guaranteed if they have the same `SORT`
 - Deleting an option does not clear the deals that referenced it: the field keeps an identifier that is no longer among the options
-- For other CRM objects, fields are created with the methods of the same name, for example [crm.lead.userfield.add](../../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md), and in a smart process with the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method
+- For other CRM objects, fields are created with the methods of the same name, for example [crm.lead.userfield.add](../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md), and in a smart process with the [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method
 
 ## Code Example
 
@@ -1043,10 +1043,10 @@ The complete scenario in a single script: it creates both fields, retrieves the 
 
 ## Continue Learning
 
-- [{#T}](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md)
-- [{#T}](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md)
-- [{#T}](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md)
-- [{#T}](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md)
-- [{#T}](../../../api-reference/crm/deals/crm-deal-fields.md)
-- [{#T}](../../../api-reference/crm/deals/crm-deal-update.md)
-- [{#T}](../../../api-reference/crm/deals/crm-deal-list.md)
+- [{#T}](../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md)
+- [{#T}](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md)
+- [{#T}](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-update.md)
+- [{#T}](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md)
+- [{#T}](../../api-reference/crm/deals/crm-deal-fields.md)
+- [{#T}](../../api-reference/crm/deals/crm-deal-update.md)
+- [{#T}](../../api-reference/crm/deals/crm-deal-list.md)

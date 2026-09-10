@@ -132,4 +132,4 @@ By default, `N` is used. If you do not want to deal with the conversion rules, p
 ## Continue Learning
 
 - [{#T}](./invoice.md)
-- [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
+- [{#T}](../../../tutorials/field-types/how-to-add-user-field-to-spa.md)

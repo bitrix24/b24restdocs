@@ -67,7 +67,7 @@ In the `rpa` module, the format `RPA_{id}` is used, where `id` is the process id
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [How to Create a Custom Field in a Smart Process](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
+- [How to Create a Custom Field in a Smart Process](../../../../tutorials/field-types/how-to-add-user-field-to-spa.md)
 
 {% endnote %}
 

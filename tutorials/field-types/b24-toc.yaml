@@ -1,0 +1,21 @@
+title: Common Use-Cases and Scenarios for Field Types
+href: index.md
+items:
+  - name: Common REST API Use-Cases for Fields of Different Types
+    href: index.md
+  - name: How to Create a Custom Field in a Smart Process
+    href: how-to-add-user-field-to-spa.md
+  - name: How to Work with the List Field Type
+    href: how-to-use-enumeration-field.md
+  - name: How to Work with the Binding to CRM Elements Field
+    href: how-to-use-crm-binding-field.md
+  - name: How to Work with the Binding to CRM Directories Field
+    href: how-to-use-crm-status-field.md
+  - name: How to Work with the Binding to Information Block Elements Field
+    href: how-to-use-iblock-binding-field.md
+  - name: How to Work with the Binding to Information Block Sections Field
+    href: how-to-use-iblock-section-binding-field.md
+  - name: How to Configure Rounding for a Number Custom Field
+    href: how-to-add-precision-to-user-field.md
+  - name: How to Automatically Fill a Dependent CRM Field After the Main Field Changes
+    href: how-to-autofill-dependent-field.md

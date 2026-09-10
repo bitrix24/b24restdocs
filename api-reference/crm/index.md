@@ -53,7 +53,7 @@ A CRM card combines the entity's data, the stage of work with it, and the histor
 
 {% note tip "Typical use-cases and scenarios" %}
 
-- [How to add a custom field to a Smart Process](../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
+- [How to add a custom field to a Smart Process](../../tutorials/field-types/how-to-add-user-field-to-spa.md)
 - [How to create a new funnel with stages in a Smart Process](../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)
 - [How to add an activity to a contact card](../../tutorials/crm/how-to-add-crm-objects/how-to-add-activity-to-contact.md)
 - [How to add a template and create a document based on it](../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md)

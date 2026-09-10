@@ -3,6 +3,10 @@ href: index.md
 items:
   - name: Ready-to-use REST API scenarios
     href: index.md
+  - name: Field Types
+    include:
+      path: field-types/b24-toc.yaml
+      mode: link
   - name: CRM
     include:
       path: crm/b24-toc.yaml

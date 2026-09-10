@@ -50,7 +50,7 @@ You can obtain the user ID and data using the [user.get](../../../user/user-get.
 {% note tip "User Documentation" %}
 
 - [How to Attach a Task to a Smart Process](../../../../tutorials/tasks/how-to-connect-task-to-spa.md)
-- [How to Create a Custom Field in a Smart Process](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
+- [How to Create a Custom Field in a Smart Process](../../../../tutorials/field-types/how-to-add-user-field-to-spa.md)
 - [How to Add a Comment to the Smart Process Timeline](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md)
 - [How to Create a New Funnel with Stages in a Smart Process](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md)
 

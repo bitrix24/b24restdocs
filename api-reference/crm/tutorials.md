@@ -36,8 +36,8 @@ The scenarios create leads, contacts, companies, deals, activities, documents, a
 || Send an email to a customer on behalf of an employee | [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-send-email.md) ||
 || Build a document from a template — an invoice, a contract, or a statement | [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-generate-documents.md) ||
 || Post a comment to the timeline of a smart process | [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-add-comment-to-spa.md) ||
-|| Add a custom field to a smart process | [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md) ||
-|| Set the rounding of a numeric field | [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md) ||
+|| Add a custom field to a smart process | [{#T}](../../tutorials/field-types/how-to-add-user-field-to-spa.md) ||
+|| Set the rounding of a numeric field | [{#T}](../../tutorials/field-types/how-to-add-precision-to-user-field.md) ||
 || Create a pipeline with stages in a smart process | [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-add-category-to-spa.md) ||
 || Add products with discounts and taxes to a CRM object | [{#T}](../../tutorials/crm/how-to-add-crm-objects/how-to-product-binding.md) ||
 |#

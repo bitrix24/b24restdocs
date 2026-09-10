@@ -1,16 +1,16 @@
 # How to Automatically Fill a Dependent CRM Field After the Main Field Changes
 
-> Scope: [`crm`](../../../api-reference/scopes/permissions.md)
+> Scope: [`crm`](../../api-reference/scopes/permissions.md)
 >
 > Who can execute the methods: to complete the entire scenario, the strictest of the listed permissions is required — permission to modify items of a CRM object
 >
-> - [event.bind](../../../api-reference/events/event-bind.md) — any application user
-> - [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md) — a user with permission to read items of a CRM object
-> - [crm.item.update](../../../api-reference/crm/universal/crm-item-update.md) — a user with permission to modify items of a CRM object
+> - [event.bind](../../api-reference/events/event-bind.md) — any application user
+> - [crm.item.get](../../api-reference/crm/universal/crm-item-get.md) — a user with permission to read items of a CRM object
+> - [crm.item.update](../../api-reference/crm/universal/crm-item-update.md) — a user with permission to modify items of a CRM object
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect the [MCP server](../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -20,10 +20,10 @@ The scenario does not change the card interface during editing: it does not show
 
 The scenario consists of four steps.
 
-1. Subscribe the application to the [onCrmDealUpdate](../../../api-reference/crm/deals/events/on-crm-deal-update.md) event using [event.bind](../../../api-reference/events/event-bind.md)
-2. Retrieve deal field values using [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md)
+1. Subscribe the application to the [onCrmDealUpdate](../../api-reference/crm/deals/events/on-crm-deal-update.md) event using [event.bind](../../api-reference/events/event-bind.md)
+2. Retrieve deal field values using [crm.item.get](../../api-reference/crm/universal/crm-item-get.md)
 3. Check the main field value in the handler code
-4. Write a value to the dependent field using [crm.item.update](../../../api-reference/crm/universal/crm-item-update.md)
+4. Write a value to the dependent field using [crm.item.update](../../api-reference/crm/universal/crm-item-update.md)
 
 ## Before You Start
 
@@ -44,19 +44,19 @@ In the examples, replace:
 - `UF_CRM_DOCUMENTS` — the Documents field
 - `102` and `103` — IDs of the Service list values
 
-Custom field IDs and list value IDs are different in every Bitrix24. You can find them in custom field settings or retrieve them using [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) and [crm.deal.userfield.get](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-get.md).
+Custom field IDs and list value IDs are different in every Bitrix24. You can find them in custom field settings or retrieve them using [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) and [crm.deal.userfield.get](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-get.md).
 
 The fragments in steps 2–4 show separate operations inside the handler. The full handler code is in the [Code Example](#full-example) section.
 
 ## 1. Subscribe the Application to Deal Updates
 
-The [event.bind](../../../api-reference/events/event-bind.md) method registers an event handler. In the `event` parameter, pass the event code `ONCRMDEALUPDATE`; in `handler`, pass the public HTTPS URL of the handler.
+The [event.bind](../../api-reference/events/event-bind.md) method registers an event handler. In the `event` parameter, pass the event code `ONCRMDEALUPDATE`; in `handler`, pass the public HTTPS URL of the handler.
 
 The method works only in the application context. An inbound webhook is not suitable for registering an event using `event.bind`.
 
-In the examples below, `$b24` for JS, `$b24` for PHP, and `client` for Python are already initialized clients with the application OAuth token. Retrieving, storing, and refreshing OAuth tokens are described in [Full OAuth 2.0 Authorization Protocol](../../../settings/oauth/index.md).
+In the examples below, `$b24` for JS, `$b24` for PHP, and `client` for Python are already initialized clients with the application OAuth token. Retrieving, storing, and refreshing OAuth tokens are described in [Full OAuth 2.0 Authorization Protocol](../../settings/oauth/index.md).
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -117,7 +117,7 @@ A successful registration returns `true`.
 
 ## 2. Retrieve Deal Field Values
 
-When the deal changes, Bitrix24 sends a POST request to the handler URL. The [onCrmDealUpdate](../../../api-reference/crm/deals/events/on-crm-deal-update.md) event passes only the deal ID in `data.FIELDS.ID`. Field values are not included in the event, so the handler must request the deal using [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md).
+When the deal changes, Bitrix24 sends a POST request to the handler URL. The [onCrmDealUpdate](../../api-reference/crm/deals/events/on-crm-deal-update.md) event passes only the deal ID in `data.FIELDS.ID`. Field values are not included in the event, so the handler must request the deal using [crm.item.get](../../api-reference/crm/universal/crm-item-get.md).
 
 The request body is sent as `application/x-www-form-urlencoded`. The example below shows the structure in JSON format.
 
@@ -361,7 +361,7 @@ if (deal.UF_CRM_DOCUMENTS === documents) {
 
 ## 4. Update the Dependent Field
 
-The [crm.item.update](../../../api-reference/crm/universal/crm-item-update.md) method updates only the fields passed in the `fields` object. Pass the deal ID from the event and the new dependent field value.
+The [crm.item.update](../../api-reference/crm/universal/crm-item-update.md) method updates only the fields passed in the `fields` object. Pass the deal ID from the event and the new dependent field value.
 
 In the example, pass the following values:
 
@@ -439,7 +439,7 @@ A successful response contains the updated deal. The example includes only the f
 
 Open the deal card in CRM. If the Service field contains a value mapped to a document list by the application, the Documents field will be filled after the deal is saved and the event is processed.
 
-You can check the result through REST using [crm.item.get](../../../api-reference/crm/universal/crm-item-get.md).
+You can check the result through REST using [crm.item.get](../../api-reference/crm/universal/crm-item-get.md).
 
 ```json
 {
@@ -479,10 +479,10 @@ If the event arrives but the field does not change, check:
 - The scenario runs after the deal is saved. It does not change the card interface when a value is selected
 - The `ONCRMDEALUPDATE` event reports only the deal ID, not the list of changed fields. That is why the handler always reads the deal using `crm.item.get`
 - Updating the dependent field also triggers a deal update event. Before calling `crm.item.update`, compare the current and new values
-- If it is important not to lose an update while the handler is temporarily unavailable, use [offline events](../../../api-reference/events/offline-events.md). The application will be able to retrieve accumulated events from the queue
-- For smart processes, use the [onCrmDynamicItemUpdate](../../../api-reference/crm/universal/events/on-crm-dynamic-item-update.md) event. The event will include the item `ID` and `ENTITY_TYPE_ID`; pass them to `crm.item.get` and `crm.item.update`
-- For leads, contacts, and companies, use the corresponding object events: [onCrmLeadUpdate](../../../api-reference/crm/leads/events/on-crm-lead-update.md), [onCrmContactUpdate](../../../api-reference/crm/contacts/events/on-crm-contact-update.md), [onCrmCompanyUpdate](../../../api-reference/crm/companies/events/on-crm-company-update.md)
-- Check `application_token` to make sure the request came from Bitrix24. See the detailed explanation in [Secure Event Handling](../../../api-reference/events/safe-event-handlers.md)
+- If it is important not to lose an update while the handler is temporarily unavailable, use [offline events](../../api-reference/events/offline-events.md). The application will be able to retrieve accumulated events from the queue
+- For smart processes, use the [onCrmDynamicItemUpdate](../../api-reference/crm/universal/events/on-crm-dynamic-item-update.md) event. The event will include the item `ID` and `ENTITY_TYPE_ID`; pass them to `crm.item.get` and `crm.item.update`
+- For leads, contacts, and companies, use the corresponding object events: [onCrmLeadUpdate](../../api-reference/crm/leads/events/on-crm-lead-update.md), [onCrmContactUpdate](../../api-reference/crm/contacts/events/on-crm-contact-update.md), [onCrmCompanyUpdate](../../api-reference/crm/companies/events/on-crm-company-update.md)
+- Check `application_token` to make sure the request came from Bitrix24. See the detailed explanation in [Secure Event Handling](../../api-reference/events/safe-event-handlers.md)
 - OAuth tokens are not sent to the handler if the update was made by an automation rule, workflow, or agent. For reliable background processing, store the tokens of the user who installed the application
 
 ## Code Example {#full-example}
@@ -753,10 +753,10 @@ Replace the application parameters, `application_token`, handler URL, custom fie
 
 ## Continue Learning
 
-- [{#T}](../../../api-reference/events/index.md)
-- [{#T}](../../../api-reference/events/event-bind.md)
-- [{#T}](../../../api-reference/events/safe-event-handlers.md)
-- [{#T}](../../../api-reference/crm/deals/events/on-crm-deal-update.md)
-- [{#T}](../../../api-reference/crm/universal/crm-item-get.md)
-- [{#T}](../../../api-reference/crm/universal/crm-item-update.md)
-- [{#T}](../../../api-reference/crm/deals/user-defined-fields/index.md)
+- [{#T}](../../api-reference/events/index.md)
+- [{#T}](../../api-reference/events/event-bind.md)
+- [{#T}](../../api-reference/events/safe-event-handlers.md)
+- [{#T}](../../api-reference/crm/deals/events/on-crm-deal-update.md)
+- [{#T}](../../api-reference/crm/universal/crm-item-get.md)
+- [{#T}](../../api-reference/crm/universal/crm-item-update.md)
+- [{#T}](../../api-reference/crm/deals/user-defined-fields/index.md)

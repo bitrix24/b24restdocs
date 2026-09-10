@@ -49,7 +49,7 @@ The documentation has several sections about custom fields. Choose the one that 
 
 {% note tip "Additionally" %}
 
-- [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md)
+- [{#T}](../../../../tutorials/field-types/how-to-add-user-field-to-spa.md)
 
 {% endnote %}
 

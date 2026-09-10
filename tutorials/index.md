@@ -22,7 +22,7 @@ A tutorial does not replace the reference. The parameters, response, and errors 
 
 - **As educational material.** Tutorials show how to form requests and process responses. Start with a simple scenario, such as [How to Filter Items by Stage Name](./crm/how-to-get-lists/how-to-get-elements-by-stage-filter.md) — it only reads data, so the objects in Bitrix24 remain unchanged
 - **As a template for your own solution.** Adapt the example to your data, and add error handling and logging. For example, the [Setting Up a Delivery Service for CRM](./sale/delivery-in-crm.md) tutorial
-- **As a ready-to-use code snippet.** Find a scenario for a specific task and move the code into your project. For example, the [How to Configure Rounding for a Number Custom Field](./crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md) tutorial
+- **As a ready-to-use code snippet.** Find a scenario for a specific task and move the code into your project. For example, the [How to Configure Rounding for a Number Custom Field](./field-types/how-to-add-precision-to-user-field.md) tutorial
 
 ## Tutorial Structure
 
@@ -49,6 +49,7 @@ If you have not made API requests yet, start with the [Where to Start](../first-
 
 #|
 || **Category** | **Tasks the Tutorials Cover** ||
+|| [Field Types](./field-types/index.md) | Create a custom field and configure it, write and read the value of a List field, of bindings to CRM elements, directories, and information blocks, fill a dependent field automatically ||
 || [CRM](./crm/index.md) | Add and update CRM objects, retrieve lists, pass Sales Intelligence data, embed an application interface into item cards and lists ||
 || [Online Sales](./sale/index.md) | Add a line item with an arbitrary price to an order, set up a delivery service for CRM ||
 || [Product Catalog](./catalog/index.md) | Create a product with custom property values and update those values ||

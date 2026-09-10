@@ -4,11 +4,12 @@
 
 ### September 10, 2026
 
-- Added the tutorial [How to Work with the Binding to CRM Directories Field](./tutorials/crm/how-to-add-crm-objects/how-to-use-crm-status-field.md)
-- Added the tutorial [How to Work with the Binding to Information Block Elements Field](./tutorials/crm/how-to-add-crm-objects/how-to-use-iblock-binding-field.md)
-- Added the tutorial [How to Work with the Binding to Information Block Sections Field](./tutorials/crm/how-to-add-crm-objects/how-to-use-iblock-section-binding-field.md)
-- Added the tutorial [How to Work with the List Field Type](./tutorials/crm/how-to-add-crm-objects/how-to-use-enumeration-field.md)
+- Added the tutorial [How to Work with the Binding to CRM Directories Field](./tutorials/field-types/how-to-use-crm-status-field.md)
+- Added the tutorial [How to Work with the Binding to Information Block Elements Field](./tutorials/field-types/how-to-use-iblock-binding-field.md)
+- Added the tutorial [How to Work with the Binding to Information Block Sections Field](./tutorials/field-types/how-to-use-iblock-section-binding-field.md)
+- Added the tutorial [How to Work with the List Field Type](./tutorials/field-types/how-to-use-enumeration-field.md)
 - Added the tutorial [How to Save the Paid Amount in the Deal Field](./tutorials/crm/how-to-edit-crm-objects/how-to-set-paid-sum-to-deal.md)
+- Grouped the tutorials on working with fields into a separate [Field Types](./tutorials/field-types/index.md) section
 
 ### September 8, 2026
 
@@ -28,12 +29,12 @@
 - Added the tutorial [How to Transfer a File from a CRM Field to a Task](./tutorials/tasks/how-to-transfer-file-from-crm-to-task.md)
 - Added the tutorial [How to Send an E-mail from a Connected Mailbox](./tutorials/mail/how-to-send-email-from-mailbox.md)
 - Added the tutorial [How to Create a CRM Activity from an Incoming E-mail](./tutorials/mail/how-to-create-crm-activity-from-email.md)
-- Added the tutorial [How to Work with the Binding to CRM Elements Field](./tutorials/crm/how-to-add-crm-objects/how-to-use-crm-binding-field.md)
+- Added the tutorial [How to Work with the Binding to CRM Elements Field](./tutorials/field-types/how-to-use-crm-binding-field.md)
 
 ### August 31, 2026
 
 - Added the [imopenlines.v2.*](./api-reference/imopenlines/statistics/index.md) methods for Open Channels statistics: aggregates, session list, session metrics, ratings, transfers, and operator load
-- Added the tutorial [How to Automatically Fill a Dependent CRM Field After the Main Field Changes](./tutorials/crm/how-to-edit-crm-objects/how-to-autofill-dependent-field.md)
+- Added the tutorial [How to Automatically Fill a Dependent CRM Field After the Main Field Changes](./tutorials/field-types/how-to-autofill-dependent-field.md)
 
 ### August 28, 2026
 
@@ -789,7 +790,7 @@
 - Updated the main page of the section [Inventory Management](./api-reference/catalog/document/index.md). Added introductory information as well as an overview of methods and connections
 - Updated the main page of the section [Order Sources](./api-reference/sale/trade-platform/index.md). Added introductory information as well as an overview of methods and connections
 - Updated the main page of the section [Linking Order Sources to Orders](./api-reference/sale/trade-binding/index.md). Added introductory information as well as an overview of methods and connections
-- Added a new tutorial [How to Set Up Rounding for a Custom Field of Type "Number"](./tutorials/crm/how-to-add-crm-objects/how-to-add-precision-to-user-field.md)
+- Added a new tutorial [How to Set Up Rounding for a Custom Field of Type "Number"](./tutorials/field-types/how-to-add-precision-to-user-field.md)
 - Updated the main page of the section [Time Tracking](./api-reference/timeman/index.md). Added introductory information as well as an overview of methods and connections
 
 ### February 26, 2025
@@ -826,7 +827,7 @@
 - Updated the main page of the [Open Lines Connectors](./api-reference/imopenlines/imconnector/index.md) section. Added introductory information as well as an overview of methods and connections.
 - Updated documentation on [application actions](./api-reference/bizproc/bizproc-activity/index.md) in the Business Processes and Automation rules section.
 - Updated documentation on [application automation rules](./api-reference/bizproc/bizproc-robot/index.md) in the Business Processes and Automation rules section.
-- Added a new tutorial [How to Create a Custom Field in a SPA](./tutorials/crm/how-to-add-crm-objects/how-to-add-user-field-to-spa.md).
+- Added a new tutorial [How to Create a Custom Field in a SPA](./tutorials/field-types/how-to-add-user-field-to-spa.md).
 - Updated information on methods for custom activity types in CRM [crm.activity.type.*](./api-reference/crm/timeline/activities/types/index.md).
 - Updated information on activity events in CRM [onCrmActivity*](./api-reference/crm/timeline/activities/events/index.md).
 

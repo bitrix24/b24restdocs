@@ -1,18 +1,18 @@
 # How to Work with the Binding to Information Block Elements Field
 
-> Scope: [`crm`, `lists`, `catalog`](../../../api-reference/scopes/permissions.md)
+> Scope: [`crm`, `lists`, `catalog`](../../api-reference/scopes/permissions.md)
 >
 > Who can execute the methods: the methods require permissions from several modules, all permissions listed below are required
 >
-> - [crm.deal.userfield.add](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) — a CRM administrator
-> - [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) and [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md) — a user with permission to modify and read deals
-> - [lists.get](../../../api-reference/lists/lists/lists-get.md) and [lists.element.get](../../../api-reference/lists/elements/lists-element-get.md) — a user with "Read" access permission for the list
-> - [catalog.catalog.list](../../../api-reference/catalog/catalog/catalog-catalog-list.md) and [catalog.product.get](../../../api-reference/catalog/product/catalog-product-get.md) — an administrator
-> - [catalog.product.list](../../../api-reference/catalog/product/catalog-product-list.md) — a user with permission to view the product catalog and read the trade catalog information block
+> - [crm.deal.userfield.add](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) — a CRM administrator
+> - [crm.deal.update](../../api-reference/crm/deals/crm-deal-update.md) and [crm.deal.get](../../api-reference/crm/deals/crm-deal-get.md) — a user with permission to modify and read deals
+> - [lists.get](../../api-reference/lists/lists/lists-get.md) and [lists.element.get](../../api-reference/lists/elements/lists-element-get.md) — a user with "Read" access permission for the list
+> - [catalog.catalog.list](../../api-reference/catalog/catalog/catalog-catalog-list.md) and [catalog.product.get](../../api-reference/catalog/product/catalog-product-get.md) — an administrator
+> - [catalog.product.list](../../api-reference/catalog/product/catalog-product-list.md) — a user with permission to view the product catalog and read the trade catalog information block
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -24,11 +24,11 @@ Let us walk through the scenario with deals. Create two fields: a single-value f
 
 The scenario consists of five steps.
 
-1. Find the information block using the [lists.get](../../../api-reference/lists/lists/lists-get.md) and [catalog.catalog.list](../../../api-reference/catalog/catalog/catalog-catalog-list.md) methods
-2. Create the binding fields using the [crm.deal.userfield.add](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) method
-3. Retrieve the element identifiers using the [lists.element.get](../../../api-reference/lists/elements/lists-element-get.md) and [catalog.product.list](../../../api-reference/catalog/product/catalog-product-list.md) methods
-4. Write the values using the [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) method
-5. Expand the values into names using the [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md), [lists.element.get](../../../api-reference/lists/elements/lists-element-get.md), and [catalog.product.get](../../../api-reference/catalog/product/catalog-product-get.md) methods
+1. Find the information block using the [lists.get](../../api-reference/lists/lists/lists-get.md) and [catalog.catalog.list](../../api-reference/catalog/catalog/catalog-catalog-list.md) methods
+2. Create the binding fields using the [crm.deal.userfield.add](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) method
+3. Retrieve the element identifiers using the [lists.element.get](../../api-reference/lists/elements/lists-element-get.md) and [catalog.product.list](../../api-reference/catalog/product/catalog-product-list.md) methods
+4. Write the values using the [crm.deal.update](../../api-reference/crm/deals/crm-deal-update.md) method
+5. Expand the values into names using the [crm.deal.get](../../api-reference/crm/deals/crm-deal-get.md), [lists.element.get](../../api-reference/lists/elements/lists-element-get.md), and [catalog.product.get](../../api-reference/catalog/product/catalog-product-get.md) methods
 
 As a result, both fields in the deal are filled in, and the stored identifiers let you retrieve the names of the list item and the products.
 
@@ -48,17 +48,17 @@ For server-side JS examples with `B24Hook`, Node.js 18, 20, 22 or newer is requi
 
 Store the webhook URL in an environment variable and do not publish it in open code.
 
-{% include [Example Note](../../../_includes/examples.md) %}
+{% include [Example Note](../../_includes/examples.md) %}
 
 ## 1. Find the Information Block and Its Identifier
 
 Lists and product catalogs are information blocks of different types, and they are retrieved with different methods.
 
-The [lists.get](../../../api-reference/lists/lists/lists-get.md) method returns lists of a single type. Pass the parameter:
+The [lists.get](../../api-reference/lists/lists/lists-get.md) method returns lists of a single type. Pass the parameter:
 
 - `IBLOCK_TYPE_ID` — information block type. `lists` stands for regular lists, `bitrix_processes` for workflow lists
 
-The [catalog.catalog.list](../../../api-reference/catalog/catalog/catalog-catalog-list.md) method returns trade catalogs and takes no parameters.
+The [catalog.catalog.list](../../api-reference/catalog/catalog/catalog-catalog-list.md) method returns trade catalogs and takes no parameters.
 
 Save the following from the responses:
 
@@ -167,7 +167,7 @@ Save the following from the responses:
 
 {% endlist %}
 
-Abbreviated response of [lists.get](../../../api-reference/lists/lists/lists-get.md):
+Abbreviated response of [lists.get](../../api-reference/lists/lists/lists-get.md):
 
 ```json
 {
@@ -183,7 +183,7 @@ Abbreviated response of [lists.get](../../../api-reference/lists/lists/lists-get
 }
 ```
 
-Abbreviated response of [catalog.catalog.list](../../../api-reference/catalog/catalog/catalog-catalog-list.md):
+Abbreviated response of [catalog.catalog.list](../../api-reference/catalog/catalog/catalog-catalog-list.md):
 
 ```json
 {
@@ -213,7 +213,7 @@ A catalog with a non-null `productIblockId` is the trade offers information bloc
 
 ## 2. Create the Binding Fields
 
-The [crm.deal.userfield.add](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) method creates a custom field for all deals. Pass the parameters:
+The [crm.deal.userfield.add](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md) method creates a custom field for all deals. Pass the parameters:
 
 - `FIELD_NAME` — field code. The parameter is required. If the code does not start with `UF_CRM_`, the prefix is added automatically: `MY_FIELD` becomes `UF_CRM_MY_FIELD`
 - `USER_TYPE_ID` — field type, `iblock_element` for the binding to information block elements
@@ -222,9 +222,9 @@ The [crm.deal.userfield.add](../../../api-reference/crm/deals/user-defined-field
 - `SETTINGS.IBLOCK_ID` — information block identifier from the first step. Without it, the method returns an error
 - `SETTINGS.DISPLAY` — type of the control in the deal card: `UI`, `DIALOG`, `LIST`, or `CHECKBOX`
 
-The full list of field types is returned by the [crm.userfield.types](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md) method. For the binding to information block sections, there is a separate type, `iblock_section`.
+The full list of field types is returned by the [crm.userfield.types](../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md) method. For the binding to information block sections, there is a separate type, `iblock_section`.
 
-Save the identifiers of the created fields from the response: they let you read the settings with the [crm.deal.userfield.get](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-get.md) method.
+Save the identifiers of the created fields from the response: they let you read the settings with the [crm.deal.userfield.get](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-get.md) method.
 
 {% list tabs %}
 
@@ -330,7 +330,7 @@ The response contains the field identifier:
 }
 ```
 
-The field settings can be read with the [crm.deal.userfield.get](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-get.md) method. Abbreviated response:
+The field settings can be read with the [crm.deal.userfield.get](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-get.md) method. Abbreviated response:
 
 ```json
 {
@@ -355,13 +355,13 @@ Only five settings are stored. The information block type is not among them: the
 
 ## 3. Retrieve the Element Identifiers
 
-List items are returned by the [lists.element.get](../../../api-reference/lists/elements/lists-element-get.md) method. Pass the parameters:
+List items are returned by the [lists.element.get](../../api-reference/lists/elements/lists-element-get.md) method. Pass the parameters:
 
 - `IBLOCK_TYPE_ID` — information block type, the same as in the first step
 - `IBLOCK_ID` — list identifier
 - `ELEMENT_ID` — identifier of a single item, if you need a specific one
 
-Catalog products are returned by the [catalog.product.list](../../../api-reference/catalog/product/catalog-product-list.md) method. Pass the parameters:
+Catalog products are returned by the [catalog.product.list](../../api-reference/catalog/product/catalog-product-list.md) method. Pass the parameters:
 
 - `filter.iblockId` — catalog identifier, otherwise the response includes products of all catalogs
 - `select` — product fields, `id`, `iblockId`, and `name` are enough for this scenario
@@ -450,7 +450,7 @@ Save the `ID` of the list item and the `id` values of the products from the resp
 
 {% endlist %}
 
-Abbreviated response of [lists.element.get](../../../api-reference/lists/elements/lists-element-get.md):
+Abbreviated response of [lists.element.get](../../api-reference/lists/elements/lists-element-get.md):
 
 ```json
 {
@@ -466,7 +466,7 @@ Abbreviated response of [lists.element.get](../../../api-reference/lists/element
 }
 ```
 
-Abbreviated response of [catalog.product.list](../../../api-reference/catalog/product/catalog-product-list.md):
+Abbreviated response of [catalog.product.list](../../api-reference/catalog/product/catalog-product-list.md):
 
 ```json
 {
@@ -484,12 +484,12 @@ You have the list item identifier `7007` and the product identifiers `533` and `
 
 ## 4. Write the Values
 
-The [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) method writes values to the deal fields. Pass the parameters:
+The [crm.deal.update](../../api-reference/crm/deals/crm-deal-update.md) method writes values to the deal fields. Pass the parameters:
 
 - `id` — deal identifier
 - `fields` — object with field codes. Pass a number to the single-value field and an array of numbers to the multiple field
 
-Bitrix24 does not validate the identifiers you pass: the method accepts a nonexistent element as well as an element of another information block and returns `true`. Check the elements yourself before writing. Look up the list item with the [lists.element.get](../../../api-reference/lists/elements/lists-element-get.md) method by `ELEMENT_ID`: an empty array in the response means the item is not in that list. Retrieve the product with the [catalog.product.get](../../../api-reference/catalog/product/catalog-product-get.md) method and compare its `iblockId` with the information block of the field.
+Bitrix24 does not validate the identifiers you pass: the method accepts a nonexistent element as well as an element of another information block and returns `true`. Check the elements yourself before writing. Look up the list item with the [lists.element.get](../../api-reference/lists/elements/lists-element-get.md) method by `ELEMENT_ID`: an empty array in the response means the item is not in that list. Retrieve the product with the [catalog.product.get](../../api-reference/catalog/product/catalog-product-get.md) method and compare its `iblockId` with the information block of the field.
 
 {% list tabs %}
 
@@ -651,9 +651,9 @@ The `true` value confirms that the deal has been updated but says nothing about 
 
 ## 5. Expand the Values into Names
 
-The [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md) method returns the deal with all custom fields. A single-value field comes as a string, a multiple field as an array of numbers.
+The [crm.deal.get](../../api-reference/crm/deals/crm-deal-get.md) method returns the deal with all custom fields. A single-value field comes as a string, a multiple field as an array of numbers.
 
-Element names are not stored in the deal. To retrieve them, request the list items with the [lists.element.get](../../../api-reference/lists/elements/lists-element-get.md) method and the products with the [catalog.product.get](../../../api-reference/catalog/product/catalog-product-get.md) method, one identifier per call.
+Element names are not stored in the deal. To retrieve them, request the list items with the [lists.element.get](../../api-reference/lists/elements/lists-element-get.md) method and the products with the [catalog.product.get](../../api-reference/catalog/product/catalog-product-get.md) method, one identifier per call.
 
 {% list tabs %}
 
@@ -759,7 +759,7 @@ Element names are not stored in the deal. To retrieve them, request the list ite
 
 {% endlist %}
 
-Abbreviated response of [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md):
+Abbreviated response of [crm.deal.get](../../api-reference/crm/deals/crm-deal-get.md):
 
 ```json
 {
@@ -772,7 +772,7 @@ Abbreviated response of [crm.deal.get](../../../api-reference/crm/deals/crm-deal
 }
 ```
 
-Abbreviated response of [catalog.product.get](../../../api-reference/catalog/product/catalog-product-get.md):
+Abbreviated response of [catalog.product.get](../../api-reference/catalog/product/catalog-product-get.md):
 
 ```json
 {
@@ -796,8 +796,8 @@ What to check in the responses:
 
 - `UF_CRM_IB_LIST` contains a string with the item identifier rather than `"0"` or an empty string
 - `UF_CRM_IB_PROD` contains an array of product identifiers
-- [lists.element.get](../../../api-reference/lists/elements/lists-element-get.md) with that `ELEMENT_ID` returned one item rather than an empty array
-- [catalog.product.get](../../../api-reference/catalog/product/catalog-product-get.md) returned the product and its `iblockId` matches the `IBLOCK_ID` of the field
+- [lists.element.get](../../api-reference/lists/elements/lists-element-get.md) with that `ELEMENT_ID` returned one item rather than an empty array
+- [catalog.product.get](../../api-reference/catalog/product/catalog-product-get.md) returned the product and its `iblockId` matches the `IBLOCK_ID` of the field
 
 Open the deal card in the interface: the List Element and Catalog Products fields show the element names. An empty field in the card together with a non-empty value in the response means that the stored element is not in the bound information block.
 
@@ -807,18 +807,18 @@ If the method returns an error, check the request data.
 
 #|
 || **Code or Error Text** | **Reason and Action** ||
-|| `The 'FIELD_NAME' field is not found.` | The field code is not passed to [crm.deal.userfield.add](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md). Pass `FIELD_NAME` ||
+|| `The 'FIELD_NAME' field is not found.` | The field code is not passed to [crm.deal.userfield.add](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md). Pass `FIELD_NAME` ||
 || `ERROR_CORE`, `Select the information block to link the field to` | The field settings contain no `SETTINGS.IBLOCK_ID`. Pass the information block identifier from the first step ||
-|| `ACCESS_DENIED`, `You do not have permission to view or edit the list.` | [lists.get](../../../api-reference/lists/lists/lists-get.md) is called with an information block type that is not a list, for example `catalog`. For products, use [catalog.catalog.list](../../../api-reference/catalog/catalog/catalog-catalog-list.md) ||
-|| `product does not exist.` | [catalog.product.get](../../../api-reference/catalog/product/catalog-product-get.md) is called with the identifier of a nonexistent product. Retrieve the identifiers with the [catalog.product.list](../../../api-reference/catalog/product/catalog-product-list.md) method ||
+|| `ACCESS_DENIED`, `You do not have permission to view or edit the list.` | [lists.get](../../api-reference/lists/lists/lists-get.md) is called with an information block type that is not a list, for example `catalog`. For products, use [catalog.catalog.list](../../api-reference/catalog/catalog/catalog-catalog-list.md) ||
+|| `product does not exist.` | [catalog.product.get](../../api-reference/catalog/product/catalog-product-get.md) is called with the identifier of a nonexistent product. Retrieve the identifiers with the [catalog.product.list](../../api-reference/catalog/product/catalog-product-list.md) method ||
 |#
 
-If there was no error but the binding does not work, check the stored value with the [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md) method.
+If there was no error but the binding does not work, check the stored value with the [crm.deal.get](../../api-reference/crm/deals/crm-deal-get.md) method.
 
 - The value `"0"` means that a string was passed to the field instead of a number. A non-numeric value is cast to zero, and the method returns no error
 - The value `"1"` in a single-value field means that an array was passed to it. A single-value field accepts only a number, and an array is cast to one rather than to its first element
-- There is a value but the card is empty: the stored identifier belongs to a nonexistent element or to an element of another information block. Check the element with the [lists.element.get](../../../api-reference/lists/elements/lists-element-get.md) or [catalog.product.get](../../../api-reference/catalog/product/catalog-product-get.md) method and write the value again
-- The field is created but the card offers nothing to select: `SETTINGS.IBLOCK_ID` points to a nonexistent information block. Such a field is created without an error. Check the setting with the [crm.deal.userfield.get](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-get.md) method
+- There is a value but the card is empty: the stored identifier belongs to a nonexistent element or to an element of another information block. Check the element with the [lists.element.get](../../api-reference/lists/elements/lists-element-get.md) or [catalog.product.get](../../api-reference/catalog/product/catalog-product-get.md) method and write the value again
+- The field is created but the card offers nothing to select: `SETTINGS.IBLOCK_ID` points to a nonexistent information block. Such a field is created without an error. Check the setting with the [crm.deal.userfield.get](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-get.md) method
 - The card shows a control other than the one you specified: an unknown value was passed to `SETTINGS.DISPLAY` and was replaced with `UI`
 
 To clear the binding, pass an empty string to the field. Running the scenario again overwrites the values and creates no duplicates.
@@ -829,8 +829,8 @@ To clear the binding, pass an empty string to the field. Running the scenario ag
 - Bitrix24 does not check that the element exists and belongs to the bound information block. Validating the identifiers is the task of your integration
 - A single-value field is returned as a string, a multiple field as an array of numbers. Take this into account when parsing the response
 - The trade offers information block is a separate catalog with a non-null `productIblockId`. A binding to it stores product variations rather than products
-- [catalog.product.list](../../../api-reference/catalog/product/catalog-product-list.md) and [lists.element.get](../../../api-reference/lists/elements/lists-element-get.md) return elements in pages of 50. To iterate through all of them, increase `start`
-- For other CRM objects, fields are created with the methods of the same name, for example [crm.lead.userfield.add](../../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md), and in a smart process with the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method
+- [catalog.product.list](../../api-reference/catalog/product/catalog-product-list.md) and [lists.element.get](../../api-reference/lists/elements/lists-element-get.md) return elements in pages of 50. To iterate through all of them, increase `start`
+- For other CRM objects, fields are created with the methods of the same name, for example [crm.lead.userfield.add](../../api-reference/crm/leads/userfield/crm-lead-userfield-add.md), and in a smart process with the [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method
 - For the binding to information block sections, use the `iblock_section` field type covered in the [{#T}](./how-to-use-iblock-section-binding-field.md) tutorial
 
 ## Code Example
@@ -1179,10 +1179,10 @@ The complete scenario in a single script: it finds the information blocks, creat
 ## Continue Learning
 
 - [{#T}](./how-to-use-iblock-section-binding-field.md)
-- [{#T}](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md)
-- [{#T}](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md)
-- [{#T}](../../../api-reference/lists/lists/lists-get.md)
-- [{#T}](../../../api-reference/lists/elements/lists-element-get.md)
-- [{#T}](../../../api-reference/catalog/catalog/catalog-catalog-list.md)
-- [{#T}](../../../api-reference/catalog/product/catalog-product-list.md)
-- [{#T}](../../../api-reference/crm/deals/crm-deal-update.md)
+- [{#T}](../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md)
+- [{#T}](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-add.md)
+- [{#T}](../../api-reference/lists/lists/lists-get.md)
+- [{#T}](../../api-reference/lists/elements/lists-element-get.md)
+- [{#T}](../../api-reference/catalog/catalog/catalog-catalog-list.md)
+- [{#T}](../../api-reference/catalog/product/catalog-product-list.md)
+- [{#T}](../../api-reference/crm/deals/crm-deal-update.md)

@@ -33,20 +33,6 @@ items:
     href: how-to-send-email.md
   - name: Add Comment to Smart Process Timeline
     href: how-to-add-comment-to-spa.md
-  - name: Create Custom Field in Smart Process
-    href: how-to-add-user-field-to-spa.md
-  - name: Configure Rounding for Number Type Custom Field
-    href: how-to-add-precision-to-user-field.md
-  - name: How to Work with the Binding to CRM Elements Field
-    href: how-to-use-crm-binding-field.md
-  - name: How to Work with the Binding to CRM Directories Field
-    href: how-to-use-crm-status-field.md
-  - name: How to Work with the Binding to Information Block Elements Field
-    href: how-to-use-iblock-binding-field.md
-  - name: How to Work with the Binding to Information Block Sections Field
-    href: how-to-use-iblock-section-binding-field.md
-  - name: How to Work with the List Field Type
-    href: how-to-use-enumeration-field.md
   - name: How to Create a New Pipeline with Stages in a Smart Process
     href: how-to-add-category-to-spa.md
 

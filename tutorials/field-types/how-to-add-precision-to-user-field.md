@@ -1,15 +1,15 @@
 # How to Configure Rounding for a Number Custom Field
 
-> Scope: [`crm`, `userfieldconfig`](../../../api-reference/scopes/permissions.md)
+> Scope: [`crm`, `userfieldconfig`](../../api-reference/scopes/permissions.md)
 >
 > Who can execute the methods: to complete the entire scenario, the strictest of the listed permissions is required — "Allow changing settings"
 >
-> - [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) and [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) — a user with "Allow changing settings" permission in CRM
-> - [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) — a user with permission to read deals
+> - [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) and [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) — a user with "Allow changing settings" permission in CRM
+> - [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) — a user with permission to read deals
 
 {% note tip "" %}
 
-If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
+If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Code, Cursor), connect to the [MCP server](../../ai-tools/mcp.md) so that the assistant can utilize the official REST documentation.
 
 {% endnote %}
 
@@ -27,21 +27,21 @@ For the "Number" type — `double` — precision is defined by the `PRECISION` s
 
 There are two independent scenarios on this page. They are not connected: the second does not use the result of the first, but begins by searching for an existing field.
 
-- [Creating a field with rounding configuration immediately](#create) — one call to [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md). Suitable when the field does not yet exist.
-- [Changing the configuration of an existing field](#update) — two steps: retrieve the `ID` of the field using the [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method, then pass it to [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md).
+- [Creating a field with rounding configuration immediately](#create) — one call to [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md). Suitable when the field does not yet exist.
+- [Changing the configuration of an existing field](#update) — two steps: retrieve the `ID` of the field using the [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method, then pass it to [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md).
 
-In both scenarios, the examples work with deal fields. For another CRM object, the object identifier in `entityId` and the method to retrieve the field list will change — for example, [crm.lead.userfield.list](../../../api-reference/crm/leads/userfield/crm-lead-userfield-list.md) for leads.
+In both scenarios, the examples work with deal fields. For another CRM object, the object identifier in `entityId` and the method to retrieve the field list will change — for example, [crm.lead.userfield.list](../../api-reference/crm/leads/userfield/crm-lead-userfield-list.md) for leads.
 
 ## Prepare the Data
 
 To run the examples, you need:
 
 - An inbound webhook with scopes `crm` and `userfieldconfig`. The webhook executes requests with the permissions of the user who created it. Do not publish the secret webhook code in client-side code or repositories — store it in environment variables, as shown in the JS example. In the PHP and Python examples, a placeholder is used instead of the webhook address; replace it with your own method for storing the secret.
-- The "Allow to change settings" permission for the webhook user. This is a general permission for CRM configurations: it is granted to a role as a whole and is not set separately for deals or other objects. The exception is SPAs within an automated solution: for these, the permission is checked at the level of the solution itself. Without this permission, [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) and [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) will return an access error.
+- The "Allow to change settings" permission for the webhook user. This is a general permission for CRM configurations: it is granted to a role as a whole and is not set separately for deals or other objects. The exception is SPAs within an automated solution: for these, the permission is checked at the level of the solution itself. Without this permission, [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) and [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) will return an access error.
 
-For server-side JS examples with `B24Hook`, Node.js 18, 20, 22, or newer is required; for new projects, 22 or newer is required. B24JsSDK is an ES module: save the code in a `.mjs` file or add `"type": "module"` to `package.json`. For examples using `b24pysdk`, Python 3.9 or newer is required; for version 3 examples using [B24PhpSDK](../../../sdk/b24phpsdk/index.md), PHP 8.4 or newer is required.
+For server-side JS examples with `B24Hook`, Node.js 18, 20, 22, or newer is required; for new projects, 22 or newer is required. B24JsSDK is an ES module: save the code in a `.mjs` file or add `"type": "module"` to `package.json`. For examples using `b24pysdk`, Python 3.9 or newer is required; for version 3 examples using [B24PhpSDK](../../sdk/b24phpsdk/index.md), PHP 8.4 or newer is required.
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../_includes/examples.md) %}
 
 The step examples follow one another. The SDK is initialized once here; subsequent examples use the ready-made instance: `$b24` in JS, `$sb` in PHP, and `client` in Python.
 
@@ -100,7 +100,7 @@ The step examples follow one another. The SDK is initialized once here; subseque
 The methods on this page return the same data in different casing. This is how the API works — there is no need to convert formats to match each other, but they can be easily confused in code.
 
 - `userfieldconfig.*` methods accept and return fields in camelCase: `fieldName`, `userTypeId`, `editFormLabel`, `settings`
-- `crm.*.userfield.*` methods, including [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md), return fields in UPPER_SNAKE: `FIELD_NAME`, `USER_TYPE_ID`, `EDIT_FORM_LABEL`, `SETTINGS`
+- `crm.*.userfield.*` methods, including [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md), return fields in UPPER_SNAKE: `FIELD_NAME`, `USER_TYPE_ID`, `EDIT_FORM_LABEL`, `SETTINGS`
 
 Keys within the configurations themselves are in uppercase in both cases: `PRECISION`, `SIZE`, `MIN_VALUE`, `MAX_VALUE`, `DEFAULT_VALUE`. Therefore, the precision of the created field lies in `settings.PRECISION`, while the precision of the field from the deal list lies in `SETTINGS.PRECISION`.
 
@@ -108,15 +108,15 @@ Keys within the configurations themselves are in uppercase in both cases: `PRECI
 
 We will create a deal field with a "Number" type and a precision of three decimal places. If a value with four or more decimal places is entered into such a field, it will be rounded to three decimal places upon saving.
 
-To create a custom field, use the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method with the following parameters:
+To create a custom field, use the [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) method with the following parameters:
 
 - `moduleId` — the module identifier where the method will create the field, a required parameter. In the example, we are creating a field for deals, so the module is `crm`
 
-- `field[entityId]` — the object identifier, a required parameter. For deals and other base CRM objects, the identifier is fixed: `CRM_DEAL`, `CRM_LEAD`, `CRM_CONTACT`, `CRM_COMPANY`. The format `CRM_{ID}` with a numeric identifier is used only for custom SPAs, while system objects use their own string identifiers such as `CRM_SMART_INVOICE`. A complete list can be found in the article [User Field Settings](../../../api-reference/crm/universal/userfieldconfig/index.md#entity-id). In the example, we will specify `CRM_DEAL`
+- `field[entityId]` — the object identifier, a required parameter. For deals and other base CRM objects, the identifier is fixed: `CRM_DEAL`, `CRM_LEAD`, `CRM_CONTACT`, `CRM_COMPANY`. The format `CRM_{ID}` with a numeric identifier is used only for custom SPAs, while system objects use their own string identifiers such as `CRM_SMART_INVOICE`. A complete list can be found in the article [User Field Settings](../../api-reference/crm/universal/userfieldconfig/index.md#entity-id). In the example, we will specify `CRM_DEAL`
 
 - `field[fieldName]` — the field code according to the formula `UF_ + {object identifier} + _ + {arbitrary string in UPPERCASE}`. A required parameter. The code must start with `UF_` and the object identifier from `entityId`, otherwise the method will return an error. Allowed characters are `A-Z`, `0-9`, and `_`, with a length limit of 50 characters. In the example, we will specify `UF_CRM_DEAL_NEW_DOUBLE_FIELD`
 
-- `field[userTypeId]` — the [field type](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md) identifier, a required parameter. In the example, we will specify `double` to create a field of the number type
+- `field[userTypeId]` — the [field type](../../api-reference/crm/universal/user-defined-fields/crm-userfield-types.md) identifier, a required parameter. In the example, we will specify `double` to create a field of the number type
 
 - `field[editFormLabel]` — an array of names to display the field in Bitrix24 in different languages. An optional parameter; if no name is provided, Bitrix24 will display the field code
 
@@ -303,22 +303,22 @@ As a result, you will receive the data for the created field.
 }
 ```
 
-The response confirms the result: `settings.PRECISION` contains the passed precision `3`, and other type settings are filled with default values. Save the `id` of the field — `6961` in the example. You can use it to update the field using the [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method or delete it using the [userfieldconfig.delete](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md) method without requesting the field list again.
+The response confirms the result: `settings.PRECISION` contains the passed precision `3`, and other type settings are filled with default values. Save the `id` of the field — `6961` in the example. You can use it to update the field using the [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method or delete it using the [userfieldconfig.delete](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md) method without requesting the field list again.
 
 This concludes the first scenario. Go to the [Verify the Result](#check) section — the second scenario is only required for fields that already exist.
 
 ## Modifying a Setting for an Existing Field {#update}
 
-This scenario is independent of the first one: the field has already been created, and its precision needs to be changed. The [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method accepts `id` fields, so the scenario consists of two steps.
+This scenario is independent of the first one: the field has already been created, and its precision needs to be changed. The [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method accepts `id` fields, so the scenario consists of two steps.
 
-1. Retrieve the `ID` and current field settings using the [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method.
-2. Pass them to [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md), changing only the precision.
+1. Retrieve the `ID` and current field settings using the [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method.
+2. Pass them to [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md), changing only the precision.
 
-If the field was just created by the first scenario, the first step is unnecessary: both `id` and the settings already arrived in the [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) response — in `field.id` and `field.settings`. Note that in this response, they are in camelCase.
+If the field was just created by the first scenario, the first step is unnecessary: both `id` and the settings already arrived in the [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md) response — in `field.id` and `field.settings`. Note that in this response, they are in camelCase.
 
 ### 1. Retrieving the Field ID {#field-id}
 
-To retrieve the field ID, use the [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method with the following parameters:
+To retrieve the field ID, use the [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) method with the following parameters:
 
 - `filter[LANG]` — a language filter used to output field names in the required language. Without this filter, names are not returned at all, making it impossible to find a field by name.
 
@@ -509,7 +509,7 @@ The field `EDIT_FORM_LABEL` is the name used to search for the field in the list
 
 ### 2. Modifying the Rounding Setting {#precision}
 
-To change a setting for an existing field, use the [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method with the following parameters:
+To change a setting for an existing field, use the [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) method with the following parameters:
 
 - `moduleId` — the module identifier in which the method will modify the field; this is a required parameter. In the example, we are modifying a deal field, and the module is `crm`.
 
@@ -523,7 +523,7 @@ To change a setting for an existing field, use the [userfieldconfig.update](../.
 
 Reducing the precision of a populated field is risky: extra characters are not hidden, but are discarded during the next deal save. It is no longer possible to restore them by setting the previous value `PRECISION`.
 
-See the full set of type configurations in the `settings` of any `userfieldconfig.*` response — all five keys are located there. The [crm.userfield.settings.fields](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-settings-fields.md) method for type `double` lists only `DEFAULT_VALUE` and `PRECISION`, so it cannot be relied upon in this context.
+See the full set of type configurations in the `settings` of any `userfieldconfig.*` response — all five keys are located there. The [crm.userfield.settings.fields](../../api-reference/crm/universal/user-defined-fields/crm-userfield-settings-fields.md) method for type `double` lists only `DEFAULT_VALUE` and `PRECISION`, so it cannot be relied upon in this context.
 
 {% endnote %}
 
@@ -1039,12 +1039,12 @@ The example assembles the second scenario in its entirety: it finds a deal field
 
 The scenario is executed correctly if the method response contains:
 
-- For [userfieldconfig.add](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md), `field.id` is present, but `field.settings.PRECISION` contains the passed precision
-- For [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md), `field.settings.PRECISION` contains the new precision, and `field.id` matches the identifier from step 1
+- For [userfieldconfig.add](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md), `field.id` is present, but `field.settings.PRECISION` contains the passed precision
+- For [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md), `field.settings.PRECISION` contains the new precision, and `field.id` matches the identifier from step 1
 
-The [userfieldconfig.get](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-get.md) method returns the current field configurations at any time using the `moduleId` parameters: `crm` and `id` of the field. It returns data in the same camelCase format as `add` and `update`.
+The [userfieldconfig.get](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-get.md) method returns the current field configurations at any time using the `moduleId` parameters: `crm` and `id` of the field. It returns data in the same camelCase format as `add` and `update`.
 
-You can verify rounding with data as follows: open a deal card — the field is displayed with the name from `editFormLabel`. Enter a value with more decimal places than specified in `PRECISION`, and save the deal. Via REST, the same is done by methods [crm.deal.update](../../../api-reference/crm/deals/crm-deal-update.md) and [crm.deal.get](../../../api-reference/crm/deals/crm-deal-get.md): write to the field `1,23456` and read it — with `PRECISION`: `3`, `1.235` will be returned.
+You can verify rounding with data as follows: open a deal card — the field is displayed with the name from `editFormLabel`. Enter a value with more decimal places than specified in `PRECISION`, and save the deal. Via REST, the same is done by methods [crm.deal.update](../../api-reference/crm/deals/crm-deal-update.md) and [crm.deal.get](../../api-reference/crm/deals/crm-deal-get.md): write to the field `1,23456` and read it — with `PRECISION`: `3`, `1.235` will be returned.
 
 ## Errors and Diagnostics
 
@@ -1057,12 +1057,12 @@ If the method returns an error, check the request data.
 || `The field #FIELD_NAME# for object #ENTITY_ID# already exists.` | An object already has a field with this `field[fieldName]`; instead of `#FIELD_NAME#` and `#ENTITY_ID#`, the passed values are substituted. You do not need to create the field again — go to the [second scenario](#update) and change the precision of the existing field ||
 || You cannot change the custom field settings | Insufficient permissions to change the field. This same error occurs if the field with the passed `id` has been deleted or belongs to a different module than the one specified in `moduleId`. The original Bitrix24 error message contains a typo in the word "custom"; search for the error using the exact string returned by the API ||
 || `The current method required more scopes. (crm)` | The inbound webhook or application does not have the module scope from `moduleId`. For CRM, both scopes are required: `userfieldconfig` and `crm` ||
-|| `Access denied.` | Error [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md): the user does not have permission to read deals ||
+|| `Access denied.` | Error [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md): the user does not have permission to read deals ||
 |#
 
 The method may execute without an error, but the result may not be what you expected.
 
-- the [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) response does not contain field labels — `LANG` was not passed in `filter`. Without it, labels are not returned at all, and searching for a field by name will not work
+- the [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md) response does not contain field labels — `LANG` was not passed in `filter`. Without it, labels are not returned at all, and searching for a field by name will not work
 - the field was not found in the response — check `USER_TYPE_ID`: for the "Number" type, it is `double`, not `integer` or `money`
 - the precision changed, but other field configurations were reset — only `PRECISION` was passed in `field[settings]`. Repeat step 2, passing the configurations from step 1 in their entirety
 - the value in the field was not rounded — rounding is applied when saving a value, not when changing a configuration. Previously saved values are not recalculated
@@ -1074,18 +1074,18 @@ The steps of the second scenario are repeated independently: step 1 does not cha
 - `PRECISION` accepts an integer from 0 to 12. Bitrix24 does not reject values outside this range but snaps them to the boundary: a negative value becomes `0`, and more than 12 becomes `12`
 - field values are accepted with both dots and commas; spaces are removed
 - `MIN_VALUE` and `MAX_VALUE`, equal to `0`, mean there is no limit
-- [userfieldconfig.update](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) does not change `entityId`, `fieldName`, `userTypeId`, and `multiple` — these parameters are ignored. To change them, delete the field using the [userfieldconfig.delete](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md) method and create it again
+- [userfieldconfig.update](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md) does not change `entityId`, `fieldName`, `userTypeId`, and `multiple` — these parameters are ignored. To change them, delete the field using the [userfieldconfig.delete](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-delete.md) method and create it again
 - `update` language labels are overwritten in the same way as configurations: if `field[editFormLabel]` is passed with at least one language, labels in other languages will be deleted. In the examples on this page, labels are not passed, so they are preserved
 - `userfieldconfig.*` methods work with modules other than CRM. For fields in another module, `moduleId` and `entityId` change, and the precision for the type `double` is set using the same `PRECISION` configuration
-- if you need a single field case for the entire scenario, [userfieldconfig.list](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-list.md) is a suitable alternative to [crm.deal.userfield.list](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md): it returns camelCase, like `add` and `update`. It has different calling rules: a mandatory `moduleId`, the field list arrives in `result.fields`, not in the root `result`, and field names will only be returned if passed to the `select` key `language` — this is the equivalent of the `LANG` filter from step 1
+- if you need a single field case for the entire scenario, [userfieldconfig.list](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-list.md) is a suitable alternative to [crm.deal.userfield.list](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md): it returns camelCase, like `add` and `update`. It has different calling rules: a mandatory `moduleId`, the field list arrives in `result.fields`, not in the root `result`, and field names will only be returned if passed to the `select` key `language` — this is the equivalent of the `LANG` filter from step 1
 
 ## Continue Learning
 
-- [{#T}](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md)
-- [{#T}](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md)
-- [{#T}](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-list.md)
-- [{#T}](../../../api-reference/crm/universal/userfieldconfig/userfieldconfig-get.md)
-- [{#T}](../../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md)
-- [{#T}](../../../api-reference/crm/universal/user-defined-fields/crm-userfield-settings-fields.md)
-- [{#T}](../../../api-reference/crm/universal/userfieldconfig/index.md)
+- [{#T}](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-add.md)
+- [{#T}](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-update.md)
+- [{#T}](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-list.md)
+- [{#T}](../../api-reference/crm/universal/userfieldconfig/userfieldconfig-get.md)
+- [{#T}](../../api-reference/crm/deals/user-defined-fields/crm-deal-userfield-list.md)
+- [{#T}](../../api-reference/crm/universal/user-defined-fields/crm-userfield-settings-fields.md)
+- [{#T}](../../api-reference/crm/universal/userfieldconfig/index.md)
 - [{#T}](./how-to-add-user-field-to-spa.md)
