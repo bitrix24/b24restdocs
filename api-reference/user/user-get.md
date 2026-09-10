@@ -16,7 +16,7 @@ By default, the method sorts users by ascending `ID`.
 
 {% note info "" %}
 
-The method does not return integrators. The list of Bitrix24 user fields that will be retrieved as a result of the method execution depends on the scope of the application/webhook. Details regarding access to user data can be found in the [article](index.md).
+The method does not return integrators. The list of Bitrix24 user fields that will be retrieved as a result of the method execution depends on the scope of the application/webhook. The fields available in each version are listed in the [User Scope Versions](user-scope.md) article.
 
 {% endnote %}
 

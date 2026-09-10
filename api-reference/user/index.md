@@ -144,15 +144,11 @@ An application can be embedded in the user profile — then you can work with it
 
 ## User Data Access Levels
 
-To ensure the security of employee data, different versions of the `user` scope are available for applications and webhooks.
+To ensure the security of employee data, three versions of the `user` scope are available for applications and webhooks. The version determines the set of profile fields that the methods return.
 
-- `user_brief` provides access to user information without contact details. This is sufficient for scenarios where displaying the user's full name in a third-party application interface is required.
-
-- `user_basic` opens basic information and contact details of users. This is required for scenarios related to making calls or sending e-mail messages.
-
-- `user` provides full access to user information, the ability to invite new users, and modify existing data.
-
-The [user.add](./user-add.md) and [user.update](./user-update.md) methods are not available in the `user_brief` and `user_basic` scopes, and the other methods return only the permitted set of fields.
+- `user_brief` provides access to names, positions, photos, and other data, excluding e-mail addresses, phone numbers, and postal addresses.
+- `user_basic` additionally opens the contact details of employees.
+- `user` provides access to all profile fields, the ability to invite new employees, and modify existing data.
 
 {% note tip " " %}
 

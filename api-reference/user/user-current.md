@@ -14,7 +14,7 @@ The method `user.current` retrieves information about the [current](*current_key
 
 {% note info "" %}
 
-The list of Bitrix24 user fields that will be received as a result of the method execution depends on the application/webhook scope. Details about access to user data can be found in the [article](index.md).
+The list of Bitrix24 user fields that will be received as a result of the method execution depends on the application/webhook scope. The fields available in each version are listed in the [User Scope Versions](user-scope.md) article.
 
 {% endnote %}
 

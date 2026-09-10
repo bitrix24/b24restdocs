@@ -14,7 +14,7 @@ The `user.fields` method allows you to retrieve a list of user field names. The 
 
 {% note info "" %}
 
-The list of Bitrix24 user fields that will be retrieved as a result of the method execution depends on the scope of the application/webhook. Details regarding access to user data can be found in the [article](index.md).
+The list of Bitrix24 user fields that will be retrieved as a result of the method execution depends on the scope of the application/webhook. The fields available in each version are listed in the [User Scope Versions](user-scope.md) article.
 
 {% endnote %}
 
