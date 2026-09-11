@@ -120,7 +120,7 @@ The order of the objects in the array does not depend on the order of selection:
         "sub": false,
         "sup": true,
         "position": "Director",
-        "photo": "/upload/resize_cache/main/c1c/58_58_2/weber.jpg",
+        "photo": "/upload/resize_cache/main/c1c/100_100_2/weber.jpg",
         "url": ""
     },
     {
@@ -155,9 +155,9 @@ The user confirmed an empty selection:
 || **sup**
 [`boolean`](../../../api-reference/data-types.md) | `true` if the employee heads the department of the current user or any department above it ||
 || **position**
-[`string`](../../../api-reference/data-types.md) | Position of the employee. If the position is not filled in, an empty string arrives ||
+[`string`](../../../api-reference/data-types.md) | Position of the employee. If the position is not filled in, an empty string or `null` arrives — check the value for truthiness ||
 || **photo**
-[`string`](../../../api-reference/data-types.md) | Path to the avatar of the employee, relative to the address of Bitrix24, not to the address of the application. To get a working link, assemble it from `https://`, the domain from [BX24.getDomain](../additional-functions/bx24-get-domain.md), and this path. If there is no photo, an empty string arrives ||
+[`string`](../../../api-reference/data-types.md) | Path to the reduced copy of the employee avatar, relative to the address of Bitrix24, not to the address of the application. To get a working link, assemble it from `https://`, the domain from [BX24.getDomain](../additional-functions/bx24-get-domain.md), and this path. If there is no photo, an empty string arrives ||
 || **url**
 [`string`](../../../api-reference/data-types.md) | Link to the profile of the employee. In an application dialog, it always arrives as an empty string ||
 |#

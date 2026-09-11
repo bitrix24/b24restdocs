@@ -18,17 +18,19 @@ System dialogs are the standard selection windows of Bitrix24. The application i
 
 ## What the Handler Receives
 
-Dialogs do not return data directly. The selection result arrives in the `callback` function that you pass when calling the method.
+Dialogs do not return data directly. The selection result arrives in the `callback` function that you pass to the method.
 
 #|
 || **Method** | **What the `callback` Receives** ||
-|| [BX24.selectUser](./bx24-select-user.md) | An object `{id, name}` of the selected user ||
+|| [BX24.selectUser](./bx24-select-user.md) | An object with employee data: identifier, name, position, avatar, and subordination flags [(list of fields)](./bx24-select-user.md#callback) ||
 || [BX24.selectUsers](./bx24-select-users.md) | An array of objects with employee data: identifier, name, position, avatar, and subordination flags [(list of fields)](./bx24-select-users.md#callback) ||
 || [BX24.selectAccess](./bx24-select-access.md) | An array of `{provider, id, name}` objects, where `id` is an access code such as `U1`, `SG4_K`, `AU` ||
 || [BX24.selectCRM](./bx24-select-crm.md) | An object with the keys `lead`, `contact`, `company`, `deal`, `quote`. Each key holds an object containing the selected items under numeric keys ||
 |#
 
-The handler is triggered only when the selection is confirmed. If the user closes the dialog without selecting anything, the handler is not called. For the multiple selection dialogs — [BX24.selectUsers](./bx24-select-users.md) and [BX24.selectAccess](./bx24-select-access.md) — a confirmed empty selection yields an empty array, so check the length of the array. Dialogs return no error codes.
+The handler is triggered when the user confirms the selection with a button or selects an employee with a click. In [BX24.selectUser](./bx24-select-user.md), there is no confirmation button: the dialog closes on a click on an employee. If the user closes the dialog without making a selection, the handler is not called.
+
+For the multiple selection dialogs — [BX24.selectUsers](./bx24-select-users.md) and [BX24.selectAccess](./bx24-select-access.md) — a confirmed empty selection yields an empty array, so check the length of the array. Dialogs return no error codes.
 
 ## Key Considerations
 
@@ -39,7 +41,7 @@ The handler is triggered only when the selection is confirmed. If the user close
 
 ## Relationships with Other Objects
 
-**User.** The methods [BX24.selectUser](./bx24-select-user.md) and [BX24.selectUsers](./bx24-select-users.md) return the numeric `id` of an employee. This identifier is passed to Bitrix24 methods that expect a `USER_ID`: for example, to [user.get](../../../api-reference/user/user-get.md) to retrieve employee details, or to the person responsible field when creating objects.
+**User.** The methods [BX24.selectUser](./bx24-select-user.md) and [BX24.selectUsers](./bx24-select-users.md) return the `id` of an employee as a string. Cast the value to a number and pass it to Bitrix24 methods that expect a `USER_ID`: for example, to [user.get](../../../api-reference/user/user-get.md) to retrieve employee details, or to the person responsible field when creating objects.
 
 **Access Permissions.** The method [BX24.selectAccess](./bx24-select-access.md) returns access codes — `U1` for a user, `SG4_K` for the members of a workgroup, `AU` for all authorized users. Such codes are accepted by the visibility and permission parameters of other Bitrix24 objects, where the list of recipients is defined by a set of codes rather than by a single user.
 
