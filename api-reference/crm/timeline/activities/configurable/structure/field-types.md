@@ -6,15 +6,13 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Available field types for configuring [your types of activities](../../types/index.md).
+The fields of the [configurable activity layout](./layout.md) use two special value types: text with translations and scope. The types of the other fields are listed in the tables on the layout pages.
 
-## textWithTranslation
+## textWithTranslation {#textwithtranslation}
 
-Text with translation support.
+Text that can be passed in several languages at once.
 
-Fields of type `textWithTranslation` support multilingualism. In its simplest form, you just need to pass a string into it. This string will be used as the value.
-
-If support for different interface languages is required, a non-empty array can be passed as the field value, where the keys are the language codes and the values are the text in that language, for example:
+If translations are not needed, pass a string — it is displayed as is. If the application has users with different interface languages, pass an object instead of a string: the key is a language code, the value is the text in that language.
 
 ```json
 {
@@ -23,16 +21,38 @@ If support for different interface languages is required, a non-empty array can 
 }
 ```
 
-If a translation for the current language is not found, English will be used. If the translation in English is also not found, the first element of the array will be used.
+Rules for the translations object:
 
-## Scope
+- keys must be language codes for languages installed in Bitrix24; otherwise, the `WRONG_LANG` error is returned
+- the value of each key is a string
+- the object must not be empty: it passes validation, but the record ends up with empty text
 
-Visibility. Where to display the block.
+Bitrix24 stores the whole object and picks the right variant when the record is displayed — based on the interface language of the user viewing the timeline. If there is no translation for their language, Bitrix24 uses English, and if there is no English either — the first value of the object.
 
-Some timeline entry blocks have a `scope` parameter. If it is filled, the visibility of the corresponding block will be limited to a specific type of device.
+The type is used in the record header, tags and badges, text blocks and links, footer buttons, menu items and sections. A working example is in the [Multi-language Card](./examples.md#multi-language-card) section.
 
-Possible values:
+## scope {#scope}
 
-- **Not filled** - the block will be shown everywhere
-- **web** - the block will be shown only in the browser
-- **mobile** - the block will be shown only in the mobile application
+Scope defines on which devices a record element is displayed.
+
+#|
+|| **Value** | **Where the Element Appears** ||
+|| field not passed | Everywhere ||
+|| `web` | Only in the browser ||
+|| `mobile` | Only in the mobile app ||
+|#
+
+The `scope` field is available in [content blocks](./content-block.md), [footer buttons](./footer.md), and [menu items](./menu-item.md). For buttons and menu items, Bitrix24 rejects any other value with the `ENUM_FIELD` error; for content blocks, the value is not validated.
+
+## Continue Learning
+
+- [{#T}](./layout.md)
+- [{#T}](./icon.md)
+- [{#T}](./header.md)
+- [{#T}](./body.md)
+- [{#T}](./content-block.md)
+- [{#T}](./footer.md)
+- [{#T}](./menu-item.md)
+- [{#T}](./action.md)
+- [{#T}](./rest-app-layout-dto.md)
+- [{#T}](./examples.md)
