@@ -9,7 +9,9 @@ resources:
     - _assets/b24loc.js?20240925-02
     - _assets/b24addons.js?20241118-01
 
-search: true
+# Temporarily disabled: the server build runs out of memory while writing the search index
+# and the site is published without _bundle, _assets and _images. Re-enable after the build server is fixed.
+search: false
 
 staticContent: true
 
