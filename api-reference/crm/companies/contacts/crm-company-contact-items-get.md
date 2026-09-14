@@ -12,6 +12,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `crm.company.contact.items.get` returns a set of contacts associated with the specified company.
 
+The method returns all the bindings of a company at once: it has no parameters for filtering, field selection, or pagination. To change the set, use [crm.company.contact.items.set](./crm-company-contact-items-set.md), and to add or remove a single contact, use [crm.company.contact.add](./crm-company-contact-add.md) and [crm.company.contact.delete](./crm-company-contact-delete.md). The structure of the binding object is described in the [section overview](./index.md).
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -20,9 +22,9 @@ The method `crm.company.contact.items.get` returns a set of contacts associated 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the company.
+[`integer`](../../../data-types.md) | Identifier of the company. Must be greater than `0`.
 
-The identifier can be obtained using the methods [crm.company.list](../crm-company-list.md) or [crm.company.add](../crm-company-add.md) ||
+The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 4` ||
 |#
 
 ## Code Examples
@@ -165,17 +167,17 @@ The identifier can be obtained using the methods [crm.company.list](../crm-compa
                     'id' => 32,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
-            echo 'Data: ' . print_r($result->data(), true);
+            echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting company contact items: ' . $e->getMessage();
@@ -251,22 +253,22 @@ HTTP status: **200**
 {
     "result": [
         {
-        "CONTACT_ID": 7,
-        "SORT": 100,
-        "ROLE_ID": 0,
-        "IS_PRIMARY": "Y"
+            "CONTACT_ID": 7,
+            "SORT": 100,
+            "ROLE_ID": 0,
+            "IS_PRIMARY": "Y"
         },
         {
-        "CONTACT_ID": 8,
-        "SORT": 110,
-        "ROLE_ID": 0,
-        "IS_PRIMARY": "N"
+            "CONTACT_ID": 8,
+            "SORT": 110,
+            "ROLE_ID": 0,
+            "IS_PRIMARY": "Y"
         },
         {
-        "CONTACT_ID": 9,
-        "SORT": 120,
-        "ROLE_ID": 0,
-        "IS_PRIMARY": "N"
+            "CONTACT_ID": 9,
+            "SORT": 120,
+            "ROLE_ID": 0,
+            "IS_PRIMARY": "N"
         }
     ],
     "time": {
@@ -280,32 +282,54 @@ HTTP status: **200**
 }
 ```
 
+Response when the company has no linked contacts:
+
+```json
+{
+    "result": [],
+    "time": {
+        "start": 1724078812.104471,
+        "finish": 1724078812.487903,
+        "duration": 0.3834319114685059,
+        "processing": 0.1382269859313965,
+        "date_start": "2024-08-19T16:46:52+02:00",
+        "date_finish": "2024-08-19T16:46:52+02:00"
+    }
+}
+```
+
 ### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`company_contact_binding[]`](#company_contact_binding) | Root element of the response. Contains an array with information about the contacts associated with the company ||
+[`company_contact_binding[]`](#company_contact_binding) | Root element of the response. Contains an array with information about the contacts associated with the company, sorted by `SORT` in ascending order.
+
+If the company with the provided `id` does not exist, the method also returns an empty array rather than an error ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Parameter Company_Contact_Binding {#company_contact_binding}
+#### Company_Contact_Binding Object {#company_contact_binding}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **CONTACT_ID**
-[`integer`](../../../data-types.md) | Identifier of the contact ||
+[`integer`](../../../data-types.md) | Identifier of the linked contact.
+
+The contact data can be obtained using the method [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 3` ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting index ||
 || **ROLE_ID**
-[`integer`](../../../data-types.md) | Role identifier, a system field ||
+[`integer`](../../../data-types.md) | Role identifier. The field is reserved, read-only, and always equals `0` ||
 || **IS_PRIMARY**
 [`char`](../../../data-types.md#standart-types) | Indicates whether the binding is primary. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+The flag belongs to the contact and means that this company is the primary one for it. Therefore, the method can return several bindings with `IS_PRIMARY = Y` — one for each such contact ||
 |#
 
 ## Error Handling
@@ -325,7 +349,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter ownerEntityID is invalid or not defined` | The provided `id` is less than or equal to 0 or not provided at all ||
+|| Empty value | `The parameter ownerEntityID is invalid or not defined.` | The provided `id` is less than or equal to 0 or not provided at all ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to read companies ||
 |#
 
@@ -333,8 +357,9 @@ HTTP status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-company-contact-add.md)
 - [{#T}](./crm-company-contact-delete.md)
-- [{#T}](./crm-company-contact-fields.md)
 - [{#T}](./crm-company-contact-items-set.md)
 - [{#T}](./crm-company-contact-items-delete.md)
+- [{#T}](./crm-company-contact-fields.md)

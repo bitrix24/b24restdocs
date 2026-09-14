@@ -8,9 +8,11 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Edit" access permission for companies
+> Who can execute the method: a user with "Edit" access permission for companies and "Read" access permission for the contact being added
 
 The method `crm.company.contact.add` adds a contact to the specified company.
+
+The method works with a single link and does not affect the other contacts of the company. To set the entire set of contacts at once, use [crm.company.contact.items.set](./crm-company-contact-items-set.md). The structure of the link object is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -20,25 +22,12 @@ The method `crm.company.contact.add` adds a contact to the specified company.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the company.
+[`integer`](../../../data-types.md) | Identifier of the company. Must be greater than `0`.
 
-This can be obtained using the methods [crm.company.list](../crm-company-list.md) or [crm.company.add](../crm-company-add.md)
+The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 4`
 ||
 || **fields***
-[`object`](../../../data-types.md) | Object in the following format:
-
-```
-{
-    field_1: value_1,
-    field_2: value_2,
-    ...,
-    field_n: value_n,
-}
-```
-
-where:
-- `field_n` — field name
-- `value_n` — field value
+[`object`](../../../data-types.md) | Object with information about the contact to be linked to the company.
 
 The list of available fields is described [below](#parameter-fields) ||
 |#
@@ -53,19 +42,21 @@ The list of available fields is described [below](#parameter-fields) ||
 || **CONTACT_ID***
 [`crm_entity`](../../data-types.md) | Identifier of the contact to be linked to the company.
 
-The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3` ||
+The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3`.
+
+The method does not check whether the contact exists: the link is created even with the identifier of a non-existent contact ||
 || **IS_PRIMARY**
 [`char`](../../../data-types.md#standart-types) | Indicates whether the link is primary. Possible values:
 - `Y` — yes
 - `N` — no
 
-For the first added element, `IS_PRIMARY` defaults to `Y`.
+The value passed does not affect the result: the added link always receives `IS_PRIMARY = Y`.
 
-Passing `IS_PRIMARY = Y` for a new and non-first link overrides the existing primary link ||
+The flag belongs to the contact and means that this company is the primary one for it. Therefore, the flag is reset to `N` in the link to the previous primary company, and the company from the new link is written to the contact's `COMPANY_ID` field ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sort index.
 
-Defaults to `i + 10`, where `i` is the maximum sort index of existing links for the current company or `0` if none exist ||
+If `SORT` is not passed, the method substitutes `i + 10`, where `i` is the maximum sort index among the links of this company. If there are no links, `i` equals `0` ||
 |#
 
 ## Code Examples
@@ -220,17 +211,17 @@ Defaults to `i + 10`, where `i` is the maximum sort index of existing links for 
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
-            echo 'Data: ' . print_r($result->data(), true);
+            echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding company contact: ' . $e->getMessage();
@@ -355,11 +346,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter 'ownerEntityID' is invalid or not defined` | The provided `id` is less than or equal to 0 or not provided at all ||
-|| Empty value | `The parameter 'fields' must be array` | The `fields` parameter is not an object ||
-|| `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit the company ||
-|| Empty value | `Not found` | The company with the provided `id` was not found ||
-|| Empty value | `The parameter 'fields' is not valid` | Can occur for several reasons:
+|| Empty value | `The parameter 'ownerEntityID' is invalid or not defined.` | The provided `id` is less than or equal to 0 or not provided at all ||
+|| Empty value | `The parameter 'fields' must be array.` | The `fields` parameter is not an object ||
+|| `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit companies or to read the contact ||
+|| Empty value | `Not found.` | The company with the provided `id` was not found ||
+|| Empty value | `The parameter 'fields' is not valid.` | Can occur for several reasons:
 - if the required parameter `fields.CONTACT_ID` is not provided
 - if the provided parameter `fields.CONTACT_ID` is less than or equal to 0 ||
 |#
@@ -368,8 +359,9 @@ HTTP status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-company-contact-delete.md)
-- [{#T}](./crm-company-contact-fields.md)
 - [{#T}](./crm-company-contact-items-get.md)
 - [{#T}](./crm-company-contact-items-set.md)
 - [{#T}](./crm-company-contact-items-delete.md)
+- [{#T}](./crm-company-contact-fields.md)

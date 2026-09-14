@@ -12,6 +12,10 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `crm.company.contact.items.set` sets a set of contacts associated with the specified company.
 
+The method replaces the entire set: the contacts that are not in `items` are unlinked from the company. For every unlinked contact, the `COMPANY_ID` field switches to another of its companies with the lowest identifier, or is cleared when the contact has no other companies.
+
+To add or remove a single contact without affecting the others, use [crm.company.contact.add](./crm-company-contact-add.md) and [crm.company.contact.delete](./crm-company-contact-delete.md). The structure of the binding object is described in the [section overview](./index.md).
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -20,15 +24,19 @@ The method `crm.company.contact.items.set` sets a set of contacts associated wit
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the company.
+[`integer`](../../../data-types.md) | Identifier of the company. Must be greater than `0`.
 
-The identifier can be obtained using the methods [crm.company.list](../crm-company-list.md) or [crm.company.add](../crm-company-add.md)
+The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 4`
 ||
 || **items***
-[`object[]`](../../../data-types.md) | A set of objects that describe the associated contacts for the company. The structure of an individual binding object is detailed [below](#company_contact_binding) ||
+[`object[]`](../../../data-types.md) | A set of objects that describe the contacts linked to the company. The structure of the binding object is detailed [below](#company_contact_binding).
+
+An empty array unlinks all contacts from the company.
+
+Elements without `CONTACT_ID`, or with a value less than or equal to `0`, are skipped by the method without an error, but their position is taken into account when calculating `SORT` for the other bindings ||
 |#
 
-### Structure of the Binding Object {#company_contact_binding}
+### Parameter items {#company_contact_binding}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -38,22 +46,28 @@ The identifier can be obtained using the methods [crm.company.list](../crm-compa
 || **CONTACT_ID***
 [`crm_entity`](../../data-types.md) | Identifier of the contact to be linked to the company.
 
-The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3` ||
+The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3`.
+
+The method does not check whether the contact exists: the binding is created even with the identifier of a non-existent contact ||
 || **IS_PRIMARY**
 [`char`](../../../data-types.md#standart-types) | Indicates whether the binding is primary. Possible values:
 - `Y` — yes
 - `N` — no
 
-If there is no binding with `IS_PRIMARY = Y`, it will be set for the first binding in `items`.
+The flag belongs to the contact and means that this company is the primary one for it.
 
-If multiple bindings with `IS_PRIMARY = Y` are provided, the first binding with `IS_PRIMARY = Y` will be considered primary.
+A new binding always receives `IS_PRIMARY = Y`, regardless of the value provided. For the contact's previous primary company, the flag is reset to `N`.
+
+For the bindings the company already had, the flag is set according to the provided set: `Y` is retained by the first binding with `IS_PRIMARY = Y`, and if `Y` is not provided in any binding, by the first binding in `items`. For the other previously existing bindings, the flag is reset to `N`.
+
+Therefore, when `items` contains both new and already existing bindings, `IS_PRIMARY = Y` can end up on several contacts at once
 ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sort index.
 
-By default, `i + 10`, where `i` is the maximum sort index of existing and provided bindings for the current company or `0` if `SORT` is not provided for any bindings and if the company has no bindings.
+If `SORT` is not provided, the method calculates it from the position of the binding in `items` as `(n + 1) * 10`, where `n` is the ordinal number of the binding in `items`, counting from zero. The first binding gets `10`, the second one `20`, and so on.
 
-If an existing binding is provided without the `SORT` parameter, the default value will not be set; the value will remain the same. ||
+This rule also applies to bindings that already exist: their previous sort index is overwritten. To retain the index, provide `SORT` explicitly ||
 |#
 
 ## Code Examples
@@ -248,19 +262,17 @@ If an existing binding is provided without the `SORT` parameter, the default val
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
-            // The data processing logic you need
-            processData($result->data());
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error setting contact items for company: ' . $e->getMessage();
@@ -391,7 +403,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success.
+
+The method also returns `true` when the provided set matches the current one ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -413,18 +427,19 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter ownerEntityID is invalid or not defined` | The provided `id` is less than or equal to 0 or not provided at all ||
-|| Empty value | `The parameter items must be array` | The `items` parameter is not an array ||
+|| Empty value | `The parameter ownerEntityID is invalid or not defined.` | The provided `id` is less than or equal to 0 or not provided at all ||
+|| Empty value | `The parameter items must be array.` | The `items` parameter is not an array ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit companies ||
-|| Empty value | `Not found` | The company with the provided `id` was not found ||
+|| Empty value | `Not found.` | The company with the provided `id` was not found ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-company-contact-add.md)
 - [{#T}](./crm-company-contact-delete.md)
-- [{#T}](./crm-company-contact-fields.md)
 - [{#T}](./crm-company-contact-items-get.md)
 - [{#T}](./crm-company-contact-items-delete.md)
+- [{#T}](./crm-company-contact-fields.md)
