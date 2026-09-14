@@ -84,5 +84,8 @@ navigation:
       - text: 'GitHub'
         type: 'link'
         url: 'https://github.com/bitrix24/b24-ai-starter'
-    rightItems:    
+      - text: 'Alaio Vibecode'
+        type: 'link'
+        url: 'https://vibecode.bitrix24.com/'
+    rightItems:
       - type: controls

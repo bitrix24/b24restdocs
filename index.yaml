@@ -30,6 +30,10 @@ blocks:
         theme: 'outlined'
         size: 'promo'
         url: 'https://github.com/bitrix24/b24-ai-starter'
+      - text: 'Vibecode'
+        theme: 'outlined'
+        size: 'promo'
+        url: 'https://vibecode.bitrix24.com/'
 
   - type: 'extended-features-block'
     title:
@@ -59,6 +63,25 @@ blocks:
             theme: 'outlined'
             size: 'promo'
             url: '/first-steps/first-rest-api-call.html'
+
+  - type: 'content-layout-block'
+    textContent:
+      title: 'Alaio Vibecode'
+      text: |
+        Alaio Vibecode helps you build apps for Bitrix24 with AI agents: Codex, Claude Code, Cursor, and other tools. Vibecode gives the agent the documentation, the access permissions, and the data needed to launch the app.
+        - Get a Vibecode key
+        - Give the key to an AI agent
+        - Describe the task in plain language
+        - Get a ready-made app for Bitrix24
+      links:
+        - text: 'How to work with the Vibecode platform'
+          theme: 'normal'
+          url: '/ai-tools/vibecode.html'
+          arrow: true
+        - text: 'Open Alaio Vibecode'
+          theme: 'normal'
+          url: 'https://vibecode.bitrix24.com/'
+          arrow: true
 
   - type: 'card-layout-block'
     title: 'How the REST API is structured'

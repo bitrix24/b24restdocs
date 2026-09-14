@@ -1,5 +1,16 @@
 title: AI Tools
-href: mcp.md
+href: vibecode.md
 items:
+  - name: Alaio Vibecode
+    href: vibecode.md
+    items:
+      - name: Alaio Vibecode
+        href: vibecode.md
+      - name: How to Build Your First App
+        href: vibecode-create-app.md
+      - name: Vibecode Tools
+        href: vibecode-tools.md
+      - name: Collaborating on an App
+        href: vibecode-collaboration.md
   - name: MCP Server for AI
     href: mcp.md
