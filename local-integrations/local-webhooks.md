@@ -88,6 +88,12 @@ An employee without administrator permissions cannot grant this access to themse
 
 ![Configure Access to Inbound Webhook Creation](../first-steps/_images/webhook.png)
 
+{% note info "" %}
+
+The Vibecode connector also controls permissions to create webhooks. If *Permission source — Vibecode server* is enabled, permissions to create keys and applications are taken from the Vibecode server, bypassing the portal restriction on REST webhooks. If it is disabled, creation follows the Bitrix24 portal permissions. Configure permissions on the Vibecode server in advance.
+
+{% endnote %}
+
 {% note tip "User Documentation" %}
 
 - [Create webhooks and apps in Bitrix24](https://helpdesk.bitrix24.com/open/21133100/)

@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 The method `bizproc.workflow.start` initiates a new business process.
 
-You can only start a business process using REST on paid plans, demo licenses, and NFR licenses.
+To call this method, your Bitrix24 account must have [REST API access](../../first-steps/access-to-rest-api.md). In Bitrix24 Cloud, Vibe+ plans include this access; it is also available during the 15-day trial and may remain active under existing subscription terms during the transition period.
 
 ## Method Parameters
 

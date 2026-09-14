@@ -83,6 +83,12 @@ An employee without administrator permissions cannot grant this access to themse
 
 ![Configure Access to Webhook and App Creation](_images/webhook.png)
 
+{% note info "" %}
+
+The Vibecode connector also controls permissions to create webhooks. If *Permission source — Vibecode server* is enabled, permissions to create keys and applications are taken from the Vibecode server, bypassing the portal restriction on REST webhooks. If it is disabled, creation follows the Bitrix24 portal permissions. Configure permissions on the Vibecode server in advance.
+
+{% endnote %}
+
 ## Other Ways to Work with the API
 
 Inbound webhooks are suitable for personal use and internal scenarios where requests are executed on behalf of a single user. For local applications that will run for different users, use OAuth 2.0. For commercial solutions that will be listed in the Bitrix24 Market, OAuth 2.0 and solution registration are also required.

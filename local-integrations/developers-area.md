@@ -13,9 +13,15 @@ The *Applications > Developer resources* page contains tools for creating local 
 
 For quick REST API calls in one Bitrix24 account, choose an inbound webhook. To send Bitrix24 events to an external handler, create an outbound webhook. If the integration needs its own interface or application event handling, create a local application.
 
-Webhooks and applications can be created if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md). Permanent use requires a BitrixGPT + Market subscription; trial mode can be enabled for testing.
+Webhooks and applications can be created if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md). In Bitrix24 Cloud, ongoing access requires Vibe+; the 15-day trial provides access for testing. Existing paid subscriptions may retain REST API access during the transition period.
 
 By default, only a Bitrix24 administrator can create applications for all users, while all users can create inbound webhooks and their own applications. An administrator can change these settings.
+
+{% note info "" %}
+
+The Vibecode connector also controls permissions to create integrations. If *Permission source — Vibecode server* is enabled, permissions to create keys and applications are taken from the Vibecode server, bypassing the portal restriction on REST integrations. If it is disabled, creation follows the Bitrix24 portal permissions. Configure permissions on the Vibecode server in advance.
+
+{% endnote %}
 
 ![Developer Resources Section](./_images/dev_menu-n-sm.png)
 

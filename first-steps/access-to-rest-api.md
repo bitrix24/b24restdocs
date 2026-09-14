@@ -11,34 +11,36 @@ Choose a tool for developing with an AI agent:
 
 You can access the Bitrix24 REST API in three ways:
 
-- purchase a Market subscription for permanent work with the REST API
-- enable Trial mode to test the REST API before purchasing
+- choose a Vibe+ plan for ongoing work with the REST API
+- enable the 15-day trial to test the REST API before purchasing
 - request an NFR key if you are developing mass-market applications for the Bitrix24 Market
 
 ## Permanent Access
 
-To work with the REST API without trial period limitations, purchase a Market subscription. It is available on paid Bitrix24 plans, and the cost [depends on the plan](https://www.bitrix24.com/prices/).
+For ongoing REST API access in Bitrix24 Cloud, choose a paid plan in the Vibe+ lineup. The Essentials lineup does not include REST API access. If you already have a paid subscription, your existing REST API access may continue during the transition period; the end date depends on your subscription terms.
 
-1. Check your current plan in the My Plan section of the Bitrix24 main menu. If Bitrix24 is on a free plan, select and activate a suitable plan.
+1. Check your current plan in the My plan widget. [Compare the available plans and prices](https://www.bitrix24.com/prices/), then choose a Vibe+ plan that suits your needs.
 
    ![My plan section](_images/plan.png)
 
-2. Purchase a Market subscription. Go to *My Plan > Bitrix24 CoPilot + Market subscription* and click Buy subscription.
+2. Purchase or switch to the selected Vibe+ plan. The available options depend on your current subscription.
 
 {% note tip "" %}
 
 - [My Plan Widget Features](https://helpdesk.bitrix24.com/open/21293016/)
+- [Vibe+ plans: what changes for paid customers](https://helpdesk.bitrix24.com/open/26027119/)
 
 {% endnote %}
 
 ## Trial Access
 
-Before purchasing a paid subscription, you can activate a trial version of the Market. During this period, the REST API will be available for testing and development.
+You can activate a free 15-day trial of the Professional Vibe+ plan. It includes REST API access for testing and development. The trial can be activated only once; it does not pause an existing commercial subscription.
 
-To enable Trial mode:
+To activate the trial:
 
-1. Go to the My Plan widget in the Bitrix24 top menu.
-2. In the Bitrix24 CoPilot + Market section, click Enable Demo.
+1. Open the My plan widget in the top right. If you are on the Free plan, click Buy Now.
+2. In the 15-day trial section, click Activate.
+3. In the slider panel, click Activate Trial Mode.
 
 {% note warning "" %}
 
@@ -54,7 +56,7 @@ In the Bitrix24 Self-Hosted version, you can only activate the Market trial peri
 
 ## Access for Technology Partners
 
-If you are developing mass-market applications to be listed in the Bitrix24 Market, request a special NFR key. This key activates a partner plan with a Market subscription to allow the REST API to function in a test Bitrix24 environment.
+If you are developing mass-market applications to be listed in the Bitrix24 Market, request a special NFR key for a test Bitrix24 environment with REST API access.
 
 To obtain an NFR key:
 
@@ -100,7 +102,7 @@ In the self-hosted version of Bitrix24, the necessary network connections must b
 
 ## What's Next
 
-Once the Bitrix24 Market subscription or trial mode is active, you can proceed to making your first request to the REST API.
+Once REST API access is active on your plan or during the trial, you can proceed to making your first request to the REST API.
 
 {% note tip "" %}
 

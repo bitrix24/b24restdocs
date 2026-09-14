@@ -61,6 +61,12 @@ An employee without administrator permissions cannot grant this access to themse
 
 ![Configure Access to Application Creation](../first-steps/_images/webhook.png)
 
+{% note info "" %}
+
+The Vibecode connector also controls permissions to create applications. If *Permission source — Vibecode server* is enabled, permissions to create keys and applications are taken from the Vibecode server, bypassing the portal restriction on REST applications. If it is disabled, creation follows the Bitrix24 portal permissions. Configure permissions on the Vibecode server in advance.
+
+{% endnote %}
+
 ## What to Keep in Mind
 
 - **Authorization.** A static application runs inside the Bitrix24 interface, and the JS SDK retrieves the authorization of the employee who opened it automatically. A server-side application with an interface uses a simplified variant of OAuth 2.0: the application acts on behalf of the employee who opened it, and Bitrix24 passes the tokens to the application page in a POST request — there is no need to request them separately. A server-side application without an interface implements the full OAuth 2.0 protocol: it retains the tokens itself in the [ONAPPINSTALL](../api-reference/common/events/on-app-install.md) event handler and refreshes them itself.
