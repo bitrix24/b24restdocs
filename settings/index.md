@@ -67,10 +67,12 @@ Compare the requirements for the cloud and self-hosted versions, configure the n
 
 Use Push & Pull to react instantly to user actions in the interface.
 
-- Which interactivity options are available — [Interactive Applications](interactivity/index.md).
+- Which interactivity options are available and which methods to use — [Interactivity in Applications](interactivity/index.md).
 - How to receive Push & Pull messages on the application page — [Push & Pull in the Browser](interactivity/push-and-pull-in-browser.md).
 - How to create and configure your own Push & Pull client — [Custom Push & Pull Client](interactivity/custom-push-and-pull-client.md).
-- Which methods to use to retrieve connection parameters and send push events — [Push & Pull](interactivity/push-and-pull/index.md).
+- How to retrieve the server addresses and application channels — [pull.application.config.get](interactivity/pull-application-config-get.md).
+- How to send an event to the application channel — [pull.application.event.add](interactivity/pull-application-event-add.md).
+- How to send a push notification to the application users — [pull.application.push.add](interactivity/pull-application-push-add.md).
 
 ## Optimize Performance Under Load {#limits}
 

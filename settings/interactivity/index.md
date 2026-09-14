@@ -6,65 +6,80 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 {% endnote %}
 
-Interactivity allows the application to function without reloading the page: it shows changes in the interface, updates status, and sends push notifications to users.
+Interactivity helps the application work without reloading the page: it shows changes in the interface, updates the status, and sends push notifications. For example, an employee starts a document check in the application and sees the result on the screen as soon as it completes. If the employee is away from the computer at that moment, the application sends a push notification to their phone.
 
-This is essential so that users can immediately see changes without having to refresh the page manually. For example, an employee can initiate a document check and see the new status upon completion. If the employee is away from their computer, the application can send a push notification about the result to their phone.
+The methods of this section deliver only the application's own events. The data flow is one-way: the server side of the application publishes an event to its own channel with `pull.application.event.add`, and the application client reads the event from the channel over websocket or long polling. The channels and servers for this exchange are provided by the Push&Pull service.
 
-> Quick Navigation: [All Methods](#all-methods)
->
-> User Documentation: [Interactivity in Applications](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&LESSON_ID=26036)
+To receive notifications about data changes in Bitrix24 — a new deal or an updated task — use [Bitrix24 events](../../api-reference/events/index.md).
 
 {% note info "" %}
 
-Interactivity methods work only in the context of an [application](../app-installation/index.md): the request is executed with the application OAuth token and the `pull` scope. A webhook does not create this context.
+The methods of this section work only in the context of an [application](../app-installation/index.md). The request is executed with the application OAuth token and the `pull` scope, and a webhook does not create such a context — the methods return the `WRONG_AUTH_TYPE` error.
 
 {% endnote %}
 
-## How to Choose a Scenario
+> Quick Navigation: [All Methods](#all-methods)
 
-In Bitrix24, there are two main scenarios for working with interactivity: the application can receive events through the built-in Push&Pull in the browser or through a custom client. The choice depends on where the application should operate and how it will receive events.
+## How to Receive Events
 
-**Push&Pull in the Browser.** This is suitable if the application is open in the Bitrix24 interface and needs to receive events in the browser. For example, a user is working on a document in the application. The server-side completes the check and immediately sends an event to the browser so that the new status appears on the screen. The article [Push&Pull in the Browser](./push-and-pull-in-browser.md) describes how to connect the built-in client.
+The way events are received depends on where the application runs.
 
-**Custom Push&Pull Client.** This is used if the built-in browser functionality is insufficient for the application. This option is appropriate if the application operates separately from the Bitrix24 interface and needs to maintain a connection with real-time servers, receive events, and recover the connection in case of a drop. The article [Custom Push&Pull Client](./custom-push-and-pull-client.md) describes the command format and how to handle connection drops.
+#|
+|| **If the application** | **Open the article** ||
+|| Is open in the Bitrix24 interface and updates its own screen | [Push&Pull in the Browser](./push-and-pull-in-browser.md) — the built-in `BX.PullClient` ||
+|| Runs outside the interface and maintains the connection itself | [Custom Push&Pull Client](./custom-push-and-pull-client.md) — connecting to the server directly ||
+|| Has to receive events while its page is closed and Bitrix24 is open in the browser | [PAGE_BACKGROUND_WORKER](../../api-reference/widgets/universal/background-worker.md) — a background placement rather than a Push&Pull client ||
+|#
 
-## Channels and Commands
+## Terms of the Section
 
-**Channel.** A queue of events on the Push&Pull servers. The method [pull.application.config.get](./push-and-pull/pull-application-config-get.md) returns the application channels: `shared` — the common channel of the application, `private` — the personal channel of the user. An event without the `USER_ID` parameter goes to the common channel, and with `USER_ID` — to the channels of the specified users.
+**Channel.** A queue of events on the Push&Pull servers. An application has two channels: `shared` — common to all users of the application, and `private` — for a single user.
 
-**Command.** The value of the `COMMAND` parameter in the method [pull.application.event.add](./push-and-pull/pull-application-event-add.md). The client uses the command to distinguish event types and decide what to update in the interface.
+**Command.** A label for the event type in the channel. In REST it is the `COMMAND` parameter of the [pull.application.event.add](./pull-application-event-add.md) method, and on the client side it is the `command` field of the `subscribe` subscription.
 
-**Event module.** The value of the `MODULE_ID` parameter. The client subscribes to the events of a specific module, `application` is used by default.
+**Event module.** The area the client subscribes to. In REST it is the `MODULE_ID` parameter, and on the client side it is the `moduleId` field of the `subscribe` subscription.
 
 ## Getting Started
 
-1. Install the application in Bitrix24 — [Application Installation Options in Bitrix24](../app-installation/index.md).
-2. Retrieve the connection parameters for the servers and channels using the method [pull.application.config.get](./push-and-pull/pull-application-config-get.md).
-3. Connect the client to the application channel according to the selected scenario — [Push&Pull in the Browser](./push-and-pull-in-browser.md) or [Custom Push&Pull Client](./custom-push-and-pull-client.md).
-4. Send an event to the channel using the method [pull.application.event.add](./push-and-pull/pull-application-event-add.md) and make sure the client has received it.
-5. Send a push notification using the method [pull.application.push.add](./push-and-pull/pull-application-push-add.md) if the user has to learn about the event outside the Bitrix24 interface.
+1. Install the application in Bitrix24 using one of the [installation options](../app-installation/index.md)
+2. Retrieve the server parameters and the application channels with the [pull.application.config.get](./pull-application-config-get.md) method
+3. Connect the [built-in client in the browser](./push-and-pull-in-browser.md) or a [custom client](./custom-push-and-pull-client.md) to the channels
+4. Send an event to the channel with the [pull.application.event.add](./pull-application-event-add.md) method to update the application interface
+5. Send a push notification with the [pull.application.push.add](./pull-application-push-add.md) method to notify the user outside the Bitrix24 interface
+
+## Limits
+
+Lifetimes of the objects of this section:
+
+- application channel — 12 hours, the `end` field in the response of [pull.application.config.get](./pull-application-config-get.md#result)
+- connection configuration — 24 hours in Bitrix24 cloud, in the self-hosted version it depends on the server settings, the `exp` field in the response of [pull.application.config.get](./pull-application-config-get.md#result)
+- event in the channel — 24 hours, [pull.application.event.add](./pull-application-event-add.md)
+
+The size limits of an event and of a push notification are different — they are described in the parameters of [pull.application.event.add](./pull-application-event-add.md) and [pull.application.push.add](./pull-application-push-add.md).
 
 ## Interaction with Other Objects
 
-**Application.** Interactivity works within the channel of a specific application: events and push notifications are received only by the users of the application on whose behalf the request is made. The method [pull.application.config.get](./push-and-pull/pull-application-config-get.md) returns the channel ID and the server parameters. Installation and launch scenarios are described in the section [Application Installation Options in Bitrix24](../app-installation/index.md).
+Interactivity is related to the application, the users, and the Bitrix24 mobile app.
 
-**User.** The `USER_ID` parameter in the methods [pull.application.event.add](./push-and-pull/pull-application-event-add.md) and [pull.application.push.add](./push-and-pull/pull-application-push-add.md) specifies the recipients — a single user or an array of IDs. Retrieve the user ID using the methods [user.get](../../api-reference/user/user-get.md) and [user.current](../../api-reference/user/user-current.md).
+**Application.** Push&Pull channels are bound to a specific application: an event is received only by the users of the application on whose behalf the request is executed. The [pull.application.config.get](./pull-application-config-get.md) method returns the application channel IDs in the `channels` object.
 
-**Widgets.** To make the application receive events when its interface is closed, embed a background handler in the [PAGE_BACKGROUND_WORKER](../../api-reference/widgets/universal/background-worker.md) placement. The handler works without any user action and receives commands from the application channel.
+**User.** The `USER_ID` parameter specifies the recipients of an event and of a push notification. Retrieve the user ID with the [user.get](../../api-reference/user/user-get.md) and [user.current](../../api-reference/user/user-current.md) methods.
 
-**Push&Pull.** Channel connection parameters, the order of method calls, and related objects are described in the section [Push&Pull](./push-and-pull/index.md).
+**Mobile app.** Push notifications do not go to a channel: they are delivered not by Push&Pull but by the Bitrix24 mobile app — with the [pull.application.push.add](./pull-application-push-add.md) method.
 
 ## Overview of Methods {#all-methods}
 
-Both scenarios utilize the application methods — for retrieving connection parameters, sending events to the channel, and push notifications to mobile devices. Only a Bitrix24 administrator can send an event to another user's channel or a push notification.
-
 > Scope: [`pull`](../../api-reference/scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the method: depends on the method
 
-#| 
+Interactivity in applications is served by a single family of methods — `pull.application.*`.
+
+Any user authorized in the application can retrieve the configuration and send an event to the common channel or to their own personal channel. A Bitrix24 administrator can additionally send an event to another user's channel, as well as a push notification.
+
+#|
 || **Method** | **Description** ||
-|| [pull.application.config.get](./push-and-pull/pull-application-config-get.md) | Returns the connection configuration to Push&Pull servers, channels, and the application API ||
-|| [pull.application.event.add](./push-and-pull/pull-application-event-add.md) | Sends an event to the application channel ||
-|| [pull.application.push.add](./push-and-pull/pull-application-push-add.md) | Sends a push notification to a mobile device ||
+|| [pull.application.config.get](./pull-application-config-get.md) | Returns the parameters of the Push&Pull servers, the application channels, and the protocol revisions ||
+|| [pull.application.event.add](./pull-application-event-add.md) | Sends an event to the application channel ||
+|| [pull.application.push.add](./pull-application-push-add.md) | Sends a push notification to the application users ||
 |#
