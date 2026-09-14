@@ -12,6 +12,10 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 
 The method `crm.company.contact.items.delete` clears the set of contacts associated with the specified company.
 
+The method unlinks all contacts at once and does not delete the contacts themselves. To remove a single contact, use [crm.company.contact.delete](./crm-company-contact-delete.md).
+
+For every unlinked contact, the `COMPANY_ID` field switches to another of its companies with the lowest identifier, or is cleared if the contact has no other companies. The set can only be restored by linking the contacts again through [crm.company.contact.items.set](./crm-company-contact-items-set.md) — the previous `SORT` and `IS_PRIMARY` values are not retained. What these fields mean is described in the [section overview](./index.md).
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -20,9 +24,9 @@ The method `crm.company.contact.items.delete` clears the set of contacts associa
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the company.
+[`integer`](../../../data-types.md) | Identifier of the company. Must be greater than `0`.
 
-The identifier can be obtained using the methods [crm.company.list](../crm-company-list.md) or [crm.company.add](../crm-company-add.md) ||
+The identifier can be obtained using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 4` ||
 |#
 
 ## Code Examples
@@ -157,17 +161,17 @@ The identifier can be obtained using the methods [crm.company.list](../crm-compa
                     'id' => 32,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting company contact item: ' . $e->getMessage();
@@ -252,7 +256,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success.
+
+The method also returns `true` when the company had no linked contacts, or when the company with the provided `id` does not exist ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -274,7 +280,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter ownerEntityID is invalid or not defined` | The provided `id` is less than or equal to 0 or not provided at all ||
+|| Empty value | `The parameter ownerEntityID is invalid or not defined.` | The provided `id` is less than or equal to 0 or not provided at all ||
 || `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit companies ||
 |#
 
@@ -282,8 +288,9 @@ HTTP status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-company-contact-add.md)
 - [{#T}](./crm-company-contact-delete.md)
-- [{#T}](./crm-company-contact-fields.md)
 - [{#T}](./crm-company-contact-items-get.md)
 - [{#T}](./crm-company-contact-items-set.md)
+- [{#T}](./crm-company-contact-fields.md)

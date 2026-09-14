@@ -1,4 +1,4 @@
-# Get Fields for Company-Contact Connection crm.company.contact.fields
+# Get Field Descriptions for Company-Contact Connection crm.company.contact.fields
 
 {% note tip "" %}
 
@@ -11,6 +11,8 @@ If you are developing integrations for Bitrix24 using AI tools (Codex, Claude Co
 > Who can execute the method: any user
 
 The method `crm.company.contact.fields` returns the description of fields for the company-contact link.
+
+The set of link fields is fixed, and the link has no custom fields. The `ROLE_ID` field, which is returned by [crm.company.contact.items.get](./crm-company-contact-items-get.md), is not included in the method output — it cannot be written. The structure of the link object is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -153,17 +155,17 @@ No parameters.
                 'crm.company.contact.fields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching company contact fields: ' . $e->getMessage();
@@ -282,19 +284,39 @@ HTTP status: **200**
 
 where:
 - `field_n` — field of the entity
-- `value_n` — information about the field in the format [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
+- `value_n` — information about the field in the format [crm_rest_field_description](../../data-types.md#crm_rest_field_description)
+
+The set of link fields is described [below](#binding-fields) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Link Fields {#binding-fields}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **CONTACT_ID**
+[`integer`](../../../data-types.md) | Identifier of the linked contact. The only required field of the link — its description comes with `isRequired: true` ||
+|| **SORT**
+[`integer`](../../../data-types.md) | Sort index ||
+|| **IS_PRIMARY**
+[`char`](../../../data-types.md#standart-types) | Indicates whether the link is primary. Possible values:
+- `Y` — yes
+- `N` — no ||
 |#
 
 ## Error Handling
 
 The method does not return errors.
 
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
+
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-company-contact-add.md)
 - [{#T}](./crm-company-contact-delete.md)
 - [{#T}](./crm-company-contact-items-get.md)
