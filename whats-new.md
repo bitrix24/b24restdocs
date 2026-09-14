@@ -289,7 +289,7 @@
 - Updated the main page of the section [Special Site Pages](./api-reference/landing/page/special-pages/index.md)
 - Updated the main pages of the sections [Page Object](./api-reference/landing/page/index.md) and [Working with Pages](./api-reference/landing/page/methods/index.md)
 - Updated the page [Unbind Widget from Block](./api-reference/landing/embedding/landing-repo-unbind.md)
-- Updated the main page of the section [Push&Pull](./settings/interactivity/push-and-pull/index.md). Added introductory information, as well as an overview of methods and relationships
+- Updated the main page of the section [Push&Pull](./settings/interactivity/index.md). Added introductory information, as well as an overview of methods and relationships
 - Updated the main page of the section [Custom Blocks](./api-reference/landing/user-blocks/index.md). Added introductory information, as well as an overview of methods and relationships
 - Updated the main page of the section [Custom Templates](./api-reference/landing/demos/index.md). Added introductory information, as well as an overview of methods and relationships
 - Updated the page [How to Prepare a Custom Template](./api-reference/landing/demos/introduction.md)
@@ -350,7 +350,7 @@
 - Updated documentation for methods [landing.site.*](./api-reference/landing/embedding/knowledge-base/index.md) in the Knowledge Base Embedding Locations section
 - Updated documentation for methods [landing.repo.*](./api-reference/landing/user-blocks/index.md) in the Custom Blocks section
 - Updated documentation for methods [placement.*](./api-reference/widgets/placements.md) in the Widget Embedding Locations section
-- Updated documentation for methods [pull.application.*](./settings/interactivity/push-and-pull/index.md) in the Push&Pull section
+- Updated documentation for methods [pull.application.*](./settings/interactivity/index.md) in the Push&Pull section
 - Updated documentation for placements [LANDING_BLOCK_*](./api-reference/landing/embedding/block.md) and [LANDING_SETTINGS](./api-reference/landing/embedding/settings.md)
 - Updated documentation for the [CONTACT_CENTER](./api-reference/widgets/contact-center.md) placement
 - Updated the page [BX24 SDK Methods for Widgets](./api-reference/widgets/bx24-widget-methods.md)

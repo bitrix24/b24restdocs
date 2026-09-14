@@ -73,7 +73,7 @@ Some methods work only in the application context. When a webhook calls such a m
 || **mobile** | [Mobile App](../widgets/mobile-app.md) | Mobile App ||
 || **pay_system** | [Payment Systems](../pay-system/index.md) | Payment Systems ||
 || **placement** | [Widgets](../widgets/index.md) | App Embedding ||
-|| **pull** | [Pull&Push](../../settings/interactivity/push-and-pull/index.md) | Pull&Push ||
+|| **pull** | [Push&Pull](../../settings/interactivity/index.md) | Push&Pull ||
 || **rpa** | [Business Automation](../outdated/rpa/index.md) | Business Automation ||
 || **sale** | [Online store](../sale/index.md) | Online store ||
 || **salescenter** | [CRM. Payment](../crm/universal/payment/index.md) | Chat sales ||

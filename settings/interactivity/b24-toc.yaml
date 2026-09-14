@@ -7,7 +7,9 @@ items:
     href: push-and-pull-in-browser.md
   - name: Custom Push&Pull Client
     href: custom-push-and-pull-client.md
-  - name: Push&Pull
-    include:
-      path: push-and-pull/b24-toc.yaml
-      mode: link
+  - name: Get the Connection Configuration for Push&Pull Servers
+    href: pull-application-config-get.md
+  - name: Send an Event to the Application Channel
+    href: pull-application-event-add.md
+  - name: Send a Push Notification to the Application Users
+    href: pull-application-push-add.md
