@@ -5,11 +5,11 @@ items:
     href: index.md  
   - name: Initialize the Library  
     href: bx24-init.md  
-  - name: Handle User's First Application Launch Event  
+  - name: Handle the First Application Launch for a User
     href: bx24-install.md  
   - name: Notify Completion of Installer Work  
     href: bx24-install-finish.md  
   - name: Obtain Data for OAuth 2.0  
     href: bx24-get-auth.md  
-  - name: Force Update Authorization Key  
+  - name: Force Refresh Authorization Data
     href: bx24-refresh-auth.md  
