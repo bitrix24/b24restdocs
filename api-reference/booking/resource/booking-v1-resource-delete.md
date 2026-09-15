@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `booking.v1.resource.delete` removes a resource.
 
+A resource can only be deleted if it has no future bookings. Cancel or move the bookings first using the [booking.v1.booking.*](../booking/index.md) methods. Past bookings do not prevent deletion.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -24,6 +26,7 @@ The method `booking.v1.resource.delete` removes a resource.
 `type` | **Description** ||
 || **id***
 [`integer`](../../data-types.md) | Resource identifier.
+
 Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource-add.md) and [booking.v1.resource.list](./booking-v1-resource-list.md) ||
 |#
 
@@ -129,7 +132,7 @@ Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource
 
     try:
         bitrix_response = client.booking.v1.resource.delete(
-            bitrix_id=123,
+            bitrix_id=15,
         ).response
         result = bitrix_response.result
         print(result)
@@ -158,17 +161,17 @@ Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource
                     'id' => 15,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting resource: ' . $e->getMessage();
@@ -235,16 +238,16 @@ HTTP status: **200**
 
 ```json
 {
-"result": true,
-"time": {
-    "start": 1741002472.477039,
-    "finish": 1741002472.598432,
-    "duration": 0.12139296531677246,
-    "processing": 0.012734174728393555,
-    "date_start": "2025-03-03T11:47:52+00:00",
-    "date_finish": "2025-03-03T11:47:52+00:00",
-    "operating": 0
-}
+    "result": true,
+    "time": {
+        "start": 1741002472.477039,
+        "finish": 1741002472.598432,
+        "duration": 0.12139296531677246,
+        "processing": 0.012734174728393555,
+        "date_start": "2025-03-03T11:47:52+00:00",
+        "date_finish": "2025-03-03T11:47:52+00:00",
+        "operating": 0
+    }
 }
 ```
 
@@ -254,7 +257,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success  ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -265,7 +268,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 100,
+    "error": "100",
     "error_description": "Could not find value for parameter {id}"
 }
 ```
@@ -277,15 +280,21 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `100` | `Could not find value for parameter {id}` | Required parameter `id` not provided ||
-|| `1008` | `Resource has not been found` | Resource with such `id` not found ||
+|| `1008` | `Resource not found` | Resource with such `id` not found ||
+|| `1008` | `The resource can not be deleted. There are future bookings with that resource.` | The resource has future bookings ||
+|| `1008` | `Failed removing resource` | The resource could not be removed ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./resource-type/index.md)
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-resource-add.md)
 - [{#T}](./booking-v1-resource-update.md)
 - [{#T}](./booking-v1-resource-get.md)
 - [{#T}](./booking-v1-resource-list.md)
+- [{#T}](./resource-type/index.md)
+- [{#T}](./slots/index.md)
+- [{#T}](./events/on-booking-resource-delete.md)

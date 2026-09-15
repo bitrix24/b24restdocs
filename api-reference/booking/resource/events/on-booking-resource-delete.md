@@ -77,6 +77,7 @@ The structure is described [below](#auth) ||
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)
 - [{#T}](./on-booking-resource-add.md)

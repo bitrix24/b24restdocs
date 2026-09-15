@@ -39,69 +39,88 @@ Can be obtained through the methods [booking.v1.resource.add](./booking-v1-resou
 || **description**
 [`string`](../../data-types.md) | Resource description ||
 || **typeId**
-[`integer`](../../data-types.md) | Resource type identifier. 
+[`integer`](../../data-types.md) | Resource type identifier.
 
-The list of available types can be found using the method [booking.v1.resourceType.list](./resource-type/booking-v1-resourcetype-list.md) ||
+The list of available types can be retrieved using the [booking.v1.resourceType.list](./resource-type/booking-v1-resourcetype-list.md) method ||
 || **isMain**
-[`string`](../../data-types.md) | How to display the resource. Possible values:
-- `Y` — in schedule columns
-- `N` — when resources overlap
-||
+[`string`](../../data-types.md) | How the resource is displayed. Possible values:
+- `Y` — in the schedule columns
+- `N` — when resources overlap ||
 || **isInfoNotificationOn**
-[`string`](../../data-types.md) | Message to the client about the booking. Possible values:
+[`string`](../../data-types.md) | Booking message to the client. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **templateTypeInfo**
-[`string`](../../data-types.md) | Type of the booking message template. Possible values:
+[`string`](../../data-types.md) | Message template type for the booking message. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+- `animate` — template for booking with specialists
+- `inanimate_long` — template for multi-day booking ||
 || **isConfirmationNotificationOn**
-[`string`](../../data-types.md) | Automatic booking confirmation. Possible values:
+[`string`](../../data-types.md) | Message to the client requesting booking confirmation. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **templateTypeConfirmation**
-[`string`](../../data-types.md) | Type of the confirmation message template. Possible values:
+[`string`](../../data-types.md) | Message template type for booking confirmation. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+- `animate` — template for booking with specialists
+- `inanimate_long` — template for multi-day booking ||
 || **isReminderNotificationOn**
-[`string`](../../data-types.md) | Reminder about the booking. Possible values:
+[`string`](../../data-types.md) | Booking reminder. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **templateTypeReminder**
-[`string`](../../data-types.md) | Type of the reminder message template. Possible values: `base` ||
+[`string`](../../data-types.md) | Message template type for the reminder. The only value is `base` ||
 || **isFeedbackNotificationOn**
-[`string`](../../data-types.md) | Request for feedback. Possible values:
+[`string`](../../data-types.md) | Feedback request. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **templateTypeFeedback**
-[`string`](../../data-types.md) | Type of the feedback request message template. Possible values:
+[`string`](../../data-types.md) | Message template type for the feedback request. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+- `animate` — template for booking with specialists ||
 || **isDelayedNotificationOn**
-[`string`](../../data-types.md) | Reminder when the client is late. Possible values:
+[`string`](../../data-types.md) | Reminder when the client is running late. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **templateTypeDelayed**
-[`string`](../../data-types.md) | Type of the delay message template. Possible values:
+[`string`](../../data-types.md) | Message template type for late arrival. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
-|| **infoDelay**
-[`integer`](../../data-types.md) | Delay after which the client receives a booking message. Specified in seconds ||
-|| **reminderDelay**
-[`integer`](../../data-types.md) | Time before the booking when the client receives a reminder. Specified in seconds ||
-|| **delayedDelay**
-[`integer`](../../data-types.md) | Time after which to send a delay message to the client. Specified in seconds ||
+- `animate` — template for booking with specialists ||
+|| **isCancellationNotificationOn**
+[`string`](../../data-types.md) | Message to the client after a booking is cancelled. Possible values:
+- `Y` — enabled
+- `N` — disabled ||
+|| **cancellationNotificationDelay**
+[`integer`](../../data-types.md) | Time after a booking is cancelled, after which the client receives the cancellation message. Specified in seconds ||
+|| **infoNotificationDelay**
+[`integer`](../../data-types.md) | Time after which the client receives the booking message. Specified in seconds ||
+|| **reminderNotificationDelay**
+[`integer`](../../data-types.md) | Time before the booking, at which the client receives the reminder. Specified in seconds.
+
+The value `-1` means the reminder arrives on the morning of the booking day ||
+|| **delayedNotificationDelay**
+[`integer`](../../data-types.md) | Time after which the late arrival message is sent to the client. Specified in seconds ||
 || **delayedCounterDelay**
-[`integer`](../../data-types.md) | Time after which to enable the counter in the calendar. Specified in seconds ||
-|| **confirmationDelay**
-[`integer`](../../data-types.md) | Time before the booking when the client receives the first confirmation message. Specified in seconds ||
-|| **confirmationRepetitions**
-[`integer`](../../data-types.md) | Number of messages sent to the client for booking confirmation, excluding the first ||
-|| **confirmationRepetitionsInterval**
+[`integer`](../../data-types.md) | Time after which the counter is activated in the calendar. Specified in seconds ||
+|| **confirmationNotificationDelay**
+[`integer`](../../data-types.md) | Time before the booking, when the client receives the first confirmation message. Specified in seconds ||
+|| **confirmationNotificationRepetitions**
+[`integer`](../../data-types.md) | Number of confirmation messages sent to the client, excluding the first one ||
+|| **confirmationNotificationRepetitionsInterval**
 [`integer`](../../data-types.md) | Interval between booking confirmation messages. Specified in seconds ||
 || **confirmationCounterDelay**
-[`integer`](../../data-types.md) | Time before the booking after which the counter for unconfirmed bookings lights up. Specified in seconds ||
+[`integer`](../../data-types.md) | Time before the booking, after which the unconfirmed booking counter is activated. Specified in seconds ||
+|| **senderCode**
+[`string`](../../data-types.md) | Code of the service that sends messages to the client. Possible values:
+- `bitrix24` — Bitrix24 notifications
+- `ai_call` — AI agent call
+
+The method does not validate the value: the codes listed are the ones Bitrix24 supports ||
 |#
+
+Fields with the `Y` and `N` flags accept strings only. The method silently ignores values of other types, such as `true`, and fields absent from the table.
+
+The method updates only the fields you pass; the rest retain their previous values.
 
 ## Code Examples
 
@@ -115,7 +134,7 @@ The list of available types can be found using the method [booking.v1.resourceTy
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":10,"fields":{"name":"New Name","description":"New Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate","infoDelay":300,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":0,"confirmationRepetitionsInterval":0,"confirmationCounterDelay":7200}}' \
+    -d '{"id":10,"fields":{"name":"New Name","description":"New Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate","infoNotificationDelay":300,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":0,"confirmationNotificationRepetitionsInterval":0,"confirmationCounterDelay":7200}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resource.update
     ```
 
@@ -125,7 +144,7 @@ The list of available types can be found using the method [booking.v1.resourceTy
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":10,"fields":{"name":"New Name","description":"New Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate","infoDelay":300,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":0,"confirmationRepetitionsInterval":0,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
+    -d '{"id":10,"fields":{"name":"New Name","description":"New Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate","infoNotificationDelay":300,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":0,"confirmationNotificationRepetitionsInterval":0,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/booking.v1.resource.update
     ```
 
@@ -159,13 +178,13 @@ The list of available types can be found using the method [booking.v1.resourceTy
             templateTypeFeedback: 'animate',
             isDelayedNotificationOn: 'N',
             templateTypeDelayed: 'animate',
-            infoDelay: 300,
-            reminderDelay: -1,
-            delayedDelay: 300,
+            infoNotificationDelay: 300,
+            reminderNotificationDelay: -1,
+            delayedNotificationDelay: 300,
             delayedCounterDelay: 7200,
-            confirmationDelay: 86400,
-            confirmationRepetitions: 0,
-            confirmationRepetitionsInterval: 0,
+            confirmationNotificationDelay: 86400,
+            confirmationNotificationRepetitions: 0,
+            confirmationNotificationRepetitionsInterval: 0,
             confirmationCounterDelay: 7200,
           },
         },
@@ -215,13 +234,13 @@ The list of available types can be found using the method [booking.v1.resourceTy
                 templateTypeFeedback: 'animate',
                 isDelayedNotificationOn: 'N',
                 templateTypeDelayed: 'animate',
-                infoDelay: 300,
-                reminderDelay: -1,
-                delayedDelay: 300,
+                infoNotificationDelay: 300,
+                reminderNotificationDelay: -1,
+                delayedNotificationDelay: 300,
                 delayedCounterDelay: 7200,
-                confirmationDelay: 86400,
-                confirmationRepetitions: 0,
-                confirmationRepetitionsInterval: 0,
+                confirmationNotificationDelay: 86400,
+                confirmationNotificationRepetitions: 0,
+                confirmationNotificationRepetitionsInterval: 0,
                 confirmationCounterDelay: 7200,
               },
             },
@@ -266,13 +285,13 @@ The list of available types can be found using the method [booking.v1.resourceTy
             "templateTypeFeedback": "animate",
             "isDelayedNotificationOn": "N",
             "templateTypeDelayed": "animate",
-            "infoDelay": 300,
-            "reminderDelay": -1,
-            "delayedDelay": 300,
+            "infoNotificationDelay": 300,
+            "reminderNotificationDelay": -1,
+            "delayedNotificationDelay": 300,
             "delayedCounterDelay": 7200,
-            "confirmationDelay": 86400,
-            "confirmationRepetitions": 0,
-            "confirmationRepetitionsInterval": 0,
+            "confirmationNotificationDelay": 86400,
+            "confirmationNotificationRepetitions": 0,
+            "confirmationNotificationRepetitionsInterval": 0,
             "confirmationCounterDelay": 7200,
         }).response
         result = bitrix_response.result
@@ -310,13 +329,13 @@ The list of available types can be found using the method [booking.v1.resourceTy
                         'templateTypeFeedback' => 'animate',
                         'isDelayedNotificationOn' => 'N',
                         'templateTypeDelayed' => 'animate',
-                        'infoDelay' => 300,
-                        'reminderDelay' => -1,
-                        'delayedDelay' => 300,
+                        'infoNotificationDelay' => 300,
+                        'reminderNotificationDelay' => -1,
+                        'delayedNotificationDelay' => 300,
                         'delayedCounterDelay' => 7200,
-                        'confirmationDelay' => 86400,
-                        'confirmationRepetitions' => 0,
-                        'confirmationRepetitionsInterval' => 0,
+                        'confirmationNotificationDelay' => 86400,
+                        'confirmationNotificationRepetitions' => 0,
+                        'confirmationNotificationRepetitionsInterval' => 0,
                         'confirmationCounterDelay' => 7200,
                     ],
                 ]
@@ -358,13 +377,13 @@ The list of available types can be found using the method [booking.v1.resourceTy
                 templateTypeFeedback: "animate",
                 isDelayedNotificationOn: "N",
                 templateTypeDelayed: "animate",
-                infoDelay: 300,
-                reminderDelay: -1,
-                delayedDelay: 300,
+                infoNotificationDelay: 300,
+                reminderNotificationDelay: -1,
+                delayedNotificationDelay: 300,
                 delayedCounterDelay: 7200,
-                confirmationDelay: 86400,
-                confirmationRepetitions: 0,
-                confirmationRepetitionsInterval: 0,
+                confirmationNotificationDelay: 86400,
+                confirmationNotificationRepetitions: 0,
+                confirmationNotificationRepetitionsInterval: 0,
                 confirmationCounterDelay: 7200
             }
         },
@@ -401,13 +420,13 @@ The list of available types can be found using the method [booking.v1.resourceTy
                 'templateTypeFeedback' => 'animate',
                 'isDelayedNotificationOn' => 'N',
                 'templateTypeDelayed' => 'animate',
-                'infoDelay' => 300,
-                'reminderDelay' => -1,
-                'delayedDelay' => 300,
+                'infoNotificationDelay' => 300,
+                'reminderNotificationDelay' => -1,
+                'delayedNotificationDelay' => 300,
                 'delayedCounterDelay' => 7200,
-                'confirmationDelay' => 86400,
-                'confirmationRepetitions' => 0,
-                'confirmationRepetitionsInterval' => 0,
+                'confirmationNotificationDelay' => 86400,
+                'confirmationNotificationRepetitions' => 0,
+                'confirmationNotificationRepetitionsInterval' => 0,
                 'confirmationCounterDelay' => 7200
             ]
         ]
@@ -439,13 +458,13 @@ The list of available types can be found using the method [booking.v1.resourceTy
     		"templateTypeFeedback":            "animate",
     		"isDelayedNotificationOn":         "N",
     		"templateTypeDelayed":             "animate",
-    		"infoDelay":                       300,
-    		"reminderDelay":                   -1,
-    		"delayedDelay":                    300,
+    		"infoNotificationDelay":                       300,
+    		"reminderNotificationDelay":                   -1,
+    		"delayedNotificationDelay":                    300,
     		"delayedCounterDelay":             7200,
-    		"confirmationDelay":               86400,
-    		"confirmationRepetitions":         0,
-    		"confirmationRepetitionsInterval": 0,
+    		"confirmationNotificationDelay":               86400,
+    		"confirmationNotificationRepetitions":         0,
+    		"confirmationNotificationRepetitionsInterval": 0,
     		"confirmationCounterDelay":        7200,
     	},
     })
@@ -487,7 +506,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success  ||
+[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -498,7 +517,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 1007,
+    "error": "1007",
     "error_description": "Resource not found"
 }
 ```
@@ -511,16 +530,22 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `100` | `Could not find value for parameter` | Required parameter not provided ||
 || `1007` | `Resource not found` | Non-existent resource `id` specified ||
-|| `1013` | `Resource type with id does not exist` | Non-existent `typeId` specified ||
-|| `422` | `Invalid value of the field` | Incorrect field value ||
+|| `1007` | `Failed updating resource` | The resource could not be saved ||
+|| `1013` | `Resource type with id {id} does not exist` | Non-existent `typeId` specified ||
+|| `422` | `Invalid value of the {field} field` | An invalid value of an enumerated field, for example `templateTypeInfo` ||
+|| `0` | `Feature is not available` | The Booking tool is not available on the current plan ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./resource-type/index.md)
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-resource-add.md)
 - [{#T}](./booking-v1-resource-get.md)
-- [{#T}](./booking-v1-resource-delete.md)
 - [{#T}](./booking-v1-resource-list.md)
+- [{#T}](./booking-v1-resource-delete.md)
+- [{#T}](./resource-type/index.md)
+- [{#T}](./slots/index.md)
+- [{#T}](./events/on-booking-resource-update.md)

@@ -13,6 +13,12 @@ Events allow applications to respond to changes almost in real-time: receiving n
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Handling](../../../events/index.md).
 
+The handler receives only the resource identifier. For the `onBookingResourceAdd` and `onBookingResourceUpdate` events, retrieve the remaining data using the [booking.v1.resource.get](../booking-v1-resource-get.md) method. For `onBookingResourceDelete`, such a request returns the `1009` error — the resource is already deleted, and the identifier from the event is the only thing known about it.
+
+Events are delivered asynchronously, after the request completes, and are not sent again. To avoid losing events when the handler is unavailable, use [offline events](../../../events/offline-events.md).
+
+Events are not sent to an application until its [installation](../../../../settings/app-installation/index.md) is complete.
+
 > Quick navigation: [all events](#all-events)
 
 ## How to Receive Events
@@ -37,6 +43,6 @@ An example of a handler code for the event is described in the article [How to T
 #|
 || **Event** | **Triggered By** ||
 || [onBookingResourceAdd](./on-booking-resource-add.md) | When a resource is created manually or by the method [booking.v1.resource.add](../booking-v1-resource-add.md) ||
-|| [onBookingResourceUpdate](./on-booking-resource-update.md) | When a resource is updated manually or by the method [booking.v1.resource.update](../booking-v1-resource-update.md) ||
+|| [onBookingResourceUpdate](./on-booking-resource-update.md) | When a resource is updated manually or by the methods [booking.v1.resource.update](../booking-v1-resource-update.md), [booking.v1.resource.slots.set](../slots/booking-v1-resource-slots-set.md), [booking.v1.resource.slots.unset](../slots/booking-v1-resource-slots-unset.md) ||
 || [onBookingResourceDelete](./on-booking-resource-delete.md) | When a resource is deleted manually or by the method [booking.v1.resource.delete](../booking-v1-resource-delete.md) ||
 |#

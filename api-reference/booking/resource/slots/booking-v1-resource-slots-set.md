@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `booking.v1.resource.slots.set` allows you to set time slots for the specified resource.
+The method `booking.v1.resource.slots.set` sets time slots for the specified resource.
+
+The method replaces the entire set of resource slots: slots absent from the request are removed. An empty `slots` array removes all resource slots, the same way [booking.v1.resource.slots.unset](./booking-v1-resource-slots-unset.md) does.
+
+After a successful call, the [onBookingResourceUpdate](../events/on-booking-resource-update.md) event is triggered: slots are retained within the resource itself.
 
 ## Method Parameters
 
@@ -23,7 +27,7 @@ The method `booking.v1.resource.slots.set` allows you to set time slots for the 
 || **Name**
 `type` | **Description** ||
 || **resourceId***
-[`integer`](../../../data-types.md) | Resource identifier. 
+[`integer`](../../../data-types.md) | Resource identifier.
 Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resource-add.md) and [booking.v1.resource.list](../booking-v1-resource-list.md) ||
 || **slots***
 [`array`](../../../data-types.md) | An array of objects containing field values for setting time slots [(detailed description)](#slots) ||
@@ -35,30 +39,35 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
 || **Name**
 `type` | **Description** ||
 || **from***
-[`integer`](../../../data-types.md) | The time from which slot booking is available during the day. Value in the range from 0 to 1440. For example, `540` means booking is available from 9:00 AM ||
+[`integer`](../../../data-types.md) | Time in minutes from the start of the day from which booking is available. Value in the range from 0 to 1440. For example, `540` means booking is available from 9:00 AM ||
 || **to***
-[`integer`](../../../data-types.md) | The end time of the slot in minutes. Value in the range from 0 to 1440, greater than or equal to the value of `from`. For example, `1080` means booking is available until 6:00 PM ||
+[`integer`](../../../data-types.md) | Time in minutes from the start of the day until which booking is available. Value in the range from 0 to 1440 and strictly greater than `from`. For example, `1080` means booking is available until 6:00 PM ||
 || **timezone***
-[`string`](../../../data-types.md) | The time zone relative to which the slot time is set ||
+[`string`](../../../data-types.md) | Time zone in the IANA format relative to which the slot time is set. For example, `Europe/Berlin`.
+
+An unknown time zone is silently replaced with `UTC` by the method ||
 || **weekDays***
-[`array`](../../../data-types.md) | An array of available weekdays for the slot. Possible values: 
-- `"Mon"` — Monday
-- `"Tue"` — Tuesday
-- `"Wed"` — Wednesday
-- `"Thu"` — Thursday
-- `"Fri"` — Friday
-- `"Sat"` — Saturday
-- `"Sun"` — Sunday ||
+[`array`](../../../data-types.md) | An array of available weekdays for the slot. Possible values:
+- `Mon` — Monday
+- `Tue` — Tuesday
+- `Wed` — Wednesday
+- `Thu` — Thursday
+- `Fri` — Friday
+- `Sat` — Saturday
+- `Sun` — Sunday ||
 || **slotSize***
-[`integer`](../../../data-types.md) | Duration of the slot in minutes ||
+[`integer`](../../../data-types.md) | Booking duration in minutes. The value cannot be negative ||
 |#
+
+All five slot fields are mandatory. The method ignores the `id` field: slot identifiers are assigned by Bitrix24.
 
 ## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
 Example of setting time slots for a resource:
-- availability from Monday to Friday from 9:00 AM to 6:00 PM in the GMT+2 time zone
+
+- availability from Monday to Friday from 9:00 AM to 6:00 PM in the `Europe/Berlin` time zone
 - slot duration of 30 minutes
 
 {% list tabs %}
@@ -69,8 +78,8 @@ Example of setting time slots for a resource:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"resourceId":10,"slots":[{"from":540,"to":1080,"timezone":"Europe/Berlin","weekDays":["Mon","Tue","Wed","Thu","Fri"],"slotSize":30}],"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.resource.slots.set
+    -d '{"resourceId":10,"slots":[{"from":540,"to":1080,"timezone":"Europe/Berlin","weekDays":["Mon","Tue","Wed","Thu","Fri"],"slotSize":30}]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resource.slots.set
     ```
 
 - cURL (OAuth)
@@ -79,8 +88,8 @@ Example of setting time slots for a resource:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"resourceId":10,"slots":[{"from":540,"to":1080,"timezone":"Europe/Berlin","weekDays":["Mon","Tue","Wed","Thu","Fri"],"slotSize":30}]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resource.slots.set
+    -d '{"resourceId":10,"slots":[{"from":540,"to":1080,"timezone":"Europe/Berlin","weekDays":["Mon","Tue","Wed","Thu","Fri"],"slotSize":30}],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.resource.slots.set
     ```
 
 - JS (TS)
@@ -230,17 +239,17 @@ Example of setting time slots for a resource:
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error setting resource slots: ' . $e->getMessage();
@@ -336,13 +345,13 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-     "start": 1724068028.331234,
-     "finish": 1724068028.726591,
-     "duration": 0.3953571319580078,
-     "processing": 0.13033390045166016,
-     "date_start": "2025-01-21T13:47:08+02:00",
-     "date_finish": "2025-01-21T13:47:08+02:00",
-     "operating": 0
+        "start": 1724068028.331234,
+        "finish": 1724068028.726591,
+        "duration": 0.3953571319580078,
+        "processing": 0.13033390045166016,
+        "date_start": "2025-01-21T13:47:08+02:00",
+        "date_finish": "2025-01-21T13:47:08+02:00",
+        "operating": 0
     }
 }
 ```
@@ -364,7 +373,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 1009,
+    "error": "1009",
     "error_description": "Resource not found"
 }
 ```
@@ -375,14 +384,24 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `1009` | `Resource not found` | Resource with the specified `id` not found ||
-|| `0` | `Required fields:` | Required parameter not provided within `slots` ||
-|| `100` | `Could not find value for parameter` | Required parameter not provided ||
+|| `1009` | `Resource not found` | Resource with the specified `resourceId` not found ||
+|| `0` | `Required fields: timezone, weekDays, slotSize` | Required fields are missing in the slot object. The message lists only the missing ones ||
+|| `422` | `Invalid range fields` | Invalid values in the slot object: `from` or `to` outside the 0–1440 range, `from` greater than or equal to `to`, an empty or unknown weekday, a negative `slotSize`. The method does not indicate which field or which slot caused the error ||
+|| `422` | `Array's element must be array, string given` | An element of the `slots` array is not an object ||
+|| `100` | `Could not find value for parameter {resourceId}` | The `resourceId` parameter is not provided ||
+|| `100` | `Could not find value for parameter {slots}` | The `slots` parameter is not provided ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
+|| `1007` | `Failed updating resource` | The resource could not be saved ||
+|| `0` | `Feature is not available` | The Booking tool is not available on the current plan ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./booking-v1-resource-slots-unset.md)
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-resource-slots-list.md)
+- [{#T}](./booking-v1-resource-slots-unset.md)
+- [{#T}](../index.md)
+- [{#T}](../booking-v1-resource-get.md)
+- [{#T}](../events/on-booking-resource-update.md)

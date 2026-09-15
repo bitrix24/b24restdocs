@@ -13,6 +13,12 @@ Events allow applications to respond to changes in near real-time: receiving not
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../../events/index.md).
 
+The handler receives only the resource type identifier. For the `onBookingResourceTypeAdd` and `onBookingResourceTypeUpdate` events, retrieve the remaining data using the [booking.v1.resourceType.get](../booking-v1-resourcetype-get.md) method. For `onBookingResourceTypeDelete`, such a request returns the `1013` error — the type is already deleted, and the identifier from the event is the only thing known about it.
+
+Events are delivered asynchronously, after the request completes, and are not sent again. To avoid losing events when the handler is unavailable, use [offline events](../../../../events/offline-events.md).
+
+Events are not sent to an application until its [installation](../../../../../settings/app-installation/index.md) is complete.
+
 > Quick navigation: [all events](#all-events)
 
 ## How to Receive Events
@@ -37,6 +43,6 @@ An example of a handler for the event is described in the article [How to Test Y
 #|
 || **Event** | **Triggered By** ||
 || [onBookingResourceTypeAdd](./on-booking-resource-type-add.md) | When a resource type is created manually or by the method [booking.v1.resourceType.add](../booking-v1-resourcetype-add.md) ||
-|| [onBookingResourceTypeUpdate](./on-booking-resource-type-update.md) | When a resource type is updated by the method [booking.v1.resourceType.update](../booking-v1-resourcetype-update.md) ||
+|| [onBookingResourceTypeUpdate](./on-booking-resource-type-update.md) | When a resource type is updated manually or by the method [booking.v1.resourceType.update](../booking-v1-resourcetype-update.md) ||
 || [onBookingResourceTypeDelete](./on-booking-resource-type-delete.md) | When a resource type is deleted by the method [booking.v1.resourceType.delete](../booking-v1-resourcetype-delete.md) ||
 |#

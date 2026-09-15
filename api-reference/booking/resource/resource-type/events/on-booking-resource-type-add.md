@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCETYPEADD` will trigger when a new resource type is created either manually or via the [booking.v1.resourceType.add](../booking-v1-resourcetype-add.md) method.
+The event `ONBOOKINGRESOURCETYPEADD` will trigger when a new resource type is created either manually or via the [booking.v1.resourceType.add](../booking-v1-resourcetype-add.md) method. The handler receives only the identifier — retrieve the remaining resource type fields using the [booking.v1.resourceType.get](../booking-v1-resourcetype-get.md) method.
 
 {% note info "" %}
 
@@ -77,6 +77,7 @@ The structure is described [below](#auth) ||
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
 - [{#T}](./on-booking-resource-type-update.md)

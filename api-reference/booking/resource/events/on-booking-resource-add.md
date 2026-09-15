@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONBOOKINGRESOURCEADD` event will trigger when a new resource is created either manually or via the [booking.v1.resource.add](../booking-v1-resource-add.md) method.
+The `ONBOOKINGRESOURCEADD` event will trigger when a new resource is created either manually or via the [booking.v1.resource.add](../booking-v1-resource-add.md) method. The handler receives only the identifier — retrieve the remaining resource fields using the [booking.v1.resource.get](../booking-v1-resource-get.md) method.
 
 {% note info "" %}
 
@@ -77,6 +77,7 @@ The structure is described [below](#auth) ||
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)
 - [{#T}](./on-booking-resource-update.md)

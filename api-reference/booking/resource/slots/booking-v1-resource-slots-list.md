@@ -24,6 +24,7 @@ The method `booking.v1.resource.slots.list` returns the configuration of time sl
 `type` | **Description** ||
 || **resourceId***
 [`integer`](../../../data-types.md) | Resource identifier.
+
 Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resource-add.md) and [booking.v1.resource.list](../booking-v1-resource-list.md) ||
 |#
 
@@ -76,16 +77,11 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
     }
 
     try {
-      // booking.v1.resource.slots.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // The method returns all resource slots at once: it has no pagination
       const response = await $b24.actions.v2.call.make<SlotsListResult>({
         method: 'booking.v1.resource.slots.list',
         params: {
           resourceId: 257,
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -114,16 +110,11 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // booking.v1.resource.slots.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // The method returns all resource slots at once: it has no pagination
           const response = await $b24.actions.v2.call.make({
             method: 'booking.v1.resource.slots.list',
             params: {
               resourceId: 257,
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -182,17 +173,17 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
                     'resourceId' => 257,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error listing resource slots: ' . $e->getMessage();
@@ -250,18 +241,20 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
     	return fmt.Errorf("no slots key in the response")
     }
 
+    // Numeric fields with the value 0 arrive as null, hence the pointers
     var items []struct {
-    	From     int    `json:"from"`
-    	ID       b24.ID `json:"id"`
-    	SlotSize int    `json:"slotSize"`
-    	Timezone string `json:"timezone"`
-    	To       int    `json:"to"`
+    	From     *int     `json:"from"`
+    	ID       b24.ID   `json:"id"`
+    	SlotSize *int     `json:"slotSize"`
+    	Timezone string   `json:"timezone"`
+    	To       int      `json:"to"`
+    	WeekDays []string `json:"weekDays"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
     for _, it := range items {
-    	fmt.Println(it.From)
+    	fmt.Println(it.ID, it.Timezone, it.WeekDays)
     }
     ```
 
@@ -276,26 +269,30 @@ HTTP status: **200**
     "result": {
         "slots": [
             {
-                "from": 100,
-                "id": 171,
-                "slotSize": 1,
+                "from": 540,
+                "id": 11,
+                "slotSize": 60,
                 "timezone": "Europe/Berlin",
-                "to": 300,
+                "to": 1080,
                 "weekDays": [
                     "Mon",
-                    "Tue"
+                    "Tue",
+                    "Wed",
+                    "Thu",
+                    "Fri"
                 ]
             }
         ]
     },
+    "total": 0,
     "time": {
-     "start": 1724068028.331234,
-     "finish": 1724068028.726591,
-     "duration": 0.3953571319580078,
-     "processing": 0.13033390045166016,
-     "date_start": "2025-01-21T13:47:08+01:00",
-     "date_finish": "2025-01-21T13:47:08+01:00",
-     "operating": 0
+        "start": 1724068028.331234,
+        "finish": 1724068028.726591,
+        "duration": 0.3953571319580078,
+        "processing": 0.13033390045166016,
+        "date_start": "2025-01-21T13:47:08+01:00",
+        "date_finish": "2025-01-21T13:47:08+01:00",
+        "operating": 0
     }
 }
 ```
@@ -306,14 +303,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. 
-
-Contains an array of objects with information about the slots. The structure is described [below](#slots) ||
+[`object`](../../../data-types.md) | Root element of the response. Contains a single field `slots` — an array of slot settings; the object structure is described [below](#slots) ||
+|| **total**
+[`integer`](../../../data-types.md) | Service field. The method always returns `0` and returns all resource settings at once, without pagination ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Slot {#slots}
+
+If no slots are set for the resource, the method returns an empty array.
+
+Numeric fields with the value `0` are returned as `null`. This applies to `from` for a slot starting at the beginning of the day and to `slotSize`.
 
 #|
 || **Name**
@@ -321,22 +322,22 @@ Contains an array of objects with information about the slots. The structure is 
 || **id**
 [`integer`](../../../data-types.md) | Identifier of the slot settings ||
 || **from**
-[`integer`](../../../data-types.md) | Time from which slots are available for booking during the day. Value in the range from 0 to 1440. For example, `540` means booking is available from 9:00 ||
+[`integer`](../../../data-types.md) | Time in minutes from the start of the day from which booking is available. Value in the range from 0 to 1440. For example, `540` means booking is available from 9:00 ||
 || **to**
-[`integer`](../../../data-types.md) | End time of the slot in minutes. Value in the range from 0 to 1440, greater than or equal to the value of `from`. For example, `1080` means booking is available until 18:00 ||
+[`integer`](../../../data-types.md) | Time in minutes from the start of the day until which booking is available. Value in the range from 0 to 1440 and strictly greater than `from`. For example, `1080` means booking is available until 18:00 ||
 || **timezone**
-[`string`](../../../data-types.md) | Timezone relative to which the slot time is set ||
+[`string`](../../../data-types.md) | Time zone in the IANA format relative to which the slot time is set. For example, `Europe/Berlin` ||
 || **weekDays**
-[`array`](../../../data-types.md) | Array of available weekdays for the slot. Possible values: 
-- `"Mon"` — Monday
-- `"Tue"` — Tuesday
-- `"Wed"` — Wednesday
-- `"Thu"` — Thursday
-- `"Fri"` — Friday
-- `"Sat"` — Saturday
-- `"Sun"` — Sunday ||
+[`array`](../../../data-types.md) | Array of available weekdays for the slot. Possible values:
+- `Mon` — Monday
+- `Tue` — Tuesday
+- `Wed` — Wednesday
+- `Thu` — Thursday
+- `Fri` — Friday
+- `Sat` — Saturday
+- `Sun` — Sunday ||
 || **slotSize**
-[`integer`](../../../data-types.md) | Duration of the slot in minutes ||
+[`integer`](../../../data-types.md) | Booking duration in minutes ||
 |#
 
 ## Error Handling
@@ -345,7 +346,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 1009,
+    "error": "1009",
     "error_description": "Resource not found"
 }
 ```
@@ -356,13 +357,17 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `1009` | `Resource not found` | Resource with the specified `id` not found ||
-|| `100` | `Could not find value for parameter` | Required parameter not provided ||
+|| `1009` | `Resource not found` | Resource with the specified `resourceId` not found ||
+|| `100` | `Could not find value for parameter {resourceId}` | Required parameter `resourceId` not provided ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-resource-slots-set.md)
 - [{#T}](./booking-v1-resource-slots-unset.md)
+- [{#T}](../index.md)
+- [{#T}](../booking-v1-resource-get.md)

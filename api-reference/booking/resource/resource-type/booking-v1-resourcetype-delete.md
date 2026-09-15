@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `booking.v1.resourceType.delete` removes a resource type.
 
+A type can only be deleted if no resource is linked to it. Reassign the resources to another type using [booking.v1.resource.update](../booking-v1-resource-update.md) or remove them using [booking.v1.resource.delete](../booking-v1-resource-delete.md). Deletion is irreversible.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -158,17 +160,17 @@ Can be obtained through the methods [booking.v1.resourceType.add](./booking-v1-r
                     'id' => 15,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting resource type: ' . $e->getMessage();
@@ -235,16 +237,16 @@ HTTP Status: **200**
 
 ```json
 {
-  "result": true,
-  "time": {
-    "start": 1741002472.477039,
-    "finish": 1741002472.598432,
-    "duration": 0.12139296531677246,
-    "processing": 0.012734174728393555,
-    "date_start": "2025-03-03T11:47:52+00:00",
-    "date_finish": "2025-03-03T11:47:52+00:00",
-    "operating": 0
-  }
+    "result": true,
+    "time": {
+        "start": 1741002472.477039,
+        "finish": 1741002472.598432,
+        "duration": 0.12139296531677246,
+        "processing": 0.012734174728393555,
+        "date_start": "2025-03-03T11:47:52+00:00",
+        "date_finish": "2025-03-03T11:47:52+00:00",
+        "operating": 0
+    }
 }
 ```
 
@@ -265,7 +267,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 100,
+    "error": "100",
     "error_description": "Could not find value for parameter {id}"
 }
 ```
@@ -277,15 +279,19 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `100` | `Could not find value for parameter {id}` | Required parameter not provided ||
-|| `1012` | `Resource type has not been found` | Resource type with such `id` not found ||
+|| `1012` | `Resource type not found` | Resource type with such `id` not found ||
+|| `1012` | `The type can not be deleted. There are resources of  type` | At least one resource is linked to the type. First remove or reassign the resources using [booking.v1.resource.update](../booking-v1-resource-update.md) ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](../index.md)
-- [{#T}](./booking-v1-resourcetype-get.md)
-- [{#T}](./booking-v1-resourcetype-update.md)
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-resourcetype-add.md)
+- [{#T}](./booking-v1-resourcetype-update.md)
+- [{#T}](./booking-v1-resourcetype-get.md)
 - [{#T}](./booking-v1-resourcetype-list.md)
+- [{#T}](../index.md)
+- [{#T}](./events/on-booking-resource-type-delete.md)

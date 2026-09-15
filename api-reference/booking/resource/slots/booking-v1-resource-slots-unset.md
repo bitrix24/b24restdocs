@@ -15,6 +15,10 @@ Choose a tool for developing with an AI agent:
 
 The method `booking.v1.resource.slots.unset` removes the time slot settings for the specified resource.
 
+The method removes all resource slots at once. A single slot cannot be removed by its identifier — pass the required set of slots using the [booking.v1.resource.slots.set](./booking-v1-resource-slots-set.md) method.
+
+After a successful call, the [onBookingResourceUpdate](../events/on-booking-resource-update.md) event is triggered: slots are retained within the resource itself. Calling the method again on a resource without slots does not return an error.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -24,6 +28,7 @@ The method `booking.v1.resource.slots.unset` removes the time slot settings for 
 `type` | **Description** ||
 || **resourceId***
 [`integer`](../../../data-types.md) | Resource identifier.
+
 Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resource-add.md) and [booking.v1.resource.list](../booking-v1-resource-list.md) ||
 |#
 
@@ -158,17 +163,17 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
                     'resourceId' => 14,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error unsetting resource slots: ' . $e->getMessage();
@@ -237,13 +242,13 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-     "start": 1724068028.331234,
-     "finish": 1724068028.726591,
-     "duration": 0.3953571319580078,
-     "processing": 0.13033390045166016,
-     "date_start": "2025-01-21T13:47:08+02:00",
-     "date_finish": "2025-01-21T13:47:08+02:00",
-     "operating": 0
+        "start": 1724068028.331234,
+        "finish": 1724068028.726591,
+        "duration": 0.3953571319580078,
+        "processing": 0.13033390045166016,
+        "date_start": "2025-01-21T13:47:08+02:00",
+        "date_finish": "2025-01-21T13:47:08+02:00",
+        "operating": 0
     }
 }
 ```
@@ -265,7 +270,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 1009,
+    "error": "1009",
     "error_description": "Resource not found"
 }
 ```
@@ -276,13 +281,20 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `1009` | `Resource not found` | Resource with the specified `id` not found ||
-|| `100` | `Could not find value for parameter` | Required parameter not provided ||
+|| `1009` | `Resource not found` | Resource with the specified `resourceId` not found ||
+|| `100` | `Could not find value for parameter {resourceId}` | Required parameter `resourceId` not provided ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
+|| `1007` | `Failed updating resource` | The resource could not be saved ||
+|| `0` | `Feature is not available` | The Booking tool is not available on the current plan ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-resource-slots-set.md)
 - [{#T}](./booking-v1-resource-slots-list.md)
+- [{#T}](../index.md)
+- [{#T}](../booking-v1-resource-get.md)
+- [{#T}](../events/on-booking-resource-update.md)

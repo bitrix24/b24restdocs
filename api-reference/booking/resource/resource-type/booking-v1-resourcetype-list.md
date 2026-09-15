@@ -17,12 +17,18 @@ The method `booking.v1.resourceType.list` returns a list of resource types based
 
 ## Method Parameters
 
+All parameters are optional. Without parameters, the first page of all resource types is returned.
+
 #|
-|| **FILTER**
+|| **Name**
+`type` | **Description** ||
+|| **filter**
 [`object`](../../../data-types.md) | An object for filtering the list of resource types in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#filter) of the resource type for filtering
-- `value_N` — field value ||
-|| **ORDER**
+- `value_N` — field value
+
+Filter conditions are combined with a logical AND. Fields absent from the list below are ignored by the method without an error ||
+|| **order**
 [`object`](../../../data-types.md) | An object for sorting the list of resource types in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where
 - `field_N` — [field](#order) of the resource type for sorting
 - `value_N` — sort direction
@@ -30,9 +36,27 @@ The method `booking.v1.resourceType.list` returns a list of resource types based
 The sort direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
-  
-The default value is `{ID: 'ASC'}` ||
+
+The value is case-insensitive. If the parameter is not provided, the order of records is not guaranteed — set the sorting explicitly ||
+|| **start**
+[`integer`](../../../data-types.md) | A parameter for managing pagination.
+
+The result page size is always fixed: 50 records.
+
+To select the second page of results, pass the value `50`, to select the third — `100`, and so on.
+
+The formula for calculating the `start` parameter value:
+
+`start = (N-1) * 50`, where `N` is the number of the required page.
+
+A value that is not a multiple of 50 is rounded down to the page boundary: with `start` from `1` to `49`, the first page is returned.
+
+The value `-1` disables the pagination count — the `total` field is absent from the response.
+
+The default value is `0` ||
 |#
+
+The method recognizes parameter and field names only in the form given in the tables: entries such as `FILTER` or `SEARCH_QUERY` are ignored.
 
 ### Filter Parameters {#filter}
 
@@ -40,16 +64,18 @@ The default value is `{ID: 'ASC'}` ||
 || **Name**
 `type` | **Description** ||
 || **searchQuery**
-[`string`](../../../data-types.md) | Search query. Searches for a substring in the resource type name ||
+[`string`](../../../data-types.md) | Search query. The method searches for a case-insensitive substring in the resource type name ||
 || **moduleId**
-[`string`](../../../data-types.md) | Resource type module ||
+[`string`](../../../data-types.md) | Identifier of the module the resource type belongs to. For types created via REST, the value is `booking`.
+
+Without this filter, the method returns the types of all modules ||
 || **name**
-[`string`](../../../data-types.md) | Resource type name ||
+[`string`](../../../data-types.md) | Resource type name. The method searches for an exact match ||
 || **code**
-[`string`](../../../data-types.md) | Resource type code ||
+[`string`](../../../data-types.md) | Symbolic code of the resource type. The method searches for an exact match ||
 |#
 
-Use either `searchQuery` for substring search or `name` for exact match search.
+The method does not support filtering by identifier: to retrieve a single type by `id`, use [booking.v1.resourceType.get](./booking-v1-resourcetype-get.md). Comparison operators, such as `%name`, are not supported either.
 
 ### Order Parameters {#order}
 
@@ -102,7 +128,7 @@ Use either `searchQuery` for substring search or `name` for exact match search.
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type ResourceTypeResult = {
-      resource: ResourceType[]
+      resourceType: ResourceType[]
     }
 
     type ResourceType = {
@@ -155,7 +181,7 @@ Use either `searchQuery` for substring search or `name` for exact match search.
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Resource types:', result.resource.length, result.resource)
+        console.info('Resource types:', result.resourceType.length, result.resourceType)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -203,7 +229,7 @@ Use either `searchQuery` for substring search or `name` for exact match search.
           }
 
           const result = response.getData().result
-          console.info('Resource types:', result.resource.length, result.resource)
+          console.info('Resource types:', result.resourceType.length, result.resourceType)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -266,18 +292,18 @@ Use either `searchQuery` for substring search or `name` for exact match search.
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
             echo 'Error: ' . $result->error();
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error listing resource types: ' . $e->getMessage();
@@ -367,8 +393,9 @@ HTTP status: **200**
 ```json
 {
     "result": {
-        "resource": [
+        "resourceType": [
             {
+                "cancellationNotificationDelay": 600,
                 "code": "equipment",
                 "confirmationCounterDelay": 10800,
                 "confirmationNotificationDelay": 86400,
@@ -378,18 +405,22 @@ HTTP status: **200**
                 "delayedNotificationDelay": 300,
                 "id": 3,
                 "infoNotificationDelay": null,
+                "isCancellationNotificationOn": "Y",
                 "isConfirmationNotificationOn": "Y",
                 "isDelayedNotificationOn": "Y",
                 "isFeedbackNotificationOn": "N",
+                "isInfoNotificationOn": "Y",
                 "isReminderNotificationOn": "Y",
-                "name": "resource",
+                "name": "Equipment",
                 "reminderNotificationDelay": -1,
+                "senderCode": null,
                 "templateTypeConfirmation": "inanimate",
                 "templateTypeDelayed": "inanimate",
                 "templateTypeFeedback": "inanimate",
                 "templateTypeReminder": "base"
             },
             {
+                "cancellationNotificationDelay": 600,
                 "code": "expert",
                 "confirmationCounterDelay": 10800,
                 "confirmationNotificationDelay": 86400,
@@ -399,19 +430,23 @@ HTTP status: **200**
                 "delayedNotificationDelay": 300,
                 "id": 5,
                 "infoNotificationDelay": null,
+                "isCancellationNotificationOn": "Y",
                 "isConfirmationNotificationOn": "Y",
                 "isDelayedNotificationOn": "Y",
                 "isFeedbackNotificationOn": "N",
+                "isInfoNotificationOn": "Y",
                 "isReminderNotificationOn": "Y",
-                "name": "resource 2",
+                "name": "Specialist",
                 "reminderNotificationDelay": -1,
-                "templateTypeConfirmation": "animate",
-                "templateTypeDelayed": "animate",
-                "templateTypeFeedback": "animate",
+                "senderCode": null,
+                "templateTypeConfirmation": "inanimate",
+                "templateTypeDelayed": "inanimate",
+                "templateTypeFeedback": "inanimate",
                 "templateTypeReminder": "base"
             }
         ]
     },
+    "total": 0,
     "time": {
         "start": 1746540063.20403,
         "finish": 1746540063.261006,
@@ -431,70 +466,96 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response. 
-
-Contains an array of objects with information about resource types. The structure is described [below](#resource) ||
+[`object`](../../../data-types.md) | The root element of the response. Contains a single field `resourceType` — an array of objects with information about resource types; the object structure is described [below](#resource) ||
+|| **total**
+[`integer`](../../../data-types.md) | Service field. The method always returns `0`, and the `next` field is absent from the response — they cannot be used to iterate over pages ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Type {#resource}
+The sign of the last page is fewer than 50 records in the response.
+
+#### Resource Type {#resource}
+
+Numeric and string fields are returned as `null` when no value is set. For example, a notification delay of `0` arrives as `null` in the response. The `is*` flags and the `templateType*` fields are always populated.
 
 #|
+|| **Name**
+`type` | **Description** ||
+|| **cancellationNotificationDelay**
+[`integer`](../../../data-types.md) | Time in seconds after a booking is cancelled, after which the client receives the cancellation message ||
 || **code**
-[`string`](../../../data-types.md) | Resource type code ||
+[`string`](../../../data-types.md) | Symbolic code of the resource type. Unique within the module ||
 || **confirmationCounterDelay**
-[`integer`](../../../data-types.md) | Time until the record is made in seconds, after which the unconfirmed record counter lights up ||
-|| **confirmationDelay**
-[`integer`](../../../data-types.md) | Time until the record in seconds when the client receives the first message for confirmation ||
-|| **confirmationRepetitions**
-[`integer`](../../../data-types.md) | Number of messages sent to the client for confirmation, excluding the first one ||
-|| **confirmationRepetitionsInterval**
-[`integer`](../../../data-types.md) | Interval between confirmation messages, in seconds ||
+[`integer`](../../../data-types.md) | Time in seconds before the booking, after which the unconfirmed booking counter is activated ||
+|| **confirmationNotificationDelay**
+[`integer`](../../../data-types.md) | Time in seconds before the booking, when the client receives the first confirmation message ||
+|| **confirmationNotificationRepetitions**
+[`integer`](../../../data-types.md) | Number of confirmation messages sent to the client, excluding the first one ||
+|| **confirmationNotificationRepetitionsInterval**
+[`integer`](../../../data-types.md) | Interval between booking confirmation messages, in seconds ||
 || **delayedCounterDelay**
-[`integer`](../../../data-types.md) | Time in seconds after which to turn on the counter in the calendar ||
-|| **delayedDelay**
-[`integer`](../../../data-types.md) | Time in seconds after which to send a message to the client about being late ||
+[`integer`](../../../data-types.md) | Time in seconds after which the counter is activated in the calendar ||
+|| **delayedNotificationDelay**
+[`integer`](../../../data-types.md) | Time in seconds after which the late arrival message is sent to the client ||
 || **id**
 [`integer`](../../../data-types.md) | Resource type identifier ||
-|| **infoDelay**
-[`integer`](../../../data-types.md) | Delay in seconds after which the client receives a message about the record ||
+|| **infoNotificationDelay**
+[`integer`](../../../data-types.md) | Time in seconds after which the client receives the booking message ||
+|| **isCancellationNotificationOn**
+[`string`](../../../data-types.md) | Message to the client after a booking is cancelled. Possible values:
+- `Y` — enabled
+- `N` — disabled ||
 || **isConfirmationNotificationOn**
-[`string`](../../../data-types.md) | Automatic confirmation of the record. Possible values:
+[`string`](../../../data-types.md) | Message to the client requesting booking confirmation. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isDelayedNotificationOn**
-[`string`](../../../data-types.md) | Reminder when the client is late. Possible values:
+[`string`](../../../data-types.md) | Reminder when the client is running late. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isFeedbackNotificationOn**
 [`string`](../../../data-types.md) | Feedback request. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
+|| **isInfoNotificationOn**
+[`string`](../../../data-types.md) | Booking message to the client. Possible values:
+- `Y` — enabled
+- `N` — disabled ||
 || **isReminderNotificationOn**
-[`string`](../../../data-types.md) | Reminder about the record. Possible values:
+[`string`](../../../data-types.md) | Booking reminder. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **name**
-[`string`](../../../data-types.md) | Resource name ||
-|| **reminderDelay**
-[`integer`](../../../data-types.md) | Time until the record in seconds, for which the client receives a reminder about the record.
-Value `-1` — in the morning on the day of the record ||
+[`string`](../../../data-types.md) | Resource type name ||
+|| **reminderNotificationDelay**
+[`integer`](../../../data-types.md) | Time in seconds before the booking, at which the client receives the reminder.
+
+The value `-1` means the reminder arrives on the morning of the booking day ||
+|| **senderCode**
+[`string`](../../../data-types.md) | Code of the service that sends messages to the client. Possible values:
+- `bitrix24` — Bitrix24 notifications
+- `ai_call` — AI agent call ||
 || **templateTypeConfirmation**
-[`string`](../../../data-types.md) | Type of confirmation message template. Possible values:
+[`string`](../../../data-types.md) | Message template type for booking confirmation. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for appointments with specialists ||
+- `animate` — template for booking with specialists
+- `inanimate_long` — template for multi-day booking ||
 || **templateTypeDelayed**
-[`string`](../../../data-types.md) | Type of delayed message template. Possible values:
+[`string`](../../../data-types.md) | Message template type for late arrival. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for appointments with specialists ||
+- `animate` — template for booking with specialists ||
 || **templateTypeFeedback**
-[`string`](../../../data-types.md) | Type of feedback request message template. Possible values:
+[`string`](../../../data-types.md) | Message template type for the feedback request. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for appointments with specialists ||
+- `animate` — template for booking with specialists ||
 || **templateTypeReminder**
-[`string`](../../../data-types.md) | Type of reminder message template. Possible values: `base` ||
+[`string`](../../../data-types.md) | Message template type for the reminder. The only value is `base` ||
 |#
+
+The resource type does not return the `templateTypeInfo` field: the booking message template of a resource type is not available via REST. The resource itself does have this field — see [booking.v1.resource.get](../booking-v1-resource-get.md).
+
+The method does not return `moduleId` either — the response does not indicate which module the type belongs to. The method returns a type by any `id`, including types of other modules. To retrieve only the types of the `booking` module, use the `moduleId` filter in the [booking.v1.resourceType.list](./booking-v1-resourcetype-list.md) method.
 
 ## Error Handling
 
@@ -513,16 +574,19 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `100` | `Invalid value to match with parameter {order}. Should be value of type array` | The `order` parameter is not an object ||
-|| `100` | `Invalid value to match with parameter {filter}. Should be value of type array` | The `filter` parameter is not an object ||
+|| `100` | `Invalid value {value} to match with parameter {order}. Should be value of type array.` | The `order` parameter is not an object ||
+|| `100` | `Invalid value {value} to match with parameter {filter}. Should be value of type array.` | The `filter` parameter is not an object ||
+|| `100` | `Invalid order "XXX"` | A sort direction other than `asc` or `desc` is passed in the `order` parameter ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](../index.md)
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-resourcetype-add.md)
 - [{#T}](./booking-v1-resourcetype-update.md)
-- [{#T}](./booking-v1-resourcetype-delete.md)
 - [{#T}](./booking-v1-resourcetype-get.md)
+- [{#T}](./booking-v1-resourcetype-delete.md)
+- [{#T}](../index.md)

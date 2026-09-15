@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGRESOURCEUPDATE` will trigger when a resource is updated manually or via the [booking.v1.resource.update](../booking-v1-resource-update.md) method.
+The event `ONBOOKINGRESOURCEUPDATE` will trigger when a resource is updated manually or via the [booking.v1.resource.update](../booking-v1-resource-update.md) method. The slot configuration methods also trigger this event — [booking.v1.resource.slots.set](../slots/booking-v1-resource-slots-set.md) and [booking.v1.resource.slots.unset](../slots/booking-v1-resource-slots-unset.md): slots are retained within the resource itself. The handler receives only the identifier — retrieve the remaining resource fields using the [booking.v1.resource.get](../booking-v1-resource-get.md) method.
 
 {% note info "" %}
 
@@ -77,6 +77,7 @@ The structure is described [below](#auth) ||
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](../../../events/index.md)
 - [{#T}](../../../events/event-bind.md)
 - [{#T}](./on-booking-resource-add.md)

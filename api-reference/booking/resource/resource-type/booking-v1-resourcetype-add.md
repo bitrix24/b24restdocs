@@ -32,98 +32,123 @@ The method `booking.v1.resourceType.add` adds a new resource type.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../../data-types.md) | The name of the resource type ||
+[`string`](../../../data-types.md) | Resource type name ||
 || **code***
-[`string`](../../../data-types.md) | A unique code for the resource type ||
+[`string`](../../../data-types.md) | Symbolic code of the resource type. Must be unique among the types of the `booking` module.
+
+Codes of the predefined types: `doctor`, `equipment`, `expert`, `car`, `room` ||
 || **isInfoNotificationOn**
-[`string`](../../../data-types.md) | Message to the client about the booking. Possible values:
+[`string`](../../../data-types.md) | Booking message to the client. Possible values:
 - `Y` — enabled
 - `N` — disabled
 
 Default is `Y` ||
-|| **templateTypeInfo**
-[`string`](../../../data-types.md) | The type of message template for the booking. Possible values:
-- `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists
-
-Default is `inanimate` ||
 || **isConfirmationNotificationOn**
-[`string`](../../../data-types.md) | Automatic confirmation of the booking. Possible values:
+[`string`](../../../data-types.md) | Message to the client requesting booking confirmation. Possible values:
 - `Y` — enabled
 - `N` — disabled
 
 Default is `Y` ||
 || **templateTypeConfirmation**
-[`string`](../../../data-types.md) | The type of message template for booking confirmation. Possible values:
+[`string`](../../../data-types.md) | Message template type for booking confirmation. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists
+- `animate` — template for booking with specialists
+- `inanimate_long` — template for multi-day booking
 
 Default is `inanimate` ||
 || **isReminderNotificationOn**
-[`string`](../../../data-types.md) | Reminder about the booking. Possible values:
+[`string`](../../../data-types.md) | Booking reminder. Possible values:
 - `Y` — enabled
 - `N` — disabled
 
 Default is `Y` ||
 || **templateTypeReminder**
-[`string`](../../../data-types.md) | The type of message template for reminders. Possible values: `base` ||
+[`string`](../../../data-types.md) | Message template type for the reminder. The only value is `base` ||
 || **isFeedbackNotificationOn**
-[`string`](../../../data-types.md) | Request for feedback. Possible values:
+[`string`](../../../data-types.md) | Feedback request. Possible values:
 - `Y` — enabled
 - `N` — disabled
 
 Default is `Y` ||
 || **templateTypeFeedback**
-[`string`](../../../data-types.md) | The type of message template for feedback requests. Possible values:
+[`string`](../../../data-types.md) | Message template type for the feedback request. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists
+- `animate` — template for booking with specialists
 
 Default is `inanimate` ||
 || **isDelayedNotificationOn**
-[`string`](../../../data-types.md) | Reminder when the client is late. Possible values:
+[`string`](../../../data-types.md) | Reminder when the client is running late. Possible values:
 - `Y` — enabled
 - `N` — disabled
 
 Default is `Y` ||
 || **templateTypeDelayed**
-[`string`](../../../data-types.md) | The type of message template for delays. Possible values:
+[`string`](../../../data-types.md) | Message template type for late arrival. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists
+- `animate` — template for booking with specialists
 
 Default is `inanimate` ||
-|| **infoDelay**
-[`integer`](../../../data-types.md) | Delay after which the client receives a booking message. Specified in seconds.
+|| **isCancellationNotificationOn**
+[`string`](../../../data-types.md) | Message to the client after a booking is cancelled. Possible values:
+- `Y` — enabled
+- `N` — disabled
 
-Default is 300 ||
-|| **reminderDelay**
-[`integer`](../../../data-types.md) | Time before the booking when the client receives a reminder. Specified in seconds.
+Default is `Y` ||
+|| **cancellationNotificationDelay**
+[`integer`](../../../data-types.md) | Time after a booking is cancelled, after which the client receives the cancellation message. Specified in seconds.
 
-Default is -1, in the morning on the day of the booking ||
-|| **delayedDelay**
-[`integer`](../../../data-types.md) | Time after which to send a message about the delay to the client. Specified in seconds.
+Default is 600 ||
+|| **infoNotificationDelay**
+[`integer`](../../../data-types.md) | Time after which the client receives the booking message. Specified in seconds.
+
+Default is 0 ||
+|| **reminderNotificationDelay**
+[`integer`](../../../data-types.md) | Time before the booking, at which the client receives the reminder. Specified in seconds.
+
+The value `-1` means the reminder arrives on the morning of the booking day.
+
+Default is `-1` ||
+|| **delayedNotificationDelay**
+[`integer`](../../../data-types.md) | Time after which the late arrival message is sent to the client. Specified in seconds.
 
 Default is 300 ||
 || **delayedCounterDelay**
-[`integer`](../../../data-types.md) | Time after which to enable the counter in the calendar. Specified in seconds.
+[`integer`](../../../data-types.md) | Time after which the counter is activated in the calendar. Specified in seconds.
 
-Default is 7200 ||
-|| **confirmationDelay**
-[`integer`](../../../data-types.md) | Time before the booking when the client receives the first confirmation message. Specified in seconds.
+Default is 300 ||
+|| **confirmationNotificationDelay**
+[`integer`](../../../data-types.md) | Time before the booking, when the client receives the first confirmation message. Specified in seconds.
 
 Default is 86400 ||
-|| **confirmationRepetitions**
-[`integer`](../../../data-types.md) | The number of messages sent to the client for booking confirmation, excluding the first.
+|| **confirmationNotificationRepetitions**
+[`integer`](../../../data-types.md) | Number of confirmation messages sent to the client, excluding the first one.
 
 Default is 0 ||
-|| **confirmationRepetitionsInterval**
-[`integer`](../../../data-types.md) | Interval between confirmation messages. Specified in seconds.
+|| **confirmationNotificationRepetitionsInterval**
+[`integer`](../../../data-types.md) | Interval between booking confirmation messages. Specified in seconds.
 
-Default is 0 ||
+Default is 10800 ||
 || **confirmationCounterDelay**
-[`integer`](../../../data-types.md) | Time before the booking after which the counter for unconfirmed bookings lights up. Specified in seconds.
+[`integer`](../../../data-types.md) | Time before the booking, after which the unconfirmed booking counter is activated. Specified in seconds.
 
-Default is 7200 ||
+Default is 10800 ||
+|| **senderCode**
+[`string`](../../../data-types.md) | Code of the service that sends messages to the client. Possible values:
+- `bitrix24` — Bitrix24 notifications
+- `ai_call` — AI agent call
+
+The method does not validate the value: the codes listed are the ones Bitrix24 supports.
+
+The field is retained on the type but has no effect on sending: Bitrix24 picks the sender by the `senderCode` field of the resource. Set it using the [booking.v1.resource.add](../booking-v1-resource-add.md) method.
+
+By default, the field is empty ||
 |#
+
+Fields with the `Y` and `N` flags accept strings only. The method silently ignores values of other types, such as `true`, and fields absent from the table.
+
+The booking message template `templateTypeInfo` cannot be set for a resource type via REST: the field is not part of the resource type and the method ignores it. Set the template on the resource itself using the [booking.v1.resource.add](../booking-v1-resource-add.md) method.
+
+Type configurations are not transferred to the resources of that type: a resource receives its own default values when created.
 
 ## Code Examples
 
@@ -137,7 +162,7 @@ Default is 7200 ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"Name","code":"code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoDelay":300,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":0,"confirmationRepetitionsInterval":0,"confirmationCounterDelay":7200}}' \
+    -d '{"fields":{"name":"Name","code":"code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoNotificationDelay":300,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":0,"confirmationNotificationRepetitionsInterval":0,"confirmationCounterDelay":7200}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resourceType.add
     ```
 
@@ -147,7 +172,7 @@ Default is 7200 ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"Name","code":"code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoDelay":300,"reminderDelay":-1,"delayedDelay":300,"delayedCounterDelay":7200,"confirmationDelay":86400,"confirmationRepetitions":0,"confirmationRepetitionsInterval":0,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"name":"Name","code":"code","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoNotificationDelay":300,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":0,"confirmationNotificationRepetitionsInterval":0,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/booking.v1.resourceType.add
     ```
 
@@ -183,13 +208,13 @@ Default is 7200 ||
             templateTypeFeedback: 'inanimate',
             isDelayedNotificationOn: 'Y',
             templateTypeDelayed: 'inanimate',
-            infoDelay: 300,
-            reminderDelay: -1,
-            delayedDelay: 300,
+            infoNotificationDelay: 300,
+            reminderNotificationDelay: -1,
+            delayedNotificationDelay: 300,
             delayedCounterDelay: 7200,
-            confirmationDelay: 86400,
-            confirmationRepetitions: 0,
-            confirmationRepetitionsInterval: 0,
+            confirmationNotificationDelay: 86400,
+            confirmationNotificationRepetitions: 0,
+            confirmationNotificationRepetitionsInterval: 0,
             confirmationCounterDelay: 7200,
           },
         },
@@ -236,13 +261,13 @@ Default is 7200 ||
                 templateTypeFeedback: 'inanimate',
                 isDelayedNotificationOn: 'Y',
                 templateTypeDelayed: 'inanimate',
-                infoDelay: 300,
-                reminderDelay: -1,
-                delayedDelay: 300,
+                infoNotificationDelay: 300,
+                reminderNotificationDelay: -1,
+                delayedNotificationDelay: 300,
                 delayedCounterDelay: 7200,
-                confirmationDelay: 86400,
-                confirmationRepetitions: 0,
-                confirmationRepetitionsInterval: 0,
+                confirmationNotificationDelay: 86400,
+                confirmationNotificationRepetitions: 0,
+                confirmationNotificationRepetitionsInterval: 0,
                 confirmationCounterDelay: 7200,
               },
             },
@@ -287,13 +312,13 @@ Default is 7200 ||
                 "templateTypeFeedback": "inanimate",
                 "isDelayedNotificationOn": "Y",
                 "templateTypeDelayed": "inanimate",
-                "infoDelay": 300,
-                "reminderDelay": -1,
-                "delayedDelay": 300,
+                "infoNotificationDelay": 300,
+                "reminderNotificationDelay": -1,
+                "delayedNotificationDelay": 300,
                 "delayedCounterDelay": 7200,
-                "confirmationDelay": 86400,
-                "confirmationRepetitions": 0,
-                "confirmationRepetitionsInterval": 0,
+                "confirmationNotificationDelay": 86400,
+                "confirmationNotificationRepetitions": 0,
+                "confirmationNotificationRepetitionsInterval": 0,
                 "confirmationCounterDelay": 7200,
             },
         ).response
@@ -334,26 +359,26 @@ Default is 7200 ||
                         'templateTypeFeedback'          => 'inanimate',
                         'isDelayedNotificationOn'       => 'Y',
                         'templateTypeDelayed'           => 'inanimate',
-                        'infoDelay'                     => 300,
-                        'reminderDelay'                 => -1,
-                        'delayedDelay'                  => 300,
+                        'infoNotificationDelay'                     => 300,
+                        'reminderNotificationDelay'                 => -1,
+                        'delayedNotificationDelay'                  => 300,
                         'delayedCounterDelay'           => 7200,
-                        'confirmationDelay'             => 86400,
-                        'confirmationRepetitions'       => 0,
-                        'confirmationRepetitionsInterval' => 0,
+                        'confirmationNotificationDelay'             => 86400,
+                        'confirmationNotificationRepetitions'       => 0,
+                        'confirmationNotificationRepetitionsInterval' => 0,
                         'confirmationCounterDelay'      => 7200,
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding resource type: ' . $e->getMessage();
@@ -379,13 +404,13 @@ Default is 7200 ||
                 templateTypeFeedback: "inanimate",
                 isDelayedNotificationOn: "Y",
                 templateTypeDelayed: "inanimate",
-                infoDelay: 300,
-                reminderDelay: -1,
-                delayedDelay: 300,
+                infoNotificationDelay: 300,
+                reminderNotificationDelay: -1,
+                delayedNotificationDelay: 300,
                 delayedCounterDelay: 7200,
-                confirmationDelay: 86400,
-                confirmationRepetitions: 0,
-                confirmationRepetitionsInterval: 0,
+                confirmationNotificationDelay: 86400,
+                confirmationNotificationRepetitions: 0,
+                confirmationNotificationRepetitionsInterval: 0,
                 confirmationCounterDelay: 7200
             }
         },
@@ -419,13 +444,13 @@ Default is 7200 ||
                 'templateTypeFeedback' => 'inanimate',
                 'isDelayedNotificationOn' => 'Y',
                 'templateTypeDelayed' => 'inanimate',
-                'infoDelay' => 300,
-                'reminderDelay' => -1,
-                'delayedDelay' => 300,
+                'infoNotificationDelay' => 300,
+                'reminderNotificationDelay' => -1,
+                'delayedNotificationDelay' => 300,
                 'delayedCounterDelay' => 7200,
-                'confirmationDelay' => 86400,
-                'confirmationRepetitions' => 0,
-                'confirmationRepetitionsInterval' => 0,
+                'confirmationNotificationDelay' => 86400,
+                'confirmationNotificationRepetitions' => 0,
+                'confirmationNotificationRepetitionsInterval' => 0,
                 'confirmationCounterDelay' => 7200,
             ]
         ]
@@ -454,13 +479,13 @@ Default is 7200 ||
     		"templateTypeFeedback":            "inanimate",
     		"isDelayedNotificationOn":         "Y",
     		"templateTypeDelayed":             "inanimate",
-    		"infoDelay":                       300,
-    		"reminderDelay":                   -1,
-    		"delayedDelay":                    300,
+    		"infoNotificationDelay":                       300,
+    		"reminderNotificationDelay":                   -1,
+    		"delayedNotificationDelay":                    300,
     		"delayedCounterDelay":             7200,
-    		"confirmationDelay":               86400,
-    		"confirmationRepetitions":         0,
-    		"confirmationRepetitionsInterval": 0,
+    		"confirmationNotificationDelay":               86400,
+    		"confirmationNotificationRepetitions":         0,
+    		"confirmationNotificationRepetitionsInterval": 0,
     		"confirmationCounterDelay":        7200,
     	},
     })
@@ -506,7 +531,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response, contains the identifier of the created resource type ||
+[`integer`](../../../data-types.md) | Identifier of the created resource type ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -517,7 +542,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 0,
+    "error": "0",
     "error_description": "Required fields: code"
 }
 ```
@@ -528,18 +553,21 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | `Required fields: code` | Required parameter not provided within `fields` ||
-|| `100` | `Could not find value for parameter ` | Required parameter not provided ||
-|| `422` | `Invalid value of the field` | Invalid field value ||
-|| `1010` | `Resource type with code already exists'` | Resource type with this `code` already exists ||
+|| `0` | `Required fields: name, code` | Required fields are not provided in `fields`. The message lists only the missing ones. Code `0` is shared by several errors — tell them apart by the text ||
+|| `100` | `Could not find value for parameter {fields}` | The `fields` parameter is not provided ||
+|| `422` | `Invalid value of the {field} field` | An invalid value of an enumerated field, for example `templateTypeConfirmation` ||
+|| `1010` | `Resource type with code "X" already exists` | A resource type with this `code` already exists ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](../index.md)
-- [{#T}](./booking-v1-resourcetype-get.md)
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-resourcetype-update.md)
-- [{#T}](./booking-v1-resourcetype-delete.md)
+- [{#T}](./booking-v1-resourcetype-get.md)
 - [{#T}](./booking-v1-resourcetype-list.md)
+- [{#T}](./booking-v1-resourcetype-delete.md)
+- [{#T}](../index.md)
+- [{#T}](./events/on-booking-resource-type-add.md)

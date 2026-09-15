@@ -183,17 +183,17 @@ Can be obtained from the methods [booking.v1.resourceType.add](./booking-v1-reso
                     'id' => 15
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting resource type: ' . $e->getMessage();
@@ -322,35 +322,49 @@ HTTP status: **200**
 
 #### Resource Type {#resource}
 
+Numeric and string fields are returned as `null` when no value is set. For example, a notification delay of `0` arrives as `null` in the response. The `is*` flags and the `templateType*` fields are always populated.
+
 #|
+|| **Name**
+`type` | **Description** ||
+|| **cancellationNotificationDelay**
+[`integer`](../../../data-types.md) | Time in seconds after a booking is cancelled, after which the client receives the cancellation message ||
 || **code**
-[`string`](../../../data-types.md) | Code of the resource type ||
+[`string`](../../../data-types.md) | Symbolic code of the resource type. Unique within the module ||
 || **confirmationCounterDelay**
-[`integer`](../../../data-types.md) | Time until the counter for unconfirmed bookings is activated, in seconds ||
-|| **confirmationDelay**
-[`integer`](../../../data-types.md) | Time until the first message for booking confirmation is sent to the client, in seconds ||
-|| **confirmationRepetitions**
-[`integer`](../../../data-types.md) | Number of messages sent to the client for booking confirmation, excluding the first one ||
-|| **confirmationRepetitionsInterval**
+[`integer`](../../../data-types.md) | Time in seconds before the booking, after which the unconfirmed booking counter is activated ||
+|| **confirmationNotificationDelay**
+[`integer`](../../../data-types.md) | Time in seconds before the booking, when the client receives the first confirmation message ||
+|| **confirmationNotificationRepetitions**
+[`integer`](../../../data-types.md) | Number of confirmation messages sent to the client, excluding the first one ||
+|| **confirmationNotificationRepetitionsInterval**
 [`integer`](../../../data-types.md) | Interval between booking confirmation messages, in seconds ||
 || **delayedCounterDelay**
-[`integer`](../../../data-types.md) | Time in seconds after which the counter in the calendar is activated ||
-|| **delayedDelay**
-[`integer`](../../../data-types.md) | Time in seconds after which a message about the delay is sent to the client ||
+[`integer`](../../../data-types.md) | Time in seconds after which the counter is activated in the calendar ||
+|| **delayedNotificationDelay**
+[`integer`](../../../data-types.md) | Time in seconds after which the late arrival message is sent to the client ||
 || **id**
-[`integer`](../../../data-types.md) | Identifier of the resource ||
-|| **infoDelay**
-[`integer`](../../../data-types.md) | Delay in seconds after which a message about the booking is sent to the client ||
+[`integer`](../../../data-types.md) | Resource type identifier ||
+|| **infoNotificationDelay**
+[`integer`](../../../data-types.md) | Time in seconds after which the client receives the booking message ||
+|| **isCancellationNotificationOn**
+[`string`](../../../data-types.md) | Message to the client after a booking is cancelled. Possible values:
+- `Y` — enabled
+- `N` — disabled ||
 || **isConfirmationNotificationOn**
-[`string`](../../../data-types.md) | Automatic booking confirmation. Possible values:
+[`string`](../../../data-types.md) | Message to the client requesting booking confirmation. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isDelayedNotificationOn**
-[`string`](../../../data-types.md) | Reminder when the client is late. Possible values:
+[`string`](../../../data-types.md) | Reminder when the client is running late. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isFeedbackNotificationOn**
 [`string`](../../../data-types.md) | Feedback request. Possible values:
+- `Y` — enabled
+- `N` — disabled ||
+|| **isInfoNotificationOn**
+[`string`](../../../data-types.md) | Booking message to the client. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isReminderNotificationOn**
@@ -358,25 +372,35 @@ HTTP status: **200**
 - `Y` — enabled
 - `N` — disabled ||
 || **name**
-[`string`](../../../data-types.md) | Name of the resource ||
-|| **reminderDelay**
-[`integer`](../../../data-types.md) | Time until the reminder about the booking is sent to the client, in seconds.
-Value `-1` means in the morning on the day of the booking ||
+[`string`](../../../data-types.md) | Resource type name ||
+|| **reminderNotificationDelay**
+[`integer`](../../../data-types.md) | Time in seconds before the booking, at which the client receives the reminder.
+
+The value `-1` means the reminder arrives on the morning of the booking day ||
+|| **senderCode**
+[`string`](../../../data-types.md) | Code of the service that sends messages to the client. Possible values:
+- `bitrix24` — Bitrix24 notifications
+- `ai_call` — AI agent call ||
 || **templateTypeConfirmation**
-[`string`](../../../data-types.md) | Type of the booking confirmation message template. Possible values:
+[`string`](../../../data-types.md) | Message template type for booking confirmation. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+- `animate` — template for booking with specialists
+- `inanimate_long` — template for multi-day booking ||
 || **templateTypeDelayed**
-[`string`](../../../data-types.md) | Type of the delay message template. Possible values:
+[`string`](../../../data-types.md) | Message template type for late arrival. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+- `animate` — template for booking with specialists ||
 || **templateTypeFeedback**
-[`string`](../../../data-types.md) | Type of the feedback request message template. Possible values:
+[`string`](../../../data-types.md) | Message template type for the feedback request. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for booking specialists ||
+- `animate` — template for booking with specialists ||
 || **templateTypeReminder**
-[`string`](../../../data-types.md) | Type of the reminder message template. Possible values: `base` ||
+[`string`](../../../data-types.md) | Message template type for the reminder. The only value is `base` ||
 |#
+
+The resource type does not return the `templateTypeInfo` field: the booking message template of a resource type is not available via REST. The resource itself does have this field — see [booking.v1.resource.get](../booking-v1-resource-get.md).
+
+The method does not return `moduleId` either — the response does not indicate which module the type belongs to. The method returns a type by any `id`, including types of other modules. To retrieve only the types of the `booking` module, use the `moduleId` filter in the [booking.v1.resourceType.list](./booking-v1-resourcetype-list.md) method.
 
 ## Error Handling
 
@@ -384,7 +408,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 1013,
+    "error": "1013",
     "error_description": "Resource type not found"
 }
 ```
@@ -396,15 +420,18 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `100` | `Could not find value for parameter {id}` | Required parameter not provided ||
+|| `100` | `Invalid value {id} to match with parameter {id}. Should be value of type int.` | A non-numeric value is passed in the `id` parameter ||
 || `1013` | `Resource type not found` | Resource type with such `id` not found ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](../index.md)
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-resourcetype-add.md)
 - [{#T}](./booking-v1-resourcetype-update.md)
-- [{#T}](./booking-v1-resourcetype-add.md)
 - [{#T}](./booking-v1-resourcetype-list.md)
+- [{#T}](./booking-v1-resourcetype-delete.md)
+- [{#T}](../index.md)

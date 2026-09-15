@@ -23,7 +23,8 @@ The method `booking.v1.resource.get` returns information about a resource by its
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Resource identifier. 
+[`integer`](../../data-types.md) | Resource identifier.
+
 Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource-add.md) and [booking.v1.resource.list](./booking-v1-resource-list.md) ||
 |#
 
@@ -66,23 +67,26 @@ Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type ResourceResult = {
       resource: {
-        confirmationCounterDelay: number,
-        confirmationNotificationDelay: number,
+        cancellationNotificationDelay: number | null,
+        confirmationCounterDelay: number | null,
+        confirmationNotificationDelay: number | null,
         confirmationNotificationRepetitions: number | null,
-        confirmationNotificationRepetitionsInterval: number,
-        delayedCounterDelay: number,
-        delayedNotificationDelay: number,
+        confirmationNotificationRepetitionsInterval: number | null,
+        delayedCounterDelay: number | null,
+        delayedNotificationDelay: number | null,
         description: string | null,
         id: number,
         infoNotificationDelay: number | null,
+        isCancellationNotificationOn: string,
         isConfirmationNotificationOn: string,
         isDelayedNotificationOn: string,
         isFeedbackNotificationOn: string,
         isInfoNotificationOn: string,
         isMain: string,
         isReminderNotificationOn: string,
-        name: string,
-        reminderNotificationDelay: number,
+        name: string | null,
+        reminderNotificationDelay: number | null,
+        senderCode: string,
         templateTypeConfirmation: string,
         templateTypeDelayed: string,
         templateTypeFeedback: string,
@@ -158,7 +162,7 @@ Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource
 
     try:
         bitrix_response = client.booking.v1.resource.get(
-            bitrix_id=123,
+            bitrix_id=15,
         ).response
         result = bitrix_response.result
         print(result)
@@ -187,17 +191,17 @@ Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource
                     'id' => 15,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
         } else {
             echo 'Success: ' . print_r($result->data(), true);
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting resource: ' . $e->getMessage();
@@ -279,6 +283,7 @@ HTTP status: **200**
 {
     "result": {
         "resource": {
+            "cancellationNotificationDelay": 600,
             "confirmationCounterDelay": 10800,
             "confirmationNotificationDelay": 86400,
             "confirmationNotificationRepetitions": null,
@@ -288,6 +293,7 @@ HTTP status: **200**
             "description": null,
             "id": 15,
             "infoNotificationDelay": null,
+            "isCancellationNotificationOn": "Y",
             "isConfirmationNotificationOn": "Y",
             "isDelayedNotificationOn": "N",
             "isFeedbackNotificationOn": "N",
@@ -296,6 +302,7 @@ HTTP status: **200**
             "isReminderNotificationOn": "Y",
             "name": "Name",
             "reminderNotificationDelay": -1,
+            "senderCode": "bitrix24",
             "templateTypeConfirmation": "animate",
             "templateTypeDelayed": "animate",
             "templateTypeFeedback": "animate",
@@ -323,83 +330,100 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. Contains information about the resource fields. The structure is described [below](#resource) ||
+[`object`](../../data-types.md) | Root element of the response. Contains a single field `resource` — an object with information about the resource; the structure is described [below](#resource) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Resource {#resource}
 
+Numeric and string fields are returned as `null` when no value is set. For example, a notification delay of `0` arrives as `null` in the response. The `is*` flags, the `templateType*` fields, and `senderCode` are always populated.
+
 #|
+|| **Name**
+`type` | **Description** ||
+|| **cancellationNotificationDelay**
+[`integer`](../../data-types.md) | Time in seconds after a booking is cancelled, after which the client receives the cancellation message ||
 || **confirmationCounterDelay**
-[`integer`](../../data-types.md) | Time until the record is made in seconds, after which the unconfirmed record counter lights up ||
-|| **confirmationDelay**
-[`integer`](../../data-types.md) | Time until the record in seconds when the client receives the first message to confirm the record ||
-|| **confirmationRepetitions**
-[`integer`](../../data-types.md) | Number of messages sent to the client for confirming the record, excluding the first one ||
-|| **confirmationRepetitionsInterval**
-[`integer`](../../data-types.md) | Interval between confirmation messages, in seconds ||
+[`integer`](../../data-types.md) | Time in seconds before the booking, after which the unconfirmed booking counter is activated ||
+|| **confirmationNotificationDelay**
+[`integer`](../../data-types.md) | Time in seconds before the booking, when the client receives the first confirmation message ||
+|| **confirmationNotificationRepetitions**
+[`integer`](../../data-types.md) | Number of confirmation messages sent to the client, excluding the first one ||
+|| **confirmationNotificationRepetitionsInterval**
+[`integer`](../../data-types.md) | Interval between booking confirmation messages, in seconds ||
 || **delayedCounterDelay**
-[`integer`](../../data-types.md) | Time in seconds after which to turn on the counter in the calendar ||
-|| **delayedDelay**
-[`integer`](../../data-types.md) | Time in seconds after which to send a message to the client about the delay ||
+[`integer`](../../data-types.md) | Time in seconds after which the counter is activated in the calendar ||
+|| **delayedNotificationDelay**
+[`integer`](../../data-types.md) | Time in seconds after which the late arrival message is sent to the client ||
 || **description**
-[`string`](../../data-types.md) | Description of the resource ||
+[`string`](../../data-types.md) | Resource description ||
 || **id**
 [`integer`](../../data-types.md) | Resource identifier ||
-|| **infoDelay**
-[`integer`](../../data-types.md) | Delay in seconds after which the client receives a message about the record ||
+|| **infoNotificationDelay**
+[`integer`](../../data-types.md) | Time in seconds after which the client receives the booking message ||
+|| **isCancellationNotificationOn**
+[`string`](../../data-types.md) | Message to the client after a booking is cancelled. Possible values:
+- `Y` — enabled
+- `N` — disabled ||
 || **isConfirmationNotificationOn**
-[`string`](../../data-types.md) | Automatic confirmation of the record. Possible values:
+[`string`](../../data-types.md) | Message to the client requesting booking confirmation. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isDelayedNotificationOn**
-[`string`](../../data-types.md) | Reminder when the client is late. Possible values:
+[`string`](../../data-types.md) | Reminder when the client is running late. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isFeedbackNotificationOn**
-[`string`](../../data-types.md) | Request for feedback. Possible values:
+[`string`](../../data-types.md) | Feedback request. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isInfoNotificationOn**
-[`string`](../../data-types.md) | Message to the client about the record. Possible values:
+[`string`](../../data-types.md) | Booking message to the client. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **isMain**
-[`string`](../../data-types.md) | How to display the resource. Possible values:
+[`string`](../../data-types.md) | How the resource is displayed. Possible values:
 - `Y` — in the schedule columns
-- `N` — when resources intersect ||
+- `N` — when resources overlap ||
 || **isReminderNotificationOn**
-[`string`](../../data-types.md) | Reminder about the record. Possible values:
+[`string`](../../data-types.md) | Booking reminder. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
 || **name**
-[`string`](../../data-types.md) | Name of the resource ||
-|| **reminderDelay**
-[`integer`](../../data-types.md) | Time until the record in seconds, after which the client receives a reminder about the record.
-Value `-1` — in the morning on the day of the record ||
+[`string`](../../data-types.md) | Resource name ||
+|| **reminderNotificationDelay**
+[`integer`](../../data-types.md) | Time in seconds before the booking, at which the client receives the reminder.
+
+The value `-1` means the reminder arrives on the morning of the booking day ||
+|| **senderCode**
+[`string`](../../data-types.md) | Code of the service that sends messages to the client. Possible values:
+- `bitrix24` — Bitrix24 notifications
+- `ai_call` — AI agent call ||
 || **templateTypeConfirmation**
-[`string`](../../data-types.md) | Type of the confirmation message template. Possible values:
+[`string`](../../data-types.md) | Message template type for booking confirmation. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for appointments with specialists ||
+- `animate` — template for booking with specialists
+- `inanimate_long` — template for multi-day booking ||
 || **templateTypeDelayed**
-[`string`](../../data-types.md) | Type of the delay message template. Possible values:
+[`string`](../../data-types.md) | Message template type for late arrival. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for appointments with specialists ||
+- `animate` — template for booking with specialists ||
 || **templateTypeFeedback**
-[`string`](../../data-types.md) | Type of the feedback request message template. Possible values:
+[`string`](../../data-types.md) | Message template type for the feedback request. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for appointments with specialists ||
+- `animate` — template for booking with specialists ||
 || **templateTypeInfo**
-[`string`](../../data-types.md) | Type of the record message template. Possible values:
+[`string`](../../data-types.md) | Message template type for the booking message. Possible values:
 - `inanimate` — template for booking equipment and rooms
-- `animate` — template for appointments with specialists ||
+- `animate` — template for booking with specialists
+- `inanimate_long` — template for multi-day booking ||
 || **templateTypeReminder**
-[`string`](../../data-types.md) | Type of the reminder message template. Possible values: `base` ||
+[`string`](../../data-types.md) | Message template type for the reminder. The only value is `base` ||
 || **typeId**
 [`integer`](../../data-types.md) | Resource type identifier.
 
-Information about the type can be obtained using the method [booking.v1.resourceType.get](./resource-type/booking-v1-resourcetype-get.md) ||
+Information about the type can be retrieved using the [booking.v1.resourceType.get](./resource-type/booking-v1-resourcetype-get.md) method ||
 |#
 
 ## Error Handling
@@ -408,7 +432,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 1021,
+    "error": "1009",
     "error_description": "Resource not found"
 }
 ```
@@ -421,14 +445,17 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `1009` | `Resource not found` | Resource with such `id` not found ||
 || `100` | `Could not find value for parameter {id}` | Required parameter not provided ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./resource-type/index.md)
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-resource-add.md)
 - [{#T}](./booking-v1-resource-update.md)
-- [{#T}](./booking-v1-resource-delete.md)
 - [{#T}](./booking-v1-resource-list.md)
+- [{#T}](./booking-v1-resource-delete.md)
+- [{#T}](./resource-type/index.md)
+- [{#T}](./slots/index.md)

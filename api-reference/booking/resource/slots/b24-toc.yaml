@@ -1,11 +1,11 @@
-title: Slots  
-href: index.md  
-items:   
-  - name: Overview of methods  
-    href: index.md  
-  - name: Set slots for resource  
-    href: booking-v1-resource-slots-set.md  
-  - name: Remove slots for resource  
-    href: booking-v1-resource-slots-unset.md  
-  - name: Get slot settings for resource  
-    href: booking-v1-resource-slots-list.md  
+title: Slots
+href: index.md
+items:
+  - name: Overview of methods
+    href: index.md
+  - name: Set slots for resource
+    href: booking-v1-resource-slots-set.md
+  - name: Get slot settings for resource
+    href: booking-v1-resource-slots-list.md
+  - name: Remove slots for resource
+    href: booking-v1-resource-slots-unset.md
