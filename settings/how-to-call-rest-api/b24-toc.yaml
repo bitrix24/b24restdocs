@@ -13,5 +13,7 @@ items:
     href: list-methods-pecularities.md
   - name: How to Execute a Batch of Requests
     href: batch.md
+  - name: How to Execute Batch Requests in REST 3.0
+    href: batch-v3.md
   - name: Features of REST Calls When Changing the Bitrix24 Address
     href: change-domen.md

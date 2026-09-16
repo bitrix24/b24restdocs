@@ -46,7 +46,7 @@ For more details, see the article [Authorization in REST](./authorization.md).
 4. Encode special characters and complex parameters according to the rules from the article [Data Encoding](./data-encoding.md)
 5. Execute the request and check the `result` field or error description in the response
 6. If the method returns a list, process the `total` and `next` fields according to the article [Features of List Methods](./list-methods-pecularities.md)
-7. If you need to reduce the number of calls, combine calls using [batch](./batch.md)
+7. If you need to reduce the number of calls, combine them using [batch](./batch.md) or [batch 3.0](./batch-v3.md)
 
 **Call example.** The `user.current` method returns the data of the user on whose behalf the request is executed. It takes no parameters, which makes it convenient for checking authorization:
 
@@ -101,7 +101,7 @@ If the authorization data is incorrect or the user lacks permissions, an error d
 
 **Request Body Format.** For arrays and nested objects, send `POST` with `Content-Type: application/json`. This way, the parameter structure is preserved without being converted to a query string.
 
-**Batch Calls.** The [batch](./batch.md) method executes up to 50 commands in a single request and allows the result of the previous command to be used in the next one.
+**Batch Calls.** Use [batch](./batch.md) to execute REST methods in a batch. It executes up to 50 commands in a single request. For REST 3.0 methods, use [batch 3.0](./batch-v3.md): it accepts a JSON array of subrequests and lets you pass results between them using `$ref` and `$refArray`.
 
 **Limits.** When making frequent and heavy calls, consider the [REST API limits](../performance/limits.md). This is especially important for lists and batch requests. How to reduce the load is described in the article [Performance Recommendations](../performance/index.md).
 
@@ -113,6 +113,7 @@ If the authorization data is incorrect or the user lacks permissions, an error d
 || [How a Request is Made](./general-principles.md) | Shows the URL structure, parameter transmission formats, and the general response format ||
 || [Data Encoding](./data-encoding.md) | Discusses URL encoding, passing complex structures, and parameter order ||
 || [How to Execute a Batch Request](./batch.md) | Demonstrates how to execute related commands in one call ||
+|| [How to Execute Batch Requests in REST 3.0](./batch-v3.md) | Shows how to pass results between sequential subrequests using `$ref` and `$refArray` ||
 || [Features of List Methods](./list-methods-pecularities.md) | Explains pagination and obtaining the next page of results ||
 || [Features of REST Calls When Changing the Bitrix24 Address](./change-domen.md) | Explains how to handle redirects after changing the Bitrix24 address ||
 |#

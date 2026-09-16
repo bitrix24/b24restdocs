@@ -2,6 +2,10 @@
 
 ## 2026
 
+### September 16, 2026
+
+- Added the page [How to Execute Batch Requests in REST 3.0](./settings/how-to-call-rest-api/batch-v3.md): described sequential execution of REST 3.0 methods and passing results between subrequests using `$ref` and `$refArray`
+
 ### September 10, 2026
 
 - Added the tutorial [How to Work with the Binding to CRM Directories Field](./tutorials/field-types/how-to-use-crm-status-field.md)
