@@ -30,8 +30,6 @@ The new task card is available starting with module version `tasks 25.700.0`. In
 || Retrieve a comment | [task.commentitem.get](./task-comment-item-get.md) | Does not work | [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) ||
 || Retrieve a list of comments | [task.commentitem.getlist](./task-comment-item-get-list.md) | Does not work | [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) ||
 || Delete a comment | [task.commentitem.delete](./task-comment-item-delete.md) | Does not work | [im.message.delete](../../chats/messages/im-message-delete.md) ||
-|| Check the rights to an action with a comment | [task.commentitem.isactionallowed](./task-comment-item-is-action-allowed.md) | Works, but only with the comments of the old card | There is no direct replacement: the rights to actions with a message are checked by the methods of the [Chats](../../chats/index.md) section ||
-|| Retrieve the description of the section's methods | [task.commentitem.getmanifest](./task-comment-item-get-manifest.md) | Works | No replacement needed ||
 |#
 
 In the new card, the [OnTaskCommentAdd](./events-comment/on-task-comment-add.md) event returns `ID = 0`, and the chat message identifier comes in `MESSAGE_ID`.
@@ -78,14 +76,13 @@ The rights apply to the methods of this section.
 
 - a user with the read access right to the task or higher can add a comment, retrieve it by identifier, and retrieve the list of comments
 - an administrator can update and delete a comment, and so can the author of the comment — but only if it is the last comment in the task. Both operations can be disabled in the settings of the task module: in that case, the method returns an error even for an administrator
-- any user can check the rights to an action and retrieve the description of the methods
 
 ## Specifics of the Section's Methods
 
 - in the new card, the methods marked as not working in the status table behave differently: [task.commentitem.getlist](./task-comment-item-get-list.md) returns an empty list without an error, [task.commentitem.get](./task-comment-item-get.md) returns an error, and [task.commentitem.update](./task-comment-item-update.md) and [task.commentitem.delete](./task-comment-item-delete.md) return the error `4/TE/ACTION_NOT_ALLOWED`. These signs show that the task comments have already moved to the chat
 - in the `get`, `getlist`, `update`, and `delete` methods, parameters are passed positionally: the key names stay as usual, but their order has to match the order in the parameter table on the method page, otherwise the request returns an error
-- the methods for working with comments, except for `getmanifest`, return errors with the `ERROR_CORE` code, and the cause differs in the text of `error_description`. The machine-readable part of the text is a construction of the form `TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED`. Typical causes are an invalid parameter type, a missing required parameter, and a lack of rights to the task. The general error format is described in the article [Error Codes](../../../error-codes.md), and the codes of a specific method are in the Error Handling section on its page. The replacement methods from the [Chats](../../chats/index.md) section have their own error model and their own response format
-- comment fields are returned in uppercase, and numeric identifiers such as `ID` and `AUTHOR_ID` come as strings. This applies to the methods that return a comment. The `add` method responds with a number, and `isactionallowed` with a boolean value. Attachments are placed in the `ATTACHED_OBJECTS` object, where the key is the attachment identifier. The full response structure and field types are described in the Response Handling section on the method pages
+- the methods for working with comments return errors with the `ERROR_CORE` code, and the cause differs in the text of `error_description`. The machine-readable part of the text is a construction of the form `TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED`. Typical causes are an invalid parameter type, a missing required parameter, and a lack of rights to the task. The general error format is described in the article [Error Codes](../../../error-codes.md), and the codes of a specific method are in the Error Handling section on its page. The replacement methods from the [Chats](../../chats/index.md) section have their own error model and their own response format
+- comment fields are returned in uppercase, and numeric identifiers such as `ID` and `AUTHOR_ID` come as strings. This applies to the methods that return a comment. The `add` method responds with a number. Attachments are placed in the `ATTACHED_OBJECTS` object, where the key is the attachment identifier. The full response structure and field types are described in the Response Handling section on the method pages
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -106,8 +103,6 @@ The rights apply to the methods of this section.
     || [task.commentitem.get](./task-comment-item-get.md) | Retrieves a task comment by `ITEMID` ||
     || [task.commentitem.getlist](./task-comment-item-get-list.md) | Retrieves a list of comments for a task ||
     || [task.commentitem.delete](./task-comment-item-delete.md) | Deletes a comment ||
-    || [task.commentitem.isactionallowed](./task-comment-item-is-action-allowed.md) | Checks whether an action with a comment is allowed ||
-    || [task.commentitem.getmanifest](./task-comment-item-get-manifest.md) | Returns the list of the section's methods and their description ||
     |#
 
 - Events
