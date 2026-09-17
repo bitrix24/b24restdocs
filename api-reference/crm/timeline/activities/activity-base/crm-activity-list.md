@@ -23,7 +23,7 @@ The `crm.activity.list` method returns a list of activities by filter, taking th
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../../data-types.md) | An array of fields of the activity [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To get the fields `COMMUNICATIONS` and `FILES`, specify them in select
+ [`array`](../../../../data-types.md) | An array of fields of the activity [crm.activity.fields](./crm-activity-fields.md) that need to be selected. To get the fields `COMMUNICATIONS` and `FILES`, specify them in `select`
 ||
 || **filter**
 [`object`](../../../../data-types.md) | An object for filtering the selected items in key-value format.
@@ -37,7 +37,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as a value)
-- `!@`— NOT IN (an array is passed as a value)
+- `!@` — NOT IN (an array is passed as a value)
 - `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for a substring in any position of the string.
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values starting with "mol"
@@ -45,7 +45,7 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
   - "%mol%" — searching for values where "mol" can be in any position
 - `%=` — LIKE (see description above)
 - `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
-- `=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
+- `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
   - "mol%" — searching for values not starting with "mol"
   - "%mol" — searching for values not ending with "mol"
   - "%mol%" — searching for values where the substring "mol" is not present in any position
@@ -55,14 +55,14 @@ An additional prefix can be assigned to the key to clarify the filter's behavior
 - `!` — not equal
 ||
 || **order**
-[`object`](../../../../data-types.md) | A set of key-value pairs for sorting the output results. The keys can use the fields of the activity [crm.activity.fields](./crm-activity-fields.md).
+ [`object`](../../../../data-types.md) | A set of key-value pairs for sorting the output results. The keys can use the fields of the activity [crm.activity.fields](./crm-activity-fields.md).
 
 Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
 
-By default, it is sorted by increasing the Start Date field (`START_TIME`)
+By default, the results are sorted in ascending order by the value of the `START_TIME` field
 ||
 || **start**
   [`integer`](../../../../data-types.md) | This parameter is used to control pagination.
@@ -82,11 +82,11 @@ See the description of [list methods](../../../../../settings/how-to-call-rest-a
 
 Please note the specific behavior of the `filter[BINDINGS]` parameter.
 
-An activity can be linked to multiple CRM entities. For example, a call can simultaneously be linked to a lead and a deal; therefore, to retrieve these entities, the `crm.activity.list` method parameters include a special filter key: `BINDINGS`.
+An activity can be linked to multiple CRM objects. For example, a call can simultaneously be linked to a lead and a deal. To filter activities by these links, use the `BINDINGS` filter key.
 
-You must specify an array of [system](../../../index.md) or [custom](../../../universal/user-defined-object-types/index.md) CRM object types for which you need to find a link.
+Specify an array of [system](../../../index.md) or [custom](../../../universal/user-defined-object-types/index.md) CRM object types for which you need to find a link.
 
-Each object can consist of the `OWNER_TYPE_ID` keys (entity type identifier) and `OWNER_ID` keys (entity identifier), either individually or in combination. For example:
+Each array item can contain `OWNER_TYPE_ID` — the object type identifier, `OWNER_ID` — the object identifier, or both keys. For example:
 
 ```json
 "BINDINGS": [
@@ -489,7 +489,6 @@ HTTP status: **200**
             "RESULT_SOURCE_ID": null,
             "AUTOCOMPLETE_RULE": "0"
         },
-        // .. 49 more items
     ],
     "next": 50,
     "total": 123456,
@@ -513,6 +512,10 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`array`](../../../../data-types.md) | Array of activities. To get information about the activity structure, see the [crm.activity.fields](./crm-activity-fields.md) method ||
+|| **next**
+[`integer`](../../../../data-types.md) | The `start` parameter value for retrieving the next page. Returned if the next page is available ||
+|| **total**
+[`integer`](../../../../data-types.md) | Total number of activities found ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -523,12 +526,21 @@ HTTP status: **400**, **403**
 
 ```json
 {
-    "error": "INVALID_REQUEST",
-    "error_description": "Https required"
+    "error": "",
+    "error_description": "Parameter 'filter' must be array."
 }
 ```
 
 {% include notitle [Error handling](../../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty string | `Parameter 'order' must be array.` | The `order` parameter is not an object ||
+|| `400` | Empty string | `Parameter 'filter' must be array.` | The `filter` parameter is not an object ||
+|| `400` | Empty string | `Failed to get list. General error.` | An unknown error occurred while retrieving the list ||
+|#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
 

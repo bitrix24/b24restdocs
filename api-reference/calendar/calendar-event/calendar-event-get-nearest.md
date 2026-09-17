@@ -28,7 +28,7 @@ This method retrieves a list of upcoming events.
 || **ownerId**
 [`integer`](../../data-types.md) | Identifier of the calendar owner.
 
-For the company calendar, the `ownerId` parameter is `0` ||
+Pass `ownerId` together with `type`. The parameter value does not affect the list of returned events. For the company calendar, pass the value `0` ||
 || **days**
 [`integer`](../../data-types.md) | Number of days to retrieve. Default is `60` ||
 || **forCurrentUser**
@@ -38,6 +38,14 @@ For the company calendar, the `ownerId` parameter is `0` ||
 || **detailUrl**
 [`string`](../../data-types.md) | URL link to the calendar ||
 |#
+
+{% note info %}
+
+To select a calendar type, pass `type` and `ownerId` together. The `ownerId` value does not affect the list of returned events. For the company calendar, pass `type: company_calendar` and `ownerId: 0`.
+
+If `forCurrentUser: true` is passed, or `type` and `ownerId` are not specified, the method forcibly switches to the current user's calendar: `type: user` and `forCurrentUser: true`.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -90,9 +98,12 @@ For the company calendar, the `ownerId` parameter is `0` ||
 
         try:
             bitrix_response = client.calendar.event.get.nearest(
-                type="company_calendar",
-                owner_id="",
-                for_current_user=False,
+                type="user",
+                owner_id=2,
+                days=10,
+                for_current_user=True,
+                max_events_count=100,
+                detail_url="/company/personal/user/#user_id#/calendar/",
             ).response
             result = bitrix_response.result
             print(result)
@@ -164,8 +175,8 @@ For the company calendar, the `ownerId` parameter is `0` ||
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"type":"company_calendar","ownerId":"","forCurrentUser":false}' \
-        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.get
+        -d '{"type":"company_calendar","ownerId":0,"forCurrentUser":false}' \
+        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.get.nearest
         ```
 
     - cURL (OAuth)
@@ -174,18 +185,18 @@ For the company calendar, the `ownerId` parameter is `0` ||
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"type":"company_calendar","ownerId":"","forCurrentUser":false,"auth":"**put_access_token_here**"}' \
-        https://**put_your_bitrix24_address**/rest/calendar.event.get
+        -d '{"type":"company_calendar","ownerId":0,"forCurrentUser":false,"auth":"**put_access_token_here**"}' \
+        https://**put_your_bitrix24_address**/rest/calendar.event.get.nearest
         ```
 
     - BX24.js
 
         ```js
         BX24.callMethod(
-            'calendar.event.get',
+            'calendar.event.get.nearest',
             {
                 type: 'company_calendar',
-                ownerId: 0, // ownerId is not specified when retrieving company calendar events. It is empty for all events of this type.
+                ownerId: 0,
                 forCurrentUser: false
             }
         );
@@ -199,7 +210,7 @@ For the company calendar, the `ownerId` parameter is `0` ||
         try:
             bitrix_response = client.calendar.event.get.nearest(
                 type="company_calendar",
-                owner_id="",
+                owner_id=0,
                 for_current_user=False,
             ).response
             result = bitrix_response.result
@@ -223,10 +234,10 @@ For the company calendar, the `ownerId` parameter is `0` ||
         require_once('crest.php');
 
         $result = CRest::call(
-            'calendar.event.get',
+            'calendar.event.get.nearest',
             [
                 'type' => 'company_calendar',
-                'ownerId' => '',
+                'ownerId' => 0,
                 'forCurrentUser' => false
             ]
         );
@@ -240,13 +251,13 @@ For the company calendar, the `ownerId` parameter is `0` ||
 
         ```go
         // client and ctx are already created — see the Go SDK section
-        res, err := client.Core().Call(ctx, "calendar.event.get", b24.Params{
+        res, err := client.Core().Call(ctx, "calendar.event.get.nearest", b24.Params{
         	"type":           "company_calendar",
-        	"ownerId":        "",
+        "ownerId":        0,
         	"forCurrentUser": false,
         }, b24.WithIdempotent())
         if err != nil {
-        	return fmt.Errorf("calendar.event.get: %w", err)
+        return fmt.Errorf("calendar.event.get.nearest: %w", err)
         }
 
         // The response arrives as json.RawMessage — unmarshal it

@@ -21,7 +21,7 @@ The `user.userfield.list` method retrieves a list of custom fields by filter.
 || **Name**
 `type` | **Description** ||
 || **order**
-[`string`](../../data-types.md)\|[`array`](../../data-types.md) | Sorting of selected custom fields in `{"field_1": "order_1", ... "field_N": "order_N"}` format.
+[`array`](../../data-types.md) | Sorting of selected custom fields in `{"field_1": "order_1", ... "field_N": "order_N"}` format.
 
 Possible values for `field_N`:
 
@@ -126,19 +126,12 @@ A key can be assigned an additional prefix to specify the filter behavior. Possi
       LIST?: Array<{ ID: string; SORT: string; VALUE: string; DEF: 'Y' | 'N'; XML_ID: string }>
     }
 
-    // user.userfield.list returns a single page (max 50 records). For the whole result set
-    // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-    // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-    // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-    // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
-
     try {
       const response = await $b24.actions.v2.call.make<UserUserfieldItem[]>({
         method: 'user.userfield.list',
         params: {
           order: { id: 'desc' },
           filter: { id: 13 },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -167,18 +160,11 @@ A key can be assigned an additional prefix to specify the filter behavior. Possi
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // user.userfield.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
-
           const response = await $b24.actions.v2.call.make({
             method: 'user.userfield.list',
             params: {
               order: { id: 'desc' },
               filter: { id: 13 },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -368,7 +354,7 @@ A key can be assigned an additional prefix to specify the filter behavior. Possi
         [
             'order' => [
                 'id' => 'desc',
-            ]
+            ],
             'filter' => [
                 'id' => 13,
             ],
@@ -507,11 +493,75 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Response root element ||
+[`array`](../../data-types.md) | An array of objects describing custom fields ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
 [`time`](../../data-types.md#time) | Query execution time information ||
+|#
+
+### Result Object Fields
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../data-types.md) | Custom field identifier ||
+|| **ENTITY_ID**
+[`string`](../../data-types.md) | Identifier of the object to which the field belongs. For employee custom fields, `USER` ||
+|| **FIELD_NAME**
+[`string`](../../data-types.md) | Custom field code ||
+|| **USER_TYPE_ID**
+[`string`](../../data-types.md) | Custom field type ||
+|| **XML_ID**
+[`string`](../../data-types.md)\|[`null`](../../data-types.md) | External custom field identifier ||
+|| **SORT**
+[`integer`](../../data-types.md) | Sorting index ||
+|| **MULTIPLE**
+[`string`](../../data-types.md) | Indicates a multiple-value field. Possible values: `Y` or `N` ||
+|| **MANDATORY**
+[`string`](../../data-types.md) | Indicates a required field. Possible values: `Y` or `N` ||
+|| **SHOW_FILTER**
+[`string`](../../data-types.md) | Field display mode in the user list filter ||
+|| **SHOW_IN_LIST**
+[`string`](../../data-types.md) | Indicates whether the field is displayed in the user list. Possible values: `Y` or `N` ||
+|| **EDIT_IN_LIST**
+[`string`](../../data-types.md) | Indicates whether the field can be edited in the user list. Possible values: `Y` or `N` ||
+|| **IS_SEARCHABLE**
+[`string`](../../data-types.md) | Indicates whether field values are included in search. Possible values: `Y` or `N` ||
+|| **EDIT_FORM_LABEL**
+[`string`](../../data-types.md) | Field label in the edit form ||
+|| **LIST_COLUMN_LABEL**
+[`string`](../../data-types.md) | Field header in the user list ||
+|| **LIST_FILTER_LABEL**
+[`string`](../../data-types.md) | Field label in the user list filter ||
+|| **ERROR_MESSAGE**
+[`string`](../../data-types.md) | Error message shown when validating the field value ||
+|| **HELP_MESSAGE**
+[`string`](../../data-types.md) | Field hint ||
+|| **USER_TYPE_OWNER**
+[`string`](../../data-types.md) | Identifier of the application that owns the custom field type. Returned for types registered by applications ||
+|| **SETTINGS**
+[`object`](../../data-types.md) | Custom field settings. The set of fields depends on `USER_TYPE_ID` ||
+|| **LIST**
+[`array`](../../data-types.md) | List items. Returned when `USER_TYPE_ID` is `enumeration`. The item structure is described [below](#list-fields) ||
+|#
+
+#### LIST Item Fields {#list-fields}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../data-types.md) | List item identifier ||
+|| **SORT**
+[`integer`](../../data-types.md) | Sorting index ||
+|| **VALUE**
+[`string`](../../data-types.md) | List item value ||
+|| **DEF**
+[`string`](../../data-types.md) | Indicates the default value. Possible values: `Y` or `N` ||
+|| **XML_ID**
+[`string`](../../data-types.md) | External list item identifier ||
 |#
 
 ## Error Handling
@@ -532,7 +582,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || Empty string | Access denied. | A field with this `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | `id` is not set or is invalid ||
+|| Empty string | Access denied. | Not enough permissions to retrieve the list of custom fields ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
