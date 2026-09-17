@@ -3,7 +3,7 @@ href: index.md
 items:   
   - name: Overview of methods  
     href: index.md  
-  - name: Connector  
+  - name: Connectors  
     include:  
       path: connector/b24-toc.yaml  
       mode: link  
@@ -11,7 +11,11 @@ items:
     include:  
       path: source/b24-toc.yaml  
       mode: link      
-  - name: Datasets  
+  - name: Tables  
+    include:  
+      path: table/b24-toc.yaml  
+      mode: link  
+  - name: Datasets (deprecated)  
     include:  
       path: dataset/b24-toc.yaml  
       mode: link  

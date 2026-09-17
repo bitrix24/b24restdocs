@@ -1,4 +1,4 @@
-# Create Dataset biconnector.dataset.add
+# Create Table biconnector.table.add
 
 {% note tip "" %}
 
@@ -13,13 +13,16 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
-{% note warning "DEPRECATED" %}
+The `biconnector.table.add` method creates a new table linked to a data source.
 
-Development of the method has been discontinued. Use [biconnector.table.add](../table/biconnector-table-add.md).
+
+The created table appears in BI Builder right away, in the Analytics hub > Tables section. The method does exactly what creating a table manually in the interface does: it saves the table, its fields, and the link to the source.
+
+{% note info "" %}
+
+The method does not create a dataset for reports: datasets are separate BI Builder objects and are not created via the REST API. How a table differs from a dataset is described in the [A Table and a Dataset Are Different Objects](./index.md#table-vs-dataset) section
 
 {% endnote %}
-
-The `biconnector.dataset.add` method creates a new dataset linked to a data source.
 
 {% note warning "" %}
 
@@ -35,7 +38,7 @@ The method works only in the context of an [application](../../../settings/app-i
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | An object containing data to create a new dataset. The object format:
+[`object`](../../data-types.md) | An object containing data to create a new table. The object format:
 
 ```
 {
@@ -58,32 +61,32 @@ The method works only in the context of an [application](../../../settings/app-i
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Dataset name. The name must start with a letter and may contain only lowercase Latin letters `a-z`, digits, and the `_` sign. The maximum name length is 230 characters ||
+[`string`](../../data-types.md) | Table name. The name must start with a letter and may contain only lowercase Latin letters `a-z`, digits, and the `_` sign. The maximum name length is 230 characters ||
 || **externalName***
-[`string`](../../data-types.md) | Name of the dataset in the external source, in the application. The maximum length is 512 characters ||
+[`string`](../../data-types.md) | Name of the table in the external source, in the application. The maximum length is 512 characters ||
 || **externalCode***
-[`string`](../../data-types.md) | Unique code of the dataset in the external source, used when selecting data. The maximum length is 512 characters ||
+[`string`](../../data-types.md) | Unique code of the table in the external source, used when selecting data. The maximum length is 512 characters ||
 || **sourceId***
 [`integer`](../../data-types.md) | Source identifier, can be obtained with the [biconnector.source.list](../source/biconnector-source-list.md) or [biconnector.source.add](../source/biconnector-source-add.md) method. The source must belong to the connector of the current application, otherwise the method returns `SOURCE_NOT_FOUND` ||
 || **description**
-[`string`](../../data-types.md) | Description of the dataset ||
+[`string`](../../data-types.md) | Table description ||
 || **fields***
-[`array`](../../data-types.md) | Array of dataset fields, [(detailed description)](#field) ||
+[`array`](../../data-types.md) | Array of table columns [(detailed description)](#field) ||
 |#
 
 ### Element of the fields array {#field}
 
-Each element of the `fields` array is an object with three required fields. Field visibility is not set on creation: all fields are created visible and can be hidden later with the [biconnector.dataset.fields.update](./biconnector-dataset-fields-update.md) method.
+Each element of the `fields` array is an object with three required fields. Column visibility is not set on creation: all columns are created visible and can be hidden later with the [biconnector.table.fields.update](./biconnector-table-fields-update.md) method.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Field name. The name must start with a letter and may contain only uppercase Latin letters `A-Z`, digits, and the `_` sign. The maximum name length is 32 characters ||
+[`string`](../../data-types.md) | Column name. The name must start with a letter and may contain only uppercase Latin letters `A-Z`, digits, and the `_` sign. The maximum name length is 32 characters ||
 || **externalCode***
-[`string`](../../data-types.md) | External code of the field — the name the application knows the field by. Bitrix24 passes exactly this code in the data request ||
+[`string`](../../data-types.md) | External code of the column — the name the application knows the column by. Bitrix24 passes exactly this code in the data request ||
 || **type***
-[`string`](../../data-types.md) | Data type of the field. Allowed values:
+[`string`](../../data-types.md) | Data type of the column. Allowed values:
 `int` — integer
 `string` — string
 `double` — float, dot separator
@@ -95,7 +98,7 @@ Each element of the `fields` array is an object with three required fields. Fiel
 The value is case-sensitive: an uppercase `INT` causes the `VALIDATION_FIELD_INVALID_TYPE` error ||
 |#
 
-Field names and external codes must not repeat within one request: on a repeated `name` the method returns the `DUPLICATE_FIELDS` error, and on a repeated `externalCode` — `VALIDATION_DUPLICATE_FIELD_CODE`.
+Column names and external codes must not repeat within one request: on a repeated `name` the method returns the `DUPLICATE_FIELDS` error, and on a repeated `externalCode` — `VALIDATION_DUPLICATE_FIELD_CODE`.
 
 ## Code Examples
 
@@ -112,10 +115,10 @@ Field names and external codes must not repeat within one request: on a repeated
     -d '{
         "fields": {
             "sourceId": 3,
-            "name": "rest_dataset",
+            "name": "sales_orders",
             "externalName": "Sales orders",
             "externalCode": "sales_orders",
-            "description": "Dataset description",
+            "description": "Table description",
             "fields": [
                 { "type": "int", "name": "ID", "externalCode": "ID" },
                 { "type": "string", "name": "NAME", "externalCode": "NAME" },
@@ -127,7 +130,7 @@ Field names and external codes must not repeat within one request: on a repeated
         },
         "auth": "**put_access_token_here**"
     }' \
-    https://**put_your_bitrix24_address**/rest/biconnector.dataset.add
+    https://**put_your_bitrix24_address**/rest/biconnector.table.add
     ```
 
 - JS (TS)
@@ -149,20 +152,20 @@ Field names and external codes must not repeat within one request: on a repeated
     }
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
-    type DatasetAddResult = {
+    type TableAddResult = {
       id: number
     }
 
     try {
-      const response = await $b24.actions.v2.call.make<DatasetAddResult | BiconnectorError>({
-        method: 'biconnector.dataset.add',
+      const response = await $b24.actions.v2.call.make<TableAddResult | BiconnectorError>({
+        method: 'biconnector.table.add',
         params: {
           fields: {
             sourceId: 3,
-            name: 'rest_dataset',
+            name: 'sales_orders',
             externalName: 'Sales orders',
             externalCode: 'sales_orders',
-            description: 'Dataset description',
+            description: 'Table description',
             fields: [
               { type: 'int', name: 'ID', externalCode: 'ID' },
               { type: 'string', name: 'NAME', externalCode: 'NAME' },
@@ -186,7 +189,7 @@ Field names and external codes must not repeat within one request: on a repeated
         if ('error' in result) {
           console.error(result.error.error, result.error.error_description)
         } else {
-          console.info('Created dataset id:', result.id)
+          console.info('Created table id:', result.id)
         }
       }
     } catch (error) {
@@ -201,20 +204,20 @@ Field names and external codes must not repeat within one request: on a repeated
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function addDataset() {
+      async function addTable() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'biconnector.dataset.add',
+            method: 'biconnector.table.add',
             params: {
               fields: {
                 sourceId: 3,
-                name: 'rest_dataset',
+                name: 'sales_orders',
                 externalName: 'Sales orders',
                 externalCode: 'sales_orders',
-                description: 'Dataset description',
+                description: 'Table description',
                 fields: [
                   { type: 'int', name: 'ID', externalCode: 'ID' },
                   { type: 'string', name: 'NAME', externalCode: 'NAME' },
@@ -242,14 +245,14 @@ Field names and external codes must not repeat within one request: on a repeated
             return
           }
 
-          console.info('Created dataset id:', result.id)
+          console.info('Created table id:', result.id)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', addDataset)
+      document.addEventListener('DOMContentLoaded', addTable)
     </script>
     ```
 
@@ -259,48 +262,29 @@ Field names and external codes must not repeat within one request: on a repeated
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.biconnector.dataset.add(
-            fields={
-                "sourceId": 3,
-                "name": "rest_dataset",
-                "externalName": "Sales orders",
-                "externalCode": "sales_orders",
-                "description": "Dataset description",
-                "fields": [
-                    {
-                        "type": "int",
-                        "name": "ID",
-                        "externalCode": "ID",
-                    },
-                    {
-                        "type": "string",
-                        "name": "NAME",
-                        "externalCode": "NAME",
-                    },
-                    {
-                        "type": "string",
-                        "name": "SURNAME",
-                        "externalCode": "SURNAME",
-                    },
-                    {
-                        "type": "double",
-                        "name": "SCORE",
-                        "externalCode": "SCORE",
-                    },
-                    {
-                        "type": "date",
-                        "name": "DATA",
-                        "externalCode": "DATA",
-                    },
-                    {
-                        "type": "datetime",
-                        "name": "TIME",
-                        "externalCode": "TIME",
-                    },
-                ],
+        # b24pysdk has no ready-made wrapper for biconnector.table.*, so the method
+        # is called directly through bitrix_token.call_method()
+        response = bitrix_token.call_method(
+            api_method="biconnector.table.add",
+            params={
+                "fields": {
+                    "sourceId": 3,
+                    "name": "sales_orders",
+                    "externalName": "Sales orders",
+                    "externalCode": "sales_orders",
+                    "description": "Table description",
+                    "fields": [
+                        {"type": "int", "name": "ID", "externalCode": "ID"},
+                        {"type": "string", "name": "NAME", "externalCode": "NAME"},
+                        {"type": "string", "name": "SURNAME", "externalCode": "SURNAME"},
+                        {"type": "double", "name": "SCORE", "externalCode": "SCORE"},
+                        {"type": "date", "name": "DATA", "externalCode": "DATA"},
+                        {"type": "datetime", "name": "TIME", "externalCode": "TIME"},
+                    ],
+                },
             },
-        ).response
-        result = bitrix_response.result
+        )
+        result = response["result"]
 
         # Methods of this section put errors inside result and answer with HTTP 200
         if isinstance(result, dict) and "error" in result:
@@ -331,14 +315,14 @@ Field names and external codes must not repeat within one request: on a repeated
         $response = $b24Service
             ->core
             ->call(
-                'biconnector.dataset.add',
+                'biconnector.table.add',
                 [
                     'fields' => [
                         'sourceId'      => 3,
-                        'name'          => 'rest_dataset',
+                        'name'          => 'sales_orders',
                         'externalName'  => 'Sales orders',
                         'externalCode'  => 'sales_orders',
-                        'description'   => 'Dataset description',
+                        'description'   => 'Table description',
                         'fields'        => [
                             ['type' => 'int', 'name' => 'ID', 'externalCode' => 'ID'],
                             ['type' => 'string', 'name' => 'NAME', 'externalCode' => 'NAME'],
@@ -371,7 +355,7 @@ Field names and external codes must not repeat within one request: on a repeated
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error adding dataset: ' . $e->getMessage();
+        echo 'Error adding table: ' . $e->getMessage();
     }
     ```
 
@@ -379,14 +363,14 @@ Field names and external codes must not repeat within one request: on a repeated
 
     ```js
     BX24.callMethod(
-        'biconnector.dataset.add',
+        'biconnector.table.add',
         {
             fields: {
                 "sourceId": 3,
-                "name": "rest_dataset",
+                "name": "sales_orders",
                 "externalName": "Sales orders",
                 "externalCode": "sales_orders",
-                "description": "Dataset description",
+                "description": "Table description",
                 "fields": [
                     { "type": "int", "name": "ID", "externalCode": "ID" },
                     { "type": "string", "name": "NAME", "externalCode": "NAME" },
@@ -422,14 +406,14 @@ Field names and external codes must not repeat within one request: on a repeated
     require_once('crest.php');
 
     $result = CRest::call(
-        'biconnector.dataset.add',
+        'biconnector.table.add',
         [
             'fields' => [
                 'sourceId' => 3,
-                'name' => 'rest_dataset',
+                'name' => 'sales_orders',
                 'externalName' => 'Sales orders',
                 'externalCode' => 'sales_orders',
-                'description' => 'Dataset description',
+                'description' => 'Table description',
                 'fields' => [
                     [ 'type' => 'int', 'name' => 'ID', 'externalCode' => 'ID' ],
                     [ 'type' => 'string', 'name' => 'NAME', 'externalCode' => 'NAME' ],
@@ -457,13 +441,13 @@ Field names and external codes must not repeat within one request: on a repeated
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "biconnector.dataset.add", b24.Params{
+    res, err := client.Core().Call(ctx, "biconnector.table.add", b24.Params{
     	"fields": b24.Params{
     		"sourceId":     3,
-    		"name":         "rest_dataset",
+    		"name":         "sales_orders",
     		"externalName": "Sales orders",
     		"externalCode": "sales_orders",
-    		"description":  "Dataset description",
+    		"description":  "Table description",
     		"fields": []b24.Params{
     			{
     				"type":         "int",
@@ -499,7 +483,7 @@ Field names and external codes must not repeat within one request: on a repeated
     	},
     })
     if err != nil {
-    	return fmt.Errorf("biconnector.dataset.add: %w", err)
+    	return fmt.Errorf("biconnector.table.add: %w", err)
     }
 
     // Methods of this section put errors inside result and answer with HTTP 200.
@@ -510,7 +494,7 @@ Field names and external codes must not repeat within one request: on a repeated
     	} `json:"error"`
     }
     if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
-    	return fmt.Errorf("biconnector.dataset.add: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
+    	return fmt.Errorf("biconnector.table.add: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     var item struct {
@@ -562,7 +546,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | Identifier of the created dataset. Use it in the [biconnector.dataset.get](./biconnector-dataset-get.md), [biconnector.dataset.update](./biconnector-dataset-update.md), and [biconnector.dataset.fields.update](./biconnector-dataset-fields-update.md) methods ||
+[`integer`](../../data-types.md) | Identifier of the created table. Use it in the [biconnector.table.get](./biconnector-table-get.md), [biconnector.table.update](./biconnector-table-update.md), and [biconnector.table.fields.update](./biconnector-table-fields-update.md) methods ||
 |#
 
 ## Error Handling
@@ -600,24 +584,18 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 || `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
 || `SOURCE_NOT_FOUND` | Source was not found. | The source does not exist or belongs to another application ||
 || `DATASET_ALREADY_EXIST` | Table with this name already exists. | The name is taken by a table that already exists in BI Builder itself ||
-|| `NAME_EXISTS` | A table named "#NAME#" already exists. | The #NAME# name is already taken by another dataset in Bitrix24. The name is checked across the entire Bitrix24, not within the source ||
+|| `NAME_EXISTS` | A table named "#NAME#" already exists. | The #NAME# name is already taken by another table in Bitrix24. The name is checked across the entire Bitrix24, not within the source ||
 || `FIELDS_EMPTY` | $fields is empty | An empty `fields` array was passed ||
 || `DUPLICATE_FIELDS` | Duplicate column names: #FIELD_NAMES#. | The `name` parameter of the fields contains repeats: the list ||
-|| `VALIDATION_DATASET_NAME_INVALID` | Dataset name has to start with a lowercase Latin character. Possible entry includes lowercase Latin characters (a-z), numbers (0-9) and underscores. | Invalid format of the dataset name. The name must start with a letter and may contain only lowercase Latin letters `a-z`, digits, and the `_` sign ||
-|| `VALIDATION_DATASET_NAME_TOO_LONG` | Dataset name must not exceed 230 characters. | Dataset name must not exceed 230 characters ||
-|| `VALIDATION_DUPLICATE_FIELD_CODE` | Duplicate values found in the "code" parameter: #LIST_CODES# | Duplicates found in the `externalCode` parameter of dataset fields ||
+|| `VALIDATION_DATASET_NAME_INVALID` | Dataset name has to start with a lowercase Latin character. Possible entry includes lowercase Latin characters (a-z), numbers (0-9) and underscores. | Invalid format of the table name. The name must start with a letter and may contain only lowercase Latin letters `a-z`, digits, and the `_` sign ||
+|| `VALIDATION_DATASET_NAME_TOO_LONG` | Dataset name must not exceed 230 characters. | The table name must not exceed 230 characters ||
+|| `VALIDATION_DUPLICATE_FIELD_CODE` | Duplicate values found in the "code" parameter: #LIST_CODES# | Duplicates found in the `externalCode` parameter of the table fields ||
+
 || `VALIDATION_FIELD_MISSING_REQUIRED_PARAMETERS` | Field must include the required parameters: "name", "externalCode" and "type". | Field must include the parameters `name`, `externalCode`, and `type` ||
 || `VALIDATION_FIELD_NAME_INVALID_FORMAT` | Field "name" has to start with an uppercase Latin character. Possible entry includes uppercase Latin characters (A-Z), numbers (0-9) and underscores. | Invalid format of the field name. The name must start with a letter and may contain only uppercase Latin letters `A-Z`, digits, and the `_` sign ||
 || `VALIDATION_FIELD_NAME_TOO_LONG` | Field "name" must not exceed 32 characters. | The field name must not exceed 32 characters ||
 || `VALIDATION_FIELD_INVALID_TYPE` | Invalid field type. | Invalid field type ||
-|| Empty value | Error creating table. or Error adding dataset | The dataset could not be created in BI Builder. This error has no string code of its own: the `error` field carries a numeric zero. No table is left behind — the record that was already created is deleted ||
 |#
-
-{% note info "" %}
-
-The method creates two objects at once: a table — the same object as [biconnector.table.add](../table/biconnector-table-add.md) creates — and a BI Builder dataset on top of it. If the second step fails, the first one is rolled back: no partially created table is left. The [biconnector.table.add](../table/biconnector-table-add.md) method has no such step, so it never returns this error
-
-{% endnote %}
 
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -625,9 +603,9 @@ The method creates two objects at once: a table — the same object as [biconnec
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./biconnector-dataset-update.md)
-- [{#T}](./biconnector-dataset-get.md)
-- [{#T}](./biconnector-dataset-list.md)
-- [{#T}](./biconnector-dataset-delete.md)
-- [{#T}](./biconnector-dataset-fields-update.md)
-- [{#T}](./biconnector-dataset-fields.md)
+- [{#T}](./biconnector-table-update.md)
+- [{#T}](./biconnector-table-get.md)
+- [{#T}](./biconnector-table-list.md)
+- [{#T}](./biconnector-table-delete.md)
+- [{#T}](./biconnector-table-fields-update.md)
+- [{#T}](./biconnector-table-fields.md)

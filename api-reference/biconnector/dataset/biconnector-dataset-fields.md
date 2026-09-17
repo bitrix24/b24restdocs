@@ -11,10 +11,24 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the Analytics hub section
+> Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
-The `biconnector.dataset.fields` method returns a description of the dataset fields.
-A table describing the standard fields can be found in the article [Datasets: Method Overview](./index.md#dataset).
+
+{% note warning "DEPRECATED" %}
+
+Development of the method has been discontinued. Use [biconnector.table.fields](../table/biconnector-table-fields.md).
+
+{% endnote %}
+
+The `biconnector.dataset.fields` method returns the description of the fields of the "dataset" object: field name, type, whether it is required, and the read-only, immutable, and multiple flags. The method has no parameters — it accepts no identifier and does not describe the fields of a particular dataset. The set of columns of a particular dataset is returned by the [biconnector.dataset.get](./biconnector-dataset-get.md) method.
+
+The purpose of each field is described in the [dataset fields](./index.md#dataset) table. The schema does not match it completely: the CSV parsing parameters — `csvDelimiter`, `csvEncoding`, and `csvHasHeaders` — are absent from the schema, although they do arrive in the `get` and `list` responses. It is exactly against this schema that `select`, `filter`, and `order` of the [biconnector.dataset.list](./biconnector-dataset-list.md) method are checked.
+
+{% note warning "" %}
+
+The method returns a static schema of the dataset fields — it is the same in any Bitrix24 and does not depend on the datasets that were created. Unlike the other methods of the family, this method is available to a webhook, but it still checks both permissions and returns the `ACCESS_DENIED` error without them
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -56,6 +70,14 @@ No parameters.
 
     declare const $b24: B24Frame
 
+    // Methods of this section put errors inside result and answer with HTTP 200
+    type BiconnectorError = {
+      error: {
+        error: string
+        error_description: string
+      }
+    }
+
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type DatasetFieldsResult = {
       fields: {
@@ -69,7 +91,7 @@ No parameters.
     }
 
     try {
-      const response = await $b24.actions.v2.call.make<DatasetFieldsResult>({
+      const response = await $b24.actions.v2.call.make<DatasetFieldsResult | BiconnectorError>({
         method: 'biconnector.dataset.fields',
         params: {},
         requestId: Text.getUuidRfc4122()
@@ -80,7 +102,13 @@ No parameters.
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Dataset fields count:', result.fields.length, result.fields)
+
+        // The SDK sees HTTP 200 as success, so check the error inside result yourself
+        if ('error' in result) {
+          console.error(result.error.error, result.error.error_description)
+        } else {
+          console.info('Dataset fields count:', result.fields.length, result.fields)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -112,6 +140,13 @@ No parameters.
           }
 
           const result = response.getData().result
+
+          // The SDK sees HTTP 200 as success, so check the error inside result yourself
+          if (result && result.error) {
+            console.error(result.error.error, result.error.error_description)
+            return
+          }
+
           console.info('Dataset fields count:', result.fields.length, result.fields)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -131,7 +166,17 @@ No parameters.
     try:
         bitrix_response = client.biconnector.dataset.fields().response
         result = bitrix_response.result
-        print(result)
+
+        # Methods of this section put errors inside result and answer with HTTP 200
+        if isinstance(result, dict) and "error" in result:
+            print(
+                "BIconnector error",
+                f"error: {result['error']['error']}",
+                f"error_description: {result['error']['error_description']}",
+                sep="\n",
+            )
+        else:
+            print(result)
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
@@ -146,7 +191,6 @@ No parameters.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -163,7 +207,14 @@ No parameters.
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
-            echo 'Success: ' . print_r($result->data(), true);
+            $data = $result->data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (isset($data['error'])) {
+                echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
+            } else {
+                echo 'Success: ' . print_r($data, true);
+            }
         }
 
     } catch (Throwable $e) {
@@ -179,9 +230,20 @@ No parameters.
         'biconnector.dataset.fields',
         {},
         (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data());
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            const data = result.data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (data && data.error) {
+                console.error(data.error.error, data.error.error_description);
+                return;
+            }
+
+            console.info(data);
         },
     );
     ```
@@ -196,9 +258,15 @@ No parameters.
         []
     );
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+    // Methods of this section put errors inside result and answer with HTTP 200
+    if (isset($result['result']['error'])) {
+        echo 'BIconnector error: ' . $result['result']['error']['error']
+            . ': ' . $result['result']['error']['error_description'];
+    } else {
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
+    }
     ```
 
 - Go
@@ -208,6 +276,17 @@ No parameters.
     res, err := client.Core().Call(ctx, "biconnector.dataset.fields", nil, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("biconnector.dataset.fields: %w", err)
+    }
+
+    // Methods of this section put errors inside result and answer with HTTP 200.
+    var apiErr struct {
+    	Error *struct {
+    		Error       string `json:"error"`
+    		Description string `json:"error_description"`
+    	} `json:"error"`
+    }
+    if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
+    	return fmt.Errorf("biconnector.dataset.fields: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     // The method wraps the response in an object with the "fields" key.
@@ -359,28 +438,77 @@ HTTP status: **200**
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Response root element. Contains an `fields` array with dataset field descriptions. The structure of the array element is described in the article [Connector: methods overview](../connector/index.md#description) ||
+[`object`](../../data-types.md) | Root element of the response. It contains the single `fields` key ||
+|| **result.fields**
+[`object[]`](../../data-types.md) | Array of dataset field descriptors, one element per field [(detailed description)](#field) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
+#### Element of the fields array {#field}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **title**
+[`string`](../../data-types.md) | Name of the dataset field. The purpose of the fields is described in the [dataset fields](./index.md#dataset) table ||
+|| **type**
+[`string`](../../data-types.md) | Field type. The method returns the `integer`, `string`, `array`, and `datetime` values ||
+|| **isRequired**
+[`boolean`](../../data-types.md) | Indicates that the field is required in the object schema. On creation, you only have to pass the fields whose `isRequired` is `true` and `isReadOnly` is `false`: read-only fields also have this flag set to `true`, but they cannot be passed ||
+|| **isReadOnly**
+[`boolean`](../../data-types.md) | The field is read-only and cannot be passed to `add` or `update` ||
+|| **isImmutable**
+[`boolean`](../../data-types.md) | The value is set once when the dataset is created and does not change afterwards ||
+|| **isMultiple**
+[`boolean`](../../data-types.md) | Multiple field. If it is `true`, the value is passed as an array ||
+|#
+
 ## Error Handling
 
+HTTP status: **200**
+
+```json
+{
+    "result": {
+        "error": {
+            "error": "ACCESS_DENIED",
+            "error_description": "Access denied."
+        }
+    }
+}
+```
+
+{% note warning "" %}
+
+The method returns an error [inside the `result` field](../index.md#errors) and with HTTP status 200. Check `result.error`: the SDK wrappers parse only the top level of the response and treat such an error as a success
+
+{% endnote %}
+
 {% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing ||
+|#
+
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./biconnector-dataset-add.md)
 - [{#T}](./biconnector-dataset-update.md)
-- [{#T}](./biconnector-dataset-fields-update.md)
 - [{#T}](./biconnector-dataset-get.md)
 - [{#T}](./biconnector-dataset-list.md)
 - [{#T}](./biconnector-dataset-delete.md)
+- [{#T}](./biconnector-dataset-fields-update.md)

@@ -1,4 +1,4 @@
-# Change source biconnector.source.update
+# Update Source biconnector.source.update
 
 {% note tip "" %}
 
@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
 The method `biconnector.source.update` updates an existing source.
+
+{% note warning "" %}
+
+The method works only in the context of an [application](../../../settings/app-installation/index.md) and changes only the sources that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -26,7 +32,7 @@ The method `biconnector.source.update` updates an existing source.
 [`integer`](../../data-types.md) | Identifier of the source, can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) and [biconnector.source.add](./biconnector-source-add.md) ||
 || **fields***
 [`object`](../../data-types.md) | Object containing the updated data.
-Object format: 
+The object format:
 
 ```
 {
@@ -40,7 +46,7 @@ Object format:
 - `field_n` — field name
 - `value_n` — field value
 
-[Detailed description below](#fields)||
+[Detailed description below](#fields) ||
 |#
 
 ### Parameter fields {#fields}
@@ -48,44 +54,53 @@ Object format:
 #|
 || **Name**
 `type` | **Description** ||
-|| **title**
+|| **title***
 [`string`](../../data-types.md) | New name of the source ||
 || **description**
 [`string`](../../data-types.md) | New description of the source ||
 || **active**
-[`boolean`](../../data-types.md) | Activity status of the source ||
+[`boolean`](../../data-types.md) | Source activity.
+The method does not read this field: a source cannot be switched off via REST ||
 || **settings**
-[`object`](../../data-types.md) | List of parameters for authorization, passed as an object where the key is the `code` of the parameter. 
-Parameters can be obtained using the methods [biconnector.connector.list](../connector/biconnector-connector-list.md) or [biconnector.connector.get](../connector/biconnector-connector-get.md) ||
+[`object`](../../data-types.md) | Values of the authorization parameters [(detailed description)](#settings) ||
 |#
+
+The method changes only the fields that were passed: whatever you did not pass stays unchanged in the source. This is also true for `settings` — the settings are merged by key, so pass only the authorization parameters that have to be changed.
+
+The `connectorId` field is set once when the source is created and cannot be changed with the `biconnector.source.update` method.
+
+On every update, Bitrix24 calls the connection check endpoint of the connector, even if the request contained no `settings`. If the external system does not respond, the method returns the `SOURCE_UPDATE_CONNECTION_ERROR` error.
+
+#### Parameter settings {#settings}
+
+Pass `settings` as an object where the key is the `code` of a parameter declared by the connector and the value is what has to be substituted during the connection. The parameter codes can be retrieved with the [biconnector.connector.list](../connector/biconnector-connector-list.md) or [biconnector.connector.get](../connector/biconnector-connector-get.md) method. Keys that are absent from the connector description are dropped without an error.
+
+If the connector declared parameters with the `login` and `password` codes, the field looks like this:
+
+```json
+{
+    "settings": {
+        "login": "new_admin",
+        "password": "new_password"
+    }
+}
+```
+
+In the response of the [biconnector.source.get](./biconnector-source-get.md) and [biconnector.source.list](./biconnector-source-list.md) methods, the same field arrives as an array of objects with the `id`, `code`, `name`, `type`, and `value` fields. Both forms are covered in the [Settings Field](./index.md#settings) section.
+
+The [biconnector.source.fields](./biconnector-source-fields.md) method declares `settings` as the `array` type, but the `biconnector.source.update` method accepts it as an object on input.
+
+{% note warning "" %}
+
+The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.source.list](./biconnector-source-list.md) methods return the values of the authorization parameters in plain text, including passwords and tokens
+
+{% endnote %}
 
 ## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "id": 4,
-        "fields": {
-            "title": "New source name",
-            "description": "Updated source description",
-            "active": false,
-            "settings": {
-                "login": "new_admin",
-                "password": "new_password"
-            }
-        }
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/biconnector.source.update
-    ```
 
 - cURL (OAuth)
 
@@ -98,7 +113,6 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
         "fields": {
             "title": "New source name",
             "description": "Updated source description",
-            "active": false,
             "settings": {
                 "login": "new_admin",
                 "password": "new_password"
@@ -119,15 +133,22 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
 
     declare const $b24: B24Frame
 
+    // Methods of this section put errors inside result and answer with HTTP 200
+    type BiconnectorError = {
+      error: {
+        error: string
+        error_description: string
+      }
+    }
+
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      const response = await $b24.actions.v2.call.make<boolean | BiconnectorError>({
         method: 'biconnector.source.update',
         params: {
           id: 4,
           fields: {
-            title: 'New source title',
+            title: 'New source name',
             description: 'Updated source description',
-            active: false,
             settings: {
               login: 'new_admin',
               password: 'new_password',
@@ -142,7 +163,13 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Source updated:', result)
+
+        // The SDK sees HTTP 200 as success, so check the error inside result yourself
+        if (typeof result === 'object' && result !== null && 'error' in result) {
+          console.error(result.error.error, result.error.error_description)
+        } else {
+          console.info('Source updated:', result)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -166,9 +193,8 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
             params: {
               id: 4,
               fields: {
-                title: 'New source title',
+                title: 'New source name',
                 description: 'Updated source description',
-                active: false,
                 settings: {
                   login: 'new_admin',
                   password: 'new_password',
@@ -185,6 +211,13 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
           }
 
           const result = response.getData().result
+
+          // The SDK sees HTTP 200 as success, so check the error inside result yourself
+          if (result && result.error) {
+            console.error(result.error.error, result.error.error_description)
+            return
+          }
+
           console.info('Source updated:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -205,9 +238,8 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
         bitrix_response = client.biconnector.source.update(
             bitrix_id=4,
             fields={
-                "title": "New source title",
+                "title": "New source name",
                 "description": "Updated source description",
-                "active": False,
                 "settings": {
                     "login": "new_admin",
                     "password": "new_password",
@@ -215,7 +247,17 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
             },
         ).response
         result = bitrix_response.result
-        print(result)
+
+        # Methods of this section put errors inside result and answer with HTTP 200
+        if isinstance(result, dict) and "error" in result:
+            print(
+                "BIconnector error",
+                f"error: {result['error']['error']}",
+                f"error_description: {result['error']['error_description']}",
+                sep="\n",
+            )
+        else:
+            print(result)
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
@@ -231,7 +273,6 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
 
 - PHP
 
-
     ```php
     try {
         $response = $b24Service
@@ -243,7 +284,6 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
                     'fields' => [
                         "title"       => "New source name",
                         "description" => "Updated source description",
-                        "active"      => false,
                         "settings"    => [
                             "login"    => "new_admin",
                             "password" => "new_password"
@@ -251,18 +291,25 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             error_log($result->error());
             echo 'Error: ' . $result->error();
         } else {
-            echo 'Success: ' . print_r($result->data(), true);
+            $data = $result->data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (isset($data['error'])) {
+                echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
+            } else {
+                echo 'Success: ' . print_r($data, true);
+            }
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating source: ' . $e->getMessage();
@@ -279,7 +326,6 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
             fields: {
                 "title": "New source name",
                 "description": "Updated source description",
-                "active": false,
                 "settings": {
                     "login": "new_admin",
                     "password": "new_password"
@@ -287,9 +333,20 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
             }
         },
         (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data());
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            const data = result.data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (data && data.error) {
+                console.error(data.error.error, data.error.error_description);
+                return;
+            }
+
+            console.info(data);
         }
     );
     ```
@@ -306,7 +363,6 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
             'fields' => [
                 'title' => 'New source name',
                 'description' => 'Updated source description',
-                'active' => false,
                 'settings' => [
                     'login' => 'new_admin',
                     'password' => 'new_password'
@@ -315,9 +371,15 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
         ]
     );
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+    // Methods of this section put errors inside result and answer with HTTP 200
+    if (isset($result['result']['error'])) {
+        echo 'BIconnector error: ' . $result['result']['error']['error']
+            . ': ' . $result['result']['error']['error_description'];
+    } else {
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
+    }
     ```
 
 - Go
@@ -329,7 +391,6 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
     	"fields": b24.Params{
     		"title":       "New source name",
     		"description": "Updated source description",
-    		"active":      false,
     		"settings": b24.Params{
     			"login":    "new_admin",
     			"password": "new_password",
@@ -338,6 +399,17 @@ Parameters can be obtained using the methods [biconnector.connector.list](../con
     })
     if err != nil {
     	return fmt.Errorf("biconnector.source.update: %w", err)
+    }
+
+    // Methods of this section put errors inside result and answer with HTTP 200.
+    var apiErr struct {
+    	Error *struct {
+    		Error       string `json:"error"`
+    		Description string `json:"error_description"`
+    	} `json:"error"`
+    }
+    if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
+    	return fmt.Errorf("biconnector.source.update: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     var ok bool
@@ -373,7 +445,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` on success ||
+[`boolean`](../../data-types.md) | Update result. On a successful update, `true` arrives and the method does not return the source data — retrieve it with the [biconnector.source.get](./biconnector-source-get.md) method. On an error, an object with the `error` field arrives in `result` instead of `true`, see the "Error Handling" section ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -384,10 +456,20 @@ HTTP status: **200**
 
 ```json
 {
-    "error": "VALIDATION_FIELDS_NOT_PROVIDED",
-    "error_description": "Fields not provided."
+    "result": {
+        "error": {
+            "error": "VALIDATION_FIELDS_NOT_PROVIDED",
+            "error_description": "Fields not provided."
+        }
+    }
 }
 ```
+
+{% note warning "" %}
+
+The method returns an error [inside the `result` field](../index.md#errors) and with HTTP status 200. Check `result.error`: the SDK wrappers parse only the top level of the response and treat such an error as a success
+
+{% endnote %}
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
@@ -395,24 +477,25 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields not passed in the request ||
 || `VALIDATION_UNKNOWN_PARAMETERS` | Unknown parameters: #LIST_OF_PARAMS# | Unknown parameters detected: list ||
-|| `VALIDATION_REQUIRED_FIELD_MISSING` | Field "#TITLE#" is required. | Required field #TITLE# not provided ||
 || `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
 || `VALIDATION_IMMUTABLE_FIELD` | Field "#TITLE#" is immutable. | Field #TITLE# is immutable ||
 || `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
-|| `SOURCE_NOT_FOUND` | Source was not found. | Source not found ||
-|| `SOURCE_CREATE_CONNECTION_ERROR` | Cannot create connection. | Error creating connection ||
-|| `SOURCE_UPDATE_CONNECTION_ERROR` | Cannot update connection. | Error updating connection ||
-|| `BX_ERROR` | Cannot delete source. Delete all related datasets first. | Cannot delete source while related datasets exist ||
+|| `SOURCE_NOT_FOUND` | Source was not found. | The source does not exist or belongs to another application ||
+|| `SOURCE_UPDATE_CONNECTION_ERROR` | Cannot update connection. | The external system did not respond to the request to the connection check endpoint — the source was not updated ||
+|| Empty value | All the fields are required. | The required `title` parameter was not passed. The REST-level validation does not catch it, so the error comes from the module and has no string code of its own ||
+
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./biconnector-source-add.md)
 - [{#T}](./biconnector-source-get.md)
 - [{#T}](./biconnector-source-list.md)

@@ -1,4 +1,4 @@
-# Get Connector by ID biconnector.connector.get
+# Get Table by ID biconnector.table.get
 
 {% note tip "" %}
 
@@ -13,11 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
-The method `biconnector.connector.get` returns information about the connector by its identifier.
+The `biconnector.table.get` method returns information about a table by its identifier.
 
 {% note warning "" %}
 
-The method works only in the context of an [application](../../../settings/app-installation/index.md) and returns only the connectors that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
+The method works only in the context of an [application](../../../settings/app-installation/index.md) and returns only the tables that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
 
 {% endnote %}
 
@@ -29,7 +29,7 @@ The method works only in the context of an [application](../../../settings/app-i
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | The identifier of the connector, which can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
+[`integer`](../../data-types.md) | Table identifier, can be obtained with the [biconnector.table.list](./biconnector-table-list.md) and [biconnector.table.add](./biconnector-table-add.md) methods ||
 |#
 
 ## Code Examples
@@ -42,13 +42,10 @@ The method works only in the context of an [application](../../../settings/app-i
 
     ```bash
     curl -X POST \
-         -H "Content-Type: application/json" \
-         -H "Accept: application/json" \
-         -d '{
-             "id": 4,
-             "auth": "**put_access_token_here**"
-             }' \
-         https://**put_your_bitrix24_address**/rest/biconnector.connector.get
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":2,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/biconnector.table.get
     ```
 
 - JS (TS)
@@ -70,33 +67,39 @@ The method works only in the context of an [application](../../../settings/app-i
     }
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
-    type ConnectorGetResult = {
+    type TableGetResult = {
       item: {
         id: number
-        title: string
-        dateCreate: string // Y-m-d H:i:s, not ISO 8601
-        logo: string
+        type: string
+        name: string
         description: string
-        sort: number
-        urlCheck: string
-        settings: Array<{
-          name: string
-          code: string
+        externalCode: string
+        externalName: string
+        dateCreate: string
+        dateUpdate: string
+        createdById: number
+        updatedById: number
+        externalId: number
+        csvDelimiter: string
+        csvEncoding: string
+        csvHasHeaders: boolean
+        fields: Array<{
+          id: number
+          datasetId: number
           type: string
+          name: string
+          externalCode: string
+          visible: boolean
+          description: string
         }>
-        urlData: string
-        urlTableList: string
-        urlTableDescription: string
-        supportMapping: boolean
-        sourceCode: string
       }
     }
 
     try {
-      const response = await $b24.actions.v2.call.make<ConnectorGetResult | BiconnectorError>({
-        method: 'biconnector.connector.get',
+      const response = await $b24.actions.v2.call.make<TableGetResult | BiconnectorError>({
+        method: 'biconnector.table.get',
         params: {
-          id: 4,
+          id: 2,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -111,7 +114,7 @@ The method works only in the context of an [application](../../../settings/app-i
         if ('error' in result) {
           console.error(result.error.error, result.error.error_description)
         } else {
-          console.info(result.item.id, result.item.title, result.item.settings)
+          console.info(result.item.id, result.item.name, result.item.type)
         }
       }
     } catch (error) {
@@ -126,15 +129,15 @@ The method works only in the context of an [application](../../../settings/app-i
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function getConnector() {
+      async function getTable() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'biconnector.connector.get',
+            method: 'biconnector.table.get',
             params: {
-              id: 4,
+              id: 2,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -153,14 +156,14 @@ The method works only in the context of an [application](../../../settings/app-i
             return
           }
 
-          console.info(result.item.id, result.item.title, result.item.settings)
+          console.info(result.item.id, result.item.name, result.item.type)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', getConnector)
+      document.addEventListener('DOMContentLoaded', getTable)
     </script>
     ```
 
@@ -170,10 +173,15 @@ The method works only in the context of an [application](../../../settings/app-i
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.biconnector.connector.get(
-            bitrix_id=4,
-        ).response
-        result = bitrix_response.result
+        # b24pysdk has no ready-made wrapper for biconnector.table.*, so the method
+        # is called directly through bitrix_token.call_method()
+        response = bitrix_token.call_method(
+            api_method="biconnector.table.get",
+            params={
+                "id": 2,
+            },
+        )
+        result = response["result"]
 
         # Methods of this section put errors inside result and answer with HTTP 200
         if isinstance(result, dict) and "error" in result:
@@ -204,9 +212,9 @@ The method works only in the context of an [application](../../../settings/app-i
         $response = $b24Service
             ->core
             ->call(
-                'biconnector.connector.get',
+                'biconnector.table.get',
                 [
-                    'id' => 4,
+                    'id' => 2,
                 ]
             );
 
@@ -223,13 +231,13 @@ The method works only in the context of an [application](../../../settings/app-i
             if (isset($data['error'])) {
                 echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
             } else {
-                echo 'Info: ' . print_r($data, true);
+                echo 'Data: ' . print_r($data, true);
             }
         }
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error calling biconnector.connector.get: ' . $e->getMessage();
+        echo 'Error getting table: ' . $e->getMessage();
     }
     ```
 
@@ -237,9 +245,9 @@ The method works only in the context of an [application](../../../settings/app-i
 
     ```js
     BX24.callMethod(
-        'biconnector.connector.get',
+        'biconnector.table.get',
         {
-            id: 4,
+            id: 2,
         },
         (result) => {
             if (result.error()) {
@@ -266,9 +274,9 @@ The method works only in the context of an [application](../../../settings/app-i
     require_once('crest.php');
 
     $result = CRest::call(
-        'biconnector.connector.get',
+        'biconnector.table.get',
         [
-            'id' => 4
+            'id' => 2
         ]
     );
 
@@ -287,11 +295,11 @@ The method works only in the context of an [application](../../../settings/app-i
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "biconnector.connector.get", b24.Params{
-    	"id": 4,
+    res, err := client.Core().Call(ctx, "biconnector.table.get", b24.Params{
+    	"id": 2,
     }, b24.WithIdempotent())
     if err != nil {
-    	return fmt.Errorf("biconnector.connector.get: %w", err)
+    	return fmt.Errorf("biconnector.table.get: %w", err)
     }
 
     // Methods of this section put errors inside result and answer with HTTP 200.
@@ -302,7 +310,7 @@ The method works only in the context of an [application](../../../settings/app-i
     	} `json:"error"`
     }
     if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
-    	return fmt.Errorf("biconnector.connector.get: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
+    	return fmt.Errorf("biconnector.table.get: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     // The method wraps the response in an object with the "item" key.
@@ -312,62 +320,58 @@ The method works only in the context of an [application](../../../settings/app-i
     }
 
     var item struct {
-    	ID          b24.ID `json:"id"`
-    	Title       string `json:"title"`
-    	DateCreate  string `json:"dateCreate"`
-    	Logo        string `json:"logo"`
-    	Description string `json:"description"`
-    	Sort        int    `json:"sort"`
+    	ID           b24.ID `json:"id"`
+    	Type         string `json:"type"`
+    	Name         string `json:"name"`
+    	Description  string `json:"description"`
+    	ExternalCode string `json:"externalCode"`
+    	ExternalName string `json:"externalName"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.ID, item.Title)
+    fmt.Println(item.ID, item.Type)
     ```
 
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "item": {
-            "id": 4,
-            "title": "SUPER REST CONNECTOR",
-            "dateCreate": "2025-03-24 07:25:59",
-            "logo": "https://app.domain/logo.png",
-            "description": "Connector with token",
-            "sort": 100,
-            "urlCheck": "http://app.domain/check",
-            "settings": [
-                {
-                    "name": "Login",
-                    "code": "login",
-                    "type": "STRING"
-                },
-                {
-                    "name": "Password",
-                    "code": "password",
-                    "type": "STRING"
-                }
-            ],
-            "urlData": "http://app.domain/data",
-            "urlTableList": "http://app.domain/table_list",
-            "urlTableDescription": "http://app.domain/table_description",
-            "supportMapping": false,
-            "sourceCode": ""
+            "id": 27,
+            "type": "rest",
+            "name": "sales_orders",
+            "description": "Orders from an external service",
+            "externalCode": "sales_orders",
+            "externalName": "Sales orders",
+            "dateCreate": "2026-09-16 12:00:46",
+            "dateUpdate": null,
+            "createdById": 1,
+            "updatedById": 0,
+            "externalId": 0,
+            "csvDelimiter": "",
+            "csvEncoding": "",
+            "csvHasHeaders": false,
+            "fields": [
+                {"id": 43, "datasetId": 27, "type": "int", "name": "ID", "externalCode": "id", "visible": true, "description": ""},
+                {"id": 45, "datasetId": 27, "type": "string", "name": "CUSTOMER", "externalCode": "customer", "visible": true, "description": ""},
+                {"id": 47, "datasetId": 27, "type": "money", "name": "AMOUNT", "externalCode": "amount", "visible": true, "description": ""},
+                {"id": 49, "datasetId": 27, "type": "date", "name": "ORDER_DATE", "externalCode": "order_date", "visible": true, "description": ""}
+            ]
         }
     },
     "time": {
-        "start": 1725365418.056843,
-        "finish": 1725365419.671506,
-        "duration": 1.6146628856658936,
-        "processing": 1.3475170135498047,
-        "date_start": "2024-09-03T14:10:18+02:00",
-        "date_finish": "2024-09-03T14:10:19+02:00"
+        "start": 1789549489,
+        "finish": 1789549489.125967,
+        "duration": 0.12596702575683594,
+        "processing": 0,
+        "date_start": "2026-09-16T12:04:49+03:00",
+        "date_finish": "2026-09-16T12:04:49+03:00"
     }
 }
 ```
@@ -378,49 +382,70 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response. It contains the single `item` key ||
-|| **result.item**
-[`object`](../../data-types.md) | Connector data [(detailed description)](#item) ||
+[`object`](../../data-types.md) | Root element of the response. It contains the single `item` key with the [table](#table) object ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### The item object {#item}
+#### The table object {#table}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | Unique identifier of the connector ||
-|| **title**
-[`string`](../../data-types.md) | Connector name ||
-|| **logo**
-[`string`](../../data-types.md) | Logo URL or a base64 string ||
+[`integer`](../../data-types.md) | Table identifier ||
+|| **type**
+[`string`](../../data-types.md) | Table type. For tables of a REST source the value is always `rest` ||
+|| **name**
+[`string`](../../data-types.md) | Table name ||
 || **description**
-[`string`](../../data-types.md) | Connector description ||
-|| **sort**
-[`integer`](../../data-types.md) | Sorting order. If the value was not passed on creation, `100` is returned ||
-|| **urlCheck**
-[`string`](../../data-types.md) | [Endpoint for checking the connection](./index.md#urlCheck) ||
-|| **urlData**
-[`string`](../../data-types.md) | [Endpoint for retrieving data](./index.md#urlData) ||
-|| **urlTableList**
-[`string`](../../data-types.md) | [Endpoint for retrieving the list of tables](./index.md#urlTableList) ||
-|| **urlTableDescription**
-[`string`](../../data-types.md) | [Endpoint for retrieving the table description](./index.md#urlTableDescription) ||
-|| **settings**
-[`array`](../../data-types.md) | Array of connection parameters. Each element contains the `code` and `name` fields of the [`string`](../../data-types.md) type and the `type` field with the `STRING` or `INT` value, [(detailed description)](./index.md#settings). The parameter values are retained by the source, while the connector returns only their codes and names ||
-|| **supportMapping**
-[`boolean`](../../data-types.md) | Support for mapping the table fields to the fields of the external system ||
-|| **sourceCode**
-[`string`](../../data-types.md) | String code of the external system. If the code was not set, the field is returned as an empty string ||
+[`string`](../../data-types.md) | Table description ||
+|| **externalCode**
+[`string`](../../data-types.md) | External code of the table ||
+|| **externalName**
+[`string`](../../data-types.md) | External name of the table ||
 || **dateCreate**
-[`datetime`](../../data-types.md) | Date the connector was created, in the `Y-m-d H:i:s` format ||
+[`datetime`](../../data-types.md) | Creation date in the `Y-m-d H:i:s` format ||
+|| **dateUpdate**
+[`datetime`](../../data-types.md) | Update date in the `Y-m-d H:i:s` format. For a table that has never been updated, the value is `null` ||
+|| **createdById**
+[`integer`](../../data-types.md) | Identifier of the user who created the table ||
+|| **updatedById**
+[`integer`](../../data-types.md) | Identifier of the user who updated the table. For a table that has never been updated, the value is `0` ||
+|| **externalId**
+[`integer`](../../data-types.md) | Identifier of the BI Builder dataset created together with the object by the deprecated `biconnector.dataset.add` method. For tables created with the [biconnector.table.add](./biconnector-table-add.md) method, the value is always `0` ||
+|| **csvDelimiter**, **csvEncoding**, **csvHasHeaders**
+[`string`](../../data-types.md), [`string`](../../data-types.md), [`boolean`](../../data-types.md) | Parameters for parsing a CSV file. For tables of a REST source they are always empty ||
+|| **fields**
+[`array`](../../data-types.md) | Array of table [columns](#field) ||
+|#
+
+There is no `sourceId` field in the response — the source identifier is returned only by the [biconnector.table.list](./biconnector-table-list.md) method. The composition of columns, on the contrary, is available only here: the [biconnector.table.list](./biconnector-table-list.md) selection carries no `fields` array.
+
+#### Element of the fields array {#field}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Column identifier ||
+|| **datasetId**
+[`integer`](../../data-types.md) | Identifier of the table the column belongs to. The key is named this way for historical reasons ||
+|| **type**
+[`string`](../../data-types.md) | [Data type](./index.md#fields) of the column ||
+|| **name**
+[`string`](../../data-types.md) | Column name ||
+|| **externalCode**
+[`string`](../../data-types.md) | External code of the column ||
+|| **visible**
+[`boolean`](../../data-types.md) | Column visibility flag ||
+|| **description**
+[`string`](../../data-types.md) | Column description. It is not filled in via the REST API ||
 |#
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -448,7 +473,7 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 || `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not provided ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
-|| `CONNECTOR_NOT_FOUND` | Connector was not found. | The connector does not exist or belongs to another application ||
+|| `DATASET_NOT_FOUND` | Dataset was not found. | The table does not exist or belongs to another application ||
 
 |#
 
@@ -457,8 +482,9 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./biconnector-connector-add.md)
-- [{#T}](./biconnector-connector-update.md)
-- [{#T}](./biconnector-connector-list.md)
-- [{#T}](./biconnector-connector-delete.md)
-- [{#T}](./biconnector-connector-fields.md)
+- [{#T}](./biconnector-table-add.md)
+- [{#T}](./biconnector-table-update.md)
+- [{#T}](./biconnector-table-list.md)
+- [{#T}](./biconnector-table-delete.md)
+- [{#T}](./biconnector-table-fields-update.md)
+- [{#T}](./biconnector-table-fields.md)

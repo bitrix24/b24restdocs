@@ -1,4 +1,4 @@
-title: Connector
+title: Connectors
 href: index.md
 items: 
   - name: Overview of methods
@@ -7,7 +7,7 @@ items:
     href: biconnector-connector-add.md    
   - name: Update connector 
     href: biconnector-connector-update.md
-  - name: Get connector information
+  - name: Get connector by id
     href: biconnector-connector-get.md
   - name: Get list of connectors
     href: biconnector-connector-list.md

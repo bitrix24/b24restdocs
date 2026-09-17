@@ -1,4 +1,4 @@
-# Get a List of Datasets biconnector.dataset.list
+# Get a List of Tables biconnector.table.list
 
 {% note tip "" %}
 
@@ -14,17 +14,11 @@ Choose a tool for developing with an AI agent:
 > Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
 
-{% note warning "DEPRECATED" %}
-
-Development of the method has been discontinued. Use [biconnector.table.list](../table/biconnector-table-list.md).
-
-{% endnote %}
-
-The `biconnector.dataset.list` method returns a list of datasets by filter.
+The `biconnector.table.list` method returns a list of tables by filter.
 
 {% note warning "" %}
 
-The method works only in the context of an [application](../../../settings/app-installation/index.md) and returns only the datasets that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
+The method works only in the context of an [application](../../../settings/app-installation/index.md) and returns only the tables that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
 
 {% endnote %}
 
@@ -36,13 +30,11 @@ All parameters are optional: the method can be called with an empty request body
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | List of fields to be filled in for the datasets in the selection. Allowed values are the field names from the schema of the [biconnector.dataset.fields](./biconnector-dataset-fields.md) method and `*`. By default all fields are taken, and an explicit `select: ["*"]` is allowed as well.
+[`string[]`](../../data-types.md) | List of fields to be filled in for the tables in the selection. Allowed values are the field names from the schema of the [biconnector.table.fields](./biconnector-table-fields.md) method and `*`. By default all fields are taken.
 
-The `csvDelimiter`, `csvEncoding`, and `csvHasHeaders` fields are not part of the schema: they do arrive in the response, but in `select` they cause the `VALIDATION_FIELD_NOT_ALLOWED_IN_SELECT` error.
-
-This is the only method of the family that returns `sourceId`: the field works in `select`. The `fields` field is not supported and is ignored ||
+The `csvDelimiter`, `csvEncoding`, and `csvHasHeaders` fields are not part of the schema: they do arrive in the response, but in `select` they cause the `VALIDATION_FIELD_NOT_ALLOWED_IN_SELECT` error. The `fields` field does belong to the schema and causes no error, but it does not get into the selection either ||
 || **filter**
-[`object`](../../data-types.md) | Filter for selecting datasets. Example format:
+[`object`](../../data-types.md) | Filter for selecting tables. Example format:
 
 ```json
 {
@@ -70,11 +62,11 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The list of available fields for filtering can be obtained using the [biconnector.dataset.fields](./biconnector-dataset-fields.md) method.
+The list of fields available for filtering can be retrieved with the [biconnector.table.fields](./biconnector-table-fields.md) method.
 
 The `logic` key defines how the filter conditions are combined:
 
-- `AND` — a dataset is included in the selection if all conditions are met. Used by default
+- `AND` — a table is included in the selection if all conditions are met. Used by default
 - `OR` — one met condition is enough
 
 Any other value of the `logic` key causes the `VALIDATION_INVALID_FILTER_LOGIC` error. Condition groups can be nested into one another.
@@ -95,7 +87,7 @@ The filter does not support the `fields` field; it will be ignored
 
 where:
 
-- `field_n` — the name of the field by which the dataset selection will be sorted
+- `field_n` — name of the field the selection of tables is sorted by
 - `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
@@ -105,14 +97,14 @@ Without this parameter, no sorting is applied and the order of records in the se
 The direction value is case-insensitive, but the field accepts no other values. An empty string, a number, or any word other than `ASC` and `DESC` breaks off at the ORM level: the response arrives with HTTP status **400** and the `ERROR_ARGUMENT` error in the root, not [inside `result`](../index.md#errors) like the other errors of the section
 ||
 || **page**
-[`integer`](../../data-types.md) | Number of the selection page, numbering starts at one, and the default value is 1. The page size is fixed at 50 records. A non-numeric, zero, or negative value causes no error: the method silently returns the first page. The method returns neither the total number of datasets nor a link to the next page, so there is only one sign that the selection has ended: the page returned fewer than 50 elements, [more about navigation](../index.md#pagination) ||
+[`integer`](../../data-types.md) | Number of the selection page, numbering starts at one, and the default value is 1. The page size is fixed at 50 records. A non-numeric, zero, or negative value causes no error: the method silently returns the first page. The method returns neither the total number of tables nor a link to the next page, so there is only one sign that the selection has ended: the page returned fewer than 50 elements, [more about navigation](../index.md#pagination) ||
 |#
 
 ## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-Retrieve the list of datasets where:
+Retrieve the list of tables where:
 
 - the name starts with `sales`
 - the description is not empty
@@ -145,7 +137,7 @@ Return only the required fields:
         "page": 1,
         "auth": "**put_access_token_here**"
     }' \
-    https://**put_your_bitrix24_address**/rest/biconnector.dataset.list
+    https://**put_your_bitrix24_address**/rest/biconnector.table.list
     ```
 
 - JS (TS)
@@ -166,20 +158,20 @@ Return only the required fields:
       }
     }
 
-    // Shape of each DatasetItem returned in result[]
-    type DatasetItem = {
+    // Shape of each TableItem returned in result[]
+    type TableItem = {
       id: number
       name: string
       description: string
     }
 
     try {
-      // biconnector.dataset.list returns a single page (max 50 records). The list helpers
+      // biconnector.table.list returns a single page (max 50 records). The list helpers
       // ($b24.actions.v2.callList.make, fetchList.make) do not work here: this method uses
       // its own `page` navigation and returns neither `total` nor `next`. Walk the pages
       // yourself, increasing `page` until a response comes back with fewer than 50 records.
-      const response = await $b24.actions.v2.call.make<DatasetItem[] | BiconnectorError>({
-        method: 'biconnector.dataset.list',
+      const response = await $b24.actions.v2.call.make<TableItem[] | BiconnectorError>({
+        method: 'biconnector.table.list',
         params: {
           select: ['id', 'name', 'description'],
           filter: {
@@ -205,7 +197,7 @@ Return only the required fields:
         if (!Array.isArray(result)) {
           console.error(result.error.error, result.error.error_description)
         } else {
-          console.info('Datasets page:', result.length, result)
+          console.info('Tables page:', result.length, result)
         }
       }
     } catch (error) {
@@ -220,17 +212,17 @@ Return only the required fields:
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function listDatasets() {
+      async function listTables() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // biconnector.dataset.list returns a single page (max 50 records). The list helpers
+          // biconnector.table.list returns a single page (max 50 records). The list helpers
           // ($b24.actions.v2.callList.make, fetchList.make) do not work here: this method uses
           // its own `page` navigation and returns neither `total` nor `next`. Walk the pages
           // yourself, increasing `page` until a response comes back with fewer than 50 records.
           const response = await $b24.actions.v2.call.make({
-            method: 'biconnector.dataset.list',
+            method: 'biconnector.table.list',
             params: {
               select: ['id', 'name', 'description'],
               filter: {
@@ -260,14 +252,14 @@ Return only the required fields:
             return
           }
 
-          console.info('Datasets page:', result.length, result)
+          console.info('Tables page:', result.length, result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', listDatasets)
+      document.addEventListener('DOMContentLoaded', listTables)
     </script>
     ```
 
@@ -277,26 +269,24 @@ Return only the required fields:
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.biconnector.dataset.list(
-            select=[
-                "id",
-                "name",
-                "description",
-            ],
-            filter={
-                "%=name": "sales%",
-                "!description": "",
-                "@sourceId": [
-                    2,
-                    4,
-                ],
+        # b24pysdk has no ready-made wrapper for biconnector.table.*, so the method
+        # is called directly through bitrix_token.call_method()
+        response = bitrix_token.call_method(
+            api_method="biconnector.table.list",
+            params={
+                "select": ["id", "name", "description"],
+                "filter": {
+                    "%=name": "sales%",
+                    "!description": "",
+                    "@sourceId": [2, 4],
+                },
+                "order": {
+                    "dateCreate": "DESC",
+                },
+                "page": 1,
             },
-            order={
-                "dateCreate": "DESC",
-            },
-            page=1,
-        ).response
-        result = bitrix_response.result
+        )
+        result = response["result"]
 
         # Methods of this section put errors inside result and answer with HTTP 200
         if isinstance(result, dict) and "error" in result:
@@ -327,7 +317,7 @@ Return only the required fields:
         $response = $b24Service
             ->core
             ->call(
-                'biconnector.dataset.list',
+                'biconnector.table.list',
                 [
                     'select' => ["id", "name", "description"],
                     'filter' => [
@@ -361,7 +351,7 @@ Return only the required fields:
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error calling biconnector.dataset.list: ' . $e->getMessage();
+        echo 'Error calling biconnector.table.list: ' . $e->getMessage();
     }
     ```
 
@@ -369,7 +359,7 @@ Return only the required fields:
 
     ```js
     BX24.callMethod(
-        'biconnector.dataset.list',
+        'biconnector.table.list',
         {
             select: ["id", "name", "description"],
             filter: {
@@ -407,7 +397,7 @@ Return only the required fields:
     require_once('crest.php');
 
     $result = CRest::call(
-        'biconnector.dataset.list',
+        'biconnector.table.list',
         [
             'select' => ["id", "name", "description"],
             'filter' => ['%=name' => "sales%", '!description' => "", '@sourceId' => [2, 4]],
@@ -431,7 +421,7 @@ Return only the required fields:
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "biconnector.dataset.list", b24.Params{
+    res, err := client.Core().Call(ctx, "biconnector.table.list", b24.Params{
     	"select": []string{"id", "name", "description"},
     	"filter": b24.Params{
     		"%=name":       "sales%",
@@ -444,7 +434,7 @@ Return only the required fields:
     	"page": 1,
     }, b24.WithIdempotent())
     if err != nil {
-    	return fmt.Errorf("biconnector.dataset.list: %w", err)
+    	return fmt.Errorf("biconnector.table.list: %w", err)
     }
 
     // Methods of this section put errors inside result and answer with HTTP 200.
@@ -455,7 +445,7 @@ Return only the required fields:
     	} `json:"error"`
     }
     if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
-    	return fmt.Errorf("biconnector.dataset.list: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
+    	return fmt.Errorf("biconnector.table.list: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     var items []struct {
@@ -516,48 +506,48 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Root element of the response. A flat array of datasets without an additional wrapper [(detailed description)](#dataset) ||
+[`array`](../../data-types.md) | Root element of the response. A flat array of tables without an additional wrapper [(detailed description)](#table) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Element of the result array {#dataset}
+#### Element of the result array {#table}
 
-An element of the selection is the same dataset that [biconnector.dataset.get](./biconnector-dataset-get.md) returns, but without the `fields` array and with an additional `sourceId` key.
+An element of the selection is the same table that [biconnector.table.get](./biconnector-table-get.md) returns, but without the `fields` array and with an additional `sourceId` key.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../data-types.md) | Unique identifier of the dataset ||
+[`integer`](../../data-types.md) | Unique identifier of the table ||
 || **sourceId**
-[`integer`](../../data-types.md) | Identifier of the source the dataset is linked to. Of all the methods of the family, only `biconnector.dataset.list` returns this field ||
+[`integer`](../../data-types.md) | Identifier of the source the table is linked to. Of all the methods of the section, only `biconnector.table.list` returns this field ||
 || **type**
-[`string`](../../data-types.md) | Dataset type. For datasets created via the REST API, the value is always `rest` ||
+[`string`](../../data-types.md) | Table type. For tables created via the REST API, the value is always `rest` ||
 || **name**
-[`string`](../../data-types.md) | Dataset name ||
+[`string`](../../data-types.md) | Table name ||
 || **description**
-[`string`](../../data-types.md) | Dataset description ||
+[`string`](../../data-types.md) | Table description ||
 || **externalCode**
-[`string`](../../data-types.md) | External code of the dataset — the name the application knows it by ||
+[`string`](../../data-types.md) | External code of the table — the name the application knows the table by ||
 || **externalName**
-[`string`](../../data-types.md) | External name of the dataset ||
+[`string`](../../data-types.md) | External name of the table ||
 || **dateCreate**
-[`datetime`](../../data-types.md) | Date the dataset was created, in the `Y-m-d H:i:s` format ||
+[`datetime`](../../data-types.md) | Date the table was created, in the `Y-m-d H:i:s` format ||
 || **dateUpdate**
-[`datetime`](../../data-types.md) | Date the dataset was updated, in the `Y-m-d H:i:s` format. For a dataset that has never been updated, the value is `null` ||
+[`datetime`](../../data-types.md) | Date the table was updated, in the `Y-m-d H:i:s` format. For a table that has never been updated, the value is `null` ||
 || **createdById**
-[`integer`](../../data-types.md) | Identifier of the user who created the dataset ||
+[`integer`](../../data-types.md) | Identifier of the user who created the table ||
 || **updatedById**
-[`integer`](../../data-types.md) | Identifier of the user who updated the dataset. For a dataset that has never been updated, the value is `0` ||
+[`integer`](../../data-types.md) | Identifier of the user who updated the table. For a table that has never been updated, the value is `0` ||
 || **externalId**
-[`integer`](../../data-types.md) | Identifier of the BI Builder dataset created together with the object by the [biconnector.dataset.add](./biconnector-dataset-add.md) method. For objects created with the [biconnector.table.add](../table/biconnector-table-add.md) method, the value is always `0` ||
+[`integer`](../../data-types.md) | Identifier of the BI Builder dataset created together with the table by the [biconnector.dataset.add](../dataset/biconnector-dataset-add.md) method. For tables created with the [biconnector.table.add](./biconnector-table-add.md) method, the value is always `0` ||
 || **csvDelimiter**
-[`string`](../../data-types.md) | Column delimiter in a CSV file. For datasets of a REST source it arrives as an empty string ||
+[`string`](../../data-types.md) | Column delimiter in a CSV file. For tables of a REST source it arrives as an empty string ||
 || **csvEncoding**
-[`string`](../../data-types.md) | Encoding of a CSV file. For datasets of a REST source it arrives as an empty string ||
+[`string`](../../data-types.md) | Encoding of a CSV file. For tables of a REST source it arrives as an empty string ||
 || **csvHasHeaders**
-[`boolean`](../../data-types.md) | Indicates that the first row of a CSV file holds the column headers. For datasets of a REST source it arrives as `false` ||
+[`boolean`](../../data-types.md) | Indicates that the first row of a CSV file holds the column headers. For tables of a REST source it arrives as `false` ||
 |#
 
 This is what an element looks like when the method is called without `select`:
@@ -574,13 +564,16 @@ This is what an element looks like when the method is called without `select`:
     "dateUpdate": null,
     "createdById": 1,
     "updatedById": 0,
-    "externalId": 31,
+    "externalId": 0,
     "csvDelimiter": "",
     "csvEncoding": "",
     "csvHasHeaders": false,
     "sourceId": 3
 }
 ```
+
+If the `select` parameter is specified, only the listed fields remain in the elements.
+
 
 {% note warning "" %}
 
@@ -641,9 +634,9 @@ One error of the method arrives differently. If the `order` parameter receives a
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./biconnector-dataset-add.md)
-- [{#T}](./biconnector-dataset-update.md)
-- [{#T}](./biconnector-dataset-get.md)
-- [{#T}](./biconnector-dataset-delete.md)
-- [{#T}](./biconnector-dataset-fields-update.md)
-- [{#T}](./biconnector-dataset-fields.md)
+- [{#T}](./biconnector-table-add.md)
+- [{#T}](./biconnector-table-update.md)
+- [{#T}](./biconnector-table-get.md)
+- [{#T}](./biconnector-table-delete.md)
+- [{#T}](./biconnector-table-fields-update.md)
+- [{#T}](./biconnector-table-fields.md)

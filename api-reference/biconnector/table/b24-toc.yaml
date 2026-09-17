@@ -1,0 +1,19 @@
+title: Tables
+href: index.md
+items:
+  - name: Overview of methods
+    href: index.md
+  - name: Create table
+    href: biconnector-table-add.md
+  - name: Update table
+    href: biconnector-table-update.md
+  - name: Get table by id
+    href: biconnector-table-get.md
+  - name: Get list of tables
+    href: biconnector-table-list.md
+  - name: Delete table
+    href: biconnector-table-delete.md
+  - name: Update table columns
+    href: biconnector-table-fields-update.md
+  - name: Get table fields
+    href: biconnector-table-fields.md

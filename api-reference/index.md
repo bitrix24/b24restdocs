@@ -148,7 +148,7 @@ Data types and parameter formats, Method scopes, and How to work with files cont
 #|
 || **Section** | **Description** ||
 || [Widgets](./widgets/index.md) | Application interface embedding points in Bitrix24 ||
-|| [BIconnector](./biconnector/index.md) | Sources, connectors, and BI analytics datasets ||
+|| [BIconnector](./biconnector/index.md) | Connectors, sources, and BI analytics tables ||
 || [BitrixGPT](./ai/index.md) | Custom AI services connected with the `ai.engine.*` methods ||
 || [Vibe](./vibe/index.md) | Custom widgets for the Vibe page, which is replacing the News Feed ||
 || [User agreements](./user-consent/index.md) | Agreements, their texts, and user consents ||

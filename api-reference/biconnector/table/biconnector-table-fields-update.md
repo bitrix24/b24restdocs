@@ -1,4 +1,4 @@
-# Update Dataset Fields biconnector.dataset.fields.update
+# Update Table Columns biconnector.table.fields.update
 
 {% note tip "" %}
 
@@ -13,17 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
-{% note warning "DEPRECATED" %}
-
-Development of the method has been discontinued. Use [biconnector.table.fields.update](../table/biconnector-table-fields-update.md).
-
-{% endnote %}
-
-The method `biconnector.dataset.fields.update` updates the fields of an existing dataset.
+The `biconnector.table.fields.update` method updates the composition of columns of an existing table. It does not change the field schema of the "table" object itself — that schema is returned by the [biconnector.table.fields](./biconnector-table-fields.md) method.
 
 {% note warning "" %}
 
-The method works only in the context of an [application](../../../settings/app-installation/index.md) and changes only the datasets that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
+The method works only in the context of an [application](../../../settings/app-installation/index.md) and changes only the tables that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
 
 {% endnote %}
 
@@ -35,9 +29,9 @@ The method works only in the context of an [application](../../../settings/app-i
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the dataset, can be obtained using the methods [biconnector.dataset.list](./biconnector-dataset-list.md) or [biconnector.dataset.add](./biconnector-dataset-add.md) ||
+[`integer`](../../data-types.md) | Table identifier, can be obtained with the [biconnector.table.list](./biconnector-table-list.md) or [biconnector.table.add](./biconnector-table-add.md) method ||
 || **add**
-[`array`](../../data-types.md) | Array of fields to add. Each element is an object with three required keys:
+[`array`](../../data-types.md) | Array of columns to add. Each element is an object with three required keys:
 
 ```
 {
@@ -47,13 +41,13 @@ The method works only in the context of an [application](../../../settings/app-i
 }
 ```
 
-- `type` [`string`](../../data-types.md) — [data type](./index.md#fields) of the field
-- `name` [`string`](../../data-types.md) — field name, uppercase Latin letters `A-Z`, digits, and the `_` sign, no longer than 32 characters
-- `externalCode` [`string`](../../data-types.md) — external code of the field
+- `type` [`string`](../../data-types.md) — [data type](./index.md#fields) of the column
+- `name` [`string`](../../data-types.md) — column name, uppercase Latin letters `A-Z`, digits, and the `_` sign, no longer than 32 characters
+- `externalCode` [`string`](../../data-types.md) — external code of the column
 
-Visibility is not set for a field being added: new fields are created visible ||
+Visibility is not set for a column being added: new columns are created visible ||
 || **update**
-[`array`](../../data-types.md) | Array of fields to change. Each element is an object with two required keys:
+[`array`](../../data-types.md) | Array of columns to change. Each element is an object with two required keys:
 
 ```
 {
@@ -62,19 +56,19 @@ Visibility is not set for a field being added: new fields are created visible ||
 }
 ```
 
-- `id` [`integer`](../../data-types.md) — field identifier, can be obtained with the [biconnector.dataset.get](./biconnector-dataset-get.md) method
-- `visible` [`boolean`](../../data-types.md) — field visibility
+- `id` [`integer`](../../data-types.md) — column identifier, can be obtained with the [biconnector.table.get](./biconnector-table-get.md) method
+- `visible` [`boolean`](../../data-types.md) — column visibility
 
-Visibility is the only field attribute that this block changes. The name, type, and external code of an existing field cannot be changed ||
+Visibility is the only column attribute that this block changes. The name, type, and external code of an existing column cannot be changed ||
 || **delete**
-[`integer[]`](../../data-types.md) | Array of identifiers of the fields to delete. The identifiers can be obtained with the [biconnector.dataset.get](./biconnector-dataset-get.md) method ||
+[`integer[]`](../../data-types.md) | Array of identifiers of the columns to delete. The identifiers can be obtained with the [biconnector.table.get](./biconnector-table-get.md) method ||
 |#
 
 All three parameters are optional and are processed in a single call in the order `update`, `add`, `delete`. A parameter that was not passed overwrites nothing, and a call that contains none of the three returns `true` and changes nothing.
 
 {% note warning "" %}
 
-Identifiers in `update` that do not belong to this dataset are skipped silently — no error is returned. Deletion, however, filters only by `id`, without checking that the field belongs to the specified dataset: before the call, verify the identifiers against the response of [biconnector.dataset.get](./biconnector-dataset-get.md)
+Identifiers in `update` that do not belong to this table are skipped silently — no error is returned. Deletion, however, filters only by `id`, without checking that the column belongs to the specified table: before the call, verify the identifiers against the response of [biconnector.table.get](./biconnector-table-get.md)
 
 {% endnote %}
 
@@ -120,7 +114,7 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
         ],
         "auth": "**put_access_token_here**"
     }' \
-    https://**put_your_bitrix24_address**/rest/biconnector.dataset.fields.update
+    https://**put_your_bitrix24_address**/rest/biconnector.table.fields.update
     ```
 
 - JS (TS)
@@ -143,7 +137,7 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
 
     try {
       const response = await $b24.actions.v2.call.make<boolean | BiconnectorError>({
-        method: 'biconnector.dataset.fields.update',
+        method: 'biconnector.table.fields.update',
         params: {
           id: 10,
           add: [
@@ -183,7 +177,7 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
         if (typeof result === 'object' && result !== null && 'error' in result) {
           console.error(result.error.error, result.error.error_description)
         } else {
-          console.info('Dataset fields updated:', result)
+          console.info('Table columns updated:', result)
         }
       }
     } catch (error) {
@@ -198,13 +192,13 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function updateDatasetFields() {
+      async function updateTableColumns() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'biconnector.dataset.fields.update',
+            method: 'biconnector.table.fields.update',
             params: {
               id: 10,
               add: [
@@ -248,14 +242,14 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
             return
           }
 
-          console.info('Dataset fields updated:', result)
+          console.info('Table columns updated:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', updateDatasetFields)
+      document.addEventListener('DOMContentLoaded', updateTableColumns)
     </script>
     ```
 
@@ -265,36 +259,24 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.biconnector.dataset.fields.update(
-            bitrix_id=10,
-            add=[
-                {
-                    "type": "int",
-                    "name": "NAME",
-                    "externalCode": "NAME",
-                },
-                {
-                    "type": "int",
-                    "name": "ID",
-                    "externalCode": "ID",
-                },
-            ],
-            update=[
-                {
-                    "id": 12,
-                    "visible": False,
-                },
-                {
-                    "id": 13,
-                    "visible": True,
-                },
-            ],
-            delete=[
-                14,
-                15,
-            ],
-        ).response
-        result = bitrix_response.result
+        # b24pysdk has no ready-made wrapper for biconnector.table.*, so the method
+        # is called directly through bitrix_token.call_method()
+        response = bitrix_token.call_method(
+            api_method="biconnector.table.fields.update",
+            params={
+                "id": 10,
+                "add": [
+                    {"type": "int", "name": "NAME", "externalCode": "NAME"},
+                    {"type": "int", "name": "ID", "externalCode": "ID"},
+                ],
+                "update": [
+                    {"id": 12, "visible": False},
+                    {"id": 13, "visible": True},
+                ],
+                "delete": [14, 15],
+            },
+        )
+        result = response["result"]
 
         # Methods of this section put errors inside result and answer with HTTP 200
         if isinstance(result, dict) and "error" in result:
@@ -326,7 +308,7 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
         $response = $b24Service
             ->core
             ->call(
-                'biconnector.dataset.fields.update',
+                'biconnector.table.fields.update',
                 [
                     'id'     => 10,
                     'add'    => [
@@ -374,7 +356,7 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error updating dataset fields: ' . $e->getMessage();
+        echo 'Error updating table columns: ' . $e->getMessage();
     }
     ```
 
@@ -382,7 +364,7 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
 
     ```js
     BX24.callMethod(
-        'biconnector.dataset.fields.update',
+        'biconnector.table.fields.update',
         {
             id: 10,
             add: [
@@ -437,7 +419,7 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
     require_once('crest.php');
 
     $result = CRest::call(
-        'biconnector.dataset.fields.update',
+        'biconnector.table.fields.update',
         [
             'id' => 10,
             'add' => [
@@ -481,7 +463,7 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "biconnector.dataset.fields.update", b24.Params{
+    res, err := client.Core().Call(ctx, "biconnector.table.fields.update", b24.Params{
     	"id": 10,
     	"add": []b24.Params{
     		{
@@ -508,7 +490,7 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
     	"delete": []int{14, 15},
     })
     if err != nil {
-    	return fmt.Errorf("biconnector.dataset.fields.update: %w", err)
+    	return fmt.Errorf("biconnector.table.fields.update: %w", err)
     }
 
     // Methods of this section put errors inside result and answer with HTTP 200.
@@ -519,7 +501,7 @@ Identifiers in `update` that do not belong to this dataset are skipped silently 
     	} `json:"error"`
     }
     if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
-    	return fmt.Errorf("biconnector.dataset.fields.update: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
+    	return fmt.Errorf("biconnector.table.fields.update: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     var ok bool
@@ -555,7 +537,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response. On a successful update it contains `true` — the response carries no new set of fields. To see it, call [biconnector.dataset.get](./biconnector-dataset-get.md) ||
+[`boolean`](../../data-types.md) | Root element of the response. On a successful update it contains `true` — the response carries no new composition of columns. To see it, call [biconnector.table.get](./biconnector-table-get.md) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -590,10 +572,11 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 || `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
-|| `DATASET_NOT_FOUND` | Dataset was not found. | The dataset does not exist or belongs to another application ||
-|| `DATASET_UPDATE_ERROR` | Error updating dataset. | The changes could not be synchronized with BI Builder. The fields are already saved by then: the synchronization runs after the changes are committed, so the error arrives for edits that have already been applied and the method does not roll them back ||
-|| `VALIDATION_DUPLICATE_FIELD_CODE` | Duplicate values found in the "code" parameter: #LIST_CODES# | Duplicates found in the `externalCode` parameter of dataset fields ||
-|| `VALIDATION_DUPLICATE_FIELD_NAME` | Duplicate values found in the "name" parameter: #LIST_NAMES# | Duplicates found in the `name` parameter of dataset fields ||
+|| `DATASET_NOT_FOUND` | Dataset was not found. | The table does not exist or belongs to another application ||
+|| `DATASET_UPDATE_ERROR` | Error updating dataset. | The changes could not be synchronized with BI Builder. The columns are already saved by then: the synchronization runs after the changes are committed, so the error arrives for edits that have already been applied and the method does not roll them back ||
+|| `VALIDATION_DUPLICATE_FIELD_CODE` | Duplicate values found in the "code" parameter: #LIST_CODES# | Duplicates found in the `externalCode` parameter of the table fields ||
+|| `VALIDATION_DUPLICATE_FIELD_NAME` | Duplicate values found in the "name" parameter: #LIST_NAMES# | Duplicates found in the `name` parameter of the table fields ||
+
 || `VALIDATION_FIELD_NAME_INVALID_FORMAT` | Field "name" has to start with an uppercase Latin character. Possible entry includes uppercase Latin characters (A-Z), numbers (0-9) and underscores. | Invalid format of the field name. The name must start with a letter and may contain only uppercase Latin letters `A-Z`, digits, and the `_` sign ||
 || `VALIDATION_FIELD_NAME_TOO_LONG` | Field "name" must not exceed 32 characters. | The field name must not exceed 32 characters ||
 
@@ -610,9 +593,9 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./biconnector-dataset-add.md)
-- [{#T}](./biconnector-dataset-update.md)
-- [{#T}](./biconnector-dataset-get.md)
-- [{#T}](./biconnector-dataset-list.md)
-- [{#T}](./biconnector-dataset-delete.md)
-- [{#T}](./biconnector-dataset-fields.md)
+- [{#T}](./biconnector-table-add.md)
+- [{#T}](./biconnector-table-update.md)
+- [{#T}](./biconnector-table-get.md)
+- [{#T}](./biconnector-table-list.md)
+- [{#T}](./biconnector-table-delete.md)
+- [{#T}](./biconnector-table-fields.md)

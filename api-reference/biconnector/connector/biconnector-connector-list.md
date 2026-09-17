@@ -11,17 +11,27 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with access to the Analytics hub section
+> Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
-The `biconnector.connector.list` method returns a list of connectors by filter. It is a list-based method implementation for connectors.
+The `biconnector.connector.list` method returns a list of connectors by filter.
+
+{% note warning "" %}
+
+The method works only in the context of an [application](../../../settings/app-installation/index.md) and returns only the connectors that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
+
+{% endnote %}
+
+The result page size is 50 records. The method returns neither the total number of connectors nor a link to the next page, so [list traversal](../index.md#pagination) is built on the page number: the selection has ended when fewer than 50 records arrive in the response.
 
 ## Method Parameters
+
+All parameters are optional: the method can be called with an empty request body.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | List of fields that must be filled in the connectors in the selection. By default, all fields are taken ||
+[`string[]`](../../data-types.md) | List of fields to be filled in for the connectors in the selection. Allowed values are the field names from the [selection element](#connector) table and `*`. The `["*"]` value returns all fields and is also used by default ||
 || **filter**
 [`object`](../../data-types.md) | Filter for selecting connectors. Example format:
 
@@ -32,8 +42,8 @@ The `biconnector.connector.list` method returns a list of connectors by filter. 
 }
 ```
 
-A prefix can be added to the keys `field_n` to specify the filter behavior.
-Possible prefix values:
+A prefix that refines how the filter works can be added to the `field_n` keys. Possible prefix values:
+
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -42,15 +52,34 @@ Possible prefix values:
 - `!@` — NOT IN, an array is passed as the value
 - `%` — LIKE, substring search. The symbol `%` does not need to be passed in the filter value. The search looks for a substring in any position of the string
 - `=%` — LIKE, substring search. The symbol `%` must be passed in the value. Examples:
-- `"mol%"` — searches for values starting with "mol"
-- `"%mol"` — searches for values ending with "mol"
-- `"%mol%"` — searches for values where "mol" can be in any position
+    - `"mol%"` — searches for values starting with "mol"
+    - `"%mol"` — searches for values ending with "mol"
+    - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
 
-The list of available fields for filtering can be obtained using the [biconnector.connector.fields](./biconnector-connector-fields.md) method
+The list of fields available for filtering can be retrieved with the [biconnector.connector.fields](./biconnector-connector-fields.md) method.
+
+The `logic` key defines how the filter conditions are combined:
+
+- `AND` — a connector is included in the selection if all conditions are met. Used by default
+- `OR` — one met condition is enough
+
+Any other value of the `logic` key causes the `VALIDATION_INVALID_FILTER_LOGIC` error. Condition groups can be nested into one another.
+
+```json
+{
+    "logic": "AND",
+    "!description": "",
+    "0": {
+        "logic": "OR",
+        "%=title": "MyConnector%",
+        "@id": [9, 11]
+    }
+}
+```
 ||
 || **order**
 [`object`](../../data-types.md) | Sorting parameters. Example format:
@@ -68,51 +97,34 @@ The list of available fields for filtering can be obtained using the [biconnecto
 - `value_n` — a `string` type value, equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
+
+Without this parameter, no sorting is applied and the order of records in the selection is not guaranteed.
+
+The direction value is case-insensitive, but the field accepts no other values. An empty string, a number, or any word other than `ASC` and `DESC` breaks off at the ORM level: the response arrives with HTTP status **400** and the `ERROR_ARGUMENT` error in the root, not [inside `result`](../index.md#errors) like the other errors of the section
 ||
 || **page**
-[`integer`](../../data-types.md) | Controls pagination. The page size of results is 50 records. To navigate through results, pass the page number 
-||
+[`integer`](../../data-types.md) | Number of the result page. Numbering starts at one, and the default value is 1. A non-numeric, zero, or negative value causes no error: the method silently returns the first page. The `start` parameter, common to most list methods of the REST API, does not work here ||
 |#
+
+The `settings` field is retained as a JSON string, so connectors cannot be selected or sorted by individual settings parameters: the filter and the sorting work with this string as a whole.
 
 ## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 Get a list of connectors where:
+
 - the name starts with `MyConnector`
 - the description is not empty
 
-Display only the necessary fields:
+Return only the required fields:
+
 - identifier `id`
 - name `title`
-- endpoint for checking source availability `urlCheck`
+- endpoint for checking the source availability `urlCheck`
 - Create date `dateCreate`
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-         -H "Content-Type: application/json" \
-         -H "Accept: application/json" \
-         -d '{
-             "select": [
-                 "id",
-                 "title",
-                 "urlCheck",
-                 "dateCreate"
-             ],
-             "filter": {
-                 "%=title": "MyConnector%",
-                 "!description": ""
-             },
-             "order": {
-                 "dateCreate": "DESC"
-             }
-             }' \
-         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/biconnector.connector.list
-    ```
 
 - cURL (OAuth)
 
@@ -134,6 +146,7 @@ Display only the necessary fields:
              "order": {
                  "dateCreate": "DESC"
              },
+             "page": 1,
              "auth": "**put_access_token_here**"
              }' \
          https://**put_your_bitrix24_address**/rest/biconnector.connector.list
@@ -145,25 +158,32 @@ Display only the necessary fields:
     // This snippet is an ES module: top-level await requires type="module" or a bundler.
     // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
     import { Text } from '@bitrix24/b24jssdk'
-    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
+    // Methods of this section put errors inside result and answer with HTTP 200
+    type BiconnectorError = {
+      error: {
+        error: string
+        error_description: string
+      }
+    }
+
     // Shape of each connector returned in result[]
     type ConnectorItem = {
-      id: string
+      id: number
       title: string
       urlCheck: string
-      dateCreate: ISODate | null
+      dateCreate: string | null // Y-m-d H:i:s, not ISO 8601
     }
 
     try {
-      // biconnector.connector.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
-      const response = await $b24.actions.v2.call.make<ConnectorItem[]>({
+      // biconnector.connector.list returns a single page (max 50 records). The list helpers
+      // ($b24.actions.v2.callList.make, fetchList.make) do not work here: this method uses
+      // its own `page` navigation and returns neither `total` nor `next`. Walk the pages
+      // yourself, increasing `page` until a response comes back with fewer than 50 records.
+      const response = await $b24.actions.v2.call.make<ConnectorItem[] | BiconnectorError>({
         method: 'biconnector.connector.list',
         params: {
           select: [
@@ -179,7 +199,7 @@ Display only the necessary fields:
           order: {
             dateCreate: 'DESC',
           },
-          start: 0,
+          page: 1,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -189,7 +209,13 @@ Display only the necessary fields:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Connectors:', result.length, result)
+
+        // The SDK sees HTTP 200 as success, so check the error inside result yourself
+        if (!Array.isArray(result)) {
+          console.error(result.error.error, result.error.error_description)
+        } else {
+          console.info('Connectors:', result.length, result)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -208,11 +234,10 @@ Display only the necessary fields:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // biconnector.connector.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // biconnector.connector.list returns a single page (max 50 records). The list helpers
+          // ($b24.actions.v2.callList.make, fetchList.make) do not work here: this method uses
+          // its own `page` navigation and returns neither `total` nor `next`. Walk the pages
+          // yourself, increasing `page` until a response comes back with fewer than 50 records.
           const response = await $b24.actions.v2.call.make({
             method: 'biconnector.connector.list',
             params: {
@@ -229,7 +254,7 @@ Display only the necessary fields:
               order: {
                 dateCreate: 'DESC',
               },
-              start: 0,
+              page: 1,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -241,6 +266,13 @@ Display only the necessary fields:
           }
 
           const result = response.getData().result
+
+          // The SDK sees HTTP 200 as success, so check the error inside result yourself
+          if (result && result.error) {
+            console.error(result.error.error, result.error.error_description)
+            return
+          }
+
           console.info('Connectors:', result.length, result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -272,9 +304,20 @@ Display only the necessary fields:
             order={
                 "dateCreate": "DESC",
             },
+            page=1,
         ).response
         result = bitrix_response.result
-        print(result)
+
+        # Methods of this section put errors inside result and answer with HTTP 200
+        if isinstance(result, dict) and "error" in result:
+            print(
+                "BIconnector error",
+                f"error: {result['error']['error']}",
+                f"error_description: {result['error']['error_description']}",
+                sep="\n",
+            )
+        else:
+            print(result)
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
@@ -309,20 +352,28 @@ Display only the necessary fields:
                     ],
                     'order' => [
                         'dateCreate' => "DESC"
-                    ]
+                    ],
+                    'page' => 1
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
-            echo 'Data: ' . print_r($result->data(), true);
+            $data = $result->data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (isset($data['error'])) {
+                echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
+            } else {
+                echo 'Data: ' . print_r($data, true);
+            }
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error calling biconnector.connector.list: ' . $e->getMessage();
@@ -347,12 +398,24 @@ Display only the necessary fields:
             },
             order: {
                 dateCreate: "DESC"
-            }
+            },
+            page: 1
         },
         (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data());
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            const data = result.data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (data && data.error) {
+                console.error(data.error.error, data.error.error_description);
+                return;
+            }
+
+            console.info(data);
         }
     );
     ```
@@ -377,13 +440,20 @@ Display only the necessary fields:
             ],
             'order' => [
                 'dateCreate' => "DESC"
-            ]
+            ],
+            'page' => 1
         ]
     );
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+    // Methods of this section put errors inside result and answer with HTTP 200
+    if (isset($result['result']['error'])) {
+        echo 'BIconnector error: ' . $result['result']['error']['error']
+            . ': ' . $result['result']['error']['error_description'];
+    } else {
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
+    }
     ```
 
 - Go
@@ -399,9 +469,21 @@ Display only the necessary fields:
     	"order": b24.Params{
     		"dateCreate": "DESC",
     	},
+    	"page": 1,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("biconnector.connector.list: %w", err)
+    }
+
+    // Methods of this section put errors inside result and answer with HTTP 200.
+    var apiErr struct {
+    	Error *struct {
+    		Error       string `json:"error"`
+    		Description string `json:"error_description"`
+    	} `json:"error"`
+    }
+    if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
+    	return fmt.Errorf("biconnector.connector.list: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     var items []struct {
@@ -417,11 +499,8 @@ Display only the necessary fields:
     	fmt.Println(it.ID, it.Title)
     }
 
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
-    if res.Total != nil {
-    	fmt.Println("total:", *res.Total)
-    }
+    // This method returns neither Total nor Next: pagination is built
+    // on the page parameter, while 50 records keep arriving in the response.
     ```
 
 {% endlist %}
@@ -434,13 +513,13 @@ HTTP status: **200**
 {
     "result": [
         {
-            "id": "11",
+            "id": 11,
             "title": "MyConnector_2",
             "urlCheck": "https://new_example.com/check",
             "dateCreate": "2025-03-24 07:25:59"
         },
         {
-            "id": "9",
+            "id": 9,
             "title": "MyConnector",
             "urlCheck": "https://example.com/check",
             "dateCreate": "2025-03-21 12:22:32"
@@ -460,13 +539,48 @@ HTTP status: **200**
 ### Returned Data
 
 #|
+|| **Name**
+`type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Response root element. Contains an array of objects with information about connectors.
-
-Note that the field structure may be changed due to the `select` parameter ||
+[`array`](../../data-types.md) | Root element of the response. A flat array of connectors without an additional wrapper [(detailed description)](#connector) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
+
+#### Element of the result array {#connector}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Unique identifier of the connector ||
+|| **title**
+[`string`](../../data-types.md) | Connector name ||
+|| **logo**
+[`string`](../../data-types.md) | Logo URL or a base64 string ||
+|| **description**
+[`string`](../../data-types.md) | Connector description ||
+|| **sort**
+[`integer`](../../data-types.md) | Sorting order ||
+|| **urlCheck**
+[`string`](../../data-types.md) | [URL for checking the connection](./index.md#urlCheck) ||
+|| **urlData**
+[`string`](../../data-types.md) | [URL for retrieving data](./index.md#urlData) ||
+|| **urlTableList**
+[`string`](../../data-types.md) | [URL for the table list](./index.md#urlTableList) ||
+|| **urlTableDescription**
+[`string`](../../data-types.md) | [URL for the table description](./index.md#urlTableDescription) ||
+|| **settings**
+[`array`](../../data-types.md) | Authorization parameters of the connector. The structure of an element is described in the [Settings Field](./index.md#settings) section. The parameter values are retained by the source, while the connector returns only their description ||
+|| **supportMapping**
+[`boolean`](../../data-types.md) | Support for mapping the table fields to the fields of the external system ||
+|| **sourceCode**
+[`string`](../../data-types.md) | String code of the external system ||
+|| **dateCreate**
+[`datetime`](../../data-types.md) | Date the connector was created, in the `Y-m-d H:i:s` format ||
+|#
+
+If the `select` parameter is specified, only the listed fields remain in the elements.
 
 ## Error Handling
 
@@ -474,8 +588,27 @@ HTTP status: **200**
 
 ```json
 {
-    "error": "VALIDATION_SELECT_TYPE",
-    "error_description": "Parameter \"select\" must be array."
+    "result": {
+        "error": {
+            "error": "VALIDATION_SELECT_TYPE",
+            "error_description": "Parameter \"select\" must be array."
+        }
+    }
+}
+```
+
+{% note warning "" %}
+
+The method returns an error [inside the `result` field](../index.md#errors) and with HTTP status 200. Check `result.error`: the SDK wrappers parse only the top level of the response and treat such an error as a success
+
+{% endnote %}
+
+One error of the method arrives differently. If the `order` parameter receives a sorting direction other than `ASC` and `DESC`, the request breaks off at the ORM level: the response gets HTTP status **400**, and the error code is in the root rather than inside `result`.
+
+```json
+{
+    "error": "ERROR_ARGUMENT",
+    "error_description": "Invalid order \"UPWARDS\""
 }
 ```
 
@@ -485,6 +618,7 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_SELECT_TYPE` | Parameter "select" must be array. | The `select` parameter must be an array ||
 || `VALIDATION_FILTER_TYPE` | Parameter "filter" must be array. | The `filter` parameter must be an array ||
 || `VALIDATION_ORDER_TYPE` | Parameter "order" must be array. | The `order` parameter must be an array ||
@@ -492,14 +626,17 @@ HTTP status: **200**
 || `VALIDATION_FIELD_NOT_ALLOWED_IN_FILTER` | Field "#TITLE#" is not allowed in the "filter". | These fields are not allowed in the filter ||
 || `VALIDATION_FIELD_NOT_ALLOWED_IN_ORDER` | Field "#TITLE#" is not allowed in the "order". | These fields are not allowed for sorting ||
 || `VALIDATION_INVALID_FILTER_LOGIC` | Field "logic" must be either "AND" or "OR". | The `logic` field can only have the value "AND" or "OR" ||
+|| `ERROR_ARGUMENT` | Invalid order "#VALUE#". | The sorting direction in `order` differs from `ASC` and `DESC`. `#VALUE#` is replaced with the passed value in uppercase. This is the only error of the method with HTTP status 400: the code arrives in the root of the response, not inside `result` ||
+
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./biconnector-connector-add.md)
 - [{#T}](./biconnector-connector-update.md)
 - [{#T}](./biconnector-connector-get.md)
-- [{#T}](./biconnector-connector-add.md)
 - [{#T}](./biconnector-connector-delete.md)
 - [{#T}](./biconnector-connector-fields.md)

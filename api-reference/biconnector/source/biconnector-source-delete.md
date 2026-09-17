@@ -11,11 +11,18 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
-The method `biconnector.source.delete` removes an existing connection.
+The `biconnector.source.delete` method deletes an existing source.
 
-A connection can be deleted if it has no datasets.
+
+A source can be deleted only when it has no tables left. Delete them first with the [biconnector.table.delete](../table/biconnector-table-delete.md) method, otherwise the method returns the `BX_ERROR` error.
+
+{% note warning "" %}
+
+The method works only in the context of an [application](../../../settings/app-installation/index.md) and deletes only the sources that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
+
+{% endnote %}
 
 ## Method parameters
 
@@ -25,7 +32,7 @@ A connection can be deleted if it has no datasets.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the connection, can be obtained using the methods [biconnector.source.list](./biconnector-source-list.md) or [biconnector.source.add](./biconnector-source-add.md) ||
+[`integer`](../../data-types.md) | Source identifier, can be obtained with the [biconnector.source.list](./biconnector-source-list.md) or [biconnector.source.add](./biconnector-source-add.md) method ||
 |#
 
 ## Code examples
@@ -33,16 +40,6 @@ A connection can be deleted if it has no datasets.
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"id":4}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/biconnector.source.delete
-    ```
 
 - cURL (OAuth)
 
@@ -64,8 +61,16 @@ A connection can be deleted if it has no datasets.
 
     declare const $b24: B24Frame
 
+    // Methods of this section put errors inside result and answer with HTTP 200
+    type BiconnectorError = {
+      error: {
+        error: string
+        error_description: string
+      }
+    }
+
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      const response = await $b24.actions.v2.call.make<boolean | BiconnectorError>({
         method: 'biconnector.source.delete',
         params: {
           id: 4,
@@ -78,7 +83,13 @@ A connection can be deleted if it has no datasets.
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Source deleted:', result)
+
+        // The SDK sees HTTP 200 as success, so check the error inside result yourself
+        if (typeof result === 'object' && result !== null && 'error' in result) {
+          console.error(result.error.error, result.error.error_description)
+        } else {
+          console.info('Source deleted:', result)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -112,6 +123,13 @@ A connection can be deleted if it has no datasets.
           }
 
           const result = response.getData().result
+
+          // The SDK sees HTTP 200 as success, so check the error inside result yourself
+          if (result && result.error) {
+            console.error(result.error.error, result.error.error_description)
+            return
+          }
+
           console.info('Source deleted:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -133,7 +151,17 @@ A connection can be deleted if it has no datasets.
             bitrix_id=4,
         ).response
         result = bitrix_response.result
-        print(result)
+
+        # Methods of this section put errors inside result and answer with HTTP 200
+        if isinstance(result, dict) and "error" in result:
+            print(
+                "BIconnector error",
+                f"error: {result['error']['error']}",
+                f"error_description: {result['error']['error_description']}",
+                sep="\n",
+            )
+        else:
+            print(result)
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
@@ -148,7 +176,6 @@ A connection can be deleted if it has no datasets.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -159,17 +186,24 @@ A connection can be deleted if it has no datasets.
                     'id' => 4,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
-            echo 'Info: ' . $result->data();
+            $data = $result->data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (isset($data['error'])) {
+                echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
+            } else {
+                echo 'Info: ' . print_r($data, true);
+            }
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting source: ' . $e->getMessage();
@@ -185,7 +219,20 @@ A connection can be deleted if it has no datasets.
             id: 4,
         },
         (result) => {
-            result.error() ? console.error(result.error()) : console.info(result.data());
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            const data = result.data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (data && data.error) {
+                console.error(data.error.error, data.error.error_description);
+                return;
+            }
+
+            console.info(data);
         }
     );
     ```
@@ -202,9 +249,15 @@ A connection can be deleted if it has no datasets.
         ]
     );
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+    // Methods of this section put errors inside result and answer with HTTP 200
+    if (isset($result['result']['error'])) {
+        echo 'BIconnector error: ' . $result['result']['error']['error']
+            . ': ' . $result['result']['error']['error_description'];
+    } else {
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
+    }
     ```
 
 - Go
@@ -216,6 +269,17 @@ A connection can be deleted if it has no datasets.
     })
     if err != nil {
     	return fmt.Errorf("biconnector.source.delete: %w", err)
+    }
+
+    // Methods of this section put errors inside result and answer with HTTP 200.
+    var apiErr struct {
+    	Error *struct {
+    		Error       string `json:"error"`
+    		Description string `json:"error_description"`
+    	} `json:"error"`
+    }
+    if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
+    	return fmt.Errorf("biconnector.source.delete: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     var ok bool
@@ -251,7 +315,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | Root element of the response. It contains `true` if the source was deleted. The method returns no other value on success and does not return the object of the deleted source. If the source could not be deleted, an object with the `error` key arrives in `result` instead of `true` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -262,10 +326,20 @@ HTTP status: **200**
 
 ```json
 {
-    "error": "VALIDATION_ID_NOT_PROVIDED",
-    "error_description": "ID is missing."
+    "result": {
+        "error": {
+            "error": "VALIDATION_ID_NOT_PROVIDED",
+            "error_description": "ID is missing."
+        }
+    }
 }
 ```
+
+{% note warning "" %}
+
+The method returns an error [inside the `result` field](../index.md#errors) and with HTTP status 200. Check `result.error`: the SDK wrappers parse only the top level of the response and treat such an error as a success
+
+{% endnote %}
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
@@ -273,18 +347,21 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
-|| `SOURCE_NOT_FOUND` | Source was not found. | Source not found ||
-|| `BX_ERROR` | Cannot delete source. Delete all related datasets first. | Cannot delete source while related datasets exist ||
+|| `SOURCE_NOT_FOUND` | Source was not found. | The source does not exist or belongs to another application ||
+|| `BX_ERROR` | Cannot delete connection. Delete all associated tables first. | A source cannot be deleted while it still has tables. Delete them with the [biconnector.table.delete](../table/biconnector-table-delete.md) method and repeat the call. In the error text, the source is called a connection ||
+
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue exploring
 
+- [{#T}](./index.md)
+- [{#T}](./biconnector-source-add.md)
 - [{#T}](./biconnector-source-update.md)
 - [{#T}](./biconnector-source-get.md)
 - [{#T}](./biconnector-source-list.md)
-- [{#T}](./biconnector-source-add.md)
 - [{#T}](./biconnector-source-fields.md)

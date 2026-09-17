@@ -1,4 +1,4 @@
-# Create Source biconnector.source.add
+# Update Table biconnector.table.update
 
 {% note tip "" %}
 
@@ -13,11 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
-The `biconnector.source.add` method creates a new data source linked to a connector.
+
+The `biconnector.table.update` method updates the description of an existing table — the only field that the method changes.
 
 {% note warning "" %}
 
-The method works only in the context of an [application](../../../settings/app-installation/index.md) and only with the connectors that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
+The method works only in the context of an [application](../../../settings/app-installation/index.md) and changes only the tables that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
 
 {% endnote %}
 
@@ -28,8 +29,11 @@ The method works only in the context of an [application](../../../settings/app-i
 #|
 || **Name**
 `type` | **Description** ||
+|| **id***
+[`integer`](../../data-types.md) | Table identifier, can be obtained with the [biconnector.table.list](./biconnector-table-list.md) and [biconnector.table.add](./biconnector-table-add.md) methods ||
 || **fields***
-[`object`](../../data-types.md) | An object containing data to create a new source. The object format:
+[`object`](../../data-types.md) | An object containing the updated data.
+The object format:
 
 ```
 {
@@ -51,49 +55,15 @@ The method works only in the context of an [application](../../../settings/app-i
 #|
 || **Name**
 `type` | **Description** ||
-|| **title***
-[`string`](../../data-types.md) | Source name ||
 || **description**
-[`string`](../../data-types.md) | Source description ||
-|| **active**
-[`boolean`](../../data-types.md) | Source activity.
-The method ignores the passed value: the created source is always active ||
-|| **connectorId***
-[`integer`](../../data-types.md) | Connector identifier, can be obtained using the methods [biconnector.connector.list](../connector/biconnector-connector-list.md) or [biconnector.connector.add](../connector/biconnector-connector-add.md) ||
-|| **settings***
-[`object`](../../data-types.md) | Values of the authorization parameters [(detailed description)](#settings) ||
+[`string`](../../data-types.md) | Table description ||
 |#
 
-When a source is created, Bitrix24 calls the connection check endpoint of the connector. If the external system does not respond, the method returns the `SOURCE_CREATE_CONNECTION_ERROR` error and the source is not created.
-
-#### Parameter settings {#settings}
-
-Pass `settings` as an object where the key is the `code` of a parameter declared by the connector and the value is what has to be substituted during the connection. The parameter codes can be retrieved with the [biconnector.connector.list](../connector/biconnector-connector-list.md) or [biconnector.connector.get](../connector/biconnector-connector-get.md) method. Keys that are absent from the connector description are dropped without an error.
-
-If the connector declared parameters with the `login` and `password` codes, the field looks like this:
-
-```json
-{
-    "settings": {
-        "login": "admin",
-        "password": "qwerty"
-    }
-}
-```
-
-In the response of the [biconnector.source.get](./biconnector-source-get.md) and [biconnector.source.list](./biconnector-source-list.md) methods, the same field arrives as an array of objects with the `id`, `code`, `name`, `type`, and `value` fields. Both forms are covered in the [Settings Field](./index.md#settings) section.
-
-The [biconnector.source.fields](./biconnector-source-fields.md) method declares `settings` as the `array` type, but the `biconnector.source.add` method accepts it as an object on input.
-
-{% note warning "" %}
-
-The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.source.list](./biconnector-source-list.md) methods return the values of the authorization parameters in plain text, including passwords and tokens
-
-{% endnote %}
+To change the composition of columns, use the [biconnector.table.fields.update](./biconnector-table-fields-update.md) method.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}
+{% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -103,8 +73,14 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"title":"CRM Source","description":"CRM data source","connectorId":123,"settings":{"login":"admin","password":"qwerty"}},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/biconnector.source.add
+    -d '{
+        "id": 10,
+        "fields": {
+            "description": "New description"
+        },
+        "auth": "**put_access_token_here**"
+    }' \
+    https://**put_your_bitrix24_address**/rest/biconnector.table.update
     ```
 
 - JS (TS)
@@ -125,23 +101,13 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
       }
     }
 
-    // Shape of the payload returned in result (match the "response handling" section of the page)
-    type SourceAddResult = {
-      id: number
-    }
-
     try {
-      const response = await $b24.actions.v2.call.make<SourceAddResult | BiconnectorError>({
-        method: 'biconnector.source.add',
+      const response = await $b24.actions.v2.call.make<boolean | BiconnectorError>({
+        method: 'biconnector.table.update',
         params: {
+          id: 10,
           fields: {
-            title: 'CRM Source',
-            description: 'CRM data source',
-            connectorId: 123,
-            settings: {
-              login: 'admin',
-              password: 'qwerty',
-            },
+            description: 'New description',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -154,10 +120,10 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
         const result = response.getData()!.result
 
         // The SDK sees HTTP 200 as success, so check the error inside result yourself
-        if ('error' in result) {
+        if (typeof result === 'object' && result !== null && 'error' in result) {
           console.error(result.error.error, result.error.error_description)
         } else {
-          console.info('Created source id:', result.id)
+          console.info('Table updated:', result)
         }
       }
     } catch (error) {
@@ -172,22 +138,17 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function addSource() {
+      async function updateTable() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'biconnector.source.add',
+            method: 'biconnector.table.update',
             params: {
+              id: 10,
               fields: {
-                title: 'CRM Source',
-                description: 'CRM data source',
-                connectorId: 123,
-                settings: {
-                  login: 'admin',
-                  password: 'qwerty',
-                },
+                description: 'New description',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -207,14 +168,14 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
             return
           }
 
-          console.info('Created source id:', result.id)
+          console.info('Table updated:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', addSource)
+      document.addEventListener('DOMContentLoaded', updateTable)
     </script>
     ```
 
@@ -224,18 +185,18 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.biconnector.source.add(
-            fields={
-                "title": "CRM Source",
-                "description": "CRM data source",
-                "connectorId": 123,
-                "settings": {
-                    "login": "admin",
-                    "password": "qwerty",
+        # b24pysdk has no ready-made wrapper for biconnector.table.*, so the method
+        # is called directly through bitrix_token.call_method()
+        response = bitrix_token.call_method(
+            api_method="biconnector.table.update",
+            params={
+                "id": 10,
+                "fields": {
+                    "description": "New description",
                 },
             },
-        ).response
-        result = bitrix_response.result
+        )
+        result = response["result"]
 
         # Methods of this section put errors inside result and answer with HTTP 200
         if isinstance(result, dict) and "error" in result:
@@ -261,23 +222,17 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
             ->core
             ->call(
-                'biconnector.source.add',
+                'biconnector.table.update',
                 [
+                    'id' => 10,
                     'fields' => [
-                        "title"       => "CRM Source",
-                        "description" => "CRM data source",
-                        "connectorId" => 123,
-                        "settings"    => [
-                            "login"    => "admin",
-                            "password" => "qwerty"
-                        ]
-                    ]
+                        "description" => "New description",
+                    ],
                 ]
             );
 
@@ -300,7 +255,7 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error adding source: ' . $e->getMessage();
+        echo 'Error updating table: ' . $e->getMessage();
     }
     ```
 
@@ -308,16 +263,11 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
 
     ```js
     BX24.callMethod(
-        'biconnector.source.add',
+        'biconnector.table.update',
         {
+            id: 10,
             fields: {
-                "title": "CRM Source",
-                "description": "CRM data source",
-                "connectorId": 123,
-                "settings": {
-                    "login": "admin",
-                    "password": "qwerty"
-                }
+                "description": "New description",
             }
         },
         (result) => {
@@ -345,16 +295,11 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
     require_once('crest.php');
 
     $result = CRest::call(
-        'biconnector.source.add',
+        'biconnector.table.update',
         [
+            'id' => 10,
             'fields' => [
-                'title' => 'CRM Source',
-                'description' => 'CRM data source',
-                'connectorId' => 123,
-                'settings' => [
-                    'login' => 'admin',
-                    'password' => 'qwerty'
-                ]
+                'description' => 'New description'
             ]
         ]
     );
@@ -374,19 +319,14 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "biconnector.source.add", b24.Params{
+    res, err := client.Core().Call(ctx, "biconnector.table.update", b24.Params{
+    	"id": 10,
     	"fields": b24.Params{
-    		"title":       "CRM Source",
-    		"description": "CRM data source",
-    		"connectorId": 123,
-    		"settings": b24.Params{
-    			"login":    "admin",
-    			"password": "qwerty",
-    		},
+    		"description": "New description",
     	},
     })
     if err != nil {
-    	return fmt.Errorf("biconnector.source.add: %w", err)
+    	return fmt.Errorf("biconnector.table.update: %w", err)
     }
 
     // Methods of this section put errors inside result and answer with HTTP 200.
@@ -397,16 +337,14 @@ The [biconnector.source.get](./biconnector-source-get.md) and [biconnector.sourc
     	} `json:"error"`
     }
     if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
-    	return fmt.Errorf("biconnector.source.add: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
+    	return fmt.Errorf("biconnector.table.update: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
-    var item struct {
-    	ID b24.ID `json:"id"`
-    }
-    if err := json.Unmarshal(res.Result, &item); err != nil {
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.ID)
+    fmt.Println("done:", ok)
     ```
 
 {% endlist %}
@@ -417,17 +355,14 @@ HTTP status: **200**
 
 ```json
 {
-    "result": {
-      "id": 7
-    },
+    "result": true,
     "time": {
-        "start": 1725013197.635808,
-        "finish": 1725013198.580873,
-        "duration": 0.9450650215148926,
-        "processing": 0.6822988986968994,
-        "date_start": "2024-08-30T12:19:57+02:00",
-        "date_finish": "2024-08-30T12:19:58+02:00",
-        "operating": 0
+        "start": 1725365418.056843,
+        "finish": 1725365419.671506,
+        "duration": 1.6146628856658936,
+        "processing": 1.3475170135498047,
+        "date_start": "2024-09-03T14:10:18+02:00",
+        "date_finish": "2024-09-03T14:10:19+02:00"
     }
 }
 ```
@@ -438,18 +373,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
+[`boolean`](../../data-types.md) | Root element of the response. On a successful update it contains `true` — the response carries no object with the table data. To see the new field values, call [biconnector.table.get](./biconnector-table-get.md) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
-|#
-
-#### The result object {#result}
-
-#|
-|| **Name**
-`type` | **Description** ||
-|| **id**
-[`integer`](../../data-types.md) | Identifier of the created source. Use it in the [biconnector.source.get](./biconnector-source-get.md), [biconnector.source.update](./biconnector-source-update.md), and [biconnector.source.delete](./biconnector-source-delete.md) methods ||
 |#
 
 ## Error Handling
@@ -473,30 +399,41 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 
 {% endnote %}
 
-{% include notitle [Error handling](../../../_includes/error-info.md) %}
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
 || **Code** | **Description** | **Value** ||
 || `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
+|| `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
+|| `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields were not passed in the request ||
 || `VALIDATION_UNKNOWN_PARAMETERS` | Unknown parameters: #LIST_OF_PARAMS# | Unknown parameters detected: list ||
-|| `VALIDATION_REQUIRED_FIELD_MISSING` | Field "#TITLE#" is required. | Required field #TITLE# was not provided ||
 || `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
+|| `VALIDATION_IMMUTABLE_FIELD` | Field "#TITLE#" is immutable. | Field #TITLE# is immutable ||
 || `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
-|| `CONNECTOR_NOT_FOUND` | Connector was not found. | The connector does not exist or belongs to another application ||
-|| `SOURCE_CREATE_CONNECTION_ERROR` | Cannot create connection. | The external system did not respond to the request to the connection check endpoint — the source was not created ||
-
+|| `DATASET_NOT_FOUND` | Dataset was not found. | The table does not exist or belongs to another application ||
+|| `INVALID_METHOD` | Use the method "biconnector.dataset.fields.update" to update the dataset fields." | The `fields` key was passed inside the `fields` parameter. To update the columns, use the [biconnector.table.fields.update](./biconnector-table-fields-update.md) method. The error text comes from code shared with the deprecated family: it names the `biconnector.dataset.fields.update` method and carries an extra quotation mark at the end ||
+|| Empty value | Error updating table. | The update was rejected by a handler subscribed to the before-save event. This error has no string code of its own: the `error` field carries a numeric zero ||
 |#
 
-{% include [System errors](../../../_includes/system-errors.md) %}
+{% note info "" %}
+
+Synchronization with BI Builder runs after saving and does not affect the response: if the synchronization fails, the method still returns `true`. This is how `update` differs from [biconnector.table.fields.update](./biconnector-table-fields-update.md), where a synchronization failure arrives in the response with the `DATASET_UPDATE_ERROR` code
+
+
+{% endnote %}
+
+
+{% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./biconnector-source-update.md)
-- [{#T}](./biconnector-source-get.md)
-- [{#T}](./biconnector-source-list.md)
-- [{#T}](./biconnector-source-delete.md)
-- [{#T}](./biconnector-source-fields.md)
+- [{#T}](./biconnector-table-add.md)
+- [{#T}](./biconnector-table-get.md)
+- [{#T}](./biconnector-table-list.md)
+- [{#T}](./biconnector-table-delete.md)
+- [{#T}](./biconnector-table-fields-update.md)
+- [{#T}](./biconnector-table-fields.md)

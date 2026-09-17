@@ -2,6 +2,10 @@
 
 ## 2026
 
+### September 17, 2026
+
+- Added the [biconnector.table.*](./api-reference/biconnector/table/index.md) methods for working with BI Builder tables: creating, updating the description, retrieving by identifier, listing with a filter, deleting, updating the column set, and describing the fields
+
 ### September 16, 2026
 
 - Added the page [How to Execute Batch Requests in REST 3.0](./settings/how-to-call-rest-api/batch-v3.md): described sequential execution of REST 3.0 methods and passing results between subrequests using `$ref` and `$refArray`

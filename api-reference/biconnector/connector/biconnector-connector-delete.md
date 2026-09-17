@@ -11,11 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst Workspace" section
+> Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
 The method `biconnector.connector.delete` removes an existing connector.
 
-A connector can be deleted if it has no sources.
+{% note warning "" %}
+
+The method works only in the context of an [application](../../../settings/app-installation/index.md) and deletes only the connectors that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
+
+{% endnote %}
+
+A connector can be deleted if it has no sources. If any sources remain, the method returns the `CONNECTOR_DELETE_RESTRICTED` error — delete each source first with the [biconnector.source.delete](../source/biconnector-source-delete.md) method.
 
 ## Method Parameters
 
@@ -33,18 +39,6 @@ A connector can be deleted if it has no sources.
 {% include [Footnote about examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-         -H "Content-Type: application/json" \
-         -H "Accept: application/json" \
-         -d '{
-             "id": 4
-             }' \
-         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/biconnector.connector.delete
-    ```
 
 - cURL (OAuth)
 
@@ -69,8 +63,16 @@ A connector can be deleted if it has no sources.
 
     declare const $b24: B24Frame
 
+    // Methods of this section put errors inside result and answer with HTTP 200
+    type BiconnectorError = {
+      error: {
+        error: string
+        error_description: string
+      }
+    }
+
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      const response = await $b24.actions.v2.call.make<boolean | BiconnectorError>({
         method: 'biconnector.connector.delete',
         params: {
           id: 4,
@@ -83,7 +85,13 @@ A connector can be deleted if it has no sources.
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Connector deleted:', result)
+
+        // The SDK sees HTTP 200 as success, so check the error inside result yourself
+        if (typeof result === 'object' && result !== null && 'error' in result) {
+          console.error(result.error.error, result.error.error_description)
+        } else {
+          console.info('Connector deleted:', result)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -117,6 +125,13 @@ A connector can be deleted if it has no sources.
           }
 
           const result = response.getData().result
+
+          // The SDK sees HTTP 200 as success, so check the error inside result yourself
+          if (result && result.error) {
+            console.error(result.error.error, result.error.error_description)
+            return
+          }
+
           console.info('Connector deleted:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -138,7 +153,17 @@ A connector can be deleted if it has no sources.
             bitrix_id=4,
         ).response
         result = bitrix_response.result
-        print(result)
+
+        # Methods of this section put errors inside result and answer with HTTP 200
+        if isinstance(result, dict) and "error" in result:
+            print(
+                "BIconnector error",
+                f"error: {result['error']['error']}",
+                f"error_description: {result['error']['error_description']}",
+                sep="\n",
+            )
+        else:
+            print(result)
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
@@ -153,7 +178,6 @@ A connector can be deleted if it has no sources.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -164,17 +188,24 @@ A connector can be deleted if it has no sources.
                     'id' => 4,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
-            echo 'Info: ' . $result->data();
+            $data = $result->data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (isset($data['error'])) {
+                echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
+            } else {
+                echo 'Info: ' . print_r($data, true);
+            }
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting connector: ' . $e->getMessage();
@@ -190,7 +221,20 @@ A connector can be deleted if it has no sources.
             id: 4,
         },
         (result) => {
-            result.error() ? console.error(result.error()) : console.info(result.data());
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            const data = result.data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (data && data.error) {
+                console.error(data.error.error, data.error.error_description);
+                return;
+            }
+
+            console.info(data);
         }
     );
     ```
@@ -207,9 +251,15 @@ A connector can be deleted if it has no sources.
         ]
     );
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+    // Methods of this section put errors inside result and answer with HTTP 200
+    if (isset($result['result']['error'])) {
+        echo 'BIconnector error: ' . $result['result']['error']['error']
+            . ': ' . $result['result']['error']['error_description'];
+    } else {
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
+    }
     ```
 
 - Go
@@ -221,6 +271,17 @@ A connector can be deleted if it has no sources.
     })
     if err != nil {
     	return fmt.Errorf("biconnector.connector.delete: %w", err)
+    }
+
+    // Methods of this section put errors inside result and answer with HTTP 200.
+    var apiErr struct {
+    	Error *struct {
+    		Error       string `json:"error"`
+    		Description string `json:"error_description"`
+    	} `json:"error"`
+    }
+    if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
+    	return fmt.Errorf("biconnector.connector.delete: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     var ok bool
@@ -256,7 +317,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | Root element of the response. It contains `true` if the connector was deleted. The method returns no other value on success and does not return the object of the deleted connector. If the connector could not be deleted, an object with the `error` key arrives in `result` instead of `true` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -267,10 +328,20 @@ HTTP Status: **200**
 
 ```json
 {
-    "error": "VALIDATION_ID_NOT_PROVIDED",
-    "error_description": "ID is missing."
+    "result": {
+        "error": {
+            "error": "VALIDATION_ID_NOT_PROVIDED",
+            "error_description": "ID is missing."
+        }
+    }
 }
 ```
+
+{% note warning "" %}
+
+The method returns an error [inside the `result` field](../index.md#errors) and with HTTP status 200. Check `result.error`: the SDK wrappers parse only the top level of the response and treat such an error as a success
+
+{% endnote %}
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
@@ -278,18 +349,21 @@ HTTP Status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
-|| `CONNECTOR_NOT_FOUND` | Connector was not found. | Connector not found ||
-|| `CONNECTOR_DELETE_RESTRICTED` | Connector cannot be removed. Remove the connections related to the connector first. | Cannot delete connector while related connections exist ||
+|| `CONNECTOR_NOT_FOUND` | Connector was not found. | The connector does not exist or belongs to another application ||
+|| `CONNECTOR_DELETE_RESTRICTED` | Connector cannot be removed. Remove the connections related to the connector first. | A connector cannot be deleted while it still has sources. Delete them with the [biconnector.source.delete](../source/biconnector-source-delete.md) method and repeat the call. In the error text, the sources are called connections ||
+
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./biconnector-connector-add.md)
 - [{#T}](./biconnector-connector-update.md)
 - [{#T}](./biconnector-connector-get.md)
 - [{#T}](./biconnector-connector-list.md)
-- [{#T}](./biconnector-connector-add.md)
 - [{#T}](./biconnector-connector-fields.md)

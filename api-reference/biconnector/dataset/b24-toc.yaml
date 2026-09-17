@@ -1,4 +1,4 @@
-title: Datasets
+title: Datasets (deprecated)
 href: index.md
 items: 
   - name: Overview of methods
@@ -7,13 +7,13 @@ items:
     href: biconnector-dataset-add.md    
   - name: Update dataset 
     href: biconnector-dataset-update.md
-  - name: Modify dataset fields
-    href: biconnector-dataset-fields-update.md     
   - name: Get dataset by id
     href: biconnector-dataset-get.md
   - name: Get list of datasets
     href: biconnector-dataset-list.md
   - name: Delete dataset
-    href: biconnector-dataset-delete.md     
+    href: biconnector-dataset-delete.md
+  - name: Update dataset fields
+    href: biconnector-dataset-fields-update.md
   - name: Get dataset fields
     href: biconnector-dataset-fields.md   

@@ -1,4 +1,4 @@
-# Update Dataset biconnector.dataset.update
+# Delete Table biconnector.table.delete
 
 {% note tip "" %}
 
@@ -14,17 +14,18 @@ Choose a tool for developing with an AI agent:
 > Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
 
-{% note warning "DEPRECATED" %}
+The `biconnector.table.delete` method deletes an existing table. Its fields, settings, and link to the source are deleted together with the table.
 
-Development of the method has been discontinued. Use [biconnector.table.update](../table/biconnector-table-update.md).
+
+{% note info "" %}
+
+The method does not touch the datasets built on the table. If the table had a dataset, after the table is deleted the dataset remains in BI Builder, in the Analytics hub > Unused elements section, and can be deleted only manually
 
 {% endnote %}
 
-The `biconnector.dataset.update` method updates the description of an existing dataset — the only field that the method changes.
-
 {% note warning "" %}
 
-The method works only in the context of an [application](../../../settings/app-installation/index.md) and changes only the datasets that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
+The method works only in the context of an [application](../../../settings/app-installation/index.md) and deletes only the tables that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
 
 {% endnote %}
 
@@ -36,36 +37,8 @@ The method works only in the context of an [application](../../../settings/app-i
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the dataset, can be obtained using the methods [biconnector.dataset.list](./biconnector-dataset-list.md) and [biconnector.dataset.add](./biconnector-dataset-add.md) ||
-|| **fields***
-[`object`](../../data-types.md) | An object containing the updated data.
-The object format:
-
-```
-{
-    "field_1": "value_1",
-    "field_2": "value_2",
-    ...,
-    "field_n": "value_n"
-}
-```
-
-- `field_n` — field name
-- `value_n` — field value
-
-[Detailed description below](#fields) ||
+[`integer`](../../data-types.md) | Table identifier, can be obtained with the [biconnector.table.list](./biconnector-table-list.md) or [biconnector.table.add](./biconnector-table-add.md) method ||
 |#
-
-### Parameter fields {#fields}
-
-#|
-|| **Name**
-`type` | **Description** ||
-|| **description**
-[`string`](../../data-types.md) | Description of the dataset ||
-|#
-
-To change the set of fields, use the [biconnector.dataset.fields.update](./biconnector-dataset-fields-update.md) method.
 
 ## Code Examples
 
@@ -79,14 +52,8 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{
-        "id": 10,
-        "fields": {
-            "description": "New description"
-        },
-        "auth": "**put_access_token_here**"
-    }' \
-    https://**put_your_bitrix24_address**/rest/biconnector.dataset.update
+    -d '{"id":4,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/biconnector.table.delete
     ```
 
 - JS (TS)
@@ -109,12 +76,9 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
 
     try {
       const response = await $b24.actions.v2.call.make<boolean | BiconnectorError>({
-        method: 'biconnector.dataset.update',
+        method: 'biconnector.table.delete',
         params: {
-          id: 10,
-          fields: {
-            description: 'New description',
-          },
+          id: 4,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -129,7 +93,7 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
         if (typeof result === 'object' && result !== null && 'error' in result) {
           console.error(result.error.error, result.error.error_description)
         } else {
-          console.info('Dataset updated:', result)
+          console.info('Table deleted:', result)
         }
       }
     } catch (error) {
@@ -144,18 +108,15 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function updateDataset() {
+      async function deleteTable() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
           const response = await $b24.actions.v2.call.make({
-            method: 'biconnector.dataset.update',
+            method: 'biconnector.table.delete',
             params: {
-              id: 10,
-              fields: {
-                description: 'New description',
-              },
+              id: 4,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -174,14 +135,14 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
             return
           }
 
-          console.info('Dataset updated:', result)
+          console.info('Table deleted:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', updateDataset)
+      document.addEventListener('DOMContentLoaded', deleteTable)
     </script>
     ```
 
@@ -191,13 +152,15 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.biconnector.dataset.update(
-            bitrix_id=10,
-            fields={
-                "description": "New description",
+        # b24pysdk has no ready-made wrapper for biconnector.table.*, so the method
+        # is called directly through bitrix_token.call_method()
+        response = bitrix_token.call_method(
+            api_method="biconnector.table.delete",
+            params={
+                "id": 4,
             },
-        ).response
-        result = bitrix_response.result
+        )
+        result = response["result"]
 
         # Methods of this section put errors inside result and answer with HTTP 200
         if isinstance(result, dict) and "error" in result:
@@ -228,12 +191,9 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
         $response = $b24Service
             ->core
             ->call(
-                'biconnector.dataset.update',
+                'biconnector.table.delete',
                 [
-                    'id' => 10,
-                    'fields' => [
-                        "description" => "New description",
-                    ],
+                    'id' => 4,
                 ]
             );
 
@@ -250,13 +210,13 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
             if (isset($data['error'])) {
                 echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
             } else {
-                echo 'Success: ' . print_r($data, true);
+                echo 'Info: ' . print_r($data, true);
             }
         }
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error updating dataset: ' . $e->getMessage();
+        echo 'Error deleting table: ' . $e->getMessage();
     }
     ```
 
@@ -264,12 +224,9 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
 
     ```js
     BX24.callMethod(
-        'biconnector.dataset.update',
+        'biconnector.table.delete',
         {
-            id: 10,
-            fields: {
-                "description": "New description",
-            }
+            id: 4,
         },
         (result) => {
             if (result.error()) {
@@ -296,12 +253,9 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
     require_once('crest.php');
 
     $result = CRest::call(
-        'biconnector.dataset.update',
+        'biconnector.table.delete',
         [
-            'id' => 10,
-            'fields' => [
-                'description' => 'New description'
-            ]
+            'id' => 4
         ]
     );
 
@@ -320,14 +274,11 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "biconnector.dataset.update", b24.Params{
-    	"id": 10,
-    	"fields": b24.Params{
-    		"description": "New description",
-    	},
+    res, err := client.Core().Call(ctx, "biconnector.table.delete", b24.Params{
+    	"id": 4,
     })
     if err != nil {
-    	return fmt.Errorf("biconnector.dataset.update: %w", err)
+    	return fmt.Errorf("biconnector.table.delete: %w", err)
     }
 
     // Methods of this section put errors inside result and answer with HTTP 200.
@@ -338,7 +289,7 @@ To change the set of fields, use the [biconnector.dataset.fields.update](./bicon
     	} `json:"error"`
     }
     if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
-    	return fmt.Errorf("biconnector.dataset.update: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
+    	return fmt.Errorf("biconnector.table.delete: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     var ok bool
@@ -374,9 +325,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response. On a successful update it contains `true` — the response carries no object with the dataset data. To see the new field values, call [biconnector.dataset.get](./biconnector-dataset-get.md) ||
+[`boolean`](../../data-types.md) | Root element of the response. It contains `true` if the table was deleted. The method returns no other value on success and does not return the object of the deleted table. If the table could not be deleted, an object with the `error` key arrives in `result` instead of `true` ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -387,8 +338,8 @@ HTTP status: **200**
 {
     "result": {
         "error": {
-            "error": "VALIDATION_FIELDS_NOT_PROVIDED",
-            "error_description": "Fields not provided."
+            "error": "VALIDATION_ID_NOT_PROVIDED",
+            "error_description": "ID is missing."
         }
     }
 }
@@ -409,31 +360,18 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 || `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
-|| `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields were not passed in the request ||
-|| `VALIDATION_UNKNOWN_PARAMETERS` | Unknown parameters: #LIST_OF_PARAMS# | Unknown parameters detected: list ||
-|| `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
-|| `VALIDATION_IMMUTABLE_FIELD` | Field "#TITLE#" is immutable. | Field #TITLE# is immutable ||
-|| `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
-|| `DATASET_NOT_FOUND` | Dataset was not found. | The dataset does not exist or belongs to another application ||
-|| `INVALID_METHOD` | Use the method "biconnector.dataset.fields.update" to update the dataset fields." | The `fields` key was passed inside the `fields` parameter. To update the fields, use the [biconnector.dataset.fields.update](./biconnector-dataset-fields-update.md) method. The extra quotation mark at the end is part of the text returned by the module ||
-|| Empty value | Error updating table. | The update was rejected by a handler subscribed to the before-save event. This error has no string code of its own: the `error` field carries a numeric zero ||
+|| `DATASET_NOT_FOUND` | Dataset was not found. | The table does not exist or belongs to another application ||
+
 |#
-
-{% note info "" %}
-
-Synchronization with BI Builder runs after saving and does not affect the response: if the synchronization fails, the method still returns `true`. This is how `update` differs from [biconnector.dataset.fields.update](./biconnector-dataset-fields-update.md), where a synchronization failure arrives in the response with the `DATASET_UPDATE_ERROR` code
-
-{% endnote %}
-
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./biconnector-dataset-add.md)
-- [{#T}](./biconnector-dataset-get.md)
-- [{#T}](./biconnector-dataset-list.md)
-- [{#T}](./biconnector-dataset-delete.md)
-- [{#T}](./biconnector-dataset-fields-update.md)
-- [{#T}](./biconnector-dataset-fields.md)
+- [{#T}](./biconnector-table-add.md)
+- [{#T}](./biconnector-table-update.md)
+- [{#T}](./biconnector-table-get.md)
+- [{#T}](./biconnector-table-list.md)
+- [{#T}](./biconnector-table-fields-update.md)
+- [{#T}](./biconnector-table-fields.md)

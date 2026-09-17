@@ -1,4 +1,4 @@
-# Update the biconnector.connector.update
+# Update Connector biconnector.connector.update
 
 {% note tip "" %}
 
@@ -11,9 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`biconnector`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access to the "Analyst's workspace" section
+> Who can execute the method: A user who has both the "Access to BI Builder" and "Access to Analytics Hub" permissions
 
 The method `biconnector.connector.update` updates an existing connector.
+
+{% note warning "" %}
+
+The method works only in the context of an [application](../../../settings/app-installation/index.md) and changes only the connectors that the application created itself. When called via a webhook, the method returns the `ACCESS_DENIED` error
+
+{% endnote %}
+
+The update is partial: the fields you did not pass keep their previous values. The `settings` array is an exception: it is replaced entirely, so pass all connection parameters in it, not only the changed ones.
 
 ## Method Parameters
 
@@ -25,7 +33,7 @@ The method `biconnector.connector.update` updates an existing connector.
 || **id***
 [`integer`](../../data-types.md) | Connector identifier, can be obtained using the methods [biconnector.connector.list](./biconnector-connector-list.md) and [biconnector.connector.add](./biconnector-connector-add.md) ||
 || **fields***
-[`object`](../../data-types.md) | An object containing the updated data. The object format: 
+[`object`](../../data-types.md) | An object containing the data to update. The object format:
 
 ```
 {
@@ -48,23 +56,44 @@ The method `biconnector.connector.update` updates an existing connector.
 || **Name**
 `type` | **Description** ||
 || **title**
-[`string`](../../data-types.md) | New connector name ||
+[`string`](../../data-types.md) | New connector name, maximum length is 512 characters ||
 || **logo**
 [`string`](../../data-types.md) | New connector logo. Can be passed as a link to an image or a base64 formatted string, for example `data:image/svg+xml;base64,PHN2ZyB3...` ||
 || **description**
 [`string`](../../data-types.md) | New connector description ||
 || **urlCheck**
-[`string`](../../data-types.md) | New endpoint for checking the connector's availability, [(detailed description)](./index.md#urlCheck) ||
+[`string`](../../data-types.md) | New endpoint for checking the connector availability, maximum length is 2048 characters, [(detailed description)](./index.md#urlCheck) ||
 || **urlTableList**
-[`string`](../../data-types.md) | New endpoint for obtaining the list of tables, [(detailed description)](./index.md#urlTableList) ||
+[`string`](../../data-types.md) | New endpoint for retrieving the list of tables, maximum length is 2048 characters, [(detailed description)](./index.md#urlTableList) ||
 || **urlTableDescription**
-[`string`](../../data-types.md) | New endpoint for obtaining the description of a specific table, [(detailed description)](./index.md#urlTableDescription) ||
+[`string`](../../data-types.md) | New endpoint for retrieving the description of a specific table, maximum length is 2048 characters, [(detailed description)](./index.md#urlTableDescription) ||
 || **urlData**
-[`string`](../../data-types.md) | New endpoint for obtaining data from the selected table, [(detailed description)](./index.md#urlData)  ||
+[`string`](../../data-types.md) | New endpoint for retrieving data from the selected table, maximum length is 2048 characters, [(detailed description)](./index.md#urlData) ||
 || **settings**
-[`array`](../../data-types.md) | New list of connection parameters, [(detailed description)](./index.md#settings) ||
+[`array`](../../data-types.md) | New array of connection parameters. It replaces the previous one entirely [(detailed description)](#settings) ||
+|| **supportMapping**
+[`boolean`](../../data-types.md) | Support for mapping the table fields to the fields of the external system. If the field is not passed, the connector keeps its previous value.
+
+The value is checked with a strict comparison against the boolean type, so it does not pass in a request of the `application/x-www-form-urlencoded` type — send it with the `Content-Type: application/json` header ||
+|| **sourceCode**
+[`string`](../../data-types.md) | String code of the external system, maximum length is 64 characters ||
 || **sort**
 [`integer`](../../data-types.md) | New sorting parameter for the connector ||
+|#
+
+### Parameter settings {#settings}
+
+Each element of the `settings` array is an object with three required fields.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **code***
+[`string`](../../data-types.md) | Parameter code. The parameter goes to the external system under this name inside the `connection` object. Maximum length is 512 characters ||
+|| **name***
+[`string`](../../data-types.md) | Parameter name that the user sees in the Analytics hub section. Maximum length is 512 characters ||
+|| **type***
+[`string`](../../data-types.md) | Parameter type that determines the input field in the interface. Allowed values: `STRING`, `INT`. The value is case-sensitive: a lowercase `string` causes the `VALIDATION_SETTINGS_INVALID_TYPE` error ||
 |#
 
 ## Code Examples
@@ -72,40 +101,6 @@ The method `biconnector.connector.update` updates an existing connector.
 {% include [Footnote on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-         -H "Content-Type: application/json" \
-         -H "Accept: application/json" \
-         -d '{
-             "id": 4,
-             "fields": {
-                 "title": "UPDATED REST CONNECTOR",
-                 "logo": "data:image/svg+xml;base64,NEWLOGODATA",
-                 "description": "Updated description",
-                 "urlCheck": "http://example.com/api/new_check",
-                 "urlTableList": "http://example.com/api/new_table_list",
-                 "urlTableDescription": "http://example.com/api/new_table_description",
-                 "urlData": "http://example.com/api/new_data",
-                 "settings": [
-                    {
-                        "name": "Employee Identifier",
-                        "type": "STRING",
-                        "code": "id"
-                    },
-                    {
-                        "name": "Password",
-                        "type": "STRING",
-                        "code": "password"
-                    }
-                 ],
-                 "sort": 200
-             }
-             }' \
-         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/biconnector.connector.update
-    ```
 
 - cURL (OAuth)
 
@@ -117,7 +112,7 @@ The method `biconnector.connector.update` updates an existing connector.
              "id": 4,
              "fields": {
                  "title": "UPDATED REST CONNECTOR",
-                 "logo": "data:image/svg+xml;base64,NEWLOGODATA",
+                 "logo": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjEwIiBmaWxsPSIjMkZDN0Y3IiAvPgoJPHRleHQgeD0iMTEiIHk9IjEzIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlJFU1Q8L3RleHQ+Cjwvc3ZnPgo=",
                  "description": "Updated description",
                  "urlCheck": "http://example.com/api/new_check",
                  "urlTableList": "http://example.com/api/new_table_list",
@@ -152,14 +147,22 @@ The method `biconnector.connector.update` updates an existing connector.
 
     declare const $b24: B24Frame
 
+    // Methods of this section put errors inside result and answer with HTTP 200
+    type BiconnectorError = {
+      error: {
+        error: string
+        error_description: string
+      }
+    }
+
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      const response = await $b24.actions.v2.call.make<boolean | BiconnectorError>({
         method: 'biconnector.connector.update',
         params: {
           id: 4,
           fields: {
             title: 'UPDATED REST CONNECTOR',
-            logo: 'data:image/svg+xml;base64,NEWLOGODATA',
+            logo: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjEwIiBmaWxsPSIjMkZDN0Y3IiAvPgoJPHRleHQgeD0iMTEiIHk9IjEzIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlJFU1Q8L3RleHQ+Cjwvc3ZnPgo=',
             description: 'Updated description',
             urlCheck: 'http://example.com/api/new_check',
             urlTableList: 'http://example.com/api/new_table_list',
@@ -188,7 +191,13 @@ The method `biconnector.connector.update` updates an existing connector.
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Connector updated:', result)
+
+        // The SDK sees HTTP 200 as success, so check the error inside result yourself
+        if (typeof result === 'object' && result !== null && 'error' in result) {
+          console.error(result.error.error, result.error.error_description)
+        } else {
+          console.info('Connector updated:', result)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -213,7 +222,7 @@ The method `biconnector.connector.update` updates an existing connector.
               id: 4,
               fields: {
                 title: 'UPDATED REST CONNECTOR',
-                logo: 'data:image/svg+xml;base64,NEWLOGODATA',
+                logo: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjEwIiBmaWxsPSIjMkZDN0Y3IiAvPgoJPHRleHQgeD0iMTEiIHk9IjEzIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlJFU1Q8L3RleHQ+Cjwvc3ZnPgo=',
                 description: 'Updated description',
                 urlCheck: 'http://example.com/api/new_check',
                 urlTableList: 'http://example.com/api/new_table_list',
@@ -244,6 +253,13 @@ The method `biconnector.connector.update` updates an existing connector.
           }
 
           const result = response.getData().result
+
+          // The SDK sees HTTP 200 as success, so check the error inside result yourself
+          if (result && result.error) {
+            console.error(result.error.error, result.error.error_description)
+            return
+          }
+
           console.info('Connector updated:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -265,7 +281,7 @@ The method `biconnector.connector.update` updates an existing connector.
             bitrix_id=4,
             fields={
                 "title": "UPDATED REST CONNECTOR",
-                "logo": "data:image/svg+xml;base64,NEWLOGODATA",
+                "logo": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjEwIiBmaWxsPSIjMkZDN0Y3IiAvPgoJPHRleHQgeD0iMTEiIHk9IjEzIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlJFU1Q8L3RleHQ+Cjwvc3ZnPgo=",
                 "description": "Updated description",
                 "urlCheck": "http://example.com/api/new_check",
                 "urlTableList": "http://example.com/api/new_table_list",
@@ -287,7 +303,17 @@ The method `biconnector.connector.update` updates an existing connector.
             },
         ).response
         result = bitrix_response.result
-        print(result)
+
+        # Methods of this section put errors inside result and answer with HTTP 200
+        if isinstance(result, dict) and "error" in result:
+            print(
+                "BIconnector error",
+                f"error: {result['error']['error']}",
+                f"error_description: {result['error']['error_description']}",
+                sep="\n",
+            )
+        else:
+            print(result)
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
@@ -302,7 +328,6 @@ The method `biconnector.connector.update` updates an existing connector.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -313,7 +338,7 @@ The method `biconnector.connector.update` updates an existing connector.
                     'id' => 4,
                     'fields' => [
                         "title"               => "UPDATED REST CONNECTOR",
-                        "logo"                => "data:image/svg+xml;base64,NEWLOGODATA",
+                        "logo"                => "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjEwIiBmaWxsPSIjMkZDN0Y3IiAvPgoJPHRleHQgeD0iMTEiIHk9IjEzIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlJFU1Q8L3RleHQ+Cjwvc3ZnPgo=",
                         "description"         => "Updated description",
                         "urlCheck"            => "http://example.com/api/new_check",
                         "urlTableList"        => "http://example.com/api/new_table_list",
@@ -335,17 +360,24 @@ The method `biconnector.connector.update` updates an existing connector.
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         if ($result->error()) {
             echo 'Error: ' . $result->error();
         } else {
-            echo 'Success: ' . print_r($result->data(), true);
+            $data = $result->data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (isset($data['error'])) {
+                echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
+            } else {
+                echo 'Success: ' . print_r($data, true);
+            }
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating connector: ' . $e->getMessage();
@@ -361,7 +393,7 @@ The method `biconnector.connector.update` updates an existing connector.
             id: 4,
             fields: {
                 "title": "UPDATED REST CONNECTOR",
-                "logo": "data:image/svg+xml;base64,NEWLOGODATA",
+                "logo": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjEwIiBmaWxsPSIjMkZDN0Y3IiAvPgoJPHRleHQgeD0iMTEiIHk9IjEzIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlJFU1Q8L3RleHQ+Cjwvc3ZnPgo=",
                 "description": "Updated description",
                 "urlCheck": "http://example.com/api/new_check",
                 "urlTableList": "http://example.com/api/new_table_list",
@@ -383,9 +415,20 @@ The method `biconnector.connector.update` updates an existing connector.
             }
         },
         (result) => {
-            result.error()
-                ? console.error(result.error())
-                : console.info(result.data());
+            if (result.error()) {
+                console.error(result.error());
+                return;
+            }
+
+            const data = result.data();
+
+            // Methods of this section put errors inside result and answer with HTTP 200
+            if (data && data.error) {
+                console.error(data.error.error, data.error.error_description);
+                return;
+            }
+
+            console.info(data);
         }
     );
     ```
@@ -401,7 +444,7 @@ The method `biconnector.connector.update` updates an existing connector.
             'id' => 4,
             'fields' => [
                 'title' => 'UPDATED REST CONNECTOR',
-                'logo' => 'data:image/svg+xml;base64,NEWLOGODATA',
+                'logo' => 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjEwIiBmaWxsPSIjMkZDN0Y3IiAvPgoJPHRleHQgeD0iMTEiIHk9IjEzIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlJFU1Q8L3RleHQ+Cjwvc3ZnPgo=',
                 'description' => 'Updated description',
                 'urlCheck' => 'http://example.com/api/new_check',
                 'urlTableList' => 'http://example.com/api/new_table_list',
@@ -424,9 +467,15 @@ The method `biconnector.connector.update` updates an existing connector.
         ]
     );
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+    // Methods of this section put errors inside result and answer with HTTP 200
+    if (isset($result['result']['error'])) {
+        echo 'BIconnector error: ' . $result['result']['error']['error']
+            . ': ' . $result['result']['error']['error_description'];
+    } else {
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
+    }
     ```
 
 - Go
@@ -437,7 +486,7 @@ The method `biconnector.connector.update` updates an existing connector.
     	"id": 4,
     	"fields": b24.Params{
     		"title":               "UPDATED REST CONNECTOR",
-    		"logo":                "data:image/svg+xml;base64,NEWLOGODATA",
+    		"logo":                "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjEwIiBmaWxsPSIjMkZDN0Y3IiAvPgoJPHRleHQgeD0iMTEiIHk9IjEzIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNiIgZmlsbD0iI0ZGRkZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9ImJvbGQiPlJFU1Q8L3RleHQ+Cjwvc3ZnPgo=",
     		"description":         "Updated description",
     		"urlCheck":            "http://example.com/api/new_check",
     		"urlTableList":        "http://example.com/api/new_table_list",
@@ -460,6 +509,17 @@ The method `biconnector.connector.update` updates an existing connector.
     })
     if err != nil {
     	return fmt.Errorf("biconnector.connector.update: %w", err)
+    }
+
+    // Methods of this section put errors inside result and answer with HTTP 200.
+    var apiErr struct {
+    	Error *struct {
+    		Error       string `json:"error"`
+    		Description string `json:"error_description"`
+    	} `json:"error"`
+    }
+    if err := json.Unmarshal(res.Result, &apiErr); err == nil && apiErr.Error != nil {
+    	return fmt.Errorf("biconnector.connector.update: %s: %s", apiErr.Error.Error, apiErr.Error.Description)
     }
 
     var ok bool
@@ -495,7 +555,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../data-types.md) | Root element of the response. On a successful update it contains `true` — the response carries no object with the connector data. To see the new field values, call [biconnector.connector.get](./biconnector-connector-get.md) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -506,10 +566,20 @@ HTTP status: **200**
 
 ```json
 {
-    "error": "VALIDATION_FIELDS_NOT_PROVIDED",
-    "error_description": "Fields not provided."
+    "result": {
+        "error": {
+            "error": "VALIDATION_FIELDS_NOT_PROVIDED",
+            "error_description": "Fields not provided."
+        }
+    }
 }
 ```
+
+{% note warning "" %}
+
+The method returns an error [inside the `result` field](../index.md#errors) and with HTTP status 200. Check `result.error`: the SDK wrappers parse only the top level of the response and treat such an error as a success
+
+{% endnote %}
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
@@ -517,14 +587,15 @@ HTTP status: **200**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields were not passed in the request ||
 || `VALIDATION_UNKNOWN_PARAMETERS` | Unknown parameters: #LIST_OF_PARAMS# | Unknown parameters detected: list ||
 || `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
-|| `VALIDATION_IMMUTABLE_FIELD` | Field "#TITLE#" is immutable. | Field #TITLE# is immutable ||
 || `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
-|| `CONNECTOR_NOT_FOUND` | Connector was not found. | Connector not found ||
+|| `CONNECTOR_NOT_FOUND` | Connector was not found. | The connector does not exist or belongs to another application ||
+
 || `VALIDATION_SETTINGS_MISSING_REQUIRED_FIELDS` | Settings must include "type", "name" and "code" fields. | Settings must include the fields `type`, `name`, and `code` ||
 || `VALIDATION_SETTINGS_INVALID_TYPE` | Parameter "type" is not correct. | Invalid value for parameter `type` ||
 || `VALIDATION_SETTINGS_NAME_TOO_LONG` | Parameter "name" must be less than 512 characters. | The value of parameter `name` must not exceed 512 characters ||
@@ -535,6 +606,7 @@ HTTP status: **200**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./biconnector-connector-add.md)
 - [{#T}](./biconnector-connector-get.md)
 - [{#T}](./biconnector-connector-list.md)
