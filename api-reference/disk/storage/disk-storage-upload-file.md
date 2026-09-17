@@ -32,9 +32,11 @@ The identifier can be obtained using the method [disk.storage.getList](../storag
 || **fileContent***
 [`array`](../../data-types.md) | An array containing the file name and a string with [Base64](../../files/how-to-upload-files.md) ||
 || **rights**
-[`array`](../../data-types.md) | An array of access permissions for the uploaded file in the format `{"TASK_ID": 42, "ACCESS_CODE": "U35"}`, where
-- `TASK_ID` — identifier of the access level
-- `ACCESS_CODE` — access code consisting of a letter code for the user or department and an identifier
+[`array`](../../data-types.md) | An array of access permissions for the uploaded file. Each item contains:
+
+- `ACCESS_CODE` — a non-empty string of up to 50 characters containing the access recipient code, for example, `U35`
+- `TASK_ID` — an integer identifier of an existing access level
+- `NEGATIVE` — an optional boolean flag for a deny permission. String values `true`, `yes`, and `on` specify a deny permission
 
 User categories:
 - `U` — user
@@ -42,7 +44,9 @@ User categories:
 - `D` — all department employees
 - `DR` — all department employees including sub-departments
 
-The list of available `TASK_ID` identifiers for setting permissions can be obtained using the method [disk.rights.getTasks](../rights/disk-rights-get-tasks.md) ||
+The list of available `TASK_ID` identifiers for setting permissions can be obtained using the method [disk.rights.getTasks](../rights/disk-rights-get-tasks.md).
+
+Additional fields, including `DOMAIN` and `OBJECT_ID`, are ignored ||
 || **generateUniqueName**
 [`boolean`](../../data-types.md) | Generate a unique file name if a file with that name already exists. For example, file (1).docx.
 
@@ -468,7 +472,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400** or **403**
 
 ```json
 {
@@ -482,13 +486,19 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #0} | Required parameter not specified ||
-|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | Storage with the specified `id` not found ||
-|| `DISK_BASE_SERVICE_22001` | Error: required parameter NAME (DISK_BASE_SERVICE_22001) | Required parameter `NAME` not specified in the `data` array ||
-|| `ERROR_COULD_NOT_SAVE_FILE` | Could not save file | Failed to save the file. Check available space on the Drive and the correctness of the data encoding ||
-|| — | Invalid rights format | Invalid format of the `rights` parameter ||
-|| `ACCESS_DENIED` | Access denied | Insufficient permissions to add the file ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #0} | Required parameter not specified ||
+|| `400` | `ERROR_NOT_FOUND` | Could not find entity with id `X` | Storage with the specified `id` not found ||
+|| `400` | `DISK_BASE_SERVICE_22001` | Error: required parameter NAME (DISK_BASE_SERVICE_22001) | Required parameter `NAME` not specified in the `data` array ||
+|| `400` | `ERROR_COULD_NOT_SAVE_FILE` | Could not save file | Failed to save the file. Check available space on the Drive and the correctness of the data encoding ||
+|| `400` | Empty value | Invalid format: Right `N` should be array | The `rights` item at index `N` is not an array ||
+|| `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE and TASK_ID | The `rights` item at index `N` does not contain `ACCESS_CODE` or `TASK_ID` ||
+|| `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE as not empty string | `ACCESS_CODE` is not a string or is an empty string ||
+|| `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE not longer than 50 characters | `ACCESS_CODE` exceeds 50 characters ||
+|| `400` | Empty value | Invalid format: Right `N` should contain TASK_ID as integer | `TASK_ID` is not an integer ||
+|| `400` | Empty value | Invalid format: Right `N` should contain known TASK_ID | The access level with the specified `TASK_ID` was not found ||
+|| `400` | Empty value | Invalid format: Right `N` should contain NEGATIVE as 0 or 1 | `NEGATIVE` cannot be converted to a boolean value ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Insufficient permissions to add the file or change access permissions ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

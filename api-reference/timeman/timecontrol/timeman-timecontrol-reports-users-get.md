@@ -315,6 +315,24 @@ If the value is empty, the user does not have an avatar. ||
 
 ## Error Handling
 
+HTTP Status: **400**
+
+```json
+{
+    "error": "TIMEMAN_TOOL_DISABLED",
+    "error_description": "Working time management is disabled."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `TIMEMAN_TOOL_DISABLED` | Working time management is disabled. | The time tracking tool is disabled ||
+|#
+
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 

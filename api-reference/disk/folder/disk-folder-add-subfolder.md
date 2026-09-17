@@ -29,11 +29,21 @@ The identifier can be obtained using the method [disk.storage.getChildren](../st
 ||
 || **data***
 [`array`](../../data-types.md) | An array with the field `NAME`, where `NAME` is the name of the subfolder ||
+|| **rights**
+[`array`](../../data-types.md) | An array of access permissions for the folder. Each item contains:
+
+- `ACCESS_CODE` — a non-empty string of up to 50 characters containing the access recipient code, for example, `U35`
+- `TASK_ID` — an integer identifier of an existing access level
+- `NEGATIVE` — an optional boolean flag for a deny permission. String values `true`, `yes`, and `on` specify a deny permission
+
+The list of available `TASK_ID` identifiers can be obtained using the [disk.rights.getTasks](../rights/disk-rights-get-tasks.md) method.
+
+Additional fields, including `DOMAIN` and `OBJECT_ID`, are ignored ||
 |#
 
 {% note info "" %}
 
-To manage access to the created folder, use the method [disk.folder.shareToUser](./disk-folder-share-to-user.md)
+You can set permissions when creating a folder using the `rights` parameter. To grant access after creating the folder, use the [disk.folder.shareToUser](./disk-folder-share-to-user.md) method
 
 {% endnote %} 
 
@@ -49,7 +59,7 @@ To manage access to the created folder, use the method [disk.folder.shareToUser]
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":8907,"data":{"NAME":"Folder in Folder"}}' \
+    -d '{"id":8907,"data":{"NAME":"Folder in Folder"},"rights":[{"TASK_ID":71,"ACCESS_CODE":"U1271"}]}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/disk.folder.addSubFolder
     ```
 
@@ -59,7 +69,7 @@ To manage access to the created folder, use the method [disk.folder.shareToUser]
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":8907,"data":{"NAME":"Folder in Folder"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":8907,"data":{"NAME":"Folder in Folder"},"rights":[{"TASK_ID":71,"ACCESS_CODE":"U1271"}],"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/disk.folder.addSubFolder
     ```
 
@@ -100,6 +110,12 @@ To manage access to the created folder, use the method [disk.folder.shareToUser]
           data: {
             NAME: 'Subfolder name',
           },
+          rights: [
+            {
+              TASK_ID: 71,
+              ACCESS_CODE: 'U1271',
+            },
+          ],
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -135,6 +151,12 @@ To manage access to the created folder, use the method [disk.folder.shareToUser]
               data: {
                 NAME: 'Subfolder name',
               },
+              rights: [
+                {
+                  TASK_ID: 71,
+                  ACCESS_CODE: 'U1271',
+                },
+              ],
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -168,6 +190,12 @@ To manage access to the created folder, use the method [disk.folder.shareToUser]
             data={
                 "NAME": "Folder inside a folder",
             },
+            rights=[
+                {
+                    "TASK_ID": 71,
+                    "ACCESS_CODE": "U1271",
+                },
+            ],
         ).response
         result = bitrix_response.result
         print(result)
@@ -196,6 +224,12 @@ To manage access to the created folder, use the method [disk.folder.shareToUser]
                     'id' => 8907,
                     'data' => [
                         'NAME' => 'Folder in Folder'
+                    ],
+                    'rights' => [
+                        [
+                            'TASK_ID' => 71,
+                            'ACCESS_CODE' => 'U1271'
+                        ]
                     ]
                 ]
             );
@@ -223,6 +257,12 @@ To manage access to the created folder, use the method [disk.folder.shareToUser]
             data: {
                 NAME: 'Folder in Folder'
             },
+            rights: [
+                {
+                    TASK_ID: 71,
+                    ACCESS_CODE: 'U1271'
+                }
+            ],
         },
         function (result) {
             if (result.error())
@@ -244,6 +284,12 @@ To manage access to the created folder, use the method [disk.folder.shareToUser]
             'id' => 8907,
             'data' => [
                 'NAME' => 'Folder in Folder'
+            ],
+            'rights' => [
+                [
+                    'TASK_ID' => 71,
+                    'ACCESS_CODE' => 'U1271'
+                ]
             ]
         ]
     );
@@ -258,10 +304,16 @@ To manage access to the created folder, use the method [disk.folder.shareToUser]
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "disk.folder.addSubFolder", b24.Params{
-    	"id": 8907,
-    	"data": b24.Params{
-    		"NAME": "Folder in Folder",
-    	},
+	    "id": 8907,
+	    "data": b24.Params{
+		    "NAME": "Folder in Folder",
+	    },
+	    "rights": []b24.Params{
+		    {
+			    "TASK_ID":     71,
+			    "ACCESS_CODE": "U1271",
+		    },
+	    },
     })
     if err != nil {
     	return fmt.Errorf("disk.folder.addSubFolder: %w", err)
@@ -365,7 +417,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400** or **403**
 
 ```json
 {
@@ -379,11 +431,18 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required field `NAME` is missing in the `data` array ||
-|| `DISK_OBJ_22000` | A folder with this name already exists | A folder with this name already exists ||
-|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient rights to create the folder ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required field `NAME` is missing in the `data` array ||
+|| `400` | `DISK_OBJ_22000` | A folder with this name already exists | A folder with this name already exists ||
+|| `400` | `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
+|| `400` | Empty value | Invalid format: Right `N` should be array | The `rights` item at index `N` is not an array ||
+|| `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE and TASK_ID | The `rights` item at index `N` does not contain `ACCESS_CODE` or `TASK_ID` ||
+|| `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE as not empty string | `ACCESS_CODE` is not a string or is an empty string ||
+|| `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE not longer than 50 characters | `ACCESS_CODE` exceeds 50 characters ||
+|| `400` | Empty value | Invalid format: Right `N` should contain TASK_ID as integer | `TASK_ID` is not an integer ||
+|| `400` | Empty value | Invalid format: Right `N` should contain known TASK_ID | The access level with the specified `TASK_ID` was not found ||
+|| `400` | Empty value | Invalid format: Right `N` should contain NEGATIVE as 0 or 1 | `NEGATIVE` cannot be converted to a boolean value ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Insufficient permissions to create the folder or change access permissions ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

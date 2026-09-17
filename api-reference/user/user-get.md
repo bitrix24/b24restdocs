@@ -15,8 +15,6 @@ Choose a tool for developing with an AI agent:
 
 The `user.get` method allows you to retrieve a filtered list of users. The method returns all users except for: bots, e-mail users, Open Channels users, and Replica users.
 
-By default, the method sorts users by ascending `ID`.
-
 {% note info "" %}
 
 The method does not return integrators. The list of Bitrix24 user fields that will be retrieved as a result of the method execution depends on the scope of the application/webhook. The fields available in each version are listed in the [User Scope Versions](user-scope.md) article.
@@ -31,7 +29,11 @@ The method does not return integrators. The list of Bitrix24 user fields that wi
 || **Name**
 `type` | **Description** ||
 || **sort**
-[`string`](../data-types.md) | The field by which the results are sorted. Sorting works for all fields from [user.add](./user-add.md) ||
+[`string`](../data-types.md) | The field by which the results are sorted. Sorting works for all fields from [user.add](./user-add.md).
+
+By default, the method sorts users by ascending `ID`.
+
+If `sort` or `order` is not a string, the method also applies the default sorting ||
 || **order**
 [`string`](../data-types.md) | Sorting direction:
 - `ASC` — ascending

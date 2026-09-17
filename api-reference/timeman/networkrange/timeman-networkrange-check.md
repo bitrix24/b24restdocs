@@ -315,6 +315,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `TIMEMAN_TOOL_DISABLED` | Working time management is disabled. | The time tracking tool is disabled ||
 || `ACCESS_ERROR` | You don't have access to use this method | The method is only available to administrators ||
 |#
 

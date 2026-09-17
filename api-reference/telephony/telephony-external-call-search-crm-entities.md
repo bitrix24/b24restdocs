@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `telephony.externalCall.searchCrmEntities` returns CRM entities based on the client's phone number and the details of the responsible employee.
+The method `telephony.externalCall.searchCrmEntities` returns CRM entities based on the client's phone number and the details of the responsible employee. For leads, the method returns only an active lead available to the current user.
 
 ## Method Parameters
 
@@ -314,7 +314,7 @@ HTTP Status: **200**
 
 Possible values:
 - `CONTACT` — contact
-- `LEAD` — lead
+- `LEAD` — active lead available to the current user
 - `COMPANY` — company ||
 || **CRM_ENTITY_ID**
 [`integer`](../data-types.md) | Identifier of the CRM object ||

@@ -292,7 +292,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **400** or **403**
 
 ```json
 {
@@ -306,11 +306,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter not specified ||
-|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
-|| `ACCESS_DENIED` | Access denied | Attempt to set permission level higher than the current user's ||
-|| `ACCESS_DENIED` | Access denied | Incorrect value provided for parameter `taskName` ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter not specified ||
+|| `400` | `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Folder sharing is disabled in Bitrix24 ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Attempt to set a permission level higher than the current user's level ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Incorrect value provided for the `taskName` parameter ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

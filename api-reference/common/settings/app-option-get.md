@@ -369,8 +369,9 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"AccessException",
-    "error_description":"Application context required"
+    "error": "ERROR_ARGUMENT",
+    "error_description": "The value of an argument 'option' must be of type string",
+    "argument": "option"
 }
 ```
 
@@ -380,6 +381,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error message** | **Description** ||
+|| `ERROR_ARGUMENT` | The value of an argument 'option' must be of type string | The `option` parameter is not a string ||
 || `AccessException` | Application context required | The method is called outside the application context ||
 || `AccessException` | User authorization required | The user is not authorized ||
 |#

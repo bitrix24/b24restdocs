@@ -318,6 +318,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `TIMEMAN_TOOL_DISABLED` | Working time management is disabled. | The time tracking tool is disabled ||
 || `ACCESS_ERROR` | You don't have access for this report | You do not have access to this report ||
 || `TEXT_EMPTY` | Text can't be empty | The report text cannot be empty ||
 |#

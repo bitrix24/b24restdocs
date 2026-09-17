@@ -53,6 +53,10 @@ Defaults to `en` ||
 [`object`](../data-types.md) | External parameters of the document [(detailed description)](#external-settings) ||
 || **language**
 [`string`](../data-types.md) | Language of the document ||
+|| **message**
+[`string`](../data-types.md) | Message text for the employee. The employee will see the message in the chat together with the invitation to sign the document.
+
+Maximum length: 2000 characters ||
 |#
 
 ### Parameter company {#company}
@@ -166,7 +170,7 @@ If you do not know the code, use the value `12.999` as a safe default. This valu
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"company":{"crmId":12},"members":[{"userId":25,"role":"signer"},{"userId":42,"role":"assignee"}],"responsible":{"userId":7},"companyProviderUid":"d4f6b8a1-4c6d-4d8c-9c7c-2d1b1f6d0f2b","files":[{"fileName":"contract.pdf","fileType":"application/pdf","fileContent":"JVBERi0xLjQKJ..."}],"regionDocumentType":"12.999","externalSettings":{"externalId":"EXT-123","externalDateCreate":"2025-02-18T09:19:34+01:00"}},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"company":{"crmId":12},"members":[{"userId":25,"role":"signer"},{"userId":42,"role":"assignee"}],"responsible":{"userId":7},"companyProviderUid":"d4f6b8a1-4c6d-4d8c-9c7c-2d1b1f6d0f2b","files":[{"fileName":"contract.pdf","fileType":"application/pdf","fileContent":"JVBERi0xLjQKJ..."}],"regionDocumentType":"12.999","externalSettings":{"externalId":"EXT-123","externalDateCreate":"2025-02-18T09:19:34+01:00"},"message":"Please sign the document"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sign.b2e.document.send
     ```
 
@@ -227,6 +231,7 @@ If you do not know the code, use the value `12.999` as a safe default. This valu
               externalId: 'EXT-123',
               externalDateCreate: '2025-02-18T09:19:34+03:00',
             },
+            message: 'Please sign the document',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -279,6 +284,7 @@ If you do not know the code, use the value `12.999` as a safe default. This valu
                   externalId: 'EXT-123',
                   externalDateCreate: '2025-02-18T09:19:34+03:00',
                 },
+                message: 'Please sign the document',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -337,6 +343,7 @@ If you do not know the code, use the value `12.999` as a safe default. This valu
             "externalId": "EXT-123",
             "externalDateCreate": "2025-02-18T09:19:34+03:00",
         },
+        "message": "Please sign the document",
     }
 
     try:
@@ -388,7 +395,8 @@ If you do not know the code, use the value `12.999` as a safe default. This valu
                         'externalSettings' => [
                             'externalId' => 'EXT-123',
                             'externalDateCreate' => '2025-02-18T09:19:34+01:00'
-                        ]
+                        ],
+                        'message' => 'Please sign the document'
                     ]
                 ]
             );
@@ -430,7 +438,8 @@ If you do not know the code, use the value `12.999` as a safe default. This valu
                 externalSettings: {
                     externalId: 'EXT-123',
                     externalDateCreate: '2025-02-18T09:19:34+01:00'
-                }
+                },
+                message: 'Please sign the document'
             }
         },
         result => {
@@ -470,7 +479,8 @@ If you do not know the code, use the value `12.999` as a safe default. This valu
                 'externalSettings' => [
                     'externalId' => 'EXT-123',
                     'externalDateCreate' => '2025-02-18T09:19:34+01:00'
-                ]
+                ],
+                'message' => 'Please sign the document'
             ]
         ]
     );
@@ -519,6 +529,7 @@ If you do not know the code, use the value `12.999` as a safe default. This valu
     			"externalId":         "EXT-123",
     			"externalDateCreate": "2025-02-18T09:19:34+03:00",
     		},
+		"message": "Please sign the document",
     	},
     })
     if err != nil {

@@ -30,9 +30,11 @@ The identifier can be obtained using the method [disk.storage.getList](./disk-st
 || **data***
 [`array`](../../data-types.md) | Array with the field `NAME`, where `NAME` is the name of the new folder ||
 || **rights**
-[`array`](../../data-types.md) | Array of access permissions for the folder in the format `{"TASK_ID": 42, "ACCESS_CODE": "U35"}`, where
-- `TASK_ID` — identifier of the access level
-- `ACCESS_CODE` — access code consisting of the user's or department's letter code and identifier
+[`array`](../../data-types.md) | Array of access permissions for the folder. Each item contains:
+
+- `ACCESS_CODE` — a non-empty string of up to 50 characters containing the access recipient code, for example, `U35`
+- `TASK_ID` — an integer identifier of an existing access level
+- `NEGATIVE` — an optional boolean flag for a deny permission. String values `true`, `yes`, and `on` specify a deny permission
 
 User categories:
 - `U` — user
@@ -40,7 +42,9 @@ User categories:
 - `D` — all department employees
 - `DR` — all department employees with subdivisions
 
-The list of available `TASK_ID` identifiers for setting permissions can be obtained using the method [disk.rights.getTasks](../rights/disk-rights-get-tasks.md) ||
+The list of available `TASK_ID` identifiers for setting permissions can be obtained using the method [disk.rights.getTasks](../rights/disk-rights-get-tasks.md).
+
+Additional fields, including `DOMAIN` and `OBJECT_ID`, are ignored ||
 |#
 
 ## Code Examples
@@ -414,7 +418,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **400** or **403**
 
 ```json
 {
@@ -428,11 +432,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required field `NAME` is missing in the `data` array ||
-|| `DISK_OBJ_22000` | A folder with this name already exists | A folder with this name already exists ||
-|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | Storage with the specified `id` not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient rights to create the folder ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required field `NAME` is missing in the `data` array ||
+|| `400` | `DISK_OBJ_22000` | A folder with this name already exists | A folder with this name already exists ||
+|| `400` | `ERROR_NOT_FOUND` | Could not find entity with id `X` | Storage with the specified `id` not found ||
+|| `400` | Empty value | Invalid format: Right `N` should be array | The `rights` item at index `N` is not an array ||
+|| `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE and TASK_ID | The `rights` item at index `N` does not contain `ACCESS_CODE` or `TASK_ID` ||
+|| `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE as not empty string | `ACCESS_CODE` is not a string or is an empty string ||
+|| `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE not longer than 50 characters | `ACCESS_CODE` exceeds 50 characters ||
+|| `400` | Empty value | Invalid format: Right `N` should contain TASK_ID as integer | `TASK_ID` is not an integer ||
+|| `400` | Empty value | Invalid format: Right `N` should contain known TASK_ID | The access level with the specified `TASK_ID` was not found ||
+|| `400` | Empty value | Invalid format: Right `N` should contain NEGATIVE as 0 or 1 | `NEGATIVE` cannot be converted to a boolean value ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Insufficient permissions to create the folder or change access permissions ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

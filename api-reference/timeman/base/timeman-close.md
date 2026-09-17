@@ -408,6 +408,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `TIMEMAN_TOOL_DISABLED` | Working time management is disabled. | The time tracking tool is disabled ||
 || empty string | User not found | User with the specified `USER_ID` not found ||
 || `WRONG_DATETIME` | Day close date should correspond to the day open date | The closing date of the workday must match the opening date ||
 |#

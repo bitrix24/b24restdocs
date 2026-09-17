@@ -91,7 +91,9 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 {% endnote %}
 
-Send a direct HTTP request to call batch 3.0.
+You can call batch 3.0 using a direct HTTP request or B24JsSDK.
+
+The `JS (TS)` and `JS (UMD)` examples require B24JsSDK version 2.0 or later.
 
 ### Independent Calls
 
@@ -110,6 +112,112 @@ If the subrequest results are not related, pass them in a single array without `
         {"method":"tasks.task.get","query":{"id":102,"select":["id","title"]}}
     ]' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/batch
+    ```
+
+- JS (TS)
+
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    type TaskGetResult = {
+      item: {
+        id: number
+        title: string
+      }
+    }
+
+    try {
+      const response = await $b24.actions.v3.batch.make<TaskGetResult>({
+        calls: [
+          {
+            method: 'tasks.task.get',
+            params: {
+              id: 101,
+              select: ['id', 'title'],
+            },
+          },
+          {
+            method: 'tasks.task.get',
+            params: {
+              id: 102,
+              select: ['id', 'title'],
+            },
+          },
+        ],
+        options: {
+          isHaltOnError: true,
+          returnAjaxResult: true,
+          requestId: Text.getUuidRfc4122(),
+        },
+      })
+
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const results = response.getData()!
+        console.info(results.map((item) => item.getData()!.result.item))
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@2/dist/umd/index.min.js"></script>
+    <script>
+      async function getTasks() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v3.batch.make({
+            calls: [
+              {
+                method: 'tasks.task.get',
+                params: {
+                  id: 101,
+                  select: ['id', 'title'],
+                },
+              },
+              {
+                method: 'tasks.task.get',
+                params: {
+                  id: 102,
+                  select: ['id', 'title'],
+                },
+              },
+            ],
+            options: {
+              isHaltOnError: true,
+              returnAjaxResult: true,
+              requestId: B24Js.Text.getUuidRfc4122(),
+            },
+          })
+
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const results = response.getData()
+          console.info(results.map((item) => item.getData().result.item))
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getTasks)
+    </script>
     ```
 
 {% endlist %}
@@ -138,10 +246,195 @@ The subrequests are executed in the following order:
         {"method":"tasks.task.get","query":{"id":101,"select":["id","title"]},"as":"first_task"},
         {"method":"tasks.task.get","query":{"id":102,"select":["id","title"]}},
         {"method":"tasks.task.update","query":{"id":{"$ref":"first_task.id"},"fields":{"title":"Updated task"}}},
-        {"method":"tasks.task.list","query":{"select":["id","title"],"filter":["id",[101,{"$ref":"first_task.id"},{"$ref":"1.id"}]]},"as":"tasks_list"},
-        {"method":"tasks.task.list","query":{"select":["id","title"],"filter":["id",{"$refArray":"tasks_list.id"}]}}
+        {"method":"tasks.task.list","query":{"select":["id","title"],"filter":[["id","in",[101,{"$ref":"first_task.id"},{"$ref":"1.id"}]]]},"as":"tasks_list"},
+        {"method":"tasks.task.list","query":{"select":["id","title"],"filter":[["id","in",{"$refArray":"tasks_list.id"}]]}}
     ]' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/batch
+    ```
+
+- JS (TS)
+
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { BatchRefV3, Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    type TaskGetResult = {
+      item: {
+        id: number
+        title: string
+      }
+    }
+
+    type TaskUpdateResult = {
+      result: boolean
+    }
+
+    type TaskListResult = {
+      items: Array<{
+        id: number
+        title: string
+      }>
+    }
+
+    try {
+      const response = await $b24.actions.v3.batch.make<
+        TaskGetResult | TaskUpdateResult | TaskListResult
+      >({
+        calls: [
+          {
+            method: 'tasks.task.get',
+            params: {
+              id: 101,
+              select: ['id', 'title'],
+            },
+            as: 'first_task',
+          },
+          {
+            method: 'tasks.task.get',
+            params: {
+              id: 102,
+              select: ['id', 'title'],
+            },
+          },
+          {
+            method: 'tasks.task.update',
+            params: {
+              id: BatchRefV3.ref('first_task.id'),
+              fields: {
+                title: 'Updated task',
+              },
+            },
+          },
+          {
+            method: 'tasks.task.list',
+            params: {
+              select: ['id', 'title'],
+              filter: [
+                ['id', 'in', [
+                  101,
+                  BatchRefV3.ref('first_task.id'),
+                  BatchRefV3.ref('1.id'),
+                ]],
+              ],
+            },
+            as: 'tasks_list',
+          },
+          {
+            method: 'tasks.task.list',
+            params: {
+              select: ['id', 'title'],
+              filter: [
+                ['id', 'in', BatchRefV3.refArray('tasks_list.id')],
+              ],
+            },
+          },
+        ],
+        options: {
+          isHaltOnError: true,
+          returnAjaxResult: true,
+          requestId: Text.getUuidRfc4122(),
+        },
+      })
+
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const results = response.getData()!
+        console.info(results.map((item) => item.getData()!.result))
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@2/dist/umd/index.min.js"></script>
+    <script>
+      async function runTaskBatch() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v3.batch.make({
+            calls: [
+              {
+                method: 'tasks.task.get',
+                params: {
+                  id: 101,
+                  select: ['id', 'title'],
+                },
+                as: 'first_task',
+              },
+              {
+                method: 'tasks.task.get',
+                params: {
+                  id: 102,
+                  select: ['id', 'title'],
+                },
+              },
+              {
+                method: 'tasks.task.update',
+                params: {
+                  id: B24Js.BatchRefV3.ref('first_task.id'),
+                  fields: {
+                    title: 'Updated task',
+                  },
+                },
+              },
+              {
+                method: 'tasks.task.list',
+                params: {
+                  select: ['id', 'title'],
+                  filter: [
+                    ['id', 'in', [
+                      101,
+                      B24Js.BatchRefV3.ref('first_task.id'),
+                      B24Js.BatchRefV3.ref('1.id'),
+                    ]],
+                  ],
+                },
+                as: 'tasks_list',
+              },
+              {
+                method: 'tasks.task.list',
+                params: {
+                  select: ['id', 'title'],
+                  filter: [
+                    ['id', 'in', B24Js.BatchRefV3.refArray('tasks_list.id')],
+                  ],
+                },
+              },
+            ],
+            options: {
+              isHaltOnError: true,
+              returnAjaxResult: true,
+              requestId: B24Js.Text.getUuidRfc4122(),
+            },
+          })
+
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const results = response.getData()
+          console.info(results.map((item) => item.getData().result))
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', runTaskBatch)
+    </script>
     ```
 
 {% endlist %}

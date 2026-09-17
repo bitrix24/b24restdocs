@@ -380,6 +380,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `TIMEMAN_TOOL_DISABLED` | Working time management is disabled. | The time tracking tool is disabled ||
 || empty string | User not found | User with the specified `USER_ID` not found ||
 || `WRONG_DATETIME` | Day open date should correspond to the current date | The date of opening the workday must match the current calendar date ||
 || `TIME` | Unable to set time, work day is paused | Cannot pass the `TIME` parameter for a paused workday ||
