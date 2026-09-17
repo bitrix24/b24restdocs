@@ -175,7 +175,7 @@ In `nodes`, the keys are the selectors of editable elements, and the values spec
 
 There are eight main node types, from text and images to maps and embedded components. The list of types, their fields, and markup examples: [Node Types](./node-types.md).
 
-### Key cards {#cards} {#cards-key}
+### Key cards {#cards-key}
 
 The `cards` key describes cards. Cards are used for repeatable content, such as lists of services, employees, or gallery items.
 

@@ -46,7 +46,7 @@ The block identifier can be obtained using the [landing.block.getlist](./landing
 || **Key**
 `type` | **Description** ||
 || **<card selector from manifest.cards>**
-[`object`](../../../data-types.md) | Card selector from the [cards section of the block manifest](../manifest.md#cards).
+[`object`](../../../data-types.md) | Card selector from the [cards section of the block manifest](../manifest.md#cards-key).
 
 The value describes the final set of cards for this selector and the changes to their nodes [(detailed description)](#card-data).
 
