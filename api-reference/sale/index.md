@@ -26,17 +26,14 @@ The sections of the online store cover the main scenarios:
 > - [How to Create and Configure an Online Store in Bitrix24](https://helpdesk.bitrix24.com/open/25757867/)
 > - [Frequently Asked Questions about the Online Store](https://helpdesk.bitrix24.com/open/25861023/)
 
-## How to Choose a Section
+## How to Get Started
 
-#| 
-|| **If you need** | **Open the section** ||
-|| To work with orders and the cart | [Order](./order/index.md), [Cart](./basket-item/index.md), [Cart Properties](./basket-properties/index.md) ||
-|| To configure properties and field values of orders | [Order Properties](./property/index.md), [Property Groups](./property-group/index.md), [Order Property Variants of type ENUM](./property-variant/index.md), [Property Binding](./property-relation/index.md), [Property Values](./property-value/index.md) ||
-|| To work with payments and their relationships | [Payments](./payment/index.md), [Binding Cart Items to Payments](./payment-item-basket/index.md), [Binding Payments to Shipments](./payment-item-shipment/index.md), [Cash Registers](./cashbox/index.md) ||
-|| To work with shipments and delivery | [Shipments](./shipment/index.md), [Shipment Item Table](./shipment-item/index.md), [Shipment Properties](./shipment-property/index.md), [Shipment Property Values](./shipment-property-value/index.md), [Delivery Services](./delivery/index.md) ||
-|| To configure statuses and payer types | [Statuses](./status/index.md), [Localization of Statuses](./status-lang/index.md), [Payer Types](./person-type/index.md), [Statuses of Payer Types](./business-value-person-domain/index.md) ||
-|| To receive events and track changes | [Events](./events/index.md) ||
-|#
+1. Check the structure of fields and types on the page [Data Types and Object Structure in the Online Store REST API](./data-types.md).
+2. Verify access permissions and user roles before making changes.
+3. Identify the main object of the scenario: order, cart, payment, shipment, or property.
+4. Retrieve working identifiers through `list` or `get` in the relevant section.
+5. Make changes to the object using the `add`, `update`, or `delete` methods.
+6. If necessary, subscribe to [Events](./events/index.md) to track changes in real time.
 
 {% note tip "User Documentation" %}
 
@@ -45,15 +42,6 @@ The sections of the online store cover the main scenarios:
 - [How to Operate in the Store without Orders](https://helpdesk.bitrix24.com/open/13727858/)
 
 {% endnote %}
-
-## How to Get Started
-
-1. Check the structure of fields and types on the page [Data Types and Object Structure in the Online Store REST API](./data-types.md).
-2. Verify access permissions and user roles before making changes.
-3. Identify the main object of the scenario: order, cart, payment, shipment, or property.
-4. Retrieve working identifiers through `list` or `get` in the relevant section.
-5. Make changes to the object using the `add`, `update`, or `delete` methods.
-6. If necessary, subscribe to [Events](./events/index.md) to track changes in real-time.
 
 ## Access Permissions
 
@@ -91,46 +79,46 @@ Access permissions for the Sites and Stores sections are shared. If you change t
 
 #| 
 || **Section** | **Description** ||
-|| [Order](./order/index.md) | Methods for working with orders ||
-|| [Cart](./basket-item/index.md) | Methods for working with cart items ||
-|| [Cart Properties](./basket-properties/index.md) | Methods for working with cart properties ||
-|| [Order Sources](./trade-platform/index.md) | Methods for working with order sources ||
-|| [Binding Order Sources to Orders](./trade-binding/index.md) | Methods for working with bindings of order sources ||
+|| [Order](./order/index.md) | Creating, retrieving, updating, and deleting orders ||
+|| [Cart](./basket-item/index.md) | Managing products and services within an order ||
+|| [Cart Properties](./basket-properties/index.md) | Managing additional product item data ||
+|| [Order Sources](./trade-platform/index.md) | Managing the sources from which orders originate ||
+|| [Binding Order Sources to Orders](./trade-binding/index.md) | Linking orders to sources ||
 |#
 
 ### Order Properties
 
 #| 
 || **Section** | **Description** ||
-|| [Order Properties](./property/index.md) | Methods for working with order properties ||
-|| [Property Groups](./property-group/index.md) | Methods for working with order property groups ||
-|| [Order Property Variants of type ENUM](./property-variant/index.md) | Methods for working with ENUM property values of orders ||
-|| [Property Binding](./property-relation/index.md) | Methods for working with property bindings of orders ||
-|| [Property Values](./property-value/index.md) | Methods for working with order property values ||
+|| [Order Properties](./property/index.md) | Configuring fields completed in an order ||
+|| [Property Groups](./property-group/index.md) | Grouping order properties ||
+|| [Order Property Variants of type ENUM](./property-variant/index.md) | Configuring selection options for ENUM properties ||
+|| [Property Binding](./property-relation/index.md) | Configuring conditions for displaying order properties ||
+|| [Property Values](./property-value/index.md) | Retrieving and updating property values in orders ||
 |#
 
 ### Payments and Shipments
 
 #| 
 || **Section** | **Description** ||
-|| [Payments](./payment/index.md) | Methods for working with payments ||
-|| [Shipments](./shipment/index.md) | Methods for working with shipments ||
-|| [Shipment Item Table](./shipment-item/index.md) | Methods for working with shipment items ||
-|| [Shipment Properties](./shipment-property/index.md) | Methods for working with shipment properties ||
-|| [Shipment Property Values](./shipment-property-value/index.md) | Methods for working with shipment property values ||
-|| [Binding Cart Items to Payments](./payment-item-basket/index.md) | Methods for working with binding cart items to payments ||
-|| [Binding Payments to Shipments](./payment-item-shipment/index.md) | Methods for working with binding payments to shipments ||
-|| [Delivery Services](./delivery/index.md) | Methods and webhooks for working with delivery services ||
-|| [Cash Registers](./cashbox/index.md) | Methods for working with cash registers and receipts ||
+|| [Payments](./payment/index.md) | Creating and updating order payments ||
+|| [Shipments](./shipment/index.md) | Creating and updating order shipments ||
+|| [Shipment Item Table](./shipment-item/index.md) | Managing product items in a shipment ||
+|| [Shipment Properties](./shipment-property/index.md) | Configuring shipment fields ||
+|| [Shipment Property Values](./shipment-property-value/index.md) | Retrieving and updating shipment property values ||
+|| [Binding Cart Items to Payments](./payment-item-basket/index.md) | Distributing product items among payments ||
+|| [Binding Payments to Shipments](./payment-item-shipment/index.md) | Linking payments to shipments ||
+|| [Delivery Services](./delivery/index.md) | Connecting delivery handlers and managing transport requests ||
+|| [Cash Registers](./cashbox/index.md) | Configuring cash registers and working with receipts ||
 |#
 
 ### Statuses and Events
 
 #| 
 || **Section** | **Description** ||
-|| [Payer Types](./person-type/index.md) | Methods for working with payer types ||
-|| [Statuses of Payer Types](./business-value-person-domain/index.md) | Methods for configuring the correspondence of payer types to individuals or legal entities ||
-|| [Statuses](./status/index.md) | Methods for working with statuses ||
-|| [Localization of Statuses](./status-lang/index.md) | Methods for working with the localization of statuses ||
-|| [Events](./events/index.md) | Events for handling changes in the online store ||
+|| [Payer Types](./person-type/index.md) | Configuring customer types for orders ||
+|| [Statuses of Payer Types](./business-value-person-domain/index.md) | Matching payer types to individuals and legal entities ||
+|| [Statuses](./status/index.md) | Configuring order and delivery statuses ||
+|| [Localization of Statuses](./status-lang/index.md) | Configuring status names and descriptions in different languages ||
+|| [Events](./events/index.md) | Tracking changes to orders, payments, shipments, and properties ||
 |#

@@ -31,6 +31,14 @@ For example, you can create a promotional page within a store's website, publish
 4. To find the page and check its parameters, use [landing.landing.getList](./landing-landing-get-list.md), [landing.landing.getadditionalfields](./landing-landing-get-additional-fields.md), [landing.landing.getpreview](./landing-landing-get-preview.md), and [landing.landing.getpublicurl](./landing-landing-get-public-url.md)
 5. After configuration, publish the page using the [landing.landing.publication](./landing-landing-publication.md) method. If you need to hide the page, use [landing.landing.unpublic](./landing-landing-unpublic.md)
 
+## When to Pass scope
+
+The `scope` parameter in page methods is not related to the REST [`landing`](../../../scopes/permissions.md) scope. It is an internal landing scope that switches the methods to the corresponding site type.
+
+The parameter is not required for pages of the `PAGE`, `STORE`, and `SMN` site types. For pages of the `KNOWLEDGE`, `GROUP`, and `MAINPAGE` site types, pass the corresponding `scope` value when calling methods such as [landing.landing.getList](./landing-landing-get-list.md), [landing.landing.publication](./landing-landing-publication.md), and [landing.landing.unpublic](./landing-landing-unpublic.md).
+
+For the parameter values and usage rules, see [Working with Site Types and Scopes](../../types.md).
+
 ## Relationships with Other Objects
 
 A page in Bitrix24 is linked to other objects. The site provides the overall context, the folder indicates the page's location in the structure, the view template defines the layout, blocks form the content, and special pages determine its role on the site.

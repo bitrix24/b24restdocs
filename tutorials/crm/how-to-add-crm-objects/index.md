@@ -13,7 +13,9 @@ This section helps you select a scenario for CRM integration. The materials desc
 
 You can use the tables to select a scenario based on the CRM object, the integration result, and the primary REST methods.
 
-## Select an Object Type
+> Quick navigation: [all scenarios](#choose-tutorial)
+
+## Select an Object Type {#choose-tutorial}
 
 Start by selecting a base object. The choice depends on the customer's interaction stage and the data source.
 
@@ -22,6 +24,17 @@ Start by selecting a base object. The choice depends on the customer's interacti
 **Contact and Company**. Use these objects when the customer has already been identified. A contact describes a person, while a company describes an organization. They are often created as a pair.
 
 **Deal**. Required to launch a commercial process. A deal is usually created along with a company and company details if the purpose of the inquiry is a sale.
+
+## How to Choose a Scenario
+
+1. Identify the primary CRM object: lead, contact, company, deal, or smart process
+2. Decide which data must be added with the card: company details, address, file, product rows, activity, or document
+3. Open the appropriate scenario in the table and call the methods in the specified order
+4. Use the identifier returned by one method in the next call
+
+To access the methods, pass an inbound webhook with the required permissions or use OAuth 2.0. The specific permissions are listed on the method pages and depend on the selected object and related data.
+
+The scenario usually returns identifiers of created objects and related elements. Check the response from each call before proceeding to the next step.
 
 ### Scenarios by Primary Objects
 
@@ -52,6 +65,7 @@ Company details, addresses, files, and vendors are stored separately from the ma
 || [Add contact with billing details via web form](./how-to-add-contact-with-requisite.md) | [crm.contact.add](../../../api-reference/crm/contacts/crm-contact-add.md), [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md), [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md) | Contact, billing details, and address ID ||
 || [Add company with billing details via web form](./how-to-add-company-with-requisite.md) | [crm.company.add](../../../api-reference/crm/companies/crm-company-add.md), [crm.requisite.add](../../../api-reference/crm/requisites/universal/crm-requisite-add.md), [crm.address.add](../../../api-reference/crm/requisites/addresses/crm-address-add.md) | Company, billing details, and address ID ||
 || [How to create a vendor in CRM](./how-to-add-contractor.md) | [crm.category.list](../../../api-reference/crm/universal/category/crm-category-list.md), [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md), [catalog.documentcontractor.add](../../../api-reference/catalog/documentcontractor/catalog-documentcontractor-add.md) | Vendor ID for warehouse documents ||
+|| [Create a CRM object with products, discounts, and taxes](./how-to-product-binding.md) | [catalog.product.list](../../../api-reference/catalog/product/catalog-product-list.md), [catalog.price.list](../../../api-reference/catalog/price/catalog-price-list.md), [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md), [crm.item.productrow.set](../../../api-reference/crm/universal/product-rows/crm-item-productrow-set.md) | CRM object ID with product rows ||
 |#
 
 ## Add Activities and Documents

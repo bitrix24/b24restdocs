@@ -22,6 +22,10 @@ The method `landing.landing.update` updates the parameters of the page.
 #|
 || **Name**
 `type` | **Description** ||
+|| **scope**
+[`string`](../../../data-types.md) | Internal landing scope. It is not related to the REST `landing` scope in the method name.
+
+The parameter is not required for pages of the `PAGE`, `STORE`, and `SMN` site types. For pages of the `GROUP`, `KNOWLEDGE`, and `MAINPAGE` site types, pass the corresponding `scope` value [(see details)](../../types.md) ||
 || **lid***
 [`integer`](../../../data-types.md) | The identifier of the page to be updated.
 

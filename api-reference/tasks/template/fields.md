@@ -9,11 +9,26 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+This page describes the fields of a task template object. For an overview of template methods, see [Task Templates](./index.md).
+
+The fields in the table are used in requests to [tasks.template.add](./tasks-template-add.md) and [tasks.template.update](./tasks-template-update.md), and are returned in responses from template methods. To retrieve the current field metadata for a specific account, use [tasks.template.fields](./tasks-template-fields.md).
+
+Choose the source according to your task:
+
+- [Task Template Fields](./fields.md) — to understand field purposes and allowed values
+- [tasks.template.fields](./tasks-template-fields.md) — to retrieve field metadata for a specific account
+- [tasks.template.get](./tasks-template-get.md) — to retrieve saved template values by identifier
+- [tasks.template.add](./tasks-template-add.md) and [tasks.template.update](./tasks-template-update.md) — to pass fields when creating or updating a template
+
+The field type in the table describes the REST API data format. The set and types of `UF_*` custom fields depend on the settings of a specific account.
+
+Access to tasks is required to work with templates. Available actions and some field values depend on the user's permissions and account settings.
+
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Template identifier. In `tasks.template.add`, the input field `ID` is ignored and removed before saving ||
+ [`integer`](../../data-types.md) | Template identifier. In [tasks.template.add](./tasks-template-add.md), the input field `ID` is ignored and removed before saving ||
 || **PARENT_ID**
 [`integer`](../../data-types.md) | Parent task identifier. Default is `0` ||
 || **TITLE**
@@ -31,7 +46,7 @@ Choose a tool for developing with an AI agent:
 || **RESPONSIBLE_ID**
 [`integer`](../../data-types.md) | Responsible person identifier ||
 || **DEPENDS_ON**
-[`array`](../../data-types.md) | Array of template identifiers that the current template depends on. In the response `tasks.template.fields`, this field is described as `integer`, but in examples and when passed to `tasks.template.add` and `tasks.template.update`, an array is used ||
+ [`array`](../../data-types.md) | Array of template identifiers that the current template depends on. In the response from [tasks.template.fields](./tasks-template-fields.md), this field is described as `integer`, but in examples and when passed to [tasks.template.add](./tasks-template-add.md) and [tasks.template.update](./tasks-template-update.md), an array is used ||
 || **RESPONSIBLES**
 [`array`](../../data-types.md) | List of responsible persons ||
 || **ACCOMPLICES**
@@ -102,7 +117,7 @@ Default is `null` ||
 
 {% note info "" %}
 
-To obtain a complete list of custom fields for a specific account, use `tasks.template.fields`.
+To obtain a complete list of custom fields for a specific account, use the [tasks.template.fields](./tasks-template-fields.md) method.
 
 {% endnote %}
 

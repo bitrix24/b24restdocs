@@ -1,5 +1,12 @@
 # How to Prepare a Custom Template
 
+> Scope: [`landing`](../../scopes/permissions.md)
+>
+> Who can execute the methods: to complete the entire scenario, the user needs the strictest permission listed below — permission to export websites
+>
+> - [landing.site.fullExport](../site/landing-site-full-export.md) — a user with permission to export websites
+> - [landing.demos.register](./landing-demos-register.md) and [landing.demos.getList](./landing-demos-get-list.md) — a user with View permission in the Sites section
+
 {% note tip "" %}
 
 Choose a tool for developing with an AI agent:
@@ -13,9 +20,15 @@ A custom template is a ready-made blueprint for a website or page that can be ad
 
 The template is created based on an existing website or page from the [Sites section](../site/index.md). First, the website is exported — its structure is unloaded into a data set that can be saved and passed on. This data set is then registered using the [`landing.demos.*` methods](./index.md) from the Bitrix24 application.
 
-> Scope: [`landing`](../../scopes/permissions.md)
->
-> Who can execute the methods: a user with View permission in the Sites section
+Verifiable result: the template is registered for the application, returned by `landing.demos.getList`, and displayed in the website or page creation wizard.
+
+The scenario consists of three steps:
+
+1. Export an existing website using [landing.site.fullExport](../site/landing-site-full-export.md)
+2. Pass the export result to [landing.demos.register](./landing-demos-register.md)
+3. Verify the registration using [landing.demos.getList](./landing-demos-get-list.md)
+
+The call order matters: `landing.demos.register` accepts the `result` object returned by `landing.site.fullExport`, and `landing.demos.getList` verifies the registration result.
 
 ## When to Use a Custom Template
 
@@ -60,62 +73,299 @@ Before exporting, check the website itself:
 
 If the website is multi-page, use a single theme for all pages. This helps maintain a consistent appearance after the template is installed.
 
-## How to Register the Template
+## Prepare the Data
 
-The process is as follows:
+Before starting, prepare:
 
-1. Create a website or page that will serve as the basis for the template
-2. Export the website using the [landing.site.fullExport](../site/landing-site-full-export.md) method — it returns the website structure as a data set
-3. Save the export result on the application side
-4. When installing the application, pass the saved data to [landing.demos.register](./landing-demos-register.md). Typically, the result of `fullExport` is passed without manually restructuring the data
-5. Verify the result using the [landing.demos.getList](./landing-demos-get-list.md) method: the template should appear in the list and in the website or page creation wizard
+- the website identifier that will serve as the template source
+- an external template code, for example `myfirstsite2026`
+- the URL of a published page for `preview_url`
+- an installed application with OAuth authorization and the `landing` permission
+- an installed and initialized SDK: [B24JsSDK](../../../sdk/b24jssdk/index.md), [B24PhpSDK](../../../sdk/b24phpsdk/index.md), or [B24PySDK](../../../sdk/b24pysdk/index.md)
 
-What the methods return:
+You can get the website identifier using [landing.site.getList](../site/landing-site-get-list.md) or from the result of [landing.site.add](../site/landing-site-add.md). The external code must contain only lowercase Latin letters and digits without separators.
 
-- [landing.demos.register](./landing-demos-register.md) — an array of numeric identifiers for the templates it created or updated
-- [landing.demos.getList](./landing-demos-get-list.md) — a list of templates. Each one has an external code `XML_ID`, a title `TITLE`, a type `TYPE`, and other fields. You can narrow the selection using the `select`, `filter`, `order`, `limit`, and `offset` parameters
+In the examples, replace `326`, `myfirstsite2026`, and the preview URL with your values. Run the examples from the selected tab sequentially in the same script: the variable containing the export result is used in the next step.
 
-## What to Consider Before Registration
+{% note warning "" %}
 
-**Template Type.** The template data includes the `type` and `tpl_type` fields. The `type` field defines the template's purpose: `page` — pages, `store` — stores, `knowledge` — knowledge bases, `group` — groups, `mainpage` — home pages. The `tpl_type` field defines the template's location in the wizard: `S` — website template, `P` — page template. Check both fields in the structure you pass to [landing.demos.register](./landing-demos-register.md).
+An OAuth token grants access to Bitrix24. Store it in the application settings or environment variables, and do not add it to the source code.
 
-**Export Composition.** Usually, the complete result of [landing.site.fullExport](../site/landing-site-full-export.md) is passed for registration. If the structure is modified manually, make sure the required fields and the page map `items` are preserved. If the required `code` field with the template's external code is left empty, the method returns the `BX_EMPTY_REQUIRED` error.
+{% endnote %}
 
-**Security Check.** Before registration, Bitrix24 checks the template's content. If unsafe code is found, the method returns the `CONTENT_IS_BAD` error, and the template is not registered.
+## 1. Export the Website
 
-**Preview Data.** Prepare `preview`, `preview2x`, `preview3x`, and `preview_url` if the template should be displayed in the list and in the preview.
+Call [landing.site.fullExport](../site/landing-site-full-export.md). Pass the website identifier in the `id` parameter and the external template code in `params.code`. The method returns the complete website structure in the `result` field.
 
-**External Template Code.** To delete a template, you need its external code. Get it as follows:
+{% include [Note on examples](../../../_includes/examples.md) %}
 
-- during registration, the external code is set in the `code` field of the [landing.demos.register](./landing-demos-register.md) method — it is saved as the template's `XML_ID`
-- if the code was not saved, you can retrieve it using the [landing.demos.getList](./landing-demos-get-list.md) method, in the `XML_ID` field
-- pass this code to the `code` parameter of the [landing.demos.unregister](./landing-demos-unregister.md) method
+{% list tabs %}
 
-If no template with this code exists, `unregister` returns `false`. If a website template and a page template are registered with the same code, deletion may affect both related records.
+- JS
 
-## Preview URL
+    ```js
+    // $b24 is a previously initialized B24JsSDK instance
+    const exportResponse = await $b24.actions.v2.call.make({
+      method: 'landing.site.fullExport',
+      params: {
+        id: 326,
+        params: {
+          code: 'myfirstsite2026',
+          name: 'Auto Repair Website',
+          preview_url: 'https://example.com/previews/myfirstsite2026'
+        }
+      }
+    })
 
-`preview_url` specifies the preview page of the template in the wizard. This URL can be passed when exporting the website via [landing.site.fullExport](../site/landing-site-full-export.md). It is then used during template registration.
+    if (!exportResponse.isSuccess) {
+      throw new Error(exportResponse.getErrorMessages().join('; '))
+    }
 
-For `preview_url`, a published page that showcases the template in its final form is typically used. For a multi-page website, the main page is sufficient.
+    const exportData = exportResponse.getData().result
+    ```
 
-Ensure that the preview link remains accessible. Otherwise, the preview page will not open in the wizard.
+- PHP
 
-## Images and External Resources
+    ```php
+    // $b24Service is a previously initialized B24PhpSDK instance
+    $response = $b24Service->core->call(
+        'landing.site.fullExport',
+        [
+            'id' => 326,
+            'params' => [
+                'code' => 'myfirstsite2026',
+                'name' => 'Auto Repair Website',
+                'preview_url' => 'https://example.com/previews/myfirstsite2026',
+            ],
+        ]
+    );
 
-When exporting the website, images and other external resources may be saved as absolute links. After the template is installed, they will be loaded from the original address. This will continue until the user replaces them with their own files.
+    $exportData = $response->getResponseData()->getResult();
+    ```
 
-If the template is distributed to other Bitrix24 accounts, check in advance:
+- Python
 
-- that all URLs are accessible externally
-- that images do not depend on temporary storage
-- that preview images will not be deleted
+    ```python
+    # client is a previously initialized B24PySDK instance
+    export_data = client.landing.site.full_export(
+        bitrix_id=326,
+        params={
+            "code": "myfirstsite2026",
+            "name": "Auto Repair Website",
+            "preview_url": "https://example.com/previews/myfirstsite2026",
+        },
+    ).response.result
+    ```
 
-## Template Localization
+{% endlist %}
 
-The title and description of the template can be localized during registration. For this, the `lang` and `lang_original` parameters are used in [landing.demos.register](./landing-demos-register.md).
+Abbreviated response:
 
-If the template is to be displayed in Bitrix24 with different languages, prepare the localization array in advance. For details, see the article [Template Localization](./localization.md).
+```json
+{
+    "result": {
+        "charset": "UTF-8",
+        "code": "myfirstsite2026",
+        "name": "Auto Repair Website",
+        "type": "page",
+        "version": 3,
+        "items": {
+            "myfirstsite2026": {
+                "code": "myfirstsite2026",
+                "name": "Auto Repair Website",
+                "type": "page",
+                "version": 3,
+                "items": {}
+            }
+        }
+    }
+}
+```
+
+Save the entire `result` object, not individual fields. The `exportData`, `$exportData`, and `export_data` variables contain data for the next step.
+
+## 2. Register the Template
+
+Pass the saved export object in the `data` parameter of [landing.demos.register](./landing-demos-register.md). Do not rebuild the structure manually: it already contains the external `code`, the page map in `items`, fields, blocks, and website settings.
+
+The examples continue the code from the first step.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    const registerResponse = await $b24.actions.v2.call.make({
+      method: 'landing.demos.register',
+      params: {
+        data: exportData
+      }
+    })
+
+    if (!registerResponse.isSuccess) {
+      throw new Error(registerResponse.getErrorMessages().join('; '))
+    }
+
+    const registeredTemplateIds = registerResponse.getData().result
+    if (registeredTemplateIds.length === 0) {
+      throw new Error('Template was not registered')
+    }
+    ```
+
+- PHP
+
+    ```php
+    $response = $b24Service->core->call(
+        'landing.demos.register',
+        [
+            'data' => $exportData,
+        ]
+    );
+
+    $registeredTemplateIds = $response->getResponseData()->getResult();
+    if ($registeredTemplateIds === []) {
+        throw new RuntimeException('Template was not registered');
+    }
+    ```
+
+- Python
+
+    ```python
+    registered_template_ids = client.landing.demos.register(
+        data=export_data,
+    ).response.result
+
+    if not registered_template_ids:
+        raise RuntimeError("Template was not registered")
+    ```
+
+{% endlist %}
+
+A successful response contains the identifiers of the created or updated templates:
+
+```json
+{
+    "result": [5]
+}
+```
+
+Save the `result` array. If it is empty, do not proceed to the UI check; verify the request data first.
+
+## 3. Verify the Registration
+
+Call [landing.demos.getList](./landing-demos-get-list.md) and find the entry whose `XML_ID` matches `myfirstsite2026`. When called from an application, the method returns only that application's templates.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    const listResponse = await $b24.actions.v2.call.make({
+      method: 'landing.demos.getList',
+      params: {
+        params: {
+          select: ['ID', 'XML_ID', 'TITLE', 'TYPE']
+        }
+      }
+    })
+
+    if (!listResponse.isSuccess) {
+      throw new Error(listResponse.getErrorMessages().join('; '))
+    }
+
+    const template = listResponse
+      .getData()
+      .result
+      .find((item) => item.XML_ID === 'myfirstsite2026')
+
+    if (!template) {
+      throw new Error('Template was not found')
+    }
+    ```
+
+- PHP
+
+    ```php
+    $response = $b24Service->core->call(
+        'landing.demos.getList',
+        [
+            'params' => [
+                'select' => ['ID', 'XML_ID', 'TITLE', 'TYPE'],
+            ],
+        ]
+    );
+
+    $templates = $response->getResponseData()->getResult();
+    $template = array_values(array_filter(
+        $templates,
+        static fn(array $item): bool => $item['XML_ID'] === 'myfirstsite2026'
+    ))[0] ?? null;
+    if ($template === null) {
+        throw new RuntimeException('Template was not found');
+    }
+    ```
+
+- Python
+
+    ```python
+    templates = client.landing.demos.get_list(
+        params={
+            "select": ["ID", "XML_ID", "TITLE", "TYPE"],
+        },
+    ).response.result
+
+    template = next(
+        (item for item in templates if item["XML_ID"] == "myfirstsite2026"),
+        None,
+    )
+
+    if template is None:
+        raise RuntimeError("Template was not found")
+    ```
+
+{% endlist %}
+
+Abbreviated response:
+
+```json
+{
+    "result": [
+        {
+            "ID": "5",
+            "XML_ID": "myfirstsite2026",
+            "TITLE": "Auto Repair Website",
+            "TYPE": "page"
+        }
+    ]
+}
+```
+
+## Verify the Result
+
+Check that:
+
+- `landing.demos.register` returned a non-empty array of identifiers
+- `landing.demos.getList` returned a template with the expected `XML_ID`, `TITLE`, and `TYPE` values
+- the template appeared in the website or page creation wizard and its preview opens
+
+## Errors and Troubleshooting
+
+- `BX_EMPTY_REQUIRED` at the second step — check `data.code` and the `code` field of every page in `data.items`
+- `REGISTER_ERROR_DATA` at the second step — pass the complete `result` object from `landing.site.fullExport` in `data`
+- `CONTENT_IS_BAD` at the second step — check the template content with `landing.repo.checkcontent`, then register it again
+- `AI_SITE_EXPORT_NOT_ALLOWED` at the first step — exporting AI websites is not supported. Select another website
+- `ACCESS_DENIED` at the first step — check the user's permission to export websites; at the second and third steps, check the View permission in the Sites section
+- **The template was not found at the third step** — check `XML_ID`, the application context, and the result of `landing.demos.register`, then repeat the third step
+- **The preview does not open** — check that `preview_url` is available without authorization
+
+## Important Notes {#important}
+
+- for a multi-page website, pass the complete result of `landing.site.fullExport` in `data`, including the page map in `items`
+- the `type` field defines the template purpose, while `tpl_type` defines its location in the wizard: `S` for a website and `P` for a page
+- external images and `preview_url` must remain available after the template is registered
+- pass OAuth tokens only through application settings or environment variables; do not add them to source code
+- to localize the title and description, pass the `lang` and `lang_original` parameters to `landing.demos.register`
+- to delete a template, retrieve its external code from the `XML_ID` field using `landing.demos.getList`, then pass the code to [landing.demos.unregister](./landing-demos-unregister.md)
 
 ## Continue Learning
 
