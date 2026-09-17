@@ -9,7 +9,11 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-To implement a timer in the [block manifest](../manifest.md), connect the `landing_countdown` extension.
+A countdown timer displays on the page how much time is left until a given date: until the end of a promotion, the start of a webinar, or the close of a pre-order. The values are recalculated in the visitor's browser, with no requests to Bitrix24.
+
+The scenario suits blocks with a time-limited offer. If the date is not fixed or the countdown has to start from a visitor's action, the timer will not fit: it can only count down to a specific moment.
+
+The behavior is enabled by the `landing_countdown` extension, which is connected in the [block manifest](../manifest.md).
 
 ## How to Configure the Timer
 
@@ -21,21 +25,17 @@ The minimum configuration is as follows:
 ],
 ```
 
-Optionally, you can specify the block version:
+The other manifest keys of such a block are the regular ones, and they are described in the [Block Manifest](../manifest.md) article.
 
-```php
-'block' => [
-    'version' => '18.5.0',
-],
-```
+## What the `landing_countdown` Extension Does
 
-The `version` is used to restrict the addition of the block in older versions of the product where the necessary resources are not yet available.
+The extension finds the elements with the `js-countdown` class on the page, calculates the time remaining until `data-end-date`, and updates the values of the service elements inside the container. The values are redrawn once per second.
 
-## What the Timer Extension Does
+When no time is left until the end date, the countdown stops at zeros: it does not go negative.
 
-The `landing_countdown` extension calculates the remaining time until `data-end-date` and updates the values of the elements `js-cd-days`, `js-cd-hours`, `js-cd-minutes`, and `js-cd-seconds`.
+Separately, the extension tracks the last day of the countdown: this is controlled by the `data-days-expired-classes` attribute from the table below.
 
-## End Date Attribute
+## How to Describe the End Date in the Manifest
 
 For the timer container node, add the end date attribute:
 
@@ -55,43 +55,60 @@ For the timer container node, add the end date attribute:
 
 ## Timer Markup
 
-The timer container must have the class `js-countdown`. Inside the container, there should be nodes:
+The timer container has to have the class `js-countdown`. Inside the container, elements for the time units are placed — only those that are displayed on the page are needed:
 
+- `js-cd-years` — years
+- `js-cd-month` — months
 - `js-cd-days` — days
 - `js-cd-hours` — hours
 - `js-cd-minutes` — minutes
 - `js-cd-seconds` — seconds
 
-Optionally, you can add:
+## HTML Attributes of the Container
 
-- `js-cd-years` — years
-- `js-cd-month` — months
+The attributes are set on the `js-countdown` container.
 
-Supported attributes include:
+#|
+|| **Attribute** | **Value** | **What It Defines** ||
+|| `data-end-date` | A number or a date string | The end date of the countdown. A number is Unix time in milliseconds, as with `format` set to `ms` in the manifest. A string is parsed by the browser's `Date` constructor, so pass it in the ISO 8601 format, `2026-12-31T23:59:59` for example. A string without an offset is treated as the visitor's local time, not as Bitrix24 time ||
+|| `data-years-format` | A format template | The display of years ||
+|| `data-month-format` | A format template | The display of months ||
+|| `data-days-format` | A format template | The display of days ||
+|| `data-hours-format` | A format template | The display of hours ||
+|| `data-minutes-format` | A format template | The display of minutes ||
+|| `data-seconds-format` | A format template | The display of seconds ||
+|| `data-days-expired-classes` | A string of CSS classes | Classes added during the last day of the countdown, when the day counter reaches zero. This is how the days block is hidden ||
+|#
 
-- `data-end-date` — end date in Unix time in milliseconds
-- `data-start-date` — start date for calculations
-- `data-years-format` — format for displaying years
-- `data-month-format` — format for displaying months
-- `data-days-format` — format for displaying days
-- `data-hours-format` — format for displaying hours
-- `data-minutes-format` — format for displaying minutes
-- `data-seconds-format` — format for displaying seconds
-- `data-days-expired-classes` — classes added when the days value is zero
+In a format template, a letter denotes a time unit. Case matters: `%m` is months, while `%M` is minutes.
 
-Value formats:
+#|
+|| **Directive** | **What It Displays** ||
+|| `%Y` | Years. The difference between calendar years is counted, not the number of full years elapsed ||
+|| `%m` | Full months ||
+|| `%D` | Total days until the end of the countdown ||
+|| `%d` | Days remaining within the week ||
+|| `%H` | Hours remaining within the day ||
+|| `%I` | Total hours until the end of the countdown ||
+|| `%M` | Minutes remaining within the hour ||
+|| `%S` | Seconds remaining within the minute ||
+|| `%n` | Days remaining within the month ||
+|| `%w` | Weeks ||
+|| `%W` | Weeks remaining within the month ||
+|| `%N` | Total minutes until the end of the countdown ||
+|| `%T` | Total seconds until the end of the countdown ||
+|#
 
-- `%S` — with leading zero, e.g., `03`
-- `%-S` — without leading zero, e.g., `3`
+By default, the value is padded with a leading zero to two digits: `03`. A hyphen after the percent sign removes that zero: `%-S` displays `3`. An exclamation mark enables inflection of the label: `%!d:day,days;` substitutes the appropriate form of the word.
 
-For hours, you can use `%H` or `%I`/`%-I`. The `%I` and `%-I` formats display the total number of hours remaining until the timer ends. In this mode, it is common to remove `data-days-format` and the `js-cd-days` element.
+The `%I` and `%-I` formats display the total number of hours, so `data-days-format` and the `js-cd-days` element are usually removed together with them.
 
 ## Example
 
 ```html
 <section class="landing_block g-pt-30 g-pb-30 g-bg-orange g-color-white">
     <div class="landing-block-node-date mx-auto js-countdown text-center g-font-weight-300 g-line-height-1-2"
-        data-end-date="1555249081000"
+        data-end-date="1798761600000"
         data-days-format="%D"
         data-hours-format="%H"
         data-minutes-format="%M"
@@ -105,7 +122,7 @@ For hours, you can use `%H` or `%I`/`%-I`. The `%I` and `%-I` formats display th
         </div>
 
         <div class="landing-block-node-number-delimiter u-countdown--days-hide d-inline-block g-font-size-36">:</div>
-    
+
         <div class="landing-block-node-number d-inline-block g-mx-20">
             <div class="landing-block-node-number-number g-font-size-36 mb-0">
                 <span class="js-cd-hours">01</span>
@@ -133,27 +150,39 @@ For hours, you can use `%H` or `%I`/`%-I`. The `%I` and `%-I` formats display th
 
 ## Examples of Standard Blocks
 
-Examples of blocks of this type can be viewed in the repository through the methods [landing.block.getmanifestfile](../methods/landing-block-get-manifest-file.md) and [landing.block.getrepository](../methods/landing-block-get-repository.md).
-
 Codes for some standard blocks:
 
+- `51.1.countdown_01`
 - `51.2.countdown_04`
 - `51.3.countdown_08`
 - `51.3.countdown_08_wo_bg`
 - `51.4.countdown_music`
 - `51.5.countdown_event`
 - `51.7.countdown_13`
-- `51.1.countdown_01`
 
-## Important Considerations
+## How to Change the End Date via REST
 
-- `data-end-date` is passed in milliseconds
-- for `%I` and `%-I`, the total number of hours is displayed, without a separate days block
-- if you need to hide days after they reach zero, use `data-days-expired-classes`
+The date is retained in the `data-end-date` HTML attribute of the timer node, so it is modified by the [landing.block.updateattrs](../methods/landing-block-update-attrs.md) method. The attribute has to be described in the [attrs](../attributes.md) key of the block manifest: the method takes the node selector and the attribute name from there.
+
+You can check the current value using the [landing.block.getcontent](../methods/landing-block-get-content.md) method with the `editMode = true` parameter: without it, the method returns the published version of the block, where the new date has not appeared yet.
+
+## Permissions and Limitations
+
+> Scope: [`landing`](../../../scopes/permissions.md)
+>
+> Who can execute the method: depending on the method
+
+Limitations:
+
+- a custom container class cannot be set: the extension looks for `js-countdown`
+- if the clock on the visitor's device is off, the countdown will be inaccurate
+- the timer is reinitialized after a block card is added. The extension is not subscribed to card modification and removal
+- the `data-start-date` attribute does not affect the output: the calculation always runs from the current time to `data-end-date`
 
 ## Continue Learning
 
-- [Sliders](./sliders.md)
-- [Galleries](./gallery.md)
-- [Block Manifest File](../manifest.md)
-- [Node Types](../node-types.md)
+- [{#T}](./index.md)
+- [{#T}](./sliders.md)
+- [{#T}](./gallery.md)
+- [{#T}](../manifest.md)
+- [{#T}](../node-types.md)

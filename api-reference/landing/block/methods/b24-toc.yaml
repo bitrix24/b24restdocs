@@ -7,7 +7,7 @@ items:
     href: landing-block-clone-card.md
   - name: Remove Block Card
     href: landing-block-remove-card.md
-  - name: Update Block Content
+  - name: Update Block Nodes
     href: landing-block-update-nodes.md
   - name: Update Block Node Attributes
     href: landing-block-update-attrs.md
@@ -29,6 +29,8 @@ items:
     href: landing-block-update-content.md
   - name: Upload and Attach Image to Block
     href: landing-block-upload-file.md
+  - name: Publish Block
+    href: landing-block-publication.md
   - name: Get List of Page Blocks
     href: landing-block-get-list.md
   - name: Get Block by ID

@@ -9,60 +9,75 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The search results page works in conjunction with the [Search Forms](./search-forms.md) blocks. The search form sends a request to a separate page on the site, and this page displays the found pages through dynamic cards.
+A search results page is a regular site page that accepts a search query and displays the pages found. Site search consists of two parts: the [search form](./search-forms.md) block, which submits the query, and the results page, which processes it.
 
-## Requirements for the Search Results Page
+The scenario is meant for sites with a large number of pages. The standard search form blocks are designed for knowledge bases — sites of the `knowledge` and `group` types. On a regular site or in an online store, the form block is built manually: the markup and the subtype are taken from a standard block.
 
-To ensure the search results page functions correctly, configure two elements:
+The results page has no subtype of its own. It is assembled from regular blocks with dynamic cards enabled, while the `search` subtype is specified in the form block rather than here.
 
-- a search form block with `subtype: search` and `subtype_params.type: form`
-- a results page where dynamic cards are enabled and the source `Site Pages` is selected
+## How the Query Reaches the Results Page
 
-For standard form blocks, the system automatically populates the results page in the `action` attribute of the form. To achieve this, the manifest of the block must describe the URL attribute with `attribute: action`. In standard blocks, the link is recorded in the format `#landing<ID>`. The `action` attribute also has restrictions: only a site page can be selected, without arbitrary URLs or block bindings.
+A search form is a `<form>` tag with a text field named `q`. The `action` attribute of the form holds the link to the results page, so on submit the browser opens that page and passes the query in the `q` parameter:
 
-## How the System Populates the Results Page
+`https://example.bitrix24.site/search-result/?q=service agreement`
 
-The search subtype works only for blocks that specify `type: form` in `subtype_params`.
+Such a link can also be opened directly, without the form: the results page reads the `q` parameter from the address. The browser encodes the query value, so a space in the address bar appears as `%20`: `?q=service%20agreement`.
 
-After adding such a block to the page, the system:
+The page itself does not search for anything. The search is performed by a block with dynamic cards: it reads the query and fills the cards with the matching pages of the site. That is why the page must contain at least one such block.
 
-- retrieves the template code for the results page from `subtype_params.resultPage`
-- searches for the results page on the current site using the template code
-- if the page is found, it uses it
-- if the page is not found, it creates it based on the template
-- records the link to the found or created page in the `action` of the form
+## What Dynamic Cards Are
 
-The substitution occurs in the `afterAdd` callback. During the transfer via `AppConfiguration::inProcess()`, this preparation does not initiate.
+Dynamic cards are a block mode in which the cards are filled not manually, but with data from a selected source. The mode is enabled in the block settings on the results page, and the source is selected there as well.
 
-## Important Considerations
+Search requires the source that is called `Site Pages` in the interface and recorded with the `landing:landing` code in the block parameters. The source fills the cards with the pages of the current site that match the query, while the settings define the sort order and the number of pages in the output.
 
-- auto-substitution works only for search forms, not for the results page
-- if `resultPage` is not present in `subtype_params`, the system will not automatically populate the results page
-- if dynamic cards are not enabled on the results page and the source `Site Pages` is not selected, the search will not display site pages
+For a block to support this mode, its manifest must describe an attribute of the `dynamic_source` type. The fields of such an attribute are listed in the [Attributes](../attributes.md#attribute-fields) article.
 
-## Standard Templates and Blocks
+REST has no dedicated method for configuring dynamic cards: the mode and the source are set in the Bitrix24 editor. The current source parameters of a block are returned by [landing.block.getcontent](../methods/landing-block-get-content.md) in the `dynamicParams` field.
 
-The source code includes standard templates for results pages:
+## How to Set Up Site Search
 
-- `search-result`
-- `search-result2`
-- `search-result3-dark`
+1. Add a search form block to the page, the standard `59.1.search` block for example. Form setup is described in the [Search Forms](./search-forms.md) article.
+2. Get the results page:
 
-Standard search form blocks that use these templates:
+   - if `subtype_params.resultPage` is set in the form block manifest, the system finds or creates the page itself when the block is added and records the link to it in the `action` attribute of the form
+   - if `resultPage` is not set, create the page in advance using the [landing.landing.add](../../page/methods/landing-landing-add.md) method and specify it in the form settings manually
 
-- `59.1.search` → `search-result`
-- `59.2.search_sidebar` → `search-result`
-- `59.3.search_dark` → `search-result3-dark`
+3. Configure the output on the results page: enable dynamic cards for the block and select the `Site Pages` source. Without this, the page opens, but no pages found appear on it.
+4. Publish both pages using the [landing.landing.publication](../../page/methods/landing-landing-publication.md) method: a draft is not available to visitors.
 
-These blocks are intended for sites of types `knowledge` and `group`. The blocks `59.2.search_sidebar` and `59.3.search_dark` additionally pertain to sidebar variants.
+You can check the result at the address of the results page with the `q` parameter: on the published page, the pages found appear in the cards of the block.
 
-The template `search-result2` is included in the standard templates for results pages, but it is not used in this set of standard search forms.
+## Standard Templates of the Results Page
+
+The system creates the results page from a template. There are three standard templates, and each one is already assembled from a form block, a heading, and a block with dynamic cards:
+
+#|
+|| **Template** | **What It Contains** | **Which Form Block It Holds** ||
+|| `search-result` | Light version: a full-width form on a background image, with the list of results below | `59.1.search` ||
+|| `search-result2` | Light version with the form in a sidebar | `59.2.search_sidebar` ||
+|| `search-result3-dark` | Dark version with a section heading above the form | `59.3.search_dark` ||
+|#
+
+A template is connected by the code from the first column: specify it in `subtype_params.resultPage` of your own form block manifest. To view the manifest of a standard block and find out which template is set in it, use the [landing.block.getmanifestfile](../methods/landing-block-get-manifest-file.md) method, passing the block code.
+
+## Permissions and Limitations
+
+> Scope: [`landing`](../../../scopes/permissions.md)
+>
+> Who can execute the method: depending on the method
+
+Limitations:
+
+- the search looks through the pages of the current site. Other Bitrix24 objects are not found through this scenario
+- the system creates the results page from a template only when the form block is added. For blocks already placed on a page, the substitution is not repeated
+- when a site configuration is transferred between Bitrix24 accounts, the results page is not created: the form manifest preparation is not performed in this mode
 
 ## Continue Your Exploration
 
-- [Special Blocks](./index.md)
-- [Menu Blocks](./menu.md)
-- [Maps in Blocks](./maps.md)
-- [Navigation and Header](./navigation.md)
-- [Search Forms](./search-forms.md)
-- [Forms in Blocks](./crm-forms.md)
+- [{#T}](./index.md)
+- [{#T}](./menu.md)
+- [{#T}](./maps.md)
+- [{#T}](./navigation.md)
+- [{#T}](./search-forms.md)
+- [{#T}](./crm-forms.md)

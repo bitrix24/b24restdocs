@@ -166,12 +166,16 @@ Default - `false` ||
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.landing.block.clonecard(
-            lid=351,
-            block=6428,
-            selector=".landing-block-card@0",
-        ).response
-        result = bitrix_response.result
+        # The method has no dedicated wrapper in b24pysdk, so call it by name
+        bitrix_response = bitrix_token.call_method(
+            "landing.block.clonecard",
+            {
+                "lid": 351,
+                "block": 6428,
+                "selector": ".landing-block-card@0",
+            },
+        )
+        result = bitrix_response["result"]
         print(result)
     except BitrixAPIError as error:
         print(

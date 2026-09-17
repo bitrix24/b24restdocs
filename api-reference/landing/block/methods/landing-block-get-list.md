@@ -125,11 +125,8 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
     }
 
     try {
-      // landing.block.getlist returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // landing.block.getlist has no pagination: it returns every block of the page
+      // in a single response, so no list helper is needed here.
       const response = await $b24.actions.v2.call.make<LandingBlock[]>({
         method: 'landing.block.getlist',
         params: {
@@ -138,7 +135,6 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
             edit_mode: true,
             get_content: true,
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -167,11 +163,8 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // landing.block.getlist returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // landing.block.getlist has no pagination: it returns every block of the page
+          // in a single response, so no list helper is needed here.
           const response = await $b24.actions.v2.call.make({
             method: 'landing.block.getlist',
             params: {
@@ -180,7 +173,6 @@ If `edit_mode` is on, the method will return the HTML of the draft. ||
                 edit_mode: true,
                 get_content: true,
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })

@@ -9,7 +9,11 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-To enable the slider in the [block manifest](../manifest.md), include the `landing_carousel` extension.
+A slider scrolls the content of a block right on the page: covers, reviews, product cards, or team photos. The visitor switches slides with arrows, pagination, or a swipe, while the block takes up a single screen.
+
+The scenario suits blocks with many elements and limited space. If the images have to be opened at full size, use [Galleries](./gallery.md).
+
+The behavior is enabled by the `landing_carousel` extension, which is connected in the [block manifest](../manifest.md).
 
 ## How to Configure the Slider
 
@@ -28,64 +32,77 @@ The minimal configuration is as follows:
 </div>
 ```
 
-## What the Slider Extension Does
+## What the `landing_carousel` Extension Does
 
-The `landing_carousel` extension initializes the slider for the `js-carousel` container and processes the `data-*` attributes that control display, navigation, and autoplay.
+The extension finds containers with the `js-carousel` class, assembles a slider from their direct children, and reads the settings from the `data-*` attributes of the container. The extension defines no separate slide selector: every direct child of the container becomes a slide.
+
+The extension adds the arrows and the pagination itself: they are not present in the block markup. They appear only if the design classes are set — `data-arrows-classes` for the arrows and `data-pagi-classes` for the pagination. Without these attributes, the controls are not created: setting only `data-arrow-left-classes` and `data-arrow-right-classes` is not enough.
+
+The slider is built on the Slick library, so `data-responsive` uses the names of its parameters rather than the names of the `data-*` attributes.
 
 ## Markup
 
 The markup uses two utility classes:
 
 - `js-carousel` — the root container of the slider
-- `js-slide` — an individual slide
+- `js-slide` — an individual slide. This class is needed for design: the styles of the standard blocks are connected through it. It does not affect how slides are found
 
 By default, the slider displays one slide, without arrows, pagination, or autoplay. The behavior can be configured through `data-*` attributes on the `js-carousel` element.
 
 ## Key Attributes
 
-- `data-arrows-classes` — classes for both arrows
-- `data-arrow-left-classes` — classes for the left arrow
-- `data-arrow-right-classes` — classes for the right arrow
-- `data-pagi-classes` — classes for the pagination block
-- `data-slides-show` — number of slides to show on the screen
-- `data-slides-scroll` — number of slides to scroll at one time
-- `data-autoplay` — enable/disable autoplay
-- `data-speed` — autoplay speed in milliseconds
-- `data-pause-hover` — stop autoplay on hover
-- `data-fade` — fade effect for slide transitions, works correctly with `data-slides-show="1"`
-- `data-vertical` — vertical slider mode
-- `data-rows` — number of rows
-- `data-infinite` — looping
-- `data-responsive` — responsive rules based on breakpoints
-- `data-center-mode` — center the active slide
-- `data-center-padding` — padding on the edges in center mode
-- `data-variable-width` — slides with variable width
-- `data-initial-slide` — initial slide on load
-- `data-rtl` — right-to-left display direction
-- `data-adaptive-height` — adaptive height of the container based on the current slide
-- `data-lazy-load` — lazy loading mode for images
-- `data-nav-for` — link to another slider, e.g., a preview slider
-- `data-is-thumbs` — thumbnail slider mode
+Boolean attributes accept the values `true` and `false`.
 
-For `data-responsive`, a valid JSON array of rules is provided. Each rule has:
+#|
+|| **Attribute** | **Value** | **What It Defines** ||
+|| `data-slides-show` | A number | The number of slides on the screen. `1` by default ||
+|| `data-slides-scroll` | A number | The number of slides per step ||
+|| `data-initial-slide` | A number | The slide displayed on load. Counting starts from one: `1` is the first slide ||
+|| `data-rows` | A number | The number of slider rows ||
+|| `data-infinite` | `true`, `false` | Looping of the slides ||
+|| `data-autoplay` | `true`, `false` | Autoplay ||
+|| `data-speed` | A number | The autoplay interval in milliseconds. `3000` by default ||
+|| `data-pause-hover` | `true`, `false` | Stopping autoplay on hover ||
+|| `data-fade` | `true`, `false` | Slide transitions through opacity. Works correctly with `data-slides-show="1"` ||
+|| `data-vertical` | `true`, `false` | Vertical slider mode ||
+|| `data-adaptive-height` | `true`, `false` | Adapting the container height to the current slide ||
+|| `data-center-mode` | `true`, `false` | Centering the active slide ||
+|| `data-center-padding` | A size with a unit, `40px` for example | Padding on the edges in center mode ||
+|| `data-variable-width` | `true`, `false` | Slides of variable width ||
+|| `data-rtl` | `true`, `false` | Right-to-left display ||
+|| `data-lazy-load` | A loading mode, `ondemand` for example | Lazy loading of images ||
+|| `data-arrows-classes` | A string of CSS classes | Classes for both arrows. Without this attribute, the arrows are not created ||
+|| `data-arrow-left-classes` | A string of CSS classes | Classes for the left arrow ||
+|| `data-arrow-right-classes` | A string of CSS classes | Classes for the right arrow ||
+|| `data-pagi-classes` | A string of CSS classes | Classes for the pagination block. Without this attribute, the pagination is not displayed ||
+|| `data-nav-for` | A CSS selector of another slider | A link between two sliders, with a preview strip for example ||
+|| `data-is-thumbs` | `true`, `false` | Preview slider mode for pairing with `data-nav-for`. Works only if the container has the `id` attribute set ||
+|| `data-responsive` | A JSON array of rules | Settings for individual breakpoints ||
+|#
 
-- `breakpoint` — screen width in pixels
-- `settings` — settings for that breakpoint
+## Responsive Rules in `data-responsive`
 
-In `settings`, the parameter names from Slick are used instead of `data-*` attributes:
+A valid JSON array is passed in `data-responsive`. Each rule has two keys:
 
-- `arrows` — show or hide arrows
-- `prevArrow` — HTML/selector for the left arrow
-- `nextArrow` — HTML/selector for the right arrow
-- `dots` — enable or disable pagination
-- `dotsClass` — CSS class for the pagination container
-- `slidesToShow` — number of slides to show on the screen
-- `slidesToScroll` — number of slides to scroll at one time
-- `autoplay` — enable or disable autoplay
-- `autoplaySpeed` — autoplay interval in milliseconds
-- `pauseOnHover` — stop autoplay on hover
-- `fade` — fade transition mode
-- `vertical` — vertical slider mode
+- `breakpoint` — the screen width in pixels
+- `settings` — the settings for that breakpoint
+
+Inside `settings`, the Slick parameter names are used:
+
+#|
+|| **Parameter in `settings`** | **Counterpart Among `data-*`** | **What It Defines** ||
+|| `slidesToShow` | `data-slides-show` | The number of slides on the screen ||
+|| `slidesToScroll` | `data-slides-scroll` | The number of slides per step ||
+|| `autoplay` | `data-autoplay` | Autoplay ||
+|| `autoplaySpeed` | `data-speed` | The autoplay interval in milliseconds ||
+|| `pauseOnHover` | `data-pause-hover` | Stopping autoplay on hover ||
+|| `fade` | `data-fade` | Slide transitions through opacity ||
+|| `vertical` | `data-vertical` | Vertical slider mode ||
+|| `arrows` | — | Displaying the arrows. At the top level, the arrows are enabled with the `data-arrows-classes` classes ||
+|| `prevArrow`, `nextArrow` | `data-arrow-left-classes`, `data-arrow-right-classes` | The markup or the selector of the arrows ||
+|| `dots` | — | Displaying the pagination ||
+|| `dotsClass` | `data-pagi-classes` | The CSS class of the pagination container. The extension always adds the service class `js-pagination` to the value from `data-pagi-classes` ||
+|#
 
 ## Example
 
@@ -136,20 +153,9 @@ In `settings`, the parameter names from Slick are used instead of `data-*` attri
 
 ## Combining with a Gallery
 
-If the slider is used together with a gallery, include the extensions in the following order:
-
-1. `landing_carousel`
-2. `landing_gallery_cards`
-
-```php
-'assets' => [
-    'ext' => ['landing_carousel', 'landing_gallery_cards'],
-],
-```
+A slider works together with a gallery: the images are scrolled inside the block and opened in the viewer. The order in which the extensions are connected matters, and it is described in the [Galleries](./gallery.md) article.
 
 ## Examples of Standard Blocks
-
-Examples of this type of block can be viewed in the repository through the methods [landing.block.getmanifestfile](../methods/landing-block-get-manifest-file.md) and [landing.block.getrepository](../methods/landing-block-get-repository.md).
 
 Codes for some standard blocks:
 
@@ -159,19 +165,28 @@ Codes for some standard blocks:
 - `39.1.five_blocks_carousel`
 - `45.2.gallery_app_with_slider` — with a gallery
 
-## Important Considerations
+## How to Change the Slider Settings via REST
 
-- `data-fade` works correctly with `data-slides-show="1"`
-- In `data-rows` mode, the `data-slides-show` and `data-slides-scroll` parameters function as the number of columns
-- For vertical mode, `data-vertical` usually requires separate configuration for arrows/pagination
-- When `data-vertical` is enabled, `verticalSwiping` is also activated, so on mobile devices, vertical mode is typically disabled through `data-responsive`
-- To display pagination, in addition to the dots settings, `data-pagi-classes` must be specified
-- `data-infinite` works in preview and publication mode; in the editor, looping is forcibly disabled
-- When combining with an embedded gallery, first include `landing_carousel`, then `landing_gallery_cards`
+The behavior of a slider is defined by the `data-*` attributes of the container, so their values are modified by the [landing.block.updateattrs](../methods/landing-block-update-attrs.md) method. Only the attributes described in the [attrs](../attributes.md) key of the block manifest are available.
+
+The slides are the cards of the block, so their composition is changed by the [landing.block.addcard](../methods/landing-block-add-card.md), [landing.block.clonecard](../methods/landing-block-clone-card.md), [landing.block.removecard](../methods/landing-block-remove-card.md), and [landing.block.updateCards](../methods/landing-block-update-cards.md) methods, while the content of a slide is changed by [landing.block.updatenodes](../methods/landing-block-update-nodes.md).
+
+## Permissions and Limitations
+
+> Scope: [`landing`](../../../scopes/permissions.md)
+>
+> Who can execute the method: depending on the method
+
+Limitations:
+
+- a custom container class cannot be set: the extension looks for `js-carousel`
+- in the editor, looping is forcibly disabled, so `data-infinite` is checked in the preview or on the published page
+- when `data-vertical` is enabled, vertical swiping works at the same time, so for mobile devices vertical mode is usually disabled with a rule in `data-responsive`
 
 ## Continue Learning
 
-- [Galleries](./gallery.md)
-- [Countdown Timers](./timer.md)
-- [Block Manifest File](../manifest.md)
-- [Node Types](../node-types.md)
+- [{#T}](./index.md)
+- [{#T}](./gallery.md)
+- [{#T}](./timer.md)
+- [{#T}](../manifest.md)
+- [{#T}](../node-types.md)

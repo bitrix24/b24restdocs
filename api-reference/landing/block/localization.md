@@ -147,9 +147,7 @@ If the `name` values arrive in the original language, compare the phrase keys in
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the methods: depending on the method
-
-Localization itself has no dedicated access permissions. Permissions are checked at the level of the methods that register a block and read a manifest, and they are listed on the pages of those methods.
+> Who can execute the method: depending on the method
 
 Limitations of localization:
 

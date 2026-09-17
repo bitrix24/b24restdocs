@@ -9,15 +9,17 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Blocks with maps use `subtype: map`. This subtype connects map settings, adds the necessary attributes, and prepares the block for use in the editor.
+Blocks with a map display an interactive map with markers on the page: an office address, pickup points, or directions. This behavior is enabled through `subtype: map` in the `block` section of the [block manifest](../manifest.md).
 
-In standard blocks for maps, the following approach is used:
+The subtype removes the need for manual setup: it describes the map node itself, adds the required attributes, substitutes the initial coordinates, and connects the initialization script. If the map has to be a static image or is embedded by a third-party widget, the subtype is not needed.
 
-- In the `block` section, `subtype: map` is specified
-- In `assets`, the `landing_map` extension is included
-- In the block markup, the node `.landing-block-node-map` is used
+The scenario consists of three parts:
 
-The node `.landing-block-node-map` must already be present in the block markup. If it is not, the map subtype will not function. For an existing node `.landing-block-node-map`, the handler automatically adds the type `map`, the attribute `data-map`, and, if available, the attribute `data-map-provider`.
+- `subtype: map` is specified in the `block` section of the manifest
+- the `landing_map` extension is connected in `assets.ext` — it brings the script that builds the map on the page
+- the block markup contains the node `.landing-block-node-map`
+
+The node `.landing-block-node-map` has to be present in the markup in advance: the subtype processes only this selector, and without it there is nothing to bind the map to.
 
 ## How to Configure a Map Block
 
@@ -44,47 +46,46 @@ Example markup:
 
 ## What the Map Subtype Does
 
-After adding the block, the system:
+The subtype handler extends the block manifest:
 
-- Determines the map provider
-- Adds the attribute `data-map-provider` to the node `.landing-block-node-map`
-- Creates an initial value for `data-map` with center, zoom, and marker
-- Connects the `map_init` extension if it is not already in the manifest
+- describes `.landing-block-node-map` as a node of the `map` type
+- adds the `data-map` attribute and, if the provider can be selected, `data-map-provider`
+- appends the `map_init` value to `assets.ext`
+- determines the current provider from the `data-map-provider` value in the block markup
+- disables manifest caching for such a block
 
-In standard blocks, the manifest usually specifies the `landing_map` extension. The map subtype automatically adds `map_init` if this extension is not present.
+When the block is added to a page, the subtype fills in the empty `data-map` attribute: it substitutes the map center, the zoom level `17`, and one marker. The center depends on the Bitrix24 region: different regions use different coordinates. At the same time, the provider is written into the markup according to the rule from the section below.
 
-By default, the following is recorded in `data-map`:
+If `data-map` is already filled in the block markup, the subtype touches neither it nor the provider: the values from the markup are left as is.
 
-- Center of the map
-- Zoom level `17`
-- One initial marker
-
-The starting center of the map depends on the website's zone.
-
-If a map key is not configured for the selected provider, the subtype adds `requiredUserAction`. In the editor, the user will see a required action to navigate to the website settings.
+If maps are not enabled for the selected provider or the key is not filled in, the subtype adds `requiredUserAction` to the manifest. In the editor, the user will see a required action to navigate to the site settings.
 
 ## What Providers Are Used
 
-By default, Google Maps is used. The current provider is stored in the attribute `data-map-provider`.
+The provider is stored in the `data-map-provider` attribute of the map node. The allowed values are:
 
-The starting coordinates of the map depend on the website's zone. For the `ru` zone, a separate set of coordinates is used. For other zones, the default value is applied.
+- `google` — Google Maps
+- `yandex` — a regional map provider available only in the Russian region of Bitrix24
 
-In the block interface, map provider settings are available, and for Google Maps, additional visual parameters are accessible:
+When a block is added to a page, the subtype selects the provider as follows:
 
-- Map theme
-- Display of roads
-- Display of landmarks
+- in the Russian region it writes `yandex`, if that provider is enabled with a key or if no provider is configured at all
+- in all other cases it writes `google`
 
-## Important Considerations
+Maps work only with a provider key. The key and the usage flag are set in the site or page settings, and via REST through the additional fields `GMAP_USE` and `GMAP_CODE` for Google Maps and `YMAP_USE` and `YMAP_CODE` for the regional provider. The set of fields is described in the [Additional Site Fields](../../site/additional-fields.md) and [Additional Page Fields](../../page/additional-fields.md) articles.
 
-- In standard map blocks, the `landing_map` extension is used, not `landing_google_maps_new`
-- In standard map manifests, `subtype: map` and `landing_map` are usually specified, while the `map_init` subtype is added automatically
-- `type: map` for `.landing-block-node-map` is added by the subtype handler
-- If the block does not contain the node `.landing-block-node-map`, the map subtype will not function
+The provider switch appears in the block settings only where the regional provider is available. In all other regions, the map is always built on Google Maps.
+
+Google Maps additionally supports visual parameters. In the manifest, the subtype declares them not in the root `attrs` key, but in `style.nodes` of the map node — which is why they appear in the design form in the editor. They are still retained in the node attributes, and via REST they are modified by the [landing.block.updateattrs](../methods/landing-block-update-attrs.md) method:
+
+#|
+|| **Attribute** | **Values** | **What It Defines** ||
+|| `data-map-theme` | Empty string, `SILVER`, `RETRO`, `DARK`, `NIGHT`, `AUBERGINE` | The color theme of the map ||
+|| `data-map-roads` | Empty string or `off` | The display of roads ||
+|| `data-map-landmarks` | Empty string or `off` | The display of landmarks ||
+|#
 
 ## Examples of Standard Blocks
-
-Examples of blocks of this type can be viewed in the repository through the methods [landing.block.getmanifestfile](../methods/landing-block-get-manifest-file.md) and [landing.block.getrepository](../methods/landing-block-get-repository.md).
 
 Codes for some standard blocks:
 
@@ -94,13 +95,28 @@ Codes for some standard blocks:
 - `16.5.two_cols_map`
 - `16.6.two_cols_map_reverse`
 
-To ensure the map block functions correctly, add the node `.landing-block-node-map` to the markup in advance, and the `map` subtype will complement the manifest and initial settings.
+## How to Change a Map via REST
+
+For a block already placed on a page, the map settings are retained in the attributes of the `.landing-block-node-map` node: `data-map` holds the center, the zoom level, and the markers in JSON format, and `data-map-provider` holds the provider. The structure of the `data-map` value is described in the [Node Types](../node-types.md) article.
+
+The values of these attributes are modified by the [landing.block.updateattrs](../methods/landing-block-update-attrs.md) method, the current state of the draft is shown by [landing.block.getcontent](../methods/landing-block-get-content.md) with the `editMode = true` parameter, and the changes become visible on the site after the page is published using the [landing.landing.publication](../../page/methods/landing-landing-publication.md) method.
+
+## Permissions and Limitations
+
+> Scope: [`landing`](../../../scopes/permissions.md)
+>
+> Who can execute the method: depending on the method
+
+Limitations:
+
+- standard map blocks connect the `landing_map` extension. The `landing_google_maps_new` extension adds no files of its own and pulls in the same `landing_map`, so it is not used in new blocks
+- the initial settings are substituted once, when the block is added to a page. For a block already placed on a page, the values are modified only by [landing.block.updateattrs](../methods/landing-block-update-attrs.md)
 
 ## Continue Your Learning
 
-- [Special Blocks](./index.md)
-- [Menu Blocks](./menu.md)
-- [Navigation and Header](./navigation.md)
-- [Search Results](./search.md)
-- [Search Forms](./search-forms.md)
-- [Forms in Blocks](./crm-forms.md)
+- [{#T}](./index.md)
+- [{#T}](./menu.md)
+- [{#T}](./navigation.md)
+- [{#T}](./search.md)
+- [{#T}](./search-forms.md)
+- [{#T}](./crm-forms.md)

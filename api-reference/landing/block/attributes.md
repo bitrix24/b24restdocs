@@ -9,67 +9,95 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Attributes are additional values that are stored in block elements and used in settings, JS logic, and conditional styling. For example, attributes can be used to store parameters for maps, links, display modes, and other block scenarios.
+An attribute is an additional block setting whose value is retained in a DOM attribute of an element, `data-view="short"` for example. The block scripts and CSS read the value from the attribute, while the Bitrix24 editor displays a field of the appropriate kind for it: a list, a checkbox, a palette, or an image picker.
 
-Attributes are registered under the `attrs` key in the [block manifest](./manifest.md). The `attrs` key links attributes with nodes and cards.
+Attributes are described in the `attrs` key of the [block manifest](./manifest.md). The key links a setting with a [node](./node-types.md) or a [card](./extended-description.md) by a CSS selector.
 
-## Where to Describe the attrs Key
+Attributes are used when a setting cannot be expressed through node content:
 
-The `attrs` key can be defined in several places within the manifest:
+- block behavior parameters, such as the display mode, the number of cards, or the form address
+- parameters for the JS logic of a block: a slider, a gallery, or a countdown timer
+- values that the block is styled by conditionally, such as the background color or the badge position
+
+Scope of the topic:
+
+- attributes do not replace nodes. The text, the image, or the link inside an element is described in the `nodes` key, and the design in the `style` key
+- this article describes how a setting is declared in the manifest. The attribute values of a block already placed on a page are modified by the [landing.block.updateattrs](./methods/landing-block-update-attrs.md) method
+
+## Where the attrs Key Is Described
+
+The place of the description determines where the field appears in the editor and what the value applies to:
+
+#|
+|| **Where `attrs` Is Described** | **Where the Field Is in the Editor** | **What the Value Applies To** ||
+|| At the root of the manifest | In the block settings form | To the block elements matching the given selector ||
+|| In `style.nodes.<selector>.additional` | In the design form next to the style settings of the element | To the element the styles are defined for ||
+|| In `style.block.additional` | In the design form of the whole block | To the block wrapper ||
+|| In `cards.<selector>.additional` | In the card settings form | To each card of that selector separately ||
+|#
+
+An array of attributes is passed in the value of the selector. If there is only one attribute, it can be described as an object without an array — this is how it is done in the example on the [Search Forms](./special/search-forms.md) page.
+
+Examples for the three most common places:
 
 1. At the root of the manifest:
-```php
-'attrs' => [
-    '.landing-block-node-text' => [
-        [
-            'name' => 'Text Setting',
-            'type' => 'dropdown',
-            'attribute' => 'data-copy',
-        ],
-    ],
-]
-```
+
+   ```php
+   'attrs' => [
+       '.landing-block-node-text' => [
+           [
+               'name' => 'Text Setting',
+               'type' => 'dropdown',
+               'attribute' => 'data-copy',
+           ],
+       ],
+   ]
+   ```
+
 2. In `style.nodes`, in which case the field is displayed in the design form:
-```php
-'style' => [
-    'nodes' => [
-        '.landing-block-node-card-button' => [
-            'name' => 'Button',
-            'type' => ['border-color', 'button', 'animation'],
-            'additional' => [
-                'attrs' => [
-                    [
-                        'type' => 'text',
-                        'name' => 'Text field',
-                        'attribute' => 'data-test-card-attr',
-                    ],
-                ],
-            ],
-        ],
-    ],
-]
-```
+
+   ```php
+   'style' => [
+       'nodes' => [
+           '.landing-block-node-card-button' => [
+               'name' => 'Button',
+               'type' => ['border-color', 'button', 'animation'],
+               'additional' => [
+                   'attrs' => [
+                       [
+                           'type' => 'text',
+                           'name' => 'Text field',
+                           'attribute' => 'data-test-card-attr',
+                       ],
+                   ],
+               ],
+           ],
+       ],
+   ]
+   ```
+
 3. In `cards`, where the attribute is applied separately to each card:
-```php
-'cards' => [
-    '.landing-block-node-card-button' => [
-        'name' => 'Card',
-        'additional' => [
-            'attrs' => [
-                [
-                    'type' => 'text',
-                    'name' => 'Text field',
-                    'attribute' => 'data-test-card-attr',
-                ],
-            ],
-        ],
-    ],
-]
-```
+
+   ```php
+   'cards' => [
+       '.landing-block-node-card-button' => [
+           'name' => 'Card',
+           'additional' => [
+               'attrs' => [
+                   [
+                       'type' => 'text',
+                       'name' => 'Text field',
+                       'attribute' => 'data-test-card-attr',
+                   ],
+               ],
+           ],
+       ],
+   ]
+   ```
 
 ## Grouping Attributes
 
-If you need to group some attributes, use the group container `attrs`:
+If you need to group some attributes, use the group container `attrs`. In the example below, the key is an empty string: the group of settings relates to the block as a whole. The element the value is retained in is defined by the `selector` field of the specific attribute.
 
 ```php
 'attrs' => [
@@ -79,7 +107,7 @@ If you need to group some attributes, use the group container `attrs`:
             'attrs' => [
                 [
                     'type' => 'checkbox',
-                    'selector' => 'bitrix:catalog.section',
+                    'selector' => '.landing-block-node-catalog',
                     'name' => '',
                     'items' => [
                         ['name' => 'Product Display', 'value' => '1'],
@@ -162,66 +190,85 @@ Common fields:
 - `name` — the name of the field in the interface
 - `attribute` — the name of the DOM attribute where the value is stored
 - `type` — the type of the field
-- `items` — the list of options
+- `items` — the list of options. An option is described by a `name` and `value` pair
 - `value` — the default value, such as a string, object, or array
 - `selector` — overriding the save selector
 - `hidden` — registration without output in the editing interface
 - `attrs` — a group of nested attributes
-- `placeholder` — a hint for input
-- `compact` — compact display mode for the field
 
 Fields for specific types:
 
-- `textOnly` — simple text input mode without a visual editor, for `text`
-- `disableLink` — disable link editing, for `icon` and `image`
-- `disableBlocks` — disable block selection in the link selector, for `url`
-- `disableCustomURL` — disable manual input of arbitrary URL, for `url`
-- `time` — enable time selection, for `date`
-- `format` — format for saving date and time, for `date`
-- `dimensions` — image size restrictions, for `image`
-- `property` — target CSS property, for `palette`, `color`, `position`, `sortable-list`, `catalog-view`, `filter`
-- `html` — HTML markup for the filter, for `filter`
-- `filterId` — filter identifier, for `filter`
-- `hideSort` — hide sorting of sources, for `dynamic_source`
-- `sources` — list of available sources, for `dynamic_source`
-- `title` — field title, for `dynamic_source`
-- `stubText` — placeholder text, for `dynamic_source`
-- `useLink` — enable link mode, for `dynamic_source`
-- `linkType` — link type, for `dynamic_source`
+#|
+|| **Field** | **For Which Types** | **What It Defines** ||
+|| `textOnly` | `text` | Plain text input mode. The field always works in this mode: the `false` value does not enable the visual editor ||
+|| `disableLink` | `icon`, `image` | Disabling link editing ||
+|| `disableBlocks` | `url` | Disabling block selection in the link selector ||
+|| `disableCustomURL` | `url` | Disabling manual input of an arbitrary URL ||
+|| `disallowType` | `url` | Disabling the change of the link type in the selector ||
+|| `allowedTypes` | `url` | The list of allowed link types, `landing` for site pages for example ||
+|| `time` | `date` | Enabling time selection ||
+|| `format` | `date` | The format for retaining the date and time ||
+|| `dimensions` | `image` | Image size restrictions ||
+|| `html` | `filter` | The HTML markup of the filter ||
+|| `filterId` | `filter` | The filter identifier ||
+|| `selected` inside an option | `multiselect` | A flag of the option selected by default. It is set on an item of the `items` list rather than on the field itself. For the other list types, the default value is set with the `value` field ||
+|| `items` inside an option | `multiselect` | A group of nested options ||
+|| `placeholder` | `text`, `html`, `date` | A hint for input ||
+|| `compact` | `checkbox`, `radio` | Compact display mode for the field ||
+|| `property` | `palette`, `position`, `sortable-list`, `checkbox`, `radio`, `multiselect`, `catalog-view`, `filter` | The target CSS property ||
+|| `hideSort` | `dynamic_source` | Hiding the sorting of sources ||
+|| `sources` | `dynamic_source` | The list of available sources ||
+|| `title` | `dynamic_source` | The field title ||
+|| `stubText` | `dynamic_source` | The placeholder text ||
+|| `useLink` | `dynamic_source` | Enabling link mode ||
+|| `linkType` | `dynamic_source` | The link type ||
+|#
 
 The necessity of fields depends on `type` and scenario. Generally, `attribute` is required, and for list types, `items` is necessary. The `name` field is recommended for proper display in the interface. The `name` value takes part in manifest translation, see [Which Labels Are Translated](./localization.md#translatable-keys) for details.
 
-If `type` is not specified, `text` is used by default.
+Always specify the `type` field. At the root of `attrs`, a description without `type` does not become a field: the system treats it as a group and expects a `name` with a nested `attrs`. Inside groups and in `additional`, a description without `type` is displayed as a dropdown list.
 
-## Attribute Types
+## Attribute Types {#attribute-types}
 
 The attribute type determines what control element will be in the editor and in what format the value will be saved in the element's attribute.
 
-Attribute types:
+#|
+|| **Type** | **Control Element in the Editor** | **Requires the `items` List** ||
+|| `text` | A single-line text field | No ||
+|| `html` | A multi-line text field | No ||
+|| `date` | Date and time selection | No ||
+|| `dropdown` | A dropdown list. The `list` value does the same | Yes ||
+|| `radio` | Selection of one option from a list | Yes ||
+|| `checkbox` | A checkbox or a group of checkboxes | Yes ||
+|| `multiselect` | Multiple selection | Yes ||
+|| `image` | Image selection | No ||
+|| `icon` | Icon selection | No ||
+|| `link` | A link with text, an address, and an opening mode | No ||
+|| `url` | A simplified link field: the address only, without text and opening mode | No ||
+|| `slider` | A scale for selecting a single value | Yes ||
+|| `range-slider` | A scale for selecting a range | Yes ||
+|| `palette` | Selection from a palette: a set of predefined options in `items` | Yes ||
+|| `color` | Selection of an arbitrary color, without a predefined set of options | No ||
+|| `sortable-list` | A sortable list of values | Yes ||
+|| `position` | Selection of the position or direction of the element | Yes ||
+|| `catalog-view` | Settings for displaying catalog data | No ||
+|| `filter` | Filter settings | No ||
+|| `user-select` | User selection | No ||
+|| `dynamic_source` | Selection of a dynamic data source. It works in a block with dynamic cards, see [Search Results](./special/search.md) for details | No ||
+|#
 
-- `text` — single-line text field
-- `date` — date and time selection
-- `html` — multi-line text field
-- `dropdown` — dropdown list
-- `checkbox` — checkbox or group of checkboxes
-- `radio` — selection of one option from a list
-- `multiselect` — multiple selection
-- `image` — image selection
-- `icon` — icon selection
-- `link` — link with extended settings
-- `url` — simplified URL field
-- `slider` — single value slider
-- `range-slider` — range value slider
-- `palette` — selection from a palette
-- `color` — color selection
-- `sortable-list` — sortable list of values
-- `position` — selection of the position/direction of the element
-- `catalog-view` — settings for displaying catalog data
-- `filter` — filter settings
-- `user-select` — user selection
-- `dynamic_source` — selection of a dynamic data source
+The format of the value depends on the type:
+
+- a string — for the text types and for the list types whose `items` values are strings, as well as for `url`, `palette`, `color`, and `position`
+- a number — for `date` with `format` set to `ms`, and for `slider` if the `items` values are numeric
+- an object — for `link`, `icon`, and `range-slider`
+- an array — for `sortable-list` and `multiselect`
+
+Examples for the main types are given below.
 
 ## Example with Different Attribute Types
+
+{% cut "Text, Lists, Images, and Links" %}
 
 ```php
 $attrs = [
@@ -286,6 +333,15 @@ $attrs = [
         ],
     ],
 
+];
+```
+
+{% endcut %}
+
+{% cut "Multiple Selection, Scales, and Sorting" %}
+
+```php
+$attrs = [
     // multiselect: multiple selection, including nested items
     '.landing-block-node-options' => [
         [
@@ -358,6 +414,15 @@ $attrs = [
         ],
     ],
 
+];
+```
+
+{% endcut %}
+
+{% cut "Link, Date, Palette, and Position" %}
+
+```php
+$attrs = [
     // url: link with selection restrictions
     '.landing-block-node-button' => [
         [
@@ -382,19 +447,13 @@ $attrs = [
         ],
     ],
 
-    // palette: palette reading color from CSS
+    // palette: palette of values
     '.landing-block-node-palette' => [
         [
             'name' => 'Background Color',
             'type' => 'palette',
             'attribute' => 'data-bg-color',
             'property' => 'background-color',
-            // If you need to read the color not from standard styles
-            'stylePath' => '/bitrix/templates/my-site/styles.css',
-            // If the color is set via a pseudo-element
-            'pseudo-element' => '::after',
-            // If the color depends on the state of the element
-            'pseudo-class' => ':hover',
             'items' => [
                 ['name' => 'g-bg-lightblue', 'value' => 'g-bg-lightblue'],
                 ['name' => 'g-bg-darkblue', 'value' => 'g-bg-darkblue'],
@@ -418,3 +477,44 @@ $attrs = [
     ],
 ];
 ```
+
+{% endcut %}
+
+## How to Change an Attribute Value via REST
+
+1. Retrieve the block manifest using the [landing.block.getmanifest](./methods/landing-block-get-manifest.md) method and find the required selector in the `attrs` key.
+2. Pass the new value using the [landing.block.updateattrs](./methods/landing-block-update-attrs.md) method. The key in the `data` parameter is the element selector, and the value is a set of attributes and their values:
+
+   ```json
+   {
+       "data": {
+           ".landing-block-node-text": {
+               "data-view": "full"
+           }
+       }
+   }
+   ```
+
+3. Publish the page using the [landing.landing.publication](../page/methods/landing-landing-publication.md) method so that the change appears on the site.
+
+## Permissions and Limitations
+
+> Scope: [`landing`](../../scopes/permissions.md)
+>
+> Who can execute the method: depending on the method
+
+Limitations:
+
+- the [landing.block.updateattrs](./methods/landing-block-update-attrs.md) method takes the allowed selectors and attributes from the `attrs`, `style.nodes`, `style.block`, and `cards` sections of the manifest. A selector or an attribute absent from them is ignored by the method without an error
+- the `attribute` field is required: without it there is nowhere to retain the setting
+- the value of an attribute of the `url` type goes through a scheme check when saved. An address with a disallowed scheme is stripped silently, without an error
+- the composition of attributes is changed only in your own block: the manifest is passed at registration using the [landing.repo.register](../user-blocks/landing-repo-register.md) method. For standard Bitrix24 blocks, REST changes the values of attributes, not their composition
+
+## Continue Your Learning
+
+- [{#T}](./manifest.md)
+- [{#T}](./node-types.md)
+- [{#T}](./extended-description.md)
+- [{#T}](./localization.md)
+- [{#T}](./methods/landing-block-update-attrs.md)
+- [{#T}](./methods/landing-block-get-manifest.md)

@@ -9,15 +9,19 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The extended description of cards is an advanced configuration of the `cards` key in the manifest, which allows for multiple card variations within a single list.
-
-The basic principles of cards and nodes are outlined in the [block manifest](./manifest.md).
+The extended description of cards is a configuration of the `cards` key in the [block manifest](./manifest.md) that allows keeping cards of different kinds in a single list. Regular cards repeat the same markup, while the extended description adds presets to them — card templates with their own markup and initial values.
 
 The extended description of cards is used when a single set of cards requires:
 
-- different sets of fields for cards in the same list, for example, just a phone number or phone number + e-mail + link
+- different sets of fields for cards in the same list, for example just a phone number, or a phone number, an e-mail, and a link
 - different layout options for identical objects
 - cards from predefined presets
+
+If all the cards in a list are identical, the extended description is not needed — the basic description of the `cards` key is enough.
+
+The configuration is defined by the block author: the manifest and the markup are passed at block registration using the [landing.repo.register](../user-blocks/landing-repo-register.md) method. To see how the `cards` key is filled in a standard block, use the [landing.block.getmanifestfile](./methods/landing-block-get-manifest-file.md) method.
+
+The basic principles of cards and nodes are outlined in the [Block Manifest](./manifest.md) and [Node Types](./node-types.md) articles.
 
 ## Example of an Extended Card Description
 
@@ -56,16 +60,24 @@ The extended description of cards is used when a single set of cards requires:
 
 ## Fields of the Extended Card Description
 
-- `name` — the name of the card group in the interface
-- `label` — the rule for forming the card title. You can specify either a single node selector or an array of selectors
-- `presets` — a set of card presets. If `presets` is not empty, new cards are added from the presets. The value is an array where the keys are the preset identifiers
+#|
+|| **Field** | **Value** | **What It Defines** ||
+|| `name` | A string | The name of the card group in the interface ||
+|| `label` | A node selector or an array of selectors | The rule for forming the card title in the list ||
+|| `presets` | An array where the keys are the preset identifiers | A set of card presets. If `presets` is not empty, new cards are added from the presets ||
+|| `group_label` | A string | The caption of the card group in the settings form ||
+|| `additional` | An object with the `attrs` key | Settings defined separately for each card. The composition is described in the [Attributes](./attributes.md) article ||
+|#
 
 ### Preset Fields
 
-- `name` — the name of the preset in the list
-- `html` — the markup for the card in the preset. Only those nodes defined in `nodes` and not disabled via `disallow` can be edited
-- `values` — initial values for the nodes and fields of the card. The key is the node selector from `nodes`, and the value is the data in the format corresponding to the node type
-- `disallow` — a list of node selectors that cannot be edited
+#|
+|| **Field** | **Value** | **What It Defines** ||
+|| `name` | A string | The name of the preset in the list ||
+|| `html` | HTML markup | The markup of the card for the preset. Only the nodes described in `nodes` and not disabled through `disallow` can be edited ||
+|| `values` | An array where the key is a node selector from `nodes` | The initial values of the card nodes when the card is added from the Bitrix24 editor. The format of the value depends on the [node type](./node-types.md) ||
+|| `disallow` | An array of selectors | The nodes that cannot be edited in the Bitrix24 editor in this preset ||
+|#
 
 ## Preset Markup
 
@@ -83,3 +95,51 @@ Example:
     </a>
 </li>
 ```
+
+## How to Add a Card from a Preset via REST
+
+Presets are applied by the [landing.block.updateCards](./methods/landing-block-update-cards.md) method. In the `source` array, pass an element with the `preset` type and the preset code from the manifest:
+
+```json
+"source": [
+    {
+        "type": "card",
+        "value": 0
+    },
+    {
+        "type": "preset",
+        "value": "telegram"
+    }
+]
+```
+
+The `source` array defines the final composition and order of the block cards, so list the cards you want to keep in it as well. If a non-existent preset is specified in `source`, an empty card appears in its place.
+
+Via REST, only the `html` markup is taken from a preset. The initial values from the `values` key of the manifest are substituted when a card is added in the Bitrix24 editor. Via REST they are set manually: the same `landing.block.updateCards` call has its own `values` key, or the values are recorded afterwards using the [landing.block.updatenodes](./methods/landing-block-update-nodes.md) method.
+
+The `disallow` restriction also applies only in the editor: it hides the fields in the card settings form. The node modification methods do not block such selectors.
+
+The other card methods do not use presets: [landing.block.addcard](./methods/landing-block-add-card.md) adds a card with the HTML passed to it, and [landing.block.clonecard](./methods/landing-block-clone-card.md) copies an existing card by selector.
+
+## Permissions and Limitations
+
+> Scope: [`landing`](../../scopes/permissions.md)
+>
+> Who can execute the method: depending on the method
+
+Limitations:
+
+- presets work only within the card selector in whose description they are defined
+- the [landing.block.updateCards](./methods/landing-block-update-cards.md) method rewrites the content of the card parent in full: any foreign markup inside that container is lost
+- an empty `source` does not remove the cards: [landing.block.updateCards](./methods/landing-block-update-cards.md) returns `true` and changes nothing
+- [landing.block.updateCards](./methods/landing-block-update-cards.md) does not check the selector passed against the manifest: it works with the block markup. The manifest is needed only for `type: preset` — the preset is looked up in `cards.<selector>.presets`. A selector absent from `cards` is not discarded by the method, and it overwrites the content of the container found by that selector
+- the preset markup goes through the sanitizer at block registration. If `manifest.cards[*].presets[*]` contains unsafe content, the [landing.repo.register](../user-blocks/landing-repo-register.md) method returns the `PRESET_CONTENT_IS_BAD` error
+
+## Continue Your Learning
+
+- [{#T}](./manifest.md)
+- [{#T}](./node-types.md)
+- [{#T}](./attributes.md)
+- [{#T}](./localization.md)
+- [{#T}](./methods/landing-block-update-cards.md)
+- [{#T}](../user-blocks/landing-repo-register.md)
