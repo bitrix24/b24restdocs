@@ -9,25 +9,29 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-A single cart can have multiple payments—for example, if products are paid for through different payment systems. Determine which cart items correspond to each payment.
+An order can have multiple payments—for example, if products are paid for through different payment systems. A binding shows which cart items, and in what quantity, are included in each payment: it stores the payment ID `paymentId`, the cart item ID `basketId`, and the quantity `quantity`.
 
 > Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [Payment Systems for Online Stores](https://helpdesk.bitrix24.com/open/25826751/)
 
-## Relationship of Cart Item Binding to Payments with Other Objects
+## Relationship with Other Objects
 
-**Payments.** Specify the payment ID to which you want to bind the cart item. A list of payment IDs can be obtained using the [sale.payment.list](../payment/sale-payment-list.md) method.
+A binding connects a payment and a cart item of the same order. The fields of the binding object are described in the reference [sale_payment_item_basket](../data-types.md#sale_payment_item_basket).
 
-**Cart.** Specify the cart item ID for the payment. A list of cart item IDs can be obtained using the [sale.basketitem.list](../basket-item/sale-basket-item-list.md) method.
+**Order.** The payment from `paymentId` and the cart item from `basketId` must belong to the same order. If the payment belongs to another order, the method [sale.paymentitembasket.add](./sale-payment-item-basket-add.md) returns the error `201240400002` — `payment not exists`.
+
+**Payment.** One payment can include several cart items, and one cart item can be included in several payments. The pair “payment + cart item” is unique: binding the same pair again returns the error `201250000001`. When a payment is added with the method [sale.payment.add](../payment/sale-payment-add.md), Bitrix24 may create bindings for the cart items automatically — check them with the method [sale.paymentitembasket.list](./sale-payment-item-basket-list.md) before adding your own. The list of order payments is returned by the method [sale.payment.list](../payment/sale-payment-list.md).
+
+**Cart.** The value of `quantity` cannot exceed the quantity of the cart item: for a larger value, the methods [sale.paymentitembasket.add](./sale-payment-item-basket-add.md) and [sale.paymentitembasket.update](./sale-payment-item-basket-update.md) return an error with the code `0` and the description “Insufficient item quantity in shopping cart”. The check is performed for each binding separately: Bitrix24 does not limit the total quantity across all payments. The quantity of a cart item is returned by the method [sale.basketitem.list](../basket-item/sale-basket-item-list.md) in the `quantity` field.
 
 ## How to Get Started
 
-1. Retrieve the payment ID using [sale.payment.list](../payment/sale-payment-list.md).
-2. Retrieve cart item IDs using [sale.basketitem.list](../basket-item/sale-basket-item-list.md).
-3. Create a binding using [sale.paymentitembasket.add](./sale-payment-item-basket-add.md).
-4. Check the binding using [sale.paymentitembasket.get](./sale-payment-item-basket-get.md) or [sale.paymentitembasket.list](./sale-payment-item-basket-list.md).
-5. If necessary, update or delete the binding using [sale.paymentitembasket.update](./sale-payment-item-basket-update.md) or [sale.paymentitembasket.delete](./sale-payment-item-basket-delete.md).
+1. Retrieve the order ID using [sale.order.list](../order/sale-order-list.md).
+2. Retrieve the order payments using [sale.payment.list](../payment/sale-payment-list.md) and the cart items using [sale.basketitem.list](../basket-item/sale-basket-item-list.md) — in both methods, filter by `orderId`.
+3. Create a binding using [sale.paymentitembasket.add](./sale-payment-item-basket-add.md): pass `paymentId`, `basketId`, and `quantity`.
+4. Check which cart items are bound to payments using [sale.paymentitembasket.list](./sale-payment-item-basket-list.md).
+5. Pass the binding ID `id` from the response of the add or list method to the methods [sale.paymentitembasket.get](./sale-payment-item-basket-get.md), [sale.paymentitembasket.update](./sale-payment-item-basket-update.md), and [sale.paymentitembasket.delete](./sale-payment-item-basket-delete.md).
 
 ## Overview of Methods {#all-methods}
 

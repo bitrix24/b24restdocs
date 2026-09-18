@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-`BodyDto` is the main content area of the [timeline entry](../index.md).
+`BodyDto` is the main content area of the [timeline entry](../index.md): a logo and a set of content blocks that make up the entry content. The object is passed in the `body` field of the [configurable activity structure](./layout.md) when calling the methods [crm.activity.configurable.add](../crm-activity-configurable-add.md) and [crm.activity.configurable.update](../crm-activity-configurable-update.md).
+
+Block types and their fields are described on the [content block](./content-block.md) page. For ready-to-use combinations — a card with a set of fields, different action types, and multiple languages — see [Activity Configuration Examples](./examples.md).
 
 ## Parameters of the `BodyDto` Object
 
@@ -18,20 +20,14 @@ Choose a tool for developing with an AI agent:
 #|
 || **Field** | **Description** ||
 || **logo^*^**
-[`LogoDto`](#obuekt) | An object describing the logo of the timeline entry ||
-|| **blocks**
-[`ContentBlockDto`](./content-block.md) | An associative array of objects describing content blocks 
-
-{% note warning %}
-
-The array must contain at least one element and no more than 20 elements.
-
-{% endnote %}
-
-||
+[`LogoDto`](#logo-dto) | Logo of the entry ||
+|| **blocks^*^**
+[`object`](../../../../../data-types.md) | Content blocks of the entry: the key is a block identifier that you define yourself, and the value is a [ContentBlockDto](./content-block.md) object. The key may contain Latin letters, digits, hyphens, and underscores. Pass at least one block, but no more than 20 ||
 |#
 
-## `LogoDto` Object {#obuekt}
+If the structure violates these restrictions, the method returns a validation error. Error codes are listed on the pages [crm.activity.configurable.add](../crm-activity-configurable-add.md#errors) and [crm.activity.configurable.update](../crm-activity-configurable-update.md#errors).
+
+## `LogoDto` Object {#logo-dto}
 
 Logo of the timeline entry.
 
@@ -42,27 +38,32 @@ Logo of the timeline entry.
 #|
 || **Field** | **Description** ||
 || **code^*^**
-[`string`](../../../../../data-types.md) | Logo code, for example `call`. A list of available codes can be obtained using the [crm.timeline.logo.list](../../../logmessage/logo/crm-timeline-logo-list.md) method ||
+[`string`](../../../../../data-types.md) | Logo code, for example `call-incoming` or `notification`. All available codes are returned by the [crm.timeline.logo.list](../../../logmessage/logo/crm-timeline-logo-list.md) method. A custom logo is added by the [crm.timeline.logo.add](../../../logmessage/logo/crm-timeline-logo-add.md) method ||
 || **action**
 [`ActionDto`](./action.md) | Action to be taken when the logo is clicked ||
 |#
 
-## Example Object (Without Content Blocks)
+## Example Object
+
+The value of the `body` field: an incoming call logo with a link to a deal and one text block.
 
 ```json
 {
-    "body": {
-        "logo": {
-            "code": "call-incoming",
-            "action": {
-                "type": "redirect",
-                "uri": "/crm/deal/details/123/"
-            }
-        },
-        "blocks": {
-
+    "logo": {
+        "code": "call-incoming",
+        "action": {
+            "type": "redirect",
+            "uri": "/crm/deal/details/123/"
         }
     },
+    "blocks": {
+        "text": {
+            "type": "text",
+            "properties": {
+                "value": "The client confirmed the meeting"
+            }
+        }
+    }
 }
 ```
 

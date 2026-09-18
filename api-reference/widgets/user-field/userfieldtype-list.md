@@ -13,9 +13,26 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method retrieves a list of user field types registered by the application. It returns a list of field types with pagination.
+The method `userfieldtype.list` returns the user field types that the application registered with the method [userfieldtype.add](./userfieldtype-add.md). For each type, the method returns the code, the handler address, the name, and the description.
 
-No parameters.
+A field of such a type is displayed in the CRM item card, and its content is loaded by the application handler. The general workflow is described in the article [Custom Field Types](./index.md).
+
+Use the method to retrieve the type code `USER_TYPE_ID` before calling [userfieldtype.update](./userfieldtype-update.md) or [userfieldtype.delete](./userfieldtype-delete.md).
+
+{% note info "" %}
+
+The method works only in the context of an [application](../../../settings/app-installation/index.md)
+
+{% endnote %}
+
+## Method Parameters
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **start**
+[`integer`](../../data-types.md) | Offset for pagination. The method returns no more than 50 records per call. To retrieve the next page, pass the `next` value from the previous response: `50` for the second page, `100` for the third. For details, see the article [Features of List Methods](../../../settings/how-to-call-rest-api/list-methods-pecularities.md) ||
+|#
 
 ## Code Examples
 
@@ -23,23 +40,13 @@ No parameters.
 
 {% list tabs %}
 
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/userfieldtype.list
-    ```
-
 - cURL (OAuth)
 
     ```curl
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{}' \
+    -d '{"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/userfieldtype.list
     ```
 
@@ -64,8 +71,6 @@ No parameters.
     // userfieldtype.list returns a single page (max 50 records). For the whole result set
     // use a list helper: $b24.actions.v2.callList.make() returns every record as one
     // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-    // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-    // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
     try {
       const response = await $b24.actions.v2.call.make<UserFieldTypeItem[]>({
         method: 'userfieldtype.list',
@@ -102,8 +107,6 @@ No parameters.
           // userfieldtype.list returns a single page (max 50 records). For the whole result set
           // use a list helper: $b24.actions.v2.callList.make() returns every record as one
           // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'userfieldtype.list',
             params: {
@@ -153,9 +156,10 @@ No parameters.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
-    ```php        
+    ```php
     try {
         $userFieldTypesResult = $serviceBuilder->getPlacementScope()->userFieldType()->list();
         $userFieldTypes = $userFieldTypesResult->getUserFieldTypes();
@@ -175,7 +179,7 @@ No parameters.
     ```js
     BX24.callMethod(
         'userfieldtype.list',
-        {},
+        { start: 0 },
         function(result)
         {
             if(result.error())
@@ -193,7 +197,7 @@ No parameters.
 
     $result = CRest::call(
         'userfieldtype.list',
-        []
+        ['start' => 0]
     );
 
     echo '<PRE>';
@@ -277,15 +281,58 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
+[`array`](../../data-types.md) | List of registered user field types [(detailed description)](#result). If the application has not registered any types, the list is empty ||
+|| **next**
+[`integer`](../../data-types.md) | Offset for the next page. Pass the value in the `start` parameter to retrieve the next 50 records. The key is present in the response only if there are records left ||
 || **total**
-[`integer`](../../data-types.md) | Number of processed records ||
+[`integer`](../../data-types.md) | Total number of types registered by the application ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
+#### Element of the result Array {#result}
+
+The field values are set by the application when registering the type with the method [userfieldtype.add](./userfieldtype-add.md).
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **USER_TYPE_ID**
+[`string`](../../data-types.md) | Short type code passed at registration. It is accepted by [userfieldtype.update](./userfieldtype-update.md) and [userfieldtype.delete](./userfieldtype-delete.md). The full type code for creating a field is built as `rest_<APP_ID>_<USER_TYPE_ID>`, as described in the article [Custom Field Types](./index.md) ||
+|| **HANDLER**
+[`string`](../../data-types.md) | Address of the type handler. Bitrix24 loads this address in a frame inside the field ||
+|| **TITLE**
+[`string`](../../data-types.md) | Name of the type in the administrative interface for configuring user fields ||
+|| **DESCRIPTION**
+[`string`](../../data-types.md) | Description of the type in the administrative interface for configuring user fields ||
+|#
+
+## Error Handling
+
+HTTP Status: **403**
+
+```json
+{
+    "error": "WRONG_AUTH_TYPE",
+    "error_description": "Current authorization type is denied for this method Application context required"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was called outside the application context, for example via a webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a user without administrator permissions ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./userfieldtype-add.md)
 - [{#T}](./userfieldtype-update.md)
 - [{#T}](./userfieldtype-delete.md)

@@ -13,11 +13,79 @@ Offline events are a mechanism for receiving events where Bitrix24 does not call
 
 This mechanism is suitable for applications that cannot accept incoming calls: they operate behind a firewall, on an internal network, or are temporarily unavailable.
 
+{% note info "" %}
+
+Offline events are available only to applications: registration with `event_type = offline` and the `event.offline.*` methods work in the context of an [application](../../settings/app-installation/index.md) and require administrator permissions
+
+{% endnote %}
+
 ## How Offline Events Work
 
 A regular event triggers an external application handler via a URL. An offline event, instead of triggering, records the change in a queue on the Bitrix24 side.
 
 The queue does not store the history of all changes but rather the current state of the object. If the same deal is modified 1000 times, only one record with the timestamp of the last change will remain in the queue. This record contains the event name and the identifiers of the modified object—the application retrieves the current data using object retrieval methods.
+
+## Queue Record
+
+The method [event.offline.get](./event-offline-get.md) returns queue records in the `events` array, and the method [event.offline.list](./event-offline-list.md) returns them directly in `result`, with the additional fields `PROCESS_ID` and `ERROR`. The record structure is the same for all events.
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **ID**
+[`string`](../data-types.md) | Identifier of the record in the queue ||
+|| **TIMESTAMP_X**
+[`datetime`](../data-types.md) | Time of the last change of the object ||
+|| **EVENT_NAME**
+[`string`](../data-types.md) | Event name, for example `ONCRMDEALUPDATE` ||
+|| **EVENT_DATA**
+[`object`](../data-types.md) or [`boolean`](../data-types.md) | Event data — the same as passed to the handler of a regular event. For CRM events, this is the object identifier in `FIELDS.ID`. If the event has no data, the field is `false` ||
+|| **EVENT_ADDITIONAL**
+[`object`](../data-types.md) or [`boolean`](../data-types.md) | Event authorization data. If the change was made by a user, their identifier is passed in the `user_id` field; otherwise the field is `false` ||
+|| **MESSAGE_ID**
+[`string`](../data-types.md) | Record key — a hash of the event name and data. A repeated event with the same key updates the record instead of adding a new one, so the queue keeps one record per object. The value is passed in `message_id` of the methods [event.offline.clear](./event-offline-clear.md) and [event.offline.error](./event-offline-error.md) ||
+|| **PROCESS_ID**
+[`string`](../data-types.md) | Only in the `event.offline.list` response. Identifier of the batch that reserved the record via `event.offline.get` with `clear = 0`; empty until the record is reserved ||
+|| **ERROR**
+[`string`](../data-types.md) | Only in the `event.offline.list` response. `1` — the record is marked as erroneous by the `event.offline.error` method, `0` — it is not ||
+|#
+
+An example of an [event.offline.get](./event-offline-get.md) response with batch reservation — one record about a deal change:
+
+```json
+{
+    "result": {
+        "process_id": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6",
+        "events": [
+            {
+                "ID": "1",
+                "TIMESTAMP_X": "2026-09-17T12:32:31+02:00",
+                "EVENT_NAME": "ONCRMDEALUPDATE",
+                "EVENT_DATA": {
+                    "FIELDS": {
+                        "ID": "123"
+                    }
+                },
+                "EVENT_ADDITIONAL": {
+                    "user_id": "1"
+                },
+                "MESSAGE_ID": "b0c7f7c2a3f1e4d5c6b7a8f9e0d1c2b3"
+            }
+        ]
+    },
+    "time": {
+        "start": 1789646720.388504,
+        "finish": 1789646720.509809,
+        "duration": 0.1213,
+        "processing": 0.0082,
+        "date_start": "2026-09-17T12:48:40+02:00",
+        "date_finish": "2026-09-17T12:48:40+02:00",
+        "operating": 0
+    }
+}
+```
+
+The `process_id` field is populated only when the method is called with `clear = 0` or with a passed `process_id`. The full description of parameters and errors is on the method pages.
 
 ## Why Offline Events Are Needed
 
@@ -33,6 +101,18 @@ For synchronization, it is important to know which objects have changed since th
 2. Retrieve events from the queue at the desired frequency using the [event.offline.get](./event-offline-get.md) method or read the queue without changes using the [event.offline.list](./event-offline-list.md) method.
 3. Obtain the current data of the modified objects using their retrieval methods and pass it to the external system.
 4. Confirm processing—remove events from the queue to avoid receiving them again on the next request.
+
+In the main scenario, the queue is controlled by six parameters. Filters, sorting, and pagination are described on the method pages.
+
+#|
+|| **Parameter** | **Method** | **What it does** ||
+|| `limit` | [event.offline.get](./event-offline-get.md) | Size of the record batch. Default `50` ||
+|| `clear` | [event.offline.get](./event-offline-get.md) | `1` — delete the records right after they are returned, the default. `0` — only mark the batch and return `process_id`; works only in the extended mode ||
+|| `process_id` | [event.offline.get](./event-offline-get.md), [event.offline.clear](./event-offline-clear.md), [event.offline.error](./event-offline-error.md) | Identifier of the reserved batch: retrieve it again, confirm it, or mark it as erroneous ||
+|| `message_id` | [event.offline.clear](./event-offline-clear.md), [event.offline.error](./event-offline-error.md) | Array of `MESSAGE_ID` keys to process part of the batch rather than the whole batch ||
+|| `auth_connector` | [event.bind](./event-bind.md), [event.offline.get](./event-offline-get.md), [event.offline.list](./event-offline-list.md) | Source key — a separate queue that does not receive changes made by the application itself ||
+|| `error` | [event.offline.get](./event-offline-get.md) | `1` — return the records marked as erroneous by the `event.offline.error` method. Default `0` — only unprocessed records ||
+|#
 
 ### Availability Check
 
@@ -217,7 +297,7 @@ The confirmation processing mode is available on certain plans. Check availabili
     }
 
     // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // into a struct matching the response shape from the method page.
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -411,7 +491,7 @@ Register the offline handler using the [event.bind](./event-bind.md) method. Spe
     }
 
     // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // into a struct matching the response shape from the method page.
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -626,7 +706,7 @@ The [event.offline.get](./event-offline-get.md) method returns the first records
     }
 
     // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // into a struct matching the response shape from the method page.
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -939,11 +1019,11 @@ The reserved batch is stored for up to 30 days and is then automatically deleted
 
 {% endlist %}
 
-The `event.offline.get` method supports parallel requests: each will receive its own set of records that do not overlap with others.
+The [event.offline.get](./event-offline-get.md) method supports parallel requests: each will receive its own set of records that do not overlap with others.
 
 ### Error Registration
 
-If events fail to process, mark them using the [event.offline.error](./event-offline-error.md) method. Pass `process_id` and an array of `message_id` for the erroneous records.
+If events fail to process, mark them using the [event.offline.error](./event-offline-error.md) method. Pass `process_id` and an array of `message_id` for the erroneous records. Marked records are excluded from the normal results: to retrieve them again, call [event.offline.get](./event-offline-get.md) with the parameter `error = 1`.
 
 {% list tabs %}
 
@@ -1133,7 +1213,7 @@ If events fail to process, mark them using the [event.offline.error](./event-off
     }
 
     // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // into a struct matching the response shape from the method page.
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -1339,7 +1419,7 @@ Specify `auth_connector` when registering the handler:
     }
 
     // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // into a struct matching the response shape from the method page.
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -1553,7 +1633,7 @@ Pass the same `auth_connector` in modifying calls. Then Bitrix24 will not record
     }
 
     // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // into a struct matching the response shape from the method page.
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -1577,8 +1657,9 @@ The event itself does not pass data—it is a signal to retrieve events from the
 
 ## Continue Learning
 
-- [{#T}](./events.md)
+- [{#T}](./index.md)
 - [{#T}](./event-bind.md)
+- [{#T}](./events.md)
 - [{#T}](./event-get.md)
 - [{#T}](./event-unbind.md)
 - [{#T}](./safe-event-handlers.md)

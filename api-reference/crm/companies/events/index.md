@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, updating, or deletion of companies.
+Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, updating, or deletion of [companies](../index.md).
+
+In all three events, the handler receives only the company ID in `data.FIELDS.ID`, without field values. After creation and update, retrieve the company data with the method [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 4` or the deprecated method [crm.company.get](../crm-company-get.md). After deletion, the company is no longer available, so store any data you may need beforehand.
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../events/index.md).
 
@@ -34,9 +36,11 @@ An example of a handler code for the event is described in the article [How to T
 >
 > Who can subscribe: any user
 
+The methods `crm.company.add`, `crm.company.update`, and `crm.company.delete` are deprecated, but the events are still triggered when they are called. For new integrations, use the universal methods `crm.item.*` with `entityTypeId = 4`.
+
 #|
 || **Event** | **Triggered** ||
-|| [onCrmCompanyAdd](./on-crm-company-add.md) | When a company is created manually or via the method [crm.company.add](../crm-company-add.md) ||
-|| [onCrmCompanyUpdate](./on-crm-company-update.md) | When a company is updated manually or via the method [crm.company.update](../crm-company-update.md) ||
-|| [onCrmCompanyDelete](./on-crm-company-delete.md) | When a company is deleted manually or via the method [crm.company.delete](../crm-company-delete.md) ||
+|| [onCrmCompanyAdd](./on-crm-company-add.md) | When a company is created manually, via the method [crm.company.add](../crm-company-add.md), or via the method [crm.item.add](../../universal/crm-item-add.md) with `entityTypeId = 4` ||
+|| [onCrmCompanyUpdate](./on-crm-company-update.md) | When a company is updated manually, via the method [crm.company.update](../crm-company-update.md), or via the method [crm.item.update](../../universal/crm-item-update.md) with `entityTypeId = 4` ||
+|| [onCrmCompanyDelete](./on-crm-company-delete.md) | When a company is deleted manually, via the method [crm.company.delete](../crm-company-delete.md), or via the method [crm.item.delete](../../universal/crm-item-delete.md) with `entityTypeId = 4` ||
 |#

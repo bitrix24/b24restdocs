@@ -9,11 +9,28 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-This document describes all events that a user application receives via [im.v2.Event.get](./event-get.md).
+> Scope: [`im`](../../../../scopes/permissions.md)
+>
+> Who can subscribe: an authorized user
 
-The fields of the `message`, `chat`, and `user` objects are described in [{#T}](../../entities.md).
+This document describes all events that an application or a user receives via [im.v2.Event.get](./event-get.md).
 
-**Quick Navigation:** [ONIMV2MESSAGEADD](#onimv2messageadd) | [ONIMV2MESSAGEUPDATE](#onimv2messageupdate) | [ONIMV2MESSAGEDELETE](#onimv2messagedelete) | [ONIMV2REACTIONCHANGE](#onimv2reactionchange) | [ONIMV2JOINCHAT](#onimv2joinchat)
+Bitrix24 records events only after [im.v2.Event.subscribe](./event-subscribe.md) is called on behalf of the user, and delivers them only in polling mode — by calls to [im.v2.Event.get](./event-get.md). The subscription and polling procedure is described in the overview [Working with Chat](../index.md).
+
+Each event arrives as an element of the `result.events` array with the fields `eventId`, `type`, `date`, and `data`. The tables and examples below describe the contents of `data`; the element wrapper is described on the [im.v2.Event.get](./event-get.md) page. The fields of the `message`, `chat`, and `user` objects are described in [{#T}](../../entities.md).
+
+> Quick navigation: [All Events](#all-events)
+
+## Overview of Events {#all-events}
+
+#|
+|| **Event** | **When it arrives** ||
+|| [ONIMV2MESSAGEADD](#onimv2messageadd) | A new message in a chat where the subscribed user is a member ||
+|| [ONIMV2MESSAGEUPDATE](#onimv2messageupdate) | A message has been edited ||
+|| [ONIMV2MESSAGEDELETE](#onimv2messagedelete) | A message has been deleted ||
+|| [ONIMV2REACTIONCHANGE](#onimv2reactionchange) | A reaction to a message has been added or removed ||
+|| [ONIMV2JOINCHAT](#onimv2joinchat) | A new participant has been added to a chat ||
+|#
 
 ## Differences from Method Responses
 
@@ -25,9 +42,7 @@ In these events, the `chat` and `user` objects are returned in a simplified form
 
 {% note info "" %}
 
-This article describes the event format of the `im.v2.Event.get` method (polling/FETCH), so the `auth` field in the event data is not returned.
-
-If using a webhook subscription for events, the webhook wrapper may contain an `auth` object with tokens.
+There is no `auth` field in the event data: `im.v2` events do not call the application handler but arrive in the [im.v2.Event.get](./event-get.md) response, so authorization is passed in the request itself.
 
 {% endnote %}
 
@@ -148,6 +163,28 @@ A message in the chat has been deleted.
 || **language** | `string` | The language of Bitrix24 ||
 |#
 
+### Example Data
+
+The `chat` and `user` objects here and in the examples below are shortened. The complete structure is shown in the [ONIMV2MESSAGEADD](#onimv2messageadd) example.
+
+```json
+{
+    "messageId": 5012,
+    "chat": {
+        "id": 5,
+        "dialogId": "chat5",
+        "name": "Project Chat",
+        "type": "chat"
+    },
+    "user": {
+        "id": 1,
+        "name": "John Smith",
+        "type": "employee"
+    },
+    "language": "en"
+}
+```
+
 ---
 
 ## ONIMV2REACTIONCHANGE {#onimv2reactionchange}
@@ -164,6 +201,39 @@ A reaction to a message in the chat has been added or removed.
 || **language** | `string` | The language of Bitrix24 ||
 |#
 
+### Example Data
+
+```json
+{
+    "reaction": "like",
+    "action": "add",
+    "message": {
+        "id": 5012,
+        "chatId": 5,
+        "authorId": 1,
+        "date": "2025-01-15T10:30:00+03:00",
+        "text": "Hello everyone!",
+        "isSystem": false,
+        "uuid": "",
+        "forward": null,
+        "params": {},
+        "viewedByOthers": false
+    },
+    "chat": {
+        "id": 5,
+        "dialogId": "chat5",
+        "name": "Project Chat",
+        "type": "chat"
+    },
+    "user": {
+        "id": 2,
+        "name": "Jane Doe",
+        "type": "employee"
+    },
+    "language": "en"
+}
+```
+
 ---
 
 ## ONIMV2JOINCHAT {#onimv2joinchat}
@@ -177,6 +247,26 @@ A new participant has been added to the chat.
 || **user** | [`User`](../../entities.md#user) | The added user. Field descriptions for the object — [User](../../entities.md#user) ||
 || **language** | `string` | The language of Bitrix24 ||
 |#
+
+### Example Data
+
+```json
+{
+    "dialogId": "chat5",
+    "chat": {
+        "id": 5,
+        "dialogId": "chat5",
+        "name": "Project Chat",
+        "type": "chat"
+    },
+    "user": {
+        "id": 3,
+        "name": "Alex Brown",
+        "type": "employee"
+    },
+    "language": "en"
+}
+```
 
 ## Continue Learning
 

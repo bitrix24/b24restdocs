@@ -9,9 +9,27 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-In the section [Task Object](#taskdto), all task fields are described, while other sections cover the fields of related objects. Some task fields are available as both an identifier number and as an object, for example, `creatorId` and `creator`. Use the identifier field in the methods for [creating](./tasks-task-add-rest-v3.md) and [updating](./tasks-task-update-rest-v3.md) a task. Use the object field in the method for [getting a task](./tasks-task-get-rest-v3.md). Instructions on how to work with the fields of related objects are described in the article [Overview of REST API 3.0](../rest-v3.md#connection).
+This page helps you understand the task fields in REST 3.0. They are returned by the methods [tasks.task.get](./tasks-task-get-rest-v3.md), [tasks.task.list](./tasks-task-list-rest-v3.md), and [tasks.task.add](./tasks-task-add-rest-v3.md), and accepted by the methods [tasks.task.add](./tasks-task-add-rest-v3.md) and [tasks.task.update](./tasks-task-update-rest-v3.md). In the section [Task Object](#taskdto), all task fields are described, while other sections cover the fields of related objects.
 
-The rights to write and modify fields depend on the user's role in the task, group permission settings, employee hierarchy, task status, and certain flags in the task, such as `allowChangeDeadline`.
+Some task fields exist in two forms: as an identifier and as an object, for example, `creatorId` and `creator`. Which form each method accepts and returns is shown in the table.
+
+## Which Fields the Methods Accept and Return {#methods}
+
+#|
+|| **Method** | **Accepts** | **Returns** ||
+|| [tasks.task.add](./tasks-task-add-rest-v3.md) | Fields of the [Task Object](#taskdto) table with identifiers of related objects: `creatorId`, `responsibleId`, `groupId`. Required: `title`, `creatorId`, `responsibleId` | The task object with the same structure as [tasks.task.get](./tasks-task-get-rest-v3.md) without `select` ||
+|| [tasks.task.update](./tasks-task-update-rest-v3.md) | The same fields as `tasks.task.add` | Success flag `true` ||
+|| [tasks.task.get](./tasks-task-get-rest-v3.md) | Task `id` and `select` | Without `select`, the basic set of fields without related objects. List the object fields in `select` using dot notation, for example, `["creator.name", "creator.email"]`. The method does not return the identifiers of the creator, assignee, group, stage, flow, template, email, and change authors, even if they are specified in `select`. Such fields are marked in the table ||
+|| [tasks.task.list](./tasks-task-list-rest-v3.md) | `select`, `filter`, `order`, `pagination` | Without `select`, only `id`. Returns the identifiers of related objects, but not the objects themselves, even if their fields are specified in `select` ||
+|#
+
+In `fields` of the methods `tasks.task.add` and `tasks.task.update`, you cannot pass `id`, `created`, `accomplices`, `auditors`, `tags`, `userFields`, and object fields — `creator`, `group`, `parent`, and others. For such a field, the method returns a validation error stating that the field is read-only. Fields marked "changes automatically" do not need to be passed: their value is calculated by Bitrix24.
+
+Instructions on how to work with the fields of related objects are described in the article [Overview of REST API 3.0](../rest-v3.md#connection).
+
+The rights to write and modify fields depend on the user's role in the task, group permission settings, employee hierarchy, task status, and task flags, such as `allowsChangeDeadline`. Before modifying a task, check the `rights` object: its fields show the actions available to the current user.
+
+Boolean fields accept and return `true` or `false`. The string values `Y` and `N` from the classic task methods are not supported in REST 3.0: the method returns a validation error.
 
 ## Task Object {#taskdto}
 
@@ -25,41 +43,41 @@ The rights to write and modify fields depend on the user's role in the task, gro
 || **description**
 [`string`](../data-types.md) | Task description ||
 || **creatorId**
-[`integer`](../data-types.md) | Creator identifier, a required field for [creating a task](./tasks-task-add-rest-v3.md) ||
+[`integer`](../data-types.md) | Creator identifier, a required field for [creating a task](./tasks-task-add-rest-v3.md). The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `creator` object instead ||
 || **creator**
 [`object`](#user) | Creator. An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **created**
-[`datetime`](../data-types.md) | Creation date in ISO-8601 format ||
+[`datetime`](../data-types.md) | Creation date in ISO 8601 format. The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); it is absent from the [tasks.task.get](./tasks-task-get-rest-v3.md) response ||
 || **responsibleId**
-[`integer`](../data-types.md) | Assignee identifier, a required field for [creating a task](./tasks-task-add-rest-v3.md) ||
+[`integer`](../data-types.md) | Assignee identifier, a required field for [creating a task](./tasks-task-add-rest-v3.md). The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `responsible` object instead ||
 || **responsible**
 [`object`](#user) | Assignee. An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **deadline**
-[`datetime`](../data-types.md) | Deadline in ISO-8601 format, for example, `2025-12-31T23:59:59+02:00` ||
+[```datetime | null```](../data-types.md) | Deadline in ISO 8601 format, for example, `2025-12-31T23:59:59+02:00` ||
 || **needsControl**
-[`boolean`](../data-types.md) | Task control by the creator. Possible values:
-`Y` — enabled
-`N` — disabled, default value ||
+[`boolean`](../data-types.md) | Task control by the creator: `true` — after the assignee completes the task, it waits for the creator's review. Default is `false` ||
 || **startPlan**
-[`datetime`](../data-types.md) | Planned start date in ISO-8601 format, for example, `2025-12-31T06:00:00+02:00` ||
+[```datetime | null```](../data-types.md) | Planned start date in ISO 8601 format, for example, `2025-12-31T06:00:00+02:00` ||
 || **endPlan**
-[`datetime`](../data-types.md) | Planned end date in ISO-8601 format, for example, `2025-12-31T18:00:00+02:00` ||
+[```datetime | null```](../data-types.md) | Planned end date in ISO 8601 format, for example, `2025-12-31T18:00:00+02:00` ||
 || **checklist**
-[`array`](../data-types.md) | Identifiers of checklist items. To work with checklists, use the methods [task.checklistitem.*](./checklist-item/index.md) ||
+[`array<integer>`](../data-types.md) | Identifiers of checklist items. To work with checklists, use the methods [task.checklistitem.*](./checklist-item/index.md) ||
+|| **fileIds**
+[```array<integer> | null```](../data-types.md) | Identifiers of Drive files to attach to the task. The field is accepted by [tasks.task.add](./tasks-task-add-rest-v3.md) and [tasks.task.update](./tasks-task-update-rest-v3.md). In the [tasks.task.get](./tasks-task-get-rest-v3.md) response, the field is not populated and is returned as `null` ||
 || **groupId**
-[`integer`](../data-types.md) | Group/project identifier. To work with groups, use the methods [sonet_group.*](../sonet-group/index.md) ||
+[`integer`](../data-types.md) | Group/project identifier. To work with groups, use the methods [sonet_group.*](../sonet-group/index.md). The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `group` object instead ||
 || **group**
 [`object`](#group) | Group/project. An object of type [group](#group). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **stageId**
-[`integer`](../data-types.md) | Stage identifier. Use if the task is in a group/project ||
+[`integer`](../data-types.md) | Stage identifier. Use if the task is in a group/project. The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `stage` object instead ||
 || **stage**
 [`object`](#stage) | Stage. An object of type [stage](#stage). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **epicId**
-[`integer`](../data-types.md) | Epic identifier. To work with epics, use the methods [tasks.api.scrum.epic.*](../sonet-group/scrum/epic/index.md) ||
+[```integer | null```](../data-types.md) | Epic identifier. To work with epics, use the methods [tasks.api.scrum.epic.*](../sonet-group/scrum/epic/index.md) ||
 || **storyPoints**
-[`integer`](../data-types.md) | Story points. To update a Scrum task, use the method [tasks.api.scrum.task.update](../sonet-group/scrum/task/tasks-api-scrum-task-update.md) ||
+[```integer | null```](../data-types.md) | Story points. To update a Scrum task, use the method [tasks.api.scrum.task.update](../sonet-group/scrum/task/tasks-api-scrum-task-update.md) ||
 || **flowId**
-[`integer`](../data-types.md) | Flow identifier. To work with flows, use the methods [tasks.flow.Flow.*](./flow/index.md) ||
+[`integer`](../data-types.md) | Flow identifier. To work with flows, use the methods [tasks.flow.Flow.*](./flow/index.md). The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `flow` object instead ||
 || **flow**
 [`object`](#flow) | Flow. An object of type [flow](#flow). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **priority**
@@ -76,15 +94,17 @@ The rights to write and modify fields depend on the user's role in the task, gro
 - `deferred` — deferred
 - `declined` — declined ||
 || **statusChanged**
-[`datetime`](../data-types.md) | Status change date in ISO 8601 format ||
+[```datetime | null```](../data-types.md) | Status change date in ISO 8601 format ||
 || **accomplices**
-[`array<object>`](#user) | List of user identifiers — participants in the methods for [creating](./tasks-task-add-rest-v3.md) or [updating](./tasks-task-update-rest-v3.md) a task.
-An array of objects of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
+[`array<object>`](#user) | Participants. An array of objects of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md), for example, `["accomplices.id", "accomplices.name"]`.
+
+The methods [tasks.task.add](./tasks-task-add-rest-v3.md) and [tasks.task.update](./tasks-task-update-rest-v3.md) do not accept the field. To assign participants, use the classic method [tasks.task.update](./tasks-task-update.md) with the `ACCOMPLICES` field ||
 || **auditors**
-[`array<object>`](#user) | List of user identifiers — auditors of the task in the methods for [creating](./tasks-task-add-rest-v3.md) or [updating](./tasks-task-update-rest-v3.md) a task.
-An array of objects of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
+[`array<object>`](#user) | Observers. An array of objects of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md), for example, `["auditors.id", "auditors.name"]`.
+
+The methods [tasks.task.add](./tasks-task-add-rest-v3.md) and [tasks.task.update](./tasks-task-update-rest-v3.md) do not accept the field. To assign observers, use the classic method [tasks.task.update](./tasks-task-update.md) with the `AUDITORS` field ||
 || **parentId**
-[`integer`](../data-types.md) | Parent task identifier.
+[```integer | null```](../data-types.md) | Parent task identifier.
 Has a value of `null` if there is no parent task ||
 || **parent**
 [`object`](#taskdto) | Parent task. An object of type [task](#taskdto). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
@@ -111,132 +131,120 @@ Has a value of `null` if there is no parent task ||
 || **actualDuration**
 [`integer`](../data-types.md) | Actual duration ||
 || **durationType**
-[`string`](../data-types.md) | Unit of planned duration. Possible values: `secs`, `mins`, `hours`, `days`, `weeks`, `monts`, `years` ||
+[`string`](../data-types.md) | Unit of planned duration. Possible values: `seconds`, `minutes`, `hours`, `days`, `weeks`, `months`, `years` ||
 || **started**
-[`datetime`](../data-types.md) | Start date of execution in ISO 8601 format ||
+[```datetime | null```](../data-types.md) | Start date of execution in ISO 8601 format ||
 || **estimatedTime**
 [`integer`](../data-types.md) | Time estimate in seconds ||
 || **replicate**
-[`boolean`](../data-types.md) | Indicates a recurring task. Possible values: 
-- `Y` — yes, make the task recurring
-- `N` — do not repeat ||
+[`boolean`](../data-types.md) | Indicates a recurring task: `true` — the task repeats according to the template schedule ||
 || **changed**
 [`datetime`](../data-types.md) | Change date in ISO 8601 format ||
 || **changedById**
-[`integer`](../data-types.md) | Identifier of the user who changed the task ||
+[`integer`](../data-types.md) | Identifier of the user who changed the task. The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `changedBy` object instead ||
 || **changedBy**
 [`object`](#user) | Who changed. An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **statusChangedById**
-[`integer`](../data-types.md) | Identifier of the user who changed the status ||
+[`integer`](../data-types.md) | Identifier of the user who changed the status. The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `statusChangedBy` object instead ||
 || **statusChangedBy**
 [`object`](#user) | Who changed the status. An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **closedById**
-[`integer`](../data-types.md) | Identifier of the user who closed the task ||
+[`integer`](../data-types.md) | Identifier of the user who closed the task. The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `closedBy` object instead ||
 || **closedBy**
 [`object`](#user) | Who closed. An object of type [user](#user). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **closed**
-[`datetime`](../data-types.md) | Closing date in ISO 8601 format ||
+[```datetime | null```](../data-types.md) | Closing date in ISO 8601 format ||
 || **activity**
 [`datetime`](../data-types.md) | Date of last activity in ISO 8601 format ||
 || **guid**
 [`string`](../data-types.md) | Task `GUID` identifier ||
 || **xmlId**
-[`string`](../data-types.md) | External identifier ||
+[```string | null```](../data-types.md) | External identifier ||
 || **exchangeId**
-[`string`](../data-types.md) | Exchange identifier ||
+[```string | null```](../data-types.md) | Exchange identifier ||
 || **exchangeModified**
-[`string`](../data-types.md) | Date of modification in Exchange ||
+[```string | null```](../data-types.md) | Date of modification in Exchange ||
 || **outlookVersion**
 [`integer`](../data-types.md) | Version of synchronization with Outlook ||
 || **mark**
 [`string`](../data-types.md) | Task rating. Possible values:
-`N` — negative
-`P` — positive
-`null` — unrated ||
+- `positive` — positive
+- `negative` — negative
+- `none` — unrated ||
 || **allowsChangeDeadline**
-[`boolean`](../data-types.md) | Allowed to change the deadline. Possible values: 
-- `Y` — allowed
-- `N` — not allowed ||
+[`boolean`](../data-types.md) | The assignee is allowed to change the deadline ||
 || **allowsTimeTracking**
-[`boolean`](../data-types.md) | Time tracking enabled for the task. Possible values: 
-- `Y` — enabled
-- `N` — not enabled ||
+[`boolean`](../data-types.md) | Time tracking is enabled for the task ||
 || **matchesWorkTime**
-[`boolean`](../data-types.md) | Consider working hours. Possible values: 
-- `Y` — yes
-- `N` — no ||
+[`boolean`](../data-types.md) | Consider working hours: skip weekends when calculating planned dates ||
 || **addInReport**
-[`boolean`](../data-types.md) | Add to report. Possible values: 
-- `Y` — add 
-- `N` — do not add ||
+[```boolean | null```](../data-types.md) | Add the task to the report ||
 || **isMultitask**
-[`boolean`](../data-types.md) | Indicates "base task with subtasks". Possible values: 
-- `Y` — yes
-- `N` — no ||
+[`boolean`](../data-types.md) | Indicates "base task with subtasks" ||
 || **siteId**
 [`string`](../data-types.md) | Site identifier ||
+|| **deadlineCount**
+[```integer | null```](../data-types.md) | Service field of task counters. Do not use it in integrations ||
+|| **declineReason**
+[```string | null```](../data-types.md) | Reason for declining the task. Populated when the assignee has declined the task ||
+|| **forumTopicId**
+[```integer | null```](../data-types.md) | Identifier of the forum topic with task comments. The value is `null` until the topic is created ||
 || **forkedByTemplateId**
-[`integer`](../data-types.md) | Identifier of the template if the task was created from a template ||
+[`integer`](../data-types.md) | Identifier of the template if the task was created from a template. The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `forkedByTemplate` object instead ||
 || **forkedByTemplate**
 [`object`](#template) | Task template. An object of type [template](#template). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **maxDeadlineChangeDate**
-[`datetime`](../data-types.md) | Date after which the deadline cannot be changed, in ISO 8601 format ||
+[```datetime | null```](../data-types.md) | Date after which the deadline cannot be changed, in ISO 8601 format ||
 || **maxDeadlineChanges**
-[`integer`](../data-types.md) | Maximum number of deadline extensions ||
+[```integer | null```](../data-types.md) | Maximum number of deadline extensions ||
 || **requireDeadlineChangeReason**
-[`boolean`](../data-types.md) | Require a reason when changing the deadline. Possible values: 
-- `Y` — yes
-- `N` — no ||
+[`boolean`](../data-types.md) | Require a reason when the deadline is moved ||
+|| **tags**
+[`array<object>`](#tag) | Task tags. An array of objects of type [tag](#tag). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md), for example, `["tags.id", "tags.name"]` ||
 || **link**
-[`string`](../data-types.md) | Link to the task ||
+[`string`](../data-types.md) | Relative link to the task in the Bitrix24 interface, for example, `/company/personal/user/1/tasks/task/view/289/` ||
+|| **userFields**
+[`array<object>`](#user-field) | Custom fields of the task. An array of objects of type [custom field](#user-field). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md), for example, `["userFields.key", "userFields.value"]` ||
 || **rights**
-[`array`](../data-types.md) | Array of actions that the user can perform with the task ||
+[`object`](../data-types.md) | Actions of the current user with the task. The key is the action code, and the value is `true` if the action is available. For example, `edit` — edit the task, `complete` — complete, `delegate` — delegate, `changeResponsible` — change the assignee. The full set of keys is in the response example of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **archiveLink**
 [`string`](../data-types.md) | Link to the archive for downloading all task files ||
 || **crmItemIds**
-[`array`](../data-types.md) | Array of identifiers of related CRM objects in the format:
-- `L_XX` — lead,
+[`array<string>`](../data-types.md) | Identifiers of related CRM objects in the format:
+- `L_XX` — lead
 - `D_XX` — deal
 - `C_XX` — contact
 - `CO_XX` — company
 - `SI_XX` — invoice
 - `TXX_XX` — SPA ||
 || **emailId**
-[`integer`](../data-types.md) | Identifier of the email from which the task was created ||
+[`integer`](../data-types.md) | Identifier of the email from which the task was created. The field is returned by [tasks.task.list](./tasks-task-list-rest-v3.md); in the [tasks.task.get](./tasks-task-get-rest-v3.md) response, request the `email` object instead ||
 || **email**
 [`object`](#email) | Email from which the task was created. An object of type [email](#email). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **elapsedTime**
 [`object`](#elapsed-time) | Time tracking. An object of type [time tracking](#elapsed-time). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **requireResult**
-[`boolean`](../data-types.md) | Require a result. Possible values: 
-- `Y` — yes
-- `N` — no  ||
+[`boolean`](../data-types.md) | Require a result: the task cannot be completed without a result record ||
 || **matchesSubTasksTime**
-[`boolean`](../data-types.md) | Consider subtasks deadlines. Possible values: 
-- `Y` — yes
-- `N` — no  ||
+[`boolean`](../data-types.md) | Consider subtask deadlines when calculating planned dates ||
 || **autocompleteSubTasks**
-[`boolean`](../data-types.md) | Auto-completion of subtasks. Possible values: 
-- `Y` — yes
-- `N` — no  ||
+[`boolean`](../data-types.md) | Complete subtasks automatically together with the base task ||
 || **allowsChangeDatePlan**
-[`boolean`](../data-types.md) | Allowed to change planned dates. Possible values: 
-- `Y` — yes
-- `N` — no  ||
+[`boolean`](../data-types.md) | The assignee is allowed to change planned dates ||
 || **inFavorite**
-[`array`](../data-types.md) | Indicates "in favorites". The field returns an array containing the ID of the current user if their setting is active `"inFavorite": [29]` ||
+[`array<integer>`](../data-types.md) | Indicates "in favorites". The field returns an array containing the ID of the current user if their setting is active `"inFavorite": [29]` ||
 || **inPin**
-[`array`](../data-types.md) | Indicates "task pinned". The field returns an array containing the ID of the current user if their setting is active `"inPin": [29]` ||
+[`array<integer>`](../data-types.md) | Indicates "task pinned". The field returns an array containing the ID of the current user if their setting is active `"inPin": [29]` ||
 || **inGroupPin**
-[`array`](../data-types.md) | Indicates "task pinned in group". The field returns an array containing the ID of the current user if their setting is active `"inGroupPin": [29]` ||
+[`array<integer>`](../data-types.md) | Indicates "task pinned in group". The field returns an array containing the ID of the current user if their setting is active `"inGroupPin": [29]` ||
 || **inMute**
-[`array`](../data-types.md) | Indicates "mute". The field returns an array containing the ID of the current user if their setting is active `"inMute": [29]` ||
+[`array<integer>`](../data-types.md) | Indicates "mute". The field returns an array containing the ID of the current user if their setting is active `"inMute": [29]` ||
 || **source**
 [`object`](#source) | Source of the task. An object [source](#source). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **dependsOn**
 [`array`](../data-types.md) | Dependencies on tasks ||
 || **scenarios**
-[`array`](../data-types.md) | Task creation scenario. Possible values: 
+[`array<string>`](../data-types.md) | Task creation scenarios. Possible element values:
 - `default` — default value
 - `crm` — CRM
 - `mobile` — mobile application
@@ -258,13 +266,40 @@ Has a value of `null` if there is no parent task ||
 || **image**
 [`object`](#file) | An object of type [file](#file). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **gender**
-[`string`](../data-types.md) | Gender ||
+[`string`](../data-types.md) | Gender. Possible values:
+- `M` — male
+- `F` — female
+- `N` — not specified ||
 || **email**
 [`string`](../data-types.md) | Email ||
 || **externalAuthId**
 [`string`](../data-types.md) | External auth ID ||
 || **rights**
 [`array`](../data-types.md) | User rights ||
+|#
+
+## Tag Object {#tag}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../data-types.md) | Tag identifier ||
+|| **name**
+[`string`](../data-types.md) | Tag name ||
+|#
+
+## Custom Field Object {#user-field}
+
+Custom fields of a task are created by the methods [task.item.userfield.*](./user-field/index.md).
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **key**
+[`string`](../data-types.md) | Field code, for example, `UF_CRM_TASK` ||
+|| **value**
+[`any`](../data-types.md) | Field value. The type depends on the field settings. If the field is empty — `null` ||
 |#
 
 ## File Object {#file}
@@ -304,7 +339,11 @@ Has a value of `null` if there is no parent task ||
 || **image**
 [`object`](#file) | An object of type [file](#file). Use for data requests in the `select` parameter of [tasks.task.get](./tasks-task-get-rest-v3.md) ||
 || **type**
-[`string`](../data-types.md) | Group type ||
+[`string`](../data-types.md) | Group type. Possible values:
+- `group` — group
+- `project` — project
+- `scrum` — Scrum
+- `collab` — collab ||
 || **isVisible**
 [`boolean`](../data-types.md) | Visibility indicator ||
 |#
@@ -343,7 +382,7 @@ Has a value of `null` if there is no parent task ||
 || **entityId**
 [`integer`](../data-types.md) | Chat object identifier ||
 || **entityType**
-[`string`](../data-types.md) | Chat object type ||
+[`string`](../data-types.md) | Chat object type. For a task chat — `TASKS_TASK` ||
 |#
 
 ## Task Template Object {#template}
@@ -393,7 +432,11 @@ Has a value of `null` if there is no parent task ||
 || **Name**
 `type` | **Description** ||
 || **period**
-[`string`](../data-types.md) | Frequency ||
+[`string`](../data-types.md) | Frequency. Possible values:
+- `daily` — daily
+- `weekly` — weekly
+- `monthly` — monthly
+- `yearly` — yearly ||
 || **everyDay**
 [`string`](../data-types.md) | Every day ||
 || **workdayOnly**
@@ -479,7 +522,10 @@ Has a value of `null` if there is no parent task ||
 || **seconds**
 [`integer`](../data-types.md) | Seconds ||
 || **source**
-[`string`](../data-types.md) | Source ||
+[`string`](../data-types.md) | Source of the time-tracking entry. Possible values:
+- `manual` — the employee entered the time manually
+- `system` — the time was recorded by the task timer
+- `unknown` — the source is not determined ||
 || **text**
 [`string`](../data-types.md) | Comment ||
 || **createdAtTs**
@@ -496,7 +542,15 @@ Has a value of `null` if there is no parent task ||
 || **Name**
 `type` | **Description** ||
 || **type**
-[`string`](../data-types.md) | Source type ||
+[`string`](../data-types.md) | Source type. Possible value — `chat`: the task was created from a chat message ||
 || **data**
 [`array`](../data-types.md) | Source data ||
 |#
+
+## Continue Learning
+
+- [{#T}](./tasks-task-get-rest-v3.md)
+- [{#T}](./tasks-task-list-rest-v3.md)
+- [{#T}](./tasks-task-add-rest-v3.md)
+- [{#T}](./tasks-task-update-rest-v3.md)
+- [{#T}](../rest-v3.md)

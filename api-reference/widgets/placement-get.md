@@ -9,15 +9,23 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`placement`, `depending on the placement`](../scopes/permissions.md)
+> Scope: [`placement`](../scopes/permissions.md)
 >
 > Who can execute the method: administrator
 
-The method `placement.get` returns the widget handlers registered by the application.
+The method `placement.get` returns the list of widget handlers that the application registered with the method [placement.bind](./placement-bind.md). For each handler, the method returns the embedding point code, the handler address, the user for whom the widget is registered, the settings, and the names in different languages.
+
+Use the method to check the current registrations: before calling [placement.bind](./placement-bind.md) again or before removing a handler with the method [placement.unbind](./placement-unbind.md). The list of embedding points available to the application is returned by another method — [placement.list](./placement-list.md).
+
+{% note info "" %}
+
+The method works only in the context of an [application](../../settings/app-installation/index.md)
+
+{% endnote %}
 
 ## Method Parameters
 
-The method has no parameters.
+No parameters.
 
 ## Code Examples
 
@@ -47,6 +55,7 @@ The method has no parameters.
 
     // Shape of each PlacementHandler returned in result[]
     type PlacementHandler = {
+      id: number
       placement: string
       userId: number
       handler: string
@@ -215,6 +224,7 @@ HTTP Status: **200**
 {
     "result": [
         {
+            "id": 41,
             "placement": "CRM_DEAL_LIST_TOOLBAR",
             "userId": 0,
             "handler": "https://myapp.com/?handler=1",
@@ -230,6 +240,7 @@ HTTP Status: **200**
             }
         },
         {
+            "id": 42,
             "placement": "CRM_DEAL_LIST_TOOLBAR",
             "userId": 0,
             "handler": "https://myapp.com/?handler=1",
@@ -245,6 +256,7 @@ HTTP Status: **200**
             }
         },
         {
+            "id": 43,
             "placement": "IM_CONTEXT_MENU",
             "userId": 0,
             "handler": "https://myapp.com/?handler=2",
@@ -264,6 +276,7 @@ HTTP Status: **200**
             }
         },
         {
+            "id": 44,
             "placement": "PAGE_BACKGROUND_WORKER",
             "userId": 1,
             "handler": "https://myapp.com/?handler=3",
@@ -300,21 +313,44 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Returns a list of registered widget handlers. The structure of each element corresponds to the parameters of the [handler registration method](./placement-bind.md#params)
-
-||
+[`array`](../data-types.md) | List of registered widget handlers [(detailed description)](#result). If the application has not registered any handlers, the list is empty ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 
+#### Element of the result Array {#result}
+
+Except for `id`, the field values are set by the application when registering the handler with the method [placement.bind](./placement-bind.md). In the response, field names are written in camelCase rather than in uppercase like the registration parameters: `placement` instead of `PLACEMENT`, `userId` instead of `USER_ID`. The mapping for each field is given in the table.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../data-types.md) | Identifier of the registered handler ||
+|| **placement**
+[`string`](../data-types.md) | Embedding point code. The `PLACEMENT` parameter at registration ||
+|| **userId**
+[`integer`](../data-types.md) | Identifier of the user for whom the widget is registered. The `USER_ID` parameter at registration. The value `0` means the widget is available to all users ||
+|| **handler**
+[`string`](../data-types.md) | Widget handler address. The `HANDLER` parameter at registration ||
+|| **options**
+[`object`](../data-types.md) or [`array`](../data-types.md) | Additional widget display parameters. The `OPTIONS` parameter at registration. An object if the parameters are set, otherwise an empty array `[]` ||
+|| **title**
+[`string`](../data-types.md) | Widget name for one language: the one in which the registration was performed, or the first one from `LANG_ALL` if there is no such translation. The `TITLE` parameter at registration ||
+|| **description**
+[`string`](../data-types.md) | Widget description for the same language as `title`. The `DESCRIPTION` parameter at registration ||
+|| **langAll**
+[`object`](../data-types.md) | Widget name, description, and group for the languages passed at registration. The key is the language code, and the value is an object with the fields `TITLE`, `DESCRIPTION`, and `GROUP_NAME`. The `LANG_ALL` parameter at registration ||
+|#
+
 ## Error Handling
 
-HTTP Status: **400**, **403**, **200**
+HTTP Status: **403**
 
 ```json
 {
-    "error": "INVALID_REQUEST",
-    "error_description": "Https required"
+    "error": "WRONG_AUTH_TYPE",
+    "error_description": "Current authorization type is denied for this method Application context required"
 }
 ```
 
@@ -323,8 +359,9 @@ HTTP Status: **400**, **403**, **200**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Status** ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method. Application context required | 403 ||
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was called outside the application context, for example via a webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a user without administrator permissions ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
