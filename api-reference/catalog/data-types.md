@@ -9,9 +9,44 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Basic data types are listed in a separate [article](../data-types.md).
+Catalog data types describe object identifiers and structures in the parameters and responses of `catalog.*` methods. Use this reference to determine an object's purpose, its relationship to a trade catalog, and the format of its fields. Basic types such as `integer`, `string`, and `object` are listed in [Data Types in the REST API](../data-types.md).
 
-In this article, we will explore the data types and object structure specific to the CRM Catalog.
+## How to Choose an Object
+
+#|
+|| **Object** | **When to Use** | **Methods** ||
+|| [`catalog_product`](#catalog_product) | For a simple product without variations that can be sold as a separate item | [catalog.product.*](./product/index.md) ||
+|| [`catalog_product_sku`](#catalog_product_sku) | For a parent product that groups variations and stores their common information | [catalog.product.sku.*](./product/sku/index.md) ||
+|| [`catalog_product_offer`](#catalog_product_offer) | For a parent product variation, such as a specific color or size | [catalog.product.offer.*](./product/offer/index.md) ||
+|| [`catalog_product_service`](#catalog_product_service) | For a service with no physical stock | [catalog.product.service.*](./product/service/index.md) ||
+|| [`catalog_catalog`](#catalog_catalog) | For identifying product and variation information blocks and the relationship between them | [catalog.catalog.*](./catalog/index.md) ||
+|| [`catalog_price`](#catalog_price) | For the price of a product, variation, or service | [catalog.price.*](./price/index.md) ||
+|| [`catalog_storeproduct`](#catalog_storeproduct) | For the stock of a product or variation at a specific warehouse | [catalog.storeproduct.*](./store-product/index.md) ||
+|#
+
+The complete list of types and structures is provided below. If a method returns a type such as `catalog_product.id`, the value contains the identifier of the corresponding object, not the entire object.
+
+## Product and Variation Relationship
+
+The `type` field defines the role of a product object. It is read-only:
+
+- `1` — simple product
+- `3` — parent product with variations
+- `4` — variation
+- `5` — variation without a parent product
+- `6` — parent product without variations
+- `7` — service
+
+The `iblockId` field indicates the information block containing the object. A parent product is stored in the product information block, while a variation is stored in a separate variation information block. In the [`catalog_catalog`](#catalog_catalog) object for a variation information block, `productIblockId` contains the product information block identifier and `skuPropertyId` contains the identifier of the property that links the variation to its parent product.
+
+A specific variation is linked to its parent product through the `parentId` field of the [`catalog_product_offer`](#catalog_product_offer) object. For example, for a variation with `parentId: 200`, the parent is the `catalog_product_sku` product with `id: 200`.
+
+To identify the objects and their relationship:
+
+1. Retrieve information blocks using [catalog.catalog.list](./catalog/catalog-catalog-list.md)
+2. Select the object by its `type` value
+3. For a variation, match its `parentId` to the parent product's `id`
+4. Go to the object table and check the format of the required field
 
 ## Data Types
 
@@ -42,6 +77,40 @@ In this article, we will explore the data types and object structure specific to
 |#
 
 ## Object Structure
+
+The examples show the fields used to identify the object type, its trade catalog, and the relationship between a variation and its parent product.
+
+```json
+{
+  "catalog_product": {
+    "id": 101,
+    "iblockId": 12,
+    "name": "Mug",
+    "type": 1
+  },
+  "catalog_product_sku": {
+    "id": 200,
+    "iblockId": 12,
+    "name": "T-shirt",
+    "type": 3
+  },
+  "catalog_product_offer": {
+    "id": 201,
+    "iblockId": 13,
+    "name": "T-shirt, size M",
+    "parentId": 200,
+    "type": 4
+  },
+  "catalog_product_service": {
+    "id": 301,
+    "iblockId": 12,
+    "name": "Delivery",
+    "type": 7
+  }
+}
+```
+
+In the example, `catalog_product_sku` with `id: 200` is the parent product. The `catalog_product_offer` object with `parentId: 200` is its variation in information block `13`. The simple product and service are stored in information block `12`, but have different `type` values.
 
 ### catalog_catalog
 
@@ -673,6 +742,11 @@ If `valueId` is not specified, the existing value will be removed from the datab
 `type` | **Description** ||
 || **id**
 [`integer`](../data-types.md) | Identifier of the product variation ||
+|| **parentId**
+[`catalog_product_sku.id`](#catalog_product_sku) | Identifier of the parent product.
+
+You can retrieve parent product identifiers using [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md)
+||
 || **iblockId**
 [`catalog_catalog.id`](#catalog_catalog) | Identifier of the information block of the trade catalog.
 

@@ -13,19 +13,25 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `booking.v1.booking.list` returns a list of bookings based on the filter. It is an implementation of the listing method for bookings.
+The method `booking.v1.booking.list` returns a filtered list of bookings. Each call returns one page with up to 50 bookings.
 
 ## Method Parameters
 
 #|
-|| **FILTER**
+|| **filter**
 [`object`](../../data-types.md) | Object for filtering the list of bookings, description of available fields [below](#filter) ||
-|| **ORDER**
+|| **order**
 [`object`](../../data-types.md) | Object for sorting the list of bookings. The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
 
 The default value is `{id: 'ASC'}`. Description of available fields [below](#order) ||
+|| **start**
+[`integer`](../../data-types.md) | Offset for pagination.
+
+The page size is 50 records. Pass `0` for the first page, `50` for the second, `100` for the third, and so on.
+
+The default value is `0` ||
 |#
 
 ### Filter Parameters {#filter}
@@ -33,21 +39,33 @@ The default value is `{id: 'ASC'}`. Description of available fields [below](#ord
 #|
 || **Name**
 `type` | **Description** ||
+|| **resourceId**
+[`array`](../../data-types.md) | Array of resource identifiers.
+
+The method returns bookings associated with the specified resources ||
 || **within**
 [`object`](../../data-types.md) | Object for filtering by booking time in the format `{"dateFrom": "0", "dateTo": "1739262600"}`, where
-- `dateFrom` — start of the period, a number in timestamp format
-- `dateTo` — end of the period, a number in timestamp format
+- `dateFrom` — required start of the period, an `integer` in Unix timestamp format
+- `dateTo` — required end of the period, an `integer` in Unix timestamp format
   
-If the object is provided, all parameters within it are required ||
+Both fields are required ||
+|| **createdWithin**
+[`object`](../../data-types.md) | Object for filtering by booking creation date with the following required fields:
+
+- `from` — start of the period, type `date`
+- `to` — end of the period, type `date` ||
 || **client**
-[`object`](../../data-types.md) | Object for filtering by client, accepts an array of `entities` objects with fields
-- `code` — client type code
-- `module` — module 
-- `id` — element identifier
+[`object`](../../data-types.md) | Object for filtering by client.
+
+Contains the required `entities` array. Each array item contains the following required fields:
+
+- `code` — client type code, `string`
+- `module` — module identifier, `string`
+- `id` — client identifier, `string`
 
 Available types and module for clients are returned by the method [booking.v1.clienttype.list](../booking-v1-clienttype-list.md). 
 
-If the object is provided, all parameters within it are required ||
+All listed fields are required ||
 |#
 
 ### Order Parameters {#order}
@@ -238,7 +256,7 @@ If the object is provided, all parameters within it are required ||
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
     try:
         bitrix_response = client.booking.v1.booking.list(filter={
-            "resourceId": 1,
+            "resourceId": [1],
             "within": {
                 "dateFrom": 0,
                 "dateTo": 1739262600,
@@ -410,7 +428,7 @@ If the object is provided, all parameters within it are required ||
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "booking.v1.booking.list", b24.Params{
-    	"FILTER": b24.Params{
+	"filter": b24.Params{
     		"within": b24.Params{
     			"dateFrom": 0,
     			"dateTo":   1739262600,
@@ -430,7 +448,7 @@ If the object is provided, all parameters within it are required ||
     			},
     		},
     	},
-    	"ORDER": b24.Params{
+	"order": b24.Params{
     		"id":       "ASC",
     		"dateFrom": "DESC",
     		"dateTo":   "ASC",
@@ -518,7 +536,7 @@ Contains an array of objects with information about bookings. The structure is d
 
 #|
 || **datePeriod**
-[`object`](../../data-types.md) | Period of time for the booking. Contains fields `from` and `to` with information about the start and end times of the booking ||
+[`object`](../../data-types.md) | Booking time period. The structure is described [below](#date-period) ||
 || **description**
 [`string`](../../data-types.md) | Description of the booking. Can be `null` ||
 || **id**
@@ -527,6 +545,21 @@ Contains an array of objects with information about bookings. The structure is d
 [`string`](../../data-types.md) | Name of the booking ||
 || **resourceIds**
 [`array`](../../data-types.md) | Array of resource identifiers associated with the booking. Resource descriptions can be obtained using the method [booking.v1.resource.get](../resource/booking-v1-resource-get.md) ||
+|#
+
+#### datePeriod Fields {#date-period}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **from.timestamp**
+[`integer`](../../data-types.md) | Booking start date and time as a Unix timestamp ||
+|| **from.timezone**
+[`string`](../../data-types.md) | Start time zone as an IANA identifier ||
+|| **to.timestamp**
+[`integer`](../../data-types.md) | Booking end date and time as a Unix timestamp ||
+|| **to.timezone**
+[`string`](../../data-types.md) | End time zone as an IANA identifier ||
 |#
 
 ## Error Handling

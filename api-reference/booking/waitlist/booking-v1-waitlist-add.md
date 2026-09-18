@@ -31,7 +31,7 @@ The method `booking.v1.waitlist.add` adds an entry to the waitlist.
 #|
 || **Name**
 `type` | **Description** ||
-|| **note***
+|| **note**
 [`string`](../../data-types.md) | Note for the waitlist entry. 
 Default value — an empty string ||
 |#
@@ -73,9 +73,7 @@ Default value — an empty string ||
     declare const $b24: B24Frame
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
-    type WaitlistAddResult = {
-      id: number
-    }
+    type WaitlistAddResult = number
 
     try {
       const response = await $b24.actions.v2.call.make<WaitlistAddResult>({
@@ -93,7 +91,7 @@ Default value — an empty string ||
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Added to waitlist, id:', result.id)
+        console.info('Added to waitlist, id:', result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -129,7 +127,7 @@ Default value — an empty string ||
           }
 
           const result = response.getData().result
-          console.info('Added to waitlist, id:', result.id)
+          console.info('Added to waitlist, id:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -248,13 +246,11 @@ Default value — an empty string ||
     	return fmt.Errorf("booking.v1.waitlist.add: %w", err)
     }
 
-    var item struct {
-    	ID b24.ID `json:"id"`
-    }
-    if err := json.Unmarshal(res.Result, &item); err != nil {
+    var id b24.ID
+    if err := json.Unmarshal(res.Result, &id); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.ID)
+    fmt.Println(id)
     ```
 
 {% endlist %}
@@ -265,9 +261,7 @@ HTTP status: **200**
 
 ```json
 {
-    "result": {
-        "id": 107
-    },
+    "result": 7,
     "time": {
      "start": 1724068028.331234,
      "finish": 1724068028.726591,

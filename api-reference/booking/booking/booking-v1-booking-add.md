@@ -50,9 +50,20 @@ Default value is an empty string ||
 || **Name**
 `type` | **Description** ||
 || **from***
-[`object`](../../data-types.md#standart-types) | The start time of the booking in the format `{"timestamp": "1723446900", "timezone": "Europe/Berlin"}`||
+[`object`](../../data-types.md#standart-types) | Booking start time. The structure is described [below](#date) ||
 || **to***
-[`object`](../../data-types.md#standart-types) | The end time of the booking in the format `{"timestamp": "1723447800", "timezone": "Europe/Berlin"}` ||
+[`object`](../../data-types.md#standart-types) | Booking end time. The structure is described [below](#date) ||
+|#
+
+#### from and to Fields {#date}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **timestamp***
+[`integer`](../../data-types.md) | Date and time as a Unix timestamp. For example, `1723446900` ||
+|| **timezone***
+[`string`](../../data-types.md) | Time zone as an IANA identifier. For example, `Europe/Berlin` ||
 |#
 
 ## Code Examples

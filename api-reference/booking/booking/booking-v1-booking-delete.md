@@ -276,6 +276,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `100` | `Could not find value for parameter {id}` | Required parameter `id` not provided ||
+|| `1020` | `booking not found` | No booking with the specified `id` was found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

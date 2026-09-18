@@ -24,6 +24,37 @@ You can subscribe to company user field events through:
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../../events/test-handler.md).
 
+## Data Sent to the Handler
+
+The events report changes to the structure of user fields, not changes to values in company cards. For all four events, the handler receives the same data in `data.FIELDS`:
+
+```json
+{
+    "event": "ONCRMCOMPANYUSERFIELDUPDATE",
+    "data": {
+        "FIELDS": {
+            "ID": "6979",
+            "ENTITY_ID": "CRM_COMPANY",
+            "FIELD_NAME": "UF_CRM_1743165530"
+        }
+    }
+}
+```
+
+- `ID` — user field identifier
+- `ENTITY_ID` — identifier of the object to which the field belongs. For companies, it is always `CRM_COMPANY`
+- `FIELD_NAME` — user field code
+
+The example shows the relevant part of the request. The complete payload with the `event_handler_id`, `ts`, and `auth` parameters is provided on individual event pages, for example [onCrmCompanyUserFieldUpdate](./on-crm-company-user-field-update.md).
+
+The field type, settings, and list values are not sent in the event. Distinguish events by the code in the `event` field, not by the contents of `data.FIELDS`.
+
+## How to Process an Event
+
+1. Use the `event` field to determine what change occurred
+2. For add, update, and list value change events, pass the received `ID` to [crm.company.userfield.get](../crm-company-userfield-get.md) to retrieve the current field properties
+3. For a delete event, use the data from `data.FIELDS` and information previously retained by the integration. After deletion, the field is no longer available through REST
+
 ## Server Availability for Sending and Receiving Events
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../../../_includes/events-index.md) %}

@@ -350,30 +350,35 @@ Check that:
 
 ## Errors and Troubleshooting
 
-- `BX_EMPTY_REQUIRED` at the second step — check `data.code` and the `code` field of every page in `data.items`
-- `REGISTER_ERROR_DATA` at the second step — pass the complete `result` object from `landing.site.fullExport` in `data`
-- `CONTENT_IS_BAD` at the second step — check the template content with `landing.repo.checkcontent`, then register it again
-- `AI_SITE_EXPORT_NOT_ALLOWED` at the first step — exporting AI websites is not supported. Select another website
-- `ACCESS_DENIED` at the first step — check the user's permission to export websites; at the second and third steps, check the View permission in the Sites section
-- **The template was not found at the third step** — check `XML_ID`, the application context, and the result of `landing.demos.register`, then repeat the third step
-- **The preview does not open** — check that `preview_url` is available without authorization
+If a method returns an error or the scenario result does not match the expected result, check the request data and user permissions.
+
+#|
+|| **Error Code or Text** | **Cause and Action** ||
+|| `BX_EMPTY_REQUIRED` | A required field is missing at the second step. Check `data.code` and the `code` field of every page in `data.items` ||
+|| `REGISTER_ERROR_DATA` | Invalid data was passed at the second step. Pass the complete `result` object from `landing.site.fullExport` in `data` ||
+|| `CONTENT_IS_BAD` | The template content failed validation. Check it using `landing.repo.checkcontent`, then register the template again ||
+|| `AI_SITE_EXPORT_NOT_ALLOWED` | Exporting AI websites is not supported. Select another website at the first step ||
+|| `ACCESS_DENIED` | At the first step, check the user's permission to export websites; at the second and third steps, check the View permission in the Sites section ||
+|| `Template was not found` | At the third step, check `XML_ID`, the application context, and the result of `landing.demos.register`, then repeat the third step ||
+|| `Preview does not open` | Check that `preview_url` is available without authorization ||
+|#
 
 ## Important Notes {#important}
 
-- for a multi-page website, pass the complete result of `landing.site.fullExport` in `data`, including the page map in `items`
-- the `type` field defines the template purpose, while `tpl_type` defines its location in the wizard: `S` for a website and `P` for a page
-- external images and `preview_url` must remain available after the template is registered
-- pass OAuth tokens only through application settings or environment variables; do not add them to source code
-- to localize the title and description, pass the `lang` and `lang_original` parameters to `landing.demos.register`
-- to delete a template, retrieve its external code from the `XML_ID` field using `landing.demos.getList`, then pass the code to [landing.demos.unregister](./landing-demos-unregister.md)
+- For a multi-page website, pass the complete result of `landing.site.fullExport` in `data`, including the page map in `items`
+- The `type` field defines the template purpose, while `tpl_type` defines its location in the wizard: `S` for a website and `P` for a page
+- External images and `preview_url` must remain available after the template is registered
+- Pass OAuth tokens only through application settings or environment variables; do not add them to source code
+- To localize the title and description, pass the `lang` and `lang_original` parameters to `landing.demos.register`
+- To delete a template, retrieve its external code from the `XML_ID` field using `landing.demos.getList`, then pass the code to [landing.demos.unregister](./landing-demos-unregister.md)
 
 ## Continue Learning
 
-- [Overview of Custom Template Methods](./index.md)
-- [Register a Template in the Website Creation Wizard](./landing-demos-register.md)
-- [Get a List of Registered Templates](./landing-demos-get-list.md)
-- [Get a List of Templates for Website Creation](./landing-demos-get-site-list.md)
-- [Get a List of Templates for Page Creation](./landing-demos-get-page-list.md)
-- [Delete a Registered Template](./landing-demos-unregister.md)
-- [Export a Website](../site/landing-site-full-export.md)
-- [Template Localization](./localization.md)
+- [{#T}](./index.md)
+- [{#T}](./landing-demos-register.md)
+- [{#T}](./landing-demos-get-list.md)
+- [{#T}](./landing-demos-get-site-list.md)
+- [{#T}](./landing-demos-get-page-list.md)
+- [{#T}](./landing-demos-unregister.md)
+- [{#T}](../site/landing-site-full-export.md)
+- [{#T}](./localization.md)

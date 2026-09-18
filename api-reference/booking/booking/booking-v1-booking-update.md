@@ -50,9 +50,20 @@ Resource IDs can be obtained using the method [booking.v1.resource.list](../reso
 || **Name**
 `type` | **Description** ||
 || **from***
-[`object`](../../data-types.md#standart-types) | Start time of the booking in the format `{"timestamp": "1723446900", "timezone": "Europe/Berlin"}` ||
+[`object`](../../data-types.md#standart-types) | Booking start time. The structure is described [below](#date) ||
 || **to***
-[`object`](../../data-types.md#standart-types) | End time of the booking in the format `{"timestamp": "1723447800", "timezone": "Europe/Berlin"}` ||
+[`object`](../../data-types.md#standart-types) | Booking end time. The structure is described [below](#date) ||
+|#
+
+#### from and to Fields {#date}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **timestamp***
+[`integer`](../../data-types.md) | Date and time as a Unix timestamp. For example, `1723446900` ||
+|| **timezone***
+[`string`](../../data-types.md) | Time zone as an IANA identifier. For example, `Europe/Berlin` ||
 |#
 
 ## Code Examples

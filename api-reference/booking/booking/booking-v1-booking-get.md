@@ -305,7 +305,7 @@ HTTP status: **200**
 
 #|
 || **datePeriod**
-[`object`](../../data-types.md) | Time period of the booking. Contains `from` and `to` fields with information about the start and end times of the booking ||
+[`object`](../../data-types.md) | Booking time period. The structure is described [below](#date-period) ||
 || **description**
 [`string`](../../data-types.md) | Description of the booking. Can be `null` ||
 || **id**
@@ -314,6 +314,21 @@ HTTP status: **200**
 [`string`](../../data-types.md) | Name of the booking ||
 || **resourceIds**
 [`array`](../../data-types.md) | Array of resource identifiers associated with the booking. Resource descriptions can be obtained using the method [booking.v1.resource.get](../resource/booking-v1-resource-get.md) ||
+|#
+
+#### datePeriod Fields {#date-period}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **from.timestamp**
+[`integer`](../../data-types.md) | Booking start date and time as a Unix timestamp ||
+|| **from.timezone**
+[`string`](../../data-types.md) | Start time zone as an IANA identifier ||
+|| **to.timestamp**
+[`integer`](../../data-types.md) | Booking end date and time as a Unix timestamp ||
+|| **to.timezone**
+[`string`](../../data-types.md) | End time zone as an IANA identifier ||
 |#
 
 ## Error Handling

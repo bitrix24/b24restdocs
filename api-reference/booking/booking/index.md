@@ -9,14 +9,23 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Booking methods allow you to:
-
-- efficiently utilize resources by transferring clients between the waiting list and bookings
-- synchronize schedules with external systems
+A booking links a resource, time, and client in a single record. A resource can be a service, employee, room, or another object available for scheduling. You can create a booking for a selected time interval, link it to a contact or company, and additionally associate it with a CRM deal.
 
 > Quick navigation: [all methods](#all-methods) 
 > 
 > User documentation: [How to schedule a client for a service](https://helpdesk.bitrix24.com/open/23851534/)
+
+## Getting Started
+
+1. Retrieve or create a resource using the [booking.v1.resource.*](../resource/index.md) methods. You will need its identifier in the `resourceIds` parameter
+2. Create a booking using [booking.v1.booking.add](./booking-v1-booking-add.md) and pass the resource identifiers and time interval. If the entry is already on the waiting list, use [booking.v1.booking.createfromwaitlist](./booking-v1-booking-createfromwaitlist.md)
+3. Link a contact or company to the booking using the [booking.v1.booking.client.*](./client/index.md) methods
+4. If necessary, associate the booking with a CRM deal using the [booking.v1.booking.externalData.*](./external-data/index.md) methods
+5. Retrieve and update the booking using [booking.v1.booking.get](./booking-v1-booking-get.md), [booking.v1.booking.list](./booking-v1-booking-list.md), and [booking.v1.booking.update](./booking-v1-booking-update.md)
+
+## Pagination
+
+The [booking.v1.booking.list](./booking-v1-booking-list.md) method returns up to 50 bookings per call. To retrieve the next page, pass `50`, `100`, `150`, and so on in the `start` parameter.
 
 ## Connection of Booking with Other Objects
 

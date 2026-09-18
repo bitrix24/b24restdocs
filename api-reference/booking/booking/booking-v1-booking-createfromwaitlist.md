@@ -25,7 +25,7 @@ The method `booking.v1.booking.createfromwaitlist` creates a booking based on an
 || **waitListId***
 [`integer`](../../data-types.md) | Identifier of the entry in the waitlist. 
 Can be obtained using the methods [booking.v1.waitlist.add](../waitlist/booking-v1-waitlist-add.md) and [booking.v1.waitlist.list](../waitlist/booking-v1-waitlist-list.md) ||
-|| **fields**
+|| **fields***
 [`object`](../../data-types.md) | Object containing field values for creating a booking [(detailed description)](#fields) ||
 |#
 
@@ -37,12 +37,6 @@ Can be obtained using the methods [booking.v1.waitlist.add](../waitlist/booking-
 || **resourceIds***
 [`array`](../../data-types.md#standart-types) | Array of resource identifiers for the booking. 
 Resource IDs can be obtained using the method [booking.v1.resource.list](../resource/booking-v1-resource-list.md) ||
-|| **name**
-[`string`](../../data-types.md) | Name of the booking. 
-Default value is an empty string ||
-|| **description**
-[`string`](../../data-types.md) | Description of the booking. 
-Default value is an empty string ||
 || **datePeriod***
 [`object`](../../data-types.md#standart-types) | Object containing the booking time [(detailed description)](#datePeriod) ||
 |#
@@ -53,9 +47,20 @@ Default value is an empty string ||
 || **Name**
 `type` | **Description** ||
 || **from***
-[`object`](../../data-types.md#standart-types) | Start time of the booking in the format `{"timestamp": "1723446900", "timezone": "Europe/Berlin"}`||
+[`object`](../../data-types.md#standart-types) | Booking start time. The structure is described [below](#date) ||
 || **to***
-[`object`](../../data-types.md#standart-types) | End time of the booking in the format `{"timestamp": "1723447800", "timezone": "Europe/Berlin"}` ||
+[`object`](../../data-types.md#standart-types) | Booking end time. The structure is described [below](#date) ||
+|#
+
+#### from and to Fields {#date}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **timestamp***
+[`integer`](../../data-types.md) | Date and time as a Unix timestamp. For example, `1723446900` ||
+|| **timezone***
+[`string`](../../data-types.md) | Time zone as an IANA identifier. For example, `Europe/Berlin` ||
 |#
 
 ## Code Examples

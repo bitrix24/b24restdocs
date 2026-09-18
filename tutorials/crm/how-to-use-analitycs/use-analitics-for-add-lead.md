@@ -548,6 +548,25 @@ In the examples below, the backend serves an HTML page with a form and processes
 
 After submitting the form, a new lead will appear in the CRM with the customer's first name, last name, and phone number. If the `TRACE` field is populated, the [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-trace-add.md) method will link the lead to the Sales Intelligence data.
 
+## Errors and Troubleshooting
+
+If a method returns an error, check the request data and user permissions. The [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md) method returns the error code in the `error` field. For errors related to the `TRACE` and `ENTITIES` parameters and permissions, [crm.tracking.trace.add](../../../api-reference/crm/tracking/crm-tracking-trace-add.md) returns the `ERROR_CORE` code and the specific cause in `error_description`.
+
+#|
+|| **Error Code or Text** | **Cause and Action** ||
+|| `ACCESS_DENIED` | The user does not have permission to add a lead. Check the permissions of the user who created the webhook ||
+|| `CRM_FIELD_ERROR_REQUIRED` | A required field is missing. Check the required lead fields ||
+|| `CRM_FIELD_ERROR_VALUE_NOT_VALID` | A field value or type failed validation. Check the lead field values and types; for `fm`, check the array item structure ||
+|| `100` | Invalid value type for the multiple `fm` field. Pass `fm` as an array of items ||
+|| ``Parameter `TRACE` required.`` | No trace was passed. Check that the Sales Intelligence script is loaded and the hidden `TRACE` field is populated ||
+|| ``Can not parse JSON in parameter `TRACE`.`` | `TRACE` is not a valid JSON string. Check the result of `b24Tracker.guest.getTrace()` ||
+|| ``Wrong TYPE in parameter `ENTITIES`. Allowed types: COMPANY,CONTACT,DEAL,LEAD,QUOTE`` | An unsupported object type was passed. Check the `TYPE` value in the `ENTITIES` array ||
+|| ``Wrong ID in parameter `ENTITIES`.`` | An empty, non-numeric, or non-positive identifier was passed. Check the `ID` value in the `ENTITIES` array ||
+|| ``You have no access to entity `LEAD` with ID `123`.`` | The user does not have permission to update the lead. Check the user's permissions for the specified lead ||
+|#
+
+In the last message, `LEAD` and `123` are examples. The method substitutes the actual object type and identifier.
+
 ## Continue Learning
 
 - [{#T}](./info-to-analitics.md)
