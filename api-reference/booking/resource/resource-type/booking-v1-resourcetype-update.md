@@ -516,12 +516,12 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `1007` | `Resource type not found` | A non-existent `id` of the resource type was specified ||
-|| `100` | `Could not find value for parameter {id}` | A required parameter was not provided ||
-|| `422` | `Invalid value of the {field} field` | An invalid value of an enumerated field, for example `templateTypeConfirmation` ||
-|| `1011` | `Resource type with code "X" already exists` | This `code` is already taken by another type or by the type being updated ||
-|| `0` | `ResourceTypeRepository::getByModuleIdAndCode(): Argument #2 ($code) must be of type string, null given` | The `code` field is not provided in `fields` ||
-|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
+|| `1007` | Resource type not found | A non-existent `id` of the resource type was specified ||
+|| `100` | Could not find value for parameter \{id\} | A required parameter was not provided ||
+|| `422` | Invalid value of the {field} field | An invalid value of an enumerated field, for example `templateTypeConfirmation` ||
+|| `1011` | Resource type with code "X" already exists | This `code` is already taken by another type or by the type being updated ||
+|| `0` | ResourceTypeRepository::getByModuleIdAndCode(): Argument #2 ($code) must be of type string, null given | The `code` field is not provided in `fields` ||
+|| `0` | Booking tool is disabled. Please contact your administrator. | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

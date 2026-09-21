@@ -370,14 +370,14 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | Empty value | `The field ENTITY_ID is required.`, `The field STATUS_ID is required.` | The required field `ENTITY_ID` or `STATUS_ID` was not passed. If both are missing, both messages arrive in the same response ||
-|| `400` | Empty value | `Parameter 'fields' must be array.` | The `fields` parameter received a value that is not an object ||
-|| `400` | Empty value | `Specified entity type is not supported.` | The `ENTITY_ID` field received a directory that does not exist in CRM ||
-|| `400` | Empty value | `The field Title is required.` | The element name `NAME` was not passed ||
-|| `400` | Empty value | `Cannot create more stages after the final stage because the final successful stage already exists. Try using sort order values less than that of the final stage.` | For the `DEAL_STAGE` directory, the `SORT` field received a value greater than that of the `WON` stage ||
-|| `400` | Empty value | `Access denied.` | The user does not have the permission to modify CRM settings ||
-|| `400` | Empty value | `Error on creating status.` | The directory element was not created, and the system did not return the reason ||
-|| `400` | `ERROR_CORE` | `The specified status ID already exists.` | The `ENTITY_ID` directory already contains an element with this `STATUS_ID` ||
+|| `400` | Empty value | The field ENTITY_ID is required., The field STATUS_ID is required. | The required field `ENTITY_ID` or `STATUS_ID` was not passed. If both are missing, both messages arrive in the same response ||
+|| `400` | Empty value | Parameter 'fields' must be array. | The `fields` parameter received a value that is not an object ||
+|| `400` | Empty value | Specified entity type is not supported. | The `ENTITY_ID` field received a directory that does not exist in CRM ||
+|| `400` | Empty value | The field Title is required. | The element name `NAME` was not passed ||
+|| `400` | Empty value | Cannot create more stages after the final stage because the final successful stage already exists. Try using sort order values less than that of the final stage. | For the `DEAL_STAGE` directory, the `SORT` field received a value greater than that of the `WON` stage ||
+|| `400` | Empty value | Access denied. | The user does not have the permission to modify CRM settings ||
+|| `400` | Empty value | Error on creating status. | The directory element was not created, and the system did not return the reason ||
+|| `400` | `ERROR_CORE` | The specified status ID already exists. | The `ENTITY_ID` directory already contains an element with this `STATUS_ID` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

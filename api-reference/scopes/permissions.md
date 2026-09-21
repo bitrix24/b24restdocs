@@ -95,10 +95,10 @@ Versions:
 || **vote** | [Surveys](../vote/index.md) | Working with surveys, voting ||
 |#
 
-[*key_task]: Additionally, three deprecated scopes are available — tasks, tasks_extended, tasksmobile. They should not be used.
-
-[*key_sonet]: The socialnetwork scope does not grant access to any method. To work with working groups, specify sonet_group.
-
 ## Service Scopes
 
 `rest.developer` — a service scope of Alaio Vibecode. It is granted to the system webhooks that Vibecode creates to synchronize apps and AI agents with the Bitrix24 catalog.
+
+[*key_task]: Additionally, three deprecated scopes are available — tasks, tasks_extended, tasksmobile. They should not be used.
+
+[*key_sonet]: The socialnetwork scope does not grant access to any method. To work with working groups, specify sonet_group.
