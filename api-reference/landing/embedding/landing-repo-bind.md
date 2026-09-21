@@ -1,4 +1,4 @@
-# Menu Item in Site Settings and LANDING_SETTINGS Page
+# Register an Embedding Location landing.repo.bind
 
 {% note tip "" %}
 
@@ -10,77 +10,57 @@ Choose a tool for developing with an AI agent:
 {% endnote %}
 
 > Scope: [`landing`](../../scopes/permissions.md)
+>
+> Who can execute the method: user with View access permission in the Sites section
 
-The `LANDING_SETTINGS` widget adds an application item to the site or page settings menu in edit mode.
-
-The `landing` section uses the internal [landing.repo.bind](./landing-repo-bind.md) method for embedding, not [placement.bind](../../widgets/placement-bind.md).
+Registers an embedding location for the current application in the Sites section.
 
 {% note info "" %}
 
-The embedding will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The method works only in the context of an [application](../../../settings/app-installation/index.md).
 
 {% endnote %}
 
-## Where the Widget is Embedded
-
-#| 
-|| **Widget Code** | **Location** ||
-|| `LANDING_SETTINGS` | Item in the site or page settings menu ||
-|#
-
-### Where to Find It in the Interface
-
-Open the site or page in edit mode. In the upper right corner, go to *Site Capabilities > Settings (⚙️)*. The application item with `PLACEMENT=LANDING_SETTINGS` appears as the last item in the left slider menu.
-
-## What the Handler Receives
-
-Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
-
-```php
-Array
-(
-    [DOMAIN] => example.bitrix24.com
-    [PROTOCOL] => 1
-    [LANG] => de
-    [APP_SID] => 0123456789abcdef0123456789abcdef
-    [APPLICATION_SCOPE] => crm,placement,landing
-    [APPLICATION_TOKEN] => xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    [AUTH_ID] => 6061e72600631fcd00005a4b00000001f0f1076700000000f69dd5fc643d9ce2fdbc1
-    [AUTH_EXPIRES] => 3600
-    [REFRESH_ID] => 50e00aa340631fcd00005a4b00000001f0f1071111116580a5b83c2de639ef28c12
-    [SERVER_ENDPOINT] => https://oauth.bitrix24.info/rest/
-    [member_id] => abcdef1234567890abcdef1234567890
-    [status] => F
-    [PLACEMENT] => LANDING_SETTINGS
-    [PLACEMENT_OPTIONS] => {"SITE_ID":"30","LID":"30"}
-)
-```
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-{% include notitle [Description of Standard Data](../../widgets/_includes/widget_data.md) %}
-
-### Additional Data
-
-#| 
-|| **Parameter** `type` | **Description** ||
-|| **APPLICATION_SCOPE** [`string`](../../data-types.md) | List of scopes available to the application ||
-|| **APPLICATION_TOKEN** [`string`](../../data-types.md) | Application token for secure event handling ||
-|| **SERVER_ENDPOINT** [`string`](../../data-types.md) | Bitrix24 authorization server address needed for updating OAuth 2.0 tokens ||
+#|
+|| **Name**
+`type` | **Description** ||
+|| **fields**^*^
+[`object`](../../data-types.md) | Embedding location parameters [(detailed description)](#fields) ||
 |#
 
-### PLACEMENT_OPTIONS
+### The fields Parameter {#fields}
 
-The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **PLACEMENT**^*^
+[`string`](../../data-types.md) | Embedding location code.
 
-For `LANDING_SETTINGS`, the following keys are passed in the context:
+The code depends on where the application item should appear:
+- `LANDING_SETTINGS` — an item in the site or page settings menu
+- `LANDING_BLOCK_<CODE>` — an editing item for blocks with the specified symbolic code
+- `LANDING_BLOCK_*` — an editing item for all blocks
 
-- `SITE_ID` — the identifier of the site where the widget is opened
-- `LID` — the identifier of the page from which the widget was called in edit mode
+The method trims whitespace from the value and converts the code to uppercase ||
+|| **PLACEMENT_HANDLER**^*^
+[`string`](../../data-types.md) | Full HTTP or HTTPS address of the embedding location handler.
+
+The address must include the protocol and domain name ||
+|| **TITLE**
+[`string`](../../data-types.md) | Application item name in the interface.
+
+The default value is an empty string ||
+|#
 
 ## Code Examples
 
-{% include [Note on Examples](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
+
+The example registers an application item in the site or page settings menu.
 
 {% list tabs %}
 
@@ -104,8 +84,6 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
 - JS (TS)
 
     ```ts
-    // This snippet is an ES module: top-level await requires type="module" or a bundler.
-    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
     import { Text } from '@bitrix24/b24jssdk'
     import type { B24Frame } from '@bitrix24/b24jssdk'
 
@@ -124,15 +102,12 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
         requestId: Text.getUuidRfc4122()
       })
 
-      // The payload is available only on a successful response
       if (!response.isSuccess) {
         console.error(response.getErrorMessages().join('; '))
       } else {
-        const result = response.getData()!.result
-        console.info('Landing settings bound:', result)
+        console.info(response.getData()!.result)
       }
     } catch (error) {
-      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
       console.error(error)
     }
     ```
@@ -140,14 +115,11 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
 - JS (UMD)
 
     ```html
-    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function bindLandingSettings() {
+      async function bindLandingPlacement() {
         try {
-          // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
-
           const response = await $b24.actions.v2.call.make({
             method: 'landing.repo.bind',
             params: {
@@ -160,21 +132,18 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
-          // The payload is available only on a successful response
           if (!response.isSuccess) {
             console.error(response.getErrorMessages().join('; '))
             return
           }
 
-          const result = response.getData().result
-          console.info('Landing settings bound:', result)
+          console.info(response.getData().result)
         } catch (error) {
-          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', bindLandingSettings)
+      document.addEventListener('DOMContentLoaded', bindLandingPlacement)
     </script>
     ```
 
@@ -186,7 +155,7 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
     fields = {
         "PLACEMENT": "LANDING_SETTINGS",
         "PLACEMENT_HANDLER": "https://your-domain.com/widgets/landing-settings-handler.php",
-        "TITLE": "My settings",
+        "TITLE": "My Settings",
     }
 
     try:
@@ -205,6 +174,7 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -223,14 +193,10 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
             );
 
         $result = $response->getResponseData()->getResult();
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Success: ' . var_export($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error binding landing settings: ' . $e->getMessage();
+        echo 'Error binding landing placement: ' . $e->getMessage();
     }
     ```
 
@@ -248,9 +214,12 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
         },
         function(result)
         {
-            if (result.error()) {
+            if (result.error())
+            {
                 console.error(result.error());
-            } else {
+            }
+            else
+            {
                 console.info(result.data());
             }
         }
@@ -273,9 +242,16 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
         ]
     );
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+    if (isset($result['error']))
+    {
+        echo 'Error: ' . $result['error_description'];
+    }
+    else
+    {
+        echo '<pre>';
+        print_r($result['result']);
+        echo '</pre>';
+    }
     ```
 
 - Go
@@ -293,16 +269,77 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
     	return fmt.Errorf("landing.repo.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
+    var ok bool
+    if err := json.Unmarshal(res.Result, &ok); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("done:", ok)
     ```
 
 {% endlist %}
 
+## Response Handling
+
+HTTP Status: **200**
+
+```json
+{
+    "result": true,
+    "time": {
+        "start": 1775203200,
+        "finish": 1775203200.764211,
+        "duration": 0.7642109394073486,
+        "processing": 0,
+        "date_start": "2026-04-03T11:00:00+02:00",
+        "date_finish": "2026-04-03T11:00:00+02:00",
+        "operating_reset_at": 1775203800,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../data-types.md) | Registration result. Returns `true` if the record was added successfully ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "PLACEMENT_EXIST",
+    "error_description": "Such embedding placement already exists"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `MISSING_PARAMS` | Not enough parameters for the call, missing: fields | The `fields` parameter was not passed ||
+|| `400` | `TYPE_ERROR` | Invalid call argument type: fields | The value passed in `fields` is not an object ||
+|| `400` | `ACCESS_DENIED` | Insufficient permissions. | The user does not have View access permission in the Sites section or did not pass the general access checks for the `landing` module ||
+|| `400` | `ACCESS_DENIED` | Only an application can manage embedding locations | The method was called outside the application context, or the `rest` module is unavailable ||
+|| `400` | `PLACEMENT_UNKNOWN` | This embedding location is not available for sites | The `PLACEMENT` code does not start with `LANDING_` ||
+|| `400` | `PLACEMENT_HANDLER_INVALID` | Invalid embedding location handler address | `PLACEMENT_HANDLER` contains an empty or invalid HTTP or HTTPS address ||
+|| `400` | `PLACEMENT_EXIST` | Such embedding placement already exists | The current application already has an embedding location with the specified `PLACEMENT` and `PLACEMENT_HANDLER` ||
+|#
+
+{% include [system errors](../../../_includes/system-errors.md) %}
+
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./settings.md)
+- [{#T}](./block.md)
 - [{#T}](./landing-repo-unbind.md)
-- [{#T}](../../widgets/ui-interaction/index.md)
-- [{#T}](../../widgets/bx24-widget-methods.md)

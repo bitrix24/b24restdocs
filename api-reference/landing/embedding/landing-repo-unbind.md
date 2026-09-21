@@ -29,7 +29,7 @@ Available codes for the `landing` section can be found on the [LANDING_SETTINGS]
 || **handler**
 [`string`](../../data-types.md) | Path of the embedding placement handler.
 
-The `handler` value must match the `PLACEMENT_HANDLER` field that was passed during the registration of the embedding placement using the `landing.repo.bind` method.
+The `handler` value must match the `PLACEMENT_HANDLER` field that was passed during the registration of the embedding placement using the [landing.repo.bind](./landing-repo-bind.md) method.
 
 For examples of passing `PLACEMENT_HANDLER`, refer to the [LANDING_SETTINGS](./settings.md) and [LANDING_BLOCK](./block.md) pages.
 
@@ -314,3 +314,4 @@ HTTP Status: **400**
 - [{#T}](./index.md)
 - [{#T}](./settings.md)
 - [{#T}](./block.md)
+- [{#T}](./landing-repo-bind.md)

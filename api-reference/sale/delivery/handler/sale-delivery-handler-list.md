@@ -55,18 +55,18 @@ No parameters.
 
     // Shape of each HandlerItem returned in result[]
     type HandlerItem = {
-      ID: string
+      ID: number
       NAME: string
       CODE: string
-      SORT: string
+      SORT: number
       DESCRIPTION: string
       SETTINGS: {
         CALCULATE_URL: string
         CREATE_DELIVERY_REQUEST_URL: string
         CANCEL_DELIVERY_REQUEST_URL: string
-        HAS_CALLBACK_TRACKING_SUPPORT: string
+        HAS_CALLBACK_TRACKING_SUPPORT: 'Y' | 'N'
         CONFIG: Array<{
-          TYPE: string
+          TYPE: 'STRING' | 'Y/N' | 'NUMBER' | 'ENUM' | 'DATE' | 'LOCATION'
           NAME: string
           CODE: string
           OPTIONS?: Record<string, string>
@@ -80,16 +80,9 @@ No parameters.
     }
 
     try {
-      // sale.delivery.handler.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<HandlerItem[]>({
         method: 'sale.delivery.handler.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -117,16 +110,9 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // sale.delivery.handler.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'sale.delivery.handler.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -216,27 +202,11 @@ No parameters.
     require_once('crest.php');
 
     $result = CRest::call(
-        'sale.delivery.getlist',
-        [
-            'SELECT' => [
-                "ID",
-                "PARENT_ID",
-                "NAME",
-                "ACTIVE",
-                "DESCRIPTION",
-                "SORT",
-                "LOGOTIP",
-                "CURRENCY",
-            ],
-            'FILTER' => [
-                "@ID" => [196, 197, 198],
-            ],
-            'ORDER' => [
-                "SORT" => "ASC",
-                "ID" => "DESC",
-            ]
-        ]
+        'sale.delivery.handler.list',
+        []
     );
+
+    print_r($result);
     ```
 
 - Go
@@ -252,7 +222,7 @@ No parameters.
     	ID          b24.ID `json:"ID"`
     	Name        string `json:"NAME"`
     	Code        string `json:"CODE"`
-    	Sort        string `json:"SORT"`
+        Sort        int    `json:"SORT"`
     	Description string `json:"DESCRIPTION"`
     }
     if err := json.Unmarshal(res.Result, &items); err != nil {
@@ -262,16 +232,13 @@ No parameters.
     	fmt.Println(it.ID, it.Name)
     }
 
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
-    if res.Total != nil {
-    	fmt.Println("total:", *res.Total)
-    }
     ```
 
 {% endlist %}
 
 ## Response Handling
+
+The method returns all available delivery service handlers in the `result` field. Pagination is not used.
 
 HTTP status: **200**
 
@@ -279,10 +246,10 @@ HTTP status: **200**
 {
    "result":[
       {
-         "ID":"14",
+         "ID":14,
          "NAME":"Uber",
          "CODE":"uber",
-         "SORT":"250",
+         "SORT":250,
          "DESCRIPTION":"Uber Description",
          "SETTINGS":{
             "CALCULATE_URL":"http:\/\/gateway.bx\/calculate.php",
@@ -360,14 +327,16 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_delivery_handler[]`](../../data-types.md) | Array of objects with information about the selected delivery service handlers  ||
+[`sale_delivery_handler[]`](../../data-types.md#sale_delivery_handler) | Array of objects containing information about delivery service handlers.
+
+If no handlers are registered, the method returns an empty array ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**, **403**
+HTTP status: **403**
 
 ```json
 {
@@ -381,8 +350,8 @@ HTTP status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Status** ||
-|| `ACCESS_DENIED` | Insufficient rights to retrieve the list of delivery services | 403 ||
+|| **Status** | **Code** | **Description** ||
+|| `403` | `ACCESS_DENIED` | Insufficient permissions to retrieve the list of delivery service handlers ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -390,6 +359,6 @@ HTTP status: **400**, **403**
 ## Continue Learning
 
 - [{#T}](./sale-delivery-handler-add.md)
-- [{#T}](./sale-delivery-handler-delete.md)
 - [{#T}](./sale-delivery-handler-update.md)
+- [{#T}](./sale-delivery-handler-delete.md)
 

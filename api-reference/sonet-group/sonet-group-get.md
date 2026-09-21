@@ -449,9 +449,22 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Array of groups and projects that match the `FILTER` conditions.
+[`object[]`](../data-types.md) | Array of groups and projects that match the `FILTER` conditions [(detailed description)](#result).
 
 An empty array means that there are no suitable records considering the access permissions of the current user ||
+|| **total**
+[`integer`](../data-types.md) | Total number of items in the selection ||
+|| **next**
+[`integer`](../data-types.md) | Offset for the next page. The field is omitted on the last page ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### The result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **ID**
 [`integer`](../data-types.md) | Identifier of the group ||
 || **SITE_ID**
@@ -484,19 +497,25 @@ An empty array means that there are no suitable records considering the access p
 [`integer`](../data-types.md) | Number of members ||
 || **SUBJECT_NAME**
 [`string`](../data-types.md) | Name of the group's subject ||
+|| **PROJECT**
+[`string`](../data-types.md) | Project indicator. Possible values:
+
+- `Y` — project
+- `N` — group ||
 || **IMAGE**
-[`string`](../data-types.md) | URL of the group's avatar ||
+[`string`](../data-types.md) | URL of the group's avatar. The field is present if the group has an avatar ||
 || **IS_EXTRANET**
-[`string`](../data-types.md) | Indicator of the extranet group ||
-|| **total**
-[`integer`](../data-types.md) | Total number of items in the selection ||
-|| **next**
-[`integer`](../data-types.md) | Offset for the next page (if any) ||
-|| **time**
-[`time`](../data-types.md#time) | Information about the execution time of the request ||
+[`string`](../data-types.md) | Extranet group indicator. Possible values:
+
+- `Y` — extranet group
+- `N` — the group is not an extranet group ||
 |#
 
 ## Error Handling
+
+The method does not return specific errors.
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
 
 {% include [system errors](../../_includes/system-errors.md) %}
 

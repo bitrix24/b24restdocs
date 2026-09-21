@@ -7,9 +7,11 @@ items:
     href: settings.md  
   - name: Block Editing Item  
     href: block.md  
+  - name: Register an Embedding Location
+    href: landing-repo-bind.md
   - name: Remove Embedding Locations  
     href: landing-repo-unbind.md  
   - name: Embedding Knowledge Base  
     include:  
       path: knowledge-base/b24-toc.yaml  
-      mode: link  
+      mode: link

@@ -10,7 +10,7 @@ Choose a tool for developing with an AI agent:
 {% endnote %}
 
 ```js
-BX24.appOption.set(string name, mixed value[, Function callback]): void;
+BX24.appOption.set(string name, any value[, Function callback]): void;
 ```
 
 The `BX24.appOption.set` method sets general configurations for the current application.
@@ -29,23 +29,50 @@ Setting application configuration values is only available to users with applica
 || **value***
 [`any`](../../../api-reference/data-types.md) | Parameter value ||
 || **callback**
-[`function`](../../../api-reference/data-types.md) | Callback after saving. The current application settings will be passed as an argument ||
+[`function`](../../../api-reference/data-types.md) | Handler called after the configuration is retained. Receives an object containing the current application configurations [(detailed description)](#callback) ||
+|#
+
+### The callback Argument {#callback}
+
+The `callback` receives an object containing the current application configurations. Property names match the configuration codes, and property values match the values retained for those codes.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **<configuration code>**
+[`any`](../../../api-reference/data-types.md) | Retained configuration value. The property name matches the value of the `name` parameter ||
 |#
 
 ## Code Example
 
 ```js
 BX24.init(() => {
-    BX24.appOption.set('param_str', 'str1', (params) => console.log(params));
-    BX24.appOption.set('param_numb', 1);
+    BX24.appOption.set('param_str', 'str1', () => {
+        BX24.appOption.set('param_numb', 1, (options) => {
+            console.log(options);
+        });
+    });
 });
+```
+
+In an application with no other retained configurations, `console.log` outputs the following object:
+
+```js
+{
+    param_str: 'str1',
+    param_numb: 1
+}
 ```
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-## Return Value
+## Response Handling
 
-The method returns nothing. If the `callback` parameter is passed, current application settings will be passed as a function argument `callback`.
+The method returns nothing. You can process the retention result using the `callback` parameter. The current application configurations are passed to its argument.
+
+## Error Handling
+
+The method does not return error codes. If the user does not have application management permissions, the configuration is not retained and `callback` is not called. You can check the permission using the [BX24.isAdmin](../additional-functions/bx24-is-admin.md) method.
 
 ## Continue Learning
 

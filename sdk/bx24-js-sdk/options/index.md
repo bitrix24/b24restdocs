@@ -40,6 +40,43 @@ Two objects are used to work with app configurations:
 3. Retain the value using the `set` method
 4. Retrieve the value using the `get` method
 
+## How Operations Are Performed
+
+#|
+|| **Object** | **Write** | **Read** | **Unretained Code** ||
+|| `BX24.userOption` | `set` immediately updates the current user's configuration | `get` synchronously returns the value | `undefined` ||
+|| `BX24.appOption` | `set` retains the configuration asynchronously and calls `callback`. Application management permissions are required to write | `get` synchronously returns the value loaded during initialization | `undefined` ||
+|#
+
+## Example
+
+Retain a configuration for the current user and read its value:
+
+```js
+BX24.init(() => {
+    BX24.userOption.set('theme', 'dark');
+
+    console.log(BX24.userOption.get('theme')); // returns dark
+    console.log(BX24.userOption.get('unknown')); // returns undefined
+});
+```
+
+Retain a general application configuration and process the write result:
+
+```js
+BX24.init(() => {
+    if (!BX24.isAdmin()) {
+        return;
+    }
+
+    BX24.appOption.set('theme', 'dark', (options) => {
+        console.log(options.theme); // returns dark
+    });
+});
+```
+
+{% include [Note on examples](../../../_includes/examples.md) %}
+
 ## Overview of Methods {#all-methods}
 
 #|

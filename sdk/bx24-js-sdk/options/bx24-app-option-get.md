@@ -10,10 +10,12 @@ Choose a tool for developing with an AI agent:
 {% endnote %}
 
 ```js
-BX24.appOption.get(string name): mixed;
+BX24.appOption.get(string name): any | undefined;
 ```
 
 The `BX24.appOption.get` method returns a configuration by its code.
+
+The method works after [BX24.init](../system-functions/bx24-init.md) and reads the application configurations loaded during library initialization.
 
 ## Method Parameters
 
@@ -26,23 +28,37 @@ The `BX24.appOption.get` method returns a configuration by its code.
 [`string`](../../../api-reference/data-types.md) | Parameter code ||
 |#
 
-## Code Examples
+## Code Example
 
 ```js
 BX24.init(() => {
     BX24.appOption.set('param_str', 'str1', (params) => console.log(params));
     BX24.appOption.set('param_numb', 1);
 
-    console.log(BX24.appOption.get('param_str')); //returns str1
-    console.log(BX24.appOption.get('param_numb'));//returns 1
+    console.log(BX24.appOption.get('param_str')); // returns str1
+    console.log(BX24.appOption.get('param_numb')); // returns 1
+    console.log(BX24.appOption.get('unknown')); // returns undefined
 });
 ```
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
-## Return Value
+## Response Handling
 
-Returns the value of the app configuration with the name `name`. The value type depends on what was retained by the [BX24.appOption.set](./bx24-app-option-set.md) method.
+The method synchronously returns the application configuration value.
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`any`\|`undefined`](../../../api-reference/data-types.md) | If a configuration named `name` is retained, the method returns its value. The type depends on the value passed to [BX24.appOption.set](./bx24-app-option-set.md). If the configuration is not retained, the method returns `undefined` ||
+|#
+
+## Error Handling
+
+The method does not return error codes. A missing configuration is not considered an error: the method returns `undefined`.
 
 ## Continue Learning
 

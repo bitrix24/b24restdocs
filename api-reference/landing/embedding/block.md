@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 
 The widget `LANDING_BLOCK_<CODE>` adds an application item next to the block editing actions in the page editor.
 
-For integration within the `landing` section, the internal method of the `landing.repo.bind` module is used instead of [placement.bind](../../widgets/placement-bind.md).
+The `landing` section uses the internal [landing.repo.bind](./landing-repo-bind.md) method for embedding, not [placement.bind](../../widgets/placement-bind.md).
 
 The integration code depends on the block code and is specified in the format `LANDING_BLOCK_<CODE>`.
 

@@ -79,7 +79,7 @@ Embedding locations allow you to add an application to the interface of websites
 
 **Knowledge Base.** The binding of the Knowledge Base to a menu or group is described in the subsection [Embedding the Knowledge Base](./embedding/knowledge-base/index.md). These bindings are managed by the `landing.site.*` methods because the Knowledge Base is presented as a separate website.
 
-In the `landing` module, embedding locations are registered using the internal method `landing.repo.bind`, not [placement.bind](../widgets/placement-bind.md). You can remove the embedding location of the current application using the [landing.repo.unbind](./embedding/landing-repo-unbind.md) method.
+In the `landing` module, embedding locations are registered using the internal method [landing.repo.bind](./embedding/landing-repo-bind.md), not [placement.bind](../widgets/placement-bind.md). You can remove the embedding location of the current application using the [landing.repo.unbind](./embedding/landing-repo-unbind.md) method.
 
 ## Types of Websites and Scope
 

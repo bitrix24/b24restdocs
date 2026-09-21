@@ -19,21 +19,15 @@ The REST API reference groups the same directions on the [{#T}](../../api-refere
 > 
 > User documentation: [How to Start Working with CRM in Bitrix24](https://helpdesk.bitrix24.com/open/25766191/)
 
-## Connection with CRM Objects
+## Requirements
 
-Scenarios work with core CRM objects and related data.
+**Scope.** All scenarios require the [`crm`](../../api-reference/scopes/permissions.md) scope. Some scenarios may require additional scopes, such as `user` to retrieve user data or `placement` to embed a widget. The exact scopes are specified at the top of each scenario page.
 
-**Leads, contacts, companies, and deals.** Core customer and sales cards can be created, updated, and retrieved using the [crm.lead.*](../../api-reference/crm/leads/index.md), [crm.contact.*](../../api-reference/crm/contacts/index.md), [crm.company.*](../../api-reference/crm/companies/index.md), and [crm.deal.*](../../api-reference/crm/deals/index.md) methods.
+**Permissions.** The user must have permission to perform the required action on the CRM object: read, add, update, or delete. Related data and widgets require the permissions specified in the selected scenario. An inbound webhook operates within its scope, while an OAuth request uses the permissions of the user on whose behalf it is sent.
 
-**Activities and timeline.** Calls, emails, meetings, tasks, and comments are linked to CRM cards via [activity](../../api-reference/crm/timeline/activities/index.md) and [timeline comment](../../api-reference/crm/timeline/comments/index.md) methods.
+**Methods.** For new integrations, use the universal `crm.item.*` methods to work with leads, deals, contacts, companies, and SPAs. Development of the object-specific `crm.lead.*` and `crm.deal.*` methods has stopped. Use them only when a specific scenario or API limitation explicitly requires them.
 
-**Company details, addresses, and line items.** Related data is stored separately from the CRM card. These are created and linked to a customer, deal, or document using [company details](../../api-reference/crm/requisites/index.md), [addresses](../../api-reference/crm/requisites/addresses/index.md), [line items](../../api-reference/crm/universal/product-rows/index.md), and [catalog](../../api-reference/catalog/index.md) methods.
-
-**SPAs.** Custom CRM types work via `entityTypeId` — an object type identifier. To create items, pipelines, stages, and custom fields, use the universal [crm.item.*](../../api-reference/crm/universal/index.md) methods.
-
-**Sales Intelligence.** The source of inquiry and the customer journey are passed to the CRM via UTM parameters, the `TRACE` field, or the [crm.tracking.trace.add](../../api-reference/crm/tracking/crm-tracking-trace-add.md) method.
-
-**CRM Widgets.** An application interface can be embedded into a CRM card via a custom field or a tab. To register handlers, use the [widgets](../../api-reference/widgets/index.md) methods and embedding points.
+**Responses and Limits.** A successful call returns data in the `result` field, while an error returns the `error` and `error_description` fields. The exact result and error structures for a method are provided on its page. General handling rules are described in [Error Codes](../../error-codes.md), and request rate and execution time limits are described in [REST API Limits](../../limits.md).
 
 ## Getting Started
 
@@ -48,12 +42,28 @@ Scenarios work with core CRM objects and related data.
 
 #|
 || **If needed** | **Open** | **What you will find** ||
-|| Create a lead, contact, company, deal, activity, document, or SPA item | [Add data](./how-to-add-crm-objects/index.md) | 19 scenarios for creating CRM objects and related data. Main methods and groups: `crm.lead.add`, `crm.contact.add`, `crm.company.add`, `crm.deal.add`, `crm.item.add`, `crm.activity.*`, `crm.requisite.*` ||
-|| Change card fields, phones, email, activity date, activity link, or payment date | [Edit data](./how-to-edit-crm-objects/index.md) | 10 scenarios for updating CRM data. Main methods and groups: `crm.lead.update`, `crm.contact.update`, `crm.company.update`, `crm.deal.update`, `crm.activity.binding.*`, `crm.item.payment.list`, `crm.deal.userfield.*` ||
-|| Find duplicates, get activities, stages, pipelines, addresses, suppliers, or items by filter | [Get lists](./how-to-get-lists/index.md) | 7 scenarios for retrieving data from CRM. Main methods and groups: `crm.duplicate.findbycomm`, `crm.*.list`, `crm.activity.list`, `crm.status.*`, `crm.category.*`, `crm.item.list`, `crm.requisite.*` ||
-|| Pass UTM tags, `TRACE`, or link created objects to a trace | [Sales Intelligence](./how-to-use-analitycs/index.md) | 3 scenarios for passing analytics data. Main methods: `crm.lead.add`, `crm.contact.add`, `crm.company.add`, `crm.deal.add`, `crm.item.add`, `crm.tracking.trace.add` ||
-|| Add the application interface to a CRM card | [How to embed widgets into CRM](./crm-widgets/index.md) | 2 scenarios for a lead custom field and a CRM card tab. Main methods and embedding points: `userfieldtype.add`, `placement.bind`, CRM ||
+|| Create a lead, contact, company, deal, activity, document, or SPA item | [Add data](./how-to-add-crm-objects/index.md) | Scenarios for creating CRM objects and related data. Main methods and groups: `crm.item.add`, `crm.activity.*`, `crm.requisite.*` ||
+|| Change card fields, phones, email, activity date, activity link, or payment date | [Edit data](./how-to-edit-crm-objects/index.md) | Scenarios for updating CRM data. Main methods and groups: `crm.item.update`, `crm.activity.binding.*`, `crm.item.payment.list`, `crm.deal.userfield.*` ||
+|| Find duplicates, get activities, stages, pipelines, addresses, suppliers, or items by filter | [Get lists](./how-to-get-lists/index.md) | Scenarios for retrieving data from CRM. Main methods and groups: `crm.duplicate.findbycomm`, `crm.*.list`, `crm.activity.list`, `crm.status.*`, `crm.category.*`, `crm.item.list`, `crm.requisite.*` ||
+|| Pass UTM tags, `TRACE`, or link created objects to a trace | [Sales Intelligence](./how-to-use-analitycs/index.md) | Scenarios for passing analytics data. Main methods: `crm.item.add`, `crm.tracking.trace.add` ||
+|| Add the application interface to a CRM card | [How to Embed Widgets into CRM](./crm-widgets/index.md) | Scenarios for a lead custom field and a CRM card tab. Main methods and embedding points: `userfieldtype.add`, `placement.bind`, CRM ||
 |#
+
+## Relationships with Other Objects
+
+Scenarios work with core CRM objects and related data.
+
+**Leads, Contacts, Companies, and Deals.** Create, update, and retrieve core customer and sales cards using the universal [crm.item.*](../../api-reference/crm/universal/index.md) methods. The documentation also includes the object-specific [crm.lead.*](../../api-reference/crm/leads/index.md) and [crm.deal.*](../../api-reference/crm/deals/index.md) groups for leads and deals, but their development has stopped.
+
+**Activities and Timeline.** Link calls, emails, meetings, tasks, and comments to CRM cards using [activity](../../api-reference/crm/timeline/activities/index.md) and [timeline comment](../../api-reference/crm/timeline/comments/index.md) methods.
+
+**Company Details, Addresses, and Line Items.** Related data is stored separately from the CRM card. Create it and link it to a customer, deal, or document using [company details](../../api-reference/crm/requisites/index.md), [addresses](../../api-reference/crm/requisites/addresses/index.md), [line items](../../api-reference/crm/universal/product-rows/index.md), and [catalog](../../api-reference/catalog/index.md) methods.
+
+**SPAs.** Custom CRM types use `entityTypeId`, the object type ID. Use the universal [crm.item.*](../../api-reference/crm/universal/index.md) methods to create items, pipelines, stages, and custom fields.
+
+**Sales Intelligence.** Pass the inquiry source to the universal `crm.item.add` method using UTM fields. Link the complete customer journey to the created object using [crm.tracking.trace.add](../../api-reference/crm/tracking/crm-tracking-trace-add.md), because `crm.item.add` does not accept the `TRACE` field.
+
+**CRM Widgets.** Embed an application interface into a CRM card using a custom field or tab. To register handlers, use the [widgets](../../api-reference/widgets/index.md) methods and embedding locations.
 
 ## Common Scenarios {#popular-tutorials}
 
