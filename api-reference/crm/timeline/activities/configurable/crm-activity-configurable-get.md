@@ -1,4 +1,4 @@
-# Get Configurable Activity by ID crm.activity.configurable.get
+# Get Configurable Activity crm.activity.configurable.get
 
 {% note tip "" %}
 
@@ -11,15 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to the CRM object the activity is linked to
 
-The method `crm.activity.configurable.get` returns information about a configurable activity.
+The method `crm.activity.configurable.get` returns a configurable activity by its identifier: its fields and the `layout` structure that defines the appearance of the entry in the timeline.
 
-{% note warning %}
+Unlike [crm.activity.configurable.add](./crm-activity-configurable-add.md) and [crm.activity.configurable.update](./crm-activity-configurable-update.md), the method does not require the application context — it can also be called via an inbound webhook.
 
-The method can only be called in the context of an [application](https://helpdesk.bitrix24.com/examples/app.zip).
+The method returns only configurable activities — for activities of other types it returns `NOT_FOUND`.
 
-{% endnote %}
+The activity identifier comes in the response of the [crm.activity.configurable.add](./crm-activity-configurable-add.md) method. You can find the activities created by the application with the [crm.activity.list](../activity-base/crm-activity-list.md) method using the `PROVIDER_ID = CONFIGURABLE_REST_APP` filter.
 
 ## Method Parameters
 
@@ -37,6 +37,16 @@ The method can only be called in the context of an [application](https://helpdes
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"id":999}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.configurable.get
+    ```
 
 - cURL (OAuth)
 
@@ -180,11 +190,7 @@ The method can only be called in the context of an [application](https://helpdes
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Data: ' . print_r($result->data(), true);
-        }
+        echo 'Data: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -221,9 +227,13 @@ The method can only be called in the context of an [application](https://helpdes
         ]
     );
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
+    if (isset($result['error'])) {
+        echo 'Error: ' . $result['error_description'];
+    } else {
+        echo '<PRE>';
+        print_r($result['result']);
+        echo '</PRE>';
+    }
     ```
 
 - Go
@@ -383,9 +393,53 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response - an associative array with the key **activity**, which will contain [fields](./crm-activity-configurable-add.md#parametr-fields) ||
+[`object`](../../../../data-types.md) | Root element of the response with a single **activity** key [(detailed description)](#activity) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Activity Object {#activity}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../../data-types.md) | Identifier of the activity ||
+|| **ownerTypeId**
+[`integer`](../../../../data-types.md) | Identifier of the [CRM object type](../../../data-types.md#object_type) the activity is linked to ||
+|| **ownerId**
+[`integer`](../../../../data-types.md) | Identifier of the CRM object the activity is linked to ||
+|| **fields**
+[`object`](../../../../data-types.md) | Activity fields [(detailed description)](#fields) ||
+|| **layout**
+[`LayoutDto`](./structure/layout.md) | Structure that defines the appearance of the entry in the timeline. The same structure is passed in the `layout` parameter of the [crm.activity.configurable.add](./crm-activity-configurable-add.md) and [crm.activity.configurable.update](./crm-activity-configurable-update.md) methods. The `actionParams` values inside the structure come back as strings even if they were passed as numbers on creation: in the example above `clientId` came back as `"456"` ||
+|#
+
+#### Fields Object {#fields}
+
+The types in the response differ from the input types. Flags come back as `boolean` even if they were passed as `Y/N` or `1/0` on creation. Unset values come back as `null` or an empty string.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **typeId**
+[`string`](../../../../data-types.md) | Type of the configurable activity, for example `CONFIGURABLE` ||
+|| **completed**
+[`boolean`](../../../../data-types.md) | Whether the activity is closed ||
+|| **deadline**
+[`datetime`](../../../../data-types.md) | Deadline in ISO 8601 format, or `null` if there is no deadline ||
+|| **pingOffsets**
+[`array`](../../../../data-types.md) | Offsets in minutes relative to the deadline. An empty array if no pings are set ||
+|| **isIncomingChannel**
+[`boolean`](../../../../data-types.md) | Whether the activity was created from an incoming channel ||
+|| **responsibleId**
+[`integer`](../../../../data-types.md) | Identifier of the assignee ||
+|| **badgeCode**
+[`string`](../../../../data-types.md) | [Badge](./badges/index.md) code, or an empty string if no badge is set ||
+|| **originatorId**
+[`string`](../../../../data-types.md) | Identifier of the data source, or `null` ||
+|| **originId**
+[`string`](../../../../data-types.md) | Identifier of the element in the data source, or `null` ||
 |#
 
 ## Error Handling
@@ -395,24 +449,29 @@ HTTP Status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error_description": "Element not found"
 }
 ```
 
 {% include notitle [error handling](../../../../../_includes/error-info.md) %}
 
-### Possible Error Codes
+### Possible Error Codes {#errors}
 
 #|
 || **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `NOT_FOUND` | Element not found ||
-|| `ERROR_WRONG_CONTEXT` | Method call is only possible in the context of an application ||
+|| `100` | The required `id` parameter is missing ||
+|| `NOT_FOUND` | The activity was not found: no such identifier, the activity is not configurable, or the user has no access to the CRM object ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./crm-activity-configurable-update.md)
 - [{#T}](./crm-activity-configurable-add.md)
+- [{#T}](./crm-activity-configurable-update.md)
+- [{#T}](./structure/layout.md)
+- [{#T}](./structure/examples.md)
+- [{#T}](./badges/index.md)
+- [{#T}](../activity-base/crm-activity-list.md)
+- [{#T}](../activity-base/crm-activity-delete.md)
+- [{#T}](./index.md)

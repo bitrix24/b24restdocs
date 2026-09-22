@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 `BodyDto` is the main content area of the [timeline entry](../index.md): a logo and a set of content blocks that make up the entry content. The object is passed in the `body` field of the [configurable activity structure](./layout.md) when calling the methods [crm.activity.configurable.add](../crm-activity-configurable-add.md) and [crm.activity.configurable.update](../crm-activity-configurable-update.md).
 
-Block types and their fields are described on the [content block](./content-block.md) page. For ready-to-use combinations — a card with a set of fields, different action types, and multiple languages — see [Activity Configuration Examples](./examples.md).
+Block types and their fields are described on the [content block](./content-block.md) page. For ready-to-use combinations — an entry with a set of fields, different action types, and multiple languages — see [Activity Configuration Examples](./examples.md).
 
 ## Parameters of the `BodyDto` Object
 

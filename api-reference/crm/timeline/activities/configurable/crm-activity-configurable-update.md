@@ -11,13 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with edit access to the CRM object the activity is linked to
 
-The `crm.activity.configurable.update` method modifies a configurable activity. 
+The `crm.activity.configurable.update` method updates the fields of a configurable activity, the structure of its timeline entry, or both at once.
 
-{% note warning %}
+The update is partial: fields not passed in `fields` keep their previous values. Without `layout` the entry keeps its current appearance. A `layout` that is passed replaces the previous structure as a whole, the fields are not merged.
 
-The method can only be called within the context of the [application](https://helpdesk.bitrix24.com/examples/app.zip) that created it.
+The same method releases the [entry lock](./structure/action.md#sobytie) set by the `animationType` field of an action on click.
+
+{% note info "" %}
+
+The method can only be called within the context of the [application](../../../../../settings/app-installation/index.md) that created the activity. Calling it via an inbound webhook returns the `ERROR_WRONG_CONTEXT` error, calling it from another application — `ERROR_WRONG_APPLICATION`.
 
 {% endnote %}
 
@@ -29,28 +33,42 @@ The method can only be called within the context of the [application](https://he
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Integer identifier of the activity, for example `999` ||
-|| **fields***
+[`integer`](../../../../data-types.md) | Integer identifier of the activity, for example `999`. It is returned by the [crm.activity.configurable.add](./crm-activity-configurable-add.md) method ||
+|| **fields**
 [`array`](../../../../data-types.md) | Associative array of values for [activity fields](./crm-activity-configurable-add.md#parametr-fields) in the following structure:
 
 ```json
-fields:
 {
-    "typeId": 'value',
-    "completed": 'value',
-    "deadline": 'value',
-    "pingOffsets": 'value',
-    "isIncomingChannel": 'value',
-    "responsibleId": 'value',
-    "badgeCode": 'value',
-    "originatorId": 'value',
-    "originId": 'value',
+    "completed": true,
+    "deadline": "2025-02-01T12:00:00+03:00",
+    "pingOffsets": [15, 60],
+    "isIncomingChannel": "N",
+    "responsibleId": 5,
+    "badgeCode": "CUSTOM",
+    "originatorId": "my_service",
+    "originId": "42"
 }
 ```
+The fields you pass are updated, the rest keep their previous values
 ||
-|| **layout***
-[`LayoutDto`](./structure/layout.md) | [A special structure associative array](./structure/layout.md#primer) describing the appearance of the activity in the timeline ||
+|| **layout**
+[`LayoutDto`](./structure/layout.md) | Structure that defines the appearance of the entry in the timeline. A ready-made [object example](./structure/layout.md#primer) is on the structure page ||
 |#
+
+Only `id` is required. The `fields` and `layout` parameters can be passed separately or together.
+
+### How to Clear a Field Value
+
+An empty value does not clear every field:
+
+#|
+|| **Field** | **How to Clear** ||
+|| `badgeCode`, `originatorId`, `originId` | Pass an empty string ||
+|| `pingOffsets` | Pass an empty array ||
+|| `deadline` | Cannot be cleared through the method: Bitrix24 ignores an empty value and keeps the previous deadline ||
+|#
+
+The activity type `typeId` does not change after creation: any other value is rejected by the method with the `CANT_CHANGE_PROVIDER_TYPE_ID` error.
 
 ## Code Examples
 
@@ -64,7 +82,7 @@ fields:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"fields":{"typeId":"CONFIGURABLE","completed":false,"deadline":"**put_current_date_time_here**","pingOffsets":[300],"isIncomingChannel":"Y","responsibleId":5,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"Klaus Weber","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+49 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About the client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
+    -d '{"id":999,"fields":{"completed":false,"deadline":"2025-02-01T12:00:00+03:00","pingOffsets":[300],"isIncomingChannel":"Y","responsibleId":5,"badgeCode":"CUSTOM"},"layout":{"icon":{"code":"call-completed"},"header":{"title":"Incoming call"},"body":{"logo":{"code":"call-incoming"},"blocks":{"responsible":{"type":"lineOfBlocks","properties":{"blocks":{"client":{"type":"link","properties":{"text":"Klaus Weber","bold":true,"action":{"type":"redirect","uri":"/crm/lead/details/789/"}}},"phone":{"type":"text","properties":{"value":"+49 999 888 7777"}}}}}}},"footer":{"buttons":{"startCall":{"title":"About the client","action":{"type":"openRestApp","actionParams":{"clientId":456}},"type":"primary"}}}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.configurable.update
     ```
 
@@ -91,9 +109,8 @@ fields:
         params: {
           id: 999,
           fields: {
-            typeId: 'CONFIGURABLE',
             completed: false,
-            deadline: '2025-08-01T12:00:00+02:00',
+            deadline: '2025-02-01T12:00:00+03:00',
             pingOffsets: [300],
             isIncomingChannel: 'Y',
             responsibleId: 5,
@@ -185,9 +202,8 @@ fields:
             params: {
               id: 999,
               fields: {
-                typeId: 'CONFIGURABLE',
                 completed: false,
-                deadline: '2025-08-01T12:00:00+02:00',
+                deadline: '2025-02-01T12:00:00+03:00',
                 pingOffsets: [300],
                 isIncomingChannel: 'Y',
                 responsibleId: 5,
@@ -272,7 +288,8 @@ fields:
 
     ```python
 
-    from datetime import datetime, timedelta
+    # The b24pysdk wrapper accepts only fields — it updates the activity fields.
+    # To replace the entry structure, call the method directly and pass layout.
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
@@ -280,11 +297,11 @@ fields:
         bitrix_response = client.crm.activity.configurable.update(
             bitrix_id=999,
             fields={
-                "completed": True,
-                "deadline": (datetime.now() + timedelta(days=1)).isoformat(timespec="seconds"),
-                "pingOffsets": [30],
-                "responsibleId": 1,
-                "badgeCode": "CUSTOM_STATUS",
+                "completed": False,
+                "deadline": "2025-02-01T12:00:00+03:00",
+                "pingOffsets": [300],
+                "responsibleId": 5,
+                "badgeCode": "CUSTOM",
             },
         ).response
         result = bitrix_response.result
@@ -313,9 +330,8 @@ fields:
                 [
                     'id'     => 999,
                     'fields' => [
-                        'typeId'            => 'CONFIGURABLE',
                         'completed'         => false,
-                        'deadline'          => new DateTime(),
+                        'deadline'          => '2025-02-01T12:00:00+03:00',
                         'pingOffsets'       => [300],
                         'isIncomingChannel' => 'Y',
                         'responsibleId'     => 5,
@@ -400,9 +416,8 @@ fields:
             id: 999,
             fields:
             {
-                typeId: 'CONFIGURABLE',
                 completed: false,
-                deadline: new Date(),
+                deadline: '2025-02-01T12:00:00+03:00',
                 pingOffsets: [300],
                 isIncomingChannel: 'Y',
                 responsibleId: 5,
@@ -481,9 +496,8 @@ fields:
         [
             'id' => 999,
             'fields' => [
-                'typeId' => 'CONFIGURABLE',
                 'completed' => false,
-                'deadline' => date('c'), // We use the current date and time in ISO 8601 format
+                'deadline' => '2025-02-01T12:00:00+03:00',
                 'pingOffsets' => [300],
                 'isIncomingChannel' => 'Y',
                 'responsibleId' => 5,
@@ -561,9 +575,8 @@ fields:
     res, err := client.Core().Call(ctx, "crm.activity.configurable.update", b24.Params{
     	"id": 999,
     	"fields": b24.Params{
-    		"typeId":            "CONFIGURABLE",
     		"completed":         false,
-    		"deadline":          "**put_current_date_time_here**",
+    		"deadline":          "2025-02-01T12:00:00+03:00",
     		"pingOffsets":       []int{300},
     		"isIncomingChannel": "Y",
     		"responsibleId":     5,
@@ -642,8 +655,9 @@ HTTP status: **200**
 {
     "result": {
         "activity": {
-            "id": 999,
-        },
+            "id": 999
+        }
+    },
     "time": {
         "start": 1724068028.331234,
         "finish": 1724068028.726591,
@@ -652,7 +666,6 @@ HTTP status: **200**
         "date_start": "2025-01-21T13:47:08+02:00",
         "date_finish": "2025-01-21T13:47:08+02:00",
         "operating": 0
-        }
     }
 }
 ```
@@ -663,9 +676,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Response root element containing the activity identifier `id` information in case of success. In case of failure, it will return `null` ||
+[`object`](../../../../data-types.md) | Root element of the response with a single **activity** key [(detailed description)](#activity) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Activity Object {#activity}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../../data-types.md) | Identifier of the updated activity ||
 |#
 
 ## Error Handling
@@ -674,8 +696,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "ERROR_WRONG_APPLICATION",
+    "error_description": "The activity can only be updated by the application that created it"
 }
 ```
 
@@ -685,20 +707,20 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `NOT_FOUND` | Element not found ||
-|| `100` | Required fields are not filled ||
-|| `ERROR_WRONG_CONTEXT` | Method call is only possible in the context of an application ||
+|| `ACCESS_DENIED` | Insufficient permissions to update the activity ||
+|| `NOT_FOUND` | The activity was not found or is not configurable ||
+|| `100` | The required `id` parameter is missing ||
+|| `ERROR_WRONG_CONTEXT` | The method was called outside an application, for example via an inbound webhook ||
 || `ERROR_WRONG_APPLICATION` | The activity can only be updated by the application that created it ||
-|| `WRONG_FIELD_VALUE` | Incorrect field value ||
+|| `WRONG_FIELD_VALUE` | Incorrect field value: an unknown `badgeCode` or `typeId` in `fields`, an unsupported nested block type, an invalid color format in `sliderParams` ||
 || `INCOMING_ACTIVITY_CAN_NOT_BE_WITH_DEADLINE` | Incoming activity cannot have a deadline ||
-|| `ERROR_EMPTY_LAYOUT` | The layout field must be filled ||
+|| `CANT_CHANGE_PROVIDER_TYPE_ID` | The activity type cannot be changed: the `typeId` passed differs from the type the activity was created with ||
 || `FIELD_IS_REQUIRED` | A required field was not passed in the structure object ||
 || `FIELD_IS_REDUNDANT` | A field was passed in the structure object that is not in its description ||
 || `ENUM_FIELD` | The field value is not in the list of allowed values, for example, an unknown tag type ||
 || `TOO_MANY_ITEMS` | The number of array elements has been exceeded, for example, more than two tags or buttons ||
 || `KEY_CONTAIN_WRONG_SYMBOLS` | The key in the structure's associative array contains invalid characters. Only Latin letters, digits, hyphens, and underscores are allowed ||
-|| `WRONG_LANG` | In the multi-language value, a language code was passed that is not set on the portal ||
+|| `WRONG_LANG` | In a multi-language value, a language code was passed that is not installed in Bitrix24 ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
@@ -707,3 +729,9 @@ HTTP status: **400**
 
 - [{#T}](./crm-activity-configurable-add.md)
 - [{#T}](./crm-activity-configurable-get.md)
+- [{#T}](./structure/layout.md)
+- [{#T}](./structure/examples.md)
+- [{#T}](./badges/index.md)
+- [{#T}](../activity-base/crm-activity-list.md)
+- [{#T}](../activity-base/crm-activity-delete.md)
+- [{#T}](./index.md)

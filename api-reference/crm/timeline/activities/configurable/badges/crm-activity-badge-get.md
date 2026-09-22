@@ -13,16 +13,19 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `crm.activity.badge.get` will return an array containing [badge fields](./index.md#badge-fields).
+The method `crm.activity.badge.get` returns the [badge fields](./index.md#badge-fields) by its code.
+
+A badge is looked up only by code — it has no identifier. If no badge is registered with that code, the method returns the `NOT_FOUND` error. The same method tells you whether a code is free before calling [crm.activity.badge.add](./crm-activity-badge-add.md).
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
-|| **Field** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **code***
-[`string`](../../../../../data-types.md) | Badge code, for example `missedCall` ||
+[`string`](../../../../../data-types.md) | Badge code, for example `missedCall`. The list of codes already in use is returned by the [crm.activity.badge.list](./crm-activity-badge-list.md) method ||
 |#
 
 ## Code Examples
@@ -30,6 +33,16 @@ The method `crm.activity.badge.get` will return an array containing [badge field
 {% include [Note on examples](../../../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"code":"missedCall"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.badge.get
+    ```
 
 - cURL (OAuth)
 
@@ -55,8 +68,9 @@ The method `crm.activity.badge.get` will return an array containing [badge field
     type BadgeGetResult = {
       badge: {
         code: string
-        title: string
-        value: string
+        // title and value come as a string or as an object with translations
+        title: string | Record<string, string>
+        value: string | Record<string, string>
         type: string
       }
     }
@@ -128,7 +142,7 @@ The method `crm.activity.badge.get` will return an array containing [badge field
 
     try:
         bitrix_response = client.crm.activity.badge.get(
-            code="CUSTOM_STATUS",
+            code="missedCall",
         ).response
         result = bitrix_response.result
         print(result)
@@ -225,9 +239,10 @@ The method `crm.activity.badge.get` will return an array containing [badge field
     }
 
     var item struct {
-    	Code  string `json:"code"`
-    	Title string `json:"title"`
-    	Value string `json:"value"`
+    	Code string `json:"code"`
+    	// Title and Value come as a string or as an object with translations
+    	Title any    `json:"title"`
+    	Value any    `json:"value"`
     	Type  string `json:"type"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
@@ -248,8 +263,8 @@ HTTP status: **200**
         "badge": {
             "code": "missedCall",
             "title": "Call Status",
-             "value": "Missed",
-             "type": "failure"
+            "value": "Missed",
+            "type": "failure"
         }
     },
     "time": {
@@ -270,9 +285,24 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../../data-types.md) | Root element of the response containing badge information in case of success. In case of failure, it will return `null` ||
+[`object`](../../../../../data-types.md) | Root element of the response with a single **badge** key [(detailed description)](#badge) ||
 || **time**
 [`time`](../../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Badge Object {#badge}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **code**
+[`string`](../../../../../data-types.md) | Badge code ||
+|| **title**
+[`string`\|`object`](../../../../../data-types.md) | Badge name. A string, or an object with translations if the badge was added in several languages ||
+|| **value**
+[`string`\|`object`](../../../../../data-types.md) | Text inside the icon. A string or an object with translations ||
+|| **type**
+[`string`](../../../../../data-types.md) | [Badge type](./index.md#badge-type): `success`, `failure`, `warning`, `primary`, or `secondary` ||
 |#
 
 ## Error Handling
@@ -282,7 +312,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error_description": "Badge not found for code `missedCall`"
 }
 ```
 
@@ -292,8 +322,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `NOT_FOUND` | Badge with the specified code not found ||
+|| `100` | The required `code` parameter is missing ||
+|| `NOT_FOUND` | No badge is registered with the specified code ||
 |#
 
 {% include [system errors](../../../../../../_includes/system-errors.md) %}
@@ -303,3 +333,5 @@ HTTP status: **400**
 - [{#T}](./crm-activity-badge-add.md)
 - [{#T}](./crm-activity-badge-list.md)
 - [{#T}](./crm-activity-badge-delete.md)
+- [{#T}](./index.md)
+- [{#T}](../crm-activity-configurable-add.md)

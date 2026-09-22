@@ -1,7 +1,7 @@
 title: Structure of a Configurable Activity
 href: layout.md
 items:
-  - name: Structure of a Configurable Activity
+  - name: Structure Overview
     href: layout.md
   - name: Icon
     href: icon.md
@@ -10,7 +10,7 @@ items:
   - name: Main Content Area
     href: body.md
   - name: Content Block of the Configurable Activity
-    href: content-block.md    
+    href: content-block.md
   - name: Bottom Part of the Record
     href: footer.md
   - name: Dropdown Menu of the Bottom Part

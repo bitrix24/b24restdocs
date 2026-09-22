@@ -42,7 +42,7 @@ A button in the bottom part of the timeline record.
 || **scope**
 [`string`](../../../../../data-types.md) | [Scope](./field-types.md#scope), e.g., `web` ||
 || **hideIfReadonly**
-[`boolean`](../../../../../data-types.md) | Flag. Hides the tag if the user does not have edit access (default is `false`) ||
+[`boolean`](../../../../../data-types.md) | Flag. Hides the button if the user does not have edit access (default is `false`) ||
 |#
 
 Possible values for the **type** field:
@@ -81,15 +81,17 @@ Dropdown menu in the bottom part of the timeline record.
 || **showDeleteItem**
 [`boolean`](../../../../../data-types.md) | Show the "Delete" menu item. Default is `true` ||
 || **items**
-[`MenuItemDto`](./menu-item.md) | Associative array of objects describing dropdown menu items ||
+[`MenuItemDto`](./menu-item.md) | Associative array of objects describing dropdown menu items. No more than ten items ||
+|| **sections**
+[`MenuSectionDto`](./menu-item.md#sections) | Menu sections that group the items. No more than ten sections ||
 |#
 
 ### Example
 
 ```json
 {
-    "showPostponeItem": "false",
-    "showDeleteItem": "false",
+    "showPostponeItem": false,
+    "showDeleteItem": false,
     "items": {
         "confirm": {
             "title": "Confirm request",

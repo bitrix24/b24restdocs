@@ -11,18 +11,21 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../../scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the crm section
+> Who can execute the method: a user with administrative access to the CRM section
 
-The method `crm.activity.badge.delete` removes a badge.
+The method `crm.activity.badge.delete` deletes a badge by its code.
+
+A badge that is already used in activities cannot be deleted: the method returns the `ENTITY_WITH_BADGE_EXISTS` error. Clear the code from those activities first — pass an empty string in the `badgeCode` field via [crm.activity.configurable.update](../crm-activity-configurable-update.md), which works only within the context of the app that created the activity.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
-|| **Field** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **code***
-[`string`](../../../../../data-types.md) | Badge code, for example `missedCall` ||
+[`string`](../../../../../data-types.md) | Badge code, for example `missedCall`. The list of codes already in use is returned by the [crm.activity.badge.list](./crm-activity-badge-list.md) method ||
 |#
 
 ## Code Examples
@@ -30,6 +33,16 @@ The method `crm.activity.badge.delete` removes a badge.
 {% include [Note on examples](../../../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"code":"missedCall"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.badge.delete
+    ```
 
 - cURL (OAuth)
 
@@ -118,7 +131,7 @@ The method `crm.activity.badge.delete` removes a badge.
 
     try:
         bitrix_response = client.crm.activity.badge.delete(
-            code="CUSTOM_STATUS",
+            code="missedCall",
         ).response
         result = bitrix_response.result
         print(result)
@@ -242,10 +255,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../../data-types.md) | Root element of the response. Contains:
-- `true` — on success
-- `null` — on failure (an error occurred)
-||
+[`boolean`](../../../../../data-types.md) | Contains `true` if the badge was deleted. On error, the response has no `result` field — it returns `error` and `error_description` instead ||
 || **time**
 [`time`](../../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -257,7 +267,16 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error_description": "Badge not found for code `missedCall`"
+}
+```
+
+A badge that is used in activities:
+
+```json
+{
+    "error": "ENTITY_WITH_BADGE_EXISTS",
+    "error_description": "There are entities with this badge. Delete them first."
 }
 ```
 
@@ -267,8 +286,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `NOT_FOUND` | Badge with the specified code not found ||
+|| `ACCESS_DENIED` | Insufficient permissions: the method is available only to a user with administrative access to the CRM section ||
+|| `100` | The required `code` parameter is missing ||
+|| `NOT_FOUND` | No badge is registered with the specified code ||
+|| `ENTITY_WITH_BADGE_EXISTS` | The badge is used in activities, clear it from them first ||
 |#
 
 {% include [system errors](../../../../../../_includes/system-errors.md) %}
@@ -276,5 +297,7 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-activity-badge-add.md)
-- [{#T}](./crm-activity-badge-list.md)
 - [{#T}](./crm-activity-badge-get.md)
+- [{#T}](./crm-activity-badge-list.md)
+- [{#T}](./index.md)
+- [{#T}](../crm-activity-configurable-add.md)

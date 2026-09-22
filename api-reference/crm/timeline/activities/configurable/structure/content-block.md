@@ -9,26 +9,54 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Content blocks `ContentBlockDto` are the foundation of the content area of a timeline entry. By combining these blocks, you can flexibly assemble various interfaces.
+Content blocks `ContentBlockDto` are the foundation of the content area of a timeline entry. The application builds the entry content from these blocks: text, links, name-value pairs, and a deadline.
 
-This structure is used when creating [configurable activities](../../layout-blocks/index.md) and when enriching timeline entries with [content blocks](../../../layout-blocks/index.md).
+The blocks are passed as an associative array in the `blocks` field: the key is the block identifier that the application sets itself, the value is the block object. The `blocks` array belongs to two objects:
 
-## General Block Structure:
+- [`BodyDto`](./body.md) — the content area of a [configurable activity](../index.md); the structure is passed in the `layout` parameter of the [crm.activity.configurable.add](../crm-activity-configurable-add.md) and [crm.activity.configurable.update](../crm-activity-configurable-update.md) methods
+- [`RestAppLayoutDto`](./rest-app-layout-dto.md) — a set of additional blocks with which an application enriches someone else's timeline entry using the [crm.activity.layout.blocks.set](../../layout-blocks/crm-activity-layout-blocks-set.md) and [crm.timeline.layout.blocks.set](../../../layout-blocks/crm-timeline-layout-blocks-set.md) methods
+
+Block types and their properties are the same in both cases. The blocks are displayed in the order they are listed in `blocks`.
+
+## General Block Structure
+
+Each block has two fields: `type` — the block type, `properties` — its properties. Each type has its own set of properties, described below.
 
 ```json
 {
-    "type": "Block type",
+    "type": "text",
     "properties": {
-        ... some properties, different for each specific block
+        "value": "The customer confirmed the meeting"
     }
 }
 ```
 
-## Content Block Types:
+## How to Choose a Block Type
 
-### Text
+#|
+|| **Type** | **What It Outputs** | **When to Use** ||
+|| [`text`](#tekst) | A line of text with formatting | A short value, a label, a comment ||
+|| [`largeText`](#dlinnyj-mnogostrochnyj-tekst) | Long text collapsed into a preview | An email, a call transcript, a description ||
+|| [`link`](#ssylka) | A link with an action on click | Navigation to a CRM object, an external service, or an app ||
+|| [`withTitle`](#blok-s-zagolovkom) | A name-value pair | An entry with a set of fields ||
+|| [`lineOfBlocks`](#neskolko-kontent-blokov-v-odnu-stroku) | Several blocks in one line | A name and a phone number side by side, text mixed with links ||
+|| [`deadline`](#vybor-krajnego-sroka) | The current activity deadline with the option to change it | An activity with a deadline the user should see and edit ||
+|#
 
-The simplest block `type = text`, which outputs certain formatted text.
+## Restrictions and Errors
+
+Only `text`, `link`, and `deadline` blocks can be nested inside `withTitle` and `lineOfBlocks`.
+
+The remaining restrictions depend on where the blocks end up, and so do the calling permissions:
+
+- as part of a [configurable activity](./layout.md) — the [Structure Restrictions](./layout.md#limits) section
+- as part of a [set of additional blocks](./rest-app-layout-dto.md) — the [Restrictions](./rest-app-layout-dto.md#limits) section
+
+## Content Block Types
+
+### Text {#tekst}
+
+The `type = text` block outputs a formatted line of text in full, without collapsing. This is the basic block you start building an entry with.
 
 #### Parameters
 
@@ -37,52 +65,46 @@ The simplest block `type = text`, which outputs certain formatted text.
 #|
 || **Field** | **Description** ||
 || **value^*^**
-[`textWithTranslation`](./field-types.md) | Text to be displayed ||
+[`textWithTranslation`](./field-types.md#textwithtranslation) | Text the user sees ||
 || **multiline**
-[`boolean`](../../../../../data-types.md) | Line break handling. If true, `\n` characters will be replaced with `<br>`. Default is `false` ||
+[`boolean`](../../../../../data-types.md) | Line break handling. With `true`, `\n` characters are replaced with `<br>`. Default is `false` ||
 || **title**
-[`textWithTranslation`](./field-types.md#textwithtranslation) | Title attribute ||
+[`textWithTranslation`](./field-types.md#textwithtranslation) | Tooltip text shown on hovering over the block ||
 || **bold**
 [`boolean`](../../../../../data-types.md) | Bold text. Default is `false` ||
 || **size**
-[`string`](../../../../../data-types.md) | Text size. Can take values `xs`, `sm`, `md` (default is `md`) ||
+[`string`](../../../../../data-types.md) | Text size. Can take values `xs`, `sm`, `md`. Default is `md` ||
 || **color**
-[`string`](../../../../../data-types.md) | Text color. Can take values `base_50`, `base_60`, `base_70`, `base_90` ||
+[`string`](../../../../../data-types.md) | Text color. Can take values `base_50`, `base_60`, `base_70`, `base_90`. Any other value is rejected by the method with the `ENUM_FIELD` error ||
 || **scope**
 [`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
 
 #### Example
 
+Two lines of text, in bold, with a tooltip on hover:
+
 ```json
 {
-    "icon": {
-        "code": "info"
-    },
-    "header": {
-        "title": "Information message"
-    },
-    "body": {
-        "logo": {
-            "code": "notification"
-        },
-        "blocks": {
-            "text": {
-                "type": "text",
-                "properties": {
-                    "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                }
-            }
-        }
+    "type": "text",
+    "properties": {
+        "value": "The customer confirmed the meeting.\nThe meeting is at the office on Tiergartenstraße.",
+        "multiline": true,
+        "bold": true,
+        "size": "md",
+        "color": "base_90",
+        "title": "Manager's comment"
     }
 }
 ```
 
-![Text](./_images/ContentBlockDto_9.png)
+This is how the `text` block looks in a timeline entry:
 
-### Long Multiline Text
+![The text block in a timeline entry](./_images/ContentBlockDto_9.png)
 
-The `type = largeText` block allows displaying long multiline texts, which will be automatically collapsed into a preview.
+### Long Multiline Text {#dlinnyj-mnogostrochnyj-tekst}
+
+The `type = largeText` block outputs long multiline text and collapses it into a preview.
 
 #### Parameters
 
@@ -91,42 +113,27 @@ The `type = largeText` block allows displaying long multiline texts, which will 
 #|
 || **Field** | **Description** ||
 || **value^*^**
-[`textWithTranslation`](./field-types.md#textwithtranslation) | Text to be displayed ||
+[`textWithTranslation`](./field-types.md#textwithtranslation) | Text the user sees ||
 || **scope**
 [`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
 
 #### Example
 
-Long text hidden under "Show more".
-
 ```json
 {
-    "icon": {
-        "code": "info"
-    },
-    "header": {
-        "title": "Information message"
-    },
-    "body": {
-        "logo": {
-            "code": "notification"
-        },
-        "blocks": {
-            "text": {
-                "type": "largeText",
-                "properties": {
-                    "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-                }
-            }
-        }
+    "type": "largeText",
+    "properties": {
+        "value": "Hello! My name is Klaus, I am calling about the request from the website. I checked the stock: both items are available, shipping is possible on Thursday. The customer asks for an invoice to a legal entity and delivery to the door. We agreed to call back once the budget is approved."
     }
 }
 ```
 
-![Long text](./_images/ContentBlockDto_10.png)
+The user can expand the text with the "Show more" button:
 
-### Link
+![The largeText block collapsed into a preview](./_images/ContentBlockDto_10.png)
+
+### Link {#ssylka}
 
 The `type = link` block outputs a link.
 
@@ -137,7 +144,7 @@ The `type = link` block outputs a link.
 #|
 || **Field** | **Description** ||
 || **text^*^**
-[`textWithTranslation`](./field-types.md#textwithtranslation) | Text to be displayed. HTML tags are not supported ||
+[`textWithTranslation`](./field-types.md#textwithtranslation) | Link text. HTML tags are not supported ||
 || **action^*^**
 [`ActionDto`](./action.md) | Action upon clicking the link ||
 || **bold**
@@ -162,11 +169,11 @@ The `type = link` block outputs a link.
 }
 ```
 
-![Link](./_images/ContentBlockDto_15.png)
+![The link block](./_images/ContentBlockDto_15.png)
 
-### Block with Heading
+### Block with Heading {#blok-s-zagolovkom}
 
-The `type = withTitle` block outputs a name-value pair. Another content block can be used as the value.
+The `type = withTitle` block outputs a name-value pair. The value can be another content block.
 
 #### Parameters
 
@@ -177,7 +184,7 @@ The `type = withTitle` block outputs a name-value pair. Another content block ca
 || **title^*^**
 [`textWithTranslation`](./field-types.md#textwithtranslation) | Title text ||
 || **block^*^**
-[`ContentBlockDto`](content-block.md) | Content block that serves as the value. Blocks of types `text`, `link`, `deadline` are supported ||
+`ContentBlockDto` | The content block displayed as the value. Blocks of types `text`, `link`, `deadline` are supported ||
 || **inline**
 [`boolean`](../../../../../data-types.md) | Display title and value in one line. Default is `false` ||
 || **scope**
@@ -201,7 +208,7 @@ The `type = withTitle` block outputs a name-value pair. Another content block ca
 }
 ```
 
-![Link](./_images/ContentBlockDto_16.png)
+![The withTitle block with a text value](./_images/ContentBlockDto_16.png)
 
 ```json
 {
@@ -223,11 +230,11 @@ The `type = withTitle` block outputs a name-value pair. Another content block ca
 }
 ```
 
-![Link](./_images/ContentBlockDto_17.png)
+![The withTitle block with a link value in one line](./_images/ContentBlockDto_17.png)
 
-### Multiple Content Blocks in One Line
+### Multiple Content Blocks in One Line {#neskolko-kontent-blokov-v-odnu-stroku}
 
-The `type = lineOfBlocks` block outputs several text or link type content blocks in a single line. This allows displaying text with different formatting mixed with links in one line.
+The `type = lineOfBlocks` block outputs several content blocks in a single line. This is how text with different formatting is combined with links in one line.
 
 #### Parameters
 
@@ -236,7 +243,7 @@ The `type = lineOfBlocks` block outputs several text or link type content blocks
 #|
 || **Field** | **Description** ||
 || **blocks^*^**
-[`ContentBlockDto[]`](content-block.md) | Associative array of content blocks. Blocks of types `text`, `link`, `deadline` are supported ||
+[`object`](../../../../../data-types.md) | Nested blocks: the key is the block identifier, the value is a `ContentBlockDto` object. No more than 20 blocks, types `text`, `link`, `deadline` are supported ||
 || **scope**
 [`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
@@ -276,11 +283,11 @@ The `type = lineOfBlocks` block outputs several text or link type content blocks
 }
 ```
 
-![Link](./_images/ContentBlockDto_18.png)
+![Several blocks in one line](./_images/ContentBlockDto_18.png)
 
-### Deadline Selection
+### Deadline Selection {#vybor-krajnego-sroka}
 
-The `type = deadline` block displays the current deadline value with the ability to change it quickly. The block will not be shown if it is added to an incoming activity or to an activity without a deadline.
+The `type = deadline` block shows the activity deadline and allows changing it right in the entry. The block is not displayed in an incoming activity or in an activity without a deadline.
 
 #### Parameters
 
@@ -289,7 +296,7 @@ The `type = deadline` block displays the current deadline value with the ability
 #|
 || **Field** | **Description** ||
 || **readonly**
-[`boolean`](../../../../../data-types.md) | Permission to change the deadline. By default `false`. If the user does not have access to edit the object to which the case belongs, or if the case is completed, then `readonly = true` regardless of the provided settings ||
+[`boolean`](../../../../../data-types.md) | Ban on changing the deadline. Default is `false` — the deadline can be changed right in the entry. Bitrix24 turns the ban on by itself if the activity is completed or the user has no edit access to the object the activity belongs to ||
 || **scope**
 [`string`](../../../../../data-types.md) | [Visibility scope](./field-types.md#scope), for example `web` ||
 |#
@@ -305,7 +312,7 @@ The `type = deadline` block displays the current deadline value with the ability
 }
 ```
 
-![Link](./_images/ContentBlockDto_19.png)
+![The deadline block](./_images/ContentBlockDto_19.png)
 
 ## Continue Learning
 

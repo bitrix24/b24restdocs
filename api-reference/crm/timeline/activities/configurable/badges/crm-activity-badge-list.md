@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `crm.activity.badge.list` retrieves a list of available badges. It will return an array containing a list of all registered badges. Each element of the array contains [badge fields](./index.md#badge-fields).
+The method `crm.activity.badge.list` returns the list of badges registered in Bitrix24. Each element of the list contains the [badge fields](./index.md#badge-fields).
+
+The method returns every badge in a single response: it has no pagination and does not accept the `start` parameter. The total number of badges comes in the `total` field.
+
+The list shows which codes are already in use: check it before calling [crm.activity.badge.add](./crm-activity-badge-add.md).
 
 ## Method Parameters
 
@@ -24,6 +28,16 @@ No parameters.
 {% include [Examples Note](../../../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.badge.list
+    ```
 
 - cURL (OAuth)
 
@@ -49,23 +63,18 @@ No parameters.
     type BadgeListResult = {
       badges: {
         code: string
-        title: string
-        value: string
+        // title and value come as a string or as an object with translations
+        title: string | Record<string, string>
+        value: string | Record<string, string>
         type: string
       }[]
     }
 
     try {
-      // crm.activity.badge.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // crm.activity.badge.list takes no parameters and returns every badge in one response
       const response = await $b24.actions.v2.call.make<BadgeListResult>({
         method: 'crm.activity.badge.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -93,16 +102,10 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.activity.badge.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // crm.activity.badge.list takes no parameters and returns every badge in one response
           const response = await $b24.actions.v2.call.make({
             method: 'crm.activity.badge.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -220,9 +223,10 @@ No parameters.
     }
 
     var items []struct {
-    	Code  string `json:"code"`
-    	Title string `json:"title"`
-    	Value string `json:"value"`
+    	Code string `json:"code"`
+    	// Title and Value come as a string or as an object with translations
+    	Title any    `json:"title"`
+    	Value any    `json:"value"`
     	Type  string `json:"type"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
@@ -251,6 +255,7 @@ HTTP status: **200**
             }
         ]
     },
+    "total": 1,
     "time": {
         "start": 1724068028.331234,
         "finish": 1724068028.726591,
@@ -269,30 +274,33 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../../data-types.md) | The root element of the response containing an array, each element of which carries information about the badge ||
+[`object`](../../../../../data-types.md) | Root element of the response with a single **badges** key [(detailed description)](#badges) ||
+|| **total**
+[`integer`](../../../../../data-types.md) | Number of badges in the response ||
 || **time**
 [`time`](../../../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-## Error Handling
-
-HTTP status: **400**
-
-```json
-{
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
-}
-```
-
-{% include notitle [error handling](../../../../../../_includes/error-info.md) %}
-
-### Possible Error Codes
+#### Badges Array {#badges}
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
+|| **Name**
+`type` | **Description** ||
+|| **code**
+[`string`](../../../../../data-types.md) | Badge code. Use it to set the badge in the `badgeCode` field of an activity, to retrieve the badge with [crm.activity.badge.get](./crm-activity-badge-get.md), and to delete it with [crm.activity.badge.delete](./crm-activity-badge-delete.md) ||
+|| **title**
+[`string`\|`object`](../../../../../data-types.md) | Badge name. A string, or an object with translations if the badge was added in several languages ||
+|| **value**
+[`string`\|`object`](../../../../../data-types.md) | Text inside the icon. A string or an object with translations ||
+|| **type**
+[`string`](../../../../../data-types.md) | [Badge type](./index.md#badge-type): `success`, `failure`, `warning`, `primary`, or `secondary` ||
 |#
+
+If there are no badges, the method returns an empty array and `total` with the value `0`. The order of elements in the array is not guaranteed — if you need a specific order, sort the list on your side.
+
+## Error Handling
+
+{% include notitle [error handling](../../../../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../../../../_includes/system-errors.md) %}
 
@@ -301,4 +309,6 @@ HTTP status: **400**
 - [{#T}](./crm-activity-badge-add.md)
 - [{#T}](./crm-activity-badge-get.md)
 - [{#T}](./crm-activity-badge-delete.md)
+- [{#T}](./index.md)
+- [{#T}](../crm-activity-configurable-add.md)
 

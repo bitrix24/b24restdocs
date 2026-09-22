@@ -14,6 +14,6 @@ items:
   - name: Add Configurable Activity
     href: crm-activity-configurable-add.md
   - name: Update Configurable Activity
-    href: crm-activity-configurable-update.md    
-  - name: Get Information about Configurable Activity
+    href: crm-activity-configurable-update.md
+  - name: Get Configurable Activity
     href: crm-activity-configurable-get.md

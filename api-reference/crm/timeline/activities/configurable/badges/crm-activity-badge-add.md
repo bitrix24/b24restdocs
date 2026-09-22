@@ -11,31 +11,48 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../../scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the crm section
+> Who can execute the method: a user with administrative access to the CRM section
 
-The method `crm.activity.badge.add` adds a new badge for a configurable activity.
+The method `crm.activity.badge.add` registers a badge — an icon that appears on the card of a CRM object in the kanban.
+
+The method only registers the badge and does not attach it to a CRM object. For the icon to appear, pass the badge code in the `badgeCode` field of a [configurable activity](../index.md) when calling [crm.activity.configurable.add](../crm-activity-configurable-add.md) or [crm.activity.configurable.update](../crm-activity-configurable-update.md).
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../../../_includes/required.md) %}
 
 #|
-|| **Field** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **code***
-[`string`](../../../../../data-types.md) | Badge code, for example `missedCall` ||
+[`string`](../../../../../data-types.md) | Badge code, for example `missedCall`. No longer than 30 characters and unique ||
 || **title***
-[`string`\|`array`](../../../../../data-types.md) | Badge title. Can be a string or an array of strings for different languages ||
+[`string`\|`object`](../../../../../data-types.md) | Badge name. A string, or an object with translations where the key is a language code ||
 || **value***
-[`string`\|`array`](../../../../../data-types.md) | Badge value. Can be a string or an array of strings for different languages ||
+[`string`\|`object`](../../../../../data-types.md) | Text inside the icon, displayed in uppercase. A string or an object with translations ||
 || **type***
-[`string`](../../../../../data-types.md) | [Badge type](./index.md#badge-type) ||
+[`string`](../../../../../data-types.md) | [Badge type](./index.md#badge-type). Defines the icon color: `success`, `failure`, `warning`, `primary`, or `secondary` ||
 |#
+
+The codes already in use are returned by the [crm.activity.badge.list](./crm-activity-badge-list.md) method.
+
+In an object with translations, the keys can only be language codes that Bitrix24 recognizes, for example `ru`, `en`, `de`.
 
 ## Code Examples
 
 {% include [Note on examples](../../../../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"code":"missedCall","title":"Call Status","value":"Missed","type":"failure"}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.badge.add
+    ```
 
 - cURL (OAuth)
 
@@ -61,8 +78,9 @@ The method `crm.activity.badge.add` adds a new badge for a configurable activity
     type BadgeAddResult = {
       badge: {
         code: string
-        title: string
-        value: string
+        // title and value come as a string or as an object with translations
+        title: string | Record<string, string>
+        value: string | Record<string, string>
         type: string
       }
     }
@@ -140,9 +158,9 @@ The method `crm.activity.badge.add` adds a new badge for a configurable activity
 
     try:
         bitrix_response = client.crm.activity.badge.add(
-            code="CUSTOM_STATUS",
-            title="Status",
-            value="Pending",
+            code="missedCall",
+            title="Call Status",
+            value="Missed",
             type="failure",
         ).response
         result = bitrix_response.result
@@ -252,9 +270,10 @@ The method `crm.activity.badge.add` adds a new badge for a configurable activity
     }
 
     var item struct {
-    	Code  string `json:"code"`
-    	Title string `json:"title"`
-    	Value string `json:"value"`
+    	Code string `json:"code"`
+    	// Title and Value come as a string or as an object with translations
+    	Title any    `json:"title"`
+    	Value any    `json:"value"`
     	Type  string `json:"type"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
@@ -297,9 +316,24 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../../data-types.md) | Root element of the response containing information about the added badge in case of success. In case of failure, it will return `null` ||
+[`object`](../../../../../data-types.md) | Root element of the response with a single **badge** key [(detailed description)](#badge) ||
 || **time**
 [`time`](../../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Badge Object {#badge}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **code**
+[`string`](../../../../../data-types.md) | Badge code. Pass it in the `badgeCode` field of a configurable activity ||
+|| **title**
+[`string`\|`object`](../../../../../data-types.md) | Badge name exactly as it was passed ||
+|| **value**
+[`string`\|`object`](../../../../../data-types.md) | Text inside the icon ||
+|| **type**
+[`string`](../../../../../data-types.md) | [Badge type](./index.md#badge-type) ||
 |#
 
 ## Error Handling
@@ -308,8 +342,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "BX_INVALID_VALUE",
+    "error_description": "Code must be unique"
 }
 ```
 
@@ -319,8 +353,12 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `REQUIRED_ARG_MISSING` | Required fields are not filled ||
+|| `ACCESS_DENIED` | Insufficient permissions: the method is available only to a user with administrative access to the CRM section ||
+|| `100` | A required parameter is missing. Its name comes in the error description, for example `Could not find value for parameter {title}` ||
+|| `REQUIRED_ARG_MISSING` | The `title` or `value` field is empty, or was passed as neither a string nor an object ||
+|| `WRONG_TYPE_VALUE` | The value of the `type` field is not in the list of allowed values ||
+|| `BX_INVALID_VALUE` | A badge with this code is already registered: `Code must be unique` ||
+|| `0` | General validation error code. The reason comes in `error_description`: `The length of the code field must not exceed 30 characters` — the code is longer than 30 characters, `` Language `X` was not found `` — an unknown language code is used in the object with translations ||
 |#
 
 {% include [system errors](../../../../../../_includes/system-errors.md) %}
@@ -330,3 +368,5 @@ HTTP Status: **400**
 - [{#T}](./crm-activity-badge-get.md)
 - [{#T}](./crm-activity-badge-list.md)
 - [{#T}](./crm-activity-badge-delete.md)
+- [{#T}](./index.md)
+- [{#T}](../crm-activity-configurable-add.md)

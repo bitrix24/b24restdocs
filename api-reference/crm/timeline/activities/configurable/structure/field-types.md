@@ -32,7 +32,7 @@ Rules for the translations object:
 
 Bitrix24 stores the whole object and picks the right variant when the record is displayed — based on the interface language of the user viewing the timeline. If there is no translation for their language, Bitrix24 uses English, and if there is no English either — the first value of the object.
 
-The type is used in the record header, tags and badges, text blocks and links, footer buttons, menu items and sections. A working example is in the [Multi-language Card](./examples.md#multi-language-card) section.
+The type is used in the record header, tags and badges, text blocks and links, footer buttons, menu items and sections. A working example is in the [Multi-language Entry](./examples.md#multilang-card) section.
 
 ## scope {#scope}
 
