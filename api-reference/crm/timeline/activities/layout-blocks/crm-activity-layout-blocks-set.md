@@ -13,13 +13,17 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user with permission to modify the CRM entity to which the activity is linked
 
-The method `crm.activity.layout.blocks.set` sets a set of additional content blocks for the activity.
+The method `crm.activity.layout.blocks.set` installs a set of additional content blocks in an activity.
 
-Setting a new set of additional content blocks in the activity will overwrite the previously added set within the same application.
+The method only works in the context of the [application](../../../../../settings/app-installation/index.md): when called via a webhook, it returns the `ERROR_WRONG_CONTEXT` error. The application modifies only the set of blocks that it installed itself. Calling the method again replaces this set entirely.
 
-Setting a set of additional content blocks cannot be applied to:
-- [configurable activity](../configurable/index.md),
-- a activity whose type is deprecated.
+The method works only with activities. To install a set of blocks in a comment or another timeline entry, use [crm.timeline.layout.blocks.set](../../layout-blocks/crm-timeline-layout-blocks-set.md).
+
+A set of blocks cannot be installed in a [configurable activity](../configurable/index.md) or in an activity of a deprecated type — the timeline does not render such an activity as a configurable entry. In these cases, the method returns the `UNSUITABLE_ACTIVITY_TYPE_ERROR` error. The suitability of an activity cannot be determined in advance from REST data, the only way to check is a trial call.
+
+If the activity is linked to several CRM entities at once, the set of blocks remains a single one and is displayed in the timeline of every linked entity. The links are managed by the [crm.activity.binding.*](../binding/index.md) methods.
+
+The order in which the methods are called and the general rules for working with block sets are described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -29,37 +33,66 @@ Setting a set of additional content blocks cannot be applied to:
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM object type to which the activity is linked ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is linked, for example `2` for a deal ||
 || **entityId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked, for example the deal identifier ||
 || **activityId***
-[`integer`](../../../../data-types.md) | Identifier of the activity ||
+[`integer`](../../../../data-types.md) | Identifier of the activity. It is returned by the [crm.activity.add](../activity-base/crm-activity-add.md) and [crm.activity.list](../activity-base/crm-activity-list.md) methods ||
 || **layout***
-[`RestAppLayoutDto`](../configurable/structure/rest-app-layout-dto.md) | Object describing the set of additional content blocks ||
+[`RestAppLayoutDto`](../configurable/structure/rest-app-layout-dto.md) | Object describing the set of additional content blocks [(detailed description)](#layout) ||
 |#
+
+### Parameter layout {#layout}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **blocks***
+[`object`](../../../../data-types.md) | Associative array of [content blocks](../configurable/structure/content-block.md). The key is the block identifier, the value is the block description ||
+|#
+
+Limitations on `blocks`:
+
+- the `blocks` field is required, otherwise the method returns the `FIELD_IS_REQUIRED` error
+- a set can contain no more than 20 blocks, otherwise the method returns the `TOO_MANY_ITEMS` error
+- a block key can contain only Latin letters, digits, hyphens, and underscores, otherwise the method returns the `KEY_CONTAIN_WRONG_SYMBOLS` error
+- a block type must be on the list of allowed types, otherwise the method returns the `ENUM_FIELD` error
+
+Each block is described by the `type` and `properties` fields. The composition of `properties` depends on the block type:
+
+#|
+|| **type** | **What It Displays** | **Required `properties` Fields** ||
+|| `text` | A line of formatted text | `value` ||
+|| `largeText` | Long text collapsed into a preview | `value` ||
+|| `link` | A link with an action on click | `text`, `action` ||
+|| `deadline` | The activity deadline, which can be changed right in the block | No required fields ||
+|| `withTitle` | A title — value pair, where the value is a nested block of the `text`, `link`, or `deadline` type | `title`, `block` ||
+|| `lineOfBlocks` | Several blocks of the `text`, `link`, or `deadline` type in a single line | `blocks` ||
+|#
+
+The full list of fields for each type, including the optional ones, is provided in the description of the [ContentBlockDto](../configurable/structure/content-block.md) structure.
+
+## Display Features
+
+If different applications have added their own sets of additional content blocks to an activity, the sets are displayed in the order they were added.
+
+In the HTML markup, data attributes show which application added the set of additional content blocks:
+
+- `data-app-name` — application name
+- `data-rest-client-id` — application identifier
 
 ## Code Examples
 
-For the activity with `id = 8`, linked to the activity with `id = 4`, we will set the following set of additional content blocks:
+Install a set of four additional content blocks in the activity with `id = 8`, linked to the deal with `id = 4`:
 
-1. Text
-2. Long multiline text
-3. Link
-4. Block with a title
+1. text
+2. long multiline text
+3. link
+4. block with a title
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"entityTypeId":2,"entityId":4,"activityId":8,"layout":{"blocks":{"block_1":{"type":"text","properties":{"value":"Hello!\nWe are starting.","multiline":true,"bold":true,"color":"base_90"}},"block_2":{"type":"largeText","properties":{"value":"Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye."}},"block_3":{"type":"link","properties":{"text":"Open deal","bold":true,"action":{"type":"redirect","uri":"/crm/deal/details/123/"}}},"block_4":{"type":"withTitle","properties":{"title":"Title","block":{"type":"text","properties":{"value":"Some value"}}}}}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.layout.blocks.set
-    ```
 
 - cURL (OAuth)
 
@@ -242,25 +275,46 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
     try:
         bitrix_response = client.crm.activity.layout.blocks.set(
             entity_type_id=2,
-            entity_id=101,
-            activity_id=999,
+            entity_id=4,
+            activity_id=8,
             layout={
                 "blocks": {
-                    "summary": {
+                    "block_1": {
                         "type": "text",
                         "properties": {
-                            "value": "Proposal is ready",
+                            "value": "Hello!\nWe are starting.",
                             "multiline": True,
                             "bold": True,
                             "color": "base_90",
                         },
                     },
-                    "dealLink": {
+                    "block_2": {
+                        "type": "largeText",
+                        "properties": {
+                            "value": "Hello!\nWe are starting.\nWe are continuing.\nWe are still working on this.\nWe are continuing.\nWe are close to the result.\nGoodbye.",
+                        },
+                    },
+                    "block_3": {
                         "type": "link",
                         "properties": {
                             "text": "Open deal",
                             "bold": True,
-                            "action": {"type": "redirect", "uri": "/crm/deal/details/101/"},
+                            "action": {
+                                "type": "redirect",
+                                "uri": "/crm/deal/details/123/",
+                            },
+                        },
+                    },
+                    "block_4": {
+                        "type": "withTitle",
+                        "properties": {
+                            "title": "Title",
+                            "block": {
+                                "type": "text",
+                                "properties": {
+                                    "value": "Some value",
+                                },
+                            },
                         },
                     },
                 },
@@ -337,13 +391,13 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error setting activity layout blocks: ' . $e->getMessage();
@@ -534,25 +588,52 @@ For the activity with `id = 8`, linked to the activity with `id = 4`, we will se
 
 {% endlist %}
 
-## Appearance
-
-If the activity contains more than one set of additional content blocks, they will be displayed in the order they were added.
-
-In the HTML layout, it is explicitly highlighted with data attributes which application added the set of additional content blocks:
-- `data-app-name`: name of the application,
-- `data-rest-client-id`: identifier of the application.
-
 ## Response Handling
 
 HTTP status: **200**
 
-Returns `{ success: true }` in case of successful writing of the set of additional content blocks, otherwise `null`.
-
 ```json
 {
-    "success": true
+    "result": {
+        "success": true
+    },
+    "time": {
+        "start": 1753341040.475739,
+        "finish": 1753341040.582705,
+        "duration": 0.10696601867675781,
+        "processing": 0.04708504676818848,
+        "date_start": "2025-07-24T17:57:20+00:00",
+        "date_finish": "2025-07-24T17:57:20+00:00",
+        "operating": 0
+    }
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../../data-types.md) | Root element of the response [(detailed description)](#result). If the set of blocks could not be installed, the method returns an `error` object instead of `result` — see the "Error Handling" section ||
+|| **time**
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **success**
+[`boolean`](../../../../data-types.md) | Result of installing the set of additional content blocks. The field is returned when the method completes successfully and has the value `true` ||
+|#
+
+The method does not return the installed set of blocks itself in the response. To read the stored set, call [crm.activity.layout.blocks.get](./crm-activity-layout-blocks-get.md).
+
+After the call from the example above, the activity looks like this:
+
+![Example](./_images/content_blocks_example.png)
 
 ## Error Handling
 
@@ -571,20 +652,27 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application ||
-|| `OWNER_NOT_FOUND` | The element to which the activity is linked was not found ||
-|| `NOT_FOUND` | The activity was not found ||
-|| `ACCESS_DENIED` | Access denied ||
-|| `UNSUITABLE_ACTIVITY_TYPE_ERROR` | The type of this activity is not suitable for adding a set of additional content blocks ||
-|| `FIELD_IS_REQUIRED` | The `blocks` field in `RestAppLayoutDto` must be filled. ||
+|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application. The method was called via a webhook ||
+|| `OWNER_NOT_FOUND` | The element to which the activity is linked was not found. An unknown `entityTypeId` was passed, or the activity is not linked to the element with the specified `entityId` ||
+|| `NOT_FOUND` | The activity with the specified `activityId` was not found ||
+|| `ACCESS_DENIED` | The user has no permission to modify the CRM entity to which the activity is linked ||
+|| `UNSUITABLE_ACTIVITY_TYPE_ERROR` | The activity type is not suitable for adding a set of additional content blocks ||
+|| `FIELD_IS_REQUIRED` | A required field of the structure was not passed: `blocks` in `RestAppLayoutDto`, or a `properties` field of a block, for example `value` for a block of the `text` type ||
+|| `FIELD_IS_REDUNDANT` | The structure object contains a field that is not in its description ||
+|| `TOO_MANY_ITEMS` | More than 20 blocks were passed in `blocks` ||
+|| `KEY_CONTAIN_WRONG_SYMBOLS` | A block key in `blocks` contains invalid characters ||
+|| `WRONG_FIELD_VALUE` | The field value does not match the expected type, for example a block was passed as something other than an object ||
+|| `ENUM_FIELD` | The `type` field of a block contains a value that is not on the list of allowed types ||
 |#
 
-The method also returns errors related to the incorrect structure of the set of content blocks. Details can be found in the error message.
+The error text specifies which field and which structure object caused it.
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-activity-layout-blocks-get.md)
 - [{#T}](./crm-activity-layout-blocks-delete.md)
+- [{#T}](../configurable/structure/content-block.md)
+- [{#T}](../../layout-blocks/content-blocks-test-app.md)

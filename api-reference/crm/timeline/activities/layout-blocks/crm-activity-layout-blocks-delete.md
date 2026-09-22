@@ -1,4 +1,4 @@
-# Delete a set of additional content blocks in the CRM activity crm.activity.layout.blocks.delete
+# Delete a set of additional content blocks from the CRM activity crm.activity.layout.blocks.delete
 
 {% note tip "" %}
 
@@ -13,9 +13,19 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user with permission to modify the CRM entity to which the activity is linked
 
-The method `crm.activity.layout.blocks.delete` removes a set of additional content blocks for a activity.
+The method `crm.activity.layout.blocks.delete` removes a set of additional content blocks from an activity.
 
-Within the application, only the set of additional content blocks that was installed through this application can be deleted.
+The method only works in the context of the [application](../../../../../settings/app-installation/index.md): when called via a webhook, it returns the `ERROR_WRONG_CONTEXT` error. The application removes only the set of blocks that it installed itself using the [crm.activity.layout.blocks.set](./crm-activity-layout-blocks-set.md) method.
+
+The method works only with activities. To remove the set of blocks of a comment or another timeline entry, use [crm.timeline.layout.blocks.delete](../../layout-blocks/crm-timeline-layout-blocks-delete.md).
+
+The method is not idempotent: calling it again for an already deleted set returns the `NOT_FOUND` error.
+
+If the activity is linked to several CRM entities at once, the blocks stop being displayed in the timeline of every linked entity.
+
+When an application is deleted, all block sets it added are removed automatically — there is no need to call this method beforehand.
+
+The order in which the methods are called and the general rules for working with block sets are described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -25,30 +35,20 @@ Within the application, only the set of additional content blocks that was insta
 || **Name**
 `type` | **Description** ||
 || **entityTypeId***  
-[`integer`](../../../../data-types.md) | Identifier of the CRM object type to which the activity is linked ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is linked, for example `2` for a deal ||
 || **entityId***  
-[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked, for example the deal identifier ||
 || **activityId***  
-[`integer`](../../../../data-types.md) | Identifier of the activity ||
+[`integer`](../../../../data-types.md) | Identifier of the activity. It is returned by the [crm.activity.add](../activity-base/crm-activity-add.md) and [crm.activity.list](../activity-base/crm-activity-list.md) methods ||
 |#
 
 ## Code Examples
 
-Delete a set of additional content blocks in the activity with `id = 8`, linked to the deal with `id = 4`:
+Delete a set of additional content blocks from the activity with `id = 8`, linked to the deal with `id = 4`.
 
 {% include [Note on examples](../../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"entityTypeId":2,"entityId":4,"activityId":8}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.activity.layout.blocks.delete
-    ```
 
 - cURL (OAuth)
 
@@ -73,7 +73,7 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type DeleteBlocksResult = {
       success: boolean
-    } | null
+    }
 
     try {
       const response = await $b24.actions.v2.call.make<DeleteBlocksResult>({
@@ -91,7 +91,7 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info(result?.success)
+        console.info(result.success)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -127,7 +127,7 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
           }
 
           const result = response.getData().result
-          console.info(result?.success)
+          console.info(result.success)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -147,8 +147,8 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
     try:
         bitrix_response = client.crm.activity.layout.blocks.delete(
             entity_type_id=2,
-            entity_id=101,
-            activity_id=999,
+            entity_id=4,
+            activity_id=8,
         ).response
         result = bitrix_response.result
         print(result)
@@ -179,15 +179,13 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
                     'activityId'   => 8, // ID of the deal linked to this deal
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting activity layout block: ' . $e->getMessage();
@@ -255,13 +253,42 @@ Delete a set of additional content blocks in the activity with `id = 8`, linked 
 
 HTTP status: **200**
 
-Returns `{ success: true }` if the set of additional content blocks is successfully deleted, otherwise `null`.
-
 ```json
 {
-    "success": true
+    "result": {
+        "success": true
+    },
+    "time": {
+        "start": 1753341040.475739,
+        "finish": 1753341040.582705,
+        "duration": 0.10696601867675781,
+        "processing": 0.04708504676818848,
+        "date_start": "2025-07-24T17:57:20+00:00",
+        "date_finish": "2025-07-24T17:57:20+00:00",
+        "operating": 0
+    }
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../../data-types.md) | Root element of the response [(detailed description)](#result). If the set of blocks could not be deleted, the method returns an `error` object instead of `result` — see the "Error Handling" section ||
+|| **time**
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **success**
+[`boolean`](../../../../data-types.md) | Result of deleting the set of additional content blocks. The field is returned when the method completes successfully and has the value `true` ||
+|#
 
 ## Error Handling
 
@@ -280,16 +307,20 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application ||
-|| `OWNER_NOT_FOUND` | The element to which the activity is linked was not found ||
-|| `NOT_FOUND` | The activity was not found ||
-|| `ACCESS_DENIED` | Access denied ||
+|| `ERROR_WRONG_CONTEXT` | The method can only be called in the context of a REST application. The method was called via a webhook ||
+|| `OWNER_NOT_FOUND` | The element to which the activity is linked was not found. An unknown `entityTypeId` was passed, or the activity is not linked to the element with the specified `entityId` ||
+|| `NOT_FOUND` | The activity was not found, or the application did not install a set of blocks in it ||
+|| `ACCESS_DENIED` | The user has no permission to modify the CRM entity to which the activity is linked ||
 |#
+
+The code and the text of the `NOT_FOUND` error are the same in both situations. To tell them apart, call [crm.activity.layout.blocks.get](./crm-activity-layout-blocks-get.md): for a non-existent activity it also returns `NOT_FOUND`, while for an activity without a set of blocks it returns `layout` with the value `null`.
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-activity-layout-blocks-set.md)
 - [{#T}](./crm-activity-layout-blocks-get.md)
+- [{#T}](../configurable/structure/content-block.md)
+- [{#T}](../../layout-blocks/content-blocks-test-app.md)
