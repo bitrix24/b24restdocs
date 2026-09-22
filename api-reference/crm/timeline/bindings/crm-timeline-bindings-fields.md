@@ -1,4 +1,4 @@
-# Retrieve CRM Item Link Fields and Timeline Records crm.timeline.bindings.fields
+# Retrieve Fields of a Timeline Record Binding with a CRM Entity crm.timeline.bindings.fields
 
 {% note tip "" %}
 
@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-Retrieves a list of available fields for linking CRM items and timeline records.
+Retrieves the description of the fields of the binding between a timeline record and a CRM entity.
+
+The method helps check the composition of the fields and whether they are required before adding a binding, and retrieve their names in the interface language.
+
+## Method Parameters
 
 No parameters.
 
@@ -90,7 +94,7 @@ No parameters.
 
     ```html
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
-    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@2/dist/umd/index.min.js"></script>
     <script>
       async function getTimelineBindingsFields() {
         try {
@@ -153,17 +157,12 @@ No parameters.
             ->call(
                 'crm.timeline.bindings.fields'
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching timeline bindings fields: ' . $e->getMessage();
@@ -175,11 +174,13 @@ No parameters.
     ```js
     BX24.callMethod(
         "crm.timeline.bindings.fields",
+        {},
         result => {
-            if (result.error())
+            if (result.error()) {
                 console.error(result.error());
-            else
+            } else {
                 console.dir(result.data());
+            }
         }
     );
     ```
@@ -268,51 +269,63 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. Contains [fields](#fields) linking timeline records to CRM entities ||
+[`object`](../../../data-types.md) | Root element of the response. The key is the name of a binding field from the [fields list](#fields), and the value is an object with the [field description](#field-description) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Fields List {#fields}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
-|| **OWNER_ID***
-[`integer`](../../../data-types.md) | Timeline record identifier. Immutable ||
-|| **ENTITY_ID***
-[`integer`](../../../data-types.md) | Identifier of the CRM item to which the timeline record is linked. Immutable ||
-|| **ENTITY_TYPE***
-[`string`](../../../data-types.md) | Type of the CRM item to which the timeline record is linked. Immutable. Possible values:
+|| **OWNER_ID**
+[`integer`](../../../data-types.md) | Identifier of the timeline record. Obtain it from the response of the method [crm.timeline.comment.add](../comments/crm-timeline-comment-add.md) or [crm.timeline.logmessage.add](../logmessage/crm-timeline-logmessage-add.md), or retrieve it from the list using the method [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) or [crm.timeline.logmessage.list](../logmessage/crm-timeline-logmessage-list.md). Required, immutable ||
+|| **ENTITY_ID**
+[`integer`](../../../data-types.md) | Identifier of the CRM entity to which the timeline record is bound. Required, immutable ||
+|| **ENTITY_TYPE**
+[`string`](../../../data-types.md) | String code of the CRM object type `entityTypeName` to which the timeline record is bound. Required, immutable. Possible values:
 - `lead` — lead
 - `deal` — deal
 - `contact` — contact
 - `company` — company
+- `quote` — quote
+- `smart_invoice` — invoice
 - `order` — order
-  ||
+- `activity` — activity
+- `dynamic_<entityTypeId>` — smart process item, for example `dynamic_128`
+
+The method [crm.timeline.bindings.bind](./crm-timeline-bindings-bind.md) also accepts other CRM object types, for example `invoice` — an invoice in the old format. How the string type codes are structured is described in the section [CRM Object Type](../../data-types.md#object_type) ||
+|#
+
+The field types describe the values accepted by the method [crm.timeline.bindings.bind](./crm-timeline-bindings-bind.md). In the response of the method [crm.timeline.bindings.list](./crm-timeline-bindings-list.md), the values of all three fields are returned as strings.
+
+#### Field Description {#field-description}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../../data-types.md) | Type of the field value: `integer` or `string` ||
+|| **isRequired**
+[`boolean`](../../../data-types.md) | Whether the field is required ||
+|| **isReadOnly**
+[`boolean`](../../../data-types.md) | Whether the field is read-only ||
+|| **isImmutable**
+[`boolean`](../../../data-types.md) | Whether the field cannot be changed after the binding is created. To change a binding, remove it with the method [crm.timeline.bindings.unbind](./crm-timeline-bindings-unbind.md) and create it again ||
+|| **isMultiple**
+[`boolean`](../../../data-types.md) | Whether the field is multiple ||
+|| **isDynamic**
+[`boolean`](../../../data-types.md) | Whether the field is a custom field. For binding fields, it is always `false` ||
+|| **title**
+[`string`](../../../data-types.md) | Name of the field in the interface language ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
-
-```json
-{
-    "error":0,
-    "error_description":"error"
-}
-```
+The method has no errors of its own: it takes no parameters, and the composition of the fields is the same in any Bitrix24. Only system errors are possible, for example, in case of invalid authorization.
 
 {% include notitle [Error handling](../../../../_includes/error-info.md) %}
-
-### Possible Error Codes
-
-#|
-|| **Code** | **Description** ||
-|| `0` | Other errors (e.g., fatal errors) ||
-|#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
@@ -321,3 +334,4 @@ HTTP status: **400**
 - [{#T}](./crm-timeline-bindings-bind.md)
 - [{#T}](./crm-timeline-bindings-list.md)
 - [{#T}](./crm-timeline-bindings-unbind.md)
+- [{#T}](./index.md)

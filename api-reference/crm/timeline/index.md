@@ -27,7 +27,7 @@ The timeline holds two kinds of objects: activities and timeline entries. Each h
 || Create a call, meeting, e-mail, or another activity in the entity detail form | [Activities in CRM](./activities/index.md) ||
 || Leave a text comment with files in the entity detail form | [Timeline Comments](./comments/index.md) ||
 || Write a service message from an application to the timeline | [Log Record Journal](./logmessage/index.md) ||
-|| Link an existing timeline entry to another CRM entity | [Timeline Record Bindings](./bindings/index.md) ||
+|| Bind an existing timeline entry to another CRM entity | [Timeline Record Bindings](./bindings/index.md) ||
 || Add a short note to an activity or a comment | [Notes on Timeline Records](./note/index.md) ||
 || Display a custom application interface inside a timeline entry | [Additional Content Blocks](./layout-blocks/index.md) ||
 || Pin an entry to the top of the timeline | [Actions with Records in the Timeline](./actions/index.md) ||
@@ -49,7 +49,7 @@ Timeline entries are divided into two types:
 * Comments. You can add, delete, modify, and retrieve comments through the group of methods [crm.timeline.comment.*](./comments/index.md)
 * Log entries. You can add, delete, modify, and retrieve log entries through the group of methods [crm.timeline.logmessage.*](./logmessage/index.md)
 
-You can manage the relationships of timeline entries with CRM entities using the methods from the group [crm.timeline.bindings.*](./bindings/index.md).
+You can manage the bindings of timeline entries with CRM entities using the methods from the group [crm.timeline.bindings.*](./bindings/index.md).
 
 ## How to Get Started
 
@@ -153,14 +153,14 @@ Activity methods are covered in the [Activities in CRM](./activities/index.md) s
 || [crm.timeline.note.delete](./note/crm-timeline-note-delete.md) | Deletes a note ||
 |#
 
-### Managing Timeline Entry Relationships
+### Timeline Record Bindings
 
 #|
 || **Method** | **Description** ||
 || [crm.timeline.bindings.bind](./bindings/crm-timeline-bindings-bind.md) | Adds a binding of the timeline record with a CRM entity ||
-|| [crm.timeline.bindings.list](./bindings/crm-timeline-bindings-list.md) | Retrieves a list of relationships for a timeline entry ||
+|| [crm.timeline.bindings.list](./bindings/crm-timeline-bindings-list.md) | Retrieves a list of bindings of the timeline record with CRM entities ||
 || [crm.timeline.bindings.unbind](./bindings/crm-timeline-bindings-unbind.md) | Removes the binding of the timeline record with a CRM entity ||
-|| [crm.timeline.bindings.fields](./bindings/crm-timeline-bindings-fields.md) | Retrieves the fields of the relationship between CRM entities and timeline entries ||
+|| [crm.timeline.bindings.fields](./bindings/crm-timeline-bindings-fields.md) | Retrieves the description of the fields of the timeline record binding with a CRM entity ||
 |#
 
 ### Additional Content Blocks
