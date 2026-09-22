@@ -24,10 +24,19 @@ The group of methods `landing.demos.*` helps manage custom templates. This secti
 3. Save the exported array on the Bitrix24 application side
 4. Pass the exported array to [landing.demos.register](./landing-demos-register.md)
 5. Check the result using the [landing.demos.getList](./landing-demos-get-list.md) method
+6. Delete the template using [landing.demos.unregister](./landing-demos-unregister.md) if it is no longer needed
 
 ## Key Parameters
 
-**XML_ID.** The external code of the registered template. It is used when deleting a template via [landing.demos.unregister](./landing-demos-unregister.md). You can obtain it using the [landing.demos.getList](./landing-demos-get-list.md) method. Deletion by code may affect related records of the template if they are registered in the application with the same code.
+**XML_ID.** The external code of the registered template. It is used when deleting a template via [landing.demos.unregister](./landing-demos-unregister.md). The [landing.demos.getList](./landing-demos-get-list.md) method returns an array of templates in `result` and the code of each template in the `XML_ID` field. Deletion by code may affect related template records if they are registered in the application with the same code.
+
+```json
+{
+  "result": [
+    { "ID": "9", "XML_ID": "ftmlt/biznes", "TITLE": "Business", "TYPE": "page" }
+  ]
+}
+```
 
 **type.** The type of template. It is specified during registration and when calling the [landing.demos.getSiteList](./landing-demos-get-site-list.md) and [landing.demos.getPageList](./landing-demos-get-page-list.md) methods. For example: `page`, `store`, `knowledge`.
 

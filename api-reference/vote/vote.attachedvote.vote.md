@@ -17,7 +17,7 @@ The method `vote.AttachedVote.vote` allows you to vote in an attached voting.
 
 ## Method Parameters
 
-There are two options for calling the method.
+There are three options for calling the method.
 
 ### 1. By the attached poll ID
 
@@ -38,7 +38,7 @@ There are two options for calling the method.
 }
 ```
 
-Key - question ID, value - array of selected answer IDs. You can obtain the question and answer IDs using the methods [vote.AttachedVote.get](./vote.attachedvote.get.md) or [vote.AttachedVote.getMany](./vote.attachedvote.getMany.md).
+The key is the question ID, and the value is an array of selected answer IDs. You can obtain the question and answer IDs using the methods [vote.AttachedVote.get](./vote.attachedvote.get.md) or [vote.AttachedVote.getMany](./vote.attachedvote.getMany.md).
 Multiple questions in one voting are available in feed posts; only one question is available in the chat message poll ||
 |#
 
@@ -96,6 +96,15 @@ Multiple questions in one voting are available in feed posts; only one question 
 
 Key - question ID, value - array of selected answer IDs. You can obtain the question and answer IDs using the methods [vote.AttachedVote.get](./vote.attachedvote.get.md) or [vote.AttachedVote.getMany](./vote.attachedvote.getMany.md).
 Multiple questions in one voting are available in feed posts; only one question is available in the chat message poll ||
+|#
+
+### Common Optional Parameter
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **actionUuid**
+[`string`](../data-types.md) | Client-side action identifier up to 1,000 characters long. The value is returned to the request initiator in the Pull event about a voting change and can be used to match the event with the request. By default, an empty string ||
 |#
 
 ## Code Examples
@@ -282,7 +291,7 @@ Multiple questions in one voting are available in feed posts; only one question 
 
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error adding product row: ' . $e->getMessage();
+        echo 'Error voting in poll: ' . $e->getMessage();
     }
     ```
 
@@ -493,13 +502,13 @@ HTTP status: **200**
 || **COUNTER**
 [`integer`](../data-types.md) | Vote counter ||
 || **QUESTIONS**
-[`array`](../data-types.md) | Array of poll questions ||
+[`object`](../data-types.md) | Poll questions. The object key is the question identifier; the value contains the question data and the `ANSWERS` object with answer options grouped by their identifiers ||
 || **ANONYMITY**
 [`integer`](../data-types.md) | Level of poll anonymity ||
 || **OPTIONS**
 [`integer`](../data-types.md) | Availability of revoting ||
 || **userAnswerMap**
-[`array`](../data-types.md) | Map of current user's answers ||
+[`object`](../data-types.md) | Current user's answers. The first-level key is the question identifier, and the second-level key is the answer identifier ||
 || **canEdit**
 [`boolean`](../data-types.md) | Can the current user edit the poll ||
 || **canVote**
@@ -538,7 +547,8 @@ HTTP status: **403**
 #|
 || **Code** | **Description** ||
 || `400` | Failed to save the voting ||
-|| `ATTACH_READ_ACCESS_DENIED` | No rights to participate in the voting ||
+|| `ATTACH_NOT_FOUND` | Attached poll not found ||
+|| `0` | No rights to participate in the voting ||
 || `403` | The poll is inactive ||
 |#
 

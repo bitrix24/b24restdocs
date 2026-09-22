@@ -42,6 +42,32 @@ Once the task is linked to Scrum, you can use methods for managing Scrum tasks. 
 
 {% endnote %}
 
+## What Data a Scrum Task Returns
+
+The [tasks.api.scrum.task.get](./tasks-api-scrum-task-get.md) method returns additional task fields used in Scrum:
+
+- `entityId` — backlog or sprint identifier
+- `storyPoints` — task complexity estimate as a string
+- `epicId` — epic identifier
+- `sort` and `sortFloat` — sorting values
+- `createdBy` and `modifiedBy` — identifiers of users who created and last modified the Scrum task record
+- `groupId` — Scrum identifier
+
+```json
+{
+    "entityId": 2,
+    "storyPoints": "8",
+    "epicId": 4,
+    "sort": 1,
+    "sortFloat": 1.0,
+    "createdBy": 1,
+    "modifiedBy": 1,
+    "groupId": 7
+}
+```
+
+You can retrieve the list of declared fields and their types using [tasks.api.scrum.task.getFields](./tasks-api-scrum-task-get-fields.md). The `getFields` method does not list `groupId`: the controller adds it directly to the `tasks.api.scrum.task.get` response.
+
 ## Linking Scrum Tasks with Other Objects
 
 **Backlog/Sprint.** A task is linked to the Scrum backlog or sprint through the identifier `entityId`. The backlog identifier can be obtained using the [get backlog fields by Scrum identifier](../backlog/tasks-api-scrum-backlog-get.md) method. The sprint identifier can be obtained using the [add new sprint](../sprint/tasks-api-scrum-sprint-add.md) method or the [get list of sprints](../sprint/tasks-api-scrum-sprint-list.md) method. 

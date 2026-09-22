@@ -11,20 +11,21 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to Scrum
+> Who can execute the method: a user with permission to modify the task and Scrum
 
-This method creates or updates a Scrum task. You will be able to:
+The `tasks.api.scrum.task.update` method creates or updates a Scrum task. You can:
 - create a task in Scrum
-- move a task from another project
 - transfer it between the backlog and sprints
 - change story points
 - link an epic
 
-A task must be created using the [tasks.task.add](../../../tasks/tasks-task-add.md) method or updated using the [tasks.task.update](../../../tasks/tasks-task-update.md) method. Linking the task to Scrum is specified in the group identifier parameter `GROUP_ID`.
+A task must be created using [tasks.task.add](../../../tasks/tasks-task-add.md) or updated using [tasks.task.update](../../../tasks/tasks-task-update.md). In the `GROUP_ID` field, specify the identifier of the same Scrum that contains the backlog or sprint from `entityId`. The `tasks.api.scrum.task.update` method does not move a task between projects.
 
 You can obtain the group identifier using the [create new group](../../sonet-group-create.md) method or the [get group list](../../socialnetwork-api-workgroup-list.md) method. A group is considered Scrum if the `SCRUM_MASTER_ID` field is filled.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -36,10 +37,13 @@ You can obtain the group identifier using the [create new group](../../sonet-gro
 
 ```js
 fields: {
-    entityId: 'value'
+    entityId: 'value',
     storyPoints: 'value',
     epicId: 'value',
-    sort: 'value'
+    sort: 'value',
+    sortFloat: 'value',
+    createdBy: 'value',
+    modifiedBy: 'value'
 }
 ```
 
@@ -54,7 +58,7 @@ fields: {
 || **entityId**
 `integer` | Identifier of the backlog or sprint.
 
-If the value is not specified, *Bitrix24* will automatically add the task to the Scrum backlog if it exists ||
+The parameter is required when adding a task to Scrum. For an existing Scrum task, you can omit it if you do not need to move the task between the backlog and sprints ||
 || **storyPoints**
 `string` | Story Points — a relative estimate of the task's complexity.
 
@@ -63,9 +67,17 @@ Can have a string value ||
 `integer` | Epic identifier ||
 || **sort**
 `integer` | Sorting ||
+|| **sortFloat**
+`float` | Sorting value with a fractional part ||
+|| **createdBy**
+`integer` | Identifier of the user who created the Scrum task record ||
+|| **modifiedBy**
+`integer` | Identifier of the user who modified the Scrum task record ||
 |#
 
 ## Code Examples
+
+{% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -300,9 +312,16 @@ HTTP status: **200**
 
 ```json
 {
-    "status" : "success",
-    "data" : true,
-    "errors" : []
+    "result": true,
+    "time": {
+        "start": 1721402687.900315,
+        "finish": 1721402694.313811,
+        "duration": 6.413496017456055,
+        "processing": 6.387248992919922,
+        "date_start": "2024-07-19T15:24:47+00:00",
+        "date_finish": "2024-07-19T15:24:54+00:00",
+        "operating": 6.387217998504639
+    }
 }
 ```
 
@@ -311,21 +330,11 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **status**
-`string` | Response status.
-
-Possible values:
-- `success` 
-- `error` 
-||
-|| **data**
-`boolean`\|`null` | Returns:
-- `true` — in case of success
-- `null` — in case of error 
-||
-|| **errors**
-`array` | Array of errors ||
-|#  
+|| **result**
+[`boolean`](../../../data-types.md) | Returns `true` if the Scrum task was created or updated ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
 
 ## Error Handling
 
@@ -334,7 +343,7 @@ HTTP status: **400**
 ```json
 {
     "error": 0,
-    "error_description": "Task not found"
+    "error_description": "Task not found."
 }
 ```
 
@@ -344,10 +353,20 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `0` | Task id not found | The task identifier is `0` ||
+|| `0` | Entity id not found | `entityId` was not passed when adding the task to Scrum ||
+|| `0` | Entity not found. | The backlog or sprint with the specified `entityId` was not found ||
 || `0` | Epic not found | Epic not found ||
-|| `0` | Task not found | Task not found ||
+|| `0` | Task not found. | Task not found ||
+|| `0` | Task not found. The task must be in the project of the entity | The task and the backlog or sprint from `entityId` belong to different projects ||
 || `0` | Access denied | Access denied ||
 || `0` | Item not created | Task not added to Scrum ||
+|| `0` | createdBy user not found | The user specified in `createdBy` was not found ||
+|| `0` | modifiedBy user not found | The user specified in `modifiedBy` was not found ||
+|| `0` | Unable to update task | Failed to save changes to the Scrum task ||
+|| `100` | Could not find value for parameter {id} | The required `id` parameter is missing ||
+|| `100` | Could not find value for parameter {fields} | The required `fields` parameter is missing ||
+|| `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | The `id` parameter has an invalid type ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

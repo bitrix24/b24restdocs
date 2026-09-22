@@ -27,6 +27,15 @@ In the on-premise Bitrix24, methods can be used starting from the [module versio
 
 {% endnote %}
 
+## Getting Started
+
+1. Create a resource type using [booking.v1.resourceType.add](./resource/resource-type/booking-v1-resourcetype-add.md). A resource cannot be created without a type because the `typeId` parameter is required when creating a resource.
+2. Create a resource using [booking.v1.resource.add](./resource/booking-v1-resource-add.md).
+3. Configure the resource's time availability using [booking.v1.resource.slots.set](./resource/slots/booking-v1-resource-slots-set.md).
+4. Create a booking using [booking.v1.booking.add](./booking/booking-v1-booking-add.md). If no suitable time is available, add an entry to the waitlist using [booking.v1.waitlist.add](./waitlist/booking-v1-waitlist-add.md), then move it to a booking later using [booking.v1.booking.createfromwaitlist](./booking/booking-v1-booking-createfromwaitlist.md).
+5. Link a client to the booking using [booking.v1.booking.client.set](./booking/client/booking-v1-booking-client-set.md), and link a CRM deal using [booking.v1.booking.externalData.set](./booking/external-data/booking-v1-booking-externaldata-set.md).
+6. Subscribe to [the section events](#all-methods) so that the application is notified when objects are created, updated, or deleted.
+
 ## Setting Up Resources
 
 Resources are objects that can be booked: rooms, equipment, services. Methods in this group allow you to:
@@ -51,14 +60,16 @@ Booking is a confirmed reservation for a resource. Methods in this group allow y
 - create a booking from an entry in the waitlist — [booking.v1.booking.createfromwaitlist](./booking/booking-v1-booking-createfromwaitlist.md)
 - manage relationships between bookings and CRM clients — [booking.v1.booking.client.*](./booking/client/index.md) and other objects — [booking.v1.booking.externalData.*](./booking/external-data/index.md)
 
-## Getting Started
+## Errors and Limitations
 
-1. Create a resource type using [booking.v1.resourceType.add](./resource/resource-type/booking-v1-resourcetype-add.md). A resource cannot be created without a type because the `typeId` parameter is required when creating a resource.
-2. Create a resource using [booking.v1.resource.add](./resource/booking-v1-resource-add.md).
-3. Configure the resource's time availability using [booking.v1.resource.slots.set](./resource/slots/booking-v1-resource-slots-set.md).
-4. Create a booking using [booking.v1.booking.add](./booking/booking-v1-booking-add.md). If no suitable time is available, add an entry to the waitlist using [booking.v1.waitlist.add](./waitlist/booking-v1-waitlist-add.md), then move it to a booking later using [booking.v1.booking.createfromwaitlist](./booking/booking-v1-booking-createfromwaitlist.md).
-5. Link a client to the booking using [booking.v1.booking.client.set](./booking/client/booking-v1-booking-client-set.md), and link a CRM deal using [booking.v1.booking.externalData.set](./booking/external-data/booking-v1-booking-externaldata-set.md).
-6. Subscribe to [Online Booking Events](#all-methods) so that the application is notified when objects are created, updated, or deleted.
+The `booking.*` methods can return REST system errors and Online Booking logic errors. When processing a response, consider these common situations:
+
+- authorization and access errors occur if the token is invalid, the application or webhook does not have the `booking` scope, or the user does not have access to the application
+- the `Booking tool is disabled. Please contact your administrator.` error means that an administrator has disabled Online Booking
+- code `1018` with the `Empty resource collection` error can occur when creating or modifying a booking if resources are not found or are unavailable at the specified time
+- code `1026` means that the time of the new or modified booking overlaps existing bookings and the resource rules do not allow such an overlap
+
+System authorization, access, and limit errors are described in [Error Codes](../../error-codes.md). Other codes and causes are provided on the corresponding method pages.
 
 ## Overview of Methods and Events {#all-methods}
 

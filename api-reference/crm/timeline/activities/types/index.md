@@ -28,6 +28,12 @@ Methods `crm.activity.type.add`, `crm.activity.type.list`, and `crm.activity.typ
 3. Retrieve the list of registered types using the [crm.activity.type.list](./crm-activity-type-list.md) method
 4. Delete the custom type using the [crm.activity.type.delete](./crm-activity-type-delete.md) method if it is no longer needed
 
+## Activity Type Requirements
+
+The `TYPE_ID` code is required and must be unique among the current application's types. The `NAME` and `ICON_FILE` are optional: without `NAME`, the type is registered with an empty name, and without `ICON_FILE`, it has no custom icon. Pass the icon as a file according to the [file upload rules](../../../../files/how-to-upload-files.md).
+
+After registration, the `TYPE_ID` value is used as the activity type code. To create a regular activity of this type, pass the code in the `PROVIDER_TYPE_ID` field of the [crm.activity.add](../activity-base/crm-activity-add.md) method. For example, for a registered `TYPE_ID = CUSTOM_CALL`, specify `PROVIDER_TYPE_ID = CUSTOM_CALL`.
+
 ## Linking to Configurable Activities
 
 A custom type with `IS_CONFIGURABLE_TYPE = Y` can be passed to the `typeId` field of the [crm.activity.configurable.add](../configurable/crm-activity-configurable-add.md) method. If `IS_CONFIGURABLE_TYPE = N`, the type cannot be used for a configurable activity.

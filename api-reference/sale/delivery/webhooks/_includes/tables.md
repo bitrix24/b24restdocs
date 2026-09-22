@@ -21,7 +21,7 @@ You can obtain shipment identifiers using the [sale.shipment.list](/api-referenc
 [`object[]`](/api-reference/data-types.html) | Array containing the property values of the shipment (detailed description provided [below](#property_values)) ||
 || **ITEMS**
 [`object[]`](/api-reference/data-types.html) | Array containing all the goods included in the shipment (detailed description provided [below](#items)) ||
-|| **EXTRA_SERVICE_VALUES**
+|| **EXTRA_SERVICES_VALUES**
 [`object[]`](/api-reference/data-types.html) | Array containing a list of necessary additional services selected for delivery (detailed description provided [below](#extra_service_values)) ||
 || **RESPONSIBLE_CONTACT**
 [`object`](/api-reference/data-types.html) | Information about the contact person responsible for delivery from Bitrix24 (detailed description provided [below](#responsible_contact)) ||
@@ -158,7 +158,7 @@ You can obtain the identifier of shipment properties using the [sale.shipmentpro
 [`double`](/api-reference/data-types.html) | Height of the product (mm) ||
 |#
 
-### EXTRA_SERVICE_VALUES
+### EXTRA_SERVICES_VALUES {#extra_service_values}
 
 #|
 || **Name**

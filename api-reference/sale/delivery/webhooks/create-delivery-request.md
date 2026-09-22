@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The request is sent to the address specified in `CREATE_DELIVERY_REQUEST_URL` when creating a delivery handler using the method [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md).
+Bitrix24 sends the request to the address from the `CREATE_DELIVERY_REQUEST_URL` parameter passed when creating a delivery handler using [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md). The external system must create a delivery order and return its identifier.
 
 ## Request Parameters
 
@@ -153,18 +153,18 @@ Example JSON request:
 || **Name**
 `type` | **Description** ||
 || **SUCCESS***
-[`string`](../../../data-types.md) | Indicator of the success of the delivery cost calculation. Possible values:
+[`string`](../../../data-types.md) | Result of creating a delivery order. Possible values:
 
-- `Y` — cost calculated successfully
-- `N` — an error occurred while attempting to calculate the cost
+- `Y` — delivery order created
+- `N` — delivery order not created
  ||
-|| **REQUEST_ID**
-[`string`](../../../data-types.md) | Identifier of the delivery request issued by the external system ||
+|| **REQUEST_ID***
+[`string`](../../../data-types.md) | Identifier of the created delivery order in the external system. Required if `SUCCESS` = `Y` ||
 || **REASON**
-[`object`](../../../data-types.md) | Reason for the error. Provided in case of an unsuccessful cost calculation attempt (detailed description provided [below](#reason)) ||
+[`object`](../../../data-types.md) | Reason why the delivery order was not created. Passed if `SUCCESS` = `N` [(detailed description)](#reason) ||
 |#
 
-### REASON
+### REASON Object {#reason}
 
 #|
 || **Name**
@@ -182,7 +182,7 @@ Example JSON request:
 }
 ```
 
-## Example Response with Error in Cost Calculation
+## Example Response with Delivery Order Creation Error
 
 ```json
 {

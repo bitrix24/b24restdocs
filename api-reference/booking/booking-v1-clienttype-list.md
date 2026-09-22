@@ -64,16 +64,9 @@ No parameters.
     }
 
     try {
-      // booking.v1.clienttype.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<ClientTypeListResult>({
         method: 'booking.v1.clienttype.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -102,16 +95,9 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // booking.v1.clienttype.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'booking.v1.clienttype.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -279,19 +265,40 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | An object containing the list of client types ||
+[`object`](../data-types.md) | Root response element [(detailed description)](#result) ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **clientType**
+[`object[]`](../data-types.md) | List of client types [(detailed description)](#client-type) ||
+|#
+
+#### clientType Object {#client-type}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **code**
+[`string`](../data-types.md) | Client type code, for example, `CONTACT` or `COMPANY` ||
+|| **module**
+[`string`](../data-types.md) | Identifier of the module that owns the client type, for example, `crm` ||
 |#
 
 ## Error Handling
 
 {% include notitle [error handling](../../_includes/error-info.md) %}
 
-### Possible Error Codes
-
 {% include [system errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./booking/client/booking-v1-booking-client-set.md)
+- [{#T}](./booking/client/booking-v1-booking-client-unset.md)
+- [{#T}](./booking/client/booking-v1-booking-client-list.md)

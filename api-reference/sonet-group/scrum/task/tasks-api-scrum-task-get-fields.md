@@ -21,6 +21,8 @@ No parameters.
 
 ## Code Examples
 
+{% include [Note on examples](../../../../_includes/examples.md) %}
+
 {% list tabs %}
 
 - cURL (Webhook)
@@ -211,39 +213,53 @@ HTTP status: **200**
 
 ```json
 {
-    "fields": 
-    {
-        "entityId": 
-        {
-            "type": "integer"
-        },
-        "storyPoints": 
-        {
-            "type": "string"
-        },
-        "epicId": 
-        {
-            "type": "integer"
-        },
-        "sort": 
-        {
-            "type": "integer"
-        },
-        "createdBy": 
-        {
-            "type": "integer"
-        },
-        "modifiedBy": 
-        {
-            "type": "integer"
+    "result": {
+        "fields": {
+            "entityId": {
+                "type": "integer"
+            },
+            "storyPoints": {
+                "type": "string"
+            },
+            "epicId": {
+                "type": "integer"
+            },
+            "sort": {
+                "type": "integer"
+            },
+            "sortFloat": {
+                "type": "float"
+            },
+            "createdBy": {
+                "type": "integer"
+            },
+            "modifiedBy": {
+                "type": "integer"
+            }
         }
     }
 }
 ```
 
-### Returned Data {#fields}
+### Returned Data
 
-The response returns an object `fields`, which contains all the fields of the Scrum task and their types `type`.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Root response element [(detailed description)](#result) ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **fields**
+[`object`](../../../data-types.md) | Scrum task fields and their types [(detailed description)](#fields) ||
+|#
+
+#### fields Object {#fields}
 
 #|
 || **Name**
@@ -258,6 +274,8 @@ Can have a string value ||
 `integer` | Identifier of the epic ||
 || **sort**
 `integer` | Sorting ||
+|| **sortFloat**
+`float` | Sorting value with a fractional part ||
 || **createdBy**
 `integer` | Who created the task ||
 || **modifiedBy**
@@ -265,6 +283,10 @@ Can have a string value ||
 |#
 
 ## Error Handling
+
+The method does not return any specific errors.
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 

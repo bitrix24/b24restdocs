@@ -25,14 +25,16 @@ Payments contain information about payments for orders: payment system, status a
 
 **Linking Cart Items to Payment.** Select the cart items for which you want to create a payment. Use the [sale.paymentitembasket.*](../payment-item-basket/index.md) methods.
 
-**Linking Payments to Shipments.** Specify which shipments have been paid. Use the [sale.paymentItemShipment.*](../payment-item-shipment/index.md) methods.
+**Linking Payments to Shipments.** Specify which shipments the payment is linked to. Use the [sale.paymentitemshipment.*](../payment-item-shipment/index.md) methods.
 
 ## How to Get Started
 
 1. Create an order using [sale.order.add](../order/sale-order-add.md) or find an existing order using [sale.order.get](../order/sale-order-get.md) or [sale.order.list](../order/sale-order-list.md).
 2. Create a payment using [sale.payment.add](./sale-payment-add.md) and specify the order ID.
-3. Link the payment to cart items using [sale.paymentitembasket.*](../payment-item-basket/index.md) or to shipments using [sale.paymentItemShipment.*](../payment-item-shipment/index.md).
+3. Link the payment to cart items using [sale.paymentitembasket.*](../payment-item-basket/index.md) or to shipments using [sale.paymentitemshipment.*](../payment-item-shipment/index.md).
 4. Check payment data using [sale.payment.get](./sale-payment-get.md) or [sale.payment.list](./sale-payment-list.md).
+
+The `sale.payment.add`, `sale.payment.get`, and `sale.payment.update` methods return the payment in the `payment` object. The `sale.payment.list` method returns an array of payments in the `payments` field and the total number of records found in the `total` field.
 
 ## Overview of Methods {#all-methods}
 

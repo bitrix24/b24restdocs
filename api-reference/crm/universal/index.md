@@ -41,6 +41,35 @@ A unified interface simplifies working with different objects. Instead of separa
 4. Obtain data for a specific item using the [crm.item.get](./crm-item-get.md) method.
 5. Modify an item using the [crm.item.update](./crm-item-update.md) method or delete it using the [crm.item.delete](./crm-item-delete.md) method.
 
+## How to Choose a Method Group
+
+For new development, use the universal `crm.item.*` methods and pass the object type in the `entityTypeId` parameter:
+
+- `1` — lead
+- `2` — deal
+- `3` — contact
+- `4` — company
+- from `128` — smart process
+
+Development of the basic [crm.lead.*](../leads/index.md), [crm.deal.*](../deals/index.md), [crm.contact.*](../contacts/index.md), and [crm.company.*](../companies/index.md) methods has stopped. They continue to work but are intended to support existing integrations.
+
+## Response Format
+
+The [crm.item.add](./crm-item-add.md), [crm.item.get](./crm-item-get.md), and [crm.item.update](./crm-item-update.md) methods return the CRM object in `result.item`. The [crm.item.delete](./crm-item-delete.md) method returns the identifier of the deleted item in `result.item.id`, while [crm.item.fields](./crm-item-fields.md) returns the description of available fields in `result.fields`.
+
+The [crm.item.list](./crm-item-list.md) method returns an array of objects in `result.items` and the total number of items found in `total`. The object's field set depends on `entityTypeId`, the user's permissions, and the `select` parameter.
+
+```json
+{
+  "result": {
+    "items": [
+      { "id": 1024, "title": "New deal" }
+    ]
+  },
+  "total": 1
+}
+```
+
 ## Relationships of Universal Methods with Other Objects
 
 **CRM Object Type.** The type is set by the `entityTypeId` parameter. It defines the structure of fields and the logic of the method.

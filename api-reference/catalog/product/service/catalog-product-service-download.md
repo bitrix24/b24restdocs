@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-This method downloads service files based on the provided parameters.
+The `catalog.product.service.download` method downloads a service file.
 
 ## Method Parameters
 
@@ -23,10 +23,10 @@ This method downloads service files based on the provided parameters.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values for downloading service files ||
+[`object`](../../../data-types.md) | Service file parameters [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -45,11 +45,11 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
 ||
 || **fieldName***
 [`string`](../../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored. Possible values:
-- `DETAIL_PICTURE` — detailed image, field available in the old product card
-- `PREVIEW_PICTURE` — preview image, field available in the old product card
-- `PROPERTY_N` — property, where `N` is the property identifier or code
+- `detailPicture` — detailed image, field available in the old product form
+- `previewPicture` — preview image, field available in the old product form
+- `propertyN` — file property, where `N` is the property identifier or symbolic code, for example, `property258` or `propertyMorePhoto`
 
-To obtain existing identifiers or codes of service properties, you need to use [catalog.productProperty.list](../../product-property/catalog-product-property-list.md)
+You can retrieve service property identifiers and symbolic codes using [catalog.productProperty.list](../../product-property/catalog-product-property-list.md). Only file-type properties can be downloaded
 ||
 |#
 

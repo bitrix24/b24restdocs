@@ -9,25 +9,34 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-An order can include multiple products that need to be shipped in parts, meaning as several independent shipments. To allocate payments among shipments, use the linking of payments to shipments.
+An order can include several independent shipments. To specify which shipments a payment relates to, use payment-to-shipment links.
 
 > Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [Payment Systems for Online Stores](https://helpdesk.bitrix24.com/open/25826751/)
 
-## Connection of Payment Linking to Shipments with Other Objects
-
-**Shipments.** Specify the ID of the paid shipment. You can obtain a list of shipment IDs using the method [sale.shipment.list](../shipment/sale-shipment-list.md).
-
-**Payments.** Specify the ID of the payment that needs to be linked to the shipment. You can obtain a list of payment IDs using the method [sale.payment.list](../payment/sale-payment-list.md).
-
 ## How to Get Started
 
 1. Retrieve the payment ID using [sale.payment.list](../payment/sale-payment-list.md).
 2. Retrieve the shipment ID using [sale.shipment.list](../shipment/sale-shipment-list.md).
-3. Create a binding using [sale.paymentItemShipment.add](./sale-payment-item-shipment-add.md).
-4. Check the binding using [sale.paymentItemShipment.get](./sale-payment-item-shipment-get.md) or [sale.paymentItemShipment.list](./sale-payment-item-shipment-list.md).
-5. If necessary, update the binding using [sale.paymentItemShipment.update](./sale-payment-item-shipment-update.md).
+3. Check the available link fields using [sale.paymentItemShipment.getFields](./sale-payment-item-shipment-get-fields.md).
+4. Create a link using [sale.paymentItemShipment.add](./sale-payment-item-shipment-add.md).
+5. Use [sale.paymentItemShipment.list](./sale-payment-item-shipment-list.md) to verify the relationships between payments and shipments.
+
+## How the Link Works
+
+A link stores the payment identifier `paymentId`, shipment identifier `shipmentId`, and optional external identifier `xmlId`. It has no amount or quantity fields: it identifies the relationship between a payment and a shipment but does not store an amount distributed between them.
+
+To link one payment to two shipments, create two links with the same `paymentId` and different `shipmentId` values:
+
+```json
+[
+    { "fields": { "paymentId": 1025, "shipmentId": 2471 } },
+    { "fields": { "paymentId": 1025, "shipmentId": 2472 } }
+]
+```
+
+Pass each item from the example in a separate [sale.paymentItemShipment.add](./sale-payment-item-shipment-add.md) call, not as a single array. Retrieve payment identifiers using [sale.payment.list](../payment/sale-payment-list.md) and shipment identifiers using [sale.shipment.list](../shipment/sale-shipment-list.md). The same `paymentId` + `shipmentId` pair can exist only once.
 
 ## Overview of Methods {#all-methods}
 

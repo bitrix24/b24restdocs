@@ -17,7 +17,7 @@ You can add a customer to a resource booking: either a contact or a company. Mes
 
 ## Connection with Other Objects
 
-**Booking.** Use the `ID` of the booking in the `bookingId` parameter of the [booking.v1.booking.client.*](./index.md) methods to add or replace a customer. You can retrieve the `ID` of the booking using the [creation](../booking-v1-booking-add.md) or [filtering](../booking-v1-booking-list.md) methods.
+**Booking.** Use the booking `ID` in the `bookingId` parameter to [add or replace](./booking-v1-booking-client-set.md), [retrieve](./booking-v1-booking-client-list.md), or [remove](./booking-v1-booking-client-unset.md) a client. You can retrieve the booking `ID` using the [creation](../booking-v1-booking-add.md) or [filtering](../booking-v1-booking-list.md) methods.
 
 **Contact.** To attach a contact to the booking, pass the `ID` of the contact in the [booking.v1.booking.client.set](./booking-v1-booking-client-set.md) method. You can retrieve the `ID` of the contact using the [crm.item.list](../../../crm/universal/crm-item-list.md) method with the `entityTypeId = 3` parameter.
 
@@ -45,6 +45,7 @@ If the client is new, first add them to the CRM using the [crm.item.add](../../.
 > Who can execute the method: any user
 
 #|
+|| **Method** | **Description** ||
 || [booking.v1.booking.client.list](./booking-v1-booking-client-list.md) | Returns the contact and company associated with the booking ||
 || [booking.v1.booking.client.set](./booking-v1-booking-client-set.md) | Adds a contact or company to the booking ||
 || [booking.v1.booking.client.unset](./booking-v1-booking-client-unset.md) | Removes a contact or company from the booking ||

@@ -25,6 +25,39 @@ An example of a handler code for the event is described in the article [How to T
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../../_includes/events-index.md) %}
 
+## Event Data Format
+
+The handler receives a POST request with the event code in `event`, event data in `data`, the sending time in `ts`, and authorization parameters in `auth`. The structure of `data` depends on the event:
+
+- message events `OnImConnectorMessageAdd`, `OnImConnectorMessageUpdate`, and `OnImConnectorMessageDelete` pass `CONNECTOR`, `LINE`, and the `MESSAGES` array
+- dialog events `OnImConnectorDialogStart` and `OnImConnectorDialogFinish` pass `CONNECTOR`, `LINE`, and the `DATA` array
+- the `OnImConnectorStatusDelete` event passes lowercase `connector` and `line` keys
+- the `OnImConnectorLineDelete` event passes the identifier of the deleted open channel as a number directly in `data`
+
+Abbreviated request example for `OnImConnectorMessageAdd`:
+
+```json
+{
+  "event": "ONIMCONNECTORMESSAGEADD",
+  "event_handler_id": 555,
+  "data": {
+    "CONNECTOR": "myconnector",
+    "LINE": 107,
+    "MESSAGES": [
+      {
+        "im": { "chat_id": 1807, "message_id": 86497 },
+        "message": { "user_id": 27, "text": "Hello!" },
+        "chat": { "id": "channel-123" }
+      }
+    ]
+  },
+  "ts": 1773759161,
+  "auth": { "domain": "example.bitrix24.com", "user_id": 27 }
+}
+```
+
+The full set of nested objects and `auth` parameters is provided on each event page.
+
 ## Overview of Events {#all-events}
 
 > Scope: [`imconnector`](../../../scopes/permissions.md), [`imopenlines`](../../../scopes/permissions.md)

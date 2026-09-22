@@ -9,18 +9,50 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-This section lists the color theme codes for the `THEME_CODE` field.
+The `THEME_CODE` field sets a ready-made color palette for the page. The table lists the available codes and general color characteristics of the themes.
 
 You can set the value of `THEME_CODE` when creating and updating a page through the methods [landing.landing.add](./methods/landing-landing-add.md) and [landing.landing.update](./methods/landing-landing-update.md).
 
 You can retrieve the current value of `THEME_CODE` using the method [landing.landing.getadditionalfields](./methods/landing-landing-get-additional-fields.md) if the field is filled.
 
+## Access Conditions
+
+The methods require the [`landing`](../../scopes/permissions.md) scope. The required permissions depend on the action:
+
+- `landing.landing.add` requires Edit permission for the site
+- `landing.landing.update` requires Change settings permission for the site
+- `landing.landing.getadditionalfields` requires View permission for the site
+
+## How to Choose a Color
+
+Choose how to configure the color:
+
+- for a ready-made palette, pass one of the codes from the table in `THEME_CODE`
+- for a custom color, pass `THEME_USE = Y` and `THEME_COLOR` in `#RRGGBB` format
+- pass font settings separately in the `THEMEFONTS_*` fields
+
+The color theme changes the color of buttons and some other elements. The exact set of elements depends on the block.
+
+## How to Pass a Theme Code
+
+For the `landing.landing.update` method, pass `THEME_CODE` in the `fields.ADDITIONAL_FIELDS` object:
+
+```json
+{
+    "lid": 349,
+    "fields": {
+        "ADDITIONAL_FIELDS": {
+            "THEME_CODE": "2business"
+        }
+    }
+}
+```
+
+When creating a page, pass the same `fields.ADDITIONAL_FIELDS` object to the [landing.landing.add](./methods/landing-landing-add.md) method.
+
 ## Important Information
 
-- `THEME_CODE` defines the ready-made color palette for the page.
-- Font settings are stored separately in the `THEMEFONTS_*` fields.
-- If you need to set a custom color, use `THEME_USE = Y` and `THEME_COLOR = #RRGGBB`.
-- When migrating old typo settings, the module maps some color themes and font sets by theme code.
+Blocks with a predefined color style may not change after you select a theme.
 
 ## Available Themes
 #|
@@ -38,7 +70,7 @@ You can retrieve the current value of `THEME_CODE` using the method [landing.lan
 || `courses` | Aquamarine palette ||
 || `spa` | Citrus palette ||
 || `charity` | Yellow palette ||
-|| `twentyFourth` | Special palette with code `twentyFourth` ||
+|| `twentyFourth` | Golden-brown palette ||
 || `travel` | Vermilion palette ||
 || `architecture` | Sunset shades palette ||
 || `event` | Amaranth palette ||
@@ -48,7 +80,9 @@ You can retrieve the current value of `THEME_CODE` using the method [landing.lan
 || `agency` | Pastel-red palette ||
 || `music` | Bright pink-red palette ||
 || `wedding` | Cranberry palette ||
-|| `twentyThird` | Special palette with code `twentyThird` ||
+|| `twentyThird` | Purple palette ||
 |#
 
-For a detailed description of all related fields, see the section [Additional Page Fields](./additional-fields.md).
+## Continue Learning
+
+- [{#T}](./additional-fields.md)

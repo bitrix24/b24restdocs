@@ -1,4 +1,4 @@
-# Get Scrum Task Fields by ID tasks.api.scrum.task.get
+# Get Scrum Task Fields by Identifier tasks.api.scrum.task.get
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user with access to Scrum
 
-This method retrieves the values of the Scrum task fields by its identifier `id`.
+The `tasks.api.scrum.task.get` method retrieves the Scrum task field values by its identifier `id`.
 
 ## Method Parameters
 
@@ -68,8 +68,10 @@ This method retrieves the values of the Scrum task fields by its identifier `id`
       storyPoints: string
       epicId: number
       sort: number
+      sortFloat: number
       createdBy: number
       modifiedBy: number
+      groupId: number
     }
 
     try {
@@ -171,12 +173,7 @@ This method retrieves the values of the Scrum task fields by its identifier `id`
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Success: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -231,12 +228,14 @@ This method retrieves the values of the Scrum task fields by its identifier `id`
     }
 
     var item struct {
-    	EntityID    b24.ID `json:"entityId"`
-    	StoryPoints string `json:"storyPoints"`
-    	EpicID      b24.ID `json:"epicId"`
-    	Sort        int    `json:"sort"`
-    	CreatedBy   int    `json:"createdBy"`
-    	ModifiedBy  int    `json:"modifiedBy"`
+        EntityID    b24.ID  `json:"entityId"`
+        StoryPoints string  `json:"storyPoints"`
+        EpicID      b24.ID  `json:"epicId"`
+        Sort        int     `json:"sort"`
+        SortFloat   float64 `json:"sortFloat"`
+        CreatedBy   int     `json:"createdBy"`
+        ModifiedBy  int     `json:"modifiedBy"`
+        GroupID     b24.ID  `json:"groupId"`
     }
     if err := json.Unmarshal(res.Result, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -257,8 +256,10 @@ HTTP Status: **200**
         "storyPoints": "2",
         "epicId": 4,
         "sort": 1,
+        "sortFloat": 1.0,
         "createdBy": 1,
-        "modifiedBy": 1
+        "modifiedBy": 1,
+        "groupId": 7
     },
     "time": {
         "start": 1721402687.900315,
@@ -278,7 +279,16 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Object with task data ||
+[`object`](../../../data-types.md) | Object with Scrum task data [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **entityId** 
 [`integer`](../../../data-types.md) | Identifier of the backlog or sprint ||
 || **storyPoints**
@@ -289,12 +299,14 @@ Data type is a string, as story points may not necessarily be a number ||
 [`integer`](../../../data-types.md) | Identifier of the epic ||
 || **sort**
 [`integer`](../../../data-types.md) | Sorting ||
+|| **sortFloat**
+[`float`](../../../data-types.md) | Sorting value with a fractional part ||
 || **createdBy**
 [`integer`](../../../data-types.md) | Identifier of the user who created the task ||
 || **modifiedBy**
 [`integer`](../../../data-types.md) | Identifier of the user who last modified the task ||
-|| **time**
-[`array`](../../../data-types.md#time) | Information about the time taken for the request ||
+|| **groupId**
+[`integer`](../../../data-types.md) | Scrum identifier ||
 |#
 
 ## Error Handling
@@ -308,12 +320,16 @@ HTTP Status: **200**
 }
 ```
 
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
 ### Possible Error Codes
 
 #|
 || **Code** | **Description**  | **Value** ||
-|| `0` | Task not found | The task does not exist or the user does not have access to this task ||
-|| `100` | Could not find value for parameter {id} | The parameter name is incorrect or the parameter is not set ||
+|| `0` | Task id not found | The task identifier is `0` ||
+|| `0` | Task not found | The task was not found among Scrum tasks ||
+|| `0` | Access denied | The user does not have access to the task or Scrum ||
+|| `100` | Could not find value for parameter {id} | The parameter name is incorrect or the parameter is missing ||
 || `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
 |#
 

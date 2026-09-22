@@ -53,7 +53,7 @@ The method also always adds a filter by site:
 
 See below for the [list of available fields for selection](#selectable).
 
-If the parameter is not passed or is empty, only `ID` is selected. ||
+If the parameter is not passed or is empty, only `ID` is selected. The `ID` field is always returned even if it is not included in `select`. Unknown fields are ignored ||
 || **order**
 [`object`](../data-types.md) | A sorting object in the format `{"field_1": "order_1", ..., "field_N": "order_N"}`.
 
@@ -89,15 +89,15 @@ If `-1` is passed, the response will not include the `total` field. ||
 || **OWNER_ID**
 [`integer`](../data-types.md) | Owner identifier ||
 || **ACTIVE**
-[`string`](../data-types.md) | Group activity status: `Y` or `N` ||
+[`boolean`](../data-types.md) | Group activity status: `Y` or `N` ||
 || **VISIBLE**
-[`string`](../data-types.md) | Group visibility in the general list: `Y` or `N` ||
+[`boolean`](../data-types.md) | Group visibility in the general list: `Y` or `N` ||
 || **OPENED**
-[`string`](../data-types.md) | Is the group open for free membership: `Y` or `N` ||
+[`boolean`](../data-types.md) | Is the group open for free membership: `Y` or `N` ||
 || **CLOSED**
-[`string`](../data-types.md) | Is the group archived: `Y` or `N` ||
+[`boolean`](../data-types.md) | Is the group archived: `Y` or `N` ||
 || **PROJECT**
-[`string`](../data-types.md) | Object type: `Y` — project, `N` — group ||
+[`boolean`](../data-types.md) | Object type: `Y` — project, `N` — group ||
 || **SUBJECT_ID**
 [`integer`](../data-types.md) | Group subject identifier ||
 || **SITE_ID**
@@ -118,25 +118,25 @@ If `-1` is passed, the response will not include the `total` field. ||
 || **ID**
 [`integer`](../data-types.md) | Group identifier ||
 || **ACTIVE**
-[`string`](../data-types.md) | Group activity status ||
+[`boolean`](../data-types.md) | Group activity status: `Y` or `N` ||
 || **SUBJECT_ID**
 [`integer`](../data-types.md) | Group subject identifier ||
 || **NAME**
 [`string`](../data-types.md) | Group name ||
 || **DESCRIPTION**
-[`string`](../data-types.md) | Group description ||
+[`text`](../data-types.md) | Group description ||
 || **KEYWORDS**
 [`string`](../data-types.md) | Group keywords ||
 || **CLOSED**
-[`string`](../data-types.md) | Archive group status ||
+[`boolean`](../data-types.md) | Archive group status: `Y` or `N` ||
 || **VISIBLE**
-[`string`](../data-types.md) | Group visibility status ||
+[`boolean`](../data-types.md) | Group visibility status: `Y` or `N` ||
 || **OPENED**
-[`string`](../data-types.md) | Open group status ||
+[`boolean`](../data-types.md) | Open group status: `Y` or `N` ||
 || **PROJECT**
-[`string`](../data-types.md) | Project status ||
+[`boolean`](../data-types.md) | Project status: `Y` or `N` ||
 || **LANDING**
-[`string`](../data-types.md) | Group for publication status ||
+[`boolean`](../data-types.md) | Group for publication status: `Y` or `N` ||
 || **DATE_CREATE**
 [`datetime`](../data-types.md) | Creation date ||
 || **DATE_UPDATE**
@@ -154,7 +154,11 @@ If `-1` is passed, the response will not include the `total` field. ||
 || **NUMBER_OF_MODERATORS**
 [`integer`](../data-types.md) | Number of moderators ||
 || **INITIATE_PERMS**
-[`string`](../data-types.md) | Permissions to invite participants ||
+[`enum`](../data-types.md) | Who can invite participants:
+
+- `A` — group owner only
+- `E` — owner and moderators
+- `K` — all members ||
 || **PROJECT_DATE_START**
 [`datetime`](../data-types.md) | Project start date ||
 || **PROJECT_DATE_FINISH**
@@ -166,7 +170,10 @@ If `-1` is passed, the response will not include the `total` field. ||
 || **SCRUM_SPRINT_DURATION**
 [`integer`](../data-types.md) | Sprint duration in seconds ||
 || **SCRUM_TASK_RESPONSIBLE**
-[`string`](../data-types.md) | Default executor in scrum ||
+[`enum`](../data-types.md) | Default assignee in Scrum:
+
+- `A` — task creator
+- `M` — Scrum master ||
 || **TYPE**
 [`string`](../data-types.md) | Group type: `group`, `project`, `scrum`, `collab` ||
 || **AVATAR**
@@ -202,9 +209,27 @@ The `additionalData` field has the structure:
     - `G` — the group (e.g., the user was invited)
   - `features` — list of available group tools (returned if `features`/`mandatoryFeatures` are passed) ||
 || **features**
-[`array`](../data-types.md) | List of group tool codes to consider when forming `additionalData` in `mobile` mode ||
+[`string[]`](../data-types.md) | List of group tool codes to consider when forming `additionalData` in `mobile` mode ||
 || **mandatoryFeatures**
-[`array`](../data-types.md) | List of tool codes that should always be included in `additionalData` in `mobile` mode ||
+[`string[]`](../data-types.md) | Tool codes from `features` to include in `additionalData.features` regardless of the current user's permissions ||
+|| **shouldSelectHasCollabers**
+[`boolean`](../data-types.md) | Whether to add the `hasCollabers` external member indicator to `additionalData`.
+
+Possible values:
+- `true` or `Y` — add the indicator
+- `false` or `N` — do not add the indicator
+
+Default — `false` ||
+|| **shouldEnsureHasCollabers**
+[`boolean`](../data-types.md) | Whether to recalculate `hasCollabers` before returning the response.
+
+The parameter is used only if `shouldSelectHasCollabers` is `true` or `Y`.
+
+Possible values:
+- `true` or `Y` — recalculate the indicator
+- `false` or `N` — return the saved value
+
+Default — `false` ||
 || **shouldSelectDialogId**
 [`string`](../data-types.md) | Whether to add a field with the chat identifier `dialogId` to the list item.
 
@@ -257,13 +282,17 @@ Default — `N` ||
     }
 
     type Workgroup = {
-      id: string
+      id: number
       name: string
-      type: string
+      type: 'group' | 'project' | 'scrum' | 'collab' | null
+      imageId: number
+      avatarType: string | null
       avatar: string
       additionalData: {
         role: string
         initiatedByType: string
+        features?: string[]
+        hasCollabers?: boolean
       }
       dialogId: string
     }
@@ -592,32 +621,32 @@ HTTP Status: **200**
 {
     "result": {
         "workgroups": [
-                {
-            "id": "5",
-            "name": "Open group for everyone",
-            "type": "group",
-            "imageId": "5",
-            "avatarType": null,
-            "avatar": "https://test.bitrix24.com/b13743910/resize_cache/5/7acf4caaf5d8/socialnetwork/8d6/8d2c04ece929572/3.png",
-            "additionalData": {
-            "role": "",
-            "initiatedByType": ""
+            {
+                "id": 5,
+                "name": "Open group for everyone",
+                "type": "group",
+                "imageId": 5,
+                "avatarType": null,
+                "avatar": "https://test.bitrix24.com/b13743910/resize_cache/5/7acf4caaf5d8/socialnetwork/8d6/8d2c04ece929572/3.png",
+                "additionalData": {
+                    "role": "",
+                    "initiatedByType": ""
+                },
+                "dialogId": ""
             },
-            "dialogId": ""
-        },
-        {
-            "id": "1",
-            "name": "Closed visible group",
-            "type": "group",
-            "imageId": "1",
-            "avatarType": null,
-            "avatar": "",
-            "additionalData": {
-            "role": "",
-            "initiatedByType": ""
-            },
-            "dialogId": "chat177"
-        }
+            {
+                "id": 1,
+                "name": "Closed visible group",
+                "type": "group",
+                "imageId": 1,
+                "avatarType": null,
+                "avatar": "",
+                "additionalData": {
+                    "role": "",
+                    "initiatedByType": ""
+                },
+                "dialogId": "chat177"
+            }
         ]
     },
     "total": 2,
@@ -642,7 +671,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../data-types.md) | Root object of the response ||
 || **workgroups**
-[`object[]`](../data-types.md) | List of workgroups.
+[`object[]`](../data-types.md) | List of workgroups with [field descriptions](#workgroup-fields).
 
 The structure of the object depends on the fields passed in `select` and the parameters in `params`.
 
@@ -655,7 +684,114 @@ If no groups are found by the filter, `workgroups` will return an empty array. |
 [`time`](../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
+### workgroup Object Fields {#workgroup-fields}
+
+Fields are passed in `select` in `UPPER_SNAKE_CASE` and returned in the response in `camelCase`. For example, `DATE_CREATE` corresponds to `dateCreate`, and `NUMBER_OF_MEMBERS` corresponds to `numberOfMembers`.
+
+#|
+|| **Response Field**
+`type` | **select Field or Return Condition** | **Description** ||
+|| **id**
+[`integer`](../data-types.md) | `ID` | Group identifier. Always returned ||
+|| **active**
+[`boolean`](../data-types.md) | `ACTIVE` | Group activity status: `Y` or `N` ||
+|| **subjectId**
+[`integer`](../data-types.md) | `SUBJECT_ID` | Group subject identifier ||
+|| **name**
+[`string`](../data-types.md) | `NAME` | Group name ||
+|| **description**
+[`text`](../data-types.md) | `DESCRIPTION` | Group description ||
+|| **keywords**
+[`string`](../data-types.md) | `KEYWORDS` | Group keywords ||
+|| **closed**
+[`boolean`](../data-types.md) | `CLOSED` | Archive group status: `Y` or `N` ||
+|| **visible**
+[`boolean`](../data-types.md) | `VISIBLE` | Group visibility status: `Y` or `N` ||
+|| **opened**
+[`boolean`](../data-types.md) | `OPENED` | Open group status: `Y` or `N` ||
+|| **project**
+[`boolean`](../data-types.md) | `PROJECT` | Project status: `Y` or `N` ||
+|| **landing**
+[`boolean`](../data-types.md) | `LANDING` | Group for publication status: `Y` or `N` ||
+|| **dateCreate**
+[`datetime`](../data-types.md) | `DATE_CREATE` | Group creation date ||
+|| **dateUpdate**
+[`datetime`](../data-types.md) | `DATE_UPDATE` | Group modification date ||
+|| **dateActivity**
+[`datetime`](../data-types.md) | `DATE_ACTIVITY` | Last activity date ||
+|| **imageId**
+[`integer`](../data-types.md) | `IMAGE_ID` or `AVATAR` | Custom avatar identifier ||
+|| **avatarType**
+[`string`](../data-types.md) \| `null` | `AVATAR_TYPE` or `AVATAR` | System avatar type ||
+|| **avatar**
+[`string`](../data-types.md) | `AVATAR` | Avatar URL. Returns an empty string if no avatar is set ||
+|| **ownerId**
+[`integer`](../data-types.md) | `OWNER_ID` | Owner identifier ||
+|| **numberOfMembers**
+[`integer`](../data-types.md) | `NUMBER_OF_MEMBERS` | Number of members ||
+|| **numberOfModerators**
+[`integer`](../data-types.md) | `NUMBER_OF_MODERATORS` | Number of moderators ||
+|| **initiatePerms**
+[`enum`](../data-types.md) | `INITIATE_PERMS` | Who can invite members: `A` — owner, `E` — owner and moderators, `K` — all members ||
+|| **projectDateStart**
+[`datetime`](../data-types.md) \| `null` | `PROJECT_DATE_START` | Project start date ||
+|| **projectDateFinish**
+[`datetime`](../data-types.md) \| `null` | `PROJECT_DATE_FINISH` | Project end date ||
+|| **scrumOwnerId**
+[`integer`](../data-types.md) | `SCRUM_OWNER_ID` | Scrum owner identifier ||
+|| **scrumMasterId**
+[`integer`](../data-types.md) | `SCRUM_MASTER_ID` | Scrum master identifier ||
+|| **scrumSprintDuration**
+[`integer`](../data-types.md) | `SCRUM_SPRINT_DURATION` | Sprint duration in seconds ||
+|| **scrumTaskResponsible**
+[`enum`](../data-types.md) | `SCRUM_TASK_RESPONSIBLE` | Default assignee: `A` — task creator, `M` — Scrum master ||
+|| **type**
+[`string`](../data-types.md) \| `null` | `TYPE` | Group type: `group`, `project`, `scrum`, `collab` ||
+|| **additionalData**
+[`object`](../data-types.md) | `params[mode] = mobile` | Additional group and current user data [(detailed description)](#additional-data) ||
+|| **dialogId**
+[`string`](../data-types.md) | `params[shouldSelectDialogId] = Y` | Group chat identifier. Returns an empty string if the chat is not found ||
+|#
+
+#### additionalData Object {#additional-data}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **role**
+[`string`](../data-types.md) | Current user's role in the group. Returns an empty string if the user is not associated with the group ||
+|| **initiatedByType**
+[`string`](../data-types.md) | Who initiated the user's association with the group:
+
+- `U` — user
+- `G` — group
+
+Returns an empty string if the user is not associated with the group ||
+|| **features**
+[`string[]`](../data-types.md) | Available group tool codes. Returned if `features` or `mandatoryFeatures` are passed in `params` ||
+|| **hasCollabers**
+[`boolean`](../data-types.md) | Whether the group has external members. Returned if `params[shouldSelectHasCollabers]` is `true` or `Y` ||
+|#
+
 ## Error Handling
+
+HTTP Status: **401**
+
+```json
+{
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the webhook token"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `insufficient_scope` | Insufficient token scope | The token does not include the `socialnetwork` scope ||
+|#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 

@@ -24,9 +24,9 @@ In the news feed and messenger, you can conduct employee polls and organize vote
 
 ## Relationships with Other Objects
 
-**News Feed.** A poll in the news feed is attached to a post. The link works through the post `ID`: pass it to the `vote.AttachedVote.*` methods in the `entityId` parameter along with `moduleId` set to `blog`. You can retrieve the post `ID` using the [log.blogpost.get](../log/log-blogpost-get.md) method.
+**News Feed.** A poll in the news feed is attached to a post. Pass `moduleId` = `blog`, `entityType` = `Bitrix\Vote\Attachment\BlogPostConnector`, and `entityId` = the post `ID` to the `vote.AttachedVote.*` methods. You can retrieve the post `ID` using the [log.blogpost.get](../log/log-blogpost-get.md) method.
 
-**Messenger.** A poll in the chat is attached to a messenger message. The link works through the message identifier: pass `messageId` from the result of the [vote.Integration.Im.send](./vote.integration.im.send.md) method to the `vote.AttachedVote.*` methods in the `entityId` parameter along with `moduleId` set to `Im`.
+**Messenger.** A poll in a chat is attached to a message. Pass `moduleId` = `Im`, `entityType` = `Bitrix\Vote\Attachment\ImMessageConnector`, and `entityId` = `messageId` from the [vote.Integration.Im.send](./vote.integration.im.send.md) result to the `vote.AttachedVote.*` methods.
 
 **User.** The methods [vote.AttachedVote.getAnswerVoted](./vote.attachedvote.getAnswerVoted.md) and [vote.AttachedVote.getWithVoted](./vote.attachedvote.getWithVoted.md) return a list of users who voted and basic information about them: ID, name, position, image. To get detailed information about the voting user, use the [user.get](../user/user-get.md) method.
 
@@ -67,6 +67,19 @@ To completely delete a poll, use the methods:
 - [im.message.delete](../chats/messages/im-message-delete.md) — if the poll was created in a chat
 
 These methods will delete the post or message containing the poll and its results.
+
+## Common Errors
+
+#|
+|| **Code or Situation** | **When It Occurs** | **What to Check** ||
+|| `100` | No valid poll identification method was passed | Pass one of these options: `attachId`, `signedAttachId`, or the complete `moduleId` + `entityType` + `entityId` set ||
+|| `ATTACH_NOT_FOUND` | The poll was not found, including because of an invalid `moduleId` + `entityType` + `entityId` set | Check the module, object type, and message or post identifier ||
+|| `0` — `Attach read access denied` | The user does not have permission to read or participate in the poll | Run the request as a user who has access to the post or chat containing the poll ||
+|| `403` — `The poll is inactive.` | [vote.AttachedVote.vote](./vote.attachedvote.vote.md) was called for a stopped poll | Resume the poll using [vote.AttachedVote.resume](./vote.attachedvote.resume.md) or do not submit new votes ||
+|| JSON decoding error on the client | The [vote.AttachedVote.download](./vote.attachedvote.download.md) response is processed as a regular method response | Make a direct HTTP request via webhook or OAuth and save the response as a binary file ||
+|#
+
+The `vote.AttachedVote.download` method supports webhooks. The limitation concerns response handling: the method returns a file, so a standard call that expects JSON cannot be used.
 
 ## Overview of Methods {#all-methods}
 
