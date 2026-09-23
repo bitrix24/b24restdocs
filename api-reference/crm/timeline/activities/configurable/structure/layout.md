@@ -62,7 +62,7 @@ The [`scope`](./field-types.md#scope) field of blocks, buttons, and menu items h
 
 #|
 || **Restriction** | **Error Code** ||
-|| No more than two [tags](./header.md#obuekt) in the heading | `TOO_MANY_ITEMS` ||
+|| No more than two [tags](./header.md#tagdto) in the heading | `TOO_MANY_ITEMS` ||
 || No more than two [buttons](./footer.md) in the bottom part | `TOO_MANY_ITEMS` ||
 || No more than 20 [content blocks](./content-block.md) in the main area | `TOO_MANY_ITEMS` ||
 || No more than ten [menu items](./menu-item.md) and no more than ten menu sections | `TOO_MANY_ITEMS` ||

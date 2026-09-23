@@ -29,7 +29,7 @@ The header and the tag text accept the [`textWithTranslation`](./field-types.md#
 [`object`](../../../../../data-types.md) | Header tags: the key is the tag identifier that the application sets itself, the value is a [TagDto](#tagdto) object ||
 |#
 
-## `TagDto` Object {#obuekt} {#tagdto}
+## `TagDto` Object {#tagdto}
 
 Each tag is described by a `TagDto` object. The tag key allows Latin letters, digits, hyphens, and underscores, otherwise the method returns the `KEY_CONTAIN_WRONG_SYMBOLS` error.
 

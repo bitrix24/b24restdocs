@@ -21,7 +21,7 @@ Choose a tool for developing with an AI agent:
 The action is set in the following fields:
 
 - `titleAction` of the [heading](./header.md) — optional
-- `action` of a [tag](./header.md#obuekt) — optional
+- `action` of a [tag](./header.md#tagdto) — optional
 - `action` of the logo in the [content area](./body.md) — optional
 - `action` of a `link` block in [content blocks](./content-block.md) — required
 - `action` of a [button in the bottom part](./footer.md) — required

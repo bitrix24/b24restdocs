@@ -1,4 +1,4 @@
-# Link a Timeline Record to a CRM Item crm.timeline.bindings.bind
+# Add a Timeline Record Binding with a CRM Entity crm.timeline.bindings.bind
 
 {% note tip "" %}
 
@@ -11,9 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to modify the CRM entity the record is bound to
 
-Adds a link between a timeline record and a CRM item.
+Adds a binding between a timeline record and a CRM entity. After that, the record is displayed in the timeline of the specified entity.
+
+{% note info "" %}
+
+The binding with the entity in which the timeline record was created appears automatically — there is no need to call the method for it separately.
+
+A repeated call with the same `OWNER_ID`, `ENTITY_TYPE`, and `ENTITY_ID` values does not create a duplicate and returns `true`. The method does not check whether the CRM entity and the timeline record exist — verify the identifiers before calling it.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -27,16 +35,15 @@ Adds a link between a timeline record and a CRM item.
 
 ```js
 fields: {
-    "OWNER_ID": "value",
-    "ENTITY_ID": "value",
-    "ENTITY_TYPE": "value",
+    "OWNER_ID": 1110,
+    "ENTITY_ID": 10,
+    "ENTITY_TYPE": "deal",
 },
 ```
-
  ||
 |#
 
-### Parameter fields
+### Parameter fields {#parameter-fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -44,17 +51,27 @@ fields: {
 || **Name**
 `type` | **Description** ||
 || **OWNER_ID***
-[`integer`](../../../data-types.md) | Identifier of the timeline record ||
+[`integer`](../../../data-types.md) | Identifier of the timeline record. Obtain it from the response of the method [crm.timeline.comment.add](../comments/crm-timeline-comment-add.md) or [crm.timeline.logmessage.add](../logmessage/crm-timeline-logmessage-add.md), or retrieve it from the list using the method [crm.timeline.comment.list](../comments/crm-timeline-comment-list.md) or [crm.timeline.logmessage.list](../logmessage/crm-timeline-logmessage-list.md) ||
 || **ENTITY_ID***
-[`integer`](../../../data-types.md) | Identifier of the CRM item to which the timeline record is linked ||
+[`integer`](../../../data-types.md) | Identifier of the CRM entity to which the timeline record is bound ||
 || **ENTITY_TYPE***
-[`string`](../../../data-types.md) | Type of the CRM item to which the timeline record is linked. Possible values:
+[`string`](../../../data-types.md) | String code of the CRM object type `entityTypeName` to which the timeline record is bound. The value is case-insensitive. Possible values:
 - `lead` — lead
 - `deal` — deal
 - `contact` — contact
 - `company` — company
-- `order` — order  
-||
+- `quote` — quote
+- `smart_invoice` — invoice
+- `order` — order
+- `activity` — activity
+- `invoice` — invoice in the old format
+- `order_payment` — order payment
+- `order_shipment` — order shipment
+- `dynamic_<entityTypeId>` — smart process item, for example `dynamic_128`
+
+How the string type codes are structured is described in the section [CRM Object Type](../../data-types.md#object_type). Not all codes from that table are suitable: the method does not accept the requisites code `requisite`.
+
+If the type code is not supported or there is no smart process with such `entityTypeId` in Bitrix24, the method returns the error `ENTITY_TYPE is not defined or invalid.` ||
 |#
 
 ## Code Examples
@@ -123,7 +140,7 @@ fields: {
 
     ```html
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
-    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@2/dist/umd/index.min.js"></script>
     <script>
       async function createBinding() {
         try {
@@ -205,17 +222,12 @@ fields: {
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error binding timeline: ' . $e->getMessage();
@@ -233,11 +245,13 @@ fields: {
                 "ENTITY_ID": 10,
                 "ENTITY_TYPE": "deal",
             },
-        }, result => {
-            if (result.error())
+        },
+        result => {
+            if (result.error()) {
                 console.error(result.error());
-            else
+            } else {
                 console.dir(result.data());
+            }
         }
     );
     ```
@@ -313,7 +327,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true`, if the connection is established. Returns `false`, if no connection is created ||
+[`boolean`](../../../data-types.md) | Returns `true` if the binding is created or already existed.
+
+Returns `false` if the user does not have permission to modify the CRM entity from `ENTITY_ID` or the binding could not be saved. The HTTP status of the response remains `200`, and the `error` object is not returned ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -334,12 +350,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| Empty value | OWNER_ID is not defined or invalid | The required parameter `OWNER_ID` was not provided or the provided `OWNER_ID` is invalid ||
-|| Empty value | ENTITY_ID is not defined or invalid. | The required parameter `ENTITY_ID` was not provided or the provided `ENTITY_ID` is invalid ||
-|| Empty value | ENTITY_TYPE is not defined or invalid. | The required parameter `ENTITY_TYPE` was not provided or the provided `ENTITY_TYPE` is invalid ||
-|| Empty value | Access denied. | Missing permissions to edit the CRM object ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | OWNER_ID is not defined or invalid. | The required parameter `OWNER_ID` is not provided, a non-numeric value is passed, or the number is less than one ||
+|| `400` | Empty value | ENTITY_ID is not defined or invalid. | The required parameter `ENTITY_ID` is not provided, a non-numeric value is passed, or the number is less than one ||
+|| `400` | Empty value | ENTITY_TYPE is not defined or invalid. | The required parameter `ENTITY_TYPE` is not provided, an unsupported type code is passed, or there is no smart process with such `entityTypeId` ||
+|| `400` | `ERROR_ARGUMENT` | Wrong params. | The `fields` parameter is not passed as an object ||
 |#
+
+If permission is denied, the method returns `false` rather than an error.
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
@@ -348,3 +366,4 @@ HTTP status: **400**
 - [{#T}](./crm-timeline-bindings-list.md)
 - [{#T}](./crm-timeline-bindings-unbind.md)
 - [{#T}](./crm-timeline-bindings-fields.md)
+- [{#T}](./index.md)

@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: read access permission for the delivery order is required.
+> Who can execute the method: a user with read access to the order the delivery belongs to
 
-This method retrieves brief information about the delivery.
+The method `crm.item.delivery.get` returns brief information about a delivery.
+
+A delivery is a shipment of an order linked to a CRM object. The method returns a fixed set of fields — you cannot select other shipment fields. The full set is returned by the [sale.shipment.get](../../../sale/shipment/sale-shipment-get.md) method, but it is available to administrators only.
+
+How deliveries are linked to CRM objects is described in the [overview of the section methods](./index.md).
+
+The method does not check which CRM object the delivery belongs to and returns any delivery the user has access to. The `crm.item.delivery.list` method excludes system shipments and shipments without a delivery service from the list, while `crm.item.delivery.get` returns them.
 
 ## Method Parameters
 
@@ -23,7 +29,9 @@ This method retrieves brief information about the delivery.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_shipment.id`](../../../sale/data-types.md#sale_order_shipment) | Delivery identifier ||
+[`sale_order_shipment.id`](../../../sale/data-types.md#sale_order_shipment) | Delivery identifier.
+
+You can retrieve the delivery identifiers of a CRM object using the [crm.item.delivery.list](./crm-item-delivery-list.md) method ||
 |#
 
 ## Code Examples
@@ -66,11 +74,11 @@ This method retrieves brief information about the delivery.
     type DeliveryGetResult = {
       id: number
       accountNumber: string
-      priceDelivery: number
-      currency: string
       deducted: string
       dateDeducted: ISODate | null
       deliveryId: number
+      priceDelivery: number
+      currency: string
       deliveryName: string
     }
 
@@ -170,13 +178,13 @@ This method retrieves brief information about the delivery.
                     'id' => 4077,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting delivery item: ' . $e->getMessage();
@@ -231,20 +239,22 @@ This method retrieves brief information about the delivery.
     var item struct {
     	ID            b24.ID  `json:"id"`
     	AccountNumber string  `json:"accountNumber"`
+    	Deducted      string  `json:"deducted"`
+    	DateDeducted  *string `json:"dateDeducted"`
+    	DeliveryID    b24.ID  `json:"deliveryId"`
     	PriceDelivery float64 `json:"priceDelivery"`
     	Currency      string  `json:"currency"`
-    	Deducted      string  `json:"deducted"`
-    	DeliveryID    b24.ID  `json:"deliveryId"`
+    	DeliveryName  string  `json:"deliveryName"`
     }
     if err := json.Unmarshal(res.Result, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.ID, item.AccountNumber)
+    fmt.Println(item.ID, item.AccountNumber, item.DeliveryName)
     ```
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -253,11 +263,11 @@ HTTP status: **200**
    "result":{
       "id":4077,
       "accountNumber":"3657\/2",
-      "priceDelivery":79.99,
-      "currency":"USD",
       "deducted":"N",
       "dateDeducted":null,
       "deliveryId":228,
+      "priceDelivery":79.99,
+      "currency":"USD",
       "deliveryName":"Uber Taxi (Cargo)"
    },
    "time":{
@@ -277,13 +287,12 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_order_shipment_crm_simple`](#sale_order_shipment_crm_simple) | Object containing brief information about the delivery ||
+[`object`](../../../data-types.md) | Object with brief information about the delivery [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Key Result. Object of Type
-### Sale_Order_Shipment_Crm_Simple
+#### Object result {#result}
 
 #|
 || **Name**
@@ -291,23 +300,23 @@ HTTP status: **200**
 || **id**
 [`sale_order_shipment.id`](../../../sale/data-types.md#sale_order_shipment) | Delivery identifier ||
 || **accountNumber**
-[`string`](../../../data-types.md) | System delivery number  ||
+[`string`](../../../data-types.md) | System delivery number. For example, `3657/2` ||
 || **deducted**
 [`string`](../../../data-types.md) | Indicates whether the delivery has been shipped.
+
 Possible values:
-- `Y` — yes (shipped)
-- `N` — no (not shipped)
- ||
+- `Y` — shipped
+- `N` — not shipped ||
 || **dateDeducted**
-[`datetime`](../../../data-types.md)  | Date of the shipment's shipped flag change ||
-|| **priceDelivery**
-[`double`](../../../data-types.md)  | Delivery cost ||
-|| **currency**
-[`string`](../../../data-types.md)  | Delivery currency ||
+[`datetime`](../../../data-types.md) | Date and time when the `deducted` flag was last changed. The field returns `null` if the flag has never been changed ||
 || **deliveryId**
-[`sale_delivery_service.ID`](../../../sale/data-types.md#sale_delivery_service)  | Delivery service identifier ||
+[`sale_delivery_service.id`](../../../sale/data-types.md#sale_delivery_service) | Delivery service identifier. You can retrieve the list of delivery services using the [sale.delivery.getlist](../../../sale/delivery/delivery/sale-delivery-get-list.md) method ||
+|| **priceDelivery**
+[`double`](../../../data-types.md) | Delivery cost ||
+|| **currency**
+[`string`](../../../data-types.md) | Character code of the delivery currency. For example, `USD` ||
 || **deliveryName**
-[`string`](../../../data-types.md)  | Delivery service name ||
+[`string`](../../../data-types.md) | Delivery service name. For example, `Uber Taxi (Cargo)` ||
 |#
 
 ## Error Handling
@@ -316,8 +325,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Insufficient permissions"
+   "error":"0",
+   "error_description":"Delivery has not been found"
 }
 ```
 
@@ -326,10 +335,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Delivery not found or access denied ||
-|| `100` | Parameter id not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Delivery has not been found | There is no delivery with such `id` in Bitrix24 ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | `100` | Invalid value {value} to match with parameter {id}. Should be value of type int | The value of `id` cannot be cast to an integer ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user has no read access to the order the delivery belongs to. Read access to the CRM object where this delivery is visible does not clear the error ||
 |#
 
 {% include notitle [System errors](../../../../_includes/system-errors.md) %}
@@ -337,3 +347,6 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-item-delivery-list.md)
+- [{#T}](./index.md)
+- [{#T}](../payment/delivery-in-payment/index.md)
+- [{#T}](../../../sale/delivery/delivery/sale-delivery-get-list.md)
