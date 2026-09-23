@@ -76,8 +76,8 @@ You can obtain the identifier after [creating a numerator](./document-generator-
         step: number
         length: number
         padString: string
-        periodicBy: string
-        timezone: string
+        periodicBy: string | null
+        timezone: string | null
         isDirectNumeration: boolean
       }>
     }
@@ -321,7 +321,7 @@ HTTP Status: **200**
 || **template**
 [`string`](../../data-types.md) | The number template ||
 || **code**
-[`string`](../../data-types.md) | The symbolic code of the numerator. It can be `null` ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | The symbolic code of the numberer. Returns `null` if the code is not specified ||
 || **settings**
 [`object`](../../data-types.md) | The settings of the numerator generators [(detailed description)](#result-numerator-settings) ||
 |#
@@ -349,9 +349,9 @@ HTTP Status: **200**
 || **padString**
 [`string`](../../data-types.md) | The padding character on the left when `length > 0` ||
 || **periodicBy**
-[`string`](../../data-types.md) | The reset period of the counter ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | The counter reset period. Returns `null` if periodic reset is disabled ||
 || **timezone**
-[`string`](../../data-types.md) | The timezone identifier for periodic reset ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | The timezone identifier for periodic reset. Returns `null` if the timezone is not specified ||
 || **isDirectNumeration**
 [`boolean`](../../data-types.md) | The indicator of direct numbering ||
 |#
@@ -362,8 +362,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "DOCGEN_ACCESS_ERROR",
-    "error_description": "Access denied"
+    "error": "0",
+    "error_description": "Numerator was not found."
 }
 ```
 
@@ -375,6 +375,7 @@ HTTP Status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Bitrix\Main\Numerator\Numerator constructor must be public | Required parameter `id` is missing ||
 || `400` | `100` | Could not construct parameter {numerator} | An invalid or non-existent numerator identifier was provided ||
+|| `400` | `0` | Numerator was not found. | The numberer with the specified identifier was not found or belongs to a different type ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||
 |#
 
@@ -382,6 +383,7 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./document-generator-numerator-add.md)
 - [{#T}](./document-generator-numerator-update.md)
 - [{#T}](./document-generator-numerator-list.md)

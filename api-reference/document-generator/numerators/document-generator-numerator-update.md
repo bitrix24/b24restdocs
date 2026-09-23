@@ -17,7 +17,7 @@ The method `documentgenerator.numerator.update` updates the numerator by its ide
 
 {% note warning "" %}
 
-You can only update a numerator that was created through the REST method `documentgenerator.numerator.add`.
+You can only update a numberer created using the `documentgenerator.numerator.add` method.
 
 {% endnote %}
 
@@ -83,19 +83,19 @@ Template examples:
 - `''` — no reset
 - `day` — daily
 - `month` — monthly
-- `year` — yearly ||
+- `year` — yearly
+
+By default, periodic reset is disabled ||
 || **timezone**
 [`string`](../../data-types.md) | Timezone identifier for periodic reset, e.g., `Europe/Berlin` ||
 || **isDirectNumeration**
 [`boolean`](../../data-types.md) | Direct numbering flag.
 
 Possible values:
-- `0` — disabled
-- `1` — enabled
+- `false` — disabled
+- `true` — enabled
 
-Default is `0`.
-
-In the method response, the value is returned as `true` \| `false` ||
+Default is `false` ||
 |#
 
 ## Code Examples
@@ -135,7 +135,7 @@ Example of updating a numerator:
             "padString": "0",
             "periodicBy": "year",
             "timezone": "Europe/Berlin",
-            "isDirectNumeration": 0
+            "isDirectNumeration": false
           }
         }
       }
@@ -162,7 +162,7 @@ Example of updating a numerator:
             "padString": "0",
             "periodicBy": "year",
             "timezone": "Europe/Berlin",
-            "isDirectNumeration": 0
+            "isDirectNumeration": false
           }
         }
       },
@@ -193,8 +193,8 @@ Example of updating a numerator:
           step: number
           length: number
           padString: string
-          periodicBy: string
-          timezone: string
+          periodicBy: string | null
+          timezone: string | null
           isDirectNumeration: boolean
         }
       }
@@ -216,7 +216,7 @@ Example of updating a numerator:
                 padString: '0',
                 periodicBy: 'year',
                 timezone: 'Europe/Berlin',
-                isDirectNumeration: 0,
+                isDirectNumeration: false,
               },
             },
           },
@@ -263,7 +263,7 @@ Example of updating a numerator:
                     padString: '0',
                     periodicBy: 'year',
                     timezone: 'Europe/Berlin',
-                    isDirectNumeration: 0,
+                    isDirectNumeration: false,
                   },
                 },
               },
@@ -346,7 +346,7 @@ Example of updating a numerator:
                           'padString' => '0',
                           'periodicBy' => 'year',
                           'timezone' => 'Europe/Berlin',
-                          'isDirectNumeration' => 0,
+                          'isDirectNumeration' => false,
                       ],
                   ],
               ],
@@ -378,7 +378,7 @@ Example of updating a numerator:
                       padString: '0',
                       periodicBy: 'year',
                       timezone: 'Europe/Berlin',
-                      isDirectNumeration: 0
+                      isDirectNumeration: false
                   }
               }
           }
@@ -417,7 +417,7 @@ Example of updating a numerator:
                       'padString' => '0',
                       'periodicBy' => 'year',
                       'timezone' => 'Europe/Berlin',
-                      'isDirectNumeration' => 0,
+                      'isDirectNumeration' => false,
                   ],
               ],
           ],
@@ -444,7 +444,7 @@ Example of updating a numerator:
     				"padString":          "0",
     				"periodicBy":         "year",
     				"timezone":           "Europe/Berlin",
-    				"isDirectNumeration": 0,
+                    "isDirectNumeration": false,
     			},
     		},
     	},
@@ -525,7 +525,7 @@ HTTP Status: **200**
 || **template**
 [`string`](../../data-types.md) | Number template ||
 || **code**
-[`string`](../../data-types.md) | Symbolic code of the numerator. Can be `null` ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Symbolic code of the numberer. Returns `null` for a numberer created by the `documentgenerator.numerator.add` method ||
 || **settings**
 [`object`](../../data-types.md) | Settings of the numerator generators [(detailed description)](#result-settings) ||
 |#
@@ -553,9 +553,9 @@ HTTP Status: **200**
 || **padString**
 [`string`](../../data-types.md) | Padding character on the left when `length > 0` ||
 || **periodicBy**
-[`string`](../../data-types.md) | Counter reset period ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Counter reset period. Returns `null` if periodic reset is disabled ||
 || **timezone**
-[`string`](../../data-types.md) | Timezone identifier for periodic reset ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Timezone identifier for periodic reset. Returns `null` if the timezone is not specified ||
 || **isDirectNumeration**
 [`boolean`](../../data-types.md) | Direct numbering flag ||
 |#
@@ -581,13 +581,14 @@ HTTP Status: **400**
 || `400` | `100` | Could not construct parameter {numerator} | Non-existent or incorrect numerator identifier provided ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||
-|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | Cannot modify a numerator that was not created through REST or a numerator of a different type ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | Cannot modify a numberer that was not created using the `documentgenerator.numerator.add` method ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./document-generator-numerator-add.md)
 - [{#T}](./document-generator-numerator-get.md)
 - [{#T}](./document-generator-numerator-list.md)

@@ -82,19 +82,19 @@ Default is `0` ||
 - `''` — no reset
 - `day` — daily
 - `month` — monthly
-- `year` — yearly ||
+- `year` — yearly
+
+By default, periodic reset is disabled ||
 || **timezone**
 [`string`](../../data-types.md) | Timezone identifier for periodic reset, e.g., `Europe/Berlin` ||
 || **isDirectNumeration**
 [`boolean`](../../data-types.md) | Direct numbering flag.
 
 Possible values:
-- `0` — disabled
-- `1` — enabled
+- `false` — disabled
+- `true` — enabled
 
-Default is `0`. 
-
-In the method response, the value is returned as `true` \| `false` ||
+Default is `false` ||
 |#
 
 ## Code Examples
@@ -132,7 +132,7 @@ Example of creating a numerator:
             "padString": "0",
             "periodicBy": "year",
             "timezone": "Europe/Berlin",
-            "isDirectNumeration": 0
+            "isDirectNumeration": false
           }
         }
       }
@@ -158,7 +158,7 @@ Example of creating a numerator:
             "padString": "0",
             "periodicBy": "year",
             "timezone": "Europe/Berlin",
-            "isDirectNumeration": 0
+            "isDirectNumeration": false
           }
         }
       },
@@ -190,8 +190,8 @@ Example of creating a numerator:
             step: number
             length: number
             padString: string
-            periodicBy: string
-            timezone: string
+            periodicBy: string | null
+            timezone: string | null
             isDirectNumeration: boolean
           }
         }
@@ -213,7 +213,7 @@ Example of creating a numerator:
                 padString: '0',
                 periodicBy: 'year',
                 timezone: 'Europe/Berlin',
-                isDirectNumeration: 0,
+                isDirectNumeration: false,
               },
             },
           },
@@ -259,7 +259,7 @@ Example of creating a numerator:
                     padString: '0',
                     periodicBy: 'year',
                     timezone: 'Europe/Berlin',
-                    isDirectNumeration: 0,
+                    isDirectNumeration: false,
                   },
                 },
               },
@@ -340,7 +340,7 @@ Example of creating a numerator:
                           'padString' => '0',
                           'periodicBy' => 'year',
                           'timezone' => 'Europe/Berlin',
-                          'isDirectNumeration' => 0,
+                          'isDirectNumeration' => false,
                       ],
                   ],
               ],
@@ -371,7 +371,7 @@ Example of creating a numerator:
                       padString: '0',
                       periodicBy: 'year',
                       timezone: 'Europe/Berlin',
-                      isDirectNumeration: 0
+                      isDirectNumeration: false
                   }
               }
           }
@@ -409,7 +409,7 @@ Example of creating a numerator:
                       'padString' => '0',
                       'periodicBy' => 'year',
                       'timezone' => 'Europe/Berlin',
-                      'isDirectNumeration' => 0,
+                      'isDirectNumeration' => false,
                   ],
               ],
           ],
@@ -435,7 +435,7 @@ Example of creating a numerator:
     				"padString":          "0",
     				"periodicBy":         "year",
     				"timezone":           "Europe/Berlin",
-    				"isDirectNumeration": 0,
+                    "isDirectNumeration": false,
     			},
     		},
     	},
@@ -533,7 +533,7 @@ HTTP Status: **200**
 || **template**
 [`string`](../../data-types.md) | Number template ||
 || **code**
-[`string`](../../data-types.md) | Symbolic code of the numerator. Can be `null` ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Symbolic code of the numberer. Returns `null` for a numberer created by this method ||
 || **settings**
 [`object`](../../data-types.md) | Settings for the numerator generators [(detailed description)](#result-numerator-settings) ||
 |#
@@ -561,9 +561,9 @@ HTTP Status: **200**
 || **padString**
 [`string`](../../data-types.md) | Padding character on the left when `length > 0` ||
 || **periodicBy**
-[`string`](../../data-types.md) | Counter reset period ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Counter reset period. Returns `null` if periodic reset is disabled ||
 || **timezone**
-[`string`](../../data-types.md) | Timezone identifier for periodic reset ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Timezone identifier for periodic reset. Returns `null` if the timezone is not specified ||
 || **isDirectNumeration**
 [`boolean`](../../data-types.md) | Direct numbering flag ||
 |#
@@ -594,6 +594,7 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./document-generator-numerator-update.md)
 - [{#T}](./document-generator-numerator-get.md)
 - [{#T}](./document-generator-numerator-list.md)

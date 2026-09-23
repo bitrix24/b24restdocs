@@ -1,4 +1,4 @@
-# Numbering Rules: Overview of Methods
+# Document Generator Numberers: Overview of Methods
 
 {% note tip "" %}
 
@@ -24,11 +24,41 @@ Numbering rules define the format for document numbers:
 5. Modify the parameters of the custom numbering rule using the [documentgenerator.numerator.update](./document-generator-numerator-update.md) method.
 6. Delete an unnecessary custom numbering rule using the [documentgenerator.numerator.delete](./document-generator-numerator-delete.md) method.
 
-{% note info " " %}
+{% note info "" %}
 
 The [documentgenerator.numerator.list](./document-generator-numerator-list.md) method returns the numbering rules of the document generator, including those created by the [CRM numbering rule](../../crm/document-generator/numerator/index.md) methods. Numbering rules of other tools, such as CRM invoices, are not included in the selection.
 
 {% endnote %}
+
+## Numberer Response Structure
+
+The [documentgenerator.numerator.list](./document-generator-numerator-list.md) method returns the `result.numerators` array. Each item contains an identifier, a name, a number template, and generator settings. The following is an abbreviated response example:
+
+```json
+{
+    "result": {
+        "numerators": [
+            {
+                "id": "55",
+                "name": "Invoice Numberer",
+                "template": "INV-{NUMBER}",
+                "settings": {
+                    "Bitrix_Main_Numerator_Generator_SequentNumberGenerator": {
+                        "start": 1000,
+                        "step": 1,
+                        "length": 6,
+                        "padString": "0",
+                        "periodicBy": "year",
+                        "timezone": "Europe/Berlin",
+                        "isDirectNumeration": false
+                    }
+                }
+            }
+        ]
+    },
+    "total": 1
+}
+```
 
 ## Linking Numbering Rules with Other Objects
 
@@ -38,7 +68,7 @@ The numbering rule identifier can be obtained after creation or through the [doc
 
 ## Considerations When Modifying and Deleting a Numbering Rule
 
-The [documentgenerator.numerator.update](./document-generator-numerator-update.md) and [documentgenerator.numerator.delete](./document-generator-numerator-delete.md) methods only work for numbering rules created via the [documentgenerator.numerator.add](./document-generator-numerator-add.md) method.
+The [documentgenerator.numerator.update](./document-generator-numerator-update.md) and [documentgenerator.numerator.delete](./document-generator-numerator-delete.md) methods only work for numberers created using the [documentgenerator.numerator.add](./document-generator-numerator-add.md) method. An attempt to modify or delete a numberer created in the Bitrix24 interface or through another method group returns the `DOCGEN_ACCESS_ERROR` error with the description `Access denied`.
 
 ## Overview of Methods {#all-methods}
 
