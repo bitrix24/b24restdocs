@@ -11,13 +11,15 @@ Choose a tool for developing with an AI agent:
 
 {% include notitle [iframe context](../../../_includes/app-runs-in-iframe.md) %}
 
-The method `BX24.im.phoneTo` sends a command to make a call to a phone number.
-
 ```js
-void BX24.im.phoneTo(String phone)
+BX24.im.phoneTo(string phone): void;
 ```
 
-## Parameters
+The `BX24.im.phoneTo` method passes a phone number to Bitrix24 Messenger and starts an outgoing call.
+
+The method works after [BX24.init](../system-functions/bx24-init.md). Telephony must be available in Bitrix24 to make a call.
+
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -25,7 +27,7 @@ void BX24.im.phoneTo(String phone)
 || **Name** 
 `type` | **Description** ||
 || **phone*** 
-`string` | The phone number to call. International format is recommended (e.g., `+14151234567`). You can also pass the number in local format, such as `84012112233` or `8 (495) 711-22-33`. In the SDK, the value is passed as a string without additional validation ||
+[`string`](../../../api-reference/data-types.md) | Phone number to call. Pass the number in international format, for example, `+4915112345678`. The method passes the string to Messenger without validating or converting the format ||
 |#
 
 ## Code Example
@@ -40,7 +42,11 @@ BX24.init(function () {
 
 ## Response Handling
 
-The method does not return data (`void`).
+The method sends a call command and returns nothing.
+
+## Error Handling
+
+The method does not pass error codes to the application. If calls are unavailable on the current plan, Bitrix24 opens a window with information about the restriction.
 
 ## Continue Learning
 

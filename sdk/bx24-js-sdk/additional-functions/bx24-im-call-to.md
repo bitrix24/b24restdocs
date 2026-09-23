@@ -11,13 +11,15 @@ Choose a tool for developing with an AI agent:
 
 {% include notitle [iframe context](../../../_includes/app-runs-in-iframe.md) %}
 
-The method `BX24.im.callTo` sends a command to call a Bitrix24 user via internal communication.
-
 ```js
-void BX24.im.callTo(Integer userId[, Boolean video])
+BX24.im.callTo(userId: integer, video?: boolean): void;
 ```
 
-## Parameters
+The `BX24.im.callTo` method passes a user identifier to Bitrix24 Messenger and starts an internal call.
+
+The method works after [BX24.init](../system-functions/bx24-init.md).
+
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -25,9 +27,14 @@ void BX24.im.callTo(Integer userId[, Boolean video])
 || **Name** 
 `type` | **Description** ||
 || **userId*** 
-`integer` | The identifier of the Bitrix24 user to be called ||
+[`integer`](../../../api-reference/data-types.md) | Identifier of the Bitrix24 user to call ||
 || **video** 
-`boolean` | Type of call: `true` — video call, `false` — audio call ||
+[`boolean`](../../../api-reference/data-types.md) | Call format. Possible values:
+
+- `true` — video call
+- `false` — audio call
+
+Default — `false` ||
 |#
 
 ## Code Example
@@ -36,13 +43,17 @@ void BX24.im.callTo(Integer userId[, Boolean video])
 
 ```js
 BX24.init(function () {
-    BX24.im.callTo(1, true);
+    BX24.im.callTo(42, true);
 });
 ```
 
 ## Response Handling
 
-The method does not return data (`void`).
+The method sends a call command and returns nothing.
+
+## Error Handling
+
+The method does not pass error codes to the application. If the call cannot be started, the application does not receive a description of the cause.
 
 ## Continue Learning
 

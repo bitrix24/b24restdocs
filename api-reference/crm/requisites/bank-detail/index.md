@@ -82,9 +82,9 @@ Currently, the field does not actually affect anything ||
 || **RQ_BANK_ADDR**
 [`string`](../../../data-types.md) | Address of the bank ||
 || **RQ_BANK_CODE**
-[`string`](../../../data-types.md) | Bank Code (for country BR) ||
+[`string`](../../../data-types.md) | Bank code (`Código do banco`, for country BR) ||
 || **RQ_BANK_ROUTE_NUM**
-[`string`](../../../data-types.md) | Bank Routing Number ||
+[`string`](../../../data-types.md) | Bank routing number (`Bank Routing Number`) ||
 || **RQ_BIK**
 [`string`](../../../data-types.md) | BIC ||
 || **RQ_CODEB**
@@ -96,13 +96,13 @@ Currently, the field does not actually affect anything ||
 || **RQ_MFO**
 [`string`](../../../data-types.md) | MFO ||
 || **RQ_ACC_NAME**
-[`string`](../../../data-types.md) | Bank Account Holder Name ||
+[`string`](../../../data-types.md) | Bank account holder name (`Bank Account Holder Name`) ||
 || **RQ_ACC_NUM**
-[`string`](../../../data-types.md) | Bank Account Number ||
+[`string`](../../../data-types.md) | Bank account number (`Bank Account Number`) ||
 || **RQ_ACC_TYPE**
-[`string`](../../../data-types.md) | Tipo da conta (for country BR) ||
+[`string`](../../../data-types.md) | Account type (`Tipo da conta`, for country BR) ||
 || **RQ_AGENCY_NAME**
-[`string`](../../../data-types.md) | Agência (for country BR) ||
+[`string`](../../../data-types.md) | Bank branch name (`Agência`, for country BR) ||
 || **RQ_IIK**
 [`string`](../../../data-types.md) | IIK ||
 || **RQ_ACC_CURRENCY**

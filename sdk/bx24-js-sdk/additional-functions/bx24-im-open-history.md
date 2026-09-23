@@ -11,13 +11,15 @@ Choose a tool for developing with an AI agent:
 
 {% include notitle [iframe context](../../../_includes/app-runs-in-iframe.md) %}
 
-The method `BX24.im.openHistory` sends a command to open the history window of a dialog.
-
 ```js
-void BX24.im.openHistory(String dialogId)
+BX24.im.openHistory(dialogId: string): void;
 ```
 
-## Parameters
+The `BX24.im.openHistory` method passes a dialog identifier to Bitrix24 Messenger and opens the message history window.
+
+The method works after [BX24.init](../system-functions/bx24-init.md).
+
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -25,8 +27,18 @@ void BX24.im.openHistory(String dialogId)
 || **Name** 
 `type` | **Description** ||
 || **dialogId*** 
-`string` | Identifier of the dialog. Supported formats: `userId` or `chatXXX` for chat, ```imol|XXXX``` for Open Channels ||
+[`string`](../../../api-reference/data-types.md) | Dialog identifier. Supported formats:
+
+- user identifier, for example, `42`
+- chat identifier in the `chatXXX` format, for example, `chat123`
+- Open Channel dialog identifier in the `imol|XXXX` format, for example, `imol|1234` ||
 |#
+
+{% note info "" %}
+
+The method passes `dialogId` to Messenger without validation or conversion.
+
+{% endnote %}
 
 ## Code Example
 
@@ -40,7 +52,11 @@ BX24.init(function () {
 
 ## Response Handling
 
-The method does not return any data (`void`).
+The method sends a command to open the history and returns nothing.
+
+## Error Handling
+
+The method does not pass error codes to the application. If `dialogId` does not match an available dialog, the application does not receive a description of the cause.
 
 ## Continue Learning
 

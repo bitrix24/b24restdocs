@@ -53,20 +53,13 @@ The method is called without parameters.
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'crm.settings.mode.get',
-    		{}
-    	);
-    	
-    	const result = response.getData().result;
-    	if (result.error())
-    	{
-    		console.error(result.error());
-    	}
-    	else
-    	{
-    		console.dir(result);
-    	}
+        const response = await $b24.callMethod(
+            'crm.settings.mode.get',
+            {}
+        );
+
+        const result = response.getData().result;
+        console.dir(result);
     }
     catch( error )
     {
@@ -111,11 +104,7 @@ The method is called without parameters.
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'CRM mode: ' . $result;
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -191,15 +180,45 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../data-types.md) | Returns the value defined in [crm.enum.settings.mode](./auxiliary/enum/crm-enum-settings-mode.md) ||
+[`integer`](../data-types.md) | Identifier of the current CRM operating mode. Possible values are described [below](#result) ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
+#### Possible result Values {#result}
+
+#|
+|| **Value** | **Mode** | **Description** ||
+|| `1` | Classic | CRM operates with leads ||
+|| `2` | Simple | CRM operates without leads: new inquiries are converted directly into deals and contacts or companies ||
+|#
+
+The [crm.enum.settings.mode](./auxiliary/enum/crm-enum-settings-mode.md) method returns the current list of modes and their names.
+
 ## Error Handling
+
+HTTP Status: **401**
+
+```json
+{
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the webhook token"
+}
+```
 
 {% include notitle [error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
+#|
+|| **Code** | **Description** | **Value** ||
+|| `insufficient_scope` | Insufficient token scope | The token does not include the `crm` scope ||
+|#
+
 {% include [system errors](../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./auxiliary/enum/crm-enum-settings-mode.md)
+- [{#T}](./index.md)
+- [{#T}](./leads/index.md)

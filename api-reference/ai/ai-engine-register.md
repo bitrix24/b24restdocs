@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `ai.engine.register` registers a custom AI service.
 
+The method is available in Bitrix24 Cloud. It is not registered in the REST API in the on-premise edition.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -32,14 +34,16 @@ Only characters `A-Za-z0-9-_` are allowed ||
 [`string`](../data-types.md) | The category of the service.
 
 Possible values:
-- `text`
-- `image`
-- `audio`
-- `call` ||
+- `text` — text requests
+- `image` — image generation
+- `audio` — audio processing
+- `call` — call recording processing
+- `vision` — image analysis
+- `classify` — data classification ||
 || **completions_url***
 [`string`](../data-types.md) | The URL endpoint of the handler, which must respond with HTTP status `200` during registration verification [(detailed description)](#endpoint) ||
 || **settings**
-[`object`](../data-types.md) | Additional settings for the service [(detailed description)](#settings) ||
+[`object`](../data-types.md) | Additional settings for the service [(detailed description)](#settings). If the parameter is not passed, an empty settings set is saved ||
 |#
 
 ### Settings Parameter {#settings}
@@ -57,8 +61,8 @@ Defaults to `ChatGPT` ||
 [`string`](../data-types.md) | The method of calculating context.
 
 Possible values:
-- `token`
-- `symbol`
+- `token` — count by tokens
+- `symbol` — count by characters
 
 Defaults to `token` ||
 || **model_context_limit**
@@ -71,9 +75,9 @@ Defaults to `15666` ||
 
 `completions_url` must point to your endpoint that accepts requests from Bitrix24 and processes them in the expected format.
 
-{% note info "Attention!" %}
+{% note info "" %}
 
-The endpoint code from the examples can be used as a foundation, but for production, it's better to separate the processing into different parts of the application.
+You can use the endpoint template as a foundation. In production, separate request acceptance from request processing.
 
 {% endnote %}
 
@@ -81,20 +85,16 @@ The [template](https://helpdesk.bitrix24.com/examples/endpoint.zip) endpoint can
 
 ### Endpoint Requirements
 
-1. The endpoint must quickly accept the request and return a response or queue the task in its internal queue. The initial response time should not exceed 5 seconds — after the timeout, the connection is terminated.
-2. For the `image` category, processing should be done asynchronously.
+1. The endpoint must quickly accept the request and return a response or queue the task in its internal queue. The initial response time should not exceed five seconds — after the timeout, the connection is terminated.
+2. Processing must be asynchronous: acknowledge the request and send the result through a callback.
 3. The request payload includes `callbackUrl` and `errorCallbackUrl`. After processing, the result should be sent to `callbackUrl`, and error information to `errorCallbackUrl`.
-4. The endpoint must correctly return HTTP statuses:
+4. In response to the POST request, the endpoint must return JSON and HTTP status `202`. Any other status is considered a processing error.
 
-- `200` — request processed immediately
-- `202` — request accepted and queued
-- `503` — service temporarily unavailable
+The `ttl` parameter contains the planned job lifetime in seconds. The default is `14400`, and the maximum is `86400`. After the lifetime expires, `errorCallbackUrl` no longer accepts an error. A successful result may be accepted by `callbackUrl` later while the job record still exists, but you should not rely on this behavior.
 
-The `callbackUrl` has a limited lifespan — it is provided in the `ttl` parameter (in seconds). If the endpoint does not send the result before this period expires, the link will become invalid, and the user will not receive a response.
+{% note info "" %}
 
-{% note info "Attention!" %}
-
-The endpoint's response to the initial request does not replace the callback mechanism. Upon successful acceptance of the request, the endpoint should return `json_encode(['result' => 'OK'])`.
+The endpoint's response to the initial request does not replace the callback mechanism. After accepting the request successfully, the endpoint must return HTTP status `202` and `json_encode(['result' => 'OK'])`.
 
 {% endnote %}
 
@@ -136,7 +136,13 @@ For the `image` category, the `prompt` key receives an object with the following
 || **style**
 [`string`](../data-types.md) | The style of image generation. May be absent if no style was specified ||
 || **format**
-[`string`](../data-types.md) | Image format, e.g., `square`, `landscape`. May come as `null` if no format was specified ||
+[`string`](../data-types.md) \| [`null`](../data-types.md) | Image format.
+
+Possible values:
+- `square` — square image with a 1:1 ratio, 1024×1024 pixels
+- `portrait` — vertical image with a 9:16 ratio, 1024×1792 pixels
+- `landscape` — horizontal image with a 16:9 ratio, 1792×1024 pixels
+- `null` — format is not specified ||
 || **images_number**
 [`integer`](../data-types.md) | The number of images to generate. May be absent if no value was specified ||
 |#
@@ -147,17 +153,17 @@ For the `image` category, the `prompt` key receives an object with the following
 || **Name**
 `type` | **Description** ||
 || **auth**
-[`object`](../data-types.md) | Authorization data ||
+[`object`](../data-types.md) \| [`null`](../data-types.md) | Application authorization data. Returns `null` if the service is registered without application context ||
 || **payload_raw**
 [`string`](../data-types.md) | Raw value of the prompt. When using BitrixGPT, this may contain the symbolic code of the used prompt ||
 || **payload_provider**
 [`string`](../data-types.md) | Symbolic code of the pre-prompt provider. When using BitrixGPT, this may contain `prompt` ||
 || **payload_prompt_text**
-[`string`](../data-types.md) | If `payload_provider = prompt`, contains the raw instruction of the pre-prompt ||
+[`string`](../data-types.md) \| [`null`](../data-types.md) | If `payload_provider = prompt`, contains the original pre-prompt instruction. For other `payload_provider` values, returns `null` ||
 || **payload_markers**
 [`object`](../data-types.md) | Additional user markers used in prompt formation ||
 || **payload_role**
-[`string`](../data-types.md) | Role or instruction used in prompt formation. In GPT-like systems, this value is usually passed as a system message ||
+[`string`](../data-types.md) \| [`null`](../data-types.md) | Role or instruction used in prompt formation. In GPT-like systems, this value is usually passed as a system message. Returns `null` if the role is not specified ||
 || **collect_context**
 [`boolean`](../data-types.md) | A flag indicating whether to pass context to the model ||
 || **context**
@@ -171,10 +177,69 @@ For the `image` category, the `prompt` key receives an object with the following
 || **errorCallbackUrl**
 [`string`](../data-types.md) | URL to which error information should be sent ||
 || **ttl**
-[`integer`](../data-types.md) | The lifespan of the `callbackUrl` link in seconds. After this period, the link will become invalid ||
+[`integer`](../data-types.md) | Planned job lifetime in seconds. The default is `14400`, and the maximum is `86400` ||
 |#
 
 Context should only be passed to the model if the request includes `collect_context = true`. If the parameter is absent or set to `false`, context can be omitted.
+
+### Endpoint Request and Callback Example
+
+Bitrix24 sends a POST request to `completions_url`. The set of additional fields depends on the scenario. Example for the `text` category:
+
+```json
+{
+    "prompt": "Prepare a brief meeting summary",
+    "payload_raw": "Prepare a brief meeting summary",
+    "payload_provider": "text",
+    "payload_prompt_text": null,
+    "payload_markers": {
+        "language": "en"
+    },
+    "payload_role": "You are an assistant that prepares summaries",
+    "context": [
+        {
+            "role": "user",
+            "content": "We discussed the launch timeline and assignees"
+        }
+    ],
+    "collect_context": true,
+    "max_tokens": 1000,
+    "temperature": 0.7,
+    "auth": null,
+    "category": "text",
+    "ttl": 14400,
+    "callbackUrl": "https://example.bitrix24.com/bitrix/services/main/ajax.php?action=ai.controller.integration.thirdparty.callbackSuccess&hash=example&rid=example",
+    "errorCallbackUrl": "https://example.bitrix24.com/bitrix/services/main/ajax.php?action=ai.controller.integration.thirdparty.callbackError&hash=example&rid=example"
+}
+```
+
+After accepting the request, the endpoint must return HTTP status `202` and JSON within five seconds:
+
+```json
+{
+    "result": "OK"
+}
+```
+
+After processing, send the result to `callbackUrl` in a POST request:
+
+```json
+{
+    "result": "The launch is scheduled for September 15. The assignee is Klaus Weber."
+}
+```
+
+If processing fails, send the error to `errorCallbackUrl`:
+
+```json
+{
+    "message": "Provider temporarily unavailable",
+    "code": 503,
+    "api_request_completed": false
+}
+```
+
+The `api_request_completed` field indicates whether the request to the AI provider was completed. If the value is `false`, Bitrix24 restores the deducted limit.
 
 Example structure of a message for a GPT-like model:
 
@@ -523,7 +588,7 @@ HTTP Status: **400**
 || `ENGINE_REGISTER_ERROR_CODE_FORMAT` | The `code` key must contain only characters `A-Za-z0-9-_` | Invalid characters are present in `code` ||
 || `ENGINE_REGISTER_ERROR_CODE_UNIQUE` | A record with this `code` already exists | A service with this code is already registered in the same category ||
 || `ENGINE_REGISTER_ERROR_CATEGORY` | The `category` key is required | The `category` parameter is missing or an empty value is provided ||
-|| `ENGINE_REGISTER_ERROR_CATEGORY_FORMAT` | The `category` key can contain one of the values: `text, image, audio, call` | The provided `category` value is not in the list of available categories ||
+|| `ENGINE_REGISTER_ERROR_CATEGORY_FORMAT` | The `category` key can contain one of the values: `text, image, audio, call, vision, classify` | The provided `category` value is not in the list of available categories ||
 || `ENGINE_REGISTER_ERROR_COMPLETIONS_URL` | The `completions_url` key with a string value is required | The `completions_url` parameter is missing, an empty value is provided, or the value is not a string ||
 || `ENGINE_REGISTER_ERROR_COMPLETIONS_URL_FAIL` | The value of the `completions_url` key must be a valid URL that returns status `200` upon verification | The URL is unavailable, invalid, or returns a status other than `200` upon verification ||
 || `ENGINE_REGISTER_ERROR_SETTINGS_FORMAT` | The value of the `settings` key must be valid JSON | The `settings` parameter is not provided as an object ||
@@ -533,5 +598,6 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./ai-engine-list.md)
 - [{#T}](./ai-engine-unregister.md)

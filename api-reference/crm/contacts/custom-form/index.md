@@ -11,8 +11,8 @@ Choose a tool for developing with an AI agent:
 
 The group of methods `crm.contact.details.configuration.*` manages the settings of the [contact](../index.md) card for two views:
 
-* "General view" — the card view for all employees
-* "My view" — personal card settings for the employee
+- "General view" — the card view for all employees
+- "My view" — personal card settings for the employee
 
 For each card view, sections can be configured, and within each section, a list of fields can be defined. For example, create a section "Contact Information" and display the fields "Phone" and "Email" within it. For fields that do not relate to contact information, create a different section.
 
@@ -50,6 +50,45 @@ The card view is selected by the `scope` parameter, and the specific employee by
 |#
 
 A CRM administrator is a user with the "Allow to change settings" access permission. This is a general permission for the entire CRM module; it is not granted for contacts separately.
+
+## Card Configuration Structure
+
+A configuration is an array of sections. Each section contains an array of contact fields. For example, a configuration with one section containing the first name, last name, and phone number looks like this:
+
+```json
+[
+    {
+        "name": "contact_info",
+        "title": "Contact details",
+        "type": "section",
+        "elements": [
+            {
+                "name": "NAME",
+                "optionFlags": 1
+            },
+            {
+                "name": "LAST_NAME",
+                "optionFlags": 1
+            },
+            {
+                "name": "PHONE",
+                "optionFlags": 0,
+                "options": {
+                    "defaultCountry": "DE"
+                }
+            }
+        ]
+    }
+]
+```
+
+#|
+|| **Level** | **Fields** | **Description** ||
+|| Section | `name`, `title`, `type`, `elements` | `name` is the unique section name, `title` is the title in the form, `type` is set to `section`, and `elements` contains contact fields ||
+|| Section field | `name`, `optionFlags`, `options` | `name` is the contact field identifier, `optionFlags` controls whether the field is always displayed, and `options` contains additional field settings ||
+|#
+
+The [crm.contact.details.configuration.set](./crm-contact-details-configuration-set.md) method accepts this structure in the `data` parameter. The [crm.contact.details.configuration.get](./crm-contact-details-configuration-get.md) method returns an array with the same structure in the `result` field.
 
 ## How to Get Started
 

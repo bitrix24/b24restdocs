@@ -23,23 +23,17 @@ The method `ai.engine.list` returns a list of registered AI services.
 || **Name**
 `type` | **Description** ||
 || **filter**
-[`array`](../data-types.md) | An array in the following format:
+[`object`](../data-types.md) | An object with filter conditions. The key is a field name with an optional operator prefix, and the value is the value to search for. For example:
 
-```
+```json
 {
-    field_1: value_1,
-    field_2: value_2,
-    ...,
-    field_n: value_n,
+    "=CATEGORY": "text"
 }
 ```
 
-where:
-- `field_n` — the name of the field to filter by
-- `value_n` — the filter value
+If the parameter is not passed, the method returns records without additional filtering.
 
-You can add a prefix to the keys `field_n` to specify the filter operation.
-Possible prefix values:
+Possible operator prefixes:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
@@ -58,7 +52,7 @@ Possible prefix values:
 
 The list of fields available for filtering is provided in the section [(detailed description)](#filter) ||
 || **limit**
-[`integer`](../data-types.md) | Maximum number of elements in the response ||
+[`integer`](../data-types.md) | Maximum number of elements in the response. The method does not set an upper limit. If the parameter is not passed, the method returns all records found ||
 |#
 
 ### Filter Parameter {#filter}
@@ -79,7 +73,15 @@ In the context of an OAuth application, the method always shows only the service
 || **CODE**
 [`string`](../data-types.md) | Symbolic code of the service ||
 || **CATEGORY**
-[`string`](../data-types.md) | Service category ||
+[`string`](../data-types.md) | Service category.
+
+Possible values:
+- `text` — text requests
+- `image` — image generation
+- `audio` — audio processing
+- `call` — call recording processing
+- `vision` — image analysis
+- `classify` — data classification ||
 || **COMPLETIONS_URL**
 [`string`](../data-types.md) | Service endpoint URL ||
 || **DATE_CREATE**
@@ -146,11 +148,6 @@ In the context of an OAuth application, the method always shows only the service
     }
 
     try {
-      // ai.engine.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<AiEngineItem[]>({
         method: 'ai.engine.list',
         params: {
@@ -158,7 +155,6 @@ In the context of an OAuth application, the method always shows only the service
             '=CATEGORY': 'text',
           },
           limit: 2,
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -187,11 +183,6 @@ In the context of an OAuth application, the method always shows only the service
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // ai.engine.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'ai.engine.list',
             params: {
@@ -199,7 +190,6 @@ In the context of an OAuth application, the method always shows only the service
                 '=CATEGORY': 'text',
               },
               limit: 2,
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -350,11 +340,6 @@ In the context of an OAuth application, the method always shows only the service
     	fmt.Println(it.ID, it.AppCode)
     }
 
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
-    if res.Total != nil {
-    	fmt.Println("total:", *res.Total)
-    }
     ```
 
 {% endlist %}
@@ -413,7 +398,7 @@ HTTP Status: **200**
 || **id**
 [`integer`](../data-types.md) | Service identifier ||
 || **app_code**
-[`string`](../data-types.md) | Application code to which the service belongs.
+[`string`](../data-types.md) \| [`null`](../data-types.md) | Application code to which the service belongs.
 
 May return `null` if the value is not set ||
 || **name**
@@ -421,16 +406,26 @@ May return `null` if the value is not set ||
 || **code**
 [`string`](../data-types.md) | Symbolic code of the service ||
 || **category**
-[`string`](../data-types.md) | Service category ||
+[`string`](../data-types.md) | Service category.
+
+Possible values:
+- `text` — text requests
+- `image` — image generation
+- `audio` — audio processing
+- `call` — call recording processing
+- `vision` — image analysis
+- `classify` — data classification ||
 || **completions_url**
 [`string`](../data-types.md) | Service endpoint URL ||
 || **settings**
-[`object`](../data-types.md) | Service settings saved during registration ||
+[`object`](../data-types.md) | Service settings saved during registration. Standard fields are described in the [`settings`](./ai-engine-register.md#settings) parameter of the `ai.engine.register` method ||
 || **date_create**
 [`integer`](../data-types.md) | Service creation date in Unix Timestamp format ||
 |#
 
 ## Error Handling
+
+The method does not return any specific errors.
 
 {% include notitle [error handling](../../_includes/error-info.md) %}
 
@@ -438,5 +433,6 @@ May return `null` if the value is not set ||
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./ai-engine-register.md)
 - [{#T}](./ai-engine-unregister.md)

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 The `ai.engine.*` methods connect your own AI service to Bitrix24. You can use them to register new services, retrieve their list, and remove selected ones.
 
-{% note warning "Important" %}
+{% note warning "" %}
 
 Before registration, check the availability of the external handler URL in the `completions_url` parameter and the requirements for processing requests.
 
@@ -22,8 +22,8 @@ Before registration, check the availability of the external handler URL in the `
 ## What to Consider Before Registration
 
 - Specify a valid URL in `completions_url` that returns an HTTP status of `200` upon verification
-- For the `image` category, use asynchronous processing
-- Choose the `category` value based on the service scenario: `text`, `image`, `audio`, or `call`
+- Process requests asynchronously: acknowledge receipt with HTTP status `202`, then send the result through a callback
+- Choose the `category` value based on the service scenario: `text`, `image`, `audio`, `call`, `vision`, or `classify`
 - Pass additional parameters in `settings`
 
 ## How to Get Started
@@ -35,11 +35,75 @@ Before registration, check the availability of the external handler URL in the `
 
 ## How Integration Works
 
-**Endpoint.** The application sends requests from Bitrix24 to the external endpoint via `completions_url`.
+**Endpoint.** Bitrix24 sends POST requests to the external endpoint via `completions_url`.
 
 **Callback Mechanism.** After processing, the service sends the result to `callbackUrl` and error information to `errorCallbackUrl`.
 
-{% note tip "Endpoint Template" %}
+Example request from Bitrix24 to `completions_url` for the `text` category:
+
+```json
+{
+    "prompt": "Prepare a brief meeting summary",
+    "payload_raw": "Prepare a brief meeting summary",
+    "payload_provider": "text",
+    "payload_role": "You are an assistant that prepares summaries",
+    "context": [
+        {
+            "role": "user",
+            "content": "We discussed the launch timeline and assignees"
+        }
+    ],
+    "payload_markers": {
+        "language": "en"
+    },
+    "payload_prompt_text": null,
+    "auth": null,
+    "category": "text",
+    "ttl": 14400,
+    "callbackUrl": "https://example.bitrix24.com/bitrix/services/main/ajax.php?action=ai.controller.integration.thirdparty.callbackSuccess&hash=example&rid=example",
+    "errorCallbackUrl": "https://example.bitrix24.com/bitrix/services/main/ajax.php?action=ai.controller.integration.thirdparty.callbackError&hash=example&rid=example"
+}
+```
+
+The endpoint must accept the POST request within five seconds and return HTTP status `202` with a JSON response:
+
+```json
+{
+    "result": "OK"
+}
+```
+
+After processing, send the result to `callbackUrl` in a POST request:
+
+```json
+{
+    "result": "The launch is scheduled for September 15. The assignee is Klaus Weber."
+}
+```
+
+If processing fails, send the error to `errorCallbackUrl`:
+
+```json
+{
+    "message": "Provider temporarily unavailable",
+    "code": 503,
+    "api_request_completed": false
+}
+```
+
+The `api_request_completed` parameter indicates whether the request to the AI provider was completed. If the value is `false`, Bitrix24 restores the deducted limit. The `ttl` parameter sets the planned job lifetime in seconds. After it expires, an error callback is not accepted; a successful result may still be accepted while the job record exists.
+
+### Common Registration Errors
+
+#|
+|| **Code** | **Cause** | **How to Fix** ||
+|| `ENGINE_REGISTER_ERROR_COMPLETIONS_URL_FAIL` | `completions_url` is unavailable, invalid, or returns a status other than `200` during verification | Check the URL and configure a `200` response to the verification GET request ||
+|| `ENGINE_REGISTER_ERROR_CATEGORY_FORMAT` | `category` contains a value outside `text`, `image`, `audio`, `call`, `vision`, `classify` | Pass one of the supported categories ||
+|#
+
+The complete list of errors and registration parameters is provided in the [ai.engine.register](./ai-engine-register.md) method description.
+
+{% note tip "" %}
 
 You can use this template as a basis for your own service.
 

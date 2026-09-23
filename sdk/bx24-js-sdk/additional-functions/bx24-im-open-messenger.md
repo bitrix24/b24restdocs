@@ -11,20 +11,35 @@ Choose a tool for developing with an AI agent:
 
 {% include notitle [iframe context](../../../_includes/app-runs-in-iframe.md) %}
 
-The method `BX24.im.openMessenger` sends a command to open the messenger window.
-
 ```js
-void BX24.im.openMessenger([String dialogId])
+BX24.im.openMessenger(dialogId?: string): void;
 ```
 
-## Parameters
+The `BX24.im.openMessenger` method opens the chat list or a selected dialog in Bitrix24 Messenger.
+
+The method works after [BX24.init](../system-functions/bx24-init.md).
+
+## Method Parameters
 
 #| 
 || **Name**
 `type` | **Description** ||
 || **dialogId**
-`string` | Identifier of the dialog. Supported formats: `userId` or `chatXXX` for chat, `sgXXX` for group chat, ```imol|XXXX``` for Open Channels. If the parameter is not provided, the chat list interface will open. ||
+[`string`](../../../api-reference/data-types.md) | Dialog identifier. Supported formats:
+
+- user identifier, for example, `42`
+- chat identifier in the `chatXXX` format, for example, `chat123`
+- group chat identifier in the `sgXXX` format, for example, `sg456`
+- Open Channel dialog identifier in the `imol|XXXX` format, for example, `imol|1234`
+
+If the parameter is not passed, the method opens the chat list ||
 |#
+
+{% note info "" %}
+
+The method passes `dialogId` to Messenger without validation or conversion.
+
+{% endnote %}
 
 ## Code Example
 
@@ -38,7 +53,11 @@ BX24.init(function () {
 
 ## Response Handling
 
-The method does not return data (`void`).
+The method sends a command to open Messenger and returns nothing.
+
+## Error Handling
+
+The method does not pass error codes to the application. If `dialogId` does not match an available dialog, the application does not receive a description of the cause.
 
 ## Continue Learning
 

@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `ai.engine.unregister` removes a registered AI service.
 
+The method searches for the service by `code` and its link to the current application. When called through a webhook, it searches among services that are not linked to an application. The service category is not used in the search and does not need to be passed.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}
@@ -22,8 +24,8 @@ The method `ai.engine.unregister` removes a registered AI service.
 #|
 || **Name**
 `type` | **Description** ||
-|| **code**
-[`string`](../data-types.md) | Character code of the service to be removed ||
+|| **code***
+[`string`](../data-types.md) | Symbolic code of the service to remove. The code must match the code of a service registered by the current application or a service not linked to an application when called through a webhook ||
 |#
 
 ## Code Examples
@@ -262,12 +264,14 @@ HTTP Status: **200**
 [`boolean`](../data-types.md) | Result of the service removal:
 
 - `true` — service removed
-- `false` — service not found, does not belong to the current application, or removal not completed ||
+- `false` — service not found, does not belong to the current application, the `code` parameter was not passed, or removal was not completed ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+The method does not return any specific errors.
 
 {% include notitle [error handling](../../_includes/error-info.md) %}
 
@@ -275,5 +279,6 @@ HTTP Status: **200**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./ai-engine-register.md)
 - [{#T}](./ai-engine-list.md)
