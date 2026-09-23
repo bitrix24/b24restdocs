@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: requires read access permission for the CRM object whose product rows are being selected
 
-Retrieves product rows of the CRM object.
+Retrieves product rows of a CRM object.
+
+If a single row with a known identifier is needed, use the [crm.item.productrow.get](./crm-item-productrow-get.md) method. If only the rows with no payment issued are needed, use the [crm.item.productrow.getAvailableForPayment](./crm-item-productrow-get-available-for-payment.md) method.
 
 ## Method Parameters
 
@@ -23,42 +25,13 @@ Retrieves product rows of the CRM object.
 || **Name**
 `type` | **Description** ||
 || **filter***
-[`object`](../../../data-types.md) | Object for filtering selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
-
-Possible values for `field` correspond to the fields of the [`crm_item_product_row`](../../data-types.md#crm_item_product_row) object.
-
-**The following keys must be present:**
-
-**=ownerType**
-**=ownerId**
-
-In `=ownerType`, pass the [Short symbolic code of the type](../../data-types.md#object_type).
-
-The key may have an additional prefix that specifies the behavior of the filter. Possible prefix values:
-
-- `=` — equals (works with arrays as well)
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `>` — greater than
-- `<` — less than
-- `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol in the filter value does not need to be passed. The search goes from both sides.
-- `>=` — greater than or equal to
-- `<=` — less than or equal to
-- `=%` — LIKE, substring search. The % symbol needs to be passed in the value. Examples:
-    - `"mol%"` — searching for values starting with "mol"
-    - `"%mol"` — searching for values ending with "mol"
-    - `"%mol%"` — searching for values where "mol" can be in any position
-- `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol needs to be passed in the value. Examples:
-    - `"mol%"` — searching for values not starting with "mol"
-    - `"%mol"` — searching for values not ending with "mol"
-    - `"%mol%"` — searching for values where the substring "mol" is not present in any position
-- `!%=` — NOT LIKE (see description above)
-||
+[`object`](../../../data-types.md) | Object for filtering selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}` [(detailed description)](#filter) ||
 || **order**
-[`object`](../../../data-types.md) | Object for sorting selected elements of the shipment table in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../../data-types.md) | Object for sorting selected product rows in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the [`crm_item_product_row`](../../data-types.md#crm_item_product_row) object.
+Sorting is available by the `id` and `sort` fields. The method ignores the other fields.
+
+Without the `order` parameter, the method returns the rows in ascending order of the `sort` value.
 
 Possible values for `order`:
 
@@ -67,16 +40,58 @@ Possible values for `order`:
  ||
 || **start**
 [`integer`](../../../data-types.md) | This parameter is used for pagination control.
- 
+
 The page size of results is always static: 50 records.
- 
-To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
- 
+
+To select the second page of results, pass the value `50`, the third one — `100`, and so on.
+
 The formula for calculating the `start` parameter value:
- 
-`start = (N-1) * 50`, where `N` is the desired page number
+
+`start = (N-1) * 50`, where `N` is the desired page number.
+
+Pass `-1` to skip counting the total number of records: the method does not return `total` and works faster.
+
+Default is `0`
  ||
 |#
+
+
+The method does not support the `select` parameter and always returns the full set of product row fields.
+
+### Parameter filter {#filter}
+
+The `=ownerType` and `=ownerId` keys are required — without them the method returns the `REQUIRED_ARG_MISSING` error.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **=ownerType***
+[`string`](../../../data-types.md) | Short symbolic code of the [CRM object type](../../data-types.md#object_type): `L` — lead, `D` — deal, `Q` — estimate, `SI` — invoice (new), `T` followed by the hexadecimal type identifier — SPA ||
+|| **=ownerId***
+[`integer`](../../../data-types.md) | Identifier of the CRM object ||
+|| **id**
+[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row ||
+|| **productId**
+[`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog ||
+|#
+
+Filtering is available only by the fields from the table: the other fields of a product row have no index in the database. The method silently ignores conditions on `price`, `productName`, `quantity`, `sort`, `type`, and on unknown fields and returns all product rows of the CRM object — check the composition of the selection on your side.
+
+The key may have an additional prefix that specifies the behavior of the filter. Possible prefix values:
+
+- `=` — equals
+- `!=` — not equal
+- `>` — greater than
+- `>=` — greater than or equal to
+- `<` — less than
+- `<=` — less than or equal to
+- `@` — any of the values of an array
+
+The prefixes apply to the `id` and `productId` keys. Pass the `=ownerType` and `=ownerId` keys with the `=` prefix only.
+
+The only key that accepts an array of values is `@id`. For example, `{"@id": [17640, 17641]}` returns two rows. In the other keys, the method ignores an array in the same way as an unsupported condition.
+
+Write the filter keys in camelCase: `=ownerType`, not `=OWNER_TYPE`.
 
 ## Code Examples
 
@@ -90,7 +105,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"=ownerType":"D","=ownerId":13142,">price":5000},"order":{"price":"desc"}}' \
+    -d '{"filter":{"=ownerType":"D","=ownerId":13142,">id":17640},"order":{"sort":"asc"},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.productrow.list
     ```
 
@@ -100,7 +115,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"=ownerType":"D","=ownerId":13142,">price":5000},"order":{"price":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"filter":{"=ownerType":"D","=ownerId":13142,">id":17640},"order":{"sort":"asc"},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.item.productrow.list
     ```
 
@@ -133,13 +148,14 @@ The formula for calculating the `start` parameter value:
         discountSum: number
         taxRate: number | null
         taxIncluded: string
+        taxName: string
         customized: string
         measureCode: number
         measureName: string
         sort: number
         xmlId: string
         type: number
-        storeId: number
+        storeId: number | null
       }[]
     }
 
@@ -155,10 +171,10 @@ The formula for calculating the `start` parameter value:
           filter: {
             '=ownerType': 'D',
             '=ownerId': 13142,
-            '>price': 5000,
+            '>id': 17640,
           },
           order: {
-            price: 'desc',
+            sort: 'asc',
           },
           start: 0,
         },
@@ -200,10 +216,10 @@ The formula for calculating the `start` parameter value:
               filter: {
                 '=ownerType': 'D',
                 '=ownerId': 13142,
-                '>price': 5000,
+                '>id': 17640,
               },
               order: {
-                price: 'desc',
+                sort: 'asc',
               },
               start: 0,
             },
@@ -241,11 +257,12 @@ The formula for calculating the `start` parameter value:
             filter={
                 "=ownerType": "D",
                 "=ownerId": 13142,
-                ">price": 5000,
+                ">id": 17640,
             },
             order={
-                "price": "desc",
+                "sort": "asc",
             },
+            start=0,
         ).response
         result = bitrix_response.result
         print(result)
@@ -273,11 +290,12 @@ The formula for calculating the `start` parameter value:
             filter={
                 "=ownerType": "D",
                 "=ownerId": 13142,
-                ">price": 5000,
+                ">id": 17640,
             },
             order={
-                "price": "desc",
+                "sort": "asc",
             },
+            start=0,
         ).as_list().response
         result = bitrix_response.result
         for item in result:
@@ -302,14 +320,12 @@ The formula for calculating the `start` parameter value:
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
+        # as_list_fast sets the order and the pagination on its own,
+        # so order and start do not need to be passed in such a call
         bitrix_response = client.crm.item.productrow.list(
             filter={
                 "=ownerType": "D",
                 "=ownerId": 13142,
-                ">price": 5000,
-            },
-            order={
-                "price": "desc",
             },
         ).as_list_fast(descending=True).response
         result = bitrix_response.result
@@ -340,11 +356,12 @@ The formula for calculating the `start` parameter value:
                     'filter' => [
                         "=ownerType" => 'D',
                         "=ownerId"   => 13142,
-                        ">price"     => 5000,
+                        ">id"        => 17640,
                     ],
                     'order'  => [
-                        'price' => "desc"
+                        'sort' => "asc"
                     ],
+                    'start'  => 0,
                 ]
             );
     
@@ -368,11 +385,12 @@ The formula for calculating the `start` parameter value:
             filter: {
                 "=ownerType": 'D',
                 "=ownerId": 13142,
-                ">price": 5000,
+                ">id": 17640,
             },
             order: {
-                price: "desc"
+                sort: "asc"
             },
+            start: 0,
         },
         function(result) {
             if (result.error()) {
@@ -395,11 +413,12 @@ The formula for calculating the `start` parameter value:
             'filter' => [
                 "=ownerType" => 'D',
                 "=ownerId" => 13142,
-                ">price" => 5000,
+                ">id" => 17640,
             ],
             'order' => [
-                'price' => "desc"
-            ]
+                'sort' => "asc"
+            ],
+            'start' => 0
         ]
     );
 
@@ -416,11 +435,12 @@ The formula for calculating the `start` parameter value:
     	"filter": b24.Params{
     		"=ownerType": "D",
     		"=ownerId":   13142,
-    		">price":     5000,
+    		">id":        17640,
     	},
     	"order": b24.Params{
-    		"price": "desc",
+    		"sort": "asc",
     	},
+    	"start": 0,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("crm.item.productrow.list: %w", err)
@@ -433,12 +453,12 @@ The formula for calculating the `start` parameter value:
     }
 
     var items []struct {
-    	ID          b24.ID `json:"id"`
-    	OwnerID     b24.ID `json:"ownerId"`
-    	OwnerType   string `json:"ownerType"`
-    	ProductID   b24.ID `json:"productId"`
-    	ProductName string `json:"productName"`
-    	Price       int    `json:"price"`
+    	ID          b24.ID  `json:"id"`
+    	OwnerID     b24.ID  `json:"ownerId"`
+    	OwnerType   string  `json:"ownerType"`
+    	ProductID   b24.ID  `json:"productId"`
+    	ProductName string  `json:"productName"`
+    	Price       float64 `json:"price"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -466,22 +486,23 @@ HTTP status: **200**
             "productName":"iphone 14",
             "price":90000,
             "priceAccount":90000,
-            "priceExclusive":81818.18,
-            "priceNetto":90909.09,
+            "priceExclusive":81818.18181818,
+            "priceNetto":90909.09090909,
             "priceBrutto":100000,
             "quantity":3,
             "discountTypeId":2,
             "discountRate":10,
-            "discountSum":9090.91,
+            "discountSum":9090.90909091,
             "taxRate":10,
             "taxIncluded":"Y",
+            "taxName":"VAT 10",
             "customized":"Y",
             "measureCode":796,
             "measureName":"pcs",
-            "sort":20,
+            "sort":10,
             "xmlId":"sale_basket_8147",
             "type":4,
-            "storeId": 19
+            "storeId":19
          },
          {
             "id":17650,
@@ -500,13 +521,14 @@ HTTP status: **200**
             "discountSum":0,
             "taxRate":null,
             "taxIncluded":"Y",
+            "taxName":"No VAT",
             "customized":"Y",
             "measureCode":6,
             "measureName":"m",
-            "sort":10,
+            "sort":20,
             "xmlId":"sale_basket_8148",
             "type":4,
-            "storeId": 17
+            "storeId":17
          }
       ]
    },
@@ -528,13 +550,22 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
-|| **productRows**
-[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects containing information about the selected product rows of the CRM object  ||
+[`object`](../../../data-types.md) | Root element of the response [(detailed description)](#result) ||
+|| **next**
+[`integer`](../../../data-types.md) | Value for the `start` parameter of the next page. It is returned only if not all the records have been selected ||
 || **total**
-[`integer`](../../../data-types.md) | The total number of records found ||
+[`integer`](../../../data-types.md) | The total number of records found. It is not returned if `start: -1` is passed ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### The result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **productRows**
+[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects with information about the selected product rows of the CRM object ||
 |#
 
 ## Error Handling
@@ -554,8 +585,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ACCESS_DENIED` | Access denied ||
-|| `INVALID_ARG_VALUE` | Invalid values for input parameters ||
+|| `REQUIRED_ARG_MISSING` | The required `=ownerType` or `=ownerId` key is missing from the filter ||
+|| `ACCESS_DENIED` | Access denied. The method returns the same error if the CRM object with the provided `=ownerId` does not exist or its type does not support product rows ||
+|| `INVALID_ARG_VALUE` | Invalid values for input parameters. For example, an array in the value of a filter key with a comparison prefix ||
 || `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
@@ -566,9 +598,9 @@ HTTP status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./crm-item-productrow-add.md)
-- [{#T}](./crm-item-productrow-fields.md)
-- [{#T}](./crm-item-productrow-get.md)
-- [{#T}](./crm-item-productrow-set.md)
 - [{#T}](./crm-item-productrow-update.md)
-- [{#T}](./crm-item-productrow-get-available-for-payment.md)
+- [{#T}](./crm-item-productrow-get.md)
 - [{#T}](./crm-item-productrow-delete.md)
+- [{#T}](./crm-item-productrow-set.md)
+- [{#T}](./crm-item-productrow-get-available-for-payment.md)
+- [{#T}](./crm-item-productrow-fields.md)

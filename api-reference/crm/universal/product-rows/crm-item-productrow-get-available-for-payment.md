@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: requires read access permission for the CRM object whose product rows are being selected.
 
-The method retrieves product rows of the CRM object for which the customer has not yet been billed.
+Retrieves product rows of a CRM object for which the customer has not been billed yet.
+
+The method compares the quantity of a product in a row with the quantity that has already been included in the payments of the CRM object and returns the remainder. Rows that have been fully included in payments are not returned. To get all product rows of the CRM object regardless of payments, call [crm.item.productrow.list](./crm-item-productrow-list.md).
+
+The method returns all matching rows at once, with no pagination, in ascending order of the `sort` value. If all product rows of the CRM object have already been included in payments, the method returns an empty `"productRows":[]` array.
+
+Call the method when you are assembling a new payment: it shows which rows can still be billed to the customer. The payment itself is created by the methods of the [Payments and Deliveries](../payment/index.md) section, and rows are added to it by the methods of the [Product Items in Payment](../payment/products-in-payment/index.md) section.
 
 ## Method Parameters
 
@@ -23,9 +29,10 @@ The method retrieves product rows of the CRM object for which the customer has n
 || **Name**
 `type` | **Description** ||
 || **ownerId***
-[`integer`](../../../data-types.md) | Identifier of the CRM object. ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object.
+It can be retrieved with the [crm.item.list](../crm-item-list.md) method or from the response of the [crm.item.add](../crm-item-add.md) method ||
 || **ownerType***
-[`string`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type). Pass the [Short symbolic code of the type](../../data-types.md#object_type) ||
+[`string`](../../../data-types.md) | Short symbolic code of the [CRM object type](../../data-types.md#object_type): `L` — lead, `D` — deal, `Q` — estimate, `SI` — invoice (new), `T` followed by the hexadecimal type identifier — SPA. For example, for a type with `entityTypeId: 128` the code is `T80` ||
 |#
 
 ## Code Examples
@@ -83,6 +90,7 @@ The method retrieves product rows of the CRM object for which the customer has n
         discountSum: number
         taxRate: number | null
         taxIncluded: string
+        taxName: string
         customized: string
         measureCode: number
         measureName: string
@@ -260,12 +268,12 @@ The method retrieves product rows of the CRM object for which the customer has n
     }
 
     var items []struct {
-    	ID          b24.ID `json:"id"`
-    	OwnerID     b24.ID `json:"ownerId"`
-    	OwnerType   string `json:"ownerType"`
-    	ProductID   b24.ID `json:"productId"`
-    	ProductName string `json:"productName"`
-    	Price       int    `json:"price"`
+    	ID          b24.ID  `json:"id"`
+    	OwnerID     b24.ID  `json:"ownerId"`
+    	OwnerType   string  `json:"ownerType"`
+    	ProductID   b24.ID  `json:"productId"`
+    	ProductName string  `json:"productName"`
+    	Price       float64 `json:"price"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -302,6 +310,7 @@ HTTP status: **200**
             "discountSum":0,
             "taxRate":null,
             "taxIncluded":"Y",
+            "taxName":"No VAT",
             "customized":"Y",
             "measureCode":796,
             "measureName":"pcs",
@@ -326,6 +335,7 @@ HTTP status: **200**
             "discountSum":0,
             "taxRate":null,
             "taxIncluded":"Y",
+            "taxName":"No VAT",
             "customized":"Y",
             "measureCode":796,
             "measureName":"pcs",
@@ -352,12 +362,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
-|| **productRows**
-[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) |An array of objects containing information about all CRM object line items for which the client has not yet been invoiced
- ||
+[`object`](../../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### The result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **productRows**
+[`crm_item_product_row[]`](../../data-types.md#crm_item_product_row) | Array of objects with information about the selected product rows.
+The `quantity` field of every row contains the remainder that has not been included in payments yet, not the original quantity of the product ||
 |#
 
 ## Error Handling
@@ -377,7 +394,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ACCESS_DENIED` | Access denied ||
+|| `ENTITY_TYPE_NOT_SUPPORTED` | This type of CRM object does not support product rows ||
+|| `ACCESS_DENIED` | The user has no permission to read the CRM object ||
+|| `OWNER_NOT_FOUND` | The provided CRM object was not found ||
 || `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
@@ -388,9 +407,9 @@ HTTP status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./crm-item-productrow-add.md)
-- [{#T}](./crm-item-productrow-fields.md)
-- [{#T}](./crm-item-productrow-get.md)
-- [{#T}](./crm-item-productrow-set.md)
 - [{#T}](./crm-item-productrow-update.md)
+- [{#T}](./crm-item-productrow-get.md)
 - [{#T}](./crm-item-productrow-list.md)
 - [{#T}](./crm-item-productrow-delete.md)
+- [{#T}](./crm-item-productrow-set.md)
+- [{#T}](./crm-item-productrow-fields.md)

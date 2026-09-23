@@ -13,7 +13,17 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-Retrieves a list of fields for product rows.
+Retrieves the description of product row fields: the value type, whether the field is required, and whether it is available for writing.
+
+Call the method before [crm.item.productrow.add](./crm-item-productrow-add.md), [crm.item.productrow.update](./crm-item-productrow-update.md), or [crm.item.productrow.set](./crm-item-productrow-set.md) to find out which values can be passed. The method calculates the fields with `isReadOnly: true` on its own and ignores the values passed for them without raising an error.
+
+The set of fields is the same for all types of CRM objects and does not depend on `ownerType`. The limits on the length of text fields are described in the [{#T}](../../field-length-limits.md) article.
+
+The `type` value is the data type of the field from the [type dictionary](../../../data-types.md). Fields of the `char` type accept only `Y` or `N`.
+
+The `isRequired` flag reflects the field description in the core and does not always match the checks of a write method. For example, `productId` comes with `isRequired: true`, but a product row can be created without it — passing `productName` is enough.
+
+## Method Parameters
 
 No parameters.
 
@@ -39,8 +49,8 @@ No parameters.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{}' \
-    https://**put_your_bitrix24_address**/rest/crm.item.productrow.fields?auth=**put_access_token_here**
+    -d '{"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/crm.item.productrow.fields
     ```
 
 - JS (TS)
@@ -353,6 +363,15 @@ HTTP status: **200**
             "isDynamic":false,
             "title":"Tax"
          },
+         "taxName":{
+            "type":"string",
+            "isRequired":false,
+            "isReadOnly":false,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"TAX_NAME"
+         },
          "taxIncluded":{
             "type":"char",
             "isRequired":false,
@@ -408,14 +427,14 @@ HTTP status: **200**
             "title":"TYPE"
          },
          "storeId":{
-               "type": "integer",
-               "isRequired": false,
-               "isReadOnly": true,
-               "isImmutable": false,
-               "isMultiple": false,
-               "isDynamic": false,
-               "title": "STORE_ID"
-         }         
+            "type":"integer",
+            "isRequired":false,
+            "isReadOnly":true,
+            "isImmutable":false,
+            "isMultiple":false,
+            "isDynamic":false,
+            "title":"STORE_ID"
+         }
       }
    },
    "time":{
@@ -435,32 +454,29 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
-|| **fields**
-[`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [crm_item_product_row](../../data-types.md#crm_item_product_row) object, and `value` is an object of type [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
+[`object`](../../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
+
+#### The result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **fields**
+[`object`](../../../data-types.md) | Object in the format `{"field code": "field description"}`, where the key is the identifier of a field of the [crm_item_product_row](../../data-types.md#crm_item_product_row) object, and the value is an object of type [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
+|#
+
+What the response does not contain: the `priceAccount` and `xmlId` fields, which cannot be written, and the `upperName` flag of the [crm_rest_field_description](../../data-types.md#crm_rest_field_description) object. The full composition of a product row is described in the [crm_item_product_row](../../data-types.md#crm_item_product_row) object.
+
+The `measureName` and `customized` fields come with the `isReadOnly: false` flag, but write methods do not retain their values. The `customized` field is also deprecated — there is no need to pass it.
 
 ## Error Handling
 
-HTTP status: **400**
-
-```json
-{
-   "error":0,
-   "error_description":"some error"
-}
-```
+The method has no error codes of its own: it accepts no parameters and does not check permissions for CRM objects. Only system errors are returned — for example, `insufficient_scope` if the webhook or the application has no `crm` permission.
 
 {% include notitle [Error handling](../../../../_includes/error-info.md) %}
-
-### Possible Error Codes
-
-#|
-|| **Code** | **Description** ||
-|| `0` | Other errors (e.g., fatal errors) ||
-|#
 
 {% include notitle [System errors](../../../../_includes/system-errors.md) %}
 
@@ -470,7 +486,7 @@ HTTP status: **400**
 - [{#T}](./crm-item-productrow-add.md)
 - [{#T}](./crm-item-productrow-update.md)
 - [{#T}](./crm-item-productrow-get.md)
-- [{#T}](./crm-item-productrow-set.md)
-- [{#T}](./crm-item-productrow-get-available-for-payment.md)
 - [{#T}](./crm-item-productrow-list.md)
 - [{#T}](./crm-item-productrow-delete.md)
+- [{#T}](./crm-item-productrow-set.md)
+- [{#T}](./crm-item-productrow-get-available-for-payment.md)

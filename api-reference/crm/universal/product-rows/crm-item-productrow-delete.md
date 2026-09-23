@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission to modify the CRM object from which the product row is being deleted is required.
+> Who can execute the method: access permission to modify the CRM object that the product row belongs to is required.
 
 Removes a product row from a CRM object.
+
+After the deletion, CRM recalculates the total of the object: for example, the deal total decreases by the cost of the deleted row. A deleted row cannot be restored — it has to be added again with the [crm.item.productrow.add](./crm-item-productrow-add.md) method.
+
+If the row has already been included in a payment, the method also deletes the corresponding [product item in the payment](../payment/products-in-payment/index.md).
+
+The method deletes a single row. To delete several rows at once, pass the required set to the [crm.item.productrow.set](./crm-item-productrow-set.md) method: it replaces all product rows of the CRM object.
 
 ## Method Parameters
 
@@ -23,7 +29,8 @@ Removes a product row from a CRM object.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row. ||
+[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row.
+It can be retrieved with the [crm.item.productrow.list](./crm-item-productrow-list.md) method. ||
 |#
 
 ## Code Examples
@@ -209,16 +216,15 @@ Removes a product row from a CRM object.
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "crm.item.productrow.delete", b24.Params{
+    _, err := client.Core().Call(ctx, "crm.item.productrow.delete", b24.Params{
     	"id": 17655,
     })
     if err != nil {
     	return fmt.Errorf("crm.item.productrow.delete: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
+    // The method returns null — there is nothing to unmarshal, it is enough to check that there is no error.
+    fmt.Println("product row deleted")
     ```
 
 {% endlist %}
@@ -247,9 +253,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`any`](../../../data-types.md) | Result of the operation. The value is always null ||
+[`null`](../../../data-types.md) | The method returns no data. Success is indicated by the absence of an error in the response ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -269,9 +275,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of objects is not supported ||
-|| `ACCESS_DENIED` | Access denied ||
-|| `NOT_FOUND` | Product item not found  ||
+|| `ENTITY_TYPE_NOT_SUPPORTED` | This type of CRM object does not support product rows ||
+|| `ACCESS_DENIED` | The user has no permission to modify the CRM object that the product row belongs to ||
+|| `NOT_FOUND` | Product row not found. The same error is returned when an already deleted row is deleted again ||
 || `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
@@ -282,9 +288,9 @@ HTTP status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./crm-item-productrow-add.md)
-- [{#T}](./crm-item-productrow-fields.md)
-- [{#T}](./crm-item-productrow-get.md)
-- [{#T}](./crm-item-productrow-set.md)
 - [{#T}](./crm-item-productrow-update.md)
-- [{#T}](./crm-item-productrow-get-available-for-payment.md)
+- [{#T}](./crm-item-productrow-get.md)
 - [{#T}](./crm-item-productrow-list.md)
+- [{#T}](./crm-item-productrow-set.md)
+- [{#T}](./crm-item-productrow-get-available-for-payment.md)
+- [{#T}](./crm-item-productrow-fields.md)

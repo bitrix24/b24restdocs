@@ -1183,5 +1183,5 @@ If the method returns an error, check the request data.
 - [Get a list of products by filter catalog.product.list](../../../api-reference/catalog/product/catalog-product-list.md)
 - [Get a list of prices by filter catalog.price.list](../../../api-reference/catalog/price/catalog-price-list.md)
 - [Create a new CRM item crm.item.add](../../../api-reference/crm/universal/crm-item-add.md)
-- [Save a CRM object product row crm.item.productrow.set](../../../api-reference/crm/universal/product-rows/crm-item-productrow-set.md)
-- [Get a list of product rows crm.item.productrow.list](../../../api-reference/crm/universal/product-rows/crm-item-productrow-list.md)
+- [Save CRM object product rows crm.item.productrow.set](../../../api-reference/crm/universal/product-rows/crm-item-productrow-set.md)
+- [Get CRM object product rows crm.item.productrow.list](../../../api-reference/crm/universal/product-rows/crm-item-productrow-list.md)

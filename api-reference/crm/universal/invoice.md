@@ -190,9 +190,9 @@ CRM Object Identifier **ownerType** — `SI`
 || [crm.item.productrow.add](./product-rows/crm-item-productrow-add.md) | Adds a product item ||
 || [crm.item.productrow.update](./product-rows/crm-item-productrow-update.md) | Updates a product item ||
 || [crm.item.productrow.get](./product-rows/crm-item-productrow-get.md) | Retrieves information about a product item by id ||
-|| [crm.item.productrow.set](./product-rows/crm-item-productrow-set.md) | Associates a product item with a CRM object ||
+|| [crm.item.productrow.set](./product-rows/crm-item-productrow-set.md) | Saves the set of product items of a CRM object ||
 || [crm.item.productrow.list](./product-rows/crm-item-productrow-list.md) | Retrieves a list of product items ||
-|| [crm.item.productrow.getAvailableForPayment](./product-rows/crm-item-productrow-get-available-for-payment.md) | Retrieves a list of unpaid products ||
+|| [crm.item.productrow.getAvailableForPayment](./product-rows/crm-item-productrow-get-available-for-payment.md) | Retrieves product items with no payment issued ||
 || [crm.item.productrow.delete](./product-rows/crm-item-productrow-delete.md) | Deletes a product item ||
 || [crm.item.productrow.fields](./product-rows/crm-item-productrow-fields.md) | Retrieves a list of product item fields ||
 |#

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires read access permission for the object to which the product items are linked
+> Who can execute the method: access permission to read the CRM object that the product row belongs to is required.
 
-Retrieves information about a product item in the CRM.
+Retrieves information about a product row of a CRM object by its identifier.
 
 ## Method Parameters
 
@@ -23,7 +23,8 @@ Retrieves information about a product item in the CRM.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row. ||
+[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row.
+It can be retrieved with the [crm.item.productrow.list](./crm-item-productrow-list.md) method. ||
 |#
 
 ## Code Examples
@@ -81,13 +82,14 @@ Retrieves information about a product item in the CRM.
         discountSum: number
         taxRate: number | null
         taxIncluded: string
+        taxName: string
         customized: string
         measureCode: number
         measureName: string
         sort: number
         xmlId: string
         type: number
-        storeId: number
+        storeId: number | null
       }
     }
 
@@ -252,12 +254,12 @@ Retrieves information about a product item in the CRM.
     }
 
     var item struct {
-    	ID          b24.ID `json:"id"`
-    	OwnerID     b24.ID `json:"ownerId"`
-    	OwnerType   string `json:"ownerType"`
-    	ProductID   b24.ID `json:"productId"`
-    	ProductName string `json:"productName"`
-    	Price       int    `json:"price"`
+    	ID          b24.ID  `json:"id"`
+    	OwnerID     b24.ID  `json:"ownerId"`
+    	OwnerType   string  `json:"ownerType"`
+    	ProductID   b24.ID  `json:"productId"`
+    	ProductName string  `json:"productName"`
+    	Price       float64 `json:"price"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -291,13 +293,14 @@ HTTP status: **200**
          "discountSum":0,
          "taxRate":null,
          "taxIncluded":"Y",
+         "taxName":"No VAT",
          "customized":"Y",
          "measureCode":796,
          "measureName":"pcs",
          "sort":10,
          "xmlId":"sale_basket_8145",
          "type":4,
-         "storeId": 19
+         "storeId":19
       }
    },
    "time":{
@@ -317,11 +320,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
-|| **productRow**
-[`crm_item_product_row`](../../data-types.md#crm_item_product_row) | Object containing information about the product item ||
+[`object`](../../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### The result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **productRow**
+[`crm_item_product_row`](../../data-types.md#crm_item_product_row) | Object with information about the product row ||
 |#
 
 ## Error Handling
@@ -341,9 +351,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of objects is not supported ||
-|| `ACCESS_DENIED` | Access denied ||
-|| `NOT_FOUND` | Product item not found ||
+|| `ENTITY_TYPE_NOT_SUPPORTED` | This type of CRM object does not support product rows ||
+|| `ACCESS_DENIED` | The user has no permission to read the CRM object that the product row belongs to ||
+|| `NOT_FOUND` | Product row not found ||
 || `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
@@ -355,8 +365,8 @@ HTTP status: **400**
 - [{#T}](./index.md)
 - [{#T}](./crm-item-productrow-add.md)
 - [{#T}](./crm-item-productrow-update.md)
-- [{#T}](./crm-item-productrow-fields.md)
-- [{#T}](./crm-item-productrow-set.md)
-- [{#T}](./crm-item-productrow-get-available-for-payment.md)
 - [{#T}](./crm-item-productrow-list.md)
 - [{#T}](./crm-item-productrow-delete.md)
+- [{#T}](./crm-item-productrow-set.md)
+- [{#T}](./crm-item-productrow-get-available-for-payment.md)
+- [{#T}](./crm-item-productrow-fields.md)

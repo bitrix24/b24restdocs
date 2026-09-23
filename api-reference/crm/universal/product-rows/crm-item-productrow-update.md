@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the CRM object whose product row is being updated.
+> Who can execute the method: access permission to modify the CRM object that the product row belongs to is required.
 
 Updates the product row of a CRM object.
+
+The method changes a single row — to replace the whole set, use the [crm.item.productrow.set](./crm-item-productrow-set.md) method. After `price` or `quantity` changes, CRM recalculates the total of the object: for example, the deal total grows if the row price is raised.
 
 ## Method Parameters
 
@@ -23,12 +25,21 @@ Updates the product row of a CRM object.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row. ||
+[`crm_item_product_row.id`](../../data-types.md#crm_item_product_row) | Identifier of the product row.
+It can be retrieved with the [crm.item.productrow.list](./crm-item-productrow-list.md) method. ||
 || **fields***
-[`object`](../../../data-types.md) | Object containing field values for updating the product row of the CRM object ||
+[`object`](../../../data-types.md) | Object containing field values for updating the product row of the CRM object [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
+
+Pass only the fields that have to be changed. Fields that are not passed keep their previous values, and CRM recalculates the dependent ones on its own: for example, after `price` changes, the method recalculates `priceExclusive`, `priceNetto`, and `priceBrutto` taking the discount and the tax of the row into account.
+
+The `id`, `priceAccount`, `priceExclusive`, `priceNetto`, `priceBrutto`, `type`, `xmlId`, and `storeId` fields are not available for writing. If at least one available field is passed together with unavailable ones, the method updates the row and ignores the unavailable values. If there is no available field in `fields` at all, the method returns the `INVALID_ARG_VALUE` error.
+
+An empty `fields` object is the exception: the method accepts it without an error, returns `result: null`, and leaves the row unchanged.
+
+The method accepts the `ownerId`, `ownerType`, `measureName`, and `customized` fields but does not retain their values. The owner of a row cannot be changed through an update.
 
 #|
 || **Name**
@@ -36,9 +47,11 @@ Updates the product row of a CRM object.
 || **productId**
 [`catalog_product.id`](../../../catalog/data-types.md#catalog_product) | Identifier of the product from the catalog. ||
 || **productName**
-[`string`](../../../data-types.md) | Name of the product in the product row. ||
+[`string`](../../../data-types.md) | Name of the product in the product row.
+If `productId` is changed and `productName` is not passed, the method substitutes the name of the new product from the catalog ||
 || **price**
-[`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes. ||
+[`double`](../../../data-types.md) | Price per unit of the product row, including discounts and taxes. It is specified in the currency of the CRM object.
+When `productId` is changed, the price from the catalog is not substituted: to change the price, pass `price` ||
 || **quantity**
 [`double`](../../../data-types.md) | Quantity of the product ||
 || **discountTypeId**
@@ -55,10 +68,14 @@ Possible values:
 || **taxIncluded**
 [`string`](../../../data-types.md) | Indicator of whether tax is included in the price.
 Possible values:
-- `Y` – tax included
-- `N` – tax not included  ||
+- `Y` — tax included
+- `N` — tax not included ||
+|| **taxName**
+[`string`](../../../data-types.md) | Name of the tax rate. For example, `VAT 20`.
+It is a label only: the calculation uses the `taxRate` value, and the method retains `taxName` as is ||
 || **measureCode**
-[`catalog_measure.code`](../../../catalog/data-types.md#catalog_measure) | Code of the unit of measurement ||
+[`catalog_measure.code`](../../../catalog/data-types.md#catalog_measure) | Code of the unit of measurement.
+When `productId` is changed, the unit of measurement from the catalog is not substituted ||
 || **sort**
 [`integer`](../../../data-types.md) | Sorting ||
 |#
@@ -116,8 +133,9 @@ Possible values:
         discountTypeId: number
         discountRate: number
         discountSum: number
-        taxRate: number
+        taxRate: number | null
         taxIncluded: string
+        taxName: string
         customized: string
         measureCode: number
         measureName: string
@@ -256,7 +274,7 @@ Possible values:
                     'id' => 17648,
                     'fields' => [
                         'productId'      => 9621,
-                        'price'          => 90000.000000,
+                        'price'          => 90000,
                         'quantity'       => 3,
                         'discountTypeId' => 2,
                         'discountRate'   => 10,
@@ -288,7 +306,7 @@ Possible values:
             id: 17648,
             fields: {
                 productId: 9621,
-                price: 90000.000000,
+                price: 90000,
                 quantity: 3,
                 discountTypeId: 2,
                 discountRate: 10,
@@ -319,7 +337,7 @@ Possible values:
             'id' => 17648,
             'fields' => [
                 'productId' => 9621,
-                'price' => 90000.000000,
+                'price' => 90000,
                 'quantity' => 3,
                 'discountTypeId' => 2,
                 'discountRate' => 10,
@@ -365,12 +383,12 @@ Possible values:
     }
 
     var item struct {
-    	ID          b24.ID `json:"id"`
-    	OwnerID     b24.ID `json:"ownerId"`
-    	OwnerType   string `json:"ownerType"`
-    	ProductID   b24.ID `json:"productId"`
-    	ProductName string `json:"productName"`
-    	Price       int    `json:"price"`
+    	ID          b24.ID  `json:"id"`
+    	OwnerID     b24.ID  `json:"ownerId"`
+    	OwnerType   string  `json:"ownerType"`
+    	ProductID   b24.ID  `json:"productId"`
+    	ProductName string  `json:"productName"`
+    	Price       float64 `json:"price"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -388,27 +406,28 @@ HTTP status: **200**
 {
    "result":{
       "productRow":{
-         "id":17649,
+         "id":17648,
          "ownerId":13142,
          "ownerType":"D",
          "productId":9621,
          "productName":"iphone 14",
          "price":90000,
          "priceAccount":90000,
-         "priceExclusive":81818.18,
-         "priceNetto":90909.09,
+         "priceExclusive":81818.18181818,
+         "priceNetto":90909.09090909,
          "priceBrutto":100000,
          "quantity":3,
          "discountTypeId":2,
          "discountRate":10,
-         "discountSum":9090.91,
+         "discountSum":9090.90909091,
          "taxRate":10,
          "taxIncluded":"Y",
+         "taxName":"VAT 10",
          "customized":"Y",
          "measureCode":796,
          "measureName":"pcs",
          "sort":20,
-         "xmlId":"sale_basket_8147",
+         "xmlId":"sale_basket_8146",
          "type":4
       }
    },
@@ -429,11 +448,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
-|| **productRow**
-[`crm_item_product_row`](../../data-types.md#crm_item_product_row) | Object containing information about the updated product row ||
+[`object`](../../../data-types.md) | Root element of the response [(detailed description)](#result).
+If an empty object is passed in `fields`, the method returns `null` ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### The result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **productRow**
+[`crm_item_product_row`](../../data-types.md#crm_item_product_row) | Object with information about the updated product row ||
 |#
 
 ## Error Handling
@@ -453,10 +480,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `ENTITY_TYPE_NOT_SUPPORTED` | Working with this type of objects is not supported ||
-|| `ACCESS_DENIED` | Access denied ||
-|| `NOT_FOUND` | Product item not found ||
-|| `INVALID_ARG_VALUE` | Unknown field or the provided field is not available for update ||
+|| `ENTITY_TYPE_NOT_SUPPORTED` | This type of CRM object does not support product rows ||
+|| `ACCESS_DENIED` | The user has no permission to modify the CRM object that the product row belongs to ||
+|| `NOT_FOUND` | Product row not found ||
+|| `INVALID_ARG_VALUE` | All the fields passed in `fields` are unknown or not available for update.
+The method returns the same error if the product with the provided `productId` is not found in the catalog ||
 || `100` | Required parameters not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
@@ -467,9 +495,9 @@ HTTP status: **400**
 
 - [{#T}](./index.md)
 - [{#T}](./crm-item-productrow-add.md)
-- [{#T}](./crm-item-productrow-fields.md)
 - [{#T}](./crm-item-productrow-get.md)
-- [{#T}](./crm-item-productrow-set.md)
-- [{#T}](./crm-item-productrow-get-available-for-payment.md)
 - [{#T}](./crm-item-productrow-list.md)
 - [{#T}](./crm-item-productrow-delete.md)
+- [{#T}](./crm-item-productrow-set.md)
+- [{#T}](./crm-item-productrow-get-available-for-payment.md)
+- [{#T}](./crm-item-productrow-fields.md)

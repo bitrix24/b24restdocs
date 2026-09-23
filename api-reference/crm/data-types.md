@@ -143,18 +143,20 @@ Possible values:
 || **discountSum**
 [`double`](../data-types.md) | Absolute discount value. ||
 || **taxRate**
-[`double`](../data-types.md) | Tax rate in percentage. ||
+[`double`](../data-types.md) | Tax rate in percentage. Returns `null` if no tax is set for the product row. ||
+|| **taxName**
+[`string`](../data-types.md) | Name of the tax rate. For example, `VAT 20` or `No VAT`. ||
 || **taxIncluded**
 [`string`](../data-types.md) | Indicator of whether tax is included in the price.
 Possible values:
-- `Y` – tax included
-- `N` – tax not included. ||
+- `Y` — tax included
+- `N` — tax not included. ||
 || **customized**
 [`string`](../data-types.md) | Deprecated. ||
 || **measureCode**
 `catalog_measure.code` | Unit of measure code. ||
 || **measureName**
-[`string`](../data-types.md) | Text representation of the unit of measure (e.g., pcs, kg, m, l, etc.). ||
+[`string`](../data-types.md) | Text representation of the unit of measure. For example, pcs, kg, m, l. ||
 || **sort**
 [`integer`](../data-types.md) | Sorting. ||
 || **xmlId**
@@ -162,15 +164,16 @@ Possible values:
 || **type**
 [`integer`](../data-types.md) | Type of product.
 Possible values:
-- `1` - Simple product
-- `2` - Bundle
-- `3` - Product with trade offers
-- `4` - Trade offer
-- `5` - Trade offer without a product (not specified or deleted)
-- `6` - Specific type indicating an invalid product with trade offers
-- `7` — Service. ||
+- `1` — simple product
+- `2` — bundle
+- `3` — product with trade offers
+- `4` — trade offer
+- `5` — trade offer without a product: the product is not specified or deleted
+- `6` — specific type indicating an invalid product with trade offers
+- `7` — service. ||
 || **storeId**
-[`integer`](../data-types.md) | Identifier of the warehouse. ||
+[`integer`](../data-types.md) | Identifier of the warehouse. Filled in only if the product row has a reserve, otherwise it returns `null`.
+The field is returned by the methods [crm.item.productrow.get](./universal/product-rows/crm-item-productrow-get.md) and [crm.item.productrow.list](./universal/product-rows/crm-item-productrow-list.md). ||
 |#
 
 ### crm_currency
