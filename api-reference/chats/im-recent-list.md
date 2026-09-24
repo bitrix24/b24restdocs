@@ -64,6 +64,12 @@ Possible values:
 Possible values:
 - `Y` — yes
 - `N` — no ||
+  || **ONLY_OPENLINES**
+  [`string`](../data-types.md) | Return only chats from Open Channels.
+
+Possible values:
+- `Y` — yes
+- `N` — no ||
   || **ONLY_COPILOT**
   [`string`](../data-types.md) | Return only BitrixGPT chats.
 
