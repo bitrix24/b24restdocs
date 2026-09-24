@@ -39,14 +39,68 @@ Handler URLs are defined in the parameters of the [sale.delivery.handler.add](..
 
 Bitrix24 sends an HTTP request with a JSON body to the handler URL. The request structure depends on the event and is described on the specific event page.
 
-The external handler must return a JSON response:
+The top level of the request depends on the action:
 
-- A successful response confirms the calculation, creation, or cancellation of the order
-- An error response provides a reason that can be displayed to the manager
+- for cost calculation — the `SHIPMENT` object
+- for order creation — the `SHIPMENTS` array
+- for order cancellation — the `DELIVERY_ID` and `REQUEST_ID` identifiers
+
+Abbreviated example of an order creation request:
+
+```json
+{
+    "SHIPMENTS": [
+        {
+            "ID": 4063,
+            "DELIVERY_SERVICE": {
+                "ID": 225
+            },
+            "ITEMS": []
+        }
+    ]
+}
+```
+
+The external handler must return JSON with the `SUCCESS` field. The response fields depend on the result and event:
+
+#|
+|| **Field**
+`type` | **When to Pass** ||
+|| **SUCCESS**
+[`string`](../../../data-types.md) | Always: `Y` for successful processing, `N` for an error ||
+|| **PRICE**
+[`double`](../../../data-types.md) | For successful cost calculation ||
+|| **REQUEST_ID**
+[`string`](../../../data-types.md) | For successful delivery order creation ||
+|| **REASON.TEXT**
+[`string`](../../../data-types.md) | On error: the reason text for the manager ||
+|#
+
+No additional fields are required for successful order cancellation. Example of a successful order creation response:
+
+```json
+{
+    "SUCCESS": "Y",
+    "REQUEST_ID": "4757aca4931a4f029f49c0db4374d13d"
+}
+```
+
+On error, provide a description in `REASON.TEXT`:
+
+```json
+{
+    "SUCCESS": "N",
+    "REASON": {
+        "TEXT": "Delivery is not available for the specified address"
+    }
+}
+```
+
+The complete set of request and response fields is provided on the event pages.
 
 ## Handler Server Availability
 
-Handler URLs must be accessible for inbound requests from Bitrix24. If the delivery service server is unavailable or returns a response in an unexpected JSON format, the delivery action will result in an error.
+Handler URLs must be accessible for inbound requests from Bitrix24. The handler must return HTTP status `200` and a valid JSON object. Responses with other HTTP statuses and data that cannot be parsed as JSON are not processed as a successful delivery service response.
 
 ## Overview of Events {#all-events}
 

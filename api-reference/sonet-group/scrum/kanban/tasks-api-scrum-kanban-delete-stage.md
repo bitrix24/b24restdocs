@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: users with permission to edit tasks in the Scrum group
 
 This method deletes a stage.
 
@@ -236,8 +236,6 @@ The stage will not be deleted if it contains tasks.
 
 HTTP status: **200**
 
-In case of a successful request, the server will return true
-
 ```json
 {
     "result": true,
@@ -251,6 +249,17 @@ In case of a successful request, the server will return true
     }
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Returns `true` if the stage was successfully deleted ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
 
 ## Error Handling
 
@@ -273,7 +282,7 @@ HTTP status: **400**
 || `0` | `Stage not found` | An unknown stage identifier `stageId` was provided ||
 || `0` | `Stage has tasks` | The stage has tasks and cannot be deleted ||
 || `0` | `Access denied` | Access is denied ||
-|| `0` | Unknown error ||
+|| `0` | `System error` | The stage could not be deleted due to an internal error ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

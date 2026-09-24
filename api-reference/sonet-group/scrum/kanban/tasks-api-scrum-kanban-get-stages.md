@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: users with permission to view tasks in the Scrum group
 
 The method returns the Kanban stages by the sprint ID.
 
@@ -294,16 +294,29 @@ HTTP Status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **id***
-[`integer`](../../../data-types.md) | The identifier of the stage ||
-|| **name***
-[`string`](../../../data-types.md) | The name of the Kanban stage ||
+|| **result**
+[`array`](../../../data-types.md) | Array of Kanban stages. The structure of each stage is described [below](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result[] Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`string`](../../../data-types.md) | Stage identifier ||
+|| **name**
+[`string`](../../../data-types.md) | Kanban stage name ||
 || **type**
 [`string`](../../../data-types.md) | The type of the Kanban stage. Possible values: `NEW`, `WORK`, `FINISH` ||
 || **sort**
-[`integer`](../../../data-types.md) | The sorting order ||
+[`string`](../../../data-types.md) | Sort order ||
+|| **sprintId**
+[`string`](../../../data-types.md) | Identifier of the sprint to which the stage belongs ||
 || **color**
-[`string`](../../../data-types.md) | The color of the Kanban stage ||
+[`string`](../../../data-types.md) | Kanban stage color as a six-character HEX code without `#`, for example `00C4FB` ||
 |#
 
 ## Error Handling
@@ -326,7 +339,6 @@ HTTP Status: **400**
 || `0` | `Sprint id not found` | The required field `sprintId` is not filled ||
 || `0` | `Sprint not found` | An unknown sprint identifier `sprintId` was provided ||
 || `0` | `Access denied` | Access is denied ||
-|| `0` | Unknown error | ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The request is sent to the address specified in `CALCULATE_URL` when creating a delivery handler using the method [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md).
+Bitrix24 sends an HTTP `POST` request to the address from the `CALCULATE_URL` parameter passed when creating a delivery handler using [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md). The external system must calculate the delivery cost and return the result in JSON format.
 
 ## Request Parameters
 
@@ -143,6 +143,8 @@ The request is sent to the address specified in `CALCULATE_URL` when creating a 
 
 ## Response Parameters
 
+The handler must return HTTP status `200` and a JSON object.
+
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
@@ -156,11 +158,27 @@ The request is sent to the address specified in `CALCULATE_URL` when creating a 
  ||
 || **PRICE**
 [`double`](../../../data-types.md) | Calculated delivery cost in the currency of the delivery service ||
+|| **PERIOD_DESCRIPTION**
+[`string`](../../../data-types.md) | Text description of the delivery period ||
+|| **PERIOD_FROM**
+[`integer`](../../../data-types.md) | Lower bound of the delivery period in the units specified in `PERIOD_TYPE` ||
+|| **PERIOD_TO**
+[`integer`](../../../data-types.md) | Upper bound of the delivery period in the units specified in `PERIOD_TYPE` ||
+|| **PERIOD_TYPE**
+[`string`](../../../data-types.md) | Unit of measurement for the delivery period. Possible values:
+
+- `MIN` — minutes
+- `H` — hours
+- `D` — days
+- `M` — months
+ ||
+|| **DESCRIPTION**
+[`string`](../../../data-types.md) | Additional description of the calculation result ||
 || **REASON**
 [`object`](../../../data-types.md) | Reason for the error. Provided in case of an unsuccessful cost calculation attempt (detailed description provided [below](#reason)) ||
 |#
 
-### REASON
+### REASON Object {#reason}
 
 #|
 || **Name**
@@ -174,7 +192,12 @@ The request is sent to the address specified in `CALCULATE_URL` when creating a 
 ```json
 {
     "SUCCESS": "Y",
-    "PRICE": 79.99
+    "PRICE": 79.99,
+    "PERIOD_DESCRIPTION": "1–2 days",
+    "PERIOD_FROM": 1,
+    "PERIOD_TO": 2,
+    "PERIOD_TYPE": "D",
+    "DESCRIPTION": "Door-to-door courier delivery"
 }
 ```
 
@@ -189,7 +212,11 @@ The request is sent to the address specified in `CALCULATE_URL` when creating a 
 }
 ```
 
-## Continue Learning 
+## Error Handling
+
+If `SUCCESS` is absent or differs from `Y`, Bitrix24 considers the calculation unsuccessful. Provide an explanation in `REASON.TEXT`. If `REASON.TEXT` is absent or empty, Bitrix24 uses the standard delivery calculation error message.
+
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./create-delivery-request.md)

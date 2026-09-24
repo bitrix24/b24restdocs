@@ -19,6 +19,37 @@ Kanban is a tool that helps visually represent task management in the form of co
 
 **Sprint.** The Kanban stage is linked to the sprint by the sprint identifier `sprintId`. You can obtain the identifier using the [add new sprint method](../sprint/tasks-api-scrum-sprint-add.md) or the [get list of sprints method](../sprint/tasks-api-scrum-sprint-list.md).
 
+**Task.** A task is linked to a stage by the `taskId`, `stageId`, and `sprintId` identifiers. The task and sprint must belong to the same Scrum group.
+
+## Kanban Stage Data
+
+The [tasks.api.scrum.kanban.getStages](./tasks-api-scrum-kanban-get-stages.md) method returns an array of stages sorted by the `sort` field.
+
+#|
+|| **Field** | **Description** | **Example** ||
+|| `id` | Stage identifier | `58` ||
+|| `name` | Stage name | `New` ||
+|| `sort` | Sort order | `100` ||
+|| `type` | Stage type: `NEW`, `WORK`, or `FINISH` | `NEW` ||
+|| `sprintId` | Sprint identifier | `5` ||
+|| `color` | Stage color as a six-character HEX code without `#` | `00C4FB` ||
+|#
+
+```json
+{
+    "result": [
+        {
+            "id": "58",
+            "name": "New",
+            "sort": "100",
+            "type": "NEW",
+            "sprintId": "5",
+            "color": "00C4FB"
+        }
+    ]
+}
+```
+
 ## How to Get Started
 
 1. Retrieve the active sprint identifier using the [tasks.api.scrum.sprint.list](../sprint/tasks-api-scrum-sprint-list.md) method.
@@ -34,9 +65,11 @@ Kanban is a tool that helps visually represent task management in the form of co
 
 ## Features
 
-The Scrum Kanban must include stages with the type new `NEW` and final `FINISH`.
+Methods accept three stage types: new `NEW`, work `WORK`, and final `FINISH`. If `type` is omitted when creating a stage, the method sets it to `WORK`. The default values for `sort` and `color` are `100` and `00C4FB`. There is no fixed list of values for `color`: pass a six-character HEX code without `#`.
 
-Use the method for creating a Kanban stage only for active sprints, meaning those with the field `"status": "active"`.
+## Method Access
+
+[Retrieving stages](./tasks-api-scrum-kanban-get-stages.md) requires permission to view tasks in the Scrum group. Creating, updating, and deleting stages, as well as adding and removing tasks, requires permission to edit tasks in the group. The [tasks.api.scrum.kanban.getFields](./tasks-api-scrum-kanban-get-fields.md) method returns the field reference without checking permissions for a specific group.
 
 ## Tasks in Kanban
 
@@ -52,7 +85,7 @@ To remove a task from the Kanban, use the [tasks.api.scrum.kanban.deleteTask](./
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: any user
+> Who can execute the methods: depends on the method
 
 #|
 || **Method** | **Description** ||

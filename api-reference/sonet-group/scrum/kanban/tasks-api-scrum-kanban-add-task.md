@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: users with permission to edit tasks in the Scrum group
 
 This method adds a task to the Scrum kanban.
 
@@ -262,6 +262,17 @@ HTTP status: **200**
 }
 ```
 
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Returns `true` if the task was successfully added to the Kanban stage ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
 ## Error Handling
 
 HTTP status: **400**
@@ -269,7 +280,7 @@ HTTP status: **400**
 ```json
 {
     "error": 0,
-    "error_description": "TaskId id not found"
+    "error_description": "Task id not found"
 }
 ```
 
@@ -280,13 +291,13 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `0` | `Sprint id not found` | Required field `sprintId` is not filled ||
-|| `0` | `TaskId id not found` | Required field `taskId` is not filled ||
-|| `0` | `StageId id not found` | Required field `stageId` is not filled ||
+|| `0` | `Task id not found` | Required field `taskId` is not filled ||
+|| `0` | `Stage id not found` | Required field `stageId` is not filled ||
 || `0` | `Sprint not found` | An unknown sprint identifier was provided ||
 || `0` | `Stage not found` | An unknown stage identifier was provided ||
 || `0` | `Task not found. The task must be with GROUP_ID` | An unknown task identifier was provided or the task does not belong to the sprint group ||
 || `0` | `Access denied` | Access is denied ||
-|| `0` | Unknown error | ||
+|| `0` | `System error` | The task could not be added to the stage due to an internal error ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -25,7 +25,9 @@ The method `log.blogpost.get` returns messages from the News Feed that are acces
 || **POST_ID**
 [`integer`](../data-types.md) | Filter by message ID.
 
-You can obtain the ID using the [log.blogpost.get](./log-blogpost-get.md) method. ||
+The ID is specified in the `ID` field of a method result item.
+
+If this parameter is passed, filtering by `LOG_RIGHTS` is ignored ||
 || **LOG_RIGHTS**
 [`array`](../data-types.md) | Filter by recipients who have the right to view the message.
 
@@ -35,17 +37,19 @@ Possible values:
 - `U<X>` — users with the identifier `X`. You can retrieve the identifier using the [user.get](../user/user-get.md) method
 - `UA` — all authorized users
 - `DR<X>` — company departments with the identifier `X`. You can retrieve the identifier using the [department.get](../departments/department-get.md) method
+
+This parameter is applied only when `POST_ID` is not passed. If neither parameter is passed, the method returns all posts available to the current user
 ||
 || **LOG_DATE_FROM**
-[`string`](../data-types.md) | Lower boundary of the post publication period in ISO 8601 format. If `LOG_DATE_FROM` and `LOG_DATE_TO` are specified, the `LOG_DATE_FROM` value must not be later than `LOG_DATE_TO` ||
+[`string`](../data-types.md) | Lower boundary of the post publication period in ISO 8601 format. If `LOG_DATE_FROM` and `LOG_DATE_TO` are specified, the `LOG_DATE_FROM` value must not be later than `LOG_DATE_TO`. An empty string does not limit the result set ||
 || **LOG_DATE_TO**
-[`string`](../data-types.md) | Upper boundary of the post publication period in ISO 8601 format. If the value is not specified, the upper boundary of the period is not applied ||
+[`string`](../data-types.md) | Upper boundary of the post publication period in ISO 8601 format. If the value is not specified or an empty string is passed, the upper boundary of the period is not applied ||
 || **FIRST_ID**
-[`integer`](../data-types.md) | News Feed entry identifier for cursor-based forward navigation. The method returns posts with identifiers greater than the specified value. If `FIRST_ID` and `LAST_ID` are passed, `FIRST_ID` is applied ||
+[`integer`](../data-types.md) | News Feed entry identifier for cursor-based forward navigation. The method returns posts with identifiers greater than the specified value. If `FIRST_ID` and `LAST_ID` are passed, `FIRST_ID` is applied. A value of `0` or an empty string starts the result set from the edge of the list ||
 || **LAST_ID**
-[`integer`](../data-types.md) | News Feed entry identifier for cursor-based backward navigation. The method returns posts with identifiers less than the specified value ||
+[`integer`](../data-types.md) | News Feed entry identifier for cursor-based backward navigation. The method returns posts with identifiers less than the specified value. A value of `0` or an empty string starts the result set from the edge of the list ||
 || **LIMIT**
-[`integer`](../data-types.md) | Page size in cursor mode. A non-positive or non-numeric value is replaced with the default value. The maximum value is `200` ||
+[`integer`](../data-types.md) | Page size in cursor mode. The default value is `50`. A non-positive or non-numeric value is replaced with the default value. The maximum value is `200` ||
 || **start**
 [`integer`](../data-types.md) | This parameter is used for pagination control.
 
@@ -60,7 +64,7 @@ The formula for calculating the `start` parameter value:
 
 {% note info "" %}
 
-If the `POST_ID` and `LOG_RIGHTS` parameters are not specified, all messages available to the current user are returned. The parameters are mutually exclusive: if `POST_ID` is specified, filtering by `LOG_RIGHTS` is ignored.
+Pass `FIRST_ID` or `LAST_ID` to enable cursor mode. In this mode, the `start` parameter is ignored and `LIMIT` sets the page size. Without cursor parameters, the method uses pagination through `start`, with 50 records per page.
 
 {% endnote %}
 
@@ -358,9 +362,9 @@ Example response:
             "HELP_MESSAGE": null,
             "USER_TYPE": {
             "USER_TYPE_ID": "file",
-            "CLASS_NAME": "Bitrix\Main\UserField\Types\FileType",
-            "EDIT_CALLBACK": ["Bitrix\Main\UserField\Types\FileType", "renderEdit"],
-            "VIEW_CALLBACK": ["Bitrix\Main\UserField\Types\FileType", "renderView"],
+            "CLASS_NAME": "Bitrix\\Main\\UserField\\Types\\FileType",
+            "EDIT_CALLBACK": ["Bitrix\\Main\\UserField\\Types\\FileType", "renderEdit"],
+            "VIEW_CALLBACK": ["Bitrix\\Main\\UserField\\Types\\FileType", "renderView"],
             "USE_FIELD_COMPONENT": true,
             "DESCRIPTION": "File",
             "BASE_TYPE": "file"
@@ -392,7 +396,7 @@ Example response:
             "HELP_MESSAGE": null,
             "USER_TYPE": {
             "USER_TYPE_ID": "url_preview",
-            "CLASS_NAME": "Bitrix\Main\UrlPreview\UrlPreviewUserType",
+            "CLASS_NAME": "Bitrix\\Main\\UrlPreview\\UrlPreviewUserType",
             "DESCRIPTION": "Link preview content",
             "BASE_TYPE": "int"
             },
@@ -428,9 +432,9 @@ Example response:
             "HELP_MESSAGE": null,
             "USER_TYPE": {
             "USER_TYPE_ID": "integer",
-            "CLASS_NAME": "Bitrix\Main\UserField\Types\IntegerType",
-            "EDIT_CALLBACK": ["Bitrix\Main\UserField\Types\IntegerType", "renderEdit"],
-            "VIEW_CALLBACK": ["Bitrix\Main\UserField\Types\IntegerType", "renderView"],
+            "CLASS_NAME": "Bitrix\\Main\\UserField\\Types\\IntegerType",
+            "EDIT_CALLBACK": ["Bitrix\\Main\\UserField\\Types\\IntegerType", "renderEdit"],
+            "VIEW_CALLBACK": ["Bitrix\\Main\\UserField\\Types\\IntegerType", "renderView"],
             "USE_FIELD_COMPONENT": true,
             "DESCRIPTION": "Integer",
             "BASE_TYPE": "int"
@@ -466,7 +470,7 @@ Example response:
             "HELP_MESSAGE": null,
             "USER_TYPE": {
             "USER_TYPE_ID": "disk_file",
-            "CLASS_NAME": "Bitrix\Disk\Uf\FileUserType",
+            "CLASS_NAME": "Bitrix\\Disk\\Uf\\FileUserType",
             "DESCRIPTION": "File (Drive)",
             "BASE_TYPE": "int",
             "TAG": ["DISK FILE ID", "DOCUMENT ID"]
@@ -505,9 +509,9 @@ Example response:
             "HELP_MESSAGE": null,
             "USER_TYPE": {
             "USER_TYPE_ID": "integer",
-            "CLASS_NAME": "Bitrix\Main\UserField\Types\IntegerType",
-            "EDIT_CALLBACK": ["Bitrix\Main\UserField\Types\IntegerType", "renderEdit"],
-            "VIEW_CALLBACK": ["Bitrix\Main\UserField\Types\IntegerType", "renderView"],
+            "CLASS_NAME": "Bitrix\\Main\\UserField\\Types\\IntegerType",
+            "EDIT_CALLBACK": ["Bitrix\\Main\\UserField\\Types\\IntegerType", "renderEdit"],
+            "VIEW_CALLBACK": ["Bitrix\\Main\\UserField\\Types\\IntegerType", "renderView"],
             "USE_FIELD_COMPONENT": true,
             "DESCRIPTION": "Integer",
             "BASE_TYPE": "int"
@@ -546,9 +550,9 @@ Example response:
             "HELP_MESSAGE": null,
             "USER_TYPE": {
             "USER_TYPE_ID": "datetime",
-            "CLASS_NAME": "Bitrix\Main\UserField\Types\DateTimeType",
-            "EDIT_CALLBACK": ["Bitrix\Main\UserField\Types\DateTimeType", "renderEdit"],
-            "VIEW_CALLBACK": ["Bitrix\Main\UserField\Types\DateTimeType", "renderView"],
+            "CLASS_NAME": "Bitrix\\Main\\UserField\\Types\\DateTimeType",
+            "EDIT_CALLBACK": ["Bitrix\\Main\\UserField\\Types\\DateTimeType", "renderEdit"],
+            "VIEW_CALLBACK": ["Bitrix\\Main\\UserField\\Types\\DateTimeType", "renderView"],
             "USE_FIELD_COMPONENT": true,
             "DESCRIPTION": "Date with time",
             "BASE_TYPE": "datetime"
@@ -588,7 +592,7 @@ Example response:
             "HELP_MESSAGE": null,
             "USER_TYPE": {
             "USER_TYPE_ID": "vote",
-            "CLASS_NAME": "Bitrix\Vote\Uf\VoteUserType",
+            "CLASS_NAME": "Bitrix\\Vote\\Uf\\VoteUserType",
             "DESCRIPTION": "Poll",
             "BASE_TYPE": "int"
             },
@@ -619,13 +623,13 @@ Example response:
             "HELP_MESSAGE": null,
             "USER_TYPE": {
             "USER_TYPE_ID": "mail_message",
-            "CLASS_NAME": "Bitrix\Mail\MessageUserType",
+            "CLASS_NAME": "Bitrix\\Mail\\MessageUserType",
             "DESCRIPTION": "Email",
             "BASE_TYPE": "int",
-            "VIEW_CALLBACK": ["Bitrix\Mail\MessageUserType", "getPublicView"],
-            "EDIT_CALLBACK": ["Bitrix\Mail\MessageUserType", "getPublicEdit"],
-            "onBeforeSave": ["Bitrix\Mail\MessageUserType", "onBeforeSave"],
-            "onDelete": ["Bitrix\Mail\MessageUserType", "onDelete"]
+            "VIEW_CALLBACK": ["Bitrix\\Mail\\MessageUserType", "getPublicView"],
+            "EDIT_CALLBACK": ["Bitrix\\Mail\\MessageUserType", "getPublicEdit"],
+            "onBeforeSave": ["Bitrix\\Mail\\MessageUserType", "onBeforeSave"],
+            "onDelete": ["Bitrix\\Mail\\MessageUserType", "onDelete"]
             },
             "VALUE": null,
             "ENTITY_VALUE_ID": 217,
@@ -656,7 +660,7 @@ Example response:
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../data-types.md) | Parameters of the message or a list of messages from the News Feed.
+[`object[]`](../data-types.md) | List of News Feed posts. The fields of each item are listed in the following table rows.
 
 An empty array means there are no records that meet the filter criteria. ||
 || **ID**
@@ -800,6 +804,28 @@ An empty array means there are no records that meet the filter criteria. ||
 |#
 
 ## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "ERROR_ARGUMENT",
+    "error_description": "Wrong date format in LOG_DATE_FROM"
+}
+```
+
+{% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `ERROR_ARGUMENT` | `Wrong date format in LOG_DATE_FROM` | An invalid date format was passed in `LOG_DATE_FROM` ||
+|| `ERROR_ARGUMENT` | `Wrong date format in LOG_DATE_TO` | An invalid date format was passed in `LOG_DATE_TO` ||
+|| `ERROR_ARGUMENT` | `LOG_DATE_FROM is later than LOG_DATE_TO` | The lower boundary `LOG_DATE_FROM` is later than the upper boundary `LOG_DATE_TO` ||
+|| `ERROR_ARGUMENT` | `Wrong FIRST_ID value` | A negative or non-numeric value was passed in `FIRST_ID` ||
+|| `ERROR_ARGUMENT` | `Wrong LAST_ID value` | A negative or non-numeric value was passed in `LAST_ID` ||
+|#
 
 {% include [System Errors](../../_includes/system-errors.md) %}
 

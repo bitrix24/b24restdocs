@@ -70,6 +70,14 @@ With the [bizproc.workflow.start](./../bizproc/bizproc-workflow-start.md) method
 
 **What events are available**. The events `OnLiveFeedPostAdd`, `OnLiveFeedPostUpdate`, and `OnLiveFeedPostDelete` allow you to track the appearance, modification, and deletion of messages.
 
+## Limitations
+
+- Read methods return only posts and comments available to the current user. The `POST_ID`, `LOG_RIGHTS`, and other filter parameters cannot bypass access permissions
+- Only the post author or an administrator can modify or delete a post or add recipients to it. For another user's post, the method returns an error if the required permissions are missing
+- A comment can be deleted by its author or a user with full access to the post
+- Post recipients are specified using user, department, and workgroup codes. The method rejects the request if the recipient list has an invalid format or the user does not have access to the specified recipients
+- Read methods return published News Feed posts. Deleted, unpublished, or inaccessible posts are not included in the result
+
 ## Overview of Methods and Events {#all-methods}
 
 > Scope: [`log`](../scopes/permissions.md)

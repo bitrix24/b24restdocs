@@ -11,13 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: users with permission to edit tasks in the Scrum group
 
 This method creates a Scrum Kanban stage.
-
-A Scrum Kanban must include stages of type new `NEW` and final `FINISH`.
-
-Use this method only for active sprints, meaning with the field `"status": "active"`.
 
 ## Method Parameters
 
@@ -42,11 +38,17 @@ Use this method only for active sprints, meaning with the field `"status": "acti
 || **name***
 [`string`](../../../data-types.md) | Name of the Kanban stage ||
 || **type**
-[`string`](../../../data-types.md) | Type of the Kanban stage. Possible values: `NEW`, `WORK`, `FINISH` ||
+[`string`](../../../data-types.md) | Type of the Kanban stage. Possible values: `NEW`, `WORK`, `FINISH`
+
+Default value: `WORK` ||
 || **sort**
-[`integer`](../../../data-types.md) | Sort order. The field value must be a multiple of `100` ||
+[`integer`](../../../data-types.md) | Sort order. Stages are displayed in ascending order of this value
+
+Default value: `100` ||
 || **color**
-[`string`](../../../data-types.md) | Color of the Kanban stage ||
+[`string`](../../../data-types.md) | Kanban stage color as a six-character HEX code without `#`
+
+Default value: `00C4FB` ||
 |#
 
 ## Code Examples
@@ -309,6 +311,17 @@ HTTP status: **200**
 }
 ```
 
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`integer`](../../../data-types.md) | Identifier of the created Kanban stage ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
 ## Error Handling
 
 HTTP status: **400**
@@ -330,7 +343,7 @@ HTTP status: **400**
 || `0` | `Sprint not found` | An unknown sprint identifier was provided ||
 || `0` | `Access denied` | Access is denied ||
 || `0` | `Incorrect name format` | Required field `name` is not filled ||
-|| `0` | Unknown error | ||
+|| `0` | `System error` | The stage could not be created due to an internal error ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

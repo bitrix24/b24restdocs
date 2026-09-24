@@ -226,6 +226,29 @@ HTTP status: **200**
 }
 ```
 
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Root element of the response ||
+|| **result.fields**
+[`object`](../../../data-types.md) | Description of the available Kanban stage fields ||
+|| **result.fields.name.type**
+[`string`](../../../data-types.md) | Type of the `name` field: `string` ||
+|| **result.fields.sort.type**
+[`string`](../../../data-types.md) | Type of the `sort` field: `integer` ||
+|| **result.fields.type.type**
+[`string`](../../../data-types.md) | Type of the `type` field: `string` ||
+|| **result.fields.sprintId.type**
+[`string`](../../../data-types.md) | Type of the `sprintId` field: `integer` ||
+|| **result.fields.color.type**
+[`string`](../../../data-types.md) | Type of the `color` field: `string` ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
 ## Error Handling
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

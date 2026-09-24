@@ -29,6 +29,48 @@ To create a Scrum, use the [create new group method](../sonet-group-create.md). 
 4. Add tasks to an epic using the [tasks.api.scrum.task.update](./task/tasks-api-scrum-task-update.md) method.
 5. Organize work by backlog, epics, sprints, and Kanban using [tasks.api.scrum.epic.*](./epic/index.md) and [tasks.api.scrum.sprint.*](./sprint/index.md).
 
+Abbreviated example of creating a Scrum and backlog:
+
+```http
+POST sonet_group.create
+{
+    "NAME": "Website Development",
+    "PROJECT": "Y",
+    "SCRUM_MASTER_ID": 6
+}
+
+POST tasks.api.scrum.backlog.add
+{
+    "fields": {
+        "groupId": 125,
+        "createdBy": 6
+    }
+}
+```
+
+The `sonet_group.create` method returns the identifier of the created Scrum. Pass it in `fields.groupId` of the `tasks.api.scrum.backlog.add` method:
+
+```json
+{
+    "result": 125
+}
+```
+
+The `tasks.api.scrum.backlog.add` response contains the backlog and Scrum identifiers:
+
+```json
+{
+    "result": {
+        "id": 42,
+        "groupId": 125,
+        "createdBy": 6,
+        "modifiedBy": 0
+    }
+}
+```
+
+`result.id` is the backlog identifier, and `result.groupId` is the Scrum identifier. Use the backlog creation method when the Scrum does not yet have an active backlog, for example, during an import.
+
 {% note tip "User documentation" %}
 
 - [How to create a group and project](https://helpdesk.bitrix24.com/open/22796428/)
@@ -51,7 +93,7 @@ The team moves tasks through Kanban stages while working on sprint tasks. Kanban
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the methods: any user
+> Who can execute the methods: depends on the method
 
 ### Backlog
 

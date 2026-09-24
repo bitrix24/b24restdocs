@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The request is sent to the address specified in `CANCEL_DELIVERY_REQUEST_URL` when creating a delivery handler using the method [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md).
+Bitrix24 sends an HTTP `POST` request to the address from the `CANCEL_DELIVERY_REQUEST_URL` parameter passed when creating a delivery handler using [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md). The external system must cancel the delivery order and return the result in JSON format.
 
 ## Request Parameters
 
@@ -24,7 +24,7 @@ You can obtain the identifiers of delivery services using the method [sale.deliv
 || **REQUEST_ID**
 [`string`](../../../data-types.md) | Identifier of the transport request.
 
-The identifier is assigned by the external system in response to the webhook for creating a delivery order (for more details, see the webhook description [{#T}](./create-delivery-request.md))
+The identifier is assigned by the external system in response to [creating a delivery order](./create-delivery-request.md)
  ||
 |#
 
@@ -38,6 +38,8 @@ The identifier is assigned by the external system in response to the webhook for
 ```
 
 ## Response Parameters
+
+The handler must return HTTP status `200` and a JSON object.
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -54,7 +56,7 @@ The identifier is assigned by the external system in response to the webhook for
 [`object`](../../../data-types.md) | Reason for the error. Provided in case of an unsuccessful attempt to cancel the delivery order (detailed description is provided [below](#reason)) ||
 |#
 
-### REASON
+### REASON Object {#reason}
 
 #|
 || **Name**
@@ -71,7 +73,7 @@ The identifier is assigned by the external system in response to the webhook for
 }
 ```
 
-## Example Response with Error in Cost Calculation
+## Example Response with Delivery Order Cancellation Error
 
 ```json
 {
@@ -82,7 +84,11 @@ The identifier is assigned by the external system in response to the webhook for
 }
 ```
 
-## Continue Learning 
+## Error Handling
+
+If `SUCCESS` is absent or differs from `Y`, Bitrix24 considers the order cancellation unsuccessful. Provide an explanation in `REASON.TEXT`. If `REASON.TEXT` is absent or empty, Bitrix24 uses the standard error message.
+
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./calculate.md)

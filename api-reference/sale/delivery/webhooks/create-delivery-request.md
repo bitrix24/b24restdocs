@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Bitrix24 sends the request to the address from the `CREATE_DELIVERY_REQUEST_URL` parameter passed when creating a delivery handler using [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md). The external system must create a delivery order and return its identifier.
+Bitrix24 sends an HTTP `POST` request to the address from the `CREATE_DELIVERY_REQUEST_URL` parameter passed when creating a delivery handler using [sale.delivery.handler.add](../handler/sale-delivery-handler-add.md). The external system must create a delivery order and return its identifier in JSON format.
 
 ## Request Parameters
 
@@ -147,6 +147,8 @@ Example JSON request:
 
 ## Response Parameters
 
+The handler must return HTTP status `200` and a JSON object.
+
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
@@ -193,7 +195,13 @@ Example JSON request:
 }
 ```
 
-## Continue Learning 
+## Error Handling
+
+If `SUCCESS` is absent or differs from `Y`, Bitrix24 considers the order creation unsuccessful. Provide an explanation in `REASON.TEXT`. If `REASON.TEXT` is absent or empty, Bitrix24 uses the standard error message.
+
+When `SUCCESS` = `Y`, the `REQUEST_ID` field must contain a non-empty string. A response without an identifier is considered invalid.
+
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./calculate.md)

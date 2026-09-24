@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: users with permission to edit tasks in the Scrum group
 
 This method removes a task from the Scrum kanban. The task will remain in the sprint on the planning page. The method will not move the task to the [backlog](../backlog/index.md).
 
@@ -255,6 +255,17 @@ HTTP status: **200**
 }
 ```
 
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`boolean`](../../../data-types.md) | Returns `true` if the task was successfully removed from the Kanban ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
 ## Error Handling
 
 HTTP status: **400**
@@ -273,11 +284,11 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `0` | `Sprint id not found` | Required field `sprintId` is not filled ||
-|| `0` | `TaskId id not found` | Required field `taskId` is not filled ||
+|| `0` | `Task id not found` | Required field `taskId` is not filled ||
 || `0` | `Sprint not found` | An unknown sprint identifier was provided ||
 || `0` | `Task not found. The task must be with GROUP_ID` | An unknown task identifier was provided or the task does not belong to the sprint group ||
 || `0` | `Access denied` | Access is denied ||
-|| `0` | Unknown error | ||
+|| `TASKS_KS_02` | Exception text | The task could not be removed from the Kanban due to an internal error ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
