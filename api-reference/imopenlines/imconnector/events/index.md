@@ -60,7 +60,7 @@ The full set of nested objects and `auth` parameters is provided on each event p
 
 ## Overview of Events {#all-events}
 
-> Scope: [`imconnector`](../../../scopes/permissions.md), [`imopenlines`](../../../scopes/permissions.md)
+> Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 

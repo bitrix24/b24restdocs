@@ -64,8 +64,7 @@ Some methods work only in the application context. When a webhook calls such a m
 || **humanresources.hcmlink** | [e-Signature Integration with HR Systems](../sign/hcm-link/index.md) | e-Signature ||
 || **im** | [Chat and Notifications](../chats/index.md) | Chat and Notifications ||
 || **imbot** | [Creating and managing Chatbots](../chat-bots/index.md) | Chat bots ||
-|| **imconnector** | [Connectors for external messengers](../imopenlines/imconnector/index.md) | Open Channels ||
-|| **imopenlines** | [Open Channels](../imopenlines/index.md) | Open Channels ||
+|| **imopenlines** | [Open Channels](../imopenlines/index.md), [Connectors for external messengers](../imopenlines/imconnector/index.md) | Open Channels ||
 || **intranet** | [Widgets](../widgets/index.md) | Widgets ||
 || **landing** | [Websites](../landing/index.md) | Websites ||
 || **lists** | [Lists](../lists/index.md) | Universal lists ||

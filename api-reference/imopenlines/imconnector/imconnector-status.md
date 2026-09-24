@@ -19,7 +19,7 @@ The method `imconnector.status` returns the current status of the connector for 
 
 The method works only in the context of the [application](../../../settings/app-installation/index.md).
 
-{% endnote %} 
+{% endnote %}
 
 ## Method Parameters
 
@@ -31,14 +31,14 @@ The method works only in the context of the [application](../../../settings/app-
 || **CONNECTOR***
 [`string`](../../data-types.md) | The string code of the connector specified in the `ID` parameter when calling [imconnector.register](./imconnector-register.md) ||
 || **LINE**
-[`integer`](../../data-types.md) | The identifier of the open line ||
+[`integer`](../../data-types.md) | The identifier of the open line.
+
+The identifier can be obtained using the methods [imopenlines.config.get](../openlines/imopenlines-config-get.md) and [imopenlines.config.list.get](../openlines/imopenlines-config-list-get.md) ||
 |#
 
-If the `LINE` parameter is not provided, the method automatically uses the value `0`. This affects the result of the check:
-- For a valid line identifier, the connector may be active and configured.
-- With `LINE=0`, the method typically returns `CONFIGURED=false` and `STATUS=false`, even if the connector is functioning for other lines.
+The method does not check whether the connector is registered or whether the line exists. For an unknown connector-line pair, it returns not an error but a status with the values `ERROR: false`, `CONFIGURED: false`, and `STATUS: false`.
 
-To obtain an accurate status, always specify the identifier of the open line.
+A call without `LINE` is a special case of such a pair: the method substitutes the value `0`, there is usually no status for this pair, and all three flags are returned as `false`, even if the connector is running on other lines. To obtain an accurate status, always specify the identifier of the open line.
 
 ## Code Examples
 
@@ -241,12 +241,14 @@ HTTP Status: **200**
         "STATUS": true
     },
     "time": {
-        "start": 1738065600.11,
-        "finish": 1738065600.18,
-        "duration": 0.07,
-        "processing": 0.03,
-        "date_start": "2025-01-28T12:00:00+00:00",
-        "date_finish": "2025-01-28T12:00:00+00:00"
+        "start": 1773267900.126,
+        "finish": 1773267900.489,
+        "duration": 0.3630001544952393,
+        "processing": 0.0884850025177002,
+        "date_start": "2026-03-11T14:25:00+03:00",
+        "date_finish": "2026-03-11T14:25:00+03:00",
+        "operating_reset_at": 1773268500,
+        "operating": 0.0884850025177002
     }
 }
 ```
@@ -268,15 +270,17 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **LINE**
-[`integer`](../../data-types.md) | The identifier of the open line ||
+[`integer`](../../data-types.md) | The identifier of the open line the status was requested for. If the `LINE` parameter was not provided, `0` is returned ||
 || **CONNECTOR**
-[`string`](../../data-types.md) | The identifier of the connector ||
+[`string`](../../data-types.md) | The connector code in lowercase ||
 || **ERROR**
-[`boolean`](../../data-types.md) | Indicates an error in the connector's status ||
+[`boolean`](../../data-types.md) | Indicates an error of the connector on this line. The value `true` means that the connector is marked as inoperable. The flag is cleared by calling [imconnector.activate](./imconnector-activate.md) again ||
 || **CONFIGURED**
-[`boolean`](../../data-types.md) | Indicates whether the connector is fully configured ||
+[`boolean`](../../data-types.md) | Indicates whether the connector is fully configured. The value is `true` if the connector is registered, connected, and active on this line at the same time. All three flags are set by the [imconnector.activate](./imconnector-activate.md) method ||
 || **STATUS**
-[`boolean`](../../data-types.md) | The final status of the connector's availability ||
+[`boolean`](../../data-types.md) | The final status of the connector's availability. The value is `true` if `CONFIGURED` is `true` and `ERROR` is `false`.
+
+Only when `STATUS: true` does the line accept messages from the connector and display its settings in the operator interface ||
 |#
 
 ## Error Handling
@@ -286,7 +290,8 @@ HTTP Status: **400**, **403**
 ```json
 {
     "error": "ERROR_ARGUMENT",
-    "error_description": "Argument 'CONNECTOR' is null or empty"
+    "error_description": "Argument 'CONNECTOR' is null or empty",
+    "argument": "CONNECTOR"
 }
 ```
 
@@ -297,8 +302,10 @@ HTTP Status: **400**, **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method. Application context required | The method was called outside the application context of OAuth ||
-|| `400` | `ERROR_ARGUMENT` | Argument 'CONNECTOR' is null or empty | The connector identifier `CONNECTOR` was not provided ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'CONNECTOR' is null or empty | The connector code `CONNECTOR` was not provided ||
 |#
+
+The body of the `ERROR_ARGUMENT` error contains an additional `argument` field with the parameter name — there is no need to parse the message text.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
@@ -314,3 +321,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./imconnector-delete-messages.md)
 - [{#T}](./imconnector-send-status-delivery.md)
 - [{#T}](./imconnector-chat-name-set.md)
+- [{#T}](../../../tutorials/openlines/example-connector.md)

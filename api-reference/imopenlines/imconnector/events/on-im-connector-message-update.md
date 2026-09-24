@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`imconnector`](../../../scopes/permissions.md)
+> Scope: [`imopenlines`](../../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
@@ -59,7 +59,7 @@ Data is transmitted as a POST request {.b24-info}
         "access_token": "2e7cb0071b04400007eb2a255d2a542d6d0ca03ceb",
         "expires": 1773763630,
         "expires_in": 3600,
-        "scope": "imconnector, imopenlines",
+        "scope": "imopenlines",
         "domain": "some-domain.bitrix24.com",
         "server_endpoint": "https://oauth.bitrix.info/rest/",
         "status": "F",

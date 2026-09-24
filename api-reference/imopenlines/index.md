@@ -91,7 +91,7 @@ To automate, connect events: [Open Channels Events](./openlines/events/index.md)
 
 ## Overview of Methods and Events {#all-methods}
 
-> Scope: [`imopenlines`](../scopes/permissions.md), [`imconnector`](../scopes/permissions.md)
+> Scope: [`imopenlines`](../scopes/permissions.md)
 >
 > Who can execute methods and events: depending on the method, event, and access permissions to open channels
 

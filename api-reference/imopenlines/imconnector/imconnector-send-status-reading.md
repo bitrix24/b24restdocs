@@ -1,4 +1,4 @@
-# Update Status to "Read" imconnector.send.status.reading
+# Pass the "Read" Status imconnector.send.status.reading
 
 {% note tip "" %}
 
@@ -23,15 +23,19 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `imconnector.send.status.reading` confirms in Bitrix24 that an outgoing message from the open line has been read in an external system. The method does not resend the message but only records the read status.
+The method `imconnector.send.status.reading` accepts the "read" status for an outgoing message from the open line.
 
-This method is not applicable for incoming messages from an external system to the open line.
+{% note warning "" %}
+
+The status is not retained anywhere: the method accepts the call, but the message state does not change. To mark an outgoing message as read, use the [imconnector.send.status.delivery](./imconnector-send-status-delivery.md) method — when processing the "delivered" status, the message is also marked as read.
+
+{% endnote %}
 
 {% note info "" %}
 
 The method works only in the context of the [application](../../../settings/app-installation/index.md).
 
-{% endnote %} 
+{% endnote %}
 
 ## Method Parameters
 
@@ -47,12 +51,14 @@ The method works only in the context of the [application](../../../settings/app-
 
 The identifier can be obtained using the methods [imopenlines.config.get](../openlines/imopenlines-config-get.md) and [imopenlines.config.list.get](../openlines/imopenlines-config-list-get.md) ||
 || **MESSAGES***
-[`array`](../../data-types.md) | Array of read statuses. Each element of the array is an object with blocks `im`, `message`, `chat`
+[`array`](../../data-types.md) | Array of read statuses. Each element of the array is an object with blocks `im`, `message`, `chat`.
 
 The structure of the object is described in detail [below](#messages) ||
 |#
 
 ### MESSAGES Parameter {#messages}
+
+The method does not parse the content of the elements and checks only that the `MESSAGES` parameter is provided: it accepts an empty array without an error. The structure repeats the [imconnector.send.status.delivery](./imconnector-send-status-delivery.md) method so that the application uses a single data format.
 
 #|
 || **Name**
@@ -70,17 +76,13 @@ The structure of the object is described in detail [below](#messages) ||
 #|
 || **Name**
 `type` | **Description** ||
-|| **chat_id**
-[`integer`](../../data-types.md) | Identifier of the open line chat in Bitrix24 for the outgoing message ||
 || **message_id**
-[`integer`](../../data-types.md) | Identifier of the message in Bitrix24 for which the "read" status needs to be set ||
+[`integer`](../../data-types.md) | Identifier of the message in Bitrix24 ||
+|| **chat_id**
+[`integer`](../../data-types.md) | Identifier of the open line chat in Bitrix24 ||
 |#
 
-The fields `im.chat_id` and `im.message_id` should be obtained from the event [OnImConnectorMessageAdd](./events/on-im-connector-message-add.md) when Bitrix24 sends a message to the external system.
-
-Typically, these values are saved when processing the event and then used to send the read status.
-
-External identifiers `message.id` and `chat.id` do not replace `im.message_id` and `im.chat_id`.
+Both identifiers come in the [OnImConnectorMessageAdd](./events/on-im-connector-message-add.md) event. How to use them is described on the page of the [imconnector.send.status.delivery](./imconnector-send-status-delivery.md) method — that is where these values are actually needed.
 
 #### message Object {#messages-message}
 
@@ -88,7 +90,7 @@ External identifiers `message.id` and `chat.id` do not replace `im.message_id` a
 || **Name**
 `type` | **Description** ||
 || **id**
-[`array`](../../data-types.md) | Array of external message identifiers for which the read status is being sent. Even for a single message, an array should be sent, for example, `["ext-msg-1007"]` ||
+[`array`](../../data-types.md) | Array of external message identifiers. Even for a single message, an array should be sent, for example, `["ext-msg-1007"]` ||
 |#
 
 #### chat Object {#messages-chat}
@@ -97,7 +99,7 @@ External identifiers `message.id` and `chat.id` do not replace `im.message_id` a
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../../data-types.md) | Identifier of the chat or channel in the external system. It is recommended to send the same value as in `chat.id` of the method [imconnector.send.messages](./imconnector-send-messages.md) ||
+[`string`](../../data-types.md) | Identifier of the chat or channel in the external system ||
 |#
 
 ## Code Examples
@@ -370,16 +372,18 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-    "SUCCESS": true,
-    "DATA": []
+        "SUCCESS": true,
+        "DATA": []
     },
     "time": {
-    "start": 1738065600.11,
-    "finish": 1738065600.21,
-    "duration": 0.10,
-    "processing": 0.04,
-    "date_start": "2025-01-28T12:00:00+00:00",
-    "date_finish": "2025-01-28T12:00:00+00:00"
+        "start": 1773267900.126,
+        "finish": 1773267900.489,
+        "duration": 0.3630001544952393,
+        "processing": 0.0884850025177002,
+        "date_start": "2026-03-11T14:25:00+03:00",
+        "date_finish": "2026-03-11T14:25:00+03:00",
+        "operating_reset_at": 1773268500,
+        "operating": 0.0884850025177002
     }
 }
 ```
@@ -389,12 +393,23 @@ HTTP Status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **SUCCESS**
-[`boolean`](../../data-types.md) | Returns `true` if the read status was successfully accepted and updated in Bitrix24 ||
-|| **DATA**
-[`array`](../../data-types.md) | Empty array upon successful processing ||
+|| **result**
+[`object`](../../data-types.md) | Result of accepting the request [(detailed description)](#result) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **SUCCESS**
+[`boolean`](../../data-types.md) | Returns `true` if the required parameters are provided and the connector provider is found.
+
+The value `true` confirms only that the request was accepted: the method does not change the message state ||
+|| **DATA**
+[`array`](../../data-types.md) | Always an empty array: the method does not return data on individual messages ||
 |#
 
 ## Error Handling
@@ -417,9 +432,13 @@ HTTP Status: **400**, **403**
 || `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | Method called not in the context of an OAuth application ||
 || `400` | `ERROR_ARGUMENT` | Argument 'CONNECTOR' is null or empty | `CONNECTOR` not provided ||
 || `400` | `ERROR_ARGUMENT` | Argument 'LINE' is null or empty | `LINE` not provided ||
-|| `400` | `ERROR_ARGUMENT` | Argument 'MESSAGES' is null or empty | `MESSAGES` not provided ||
-|| `400` | `IMCONNECTOR_NO_CORRECT_PROVIDER` | Unable to find a suitable provider for the connector | Failed to initialize provider for the connector ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'MESSAGES' is null or empty | The `MESSAGES` key is not provided. An empty array does not cause an error ||
+|| `400` | `IMCONNECTOR_NO_CORRECT_PROVIDER` | Unable to find a suitable provider for the connector | A connector with this code is not registered in Bitrix24 ||
 |#
+
+The method returns an error only for problems with the entire request: a parameter is missing, the connector provider is not found, or the call was made outside the application context.
+
+Unlike [imconnector.send.messages](./imconnector-send-messages.md), this method does not check the `LINE` parameter, so it does not return the `NOT_ACTIVE_LINE` error.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
@@ -436,3 +455,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./imconnector-delete-messages.md)
 - [{#T}](./imconnector-send-status-delivery.md)
 - [{#T}](./imconnector-chat-name-set.md)
+- [{#T}](../../../tutorials/openlines/example-connector.md)

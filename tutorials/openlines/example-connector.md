@@ -1,6 +1,6 @@
 # How to Create an Open Channels Connector for Website Chat
 
-> Scope: [`imopenlines`, `imconnector`](../../api-reference/scopes/permissions.md)
+> Scope: [`imopenlines`](../../api-reference/scopes/permissions.md)
 >
 > Who can execute the methods: any application user
 
@@ -27,7 +27,7 @@ SDKs perform outgoing method calls. Your web server receives incoming events (`O
 
 For the scenario, you need:
 
-- a local application of the `Server` type with the `imopenlines`, `imconnector`, and `im` permissions
+- a local application of the `Server` type with the `imopenlines` and `im` permissions
 - a public HTTPS URL for the application server side
 - URL of the installation handler `install_connector.*`
 - URL of the event and settings handler `handler.*`
@@ -113,7 +113,7 @@ Bitrix24 passes authorization in requests to application handlers. Use the `auth
     $appProfile = ApplicationProfile::initFromArray([
         'BITRIX24_PHP_SDK_APPLICATION_CLIENT_ID' => 'local.xxxxxxxx.xxxxxxxx',
         'BITRIX24_PHP_SDK_APPLICATION_CLIENT_SECRET' => 'yyyyyyyy',
-        'BITRIX24_PHP_SDK_APPLICATION_SCOPE' => 'imopenlines,imconnector,im',
+        'BITRIX24_PHP_SDK_APPLICATION_SCOPE' => 'imopenlines,im',
     ]);
 
     $authToken = AuthToken::initFromEventRequest($request);
@@ -491,7 +491,7 @@ In the response, save `session.CHAT_ID` and `session.ID`. They confirm that the 
 ## 5. Running the Connector
 
 1. Deploy the server files to a public HTTPS URL
-2. Create a [Local application](../../settings/app-installation/local-apps/index.md) of the `Server` type with the `imopenlines`, `imconnector`, and `im` permissions
+2. Create a [Local application](../../settings/app-installation/local-apps/index.md) of the `Server` type with the `imopenlines` and `im` permissions
 3. Open `install_connector.*` to register the connector and subscribe to the event
 4. In the **Contact Center**, open the `ExampleSiteChat` connector, select an Open Channel, and activate it. Bitrix24 will call `handler.*` with placement `SETTING_CONNECTOR`
 5. Place the widget (`index.*`) on the website and test message exchange

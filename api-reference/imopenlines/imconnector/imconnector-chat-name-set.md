@@ -9,17 +9,21 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-> Scope: [`imconnector`](../../scopes/permissions.md)
+> Scope: [`imopenlines`](../../scopes/permissions.md)
 >
 > Who can execute the method: any user
 
-The method `imconnector.chat.name.set` sets a new name for the chat.
+The method `imconnector.chat.name.set` renames the Open Channel chat in Bitrix24 that corresponds to the external system dialog with the specified `CHAT_ID`. In the external system, the dialog name stays the same.
+
+Bitrix24 looks for an open session by the combination of `CONNECTOR`, `LINE`, and `CHAT_ID`. If there is no such session, the method returns the `CHAT_RENAMING_FAILED` error.
+
+For connectors with `CHAT_GROUP: false`, `USER_ID` also takes part in the search, but it behaves differently: if no interlocutor with this identifier is found, the method returns `SUCCESS: true` and does not rename the chat.
 
 {% note info "" %}
 
 The method works only in the context of the [application](../../../settings/app-installation/index.md).
 
-{% endnote %} 
+{% endnote %}
 
 ## Method Parameters
 
@@ -31,15 +35,17 @@ The method works only in the context of the [application](../../../settings/app-
 || **CONNECTOR***  
 [`string`](../../data-types.md) | The string code of the connector specified in the `ID` parameter when calling [imconnector.register](./imconnector-register.md) ||
 || **LINE***  
-[`integer`](../../data-types.md) | Identifier of the Open Channel
+[`integer`](../../data-types.md) | Identifier of the Open Channel.
 
 The identifier can be obtained using the methods [imopenlines.config.get](../openlines/imopenlines-config-get.md) and [imopenlines.config.list.get](../openlines/imopenlines-config-list-get.md) ||
 || **CHAT_ID***  
-[`string`](../../data-types.md) | Identifier of the chat in the external system ||
+[`string`](../../data-types.md) | Identifier of the chat in the external system — the same value that is passed in `chat.id` of the [imconnector.send.messages](./imconnector-send-messages.md) method ||
 || **NAME***  
 [`string`](../../data-types.md) | New name for the chat ||
 || **USER_ID**  
-[`string`](../../data-types.md) | User identifier. This parameter is mandatory only for connectors without group chats from the external side. For such a connector, the `CHAT_GROUP` parameter in the [imconnector.register](./imconnector-register.md) method must be set to `false` ||
+[`string`](../../data-types.md) | Identifier of the interlocutor in the external system — the same value that is passed in `user.id` of the [imconnector.send.messages](./imconnector-send-messages.md) method. A Bitrix24 user identifier does not work here.
+
+The parameter is required for connectors registered with the `CHAT_GROUP` parameter set to `false` in the [imconnector.register](./imconnector-register.md) method. If `CHAT_GROUP` is `true`, the value passed is ignored ||
 |#
 
 ## Code Examples
@@ -307,14 +313,16 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **SUCCESS**
-[`boolean`](../../data-types.md) | Returns `true` when the new chat name is successfully set ||
+[`boolean`](../../data-types.md) | Returns `true` if the request is accepted and passed to the connector handler.
+
+The method never returns `false`: rejections come as an error with the HTTP status `400`. The only exception is an unrecognized `USER_ID`, described below in the "Error Handling" section ||
 || **DATA**
-[`object`](../../data-types.md) | Contains the `RESULT` object with parameters of the new chat name ||
+[`object`](../../data-types.md) | Service object. The `RESULT` field is reserved for the connector handler result and always comes as an empty object `{}` in the response ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -328,12 +336,15 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Status** | **Code** | **Description** ||
-|| `400` | `NOT_ACTIVE_LINE` | The line with this ID is inactive or does not exist ||
-|| `400` | `IMCONNECTOR_NO_CORRECT_PROVIDER` | Unable to find a suitable provider for the connector ||
-|| `400` | `ERROR_ARGUMENT` | Required parameters `NAME`, `CHAT_ID`, `USER_ID`, `CONNECTOR`, or `LINE` are missing ||
-|| `400` | `CHAT_RENAMING_FAILED` | Failed to rename the chat ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was called outside the application OAuth context ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'NAME' is null or empty | One of the parameters is missing or empty: `CONNECTOR`, `LINE`, `CHAT_ID`, `NAME`, or the conditionally required `USER_ID`. The parameter name comes in the message and in a separate `argument` field ||
+|| `400` | `NOT_ACTIVE_LINE` | The line with this ID is inactive or does not exist | The connector is not enabled on this line, or there is no line with this `LINE`. Enable the connector using the [imconnector.activate](./imconnector-activate.md) method ||
+|| `400` | `IMCONNECTOR_NO_CORRECT_PROVIDER` | Unable to find a suitable provider for the connector | A connector with this code is not registered in Bitrix24 ||
+|| `400` | `CHAT_RENAMING_FAILED` | Chat renaming failed | There is no open session for the combination of parameters passed, or the chat could not be renamed ||
 |#
+
+Not every rejection comes as an error: if the interlocutor in the external system could not be identified by `USER_ID`, the method returns `SUCCESS: true`, but the chat is not renamed.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
@@ -349,4 +360,4 @@ HTTP Status: **400**
 - [{#T}](./imconnector-update-messages.md)
 - [{#T}](./imconnector-delete-messages.md)
 - [{#T}](./imconnector-send-status-delivery.md)
-- [{#T}](./imconnector-chat-name-set.md)
+- [{#T}](../../../tutorials/openlines/example-connector.md)

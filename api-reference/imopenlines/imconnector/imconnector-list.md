@@ -13,13 +13,22 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to modify Open Channels connectors
 
-The method `imconnector.list` returns a list of all connectors registered in Bitrix24.
+The method `imconnector.list` returns a list of connectors that are available in Bitrix24 and can be connected to an open line.
 
 {% note info "" %}
 
 The method works only in the context of an [application](../../../settings/app-installation/index.md).
 
-{% endnote %} 
+{% endnote %}
+
+The list includes:
+
+- built-in connectors that are available in the region and enabled in the Bitrix24 settings: Live Chat, Telegram, Bitrix24 Network, and others
+- custom connectors registered by applications via [imconnector.register](./imconnector-register.md)
+
+Bitrix24 settings do not affect custom connectors: they appear in the list right after registration.
+
+The method does not show which lines the connectors are attached to or what state they are in. To check the connector state on a specific line, use the [imconnector.status](./imconnector-status.md) method.
 
 ## Method Parameters
 
@@ -193,7 +202,7 @@ HTTP Status: **200**
     "result": {
         "livechat": "Live Chat",
         "telegrambot": "Telegram",
-        "network": "Bitrix24.Network",
+        "network": "Bitrix24 Network",
         "myconnector": "My Connector"
     },
     "time": {
@@ -213,14 +222,32 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | An object of the form `connector_id: connector_name` for available connectors ||
+[`object`](../../data-types.md) | An object of the form `connector_id: connector_name`, where:
+
+- the key is the connector code. For a custom connector, this is the value of the `ID` parameter of the [imconnector.register](./imconnector-register.md) method converted to lowercase
+- the value is the connector name in the Bitrix24 interface language: for a custom connector, this is the `NAME` parameter of the [imconnector.register](./imconnector-register.md) method
+
+The key is passed in the `CONNECTOR` parameter of the other methods in this section.
+
+If there are no available connectors, `result` contains an empty array `[]` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
+
+Called outside the application context:
+
+```json
+{
+    "error": "ERROR_CORE",
+    "error_description": "Current authorization type is denied for this method"
+}
+```
+
+No permission to modify connectors:
 
 ```json
 {
@@ -235,8 +262,8 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method. Application context required | Method called outside of the application OAuth context ||
-|| `400` | `ACCESS_DENIED` | The ImOpenLines module is not installed | The `imopenlines` module is not installed on the account ||
+|| `400` | `ERROR_CORE` | Current authorization type is denied for this method | The method was called outside of the application OAuth context. Unlike the other methods in this section, this method responds with the `ERROR_CORE` code and the `400` status ||
+|| `400` | `ACCESS_DENIED` | The ImOpenLines module is not installed. | The `imopenlines` module is not installed in Bitrix24. This check runs before the application context check ||
 || `400` | `ACCESS_DENIED` | You don't have access to this action | The user does not have permission to modify connectors ||
 |#
 
@@ -254,3 +281,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./imconnector-delete-messages.md)
 - [{#T}](./imconnector-send-status-delivery.md)
 - [{#T}](./imconnector-chat-name-set.md)
+- [{#T}](../../../tutorials/openlines/example-connector.md)

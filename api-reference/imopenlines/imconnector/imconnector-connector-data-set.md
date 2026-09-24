@@ -13,13 +13,17 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `imconnector.connector.data.set` sets the channel settings in an external system for a custom connector and the specified open line.
+The method `imconnector.connector.data.set` retains in Bitrix24 the configurations of a custom connector on the specified open line: the external channel identifier, the links to it, and the name.
+
+The configurations appear in the operator interface only after the connector is enabled on this line: the [imconnector.status](./imconnector-status.md) method must return `STATUS: true`.
+
+When the connector is disabled by calling [imconnector.activate](./imconnector-activate.md) with the `ACTIVE: 0` parameter, the retained configurations are deleted along with the status record.
 
 {% note info "" %}
 
 The method works only in the context of the [application](../../../settings/app-installation/index.md).
 
-{% endnote %} 
+{% endnote %}
 
 ## Method Parameters
 
@@ -31,30 +35,34 @@ The method works only in the context of the [application](../../../settings/app-
 || **CONNECTOR***
 [`string`](../../data-types.md) | String code of the connector specified in the `ID` parameter when calling [imconnector.register](./imconnector-register.md) ||
 || **LINE***
-[`integer`](../../data-types.md) | Identifier of the open line. 
+[`integer`](../../data-types.md) | Identifier of the open line.
 
 The identifier can be obtained using the methods [imopenlines.config.get](../openlines/imopenlines-config-get.md) and [imopenlines.config.list.get](../openlines/imopenlines-config-list-get.md) ||
 || **DATA***
-[`object`](../../data-types.md) | Object containing the channel settings in the external system. The method does not support setting or modifying a single field separately: settings are written and overwritten through this object as a whole. 
+[`object`](../../data-types.md) | Object containing the channel settings in the external system.
 
 The structure of the object is described in detail [below](#data) ||
 |#
 
 ### DATA Parameter {#data}
 
+All fields of the object are optional. The method does not overwrite the settings as a whole: the fields you pass are updated, and the fields you omit keep their previous values.
+
+An empty string is ignored, so the method cannot clear a value that is already retained.
+
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`string`](../../data-types.md) | Identifier of the channel in the external system, for example `channel-123`. 
+[`string`](../../data-types.md) | Identifier of the channel in the external system, for example, `channel-123`.
 
-The identifier should be taken from the external system. If none is available, use a unique key, such as a combination of the connector ID and line: `myconnector_line107` ||
+The identifier should be taken from the external system. If none is available, use a unique key, such as a combination of the connector code and the line identifier: `myconnector_line107` ||
 || **URL**
 [`string`](../../data-types.md) | Full link to the chat or channel in the external system ||
 || **URL_IM**
-[`string`](../../data-types.md) | Full link to the chat in the operator interface format. If there is no separate link for the operator, use the value of `URL` ||
+[`string`](../../data-types.md) | Link to the chat that the operator opens from the Open Channels interface. If there is no separate link for the operator, you can omit the field — the connector keeps only `URL` ||
 || **NAME**
-[`string`](../../data-types.md) | Name of the channel for display in the interface ||
+[`string`](../../data-types.md) | Name of the channel that the operator sees ||
 |#
 
 ## Code Examples
@@ -281,12 +289,14 @@ HTTP Status: **200**
 {
     "result": true,
     "time": {
-    "start": 1738065600.11,
-    "finish": 1738065600.20,
-    "duration": 0.09,
-    "processing": 0.04,
-    "date_start": "2025-01-28T12:00:00+00:00",
-    "date_finish": "2025-01-28T12:00:00+00:00"
+        "start": 1773267900.126,
+        "finish": 1773267900.489,
+        "duration": 0.3630001544952393,
+        "processing": 0.0884850025177002,
+        "date_start": "2026-03-11T14:25:00+03:00",
+        "date_finish": "2026-03-11T14:25:00+03:00",
+        "operating_reset_at": 1773268500,
+        "operating": 0.0884850025177002
     }
 }
 ```
@@ -297,7 +307,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the data is saved ||
+[`boolean`](../../data-types.md) | Always `true` if the required parameters are provided: the method does not check whether the connector and the open line exist ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -309,7 +319,8 @@ HTTP Status: **400**, **403**
 ```json
 {
     "error": "ERROR_ARGUMENT",
-    "error_description": "Argument 'DATA' is null or empty"
+    "error_description": "Argument 'DATA' is null or empty",
+    "argument": "DATA"
 }
 ```
 
@@ -322,8 +333,10 @@ HTTP Status: **400**, **403**
 || `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | Method called outside the application context OAuth ||
 || `400` | `ERROR_ARGUMENT` | Argument 'CONNECTOR' is null or empty | `CONNECTOR` not provided ||
 || `400` | `ERROR_ARGUMENT` | Argument 'LINE' is null or empty | `LINE` not provided ||
-|| `400` | `ERROR_ARGUMENT` | Argument 'DATA' is null or empty | `DATA` not provided ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'DATA' is null or empty | The `DATA` key is not provided. An empty `DATA` object does not cause an error ||
 |#
+
+The body of the `ERROR_ARGUMENT` error contains an additional `argument` field with the parameter name — there is no need to parse the message text.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
