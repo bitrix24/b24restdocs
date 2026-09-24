@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: store manager
+> Who can execute the method: any user
 
-The method `sale.basketproperties.getFields` retrieves a list of property fields. Each field is described as a settings structure (`rest_field_description`).
+The method `sale.basketproperties.getFields` retrieves the description of the basket item (position) property fields. Each field is described as a settings structure (`rest_field_description`).
 
 No parameters.
 
@@ -156,11 +156,9 @@ No parameters.
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -174,24 +172,18 @@ No parameters.
     BX24.callMethod(
         "sale.basketproperties.getFields",
         {},
-    )
-        .then(
-            function(result)
+        function(result)
+        {
+            if (result.error())
             {
-                if (result.error())
-                {
-                    console.error(result.error());
-                }
-                else
-                {
-                    console.log(result.data());
-                }
-            },
-            function(error)
-            {
-                console.info(error);
+                console.error(result.error());
             }
-        );
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
     ```
 
 - PHP CRest
@@ -308,24 +300,18 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **401**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the access token"
 }
 ```
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-### Possible Error Codes
-
-#|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read ||
-|| `0` | Other errors (e.g., fatal errors) ||
-|#
+The method has no errors of its own. Only general REST errors are possible, for example, `insufficient_scope` if the application or webhook does not have the `sale` scope.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

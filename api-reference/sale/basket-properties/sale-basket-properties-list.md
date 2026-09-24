@@ -27,7 +27,7 @@ The method `sale.basketproperties.list` retrieves a set of properties for the it
 
 If the array is not provided or an empty array is passed, all available fields of the basket item properties will be selected. ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected catalog sections in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | An object for filtering the selected basket item properties in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. If it is not passed, the method returns the properties of all basket items.
 
 Possible values for `field` correspond to the fields of the object [`sale_basket_item_property`](../data-types.md#sale_basket_item_property).
 
@@ -55,21 +55,30 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `!` — not equal
 ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected groups of properties in the format `{"field_1": "order_1", ... "field_N": "order_N"}`. 
+[`object`](../../data-types.md) | An object for sorting the selected properties in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 Possible values for `field` correspond to the fields of the object [`sale_basket_item_property`](../data-types.md#sale_basket_item_property).
 
 Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
+
+If `order` is not passed, the properties are returned in ascending order of `id`, not by the `sort` field. To retrieve the properties in `sort` order, pass `{"sort": "asc", "id": "asc"}`
 ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
 The page size of results is always static - 50 records.
 To select the second page of results, you need to pass the value - 50. To select the third page of results, the value - 100, and so on.
 The formula for calculating the start parameter value:
-start = (N-1) * 50, where N is the desired page number
+start = (N-1) * 50, where N is the desired page number.
+If it is not passed, the method returns the first page
 ||
 |#
+
+{% note warning "" %}
+
+The method skips unknown fields in `select`, `filter`, and `order` without an error. If you misspell a filter field name, for example, write `basketid` instead of `basketId`, the method returns the properties of all basket items.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -303,29 +312,23 @@ start = (N-1) * 50, where N is the desired page number
                 id: 'desc',
             },
         },
-    )
-        .then(
-            function(result)
+        function(result)
+        {
+            if (result.error())
             {
-                if (result.error())
-                {
-                    console.error(result.error());
-                }
-                else
-                {
-                    console.log(result.data);
-
-                    if (result.more())
-                    {
-                        result.next();
-                    }
-                }
-            },
-            function(error)
-            {
-                console.info(error);
+                console.error(result.error());
             }
-        );
+            else
+            {
+                console.log(result.data());
+
+                if (result.more())
+                {
+                    result.next();
+                }
+            }
+        }
+    );
     ```
 
 - PHP CRest
@@ -434,7 +437,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **basketProperties**
-[`sale_basket_item_property[]`](../data-types.md#sale_basket_item_property) | An array of objects containing information about the selected properties of items (positions) in the basket for orders ||
+[`sale_basket_item_property[]`](../data-types.md#sale_basket_item_property) | An array of objects containing information about the selected properties of items (positions) in the basket for orders. If no properties are found, the array is empty ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
@@ -447,8 +450,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -458,7 +461,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read  ||
+|| `200040300010` | `Access Denied` — insufficient permissions to read ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: store administrator
+> Who can execute the method: administrator
 
 The method `sale.basketproperties.delete` removes a property for an item (position) in the basket of an order.
 
@@ -163,11 +163,9 @@ You can obtain it using the method [`sale.basketproperties.list`](sale-basket-pr
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Success: ' . print_r($result, true);
+        // Your logic for processing data
+        processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -183,25 +181,18 @@ You can obtain it using the method [`sale.basketproperties.list`](sale-basket-pr
         {
             id: 17
         },
-    )
-        .then(
-            function(result)
+        function(result)
+        {
+            if (result.error())
             {
-                if (result.error())
-                {
-                    console.error(result.error());
-                }
-                else
-                {
-                    console.log(result.data());
-                }
-            },
-            function(error)
-            {
-                console.info(error);
+                console.error(result.error());
             }
-        );
-
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
     ```
 
 - PHP CRest
@@ -277,8 +268,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200240400003",
+    "error_description": "basket property is not exists"
 }
 ```
 
@@ -288,11 +279,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200140400001` | basket item does not exist
-
-Basket position not found   ||
-|| `200040300010` | Insufficient permissions to delete ||
-|| `100` | Required parameters not provided ||
+|| `200240400003` | `basket property is not exists` — there is no property with this `id` ||
+|| `100` | `Bitrix\Sale\BasketPropertyItem constructor must be is public` — the `id` parameter is not passed ||
+|| `200040300020` | `Access Denied` — insufficient permissions to delete ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
@@ -304,5 +293,5 @@ Basket position not found   ||
 - [{#T}](./sale-basket-properties-add.md)
 - [{#T}](./sale-basket-properties-update.md)
 - [{#T}](./sale-basket-properties-get.md)
-- [{#T}](./sale-basket-properties-update.md)
+- [{#T}](./sale-basket-properties-list.md)
 - [{#T}](./sale-basket-properties-get-fields.md)

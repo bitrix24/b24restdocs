@@ -23,9 +23,10 @@ The method `sale.basketproperties.update` modifies the property for an item (pos
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_basket_item_property.id`](../data-types.md#sale_basket_item_property) | Identifier of the order item ||
+[`sale_basket_item_property.id`](../data-types.md#sale_basket_item_property) | Identifier of the basket item (position) property.
+Can be retrieved using the [`sale.basketproperties.list`](./sale-basket-properties-list.md) method ||
 || **fields***
-[`object`](../../data-types.md) | Values of the fields to be modified (detailed description is provided [below](#parameter-fields)) for the basket item (position) property:
+[`object`](../../data-types.md) | Values of the fields to be modified (detailed description is provided [below](#parametr-fields)) for the basket item (position) property:
 
 ```js
 fields: {
@@ -39,24 +40,32 @@ fields: {
  ||
 |#
 
-### Parameter fields
+### Parameter fields {#parametr-fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
+
+Pass the `name`, `value`, and `code` fields in every call, even if you change only one of them. String fields store up to 255 characters: Bitrix24 truncates a longer value without an error.
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **name**
+|| **name***
 [`string`](../../data-types.md) | Name of the property ||
-|| **value**
+|| **value***
 [`string`](../../data-types.md) | Value of the property ||
-|| **code**
+|| **code***
 [`string`](../../data-types.md) | Symbolic code of the property ||
 || **sort**
 [`integer`](../../data-types.md) | Position in the list of properties ||
 || **xmlId**
 [`string`](../../data-types.md) | External code of the property ||
 |#
+
+{% note warning "" %}
+
+A property cannot be moved to another basket item. If you pass a new `basketId` in `fields`, the method returns no error, but the property stays with the previous item. To make the property appear for the right item, delete it with the [sale.basketproperties.delete](./sale-basket-properties-delete.md) method and create it again with the [sale.basketproperties.add](./sale-basket-properties-add.md) method.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -249,24 +258,18 @@ fields: {
                 code: 'ARTICUL',
             }
         },
-    )
-        .then(
-            function(result)
+        function(result)
+        {
+            if (result.error())
             {
-                if (result.error())
-                {
-                    console.error(result.error());
-                }
-                else
-                {
-                    console.log(result);
-                }
-            },
-            function(error)
-            {
-                console.info(error);
+                console.error(result.error());
             }
-        );
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
     ```
 
 - PHP CRest
@@ -381,8 +384,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "0",
+    "error_description": "Required fields: name, code"
 }
 ```
 
@@ -392,9 +395,12 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `20004030001` | Insufficient rights to modify ||
-|| `100` | Required parameters not provided ||
-|| `0` | Other errors (e.g., missing required fields) ||
+|| `0` | `Required fields: name, code` — the required fields `name`, `value`, or `code` are not passed in `fields`. The names of the missing fields are listed in `error_description` ||
+|| `200240400003` | `basket property is not exists` — there is no property with this `id` ||
+|| `100` | `Could not find value for parameter {fields}` — the `fields` parameter is not passed ||
+|| `100` | `Bitrix\Sale\BasketPropertyItem constructor must be is public` — the `id` parameter is not passed ||
+|| `200040300020` | `Access Denied` — insufficient rights to modify ||
+|| `0` | Other errors (e.g., fatal errors) ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

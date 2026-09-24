@@ -192,24 +192,18 @@ The method `sale.basketproperties.get` retrieves the property for an item (posit
         {
             id: 17
         },
-    )
-        .then(
-            function(result)
+        function(result)
+        {
+            if (result.error())
             {
-                if (result.error())
-                {
-                    console.error(result.error());
-                }
-                else
-                {
-                    console.log(result.data());
-                }
-            },
-            function(error)
-            {
-                console.info(error);
+                console.error(result.error());
             }
-        );
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
     ```
 
 - PHP CRest
@@ -310,8 +304,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200240400003",
+    "error_description": "basket property is not exists"
 }
 ```
 
@@ -321,9 +315,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200240400003` | Basket item not found ||
-|| `200040300010` | Insufficient rights for reading ||
-|| `100` | Parameter `id` not specified ||
+|| `200240400003` | `basket property is not exists` — there is no property with this `id`, or `id` is not a number ||
+|| `100` | `Bitrix\Sale\BasketPropertyItem constructor must be is public` — the `id` parameter is not passed ||
+|| `200040300010` | `Access Denied` — insufficient rights for reading ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

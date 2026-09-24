@@ -42,18 +42,20 @@ fields: {
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
+The `name`, `value`, `code`, and `xmlId` fields store up to 255 characters. Bitrix24 truncates a longer value without an error.
+
 #|
 || **Name**
 `type` | **Description** ||
 || **basketId***
-[`sale_basket_item.id`](../data-types.md) | Identifier of the basket item (position) in the order.
+[`sale_basket_item.id`](../data-types.md) | Identifier of the basket item (position) in the order. The item must belong to an order: its `orderId` field is filled in.
 Can be obtained using the methods [`sale.basketitem.get`](../basket-item/sale-basket-item-get.md) or [`sale.basketitem.list`](../basket-item/sale-basket-item-list.md) ||
 || **name***
 [`string`](../../data-types.md) | Property name ||
 || **value***
 [`string`](../../data-types.md) | Property value ||
 || **code***
-[`string`](../../data-types.md) | Symbolic code of the property ||
+[`string`](../../data-types.md) | Symbolic code of the property. Bitrix24 does not check the code for uniqueness: calling the method again with the same `code` creates a second property for the item ||
 || **sort**
 [`integer`](../../data-types.md) | Position in the list of properties.
 If not specified, a default value of 100 will be assigned ||
@@ -252,24 +254,18 @@ If not specified, it will be generated automatically ||
                 code: 'ARTICUL',
             }
         },
-    )
-        .then(
-            function(result)
+        function(result)
+        {
+            if (result.error())
             {
-                if (result.error())
-                {
-                    console.error(result.error());
-                }
-                else
-                {
-                    console.log(result);
-                }
-            },
-            function(error)
-            {
-                console.info(error);
+                console.error(result.error());
             }
-        );
+            else
+            {
+                console.log(result.data());
+            }
+        }
+    );
     ```
 
 - PHP CRest
@@ -380,8 +376,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200240400002",
+    "error_description": "Basket item not exists"
 }
 ```
 
@@ -391,13 +387,13 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to add ||
-|| `200240400004` | Basket item id is absent
-Basket item (position) identifier is not specified ||
-|| `200240400005` | Basket item id is bad
-Invalid basket item (position) identifier — for example, the string ‘seventy’ ||
-|| `200240400001`, `200240400002` | Basket item (position) not found ||
-|| `100` | Parameter `fields` is not specified or empty ||
+|| `0` | `Required fields: basketId` — the required field `basketId`, `name`, `value`, or `code` is not passed. The names of the missing fields are listed in `error_description` ||
+|| `200240400004` | `Basket item id is absent` — `null` is passed in `basketId` ||
+|| `200240400005` | `Basket item id is bad` — `basketId` is not a number or is less than 1, for example `"abc"` or `0` ||
+|| `200240400002`, `200240400001` | `Basket item not exists` — there is no basket item with this `basketId` ||
+|| `MAIN_CONTROLLER_22001` | `Argument 'id' is null or empty` — the basket item does not belong to an order: its `orderId` field is empty ||
+|| `100` | `Could not find value for parameter {fields}` — the `fields` parameter is not passed ||
+|| `200040300020` | `Access Denied` — insufficient permissions to add ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
