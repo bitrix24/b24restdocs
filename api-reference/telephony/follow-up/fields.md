@@ -38,6 +38,8 @@ You cannot pass fields inside `items` arrays in `select`. For example, instead o
 - `1` — instant call
 - `2` — persistent conference
 - `3` — large room ||
+|| **chatId**
+[`integer`](../../data-types.md) | Identifier of the chat the call belongs to. If there is no chat, the value is `null` ||
 || **initiatorId**
 [`integer`](../../data-types.md) | Identifier of the user who started the call ||
 || **startDate**
