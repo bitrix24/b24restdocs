@@ -30,7 +30,7 @@ The method works after [BX24.init](../system-functions/bx24-init.md).
 - user identifier, for example, `42`
 - chat identifier in the `chatXXX` format, for example, `chat123`
 - group chat identifier in the `sgXXX` format, for example, `sg456`
-- Open Channel dialog identifier in the `imol|XXXX` format, for example, `imol|1234`
+- Open Channel dialog identifier in the `imol\|XXXX` format, for example, `imol\|1234`
 
 If the parameter is not passed, the method opens the chat list ||
 |#

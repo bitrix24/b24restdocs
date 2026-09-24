@@ -31,7 +31,7 @@ The method works after [BX24.init](../system-functions/bx24-init.md).
 
 - user identifier, for example, `42`
 - chat identifier in the `chatXXX` format, for example, `chat123`
-- Open Channel dialog identifier in the `imol|XXXX` format, for example, `imol|1234` ||
+- Open Channel dialog identifier in the `imol\|XXXX` format, for example, `imol\|1234` ||
 |#
 
 {% note info "" %}
