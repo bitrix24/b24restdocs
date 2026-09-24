@@ -52,7 +52,7 @@ Open Channels methods and events manage each step in this chain: configuring cha
 ## Getting Started
 
 1. Connect the request source:
-   - An external channel via a connector according to the scenario from the article [Open Channels in Bitrix24: API of Channels and Connectors](../index.md),
+   - An external channel via a connector according to the scenario from the article [Open Channels in Bitrix24: Overview of Methods and Events](../index.md),
    - An external open channel from another Bitrix24 using the method [imopenlines.network.join](./imopenlines-network-join.md).
 2. Open a conversation and retrieve the `CHAT_ID` and `SESSION_ID` identifiers in the [Dialogs](./sessions/index.md) section.
 3. Configure conversation processing by employees in the [Operators](./operators/index.md) section.
