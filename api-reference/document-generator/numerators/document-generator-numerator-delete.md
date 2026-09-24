@@ -21,6 +21,12 @@ You can only delete a numerator that was created using the `documentgenerator.nu
 
 {% endnote %}
 
+The method does not check whether the numberer is linked to document templates. After deletion:
+
+- the numberer identifier remains in the settings of linked templates
+- when new documents are created from these templates, the system uses the default numberer if one is available
+- the numbers of existing documents remain unchanged
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -282,7 +288,10 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./document-generator-numerator-add.md)
 - [{#T}](./document-generator-numerator-update.md)
 - [{#T}](./document-generator-numerator-get.md)
 - [{#T}](./document-generator-numerator-list.md)
+- [{#T}](../templates/document-generator-template-add.md)
+- [{#T}](../templates/document-generator-template-update.md)

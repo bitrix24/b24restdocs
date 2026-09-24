@@ -484,12 +484,21 @@ HTTP status: **200**
 || **template**
 [`string`](../../../data-types.md) | The number template ||
 || **code**
-[`string`](../../../data-types.md) | The symbolic code of the numerator. Can be `null` ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | The symbolic code of the numberer. Returns `null` if the code is not specified ||
 || **settings**
 [`object`](../../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
 |#
 
 #### Settings Type {#settings}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **Bitrix_Main_Numerator_Generator_SequentNumberGenerator**
+[`object`](../../../data-types.md) | Sequential number generator settings [(detailed description)](#sequent-number-generator) ||
+|#
+
+#### Bitrix_Main_Numerator_Generator_SequentNumberGenerator Type {#sequent-number-generator}
 
 #|
 || **Name**
@@ -503,9 +512,9 @@ HTTP status: **200**
 || **padString**
 [`string`](../../../data-types.md) | The left padding character ||
 || **periodicBy**
-[`string`](../../../data-types.md) | The reset period for the counter: `null`, `day`, `month`, or `year` ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | The counter reset period: `day`, `month`, `year`, or `null` if reset is disabled ||
 || **timezone**
-[`string`](../../../data-types.md) | The timezone identifier for periodic reset. Can be `null` ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | The timezone identifier for periodic reset. Returns `null` if the timezone is not specified ||
 || **isDirectNumeration**
 [`boolean`](../../../data-types.md) | Indicator of direct numbering ||
 |#
@@ -531,7 +540,6 @@ HTTP status: **400**
 || `100` | `Bitrix\Main\Numerator\Numerator constructor must be is public` | Internal error while creating the numerator object ||
 || `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | The `fields` parameter was not passed as an array/object ||
 || `100` | `Could not construct parameter {numerator}` | Numerator with the specified `id` not found ||
-|| `DOCGEN_ACCESS_ERROR` | `Access denied` | No access to the numerator. The method only updates numerators created via REST ||
 || Empty value | `You do not have permissions to modify templates` | Insufficient permissions to modify document generator templates ||
 || Empty value | `Module documentgenerator is not installed` | The `documentgenerator` module is not available ||
 |#
@@ -540,6 +548,7 @@ HTTP status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-document-generator-numerator-add.md)
 - [{#T}](./crm-document-generator-numerator-get.md)
 - [{#T}](./crm-document-generator-numerator-list.md)

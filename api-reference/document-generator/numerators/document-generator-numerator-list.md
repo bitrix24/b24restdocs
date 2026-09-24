@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to modify document generator templates
 
-The method `documentgenerator.numerator.list` returns a list of numerators for the document generator. It retrieves all numerators available in the current Bitrix24, including [CRM numerators](../../crm/document-generator/numerator/index.md).
+The method `documentgenerator.numerator.list` returns a paginated list of numberers for the document generator. The result includes available numberers of this type, including [CRM numberers](../../crm/document-generator/numerator/index.md).
 
 ## Method Parameters
 
@@ -31,6 +31,12 @@ The formula for calculating the `start` value:
 
 `start = (N - 1) * 50`, where `N` is the desired page number ||
 |#
+
+{% note info "" %}
+
+The method does not return the total number of numberers or the `next` value. To load pages sequentially, increment `start` by 50 until the `numerators` array is empty or contains fewer than 50 items.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -72,7 +78,6 @@ The formula for calculating the `start` value:
       id: string
       name: string
       template: string
-      code: string | null
       settings: {
         Bitrix_Main_Numerator_Generator_SequentNumberGenerator?: {
           start: number
@@ -92,11 +97,6 @@ The formula for calculating the `start` value:
     }
 
     try {
-      // documentgenerator.numerator.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<NumeratorListResult>({
         method: 'documentgenerator.numerator.list',
         params: {
@@ -129,11 +129,6 @@ The formula for calculating the `start` value:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // documentgenerator.numerator.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'documentgenerator.numerator.list',
             params: {
@@ -207,7 +202,9 @@ The formula for calculating the `start` value:
   ```js
   BX24.callMethod(
       'documentgenerator.numerator.list',
-      {},
+      {
+          start: 0
+      },
       function(result)
       {
           if (result.error())
@@ -217,11 +214,6 @@ The formula for calculating the `start` value:
           else
           {
               console.log(result.data());
-
-              if (result.more())
-              {
-                  result.next();
-              }
           }
       }
   );
@@ -268,7 +260,6 @@ HTTP Status: **200**
 {
     "result": {
         "numerators": [
-            ..., // description of other numerators, including CRM
             {
                 "id": "53",
                 "name": "General Number",
@@ -303,7 +294,7 @@ HTTP Status: **200**
             }
         ]
     },
-    "total": 20,
+    "total": 2,
     "time": {
         "start": 1774363478,
         "finish": 1774363478.809978,
@@ -325,7 +316,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response [(detailed description)](#result) ||
 || **total**
-[`integer`](../../data-types.md) | The number of numerators in the current selection ||
+[`integer`](../../data-types.md) | Number of numberers on the current page. This field does not contain the total number of records in the full result set ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -350,8 +341,6 @@ HTTP Status: **200**
 [`string`](../../data-types.md) | Name of the numerator ||
 || **template**
 [`string`](../../data-types.md) | Number template ||
-|| **code**
-[`string`](../../data-types.md) | Symbolic code of the numerator. Can be `null` ||
 || **settings**
 [`object`](../../data-types.md) | Settings of the numerator generators [(detailed description)](#numerators-settings) ||
 |#
@@ -379,9 +368,9 @@ HTTP Status: **200**
 || **padString**
 [`string`](../../data-types.md) | Padding character on the left when `length > 0` ||
 || **periodicBy**
-[`string`](../../data-types.md) | Reset period of the counter. Can be `null` ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Counter reset period. Returns `null` if periodic reset is disabled ||
 || **timezone**
-[`string`](../../data-types.md) | Timezone identifier for periodic reset. Can be `null` ||
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Timezone identifier for periodic reset. Returns `null` if the timezone is not specified ||
 || **isDirectNumeration**
 [`boolean`](../../data-types.md) | Indicator of direct numbering ||
 |#
@@ -410,6 +399,7 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./document-generator-numerator-add.md)
 - [{#T}](./document-generator-numerator-update.md)
 - [{#T}](./document-generator-numerator-get.md)

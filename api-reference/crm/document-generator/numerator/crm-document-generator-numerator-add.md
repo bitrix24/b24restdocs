@@ -485,12 +485,21 @@ HTTP status: **200**
 || **template**
 [`string`](../../../data-types.md) | The number template ||
 || **code**
-[`string`](../../../data-types.md) | The symbolic code of the numerator. Can be `null` ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | The symbolic code of the numberer. Returns `null` if the code is not specified ||
 || **settings**
 [`object`](../../../data-types.md) | Saved settings for sequential numbering of type [`settings`](#settings) ||
 |#
 
 #### Settings Type {#settings}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **Bitrix_Main_Numerator_Generator_SequentNumberGenerator**
+[`object`](../../../data-types.md) | Sequential number generator settings [(detailed description)](#sequent-number-generator) ||
+|#
+
+#### Bitrix_Main_Numerator_Generator_SequentNumberGenerator Type {#sequent-number-generator}
 
 #|
 || **Name**
@@ -504,9 +513,9 @@ HTTP status: **200**
 || **padString**
 [`string`](../../../data-types.md) | The left padding character ||
 || **periodicBy**
-[`string`](../../../data-types.md) | The reset period for the counter: `null`, `day`, `month`, or `year` ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | The counter reset period: `day`, `month`, `year`, or `null` if reset is disabled ||
 || **timezone**
-[`string`](../../../data-types.md) | The timezone identifier for periodic reset. Can be `null` ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | The timezone identifier for periodic reset. Returns `null` if the timezone is not specified ||
 || **isDirectNumeration**
 [`boolean`](../../../data-types.md) | Indicator of direct numbering ||
 |#
@@ -528,6 +537,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `100` | `Could not find value for parameter {fields}` | The required `fields` parameter was not provided ||
 || `100` | Invalid value {...} to match with parameter {fields}. Should be value of type array. | The `fields` parameter was not passed as an array/object ||
 || `0` | `Empty required fields: ...` | Required fields are not provided ||
 || Empty value | `You do not have permissions to modify templates` | Insufficient permissions to modify document generator templates ||
@@ -538,6 +548,7 @@ HTTP status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-document-generator-numerator-update.md)
 - [{#T}](./crm-document-generator-numerator-get.md)
 - [{#T}](./crm-document-generator-numerator-list.md)

@@ -15,7 +15,11 @@ Choose a tool for developing with an AI agent:
 
 The method `crm.documentgenerator.numerator.delete` removes a numerator.
 
-You can only delete numerators created through [crm.documentgenerator.numerator.add](./crm-document-generator-numerator-add.md).
+The method does not check whether the numberer is linked to document templates. After deletion:
+
+- the numberer identifier remains in the settings of linked templates
+- when new documents are created from these templates, the system uses the default numberer if one is available
+- the numbers of existing documents remain unchanged
 
 ## Method Parameters
 
@@ -277,7 +281,6 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `100` | `Could not construct parameter {numerator}` | The numerator with the specified `id` was not found or cannot be created from the provided data ||
 || `100` | `Bitrix\Main\Numerator\Numerator constructor must be is public` | The required parameter `id` for auto-binding the `numerator` object was not provided ||
-|| `DOCGEN_ACCESS_ERROR` | `Access denied` | No access to the numerator: only REST numerators of the document generator type can be deleted ||
 || Empty value | `You do not have permissions to modify templates` | Insufficient permissions to modify document generator templates ||
 || Empty value | `Module documentgenerator is not installed` | The `documentgenerator` module is not available ||
 |#
@@ -286,6 +289,7 @@ HTTP status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-document-generator-numerator-add.md)
 - [{#T}](./crm-document-generator-numerator-update.md)
 - [{#T}](./crm-document-generator-numerator-get.md)

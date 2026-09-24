@@ -1,4 +1,4 @@
-title: Numberers  
+title: CRM Document Numberers
 href: index.md  
 items:  
   - name: Overview of methods  
@@ -12,4 +12,4 @@ items:
   - name: Get a list of numberers  
     href: crm-document-generator-numerator-list.md  
   - name: Delete a numberer  
-    href: crm-document-generator-numerator-delete.md  
+    href: crm-document-generator-numerator-delete.md
