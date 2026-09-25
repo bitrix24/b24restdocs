@@ -1,4 +1,4 @@
-# Widget on the Tab of the Task Card TASK_VIEW_TAB
+# Widget in the Task Card TASK_VIEW_TAB
 
 {% note tip "" %}
 
@@ -11,9 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, task`](../../scopes/permissions.md)
 
-The widget adds an application widget to the task card. In the previous card the item was rendered as a separate tab, hence the name of the placement. The handler receives the identifier of the task whose card the widget is opened from.
+The widget adds the application interface to the task card. Until module version `tasks` 25.700.0 it was rendered as a separate tab; in the [new card](../../tasks/tasks-new.md) it is a row in the *Applications* block.
 
-The widget can be limited to tasks of specific projects — this is described in the [Connection parameters](#options) section.
+This placement is chosen when the application needs a screen of its own inside a task: data from an external service, a report, or a form next to the task fields.
+
+If the application registers several card placements, the block shows one row per placement. One placement is enough for a new integration.
+
+The widget can be limited to tasks of specific projects with the `groupId` connection parameter — see [OPTIONS at registration](#options).
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -27,16 +31,14 @@ The widget is not displayed in the interface until the application installation 
 
 #|
 || **Placement Code** | **Location** ||
-|| `TASK_VIEW_TAB` | Widget on the tab of the task card ||
+|| `TASK_VIEW_TAB` | Row in the *Applications* block of the task card ||
 |#
 
 ### Where to Find It in the Interface
 
-Starting from version `tasks 25.700.0`, a [new task card](../../tasks/tasks-new.md) has been released. The placement has no separate tab in it: all widgets of the card are rendered as rows in the "Applications" block — below the task fields and before the list of additional fields. Open a task and click the row with the application name.
+Open a task. The application row is rendered below the task fields in the *Applications* block. The row name is the `TITLE` value passed at registration.
 
-![Widget on the tab of the task card](./_images/TASK_VIEW_TAB.png "Widget on the tab of the task card")
-
-The [TASK_VIEW_SIDEBAR](./view-sidebar.md) and [TASK_VIEW_TOP_PANEL](./view-top-panel.md) placements are rendered in the same block. Previously registered widgets keep working.
+![Row in the Applications block of the task card](./_images/TASK_VIEW_TAB.png "Row in the Applications block of the task card")
 
 ## What the Handler Receives
 
@@ -64,6 +66,15 @@ Array
 
 ```
 
+After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+```json
+{
+    "taskId": "31",
+    "URI": "/company/personal/user/1/tasks/task/view/31/"
+}
+```
+
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
@@ -82,11 +93,13 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 Task data is returned by the [tasks.task.get](../../tasks/tasks-task-get.md) method
 
 ||
+|| **URI**
+[`string`](../../data-types.md) | Address of the Bitrix24 page the widget is opened from ||
 |#
 
-## Connection Parameters {#options}
+## OPTIONS at Registration via placement.bind {#options}
 
-The connection parameter is passed in the `OPTIONS` field of the [placement.bind](../placement-bind.md) method when the handler is registered. This is not the data that Bitrix24 passes to the handler when the placement is called: the incoming data is described above.
+Connection parameters are passed in `OPTIONS` of the [placement.bind](../placement-bind.md) method when the handler is registered. This is not the data that Bitrix24 passes to the handler when the placement is called: that data is described in the "What the Handler Receives" section.
 
 #|
 || **Parameter** | **Description** ||
@@ -98,27 +111,11 @@ If the parameter is not passed or is empty, the widget is displayed in all tasks
 ||
 |#
 
-An example of registration limited to projects:
-
-```bash
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -d '{
-    "PLACEMENT": "TASK_VIEW_TAB",
-    "HANDLER": "https://your-domain.com/widgets/task-view-tab-handler.php",
-    "TITLE": "My task widget",
-    "OPTIONS": {
-      "groupId": "11,12"
-    },
-    "auth": "**put_access_token_here**"
-  }' \
-  https://**put_your_bitrix24_address**/rest/placement.bind
-```
-
 ## Code Examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
+
+The examples pass the `OPTIONS` parameter with the project identifiers `11,12`. Remove it if the widget has to be displayed in all tasks.
 
 {% list tabs %}
 
@@ -132,6 +129,9 @@ curl -X POST \
         "PLACEMENT": "TASK_VIEW_TAB",
         "HANDLER": "https://your-domain.com/widgets/task-view-tab-handler.php",
         "TITLE": "My task widget",
+        "OPTIONS": {
+          "groupId": "11,12"
+        },
         "LANG_ALL": {
           "en": {
             "TITLE": "My task widget"
@@ -162,6 +162,9 @@ curl -X POST \
           PLACEMENT: 'TASK_VIEW_TAB',
           HANDLER: 'https://your-domain.com/widgets/task-view-tab-handler.php',
           TITLE: 'My task widget',
+          OPTIONS: {
+            groupId: '11,12',
+          },
           LANG_ALL: {
             en: {
               TITLE: 'My task widget',
@@ -204,6 +207,9 @@ curl -X POST \
               PLACEMENT: 'TASK_VIEW_TAB',
               HANDLER: 'https://your-domain.com/widgets/task-view-tab-handler.php',
               TITLE: 'My task widget',
+              OPTIONS: {
+                groupId: '11,12',
+              },
               LANG_ALL: {
                 en: {
                   TITLE: 'My task widget',
@@ -246,6 +252,9 @@ curl -X POST \
                     'PLACEMENT' => 'TASK_VIEW_TAB',
                     'HANDLER' => 'https://your-domain.com/widgets/task-view-tab-handler.php',
                     'TITLE' => 'My task widget',
+                    'OPTIONS' => [
+                        'groupId' => '11,12',
+                    ],
                     'LANG_ALL' => [
                         'en' => [
                             'TITLE' => 'My task widget',
@@ -278,6 +287,9 @@ curl -X POST \
             PLACEMENT: 'TASK_VIEW_TAB',
             HANDLER: 'https://your-domain.com/widgets/task-view-tab-handler.php',
             TITLE: 'My task widget',
+            OPTIONS: {
+                groupId: '11,12'
+            },
             LANG_ALL: {
                 en: { TITLE: 'My task widget' },
                 de: { TITLE: 'Mein Aufgaben-Widget' }
@@ -304,6 +316,9 @@ curl -X POST \
             'PLACEMENT' => 'TASK_VIEW_TAB',
             'HANDLER' => 'https://your-domain.com/widgets/task-view-tab-handler.php',
             'TITLE' => 'My task widget',
+            'OPTIONS' => [
+                'groupId' => '11,12',
+            ],
             'LANG_ALL' => [
                 'en' => [
                     'TITLE' => 'My task widget',
@@ -328,6 +343,9 @@ curl -X POST \
     	"PLACEMENT": "TASK_VIEW_TAB",
     	"HANDLER":   "https://your-domain.com/widgets/task-view-tab-handler.php",
     	"TITLE":     "My task widget",
+    	"OPTIONS": b24.Params{
+    		"groupId": "11,12",
+    	},
     	"LANG_ALL": b24.Params{
     		"ru": b24.Params{
     			"TITLE": "My task widget",
@@ -348,12 +366,26 @@ curl -X POST \
 
 {% endlist %}
 
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| The widget has appeared in some tasks only | Check `groupId`: the widget is displayed only in tasks of the projects listed in it — see [OPTIONS at registration](#options) ||
+|| The handler does not find the task identifier | Read the identifier from the `taskId` key. The `ID` key arrives with the [TASK_LIST_CONTEXT_MENU](./list-context-menu.md) placement in the context menu of the list ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
+
 ## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./view-sidebar.md)
 - [{#T}](./view-top-panel.md)
 - [{#T}](../placement-bind.md)
+- [{#T}](../placement-get.md)
+- [{#T}](../placement-unbind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../bx24-widget-methods.md)
+- [{#T}](../../tasks/tasks-new.md)

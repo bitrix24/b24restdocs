@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, task`](../../scopes/permissions.md)
 
-The widget adds its own item to the dropdown menu above the task list. The placement works with the list as a whole rather than with an individual task: the handler receives the identifier of the list owner — a user or a workgroup.
+The widget adds its own item to the dropdown menu above the task list. The handler receives the identifier of the list owner — a user, a workgroup, or a project.
 
-The task list of a user and the task list of a group are two different placements with different codes. Register both if the application has to work in both lists.
+This placement is chosen when an action has to be performed on the list as a whole: export the tasks of a project, build a report, or send a set of tasks to an external system.
+
+There are two placements — one per list. Register both placements if the application works with both lists.
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -33,19 +35,25 @@ The widget is not displayed in the interface until the application installation 
 
 ### Where to Find It in the Interface
 
-Open the task list and click the arrow next to the button in the right part of the panel above the list. The application item appears in this menu next to the knowledge base and Bitrix24 Market items. The button itself shows the *•••* icon or the name of the item opened last.
+Open your own list in the *Tasks* section. The list of a group or a project is on the *Tasks* tab inside the group. In the right part of the panel above the list there is a button with the *•••* icon or with the name of one of the menu items. Click the arrow next to it: the application item appears in this menu next to the knowledge base and Bitrix24 Market items.
 
 {% list tabs %}
 
-- Task list of a user
+- TASK_USER_LIST_TOOLBAR
 
     ![Dropdown menu item above the task list of a user](./_images/TASK_USER_LIST_TOOLBAR.png "Dropdown menu item above the task list of a user")
 
-- Task list of a group
+- TASK_GROUP_LIST_TOOLBAR
 
     ![Dropdown menu item above the task list of a group](./_images/TASK_GROUP_LIST_TOOLBAR.png "Dropdown menu item above the task list of a group")
 
 {% endlist %}
+
+{% note info "" %}
+
+Do not confuse it with the [SONET_GROUP_TOOLBAR](../workgroups/toolbar.md) placement: it requires the `sonet_group` scope and is rendered in the menu of the group itself, not above the list of its tasks.
+
+{% endnote %}
 
 ## What the Handler Receives
 
@@ -77,6 +85,15 @@ Data is sent in a POST request: some parameters come in the handler URL query st
 
     ```
 
+    After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+    ```json
+    {
+        "USER_ID": "1",
+        "URI": "/company/personal/user/1/tasks/"
+    }
+    ```
+
 - TASK_GROUP_LIST_TOOLBAR
 
     ```php
@@ -101,6 +118,15 @@ Data is sent in a POST request: some parameters come in the handler URL query st
 
     ```
 
+    After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+    ```json
+    {
+        "GROUP_ID": "11",
+        "URI": "/workgroups/group/11/tasks/"
+    }
+    ```
+
 {% endlist %}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -109,19 +135,21 @@ Data is sent in a POST request: some parameters come in the handler URL query st
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. In addition to the universal `URI` key, the context carries the key of the placement itself: each placement has its own.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. In addition to the universal `URI` key, the context carries the key of the placement itself.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
-|| **USER_ID***
+|| **URI**
+[`string`](../../data-types.md) | Address of the Bitrix24 page the widget is opened from ||
+|| **USER_ID**
 [`string`](../../data-types.md) | Identifier of the user whose task list the widget is opened above. Arrives only for the `TASK_USER_LIST_TOOLBAR` placement.
 
 User data is returned by the [user.get](../../user/user-get.md) method
 
 ||
-|| **GROUP_ID***
+|| **GROUP_ID**
 [`string`](../../data-types.md) | Identifier of the workgroup or project whose task list the widget is opened above. Arrives only for the `TASK_GROUP_LIST_TOOLBAR` placement.
 
 Group data is returned by the [sonet_group.get](../../sonet-group/sonet-group-get.md) method
@@ -129,9 +157,17 @@ Group data is returned by the [sonet_group.get](../../sonet-group/sonet-group-ge
 ||
 |#
 
+The tasks of a group or project are returned by the [tasks.task.list](../../tasks/tasks-task-list.md) method with the `GROUP_ID` filter. In the interface, the task list of a user takes into account all the roles the user has in tasks, so such a list cannot be reproduced by filtering on `RESPONSIBLE_ID` alone.
+
+## OPTIONS at Registration via placement.bind {#options}
+
+This placement does not support connection parameters. The list the item is rendered above is determined by the choice of the placement code, not by registration parameters.
+
 ## Code Examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
+
+The examples are shown for `TASK_USER_LIST_TOOLBAR`. To make the item appear above the task list of a group or project as well, repeat the same call with the `TASK_GROUP_LIST_TOOLBAR` code.
 
 {% list tabs %}
 
@@ -361,12 +397,25 @@ Group data is returned by the [sonet_group.get](../../sonet-group/sonet-group-ge
 
 {% endlist %}
 
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| The item is present above one list and missing above the other | Register both placements: `TASK_USER_LIST_TOOLBAR` and `TASK_GROUP_LIST_TOOLBAR` ||
+|| The handler expects both context keys and fails with an error | The keys are mutually exclusive. Check which one has arrived: `USER_ID` for the list of a user, `GROUP_ID` for the list of a group or project ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
+
 ## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./list-context-menu.md)
 - [{#T}](./robot-designer-toolbar.md)
 - [{#T}](../placement-bind.md)
+- [{#T}](../placement-get.md)
+- [{#T}](../placement-unbind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../bx24-widget-methods.md)

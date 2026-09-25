@@ -173,9 +173,9 @@ Kanban and "My plan" stages can be managed using the [task.stages.*](./stages/in
 
 An application can be embedded into a task card. Embedding allows you to use the application without leaving the card.
 
-- [Widget on the tab of the task card](../widgets/task/view-tab.md) `TASK_VIEW_TAB`
-- [Widget in the right sidebar of the task card](../widgets/task/view-sidebar.md) `TASK_VIEW_SIDEBAR`
-- [Widget in the top panel of the task card](../widgets/task/view-top-panel.md) `TASK_VIEW_TOP_PANEL`
+- [Widget in the task card](../widgets/task/view-tab.md) `TASK_VIEW_TAB`
+- [Widget in the task card](../widgets/task/view-sidebar.md) `TASK_VIEW_SIDEBAR`
+- [Widget in the task card](../widgets/task/view-top-panel.md) `TASK_VIEW_TOP_PANEL`
 
 An application can also be embedded in the task list:
 

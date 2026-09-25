@@ -9,9 +9,9 @@ items:
     href: list-toolbar.md
   - name: Button in the Task Automation Rules Designer
     href: robot-designer-toolbar.md
-  - name: Widget on the Tab of the Task Card
+  - name: Widget in the Task Card TASK_VIEW_TAB
     href: view-tab.md
-  - name: Widget in the Right Sidebar of the Task Card
+  - name: Widget in the Task Card TASK_VIEW_SIDEBAR
     href: view-sidebar.md
-  - name: Widget in the Top Panel of the Task Card
+  - name: Widget in the Task Card TASK_VIEW_TOP_PANEL
     href: view-top-panel.md

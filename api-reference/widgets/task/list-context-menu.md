@@ -11,7 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, task`](../../scopes/permissions.md)
 
-The widget adds its own item to the context menu of an individual task in the list. The handler receives the identifier of the task whose menu the widget is opened from.
+The widget adds its own item to the context menu of an individual task in the list. The handler receives the task identifier.
+
+This placement is chosen when an action has to be performed on a single task without opening its card: approve it, export it, or send it to an external system.
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -30,7 +32,7 @@ The widget is not displayed in the interface until the application installation 
 
 ### Where to Find It in the Interface
 
-Open the task list, click the menu button to the left of a task, and hover over *Bitrix24 Market*. The application item appears in this submenu.
+Open the task list, click the menu button to the left of a task, and hover over *Bitrix24 Market*. The application appears in this submenu, not directly in the task context menu.
 
 ![Context menu item of a task in the list](./_images/TASK_LIST_CONTEXT_MENU.png "Context menu item of a task in the list")
 
@@ -60,6 +62,15 @@ Array
 
 ```
 
+After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+```json
+{
+    "ID": "31",
+    "URI": "/company/personal/user/1/tasks/"
+}
+```
+
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
@@ -78,11 +89,19 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 Task data is returned by the [tasks.task.get](../../tasks/tasks-task-get.md) method
 
 ||
+|| **URI**
+[`string`](../../data-types.md) | Address of the Bitrix24 page the widget is opened from ||
 |#
+
+## OPTIONS at Registration via placement.bind {#options}
+
+This placement does not support connection parameters: the item output cannot be limited at registration.
 
 ## Code Examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
+
+The item name in the menu is set by the `TITLE` parameter, and its translations by `LANG_ALL`.
 
 {% list tabs %}
 
@@ -312,12 +331,24 @@ Task data is returned by the [tasks.task.get](../../tasks/tasks-task-get.md) met
 
 {% endlist %}
 
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| The handler does not find the task identifier | Read the identifier from the `ID` key. In the task card placements, the identifier comes in the `taskId` key ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
+
 ## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./list-toolbar.md)
 - [{#T}](./view-tab.md)
 - [{#T}](../placement-bind.md)
+- [{#T}](../placement-get.md)
+- [{#T}](../placement-unbind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../bx24-widget-methods.md)

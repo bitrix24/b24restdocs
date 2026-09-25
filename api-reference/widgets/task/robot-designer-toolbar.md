@@ -11,7 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, task`](../../scopes/permissions.md)
 
-The widget adds its own button to the task automation rules designer. The handler receives the context of the automation the widget is opened from: the personal planner of a user or a project.
+The widget adds its own button to the task automation rules designer. The handler receives the context of the automation the widget is opened from: the personal planner of a user or a project. The personal planner is a user's task list. The automation rules designer for the personal planner is opened from this list.
+
+This placement is chosen when an application extends task automation: to build your own scenario designer, to carry over rules from an external system, or to add a setting that is missing among the standard automation rules. The button opens the application interface but does not register an automation step of its own.
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -30,13 +32,13 @@ The widget is not displayed in the interface until the application installation 
 
 ### Where to Find It in the Interface
 
-Open the task list of a user or a project and click *Automation rules*. The application button appears on the right in the header of the *Task automation* window. If another item occupies the button, click the arrow next to it — the application appears in the dropdown menu.
+Open the task list of a user or a project and click *Automation rules*. The application button appears on the right in the header of the *Task automation* window. If the button carries the name of another item, click the arrow next to it: the application item is in the dropdown menu.
 
 ![Button in the task automation rules designer](./_images/TASK_ROBOT_DESIGNER_TOOLBAR.png "Button in the task automation rules designer")
 
 {% note info "" %}
 
-The [SONET_GROUP_ROBOT_DESIGNER_TOOLBAR](../workgroups/robot-designer-toolbar.md) placement is rendered in the same menu. It is a separate placement with its own `sonet_group` scope and its own call context.
+When the designer is opened from a project, the [SONET_GROUP_ROBOT_DESIGNER_TOOLBAR](../workgroups/robot-designer-toolbar.md) placement is rendered in the same menu. It is a separate placement with its own `sonet_group` scope and a separate call context. It is absent in the automation of a personal planner: a personal planner has no group.
 
 {% endnote %}
 
@@ -44,7 +46,7 @@ The [SONET_GROUP_ROBOT_DESIGNER_TOOLBAR](../workgroups/robot-designer-toolbar.md
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
 
-The example is shown for the automation of a project. In the automation of a personal planner the set of data is the same, only the call context changes.
+The example is shown for the automation of a project. In the automation of a personal planner, the set of standard parameters is the same. Only the context key in `PLACEMENT_OPTIONS` changes: `USER_ID` arrives instead of `GROUP_ID`.
 
 ```php
 
@@ -68,37 +70,52 @@ Array
 
 ```
 
+After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+```json
+{
+    "GROUP_ID": "11",
+    "URI": "/workgroups/group/11/tasks/"
+}
+```
+
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
 ### PLACEMENT_OPTIONS
 
-The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. In addition to the universal `URI` key, the context carries one own key. Which one depends on where the automation rules designer is opened from.
+The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. In addition to the universal `URI` key, exactly one of the two own keys arrives — `USER_ID` or `GROUP_ID`.
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Parameter** | **Description** ||
-|| **USER_ID***
-[`string`](../../data-types.md) | Identifier of the user in whose personal planner automation the widget is opened.
+|| **URI**
+[`string`](../../data-types.md) | Address of the Bitrix24 page the widget is opened from ||
+|| **USER_ID**
+[`string`](../../data-types.md) | Identifier of the user in whose personal planner automation the widget is opened. Does not arrive in the automation of a project.
 
 User data is returned by the [user.get](../../user/user-get.md) method
 
 ||
-|| **GROUP_ID***
-[`string`](../../data-types.md) | Identifier of the project in whose task automation the widget is opened.
+|| **GROUP_ID**
+[`string`](../../data-types.md) | Identifier of the workgroup or project in whose task automation the widget is opened. Does not arrive in the automation of a personal planner.
 
 Group data is returned by the [sonet_group.get](../../sonet-group/sonet-group-get.md) method
 
 ||
 |#
 
-The keys are mutually exclusive: `USER_ID` arrives in the automation of a personal planner, `GROUP_ID` in the automation of a project.
+## OPTIONS at Registration via placement.bind {#options}
+
+This placement does not support connection parameters: the button output cannot be limited at registration.
 
 ## Code Examples
 
 {% include [Footnote on examples](../../../_includes/examples.md) %}
+
+The button name is set by the `TITLE` parameter, and its translations by `LANG_ALL`.
 
 {% list tabs %}
 
@@ -328,12 +345,25 @@ The keys are mutually exclusive: `USER_ID` arrives in the automation of a person
 
 {% endlist %}
 
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| The button has appeared, but the handler receives the wrong context | Check the code: the context of a personal planner and of a project arrives with `TASK_ROBOT_DESIGNER_TOOLBAR`. The [SONET_GROUP_ROBOT_DESIGNER_TOOLBAR](../workgroups/robot-designer-toolbar.md) placement is rendered in the same designer but passes the context of a workgroup ||
+|| The handler expects both context keys and fails with an error | The keys are mutually exclusive. Check which one has arrived: `USER_ID` for a personal planner, `GROUP_ID` for a project ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
+
 ## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./list-toolbar.md)
 - [{#T}](../workgroups/robot-designer-toolbar.md)
 - [{#T}](../placement-bind.md)
+- [{#T}](../placement-get.md)
+- [{#T}](../placement-unbind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../bx24-widget-methods.md)

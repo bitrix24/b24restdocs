@@ -1,4 +1,4 @@
-# Widget in the Top Panel of the Task Card TASK_VIEW_TOP_PANEL
+# Widget in the Task Card TASK_VIEW_TOP_PANEL
 
 {% note tip "" %}
 
@@ -11,7 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, task`](../../scopes/permissions.md)
 
-The widget adds an application widget to the task card. In the previous card the item was rendered as a button in the top panel, hence the name of the placement. The handler receives the identifier of the task whose card the widget is opened from.
+The widget adds the application interface to the task card. Until module version `tasks` 25.700.0 it was rendered as a button in the top panel; in the [new card](../../tasks/tasks-new.md) it is a row in the *Applications* block.
+
+This placement is chosen when the application needs a screen of its own inside a task: data from an external service, a report, or a form next to the task fields.
+
+If the application registers several card placements, the block shows one row per placement. One placement is enough for a new integration.
+
+This placement does not allow limiting the widget to tasks of specific projects — see [OPTIONS at registration](#options).
 
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
 
@@ -25,18 +31,14 @@ The widget is not displayed in the interface until the application installation 
 
 #|
 || **Placement Code** | **Location** ||
-|| `TASK_VIEW_TOP_PANEL` | Widget in the top panel of the task card ||
+|| `TASK_VIEW_TOP_PANEL` | Row in the *Applications* block of the task card ||
 |#
 
 ### Where to Find It in the Interface
 
-Starting from version `tasks 25.700.0`, a [new task card](../../tasks/tasks-new.md) has been released. The placement has no separate button in the top panel in it: all widgets of the card are rendered as rows in the "Applications" block — below the task fields and before the list of additional fields. Open a task and click the row with the application name.
+Open a task. The application row is rendered below the task fields in the *Applications* block. The row name is the `TITLE` value passed at registration.
 
-![Widget in the top panel of the task card](./_images/TASK_VIEW_TOP_PANEL.png "Widget in the top panel of the task card")
-
-The [TASK_VIEW_TAB](./view-tab.md) and [TASK_VIEW_SIDEBAR](./view-sidebar.md) placements are rendered in the same block. Previously registered widgets keep working.
-
-This placement cannot be limited to tasks of specific projects: the `groupId` connection parameter is supported only by [TASK_VIEW_TAB](./view-tab.md) and [TASK_VIEW_SIDEBAR](./view-sidebar.md).
+![Row in the Applications block of the task card](./_images/TASK_VIEW_TOP_PANEL.png "Row in the Applications block of the task card")
 
 ## What the Handler Receives
 
@@ -64,6 +66,15 @@ Array
 
 ```
 
+After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+```json
+{
+    "taskId": "31",
+    "URI": "/company/personal/user/1/tasks/task/view/31/"
+}
+```
+
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
@@ -82,7 +93,13 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 Task data is returned by the [tasks.task.get](../../tasks/tasks-task-get.md) method
 
 ||
+|| **URI**
+[`string`](../../data-types.md) | Address of the Bitrix24 page the widget is opened from ||
 |#
+
+## OPTIONS at Registration via placement.bind {#options}
+
+This placement does not support the `groupId` connection parameter: it is supported only by [TASK_VIEW_TAB](./view-tab.md#options) and [TASK_VIEW_SIDEBAR](./view-sidebar.md#options). The values passed are not retained: the [placement.get](../placement-get.md) method returns an empty array for such a registration.
 
 ## Code Examples
 
@@ -316,12 +333,26 @@ Task data is returned by the [tasks.task.get](../../tasks/tasks-task-get.md) met
 
 {% endlist %}
 
+## Common Mistakes
+
+#|
+|| **Mistake** | **Solution** ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| The handler does not find the task identifier | Read the identifier from the `taskId` key. The `ID` key arrives with the [TASK_LIST_CONTEXT_MENU](./list-context-menu.md) placement in the context menu of the list ||
+|| The widget is displayed in all tasks even though `groupId` was passed at registration | This placement does not support `groupId` — see [OPTIONS at registration](#options) ||
+|#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
+
 ## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./view-tab.md)
 - [{#T}](./view-sidebar.md)
 - [{#T}](../placement-bind.md)
+- [{#T}](../placement-get.md)
+- [{#T}](../placement-unbind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../../../settings/interactivity/index.md)
 - [{#T}](../bx24-widget-methods.md)
+- [{#T}](../../tasks/tasks-new.md)

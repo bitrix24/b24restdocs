@@ -9,9 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Placements add the application interface to tasks: an item in the context menu of a task, an item in the dropdown menu above the list, a button in the automation rules designer, and a widget inside the task card.
-
-All placements of the section require the `task` scope. The handler receives the call context: the identifier of a task, a user, or a project, depending on where the widget is opened from.
+Placements add the application interface to tasks: an item in the context menu, an item in the dropdown menu above the list, a button in the automation rules designer, and your own screen inside the card.
 
 To register a widget, use the [placement.bind](../placement-bind.md) method and pass the required code in the `PLACEMENT` parameter.
 
@@ -21,27 +19,66 @@ To register a widget, use the [placement.bind](../placement-bind.md) method and 
 
 Choose a placement by the task your application solves:
 
-- add an action to an individual task in the list — [TASK_LIST_CONTEXT_MENU](./list-context-menu.md)
-- add an action to the whole task list — [TASK_USER_LIST_TOOLBAR and TASK_GROUP_LIST_TOOLBAR](./list-toolbar.md)
-- extend task automation — [TASK_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md)
+- add an action for an individual task from the list — [TASK_LIST_CONTEXT_MENU](./list-context-menu.md)
+- add an action for the entire task list — [TASK_USER_LIST_TOOLBAR and TASK_GROUP_LIST_TOOLBAR](./list-toolbar.md)
+- add your own button to the task automation rules designer — [TASK_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md)
 - add your own screen to the task card — [TASK_VIEW_TAB](./view-tab.md), [TASK_VIEW_SIDEBAR](./view-sidebar.md), or [TASK_VIEW_TOP_PANEL](./view-top-panel.md)
 
-The three placements of the card used to differ in rendering location: a tab, the right panel, and a button in the top panel. Starting with the `tasks 25.700.0` module version, the [new task card](../../tasks/tasks-new.md) was released, and none of them has a place of its own anymore — all three are rendered as identical rows in the "Applications" block. Previously registered widgets keep working, and one placement out of the three is enough for a new integration.
+{% note info "" %}
 
-The menu of the workgroup or project itself belongs to another section: the [SONET_GROUP_DETAIL_TAB and SONET_GROUP_TOOLBAR](../workgroups/index.md) placements require the `sonet_group` scope and are called from the group menu, not from tasks. The [SONET_GROUP_ROBOT_DESIGNER_TOOLBAR](../workgroups/robot-designer-toolbar.md) placement is rendered in the same automation rules designer as `TASK_ROBOT_DESIGNER_TOOLBAR` but belongs to the workgroups section.
+Starting with module version `tasks` 25.700.0, tasks open in the [new card](../../tasks/tasks-new.md). The three card placements no longer have a place of their own in it: all three are rendered as identical rows in the *Applications* block and receive the same `taskId`. One placement out of the three is enough for a new integration: every registered placement adds one more row.
+
+{% endnote %}
+
+Placements in the menu of the workgroup or project itself are described in the workgroups section: [SONET_GROUP_DETAIL_TAB](../workgroups/detail-tab.md) and [SONET_GROUP_TOOLBAR](../workgroups/toolbar.md) require the `sonet_group` scope and are called from the group menu, not from tasks. The same section describes the [SONET_GROUP_ROBOT_DESIGNER_TOOLBAR](../workgroups/robot-designer-toolbar.md) placement: it is rendered in the same automation rules designer as `TASK_ROBOT_DESIGNER_TOOLBAR`, but only when the designer is opened from a project.
 
 ## How to Get Started
 
-1. Choose a placement for your scenario.
-2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the code in the `PLACEMENT` parameter. The method is available to an administrator only and requires the application context: a placement cannot be bound with a webhook.
-3. Limit the widget to specific projects if you need to. The `groupId` connection parameter is supported only by the [TASK_VIEW_TAB](./view-tab.md) and [TASK_VIEW_SIDEBAR](./view-sidebar.md) placements.
+1. Choose a placement for your scenario. The [placement.list](../placement-list.md) method returns the codes available to the application in a specific Bitrix24.
+2. Register the handler with the [placement.bind](../placement-bind.md) method and pass the code in the `PLACEMENT` parameter. On successful registration, the method returns `result: true` — the response breakdown and the error codes are on its page.
+3. Limit the output to specific projects if you need to. The `groupId` parameter is supported only by `TASK_VIEW_TAB` and `TASK_VIEW_SIDEBAR` — see [OPTIONS at registration](#options).
 4. Complete the application installation. Until then, the widget is not displayed in the interface.
 5. Open the place in the interface and call the widget. Where exactly the item is located is described on each placement page in the "Where to Find It in the Interface" section.
-6. Parse `PLACEMENT_OPTIONS` in the handler — it carries the call context: the identifier of a task, a user, or a project, and the address of the page the widget was opened from.
+6. Parse `PLACEMENT_OPTIONS` in the handler — it carries the call context: the identifier of a task, a user, or a project, as well as the address of the page the widget was opened from.
 
 ## What the Handler Receives
 
-All placements of the section pass the same set of standard parameters to the handler.
+Bitrix24 passes the same set of standard parameters to every placement of the section. Only the call context in `PLACEMENT_OPTIONS` differs.
+
+Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
+
+```php
+
+Array
+(
+    [DOMAIN] => xxx.bitrix24.com
+    [PROTOCOL] => 1
+    [LANG] => en
+    [APP_SID] => 0063a02ba25315469678f946ece50010
+    [AUTH_ID] => 9c52ba6600705a0700005a4b00000001f0f107e81691773d119eb941ad045e36
+    [AUTH_EXPIRES] => 3600
+    [REFRESH_ID] => 8cd1e16600705a0700005a4b00000001f0f1070aef2cbe270a6f27bcaf791e45
+    [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
+    [APPLICATION_TOKEN] => 3f0a7c19e5b84d2196c8ad470e5f2b31
+    [APPLICATION_SCOPE] => task,placement
+    [member_id] => da45a03b265edd8787f8a258d793cc5d
+    [status] => L
+    [PLACEMENT] => TASK_VIEW_TAB
+    [PLACEMENT_OPTIONS] => {"taskId":"31","URI":"\/company\/personal\/user\/1\/tasks\/task\/view\/31\/"}
+)
+
+```
+
+After parsing, the `PLACEMENT_OPTIONS` string from this example looks like this:
+
+```json
+{
+    "taskId": "31",
+    "URI": "/company/personal/user/1/tasks/task/view/31/"
+}
+```
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 {% include notitle [Description of Standard Data](../_includes/widget_data.md) %}
 
@@ -60,28 +97,36 @@ The `PLACEMENT_OPTIONS` value is passed as a JSON string with the call context. 
 || [TASK_VIEW_TOP_PANEL](./view-top-panel.md) | `taskId` | Identifier of the task whose card the widget is opened from ||
 |#
 
-The key that carries the task identifier is named differently across the section: `ID` in the context menu of the list and `taskId` in the card.
+## OPTIONS at Registration via placement.bind {#options}
+
+Connection parameters are passed in `OPTIONS` of the [placement.bind](../placement-bind.md) method. This is not the data that Bitrix24 passes to the handler when the placement is called. In the tasks section, connection parameters are supported by one pair of placements only.
+
+#|
+|| **Placement** | **`OPTIONS` Keys** ||
+|| [TASK_VIEW_TAB](./view-tab.md#options), [TASK_VIEW_SIDEBAR](./view-sidebar.md#options) | `groupId` — comma-separated project identifiers, for example `11,12`. An empty value or a missing parameter means the widget is displayed in all tasks ||
+|| Other placements of the section | `groupId` is not declared ||
+|#
 
 ## Connection with Other Objects
 
-**Task.** The identifier from `PLACEMENT_OPTIONS` indicates which task the handler was called for. Task data is returned by the [tasks.task.get](../../tasks/tasks-task-get.md) method.
+**Task.** The `ID` key in the context menu of the list and the `taskId` key in the card indicate which task the handler was called for. Task data is returned by the [tasks.task.get](../../tasks/tasks-task-get.md) method.
 
 **User.** The `USER_ID` key indicates whose task list or whose personal planner is open. User data is returned by the [user.get](../../user/user-get.md) method.
 
 **Workgroup and project.** The `GROUP_ID` key indicates which group the task list or the automation belongs to. Group data is returned by the [sonet_group.get](../../sonet-group/sonet-group-get.md) method.
 
-**Call page.** The universal `URI` key contains the path of the Bitrix24 page the widget was opened from.
-
 ## Common Mistakes
 
 #|
 || **Mistake** | **Solution** ||
-|| `placement.bind` returns `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
+|| `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the placement on behalf of an application. A placement cannot be bound with a webhook ||
 || The widget is registered but does not appear in the interface | Complete the [application installation](../../../settings/app-installation/installation-finish.md) and reload the page ||
-|| The widget does not appear in the task card | Check the `groupId` connection parameter: if it is filled in, the widget is displayed only in tasks of the listed projects ||
-|| The handler does not find the task identifier | The key name depends on the placement: `ID` in the context menu of the list and `taskId` in the card ||
-|| The item cannot be found above the task list | The menu is hidden under the button in the right part of the panel: it shows the *•••* icon or the name of the item opened last ||
+|| `placement.bind` returns `ERROR_PLACEMENT_NOT_FOUND` | Check the code against the [Overview of Placements](#all-placements) table and make sure the application has been granted the `task` scope ||
+|| `placement.bind` returns `ERROR_ARGUMENT` | Check the required parameters and their types. The name of the invalid parameter comes in the `argument` field ||
+|| The handler does not find the task identifier | Read the identifier from the `ID` key in the context menu of the list and from `taskId` in the task card ||
 |#
+
+Other registration error codes are listed in the "Possible Error Codes" section of the [placement.bind](../placement-bind.md) page.
 
 ## Overview of Placements {#all-placements}
 
@@ -92,16 +137,20 @@ The key that carries the task identifier is named differently across the section
 || [TASK_LIST_CONTEXT_MENU](./list-context-menu.md) | Context menu item of a task in the list ||
 || [TASK_USER_LIST_TOOLBAR, TASK_GROUP_LIST_TOOLBAR](./list-toolbar.md) | Dropdown menu item above the task list of a user or a group ||
 || [TASK_ROBOT_DESIGNER_TOOLBAR](./robot-designer-toolbar.md) | Button in the task automation rules designer ||
-|| [TASK_VIEW_TAB](./view-tab.md) | Widget in the task card, formerly a tab ||
-|| [TASK_VIEW_SIDEBAR](./view-sidebar.md) | Widget in the task card, formerly the right panel ||
-|| [TASK_VIEW_TOP_PANEL](./view-top-panel.md) | Widget in the task card, formerly a button in the top panel ||
+|| [TASK_VIEW_TAB](./view-tab.md) | Your own screen inside a task, formerly a tab of the card ||
+|| [TASK_VIEW_SIDEBAR](./view-sidebar.md) | Your own screen inside a task, formerly the right panel of the card ||
+|| [TASK_VIEW_TOP_PANEL](./view-top-panel.md) | Your own screen inside a task, formerly a button in the top panel of the card ||
 |#
 
 ## Continue Learning
 
+- [{#T}](../index.md)
+- [{#T}](../placements.md)
 - [{#T}](../placement-bind.md)
+- [{#T}](../placement-get.md)
 - [{#T}](../placement-list.md)
 - [{#T}](../placement-unbind.md)
 - [{#T}](../ui-interaction/index.md)
 - [{#T}](../bx24-widget-methods.md)
+- [{#T}](../../tasks/index.md)
 - [{#T}](../../../settings/interactivity/index.md)
