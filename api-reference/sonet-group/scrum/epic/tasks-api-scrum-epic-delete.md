@@ -15,6 +15,12 @@ Choose a tool for developing with an AI agent:
 
 This method deletes an epic.
 
+{% note warning "Attention" %}
+
+The method does not detach tasks from the epic: after deletion, the [tasks.api.scrum.task.get](../task/tasks-api-scrum-task-get.md) method still returns the `epicId` of the deleted epic for these tasks. To avoid leaving a reference to a nonexistent epic, first detach the tasks using the [tasks.api.scrum.task.update](../task/tasks-api-scrum-task-update.md) method with the value `epicId: 0`
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -50,9 +56,9 @@ You can obtain epic identifiers using the [`tasks.api.scrum.epic.list`](./tasks-
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
     -d '{
-    "id": 1
+    "id": 1,
+    "auth": "YOUR_ACCESS_TOKEN"
     }' \
     https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.delete
     ```
@@ -68,7 +74,8 @@ You can obtain epic identifiers using the [`tasks.api.scrum.epic.list`](./tasks-
     declare const $b24: B24Frame
 
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      // On success, result is an empty array
+      const response = await $b24.actions.v2.call.make<unknown[]>({
         method: 'tasks.api.scrum.epic.delete',
         params: {
           id: 1,
@@ -233,7 +240,34 @@ You can obtain epic identifiers using the [`tasks.api.scrum.epic.list`](./tasks-
 
 ## Response Handling
 
-Upon successful deletion, the method returns an empty array.
+HTTP status: **200**
+
+```json
+{
+    "result": [],
+    "time": {
+        "start": 1790263165,
+        "finish": 1790263165.067531,
+        "duration": 0.06753110885620117,
+        "processing": 0,
+        "date_start": "2026-09-24T18:19:25+03:00",
+        "date_finish": "2026-09-24T18:19:25+03:00",
+        "operating_reset_at": 1790263765,
+        "operating": 0
+    }
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../../data-types.md) | An empty array — the epic has been deleted ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
 
 ## Error Handling
 
@@ -241,7 +275,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
+    "error": "0",
     "error_description": "Epic not found"
 }
 ```
@@ -251,16 +285,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description**  | **Value** ||
-|| `0` | Access denied | No access to Scrum ||
-|| `0` | Epic not found | The epic does not exist ||
-|| `100` | Could not find value for parameter {id} | Incorrect parameter name or parameter not set ||
-|| `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Epic not found | An epic with this `id` does not exist, including when it has already been deleted ||
+|| `400` | `0` | Access denied | The user has no access to the tasks of the group the epic belongs to ||
+|| `400` | `0` | Epic not deleted | Failed to delete the epic ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter was not passed ||
+|| `400` | `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | A non-numeric value was passed in `id` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./tasks-api-scrum-epic-add.md)

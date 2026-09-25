@@ -1,4 +1,4 @@
-# Add Clients to the Waitlist Record in booking.v1.waitlist.client.set
+# Set Clients for a Waitlist Entry booking.v1.waitlist.client.set
 
 {% note tip "" %}
 
@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `booking.v1.waitlist.client.set` sets clients for the specified record in the waitlist.
+Sets the list of clients for the specified waitlist entry. Clients can be CRM contacts and companies.
+
+{% note warning "" %}
+
+The method replaces the entry's entire client list. To keep the current clients, retrieve them using the [booking.v1.waitlist.client.list](./booking-v1-waitlist-client-list.md) method and pass them in `clients` along with the new ones.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -23,10 +29,10 @@ The method `booking.v1.waitlist.client.set` sets clients for the specified recor
 || **Name**
 `type` | **Description** ||
 || **waitListId***
-[`integer`](../../../data-types.md) | Identifier of the waitlist record. 
+[`integer`](../../../data-types.md) | Identifier of the waitlist entry.
 Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitlist-add.md) and [booking.v1.waitlist.list](../booking-v1-waitlist-list.md) ||
 || **clients***
-[`array`](../../../data-types.md) | Array of objects containing information about clients [(detailed description)](#clients) ||
+[`array`](../../../data-types.md) | Complete list of the entry's clients. Each element is an object with the `id` and `type` fields. [Element Structure](#clients), [Empty Array Behavior](#empty-clients) ||
 |#
 
 ### Clients Parameter {#clients}
@@ -35,17 +41,39 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Client identifier, can be obtained using the method [crm.item.list](../../../crm/universal/crm-item-list.md) for contacts and companies ||
+[`integer`](../../../data-types.md) | Identifier of a CRM contact or company. You can retrieve it using the [crm.item.list](../../../crm/universal/crm-item-list.md) method: `entityTypeId: 3` for contacts, `entityTypeId: 4` for companies ||
 || **type***
-[`object`](../../../data-types.md) | Client type in the format `{"module": "crm", "code": "CONTACT"}`.
-Possible `code` values: 
+[`object`](../../../data-types.md) | Client type. For example, `{"module": "crm", "code": "CONTACT"}`. [Object Structure](#client-type) ||
+|#
+
+### type Object {#client-type}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **module***
+[`string`](../../../data-types.md) | Client module. For contacts and companies, `crm` ||
+|| **code***
+[`string`](../../../data-types.md) | Client type code:
 - `CONTACT` — [CRM contact](../../../crm/contacts/index.md)
 - `COMPANY` — [CRM company](../../../crm/companies/index.md)
 
-The structure of the object is returned by the method [booking.v1.clienttype.list](../../booking-v1-clienttype-list.md) ||
+The available client types are returned by the [booking.v1.clienttype.list](../../booking-v1-clienttype-list.md) method ||
 |#
 
+### Empty clients Array {#empty-clients}
+
+To remove the current client links, pass `clients: []`.
+
+{% note warning "Linked Deal" %}
+
+If the entry no longer has clients but a deal is linked to it using the [booking.v1.waitlist.externalData.set](../external-data/booking-v1-waitlist-externaldata-set.md) method, a call with `clients: []` links the contacts and company of that deal to the entry. As a result, a repeated call can populate the list again. Check the result using the [booking.v1.waitlist.client.list](./booking-v1-waitlist-client-list.md) method.
+
+{% endnote %}
+
 ## Code Examples
+
+The examples link entry `13` to contact `2795` and company `3063`. Replace the identifiers with values from your Bitrix24.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -57,8 +85,8 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"waitListId":4,"clients":[{"id":1,"type":{"module":"crm","code":"CONTACT"}},{"id":2,"type":{"module":"crm","code":"CONTACT"}}],"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.waitlist.client.set
+    -d '{"waitListId":13,"clients":[{"id":2795,"type":{"module":"crm","code":"CONTACT"}},{"id":3063,"type":{"module":"crm","code":"COMPANY"}}]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.waitlist.client.set
     ```
 
 - cURL (OAuth)
@@ -67,8 +95,8 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"waitListId":4,"clients":[{"id":1,"type":{"module":"crm","code":"CONTACT"}},{"id":2,"type":{"module":"crm","code":"CONTACT"}}]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.waitlist.client.set
+    -d '{"waitListId":13,"clients":[{"id":2795,"type":{"module":"crm","code":"CONTACT"}},{"id":3063,"type":{"module":"crm","code":"COMPANY"}}],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.waitlist.client.set
     ```
 
 - JS (TS)
@@ -85,20 +113,20 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'booking.v1.waitlist.client.set',
         params: {
-          waitListId: 4,
+          waitListId: 13,
           clients: [
             {
-              id: 1,
+              id: 2795,
               type: {
                 module: 'crm',
                 code: 'CONTACT',
               },
             },
             {
-              id: 2,
+              id: 3063,
               type: {
                 module: 'crm',
-                code: 'CONTACT',
+                code: 'COMPANY',
               },
             },
           ],
@@ -133,20 +161,20 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
           const response = await $b24.actions.v2.call.make({
             method: 'booking.v1.waitlist.client.set',
             params: {
-              waitListId: 4,
+              waitListId: 13,
               clients: [
                 {
-                  id: 1,
+                  id: 2795,
                   type: {
                     module: 'crm',
                     code: 'CONTACT',
                   },
                 },
                 {
-                  id: 2,
+                  id: 3063,
                   type: {
                     module: 'crm',
-                    code: 'CONTACT',
+                    code: 'COMPANY',
                   },
                 },
               ],
@@ -179,20 +207,20 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
 
     try:
         bitrix_response = client.booking.v1.waitlist.client.set(
-            wait_list_id=4,
+            wait_list_id=13,
             clients=[
                 {
-                    "id": 1,
+                    "id": 2795,
                     "type": {
                         "module": "crm",
                         "code": "CONTACT",
                     },
                 },
                 {
-                    "id": 2,
+                    "id": 3063,
                     "type": {
                         "module": "crm",
-                        "code": "CONTACT",
+                        "code": "COMPANY",
                     },
                 },
             ],
@@ -221,37 +249,34 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
             ->call(
                 'booking.v1.waitlist.client.set',
                 [
-                    'waitListId' => 4,
+                    'waitListId' => 13,
                     'clients'    => [
                         [
-                            'id'   => 1,
+                            'id'   => 2795,
                             'type' => [
                                 'module' => 'crm',
                                 'code'   => 'CONTACT',
                             ],
                         ],
                         [
-                            'id'   => 2,
+                            'id'   => 3063,
                             'type' => [
                                 'module' => 'crm',
-                                'code'   => 'CONTACT',
+                                'code'   => 'COMPANY',
                             ],
                         ],
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
+
+        if ($result[0] === true) {
+            echo 'Success';
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error setting waitlist clients: ' . $e->getMessage();
@@ -264,20 +289,20 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
     BX24.callMethod(
         "booking.v1.waitlist.client.set",
         {
-            waitListId: 4,
+            waitListId: 13,
             clients: [
                 {
-                    id: 1,
+                    id: 2795,
                     type: {
                         module: "crm",
                         code: "CONTACT"
                     }
                 },
                 {
-                    id: 2,
+                    id: 3063,
                     type: {
                         module: "crm",
-                        code: "CONTACT"
+                        code: "COMPANY"
                     }
                 }
             ]
@@ -299,22 +324,22 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
     $result = CRest::call(
         'booking.v1.waitlist.client.set',
         [
-            'waitListId' => 4,
+            'waitListId' => 13,
             'clients' => [
                 [
-                    'id' => 1,
+                    'id' => 2795,
                     'type' => [
                         'module' => 'crm',
                         'code' => 'CONTACT'
                     ]
-                },
+                ],
                 [
-                    'id' => 2,
+                    'id' => 3063,
                     'type' => [
                         'module' => 'crm',
-                        'code' => 'CONTACT'
+                        'code' => 'COMPANY'
                     ]
-                }
+                ]
             ]
         ]
     );
@@ -329,20 +354,20 @@ The structure of the object is returned by the method [booking.v1.clienttype.lis
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "booking.v1.waitlist.client.set", b24.Params{
-    	"waitListId": 4,
+    	"waitListId": 13,
     	"clients": []b24.Params{
     		{
-    			"id": 1,
+    			"id": 2795,
     			"type": b24.Params{
     				"module": "crm",
     				"code":   "CONTACT",
     			},
     		},
     		{
-    			"id": 2,
+    			"id": 3063,
     			"type": b24.Params{
     				"module": "crm",
-    				"code":   "CONTACT",
+    				"code":   "COMPANY",
     			},
     		},
     	},
@@ -368,12 +393,13 @@ HTTP Status: **200**
 {
     "result": true,
     "time": {
-        "start": 1724068028.331234,
-        "finish": 1724068028.726591,
-        "duration": 0.3953571319580078,
-        "processing": 0.13033390045166016,
-        "date_start": "2025-01-21T13:47:08+02:00",
-        "date_finish": "2025-01-21T13:47:08+02:00",
+        "start": 1790294535,
+        "finish": 1790294535.315704,
+        "duration": 0.3157041072845459,
+        "processing": 0,
+        "date_start": "2026-09-25T03:02:15+03:00",
+        "date_finish": "2026-09-25T03:02:15+03:00",
+        "operating_reset_at": 1790295135,
         "operating": 0
     }
 }
@@ -396,7 +422,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 1040,
+    "error": "1040",
     "error_description": "Wait list not found"
 }
 ```
@@ -407,9 +433,14 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | `Required fields:` | Required parameter not provided within `clients` ||
-|| `1040` | `Wait list not found` | Waitlist with the specified `id` not found ||
-|| `100` | `Could not find value for parameter` | Required parameter not provided ||
+|| `0` | `Required fields: id` | The `id` field is not provided in a `clients` element. Specify the contact or company identifier ||
+|| `0` | `Required fields: type` | The `type` object is not provided in a `clients` element ||
+|| `0` | `Required fields: module` | The `module` field is not provided in the `type` object. For CRM, specify `crm` ||
+|| `0` | `Required fields: code` | The `code` field is not provided in the `type` object. Specify `CONTACT` or `COMPANY` ||
+|| `100` | `Could not find value for parameter {waitListId}` | The `waitListId` parameter is not provided. Specify the waitlist entry identifier ||
+|| `100` | `Could not find value for parameter {clients}` | The `clients` array is not provided ||
+|| `1025` | `Client type not found` | An unknown client type is passed. Check the `module` and `code` combination against the [booking.v1.clienttype.list](../../booking-v1-clienttype-list.md) method ||
+|| `1040` | `Wait list not found` | The entry with the specified `waitListId` was not found. Check the identifier using the [booking.v1.waitlist.list](../booking-v1-waitlist-list.md) method ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

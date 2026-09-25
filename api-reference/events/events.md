@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Who can execute the method: any user
 
-The `events` method returns a comprehensive list of available events.
+Retrieves Bitrix24 event codes. The application uses this list to choose which events to subscribe to with the [event.bind](./event-bind.md) method. The events included in the list depend on the `SCOPE` and `FULL` parameters.
 
-The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
+The method works only in the context of authorizing the [application](../../settings/app-installation/index.md). When called through a webhook, it returns the `WRONG_AUTH_TYPE` error.
 
 ## Method Parameters
 
@@ -23,10 +23,16 @@ The method works only in the context of authorizing the [application](../../sett
 || **Name**
 `type` | **Description** ||
 || **SCOPE**
-[`string`](../data-types.md) | The method will return events belonging to the specified permission ||
+[`string`](../data-types.md) | [Scope](../scopes/permissions.md) whose events you need to retrieve, for example `crm` or `user`. The method returns events of this scope only, even if the application does not have this permission.
+
+If you pass an empty string, the method returns only the common application events. For an unknown scope, the method returns an empty array without an error ||
 || **FULL**
-[`boolean`](../data-types.md) | The method will return the complete list of events. This parameter will be ignored if the `SCOPE` parameter is provided ||
+[`boolean`](../data-types.md) | If you pass `true`, the method returns all Bitrix24 events regardless of the application's permissions.
+
+The parameter has no effect if `SCOPE` is passed, even an empty one ||
 |#
+
+If no parameters are passed, the method returns events from the application's scope and common events available to any application: for example, [ONAPPINSTALL](../common/events/on-app-install.md) and [ONOFFLINEEVENT](./on-offline-event.md).
 
 ## Code Examples
 
@@ -48,9 +54,9 @@ The method works only in the context of authorizing the [application](../../sett
     }' \
     https://**put_your_bitrix24_address**/rest/events
     ```
-    
+
     Example №2
-    
+
     ```curl
     curl -X POST \
     -H "Content-Type: application/json" \
@@ -81,9 +87,9 @@ The method works only in the context of authorizing the [application](../../sett
         }
     );
     ```
-    
+
     Example №2
-    
+
     ```js
     BX24.callMethod(
         "events",
@@ -150,10 +156,10 @@ The method works only in the context of authorizing the [application](../../sett
         print(f"Unexpected error: {error}")
     ```
 
-- PHP
+- PHP CRest
 
     Example №1
-    
+
     ```php
     require_once('crest.php');
 
@@ -170,7 +176,7 @@ The method works only in the context of authorizing the [application](../../sett
     ```
 
     Example №2
-    
+
     ```php
     require_once('crest.php');
 
@@ -192,121 +198,23 @@ The method works only in the context of authorizing the [application](../../sett
 
 HTTP status: **200**
 
+Response to the first example — a request with `SCOPE: "user"`:
+
 ```json
 {
-    "result":[
-        "ONAPPUNINSTALL",
-        "ONAPPINSTALL",
-        "ONAPPUPDATE",
-        "ONAPPPAYMENT",
-        "ONAPPTEST",
-        "ONAPPMETHODCONFIRM",
-        "ONOFFLINEEVENT",
-        "ONUSERADD",
-        "ONCRMINVOICEADD",
-        "ONCRMINVOICEUPDATE",
-        "ONCRMINVOICEDELETE",
-        "ONCRMINVOICESETSTATUS",
-        "ONCRMLEADADD",
-        "ONCRMLEADUPDATE",
-        "ONCRMLEADDELETE",
-        "ONCRMLEADUSERFIELDADD",
-        "ONCRMLEADUSERFIELDUPDATE",
-        "ONCRMLEADUSERFIELDDELETE",
-        "ONCRMLEADUSERFIELDSETENUMVALUES",
-        "ONCRMDEALADD",
-        "ONCRMDEALUPDATE",
-        "ONCRMDEALDELETE",
-        "ONCRMDEALMOVETOCATEGORY",
-        "ONCRMDEALUSERFIELDADD",
-        "ONCRMDEALUSERFIELDUPDATE",
-        "ONCRMDEALUSERFIELDDELETE",
-        "ONCRMDEALUSERFIELDSETENUMVALUES",
-        "ONCRMCOMPANYADD",
-        "ONCRMCOMPANYUPDATE",
-        "ONCRMCOMPANYDELETE",
-        "ONCRMCOMPANYUSERFIELDADD",
-        "ONCRMCOMPANYUSERFIELDUPDATE",
-        "ONCRMCOMPANYUSERFIELDDELETE",
-        "ONCRMCOMPANYUSERFIELDSETENUMVALUES",
-        "ONCRMCONTACTADD",
-        "ONCRMCONTACTUPDATE",
-        "ONCRMCONTACTDELETE",
-        "ONCRMCONTACTUSERFIELDADD",
-        "ONCRMCONTACTUSERFIELDUPDATE",
-        "ONCRMCONTACTUSERFIELDDELETE",
-        "ONCRMCONTACTUSERFIELDSETENUMVALUES",
-        "ONCRMQUOTEADD",
-        "ONCRMQUOTEUPDATE",
-        "ONCRMQUOTEDELETE",
-        "ONCRMQUOTEUSERFIELDADD",
-        "ONCRMQUOTEUSERFIELDUPDATE",
-        "ONCRMQUOTEUSERFIELDDELETE",
-        "ONCRMQUOTEUSERFIELDSETENUMVALUES",
-        "ONCRMINVOICEUSERFIELDADD",
-        "ONCRMINVOICEUSERFIELDUPDATE",
-        "ONCRMINVOICEUSERFIELDDELETE",
-        "ONCRMINVOICEUSERFIELDSETENUMVALUES",
-        "ONCRMCURRENCYADD",
-        "ONCRMCURRENCYUPDATE",
-        "ONCRMCURRENCYDELETE",
-        "ONCRMPRODUCTADD",
-        "ONCRMPRODUCTUPDATE",
-        "ONCRMPRODUCTDELETE",
-        "ONCRMPRODUCTPROPERTYADD",
-        "ONCRMPRODUCTPROPERTYUPDATE",
-        "ONCRMPRODUCTPROPERTYDELETE",
-        "ONCRMPRODUCTSECTIONADD",
-        "ONCRMPRODUCTSECTIONUPDATE",
-        "ONCRMPRODUCTSECTIONDELETE",
-        "ONCRMACTIVITYADD",
-        "ONCRMACTIVITYUPDATE",
-        "ONCRMACTIVITYDELETE",
-        "ONCRMREQUISITEADD",
-        "ONCRMREQUISITEUPDATE",
-        "ONCRMREQUISITEDELETE",
-        "ONCRMREQUISITEUSERFIELDADD",
-        "ONCRMREQUISITEUSERFIELDUPDATE",
-        "ONCRMREQUISITEUSERFIELDDELETE",
-        "ONCRMREQUISITEUSERFIELDSETENUMVALUES",
-        "ONCRMBANKDETAILADD",
-        "ONCRMBANKDETAILUPDATE",
-        "ONCRMBANKDETAILDELETE",
-        "ONCRMADDRESSREGISTER",
-        "ONCRMADDRESSUNREGISTER",
-        "ONCRMMEASUREADD",
-        "ONCRMMEASUREUPDATE",
-        "ONCRMMEASUREDELETE",
-        "ONCRMDEALRECURRINGADD",
-        "ONCRMDEALRECURRINGUPDATE",
-        "ONCRMDEALRECURRINGDELETE",
-        "ONCRMDEALRECURRINGEXPOSE",
-        "ONCRMINVOICERECURRINGADD",
-        "ONCRMINVOICERECURRINGUPDATE",
-        "ONCRMINVOICERECURRINGDELETE",
-        "ONCRMINVOICERECURRINGEXPOSE",
-        "ONCRMTIMELINECOMMENTADD",
-        "ONCRMTIMELINECOMMENTUPDATE",
-        "ONCRMTIMELINECOMMENTDELETE",
-        "ONCRMDYNAMICITEMADD",
-        "ONCRMDYNAMICITEMUPDATE",
-        "ONCRMDYNAMICITEMDELETE",
-        "ONCRMDYNAMICITEMADD_147",
-        "ONCRMDYNAMICITEMUPDATE_147",
-        "ONCRMDYNAMICITEMDELETE_147",
-        "ONCRMTYPEADD",
-        "ONCRMTYPEUPDATE",
-        "ONCRMTYPEDELETE",
-        "ONCRMDOCUMENTGENERATORDOCUMENTADD",
-        "ONCRMDOCUMENTGENERATORDOCUMENTUPDATE",
-        "ONCRMDOCUMENTGENERATORDOCUMENTDELETE",
-        "ONTASKADD",
-        "ONTASKUPDATE",
-        "ONTASKDELETE",
-        "ONTASKCOMMENTADD",
-        "ONTASKCOMMENTUPDATE",
-        "ONTASKCOMMENTDELETE"
-    ]
+    "result": [
+        "ONUSERADD"
+    ],
+    "time": {
+        "start": 1790304784,
+        "finish": 1790304784.638336,
+        "duration": 0.6383359432220459,
+        "processing": 0,
+        "date_start": "2026-09-25T05:53:04+03:00",
+        "date_finish": "2026-09-25T05:53:04+03:00",
+        "operating_reset_at": 1790305384,
+        "operating": 0
+    }
 }
 ```
 
@@ -316,15 +224,38 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response ||
+[`array`](../data-types.md) | An array of strings — symbolic event codes in uppercase, for example `ONCRMDEALADD`. The code is passed in the `event` parameter of the [event.bind](./event-bind.md) method.
+
+The codes included in the array depend on the `SCOPE` and `FULL` parameters ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+HTTP status: **403**
+
+```json
+{
+    "error": "WRONG_AUTH_TYPE",
+    "error_description": "Current authorization type is denied for this method"
+}
+```
+
+{% include notitle [Error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Error message** | **Description** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called outside an application, for example, through a webhook ||
+|#
 
 {% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./event-bind.md)
 - [{#T}](./event-get.md)
 - [{#T}](./event-unbind.md)

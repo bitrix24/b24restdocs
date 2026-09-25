@@ -9,77 +9,65 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The Bitrix24 REST API is an API that can be accessed by making HTTP requests to specific addresses of a particular Bitrix24 account. In fact, such requests can be made from any software that supports the HTTP protocol.
+Bitrix24 REST API methods are called with HTTP requests to the address of a specific Bitrix24 account, from any software that supports the HTTP protocol. Each request is executed on behalf of a user and with that user's permissions: if an employee cannot see a deal in CRM, the method does not return it through the API either. Access is further restricted by scopes, the authorization method, and the conditions of the specific method.
+
+Therefore, in addition to the method parameters, each request passes authorization data. Without it, Bitrix24 rejects the request with the `NO_AUTH_FOUND` error.
+
+Authorization data is passed in one of two ways:
+
+- [Inbound Webhook](#webhook) — a permanent secret code in the request URL. Suitable for integrations with a single Bitrix24 account
+- [OAuth 2.0 Token](#oauth) — a temporary token in the `auth` parameter. Local and mass-market applications receive it
+
+To choose the right method for your task, see the [How to Call REST API Methods](./index.md#auth) section overview.
+
+## Inbound Webhooks {#webhook}
+
+Example of accessing the REST API through an inbound webhook:
 
 ```bash
 curl -X POST \
 -H "Content-Type: application/json" \
 -d '{
-	"fields": {
-		"title": "New Deal",
-		"typeId": "SALE",
-		"stageId": "NEW"
-	},
-	"auth": "YOUR_ACCESS_TOKEN"
-}' \
-https://your-domain.bitrix24.com/rest/crm.deal.add.json
-```
-
-In addition to the parameters of a specific method, it is necessary to pass some authorization data when making a request, without which the request will be considered unauthorized and blocked by Bitrix24.
-
-Moreover, REST API methods are always called "on behalf of" a specific user of the Bitrix24 account. Essentially, the entire REST API is another way to use the existing functionality of Bitrix24, where the user directly accesses the product's functionality instead of using the user interface, calling various REST API methods.
-
-There are two options for passing authorization data in requests to the REST API:
-
-- Specifying a permanent inbound local webhook code;
-- Specifying a temporary OAuth 2.0 authorization token, which is used in local and mass-market applications.
-
-## Local Inbound Webhooks
-
-Example of accessing the REST API using an inbound local webhook:
-
-```bash
-curl -X POST \
--H "Content-Type: application/json" \
--d '{
+	"entityTypeId": 2,
 	"fields": {
 		"title": "New Deal",
 		"typeId": "SALE",
 		"stageId": "NEW"
 	}
 }' \
-https://your-domain.bitrix24.com/rest/1/8g9l071eismy9q2l/crm.deal.add.json
+https://your-domain.bitrix24.com/rest/1/8g9l071eismy9q2l/crm.item.add.json
 ```
 
-In this example, the following is specified:
+The request URL contains:
 
-- The address of a specific Bitrix24 account (`your-domain.bitrix24.com`);
-- The user ID of the person who created the webhook (`1`);
-- The secret code of the webhook (`8g9l071eismy9q2l`);
-- The REST API method that adds a deal to the CRM (`crm.deal.add`).
+- the Bitrix24 address — `your-domain.bitrix24.com`
+- the ID of the user who created the webhook — `1`
+- the webhook secret code — `8g9l071eismy9q2l`
+- the [crm.item.add](../../api-reference/crm/universal/crm-item-add.md) method, which adds a CRM item. The value `entityTypeId: 2` stands for a deal
 
-The values of the method parameters (`fields`) were passed as a POST request.
+The method parameters, `entityTypeId` and `fields` in this example, are passed in the body of the POST request.
 
-In fact, "authorization" in this way of accessing the REST API is the user ID and the secret code of the webhook.
+The user ID and the secret code in the URL serve as authorization. The method is executed with the permissions of the user who created the webhook, and only within the [Scopes](../../api-reference/scopes/permissions.md) selected in the webhook settings. The webhook code grants access to Bitrix24 data, so treat it like a password: do not publish it or pass it to code that runs in the browser.
 
-Webhooks are ideal for:
+Webhooks are suitable for:
 
-- Organizing one-time data import-export;
-- Simple integrations with external and internal company systems (ERP, time tracking, auto-monitoring of software and hardware, etc.);
-- Use in automating the processing of leads and deals (triggers and actions in CRM automation rules);
+- one-time data import or export
+- simple integrations with company systems: ERP, time tracking, hardware and software monitoring
+- automating lead and deal processing in CRM automation rules and triggers
 
-Using webhooks is simpler for technical implementation, as it does not require the implementation of the OAuth 2.0 protocol. Each user can add webhooks "for themselves," and the REST API called within such webhooks will be limited to the rights of the specific user-owner.
+A webhook is easier to implement because it does not require the OAuth 2.0 protocol. By default, any employee can create a webhook, and an administrator can restrict this permission. Some methods are not available to a webhook because they require an application context. For example, the [placement.bind](../../api-reference/widgets/placement-bind.md) method returns the `WRONG_AUTH_TYPE` error when called through a webhook.
 
-You can learn more about webhooks in the [corresponding lesson](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&LESSON_ID=26002&LESSON_PATH=25400.25996.25998.26002) of our video course for developers.
+To learn how to create a webhook, set up employee access, and test a method, see the [Inbound and Outbound Webhooks](../../local-integrations/local-webhooks.md) page.
 
-## Local and Mass-Market Applications Using OAuth 2.0
+## Applications with OAuth 2.0 Authorization {#oauth}
 
-Example of accessing the REST API using a temporary authorization token:
+Example of accessing the REST API with a temporary authorization token:
 
 ```bash
 curl -X POST \
 -H "Content-Type: application/json" \
 -d '{
+	"entityTypeId": 2,
 	"fields": {
 		"title": "New Deal",
 		"typeId": "SALE",
@@ -87,31 +75,49 @@ curl -X POST \
 	},
 	"auth": "807ca26600631fce00007a4b00000001f0f107255033363e91ab16442bd901b2571ed9"
 }' \
-https://your-domain.bitrix24.com/rest/crm.deal.add.json
+https://your-domain.bitrix24.com/rest/crm.item.add.json
 ```
 
-In this example, the following is specified:
+The request contains:
 
-- The address of a specific Bitrix24 account (`your-domain.bitrix24.com`);
-- The REST API method that adds a deal to the CRM (`crm.deal.add`);
-- The authorization token specified in the `auth` parameter (`807ca26600631fce00007a4b00000001f0f107255033363e91ab16442bd901b2571ed9`).
+- the Bitrix24 address — `your-domain.bitrix24.com`
+- the [crm.item.add](../../api-reference/crm/universal/crm-item-add.md) method, which adds a deal
+- the authorization token in the `auth` parameter
 
-The values of the method parameters (`fields`) were passed as a POST request.
+The `access_token` that the application passes in the `auth` parameter serves as authorization. Bitrix24 uses it to identify the application and the user on whose behalf the request is executed. The method is executed with this user's permissions and within the application's scopes: the example requires the `crm` scope and permission to add deals.
 
-"Authorization" in this way of accessing the REST API is the token specified in the `auth` parameter. It contains a number of important system values, including the ID of the specific Bitrix24 user on behalf of whom the REST API is being accessed.
+A token is valid for a limited time, after which it must be refreshed. How applications receive and renew tokens is described in the [OAuth 2.0](../oauth/index.md) section. Like a webhook code, tokens grant access to Bitrix24 data: do not publish them or write them to logs, and keep them in secure storage on the application server.
 
-You can learn how local and mass-market applications obtain authorization tokens in the [corresponding section](../oauth/index.md) of the documentation.
+Applications can be local or mass-market.
 
-**Local applications**, unlike local webhooks, are better suited for tasks that require creating a user interface:
+**Local applications** are installed on a single Bitrix24 account, without publication in the catalog. Unlike webhooks, they are suitable for tasks that require a custom interface:
 
-- Various reports;
-- Additional auto-handlers within specific business logic;
-- Solutions that require user access management;
-- Chatbots and applications that extend the functionality of the Bitrix24 messenger;
-- Additional operations for automated Bitrix24 workflows.
+- reports
+- handlers for specific business logic
+- solutions that manage user access
+- chatbots and applications that extend the messenger's capabilities
+- additional workflow actions
 
-Local applications support all capabilities of the REST API and call REST using the OAuth 2.0 authorization protocol, but are installed only on a specific Bitrix24 account, without publication in the solutions catalog. Administrative access is required to add a local application.
+A local application can also call methods that require an application context. By default, only an administrator can add a local application, and they can grant this permission to other employees.
 
-**Mass-market solutions** are published in our [application catalog](../../market/index.md). They are available for installation to an unlimited number of users, and moreover, you can make them paid, selling their functionality on a subscription model.
+**Mass-market applications** are published in the [Bitrix24 Marketplace](../../market/index.md) catalog. They can be installed on multiple Bitrix24 accounts, and you can charge for the app's features. Publication is governed by the Marketplace rules, so review them before you start development.
 
-Unlike the development of local applications for a specific project or client, where the relationship between the developer and the user is governed by their bilateral agreements, the publication of mass-market solutions in the Bitrix24 Marketplace catalog is regulated by Bitrix24 rules, which you will need to familiarize yourself with carefully.
+## If Authorization Fails {#errors}
+
+#|
+|| **Status** | **Code** | **When it occurs** | **What to do** ||
+|| `401` | `NO_AUTH_FOUND` | The request contains no authorization data | Pass the webhook code in the request URL or the token in the `auth` parameter ||
+|| `401` | `INVALID_CREDENTIALS` | There is no active webhook with this user ID and code | Make sure the webhook exists and is active, and copy its URL from the settings again ||
+|| `401` | `invalid_token` | Bitrix24 did not accept the token, for example, because it was copied incorrectly | Request a new token using the [OAuth 2.0 Protocol](../oauth/index.md) ||
+|| `401` | `expired_token` | The token has expired | Refresh the token as described in the article [Automatic Renewal of OAuth 2.0 Tokens](../oauth/auto-renewal.md) ||
+|| `403` | `WRONG_AUTH_TYPE` | The method requires an application context, but the request came through a webhook | Call the method from an application ||
+|#
+
+System errors and how to handle them are described in the [Error Codes](../../error-codes.md) article, and errors of a specific method are described on its page.
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](../../first-steps/first-rest-api-call.md)
+- [{#T}](../../local-integrations/local-webhooks.md)
+- [{#T}](../oauth/index.md)

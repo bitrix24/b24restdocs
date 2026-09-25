@@ -13,24 +13,43 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method returns a list of epics.
+This method returns a list of epics. The list includes only epics from the groups the user is a member of.
 
 ## Method Parameters
+
+Pass epic field names in uppercase in `filter`, `select`, and `order`:
+
+#|
+|| **Response Field** | **Name in `filter`, `select`, and `order`** ||
+|| `id` | `ID` ||
+|| `groupId` | `GROUP_ID` ||
+|| `name` | `NAME` ||
+|| `description` | `DESCRIPTION` ||
+|| `createdBy` | `CREATED_BY` ||
+|| `modifiedBy` | `MODIFIED_BY` ||
+|| `color` | `COLOR` ||
+|#
+
+{% note warning "Attention" %}
+
+If you pass a field in `filter` in a different case, for example `groupId`, or a nonexistent field, the method returns an empty array without an error. The method responds the same way to a nonexistent field in `select` and `order`.
+
+The method still returns fields not included in `select`, but with the value `0` or an empty string. Do not mistake these values for epic data
+
+{% endnote %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **order**
-[`array`](../../../data-types.md) | An array for sorting the result in the format `{'sort_field': 'sort_direction' [, ...]}`. 
+[`object`](../../../data-types.md) | An object for sorting the result in the format `{"sort_field": "sort_direction" [, ...]}`.
 
 The sort direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
-
-Possible values for the array elements correspond to the fields in the response of [tasks.api.scrum.epic.add](./tasks-api-scrum-epic-add.md#fields)
 ||
 || **filter**
-[`array`](../../../data-types.md) | An array in the format `{'filter_field': 'filter_value' [, ...]}`.
+[`object`](../../../data-types.md) | An object in the format `{"filter_field": "filter_value" [, ...]}`.
 
 An additional prefix can be specified for the key to clarify the filter behavior.
 
@@ -40,7 +59,7 @@ Possible prefix values:
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be included in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be included in the filter value. The search goes from both sides
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
 - `=%` — LIKE, substring search. The `%` symbol must be included in the value. Examples:
@@ -54,27 +73,14 @@ Possible prefix values:
   - `"%mol%"` — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (see description above)
 
-Possible values for the array elements correspond to the fields in the response of [tasks.api.scrum.epic.add](./tasks-api-scrum-epic-add.md#fields)
-
+If there is no prefix and the value contains the `%` character, the filter also searches by substring: `"NAME": "%epic%"`
 ||
 || **select**
-[`array`](../../../data-types.md) | An array of record fields that will be returned by the method.
-
-Possible values for the array elements correspond to the fields in the response of [tasks.api.scrum.epic.add](./tasks-api-scrum-epic-add.md#fields). You can specify only the fields that are necessary.
-
-If the array contains the value `"*"`, all available fields will be returned.
-
-The default value is an empty array `array()`. This means that all fields from the main query table will be returned.
-||
+[`array`](../../../data-types.md) | An array of fields to fill in the response, for example `["ID", "NAME"]`. The value `"*"` or an empty array means all fields ||
 || **start**
-[`integer`](../../../data-types.md) | The page number of the output. Works for HTTPS requests.
+[`integer`](../../../data-types.md) | Selection offset, a multiple of 50, defaults to `0`. The page size of results is always 50 records: to retrieve the second page, pass `50`; for the third page, pass `100`.
 
-The page size of results is always static: 50 records.
-
-To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
-
-The formula for calculating the `start` parameter value:
-`start = (N-1) * 50`, where `N` is the desired page number.
+Calculation formula: `start = (N-1) * 50`, where `N` is the desired page number. The method rounds a value that is not a multiple of 50 down to the start of the page: with `start: 2`, it returns the first page
 ||
 |#
 
@@ -156,11 +162,8 @@ The formula for calculating the `start` parameter value:
     }
 
     try {
-      // tasks.api.scrum.epic.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // tasks.api.scrum.epic.list returns a single page (max 50 records) without `total` and `next`.
+      // To load the next page, repeat the call with `start` increased by 50.
       const response = await $b24.actions.v2.call.make<EpicItem[]>({
         method: 'tasks.api.scrum.epic.list',
         params: {
@@ -208,11 +211,8 @@ The formula for calculating the `start` parameter value:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // tasks.api.scrum.epic.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // tasks.api.scrum.epic.list returns a single page (max 50 records) without `total` and `next`.
+          // To load the next page, repeat the call with `start` increased by 50.
           const response = await $b24.actions.v2.call.make({
             method: 'tasks.api.scrum.epic.list',
             params: {
@@ -464,11 +464,6 @@ The formula for calculating the `start` parameter value:
             }
 
             console.log(res.data());
-
-            if (res.more())
-            {
-                res.next();
-            }
         }
     );
     ```
@@ -548,29 +543,45 @@ The formula for calculating the `start` parameter value:
 HTTP Status: **200**
 
 ```json
-[
-    {
-        "id": 1,
-        "groupId": 143,
-        "name": "epic",
-        "description": "",
-        "createdBy": 1,
-        "modifiedBy": 0,
-        "color": "#69dafc"
-    },
-    {
-        "id": 3,
-        "groupId": 143,
-        "name": "epic2",
-        "description": "new epic",
-        "createdBy": 3,
-        "modifiedBy": 5,
-        "color": "#69dagc"
+{
+    "result": [
+        {
+            "id": 12,
+            "groupId": 0,
+            "name": "New epic",
+            "description": "",
+            "createdBy": 1,
+            "modifiedBy": 3,
+            "color": "#69dafc"
+        }
+    ],
+    "time": {
+        "start": 1790263004,
+        "finish": 1790263004.141055,
+        "duration": 0.14105510711669922,
+        "processing": 0,
+        "date_start": "2026-09-24T18:16:44+03:00",
+        "date_finish": "2026-09-24T18:16:44+03:00",
+        "operating_reset_at": 1790263604,
+        "operating": 0
     }
-]
+}
 ```
 
+In the example, `groupId` is `0` because the `GROUP_ID` field is not included in the request `select`. If no epics match the conditions, `result` is an empty array. The response contains no `total` or `next` fields.
+
 ### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object[]`](../../../data-types.md) | Array of epics [(Detailed Description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Epic Object {#result}
 
 #|
 || **Name**
@@ -578,7 +589,7 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../../data-types.md) | Epic identifier ||
 || **groupId**
-[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic is linked ||
+[`integer`](../../../data-types.md) | Identifier of the Scrum to which the epic belongs ||
 || **name**
 [`string`](../../../data-types.md) | Name of the epic ||
 || **description**
@@ -586,35 +597,31 @@ HTTP Status: **200**
 || **createdBy**
 [`integer`](../../../data-types.md) | Identifier of the user who created the epic ||
 || **modifiedBy**
-[`integer`](../../../data-types.md) | Identifier of the user who last modified the epic ||
+[`integer`](../../../data-types.md) | Identifier of the user who last modified the epic. `0` if the epic has not been modified ||
 || **color**
-[`string`](../../../data-types.md) | Color of the epic in HEX format ||
-
+[`string`](../../../data-types.md) | Color of the epic ||
 |#
+
+The method does not return attached files. You can retrieve them using the [tasks.api.scrum.epic.get](./tasks-api-scrum-epic-get.md) method.
 
 ## Error Handling
 
-HTTP Status: **400**
+The method has no errors of its own. An example of a general error is an application token without the `task` scope:
+
+HTTP Status: **401**
 
 ```json
 {
-    "error": 0,
-    "error_description": "Could not load list"
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the access token"
 }
 ```
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible Error Codes
-
-#|
-|| **Code** | **Description**  | **Value** ||
-|| `0` | Could not load list| No epics found with the specified filters ||
-|#
-
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./tasks-api-scrum-epic-add.md)

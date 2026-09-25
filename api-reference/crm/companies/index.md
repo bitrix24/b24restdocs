@@ -16,9 +16,9 @@ A company is a CRM object that stores client data for legal entities. The compan
 
 {% note warning "Method Development Has Been Discontinued" %}
 
-Development of the `crm.company.*` and `crm.company.details.configuration.*` methods has been discontinued. For new development, use the universal methods `crm.item.*` — the replacement table is in the section [Current API Version](#actual-version).
+Development of the [Main Company Methods](#all-methods) and the card configuration methods [crm.company.details.configuration.*](./custom-form/index.md) has been discontinued. For new development, use the universal methods [crm.item.*](../universal/index.md) — the replacement table is in the section [Current API Version](#actual-version).
 
-The `crm.company.contact.*` and `crm.company.userfield.*` methods remain current.
+The [crm.company.contact.*](./contacts/index.md) and [crm.company.userfield.*](./userfields/index.md) methods remain current.
 
 {% endnote %}
 
@@ -28,7 +28,7 @@ The `crm.company.contact.*` and `crm.company.userfield.*` methods remain current
 
 ## Current API Version {#actual-version}
 
-The base company methods and the methods for its card settings have been replaced by the universal CRM methods. A universal method works with any CRM object and receives the object type in the `entityTypeId` parameter. For a company, `entityTypeId` equals `4`.
+The base company methods and the methods for its card settings have been replaced by the universal CRM methods. A universal method works with different types of CRM objects and receives the type in the `entityTypeId` parameter. For a company, `entityTypeId` equals `4`.
 
 #|
 || **Method with Discontinued Development** | **Replacement** ||
@@ -48,16 +48,16 @@ The discontinued methods keep working — you do not have to rewrite existing in
 
 ## How to Get Started
 
-1. Retrieve the description of the company fields with the [crm.company.fields](./crm-company-fields.md) method. It returns system and custom fields, their types, and whether they are required
-2. Create a company with the [crm.company.add](./crm-company-add.md) method or find the one you need with the [crm.company.list](./crm-company-list.md) method
+1. Retrieve the description of the company fields with the [crm.item.fields](../universal/crm-item-fields.md) method with `entityTypeId: 4`. It returns system and custom fields, their types, and whether they are required
+2. Create a company with the [crm.item.add](../universal/crm-item-add.md) method or find the one you need with the [crm.item.list](../universal/crm-item-list.md) method. Pass `entityTypeId: 4` to both methods as well
 3. Link the company to contacts with the [crm.company.contact.*](./contacts/index.md) group of methods, and to details with the [crm.requisite.*](../requisites/index.md) methods
 4. Subscribe to [company events](./events/index.md) if your application has to react to changes
 
 ## Relationships with Other CRM Objects
 
-**Deal, lead, SPA.** Any CRM object that has the standard field `Client` is linked to a company. The link is stored in the `COMPANY_ID` field. Change it with the groups of methods for [deals](../deals/index.md), [leads](../leads/index.md), and [SPAs](../universal/index.md).
+**Deal, lead, SPA.** Any CRM object that has the standard field `Client` is linked to a company. The link is stored in the `COMPANY_ID` field, and in the universal methods, in the `companyId` field. Change it with the groups of methods for [deals](../deals/index.md), [leads](../leads/index.md), and [SPAs](../universal/index.md).
 
-**Contact.** Multiple contacts can be associated with a single company. This connection is managed by the group of methods [crm.company.contact.*](./contacts/index.md). When you select a company in the `Client` field of a deal or an SPA, all related contacts are automatically pulled into the field.
+**Contact.** Multiple contacts can be associated with a single company. This connection is managed by the group of methods [crm.company.contact.*](./contacts/index.md). When an employee selects a company in the `Client` field of a deal or an SPA, Bitrix24 can fill in the field with the contacts related to the company.
 
 **Details.** Details are a separate CRM object. Create and modify them with the methods of the [crm.requisite.*](../requisites/index.md) and [crm.address.*](../requisites/addresses/index.md) groups. In the company card, the details are displayed in the `Details` field.
 
@@ -77,7 +77,7 @@ The main workspace in a company is the "General" tab of its card. It consists of
 
 - the right part, which contains the company timeline. CRM activities in the timeline are managed by the group of methods [crm.activity.*](../timeline/activities/index.md), and timeline records by the group of methods [crm.timeline.*](../timeline/index.md). Both sets of methods create, modify, filter, and delete their objects
 
-The parameters of the company card can be managed through the group of methods [crm.company.details.configuration.*](./custom-form/index.md).
+The parameters of the company card can be managed with the group of methods [crm.item.details.configuration.*](../universal/item-details-configuration/index.md) with `entityTypeId: 4`.
 
 {% note tip "User Documentation" %}
 
@@ -95,7 +95,7 @@ You can embed an application into the company card. The employee then works with
 There are two embedding scenarios:
 
 - use special [embedding locations](../../widgets/crm/index.md). For example, create your own tab
-- create a [custom field](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md) where the interface of your application will be loaded
+- create a custom field where the interface of your application will be loaded. An example for a lead is described in the tutorial [How to Embed a Widget into a Lead as a Custom Field](../../../tutorials/crm/crm-widgets/widget-as-field-in-lead-page.md)
 
 {% note tip "Typical use-cases and scenarios" %}
 
@@ -112,6 +112,21 @@ An application can react to changes in companies in almost real time. The events
 - [company custom field events](./userfields/events/index.md) — creation, update, and deletion of a field, as well as a change in the set of values of a list field
 
 You can subscribe to the events through an outbound webhook or through an application and the method [event.bind](../../events/event-bind.md).
+
+## Response Format {#response}
+
+The methods of this section return the result in the `result` field and the request execution time in the [`time`](../../data-types.md#time) field. What `result` contains depends on the method:
+
+- [crm.company.add](./crm-company-add.md) — the identifier of the created company
+- [crm.company.update](./crm-company-update.md) and [crm.company.delete](./crm-company-delete.md) — `true`
+- [crm.company.get](./crm-company-get.md) — the company object. Field names are in uppercase, for example `TITLE`
+- [crm.company.list](./crm-company-list.md) — an array of companies, no more than 50 per request. Next to `result`, the response contains `total` — the number of companies found. If there is a next page, the response also contains `next` — the position from which to request it
+
+Universal methods respond differently: [crm.item.get](../universal/crm-item-get.md) and [crm.item.add](../universal/crm-item-add.md) return the object in `result.item`, and [crm.item.list](../universal/crm-item-list.md) returns an array in `result.items`. Field names in them are in camelCase by default, for example `title`.
+
+If the call fails, the response contains the `error` and `error_description` fields instead of `result`. For many errors of the main company methods, the `error` code is empty, and only the text describes the cause, for example `Not found`. Therefore, check for the `error` key or the HTTP status of the response rather than the code value.
+
+In a [batch](../../../settings/how-to-call-rest-api/batch.md) request, command errors are returned with status `200`. How to recognize them is described in the [Error Codes](../../../error-codes.md) article, which also lists common REST API errors. Errors of a specific method are described on its page.
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -131,7 +146,7 @@ You can subscribe to the events through an outbound webhook or through an applic
     || [crm.company.update](./crm-company-update.md) | Updates an existing company ||
     || [crm.company.get](./crm-company-get.md) | Returns a company by ID ||
     || [crm.company.list](./crm-company-list.md) | Returns a list of companies by filter ||
-    || [crm.company.delete](./crm-company-delete.md) | Deletes a company and all related objects ||
+    || [crm.company.delete](./crm-company-delete.md) | Deletes a company ||
     || [crm.company.fields](./crm-company-fields.md) | Returns the description of company fields ||
     |#
 

@@ -9,16 +9,6 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- The structure of the parameter files relates to the Drive module, so it is not described here. A link should be made when the structure description appears in the documentation.
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`task`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user with access to Scrum
@@ -36,7 +26,17 @@ The method retrieves the values of the epic fields by its identifier `id`.
 [`integer`](../../../data-types.md) | Epic identifier.
 
 You can get the identifiers of epics using the method [`tasks.api.scrum.epic.list`](./tasks-api-scrum-epic-list.md) ||
+|| **withFiles**
+[`boolean`](../../../data-types.md) | Whether to return the epic files in the `files` field. Defaults to `true`.
+
+To retrieve an epic without files, pass `false` or `0` ||
 |#
+
+{% note warning "Attention" %}
+
+The method treats the strings `"false"` and `"N"` in `withFiles` as `true` and returns the files. Pass a boolean `false` in a JSON request, or `0`
+
+{% endnote %}
 
 ## Code Examples
 
@@ -251,48 +251,64 @@ HTTP status: **200**
 
 ```json
 {
-    "id": 1,
-    "groupId": 143,
-    "name": "epic",
-    "description": "",
-    "createdBy": 1,
-    "modifiedBy": 0,
-    "color": "#69dafc",
-    "files": {
-        "ID": "136",
-        "ENTITY_ID": "TASKS_SCRUM_EPIC",
-        "FIELD_NAME": "UF_SCRUM_EPIC_FILES",
-        "USER_TYPE_ID": "disk_file",
-        "XML_ID": null,
-        "SORT": "100",
-        "MULTIPLE": "Y",
-        "MANDATORY": "N",
-        "SHOW_FILTER": "N",
-        "SHOW_IN_LIST": "N",
-        "EDIT_IN_LIST": "N",
-        "IS_SEARCHABLE": "N",
-        "SETTINGS": {
-            "IBLOCK_ID": null,
-            "SECTION_ID": null,
-            "UF_TO_SAVE_ALLOW_EDIT": false
-        },
-        "USER_TYPE": {
+    "result": {
+        "id": 2,
+        "groupId": 2,
+        "name": "User Registration",
+        "description": "Login form, registration, and password recovery",
+        "createdBy": 1,
+        "modifiedBy": 1,
+        "color": "#69dafc",
+        "files": {
+            "ID": "60",
+            "ENTITY_ID": "TASKS_SCRUM_EPIC",
+            "FIELD_NAME": "UF_SCRUM_EPIC_FILES",
             "USER_TYPE_ID": "disk_file",
-            "CLASS_NAME": "Bitrix\\Disk\\Uf\\FileUserType",
-            "DESCRIPTION": "File (Drive)",
-            "BASE_TYPE": "int",
-            "TAG": [
-                "DISK FILE ID",
-                "DOCUMENT ID"
-            ]
-        },
-        "VALUE": [],
-        "ENTITY_VALUE_ID": 1,
-        "CUSTOM_DATA": {
-            "PHOTO_TEMPLATE": ""
-        },
-        "EDIT_FORM_LABEL": "UF_SCRUM_EPIC_FILES",
-        "TAG": "DOCUMENT ID"
+            "XML_ID": null,
+            "SORT": "100",
+            "MULTIPLE": "Y",
+            "MANDATORY": "N",
+            "SHOW_FILTER": "N",
+            "SHOW_IN_LIST": "N",
+            "EDIT_IN_LIST": "N",
+            "IS_SEARCHABLE": "N",
+            "SETTINGS": {
+                "IBLOCK_ID": null,
+                "SECTION_ID": null,
+                "UF_TO_SAVE_ALLOW_EDIT": false
+            },
+            "USER_TYPE": {
+                "USER_TYPE_ID": "disk_file",
+                "CLASS_NAME": "Bitrix\\Disk\\Uf\\FileUserType",
+                "DESCRIPTION": "File (Drive)",
+                "BASE_TYPE": "int",
+                "TAG": [
+                    "DISK FILE ID",
+                    "DOCUMENT ID"
+                ]
+            },
+            "VALUE": [
+                6
+            ],
+            "ENTITY_VALUE_ID": 2,
+            "VALUE_EXISTS": true,
+            "VALUE_RAW": "a:1:{i:0;i:6;}",
+            "CUSTOM_DATA": {
+                "PHOTO_TEMPLATE": ""
+            },
+            "EDIT_FORM_LABEL": "UF_SCRUM_EPIC_FILES",
+            "TAG": "DOCUMENT ID"
+        }
+    },
+    "time": {
+        "start": 1790263942,
+        "finish": 1790263942.418237,
+        "duration": 0.4182369709014893,
+        "processing": 0,
+        "date_start": "2026-09-24T18:32:22+03:00",
+        "date_finish": "2026-09-24T18:32:22+03:00",
+        "operating_reset_at": 1790264542,
+        "operating": 0
     }
 }
 ```
@@ -302,10 +318,21 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Epic data [(Detailed Description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id**
 [`integer`](../../../data-types.md) | Epic identifier ||
 || **groupId**
-[`integer`](../../../data-types.md) | Group identifier (scrum) to which the epic is attached ||
+[`integer`](../../../data-types.md) | Identifier of the Scrum to which the epic belongs ||
 || **name**
 [`string`](../../../data-types.md) | Epic name ||
 || **description**
@@ -313,11 +340,65 @@ HTTP status: **200**
 || **createdBy**
 [`integer`](../../../data-types.md) | Identifier of the user who created the epic ||
 || **modifiedBy**
-[`integer`](../../../data-types.md) | Identifier of the user who last modified the epic ||
+[`integer`](../../../data-types.md) | Identifier of the user who last modified the epic. `0` if the epic has not been modified ||
 || **color**
-[`string`](../../../data-types.md) | Epic color in HEX format ||
+[`string`](../../../data-types.md) | Epic color ||
 || **files**
-[`object`](../../../data-types.md) | Object with data about all files attached to the epic ||
+[`object`](../../../data-types.md) | Epic files as the `UF_SCRUM_EPIC_FILES` custom field [(Detailed Description)](#files) ||
+|#
+
+#### files Object {#files}
+
+The file data you need is in the `VALUE` field. The other fields of the object contain internal metadata describing the custom field.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **VALUE**
+[`array`](../../../data-types.md) | Identifiers of the files attached to the epic. These are attachment identifiers, not Drive file identifiers: you can retrieve the file name, download link, and Drive file identifier `OBJECT_ID` using the [disk.attachedObject.get](../../../disk/attached-object/disk-attached-object-get.md) method.
+
+An empty array if there are no files ||
+|| **VALUE_EXISTS**
+[`boolean`](../../../data-types.md) | Returned with the value `true` if files are attached to the epic. If there are no files, this field is absent from the response ||
+|| **FIELD_NAME**
+[`string`](../../../data-types.md) | Custom field code, always `UF_SCRUM_EPIC_FILES` ||
+|| **USER_TYPE_ID**
+[`string`](../../../data-types.md) | Custom field type, always `disk_file` ||
+|| **ENTITY_VALUE_ID**
+[`integer`](../../../data-types.md) | Epic identifier ||
+|| **VALUE_RAW**
+[`string`](../../../data-types.md) | The `VALUE` value in PHP serialized form. If there are no files, this field is absent from the response ||
+|#
+
+The remaining fields describe the settings of the `UF_SCRUM_EPIC_FILES` custom field itself. They are the same for all epics and do not depend on the attached files:
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../../data-types.md) | Custom field identifier ||
+|| **ENTITY_ID**
+[`string`](../../../data-types.md) | Object the field belongs to, always `TASKS_SCRUM_EPIC` ||
+|| **XML_ID**
+[`string`](../../../data-types.md) \| `null` | External code of the field. `null` for the epic files field ||
+|| **SORT**
+[`string`](../../../data-types.md) | Field sort order ||
+|| **MULTIPLE**
+[`string`](../../../data-types.md) | Whether the field accepts multiple values, always `Y` ||
+|| **MANDATORY**
+[`string`](../../../data-types.md) | Whether the field is required, always `N` ||
+|| **SHOW_FILTER**, **SHOW_IN_LIST**, **EDIT_IN_LIST**, **IS_SEARCHABLE**
+[`string`](../../../data-types.md) | Field display settings in the interface, `Y` or `N` ||
+|| **SETTINGS**
+[`object`](../../../data-types.md) | Field settings: `IBLOCK_ID`, `SECTION_ID`, `UF_TO_SAVE_ALLOW_EDIT` ||
+|| **USER_TYPE**
+[`object`](../../../data-types.md) | Field type description: `USER_TYPE_ID`, `CLASS_NAME`, `DESCRIPTION`, `BASE_TYPE`, `TAG` ||
+|| **CUSTOM_DATA**
+[`object`](../../../data-types.md) | Additional data of the field type ||
+|| **EDIT_FORM_LABEL**
+[`string`](../../../data-types.md) | Field label in the edit form ||
+|| **TAG**
+[`string`](../../../data-types.md) | Field type tag, `DOCUMENT ID` ||
 |#
 
 ## Error Handling
@@ -326,7 +407,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
+    "error": "0",
     "error_description": "Access denied"
 }
 ```
@@ -336,16 +417,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description**  | **Value** ||
-|| `0` | Access denied | No access to view epic data ||
-|| `0` | Epic not found | The epic does not exist ||
-|| `100` | Could not find value for parameter {id} | Incorrect parameter name or parameter not set ||
-|| `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | Invalid parameter type ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Epic not found | An epic with this `id` does not exist ||
+|| `400` | `0` | Access denied | The user has no access to the tasks of the group the epic belongs to ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter was not passed ||
+|| `400` | `100` | Invalid value {stringValue} to match with parameter {id}. Should be value of type int. | A non-numeric value was passed in `id` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./tasks-api-scrum-epic-add.md)

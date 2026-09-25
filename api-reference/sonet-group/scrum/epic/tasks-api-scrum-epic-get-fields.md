@@ -41,7 +41,7 @@ No parameters.
     curl -X POST \
     -H "Content-Type: application/json" \
     -d '{
-    auth=YOUR_ACCESS_TOKEN
+    "auth": "YOUR_ACCESS_TOKEN"
     }' \
     https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.getFields
     ```
@@ -215,55 +215,100 @@ No parameters.
 
 ## Response Handling
 
-HTTP status: **400**
+HTTP status: **200**
 
 ```json
 {
-    "fields":
-    {
-        "name": {
-            "type": "string"
-        },
-        "description": {
-            "type": "string"
-        },
-        "groupId": {
-            "type": "integer"
-        },
-        "color": {
-            "type": "string"
-        },
-        "files": {
-            "type": "array"
-        },
-        "createdBy": {
-            "type": "integer"
-        },
-        "modifiedBy": {
-            "type": "integer"
+    "result": {
+        "fields": {
+            "name": {
+                "type": "string"
+            },
+            "description": {
+                "type": "string"
+            },
+            "groupId": {
+                "type": "integer"
+            },
+            "color": {
+                "type": "string"
+            },
+            "files": {
+                "type": "array"
+            },
+            "createdBy": {
+                "type": "integer"
+            },
+            "modifiedBy": {
+                "type": "integer"
+            }
         }
+    },
+    "time": {
+        "start": 1790262925,
+        "finish": 1790262925.771081,
+        "duration": 0.7710809707641602,
+        "processing": 0,
+        "date_start": "2026-09-24T18:15:25+03:00",
+        "date_finish": "2026-09-24T18:15:25+03:00",
+        "operating_reset_at": 1790263525,
+        "operating": 0
     }
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #|
-|| **Field** `type` | **Description** ||
-|| **name** `string` | Epic name ||
-|| **description** `string` | Epic description ||
-|| **groupId** `integer` | Identifier of the group (scrum) to which the epic belongs ||
-|| **color** `string` | Epic color ||
-|| **files** `array` | Array of files attached to the epic ||
-|| **createdBy** `integer` | Created by ||
-|| **modifiedBy** `integer` | Modified by ||
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Object with the `fields` key [(Detailed Description)](#fields) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### fields Object {#fields}
+
+The key is the epic field name in the [tasks.api.scrum.epic.add](./tasks-api-scrum-epic-add.md) and [tasks.api.scrum.epic.update](./tasks-api-scrum-epic-update.md) methods, and the value is an object with the field type `type`. In the [tasks.api.scrum.epic.list](./tasks-api-scrum-epic-list.md) method, the same fields are passed in uppercase.
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **name**
+`string` | Epic name ||
+|| **description**
+`string` | Epic description ||
+|| **groupId**
+`integer` | Identifier of the Scrum to which the epic belongs ||
+|| **color**
+`string` | Epic color ||
+|| **files**
+`array` | Drive file identifiers with the `n` prefix ||
+|| **createdBy**
+`integer` | Identifier of the user who created the epic ||
+|| **modifiedBy**
+`integer` | Identifier of the user who last modified the epic ||
 |#
 
 ## Error Handling
 
+The method has no errors of its own. An example of a general error is an application token without the `task` scope:
+
+HTTP status: **401**
+
+```json
+{
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the access token"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./tasks-api-scrum-epic-add.md)

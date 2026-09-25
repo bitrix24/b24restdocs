@@ -23,7 +23,7 @@ This method adds an epic to Scrum.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a new epic in the form of a structure:
+[`object`](../../../data-types.md) | Field values of the new epic [(Detailed Description)](#fields) in the form of a structure:
 
 ```js
 fields: {
@@ -43,7 +43,7 @@ fields: {
 ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -51,22 +51,26 @@ fields: {
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../../data-types.md) | Epic name ||
+[`string`](../../../data-types.md) | Epic name, up to 255 characters ||
 || **description**
 [`string`](../../../data-types.md) | Epic description ||
 || **groupId***
-[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic belongs ||
-|| **color**
-[`string`](../../../data-types.md) | Epic color ||
-|| **files**
-[`array`](../../../data-types.md) | Array of files associated with the epic.
+[`integer`](../../../data-types.md) | Identifier of the Scrum in which the epic is created.
 
-In `files`, you can pass an array of values with file identifiers, specifying the prefix `n` for each identifier ||
+You can retrieve the identifier using the [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) method ||
+|| **color**
+[`string`](../../../data-types.md) | Epic color, for example `#69dafc`, up to 18 characters. The method does not validate the color format and retains the string as is ||
+|| **files**
+[`array`](../../../data-types.md) | Array of Drive file identifiers. Prefix each identifier with `n`, for example `["n428", "n345"]` ||
 || **createdBy**
-[`integer`](../../../data-types.md) | Created by ||
-|| **modifiedBy**
-[`integer`](../../../data-types.md) | Modified by ||
+[`integer`](../../../data-types.md) | Identifier of the user to be set as the creator of the epic. Defaults to the current user ||
 |#
+
+{% note warning "Attention" %}
+
+The method skips a file identifier without the `n` prefix and a nonexistent file without an error: the epic is created without these files
+
+{% endnote %}
 
 ## Code Examples
 
@@ -96,7 +100,6 @@ In `files`, you can pass an array of values with file identifiers, specifying th
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
     -d '{
     "fields": {
         "name": "Epic 1",
@@ -104,7 +107,8 @@ In `files`, you can pass an array of values with file identifiers, specifying th
         "description": "Description text",
         "color": "#69dafc",
         "files": ["n428", "n345"]
-    }
+    },
+    "auth": "YOUR_ACCESS_TOKEN"
     }' \
     https://your-domain.bitrix24.com/rest/tasks.api.scrum.epic.add
     ```
@@ -315,7 +319,7 @@ In `files`, you can pass an array of values with file identifiers, specifying th
                 'color' => $color,
                 'files' => $files
             ]
-        }
+        ]
     );
 
     // Process response from Bitrix24
@@ -357,17 +361,40 @@ HTTP Status: **200**
 
 ```json
 {
-    "id": 4,
-    "groupId": 1,
-    "name": "Epic 1",
-    "description": "Description text",
-    "createdBy": 1,
-    "modifiedBy": 1,
-    "color": "#69dafc"
+    "result": {
+        "id": 4,
+        "groupId": 1,
+        "name": "Epic 1",
+        "description": "Description text",
+        "createdBy": 1,
+        "modifiedBy": 0,
+        "color": "#69dafc"
+    },
+    "time": {
+        "start": 1790262925,
+        "finish": 1790262925.771081,
+        "duration": 0.7710809707641602,
+        "processing": 0,
+        "date_start": "2026-09-24T18:15:25+03:00",
+        "date_finish": "2026-09-24T18:15:25+03:00",
+        "operating_reset_at": 1790263525,
+        "operating": 0
+    }
 }
 ```
 
-### Returned Data {#fields}
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Data of the created epic [(Detailed Description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
 
 #|
 || **Name**
@@ -375,18 +402,20 @@ HTTP Status: **200**
 || **id**
 [`integer`](../../../data-types.md) | Epic identifier ||
 || **groupId**
-[`integer`](../../../data-types.md) | Identifier of the group (scrum) to which the epic is linked ||
+[`integer`](../../../data-types.md) | Identifier of the Scrum to which the epic belongs ||
 || **name**
 [`string`](../../../data-types.md) | Epic name ||
 || **description**
-[`string`](../../../data-types.md) | Epic description ||
+[`string`](../../../data-types.md) | Epic description. An empty string if no description was passed ||
 || **createdBy**
 [`integer`](../../../data-types.md) | Identifier of the user who created the epic ||
 || **modifiedBy**
-[`integer`](../../../data-types.md) | Identifier of the user who last modified the epic ||
+[`integer`](../../../data-types.md) | Identifier of the user who last modified the epic. `0` for a new epic ||
 || **color**
-[`string`](../../../data-types.md) | Epic color in HEX format ||
+[`string`](../../../data-types.md) | Epic color. An empty string if no color was passed ||
 |#
+
+The method does not return attached files. You can retrieve them using the [tasks.api.scrum.epic.get](./tasks-api-scrum-epic-get.md) method.
 
 ## Error Handling
 
@@ -394,8 +423,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "Group is not found"
+    "error": "0",
+    "error_description": "Group id not found"
 }
 ```
 
@@ -404,18 +433,19 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description**  | **Value** ||
-|| `0` | Access denied | No access to scrum ||
-|| `0` | Epic not created | Failed to create epic ||
-|| `0` | createdBy user not found | User in the "creator" field not found ||
-|| `0` | modifiedBy user not found | User in the "last modified by" field not found ||
-|| `0` | Group is not found | `GROUP_ID` parameter not specified or group with such `ID` does not exist ||
-|| `0` | Name is not found | `NAME` parameter not specified ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Group id not found | `groupId` was not passed ||
+|| `400` | `0` | Name not found | The `name` was not passed, or an empty string was passed ||
+|| `400` | `0` | Access denied | The user has no access to the tasks of the group, or a group with this `groupId` does not exist ||
+|| `400` | `0` | createdBy user not found | The user from `createdBy` does not exist ||
+|| `400` | `0` | Epic not created | Failed to save the epic, for example, the name is longer than 255 characters or the color is longer than 18 characters ||
+|| `400` | `0` | Epic files not attached | The epic was created, but the files could not be attached ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter was not passed ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./tasks-api-scrum-epic-update.md)

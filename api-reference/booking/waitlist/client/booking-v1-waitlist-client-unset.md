@@ -1,4 +1,4 @@
-# Remove clients from the waitlist entry booking.v1.waitlist.client.unset
+# Remove Client Links from a Waitlist Entry booking.v1.waitlist.client.unset
 
 {% note tip "" %}
 
@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `booking.v1.waitlist.client.unset` removes clients for the specified entry in the waitlist.
+Removes all client links from the specified waitlist entry. The contacts and companies remain in the CRM.
+
+{% note warning "Linked Deal" %}
+
+If the entry no longer has clients but a deal is linked to it using the [booking.v1.waitlist.externalData.set](../external-data/booking-v1-waitlist-externaldata-set.md) method, calling this method links the contacts and company of that deal to the entry. As a result, a repeated call can populate the list again. Check the result using the [booking.v1.waitlist.client.list](./booking-v1-waitlist-client-list.md) method.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -23,11 +29,13 @@ The method `booking.v1.waitlist.client.unset` removes clients for the specified 
 || **Name**
 `type` | **Description** ||
 || **waitListId***
-[`integer`](../../../data-types.md) | Identifier of the waitlist entry. 
+[`integer`](../../../data-types.md) | Identifier of the waitlist entry.
 Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitlist-add.md) and [booking.v1.waitlist.list](../booking-v1-waitlist-list.md) ||
 |#
 
 ## Code Examples
+
+The examples remove the client links of entry `13`. Replace the identifier with a value from your Bitrix24.
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
@@ -39,8 +47,8 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"waitListId":14,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.waitlist.client.unset
+    -d '{"waitListId":13}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.waitlist.client.unset
     ```
 
 - cURL (OAuth)
@@ -49,8 +57,8 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"waitListId":14}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.waitlist.client.unset
+    -d '{"waitListId":13,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.waitlist.client.unset
     ```
 
 - JS (TS)
@@ -67,7 +75,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'booking.v1.waitlist.client.unset',
         params: {
-          waitListId: 14,
+          waitListId: 13,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -99,7 +107,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
           const response = await $b24.actions.v2.call.make({
             method: 'booking.v1.waitlist.client.unset',
             params: {
-              waitListId: 14,
+              waitListId: 13,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -129,7 +137,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
 
     try:
         bitrix_response = client.booking.v1.waitlist.client.unset(
-            wait_list_id=14,
+            wait_list_id=13,
         ).response
         result = bitrix_response.result
         print(result)
@@ -155,20 +163,18 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
             ->call(
                 'booking.v1.waitlist.client.unset',
                 [
-                    'waitListId' => 14,
+                    'waitListId' => 13,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
+
+        if ($result[0] === true) {
+            echo 'Success';
         }
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error unsetting waitlist client: ' . $e->getMessage();
@@ -181,7 +187,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
     BX24.callMethod(
         "booking.v1.waitlist.client.unset",
         {
-            waitListId: 14,
+            waitListId: 13,
         },
         result => {
             if (result.error())
@@ -200,7 +206,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
     $result = CRest::call(
         'booking.v1.waitlist.client.unset',
         [
-            'waitListId' => 14,
+            'waitListId' => 13,
         ]
     );
 
@@ -214,7 +220,7 @@ Can be obtained using the methods [booking.v1.waitlist.add](../booking-v1-waitli
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "booking.v1.waitlist.client.unset", b24.Params{
-    	"waitListId": 14,
+    	"waitListId": 13,
     })
     if err != nil {
     	return fmt.Errorf("booking.v1.waitlist.client.unset: %w", err)
@@ -237,12 +243,13 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1724068028.331234,
-        "finish": 1724068028.726591,
-        "duration": 0.3953571319580078,
-        "processing": 0.13033390045166016,
-        "date_start": "2025-01-21T13:47:08+02:00",
-        "date_finish": "2025-01-21T13:47:08+02:00",
+        "start": 1790294539,
+        "finish": 1790294539.731543,
+        "duration": 0.7315430641174316,
+        "processing": 0,
+        "date_start": "2026-09-25T03:02:19+03:00",
+        "date_finish": "2026-09-25T03:02:19+03:00",
+        "operating_reset_at": 1790295139,
         "operating": 0
     }
 }
@@ -265,7 +272,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 1040,
+    "error": "1040",
     "error_description": "Wait list not found"
 }
 ```
@@ -276,8 +283,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `1040` | `Wait list not found` | The waitlist with the specified `id` was not found ||
-|| `100` | `Could not find value for parameter` | Required parameter was not provided ||
+|| `100` | `Could not find value for parameter {waitListId}` | The `waitListId` parameter is not provided. Specify the waitlist entry identifier ||
+|| `1040` | `Wait list not found` | The entry with the specified `waitListId` was not found. Check the identifier using the [booking.v1.waitlist.list](../booking-v1-waitlist-list.md) method ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
