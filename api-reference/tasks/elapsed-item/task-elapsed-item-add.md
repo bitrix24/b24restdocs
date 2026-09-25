@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with permission to track time spent in the task
 
 The method `task.elapseditem.add` adds elapsed time to a task. The identifier of the added record is returned.
 
-{% note info %}
+{% note info "" %}
 
 You can check the permission to add using the special method [task.elapseditem.isactionallowed](./task-elapsed-item-is-action-allowed.md).
 
@@ -33,20 +33,10 @@ You can check the permission to add using the special method [task.elapseditem.i
 
 You can obtain the task identifier when [creating a new task](../tasks-task-add.md) or using the [get task list](../tasks-task-list.md) method. ||
 || **ARFIELDS*** 
-[`object`](../../data-types.md) | An object containing records about the user, time, and comments (detailed description provided below) in the following structure:
-
-```js
-"ARFIELDS": {
-    "SECONDS": "value", 
-    "COMMENT_TEXT": "value",
-    "USER_ID": "value"
-},
-```
-
-||
+[`object`](../../data-types.md) | Time entry fields [(detailed description)](#arfields) ||
 |#
 
-### ARFIELDS Parameter
+### ARFIELDS Parameter {#arfields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -55,13 +45,21 @@ You can obtain the task identifier when [creating a new task](../tasks-task-add.
 `type` | **Description** ||
 || **SECONDS*** 
 [`integer`](../../data-types.md) | Amount of time spent in seconds. ||
-|| **COMMENT_TEXT*** 
+|| **COMMENT_TEXT**
 [`string`](../../data-types.md) | Comment text. ||
 || **USER_ID** 
-[`integer`](../../data-types.md) | User identifier. ||
+[`integer`](../../data-types.md) | Entry author identifier. By default, the current user identifier. You cannot pass another user's identifier. ||
+|| **CREATED_DATE**
+[`datetime`](../../data-types.md) | Entry creation date. By default, the current date and time. ||
+|| **DATE_START**
+[`datetime`](../../data-types.md) | Date and time when tracking started. ||
+|| **DATE_STOP**
+[`datetime`](../../data-types.md) | Date and time when tracking ended. ||
+|| **SOURCE**
+[`integer`](../../data-types.md) | Entry source. The method always stores `2`, which means the entry was added manually. The passed value is replaced with `2`. ||
 |#
 
-{% note warning %}
+{% note warning "" %}
 
 It is mandatory to follow the specified order of parameters in the request as shown in the tables. Otherwise, the request will execute with errors.
 
@@ -328,7 +326,7 @@ In case of a successful request, the server will return the identifier of the ne
 || **result** 
 [`integer`](../../data-types.md) | Identifier of the new record. ||
 || **time** 
-[`time`](../../data-types.md) | Information about the request execution time. ||
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
 
 ## Error Handling
@@ -337,8 +335,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "ERROR_CODE",
-    "error_description": "ACTION_NOT_ALLOWED"
+    "error": "ERROR_CORE",
+    "error_description": "TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED"
 }
 ```
 
@@ -347,11 +345,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `0x000001` | Task not found. ||
-|| `0x100002` | Access denied. ||
-|| `0x000004` | Action not allowed. ||
-|| `0x000040` | Unknown error. ||
+|| **Code** | **Internal Code** | **Description** ||
+|| `ERROR_CORE` | `0x000004` | The action is not allowed, including when attempting to specify another author. ||
+|| `ERROR_CORE` | `0x000008` | Failed to add the entry. ||
+|| `ERROR_CORE` | `0x000100` | A required parameter was not passed, an invalid type was specified, or an unsupported field was passed. ||
+|| `ERROR_CORE` | `TASKS_ERROR_ASSERT_EXCEPTION` | The `SECONDS` field was not passed in the `ARFIELDS` object. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

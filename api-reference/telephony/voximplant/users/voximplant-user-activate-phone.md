@@ -288,5 +288,5 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./voximplant-user-get.md)
-- [{#T}](./voximplant-user-activate-phone.md)

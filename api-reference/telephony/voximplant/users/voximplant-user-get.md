@@ -298,11 +298,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Array of user settings ||
+[`object[]`](../../../data-types.md) | Array of user settings ||
 || **ID**
 [`string`](../../../data-types.md) | User ID ||
 || **DEFAULT_LINE**
-[`string`](../../../data-types.md) | Default outgoing line number ||
+[`string`](../../../data-types.md) | Default outgoing line number. May be `null` ||
 || **PHONE_ENABLED**
 [`string`](../../../data-types.md) | Indicator of SIP device availability.
 
@@ -314,9 +314,9 @@ Possible values:
 || **SIP_LOGIN**
 [`string`](../../../data-types.md) | Login for connecting the SIP device ||
 || **SIP_PASSWORD**
-[`string`](../../../data-types.md) | Password for connecting the SIP device ||
+[`string`](../../../data-types.md) | Password for connecting the SIP device. May be `null` ||
 || **INNER_NUMBER**
-[`string`](../../../data-types.md) | User's internal number ||
+[`string`](../../../data-types.md) | User's internal number. May be `null` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -339,7 +339,7 @@ HTTP Status: **400**, **401**, **403**
 #|
 || **Code** | **Description** | **Value** ||
 || — | `Parameter USER_ID is not set` | Required parameter `USER_ID` is not specified ||
-|| `METHOD_CONFIRM_WAITING` | `Waiting for confirmation` | Administrator confirmation is pending for the method call ||
+|| `METHOD_CONFIRM_WAITING` | `Waiting for confirmation` | Confirmation from a Bitrix24 administrator is pending for the method call ||
 || `METHOD_CONFIRM_DENIED` | `Method call denied` | Administrator has denied the method call for the current token ||
 || `ACCESS_DENIED` | `Access denied! You have no permission to query selected users` | Insufficient permissions to retrieve user settings ||
 |#
@@ -348,6 +348,6 @@ HTTP Status: **400**, **401**, **403**
 
 ## Continue Learning
 
-- [{#T}](./voximplant-user-get.md)
+- [{#T}](./index.md)
 - [{#T}](./voximplant-user-activate-phone.md)
 - [{#T}](../../../scopes/confirmation.md)

@@ -11,12 +11,22 @@ Choose a tool for developing with an AI agent:
 
 Users' SIP settings define the parameters for connecting an employee to a SIP phone or softphone. The `voximplant.user.*` methods allow you to:
 
-- how to view the current configuration of an employee
-- how to enable the SIP device indicator
+- view an employee's current configuration
+- enable the SIP device indicator
 
-The response includes the main parameters for connections and calls, including the default line, device status, server, credentials, and internal number.
+The [voximplant.user.get](./voximplant-user-get.md) method returns the main parameters for connections and calls: the default line, device status, server, credentials, and internal number.
 
-Calling the methods depends on the `User Settings — Modify` access permission. If the permissions are insufficient, modifying the user's SIP settings will not be available.
+## Access Permissions {#permissions}
+
+Both methods check the `User Settings — Modify` permission. Although [voximplant.user.get](./voximplant-user-get.md) only reads settings, this permission is also required to call it.
+
+The permission level determines which users can be managed:
+
+- `Personal` — the current user only
+- `Personal and department` — the current user and employees in their department
+- `Any` — all users
+
+[voximplant.user.get](./voximplant-user-get.md) returns the settings of accessible users. When called from an application, the method also requires confirmation from a Bitrix24 administrator. [voximplant.user.activatePhone](./voximplant-user-activate-phone.md) activates a SIP device only for a user who is available under the configured permission level.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -42,7 +52,7 @@ Calling the methods depends on the `User Settings — Modify` access permission.
 
 > Scope: [`telephony`](../../../scopes/permissions.md)
 >
-> Who can execute the method: user with the User Settings — Modify permission
+> Who can execute the methods: a user with the User Settings — Modify permission within the configured [access level](#permissions)
 
 #| 
 || **Method** | **Description** ||

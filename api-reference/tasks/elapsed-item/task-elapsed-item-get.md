@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to the task
 
 The method `task.elapseditem.get` returns a time entry by its ID.
 
@@ -32,7 +32,7 @@ The task ID can be obtained when [creating a new task](../tasks-task-add.md) or 
 This can be obtained when [creating a new entry](./task-elapsed-item-add.md) or by using the [get time entry list method](./task-elapsed-item-get-list.md) ||
 |#
 
-{% note warning %}
+{% note warning "" %}
 
 It is mandatory to follow the specified order of parameters in the request as shown in the table. Otherwise, the request will execute with errors.
 
@@ -50,7 +50,7 @@ It is mandatory to follow the specified order of parameters in the request as sh
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID": 691,"ITEMID": 1,}' \
+    -d '{"TASKID":691,"ITEMID":1}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.elapseditem.get
     ```
 
@@ -86,7 +86,7 @@ It is mandatory to follow the specified order of parameters in the request as sh
       CREATED_DATE: ISODate | null
       DATE_START: ISODate | null
       DATE_STOP: ISODate | null
-    }[]
+    }
 
     try {
       const response = await $b24.actions.v2.call.make<ElapsedItemResult>({
@@ -103,7 +103,7 @@ It is mandatory to follow the specified order of parameters in the request as sh
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info(result[0].ID, result[0].SECONDS, result[0].CREATED_DATE)
+        console.info(result.ID, result.SECONDS, result.CREATED_DATE)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -138,7 +138,7 @@ It is mandatory to follow the specified order of parameters in the request as sh
           }
 
           const result = response.getData().result
-          console.info(result[0].ID, result[0].SECONDS, result[0].CREATED_DATE)
+          console.info(result.ID, result.SECONDS, result.CREATED_DATE)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -191,11 +191,7 @@ It is mandatory to follow the specified order of parameters in the request as sh
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Success: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -252,7 +248,7 @@ It is mandatory to follow the specified order of parameters in the request as sh
     	return fmt.Errorf("task.elapseditem.get: %w", err)
     }
 
-    var items []struct {
+    var item struct {
     	ID          b24.ID `json:"ID"`
     	TaskID      b24.ID `json:"TASK_ID"`
     	UserID      b24.ID `json:"USER_ID"`
@@ -260,12 +256,10 @@ It is mandatory to follow the specified order of parameters in the request as sh
     	Seconds     string `json:"SECONDS"`
     	Minutes     string `json:"MINUTES"`
     }
-    if err := json.Unmarshal(res.Result, &items); err != nil {
+    if err := json.Unmarshal(res.Result, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    for _, it := range items {
-    	fmt.Println(it.ID, it.TaskID)
-    }
+    fmt.Println(item.ID, item.TaskID)
     ```
 
 {% endlist %}
@@ -276,20 +270,18 @@ HTTP Status: **200**
 
 ```json
 {
-    "result":[
-        {
-            "ID": "1",
-            "TASK_ID": "691",
-            "USER_ID": "1",
-            "COMMENT_TEXT": "1",
-            "SECONDS": "3600",
-            "MINUTES": "60",
-            "SOURCE": "2",
-            "CREATED_DATE": "2024-05-16T10:33:00+02:00",
-            "DATE_START": "2024-05-16T10:33:15+02:00",
-            "DATE_STOP": "2024-05-16T10:33:15+02:00"
-        }
-    ],
+    "result": {
+        "ID": "1",
+        "TASK_ID": "691",
+        "USER_ID": "1",
+        "COMMENT_TEXT": "1",
+        "SECONDS": "3600",
+        "MINUTES": "60",
+        "SOURCE": "2",
+        "CREATED_DATE": "2024-05-16T10:33:00+02:00",
+        "DATE_START": "2024-05-16T10:33:15+02:00",
+        "DATE_STOP": "2024-05-16T10:33:15+02:00"
+    },
     "time":{
         "start":1712137817.343984,
         "finish":1712137817.605804,
@@ -307,9 +299,39 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Information about the time entry ||
+[`object`](../../data-types.md) | Information about the time entry [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Time entry identifier ||
+|| **TASK_ID**
+[`string`](../../data-types.md) | Task identifier ||
+|| **USER_ID**
+[`string`](../../data-types.md) | Entry author identifier ||
+|| **COMMENT_TEXT**
+[`string`](../../data-types.md) | Comment ||
+|| **SECONDS**
+[`string`](../../data-types.md) | Time spent in seconds ||
+|| **MINUTES**
+[`string`](../../data-types.md) | Time spent in minutes ||
+|| **SOURCE**
+[`string`](../../data-types.md) | Entry source:
+- `1` — source is not specified
+- `2` — entry was added manually
+- `3` — entry was added automatically ||
+|| **CREATED_DATE**
+[`datetime`](../../data-types.md) | Entry creation date ||
+|| **DATE_START**
+[`datetime`](../../data-types.md) | Date and time when tracking started ||
+|| **DATE_STOP**
+[`datetime`](../../data-types.md) | Date and time when tracking ended ||
 |#
 
 ## Error Handling
@@ -319,7 +341,7 @@ HTTP Status: **400**
 ```json
 {
     "error":"ERROR_CORE",
-    "error_description":"Task not found"
+    "error_description":"TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512/TE/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE"
 }
 ```
 
@@ -328,11 +350,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `0x000001` | Task not found ||
-|| `0x100002` | Access denied ||
-|| `0x000004` | Action not allowed ||
-|| `0x000040` | Unknown error ||
+|| **Code** | **Internal Code** | **Description** ||
+|| `ERROR_CORE` | `0x000100` | A required parameter was not passed or an invalid type was specified ||
+|| `ERROR_CORE` | `0x000200` | The task or entry was not found or is unavailable ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

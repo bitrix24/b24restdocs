@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: the entry author or an administrator with access to the task
 
 The method `task.elapseditem.delete` deletes a time entry.
 
-{% note info %}
+{% note info "" %}
 
 You can check the permission to delete using the special method [task.elapseditem.isactionallowed](./task-elapsed-item-is-action-allowed.md).
 
@@ -38,7 +38,7 @@ You can obtain the task identifier when [creating a new task](../tasks-task-add.
 You can obtain it when [creating a new entry](./task-elapsed-item-add.md) or by using the [get time entry list](./task-elapsed-item-get-list.md) method. ||
 |#
 
-{% note warning %}
+{% note warning "" %}
 
 It is mandatory to follow the specified order of parameters in the request as shown in the table. Otherwise, the request will execute with errors.
 
@@ -187,11 +187,7 @@ It is mandatory to follow the specified order of parameters in the request as sh
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Success: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -275,6 +271,17 @@ In case of a successful request, the server will return `result:null`.
 }
 ```
 
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`null`](../../data-types.md) | Returns `null` if the entry was successfully deleted. ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time. ||
+|#
+
 ## Error Handling
 
 HTTP Status: **400**
@@ -282,7 +289,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "ACTION_NOT_ALLOWED"
+    "error_description": "TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED"
 }
 ```
 
@@ -291,11 +298,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `0x000001` | Task not found ||
-|| `0x100002` | Access denied ||
-|| `0x000004` | Action not allowed ||
-|| `0x000040` | Unknown error ||
+|| **Code** | **Internal Code** | **Description** ||
+|| `ERROR_CORE` | `0x000004` | The action is not allowed. Only the entry author or an administrator can delete the entry. ||
+|| `ERROR_CORE` | `0x000008` | Failed to delete the entry. ||
+|| `ERROR_CORE` | `0x000100` | A required parameter was not passed or an invalid type was specified. ||
+|| `ERROR_CORE` | `0x000200` | The task or entry was not found or is unavailable. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

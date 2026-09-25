@@ -499,10 +499,39 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Description of methods `task.elapseditem.*` ||
+[`object`](../../data-types.md) | Description of the `task.elapseditem.*` methods [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **Manifest version**
+[`string`](../../data-types.md) | Manifest structure version ||
+|| **Manifest change date**
+[`string`](../../data-types.md) | Manifest modification date ||
+|| **Warning**
+[`string`](../../data-types.md) | Warning that the format is unstable ||
+|| **REST: shortname alias to class**
+[`string`](../../data-types.md) | Short object name used in method names ||
+|| **REST: writable elapseditem data fields**
+[`array`](../../data-types.md) | Fields that the common handler allows in write requests ||
+|| **REST: readable elapseditem data fields**
+[`array`](../../data-types.md) | Fields available for reading ||
+|| **REST: sortable elapseditem data fields**
+[`array`](../../data-types.md) | Fields available for sorting ||
+|| **REST: filterable elapseditem data fields**
+[`array`](../../data-types.md) | Fields available for filtering ||
+|| **REST: date fields**
+[`array`](../../data-types.md) | Date and time fields ||
+|| **REST: available methods**
+[`object`](../../data-types.md) | The `task.elapseditem.*` methods, their parameters, supported fields, and result behavior ||
+|#
+
+The manifest describes the general permissions of the REST handler. For `task.elapseditem.update`, the handler and the method implementation together allow only the `SECONDS`, `COMMENT_TEXT`, and `CREATED_DATE` fields. Use the parameter table on the method page to build requests.
 
 ## Error Handling
 

@@ -31,6 +31,28 @@ With the Time Tracking in Tasks tool, you can:
 
 {% endnote %}
 
+## Time Entry Data
+
+A time entry stores the task and author identifiers, work duration, a comment, and the creation date. The field names differ between the classic `task.elapseditem.*` methods and REST 3.0.
+
+#|
+|| **Data** | **`task.elapseditem.*` Field** | **REST 3.0 Field** ||
+|| Entry identifier | `ID` | `id` ||
+|| Task identifier | `TASK_ID` | `taskId` ||
+|| Entry author | `USER_ID` | `userId` ||
+|| Time spent | `SECONDS`, `MINUTES` | `seconds`, `minutes` ||
+|| Comment | `COMMENT_TEXT` | `text` ||
+|| Creation date | `CREATED_DATE` | `createdAtTs` ||
+|#
+
+In REST 3.0, you can retrieve time tracking data together with the task using [tasks.task.get](../tasks-task-get-rest-v3.md). Pass the required nested `elapsedTime` fields in the `select` parameter, for example, `elapsedTime.minutes`, `elapsedTime.text`, `elapsedTime.createdAtTs`, and `elapsedTime.userId`. The complete set of fields is provided in the [time tracking object](../fields-rest-v3.md#elapsed-time) description.
+
+## How to Get Started
+
+1. Add an entry using [task.elapseditem.add](./task-elapsed-item-add.md)
+2. Retrieve the task entries using [task.elapseditem.getlist](./task-elapsed-item-get-list.md)
+3. Before updating or deleting an entry, check whether the action is available using [task.elapseditem.isactionallowed](./task-elapsed-item-is-action-allowed.md), then call [task.elapseditem.update](./task-elapsed-item-update.md) or [task.elapseditem.delete](./task-elapsed-item-delete.md)
+
 ## Who Can Add or Modify an Entry
 
 To add, modify, or delete a time spent entry, you need access permissions to the task. You can check permissions using the special method [task.elapseditem.isactionallowed](./task-elapsed-item-is-action-allowed.md).
@@ -43,7 +65,7 @@ You can find up-to-date information about methods for working with elapsed time 
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the methods: any user
+> Who can execute the methods: depends on the method
 
 #| 
 || **Method** | **Description** ||

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to the task
 
 The method `task.elapseditem.getlist` returns a list of time tracking records for a task.
 
@@ -25,24 +25,24 @@ The method `task.elapseditem.getlist` returns a list of time tracking records fo
 
 The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
 || **order**
-[`object`](../../data-types.md) | Object for sorting the result (detailed description provided below) ||
+[`object`](../../data-types.md) | Object for sorting the result [(detailed description)](#order) ||
 || **filter**
-[`object`](../../data-types.md) | Object for filtering the result (detailed description provided below) ||
+[`object`](../../data-types.md) | Object for filtering the result [(detailed description)](#filter) ||
 || **select**
-[`array`](../../data-types.md) | Array of fields of records that will be returned by the method. You can specify only the fields you need. If the array contains the value `"*"`, all available fields will be returned.
+[`array`](../../data-types.md) | Array of record fields returned by the method [(detailed description)](#select)
 
-By default, all fields of the main request table will be returned ||
+If this parameter is not passed, the method returns all fields of the main request table. To explicitly return all available fields, pass `*` ||
 || **params**
-[`object`](../../data-types.md) | Object for call options. The element is an object `NAV_PARAMS` of the form `{'call option': 'value' [, ...]}` (detailed description provided below) in structure ||
+[`object`](../../data-types.md) | Object containing call options [(detailed description)](#params) ||
 |#
 
-{% note warning %}
+{% note warning "" %}
 
 The method accepts parameters positionally. Follow the order from the table: `taskId`, `order`, `filter`, `select`, `params`. If you pass `order`, `filter`, `select`, and `params` as named fields of a single object, the request will fail.
 
 {% endnote %}
 
-{% note info %}
+{% note info "" %}
 
 Features of manually adding information about work time that was actually performed several days ago. In this case, the values of some fields change:
 - `CREATED_DATE` — start date
@@ -51,13 +51,17 @@ Features of manually adding information about work time that was actually perfor
 
 {% endnote %}
 
-### order Parameter
+### order Parameter {#order}
 
 #| 
 || **Name**
 `type` | **Description** ||
 || **ID**
 [`string`](../../data-types.md) | Identifier of the time tracking record. Can take values:
+- `asc` — ascending
+- `desc` — descending ||
+|| **TASK_ID**
+[`string`](../../data-types.md) | Task identifier. Possible values:
 - `asc` — ascending
 - `desc` — descending ||
 || **USER_ID**
@@ -86,20 +90,22 @@ Features of manually adding information about work time that was actually perfor
 - `desc` — descending ||
 |#
 
-### filter Parameter
+### filter Parameter {#filter}
 
 #| 
 || **Name**
 `type` | **Description** ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the time tracking record ||
+|| **TASK_ID**
+[`integer`](../../data-types.md) | Task identifier ||
 || **USER_ID**
 [`integer`](../../data-types.md) | Identifier of the user on behalf of whom the time tracking record was made ||
 || **CREATED_DATE**
 [`datetime`](../../data-types.md) | Record creation date ||
 |#
 
-{% note info %}
+{% note info "" %}
 
 Before the name of the filtered field, you can specify the type of filtering:
 - "!" — not equal
@@ -112,7 +118,43 @@ Before the name of the filtered field, you can specify the type of filtering:
 
 {% endnote %}
 
-### NAV_PARAMS Parameter
+### select Parameter {#select}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Time entry identifier ||
+|| **TASK_ID**
+[`string`](../../data-types.md) | Task identifier ||
+|| **USER_ID**
+[`string`](../../data-types.md) | Entry author identifier ||
+|| **COMMENT_TEXT**
+[`string`](../../data-types.md) | Comment ||
+|| **SECONDS**
+[`string`](../../data-types.md) | Time spent in seconds ||
+|| **MINUTES**
+[`string`](../../data-types.md) | Time spent in minutes ||
+|| **SOURCE**
+[`string`](../../data-types.md) | Entry source ||
+|| **CREATED_DATE**
+[`string`](../../data-types.md) | Entry creation date ||
+|| **DATE_START**
+[`string`](../../data-types.md) | Date and time when tracking started ||
+|| **DATE_STOP**
+[`string`](../../data-types.md) | Date and time when tracking ended ||
+|#
+
+### params Parameter {#params}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **NAV_PARAMS**
+[`object`](../../data-types.md) | Pagination settings [(detailed description)](#nav-params) ||
+|#
+
+#### NAV_PARAMS Object {#nav-params}
 
 #| 
 || **Name**
@@ -463,12 +505,44 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of objects with information about time tracking records for the task ||
+[`array`](../../data-types.md) | Array of objects containing information about time entries for the task [(detailed description)](#result) ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
+
+#### result[] Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Time entry identifier ||
+|| **TASK_ID**
+[`string`](../../data-types.md) | Task identifier ||
+|| **USER_ID**
+[`string`](../../data-types.md) | Entry author identifier ||
+|| **COMMENT_TEXT**
+[`string`](../../data-types.md) | Comment ||
+|| **SECONDS**
+[`string`](../../data-types.md) | Time spent in seconds ||
+|| **MINUTES**
+[`string`](../../data-types.md) | Time spent in minutes ||
+|| **SOURCE**
+[`string`](../../data-types.md) | Entry source:
+- `1` — source is not specified
+- `2` — entry was added manually
+- `3` — entry was added automatically ||
+|| **CREATED_DATE**
+[`datetime`](../../data-types.md) | Entry creation date ||
+|| **DATE_START**
+[`datetime`](../../data-types.md) | Date and time when tracking started ||
+|| **DATE_STOP**
+[`datetime`](../../data-types.md) | Date and time when tracking ended ||
+|#
+
+The fields in the `result[]` objects depend on the `select` parameter.
 
 ## Error Handling
 
@@ -486,12 +560,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `0x100002` | Access denied ||
-|| `0x000004` | Action not allowed ||
-|| `0x000040` | Unknown error ||
-|| `0x000100` | Invalid method parameters provided ||
-|| `ERROR_CORE` | Error executing the action. Check task access and the order of the method's positional parameters ||
+|| **Code** | **Internal Code** | **Description** ||
+|| `ERROR_CORE` | `0x000001` | The task was not found or is unavailable if `taskId` was passed ||
+|| `ERROR_CORE` | `0x000100` | The parameter order is invalid, an invalid type was specified, or an unsupported field or value was passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: depends on the action being checked and the user's permissions for the task
 
 The method `task.elapseditem.isactionallowed` checks whether an action is permitted for a record: creation, update, and deletion.
 
@@ -20,6 +20,8 @@ The method `task.elapseditem.isactionallowed` checks whether an action is permit
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #| 
+|| **Name**
+`type` | **Description** ||
 || **TASKID*** 
 [`integer`](../../data-types.md) | Task identifier.
 
@@ -35,7 +37,7 @@ It can be obtained when [creating a new record](./task-elapsed-item-add.md) or b
 - **3** — delete a record (`ACTION_ELAPSED_TIME_REMOVE`) ||
 |#
 
-{% note warning %}
+{% note warning "" %}
 
 It is mandatory to follow the specified order of parameters in the request as shown in the table. Otherwise, the request will execute with errors.
 
@@ -184,11 +186,7 @@ It is mandatory to follow the specified order of parameters in the request as sh
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
+        echo 'Info: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -286,10 +284,29 @@ HTTP Status: **200**
 - `false` — not allowed
  ||
 || **time** 
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error":"ERROR_CORE",
+    "error_description":"TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512/TE/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Internal Code** | **Description** ||
+|| `ERROR_CORE` | `0x000100` | A required parameter was not passed or an invalid type was specified ||
+|| `ERROR_CORE` | `0x000200` | The task or entry was not found or is unavailable when checking an update or deletion ||
+|#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
