@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 A local application needs an installation wizard if initial setup is required before use. The wizard can display a form, retain settings, register event handlers and widgets, or prepare other objects in Bitrix24.
 
-For a server-side application, the wizard opens if the *Initial installation path* field is filled in and the *Application completes the installation itself* option is disabled. If you enable this option, Bitrix24 sends the installation data to the specified URL in the [`ONAPPINSTALL`](../../../api-reference/common/events/on-app-install.md) event and immediately marks the application as installed. This scenario is described in [Installation Callback](./installation-callback.md).
+For a server-side application, the wizard opens if the *Initial installation path* field is filled in and the *Application completes the installation itself* option is enabled. The option is disabled by default: Bitrix24 then immediately marks the application as installed and sends the installation data to the specified URL in the [`ONAPPINSTALL`](../../../api-reference/common/events/on-app-install.md) event. This scenario is described in [Installation Callback](./installation-callback.md).
 
 ## When the Installation Wizard Opens
 
@@ -40,7 +40,9 @@ Specify the application's main URL separately in the *Your handler path* field. 
 
 If the *Initial installation path* field is empty, Bitrix24 immediately considers the local application installed and does not open the wizard.
 
-Do not enable *Application completes the installation itself* if the specified URL must open a wizard page. When the option is enabled, this URL is used as the installation callback, and the application immediately receives the installed status.
+Enable *Application completes the installation itself* if the specified URL must open a wizard page. When the option is disabled, this URL is used as the installation callback, and the application immediately receives the installed status.
+
+The option is taken into account when the application is installed. Saving the form does not repeat the installation, so the status of an application that is already installed is not reset — it still opens at the address from the *Your handler path* field. To apply the new mode, click *Reinstall* in the application card.
 
 ### Static Application
 

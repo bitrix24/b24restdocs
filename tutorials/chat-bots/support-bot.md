@@ -34,7 +34,7 @@ Both methods use the same connector code. The network bot identifier from step 1
 In the user's Bitrix24, prepare a local application without a user interface.
 
 1. Prepare a handler address accessible from the internet, for example `https://example.com/handler`
-2. Create a [local application with an installation handler](../../settings/app-installation/local-apps/installation-callback.md) and enable the "Uses API only" option.
+2. Create a [local application with an installation handler](../../settings/app-installation/local-apps/installation-callback.md): leave the "Menu item text" fields empty and the "Application completes the installation itself" option disabled.
 3. In the "Initial installation path" field, specify the handler address and grant the application the [`imopenlines`](../../api-reference/scopes/permissions.md) permission.
 4. In the handler, retrieve the authorization data `auth` and [initialize the SDK](./index.md#sdk-init).
 

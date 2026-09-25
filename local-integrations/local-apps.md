@@ -45,7 +45,7 @@ This page helps you choose the type of application and create it on your own Bit
 
 6. Save the application. It will appear in the *Applications > Developer resources > Integrations* list.
 
-7. Enable the *Application uses API only* option if the application needs no interface, and store the application code and the secret key in the code on your server — Bitrix24 shows them after the form is saved.
+7. Store the application code and the secret key in the code on your server — Bitrix24 shows them after the form is saved. If the application needs no interface, leave the *Menu item text* fields empty: the application will not appear in the left menu.
 
 If the *Local application* item is missing, the permission to create applications is disabled. Ask the administrator to configure access to application creation.
 

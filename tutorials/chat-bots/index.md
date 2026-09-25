@@ -47,7 +47,7 @@ The bot is registered on behalf of the application, so first prepare a local app
 1. Host the handler on a public HTTPS URL, for example `https://example.com/handler`
 2. In the *Applications > Developer resources > Other > Local application* section, create a server-side application
 3. In the *Initial installation path* field, specify the handler address
-4. Enable the *Application completes installation on its own* option
+4. Leave the *Application completes the installation itself* option disabled — otherwise Bitrix24 does not register the `ONAPPINSTALL` event handler and the application does not receive the tokens
 5. In the *Your handler path* field, specify the same handler address
 6. Grant the application the [`imbot`](../../api-reference/scopes/permissions.md) and [`task`](../../api-reference/scopes/permissions.md) permissions
 7. Save the application and copy its `client_id` and `client_secret`

@@ -124,23 +124,25 @@ Bitrix24 issues the application ID and the secret key only after the form is sav
 
 5. Specify the addresses of the pages on your server: in the *Initial installation path* field — the address of `install.php`, in the *Your handler path* field — the address of `index.php`. Bitrix24 contacts the first address when installing the application and opens the application in a frame at the second one.
 
-6. Fill in *Menu item text English (en)* — it is how the application is found in the Bitrix24 interface. In the example it is "Full Name". Names in other languages are filled in if the application is used not only in English.
+6. Enable the *Application completes the installation itself* option. It is disabled by default, and then Bitrix24 considers the application installed right away and does not open the initial installation page.
 
-7. Select the application scopes in the *Assign permissions* block. Any of the user scopes will do for the example: *Users* — `user`, *Users (basic)* — `user_basic`, *Users (minimum)* — `user_brief`. The selected scope determines which fields `user.current` returns. The remaining scopes are listed in the article [{#T}](../api-reference/scopes/permissions.md).
+7. Fill in *Menu item text English (en)* — it is how the application is found in the Bitrix24 interface. In the example it is "Full Name". Names in other languages are filled in if the application is used not only in English.
+
+8. Select the application scopes in the *Assign permissions* block. Any of the user scopes will do for the example: *Users* — `user`, *Users (basic)* — `user_basic`, *Users (minimum)* — `user_brief`. The selected scope determines which fields `user.current` returns. The remaining scopes are listed in the article [{#T}](../api-reference/scopes/permissions.md).
 
     ![Application addition form](./_images/server-ui-local-form_1-new.png)
 
-8. Save the form. The application appears in the *Applications > Developer resources > Integrations* list.
+9. Save the form. The application appears in the *Applications > Developer resources > Integrations* list.
 
     ![List of integrations](./_images/server-ui-local-added_new.png)
 
-9. Open the application. Bitrix24 displays the initial installation page — this is how you check that the `install.php` address is available. The settings are not retained at this step. This page is opened by a Bitrix24 administrator or by a user with the permission to install applications — everyone else sees an error message instead.
+10. Open the application. Bitrix24 displays the initial installation page — this is how you check that the `install.php` address is available. The settings are not retained at this step. This page is opened by a Bitrix24 administrator or by a user with the permission to install applications — everyone else sees an error message instead.
 
-10. Open the application card. After saving, it contains the *Application ID (client_id)* and *Application key (client_secret)* fields. Copy these values into the `C_REST_CLIENT_ID` and `C_REST_CLIENT_SECRET` constants of the `settings.php` file and upload the modified file to the server.
+11. Open the application card. After saving, it contains the *Application ID (client_id)* and *Application key (client_secret)* fields. Copy these values into the `C_REST_CLIENT_ID` and `C_REST_CLIENT_SECRET` constants of the `settings.php` file and upload the modified file to the server.
 
     ![Authorization keys in the application card](./_images/server-ui-local-card-keys.png)
 
-11. Click *Reinstall* in the application card and open the application once again. The button is available to a Bitrix24 administrator only. Now `install.php` runs with the constants filled in and creates `settings.json`. Without this file, CRest cannot call a method.
+12. Click *Reinstall* in the application card and open the application once again. The button is available to a Bitrix24 administrator only. Now `install.php` runs with the constants filled in and creates `settings.json`. Without this file, CRest cannot call a method.
 
 {% note warning "" %}
 

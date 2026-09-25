@@ -15,9 +15,9 @@ The main distinction in installing applications in Bitrix24 is the presence or a
 
 An application without an interface operates in the background and does not require user actions.
 
-- For on-premise applications, enable the "Script only (no user interface) " option.
+- For local applications, leave the "Menu item text" fields empty and do not enable the "Application completes the installation itself" option. The option is disabled by default.
 
-   ![Script only (no user interface) ](./_images/install-finish.png "Script only (no user interface) ")
+   ![Local application settings without an interface](./_images/install-finish.png "Local application settings without an interface")
 
 - For mass-market applications, disable the "Add custom page and menu item. Menu item title has to be specified in the application description!" option.
 
@@ -25,7 +25,7 @@ An application without an interface operates in the background and does not requ
 
 **How it works.** The application installation is processed automatically. A POST request with OAuth 2.0 authorization data: `access_token` and `refresh_token` will be sent to the application URL.
 
-- For on-premise applications — to the URL from the "Initial installation path  " field.
+- For local applications — to the URL from the "Initial installation path  " field.
 
    ![Initial installation path](./_images/install-finish-3.png "Initial installation path")
 
@@ -39,9 +39,9 @@ An application without an interface operates in the background and does not requ
 
 The operation of an application with an interface depends on the actions performed by the user.
 
-- For on-premise applications, disable the "Script only (no user interface) " option.
+- For local applications, fill in "Menu item text" and enable the "Application completes the installation itself" option. Without this option, Bitrix24 considers the application installed right away and does not open the setup page.
 
-   ![Script only (no user interface) ](./_images/install-finish-7.png "Script only (no user interface) ")
+   ![Local application settings with an interface](./_images/install-finish-7.png "Local application settings with an interface")
 
 - For mass-market applications, enable the "Add custom page and menu item. Menu item title has to be specified in the application description!" option.
 
@@ -49,7 +49,7 @@ The operation of an application with an interface depends on the actions perform
 
 **How the installation works.** Upon first opening, the administrator will see the application setup page.
 
-- For on-premise applications — the page from the "Initial installation path" field.
+- For local applications — the page from the "Initial installation path" field.
 
    ![Initial installation path](./_images/install-finish-9.png "Initial installation path")
 
@@ -71,7 +71,7 @@ Until the application sends a signal indicating the completion of installation v
 
 - The application interface will not load:
     - regular users will see the message *“The application is not fully installed yet. Please contact your Bitrix24 administrator to complete the installation.”*
-    - the administrator will see the page from the "Initial installation path" field for on-premise applications or the "Application installer URL" for mass-market applications.
+    - the administrator will see the page from the "Initial installation path" field for local applications or the "Application installer URL" for mass-market applications.
 
 ## How to Check Installation Status
 
@@ -117,7 +117,7 @@ If the response is:
 
 Call the method on the application setup page:
 
-- for on-premise applications in the file from the "Initial installation path" field,
+- for local applications in the file from the "Initial installation path" field,
 
 - for mass-market applications — the "Installation application URL."
 

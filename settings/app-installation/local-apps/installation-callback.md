@@ -9,11 +9,11 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-When a local application is added with the **Uses API only** option, it does not have a base interface in the left menu. Such an application can still register widgets in various integration points, but a menu item will not be automatically added to the left menu.
+When none of the **Menu item text** fields of a local application are filled in, it does not have a base interface in the left menu. Such an application can still register widgets in various integration points, but a menu item will not be automatically added to the left menu.
 
 This is a useful scenario for applications that do not require a separate user interface or settings, and where all business logic is implemented, for example, as automatic event handlers.
 
-Despite the lack of a user interface, such applications need to retrieve authorization tokens. For this, a callback handler is required, the path to which must be specified in the **Initial installation path** field.
+Despite the lack of a user interface, such applications need to retrieve authorization tokens. For this, a callback handler is required, the path to which must be specified in the **Initial installation path** field. The **Application completes the installation itself** option must be disabled — it is disabled by default. If you enable it, Bitrix24 does not send the installation data to the handler and waits for an `installFinish` call on the [installation wizard](./installation-master.md) page.
 
 Immediately after adding a local application, Bitrix24 will automatically call this URL and send a POST request with OAuth 2.0 authorization data, including `access_token` and `refresh_token`.
 
