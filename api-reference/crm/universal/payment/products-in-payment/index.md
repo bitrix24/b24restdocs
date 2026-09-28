@@ -9,11 +9,29 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The methods `crm.item.payment.product.*` manage product items within CRM payments. For example, you can add a specific product to a payment, change its quantity, or remove it from the payment.
+Product items in a payment are products from the product rows of a deal or invoice that are included in the payment. Each item specifies the quantity being paid for, while the total amount is calculated based on product quantities and prices.
 
-This is necessary to detail the composition of the order in financial documents. Bitrix24 links products from the catalog with payments, allowing for accurate accounting of items during transactions.
+The methods `crm.item.payment.product.*` allow you to add a product item to a payment, retrieve the payment contents, change a product quantity, or delete an item.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Accept payment in the deal form](https://helpdesk.bitrix24.com/open/23570150/)
+
+## How to Start
+
+1. Prepare the `paymentId` of the desired payment using the main methods [crm.item.payment.*](../index.md).
+2. Obtain the `rowId` of the desired product using the method [crm.item.productrow.list](../../product-rows/crm-item-productrow-list.md), or a list of products that have not been paid for yet using the method [crm.item.productrow.getAvailableForPayment](../../product-rows/crm-item-productrow-get-available-for-payment.md).
+3. Add a product item using the method [crm.item.payment.product.add](./crm-item-payment-product-add.md).
+4. Check the composition of the items using the method [crm.item.payment.product.list](./crm-item-payment-product-list.md).
+5. If necessary, adjust the quantity using the method [crm.item.payment.product.setQuantity](./crm-item-payment-product-set-quantity.md) or remove the item using the method [crm.item.payment.product.delete](./crm-item-payment-product-delete.md).
+
+## Product Allocation Restrictions Across Payments
+
+The methods take into account the product quantity in the original product row and the quantity already allocated across all order payments.
+
+- In `crm.item.payment.product.add`, the `rowId` parameter must refer to a product row in the same CRM object as the payment. If the product row belongs to another object, the method returns the `Product not found` error
+- If the entire quantity in the product row has already been allocated among payments, `crm.item.payment.product.add` returns the `Product not found` error. If the product has been partially allocated, you can add no more than the available remainder; otherwise, the method returns the `Insufficient product quantity to add to payment` error
+- The method `crm.item.payment.product.setQuantity` checks the total product quantity across all order payments. If the new item quantity exceeds the available remainder after accounting for other payments, the method returns the `Insufficient product quantity to add to payment` error and does not update the item
 
 ## Linking Product Items in Payment with Other Objects
 
@@ -24,14 +42,6 @@ This is necessary to detail the composition of the order in financial documents.
 **CRM Product Line.** The methods in this group work with the product line through `rowId`. The product line contains data about the product: identifier, name, quantity, price, unit of measurement, and other parameters. You can obtain `rowId` using the method [crm.item.productrow.list](../../product-rows/crm-item-productrow-list.md). Within the payment, you can only manage the quantity of the product.
 
 **CRM Object.** A payment always belongs to a deal or an invoice — only these objects support payments. Therefore, product items in a payment exist only for them.
-
-## How to Work with Product Items in Payment
-
-1. Prepare the `paymentId` of the desired payment using the main methods [crm.item.payment.*](../index.md).
-2. Obtain the `rowId` of the desired product using the method [crm.item.productrow.list](../../product-rows/crm-item-productrow-list.md), or a list of products that have not been paid for yet using the method [crm.item.productrow.getAvailableForPayment](../../product-rows/crm-item-productrow-get-available-for-payment.md).
-3. Add a product item using the method [crm.item.payment.product.add](./crm-item-payment-product-add.md).
-4. Check the composition of the items using the method [crm.item.payment.product.list](./crm-item-payment-product-list.md).
-5. If necessary, adjust the quantity using the method [crm.item.payment.product.setQuantity](./crm-item-payment-product-set-quantity.md) or remove the item using the method [crm.item.payment.product.delete](./crm-item-payment-product-delete.md).
 
 ## Overview of Methods {#all-methods}
 

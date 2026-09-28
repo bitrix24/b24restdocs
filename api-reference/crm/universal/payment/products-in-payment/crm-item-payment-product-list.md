@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: read access permission for payment order is required
+> Who can execute the method: a user with "read" access permission for the CRM object associated with the payment
 
-This method retrieves a list of product items (goods or services) associated with a specific payment.
+The method `crm.item.payment.product.list` returns a list of product items for a specific payment.
 
 ## Method Parameters
 
@@ -25,8 +25,10 @@ This method retrieves a list of product items (goods or services) associated wit
 || **paymentId***
 [`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
 Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) ||
-|| **filter***
+|| **filter**
 [`object`](../../../../data-types.md) | Object for filtering selected payment product items in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+
+By default, no filter is applied.
 
 Possible values for `field`:
 - `id`
@@ -39,7 +41,7 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `>` — greater than
 - `<` — less than
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol should not be included in the filter value. The search is conducted from both sides.
+- `!%` — NOT LIKE, substring search. The % symbol should not be included in the filter value. The search is conducted from both sides
 - `>=` — greater than or equal to
 - `<=` — less than or equal to
 - `@` — IN, an array is passed as the value
@@ -57,6 +59,8 @@ An additional prefix can be specified for the key to clarify the filter behavior
 ||
 || **order**
 [`object`](../../../../data-types.md) | Object for sorting selected payment product items in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+
+By default, records are sorted by `id` in ascending order.
 
 Possible values for `field`:
 - `id`
@@ -110,15 +114,11 @@ Possible values for `order`:
       id: number,
       paymentId: number,
       quantity: number,
-      rowId: number,
+      entityId?: number,
+      rowId?: number,
     }
 
     try {
-      // crm.item.payment.product.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<PaymentProductItem[]>({
         method: 'crm.item.payment.product.list',
         params: {
@@ -127,7 +127,6 @@ Possible values for `order`:
             '>=quantity': 2,
             '@id': [1195, 1196],
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -156,11 +155,6 @@ Possible values for `order`:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.item.payment.product.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'crm.item.payment.product.list',
             params: {
@@ -169,7 +163,6 @@ Possible values for `order`:
                 '>=quantity': 2,
                 '@id': [1195, 1196],
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -370,10 +363,11 @@ Possible values for `order`:
     }
 
     var items []struct {
-    	ID        b24.ID `json:"id"`
-    	PaymentID b24.ID `json:"paymentId"`
-    	Quantity  int    `json:"quantity"`
-    	RowID     b24.ID `json:"rowId"`
+        ID        b24.ID  `json:"id"`
+        PaymentID b24.ID  `json:"paymentId"`
+        Quantity  int     `json:"quantity"`
+        EntityID  *b24.ID `json:"entityId"`
+        RowID     *b24.ID `json:"rowId"`
     }
     if err := json.Unmarshal(res.Result, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -399,25 +393,21 @@ HTTP status: **200**
 {
    "result":[
       {
-         "id":1195,
-         "paymentId":1039,
+         "id":433,
+         "paymentId":553,
          "quantity":2,
-         "rowId":17587
-      },
-      {
-         "id":1196,
-         "paymentId":1039,
-         "quantity":3,
-         "rowId":17588
+         "entityId":1349
       }
    ],
    "time":{
-      "start":1716286140.489916,
-      "finish":1716286140.802505,
-      "duration":0.3125889301300049,
-      "processing":0.053195953369140625,
-      "date_start":"2024-05-21T13:09:00+03:00",
-      "date_finish":"2024-05-21T13:09:00+03:00"
+      "start":1790581835,
+      "finish":1790581835.956596,
+      "duration":0.9565958976745605,
+      "processing":0,
+      "date_start":"2026-09-28T10:50:35+03:00",
+      "date_finish":"2026-09-28T10:50:35+03:00",
+      "operating_reset_at":1790582435,
+      "operating":0
    }
 }
 ```
@@ -433,7 +423,7 @@ HTTP status: **200**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Key Result. Object of Type Crm_Item_Payment_Product
+### Key result. Object of type crm_item_payment_product
 
 #|
 || **Name**
@@ -444,8 +434,10 @@ HTTP status: **200**
 [`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Payment identifier ||
 || **quantity**
 [`double`](../../../../data-types.md) | Quantity of the product ||
+|| **entityId**
+[`integer`](../../../../data-types.md) | Identifier of the order product item. Returned if the payment item is not matched to a product row in the CRM object ||
 || **rowId**
-[`integer`](../../../../data-types.md) | Identifier of the product item in the CRM object ||
+[`integer`](../../../../data-types.md) | Identifier of the product row in the CRM object. Returned if the payment item is matched to a product row in the CRM object ||
 |#
 
 ## Error Handling
@@ -466,7 +458,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `0` | Payment not found ||
-|| `0` | Access denied ||
+|| `ACCESS_DENIED` | Access denied: the user does not have permission to read the payment ||
 || `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
@@ -480,5 +472,5 @@ For business errors, the method may return `error: 0`. In this case, refer to `e
 ## Continue Learning
 
 - [{#T}](./crm-item-payment-product-add.md)
-- [{#T}](./crm-item-payment-product-set-quantity.md)
 - [{#T}](./crm-item-payment-product-delete.md)
+- [{#T}](./crm-item-payment-product-set-quantity.md)

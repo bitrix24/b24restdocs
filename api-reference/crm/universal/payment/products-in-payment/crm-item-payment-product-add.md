@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission to modify the order to which the product item is being added is required
+> Who can execute the method: a user with "edit" access permission for the CRM object associated with the payment
 
-This method adds a product item to the payment.
+The method `crm.item.payment.product.add` adds a product item to the payment.
 
 ## Method Parameters
 
@@ -26,12 +26,15 @@ This method adds a product item to the payment.
 [`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
 Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md)
  ||
- || **rowId***
-[`integer`](../../../../data-types.md) | Product item identifier in the CRM object.
-Can be obtained using [`crm.item.productrow.list`](../../../../crm/universal/product-rows/crm-item-productrow-list.md)
+|| **rowId***
+[`integer`](../../../../data-types.md) | Identifier of the product item in the CRM object associated with the payment.
+
+It can be obtained using the method [`crm.item.productrow.list`](../../../../crm/universal/product-rows/crm-item-productrow-list.md)
  ||
- || **quantity***
-[`double`](../../../../data-types.md)| Product quantity ||
+|| **quantity***
+[`integer`](../../../../data-types.md)| Product quantity.
+
+The value must be greater than zero and must not exceed the remaining quantity that has not yet been allocated among the order payments ||
 |#
 
 ## Code Examples
@@ -274,10 +277,12 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `0` | Payment not found ||
-|| `0` | Access denied ||
+|| `ACCESS_DENIED` | Access denied: the user does not have permission to edit the payment, or the payment is already marked as paid ||
+|| `0` | The link between the order and the CRM object was not found ||
+|| `0` | The CRM object does not support linking to catalog products ||
 || `0` | Product item not found ||
 || `0` | Insufficient product quantity to add to payment ||
-|| `0` | Product quantity cannot be less than or equal to 0 ||
+|| `0` | Product quantity must be greater than zero ||
 || `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
@@ -290,6 +295,6 @@ For business errors, the method may return `error: 0`. In this case, refer to `e
 
 ## Continue Learning
 
-- [{#T}](./crm-item-payment-product-set-quantity.md)
 - [{#T}](./crm-item-payment-product-list.md)
 - [{#T}](./crm-item-payment-product-delete.md)
+- [{#T}](./crm-item-payment-product-set-quantity.md)

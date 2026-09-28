@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the payment order
+> Who can execute the method: a user with "edit" access permission for the CRM object associated with the payment
 
-This method changes the quantity of a product in a payment line item.
+The method `crm.item.payment.product.setQuantity` changes the product quantity in a payment product item.
 
 ## Method Parameters
 
@@ -23,9 +23,13 @@ This method changes the quantity of a product in a payment line item.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the product item in the payment ||
+[`integer`](../../../../data-types.md) | Identifier of the product item in the payment.
+
+It can be obtained using the method [`crm.item.payment.product.list`](./crm-item-payment-product-list.md) ||
 || **quantity***
-[`double`](../../../../data-types.md) | Quantity of the product ||
+[`integer`](../../../../data-types.md) | New product quantity.
+
+The value must be greater than zero, and the total quantity of this product item across all payments must not exceed the quantity in the original product row ||
 |#
 
 ## Code Examples
@@ -281,9 +285,10 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `0` | Product item not found ||
-|| `0` | Access denied ||
-|| `0` | Product quantity cannot be less than or equal to 0 ||
+|| `ACCESS_DENIED` | Access denied: the user does not have permission to edit the payment, or the payment is already marked as paid ||
+|| `0` | Product quantity must be greater than zero ||
 || `0` | Insufficient product quantity to add to payment ||
+|| `0` | Internal error when changing the product quantity ||
 || `100` | Required fields are not provided ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

@@ -11,10 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: access permission to modify the order from which the product item is being removed is required.
+> Who can execute the method: a user with "edit" access permission for the CRM object associated with the payment
 
-
-Removes a product item from the payment.
+The method `crm.item.payment.product.delete` removes a product item from the payment and recalculates the payment amount without deleting the associated product row from the CRM object.
 
 ## Method Parameters
 
@@ -25,7 +24,8 @@ Removes a product item from the payment.
 `type` | **Description** ||
 || **id***
 [`integer`](../../../../data-types.md) | Identifier of the product item in the payment.
-Can be obtained using [`crm.item.payment.product.list`](../../../../crm/universal/payment/products-in-payment/crm-item-payment-product-list.md)
+
+It can be obtained using the method [`crm.item.payment.product.list`](./crm-item-payment-product-list.md)
  ||
 |#
 
@@ -275,7 +275,8 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `0` | Product item not found ||
-|| `0` | Access denied ||
+|| `ACCESS_DENIED` | Access denied: the user does not have permission to edit the payment, or the payment is already marked as paid ||
+|| `0` | Internal error when deleting the product item ||
 || `100` | Parameter id not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#

@@ -24,6 +24,24 @@ To retrieve version data:
 1. Request a list of file versions using the method [disk.file.getVersions](../file/disk-file-get-versions.md). In the response, you will receive an array with the `ID` of all available versions
 2. Use the required `ID` as a parameter in the method [disk.version.get](./disk-version-get.md)
 
+## What the Method Returns
+
+The method `disk.version.get` returns file version data. Here is a shortened response example:
+
+```json
+{
+    "result": {
+        "ID": "7169",
+        "NAME": "Picture.png",
+        "SIZE": "52486",
+        "CREATE_TIME": "2025-12-23T10:30:01+03:00",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?..."
+    }
+}
+```
+
+`DOWNLOAD_URL` is a temporary link for downloading the version. If a version with the specified `ID` is not found, the method returns the `ERROR_NOT_FOUND` error. If the user does not have permission to read the file, it returns `ACCESS_DENIED`. The full response structure and error examples are provided in the description of the [disk.version.get](./disk-version-get.md) method.
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`disk`](../../scopes/permissions.md)

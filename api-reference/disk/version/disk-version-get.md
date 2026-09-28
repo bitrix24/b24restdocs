@@ -282,7 +282,16 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with version data ||
+[`object`](../../data-types.md) | Object containing version data [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the version ||
 || **OBJECT_ID**
@@ -299,8 +308,6 @@ HTTP status: **200**
 [`integer`](../../data-types.md) | Identifier of the user who created the version ||
 || **DOWNLOAD_URL**
 [`string`](../../data-types.md) | Link to download the version ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -310,7 +317,7 @@ HTTP status: **400**
 ```json
 {
     "error":"ERROR_ARGUMENT",
-    "error_description":"Invalid value of parameter `id`"
+    "error_description":"Invalid value of parameter { Parameter #0 [ <required> $id ] }."
 }
 ```
 
@@ -319,16 +326,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_ARGUMENT` | Invalid value of parameter `id` | Parameter `id` is missing or has an invalid type ||
-|| `ERROR_NOT_FOUND` | Could not find entity with id `X` | Version with the specified `id` was not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient rights to read the file ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | Invalid value of parameter { Parameter #0 [ <required> $id ] }. | The `id` parameter is missing ||
+|| `400` | `ERROR_NOT_FOUND` | Could not find entity with id 'X'. | A version with the specified `id` was not found, or the `id` value cannot be matched to an existing version ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Insufficient permission to read the file ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](../../../tutorials/tasks/how-to-create-comment-with-file.md)
-- [{#T}](../../../tutorials/tasks/how-to-create-task-with-file.md)
-- [{#T}](../../../tutorials/tasks/how-to-upload-file-to-task.md)
+- [{#T}](../file/disk-file-get-versions.md)
+- [{#T}](../file/disk-file-get.md)
+- [{#T}](../index.md)
