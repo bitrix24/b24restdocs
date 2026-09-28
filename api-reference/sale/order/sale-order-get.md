@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.order.get` is designed to retrieve values for all fields of an order and related objects.
+The method `sale.order.get` retrieves all fields of an order together with its related objects, such as basket items, payments, shipments, property values, and CRM clients. To retrieve only the fields of the order itself or several orders at once, use [sale.order.list](./sale-order-list.md).
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order.id`](../data-types.md) | Order identifier ||
+[`sale_order.id`](../data-types.md#sale_order) | Order identifier. It is returned by the [sale.order.add](./sale-order-add.md) and [sale.order.list](./sale-order-list.md) methods. Do not confuse it with the order number `accountNumber` ||
 |#
 
 ## Code Examples
@@ -38,8 +38,8 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":6,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/sale.order.get
+    -d '{"id":236}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.order.get
     ```
 
 - cURL (OAuth)
@@ -48,8 +48,8 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":6}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.order.get
+    -d '{"id":236,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/sale.order.get
     ```
 
 - JS (TS)
@@ -87,7 +87,7 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
       const response = await $b24.actions.v2.call.make<OrderGetResult>({
         method: 'sale.order.get',
         params: {
-          id: 6,
+          id: 236,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -119,7 +119,7 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
           const response = await $b24.actions.v2.call.make({
             method: 'sale.order.get',
             params: {
-              id: 6,
+              id: 236,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -149,7 +149,7 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
 
     try:
         bitrix_response = client.sale.order.get(
-            bitrix_id=6,
+            bitrix_id=236,
         ).response
         result = bitrix_response.result
         print(result)
@@ -175,7 +175,7 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
             ->call(
                 'sale.order.get',
                 [
-                    'id' => 6
+                    'id' => 236
                 ]
             );
     
@@ -183,12 +183,8 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Order data: ' . print_r($result->data(), true);
-        }
+        // SDK throws an exception on API errors, so here the call has succeeded
+        echo 'Order data: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -201,7 +197,7 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
     ```js
     BX24.callMethod(
         "sale.order.get", {
-            "id": 6
+            "id": 236
         },
         function(result) {
             if (result.error()) {
@@ -221,7 +217,7 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
     $result = CRest::call(
         'sale.order.get',
         [
-            'id' => 6
+            'id' => 236
         ]
     );
 
@@ -235,7 +231,7 @@ The method `sale.order.get` is designed to retrieve values for all fields of an 
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "sale.order.get", b24.Params{
-    	"id": 6,
+    	"id": 236,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("sale.order.get: %w", err)
@@ -586,11 +582,39 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **order**
-[`sale_order`](../data-types.md) | Order information ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **order**
+[`sale_order`](../data-types.md#sale_order) | Order fields and related objects [(detailed description)](#order-related) ||
+|#
+
+#### Related Objects in order {#order-related}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **basketItems**
+[`sale_basket_item[]`](../data-types.md#sale_basket_item) | Order basket items. Each item contains its properties in `properties` and its reservations in `reservations` ||
+|| **payments**
+[`sale_order_payment[]`](../data-types.md#sale_order_payment) | Order payments ||
+|| **shipments**
+[`sale_order_shipment[]`](../data-types.md#sale_order_shipment) | Order shipments. The shipment contents are in the `shipmentItems` array, where `basketId` is the `id` of an item from `basketItems` ||
+|| **propertyValues**
+[`sale_order_property_value[]`](../data-types.md#sale_order_property_value) | Order property values, such as the buyer's name and phone number. The set of properties depends on the payer type `personTypeId` ||
+|| **clients**
+[`sale_order_crm_client[]`](../data-types.md#sale_order_crm_client) | CRM contacts and companies linked to the order ||
+|| **requisiteLink**
+[`object`](../../data-types.md) | Requisites selected for the order: `requisiteId` and `bankDetailId` for the client, `mcRequisiteId` and `mcBankDetailId` for your company ||
+|| **tradeBindings**
+[`sale_order_trade_binding[]`](../data-types.md#sale_order_trade_binding) | Bindings of the order to its sources, which are trading platforms ||
 |#
 
 ## Error Handling
@@ -599,8 +623,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200540400001,
-    "error_description":"order does not exist"
+    "error": "200540400001",
+    "error_description": "order is not exists"
 }
 ```
 
@@ -609,17 +633,17 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201240400001` | Order not found ||
-|| `200040300010` | Insufficient permissions to read the order ||
-|| `100` | Parameter `id` not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200540400001` | `order is not exists` | There is no order with this `id`. The method returns the same error if a non-numeric value is passed in `id`, for example `"abc"` ||
+|| `400` | `100` | `Bitrix\Sale\Order constructor must be is public` | The `id` parameter is not passed ||
+|| `400` | `200040300010` | `Access Denied` | Insufficient permissions to read the order ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-order-add.md)
 - [{#T}](./sale-order-update.md)
 - [{#T}](./sale-order-list.md)

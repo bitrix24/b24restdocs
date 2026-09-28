@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.order.list` retrieves a list of orders.
+The method `sale.order.list` retrieves a list of orders with filtering, sorting, and pagination. The response contains only order fields: basket items, payments, shipments, and property values are returned by the [sale.order.get](./sale-order-get.md) method.
+
+{% note warning "" %}
+
+The method does not validate field names in `select` and `filter`. A condition with a misspelled field name is not applied, and the method returns orders as if the condition were absent. The exact field names are returned by [sale.order.getFields](./sale-order-get-fields.md).
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -21,63 +27,37 @@ The method `sale.order.list` retrieves a list of orders.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to be selected (see fields of the [sale_order](../data-types.md#sale_order) object).
+[`array`](../../data-types.md) | Order fields to return. The field names are listed in the [sale_order](../data-types.md#sale_order) object.
 
-If not provided or an empty array is passed, all available order fields will be selected. ||
+If the parameter is not provided, the array is empty, or it contains no existing field, the method returns all order fields ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected orders in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
- 
-Possible values for `field` correspond to the fields of the [sale_order](../data-types.md#sale_order) object.
+[`object`](../../data-types.md) | Order filter conditions in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is a field of the [sale_order](../data-types.md#sale_order) object.
 
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
+You can add a prefix to the key to set the comparison condition:
 
+- `=` — equal to, used by default
+- `!=` or `!` — not equal to
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN (an array is passed as the value)
-- `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` character in the filter value should not be passed. The search looks for a substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character should be passed in the value. Examples:
-    - "mol%" — searching for values starting with "mol"
-    - "%mol" — searching for values ending with "mol"
-    - "%mol%" — searching for values where "mol" can be in any position.
-
-- `%=` — LIKE (see description above)
-
-- `!%` — NOT LIKE, substring search. The `%` character in the filter value should not be passed. The search goes from both sides.
-
-- `!=%` — NOT LIKE, substring search. The `%` character should be passed in the value. Examples:
-    - "mol%" — searching for values not starting with "mol"
-    - "%mol" — searching for values not ending with "mol"
-    - "%mol%" — searching for values where the substring "mol" is not present in any position.
-
-- `!%=` — NOT LIKE (see description above)
-
-- `=` — equal, exact match (used by default)
-- `!=` - not equal
-- `!` — not equal ||
+- `@` — in the list, the value is an array
+- `!@` — not in the list, the value is an array
+- `%` — contains a substring, do not pass the `%` character in the value
+- `!%` — does not contain a substring, do not pass the `%` character in the value
+- `=%` or `%=` — LIKE by pattern, pass the `%` character in the value: `mol%` — starts with "mol", `%mol` — ends with "mol", `%mol%` — contains "mol"
+- `!=%` or `!%=` — NOT LIKE by pattern, pass the `%` character in the value ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected orders in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
- 
-Possible values for `field` correspond to the fields of the [sale_order](../data-types.md#sale_order).
- 
-Possible values for `order`:
+[`object`](../../data-types.md) | Sort order in the format `{"field_1": "order_1", ... "field_N": "order_N"}`, where `field` is a field of the [sale_order](../data-types.md#sale_order) object and `order` is the direction:
 
-- asc — ascending order
-- desc — descending order
- ||
+- `asc` — ascending
+- `desc` — descending
+
+If the parameter is not provided, orders are sorted by `id` in ascending order ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used to manage pagination.
- 
-The page size of results is always static: 50 records.
- 
-To select the second page of results, the value `50` must be passed. To select the third page of results, the value is `100`, and so on.
- 
-The formula for calculating the `start` parameter value:
- 
-`start = (N-1) * 50`, where `N` is the desired page number
- ||
+[`integer`](../../data-types.md) | Offset for pagination. A page contains up to 50 orders, and the page size cannot be changed.
+
+The value is calculated using the formula `start = (N-1) * 50`, where `N` is the page number. For the second page, pass `50`. The default is `0` ||
 |#
 
 ## Code Examples
@@ -92,7 +72,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","lid","dateInsert","dateUpdate","personTypeId","personTypeXmlId","statusId","dateStatus","empStatusId","marked","dateMarked","empMarkedId","reasonMarked","price","discountValue","taxValue","userDescription","additionalInfo","comments","companyId","responsibleId","recurringId","lockedBy","dateLock","recountFlag","affiliateId","updated1c","orderTopic","xmlId","statusXmlId","id1c","version","version1c","externalOrder","canceled","dateCanceled","empCanceledId","reasonCanceled","userId","currency","accountNumber","payed","deducted"],"filter":{"<id":10,"@personTypeId":[3,4],"payed":"N"},"order":{"id":"desc"}}' \
+    -d '{"select":["id","accountNumber","statusId","price","currency","payed","dateInsert","userId"],"filter":{"<id":1000,"@personTypeId":[3,4],"payed":"N"},"order":{"id":"desc"},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.order.list
     ```
 
@@ -102,7 +82,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","lid","dateInsert","dateUpdate","personTypeId","personTypeXmlId","statusId","dateStatus","empStatusId","marked","dateMarked","empMarkedId","reasonMarked","price","discountValue","taxValue","userDescription","additionalInfo","comments","companyId","responsibleId","recurringId","lockedBy","dateLock","recountFlag","affiliateId","updated1c","orderTopic","xmlId","statusXmlId","id1c","version","version1c","externalOrder","canceled","dateCanceled","empCanceledId","reasonCanceled","userId","currency","accountNumber","payed","deducted"],"filter":{"<id":10,"@personTypeId":[3,4],"payed":"N"},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","accountNumber","statusId","price","currency","payed","dateInsert","userId"],"filter":{"<id":1000,"@personTypeId":[3,4],"payed":"N"},"order":{"id":"desc"},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.order.list
     ```
 
@@ -119,49 +99,14 @@ The formula for calculating the `start` parameter value:
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type SaleOrderListResult = {
       orders: {
-        id: number
         accountNumber: string
-        additionalInfo: string
-        affiliateId: number | null
-        canceled: string
-        comments: string
-        companyId: number | null
         currency: string
-        dateCanceled: ISODate | null
-        dateInsert: ISODate
-        dateLock: ISODate | null
-        dateMarked: ISODate | null
-        dateStatus: ISODate
-        dateUpdate: ISODate
-        deducted: string
-        discountValue: number
-        empCanceledId: number | null
-        empMarkedId: number | null
-        empStatusId: number
-        externalOrder: string
-        id1c: string
-        lid: string
-        lockedBy: string
-        marked: string
-        orderTopic: string
+        dateInsert: ISODate | null
+        id: number
         payed: string
-        personTypeId: number
-        personTypeXmlId: string
         price: number
-        reasonCanceled: string
-        reasonMarked: string
-        recountFlag: string
-        recurringId: string
-        responsibleId: number
         statusId: string
-        statusXmlId: string
-        taxValue: number
-        updated1c: string
-        userDescription: string
         userId: number
-        version: number
-        version1c: string
-        xmlId: string
       }[]
     }
 
@@ -176,51 +121,16 @@ The formula for calculating the `start` parameter value:
         params: {
           select: [
             'id',
-            'lid',
-            'dateInsert',
-            'dateUpdate',
-            'personTypeId',
-            'personTypeXmlId',
-            'statusId',
-            'dateStatus',
-            'empStatusId',
-            'marked',
-            'dateMarked',
-            'empMarkedId',
-            'reasonMarked',
-            'price',
-            'discountValue',
-            'taxValue',
-            'userDescription',
-            'additionalInfo',
-            'comments',
-            'companyId',
-            'responsibleId',
-            'recurringId',
-            'lockedBy',
-            'dateLock',
-            'recountFlag',
-            'affiliateId',
-            'updated1c',
-            'orderTopic',
-            'xmlId',
-            'statusXmlId',
-            'id1c',
-            'version',
-            'version1c',
-            'externalOrder',
-            'canceled',
-            'dateCanceled',
-            'empCanceledId',
-            'reasonCanceled',
-            'userId',
-            'currency',
             'accountNumber',
+            'statusId',
+            'price',
+            'currency',
             'payed',
-            'deducted',
+            'dateInsert',
+            'userId',
           ],
           filter: {
-            '<id': 10,
+            '<id': 1000,
             '@personTypeId': [3, 4],
             payed: 'N',
           },
@@ -266,51 +176,16 @@ The formula for calculating the `start` parameter value:
             params: {
               select: [
                 'id',
-                'lid',
-                'dateInsert',
-                'dateUpdate',
-                'personTypeId',
-                'personTypeXmlId',
-                'statusId',
-                'dateStatus',
-                'empStatusId',
-                'marked',
-                'dateMarked',
-                'empMarkedId',
-                'reasonMarked',
-                'price',
-                'discountValue',
-                'taxValue',
-                'userDescription',
-                'additionalInfo',
-                'comments',
-                'companyId',
-                'responsibleId',
-                'recurringId',
-                'lockedBy',
-                'dateLock',
-                'recountFlag',
-                'affiliateId',
-                'updated1c',
-                'orderTopic',
-                'xmlId',
-                'statusXmlId',
-                'id1c',
-                'version',
-                'version1c',
-                'externalOrder',
-                'canceled',
-                'dateCanceled',
-                'empCanceledId',
-                'reasonCanceled',
-                'userId',
-                'currency',
                 'accountNumber',
+                'statusId',
+                'price',
+                'currency',
                 'payed',
-                'deducted',
+                'dateInsert',
+                'userId',
               ],
               filter: {
-                '<id': 10,
+                '<id': 1000,
                 '@personTypeId': [3, 4],
                 payed: 'N',
               },
@@ -349,51 +224,16 @@ The formula for calculating the `start` parameter value:
         bitrix_response = client.sale.order.list(
             select=[
                 "id",
-                "lid",
-                "dateInsert",
-                "dateUpdate",
-                "personTypeId",
-                "personTypeXmlId",
-                "statusId",
-                "dateStatus",
-                "empStatusId",
-                "marked",
-                "dateMarked",
-                "empMarkedId",
-                "reasonMarked",
-                "price",
-                "discountValue",
-                "taxValue",
-                "userDescription",
-                "additionalInfo",
-                "comments",
-                "companyId",
-                "responsibleId",
-                "recurringId",
-                "lockedBy",
-                "dateLock",
-                "recountFlag",
-                "affiliateId",
-                "updated1c",
-                "orderTopic",
-                "xmlId",
-                "statusXmlId",
-                "id1c",
-                "version",
-                "version1c",
-                "externalOrder",
-                "canceled",
-                "dateCanceled",
-                "empCanceledId",
-                "reasonCanceled",
-                "userId",
-                "currency",
                 "accountNumber",
+                "statusId",
+                "price",
+                "currency",
                 "payed",
-                "deducted",
+                "dateInsert",
+                "userId",
             ],
             filter={
-                "<id": 10,
+                "<id": 1000,
                 "@personTypeId": [
                     3,
                     4,
@@ -403,7 +243,7 @@ The formula for calculating the `start` parameter value:
             order={
                 "id": "desc",
             },
-            start='1712847891.436862',
+            start=0,
         ).response
         result = bitrix_response.result
         print(result)
@@ -422,7 +262,6 @@ The formula for calculating the `start` parameter value:
 
 - PHP
 
-
     ```php
     try {
         $response = $b24Service
@@ -432,57 +271,23 @@ The formula for calculating the `start` parameter value:
                 [
                     'select' => [
                         'id',
-                        'lid',
-                        'dateInsert',
-                        'dateUpdate',
-                        'personTypeId',
-                        'personTypeXmlId',
-                        'statusId',
-                        'dateStatus',
-                        'empStatusId',
-                        'marked',
-                        'dateMarked',
-                        'empMarkedId',
-                        'reasonMarked',
-                        'price',
-                        'discountValue',
-                        'taxValue',
-                        'userDescription',
-                        'additionalInfo',
-                        'comments',
-                        'companyId',
-                        'responsibleId',
-                        'recurringId',
-                        'lockedBy',
-                        'dateLock',
-                        'recountFlag',
-                        'affiliateId',
-                        'updated1c',
-                        'orderTopic',
-                        'xmlId',
-                        'statusXmlId',
-                        'id1c',
-                        'version',
-                        'version1c',
-                        'externalOrder',
-                        'canceled',
-                        'dateCanceled',
-                        'empCanceledId',
-                        'reasonCanceled',
-                        'userId',
-                        'currency',
                         'accountNumber',
+                        'statusId',
+                        'price',
+                        'currency',
                         'payed',
-                        'deducted',
+                        'dateInsert',
+                        'userId',
                     ],
                     'filter' => [
-                        '<id'          => 10,
+                        '<id'          => 1000,
                         '@personTypeId' => [3, 4],
                         'payed'        => 'N',
                     ],
                     'order' => [
                         'id' => 'desc',
                     ],
+                    'start' => 0,
                 ]
             );
     
@@ -505,57 +310,23 @@ The formula for calculating the `start` parameter value:
         "sale.order.list", {
             "select": [
                 "id",
-                "lid",
-                "dateInsert",
-                "dateUpdate",
-                "personTypeId",
-                "personTypeXmlId",
-                "statusId",
-                "dateStatus",
-                "empStatusId",
-                "marked",
-                "dateMarked",
-                "empMarkedId",
-                "reasonMarked",
-                "price",
-                "discountValue",
-                "taxValue",
-                "userDescription",
-                "additionalInfo",
-                "comments",
-                "companyId",
-                "responsibleId",
-                "recurringId",
-                "lockedBy",
-                "dateLock",
-                "recountFlag",
-                "affiliateId",
-                "updated1c",
-                "orderTopic",
-                "xmlId",
-                "statusXmlId",
-                "id1c",
-                "version",
-                "version1c",
-                "externalOrder",
-                "canceled",
-                "dateCanceled",
-                "empCanceledId",
-                "reasonCanceled",
-                "userId",
-                "currency",
                 "accountNumber",
+                "statusId",
+                "price",
+                "currency",
                 "payed",
-                "deducted",
+                "dateInsert",
+                "userId",
             ],
             "filter": {
-                "<id": 10,
+                "<id": 1000,
                 "@personTypeId": [3, 4],
                 "payed": "N",
             },
             "order": {
                 "id": "desc",
-            }
+            },
+            "start": 0
         },
         function(result) {
             if (result.error()) {
@@ -577,57 +348,23 @@ The formula for calculating the `start` parameter value:
         [
             'select' => [
                 "id",
-                "lid",
-                "dateInsert",
-                "dateUpdate",
-                "personTypeId",
-                "personTypeXmlId",
-                "statusId",
-                "dateStatus",
-                "empStatusId",
-                "marked",
-                "dateMarked",
-                "empMarkedId",
-                "reasonMarked",
-                "price",
-                "discountValue",
-                "taxValue",
-                "userDescription",
-                "additionalInfo",
-                "comments",
-                "companyId",
-                "responsibleId",
-                "recurringId",
-                "lockedBy",
-                "dateLock",
-                "recountFlag",
-                "affiliateId",
-                "updated1c",
-                "orderTopic",
-                "xmlId",
-                "statusXmlId",
-                "id1c",
-                "version",
-                "version1c",
-                "externalOrder",
-                "canceled",
-                "dateCanceled",
-                "empCanceledId",
-                "reasonCanceled",
-                "userId",
-                "currency",
                 "accountNumber",
+                "statusId",
+                "price",
+                "currency",
                 "payed",
-                "deducted",
+                "dateInsert",
+                "userId",
             ],
             'filter' => [
-                "<id" => 10,
+                "<id" => 1000,
                 "@personTypeId" => [3, 4],
                 "payed" => "N",
             ],
             'order' => [
                 "id" => "desc",
-            ]
+            ],
+            'start' => 0,
         ]
     );
 
@@ -641,15 +378,16 @@ The formula for calculating the `start` parameter value:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "sale.order.list", b24.Params{
-    	"select": []string{"id", "lid", "dateInsert", "dateUpdate", "personTypeId", "personTypeXmlId", "statusId", "dateStatus", "empStatusId", "marked", "dateMarked", "empMarkedId", "reasonMarked", "price", "discountValue", "taxValue", "userDescription", "additionalInfo", "comments", "companyId", "responsibleId", "recurringId", "lockedBy", "dateLock", "recountFlag", "affiliateId", "updated1c", "orderTopic", "xmlId", "statusXmlId", "id1c", "version", "version1c", "externalOrder", "canceled", "dateCanceled", "empCanceledId", "reasonCanceled", "userId", "currency", "accountNumber", "payed", "deducted"},
+    	"select": []string{"id", "accountNumber", "statusId", "price", "currency", "payed", "dateInsert", "userId"},
     	"filter": b24.Params{
-    		"<id":           10,
+    		"<id":           1000,
     		"@personTypeId": []int{3, 4},
     		"payed":         "N",
     	},
     	"order": b24.Params{
     		"id": "desc",
     	},
+    	"start": 0,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("sale.order.list: %w", err)
@@ -671,60 +409,38 @@ HTTP status: **200**
     "result": {
         "orders": [
             {
-                "accountNumber": "165",
-                "additionalInfo": "",
-                "affiliateId": null,
-                "canceled": "N",
-                "comments": "",
-                "companyId": null,
+                "accountNumber": "923",
                 "currency": "USD",
-                "dateCanceled": null,
-                "dateInsert": "2022-10-14T17:19:11+02:00",
-                "dateLock": null,
-                "dateMarked": null,
-                "dateStatus": "2022-10-14T17:19:03+02:00",
-                "dateUpdate": "2022-10-14T17:19:11+02:00",
-                "deducted": "N",
-                "discountValue": 0,
-                "empCanceledId": null,
-                "empMarkedId": null,
-                "empStatusId": 1,
-                "externalOrder": "N",
-                "id": 9,
-                "id1c": "",
-                "lid": "s1",
-                "lockedBy": "",
-                "marked": "N",
-                "orderTopic": "",
+                "dateInsert": "2026-09-23T09:06:07+02:00",
+                "id": 923,
                 "payed": "N",
-                "personTypeId": 4,
-                "personTypeXmlId": "",
-                "price": 1176,
-                "reasonCanceled": "",
-                "reasonMarked": "",
-                "recountFlag": "Y",
-                "recurringId": "",
-                "responsibleId": 1,
+                "price": 300,
                 "statusId": "N",
-                "statusXmlId": "",
-                "taxValue": 196,
-                "updated1c": "N",
-                "userDescription": "",
-                "userId": 2,
-                "version": 0,
-                "version1c": "",
-                "xmlId": "bx_63498bf7c8d31"
+                "userId": 1
             },
+            {
+                "accountNumber": "909",
+                "currency": "USD",
+                "dateInsert": "2026-09-04T23:03:40+02:00",
+                "id": 909,
+                "payed": "N",
+                "price": 100.5,
+                "statusId": "N",
+                "userId": 1295
+            }
         ]
     },
-    "total": 1,
+    "next": 50,
+    "total": 189,
     "time": {
-        "start": 1712847891.436862,
-        "finish": 1712847892.028163,
-        "duration": 0.5913009643554688,
-        "processing": 0.1332709789276123,
-        "date_start": "2024-04-11T18:04:51+02:00",
-        "date_finish": "2024-04-11T18:04:52+02:00"
+        "start": 1790576208,
+        "finish": 1790576208.881895,
+        "duration": 0.8818950653076172,
+        "processing": 0,
+        "date_start": "2026-09-28T09:16:48+02:00",
+        "date_finish": "2026-09-28T09:16:48+02:00",
+        "operating_reset_at": 1790576808,
+        "operating": 0
     }
 }
 ```
@@ -735,13 +451,22 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response ||
-|| **orders**
-[`sale_order[]`](../data-types.md) | An array of objects containing information about the selected orders ||
+[`object`](../../data-types.md) | The root element of the response [(detailed description)](#result) ||
 || **total**
-[`integer`](../../data-types.md) | The total number of records found ||
+[`integer`](../../data-types.md) | The total number of orders matching the filter ||
+|| **next**
+[`integer`](../../data-types.md) | The `start` value for the next page. Returned only if there are more orders after the current page ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **orders**
+[`sale_order[]`](../data-types.md#sale_order) | An array of orders, up to 50 per call. The set of fields is defined by `select` ||
 |#
 
 ## Error Handling
@@ -750,8 +475,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "100",
+    "error_description": "Invalid order \"SIDEWAYS\""
 }
 ```
 
@@ -760,15 +485,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read orders ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | `Invalid order "SIDEWAYS"` | A sort direction other than `asc` and `desc` is passed in `order` ||
+|| `400` | `200040300010` | `Access Denied` | Insufficient permissions to read orders ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-order-add.md)
 - [{#T}](./sale-order-update.md)
 - [{#T}](./sale-order-get.md)

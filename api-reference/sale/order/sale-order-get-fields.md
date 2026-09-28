@@ -1,4 +1,4 @@
-# Get Order Fields sale.order.getfields
+# Get Order Fields sale.order.getFields
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.order.getfields` retrieves the available fields of an order.
+The method `sale.order.getFields` retrieves the description of order fields: the type of each field, whether it is required when creating an order, and whether it can be changed. Use the response to check field names for `select` and `filter` in [sale.order.list](./sale-order-list.md) and the set of `fields` for [sale.order.add](./sale-order-add.md) and [sale.order.update](./sale-order-update.md).
 
 No parameters.
 
@@ -157,11 +157,8 @@ No parameters.
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Fields: ' . print_r($result->data(), true);
-        }
+        // SDK throws an exception on API errors, so here the call has succeeded
+        echo 'Fields: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -504,21 +501,43 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **order**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the [sale_order](../data-types.md) object, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **order**
+[`object`](../../data-types.md) | The key is the name of a [sale_order](../data-types.md#sale_order) object field, and the value is the field description [(detailed description)](#field-description) ||
+|#
+
+#### Field Description {#field-description}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../data-types.md) | Type of the field value: `integer`, `double`, `string`, `char`, `datetime`. A `char` value is passed as a string. Flag fields, such as `canceled` or `marked`, take the values `Y` or `N` ||
+|| **isRequired**
+[`boolean`](../../data-types.md) | `true` — the field is required when creating an order. The required fields are `lid`, `personTypeId`, and `currency` ||
+|| **isReadOnly**
+[`boolean`](../../data-types.md) | `true` — the value is set by Bitrix24, so you do not need to pass it to `sale.order.add` and `sale.order.update`. For example, `id`, `accountNumber`, `payed`, `dateUpdate` ||
+|| **isImmutable**
+[`boolean`](../../data-types.md) | `true` — the value is set only when the order is created. The `sale.order.update` method does not change such a field and does not return an error. These fields are `lid`, `personTypeId`, `currency`, and `userId` ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **401**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the webhook token"
 }
 ```
 
@@ -527,15 +546,15 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read available order fields ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | `Access Denied` | Insufficient permissions to read order fields ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 
+- [{#T}](./index.md)
 - [{#T}](./sale-order-add.md)
 - [{#T}](./sale-order-update.md)
 - [{#T}](./sale-order-get.md)

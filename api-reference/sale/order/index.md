@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-An order is a record of a purchase. An order contains customer data, a list of products or services, their quantity, cost, and the status of the order.
+An order is a record of a purchase: the customer, products or services, their quantity, cost, and fulfillment status. The `sale.order.*` methods create, update, retrieve, and delete Online Store orders.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -17,33 +17,37 @@ An order is a record of a purchase. An order contains customer data, a list of p
 > 
 > User documentation: [How to create an order within CRM](https://helpdesk.bitrix24.com/open/8271153/)
 
-## Products and Services in the Order
+## How to Get Started with an Order
 
-When a customer places an order, products and services are first added to the cart, and then the cart is linked to the order. It is not possible to add a product directly to the order, bypassing the cart stage.
+1. Retrieve the payer type using [sale.persontype.list](../person-type/sale-person-type-list.md)
+2. Create an order using [sale.order.add](./sale-order-add.md): pass the site ID `lid`, for example `s1`, the payer type `personTypeId`, and the currency `currency`. Note the order `id` returned in the response
+3. Add products or services to the order using [sale.basketitem.*](../basket-item/index.md), passing this `id` in the `orderId` field. A product cannot be added to an order without going through the cart
+4. Create payments using [sale.payment.*](../payment/index.md) and shipments using [sale.shipment.*](../shipment/index.md)
+5. Check the order using [sale.order.get](./sale-order-get.md): it returns the order together with its basket items, payments, and shipments
+6. Change the order status using [sale.order.update](./sale-order-update.md): pass the new `statusId`
+
+## What to Consider
+
+- The `lid`, `personTypeId`, `currency`, and `userId` fields can only be set when an order is created. The [sale.order.update](./sale-order-update.md) method does not change them and does not return an error
+- The [sale.order.list](./sale-order-list.md) method returns orders in the `result.orders` array, up to 50 per call. The add, update, and get methods return a single order in `result.order`
+- The [sale.order.list](./sale-order-list.md) method silently skips a `filter` condition with an unknown field name. The exact field names are returned by [sale.order.getFields](./sale-order-get-fields.md)
+- An order that has a payment with `paid` = `Y` cannot be deleted: [sale.order.delete](./sale-order-delete.md) returns the `SALE_ORDER_CANCEL_PAYMENT_EXIST_ACTIVE` error
+
+Error codes are listed on the method pages, and the common REST errors are described in the [Error Codes](../../../error-codes.md) article.
 
 ## Connection of the Order with Other Objects
 
-**Types of Payers.** Determine what type of client the buyer is: individual or legal entity. For this, use the methods [sale.persontype.*](../person-type/index.md).
+An order references the payer type, currency, and status through its fields and stores property values, while the cart, payments, and shipments reference the order.
 
-**Currency.** Choose the currency in which the order will be paid. The list of currencies can be obtained using the method [crm.currency.list](../../crm/currency/crm-currency-list.md).
+**Payer Type.** The `personTypeId` field determines what type of client the buyer is: individual or legal entity. Payer types are configured by the [sale.persontype.*](../person-type/index.md) methods.
 
-**Order Properties.** Create fields that the buyer must fill out when placing an order, such as "Metro Station" or "Date and Time of Delivery." To create order properties, use the methods [sale.property.*](../property/index.md).
+**Currency.** The `currency` field sets the currency in which the order is paid. The list of currencies is returned by the [crm.currency.list](../../crm/currency/crm-currency-list.md) method.
 
-**Status.** Track the progress of order fulfillment using statuses. You can create and change a status using the group of methods [sale.status.*](../status/index.md).
+**Order Properties.** Properties are the data the buyer fills out when placing an order, such as "Metro Station" or "Date and Time of Delivery." Properties are created by the [sale.property.*](../property/index.md) methods, and their set depends on the payer type. Property values of a specific order are set by the [sale.propertyvalue.*](../property-value/index.md) methods, and the [sale.order.get](./sale-order-get.md) response returns them in `propertyValues`.
 
-**Cart.** Add or modify products in the cart of an existing order using the methods [sale.basketitem.*](../basket-item/index.md).
+**Status.** The `statusId` field shows the order fulfillment stage. Statuses are created and modified by the [sale.status.*](../status/index.md) methods.
 
-**Payments.** Create and modify order payments using the methods [sale.payment.*](../payment/index.md).
-
-**Shipments.** Control the shipment of products to customers using the methods [sale.shipment.*](../shipment/index.md).
-
-## How to Get Started with an Order
-
-1. Retrieve the payer type using [sale.persontype.list](../person-type/sale-person-type-list.md).
-2. Add products or services to the cart using [sale.basketitem.*](../basket-item/index.md).
-3. Create an order using [sale.order.add](./sale-order-add.md) and pass customer data, currency, and cart contents.
-4. Create payments using [sale.payment.*](../payment/index.md) and, if necessary, link the payment to cart items or shipments.
-5. Create shipments using [sale.shipment.*](../shipment/index.md) and track order progress through [sale.status.*](../status/index.md).
+**Cart, Payments, and Shipments.** How these objects are linked to each other is shown in the "How an Order Is Structured" section of the Online Store [data types reference](../data-types.md).
 
 ## Overview of Methods {#all-methods}
 
@@ -57,6 +61,6 @@ When a customer places an order, products and services are first added to the ca
 || [sale.order.update](./sale-order-update.md) | Modifies an order ||
 || [sale.order.get](./sale-order-get.md) | Returns order fields and fields of related objects ||
 || [sale.order.list](./sale-order-list.md) | Returns a list of orders ||
-|| [sale.order.delete](./sale-order-delete.md) | Deletes an order and related objects ||
-|| [sale.order.getFields](./sale-order-get-fields.md) | Returns order fields ||
+|| [sale.order.delete](./sale-order-delete.md) | Deletes an order along with its basket items, payments, and shipments ||
+|| [sale.order.getFields](./sale-order-get-fields.md) | Returns the description of order fields ||
 |#

@@ -1,4 +1,4 @@
-# Delete Order and Related Objects sale.order.delete
+# Delete Order sale.order.delete
 
 {% note tip "" %}
 
@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The `sale.order.delete` method is designed to delete an order and its related objects.
+The `sale.order.delete` method deletes an order together with its basket items, payments, and shipments. A deleted order cannot be restored. The method does not delete the order's property values — [sale.propertyvalue.list](../property-value/sale-property-value-list.md) with a filter by `orderId` still returns them.
+
+The method does not delete an order that has a payment with `paid` = `Y`. First, clear the paid flag using the [sale.payment.update](../payment/sale-payment-update.md) method: pass the payment `id`, and in `fields` pass `paid` = `N` and the `paySystemId` of that payment. [sale.payment.list](../payment/sale-payment-list.md) with a filter by `orderId` returns the order's payments with their `id` and `paySystemId`.
 
 ## Method Parameters
 
@@ -23,7 +25,7 @@ The `sale.order.delete` method is designed to delete an order and its related ob
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order.id`](../data-types.md) | Order identifier ||
+[`sale_order.id`](../data-types.md#sale_order) | Identifier of the order to delete. It is returned by the [sale.order.add](./sale-order-add.md) and [sale.order.list](./sale-order-list.md) methods ||
 |#
 
 ## Code Examples
@@ -34,8 +36,8 @@ The `sale.order.delete` method is designed to delete an order and its related ob
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":5}' \
@@ -44,8 +46,8 @@ The `sale.order.delete` method is designed to delete an order and its related ob
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":5,"auth":"**put_access_token_here**"}' \
@@ -162,12 +164,8 @@ The `sale.order.delete` method is designed to delete an order and its related ob
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
+        // SDK throws an exception on API errors, so here the call has succeeded
+        echo 'Info: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -253,9 +251,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of order deletion ||
+[`boolean`](../../data-types.md) | `true` if the order is deleted ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -264,8 +262,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200540400001,
-    "error_description":"order does not exist"
+    "error": "SALE_ORDER_CANCEL_PAYMENT_EXIST_ACTIVE",
+    "error_description": "The order has active payments"
 }
 ```
 
@@ -274,18 +272,18 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `SALE_ORDER_CANCEL_PAYMENT_EXIST_ACTIVE` | The order has active payments ||
-|| `200540400001` | The order to be deleted was not found ||
-|| `200040300020` | Insufficient permissions to delete the order ||
-|| `100` | The `id` parameter is missing ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `SALE_ORDER_CANCEL_PAYMENT_EXIST_ACTIVE` | `The order has active payments` | At least one payment of the order is marked as paid, `paid` = `Y` ||
+|| `400` | `200540400001` | `order is not exists` | There is no order with this `id` ||
+|| `400` | `100` | `Bitrix\Sale\Order constructor must be is public` | The `id` parameter is not passed ||
+|| `400` | `200040300020` | `Access Denied` | Insufficient permissions to delete the order ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-order-add.md)
 - [{#T}](./sale-order-update.md)
 - [{#T}](./sale-order-get.md)

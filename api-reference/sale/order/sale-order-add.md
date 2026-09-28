@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.order.add` is designed for adding an order.
+Creates an order without basket items, payments, or shipments and returns its fields. Add basket items, payments, and shipments after the order is created, using the [sale.basketitem.*](../basket-item/index.md), [sale.payment.*](../payment/index.md), and [sale.shipment.*](../shipment/index.md) methods.
 
 ## Method Parameters
 
@@ -23,34 +23,32 @@ The method `sale.order.add` is designed for adding an order.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating an order ||
+[`object`](../../data-types.md) | Field values for creating an order [(detailed description)](#params-fields) ||
 |#
 
-### Parameter fields
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
+### Parameter fields {#params-fields}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **lid***
-[`string`](../../data-types.md) | Identifier of the site where this payer type will be used. Has a constant value 's1' ||
+[`string`](../../data-types.md) | Identifier of the site the order belongs to. In cloud Bitrix24, pass `s1`. The field cannot be changed after the order is created ||
 || **personTypeId***
-[`sale_person_type.id`](../data-types.md) | Identifier of the payer type ||
+[`sale_person_type.id`](../data-types.md#sale_person_type) | Identifier of the payer type, such as an individual or a legal entity. Retrieve it using the [sale.persontype.list](../person-type/sale-person-type-list.md) method. The method does not check that the payer type exists. The field cannot be changed after the order is created ||
 || **currency***
-[`string`](../../data-types.md) | Currency. The list of currencies can be obtained via the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
+[`string`](../../data-types.md) | Currency code, such as `USD`. Retrieve the list of currencies using the [crm.currency.list](../../crm/currency/crm-currency-list.md) method. The field cannot be changed after the order is created ||
 || **price**
-[`double`](../../data-types.md) | Price ||
+[`double`](../../data-types.md) | Order amount including delivery ||
 || **discountValue**
 [`double`](../../data-types.md) | Discount value ||
 || **statusId**
-[`sale_status.id`](../data-types.md) | Identifier of the order status ||
+[`sale_status.id`](../data-types.md#sale_status) | Identifier of the order status. Retrieve the list of statuses using the [sale.status.list](../status/sale-status-list.md) method. If the field is not provided, the order receives the initial status `N` ||
 || **empStatusId**
 [`user.id`](../../data-types.md) | Identifier of the user who changed the order status ||
 || **dateInsert**
 [`datetime`](../../data-types.md) | Order creation date ||
 || **marked**
-[`string`](../../data-types.md) | Marking flag. Indicates whether the shipment is marked as problematic. The value `Y` is set automatically if an error occurred during saving.
+[`string`](../../data-types.md) | Indicates whether the order is marked as problematic. Bitrix24 sets `Y` automatically if a warning occurs while the order is being saved and writes the reason to the `reasonMarked` field.
 
 - `Y` — yes
 - `N` — no
@@ -59,7 +57,7 @@ Defaults to `N` ||
 || **empMarkedId**
 [`user.id`](../../data-types.md) | Identifier of the user who set the marking ||
 || **reasonMarked**
-[`string`](../../data-types.md) | Reason for marking the order ||
+[`string`](../../data-types.md) | Reason the order is marked as problematic ||
 || **userDescription**
 [`string`](../../data-types.md) | Customer's comment on the order ||
 || **additionalInfo**
@@ -68,12 +66,14 @@ Defaults to `N` ||
 Additional information ||
 || **comments**
 [`string`](../../data-types.md) | Manager's comment on the order ||
+|| **companyId**
+[`integer`](../../data-types.md) | Identifier of the company from the Online Store module ||
 || **responsibleId**
 [`user.id`](../../data-types.md) | Identifier of the user responsible for the order ||
 || **recurringId**
-[`integer`](../../data-types.md) | Identifier for subscription renewal ||
+[`string`](../../data-types.md) | Identifier for subscription renewal ||
 || **lockedBy**
-[`user.id`](../../data-types.md) | Relevant only for on-premise.
+[`string`](../../data-types.md) | Relevant only for on-premise.
 
 Identifier of the user who locked the order. The order is locked in the admin panel when the user opens the detail form of the order ||
 || **recountFlag**
@@ -90,7 +90,7 @@ Defaults to `Y` ||
 
 Identifier of the affiliate ||
 || **updated1c**
-[`string`](../../data-types.md) | Updated via QuickBooks and other similar platforms.
+[`string`](../../data-types.md) | Whether the order was updated via an ERP system.
 
 - `Y` — yes
 - `N` — no
@@ -103,9 +103,9 @@ Order topic ||
 || **xmlId**
 [`string`](../../data-types.md) | External identifier ||
 || **id1c**
-[`string`](../../data-types.md) | Identifier in QuickBooks and other similar platforms ||
+[`string`](../../data-types.md) | Identifier in the ERP system ||
 || **version1c**
-[`string`](../../data-types.md) | Version in QuickBooks and other similar platforms ||
+[`string`](../../data-types.md) | Version in the ERP system ||
 || **externalOrder**
 [`string`](../../data-types.md) | Whether the order is from an external system.
 
@@ -125,7 +125,7 @@ Defaults to `N` ||
 || **reasonCanceled**
 [`string`](../../data-types.md) | Reason for cancellation ||
 || **userId**
-[`user.id`](../../data-types.md) | Identifier of the client ||
+[`user.id`](../../data-types.md) | Identifier of the customer. The field cannot be changed after the order is created ||
 |#
 
 ## Code Examples
@@ -136,21 +136,21 @@ Defaults to `N` ||
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"lid":"s1","personTypeId":1,"currency":"USD","price":100,"discountValue":10,"statusId":"N","empStatusId":1,"dateInsert":"2024-03-01T14:00:00","marked":"Y","empMarkedId":1,"reasonMarked":"","userDescription":"","additionalInfo":"","comments":"","companyId":1,"responsibleId":1,"recurringId":1,"lockedBy":1,"recountFlag":"N","affiliateId":1,"updated1c":"N","orderTopic":"","xmlId":"","id1c":"","version1c":"","externalOrder":"N","canceled":"Y","empCanceledId":1,"reasonCanceled":"","userId":1}}' \
+    -d '{"fields":{"lid":"s1","personTypeId":1,"currency":"USD","statusId":"N","userId":1,"responsibleId":1,"userDescription":"Call before delivery","comments":"Order from the website integration"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.order.add
     ```
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"lid":"s1","personTypeId":1,"currency":"USD","price":100,"discountValue":10,"statusId":"N","empStatusId":1,"dateInsert":"2024-03-01T14:00:00","marked":"Y","empMarkedId":1,"reasonMarked":"","userDescription":"","additionalInfo":"","comments":"","companyId":1,"responsibleId":1,"recurringId":1,"lockedBy":1,"recountFlag":"N","affiliateId":1,"updated1c":"N","orderTopic":"","xmlId":"","id1c":"","version1c":"","externalOrder":"N","canceled":"Y","empCanceledId":1,"reasonCanceled":"","userId":1},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"lid":"s1","personTypeId":1,"currency":"USD","statusId":"N","userId":1,"responsibleId":1,"userDescription":"Call before delivery","comments":"Order from the website integration"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.order.add
     ```
 
@@ -168,46 +168,28 @@ Defaults to `N` ||
     type OrderResult = {
       order: {
         accountNumber: string
-        additionalInfo: string
-        affiliateId: number
         canceled: string
-        clients: unknown[]
+        clients: Record<string, unknown>[]
         comments: string
-        companyId: number
         currency: string
-        dateCanceled: ISODate | null
         dateInsert: ISODate | null
-        dateMarked: ISODate | null
         dateStatus: ISODate | null
         dateUpdate: ISODate | null
         deducted: string
-        discountValue: number
-        empCanceledId: number
-        empMarkedId: number
         empStatusId: number
-        externalOrder: string
         id: number
-        id1c: string
         lid: string
-        lockedBy: string
-        marked: string
-        orderTopic: string
         payed: string
         personTypeId: number
         personTypeXmlId: string
-        price: number
-        reasonCanceled: string
-        reasonMarked: string
-        recountFlag: string
-        recurringId: string
-        requisiteLink: unknown[]
+        propertyValues: Record<string, unknown>[]
+        requisiteLink: Record<string, number>
         responsibleId: number
         statusId: string
         statusXmlId: string
         updated1c: string
         userDescription: string
         userId: number
-        version1c: string
         xmlId: string
       }
     }
@@ -220,33 +202,11 @@ Defaults to `N` ||
             lid: 's1',
             personTypeId: 1,
             currency: 'USD',
-            price: 100,
-            discountValue: 10,
             statusId: 'N',
-            empStatusId: 1,
-            dateInsert: '2024-03-01T14:00:00',
-            marked: 'Y',
-            empMarkedId: 1,
-            reasonMarked: '',
-            userDescription: '',
-            additionalInfo: '',
-            comments: '',
-            companyId: 1,
-            responsibleId: 1,
-            recurringId: 1,
-            lockedBy: 1,
-            recountFlag: 'N',
-            affiliateId: 1,
-            updated1c: 'N',
-            orderTopic: '',
-            xmlId: '',
-            id1c: '',
-            version1c: '',
-            externalOrder: 'N',
-            canceled: 'Y',
-            empCanceledId: 1,
-            reasonCanceled: '',
             userId: 1,
+            responsibleId: 1,
+            userDescription: 'Call before delivery',
+            comments: 'Order from the website integration',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -283,33 +243,11 @@ Defaults to `N` ||
                 lid: 's1',
                 personTypeId: 1,
                 currency: 'USD',
-                price: 100,
-                discountValue: 10,
                 statusId: 'N',
-                empStatusId: 1,
-                dateInsert: '2024-03-01T14:00:00',
-                marked: 'Y',
-                empMarkedId: 1,
-                reasonMarked: '',
-                userDescription: '',
-                additionalInfo: '',
-                comments: '',
-                companyId: 1,
-                responsibleId: 1,
-                recurringId: 1,
-                lockedBy: 1,
-                recountFlag: 'N',
-                affiliateId: 1,
-                updated1c: 'N',
-                orderTopic: '',
-                xmlId: '',
-                id1c: '',
-                version1c: '',
-                externalOrder: 'N',
-                canceled: 'Y',
-                empCanceledId: 1,
-                reasonCanceled: '',
                 userId: 1,
+                responsibleId: 1,
+                userDescription: 'Call before delivery',
+                comments: 'Order from the website integration',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -342,33 +280,11 @@ Defaults to `N` ||
         "lid": "s1",
         "personTypeId": 1,
         "currency": "USD",
-        "price": 100,
-        "discountValue": 10,
         "statusId": "N",
-        "empStatusId": 1,
-        "dateInsert": "2024-03-01T14:00:00",
-        "marked": "Y",
-        "empMarkedId": 1,
-        "reasonMarked": "",
-        "userDescription": "",
-        "additionalInfo": "",
-        "comments": "",
-        "companyId": 1,
-        "responsibleId": 1,
-        "recurringId": 1,
-        "lockedBy": 1,
-        "recountFlag": "N",
-        "affiliateId": 1,
-        "updated1c": "N",
-        "orderTopic": "",
-        "xmlId": "",
-        "id1c": "",
-        "version1c": "",
-        "externalOrder": "N",
-        "canceled": "Y",
-        "empCanceledId": 1,
-        "reasonCanceled": "",
         "userId": 1,
+        "responsibleId": 1,
+        "userDescription": "Call before delivery",
+        "comments": "Order from the website integration",
     }
 
     try:
@@ -389,6 +305,7 @@ Defaults to `N` ||
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -399,36 +316,14 @@ Defaults to `N` ||
                 'sale.order.add',
                 [
                     'fields' => [
-                        'lid'            => 's1',
-                        'personTypeId'   => 1,
-                        'currency'       => 'USD',
-                        'price'          => 100,
-                        'discountValue'  => 10,
-                        'statusId'       => 'N',
-                        'empStatusId'    => 1,
-                        'dateInsert'     => '2024-03-01T14:00:00',
-                        'marked'         => 'Y',
-                        'empMarkedId'    => 1,
-                        'reasonMarked'   => '',
-                        'userDescription' => '',
-                        'additionalInfo' => '',
-                        'comments'       => '',
-                        'companyId'      => 1,
-                        'responsibleId'  => 1,
-                        'recurringId'    => 1,
-                        'lockedBy'       => 1,
-                        'recountFlag'    => 'N',
-                        'affiliateId'    => 1,
-                        'updated1c'      => 'N',
-                        'orderTopic'     => '',
-                        'xmlId'          => '',
-                        'id1c'           => '',
-                        'version1c'      => '',
-                        'externalOrder'  => 'N',
-                        'canceled'       => 'Y',
-                        'empCanceledId'  => 1,
-                        'reasonCanceled' => '',
-                        'userId'         => 1,
+                        'lid'             => 's1',
+                        'personTypeId'    => 1,
+                        'currency'        => 'USD',
+                        'statusId'        => 'N',
+                        'userId'          => 1,
+                        'responsibleId'   => 1,
+                        'userDescription' => 'Call before delivery',
+                        'comments'        => 'Order from the website integration',
                     ],
                 ]
             );
@@ -455,33 +350,11 @@ Defaults to `N` ||
                 lid: 's1',
                 personTypeId: 1,
                 currency: 'USD',
-                price: 100,
-                discountValue: 10,
                 statusId: 'N',
-                empStatusId: 1,
-                dateInsert: '2024-03-01T14:00:00',
-                marked: 'Y',
-                empMarkedId: 1,
-                reasonMarked: '',
-                userDescription: '',
-                additionalInfo: '',
-                comments: '',
-                companyId: 1,
-                responsibleId: 1,
-                recurringId: 1,
-                lockedBy: 1,
-                recountFlag: 'N',
-                affiliateId: 1,
-                updated1c: 'N',
-                orderTopic: '',
-                xmlId: '',
-                id1c: '',
-                version1c: '',
-                externalOrder: 'N',
-                canceled: 'Y',
-                empCanceledId: 1,
-                reasonCanceled: '',
                 userId: 1,
+                responsibleId: 1,
+                userDescription: 'Call before delivery',
+                comments: 'Order from the website integration',
             }
         },
         function(result)
@@ -506,33 +379,11 @@ Defaults to `N` ||
                 'lid' => 's1',
                 'personTypeId' => 1,
                 'currency' => 'USD',
-                'price' => 100,
-                'discountValue' => 10,
                 'statusId' => 'N',
-                'empStatusId' => 1,
-                'dateInsert' => '2024-03-01T14:00:00',
-                'marked' => 'Y',
-                'empMarkedId' => 1,
-                'reasonMarked' => '',
-                'userDescription' => '',
-                'additionalInfo' => '',
-                'comments' => '',
-                'companyId' => 1,
-                'responsibleId' => 1,
-                'recurringId' => 1,
-                'lockedBy' => 1,
-                'recountFlag' => 'N',
-                'affiliateId' => 1,
-                'updated1c' => 'N',
-                'orderTopic' => '',
-                'xmlId' => '',
-                'id1c' => '',
-                'version1c' => '',
-                'externalOrder' => 'N',
-                'canceled' => 'Y',
-                'empCanceledId' => 1,
-                'reasonCanceled' => '',
                 'userId' => 1,
+                'responsibleId' => 1,
+                'userDescription' => 'Call before delivery',
+                'comments' => 'Order from the website integration',
             ]
         ]
     );
@@ -551,33 +402,11 @@ Defaults to `N` ||
     		"lid":             "s1",
     		"personTypeId":    1,
     		"currency":        "EUR",
-    		"price":           100,
-    		"discountValue":   10,
     		"statusId":        "N",
-    		"empStatusId":     1,
-    		"dateInsert":      "2024-03-01T14:00:00",
-    		"marked":          "Y",
-    		"empMarkedId":     1,
-    		"reasonMarked":    "",
-    		"userDescription": "",
-    		"additionalInfo":  "",
-    		"comments":        "",
-    		"companyId":       1,
-    		"responsibleId":   1,
-    		"recurringId":     1,
-    		"lockedBy":        1,
-    		"recountFlag":     "N",
-    		"affiliateId":     1,
-    		"updated1c":       "N",
-    		"orderTopic":      "",
-    		"xmlId":           "",
-    		"id1c":            "",
-    		"version1c":       "",
-    		"externalOrder":   "N",
-    		"canceled":        "Y",
-    		"empCanceledId":   1,
-    		"reasonCanceled":  "",
     		"userId":          1,
+    		"responsibleId":   1,
+    		"userDescription": "Call before delivery",
+    		"comments":        "Order from the website integration",
     	},
     })
     if err != nil {
@@ -591,17 +420,15 @@ Defaults to `N` ||
     }
 
     var item struct {
-    	AccountNumber  string `json:"accountNumber"`
-    	AdditionalInfo string `json:"additionalInfo"`
-    	AffiliateID    b24.ID `json:"affiliateId"`
-    	Canceled       string `json:"canceled"`
-    	Comments       string `json:"comments"`
-    	CompanyID      b24.ID `json:"companyId"`
+    	ID            b24.ID `json:"id"`
+    	AccountNumber string `json:"accountNumber"`
+    	StatusID      string `json:"statusId"`
+    	Comments      string `json:"comments"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.AccountNumber, item.AdditionalInfo)
+    fmt.Println(item.ID, item.AccountNumber, item.StatusID, item.Comments)
     ```
 
 {% endlist %}
@@ -614,57 +441,68 @@ HTTP Status: **200**
 {
     "result": {
         "order": {
-            "accountNumber": "455",
-            "additionalInfo": "",
-            "affiliateId": 1,
-            "canceled": "Y",
-            "clients": [],
-            "comments": "",
-            "companyId": 1,
+            "accountNumber": "971",
+            "canceled": "N",
+            "clients": [
+                {
+                    "entityId": 2819,
+                    "entityTypeId": 3,
+                    "id": 1717,
+                    "isPrimary": "Y",
+                    "orderId": 971
+                }
+            ],
+            "comments": "Order from the website integration",
             "currency": "USD",
-            "dateCanceled": "2024-04-12T13:50:21+02:00",
-            "dateInsert": "2024-03-01T13:00:00+02:00",
-            "dateMarked": "2024-04-12T13:50:21+02:00",
-            "dateStatus": "2024-04-12T13:50:21+02:00",
-            "dateUpdate": "2024-04-12T13:50:21+02:00",
+            "dateInsert": "2026-09-28T08:02:16+02:00",
+            "dateStatus": "2026-09-28T08:02:15+02:00",
+            "dateUpdate": "2026-09-28T08:02:16+02:00",
             "deducted": "N",
-            "discountValue": 10,
-            "empCanceledId": 1,
-            "empMarkedId": 1,
             "empStatusId": 1,
-            "externalOrder": "N",
-            "id": 299,
-            "id1c": "",
+            "id": 971,
             "lid": "s1",
-            "lockedBy": "1",
-            "marked": "Y",
-            "orderTopic": "",
             "payed": "N",
             "personTypeId": 1,
             "personTypeXmlId": "",
-            "price": 100,
-            "reasonCanceled": "",
-            "reasonMarked": "",
-            "recountFlag": "N",
-            "recurringId": "1",
-            "requisiteLink": [],
+            "propertyValues": [
+                {
+                    "code": "EMAIL",
+                    "id": 11287,
+                    "name": "E-Mail",
+                    "orderPropsId": 41,
+                    "orderPropsXmlId": "bx_60b605ba1d082"
+                },
+                {
+                    "code": "FIO",
+                    "id": 11289,
+                    "name": "Full name",
+                    "orderPropsId": 39,
+                    "orderPropsXmlId": "bx_609bec7cc794c"
+                }
+            ],
+            "requisiteLink": {
+                "mcBankDetailId": 0,
+                "mcRequisiteId": 0,
+                "requisiteId": 467
+            },
             "responsibleId": 1,
             "statusId": "N",
             "statusXmlId": "",
             "updated1c": "N",
-            "userDescription": "",
+            "userDescription": "Call before delivery",
             "userId": 1,
-            "version1c": "",
-            "xmlId": ""
+            "xmlId": "bx_6aba02e7a86af"
         }
     },
     "time": {
-        "start": 1712922620.724857,
-        "finish": 1712922623.393783,
-        "duration": 2.6689260005950928,
-        "processing": 2.210068941116333,
-        "date_start": "2024-04-12T14:50:20+02:00",
-        "date_finish": "2024-04-12T14:50:23+02:00"
+        "start": 1790575335,
+        "finish": 1790575336.454058,
+        "duration": 1.4540579319000244,
+        "processing": 1,
+        "date_start": "2026-09-28T09:02:15+02:00",
+        "date_finish": "2026-09-28T09:02:16+02:00",
+        "operating_reset_at": 1790575935,
+        "operating": 0.7697091102600098
     }
 }
 ```
@@ -675,11 +513,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **order**
-[`sale_order`](../data-types.md) | Object containing information about the added order ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **order**
+[`sale_order`](../data-types.md#sale_order) | The created order. The order identifier to use in other methods is in the `id` field. The response includes only the populated order fields, plus `clients`, `requisiteLink`, and `propertyValues` ||
 |#
 
 ## Error Handling
@@ -688,8 +533,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200040300020,
-    "error_description":"Access Denied"
+    "error": "0",
+    "error_description": "Required fields: personTypeId, currency, lid"
 }
 ```
 
@@ -698,17 +543,18 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to add an order ||
-|| `100` | Parameter `fields` is not specified or is empty ||
-|| `0` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | `Required fields: personTypeId, currency, lid` | Required fields are not provided; their names are listed in the error text ||
+|| `400` | `100` | `Could not find value for parameter {fields}` | The `fields` parameter is not provided ||
+|| `400` | `200040300020` | `Access Denied` | Insufficient permissions to add an order ||
+|| `400` | `0` | Save error text | The order was not saved for another reason, which is given in `error_description` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-order-update.md)
 - [{#T}](./sale-order-get.md)
 - [{#T}](./sale-order-list.md)
