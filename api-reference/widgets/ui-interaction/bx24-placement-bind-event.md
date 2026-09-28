@@ -45,7 +45,7 @@ The set of events is defined by the placement where the widget is open.
 #|
 || **Placement** | **Events** ||
 || [`CALL_CARD`](./call-card/index.md) | `CallCard::EntityChanged`, `CallCard::BeforeClose`, `CallCard::CallStateChanged` ||
-|| [`PAGE_BACKGROUND_WORKER`](./page-background-worker/events/index.md) | 17 `BackgroundCallCard::*` events — from `initialized` to the operator's button clicks ||
+|| [`PAGE_BACKGROUND_WORKER`](./page-background-worker/events/index.md) | 16 `BackgroundCallCard::*` events — from `initialized` to the operator's button clicks ||
 || [`CALENDAR_GRIDVIEW`](../../calendar/calendar-grid-view.md) | `Calendar.customView:refreshEntries`, `Calendar.customView:decreaseViewRangeDate`, `Calendar.customView:increaseViewRangeDate`, `Calendar.customView:adjustToDate` ||
 || [Client search and requisite autocomplete](../crm/detail-search.md) | `onCrmEntityIsNeedToCreate` — the user selected an option offered by the application ||
 |#

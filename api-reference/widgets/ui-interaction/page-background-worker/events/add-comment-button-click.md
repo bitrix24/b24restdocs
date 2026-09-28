@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::addCommentButtonClick` event occurs when a comment is saved in the call card.
+The `BackgroundCallCard::addCommentButtonClick` event occurs when the operator saves a comment in the call card.
+
+The "Comment" button opens an input field and changes its label to "Save". Clicking it again saves the text. Bitrix24 stores the comment with the call itself, and the event passes the same text to the application.
+
+The event can also occur without a click. If the card is hidden, for example with the [telephony.externalCall.hide](../../../../telephony/telephony-external-call-hide.md) method, while the comment field is open, the card stays on screen for another 65 seconds. Each input in the field restarts this countdown. When the time runs out, Bitrix24 saves the comment and sends the event itself.
 
 {% note info "" %}
 
@@ -37,7 +41,9 @@ callback("Operator's comment");
 || **Parameter**
 `type` | **Description** ||
 || **eventData***
-[`string`](../../../../data-types.md) | The text of the saved comment ||
+[`string`](../../../../data-types.md) | The entire content of the comment field at the moment of saving.
+
+It can be an empty string if the operator saved the field without text. The field is not cleared after saving, so a repeated save passes the whole text again ||
 |#
 
 ## Event Subscription Parameters
@@ -117,5 +123,8 @@ Check the following conditions.
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../bx24-placement-bind-event.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)
+- [{#T}](./dialpad-button-click.md)
+- [{#T}](./notify-admin-button-click.md)

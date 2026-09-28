@@ -102,15 +102,14 @@ How the card itself is arranged, which areas it has, and which buttons are avail
     || [BackgroundCallCard::holdButtonClick](./events/hold-button-click.md) | When the hold call button is clicked ||
     || [BackgroundCallCard::closeButtonClick](./events/close-button-click.md) | When the close call card button is clicked ||
     || [BackgroundCallCard::transferButtonClick](./events/transfer-button-click.md) | When an operator is selected to transfer the call to ||
-    || [BackgroundCallCard::cancelTransferButtonClick](./events/cancel-transfer-button-click.md) | When the "return to call" button is clicked ||
+    || [BackgroundCallCard::cancelTransferButtonClick](./events/cancel-transfer-button-click.md) | When the "continue call" button is clicked ||
     || [BackgroundCallCard::completeTransferButtonClick](./events/complete-transfer-button-click.md) | When the "redirect" button is clicked ||
     || [BackgroundCallCard::hangupButtonClick](./events/hang-up-button-click.md) | When the "end" button is clicked ||
     || [BackgroundCallCard::nextButtonClick](./events/next-button-click.md) | When the "next" button is clicked ||
-    || [BackgroundCallCard::skipButtonClick](./events/skip-button-click.md) | When the "skip" button is clicked ||
+    || [BackgroundCallCard::skipButtonClick](./events/skip-button-click.md) | When the "ignore" button is clicked ||
     || [BackgroundCallCard::answerButtonClick](./events/answer-button-click.md) | When the "answer" button is clicked ||
     || [BackgroundCallCard::entityChanged](./events/entity-changed.md) | When the CRM object linked to the call is loaded or changed ||
     || [BackgroundCallCard::makeCallButtonClick](./events/make-call-button-click.md) | When the "call" or "callback" button is clicked ||
-    || [BackgroundCallCard::qualityMeterClick](./events/quality-meter-click.md) | When the call quality is rated ||
     || [BackgroundCallCard::dialpadButtonClick](./events/dialpad-button-click.md) | When one of the numeric buttons of the phone is pressed ||
     || [BackgroundCallCard::notifyAdminButtonClick](./events/notify-admin-button-click.md) | When the "notify administrator" button is clicked ||
     |#

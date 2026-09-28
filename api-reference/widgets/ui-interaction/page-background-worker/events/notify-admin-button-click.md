@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::notifyAdminButtonClick` event occurs when a notification of the administrator is requested from the call card.
+The `BackgroundCallCard::notifyAdminButtonClick` event occurs when the operator clicks the "Notify administrator" button in the call card.
+
+The button is available only in the `moneyError` state. The application enables it with the [CallCardSetUiState](../call-card-set-ui-state.md) command when a call fails because of insufficient funds on the account. Bitrix24 does not notify anyone on the click — the application must notify the administrator itself.
 
 {% note info "" %}
 
@@ -102,5 +104,8 @@ Check the following conditions.
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../bx24-placement-bind-event.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)
+- [{#T}](../call-card-set-ui-state.md)
+- [{#T}](./close-button-click.md)

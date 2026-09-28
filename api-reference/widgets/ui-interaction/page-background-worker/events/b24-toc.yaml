@@ -13,9 +13,9 @@ items:
     href: hold-button-click.md
   - name: When Clicking the Close Call Detail Form Button
     href: close-button-click.md
-  - name: When Selecting the Operator to Whom the Current Operator Wants to Transfer the Call
+  - name: When Selecting an Operator to Transfer the Call To
     href: transfer-button-click.md
-  - name: When Clicking the "Return to Call" Button
+  - name: When Clicking the "Continue Call" Button
     href: cancel-transfer-button-click.md
   - name: When Clicking the "Redirect" Button
     href: complete-transfer-button-click.md
@@ -23,7 +23,7 @@ items:
     href: hang-up-button-click.md
   - name: When Clicking the "Next" Button
     href: next-button-click.md
-  - name: When Clicking the "Skip" Button
+  - name: When Clicking the "Ignore" Button
     href: skip-button-click.md
   - name: When Clicking the "Answer" Button
     href: answer-button-click.md
@@ -31,8 +31,6 @@ items:
     href: entity-changed.md
   - name: When Clicking the "Call" or "Callback" Button
     href: make-call-button-click.md
-  - name: When Evaluating Call Quality
-    href: quality-meter-click.md
   - name: When Pressing One of the Phone's Numeric Buttons
     href: dialpad-button-click.md
   - name: When Clicking the "Notify Administrator" Button
