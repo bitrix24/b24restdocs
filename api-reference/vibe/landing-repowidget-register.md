@@ -1,4 +1,4 @@
-# Add Widget to Start Page: the Vibe landing.repowidget.register
+# Add Widget for Vibe landing.repowidget.register
 
 {% note tip "" %}
 
@@ -11,11 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`landing`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user when called from an application; an administrator when called via a webhook
 
-The method `landing.repowidget.register` adds a widget for the Start page: the Vibe. It returns an error or the `ID` of the added widget.
+The method `landing.repowidget.register` adds a widget for the Vibe.
 
-During the addition, a check is performed. If a widget with the code `code` has already been registered previously, its content will be updated. Widgets already placed on the Vibe will be automatically updated in case of content changes.
+If the application has already registered a widget with this `code`, the method updates its content. Instances placed on Vibe pages are updated automatically.
+
+Register the widget from an application: the handler of a widget registered via a webhook is not called. For details, see the [overview of methods](./index.md).
 
 ## Method Parameters
 
@@ -25,9 +27,9 @@ During the addition, a check is performed. If a widget with the code `code` has 
 || **Name**
 `type` | **Description** ||
 || **code***
-[`string`](../data-types.md) | Unique code for the widget. It is highly recommended to use a unique prefix for your widgets to avoid the risk of code conflicts with widgets from other developers ||
+[`string`](../data-types.md) | Widget code, unique within the application. Widgets of different applications with the same code do not conflict ||
 || **fields***
-[`object`](../data-types.md) | Field values for creating the widget ||
+[`object`](../data-types.md) | Field values for creating the widget [(detailed description)](#anchor-fields) ||
 |#
 
 ### Parameter fields {#anchor-fields}
@@ -61,14 +63,19 @@ During the addition, a check is performed. If a widget with the code `code` has 
 - `widgets_separators` — Transitions and Separators
 - `widgets_text` — Text
 - `widgets_image` — Images
-- `widgets_video` — Video ||
+- `widgets_video` — Video
+- `widgets_tiles` — Buttons and Links
+- `widgets_columns` — Columns
+- `widgets_text_image` — Text and Images ||
 || **WIDGET_PARAMS***
-[`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue templater. Without them, the method returns the `REQUIRED_FIELD_NO_EXISTS` error ||
+[`object`](../data-types.md) | [Parameters](#anchor-widget-params) for the Vue template engine ||
 || **ACTIVE**
-[`char`](../data-types.md) | Widget activity. Accepts values: 
+[`char`](../data-types.md) | Widget activity. Accepts values:
 
-- `Y` - widget is active and available
-- `N` - widget is inactive and unavailable ||
+- `Y` — widget is active and available
+- `N` — widget is inactive and unavailable
+
+Default: `Y` ||
 || **SITE_TEMPLATE_ID**
 [`string`](../data-types.md) | Binding the widget to a specific site template. **Only for on-premise Bitrix24!** ||
 |#
@@ -81,24 +88,27 @@ During the addition, a check is performed. If a widget with the code `code` has 
 || **Name**
 `type` | **Description** ||
 || **rootNode***
-[`string`](../data-types.md) | Selector for the root element in the markup that will be turned into a Vue component. The root element must be the only element in the passed template; all other markup will be cleared ||
+[`string`](../data-types.md) | Selector for the root element in the `CONTENT` markup that will be turned into a Vue component. All markup must be inside the root element. If the selector does not find the element in `CONTENT`, the widget is not rendered ||
 || **lang**
-[`string`](../data-types.md) | Array of language phrases used in constructs `{{$Bitrix.Loc.getMessage('W_EMPTY')}}` ||
+[`object`](../data-types.md) | Language phrases for `{{$Bitrix.Loc.getMessage('W_EMPTY')}}` constructs in the format `{"language code": {"PHRASE_CODE": "text"}}`, for example, `{"de": {"W_EMPTY": "Keine Daten"}, "en": {"W_EMPTY": "No data"}}`.
+
+The widget uses the phrases for the user's interface language; if there are none, it uses `en` ||
 || **handler***
 [`string`](../data-types.md) | Address of the [external handler](./index.md#anchor-handler) to which requests will be sent.
 
-**Important**: The handler must be accessible from the external network! Check the handler's availability with special services
+Address requirements:
 
- ||
+- an absolute URL accessible from the external network
+- the `https` protocol for a new or changed address
+- not a loopback or local network address
+
+If the address does not meet the requirements, the method returns the `WIDGET_HANDLER_INVALID` error. Requirements for the handler response are described in the section [Handler Request and Response](./index.md#handler-request) ||
 || **style**
 [`string`](../data-types.md) | Address of styles for the widget. Styles can also be set inline in the markup via the binding `:style="{borderBottom: '1px solid red'}"` ||
 || **demoData***
-[`object`](../data-types.md) | Demo data for the widget that will be used to showcase the widget in the Vibe templates in [Bitrix24 Marketplace](../../market/index.md).
+[`object`](../data-types.md) | Demo data for the widget. It is displayed in the Vibe template preview slider in the [Market](../../market/index.md), so its structure must match the response of the `handler`.
 
-If you are developing a widget for a specific Bitrix24 and do not plan to publish it in the Marketplace, you can specify any array as the parameter value; it will not be used anyway.
-
-However, if you are preparing a mass-market solution with a widget, pay maximum attention to the demo data — they will be displayed in the preview slider of the Vibe template! Obviously, the structure of the demo data should match what your `handler` would return in normal widget usage
- ||
+If the widget will not be published in the Market, pass any object ||
 |#
 
 ## Code Examples
@@ -584,15 +594,21 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `REQUIRED_FIELD_NO_EXISTS` | A required field is not passed in the `fields` parameter: `NAME`, `PREVIEW`, `CONTENT`, `SECTIONS`, or `WIDGET_PARAMS`. The field name is substituted into the error text ||
-|| `REQUIRED_PARAM_NO_EXISTS` | A required parameter is not passed in the `WIDGET_PARAMS` parameter: `rootNode`, `handler`, or `demoData`. The parameter name is substituted into the error text ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `REQUIRED_FIELD_NO_EXISTS` | The required field is missing: CONTENT | A required field is not passed in the `fields` parameter: `NAME`, `PREVIEW`, `CONTENT`, `SECTIONS`, or `WIDGET_PARAMS`. The field name is substituted into the error text ||
+|| `400` | `REQUIRED_PARAM_NO_EXISTS` | The required widget parameter is missing: handler | A required parameter is not passed in the `WIDGET_PARAMS` parameter: `rootNode`, `handler`, or `demoData`. The parameter name is substituted into the error text ||
+|| `400` | `WIDGET_HANDLER_INVALID` | Invalid handler URL in parameter WIDGET_PARAMS.handler | The `handler` address does not meet the requirements from the [parameter](#anchor-widget-params) description ||
+|| `400` | `CONTENT_IS_BAD` | The contents of the block were marked as unsafe | The `CONTENT` markup failed the security check. You can check it with the [landing.repo.checkContent](../landing/user-blocks/landing-repo-check-content.md) method ||
+|| `400` | `ACCESS_DENIED` | — | The method was called via a webhook by a user who is not an administrator ||
+|| `400` | `MISSING_PARAMS` | Some of the call parameters were missing: fields | The `code` or `fields` parameter was not passed ||
+|| `400` | `TYPE_ERROR` | Invalid type of the call argument: fields | The `fields` parameter was not passed as an object ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./landing-repowidget-unregister.md)
 - [{#T}](./landing-repowidget-get-list.md)
+- [{#T}](./landing-repowidget-unregister.md)
 - [{#T}](./landing-repowidget-debug.md)
+- [{#T}](./index.md)
