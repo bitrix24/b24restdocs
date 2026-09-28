@@ -15,32 +15,44 @@ Choose a tool for developing with an AI agent:
 
 The method `tasks.api.scrum.sprint.list` returns a list of sprints.
 
-This method is similar to other methods with list filtering.
-
 ## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
+All parameters are optional. The method returns only sprints of Scrums the user is a member of; without parameters, it returns all such sprints. Specify field names in `order`, `filter`, and `select` in uppercase. Available fields are listed in the [Available Fields for filter, order, and select](#fields) table.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **order**
-[`object`](../../../data-types.md) | Object for sorting the result. An object of type `{'sort_field': 'sort_direction' [, ...]}`. Available fields are described in the table [below](#fields).
+[`object`](../../../data-types.md) | An object of type `{'sort_field': 'sort_direction' [, ...]}`, for example, `{"ID": "desc"}`.
 
 The sort direction can take the following values:
 - `asc` — ascending
 - `desc` — descending ||
 || **filter**
-[`object`](../../../data-types.md) | An object of type `{'filterable_field': 'filter_value' [, ...]}`. Available fields are described in the table [below](#fields) ||
+[`object`](../../../data-types.md) | An object of type `{'filterable_field': 'filter_value' [, ...]}`, for example, `{"GROUP_ID": 1, "STATUS": "active"}`.
+
+You can put an operator before the field name:
+- `>` and `<` — greater than and less than
+- `>=` and `<=` — greater than or equal to, less than or equal to
+- `!` — not equal to
+- `%` — contains a substring
+
+For example, `{">ID": 20}` or `{"%NAME": "Sprint"}`.
+
+If you specify a nonexistent field, for example, `groupId` instead of `GROUP_ID`, the method returns an empty array without an error ||
 || **select**
-[`object`](../../../data-types.md) | An array of record fields that will be returned by the method. You can specify only the fields that are necessary. 
+[`array`](../../../data-types.md) | An array of fields to fill in the response, for example, `["ID", "NAME", "STATUS"]`.
 
-If the array contains the value `"*"`, all available fields will be returned.
+If the array contains the value `"*"` or the array is not passed, all fields are filled.
 
-The default value is an empty array `array()`. In this case, all fields of the main query table will be returned ||
+The response always contains the full set of sprint keys. Fields not listed in `select` are returned with empty values: `0` for numbers and `""` for strings ||
 || **start**
-[`integer`](../../../data-types.md) | The page number of the output. Works for https requests ||
+[`integer`](../../../data-types.md) | Offset for pagination. The method returns up to 50 sprints per call. To retrieve the next page, increase `start` by 50. The response does not contain the `total` and `next` fields: if fewer than 50 sprints are returned, this is the last page ||
 |#
 
-### Available Filter Fields {#fields}
+### Available Fields for filter, order, and select {#fields}
 
 #|
 || **Name**
@@ -48,26 +60,28 @@ The default value is an empty array `array()`. In this case, all fields of the m
 || **ID** 
 [`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **GROUP_ID** 
-[`integer`](../../../data-types.md) | Scrum identifier ||
+[`integer`](../../../data-types.md) | Scrum identifier. You can obtain the identifier using the [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) method ||
 || **ENTITY_TYPE** 
-[`string`](../../../data-types.md) | Item type ||
+[`string`](../../../data-types.md) | Item type, always `sprint` for sprints ||
 || **NAME** 
-[`string`](../../../data-types.md) | Name ||
+[`string`](../../../data-types.md) | Name of the sprint ||
 || **SORT** 
-[`integer`](../../../data-types.md) | Sorting ||
+[`integer`](../../../data-types.md) | Sort order of the sprint ||
 || **CREATED_BY** 
-[`integer`](../../../data-types.md) | Created by ||
+[`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
 || **MODIFIED_BY** 
-[`integer`](../../../data-types.md) | Modified by ||
+[`integer`](../../../data-types.md) | Identifier of the user who modified the sprint ||
 || **DATE_START** 
-[`string`](../../../data-types.md) | Start date ||
+[`string`](../../../data-types.md) | Start date of the sprint. You can use the field in `order` and `select`. Filtering by date does not work: the method returns an empty array for any value format ||
 || **DATE_END** 
-[`string`](../../../data-types.md) | End date ||
+[`string`](../../../data-types.md) | End date of the sprint. You can use the field in `order` and `select`. Filtering by date does not work, as with `DATE_START` ||
 || **STATUS** 
-[`string`](../../../data-types.md) | Status ||
+[`string`](../../../data-types.md) | Status: `planned` — planned, `active` — active, `completed` — completed ||
 || **INFO** 
-[`object`](../../../data-types.md) | Information ||
+[`object`](../../../data-types.md) | Service field. Not returned in the method response ||
 |#
+
+There is no `GOAL` field in `filter`, `order`, and `select`: with it, the method returns an empty array. The sprint goal is returned only in the response, in the `goal` field.
 
 ## Code Examples
 
@@ -83,7 +97,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
     -d '{
     "filter": {
         "GROUP_ID": 1,
-        ">=DATE_END": "2024-07-19T15:03:01+00:00"
+        "STATUS": "active"
     }
     }' \
     https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.api.scrum.sprint.list
@@ -97,7 +111,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
     -d '{
     "filter": {
         "GROUP_ID": 1,
-        ">=DATE_END": "2024-07-19T15:03:01+00:00"
+        "STATUS": "active"
     },
     "auth": "YOUR_ACCESS_TOKEN"
     }' \
@@ -142,7 +156,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
         params: {
           filter: {
             GROUP_ID: groupId,
-            '>=DATE_END': new Date().toISOString(),
+            STATUS: 'active',
           },
           start: 0,
         },
@@ -185,7 +199,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
             params: {
               filter: {
                 GROUP_ID: groupId,
-                '>=DATE_END': new Date().toISOString(),
+                STATUS: 'active',
               },
               start: 0,
             },
@@ -219,7 +233,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
         bitrix_response = client.tasks.api.scrum.sprint.list(
             filter={
                 "GROUP_ID": 1,
-                ">=DATE_END": "2024-07-19T15:03:01+00:00",
+                "STATUS": "active",
             },
             start=0,
         ).response
@@ -237,6 +251,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -250,7 +265,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
                 [
                     'filter' => [
                         'GROUP_ID'    => $groupId,
-                        '>=DATE_END' => new DateTime(),
+                        'STATUS'   => 'active',
                     ],
                 ]
             );
@@ -276,7 +291,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
         {
             filter: {
                 GROUP_ID: groupId,
-                '>=DATE_END': new Date()
+                STATUS: 'active'
             }
         },
         function(res)
@@ -297,7 +312,7 @@ The default value is an empty array `array()`. In this case, all fields of the m
         [
             'filter' => [
                 'GROUP_ID' => 1,
-                '>=DATE_END' => '2024-07-19T15:03:01+00:00'
+                'STATUS' => 'active'
             ]
         ]
     );
@@ -316,8 +331,8 @@ The default value is an empty array `array()`. In this case, all fields of the m
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "tasks.api.scrum.sprint.list", b24.Params{
     	"filter": b24.Params{
-    		"GROUP_ID":   1,
-    		">=DATE_END": "2024-07-19T15:03:01+00:00",
+    		"GROUP_ID": 1,
+    		"STATUS":   "active",
     	},
     }, b24.WithIdempotent())
     if err != nil {
@@ -336,34 +351,33 @@ The default value is an empty array `array()`. In this case, all fields of the m
 HTTP status: **200**
 
 ```json
-[
-    {
-        "id": 2,
-        "groupId": 143,
-        "entityType": "sprint",
-        "name": "Sprint 1",
-        "goal": "",
-        "sort": 1,
-        "createdBy": 1,
-        "modifiedBy": 1,
-        "dateStart": "2024-07-19T15:03:01+00:00",
-        "dateEnd": "2024-08-02T15:03:01+00:00",
-        "status": "planned"
-    },
-    {
-        "id": 3,
-        "groupId": 1,
-        "entityType": "sprint",
-        "name": "Sprint 1",
-        "goal": "",
-        "sort": 1,
-        "createdBy": 1,
-        "modifiedBy": 1,
-        "dateStart": "2021-11-21T22:00:00+00:00",
-        "dateEnd": "2021-11-28T22:00:00+00:00",
-        "status": "planned"
+{
+    "result": [
+        {
+            "id": 3,
+            "groupId": 1,
+            "entityType": "sprint",
+            "name": "Sprint 1",
+            "goal": "",
+            "sort": 1,
+            "createdBy": 1,
+            "modifiedBy": 1,
+            "dateStart": "2021-11-21T22:00:00+00:00",
+            "dateEnd": "2021-11-28T22:00:00+00:00",
+            "status": "active"
+        }
+    ],
+    "time": {
+        "start": 1790580587,
+        "finish": 1790580587.569156,
+        "duration": 0.5691559314727783,
+        "processing": 0,
+        "date_start": "2026-09-28T10:29:47+03:00",
+        "date_finish": "2026-09-28T10:29:47+03:00",
+        "operating_reset_at": 1790581187,
+        "operating": 0
     }
-]
+}
 ```
 
 ### Returned Data
@@ -372,19 +386,28 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../../data-types.md) | Object containing sprint data ||
+[`array`](../../../data-types.md) | Array of sprints. If no sprint matches the filter, the method returns an empty array, not an error. Array element fields [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Array Element {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id** 
 [`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **groupId** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
 || **entityType** 
-[`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
+[`string`](../../../data-types.md) | Object type, always `sprint` for sprints ||
 || **name** 
 [`string`](../../../data-types.md) | Name of the sprint ||
 || **goal** 
 [`string`](../../../data-types.md) | Goal of the sprint. Set only in the interface when starting the sprint ||
 || **sort** 
-[`integer`](../../../data-types.md) | Sorting ||
+[`integer`](../../../data-types.md) | Sort order of the sprint ||
 || **createdBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
 || **modifiedBy** 
@@ -394,7 +417,7 @@ HTTP status: **200**
 || **dateEnd** 
 [`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
 || **status** 
-[`string`](../../../data-types.md) | Status of the sprint ||
+[`string`](../../../data-types.md) | Status of the sprint: `planned` — planned, `active` — active, `completed` — completed ||
 |#
 
 ## Error Handling
@@ -413,8 +436,9 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| `0` | `Could not load list`| No sprints found with the specified filters ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | `Could not load list` | An error occurred while executing the database query ||
+|| `400` | `0` | PHP system error text, for example, `Cannot access offset of type string on string` | The `filter`, `order`, or `select` parameter is passed as a string instead of an object or array ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -423,8 +447,8 @@ HTTP status: **400**
 
 - [{#T}](./tasks-api-scrum-sprint-add.md)
 - [{#T}](./tasks-api-scrum-sprint-update.md)
-- [{#T}](./tasks-api-scrum-sprint-start.md)
-- [{#T}](./tasks-api-scrum-sprint-complete.md)
 - [{#T}](./tasks-api-scrum-sprint-get.md)
 - [{#T}](./tasks-api-scrum-sprint-delete.md)
+- [{#T}](./tasks-api-scrum-sprint-start.md)
+- [{#T}](./tasks-api-scrum-sprint-complete.md)
 - [{#T}](./tasks-api-scrum-sprint-get-fields.md)

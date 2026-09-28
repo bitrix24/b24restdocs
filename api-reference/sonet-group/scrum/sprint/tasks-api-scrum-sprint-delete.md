@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 The method `tasks.api.scrum.sprint.delete` deletes a sprint.
 
-When a sprint with tasks is deleted, the tasks will be moved to the backlog.
+The method deletes a sprint in any status, including a completed one. The sprint tasks are not deleted; they move to the Scrum backlog.
 
 ## Method Parameters
 
@@ -25,7 +25,9 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the sprint ||
+[`integer`](../../../data-types.md) | Identifier of the sprint.
+
+You can obtain the identifier using the [tasks.api.scrum.sprint.list](./tasks-api-scrum-sprint-list.md) method ||
 |#
 
 ## Code Examples
@@ -68,7 +70,7 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
     declare const $b24: B24Frame
 
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      const response = await $b24.actions.v2.call.make<[]>({
         method: 'tasks.api.scrum.sprint.delete',
         params: {
           id: 1,
@@ -149,9 +151,12 @@ When a sprint with tasks is deleted, the tasks will be moved to the backlog.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
+    $sprintId = 1;
+
     try {
         $response = $b24Service
             ->core
@@ -234,11 +239,30 @@ HTTP status: **200**
 
 ```json
 {
-    "result" : []
+    "result": [],
+    "time": {
+        "start": 1790580587,
+        "finish": 1790580587.569156,
+        "duration": 0.5691559314727783,
+        "processing": 0,
+        "date_start": "2026-09-28T10:29:47+03:00",
+        "date_finish": "2026-09-28T10:29:47+03:00",
+        "operating_reset_at": 1790581187,
+        "operating": 0
+    }
 }
 ```
 
-Upon successful deletion, the method returns an empty array.
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../../data-types.md) | Empty array on successful deletion ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
 
 ## Error Handling
 
@@ -256,13 +280,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| `0` | `Access denied` | No access to Scrum ||
-|| `0` | `Sprint not found` | The sprint does not exist ||
-|| `0` | `It is forbidden remove a sprint with items` | Cannot delete a sprint that has tasks ||
-|| `0` | `Sprint items have not been moved to backlog` | Failed to move tasks from the sprint to the backlog ||
-|| `100` | `Could not find value for parameter {id}` | Incorrect parameter name or parameter not set ||
-|| `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | Invalid parameter type ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | `Access denied` | No access to the Scrum ||
+|| `400` | `0` | `Sprint not found` | The sprint with the specified `id` is not found ||
+|| `400` | `0` | `It is forbidden remove a sprint with items` | The sprint has tasks, but the Scrum has no backlog to move them to ||
+|| `400` | `0` | `Sprint items have not been moved to backlog` | Failed to move tasks from the sprint to the backlog ||
+|| `400` | `0` | `Sprint not deleted` | Failed to delete the sprint ||
+|| `400` | `100` | `Could not find value for parameter {id}` | The `id` parameter is not passed ||
+|| `400` | `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | The `id` parameter is not a number ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -271,8 +296,8 @@ HTTP status: **400**
 
 - [{#T}](./tasks-api-scrum-sprint-add.md)
 - [{#T}](./tasks-api-scrum-sprint-update.md)
-- [{#T}](./tasks-api-scrum-sprint-start.md)
-- [{#T}](./tasks-api-scrum-sprint-complete.md)
 - [{#T}](./tasks-api-scrum-sprint-get.md)
 - [{#T}](./tasks-api-scrum-sprint-list.md)
+- [{#T}](./tasks-api-scrum-sprint-start.md)
+- [{#T}](./tasks-api-scrum-sprint-complete.md)
 - [{#T}](./tasks-api-scrum-sprint-get-fields.md)

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: the Scrum owner or moderator, or a Bitrix24 administrator
 
 The method `tasks.api.scrum.sprint.complete` completes the active sprint of the selected Scrum.
 
@@ -25,7 +25,9 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the group with the active sprint ||
+[`integer`](../../../data-types.md) | Identifier of the Scrum, the group with the active sprint. This is not the sprint identifier.
+
+You can obtain the identifier using the [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) method ||
 |#
 
 ## Code Examples
@@ -164,9 +166,12 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
+    $groupId = 1;
+
     try {
         $response = $b24Service
             ->core
@@ -182,8 +187,6 @@ When the sprint is completed, unfinished tasks are moved to the backlog.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // The data processing logic you need
-        processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -261,10 +264,9 @@ HTTP status: **200**
 
 ```json
 {
-    "result":
-    {
+    "result": {
         "id": 1,
-        "groupId": 143,
+        "groupId": 1,
         "entityType": "sprint",
         "name": "Sprint 1",
         "goal": "Goal",
@@ -274,6 +276,16 @@ HTTP status: **200**
         "dateStart": "2024-07-19T15:03:01+00:00",
         "dateEnd": "2024-08-02T15:03:01+00:00",
         "status": "completed"
+    },
+    "time": {
+        "start": 1790580587,
+        "finish": 1790580587.569156,
+        "duration": 0.5691559314727783,
+        "processing": 0,
+        "date_start": "2026-09-28T10:29:47+03:00",
+        "date_finish": "2026-09-28T10:29:47+03:00",
+        "operating_reset_at": 1790581187,
+        "operating": 0
     }
 }
 ```
@@ -284,19 +296,28 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../../data-types.md) | Object containing sprint data ||
+[`object`](../../../data-types.md) | Sprint data [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id** 
 [`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **groupId** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
 || **entityType** 
-[`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
+[`string`](../../../data-types.md) | Object type, always `sprint` for sprints ||
 || **name** 
 [`string`](../../../data-types.md) | Name of the sprint ||
 || **goal** 
 [`string`](../../../data-types.md) | Goal of the sprint. Set only in the interface when starting the sprint ||
 || **sort** 
-[`integer`](../../../data-types.md) | Sorting ||
+[`integer`](../../../data-types.md) | Sort order of the sprint ||
 || **createdBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
 || **modifiedBy** 
@@ -306,7 +327,7 @@ HTTP status: **200**
 || **dateEnd** 
 [`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
 || **status** 
-[`string`](../../../data-types.md) | Status of the sprint ||
+[`string`](../../../data-types.md) | Status of the sprint: `planned` — planned, `active` — active, `completed` — completed ||
 |#
 
 ## Error Handling
@@ -325,11 +346,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| `0` | `Access denied` | No access to Scrum ||
-|| `0` | `Sprint not found` | Active sprint not found in the group ||
-|| `100` | `Could not find value for parameter {id}` | Incorrect parameter name or parameter not set ||
-|| `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | Invalid parameter type ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | `Group id not found` | `0` is passed in the `id` parameter ||
+|| `400` | `0` | `Access denied` | The user is neither the owner nor a moderator of the Scrum, or has no access to the Scrum tasks ||
+|| `400` | `0` | `Sprint not found` | Active sprint not found in the group ||
+|| `400` | `100` | `Could not find value for parameter {id}` | The `id` parameter is not passed ||
+|| `400` | `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | The `id` parameter is not a number ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -338,8 +360,8 @@ HTTP status: **400**
 
 - [{#T}](./tasks-api-scrum-sprint-add.md)
 - [{#T}](./tasks-api-scrum-sprint-update.md)
-- [{#T}](./tasks-api-scrum-sprint-start.md)
 - [{#T}](./tasks-api-scrum-sprint-get.md)
 - [{#T}](./tasks-api-scrum-sprint-list.md)
 - [{#T}](./tasks-api-scrum-sprint-delete.md)
+- [{#T}](./tasks-api-scrum-sprint-start.md)
 - [{#T}](./tasks-api-scrum-sprint-get-fields.md)

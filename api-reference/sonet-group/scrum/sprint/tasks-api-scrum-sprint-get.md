@@ -1,4 +1,4 @@
-# Get Sprint Fields by Its Identifier tasks.api.scrum.sprint.get
+# Get Sprint by Identifier tasks.api.scrum.sprint.get
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user with access to the Scrum
 
-The method `tasks.api.scrum.sprint.get` returns the values of the sprint fields by its identifier.
+The method `tasks.api.scrum.sprint.get` returns sprint data by its identifier.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ The method `tasks.api.scrum.sprint.get` returns the values of the sprint fields 
 #|
 || **Name**
 `type` | **Description** ||
-|| **sprintId***
+|| **id***
 [`integer`](../../../data-types.md) | The identifier of the sprint. 
 
 The identifier can be obtained using the method [tasks.api.scrum.sprint.list](./tasks-api-scrum-sprint-list.md) ||
@@ -148,7 +148,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.list](./
 
     try:
         bitrix_response = client.tasks.api.scrum.sprint.get(
-            bitrix_id=2,
+            sprint_id=2,
         ).response
         result = bitrix_response.result
         print(result)
@@ -164,6 +164,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.list](./
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -183,8 +184,6 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.list](./
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // The data processing logic you need
-        processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -224,7 +223,7 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.list](./
     );
 
     // Processing the response from Bitrix24
-    if ($result['error']) {
+    if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     } else {
         print_r($result['result']);
@@ -239,8 +238,7 @@ HTTP status: **200**
 
 ```json
 {
-    "result":
-    {
+    "result": {
         "id": 2,
         "groupId": 143,
         "entityType": "sprint",
@@ -252,6 +250,16 @@ HTTP status: **200**
         "dateStart": "2024-07-19T15:03:01+00:00",
         "dateEnd": "2024-08-02T15:03:01+00:00",
         "status": "planned"
+    },
+    "time": {
+        "start": 1790580587,
+        "finish": 1790580587.569156,
+        "duration": 0.5691559314727783,
+        "processing": 0,
+        "date_start": "2026-09-28T10:29:47+03:00",
+        "date_finish": "2026-09-28T10:29:47+03:00",
+        "operating_reset_at": 1790581187,
+        "operating": 0
     }
 }
 ```
@@ -262,19 +270,28 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../../data-types.md) | Object containing sprint data ||
+[`object`](../../../data-types.md) | Sprint data [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id** 
 [`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **groupId** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
 || **entityType** 
-[`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
+[`string`](../../../data-types.md) | Object type, always `sprint` for sprints ||
 || **name** 
 [`string`](../../../data-types.md) | Name of the sprint ||
 || **goal** 
 [`string`](../../../data-types.md) | Goal of the sprint. Set only in the interface when starting the sprint ||
 || **sort** 
-[`integer`](../../../data-types.md) | Sorting ||
+[`integer`](../../../data-types.md) | Sort order of the sprint ||
 || **createdBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
 || **modifiedBy** 
@@ -284,7 +301,7 @@ HTTP status: **200**
 || **dateEnd** 
 [`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
 || **status** 
-[`string`](../../../data-types.md) | Status of the sprint ||
+[`string`](../../../data-types.md) | Status of the sprint: `planned` — planned, `active` — active, `completed` — completed ||
 |#
 
 ## Error Handling
@@ -303,11 +320,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| `0` | `Access denied` | No access to view sprint data ||
-|| `0` | `Sprint not found` | The sprint does not exist ||
-|| `100` | `Could not find value for parameter {id}` | Incorrect parameter name or parameter not set ||
-|| `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | Invalid parameter type ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | `Sprint id not found` | `0` is passed in the `id` parameter ||
+|| `400` | `0` | `Access denied` | No access to the Scrum ||
+|| `400` | `0` | `Sprint not found` | The sprint with the specified `id` is not found ||
+|| `400` | `100` | `Could not find value for parameter {id}` | The `id` parameter is not passed ||
+|| `400` | `100` | `Invalid value {stringValue} to match with parameter {id}. Should be value of type int` | The `id` parameter is not a number ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -316,8 +334,8 @@ HTTP status: **400**
 
 - [{#T}](./tasks-api-scrum-sprint-add.md)
 - [{#T}](./tasks-api-scrum-sprint-update.md)
-- [{#T}](./tasks-api-scrum-sprint-start.md)
-- [{#T}](./tasks-api-scrum-sprint-complete.md)
 - [{#T}](./tasks-api-scrum-sprint-list.md)
 - [{#T}](./tasks-api-scrum-sprint-delete.md)
+- [{#T}](./tasks-api-scrum-sprint-start.md)
+- [{#T}](./tasks-api-scrum-sprint-complete.md)
 - [{#T}](./tasks-api-scrum-sprint-get-fields.md)
