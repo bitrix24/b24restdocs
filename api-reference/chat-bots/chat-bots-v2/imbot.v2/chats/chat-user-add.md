@@ -13,11 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.User.add` adds participants to the chat. The bot must be an administrator of the chat.
+The method `imbot.v2.Chat.User.add` adds participants to the chat. The bot must be a participant of the chat: by default, any participant can add new users. If this permission is restricted in the chat settings, the bot needs the corresponding role — see [Chat Roles](./index.md#roles).
+
+In a personal chat, the method adds no one but returns `true`. You cannot use this method to add participants to the general chat or to workgroup, comment, and call chats.
 
 {% note info "" %}
 
-Non-existent or inactive users will be ignored without an error.
+The method skips non-existent and inactive users, as well as users who are already chat participants, without an error. If `userIds` is empty or not passed, the method returns `true`.
 
 {% endnote %}
 
@@ -31,12 +33,12 @@ Non-existent or inactive users will be ignored without an error.
 || **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
 || **botToken** 
-[`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
+[`string`](../../../../data-types.md) | Bot token. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the bot registration ||
+Pass the same `botToken` that you specified when registering the bot ||
 || **dialogId*** 
-[`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
-|| **userIds*** 
+[`string`](../../../../data-types.md) | ID of the group chat in the [dialogId format](../../index.md#dialog-id): `chat{chatId}` ||
+|| **userIds**
 [`integer[]`](../../../../data-types.md) | Array of user IDs to add ||
 |#
 
@@ -240,12 +242,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied"
+    "error_description": "ACCESS_DENIED"
 }
 ```
 
@@ -255,11 +257,12 @@ HTTP Status: **400**, **403**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token not specified (botToken is required for webhook auth) | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | botId is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
-|| `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat or does not have permission to add users ||
+|| `BOT_OWNERSHIP_ERROR` | Bot was installed by another rest application | The bot is registered by another application ||
+|| `CHAT_NOT_FOUND` | CHAT_NOT_FOUND | No chat found with the specified `dialogId` ||
+|| `ACCESS_DENIED` | ACCESS_DENIED | The bot is not a participant of the chat, has no permission to add participants, or participants cannot be added to chats of this type ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
@@ -270,3 +273,5 @@ HTTP Status: **400**, **403**
 - [{#T}](./chat-user-delete.md)
 - [{#T}](./chat-user-list.md)
 - [{#T}](./chat-manager-add.md)
+- [{#T}](./index.md)
+- [{#T}](../../migration.md)

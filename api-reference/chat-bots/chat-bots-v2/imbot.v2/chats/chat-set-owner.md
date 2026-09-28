@@ -13,7 +13,17 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: the owner of the registered bot
 
-The method `imbot.v2.Chat.setOwner` transfers chat ownership to another user. Only the current owner of the chat can transfer ownership.
+The method `imbot.v2.Chat.setOwner` transfers chat ownership to another user.
+
+By default, the bot must be the chat owner. If the permission to change settings in the chat (`permissions.manageSettings` in the [imbot.v2.Chat.get](./chat-get.md) response) is granted to managers, the method is also available to a bot with the manager role. The method is not available in personal chats and Open Channel chats.
+
+After the transfer, the previous owner remains a chat participant. The method does not remove the manager role from them — to do this, call [imbot.v2.Chat.Manager.delete](./chat-manager-delete.md).
+
+{% note warning "" %}
+
+The method does not check whether the `userId` user exists or is a participant of the chat. If you pass the ID of a user who is not in the chat, the user becomes the owner but is not added to the chat and gets no access to a private chat. Add the user with the [imbot.v2.Chat.User.add](./chat-user-add.md) method first.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -25,13 +35,13 @@ The method `imbot.v2.Chat.setOwner` transfers chat ownership to another user. On
 || **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
 || **botToken** 
-[`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
+[`string`](../../../../data-types.md) | Bot token. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
+Pass the same `botToken` that you specified when registering the bot ||
 || **dialogId*** 
-[`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
+[`string`](../../../../data-types.md) | ID of the group chat in the [dialogId format](../../index.md#dialog-id): `chat{chatId}` ||
 || **userId*** 
-[`integer`](../../../../data-types.md) | ID of the new chat owner ||
+[`integer`](../../../../data-types.md) | ID of the new chat owner. The user must be a participant of the chat — see the warning above ||
 |#
 
 ## Code Examples
@@ -230,12 +240,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied"
+    "error_description": "ACCESS_DENIED"
 }
 ```
 
@@ -245,11 +255,12 @@ HTTP Status: **400**, **403**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token not specified (botToken is required for webhook auth) | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | botId is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
-|| `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat or is not the owner of the chat ||
+|| `BOT_OWNERSHIP_ERROR` | Bot was installed by another rest application | The bot is registered by another application ||
+|| `CHAT_NOT_FOUND` | CHAT_NOT_FOUND | No chat found with the specified `dialogId` ||
+|| `ACCESS_DENIED` | ACCESS_DENIED | The bot has no permission to transfer ownership (the owner role is required by default), the bot is not a participant of a private chat, or this is a personal chat or an Open Channel chat ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
@@ -259,3 +270,7 @@ HTTP Status: **400**, **403**
 - [API Change Log for imbot.v2](../../change-log.md)
 - [{#T}](./chat-manager-add.md)
 - [{#T}](./chat-get.md)
+- [{#T}](./chat-user-add.md)
+- [{#T}](./chat-leave.md)
+- [{#T}](./index.md)
+- [{#T}](../../migration.md)

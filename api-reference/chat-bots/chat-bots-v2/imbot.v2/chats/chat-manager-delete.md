@@ -13,7 +13,17 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.Manager.delete` removes users from the chat managers list. The bot must be the owner of the chat.
+The method `imbot.v2.Chat.Manager.delete` removes users from the list of chat managers.
+
+By default, the bot must be the chat owner. If the permission to change settings in the chat (`permissions.manageSettings` in the [imbot.v2.Chat.get](./chat-get.md) response) is granted to managers, the method is also available to a bot with the manager role. The method works only in group chats, except for Open Channel chats, collab chats, and task chats.
+
+{% note info "" %}
+
+The method skips the IDs of users who are not chat participants or are not managers and returns `result.result: true`.
+
+{% endnote %}
+
+If you pass the chat owner ID, it disappears from `managerList` in the [imbot.v2.Chat.get](./chat-get.md) response, but the owner keeps their permissions: the owner role is defined by the `owner` field, not by the list of managers.
 
 ## Method Parameters
 
@@ -25,11 +35,11 @@ The method `imbot.v2.Chat.Manager.delete` removes users from the chat managers l
 || **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
 || **botToken** 
-[`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
+[`string`](../../../../data-types.md) | Bot token. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
+Pass the same `botToken` that you specified when registering the bot ||
 || **dialogId*** 
-[`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
+[`string`](../../../../data-types.md) | ID of the group chat in the [dialogId format](../../index.md#dialog-id): `chat{chatId}` ||
 || **userIds*** 
 [`integer[]`](../../../../data-types.md) | Array of user IDs to remove the manager role ||
 |#
@@ -226,19 +236,19 @@ HTTP Status: **200**
 || **result** 
 [`object`](../../../../data-types.md) | Result of the operation ||
 || **result.result** 
-[`boolean`](../../../../data-types.md) | `true` if managers were successfully removed ||
+[`boolean`](../../../../data-types.md) | `true` if the request was processed. The value does not indicate whether the role was removed from at least one user ||
 || **time** 
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied"
+    "error_description": "ACCESS_DENIED"
 }
 ```
 
@@ -248,12 +258,14 @@ HTTP Status: **400**, **403**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is required ||
-|| `EMPTY_USER_IDS` | Empty user IDs | User IDs array is not provided or is empty ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token not specified (botToken is required for webhook auth) | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | botId is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat or lacks permissions (owner role required) ||
+|| `BOT_OWNERSHIP_ERROR` | Bot was installed by another rest application | The bot is registered by another application ||
+|| `CHAT_NOT_FOUND` | CHAT_NOT_FOUND | No chat found with the specified `dialogId` ||
+|| `ACCESS_DENIED` | ACCESS_DENIED | The bot has no permission to manage managers (the owner role is required by default), the bot is not a participant of a private chat, or chats of this type have no managers: a personal chat, an Open Channel chat, a collab chat, or a task chat ||
+|| `WRONG_MESSAGE_TYPE` | WRONG_MESSAGE_TYPE | The chat is not a group chat ||
+|| `EMPTY_USER_IDS` | userIds is required | The `userIds` array is not passed or is empty ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
@@ -263,3 +275,7 @@ HTTP Status: **400**, **403**
 - [API Change Log for imbot.v2](../../change-log.md)
 - [{#T}](./chat-manager-add.md)
 - [{#T}](./chat-set-owner.md)
+- [{#T}](./chat-user-list.md)
+- [{#T}](./chat-get.md)
+- [{#T}](./index.md)
+- [{#T}](../../migration.md)
