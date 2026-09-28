@@ -1,4 +1,4 @@
-# Get a List of Items (Positions) in the Cart sale.basketitem.list
+# Get a List of Cart Items sale.basketitem.list
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: store manager
 
-The method `sale.basketitem.list` retrieves a set of items (positions) in the cart filtered by the specified criteria.
+The method `sale.basketitem.list` retrieves a list of cart items that match the filter.
 
 ## Method Parameters
 
@@ -23,15 +23,19 @@ The method `sale.basketitem.list` retrieves a set of items (positions) in the ca
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | 
-An array of fields to be selected (see fields of the [sale_basket_item](../data-types.md) object).
+[`array`](../../data-types.md) |
+An array of fields to be selected (see fields of the [sale_basket_item](../data-types.md#sale_basket_item) object). Pass field names in camelCase, as in the response: `orderId`, not `ORDER_ID`.
 
-If the array is not provided or is empty, all available fields from the trade catalogs will be selected.
+If the array is not provided, is empty, or contains no known fields, all fields of the cart item are selected. The method skips unknown fields without an error.
+
+The method does not return the cart item properties and reservations (`properties`, `reservations`). You can retrieve them using the [sale.basketitem.get](./sale-basket-item-get.md) method
 ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [sale_basket_item](../data-types.md) object.
+Possible values for `field` correspond to the fields of the [sale_basket_item](../data-types.md#sale_basket_item) object. The method skips a condition with an unknown field without an error, so a typo in a field name returns cart items without filtering.
+
+The selection also includes cart items that do not belong to any order: their `orderId` is `null`. To retrieve the items of a single order, pass `{"orderId": 5147}`.
 
 An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -40,30 +44,33 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for the substring in any position of the string.
+- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The substring is searched for in any position of the string.
 - `=%` — LIKE, substring search. The `%` character must be passed in the value. Examples:
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
 - `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The substring is searched for in any position of the string.
 - `!=%` — NOT LIKE, substring search. The `%` character must be passed in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
+    - `"%mol%"` — searches for values that do not contain the substring "mol"
 - `!%=` — NOT LIKE (similar to `!=%`)
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
-- `!` — not equal ||
+- `!` — not equal
+||
 || **order**
-[`object`](../../data-types.md) | 
+[`object`](../../data-types.md) |
 An object for sorting the selected records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the [sale_basket_item](../data-types.md) object.
+Possible values for `field` correspond to the fields of the [sale_basket_item](../data-types.md#sale_basket_item) object. The method skips unknown fields without an error.
 
 Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
+
+By default, cart items are sorted by `id` in ascending order
 ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
@@ -74,7 +81,7 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number
+`start = (N-1) * 50`, where `N` is the desired page number. The method returns the value for the next page in the `next` field of the response
 ||
 |#
 
@@ -263,6 +270,7 @@ The formula for calculating the `start` parameter value:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -289,15 +297,15 @@ The formula for calculating the `start` parameter value:
                     'start' => 0,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your data processing logic
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error: ' . $e->getMessage();
@@ -324,6 +332,7 @@ The formula for calculating the `start` parameter value:
             order: {
                 id: 'desc',
             },
+            start: 0,
         },
     )
         .then(
@@ -406,12 +415,12 @@ The formula for calculating the `start` parameter value:
     }
 
     var items []struct {
-    	Currency  string `json:"currency"`
-    	ID        b24.ID `json:"id"`
-    	Name      string `json:"name"`
-    	OrderID   b24.ID `json:"orderId"`
-    	Price     int    `json:"price"`
-    	ProductID b24.ID `json:"productId"`
+    	Currency  string  `json:"currency"`
+    	ID        b24.ID  `json:"id"`
+    	Name      string  `json:"name"`
+    	OrderID   b24.ID  `json:"orderId"`
+    	Price     float64 `json:"price"`
+    	ProductID b24.ID  `json:"productId"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -439,11 +448,10 @@ HTTP Status: **200**
                 "price": 1100,
                 "productId": 4343
             },
-            
             {
                 "currency": "USD",
                 "id": 6791,
-                "name": "Catalog Chair",
+                "name": "Gift Wrapping",
                 "orderId": 5146,
                 "price": 900,
                 "productId": 0
@@ -479,11 +487,13 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItems**
-[`sale_basket_item[]`](../data-types.md) | An array of objects containing information about the selected items (positions) in the order cart ||
+[`sale_basket_item[]`](../data-types.md#sale_basket_item) | An array of objects containing information about the selected cart items. The set of fields in each object is defined by the `select` parameter. If no cart items are found, the array is empty ||
+|| **next**
+[`integer`](../../data-types.md) | The `start` value for the next page. Returned if more records are found than fit on the current page ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -492,8 +502,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "100",
+    "error_description": "Invalid value {x} to match with parameter {filter}. Should be value of type array."
 }
 ```
 
@@ -504,20 +514,29 @@ HTTP Status: **400**
 #| 
 || **Code** | **Description** ||
 || `200040300010` | Insufficient permissions to read
-|| 
+||
+|| `100` | `Invalid value {x} to match with parameter {select}. Should be value of type array.`
+
+A value that is not an array or object is passed in `select`, `filter`, or `order`. The error text contains the passed value and the parameter name
+||
+|| `100` | `Invalid order "BAD"`
+
+The sort direction in `order` is other than `asc` or `desc`
+||
 || `0` | Other errors (e.g., fatal errors)
-|| 
+||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-basket-item-add.md)
 - [{#T}](./sale-basket-item-update.md)
 - [{#T}](./sale-basket-item-get.md)
 - [{#T}](./sale-basket-item-delete.md)
-- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-add-catalog-product.md)
 - [{#T}](./sale-basket-item-update-catalog-product.md)
+- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-get-catalog-product-fields.md)

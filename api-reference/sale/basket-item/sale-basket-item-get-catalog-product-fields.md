@@ -1,4 +1,4 @@
-# Get Available Fields of a Basket Item (Product from Catalog) sale.basketitem.getFieldsCatalogProduct
+# Get Catalog Product Item Fields sale.basketitem.getFieldsCatalogProduct
 
 {% note tip "" %}
 
@@ -13,9 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: store manager
 
-The method `sale.basketitem.getFieldsCatalogProduct` retrieves a list of available fields for a basket item (position) for the methods [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md) and [sale.basketitem.updateCatalogProduct](./sale-basket-item-update-catalog-product.md) — these methods only work with products from the catalog module in basket items (positions).
+The method `sale.basketitem.getFieldsCatalogProduct` retrieves a list of cart item fields for the methods [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md) and [sale.basketitem.updateCatalogProduct](./sale-basket-item-update-catalog-product.md) — these methods only work with products from the catalog module.
 
-Unlike [sale.basketitem.getFields](./sale-basket-item-get-fields.md), the method `sale.basketitem.getFieldsCatalogProduct` returns the minimum necessary list of fields for operation.
+The field set is the same as in [sale.basketitem.getFields](./sale-basket-item-get-fields.md), but most of the fields are marked as read-only. When adding a cart item with [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md), pass `orderId`, `productId`, `currency`, `quantity`, `price`, `sort`, and `xmlId`. Once the item is added, [sale.basketitem.updateCatalogProduct](./sale-basket-item-update-catalog-product.md) can change only `quantity`, `price`, `sort`, and `xmlId`.
 
 No parameters required.
 
@@ -143,6 +143,7 @@ No parameters required.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -231,6 +232,8 @@ No parameters required.
 
 HTTP Status: **200**
 
+The example shows three of the 25 fields.
+
 ```json
 {
     "result": {
@@ -245,24 +248,24 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": true,
                 "isRequired": false,
-                "type": "string"
+                "type": "char"
             },
             "catalogXmlId": {
                 "isImmutable": false,
                 "isReadOnly": true,
                 "isRequired": false,
                 "type": "string"
-            },
-        ...
+            }
         }
     },
     "time": {
-        "start": 1713789567.852219,
-        "finish": 1713789568.52453,
-        "duration": 0.6723108291625977,
-        "processing": 0.01367807388305664,
-        "date_start": "2024-04-22T14:39:27+02:00",
-        "date_finish": "2024-04-22T14:39:28+02:00",
+        "start": 1790578169,
+        "finish": 1790578169.100949,
+        "duration": 0.10094904899597168,
+        "processing": 0,
+        "date_start": "2026-09-28T08:49:29+02:00",
+        "date_finish": "2026-09-28T08:49:29+02:00",
+        "operating_reset_at": 1790578769,
         "operating": 0
     }
 }
@@ -276,22 +279,13 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItem**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the field of the [sale_basket_item](../data-types.md), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description)
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the field of the [sale_basket_item](../data-types.md#sale_basket_item), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description)
 ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
-
-HTTP Status: **400**
-
-```json
-{
-    "error":0,
-    "error_description":"error"
-}
-```
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
@@ -299,19 +293,22 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read || 
-|| `0` | Other errors (e.g., fatal errors) || 
+|| `200040300010` | Insufficient permissions to read
+||
+|| `0` | Other errors, such as fatal errors
+||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-basket-item-add.md)
 - [{#T}](./sale-basket-item-update.md)
 - [{#T}](./sale-basket-item-get.md)
 - [{#T}](./sale-basket-item-list.md)
 - [{#T}](./sale-basket-item-delete.md)
-- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-add-catalog-product.md)
 - [{#T}](./sale-basket-item-update-catalog-product.md)
+- [{#T}](./sale-basket-item-get-fields.md)

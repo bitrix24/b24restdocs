@@ -1,4 +1,4 @@
-# Add Item (Position) to the Cart of an Existing Order sale.basketitem.add
+# Add a Custom Item to an Order Cart sale.basketitem.add
 
 {% note tip "" %}
 
@@ -23,61 +23,48 @@ The method `sale.basketitem.add` adds an item to the cart of an existing order.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating an item (position) in the cart of the order ||
+[`object`](../../data-types.md) | Field values of the cart item [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-Field values marked with ** will be taken from the product data on the site if a valid product identifier is passed in the `productid` field. If the product does not exist on the site, the field must be filled in manually. {.b24-info}
+Field values marked with ** are taken from the product data in the catalog if a valid product identifier is passed in the `productId` field. Values passed in these fields for a catalog product are not retained. For a custom item, fill in these fields yourself. {.b24-info}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **orderId***
-[`sale_order.id`](../data-types.md) | Order identifier ||
+[`sale_order.id`](../data-types.md#sale_order) | Order identifier ||
 || **sort**
-[`integer`](../../data-types.md) | Position in the list of order items ||
-|| **productid***
-[`catalog_product.id`](../../catalog/data-types.md#catalog_product) | Product/variation identifier.
+[`integer`](../../data-types.md) | Position in the list of order items. Default is `100` ||
+|| **productId***
+[`catalog_product.id`](../../catalog/data-types.md#catalog_product) | Identifier of a product or variation from the catalog.
 
-For products that are not on the site/account, it may be zero
+For a custom item that is not in the catalog, pass `0`. For a catalog product, the [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md) method is more convenient
  ||
 || **price**
-[`double`](../../data-types.md) | Price including markups and discounts (see the `customPrice` field below).
+[`double`](../../data-types.md) | Unit price including markups and discounts.
 
-The field will be filled automatically if `customPrice !== ‘Y’`
+If you pass `price`, the price is retained as manually set: the response contains `customPrice` = `Y`, and the price is not recalculated from the catalog. If you do not pass it, a catalog product takes the price from the catalog, and a custom item gets `0`
  ||
 || **basePrice**
-[`double`](../../data-types.md) | Original price excluding markups and discounts (see the `customPrice` field below).
-
-The field will be filled automatically if `customPrice !== ‘Y’`
- ||
+[`double`](../../data-types.md) | Original price excluding markups and discounts. For a catalog product, it is taken from the catalog by default. For a custom item without `basePrice`, the field is `0`, even if `price` is passed ||
 || **discountPrice**
-[`double`](../../data-types.md) | Amount of the final discount or markup (see the `customPrice` field below).
-
-The field will be filled automatically if `customPrice !== ‘Y’`
- ||
+[`double`](../../data-types.md) | Amount of the final discount or markup. If you pass `price`, `basePrice`, and `discountPrice` yourself, keep the condition `basePrice = price + discountPrice` ||
 || **currency***
-[`crm_currency.CURRENCY`](../../crm/data-types.md) | Currency of the price. Must match the currency of the order ||
-|| **customPrice**
-[`string`](../../data-types.md) | Is the price specified manually. Possible values:
-- `Y` — yes
-- `N` — no
-
-If `Y` is specified, catalog data will be ignored. The parameters `price`, `basePrice`, and `discountPrice` must be explicitly set so that the condition `basePrice = price + discountPrice` is met
- ||
+[`crm_currency.CURRENCY`](../../crm/data-types.md) | Currency of the price. Must match the currency of the order, otherwise the method returns the `200140400011` error. The order currency is returned by the [sale.order.get](../order/sale-order-get.md) method ||
 || **quantity***
 [`double`](../../data-types.md) | Quantity of the product ||
 || **xmlId**
-[`string`](../../data-types.md) | External code of the cart item ||
-|| **name***,**
-[`string`](../../data-types.md) | Product name ||
+[`string`](../../data-types.md) | External code of the cart item. If you do not pass it, Bitrix24 generates a code like `bx_6ab9ff3cc2d0a` ||
+|| **name****
+[`string`](../../data-types.md) | Product name. For a custom item, pass it explicitly: without `name`, the item is created with no name ||
 || **weight****
-[`integer`](../../data-types.md) | Weight of the product ||
+[`double`](../../data-types.md) | Weight of the product. Retained exactly as passed ||
 || **dimensions****
-[`string`](../../data-types.md) | Dimensions of the product (serialized array) ||
+[`string`](../../data-types.md) | Dimensions of the product — a string with a serialized PHP array with the keys `WIDTH`, `HEIGHT`, `LENGTH`, for example `a:3:{s:5:"WIDTH";i:100;s:6:"HEIGHT";i:200;s:6:"LENGTH";i:300;}`. If you pass an object, the string `Array` is retained instead of the dimensions ||
 || **measureCode****
 [`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | Unit code of the product ||
 || **measureName****
@@ -85,13 +72,17 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
 || **canBuy****
 [`string`](../../data-types.md) | Availability flag of the product. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+For a custom item, the default is `Y` ||
 || **vatRate****
-[`double`](../../data-types.md) | Tax rate as a fraction of one: `0.1` means 10 %. To specify the rate "No VAT", an empty string must be passed ||
+[`double`](../../data-types.md) | Tax rate as a fraction of one: `0.1` means 10 %. For the "No VAT" rate, pass an empty string ||
 || **vatIncluded****
 [`string`](../../data-types.md) | Flag indicating whether VAT or tax is included in the product price. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+For a custom item, the default is `Y` ||
 || **catalogXmlId****
 [`string`](../../data-types.md) | External code of the product catalog ||
 || **productXmlId****
@@ -110,7 +101,7 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"orderId":5147,"quantity":2,"productId":6544,"currency":"USD"}}' \
+    -d '{"fields":{"orderId":923,"productId":0,"name":"Oversized freight delivery","price":1500,"currency":"USD","quantity":1,"measureCode":"796","measureName":"pcs"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.basketitem.add
     ```
 
@@ -120,7 +111,7 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"orderId":5147,"quantity":2,"productId":6544,"currency":"USD"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"orderId":923,"productId":0,"name":"Oversized freight delivery","price":1500,"currency":"USD","quantity":1,"measureCode":"796","measureName":"pcs"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.basketitem.add
     ```
 
@@ -143,21 +134,21 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
         name: string
         sort: number
         quantity: number
-        price: number
+        price?: number
         basePrice: number
-        discountPrice: number
+        discountPrice?: number
         currency: string
         customPrice: string
         vatRate: number | null
-        vatIncluded: string
-        weight: number
-        dimensions: string
-        measureCode: string
-        measureName: string
+        vatIncluded?: string
+        weight?: number
+        dimensions?: string
+        measureCode?: string
+        measureName?: string
         canBuy: string
         xmlId: string
-        catalogXmlId: string
-        productXmlId: string
+        catalogXmlId?: string
+        productXmlId?: string
         dateInsert: ISODate | null
         dateUpdate: ISODate | null
         properties: unknown[]
@@ -170,10 +161,14 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
         method: 'sale.basketitem.add',
         params: {
           fields: {
-            orderId: 5147,
-            quantity: 2,
-            productId: 6544,
+            orderId: 923,
+            productId: 0,
+            name: 'Oversized freight delivery',
+            price: 1500,
             currency: 'USD',
+            quantity: 1,
+            measureCode: '796',
+            measureName: 'pcs',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -207,10 +202,14 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
             method: 'sale.basketitem.add',
             params: {
               fields: {
-                orderId: 5147,
-                quantity: 2,
-                productId: 6544,
+                orderId: 923,
+                productId: 0,
+                name: 'Oversized freight delivery',
+                price: 1500,
                 currency: 'USD',
+                quantity: 1,
+                measureCode: '796',
+                measureName: 'pcs',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -240,10 +239,14 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     fields = {
-        "orderId": 5147,
-        "quantity": 2,
-        "productId": 6544,
+        "orderId": 923,
+        "productId": 0,
+        "name": "Oversized freight delivery",
+        "price": 1500,
         "currency": "USD",
+        "quantity": 1,
+        "measureCode": "796",
+        "measureName": "pcs",
     }
 
     try:
@@ -264,8 +267,8 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
-- PHP
 
+- PHP
     ```php
     try {
         $response = $b24Service
@@ -274,20 +277,24 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
                 'sale.basketitem.add',
                 [
                     'fields' => [
-                        'orderId'   => 5147,
-                        'quantity'  => 2,
-                        'productId' => 6544,
-                        'currency'  => 'USD',
+                        'orderId'     => 923,
+                        'productId'   => 0,
+                        'name'        => 'Oversized freight delivery',
+                        'price'       => 1500,
+                        'currency'    => 'USD',
+                        'quantity'    => 1,
+                        'measureCode' => '796',
+                        'measureName' => 'pcs',
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding basket item: ' . $e->getMessage();
@@ -300,11 +307,15 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
     BX24.callMethod(
         "sale.basketitem.add",
         {
-            fields: { // minimum set of required fields
-                orderId: 5147,
-                quantity: 2,
-                productId: 6544,
+            fields: {
+                orderId: 923,
+                productId: 0,
+                name: 'Oversized freight delivery',
+                price: 1500,
                 currency: 'USD',
+                quantity: 1,
+                measureCode: '796',
+                measureName: 'pcs',
             }
         },
     )
@@ -337,10 +348,14 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
         [
             'fields' =>
             [
-                'orderId' => 5147,
-                'quantity' => 2,
-                'productId' => 6544,
+                'orderId' => 923,
+                'productId' => 0,
+                'name' => 'Oversized freight delivery',
+                'price' => 1500,
                 'currency' => 'USD',
+                'quantity' => 1,
+                'measureCode' => '796',
+                'measureName' => 'pcs',
             ]
         ]
     );
@@ -356,10 +371,14 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "sale.basketitem.add", b24.Params{
     	"fields": b24.Params{
-    		"orderId":   5147,
-    		"quantity":  2,
-    		"productId": 6544,
-    		"currency":  "EUR",
+    		"orderId":     923,
+    		"productId":   0,
+    		"name":        "Oversized freight delivery",
+    		"price":       1500,
+    		"currency":    "EUR",
+    		"quantity":    1,
+    		"measureCode": "796",
+    		"measureName": "pcs",
     	},
     })
     if err != nil {
@@ -373,17 +392,21 @@ If `Y` is specified, catalog data will be ignored. The parameters `price`, `base
     }
 
     var item struct {
-    	BasePrice    int    `json:"basePrice"`
-    	CanBuy       string `json:"canBuy"`
-    	CatalogXmlID string `json:"catalogXmlId"`
-    	Currency     string `json:"currency"`
-    	CustomPrice  string `json:"customPrice"`
-    	DateInsert   string `json:"dateInsert"`
+    	ID          int     `json:"id"`
+    	OrderID     int     `json:"orderId"`
+    	ProductID   int     `json:"productId"`
+    	Name        string  `json:"name"`
+    	Price       float64 `json:"price"`
+    	Currency    string  `json:"currency"`
+    	Quantity    float64 `json:"quantity"`
+    	MeasureCode string  `json:"measureCode"`
+    	MeasureName string  `json:"measureName"`
+    	CustomPrice string  `json:"customPrice"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.BasePrice, item.CanBuy)
+    fmt.Println(item.ID, item.Name, item.Price)
     ```
 
 {% endlist %}
@@ -402,42 +425,37 @@ HTTP status: **200**
 {
     "result": {
         "basketItem": {
-            "basePrice": 1000,
+            "basePrice": 0,
             "canBuy": "Y",
-            "catalogXmlId": "FUTURE-QUICKBOOKS-CATALOG",
             "currency": "USD",
-            "customPrice": "N",
-            "dateInsert": "2024-04-23T15:59:37+02:00",
-            "dateUpdate": "2024-04-23T15:59:37+02:00",
-            "dimensions": "a:3:{s:5:\"WIDTH\";N;s:6:\"HEIGHT\";N;s:6:\"LENGTH\";N;}",
-            "discountPrice": 100,
-            "id": 6790,
-            "measureCode": "163",
-            "measureName": "g",
-            "name": "Product",
-            "orderId": 5147,
-            "price": 900,
-            "productId": 1245,
-            "productXmlId": "1245",
+            "customPrice": "Y",
+            "dateInsert": "2026-09-28T07:49:12+02:00",
+            "dateUpdate": "2026-09-28T07:49:12+02:00",
+            "id": 1313,
+            "measureCode": "796",
+            "measureName": "pcs",
+            "name": "Oversized freight delivery",
+            "orderId": 923,
+            "price": 1500,
+            "productId": 0,
             "properties": [],
             "quantity": 1,
             "reservations": [],
             "sort": 100,
-            "vatIncluded": "N",
             "vatRate": null,
-            "weight": 0,
-            "xmlId": "bx_6627bec8c4fdc"
+            "xmlId": "bx_6aba0de846c91"
         }
     },
     "total": 1,
     "time": {
-        "start": 1713880776.108755,
-        "finish": 1713880777.704221,
-        "duration": 1.595465898513794,
-        "processing": 0.973701000213623,
-        "date_start": "2024-04-23T15:59:36+02:00",
-        "date_finish": "2024-04-23T15:59:37+02:00",
-        "operating": 0
+        "start": 1790578152,
+        "finish": 1790578153.972347,
+        "duration": 1.9723470211029053,
+        "processing": 1,
+        "date_start": "2026-09-28T08:49:12+02:00",
+        "date_finish": "2026-09-28T08:49:13+02:00",
+        "operating_reset_at": 1790578752,
+        "operating": 1.7863950729370117
     }
 }
 ```
@@ -450,11 +468,20 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItem**
-[`sale_basket_item`](../data-types.md) | Object with data of the created item (position) in the cart ||
+[`sale_basket_item`](../data-types.md#sale_basket_item) | Object with data of the created cart item. Main fields:
+- `id` — item identifier, passed to [sale.basketitem.update](./sale-basket-item-update.md), [sale.basketitem.get](./sale-basket-item-get.md), and [sale.basketitem.delete](./sale-basket-item-delete.md)
+- `orderId`, `productId`, `name`, `quantity`, `currency` — item data
+- `price`, `basePrice`, `discountPrice` — unit price, original price, and discount
+- `customPrice` — `Y` if the price is set manually, `N` if it is taken from the catalog
+- `xmlId` — external code of the item
+- `properties` — item properties, an array of [sale_basket_item_property](../data-types.md#sale_basket_item_property)
+- `reservations` — item reservations, an array of [sale_basket_item_reservation](../data-types.md#sale_basket_item_reservation)
+
+For a custom item, the `add` response omits the fields that were not passed in the request: in the example above, these are `discountPrice`, `weight`, `dimensions`, `vatIncluded`, `catalogXmlId`, `productXmlId`, `type`, `barcodeMulti`. Their values are returned by [sale.basketitem.get](./sale-basket-item-get.md). For the full list of fields, see the [sale_basket_item](../data-types.md#sale_basket_item) type description ||
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -463,8 +490,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200140400011",
+    "error_description": "Currency must be the currency of the order"
 }
 ```
 
@@ -476,37 +503,40 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `200140400007` | `basket item is not saved - bad data`
 
-The item was not created. The error occurs if an invalid product identifier is passed or if the product is inactive
-|| 
-|| `200140400008` | `Required fields: fields[ORDER_ID]`
-
-Order identifier is not specified
-|| 
+The item was not created. The error occurs if a nonexistent product identifier is passed or if the product is inactive
+||
 || `200140400009` | `Order not found`
 
-Order not found
-|| 
+The order with the passed `orderId` was not found
+||
 || `200140400011` | `Currency must be the currency of the order`
 
 The currency of the item does not match the currency of the order
-|| 
+||
 || `200040300010` | Insufficient permissions to add
-|| 
-|| `100` | Required parameters are not specified
+||
+|| `100` | `Could not find value for parameter {fields}`
+
+The `fields` parameter is not passed
+||
+|| `0` | `Required fields: orderId`
+
+A required field is not passed in `fields`. Instead of `orderId`, the text contains the name of the missing field: `productId`, `quantity`, or `currency`
 ||
 || `0` | Other errors (e.g., fatal errors)
-|| 
+||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-basket-item-update.md)
 - [{#T}](./sale-basket-item-get.md)
 - [{#T}](./sale-basket-item-list.md)
 - [{#T}](./sale-basket-item-delete.md)
-- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-add-catalog-product.md)
 - [{#T}](./sale-basket-item-update-catalog-product.md)
+- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-get-catalog-product-fields.md)

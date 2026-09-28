@@ -1,4 +1,4 @@
-# Add a position with a product or service from the catalog module to the cart of an existing order sale.basketitem.addCatalogProduct
+# Add a Catalog Product Item to an Order Cart sale.basketitem.addCatalogProduct
 
 {% note tip "" %}
 
@@ -23,10 +23,10 @@ The method `sale.basketitem.addCatalogProduct` adds a position (item) with a pro
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating an item (position) in the order cart ||
+[`object`](../../data-types.md) | Field values for creating a cart item in the order [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -34,48 +34,32 @@ The method `sale.basketitem.addCatalogProduct` adds a position (item) with a pro
 || **Name**
 `type` | **Description** ||
 || **orderId***
-[`sale_order.id`](../data-types.md) | Order identifier. Can only be specified when creating a cart position.
+[`sale_order.id`](../data-types.md#sale_order) | Order identifier. It cannot be changed after the item is created.
 
-Must be obtained earlier using the methods [sale.order.add](../order/sale-order-add.md) or [sale.order.list](../order/sale-order-list.md)
- ||
-|| **sort**
-[`integer`](../../data-types.md) | Position in the order item list ||
-|| **productid***
-[`catalog_product.id`](../../catalog/data-types.md#catalog_product) | Identifier of the product/variation
-||
-|| **price**
-[`double`](../../data-types.md) | Price considering markups and discounts (see the `customPrice` field below). If not specified, it will be calculated based on catalog data.
+Retrieve the identifier using the [sale.order.add](../order/sale-order-add.md) or [sale.order.list](../order/sale-order-list.md) method ||
+|| **productId***
+[`catalog_product.id`](../../catalog/data-types.md#catalog_product) | Identifier of a product, service, or variation from the catalog. It cannot be changed after the item is created.
 
-The field will be automatically filled if `customPrice !== ‘Y’`
- ||
-|| **basePrice**
-[`double`](../../data-types.md) | Original price without considering markups and discounts (see the `customPrice` field below). If not specified, it will be calculated based on catalog data.
-
-The field will be automatically filled if `customPrice !== ‘Y’`
- ||
-|| **discountPrice**
-[`double`](../../data-types.md) | Amount of the final discount or markup (see the `customPrice` field below). If not specified, it will be calculated based on catalog data.
-
-The field will be automatically filled if `customPrice !== ‘Y’`
- ||
-|| **currency***
-[`crm_currency.CURRENCY`](../../crm/data-types.md) | Currency of the price. Must match the currency of the order ||
-|| **customPrice**
-[`string`](../../data-types.md) | Is the price specified manually:
-- `Y` — price is set manually
-- `N` — price is obtained from the product catalog
-
-Default value is `N`.
-
-If `Y` is specified, the catalog price data will be ignored. The parameters `price`, `basePrice`, and `discountPrice` must be explicitly set so that the condition `basePrice = price + discountPrice` is met
- ||
+Retrieve the identifier using the [catalog.product.list](../../catalog/product/catalog-product-list.md) method ||
 || **quantity***
-[`double`](../../data-types.md) | Quantity of the product ||
+[`double`](../../data-types.md) | Quantity of the product. Pass a value greater than `0`: with `0`, the method creates an item with no price and no name. You can pass a fractional number, for example `1.5` ||
+|| **currency***
+[`crm_currency.CURRENCY`](../../crm/data-types.md) | Currency of the price, for example `USD`. Must match the currency of the order, otherwise the method returns the `200140400011` error. It cannot be changed after the item is created ||
+|| **price**
+[`double`](../../data-types.md) | Unit price including discounts and markups.
+
+If the parameter is not passed, Bitrix24 calculates the price from the catalog data. If the parameter is passed, the item gets `customPrice` = `Y`.
+
+If the product has no price in the catalog, pass `price`, otherwise the method returns the `200140400007` error ||
+|| **sort**
+[`integer`](../../data-types.md) | Position in the order item list. Default is `100` ||
 || **xmlId**
-[`string`](../../data-types.md) | External code of the cart position ||
-|| **name***
-[`string`](../../data-types.md) | Name of the product ||
+[`string`](../../data-types.md) | External code of the cart item. If not passed, Bitrix24 generates the code itself, for example `bx_662675fba6516` ||
 |#
+
+The method takes the name, unit of measure, base price `basePrice`, discount `discountPrice`, weight, and VAT from the product card in the catalog. If you pass them in `fields`, the values are ignored. To set the item name and price manually, use the [sale.basketitem.add](./sale-basket-item-add.md) method.
+
+The full list of fields, with required and read-only flags, is returned by the [sale.basketitem.getFieldsCatalogProduct](./sale-basket-item-get-catalog-product-fields.md) method.
 
 ## Code Examples
 
@@ -116,6 +100,7 @@ If `Y` is specified, the catalog price data will be ignored. The parameters `pri
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type AddCatalogProductResult = {
       basketItem: {
+        barcodeMulti: string
         basePrice: number
         canBuy: string
         catalogXmlId: string
@@ -244,8 +229,8 @@ If `Y` is specified, the catalog price data will be ignored. The parameters `pri
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
-- PHP
 
+- PHP
     ```php
     try {
         $response = $b24Service
@@ -354,12 +339,12 @@ If `Y` is specified, the catalog price data will be ignored. The parameters `pri
     }
 
     var item struct {
-    	BasePrice    int    `json:"basePrice"`
-    	CanBuy       string `json:"canBuy"`
-    	CatalogXmlID string `json:"catalogXmlId"`
-    	Currency     string `json:"currency"`
-    	CustomPrice  string `json:"customPrice"`
-    	DateInsert   string `json:"dateInsert"`
+    	BasePrice    float64 `json:"basePrice"`
+    	CanBuy       string  `json:"canBuy"`
+    	CatalogXmlID string  `json:"catalogXmlId"`
+    	Currency     string  `json:"currency"`
+    	CustomPrice  string  `json:"customPrice"`
+    	DateInsert   string  `json:"dateInsert"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -377,6 +362,7 @@ HTTP status: **200**
 {
     "result": {
         "basketItem": {
+            "barcodeMulti": "N",
             "basePrice": 1234,
             "canBuy": "Y",
             "catalogXmlId": "FUTURE-QUICKBOOKS-CATALOG",
@@ -426,11 +412,18 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItem**
-[`sale_basket_item`](../data-types.md) | Object with data of the created item (position) in the cart ||
+[`sale_basket_item`](../data-types.md#sale_basket_item) | The created cart item. Key fields:
+- `id` — item identifier, passed to the [sale.basketitem.updateCatalogProduct](./sale-basket-item-update-catalog-product.md), [sale.basketitem.get](./sale-basket-item-get.md), and [sale.basketitem.delete](./sale-basket-item-delete.md) methods
+- `name`, `measureCode`, `measureName`, `catalogXmlId`, `productXmlId` — data from the product card in the catalog
+- `price`, `basePrice`, `discountPrice` — unit price, price without discounts, and discount amount
+- `customPrice` — `Y` if the price is set manually in `price`, `N` if it is calculated from the catalog
+- `type` — item type: `2` for a service, `null` for a simple product, a product with variations, and a variation
+
+For the description of all fields, see the [sale_basket_item](../data-types.md#sale_basket_item) type ||
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -439,8 +432,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200140400011",
+    "error_description": "Currency must be the currency of the order"
 }
 ```
 
@@ -450,43 +443,46 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200140400006` | `Module catalog does not exist`
+|| `100` | `Could not find value for parameter {fields}`
 
-The Trade Catalog module (catalog) is missing
-|| 
+The `fields` parameter is not passed
+||
+|| `0` | `Required fields: productId`
+
+Required fields are not passed. The error text lists all missing fields out of `orderId`, `productId`, `quantity`, and `currency`, for example `Required fields: orderId, currency, quantity`. The method also returns other errors, such as fatal errors, with the same code
+||
+|| `200140400006` | `Module catalog is not exists`
+
+The Trade Catalog module is not installed
+||
 || `200140400007` | `basket item is not saved - bad data`
 
-The item was not created. The error occurs if an incorrect product identifier is passed or if the product is inactive
-|| 
-|| `200140400008` | `Required fields: fields[ORDER_ID]`
+The item was not created: there is no product with this `productId`, the product is inactive, or it has no price in the catalog and `price` is not passed.
 
-Order identifier is not specified
-|| 
+In this case, an empty item with no product and no price may remain in the order. Find it using the [sale.basketitem.list](./sale-basket-item-list.md) method and delete it using the [sale.basketitem.delete](./sale-basket-item-delete.md) method
+||
 || `200140400009` | `Order not found`
 
-Order not found
-|| 
+The order with this `orderId` was not found
+||
 || `200140400011` | `Currency must be the currency of the order`
 
-The position currency does not match the order currency
-|| 
-|| `200040300010` | Insufficient rights to add
-|| 
-|| `100` | Required parameters are not specified
+The `currency` does not match the order currency
 ||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| `200040300010` | Insufficient rights to add the item
+||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-basket-item-add.md)
 - [{#T}](./sale-basket-item-update.md)
 - [{#T}](./sale-basket-item-get.md)
 - [{#T}](./sale-basket-item-list.md)
 - [{#T}](./sale-basket-item-delete.md)
-- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-update-catalog-product.md)
+- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-get-catalog-product-fields.md)

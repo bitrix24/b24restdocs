@@ -1,4 +1,4 @@
-# Change the basket item position (catalog product) of an existing order sale.basketitem.updateCatalogProduct
+# Update a Catalog Product Item sale.basketitem.updateCatalogProduct
 
 {% note tip "" %}
 
@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.basketitem.updateCatalogProduct` changes the basket item position (catalog product) of an existing order.
+The method `sale.basketitem.updateCatalogProduct` changes a cart item with a catalog product in an existing order.
+
+The method changes only the fields `quantity`, `price`, `sort`, and `xmlId`. It takes the name, currency, and product from the catalog and skips the values of these fields in `fields` without an error. To change the item name manually, use the method [sale.basketitem.update](./sale-basket-item-update.md). The method [sale.basketitem.getFieldsCatalogProduct](./sale-basket-item-get-catalog-product-fields.md) returns the list of modifiable fields: their `isReadOnly` and `isImmutable` are `false`.
+
+After the call, the item's `customPrice` field becomes `Y`: the price is fixed and is no longer recalculated from the catalog, even if `price` was not passed.
 
 ## Method Parameters
 
@@ -23,24 +27,28 @@ The method `sale.basketitem.updateCatalogProduct` changes the basket item positi
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_basket_item.id`](../data-types.md) | Identifier of the basket item. Can be obtained using the methods [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md) and [sale.basketitem.list](./sale-basket-item-list.md) ||
+[`sale_basket_item.id`](../data-types.md#sale_basket_item) | Identifier of the cart item. You can retrieve it using the methods [sale.basketitem.addCatalogProduct](./sale-basket-item-add-catalog-product.md) and [sale.basketitem.list](./sale-basket-item-list.md) ||
 || **fields***
-[`object`](../../data-types.md) | Object with modifiable fields ||
+[`object`](../../data-types.md) | Object with modifiable fields [(detailed description)](#fields) ||
 |#
 
-### fields Parameter
+### fields Parameter {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
+|| **quantity***
+[`double`](../../data-types.md) | Quantity of the product, for example `4` or `1.5`. Always pass it, even if you change only other fields: without it, the method returns the error `Required fields: quantity`.
+
+The method skips `0`, a negative number, or a string without an error, and the quantity stays the same. To remove the item from the order, use the method [sale.basketitem.delete](./sale-basket-item-delete.md) ||
+|| **price**
+[`double`](../../data-types.md) | Unit price of the product. If not passed, the current item price is retained ||
 || **sort**
 [`integer`](../../data-types.md) | Position in the order item list ||
-|| **quantity***
-[`double`](../../data-types.md) | Quantity of the product ||
 || **xmlId**
-[`string`](../../data-types.md) | External code of the basket item ||
+[`string`](../../data-types.md) | External code of the cart item ||
 |#
 
 ## Code Examples
@@ -82,6 +90,7 @@ The method `sale.basketitem.updateCatalogProduct` changes the basket item positi
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type BasketItemUpdateResult = {
       basketItem: {
+        barcodeMulti: string,
         basePrice: number,
         canBuy: string,
         catalogXmlId: string,
@@ -97,10 +106,13 @@ The method `sale.basketitem.updateCatalogProduct` changes the basket item positi
         name: string,
         orderId: number,
         price: number,
+        productId: number,
         productXmlId: string,
+        properties: Array<{ basketId: number, code: string, id: number, name: string, sort: number, value: string, xmlId: string }>,
         quantity: number,
+        reservations: Array<{ basketId: number, dateReserve: ISODate, dateReserveEnd: ISODate, id: number, quantity: number, reservedBy: number | null, storeId: number }>,
         sort: number,
-        type: number,
+        type: number | null,
         vatIncluded: string,
         vatRate: number | null,
         weight: number,
@@ -201,6 +213,7 @@ The method `sale.basketitem.updateCatalogProduct` changes the basket item positi
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -303,12 +316,12 @@ The method `sale.basketitem.updateCatalogProduct` changes the basket item positi
     }
 
     var item struct {
-    	BasePrice    int    `json:"basePrice"`
-    	CanBuy       string `json:"canBuy"`
-    	CatalogXmlID string `json:"catalogXmlId"`
-    	Currency     string `json:"currency"`
-    	CustomPrice  string `json:"customPrice"`
-    	DateInsert   string `json:"dateInsert"`
+    	BasePrice    float64 `json:"basePrice"`
+    	CanBuy       string  `json:"canBuy"`
+    	CatalogXmlID string  `json:"catalogXmlId"`
+    	Currency     string  `json:"currency"`
+    	CustomPrice  string  `json:"customPrice"`
+    	DateInsert   string  `json:"dateInsert"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -326,43 +339,55 @@ HTTP status: **200**
 {
     "result": {
         "basketItem": {
-            "basePrice": 1234,
+            "barcodeMulti": "N",
+            "basePrice": 100,
             "canBuy": "Y",
             "catalogXmlId": "FUTURE-QUICKBOOKS-CATALOG",
             "currency": "USD",
-            "customPrice": "N",
-            "dateInsert": "2024-04-22T16:23:43+02:00",
-            "dateUpdate": "2024-04-22T16:32:26+02:00",
+            "customPrice": "Y",
+            "dateInsert": "2026-09-28T06:46:42+02:00",
+            "dateUpdate": "2026-09-28T06:46:49+02:00",
             "dimensions": "a:3:{s:5:\"WIDTH\";N;s:6:\"HEIGHT\";N;s:6:\"LENGTH\";N;}",
-            "discountPrice": 124,
+            "discountPrice": 0,
             "id": 6783,
             "measureCode": "796",
             "measureName": "pcs",
-            "name": " Design Development ",
+            "name": "Parent product",
             "orderId": 5147,
-            "price": 1110,
-            "productid": 4347,
-            "productXmlId": "4347",
+            "price": 100,
+            "productId": 6967,
+            "productXmlId": "6967",
             "properties": [],
             "quantity": 4,
-            "reservations": [],
+            "reservations": [
+                {
+                    "basketId": 6783,
+                    "dateReserve": "2026-09-28T06:46:42+02:00",
+                    "dateReserveEnd": "2026-10-01T20:00:00+02:00",
+                    "id": 329,
+                    "quantity": 1,
+                    "reservedBy": null,
+                    "storeId": 1
+                }
+            ],
             "sort": 100,
-            "type": 2,
+            "type": null,
             "vatIncluded": "N",
-            "vatRate": null,
+            "vatRate": 0,
             "weight": 0,
-            "xmlId": "bx_662672ef370c6"
+            "xmlId": "bx_6ab9ff420a704"
         }
     },
     "total": 1,
     "time": {
-        "start": 1713796344.951712,
-        "finish": 1713796346.586924,
-        "duration": 1.6352121829986572,
-        "processing": 0.6428370475769043,
-        "date_start": "2024-04-22T16:32:24+02:00",
-        "date_finish": "2024-04-22T16:32:26+02:00",
-        "operating": 0
+        "start": 1790574409,
+        "finish": 1790574410.105003,
+        "duration": 1.1050031185150146,
+        "processing": 1,
+        "date_start": "2026-09-28T07:46:49+02:00",
+        "date_finish": "2026-09-28T07:46:50+02:00",
+        "operating_reset_at": 1790575009,
+        "operating": 0.23203706741333008
     }
 }
 ```
@@ -375,11 +400,23 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItem**
-[`sale_basket_item`](../data-types.md) | Object with data of the created basket item ||
+[`sale_basket_item`](../data-types.md#sale_basket_item) | Object with data of the modified cart item. Main fields:
+- `id` — identifier of the item
+- `orderId` — identifier of the order
+- `productId` — identifier of the product in the catalog
+- `name` — product name from the catalog
+- `quantity` — quantity
+- `price` — unit price including discounts and markups, `basePrice` — price excluding them
+- `customPrice` — `Y` if the price is fixed manually
+- `currency` — price currency
+- `properties` — item properties, an array of [sale_basket_item_property](../data-types.md#sale_basket_item_property) objects
+- `reservations` — item reservations in warehouses, an array of [sale_basket_item_reservation](../data-types.md#sale_basket_item_reservation) objects
+
+For the full list of fields with types, see the description of the type [sale_basket_item](../data-types.md#sale_basket_item) ||
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -388,8 +425,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200140400001",
+    "error_description": "basket item is not exists"
 }
 ```
 
@@ -399,29 +436,31 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200140400006` | `Module catalog is not exists`
+|| `0` | `Required fields: quantity`
 
-The Trade Catalog module is missing
-|| 
+The required field `quantity` is not passed in `fields`
+||
 || `200140400001` | `basket item is not exists`
 
-Basket item not found
-|| 
-|| `200140400008` | `Required fields: fields[ORDER_ID]`
+There is no cart item with this `id`
+||
+|| `100` | `Could not find value for parameter {fields}`
 
-Order ID is not specified
-|| 
+The `fields` parameter is not passed
+||
+|| `100` | `Bitrix\Sale\BasketItem constructor must be is public`
+
+The `id` parameter is not passed
+||
+|| `200140400006` | `Module catalog is not exists`
+
+The Trade Catalog module is not installed
+||
 || `200140400009` | `Order not found`
 
-Order not found
-|| 
-|| `200140400011` | `Currency must be the currency of the order`
-
-The item's currency does not match the order's currency
-|| 
+The item's order is not found
+||
 || `200040300010` | Insufficient permissions to modify
-|| 
-|| `100` | Required parameters are not specified
 ||
 || `0` | Other errors (e.g., fatal errors)
 ||
@@ -431,11 +470,12 @@ The item's currency does not match the order's currency
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-basket-item-add.md)
 - [{#T}](./sale-basket-item-update.md)
 - [{#T}](./sale-basket-item-get.md)
 - [{#T}](./sale-basket-item-list.md)
 - [{#T}](./sale-basket-item-delete.md)
-- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-add-catalog-product.md)
+- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-get-catalog-product-fields.md)

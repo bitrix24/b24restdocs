@@ -1,4 +1,4 @@
-# Remove item (position) from the cart using sale.basketitem.delete
+# Remove an Item from an Order Cart sale.basketitem.delete
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.basketitem.delete` removes an item (position) from the cart in the order.
+The method `sale.basketitem.delete` removes a cart item from an order. After the removal, the order total is recalculated. If you remove the last item, the order is left with no items and a total of `0`.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `sale.basketitem.delete` removes an item (position) from the cart in 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_basket_item.id`](../data-types.md) | Identifier of the cart item (position).
+[`sale_basket_item.id`](../data-types.md#sale_basket_item) | Identifier of the cart item.
 
 You can obtain it using the [sale.basketitem.list](./sale-basket-item-list.md) method.
 ||
@@ -147,6 +147,7 @@ You can obtain it using the [sale.basketitem.list](./sale-basket-item-list.md) m
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -264,9 +265,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the cart item removal ||
+[`boolean`](../../data-types.md) | Result of the cart item removal. Returns `true` on successful removal ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -275,8 +276,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200140400001",
+    "error_description": "basket item is not exists"
 }
 ```
 
@@ -286,27 +287,30 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200140400001` | `basket item does not exist`
+|| `200140400001` | `basket item is not exists`
 
-Cart item not found
-|| 
-|| `200040300010` | Insufficient permissions to delete
-|| 
-|| `100` | Required parameters are missing
+There is no cart item with this `id`. The error also occurs when you try to remove an item that has already been removed
 ||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| `200040300010` | Insufficient permissions to delete
+||
+|| `100` | `Bitrix\Sale\BasketItem constructor must be is public`
+
+The `id` parameter is not specified
+||
+|| `0` | Other errors, such as fatal errors
+||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-basket-item-add.md)
 - [{#T}](./sale-basket-item-update.md)
 - [{#T}](./sale-basket-item-get.md)
 - [{#T}](./sale-basket-item-list.md)
-- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-add-catalog-product.md)
 - [{#T}](./sale-basket-item-update-catalog-product.md)
+- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-get-catalog-product-fields.md)

@@ -3,21 +3,21 @@ href: index.md
 items: 
   - name: Overview of Methods
     href: index.md 
-  - name: Add Item to Cart of Existing Order
-    href: sale-basket-item-add.md 
-  - name: Update Item in Cart of Existing Order
+  - name: Add Custom Item to Order Cart
+    href: sale-basket-item-add.md
+  - name: Update Order Cart Item
     href: sale-basket-item-update.md
-  - name: Get Information About Cart Item of Order
+  - name: Get Cart Item
     href: sale-basket-item-get.md
   - name: Get List of Cart Items
     href: sale-basket-item-list.md
-  - name: Remove Item from Cart of Order
+  - name: Remove Item from Order Cart
     href: sale-basket-item-delete.md
-  - name: Get Available Fields of Cart Item
-    href: sale-basket-item-get-fields.md 
-  - name: Add Item with Product or Service from Catalog Module to Cart of Existing Order
-    href: sale-basket-item-add-catalog-product.md 
-  - name: Update Cart Item (Product from Catalog) of Existing Order
-    href: sale-basket-item-update-catalog-product.md 
-  - name: Get Available Fields of Cart Item (Product from Catalog)
-    href: sale-basket-item-get-catalog-product-fields.md 
+  - name: Add Catalog Product Item to Order Cart
+    href: sale-basket-item-add-catalog-product.md
+  - name: Update Catalog Product Item
+    href: sale-basket-item-update-catalog-product.md
+  - name: Get Cart Item Fields
+    href: sale-basket-item-get-fields.md
+  - name: Get Catalog Product Item Fields
+    href: sale-basket-item-get-catalog-product-fields.md

@@ -1,4 +1,4 @@
-# Change the position of the basket in an existing order sale.basketitem.update
+# Update an Order Cart Item sale.basketitem.update
 
 {% note tip "" %}
 
@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.basketitem.update` modifies the position of the basket in an existing order.
+The method `sale.basketitem.update` modifies a cart item in an existing order. After the quantity or price changes, Bitrix24 recalculates the order total.
+
+For a cart item with a product from the catalog, use the method [sale.basketitem.updateCatalogProduct](./sale-basket-item-update-catalog-product.md): it takes the name and currency of the item from the catalog.
 
 ## Method Parameters
 
@@ -23,34 +25,40 @@ The method `sale.basketitem.update` modifies the position of the basket in an ex
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_basket_item.id`](../data-types.md) | Identifier of the order item ||
+[`sale_basket_item.id`](../data-types.md#sale_basket_item) | Identifier of the cart item. You can retrieve cart item identifiers using the method [sale.basketitem.list](./sale-basket-item-list.md) ||
 || **fields***
-[`object`](../../data-types.md) | Values of the fields to be modified ||
+[`object`](../../data-types.md) | Values of the fields to be modified [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
+|| **quantity***
+[`double`](../../data-types.md) | Quantity of the product. Pass it in every call, even if the quantity does not change, otherwise the method returns the error `Required fields: quantity`.
+
+The method ignores a zero, negative, or non-numeric value without an error ||
 || **sort**
-[`integer`](../../data-types.md) | Position in the list of order items ||
+[`integer`](../../data-types.md) | Position in the list of cart items ||
 || **price**
-[`double`](../../data-types.md) | Price including markups and discounts ||
+[`double`](../../data-types.md) | Price including markups and discounts. If you pass a price, Bitrix24 sets `customPrice` = `Y` for the item — the price is considered manually set and is no longer taken from the catalog ||
 || **basePrice**
-[`double`](../../data-types.md) | Original price excluding markups and discounts ||
+[`double`](../../data-types.md) | Original price excluding markups and discounts. Pass it together with `price` and `discountPrice` so that `basePrice = price + discountPrice` holds ||
 || **discountPrice**
-[`double`](../../data-types.md) | Amount of the final discount or markup ||
-|| **quantity**
-[`double`](../../data-types.md) | Quantity of the product ||
+[`double`](../../data-types.md) | Amount of the final discount or markup. For a markup, the value is negative ||
 || **xmlId**
-[`string`](../../data-types.md) | External code of the basket item ||
+[`string`](../../data-types.md) | External code of the cart item ||
 || **name**
 [`string`](../../data-types.md) | Name of the product ||
 || **weight**
-[`integer`](../../data-types.md) | Weight of the product ||
+[`double`](../../data-types.md) | Weight of the product. A cart item from the catalog receives the value of the product's `weight` field without conversion, so pass the weight in the same units as in the catalog ||
 || **dimensions**
-[`string`](../../data-types.md) | Dimensions of the product (serialized array) ||
+[`string`](../../data-types.md) | Dimensions of the product — a string with a PHP-serialized array with the keys `WIDTH`, `HEIGHT`, and `LENGTH`, for example `a:3:{s:5:"WIDTH";i:244;s:6:"HEIGHT";i:100;s:6:"LENGTH";i:31;}`. Cart items added from the catalog store dimensions in this form.
+
+The method does not validate the format and saves any string as is. If you pass an object instead of a string, the value `Array` is saved ||
 || **measureCode**
 [`catalog_measure.code`](../../catalog/data-types.md#catalog_measure) | Code of the product's unit of measure ||
 || **measureName**
@@ -60,16 +68,18 @@ The method `sale.basketitem.update` modifies the position of the basket in an ex
 - `Y` — yes
 - `N` — no ||
 || **vatRate**
-[`double`](../../data-types.md) | Tax rate as a fraction of one: `0.1` means 10 %. To specify the "No VAT" rate, an empty string should be passed ||
+[`double`](../../data-types.md) | Tax rate as a fraction of one: `0.1` means 10 %. For the "No VAT" rate, pass an empty string; the response contains `null` ||
 || **vatIncluded**
 [`string`](../../data-types.md) | Flag indicating whether VAT or tax is included in the product price. Possible values:
 - `Y` — yes
 - `N` — no ||
-|| **catalogXmlId**
-[`string`](../../data-types.md) | External code of the product catalog ||
-|| **productXmlId**
-[`string`](../../data-types.md) | External code of the product ||
 |#
+
+The fields `orderId`, `productId`, `currency`, `customPrice`, `catalogXmlId`, and `productXmlId` cannot be changed via `sale.basketitem.update`. The method ignores them without an error and returns the previous values. The item currency `currency` always matches the order currency; it is set when the item is added.
+
+To move a product to another order or replace a product, delete the item using the method [sale.basketitem.delete](./sale-basket-item-delete.md) and add a new one using the method [sale.basketitem.add](./sale-basket-item-add.md).
+
+The method also skips unknown fields without an error. Check the result against the `basketItem` object in the response.
 
 ## Code Examples
 
@@ -110,6 +120,7 @@ The method `sale.basketitem.update` modifies the position of the basket in an ex
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type BasketItemUpdateResult = {
       basketItem: {
+        barcodeMulti: string
         basePrice: number
         canBuy: string
         catalogXmlId: string
@@ -133,7 +144,7 @@ The method `sale.basketitem.update` modifies the position of the basket in an ex
         sort: number
         type: string | null
         vatIncluded: string
-        vatRate: number
+        vatRate: number | null
         weight: number
         xmlId: string
       }
@@ -238,6 +249,7 @@ The method `sale.basketitem.update` modifies the position of the basket in an ex
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -255,13 +267,13 @@ The method `sale.basketitem.update` modifies the position of the basket in an ex
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating basket item: ' . $e->getMessage();
@@ -347,12 +359,12 @@ The method `sale.basketitem.update` modifies the position of the basket in an ex
     }
 
     var item struct {
-    	BasePrice    int    `json:"basePrice"`
-    	CanBuy       string `json:"canBuy"`
-    	CatalogXmlID string `json:"catalogXmlId"`
-    	Currency     string `json:"currency"`
-    	CustomPrice  string `json:"customPrice"`
-    	DateInsert   string `json:"dateInsert"`
+    	BasePrice    float64 `json:"basePrice"`
+    	CanBuy       string  `json:"canBuy"`
+    	CatalogXmlID string  `json:"catalogXmlId"`
+    	Currency     string  `json:"currency"`
+    	CustomPrice  string  `json:"customPrice"`
+    	DateInsert   string  `json:"dateInsert"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -370,6 +382,7 @@ HTTP status: **200**
 {
     "result": {
         "basketItem": {
+            "barcodeMulti": "N",
             "basePrice": 1000,
             "canBuy": "Y",
             "catalogXmlId": "",
@@ -393,7 +406,7 @@ HTTP status: **200**
             "sort": 400,
             "type": null,
             "vatIncluded": "Y",
-            "vatRate": 10,
+            "vatRate": 0.1,
             "weight": 40,
             "xmlId": "BasketPositionId"
         }
@@ -419,11 +432,20 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItem**
-[`sale_basket_item`](../data-types.md) | Object containing data of the updated basket item ||
+[`sale_basket_item`](../data-types.md#sale_basket_item) | Updated cart item. Contains all fields of the item, not only the changed ones. Key fields:
+- `id`, `orderId`, `productId` — identifiers of the item, order, and product
+- `name`, `quantity`, `currency` — product name, quantity, and item currency
+- `price`, `basePrice`, `discountPrice` — unit price, price without discounts, and discount amount
+- `customPrice` — `Y` if the price is set manually, `N` if it is calculated from the catalog
+- `weight`, `dimensions` — weight and dimensions as they are saved
+- `properties` — array of [cart item properties](../data-types.md#sale_basket_item_property)
+- `reservations` — array of [cart item reservations in warehouses](../data-types.md#sale_basket_item_reservation)
+
+For a description of all fields, see the type [sale_basket_item](../data-types.md#sale_basket_item) ||
 || **total**
 [`integer`](../../data-types.md) | Number of processed records ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -432,8 +454,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "0",
+    "error_description": "Required fields: quantity"
 }
 ```
 
@@ -443,39 +465,38 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200140400001` | `basket item does not exist`
+|| `0` | `Required fields: quantity`
 
-Basket item not found
-|| 
-|| `200140400008` | `Required fields: fields[ORDER_ID]`
+The required field `quantity` is not passed in `fields`
+||
+|| `200140400001` | `basket item is not exists`
 
-Order ID not specified
-|| 
-|| `200140400009` | `Order not found`
-
-Order not found
-|| 
-|| `200140400011` | `Currency must match the order's currency`
-
-Item currency does not match the order's currency
-|| 
+There is no cart item with this `id`
+||
 || `200040300010` | Insufficient permissions to modify
-|| 
-|| `100` | Required parameters not specified
+||
+|| `100` | `Could not find value for parameter {fields}`
+
+The `fields` parameter is not passed
+||
+|| `100` | `Bitrix\Sale\BasketItem constructor must be is public`
+
+The `id` parameter is not passed
 ||
 || `0` | Other errors (e.g., fatal errors)
-|| 
+||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-basket-item-add.md)
 - [{#T}](./sale-basket-item-get.md)
 - [{#T}](./sale-basket-item-list.md)
 - [{#T}](./sale-basket-item-delete.md)
-- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-add-catalog-product.md)
 - [{#T}](./sale-basket-item-update-catalog-product.md)
+- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-get-catalog-product-fields.md)

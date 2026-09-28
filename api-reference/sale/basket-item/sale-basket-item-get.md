@@ -1,4 +1,4 @@
-# Get Information About a Basket Item (Position) sale.basketitem.get
+# Get a Cart Item sale.basketitem.get
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: store manager
 
-The method `sale.basketitem.get` retrieves information about a basket item (position).
+The method `sale.basketitem.get` retrieves information about an order cart item by its identifier.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `sale.basketitem.get` retrieves information about a basket item (posi
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_basket_item.id`](../data-types.md) | Identifier of the basket item (position).
+[`sale_basket_item.id`](../data-types.md#sale_basket_item) | Identifier of the cart item.
 
 Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) method
 ||
@@ -178,6 +178,7 @@ Can be obtained using the [sale.basketitem.list](./sale-basket-item-list.md) met
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -293,6 +294,7 @@ HTTP Status: **200**
 {
     "result": {
         "basketItem": {
+            "barcodeMulti": "N",
             "basePrice": 1000,
             "canBuy": "Y",
             "catalogXmlId": "FUTURE-QUICKBOOKS-CATALOG",
@@ -314,6 +316,7 @@ HTTP Status: **200**
             "quantity": 1,
             "reservations": [],
             "sort": 100,
+            "type": null,
             "vatIncluded": "N",
             "vatRate": null,
             "weight": 0,
@@ -340,9 +343,19 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **basketItem**
-[`sale_basket_item`](../data-types.md) | Object containing the data of the basket item (position) ||
+[`sale_basket_item`](../data-types.md#sale_basket_item) | Object containing the cart item data. Key fields:
+- `id`, `orderId`, `productId` — identifiers of the cart item, the order, and the product
+- `name`, `quantity`, `currency` — product name, quantity, and currency of the cart item
+- `price`, `basePrice`, `discountPrice` — unit price, price before discounts, and discount amount
+- `customPrice` — `Y` if the price was set manually, `N` if it was calculated from the catalog
+- `vatRate`, `vatIncluded` — tax rate and whether the tax is included in the price
+- `dateInsert`, `dateUpdate` — dates the cart item was added and last modified
+- `properties` — array of [cart item properties](../data-types.md#sale_basket_item_property). If there are no properties, an empty array is returned
+- `reservations` — array of [cart item reservations in warehouses](../data-types.md#sale_basket_item_reservation). If there are no reservations, an empty array is returned
+
+All fields are described in the [sale_basket_item](../data-types.md#sale_basket_item) type ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -351,8 +364,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200140400001",
+    "error_description": "basket item is not exists"
 }
 ```
 
@@ -362,27 +375,30 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200140400001` | `basket item does not exist`
+|| `200140400001` | `basket item is not exists`
 
-Basket position not found
-|| 
-|| `200040300010` | Insufficient permissions to read
-|| 
-|| `100` | Required parameters not specified
+There is no cart item with this `id`
 ||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| `200040300010` | Insufficient permissions to read
+||
+|| `100` | `Bitrix\Sale\BasketItem constructor must be is public`
+
+The `id` parameter is not specified
+||
+|| `0` | Other errors, such as fatal errors
+||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-basket-item-add.md)
 - [{#T}](./sale-basket-item-update.md)
 - [{#T}](./sale-basket-item-list.md)
 - [{#T}](./sale-basket-item-delete.md)
-- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-add-catalog-product.md)
 - [{#T}](./sale-basket-item-update-catalog-product.md)
+- [{#T}](./sale-basket-item-get-fields.md)
 - [{#T}](./sale-basket-item-get-catalog-product-fields.md)
