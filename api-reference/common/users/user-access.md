@@ -1,4 +1,4 @@
-# Determine the user.access permissions set
+# Check User Access Codes user.access
 
 {% note tip "" %}
 
@@ -13,30 +13,34 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The `user.access` method checks if the current user has at least one of the permissions specified in the `ACCESS` parameter.
+The `user.access` method checks if the current user has at least one of the access codes passed in the `ACCESS` parameter.
 
 ## Method Parameters
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **ACCESS***
-[`array`](../../data-types.md) | List of access codes to check.
+|| **ACCESS**
+[`string[]`](../../data-types.md)\|[`string`](../../data-types.md) | List of access codes to check, for example `["D1", "SG1_K"]`. A single code can be passed as a string, for example `"D1"`.
 
 Code formats:
 
 - `U<id>` — user, for example `U1`
-- `G<id>` — user group, for example `G2`
-- `AU` — all authorized users
+- `G<id>` — user group, for example `G1`. The `G2` code is "All visitors", and with it the method always returns `true`
+- `AU` — all authorized users. When called via REST, the user is always authorized, so with `AU` the method always returns `true`
+- `D<id>` — a department the user belongs to, for example `D1`
+- `DR<id>` — a department together with all its subdepartments, for example `DR1`
+- `IU<id>` — an employee and their supervisors: `true` if the current user is employee `<id>` or their supervisor
+- `SG<id>_A` — owner of a group or project, `SG<id>_E` — owner and moderators, `SG<id>_K` — all members, for example `SG1_K`
 
-The names of the codes are retrieved by the [access.name](../system/access-name.md) method ||
+The `CR` (author) code is not assigned to a user in Bitrix24, so with it the method returns `false` to everyone except an administrator. The names of the codes are retrieved by the [access.name](../system/access-name.md) method.
+
+If the parameter is not passed, is empty, or contains only non-existent codes, the method does not return an error: it returns `true` to an administrator and `false` to other users ||
 |#
 
 {% note info "" %}
 
-For a user with permissions to manage application settings, the method always returns `true`, regardless of the access codes provided. The permissions themselves are checked by the [user.admin](./user-admin.md) method.
+For a Bitrix24 administrator, the method always returns `true`, regardless of the access codes provided. Administrator permissions are checked by the [user.admin](./user-admin.md) method.
 
 {% endnote %}
 
@@ -53,7 +57,7 @@ For a user with permissions to manage application settings, the method always re
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{
-        "ACCESS": ["G2", "AU"]
+        "ACCESS": ["D1", "SG1_K"]
     }' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.access
     ```
@@ -65,7 +69,7 @@ For a user with permissions to manage application settings, the method always re
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{
-        "ACCESS": ["G2", "AU"],
+        "ACCESS": ["D1", "SG1_K"],
         "auth": "**put_access_token_here**"
     }' \
     https://**put_your_bitrix24_address**/rest/user.access
@@ -85,7 +89,7 @@ For a user with permissions to manage application settings, the method always re
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'user.access',
         params: {
-          ACCESS: ['G2', 'AU'],
+          ACCESS: ['D1', 'SG1_K'],
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -117,7 +121,7 @@ For a user with permissions to manage application settings, the method always re
           const response = await $b24.actions.v2.call.make({
             method: 'user.access',
             params: {
-              ACCESS: ['G2', 'AU'],
+              ACCESS: ['D1', 'SG1_K'],
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -148,8 +152,8 @@ For a user with permissions to manage application settings, the method always re
     try:
         bitrix_response = client.user.access(
             access=[
-                "G2",
-                "AU",
+                "D1",
+                "SG1_K",
             ],
         ).response
         result = bitrix_response.result
@@ -176,7 +180,7 @@ For a user with permissions to manage application settings, the method always re
             ->call(
                 'user.access',
                 [
-                    'ACCESS' => ["G2", "AU"]
+                    'ACCESS' => ["D1", "SG1_K"]
                 ]
             );
     
@@ -202,7 +206,7 @@ For a user with permissions to manage application settings, the method always re
     BX24.callMethod(
         "user.access",
         {
-            "ACCESS": ["G2", "AU"]
+            "ACCESS": ["D1", "SG1_K"]
         },
         function(result)
         {
@@ -222,7 +226,7 @@ For a user with permissions to manage application settings, the method always re
     $result = CRest::call(
         'user.access',
         [
-            'ACCESS' => ['G2','AU']
+            'ACCESS' => ['D1','SG1_K']
         ]
     );
 
@@ -236,7 +240,7 @@ For a user with permissions to manage application settings, the method always re
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "user.access", b24.Params{
-    	"ACCESS": []string{"G2", "AU"},
+    	"ACCESS": []string{"D1", "SG1_K"},
     })
     if err != nil {
     	return fmt.Errorf("user.access: %w", err)
@@ -276,16 +280,22 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the current user has at least one of the access codes listed in the `ACCESS` parameter or has permissions to manage application settings, `false` otherwise ||
+[`boolean`](../../data-types.md) | Returns `true` if the current user has at least one of the access codes listed in the `ACCESS` parameter or is a Bitrix24 administrator, `false` otherwise ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
+The method has no errors of its own.
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./user-admin.md)
 - [{#T}](./profile.md)
+- [{#T}](../system/access-name.md)

@@ -9,21 +9,21 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-System methods check the availability of methods and scope, retrieve information about the application, access codes, available functionality, and server time.
+System methods check the availability of methods and scope, retrieve information about the application, access codes, available features, and server time.
 
 > Quick Navigation: [All Methods](#all-methods)
 
 ## What to Check Before Calling a Method
 
-**Application Context.** The method [app.info](./app-info.md) only works within the context of the application. Otherwise, the method will return an `ACCESS_DENIED` error.
+**Application Context.** The method [app.info](./app-info.md) returns full information about the application only within the application context.
 
-**Method Availability.** For new integrations, use [method.get](./method-get.md). This method shows whether the method exists in Bitrix24 and if it can be called with the current permissions.
+**Method Availability.** Check a method with [method.get](./method-get.md): it shows whether the method exists in Bitrix24 and whether it can be called with the current scopes.
 
-**Functionality Availability.** The method [feature.get](./feature-get.md) is needed when behavior depends on scope and the functionality enabled in Bitrix24.
+**Feature Availability.** The method [feature.get](./feature-get.md) checks whether a Bitrix24 feature that the application's behavior depends on is enabled, for example, the extended mode of offline events.
 
 ## Relationship with Other Objects
 
-**Access Permissions.** The method [access.name](./access-name.md) decodes `ACCESS` codes used by, for example, [user.access](../users/user-access.md). User permissions, rather than application permissions, are checked by [user.access](../users/user-access.md).
+**Access Permissions.** The method [access.name](./access-name.md) decodes `ACCESS` codes used by, for example, [user.access](../users/user-access.md).
 
 **Application Permissions.** The method [scope](./scope.md) returns the scope of the current application. The values of scope codes are described on the [available scopes](../../scopes/permissions.md) page.
 
@@ -37,15 +37,11 @@ System methods check the availability of methods and scope, retrieve information
 
 #| 
 || **Method** | **Description** ||
-|| [method.get](./method-get.md) | Checks the existence of a method in Bitrix24 and its availability for the application ||
+|| [method.get](./method-get.md) | Checks the existence of a method in Bitrix24 and its availability with the current scopes ||
 || [scope](./scope.md) | Retrieves a list of scopes available to the current application ||
 || [app.info](./app-info.md) | Returns information about the application ||
 || [access.name](./access-name.md) | Retrieves the names of `ACCESS` codes ||
-|| [feature.get](./feature-get.md) | Checks the availability of functionality in Bitrix24 ||
+|| [feature.get](./feature-get.md) | Checks the availability of a feature in Bitrix24 ||
 || [server.time](./server-time.md) | Returns the current server time ||
-|| [methods](./methods.md) | {% note warning "DEPRECATED" %}
-
-Development of this method has been halted. Use [method.get](./method-get.md).
-
-{% endnote %} ||
+|| [methods](./methods.md) | Retrieves a list of available methods. Deprecated; use [method.get](./method-get.md) for new integrations ||
 |#

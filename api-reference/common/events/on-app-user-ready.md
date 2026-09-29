@@ -1,4 +1,4 @@
-# Event for Creating an Application System User ONAPPUSERREADY
+# Event When Creating an Application System User ONAPPUSERREADY
 
 {% note tip "" %}
 
@@ -11,17 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
-> Who can subscribe: the application handler is registered automatically
+> Who can subscribe: any user
 
-The `ONAPPUSERREADY` event is triggered after the application installation is completed successfully, when Bitrix24 has created or reactivated the application [system user](../../../settings/system-user.md).
+The `ONAPPUSERREADY` event is triggered after the application installation is completed successfully, when Bitrix24 has created or reactivated the application [system user](../../../settings/system-user.md). The event is not sent to local applications.
 
-The event handler is registered automatically at the application handler URL used for installation. The handler is transferred together with the application configuration.
+The handler is transferred together with the application configuration.
 
-Unlike [`ONAPPINSTALL`](./on-app-install.md), the `ONAPPUSERREADY` event is sent for both immediate and deferred installation completion modes and passes long-lived authorization for the system user. If the application needs to run without an employee's involvement, rely on the `ONAPPUSERREADY` event.
+Both events, `ONAPPUSERREADY` and [`ONAPPINSTALL`](./on-app-install.md), are triggered when the installation is completed, including after the `installFinish` call. There are two differences: the `ONAPPUSERREADY` handler is registered automatically for any application with an installation URL, and the event `data` contains long-lived authorization of the system user. If the application needs to run without an employee's involvement, rely on the `ONAPPUSERREADY` event.
 
 ## What the Handler Receives
 
-Data is passed as a POST request in form-encoded format {.b24-info}
+Data is transmitted as a POST request {.b24-info}
 
 ```json
 {
@@ -38,7 +38,8 @@ Data is passed as a POST request in form-encoded format {.b24-info}
         "member_id": "a1b2c3d4e5f60718293a4b5c6d7e8f90",
         "user_id": "512",
         "client_id": "app.573ad8a0346747.09223434",
-        "status": "L",
+        "status": "P",
+        "date_finish": "1767139200",
         "LANGUAGE_ID": "de"
     },
     "ts": "1756890123",
@@ -47,22 +48,16 @@ Data is passed as a POST request in form-encoded format {.b24-info}
         "refresh_token": "q9z8y7x6w5v4u3t2s1r0q9p8o7n6m5l4",
         "expires_in": "3600",
         "scope": "crm,user,task",
-        "domain": "oauth.bitrix.info",
+        "domain": "some-domain.bitrix24.com",
         "server_endpoint": "https://oauth.bitrix.info/rest/",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "a1b2c3d4e5f60718293a4b5c6d7e8f90",
         "user_id": "1",
-        "status": "L",
+        "status": "P",
         "application_token": "0f1e2d3c4b5a69788796a5b4c3d2e1f0"
     }
 }
 ```
-
-{% note info "" %}
-
-The `data` object contains the system user authorization, and the `auth` object contains the authorization of the employee who installed the application and the `application_token` for event verification.
-
-{% endnote %}
 
 ## Request Parameters
 
@@ -82,7 +77,7 @@ In this case — `ONAPPUSERREADY` ||
 
 The structure is described [below](#data) ||
 || **ts***
-[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
 || **auth***
 [`object`](../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
@@ -119,14 +114,13 @@ The structure is described [below](#auth) ||
 
 Possible values:
 
-- `L` — local application
 - `F` — free mass-market application
 - `D` — demo version of a mass-market application
 - `T` — trial version of a mass-market application, time-limited
 - `P` — paid mass-market application
 ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Bitrix24 language at the time of application installation ||
+[`string`](../../data-types.md) | Default language of the Bitrix24 account: `ru`, `en` and others ||
 || **date_finish**
 [`timestamp`](../../data-types.md) | Subscription end date and time, if known to Bitrix24 ||
 |#
@@ -142,37 +136,36 @@ The `APP_ID` field is not passed in `data`. The application identifies itself by
 #|
 || **Name**
 `type` | **Description** ||
-|| **access_token***
+|| **access_token**
 [`string`](../../data-types.md) | Token for API calls ||
-|| **refresh_token***
+|| **refresh_token**
 [`string`](../../data-types.md) | Token for refreshing OAuth 2.0 authorization ||
-|| **expires_in***
+|| **expires_in**
 [`integer`](../../data-types.md) | Access token lifetime in seconds ||
-|| **scope***
-[`string`](../../data-types.md) | List of permissions granted to the application ||
+|| **scope**
+[`string`](../../data-types.md) | Codes of the [permissions](../../scopes/permissions.md) granted to the application, separated by commas ||
 || **domain***
 [`string`](../../data-types.md) | Address of the Bitrix24 account where the event occurred ||
 || **server_endpoint***
-[`string`](../../data-types.md) | Bitrix24 authorization server address required to refresh OAuth 2.0 tokens ||
+[`string`](../../data-types.md) | Authorization server address for token renewal ||
 || **client_endpoint***
 [`string`](../../data-types.md) | Base path for calling Bitrix24 API methods ||
 || **member_id***
-[`string`](../../data-types.md) | ID of the Bitrix24 account where the event occurred ||
+[`string`](../../data-types.md) | Unique identifier of the account ||
 || **user_id***
 [`integer`](../../data-types.md) | ID of the employee who installed the application ||
-|| **status***
+|| **status**
 [`string`](../../data-types.md) | Application status.
 
 Possible values:
 
-- `L` — local application
 - `F` — free mass-market application
 - `D` — demo version of a mass-market application
 - `T` — trial version of a mass-market application, time-limited
 - `P` — paid mass-market application
 ||
 || **application_token***
-[`string`](../../data-types.md) | Token for secure event handling ||
+[`string`](../../data-types.md) | Application token. Compare it with the token retained during installation to make sure the request came from Bitrix24. For more details, see the article [{#T}](../../events/safe-event-handlers.md) ||
 |#
 
 ## How to Handle the Event
@@ -207,6 +200,7 @@ saveSystemUserAuth(
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](../../../settings/system-user.md)
 - [{#T}](./on-app-install.md)
 - [{#T}](./on-app-uninstall.md)

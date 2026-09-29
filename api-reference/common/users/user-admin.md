@@ -1,4 +1,4 @@
-# Determine Access Permissions for Application Settings user.admin
+# Check Administrator Permissions user.admin
 
 {% note tip "" %}
 
@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `user.admin` determines whether the current user has the permissions to manage application settings.
+The method `user.admin` checks whether the current user is a Bitrix24 administrator.
+
+In cloud Bitrix24, the method returns `true` to a user with the permission to change Bitrix24 settings (the `bitrix24_config` operation); in the on-premise version, it returns `true` to a member of the administrators group.
+
+## Method Parameters
 
 No parameters.
 
@@ -233,20 +237,22 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the current user has permissions to manage application settings, `false` otherwise ||
+[`boolean`](../../data-types.md) | Returns `true` if the current user is a Bitrix24 administrator, `false` otherwise ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
+The method has no errors of its own.
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./user-access.md)
 - [{#T}](./profile.md)
-
-## See Also
-
 - [BX24.isAdmin](../../../sdk/bx24-js-sdk/additional-functions/bx24-is-admin.md)

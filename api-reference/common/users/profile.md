@@ -13,9 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The `profile` method allows you to retrieve basic information about the current user without any scopes, unlike [user.current](../../user/user-current.md).
+The `profile` method retrieves basic information about the current user. Unlike [user.current](../../user/user-current.md), it does not require a separate scope.
 
-No parameters required.
+## Method Parameters
+
+No parameters.
 
 ## Code Examples
 
@@ -62,11 +64,12 @@ No parameters required.
       NAME: string,
       LAST_NAME: string,
       PERSONAL_GENDER: string,
-      TIME_ZONE: string,
+      TIME_ZONE: string | null,
+      PERSONAL_PHOTO?: string,
     }
 
     try {
-      const response = await $b24.actions.v2.call.make<ProfileResult>({
+      const response = await $b24.actions.v2.call.make<ProfileResult | []>({
         method: 'profile',
         params: {},
         requestId: Text.getUuidRfc4122()
@@ -77,7 +80,12 @@ No parameters required.
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info(result.ID, result.NAME, result.LAST_NAME, result.ADMIN)
+        // An inactive user gets an empty array instead of an object
+        if (Array.isArray(result)) {
+          console.info('User is inactive')
+        } else {
+          console.info(result.ID, result.NAME, result.LAST_NAME, result.ADMIN)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -211,10 +219,11 @@ HTTP Status: **200**
     "result": {
         "ID": "1",
         "ADMIN": true,
-        "NAME": "Vadim",
-        "LAST_NAME": "Valeev",
-        "PERSONAL_GENDER": "",
-        "TIME_ZONE": ""
+        "NAME": "Klaus",
+        "LAST_NAME": "Weber",
+        "PERSONAL_GENDER": "M",
+        "TIME_ZONE": "Europe/Berlin",
+        "PERSONAL_PHOTO": "https://example.bitrix24.com/upload/main/c7b/c7bd44b1babaa5448125dd97d038ce1b/photo.jpg"
     },
     "time": {
         "start": 1722848182.67776,
@@ -238,7 +247,7 @@ HTTP Status: **200**
 
 The structure is described [below](#profile).
 
-If the user is inactive, the object is empty ||
+If the user is inactive, an empty array `[]` is returned instead of an object ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -251,7 +260,7 @@ If the user is inactive, the object is empty ||
 || **ID**
 [`string`](../../data-types.md) | Identifier of the current user ||
 || **ADMIN**
-[`boolean`](../../data-types.md) | Indicates the permission to manage application settings. Matches the result of the [user.admin](./user-admin.md) method ||
+[`boolean`](../../data-types.md) | Bitrix24 administrator flag: `true` — administrator, `false` — not an administrator. Matches the result of the [user.admin](./user-admin.md) method ||
 || **NAME**
 [`string`](../../data-types.md) | First name of the user ||
 || **LAST_NAME**
@@ -259,16 +268,36 @@ If the user is inactive, the object is empty ||
 || **PERSONAL_GENDER**
 [`string`](../../data-types.md) | Gender: `M` — male, `F` — female. If the gender is not specified, an empty string is returned ||
 || **TIME_ZONE**
-[`string`](../../data-types.md) | Time zone of the user, for example `Europe/Berlin`. If the time zone is not set, an empty string is returned ||
+[`string`](../../data-types.md) | Time zone of the user, for example `Europe/Berlin`. If the time zone is not set, an empty string or `null` is returned ||
 || **PERSONAL_PHOTO**
-[`string`](../../data-types.md) | Link to the user's photo. The field is returned only if a photo has been uploaded ||
+[`string`](../../data-types.md) | Absolute link to the original file of the user's photo. The field is returned only if a photo has been uploaded ||
 |#
 
 ## Error Handling
+
+HTTP Status: **403**
+
+```json
+{
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied! User authorization required"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without an authorized user ||
+|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./user-admin.md)
 - [{#T}](./user-access.md)
+- [{#T}](../../user/user-current.md)

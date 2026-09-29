@@ -13,20 +13,20 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The `scope` method returns a list of permissions.
+The `scope` method returns a list of scopes — the permissions granted to the application or webhook.
 
 ## Method Parameters
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **full**
-[`boolean`](../../data-types.md) | If the parameter is set to `true`, the method will return the complete [list of permissions](../../scopes/permissions.md) ||
-|#
+[`boolean`](../../data-types.md) | If you pass `true`, the method returns all scopes available in this Bitrix24, regardless of the application's permissions. The set depends on the installed modules.
 
-> If the method is called without parameters, it will return all permissions available for this application.
+If the parameter is not passed or equals `false` in a JSON request, the method returns only the scopes of the current application or webhook.
+
+When passed in form-data, the string `false` enables the full list, so to retrieve the application's list, omit the parameter or pass `0` ||
+|#
 
 ## Code Examples
 
@@ -222,6 +222,8 @@ The `scope` method returns a list of permissions.
 
 HTTP Status: **200**
 
+The response to a request with `full: true` is shortened: the full list contains all Bitrix24 scopes, usually several dozen.
+
 ```json
 {
     "result": [
@@ -248,20 +250,26 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array containing the list of permissions ||
+[`string[]`](../../data-types.md) | An array of scope codes, for example, `crm`, `user`, `task`. The code values are described on the [available scopes](../../scopes/permissions.md) page.
+
+The basic scope is not included in the array: basic methods are available to all applications ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
+
+The method has no errors of its own.
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./method-get.md)
 - [{#T}](./app-info.md)
 - [{#T}](./access-name.md)
 - [{#T}](./feature-get.md)
 - [{#T}](./server-time.md)
-- [{#T}](./methods.md)

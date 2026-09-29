@@ -1,4 +1,4 @@
-# Event After Successful Application Installation OnAppInstall
+# Event After Successful Application Installation onAppInstall
 
 {% note tip "" %}
 
@@ -13,11 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONAPPINSTALL` event is triggered immediately after the successful installation of an application on Bitrix24. The `application_token` is passed to the handler, which is important to save. For more details, refer to the article [{#T}](../../events/safe-event-handlers.md).
+The `ONAPPINSTALL` event is triggered immediately after the successful installation of an application on Bitrix24. An application without an interface also receives the event when it is updated.
 
 {% note info "" %}
 
-Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md).
 
 {% endnote %}
 
@@ -28,8 +28,9 @@ Data is transmitted as a POST request {.b24-info}
 ```json
 {
     "event": "ONAPPINSTALL",
+    "event_handler_id": "11",
     "data": {
-        "VERSION": "1.0.0",
+        "VERSION": "1",
         "ACTIVE": "Y",
         "INSTALLED": "Y",
         "LANGUAGE_ID": "de"
@@ -37,10 +38,10 @@ Data is transmitted as a POST request {.b24-info}
     "ts": "1696527000",
     "auth": {
         "domain": "some-domain.bitrix24.com",
-        "scope": "imbot",
+        "scope": "crm,user",
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
-        "expires_in": 3600,
+        "expires_in": "3600",
         "server_endpoint": "https://oauth.bitrix.info/rest/",
         "status": "F",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
@@ -59,6 +60,8 @@ Data is transmitted as a POST request {.b24-info}
 `type` | **Description** ||
 || **event***
 [`string`](../../data-types.md) | Symbolic event code. In this case — `ONAPPINSTALL` ||
+|| **event_handler_id**
+[`integer`](../../data-types.md) | Event handler ID ||
 || **data***
 [`object`](../../data-types.md) | Data about the installed application.
 
@@ -77,21 +80,13 @@ The structure is described [below](#auth) ||
 || **Name**
 `type` | **Description** ||
 || **VERSION***
-[`string`](../../data-types.md) | Version of the installed application ||
+[`string`](../../data-types.md) | Number of the installed application version, for example `1` ||
 || **ACTIVE***
-[`string`](../../data-types.md) | Application activity status.
-
-Possible values:
-`Y` — active
-`N` — inactive ||
+[`string`](../../data-types.md) | Application activity status. Always `Y`: events are not sent to inactive applications ||
 || **INSTALLED***
-[`string`](../../data-types.md) | Whether the application is ready for use.
-
-Possible values:
-`Y` — ready
-`N` — not fully installed ||
+[`string`](../../data-types.md) | Whether the application is ready for use. Always `Y`: events are not sent until the installation is complete ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Installed language: `ru`, `en` and others ||
+[`string`](../../data-types.md) | Default language of the Bitrix24 account: `ru`, `en` and others ||
 |#
 
 ### Parameter auth {#auth}
@@ -101,17 +96,17 @@ Possible values:
 `type` | **Description** ||
 || **domain***
 [`string`](../../data-types.md) | Address of the Bitrix24 account where the event occurred ||
-|| **scope***
-[`string`](../../data-types.md) | List of permissions granted to the application, separated by spaces ||
-|| **access_token***
+|| **scope**
+[`string`](../../data-types.md) | Codes of the [permissions](../../scopes/permissions.md) granted to the application, separated by commas ||
+|| **access_token**
 [`string`](../../data-types.md) | OAuth 2.0 authorization token ||
-|| **refresh_token***
+|| **refresh_token**
 [`string`](../../data-types.md) | Token for extending OAuth 2.0 authorization ||
-|| **expires_in***
+|| **expires_in**
 [`integer`](../../data-types.md) | Access token lifetime in seconds ||
 || **server_endpoint***
 [`string`](../../data-types.md) | Authorization server address for token renewal ||
-|| **status***
+|| **status**
 [`string`](../../data-types.md) | Status of the application that subscribed to this event:
 
 - `L` — local application
@@ -124,12 +119,16 @@ Possible values:
 || **member_id***
 [`string`](../../data-types.md) | Unique identifier of the account ||
 || **application_token***
-[`string`](../../data-types.md) | Token for secure event handling ||
+[`string`](../../data-types.md) | Application token. Retain it: handlers of other events use it to verify that the request came from Bitrix24. For more details, see the article [{#T}](../../events/safe-event-handlers.md) ||
 |#
 
-{% note warning "" %}
+If the event could be linked to a user, `auth` contains `access_token`, `refresh_token`, `expires_in`, `scope`, and `status`, [more details](../../events/index.md#auth).
 
-The handler for this event can be set in the installation script of the application, which is specified in the version card in a separate field.
+{% note info "" %}
+
+If the application has no interface and an installation URL is specified, Bitrix24 automatically registers the `ONAPPINSTALL` handler on this URL during installation.
+
+You can set a handler on a different URL with the [event.bind](../../events/event-bind.md) method in the installation script of the application. The script URL is specified in a separate field of the application version card.
 
 {% endnote %}
 
@@ -137,7 +136,9 @@ The handler for this event can be set in the installation script of the applicat
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
-- [{#T}](./on-app-payment.md)
-- [{#T}](./on-app-method-confirm.md)
-- [{#T}](./on-user-add.md)
+- [{#T}](./index.md)
+- [{#T}](./on-app-user-ready.md)
+- [{#T}](./on-app-update.md)
 - [{#T}](./on-app-uninstall.md)
+- [{#T}](./on-app-payment.md)
+- [{#T}](../../../settings/app-installation/installation-finish.md)

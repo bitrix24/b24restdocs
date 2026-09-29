@@ -1,4 +1,4 @@
-# Bind Data to User and Application user.option.set
+# Save User Settings user.option.set
 
 {% note tip "" %}
 
@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any authorized user in the application context
 
-The method `user.option.set` binds data to the application and user.
+The method `user.option.set` saves the current user's settings for the application. Each user stores their own values. You can read them with the [user.option.get](./user-option-get.md) method.
 
-The application can be bound to the user who installed it if it is a [headless application](../../../local-integrations/serverside-local-app-with-no-ui.md) or to the user with whom it interacts if it is a [UI application](../../../local-integrations/serverside-local-app-with-ui.md).
+The settings are saved for the user whose token was used for the call. For a [headless application](../../../local-integrations/serverside-local-app-with-no-ui.md), this is usually the user who installed the application; for a [UI application](../../../local-integrations/serverside-local-app-with-ui.md), it is the user working with it.
 
 ## Method Parameters
 
@@ -24,8 +24,12 @@ The application can be bound to the user who installed it if it is a [headless a
 #|
 || **Name**
 `type` | **Description** ||
-|| **options***
-[`array`](../../data-types.md) | An array where the key is the name of the property to be saved, and the value is the property value. If a value with a new key is passed, the method will write it; if an existing one, it will update it. ||
+|| **options**
+[`object`](../../data-types.md) | An object of settings: the key is the setting name, and the value is its value. Pass `options` as an object. Do not use the keys `next` and `total`: when all settings are read, the REST API returns them in the root of the response rather than in `result`.
+
+Only the passed keys are overwritten; other saved settings remain unchanged. A value is saved with the type it had in the request: from form parameters, as a string; from a JSON body, as a number, a boolean, an array, or an object. There is no delete method: a key with an empty string remains in the settings with an empty value.
+
+If the `options` parameter is not passed, the request parameters themselves are treated as settings, for example, `{"data": "value"}` ||
 |#
 
 ## Code Examples
@@ -33,21 +37,6 @@ The application can be bound to the user who installed it if it is a [headless a
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "options": {
-            "data": "value",
-            "data2": "value2"
-        }
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.option.set
-    ```
 
 - cURL (OAuth)
 
@@ -297,8 +286,9 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"ArgumentNullException",
-    "error_description":"options is empty"
+    "error": "ERROR_ARGUMENT",
+    "error_description": "Argument 'options' is null or empty",
+    "argument": "options"
 }
 ```
 
@@ -307,16 +297,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `ArgumentNullException` | options is empty | Empty array `options`  ||
-|| `AccessException` | Application context required | The method is called outside the application context ||
-|| `AccessException` | User authorization required | The user is not authorized ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'options' is null or empty | No settings were passed: the `options` parameter is empty, or the request contains neither `options` nor any other parameters ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method is called outside the application context, for example, via an inbound webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without an authorized user ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./app-option-set.md)
 - [{#T}](./app-option-get.md)
 - [{#T}](./user-option-get.md)

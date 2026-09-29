@@ -3,9 +3,9 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md 
-  - name: Define Access Permissions for Managing Application Settings
+  - name: Check Administrator Permissions
     href: user-admin.md
-  - name: Define User Access Rights
+  - name: Check User Access Codes
     href: user-access.md
   - name: Retrieve Basic Information About the Current User
     href: profile.md

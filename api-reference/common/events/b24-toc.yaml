@@ -13,7 +13,7 @@ items:
     href: on-app-uninstall.md
   - name: When Paying for the Application
     href: on-app-payment.md
-  - name: When Receiving Permission to Use Methods
+  - name: When the Administrator Decides on a Request for a Method Requiring Confirmation
     href: on-app-method-confirm.md
   - name: When Adding a User
     href: on-user-add.md

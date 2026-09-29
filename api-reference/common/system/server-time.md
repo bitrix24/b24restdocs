@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `server.time` returns the current server time in the format `YYYY-MM-DDThh:mm:ss±hh:mm`.
+The method `server.time` returns the current Bitrix24 server time in the ISO 8601 format `YYYY-MM-DDThh:mm:ss±hh:mm`.
+
+The time is returned in the server's time zone, not the user's. Use the method to calculate the clock offset between your server and Bitrix24.
+
+## Method Parameters
 
 No parameters.
 
@@ -39,7 +43,9 @@ No parameters.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{}' \
+    -d '{
+        "auth": "**put_access_token_here**"
+    }' \
     https://**put_your_bitrix24_address**/rest/server.time
     ```
 
@@ -229,20 +235,24 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`string`](../../data-types.md) | Server time in the format `YYYY-MM-DDThh:mm:ss±hh:mm` ||
+[`string`](../../data-types.md) | Server time in the format `YYYY-MM-DDThh:mm:ss±hh:mm`, for example, `2024-08-05T09:02:13+00:00` ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+The method has no errors of its own.
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./method-get.md)
 - [{#T}](./scope.md)
 - [{#T}](./app-info.md)
 - [{#T}](./access-name.md)
 - [{#T}](./feature-get.md)
-- [{#T}](./methods.md)

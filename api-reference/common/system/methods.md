@@ -17,24 +17,32 @@ The `methods` method retrieves a list of available methods.
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Please use [method.get](./method-get.md).
+Development of this method has been halted. Please use [method.get](./method-get.md): it does not return a list but checks a specific method by name.
 
 {% endnote %}
 
 ## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
 || **full**
-[`boolean`](../../data-types.md) | If the parameter is set to `true`, the method will return a list of all methods ||
+[`boolean`](../../data-types.md) | If you pass `true`, the method returns the methods of all Bitrix24 scopes, not only those available to the application.
+
+When passed in form-data, the string `false` also enables the full list, so to retrieve the application's list, omit the parameter or pass `0`.
+
+The parameter is ignored if `scope` is passed ||
 || **scope**
-[`string`](../../data-types.md) | Displays methods included in the specified permission. If the parameter is provided without a value (`methods?scope=&auth=xxxxx`), all common methods will be displayed. ||
+[`string`](../../data-types.md) | The code of the scope whose methods to retrieve, for example, `user` or `crm`. The codes are listed on the [available scopes](../../scopes/permissions.md) page.
+
+If you pass an empty string, the method returns only the basic methods that are available without a scope: `batch`, `scope`, `method.get`, `app.option.get`, and others.
+
+For a nonexistent code, the method returns an empty array ||
 |#
 
-> If the method is called without parameters, it will return a list of all methods available to the current application.
+If the method is called without parameters, it returns the methods of the scopes available to the current application or webhook, plus the basic methods.
+
+The list is incomplete: it does not include methods that Bitrix24 handles through module controllers, for example, `tasks.task.list` and `crm.item.list`. Such a method can be checked only with [method.get](./method-get.md).
 
 ## Code Examples
 
@@ -239,17 +247,22 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array with the names of available methods ||
+[`string[]`](../../data-types.md) | An array of method names, for example, `user.get` ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+The method has no errors of its own.
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./method-get.md)
 - [{#T}](./scope.md)
 - [{#T}](./app-info.md)

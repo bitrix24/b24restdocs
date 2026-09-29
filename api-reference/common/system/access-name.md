@@ -1,4 +1,4 @@
-# Get Access Permission Names access.name
+# Get Access Code Names access.name
 
 {% note tip "" %}
 
@@ -13,25 +13,28 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `access.name` retrieves the names of access permissions.
+The method `access.name` retrieves the names of access codes. Access codes identify users, departments, groups, and other permission subjects, for example, in the [user.access](../users/user-access.md) method.
 
 ## Method Parameters
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **ACCESS***
-[`array`](../../data-types.md) | List of access codes for which names need to be retrieved.
+|| **ACCESS**
+[`string[]`](../../data-types.md) | List of access codes for which names need to be retrieved, for example `["U1", "D107"]`.
 
-Code formats:
+Main code formats:
 
 - `U<id>` — user, for example `U1`
-- `G<id>` — user group, for example `G2`
+- `IU<id>` — user and their supervisors, for example `IU1`
+- `G<id>` — user group, for example `G1`
+- `D<id>` — all employees of a department, for example `D107`
+- `DR<id>` — all employees of a department and its subdepartments, for example `DR107`
+- `SG<id>_A`, `SG<id>_E`, `SG<id>_K` — owner, moderators, and all members of a workgroup or project, for example `SG1_K`
 - `AU` — all authorized users
+- `CR` — author
 
-If the parameter is not provided or is empty, the method returns `false` ||
+If the parameter is not provided, is empty, or is passed as a string instead of an array, the method returns `false` ||
 |#
 
 ## Code Examples
@@ -85,7 +88,7 @@ If the parameter is not provided or is empty, the method returns `false` ||
     type AccessNameResult = Record<string, AccessNameItem>
 
     try {
-      const response = await $b24.actions.v2.call.make<AccessNameResult>({
+      const response = await $b24.actions.v2.call.make<AccessNameResult | [] | false>({
         method: 'access.name',
         params: {
           ACCESS: ['G2', 'AU'],
@@ -291,13 +294,13 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md)\|[`boolean`](../../data-types.md) | An object where the key is an access code from the `ACCESS` parameter and the value is the description of that code.
+[`object`](../../data-types.md)\|[`array`](../../data-types.md)\|[`boolean`](../../data-types.md) | An object: the key is an access code from the `ACCESS` parameter, the value is the description of that code [(detailed description)](#access-item).
 
-The structure is described [below](#access-item).
+If none of the passed codes exist in Bitrix24, the method returns an empty array `[]`.
 
-If the `ACCESS` parameter is not provided or is empty, the method returns `false` ||
+If the `ACCESS` parameter is not provided, is empty, or is passed as a string, the method returns `false` ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ### Access Code Description {#access-item}
@@ -308,22 +311,33 @@ If the `ACCESS` parameter is not provided or is empty, the method returns `false
 || **name**
 [`string`](../../data-types.md) | Name of the access code in the Bitrix24 language, for example `All authorized users` ||
 || **provider**
-[`string`](../../data-types.md) | Name of the access code provider. For the `G` and `AU` codes, it is an empty string ||
+[`string`](../../data-types.md) | Name of the access code provider in the Bitrix24 language, for example `User`, `Department`, `Project`. For the `G2`, `AU`, and `CR` codes, it is an empty string ||
 || **provider_id**
-[`string`](../../data-types.md) | Identifier of the access code provider, for example `other` for the `G2` and `AU` codes ||
+[`string`](../../data-types.md) | Identifier of the access code provider:
+
+- `user` — `U` codes
+- `intranet` — `IU`, `D`, `DR` codes
+- `group` — `G` codes, except `G2`
+- `socnetgroup` — `SG` codes
+- `other` — `G2`, `AU`, `CR` codes ||
 |#
 
-Codes that do not exist in Bitrix24 are not returned in the response.
+Codes that do not exist in Bitrix24, for example, a department with a nonexistent ID, are not returned in the response. The order of keys in `result` may differ from the order in `ACCESS`.
 
 ## Error Handling
+
+The method has no errors of its own.
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](../users/user-access.md)
 - [{#T}](./method-get.md)
 - [{#T}](./scope.md)
 - [{#T}](./app-info.md)
 - [{#T}](./feature-get.md)
 - [{#T}](./server-time.md)
-- [{#T}](./methods.md)

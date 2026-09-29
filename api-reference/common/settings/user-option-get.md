@@ -1,4 +1,4 @@
-# Get User Data Associated with the Application user.option.get
+# Retrieve User Settings user.option.get
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any authorized user in the application context
 
-The method `user.option.get` retrieves user data associated with the application. If no input is provided, it will return all properties recorded through [user.option.set](./user-option-set.md).
+The method `user.option.get` retrieves the current user's settings saved by the application via [user.option.set](./user-option-set.md). Each user sees only their own values. The method does not return other users' settings; general application settings are read by the [app.option.get](./app-option-get.md) method.
 
 ## Method Parameters
 
@@ -34,30 +34,6 @@ If the parameter is not provided, the method returns all saved settings of the c
 
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    Example #1
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "option": "data"
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.option.get
-    ```
-
-    Example #2
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/user.option.get
-    ```
 
 - cURL (OAuth)
 
@@ -80,7 +56,9 @@ If the parameter is not provided, the method returns all saved settings of the c
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{}' \
+    -d '{
+        "auth": "**put_access_token_here**"
+    }' \
     https://**put_your_bitrix24_address**/rest/user.option.get
     ```
 
@@ -95,11 +73,11 @@ If the parameter is not provided, the method returns all saved settings of the c
     declare const $b24: B24Frame
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
-    type UserOptionResult = Record<string, string>
+    type UserOptionResult = Record<string, unknown> | []
 
     // Example 1: get a specific option by key
     try {
-      const response = await $b24.actions.v2.call.make<UserOptionResult>({
+      const response = await $b24.actions.v2.call.make<unknown>({
         method: 'user.option.get',
         params: {
           option: 'data',
@@ -112,7 +90,7 @@ If the parameter is not provided, the method returns all saved settings of the c
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Option value:', result['data'])
+        console.info('Option value:', result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -167,7 +145,7 @@ If the parameter is not provided, the method returns all saved settings of the c
           }
 
           const result1 = response1.getData().result
-          console.info('Option value:', result1['data'])
+          console.info('Option value:', result1)
 
           // Example 2: get all options (no parameters)
           const response2 = await $b24.actions.v2.call.make({
@@ -242,7 +220,7 @@ If the parameter is not provided, the method returns all saved settings of the c
         print(f"Unexpected error: {error}")
     ```
 
-- PHP
+- PHP CRest
 
     Example #1
     
@@ -341,23 +319,25 @@ A call with the `option` parameter — the method returns the value of a single 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md)\|[`string`](../../data-types.md)\|[`null`](../../data-types.md) | Depends on the `option` parameter:
+[`object`](../../data-types.md)\|[`array`](../../data-types.md)\|[`string`](../../data-types.md)\|[`integer`](../../data-types.md)\|[`double`](../../data-types.md)\|[`boolean`](../../data-types.md)\|[`null`](../../data-types.md) | Depends on the `option` parameter:
 
-- the parameter is not provided — an object where the key is the setting name and the value is the saved value. If there are no settings, the object is empty
-- the parameter is provided — the saved value of the key
-- the parameter is provided, but there is no such key — `null` ||
+- the parameter is not provided — an object where the key is the setting name and the value is the saved value. If there are no settings, an empty array `[]` is returned
+- the parameter is provided — the saved value of the key: a string, an integer or a floating-point number, a boolean, an array, or an object
+- the parameter is provided, but there is no such key — `null`
+
+The value is returned in the form in which [user.option.set](./user-option-set.md) saved it: as a string if the setting was passed as a form parameter, or with its original JSON type if it was passed in a JSON body ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **403**
 
 ```json
 {
-    "error":"AccessException",
-    "error_description":"Application context required"
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied! Application context required"
 }
 ```
 
@@ -366,15 +346,16 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `AccessException` | Application context required | The method is called outside the application context ||
-|| `AccessException` | User authorization required | The user is not authorized ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method is called outside the application context, for example, via an inbound webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without an authorized user ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./app-option-set.md)
 - [{#T}](./app-option-get.md)
 - [{#T}](./user-option-set.md)

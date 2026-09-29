@@ -9,34 +9,22 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The methods in this group work exclusively with the current user: they retrieve basic profile data, check access permissions, and manage application settings.
+The methods in this group work exclusively with the current user: they retrieve basic profile data, check access codes, and check Bitrix24 administrator permissions. The methods do not require a separate scope.
 
 Information about other users can be obtained through the [Users](../../user/index.md) group of methods.
 
 > Quick Navigation: [all methods](#all-methods)
 
-## How to Retrieve Current User Data
+## How to Choose a Method
 
-The [profile](./profile.md) method retrieves basic data about the current user, such as `ID`, first name, last name, admin status, and time zone.
-
-## How to Check Current User Access
-
-The [user.access](./user-access.md) method checks whether the current user has at least one of the provided access codes, such as `G2` or `AU`.
-
-The [user.admin](./user-admin.md) method checks if the current user has the rights to manage application settings.
-
-## Access Codes in user.access   {#kody-dostupa-v-useraccess}
-
-The [user.access](./user-access.md) method accepts an array of access codes in the `ACCESS` parameter.
-
-#| 
-|| **Code** | **Meaning** | **Example** ||
-|| `U<id>` | User | `U1` ||
-|| `G<id>` | User Group | `G2` ||
-|| `AU` | All authorized users | `AU` ||
+#|
+|| **If you need to** | **Use** ||
+|| Retrieve profile data: name, time zone, administrator flag | [profile](./profile.md) ||
+|| Check whether the user belongs to a department, group, or project by access code | [user.access](./user-access.md) ||
+|| Check whether the user is a Bitrix24 administrator | [user.admin](./user-admin.md) ||
 |#
 
-If the access code is already known, use [user.access](./user-access.md). To obtain the name of the access code, use [access.name](../system/access-name.md).
+Access code formats are described on the [user.access](./user-access.md) page, and their names are retrieved by the [access.name](../system/access-name.md) method.
 
 ## Overview of Methods      {#all-methods}
 
@@ -46,7 +34,7 @@ If the access code is already known, use [user.access](./user-access.md). To obt
 
 #| 
 || **Method** | **Description** ||
-|| [user.admin](./user-admin.md) | Checks if the current user can manage application settings ||
+|| [user.admin](./user-admin.md) | Checks if the current user is a Bitrix24 administrator ||
 || [user.access](./user-access.md) | Checks if the current user has at least one of the specified access codes (`ACCESS`) ||
-|| [profile](./profile.md) | Retrieves information about the current user ||
+|| [profile](./profile.md) | Retrieves basic data of the current user ||
 |#

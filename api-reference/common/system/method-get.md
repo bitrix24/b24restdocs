@@ -1,4 +1,4 @@
-# Get a list of available methods method.get
+# Check Method Availability method.get
 
 {% note tip "" %}
 
@@ -13,17 +13,19 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The `method.get` method returns two parameters `isExisting` and `isAvailable`, which determine the existence of the method in Bitrix24 and its availability for invocation.
+The `method.get` method checks whether a method exists in Bitrix24 and whether it can be called with the current scopes.
 
 ## Method Parameters
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../data-types.md) | The name of the method to check in lowercase, for example `user.get`.
+[`string`](../../data-types.md) | The name of the method to check, for example `user.get`.
+
+Pass the method name in lowercase, even if the documentation spells the method with capital letters: for `telephony.externalLine.get` and `User.Get` the method returns `false`, for `telephony.externalline.get` — `true`. For module methods such as `crm.item.*` and `tasks.task.*`, the action is not checked: for `crm.item.lst` and `tasks.Task.list` the method returns `true`.
+
+The parameter key is lowercase only — the method does not recognize `NAME`.
 
 If the parameter is not provided or is empty, the method returns `isExisting` and `isAvailable` with the value `false` ||
 |#
@@ -273,24 +275,44 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Two parameters are returned:
-
-- `isExisting => true/false` — determines whether the method exists in this Bitrix24
-- `isAvailable => true/false` — determines the availability of the method for invocation with the current access permissions ([scope](./scope.md)) of the application ||
+[`object`](../../data-types.md) | Check result [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **isExisting**
+[`boolean`](../../data-types.md) | `true` — the method exists in this Bitrix24, `false` — the method does not exist, for example, the module is not installed, or the name is misspelled or not in lowercase ||
+|| **isAvailable**
+[`boolean`](../../data-types.md) | `true` — the method can be called with the current [scopes](./scope.md) of the application or webhook, `false` — the application lacks the required scope or the method does not exist.
+
+The value `true` does not guarantee a successful call: the method checks user permissions only at call time ||
+|#
+
+Value combinations:
+
+- `isExisting: true`, `isAvailable: true` — the method can be called
+- `isExisting: true`, `isAvailable: false` — add the required scope to the application or webhook settings
+- `isExisting: false`, `isAvailable: false` — the method does not exist in this Bitrix24
+
 ## Error Handling
+
+The method has no errors of its own.
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./scope.md)
 - [{#T}](./app-info.md)
 - [{#T}](./access-name.md)
 - [{#T}](./feature-get.md)
 - [{#T}](./server-time.md)
-- [{#T}](./methods.md)

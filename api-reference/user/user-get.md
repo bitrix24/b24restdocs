@@ -1118,8 +1118,8 @@ HTTP status: **200**
             {
                 "ID": "1",
                 "ACTIVE": true,
-                "NAME": "Vadim",
-                "LAST_NAME": "Valeev",
+                "NAME": "Klaus",
+                "LAST_NAME": "Weber",
                 "SECOND_NAME": "",
                 "EMAIL": "v.r.valeev@bitrix.com",
                 "LAST_LOGIN": "2024-07-25T13:06:54+00:00",

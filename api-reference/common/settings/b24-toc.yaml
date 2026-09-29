@@ -3,11 +3,11 @@ href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: Bind Data to Application
+  - name: Save General Application Settings
     href: app-option-set.md
-  - name: Retrieve Bound Data from Application
+  - name: Retrieve General Application Settings
     href: app-option-get.md
-  - name: Bind Data to User and Application
+  - name: Save User Settings
     href: user-option-set.md
-  - name: Retrieve Saved User Settings
+  - name: Retrieve User Settings
     href: user-option-get.md

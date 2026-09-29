@@ -9,40 +9,58 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Events allow applications to respond to changes in near real-time: receiving notifications about installation, system user creation, updates, deletions, and payments of the application, adding users, and the administrator's decision regarding requests for access to methods requiring confirmation.
+Events allow applications to respond to changes in near real-time: receiving notifications about the application lifecycle — installation, system user creation, updates, deletion, and payment — about the administrator's decision on methods requiring confirmation, and about adding a user.
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../events/index.md).
 
 > Quick navigation: [all events](#all-events)
 
-{% note info "" %}
-
-The events section works only in the context of the [application](../../../settings/app-installation/index.md).
-
-{% endnote %}
-
 ## How to Receive Events
 
-You can subscribe to application events through the [application](../../../settings/app-installation/index.md) and the [event.bind](../../events/event-bind.md) method.
+You can subscribe to the onUserAdd event through:
+
+- an [outbound webhook](../../../local-integrations/local-webhooks.md)
+- the [application](../../../settings/app-installation/index.md) and the [event.bind](../../events/event-bind.md) method
+
+You can subscribe to the other events in this section only through the [application](../../../settings/app-installation/index.md) and the [event.bind](../../events/event-bind.md) method.
 
 To receive events:
 
 - install the application and specify the public URL of the handler
-- if the application requests access to methods requiring confirmation, handle the [onAppMethodConfirm](./on-app-method-confirm.md) event
+- if the application has an interface, complete the installation with the `installFinish` method — events are not sent to the application until then. For more details, see the article [{#T}](../../../settings/app-installation/installation-finish.md)
+
+Bitrix24 registers the [ONAPPUSERREADY](./on-app-user-ready.md) handler on the application installation URL automatically, and for applications without an interface, the [onAppInstall](./on-app-install.md) handler as well. You do not need to call `event.bind` for these events. ONAPPUSERREADY is not sent to local applications.
+
+Bitrix24 does not send events to an application if its paid or trial period has expired.
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../events/test-handler.md).
+
+## Tokens in Events
+
+The format of the request to the handler is described in the article [Concept and Benefits of Event Processing](../../events/index.md#auth).
+
+#|
+|| **Event** | **Tokens in auth** ||
+|| onAppInstall, ONAPPUSERREADY, onAppUpdate | `access_token` and `refresh_token` ||
+|| onAppPayment, onUserAdd | `access_token` without `refresh_token` ||
+|| onAppUninstall, onAppMethodConfirm | No tokens ||
+|#
+
+## Interaction with Other Objects
+
+The events in this section are related to methods for working with users and the application.
+
+**User.** Data from the [onUserAdd](./on-user-add.md) event can be used together with the [user.get](../../user/user-get.md) method if additional information about the user is needed after registration or to configure access.
+
+**Application.** After the [onAppPayment](./on-app-payment.md) event, you can retrieve the current application status and payment period with the [app.info](../system/app-info.md) method.
 
 ## Server Availability for Sending and Receiving Events
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../_includes/events-index.md) %}
 
-## Interaction with Other Objects
-
-**User.** Data from the [onUserAdd](./on-user-add.md) event can be used together with the [user.get](../../user/user-get.md) method if additional information about the user is needed after registration or to configure access. The event requires the `user` scope rather than the basic one — request it when installing the application.
-
 ## Overview of Events {#all-events}
 
-> Scope: [`basic`](../../scopes/permissions.md), for `onUserAdd` — [`user`](../../scopes/permissions.md)
+> Scope: [`basic`](../../scopes/permissions.md), for `onUserAdd` — [`user`](../../scopes/permissions.md), [`user_brief`](../../scopes/permissions.md), or [`user_basic`](../../scopes/permissions.md)
 >
 > Who can subscribe: any user
 
@@ -52,7 +70,7 @@ An example of a handler code for the event is described in the article [How to T
 || [ONAPPUSERREADY](./on-app-user-ready.md) | When an application system user is created or reactivated ||
 || [onAppUpdate](./on-app-update.md) | When the application is updated ||
 || [onAppUninstall](./on-app-uninstall.md) | When the application is uninstalled ||
-|| [onAppMethodConfirm](./on-app-method-confirm.md) | When receiving the administrator's decision regarding a request for access to methods requiring confirmation ||
 || [onAppPayment](./on-app-payment.md) | When the application is paid for ||
+|| [onAppMethodConfirm](./on-app-method-confirm.md) | When the administrator decides on a request for a method requiring confirmation ||
 || [onUserAdd](./on-user-add.md) | When a user is added to Bitrix24 ||
 |#

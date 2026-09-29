@@ -1,4 +1,4 @@
-# Bind Data to the app.option.set Method
+# Save General Application Settings app.option.set
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: Bitrix24 administrator in the application context
 
-The `app.option.set` method binds data to the application.
+The `app.option.set` method saves general application settings, which are the same for all Bitrix24 users. You can read them with the [app.option.get](./app-option-get.md) method.
 
 ## Method Parameters
 
@@ -22,8 +22,12 @@ The `app.option.set` method binds data to the application.
 #|
 || **Name**
 `type` | **Description** ||
-|| **options***
-[`array`](../../data-types.md) | An array where the key is the name of the property to be saved, and the value is the property value. If a value with a new key is passed, the method will write it; if an existing one, it will update it. ||
+|| **options**
+[`object`](../../data-types.md) | An object of settings: the key is the setting name, and the value is its value. Pass `options` as an object. Do not use the keys `next` and `total`: when all settings are read, the REST API returns them in the root of the response rather than in `result`.
+
+Only the passed keys are overwritten; other saved settings remain unchanged. A value is saved with the type it had in the request: from form parameters, as a string; from a JSON body, as a number, a boolean, an array, or an object. There is no delete method: a key with an empty string remains in the settings with an empty value.
+
+If the `options` parameter is not passed, the request parameters themselves are treated as settings, for example, `{"data": "value"}` ||
 |#
 
 ## Code Examples
@@ -31,21 +35,6 @@ The `app.option.set` method binds data to the application.
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "options": {
-            "data": "value",
-            "data2": "value2"
-        }
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/app.option.set
-    ```
 
 - cURL (OAuth)
 
@@ -297,8 +286,9 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":"ArgumentNullException",
-    "error_description":"options is empty"
+    "error": "ERROR_ARGUMENT",
+    "error_description": "Argument 'options' is null or empty",
+    "argument": "options"
 }
 ```
 
@@ -307,16 +297,17 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `ArgumentNullException` | options is empty | Empty array `options`  ||
-|| `AccessException` | Application context required | The method is called outside the application context ||
-|| `AccessException` | Administrator authorization required | The current user does not have administrator permissions ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'options' is null or empty | No settings were passed: the `options` parameter is empty, or the request contains neither `options` nor any other parameters ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method is called outside the application context, for example, via an inbound webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! Administrator authorization required | The current user is not a Bitrix24 administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./app-option-get.md)
 - [{#T}](./user-option-set.md)
 - [{#T}](./user-option-get.md)

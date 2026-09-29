@@ -1,4 +1,4 @@
-# Get information about feature availability in Bitrix24 feature.get
+# Get Information on Feature Availability in Bitrix24 feature.get
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `feature.get` returns information about the availability of features in a specific Bitrix24.
+The method `feature.get` checks whether a REST API feature is available in a specific Bitrix24. Availability depends on the plan, so check it before using the feature in your application.
 
 ## Method Parameters
 
@@ -23,9 +23,12 @@ The method `feature.get` returns information about the availability of features 
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`string`](../../data-types.md) | Available keys:
-- `rest_offline_extended` — availability of offline events
-- `rest_auth_connector` — availability of the `auth_connector` key in events ||
+[`string`](../../data-types.md) | Feature code. Available codes:
+
+- `rest_offline_extended` — extended mode of [offline events](../../events/offline-events.md): retrieving events with the [event.offline.get](../../events/event-offline-get.md) method with the `clear = 0` parameter, without removing them from the queue
+- `rest_auth_connector` — availability of the `auth_connector` key in events
+
+The method does not check whether the code exists and does not return an error for an unknown code. For an unknown code, the method may return `Y` — this does not mean the feature is available. Pass only codes from the list ||
 |#
 
 ## Code Examples
@@ -270,11 +273,23 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The object contains information about the method's availability:
-- `value` — (Y/N) presence of the feature in Bitrix24
-- `lang_selfhosted` — *lang* is replaced with en, de, ua, kz, etc. (used for on-premise *Bitrix24*) ||
+[`object`](../../data-types.md) | Check result [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **value**
+[`string`](../../data-types.md) | Feature availability:
+
+- `Y` — the feature is available
+- `N` — the feature is not available
+
+In on-premise Bitrix24 without a feature check handler, the string `<language>_selfhosted` is returned instead of `Y` or `N`, for example, `en_selfhosted`. Cloud Bitrix24 does not return this value ||
 |#
 
 ## Error Handling
@@ -283,27 +298,27 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"CODE_EMPTY",
-    "error_description":"CODE can't be empty"
+    "error": "CODE_EMPTY",
+    "error_description": "CODE can't be empty"
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %} 
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `CODE_EMPTY` | CODE can't be empty | The CODE parameter was not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `CODE_EMPTY` | CODE can't be empty | The `CODE` parameter is not provided, or an empty string or `0` is passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./method-get.md)
 - [{#T}](./scope.md)
 - [{#T}](./app-info.md)
 - [{#T}](./access-name.md)
 - [{#T}](./server-time.md)
-- [{#T}](./methods.md)

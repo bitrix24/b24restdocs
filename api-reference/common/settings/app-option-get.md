@@ -1,4 +1,4 @@
-# Get Application-Linked Data app.option.get
+# Retrieve General Application Settings app.option.get
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`basic`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any authorized user in the application context
 
-The method `app.option.get` retrieves data linked to the application. If no input is provided, it will return all properties recorded via [app.option.set](./app-option-set.md).
+The method `app.option.get` retrieves general application settings saved via [app.option.set](./app-option-set.md). The settings are the same for all Bitrix24 users.
 
 ## Method Parameters
 
@@ -33,30 +33,6 @@ If the parameter is not provided, the method returns all saved application setti
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    Example №1
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "option": "data"
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/app.option.get
-    ```
-
-    Example №2
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/app.option.get
-    ```
 
 - cURL (OAuth)
 
@@ -79,7 +55,9 @@ If the parameter is not provided, the method returns all saved application setti
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{}' \
+    -d '{
+        "auth": "**put_access_token_here**"
+    }' \
     https://**put_your_bitrix24_address**/rest/app.option.get
     ```
 
@@ -94,11 +72,11 @@ If the parameter is not provided, the method returns all saved application setti
     declare const $b24: B24Frame
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
-    type AppOptionResult = Record<string, string>
+    type AppOptionResult = Record<string, unknown> | []
 
     // Example 1: get a specific option by key
     try {
-      const response = await $b24.actions.v2.call.make<string | null>({
+      const response = await $b24.actions.v2.call.make<unknown>({
         method: 'app.option.get',
         params: {
           option: 'data',
@@ -255,7 +233,7 @@ If the parameter is not provided, the method returns all saved application setti
     );
     ```
 
-- PHP
+- PHP CRest
 
     Example №1
     
@@ -354,24 +332,25 @@ A call with the `option` parameter — the method returns the value of a single 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md)\|[`string`](../../data-types.md)\|[`null`](../../data-types.md) | Depends on the `option` parameter:
+[`object`](../../data-types.md)\|[`array`](../../data-types.md)\|[`string`](../../data-types.md)\|[`integer`](../../data-types.md)\|[`double`](../../data-types.md)\|[`boolean`](../../data-types.md)\|[`null`](../../data-types.md) | Depends on the `option` parameter:
 
-- the parameter is not provided — an object where the key is the setting name and the value is the saved value. If there are no settings, the object is empty
-- the parameter is provided — the saved value of the key
-- the parameter is provided, but there is no such key — `null` ||
+- the parameter is not provided — an object where the key is the setting name and the value is the saved value. If there are no settings, an empty array `[]` is returned
+- the parameter is provided — the saved value of the key: a string, an integer or a floating-point number, a boolean, an array, or an object
+- the parameter is provided, but there is no such key — `null`
+
+The value is returned in the form in which [app.option.set](./app-option-set.md) saved it: as a string if the setting was passed as a form parameter, or with its original JSON type if it was passed in a JSON body ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **403**
 
 ```json
 {
-    "error": "ERROR_ARGUMENT",
-    "error_description": "The value of an argument 'option' must be of type string",
-    "argument": "option"
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied! Application context required"
 }
 ```
 
@@ -380,16 +359,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| `ERROR_ARGUMENT` | The value of an argument 'option' must be of type string | The `option` parameter is not a string ||
-|| `AccessException` | Application context required | The method is called outside the application context ||
-|| `AccessException` | User authorization required | The user is not authorized ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method is called outside the application context, for example, via an inbound webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without an authorized user ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./app-option-set.md)
 - [{#T}](./user-option-set.md)
 - [{#T}](./user-option-get.md)

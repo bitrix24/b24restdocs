@@ -17,7 +17,7 @@ The `ONAPPUNINSTALL` event is triggered when an application is uninstalled.
 
 {% note info "" %}
 
-Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md).
 
 {% endnote %}
 
@@ -28,9 +28,10 @@ Data is transmitted as a POST request {.b24-info}
 ```json
 {
     "event": "ONAPPUNINSTALL",
+    "event_handler_id": "13",
     "data": {
         "LANGUAGE_ID": "de",
-        "CLEAN": 1
+        "CLEAN": "1"
     },
     "ts": "1466439714",
     "auth": {
@@ -52,6 +53,8 @@ Data is transmitted as a POST request {.b24-info}
 `type` | **Description** ||
 || **event***
 [`string`](../../data-types.md) | Event character code — `ONAPPUNINSTALL` ||
+|| **event_handler_id**
+[`integer`](../../data-types.md) | Event handler ID ||
 || **data***
 [`object`](../../data-types.md) | Data about the uninstalled application.
 
@@ -59,7 +62,7 @@ The structure is described [below](#data) ||
 || **ts***
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the queue ||
 || **auth***
-[`object`](../../data-types.md) | Authorization and account data.
+[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#
@@ -70,7 +73,7 @@ The structure is described [below](#auth) ||
 || **Name**
 `type` | **Description** ||
 || **LANGUAGE_ID***
-[`string`](../../data-types.md) | Set language: `ru`, `en` and others ||
+[`string`](../../data-types.md) | Default language of the Bitrix24 account: `ru`, `en` and others ||
 || **CLEAN***
 [`integer`](../../data-types.md) | Value of the "Clear application data" option set by the user during uninstallation. Values: `1` or `0` ||
 |#
@@ -89,12 +92,12 @@ The structure is described [below](#auth) ||
 || **member_id***
 [`string`](../../data-types.md) | Unique identifier of the account ||
 || **application_token***
-[`string`](../../data-types.md) | Token for secure event handling ||
+[`string`](../../data-types.md) | Application token. Compare it with the token retained during installation to make sure the request came from Bitrix24. For more details, see the article [{#T}](../../events/safe-event-handlers.md) ||
 |#
 
 {% note warning "" %}
 
-When an application is uninstalled, all access permissions for the application to the API are revoked. Therefore, even though the event handler will receive authorization data, it can no longer use the API on behalf of the uninstalled application.
+Tokens are not passed in `auth`, and the application's API permissions are revoked on uninstallation. You cannot call API methods from the handler of this event.
 
 {% endnote %}
 
@@ -102,6 +105,9 @@ When an application is uninstalled, all access permissions for the application t
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
+- [{#T}](./on-app-user-ready.md)
+- [{#T}](./on-app-update.md)
 - [{#T}](./on-app-install.md)
 - [{#T}](./on-app-payment.md)
 - [{#T}](./on-app-method-confirm.md)
