@@ -11,13 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: a Bitrix24 administrator or a user with the "Edit automation solutions" or "Edit settings" permission for "Automated solutions" in CRM access permissions
 
-This method deletes an existing digital workplace with the identifier `id`.
+The method `crm.automatedsolution.delete` deletes the digital workplace with the identifier `id`.
 
-Deletion of the digital workplace is only possible if there are no bound SPAs associated with it.
-
-If there are SPAs, they must first be unbound or reassigned to another workplace before deleting this digital workplace.
+Only a workplace without linked SPAs can be deleted. If it has SPAs, first unlink them using the [crm.automatedsolution.update](./crm-automated-solution-update.md) method with an empty `typeIds`, or link them to another workplace.
 
 ## Method Parameters
 
@@ -27,7 +25,7 @@ If there are SPAs, they must first be unbound or reassigned to another workplace
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the digital workplace. It can be obtained from the response of the method [crm.automatedsolution.add](./crm-automated-solution-add.md) (`result.automatedSolution.id`), which was called when adding the digital workplace, or [crm.automatedsolution.list](./crm-automated-solution-list.md). You can also use the "Digital Workplaces" section on the Bitrix24 account — the `ID` column in the list of digital workplaces ||
+[`integer`](../../data-types.md) | Identifier of the digital workplace. You can retrieve it from the response of the [crm.automatedsolution.add](./crm-automated-solution-add.md) method (`result.automatedSolution.id`) or [crm.automatedsolution.list](./crm-automated-solution-list.md). In Bitrix24, the identifier is shown in the `ID` column of the digital workplace list ||
 |#
 
 ## Code Examples
@@ -252,6 +250,19 @@ HTTP Status: **200**
 }
 ```
 
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`null`](../../data-types.md) | `null` is returned both after deletion and for a non-existent `id` ||
+|| **time**
+[`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+The method has no `NOT_FOUND` error. To make sure the workplace has been deleted, call [crm.automatedsolution.get](./crm-automated-solution-get.md) with the same `id`: `crm.automatedsolution.get` returns the `NOT_FOUND` error.
+
 ## Error Handling
 
 HTTP Status: **400**
@@ -270,12 +281,13 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions ||
-|| `HAS_BOUND_TYPES` | The digital workplace has bound SPAs. You must unbind the SPAs before deletion ||
+|| `HAS_BOUND_TYPES` | SPAs are linked to the digital workplace. Unlink them before deletion ||
+|| `RESTRICTED_BY_TARIFF` | The workplace was installed from the Automated solution gallery and is locked: your current plan does not allow working with it ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-automated-solution-add.md)

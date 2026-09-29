@@ -1,7 +1,7 @@
 title: Digital Workspaces
 href: index.md
 items:
-  - name: Digital Workspaces
+  - name: Methods Overview
     href: index.md
   - name: Create a Digital Workspace
     href: crm-automated-solution-add.md
@@ -9,7 +9,7 @@ items:
     href: crm-automated-solution-update.md
   - name: Retrieve Digital Workspace Data by ID
     href: crm-automated-solution-get.md
-  - name: Get a List of Digital Workspaces 
+  - name: Get a List of Digital Workspaces
     href: crm-automated-solution-list.md
   - name: Delete a Digital Workspace
     href: crm-automated-solution-delete.md

@@ -9,9 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Digital workspaces are a separate section for smart processes that are not tied to CRM. A workspace can consist of one or more processes. Each has its own cards, pipelines, Kanban stages, Automation rules, and other features.
+Digital workspaces are a separate section for smart processes that do not have to be linked to leads, deals, contacts, or companies. A workspace can consist of one or more processes. Each has its own cards, pipelines, Kanban stages, Automation rules, and other features.
 
-In your account, you can find them in the section *Automation > Digital Workspaces > List of Digital Workspaces*.
+In Bitrix24, they are located in the section *Automation > Digital Workspaces > List of Digital Workspaces*.
 
 > Quick navigation: [All Methods](#all-methods)
 >
@@ -19,18 +19,22 @@ In your account, you can find them in the section *Automation > Digital Workspac
 
 ## Getting Started
 
-1. Create a workspace using the [crm.automatedsolution.add](./crm-automated-solution-add.md) method
-2. Change the name, sorting, or other parameters using the [crm.automatedsolution.update](./crm-automated-solution-update.md) method
-3. Retrieve a workspace by identifier using the [crm.automatedsolution.get](./crm-automated-solution-get.md) method
-4. Find workspaces by filter using the [crm.automatedsolution.list](./crm-automated-solution-list.md) method
-5. If a workspace is no longer needed, delete it using the [crm.automatedsolution.delete](./crm-automated-solution-delete.md) method
-6. To check available fields, use the [crm.automatedsolution.fields](./crm-automated-solution-fields.md) method
+1. Retrieve the `id` of an SPA type using the [crm.type.list](../universal/user-defined-object-types/crm-type-list.md) method, or create a type using the [crm.type.add](../universal/user-defined-object-types/crm-type-add.md) method
+2. Create a workspace using the [crm.automatedsolution.add](./crm-automated-solution-add.md) method and pass the type `id` values in the `typeIds` field
+3. Check the result using the [crm.automatedsolution.get](./crm-automated-solution-get.md) method, or find workspaces by filter using the [crm.automatedsolution.list](./crm-automated-solution-list.md) method
+4. Change the name or the set of SPAs using the [crm.automatedsolution.update](./crm-automated-solution-update.md) method
+5. Delete the workspace using the [crm.automatedsolution.delete](./crm-automated-solution-delete.md) method. Before deleting, remove its SPAs: pass an empty `typeIds` to `crm.automatedsolution.update`, and the SPAs return to CRM
 
 ## Connection with Other Objects
 
-**SPAs.** A workspace combines one or more SPAs. First, create a workspace, then use its identifier when configuring the SPA type.
+**SPAs.** SPAs are bound on the workspace side, in the `typeIds` field. Pass the SPA type identifiers (`id`) from the [Smart Processes](../universal/user-defined-object-types/index.md) section to `typeIds`, not `entityTypeId`. The `customSectionId` and `customSections` parameters of the `crm.type.*` methods are deprecated and are not used to configure workspaces.
 
-**CRM.** A workspace is located within CRM, but its SPAs do not have to be linked to leads, deals, contacts, or companies.
+**CRM.** Workspaces and their SPAs run on CRM and are managed by methods with the `crm` scope, but they are displayed in the *Automation* section. An SPA can belong to only one place: CRM or a single workspace. When bound to a workspace, it is removed from its previous place.
+
+## Limitations
+
+- The number of digital workspaces is limited. When the limit is exceeded, the `crm.automatedsolution.add` method returns the `LIMIT_EXCEEDED` error
+- To move an SPA from CRM to a workspace or return it to CRM, the "User can edit preferences" CRM permission is required in addition to permissions for digital workspaces
 
 {% note info "" %}
 
@@ -42,7 +46,7 @@ In the self-hosted version of Bitrix24, digital workspaces are available startin
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: depends on the method
+> Who can execute the methods: a Bitrix24 administrator or a user with the "Edit automation solutions" or "Edit settings" permission for "Automated solutions" in CRM access permissions
 
 #|
 || **Method** | **Description** ||

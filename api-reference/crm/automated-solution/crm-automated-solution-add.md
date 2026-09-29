@@ -9,23 +9,13 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- there is a link to the data-types file, need to check that the type crm_dynamic_type is described (from SPAs)
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: a Bitrix24 administrator or a user with the "Edit automation solutions" or "Edit settings" permission for "Automated solutions" in CRM access permissions
 
-This method will create a new digital workspace.
+The method `crm.automatedsolution.add` creates a digital workspace.
 
-In the cloud, the maximum number of digital workspaces depends on the plan. In on-premise, the maximum number depends on technical limitations.
+In cloud Bitrix24, the maximum number of digital workspaces depends on the plan. In the on-premise version, the limit is set by the `automated_solution_limit` option of the `crm` module, 200 by default. The limit counts all workspaces, including those installed from the Automated solution gallery.
 
 ## Method Parameters
 
@@ -35,7 +25,7 @@ In the cloud, the maximum number of digital workspaces depends on the plan. In o
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided below) for creating a digital workspace in the form of a structure:
+[`object`](../../data-types.md) | Field values [(detailed description)](#fields) for creating a digital workspace in the form of a structure:
 
 ```js
 "fields": {
@@ -46,7 +36,7 @@ In the cloud, the maximum number of digital workspaces depends on the plan. In o
  ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -54,13 +44,13 @@ In the cloud, the maximum number of digital workspaces depends on the plan. In o
 || **Name**
 `type` | **Description** ||
 || **title***
-[`string`](../../data-types.md) | The name of the digital workspace. The link to the corresponding section on the account will be built based on the title of the digital workspace. ||
+[`string`](../../data-types.md) | The name of the digital workspace. The link to the workspace section in Bitrix24 is built from the name ||
 || **typeIds**
-[`crm_dynamic_type.id[]`](../data-types.md) | An array of identifiers of SPAs that need to be linked to this workspace.
+[`crm_dynamic_type.id[]`](../data-types.md) | An array of SPA type identifiers (`id`) to link to this workspace. If not passed, the workspace is created without SPAs. Non-existent identifiers are ignored without an error.
 
-If the SPA was previously linked to another workspace or to the CRM, it will disappear from there after being linked to the new workspace.
+If an SPA is already linked to another workspace or to CRM, it is removed from its previous place when linked to the new workspace. To move an SPA from CRM, the "User can edit preferences" CRM permission is also required.
 
-A digital workspace without SPAs will not be displayed in the left menu. However, it can be found in the list of digital workspaces. ||
+A digital workspace without SPAs is not displayed in the left menu, but it can be found in the list of digital workspaces ||
 |#
 
 ## Code Examples
@@ -480,9 +470,22 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **automatedSolution**
-[`object`](../../data-types.md) | Object containing information about the added digital workspace ||
+[`object`](../../data-types.md) | The created digital workspace. The object is nested in `result` [(detailed description)](#automatedSolution) ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
+|#
+
+#### Object automatedSolution {#automatedSolution}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the created digital workspace. Pass it to the `id` parameter of the [crm.automatedsolution.update](./crm-automated-solution-update.md), [crm.automatedsolution.get](./crm-automated-solution-get.md), and [crm.automatedsolution.delete](./crm-automated-solution-delete.md) methods ||
+|| **title**
+[`string`](../../data-types.md) | Name of the digital workspace ||
+|| **typeIds**
+[`crm_dynamic_type.id[]`](../data-types.md) | Identifiers of the SPAs linked to the workspace. If `typeIds` was not passed on creation, an empty array is returned ||
 |#
 
 ## Error Handling
@@ -492,7 +495,7 @@ HTTP status: **400**
 ```json
 {
     "error": "BX_EMPTY_REQUIRED",
-    "error_description":"The required field 'Title' is not filled"
+    "error_description":"The field Name is required."
 }
 ```
 
@@ -505,11 +508,12 @@ HTTP status: **400**
 || `ACCESS_DENIED` | Insufficient permissions ||
 || `LIMIT_EXCEEDED` | The number of available digital workspaces has been exceeded ||
 || `BX_EMPTY_REQUIRED` | A required field is not filled ||
+|| `0` | SPAs cannot be moved from workspaces installed from the Automated solution gallery ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-automated-solution-update.md)

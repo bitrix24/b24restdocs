@@ -9,21 +9,11 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-{% if build == 'dev' %}
-
-{% note alert "TO-DO _not exported to prod_" %}
-
-- there is a link to the data-types file, check that the type crm_dynamic_type is described there (from SPAs)
-
-{% endnote %}
-
-{% endif %}
-
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the crm section
+> Who can execute the method: a Bitrix24 administrator or a user with the "Edit automation solutions" or "Edit settings" permission for "Automated solutions" in CRM access permissions
 
-This method updates the existing settings of the digital workplace with the identifier `id`. If any of the fields are not provided, their values will remain unchanged.
+The method `crm.automatedsolution.update` modifies the digital workplace with the identifier `id`. Fields that are not passed retain their previous values.
 
 ## Method Parameters
 
@@ -33,9 +23,9 @@ This method updates the existing settings of the digital workplace with the iden
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the digital workplace. It can be obtained from the response of the method [crm.automatedsolution.add](./crm-automated-solution-add.md) (result.automatedSolution.id), which was called when adding the digital workplace, or [crm.automatedsolution.list](./crm-automated-solution-list.md). You can also use the "Digital Workplaces" section in the Bitrix24 account — the `ID` column in the list of digital workplaces ||
+[`integer`](../../data-types.md) | Identifier of the digital workplace. You can retrieve it from the response of the [crm.automatedsolution.add](./crm-automated-solution-add.md) method (`result.automatedSolution.id`) or [crm.automatedsolution.list](./crm-automated-solution-list.md). In Bitrix24, the identifier is shown in the `ID` column of the digital workplace list ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided below) for creating a digital workplace in the following structure:
+[`object`](../../data-types.md) | Field values [(detailed description)](#fields) for modifying a digital workplace in the following structure:
 
 ```js
 "fields": {
@@ -46,7 +36,7 @@ This method updates the existing settings of the digital workplace with the iden
 ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 #|
 || **Name**
@@ -54,15 +44,13 @@ This method updates the existing settings of the digital workplace with the iden
 || **title**
 [`string`](../../data-types.md) | Title of the digital workplace.
 
-Be careful when changing the `title` field. Since the link to the digital workplace is built based on the title, changing it will also change the link to the digital workplace ||
+The link to the digital workplace is built from the title, so changing `title` also changes the link. If `title` is passed, it cannot be empty ||
 || **typeIds**
-[`crm_dynamic_type.id[]`](../data-types.md) | Array of identifiers of SPAs that need to be linked to this workplace.
-
-To change the list of linked SPAs, you need to pass the `typeIds` field with the desired set of SPAs.
+[`crm_dynamic_type.id[]`](../data-types.md) | Array of SPA type identifiers (`id`) to link to this workplace. Non-existent identifiers are ignored without an error.
 
 {% note warning %}
 
-Settings are completely overwritten. When changing the list of linked SPAs, you must pass the `typeIds` set in its entirety, or omit the `typeIds` key altogether 
+The `typeIds` list is overwritten entirely: pass the full set of required SPAs. If `typeIds` is not passed, the links do not change. Unlinked SPAs return to CRM. To unlink an SPA or move it from CRM, the "User can edit preferences" CRM permission is also required
 
 {% endnote %}
 
@@ -193,7 +181,7 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
             bitrix_response = client.crm.automatedsolution.update(
                 bitrix_id=238,
                 fields={
-                    "title": "HR and Customer Success",
+                    "title": "HR & Customer Success",
                 },
             ).response
             result = bitrix_response.result
@@ -266,7 +254,7 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
 
 2. Change the list of linked SPAs
 
-    Suppose the digital workplace with `id` = `267` had two SPAs linked — one with `id` = `14`, and the other with `id` = `158`. If we want the digital workplace to retain only one SPA, we pass the `typeIds` field containing only the desired SPAs:
+    Suppose the SPAs with `id` = `14` and `158` are linked to the digital workplace with `id` = `238`. To keep only one of them, pass only the required SPAs in `typeIds`:
 
     {% list tabs %}
 
@@ -459,7 +447,7 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
 
 3. Unlink all SPAs
 
-    To unlink all SPAs from the digital workplace, you need to pass an empty array as `typeIds`.
+    To unlink all SPAs from the digital workplace, pass an empty array in `typeIds`. The SPAs return to CRM.
 
     {% list tabs %}
 
@@ -606,7 +594,8 @@ Settings are completely overwritten. When changing the list of linked SPAs, you 
                 'id' => 238,
                 'fields' =>
                 [
-                    'typeIds' => []
+                    // CRest does not send an empty array, so pass an empty string
+                    'typeIds' => ''
                 ]
             ]
         );
@@ -656,12 +645,10 @@ HTTP status: **200**
 {
     "result": {
         "automatedSolution": {
-            "id": 1,
-            "title": "HR",
+            "id": 238,
+            "title": "HR & Customer Success",
             "typeIds": [
-                1,
-                2,
-                3
+                14
             ]
         }
     },
@@ -686,9 +673,22 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **automatedSolution**
-[`object`](../../data-types.md) | Object containing information about the updated digital workplace ||
+[`object`](../../data-types.md) | The digital workplace after the update. The object is nested in `result` [(detailed description)](#automatedSolution) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+#### Object automatedSolution {#automatedSolution}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the digital workplace ||
+|| **title**
+[`string`](../../data-types.md) | Title of the digital workplace ||
+|| **typeIds**
+[`crm_dynamic_type.id[]`](../data-types.md) | Identifiers of the SPAs linked to the workplace. If no SPAs are linked, an empty array is returned ||
 |#
 
 ## Error Handling
@@ -698,7 +698,7 @@ HTTP status: **400**
 ```json
 {
     "error":"BX_EMPTY_REQUIRED",
-    "error_description":"Required field is not filled"
+    "error_description":"The field Name is required."
 }
 ```
 
@@ -709,12 +709,15 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions ||
-|| `BX_EMPTY_REQUIRED` | Required field is not filled ||
+|| `BX_EMPTY_REQUIRED` | An empty `title` value was passed ||
+|| `NOT_FOUND` | A digital workplace with this `id` was not found ||
+|| `RESTRICTED_BY_TARIFF` | The workplace was installed from the Automated solution gallery and is locked: your current plan does not allow working with it ||
+|| `0` | SPAs cannot be moved from workplaces installed from the Automated solution gallery ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-automated-solution-add.md)

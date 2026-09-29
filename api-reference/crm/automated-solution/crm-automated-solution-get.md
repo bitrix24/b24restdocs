@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: a Bitrix24 administrator or a user with the "Edit automation solutions" or "Edit settings" permission for "Automated solutions" in CRM access permissions
 
-The method returns information about the digital workplace with the identifier `id`.
+The method `crm.automatedsolution.get` returns the digital workplace by the identifier `id`.
 
 ## Method Parameters
 
@@ -27,6 +27,8 @@ The method returns information about the digital workplace with the identifier `
 |#
 
 ## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -286,12 +288,12 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **automatedSolution**
-[`object`](../../data-types.md) | Information about the digital workplace ||
+[`object`](../../data-types.md) | Information about the digital workplace. The object is nested in `result` [(detailed description)](#automatedSolution) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
-**Object** `automatedSolution`:
+#### Object automatedSolution {#automatedSolution}
 
 #|
 || **Name**
@@ -301,12 +303,12 @@ HTTP status: **200**
 || **title**
 [`string`](../../data-types.md) | Name of the digital workplace ||
 || **typeIds**
-[`array`](../../data-types.md) | Identifiers of the smart processes linked to the workplace ||
+[`crm_dynamic_type.id[]`](../data-types.md) | Identifiers of the smart processes linked to the workplace. If no smart processes are linked, an empty array is returned ||
 |#
 
 {% note warning %}
 
-`Id` of the digital workplace and `id` of the `customSection` structures from the method [crm.type.get](../universal/user-defined-object-types/crm-type-get.md) do not match due to different storage organization
+The digital workplace identifier and `customSectionId` from the [crm.type.get](../universal/user-defined-object-types/crm-type-get.md) method may differ: they are stored in different tables. The `customSectionId` and `customSections` parameters of the `crm.type.*` methods are deprecated. Take the workplace identifier from the response of [crm.automatedsolution.add](./crm-automated-solution-add.md) or [crm.automatedsolution.list](./crm-automated-solution-list.md)
 
 {% endnote %}
 
@@ -317,7 +319,7 @@ HTTP status: **400**
 ```json
 {
     "error":"NOT_FOUND",
-    "error_description":"Digital workplace with such id not found"
+    "error_description":"Item was not found."
 }
 ```
 
@@ -329,11 +331,12 @@ HTTP status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions ||
 || `NOT_FOUND` | Digital workplace with such `id` not found ||
+|| `RESTRICTED_BY_TARIFF` | The workplace was installed from the Automated solution gallery and is locked: your current plan does not allow working with it ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Exploring 
+## Continue Exploring
 
 - [{#T}](./index.md)
 - [{#T}](./crm-automated-solution-add.md)

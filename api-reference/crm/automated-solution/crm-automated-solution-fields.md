@@ -11,13 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: a Bitrix24 administrator or a user with the "Edit automation solutions" or "Edit settings" permission for "Automated solutions" in CRM access permissions
 
-The method returns information about the fields of the digital workplace settings.
+The method `crm.automatedsolution.fields` returns the description of the digital workplace fields.
+
+## Method Parameters
 
 No parameters.
 
 ## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -277,16 +281,49 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` — fields of the digital workplace, and `value` — an object of type `rest_field_description`. ||
+[`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is a digital workplace field and `value` is a field description of the [`crm_rest_field_description`](../data-types.md#crm_rest_field_description) type ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
 
+The method returns three fields:
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the digital workplace. Read-only ||
+|| **title**
+[`string`](../../data-types.md) | Title of the digital workplace. Required field ||
+|| **typeIds**
+[`crm_dynamic_type.id[]`](../data-types.md) | SPA type identifiers (`id`) linked to the workplace. The value is passed as an array ||
+|#
+
+The field names in the response match the keys of the `fields` parameter in the [crm.automatedsolution.add](./crm-automated-solution-add.md) and [crm.automatedsolution.update](./crm-automated-solution-update.md) methods.
+
 ## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error":"ACCESS_DENIED",
+    "error_description":"Access denied"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** ||
+|| `ACCESS_DENIED` | Insufficient permissions ||
+|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-automated-solution-add.md)

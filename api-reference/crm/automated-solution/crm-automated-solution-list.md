@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: users with administrative access to the CRM section
+> Who can execute the method: a Bitrix24 administrator or a user with the "Edit automation solutions" or "Edit settings" permission for "Automated solutions" in CRM access permissions
 
-The method will return an array of digital workspace settings. Each element of the array is a structure similar to the response from the request [crm.automatedsolution.get](./crm-automated-solution-get.md).
+The method `crm.automatedsolution.list` returns a list of digital workspaces.
 
 ## Method Parameters
 
@@ -21,7 +21,7 @@ The method will return an array of digital workspace settings. Each element of t
 || **Name**
 `type` | **Description** ||
 || **order**
-[`object`](../../data-types.md) | List for sorting in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where the key is the field and the value is `ASC` or `DESC`. Available fields for sorting:
+[`object`](../../data-types.md) | Object for sorting in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where the key is the field and the value is `ASC` or `DESC`. Defaults to `{"id": "ASC"}`. The `ASC` and `DESC` values are written in uppercase, field names in lowercase. Available fields for sorting:
 - `id`
 - `title` 
 ||
@@ -30,7 +30,9 @@ The method will return an array of digital workspace settings. Each element of t
 - `id`
 - `title`
  
-The filter can have unlimited nesting and number of conditions. By default, all conditions are combined using `AND`. If you need to use `OR`, you can pass a special key `logic` with the value `OR`.
+The filter can have unlimited nesting and number of conditions. By default, all conditions are combined using `AND`. To combine conditions with `OR`, pass the special key `logic` with the value `OR`.
+
+Field names in the filter are written in lowercase: `ID` instead of `id` returns the `INVALID_ARG_VALUE` error.
 
 An additional prefix can be assigned to the key to specify the filter's behavior. Possible prefix values:
 
@@ -38,32 +40,32 @@ An additional prefix can be assigned to the key to specify the filter's behavior
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The substring is searched for in any position of the string.
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searching for values starting with "mol"
     - `"%mol"` — searching for values ending with "mol"
     - `"%mol%"` — searching for values where "mol" can be in any position.
 
-- `%=` — LIKE (see description above)
+- `%=` — LIKE (description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The substring is searched for in any position of the string.
 
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - `"mol%"` — searching for values not starting with "mol"
     - `"%mol"` — searching for values not ending with "mol"
     - `"%mol%"` — searching for values where the substring "mol" is not present in any position.
 
-- `!%=` — NOT LIKE (see description above)
+- `!%=` — NOT LIKE (description above)
 
 - `=` — equals, exact match (used by default)
-- `!=` - not equal
+- `!=` — not equal
 ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used for pagination control.
  
 The page size of results is always static: 50 records.
  
-To select the second page of results, you need to pass the value `50`. To select the third page of results, the value is `100`, and so on.
+Defaults to `0`. To select the second page of results, pass the value `50`, the third one — `100`, and so on.
  
 The formula for calculating the `start` parameter value:
  
@@ -72,6 +74,8 @@ The formula for calculating the `start` parameter value:
 |#
 
 ## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 1. Get all digital workspaces sorted by descending `id`
 
@@ -250,9 +254,7 @@ The formula for calculating the `start` parameter value:
         from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
-            bitrix_response = client.crm.automatedsolution.list(
-                order={"id": "DESC"},
-            ).as_list_fast(descending=True).response
+            bitrix_response = client.crm.automatedsolution.list().as_list_fast(descending=True).response
             result = bitrix_response.result
             for item in result:
                 print(item)
@@ -511,9 +513,6 @@ The formula for calculating the `start` parameter value:
             bitrix_response = client.crm.automatedsolution.list(
                 filter={
                     "%=title": "HR%",
-                },
-                order={
-                    "title": "ASC",
                 },
             ).as_list_fast(descending=True).response
             result = bitrix_response.result
@@ -805,9 +804,6 @@ The formula for calculating the `start` parameter value:
 
         try:
             bitrix_response = client.crm.automatedsolution.list(
-                order={
-                    "title": "ASC",
-                },
                 filter={
                     ">id": 100,
                     "0": {
@@ -964,11 +960,26 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **automatedSolutions**
-[`object`](../../data-types.md) | Array of objects with information about selected payments ||
+[`object[]`](../../data-types.md) | Array of digital workspaces that match the filter. The array is nested in `result`. If there are no such workspaces, an empty array is returned [(detailed description)](#automatedSolutions) ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
+|| **next**
+[`integer`](../../data-types.md) | The `start` value for the next page. Returned only if there is a next page ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
+|#
+
+#### Array Element automatedSolutions {#automatedSolutions}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the digital workspace ||
+|| **title**
+[`string`](../../data-types.md) | Name of the digital workspace ||
+|| **typeIds**
+[`crm_dynamic_type.id[]`](../data-types.md) | Identifiers of the SPAs linked to the workspace. If no SPAs are linked, an empty array is returned ||
 |#
 
 ## Error Handling
@@ -978,7 +989,7 @@ HTTP status: **400**
 ```json
 {
     "error":"ACCESS_DENIED",
-    "error_description":"Insufficient permissions"
+    "error_description":"Access denied"
 }
 ```
 
@@ -989,12 +1000,12 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient permissions ||
-|| `INVALID_ARG_VALUE` | Invalid input argument value. Details can be found in the error message ||
+|| `INVALID_ARG_VALUE` | An unsupported field or value was passed in `filter` or `order`. Filtering and sorting are available only by `id` and `title`. Details are in the error message ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./crm-automated-solution-add.md)
