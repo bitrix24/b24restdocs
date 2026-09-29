@@ -13,22 +13,22 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.getlist` returns a list of widgets for the current application, filtered by the specified criteria.
+The method `landing.repowidget.getlist` returns a list of Vibe widgets of the current application, filtered by the specified criteria. If the method is called via a webhook, it returns the widgets registered without an application.
+
+The method returns all matching records in a single call. It does not support pagination via `start`.
 
 ## Method Parameters
-
-{% include [Note on required parameters](../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **params***
-[`object`](../data-types.md) | Array of fields to retrieve the list of widgets ||
+|| **params**
+[`object`](../data-types.md) | Selection parameters [(detailed description)](#params).
+
+If not passed, the method returns all widgets ||
 |#
 
-### Parameter params
-
-{% include [Note on required parameters](../../_includes/required.md) %}
+### Parameter params {#params}
 
 #|
 || **Name**
@@ -36,11 +36,11 @@ The method `landing.repowidget.getlist` returns a list of widgets for the curren
 || **select**
 [`array`](../data-types.md) | Array [with the list of fields](#anchor-field) to be selected.
 
-If not provided or an empty array is passed, all available widgets will be selected ||
+If not passed, all fields are selected. The `MANIFEST` field is always added to the selection, so with an empty array the method returns only this field ||
 || **filter**
 [`object`](../data-types.md) | Object for filtering the selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` can be found [in the table below](#anchor-field).
+Possible values for `field` can be found [in the table below](#anchor-field). The method adds the `APP_CODE` condition to the filter itself.
 
 An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -48,8 +48,8 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `<=` — less than or equal to
 - `<` — less than
 - `@` — IN (an array is passed as the value)
-- `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string
+- `!@` — NOT IN (an array is passed as the value)
+- `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. Finds the substring in any position of the string
 - `=%` — LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
@@ -57,7 +57,7 @@ An additional prefix can be specified for the key to clarify the filter behavior
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. Finds values that do not contain the substring in any position
 
 - `!=%` — NOT LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
@@ -67,7 +67,7 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `!%=` — NOT LIKE (see description above)
 
 - `=` — equals, exact match (used by default)
-- `!=` - not equal
+- `!=` — not equal
 - `!` — not equal ||
 || **group**
 [`array`](../data-types.md) | Array for grouping widgets. Grouping can be done [by fields](#anchor-field) of the widget ||
@@ -79,12 +79,15 @@ Possible values for `field` can be found [in the table below](#anchor-field).
 Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order ||
-
+|| **limit**
+[`integer`](../data-types.md) | Maximum number of records in the selection. The limit applies to all blocks of the application in the repository, including blocks added with the [landing.repo.register](../landing/user-blocks/landing-repo-register.md) method. Vibe widgets are selected after that, so with `limit: 10` the method can return fewer than 10 widgets ||
+|| **offset**
+[`integer`](../data-types.md) | Number of records to skip from the start of the selection. Used together with `limit` ||
 |#
 
 #### Fields field {#anchor-field}
 
-Fields of the widget object. Present in the request and response.
+Fields of the widget object. You can pass them in `select`, `filter`, `order`, and `group`, and they are also returned in the response. The numeric fields `ID`, `CREATED_BY_ID`, and `MODIFIED_BY_ID` are returned as strings.
 
 #|
 || **Name**
@@ -96,10 +99,10 @@ Fields of the widget object. Present in the request and response.
 || **APP_CODE**
 [`string`](../data-types.md) | Code of the current application ||
 || **ACTIVE**
-[`char`](../data-types.md) | Widget activity. Accepts values: 
+[`char`](../data-types.md) | Widget activity. Accepts values:
 
-- `Y` - widget is active and available
-- `N` - widget is inactive and unavailable ||
+- `Y` — widget is active and available
+- `N` — widget is inactive and unavailable ||
 || **NAME**
 [`string`](../data-types.md) | Widget name ||
 || **DESCRIPTION**
@@ -108,20 +111,22 @@ Fields of the widget object. Present in the request and response.
 [`string`](../data-types.md) | Code of the [section](./landing-repowidget-register.md#anchor-fields) where the widget will be added ||
 || **PREVIEW**
 [`string`](../data-types.md) | URL of the widget cover image for the widget selection slider ||
-|| **WIDGET_PARAMS**
-[`object`](../data-types.md) | [Parameters](./landing-repowidget-register.md#anchor-widget-params) for the Vue template engine ||
 || **CONTENT**
 [`string`](../data-types.md) | Widget markup using Vue constructs ||
 || **MANIFEST**
-[`object`](../data-types.md) | Widget manifest ||
+[`object`](../data-types.md) | Widget manifest. Contains:
+
+- `block.type` — `["vibe"]`
+- `block.subtype` — `widgetvue` as a string or as the array `["widgetvue"]`
+- `block.subtype_params` — [parameters](./landing-repowidget-register.md#anchor-widget-params) from `WIDGET_PARAMS` passed during registration: `rootNode`, `demoData`, `handler`, `style`, `lang` ||
 || **CREATED_BY_ID**
 [`integer`](../data-types.md) | Identifier of the user who created the record ||
 || **MODIFIED_BY_ID**
 [`integer`](../data-types.md) | Identifier of the user who modified the record ||
 || **DATE_CREATE**
-[`date`](../data-types.md) | Creation date ||
+[`string`](../data-types.md) | Creation date. In the response, a string in the Bitrix24 date and time format, for example, `10.10.2024 15:55:30` ||
 || **DATE_MODIFY**
-[`date`](../data-types.md) | Modification date ||
+[`string`](../data-types.md) | Modification date. Same format as `DATE_CREATE` ||
 || **SITE_TEMPLATE_ID**
 [`string`](../data-types.md) | Binding of the widget to a specific site template. **Only for on-premise Bitrix24!** ||
 |#
@@ -162,11 +167,6 @@ Fields of the widget object. Present in the request and response.
     }
 
     try {
-      // landing.repowidget.getlist returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<RepoWidgetItem[]>({
         method: 'landing.repowidget.getlist',
         params: {
@@ -176,7 +176,6 @@ Fields of the widget object. Present in the request and response.
               '>ID': '1',
             },
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -186,7 +185,7 @@ Fields of the widget object. Present in the request and response.
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Widgets count on this page:', result.length, result)
+        console.info('Widgets count:', result.length, result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -205,11 +204,6 @@ Fields of the widget object. Present in the request and response.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // landing.repowidget.getlist returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'landing.repowidget.getlist',
             params: {
@@ -219,7 +213,6 @@ Fields of the widget object. Present in the request and response.
                   '>ID': '1',
                 },
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -231,7 +224,7 @@ Fields of the widget object. Present in the request and response.
           }
 
           const result = response.getData().result
-          console.info('Widgets count on this page:', result.length, result)
+          console.info('Widgets count:', result.length, result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -275,7 +268,6 @@ Fields of the widget object. Present in the request and response.
     ```
 
 - PHP
-
 
     ```php
     try {
@@ -380,7 +372,7 @@ HTTP status: **200**
             "MANIFEST": {
                 "block": {
                     "type": [
-                        "mainpage"
+                        "vibe"
                     ],
                     "subtype": [
                         "widgetvue"
@@ -431,12 +423,33 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Array of widgets. Each element of the array is an object, permissible fields are described [above](#anchor-field). ||
+[`array`](../data-types.md) | Array of widgets. Each element of the array is an object, permissible fields are described [above](#anchor-field). If there are no matching widgets, an empty array is returned.
+
+If the application has other blocks in the repository, the element numbering can have gaps after the widgets are selected. In that case, the array is returned in JSON as an object with numeric keys, for example, `{"1": {...}, "3": {...}}`. Process `result` as a collection of values, not as an array with consecutive indexes ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "TYPE_ERROR",
+    "error_description": "Invalid type of the call argument: params"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `SYSTEM_ERROR` | — | A field that is not in the [list of fields](#anchor-field) was passed in `select`, `filter`, `order`, or `group` ||
+|| `400` | `TYPE_ERROR` | Invalid type of the call argument: params | The `params` parameter was not passed as an object ||
+|#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
@@ -445,4 +458,5 @@ HTTP status: **200**
 - [{#T}](./landing-repowidget-register.md)
 - [{#T}](./landing-repowidget-unregister.md)
 - [{#T}](./landing-repowidget-debug.md)
+- [{#T}](./index.md)
 

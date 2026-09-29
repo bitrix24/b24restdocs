@@ -1,4 +1,4 @@
-# When Selecting the Operator to Whom the Current Operator Wants to Transfer the Call BackgroundCallCard::transferButtonClick
+# When Selecting an Operator to Transfer the Call To BackgroundCallCard::transferButtonClick
 
 {% note tip "" %}
 
@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::transferButtonClick` event occurs when the recipient of the call transfer is selected.
+The `BackgroundCallCard::transferButtonClick` event occurs when the operator clicks the transfer button in the call card and selects the employee to transfer the call to.
+
+The transfer button is available only in the `connected` state, which the application enables with the [CallCardSetUiState](../call-card-set-ui-state.md) command. In call list mode and in the card of a call that was itself transferred, the button is not shown.
+
+This is the first step of the transfer scenario. Bitrix24 does not transfer an application call itself. The application receives the recipient, connects them, and switches the card to the `transferring` state with the same command — in this state the operator sees the "Redirect" and "Continue call" buttons. Clicks on these buttons arrive as the [completeTransferButtonClick](./complete-transfer-button-click.md) and [cancelTransferButtonClick](./cancel-transfer-button-click.md) events.
 
 {% note info "" %}
 
@@ -28,7 +32,7 @@ Data is passed to the callback `BX24.placement.bindEvent` {.b24-info}
 ```js
 callback({
     "phoneNumber": "+19001234567",
-    "target": "12"
+    "target": 12
 });
 ```
 
@@ -40,16 +44,17 @@ callback({
 || **Parameter**
 `type` | **Description** ||
 || **phoneNumber**
-[`string`](../../../../data-types.md) | The number of the current call ||
+[`string`](../../../../data-types.md) | The phone number of the other party ||
 || **target**
-[`string`](../../../../data-types.md) | Where the call is being transferred to.
+[`integer`](../../../../data-types.md) or [`string`](../../../../data-types.md) | Where the call is being transferred to.
 
 The value depends on the item the operator selected:
 
-- the identifier of an employee — when transferring to an internal extension
-- a phone number from the employee's profile — mobile, personal, or work, if the operator chose to call a phone
+- the employee ID as a number, for example `12`, — if the employee's profile has no phone numbers and no selection menu is shown
+- the employee ID as a string, for example `"12"`, — if the operator selected the "Internal call" item in the menu
+- a phone number as a string, for example `"+19007654321"`, — mobile, personal, or work number from the employee's profile, if the operator selected it in the menu
 
-The cases can be told apart by the format of the value.
+The transfer type — to an employee or to a phone — is not passed to the handler. The application determines it from the value: an employee ID matches the `ID` from [user.get](../../../../user/user-get.md), and a phone number matches the employee's `PERSONAL_MOBILE`, `PERSONAL_PHONE`, or `WORK_PHONE` field.
 
 If the operator selected a department rather than an employee, the event does not occur ||
 |#
@@ -97,7 +102,7 @@ For this event — `BackgroundCallCard::transferButtonClick` ||
 
     declare const $b24: B24Frame
 
-    await $b24.placement.bindEvent('BackgroundCallCard::transferButtonClick', (eventData: { phoneNumber: string; target: string }) => {
+    await $b24.placement.bindEvent('BackgroundCallCard::transferButtonClick', (eventData: { phoneNumber: string; target: number | string }) => {
       console.log(eventData.target)
     })
     ```
@@ -131,5 +136,9 @@ Check the following conditions.
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../bx24-placement-bind-event.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)
+- [{#T}](./complete-transfer-button-click.md)
+- [{#T}](./cancel-transfer-button-click.md)
+- [{#T}](../call-card-set-ui-state.md)

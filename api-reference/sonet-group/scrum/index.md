@@ -137,11 +137,11 @@ The team moves tasks through Kanban stages while working on sprint tasks. Kanban
 || **Method** | **Description** ||
 || [tasks.api.scrum.sprint.add](./sprint/tasks-api-scrum-sprint-add.md) | Adds a sprint to Scrum ||
 || [tasks.api.scrum.sprint.update](./sprint/tasks-api-scrum-sprint-update.md) | Updates a sprint ||
-|| [tasks.api.scrum.sprint.start](./sprint/tasks-api-scrum-sprint-start.md) | Starts a sprint ||
-|| [tasks.api.scrum.sprint.complete](./sprint/tasks-api-scrum-sprint-complete.md) | Completes the active sprint of the selected Scrum ||
 || [tasks.api.scrum.sprint.get](./sprint/tasks-api-scrum-sprint-get.md) | Retrieves field values of the sprint by its `id` ||
 || [tasks.api.scrum.sprint.list](./sprint/tasks-api-scrum-sprint-list.md) | Retrieves a list of sprints ||
 || [tasks.api.scrum.sprint.delete](./sprint/tasks-api-scrum-sprint-delete.md) | Deletes a sprint ||
+|| [tasks.api.scrum.sprint.start](./sprint/tasks-api-scrum-sprint-start.md) | Starts a sprint ||
+|| [tasks.api.scrum.sprint.complete](./sprint/tasks-api-scrum-sprint-complete.md) | Completes the active sprint of the selected Scrum ||
 || [tasks.api.scrum.sprint.getFields](./sprint/tasks-api-scrum-sprint-get-fields.md) | Retrieves available fields of the sprint ||
 |#
 

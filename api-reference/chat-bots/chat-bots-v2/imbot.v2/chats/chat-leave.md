@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.leave` removes the bot from the chat.
+The method `imbot.v2.Chat.leave` removes the bot from the chat. The bot must be a participant of the chat.
+
+If the bot is the chat owner, ownership passes to one of the participants when the bot leaves: an active user who is not a bot, an extranet user, or a connector. The new owner also becomes a manager. You cannot choose the new owner when leaving.
+
+To transfer ownership to a specific user, call [imbot.v2.Chat.setOwner](./chat-set-owner.md) before leaving.
+
+If the chat has no suitable participants, the bot leaves anyway, and the `owner` field of the [imbot.v2.Chat.get](./chat-get.md) response keeps the bot ID.
 
 ## Method Parameters
 
@@ -25,11 +31,11 @@ The method `imbot.v2.Chat.leave` removes the bot from the chat.
 || **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
 || **botToken** 
-[`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
+[`string`](../../../../data-types.md) | Bot token. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the bot registration ||
+Pass the same `botToken` that you specified when registering the bot ||
 || **dialogId*** 
-[`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
+[`string`](../../../../data-types.md) | ID of the group chat in the [dialogId format](../../index.md#dialog-id): `chat{chatId}` ||
 |#
 
 ## Code Examples
@@ -222,12 +228,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied"
+    "error_description": "ACCESS_DENIED"
 }
 ```
 
@@ -237,11 +243,13 @@ HTTP Status: **400**, **403**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token not specified (botToken is required for webhook auth) | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | botId is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
+|| `BOT_OWNERSHIP_ERROR` | Bot was installed by another rest application | The bot is registered by another application ||
+|| `CHAT_NOT_FOUND` | CHAT_NOT_FOUND | No chat found with the specified `dialogId` ||
+|| `ACCESS_DENIED` | ACCESS_DENIED | The bot is not a participant of a private chat ||
+|| `USER_NOT_FOUND` | USER_NOT_FOUND | The bot is not a participant of an open chat or an open channel ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
@@ -252,3 +260,6 @@ HTTP Status: **400**, **403**
 - [{#T}](./chat-user-add.md)
 - [{#T}](./chat-user-delete.md)
 - [{#T}](./chat-get.md)
+- [{#T}](./chat-set-owner.md)
+- [{#T}](./index.md)
+- [{#T}](../../migration.md)

@@ -1,4 +1,4 @@
-# When Clicking the "Return to Call" Button BackgroundCallCard::cancelTransferButtonClick
+# When Clicking the "Continue Call" Button BackgroundCallCard::cancelTransferButtonClick
 
 {% note tip "" %}
 
@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::cancelTransferButtonClick` event occurs when the transfer is canceled and the operator returns to the call.
+The `BackgroundCallCard::cancelTransferButtonClick` event occurs when the operator clicks the "Continue call" button to cancel the transfer.
+
+The button is available in the `transferring` and `transferFailed` states. The application enables them with the [CallCardSetUiState](../call-card-set-ui-state.md) command. A transfer starts with the [transferButtonClick](./transfer-button-click.md) event, when the operator selects the recipient. In the `transferring` state, one of two events follows: [completeTransferButtonClick](./complete-transfer-button-click.md) if the operator confirmed the transfer, or `cancelTransferButtonClick` if they canceled it. In the `transferFailed` state, the "Redirect" button is not shown, so only `cancelTransferButtonClick` can occur.
+
+Bitrix24 does not cancel the transfer of an application call itself: the application aborts the transfer on its side and returns the card to the `connected` state.
 
 {% note info "" %}
 
@@ -102,5 +106,9 @@ Check the following conditions.
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../bx24-placement-bind-event.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)
+- [{#T}](./transfer-button-click.md)
+- [{#T}](./complete-transfer-button-click.md)
+- [{#T}](../call-card-set-ui-state.md)

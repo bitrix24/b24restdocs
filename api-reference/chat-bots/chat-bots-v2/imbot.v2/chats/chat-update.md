@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.update` updates chat properties. It combines the update of the title, description, color, and avatar in a single call.
+The method `imbot.v2.Chat.update` updates the properties of a group chat: title, description, color, and avatar. Pass in `fields` only the properties you want to change. The bot must be the chat owner — this requirement does not depend on the chat permission settings.
 
 ## Method Parameters
 
@@ -25,13 +25,13 @@ The method `imbot.v2.Chat.update` updates chat properties. It combines the updat
 || **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
 || **botToken** 
-[`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
+[`string`](../../../../data-types.md) | Bot token. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
+Pass the same `botToken` that you specified when registering the bot ||
 || **dialogId*** 
-[`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}`, for personal chats — `{userId}` ||
-|| **fields*** 
-[`object`](../../../../data-types.md) | Properties of the chat to be updated. The structure of the object is described [below](#fields) ||
+[`string`](../../../../data-types.md) | ID of the group chat in the [dialogId format](../../index.md#dialog-id): `chat{chatId}` ||
+|| **fields**
+[`object`](../../../../data-types.md) | Chat properties to update [(detailed description)](#fields). Without `fields`, the method changes nothing and returns `true` ||
 |#
 
 ### Parameter fields {#fields}
@@ -44,9 +44,9 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **description** 
 [`string`](../../../../data-types.md) | New chat description ||
 || **color** 
-[`string`](../../../../data-types.md) | Chat color — [available colors](#available-colors) ||
+[`string`](../../../../data-types.md) | Chat color — [available colors](#available-colors). An unknown color code is ignored without an error, and the color does not change ||
 || **avatar** 
-[`file`](../../../../data-types.md) | New chat avatar in [Base64](../../../../files/how-to-upload-files.md) format ||
+[`file`](../../../../data-types.md) | New chat avatar in [Base64](../../../../files/how-to-upload-files.md) format. If the string does not contain an image, the current avatar is removed without an error ||
 |#
 
 ### Available Colors {#available-colors}
@@ -285,12 +285,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied"
+    "error_description": "ACCESS_DENIED"
 }
 ```
 
@@ -300,11 +300,13 @@ HTTP Status: **400**, **403**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | Bot token is required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | Bot ID is not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token not specified (botToken is required for webhook auth) | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | botId is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
+|| `BOT_OWNERSHIP_ERROR` | Bot was installed by another rest application | The bot is registered by another application ||
+|| `CHAT_NOT_FOUND` | CHAT_NOT_FOUND | No chat found with the specified `dialogId` ||
+|| `ACCESS_DENIED` | ACCESS_DENIED | The bot is not the chat owner, or the chat type does not support changes ||
+|| `WRONG_MESSAGE_TYPE` | WRONG_MESSAGE_TYPE | The chat is not a group chat ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
@@ -316,3 +318,5 @@ HTTP Status: **400**, **403**
 - [{#T}](./chat-get.md)
 - [{#T}](./chat-user-add.md)
 - [{#T}](./chat-set-owner.md)
+- [{#T}](./index.md)
+- [{#T}](../../migration.md)

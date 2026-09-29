@@ -32,21 +32,19 @@ Additionally, the Vibe created on your Bitrix24 can be exported as a ready-made 
 1. Prepare the widget markup in Vue and a handler — an external script that returns the data for the template as a JSON string.
 2. Register the widget using the [landing.repowidget.register](./landing-repowidget-register.md) method. Pass the unique widget code, markup, styles, and handler address to it.
 3. Check the list of your widgets using the [landing.repowidget.getlist](./landing-repowidget-get-list.md) method.
-4. Enable debug mode using the [landing.repowidget.debug](./landing-repowidget-debug.md) method so that Vue outputs more errors to the browser console.
+4. Enable debug mode using the [landing.repowidget.debug](./landing-repowidget-debug.md) method so that the widget outputs details of data loading errors to the browser console.
 5. Add the widget to the Vibe page in the Bitrix24 builder — this is done by the administrator.
 6. Remove a widget you no longer need using the [landing.repowidget.unregister](./landing-repowidget-unregister.md) method.
 
 {% note info "" %}
 
-If the widget was registered by an application, the widget is bound to it by the application code. Debug mode works only in the context of an application: the `landing.repowidget.debug` method called via a webhook returns the `APP_NOT_FOUND` error.
+Register widgets from an application: the widget is bound to it by the application code, and Bitrix24 calls the handler on behalf of that application. A widget registered via a webhook is not bound to an application. Its handler is not called, and the widget displays a data loading error.
 
 {% endnote %}
 
 ## How Widgets Work
 
-The widget interface is implemented based on the [Vue templating engine](https://vuejs.org). The widget retrieves data for display by making a request to an external handler.
-
-To add your widget to Bitrix24, provide the Vue template markup, the necessary CSS classes, and the handler address — it is responsible for passing data to the template.
+The widget interface is implemented based on the [Vue templating engine](https://vuejs.org).
 
 ### Vue Directives
 
@@ -75,10 +73,42 @@ The main part of the widget's operation is built on the `fetch(?params)` functio
 2. The handler returns the data as a JSON string. You define the data structure yourself.
 3. Vue executes the template code of your widget, substituting the data obtained from the handler in step 2. This forms the initial complete appearance of the widget.
 4. If you used the `fetch` function in the template — for example, with the parameters `{'action': 'getItems'}` — then, when a link is clicked, Bitrix24 calls your widget handler again and passes those same parameters `{'action': 'getItems'}` in a POST request.
-5. The handler analyzes the input parameters, forms a new set of data, and returns it as a JSON string. The set can be complete or partial — a partial one saves traffic and speeds up the widget.
+5. The handler analyzes the input parameters, forms a new set of data, and returns it as a JSON string.
 6. The newly obtained data will be substituted back into your template.
 
 This is how the widget changes its appearance and displayed data in response to user actions.
+
+### Handler Request and Response {#handler-request}
+
+Bitrix24 sends the handler a POST request with form fields in the `application/x-www-form-urlencoded` format, not a JSON body. The request contains the parameters from the `fetch(params)` call and the `auth` array with the application's authorization on behalf of the current user. With this authorization, the handler can call REST API methods. When the widget is first displayed, there are no parameters, and only `auth` is sent.
+
+The handler must respond with status 200 and return a non-empty JSON string of up to 1 MB. The connection to the handler must not stay idle for more than five seconds. Bitrix24 does not send requests to loopback or local network addresses.
+
+Example response from a task list handler:
+
+```json
+{
+    "title": "Department tasks",
+    "items": [
+        { "id": 12, "name": "Prepare the report" },
+        { "id": 15, "name": "Call the client" }
+    ]
+}
+```
+
+Top-level keys become template variables. On a repeated `fetch` call, the handler can return only some of the keys, and only those are updated. The widget ignores new keys that were not present in the first response, so pass all template keys in the first response.
+
+```html
+<div class="w-container">
+    <h3>not_var{{ title }}</h3>
+    <ul>
+        <li v-for="item in items" :key="item.id">not_var{{ item.name }}</li>
+    </ul>
+    <a href="#" @click="fetch({'action': 'getItems'})">Refresh</a>
+</div>
+```
+
+If the handler is unavailable, responds with a different status, or returns an empty body, invalid JSON, or JSON with the `error` key, the widget displays the message "Error loading data". The user does not see the text from `error`. To display your own message, pass it as a regular data key and output it in the template.
 
 ## Examples of Vue Syntax for Vibe Widgets
 
@@ -123,7 +153,7 @@ Use logical expressions to apply optional classes:
 
 ### Using Variables in openPath
 
-Use backticks to reference Vue variables when forming the desired path:
+Use a template literal in backticks to reference Vue variables when forming the desired path:
 
 ```html
 <tr
@@ -147,12 +177,12 @@ Use string concatenation to form the path:
 
 > Scope: [`landing`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: depends on the method
 
 #|
 || **Method** | **Description** ||
 || [landing.repowidget.register](./landing-repowidget-register.md) | Registers a widget ||
 || [landing.repowidget.getlist](./landing-repowidget-get-list.md) | Returns a list of widgets ||
 || [landing.repowidget.unregister](./landing-repowidget-unregister.md) | Unregisters a widget ||
-|| [landing.repowidget.debug](./landing-repowidget-debug.md) | Enables debug mode ||
+|| [landing.repowidget.debug](./landing-repowidget-debug.md) | Enables or disables debug mode ||
 |#

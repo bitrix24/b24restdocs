@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.User.delete` removes a participant from the chat. The bot must be an administrator of the chat.
+The method `imbot.v2.Chat.User.delete` removes a participant from the chat. By default, the bot must be a manager or the owner of the chat — roles are described in [Chat Roles](./index.md#roles).
 
 {% note info "" %}
 
@@ -31,11 +31,11 @@ If the user is not a participant in the chat, the method will return `true` (ide
 || **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
 || **botToken** 
-[`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
+[`string`](../../../../data-types.md) | Bot token. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
+Pass the same `botToken` that you specified when registering the bot ||
 || **dialogId*** 
-[`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
+[`string`](../../../../data-types.md) | ID of the group chat in the [dialogId format](../../index.md#dialog-id): `chat{chatId}` ||
 || **userId*** 
 [`integer`](../../../../data-types.md) | User ID to be removed ||
 |#
@@ -236,12 +236,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied"
+    "error_description": "ACCESS_DENIED"
 }
 ```
 
@@ -251,11 +251,13 @@ HTTP Status: **400**, **403**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not provided. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token not specified (botToken is required for webhook auth) | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | botId is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
-|| `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat or does not have permission to remove users ||
+|| `BOT_OWNERSHIP_ERROR` | Bot was installed by another rest application | The bot is registered by another application ||
+|| `CHAT_NOT_FOUND` | CHAT_NOT_FOUND | No chat found with the specified `dialogId` ||
+|| `ACCESS_DENIED` | ACCESS_DENIED | The bot does not have a role allowed to remove participants in this chat, or this is a personal chat ||
+|| `USER_INVITED_FROM_STRUCTURE` | USER_INVITED_FROM_STRUCTURE | The user was added to the chat by synchronization with the company structure and cannot be removed ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
@@ -266,3 +268,5 @@ HTTP Status: **400**, **403**
 - [{#T}](./chat-user-add.md)
 - [{#T}](./chat-user-list.md)
 - [{#T}](./chat-leave.md)
+- [{#T}](./index.md)
+- [{#T}](../../migration.md)

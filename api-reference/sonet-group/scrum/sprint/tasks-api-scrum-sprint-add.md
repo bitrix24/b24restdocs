@@ -23,12 +23,10 @@ The method `tasks.api.scrum.sprint.add` adds a sprint to Scrum.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Object containing sprint data ||
+[`object`](../../../data-types.md) | Object containing sprint data [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
-
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+### Parameter fields {#fields}
 
 #|
 || **Name**
@@ -36,17 +34,30 @@ The method `tasks.api.scrum.sprint.add` adds a sprint to Scrum.
 || **groupId*** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs. 
 
-The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./tasks-api-scrum-sprint-get.md) for an existing sprint||
+You can obtain the identifier using the [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) method. A group is a Scrum if its `SCRUM_MASTER_ID` field is filled ||
 || **name*** 
 [`string`](../../../data-types.md) | Name of the sprint ||
+|| **createdBy*** 
+[`integer`](../../../data-types.md) | Identifier of the user who creates the sprint.
+
+You can obtain the identifier using the [user.get](../../../user/user-get.md) method ||
+|| **modifiedBy** 
+[`integer`](../../../data-types.md) | Identifier of the user who last modified the sprint ||
 || **sort** 
-[`integer`](../../../data-types.md) | Sorting ||
-|| **dateStart** 
+[`integer`](../../../data-types.md) | Sort order of the sprint. Default is `0` ||
+|| **dateStart*** 
 [`string`](../../../data-types.md) | Start date of the sprint. Available formats: `ISO 8601`, `timestamp` ||
-|| **dateEnd** 
-[`string`](../../../data-types.md) | End date of the sprint. Available formats: `ISO 8601`, `timestamp` ||
-|| **status** 
-[`string`](../../../data-types.md) | Status of the sprint. Available values: `active`, `planned`, `completed` ||
+|| **dateEnd*** 
+[`string`](../../../data-types.md) | End date of the sprint. Available formats: `ISO 8601`, `timestamp`.
+
+The method does not validate the date format: it writes a string that is not a date as `1970-01-01` ||
+|| **status*** 
+[`string`](../../../data-types.md) | Status of the sprint. Available values:
+- `planned` — planned
+- `active` — active. A Scrum can have only one active sprint
+- `completed` — completed
+
+To create a sprint and then start it with the [tasks.api.scrum.sprint.start](./tasks-api-scrum-sprint-start.md) method, pass `planned` ||
 |#
 
 ## Code Examples
@@ -225,9 +236,18 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
+    $groupId = 1;
+    $name = 'Sprint 1';
+    $createdBy = 1;
+    $sort = 1;
+    $status = 'planned';
+    $dateStart = '2021-11-22T00:00:00+02:00';
+    $dateEnd = '2021-11-29T00:00:00+02:00';
+
     try {
         $response = $b24Service
             ->core
@@ -251,8 +271,6 @@ The identifier can be obtained using the method [tasks.api.scrum.sprint.get](./t
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // The data processing logic you need
-        processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -368,8 +386,7 @@ HTTP status: **200**
 
 ```json
 {
-    "result":
-    {
+    "result": {
         "id": 1,
         "groupId": 1,
         "entityType": "sprint",
@@ -381,6 +398,16 @@ HTTP status: **200**
         "dateStart": "2021-11-22T00:00:00+02:00",
         "dateEnd": "2021-11-29T00:00:00+02:00",
         "status": "planned"
+    },
+    "time": {
+        "start": 1790580587,
+        "finish": 1790580587.569156,
+        "duration": 0.5691559314727783,
+        "processing": 0,
+        "date_start": "2026-09-28T10:29:47+03:00",
+        "date_finish": "2026-09-28T10:29:47+03:00",
+        "operating_reset_at": 1790581187,
+        "operating": 0
     }
 }
 ```
@@ -391,19 +418,28 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`object`](../../../data-types.md) | Object containing sprint data ||
+[`object`](../../../data-types.md) | Sprint data [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id** 
 [`integer`](../../../data-types.md) | Identifier of the sprint ||
 || **groupId** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
 || **entityType** 
-[`string`](../../../data-types.md) | Entity type (in this case `sprint`) ||
+[`string`](../../../data-types.md) | Object type, always `sprint` for sprints ||
 || **name** 
 [`string`](../../../data-types.md) | Name of the sprint ||
 || **goal** 
 [`string`](../../../data-types.md) | Goal of the sprint. Set only in the interface when starting the sprint ||
 || **sort** 
-[`integer`](../../../data-types.md) | Sorting ||
+[`integer`](../../../data-types.md) | Sort order of the sprint ||
 || **createdBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
 || **modifiedBy** 
@@ -413,7 +449,7 @@ HTTP status: **200**
 || **dateEnd** 
 [`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
 || **status** 
-[`string`](../../../data-types.md) | Status of the sprint ||
+[`string`](../../../data-types.md) | Status of the sprint: `planned` — planned, `active` — active, `completed` — completed ||
 |#
 
 ## Error Handling
@@ -423,7 +459,7 @@ HTTP status: **400**
 ```json
 {
     "error": 0,
-    "error_description": "Sprint not created"
+    "error_description": "Group id not found"
 }
 ```
 
@@ -432,15 +468,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| `0` | `Access denied` | No access to scrum ||
-|| `0` | `Sprint not created` | Failed to create sprint ||
-|| `0` | `Incorrect dateStart format` | Invalid start date format for the sprint ||
-|| `0` | `Incorrect dateEnd format` | Invalid end date format for the sprint ||
-|| `0` | `createdBy user not found` | User in the "creator" field not found ||
-|| `0` | `modifiedBy user not found` | User in the "last modified by" field not found ||
-|| `100` | `Could not find value for parameter {fields}` | Incorrect parameter name or parameter not set ||
-|| `100` | `Invalid value {stringValue} to match with parameter {fields}. Should be value of type array` | Invalid parameter type ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | `Access denied` | No access to the Scrum ||
+|| `400` | `0` | `Group id not found` | The `groupId` field is not passed ||
+|| `400` | `0` | `Unable to add sprint` | Failed to create the sprint, for example, the `name` or `createdBy` field is not passed ||
+|| `400` | `0` | `Unable to add two active sprint` | The `active` status is passed, but the Scrum already has an active sprint ||
+|| `400` | `0` | `Incorrect sprint status` | The `status` field is not passed or contains a value other than `planned`, `active`, `completed` ||
+|| `400` | `0` | `Incorrect dateStart format` | The `dateStart` field is not passed ||
+|| `400` | `0` | `Incorrect dateEnd format` | The `dateEnd` field is not passed ||
+|| `400` | `0` | `createdBy user not found` | The user with the identifier from the `createdBy` field is not found ||
+|| `400` | `0` | `modifiedBy user not found` | The user with the identifier from the `modifiedBy` field is not found ||
+|| `400` | `100` | `Could not find value for parameter {fields}` | The `fields` parameter is not passed ||
+|| `400` | `100` | `Invalid value {stringValue} to match with parameter {fields}. Should be value of type array` | The `fields` parameter is not an object ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -448,9 +487,9 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./tasks-api-scrum-sprint-update.md)
-- [{#T}](./tasks-api-scrum-sprint-start.md)
-- [{#T}](./tasks-api-scrum-sprint-complete.md)
 - [{#T}](./tasks-api-scrum-sprint-get.md)
 - [{#T}](./tasks-api-scrum-sprint-list.md)
 - [{#T}](./tasks-api-scrum-sprint-delete.md)
+- [{#T}](./tasks-api-scrum-sprint-start.md)
+- [{#T}](./tasks-api-scrum-sprint-complete.md)
 - [{#T}](./tasks-api-scrum-sprint-get-fields.md)

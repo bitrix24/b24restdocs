@@ -44,7 +44,7 @@ Pass the same botToken that was specified during the chat bot registration ||
 || **message**
 [`string`](../../../../data-types.md) | New text of the message. Maximum length—20,000 characters ||
 || **attach**
-[`array`](../../../../data-types.md) | New attachments. More details: [How to use attachments](./attachments/index.md) ||
+[`object`](../../../../data-types.md) | A new attachment in the full form: an object with the `BLOCKS` array. The method does not accept the short form, an array of blocks, and removes the attachment instead. An empty string removes the attachment. More details: [How to use attachments](./attachments/index.md) ||
 || **keyboard**
 [`array`](../../../../data-types.md) | New keyboard. More details: [Working with keyboards](./message-keyboards.md). To remove the keyboard, pass `"N"` ||
 || **urlPreview**

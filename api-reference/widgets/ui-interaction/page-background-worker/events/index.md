@@ -52,7 +52,7 @@ An interface event cannot be unsubscribed from, and calling `BX24.placement.bind
 || The operator clicks the call control buttons | [BackgroundCallCard::muteButtonClick](mute-button-click.md), [BackgroundCallCard::holdButtonClick](hold-button-click.md), [BackgroundCallCard::hangupButtonClick](hang-up-button-click.md), [BackgroundCallCard::answerButtonClick](answer-button-click.md) | The data of the specific action in the interface ||
 || The operator works with the call transfer | [BackgroundCallCard::transferButtonClick](transfer-button-click.md), [BackgroundCallCard::cancelTransferButtonClick](cancel-transfer-button-click.md), [BackgroundCallCard::completeTransferButtonClick](complete-transfer-button-click.md) | The data of the transfer scenario ||
 || The card loaded the client data from the CRM, the client was identified, or the current client changed in a call campaign | [BackgroundCallCard::entityChanged](entity-changed.md) | The client's number and the current CRM binding ||
-|| You need additional actions from the card interface, for example to save a comment, rate the call quality, or enter a digit on the keypad | [BackgroundCallCard::addCommentButtonClick](add-comment-button-click.md), [BackgroundCallCard::dialpadButtonClick](dialpad-button-click.md), [BackgroundCallCard::qualityMeterClick](quality-meter-click.md), [BackgroundCallCard::notifyAdminButtonClick](notify-admin-button-click.md), [BackgroundCallCard::nextButtonClick](next-button-click.md), [BackgroundCallCard::skipButtonClick](skip-button-click.md), [BackgroundCallCard::makeCallButtonClick](make-call-button-click.md), [BackgroundCallCard::closeButtonClick](close-button-click.md) | The value selected by the user or the parameters of the action ||
+|| You need additional actions from the card interface, for example to save a comment or enter a digit on the keypad | [BackgroundCallCard::addCommentButtonClick](add-comment-button-click.md), [BackgroundCallCard::dialpadButtonClick](dialpad-button-click.md), [BackgroundCallCard::notifyAdminButtonClick](notify-admin-button-click.md), [BackgroundCallCard::nextButtonClick](next-button-click.md), [BackgroundCallCard::skipButtonClick](skip-button-click.md), [BackgroundCallCard::makeCallButtonClick](make-call-button-click.md), [BackgroundCallCard::closeButtonClick](close-button-click.md) | The value selected by the user or the parameters of the action ||
 |#
 
 Which buttons the operator sees in each state of the card and which event they trigger is shown on the page [{#T}](../card.md).
@@ -70,16 +70,15 @@ Which buttons the operator sees in each state of the card and which event they t
 || [BackgroundCallCard::muteButtonClick](mute-button-click.md) | When the mute button is clicked | `boolean` — the state of the microphone ||
 || [BackgroundCallCard::holdButtonClick](hold-button-click.md) | When the hold call button is clicked | `boolean` — the hold state ||
 || [BackgroundCallCard::closeButtonClick](close-button-click.md) | When the close call card button is clicked | No data ||
-|| [BackgroundCallCard::transferButtonClick](transfer-button-click.md) | When the current operator selects the operator to transfer the call to | An object with the number and the target of the transfer ||
-|| [BackgroundCallCard::cancelTransferButtonClick](cancel-transfer-button-click.md) | When the "return to call" button is clicked | No data ||
+|| [BackgroundCallCard::transferButtonClick](transfer-button-click.md) | When an operator is selected to transfer the call to | An object with the number and the target of the transfer ||
+|| [BackgroundCallCard::cancelTransferButtonClick](cancel-transfer-button-click.md) | When the "continue call" button is clicked | No data ||
 || [BackgroundCallCard::completeTransferButtonClick](complete-transfer-button-click.md) | When the "redirect" button is clicked | No data ||
 || [BackgroundCallCard::hangupButtonClick](hang-up-button-click.md) | When the "end" button is clicked | No data ||
 || [BackgroundCallCard::nextButtonClick](next-button-click.md) | When the "next" button is clicked | No data ||
-|| [BackgroundCallCard::skipButtonClick](skip-button-click.md) | When the "skip" button is clicked | No data ||
+|| [BackgroundCallCard::skipButtonClick](skip-button-click.md) | When the "ignore" button is clicked | No data ||
 || [BackgroundCallCard::answerButtonClick](answer-button-click.md) | When the "answer" button is clicked | No data ||
 || [BackgroundCallCard::entityChanged](entity-changed.md) | When the CRM object linked to the call is loaded or changed | An object with the number and the CRM binding ||
 || [BackgroundCallCard::makeCallButtonClick](make-call-button-click.md) | When the "call" or "callback" button is clicked | No data ||
-|| [BackgroundCallCard::qualityMeterClick](quality-meter-click.md) | When the call quality is rated | A string with a rating from 1 to 5 ||
 || [BackgroundCallCard::dialpadButtonClick](dialpad-button-click.md) | When one of the numeric buttons of the phone is pressed | A string with the pressed key ||
 || [BackgroundCallCard::notifyAdminButtonClick](notify-admin-button-click.md) | When the "notify administrator" button is clicked | No data ||
 |#

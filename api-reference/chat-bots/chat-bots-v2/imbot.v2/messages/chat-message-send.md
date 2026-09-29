@@ -42,7 +42,7 @@ Pass the same botToken that was specified during the chat-bot registration ||
 || **message**
 [`string`](../../../../data-types.md) | Message text. Maximum length — 20,000 characters. If exceeded, the text is truncated with ` (...)` added ||
 || **attach**
-[`array`](../../../../data-types.md) | Attachments. More details: [How to use attachments](./attachments/index.md) ||
+[`object`](../../../../data-types.md) \| [`array`](../../../../data-types.md) | An attachment: an object with the `BLOCKS` array or a plain array of blocks. More details: [How to use attachments](./attachments/index.md) ||
 || **keyboard**
 [`array`](../../../../data-types.md) | Keyboard with buttons. More details: [Working with keyboards](./message-keyboards.md) ||
 || **system**

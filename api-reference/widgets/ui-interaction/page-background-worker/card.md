@@ -65,10 +65,10 @@ Right after it appears, the card is in an internal state: it has only the Close 
 || **State** | **When Used** | **Buttons and Events** ||
 || incoming | For accepting incoming calls |
 - Answer — [BackgroundCallCard::answerButtonClick](./events/answer-button-click.md)
-- Skip — [BackgroundCallCard::skipButtonClick](./events/skip-button-click.md) ||
+- Ignore — [BackgroundCallCard::skipButtonClick](./events/skip-button-click.md) ||
 || transferIncoming | For accepting a redirected incoming call |
 - Answer — [BackgroundCallCard::answerButtonClick](./events/answer-button-click.md)
-- Skip — [BackgroundCallCard::skipButtonClick](./events/skip-button-click.md) ||
+- Ignore — [BackgroundCallCard::skipButtonClick](./events/skip-button-click.md) ||
 || outgoing | For displaying the outgoing call card |
 - Call — [BackgroundCallCard::makeCallButtonClick](./events/make-call-button-click.md) ||
 || connectingIncoming | For displaying the card while connecting to an incoming call |
@@ -83,9 +83,9 @@ Right after it appears, the card is in an internal state: it has only the Close 
 - Pressing buttons on the dial pad — [BackgroundCallCard::dialpadButtonClick](./events/dialpad-button-click.md) ||
 || transferring | For confirming the transfer of the call to another operator |
 - Transfer — [BackgroundCallCard::completeTransferButtonClick](./events/complete-transfer-button-click.md)
-- Return to call — [BackgroundCallCard::cancelTransferButtonClick](./events/cancel-transfer-button-click.md) ||
+- Continue call — [BackgroundCallCard::cancelTransferButtonClick](./events/cancel-transfer-button-click.md) ||
 || transferFailed | If the call transfer failed |
-- Return to call — [BackgroundCallCard::cancelTransferButtonClick](./events/cancel-transfer-button-click.md) ||
+- Continue call — [BackgroundCallCard::cancelTransferButtonClick](./events/cancel-transfer-button-click.md) ||
 || transferConnected | If the transfer was successful and you need to exit the call card |
 - Hang up — [BackgroundCallCard::hangupButtonClick](./events/hang-up-button-click.md) ||
 || error | If a call error occurred |

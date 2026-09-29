@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::answerButtonClick` event occurs when an incoming call is accepted.
+The `BackgroundCallCard::answerButtonClick` event occurs when the operator clicks the "Answer" button in the card of an incoming call.
+
+The button is available only in the `incoming` and `transferIncoming` states. The card of an application call opens without it — the application enables these states with the [CallCardSetUiState](../call-card-set-ui-state.md) command. Bitrix24 does not change the card state on the click: after answering, the application switches the card to `connected` with the same command.
 
 {% note info "" %}
 
@@ -102,5 +104,8 @@ Check the following conditions.
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../bx24-placement-bind-event.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)
+- [{#T}](./skip-button-click.md)
+- [{#T}](../call-card-set-ui-state.md)

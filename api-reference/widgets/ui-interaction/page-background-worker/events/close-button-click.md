@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::closeButtonClick` event occurs when the operator clicks the button that closes the call card.
+The `BackgroundCallCard::closeButtonClick` event occurs when the operator clicks the "Close" button in the call card.
+
+The button is available in the initial view of an application call card and in the `error` and `moneyError` states, which the application enables with the [CallCardSetUiState](../call-card-set-ui-state.md) command.
+
+Right after the event, Bitrix24 closes the card itself. The handler cannot cancel the closing. Closing the card does not end the call — to end it, the application calls the [telephony.externalCall.finish](../../../../telephony/telephony-external-call-finish.md) method. The [CallCardClose](../call-card-close.md) command closes the card from the application side, and this event does not occur in that case.
 
 {% note info "" %}
 
@@ -102,5 +106,8 @@ Check the following conditions.
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../bx24-placement-bind-event.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)
+- [{#T}](../call-card-close.md)
+- [{#T}](./hang-up-button-click.md)

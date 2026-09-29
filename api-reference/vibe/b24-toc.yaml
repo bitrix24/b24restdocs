@@ -5,9 +5,9 @@ items:
     href: index.md  
   - name: Add Widget  
     href: landing-repowidget-register.md  
-  - name: Remove Widget  
-    href: landing-repowidget-unregister.md  
   - name: Get Widget List  
     href: landing-repowidget-get-list.md  
-  - name: Enable Debug Mode  
+  - name: Remove Widget  
+    href: landing-repowidget-unregister.md  
+  - name: Enable or Disable Debug Mode  
     href: landing-repowidget-debug.md  

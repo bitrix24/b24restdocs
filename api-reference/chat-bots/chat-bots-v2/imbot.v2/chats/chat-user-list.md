@@ -1,4 +1,4 @@
-# List of Chat Participants imbot.v2.Chat.User.list
+# Get the List of Chat Participants imbot.v2.Chat.User.list
 
 {% note tip "" %}
 
@@ -13,7 +13,17 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: owner of the registered bot
 
-The method `imbot.v2.Chat.User.list` returns a list of chat participants.
+The method `imbot.v2.Chat.User.list` returns the list of chat participants. If the bot is a participant of the chat, it is also in the list — it is identified by the `bot: true` field.
+
+Users with a deactivated account are not included in the list.
+
+The bot must be a participant of the chat. The method returns the participants of an open chat or an open channel even if the bot is not a participant.
+
+{% note warning "" %}
+
+The method does not support pagination: there are no offset parameters, and the response does not contain the total number of participants. A single call returns up to 200 participants. The number of chat participants is available in the `userCounter` field of the [imbot.v2.Chat.get](./chat-get.md) response.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -25,19 +35,25 @@ The method `imbot.v2.Chat.User.list` returns a list of chat participants.
 || **botId*** 
 [`integer`](../../../../data-types.md) | Bot ID ||
 || **botToken** 
-[`string`](../../../../data-types.md) | Unique authorization token for the bot. Required for webhook authorization, not needed for OAuth.
+[`string`](../../../../data-types.md) | Bot token. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chat bot registration ||
+Pass the same `botToken` that you specified when registering the bot ||
 || **dialogId*** 
-[`string`](../../../../data-types.md) | Dialog ID. For group chats — `chat{chatId}` ||
+[`string`](../../../../data-types.md) | ID of the group chat in the [dialogId format](../../index.md#dialog-id): `chat{chatId}` ||
 || **order** 
 [`object`](../../../../data-types.md) | Sorting.
 
-Available fields: `id`, `lastSendMessageId`, `userId`. Value: `ASC` or `DESC`.
+Available fields:
+
+- `id` — the order of joining the chat
+- `lastSendMessageId` — ID of the participant's last message
+- `userId` — user ID
+
+Sort direction: `ASC` or `DESC`. If you pass several fields, the method uses only one — the one listed higher among the available fields. Without `order`, the order is not guaranteed.
 
 Example: `{"id": "ASC"}` ||
 || **limit** 
-[`integer`](../../../../data-types.md) | Number of records (1–200). Default is `50` ||
+[`integer`](../../../../data-types.md) | Number of records, from `1` to `200`. Default is `50`. A value out of range does not cause an error — the method returns up to `50` records ||
 |#
 
 ## Code Examples
@@ -251,10 +267,14 @@ HTTP Status: **200**
             "status": "online",
             "idle": false,
             "lastActivityDate": "2025-01-15T14:25:00+01:00",
+            "mobileLastDate": false,
+            "desktopLastDate": "2025-01-15T14:25:00+01:00",
             "absent": false,
             "departments": [7],
             "phones": false,
-            "type": "employee"
+            "type": "user",
+            "website": "",
+            "email": ""
         },
         {
             "id": 2,
@@ -274,10 +294,14 @@ HTTP Status: **200**
             "status": "online",
             "idle": false,
             "lastActivityDate": "2025-01-15T14:20:00+01:00",
+            "mobileLastDate": false,
+            "desktopLastDate": "2025-01-15T14:20:00+01:00",
             "absent": false,
             "departments": [12],
             "phones": false,
-            "type": "employee"
+            "type": "user",
+            "website": "",
+            "email": ""
         }
     ],
     "time": {
@@ -304,12 +328,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied"
+    "error_description": "ACCESS_DENIED"
 }
 ```
 
@@ -319,11 +343,12 @@ HTTP Status: **400**, **403**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
-|| `BOT_ID_REQUIRED` | Bot ID is required | `botId` is not specified ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token not specified (botToken is required for webhook auth) | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_ID_REQUIRED` | botId is required | `botId` is not specified ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
-|| `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot registered by another application ||
-|| `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
+|| `BOT_OWNERSHIP_ERROR` | Bot was installed by another rest application | The bot is registered by another application ||
+|| `CHAT_NOT_FOUND` | CHAT_NOT_FOUND | No chat found with the specified `dialogId` ||
+|| `ACCESS_DENIED` | ACCESS_DENIED | The bot is not a participant of a private chat ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
@@ -334,3 +359,6 @@ HTTP Status: **400**, **403**
 - [{#T}](./chat-user-add.md)
 - [{#T}](./chat-user-delete.md)
 - [{#T}](./chat-manager-add.md)
+- [{#T}](./chat-get.md)
+- [{#T}](./index.md)
+- [{#T}](../../migration.md)

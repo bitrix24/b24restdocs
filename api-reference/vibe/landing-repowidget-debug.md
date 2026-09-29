@@ -1,4 +1,4 @@
-# Enable Debug Mode landing.repowidget.debug
+# Enable or Disable Debug Mode landing.repowidget.debug
 
 {% note tip "" %}
 
@@ -13,7 +13,15 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `landing.repowidget.debug` enables debug mode for all widgets of the current application. In this case, the vue application will report more errors in the js console for developer convenience. By default, the mode is disabled.
+The method `landing.repowidget.debug` enables or disables debug mode for all widgets of the current application.
+
+In debug mode, widgets output details of data loading errors to the browser console. The mode is enabled for the entire Bitrix24: the details are visible to all users who open Vibe pages with the application's widgets. By default, the mode is disabled, and it stays in effect until the method is called again with `enable: false`.
+
+{% note info "" %}
+
+The method works only in the context of an [application](../../settings/app-installation/index.md).
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -22,8 +30,13 @@ The method `landing.repowidget.debug` enables debug mode for all widgets of the 
 #|
 || **Name**
 `type` | **Description** ||
-|| **enable**
-[`boolean`](../data-types.md) | Debug mode activation flag ||
+|| **enable***
+[`boolean`](../data-types.md) | Debug mode. Possible values:
+
+- `true` — enable
+- `false` — disable
+
+In a request with form fields, pass `1` or `0`: the string `false` enables the mode ||
 |#
 
 ## Code Examples
@@ -215,7 +228,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | On success — `true`, otherwise — error ||
+[`boolean`](../data-types.md) | `true` if debug mode is set to the passed value ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
@@ -226,8 +239,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":"APP_NOT_FOUND",
-    "error_description":"Cannot find REST application"
+    "error": "APP_NOT_FOUND",
+    "error_description": "Cannot find REST application."
 }
 ```
 
@@ -236,8 +249,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `APP_NOT_FOUND` | REST application not found. Occurs when there are issues with the authorization of the REST application on the account ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `APP_NOT_FOUND` | Cannot find REST application. | The method was called outside the context of an application, for example, via a webhook ||
+|| `400` | `MISSING_PARAMS` | Some of the call parameters were missing: enable | The method was called without the `enable` parameter ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -245,5 +259,7 @@ HTTP Status: **400**
 ## Continue Learning
 
 - [{#T}](./landing-repowidget-register.md)
-- [{#T}](./landing-repowidget-unregister.md)
 - [{#T}](./landing-repowidget-get-list.md)
+- [{#T}](./landing-repowidget-unregister.md)
+- [{#T}](./index.md)
+

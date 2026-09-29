@@ -1,4 +1,4 @@
-# When Clicking the "Skip" Button BackgroundCallCard::skipButtonClick
+# When Clicking the "Ignore" Button BackgroundCallCard::skipButtonClick
 
 {% note tip "" %}
 
@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::skipButtonClick` event occurs when the current call is skipped.
+The `BackgroundCallCard::skipButtonClick` event occurs when the operator clicks the "Ignore" button in the card of an incoming call.
+
+The "Ignore" button is shown together with the "Answer" button in the `incoming` and `transferIncoming` states. The application enables them with the [CallCardSetUiState](../call-card-set-ui-state.md) command. For an application call, Bitrix24 does nothing on the click: the call does not end and the card stays open. The application ends the call itself with the [telephony.externalCall.finish](../../../../telephony/telephony-external-call-finish.md) method and closes the card with the [CallCardClose](../call-card-close.md) command.
 
 {% note info "" %}
 
@@ -102,5 +104,8 @@ Check the following conditions.
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../bx24-placement-bind-event.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)
+- [{#T}](./answer-button-click.md)
+- [{#T}](../call-card-set-ui-state.md)

@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`landing`](../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user when called from an application; an administrator when called via a webhook
 
-The method `landing.repowidget.unregister` removes the widget for Start page: the Vibe. On success, it returns `true`; otherwise, it returns `false` or an error with a description.
+The method `landing.repowidget.unregister` removes a widget for the Vibe by its code. All instances of the widget placed on Vibe pages are removed along with it.
+
+The method searches for the widget only among the widgets of the current application. If the method is called via a webhook, it searches among the widgets registered without an application.
 
 ## Method Parameters
 
@@ -23,7 +25,9 @@ The method `landing.repowidget.unregister` removes the widget for Start page: th
 || **Name**
 `type` | **Description** ||
 || **code***
-[`string`](../data-types.md) | Unique code of the widget to be removed ||
+[`string`](../data-types.md) | Unique code of the widget to be removed — the one passed in `code` when registering the widget with the [landing.repowidget.register](./landing-repowidget-register.md) method.
+
+You can retrieve the code from the `XML_ID` field in the response of the [landing.repowidget.getlist](./landing-repowidget-get-list.md) method ||
 |#
 
 ## Code Examples
@@ -215,12 +219,34 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Result of the widget removal ||
+[`boolean`](../data-types.md) | Result of the widget removal:
+
+- `true` — the widget was found and removed
+- `false` — `code` is empty or no widget with this code was found ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "MISSING_PARAMS",
+    "error_description": "Some of the call parameters were missing: code"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `MISSING_PARAMS` | Some of the call parameters were missing: code | The method was called without the `code` parameter ||
+|| `400` | `ACCESS_DENIED` | — | The method was called via a webhook by a user who is not an administrator ||
+|#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
@@ -229,3 +255,4 @@ HTTP status: **200**
 - [{#T}](./landing-repowidget-register.md)
 - [{#T}](./landing-repowidget-get-list.md)
 - [{#T}](./landing-repowidget-debug.md)
+- [{#T}](./index.md)

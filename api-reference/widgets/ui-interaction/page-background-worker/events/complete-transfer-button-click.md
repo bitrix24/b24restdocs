@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::completeTransferButtonClick` event occurs when the call transfer is confirmed.
+The `BackgroundCallCard::completeTransferButtonClick` event occurs when the operator clicks the "Redirect" button to complete the call transfer.
+
+The button is available only in the `transferring` state. The application enables it with the [CallCardSetUiState](../call-card-set-ui-state.md) command after the [transferButtonClick](./transfer-button-click.md) event, which passes the other party's number `phoneNumber` and the transfer recipient `target`. The second button of this state, "Continue call", sends [cancelTransferButtonClick](./cancel-transfer-button-click.md).
+
+Bitrix24 does not complete the transfer of an application call itself: the application hands the call over to the recipient and changes the card state.
 
 {% note info "" %}
 
@@ -102,5 +106,9 @@ Check the following conditions.
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../bx24-placement-bind-event.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)
+- [{#T}](./transfer-button-click.md)
+- [{#T}](./cancel-transfer-button-click.md)
+- [{#T}](../call-card-set-ui-state.md)

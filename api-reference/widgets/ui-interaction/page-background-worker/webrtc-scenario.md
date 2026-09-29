@@ -39,7 +39,7 @@ An important distinction from other placements is the mandatory `OPTIONS[errorHa
 
 The call is registered with the [telephony.externalCall.register](../../../telephony/telephony-external-call-register.md) method — the same method raises the call card. Call it at the moment when the WebRTC client of the widget starts processing the call.
 
-Furthermore, the widget can interact with the open call card. For working with the card through the `PAGE_BACKGROUND_WORKER` placement, there are 9 JS interface commands for retrieving and modifying card data and 17 events for handling operator actions — the full list is in the section overview [{#T}](./index.md).
+Furthermore, the widget can interact with the open call card. For working with the card through the `PAGE_BACKGROUND_WORKER` placement, there are 9 JS interface commands for retrieving and modifying card data and 16 events for handling operator actions — the full list is in the section overview [{#T}](./index.md).
 
 The key event is [BackgroundCallCard::initialized](./events/initialized.md). It occurs when the call card is created, and only after that can the card be managed. Therefore, make all command calls from the application side in the handler of this event.
 

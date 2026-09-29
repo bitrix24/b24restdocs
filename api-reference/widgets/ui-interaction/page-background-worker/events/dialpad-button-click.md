@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `BackgroundCallCard::dialpadButtonClick` event occurs when a key of the numeric keypad is pressed during a call.
+The `BackgroundCallCard::dialpadButtonClick` event occurs when the operator presses a key on the card's numeric keypad during a conversation.
+
+The keypad button is available only in the `connected` state. The card of an application call opens without it — the button appears when the application switches the card to `connected` with the [CallCardSetUiState](../call-card-set-ui-state.md) command. The event occurs separately for each key pressed. For an application call, Bitrix24 does not send DTMF tones to the line — the application does it, for example to navigate the other party's voice menu.
 
 {% note info "" %}
 
@@ -117,5 +119,8 @@ Check the following conditions.
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../bx24-placement-bind-event.md)
 - [{#T}](../card.md)
 - [{#T}](../index.md)
+- [{#T}](./add-comment-button-click.md)
+- [{#T}](./make-call-button-click.md)

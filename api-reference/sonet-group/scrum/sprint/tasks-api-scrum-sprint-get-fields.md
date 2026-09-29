@@ -41,7 +41,7 @@ No parameters.
     curl -X POST \
     -H "Content-Type: application/json" \
     -d '{
-    auth=YOUR_ACCESS_TOKEN
+    "auth": "YOUR_ACCESS_TOKEN"
     }' \
     https://your-domain.bitrix24.com/rest/tasks.api.scrum.sprint.getFields
     ```
@@ -141,6 +141,7 @@ No parameters.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -184,15 +185,15 @@ No parameters.
 
     // executing a request to the REST API
     $result = CRest::call(
-    'tasks.api.scrum.sprint.getFields',
-    []
+        'tasks.api.scrum.sprint.getFields',
+        []
     );
 
     // Processing the response from Bitrix24
-    if ($result['error']) {
-    echo 'Error: '.$result['error_description'];
+    if (isset($result['error'])) {
+        echo 'Error: '.$result['error_description'];
     } else {
-    print_r($result['result']);
+        print_r($result['result']);
     }
     ```
 
@@ -205,7 +206,7 @@ No parameters.
     	return fmt.Errorf("tasks.api.scrum.sprint.getFields: %w", err)
     }
 
-    // The method wraps the response in an object with the "fields" key.
+    // The method returns the fields inside an object with the "fields" key.
     raw, ok := b24.Unwrap(res.Result, "fields")
     if !ok {
     	return fmt.Errorf("no fields key in the response")
@@ -259,6 +260,16 @@ HTTP status: **200**
                 "type": "string"
             }
         }
+    },
+    "time": {
+        "start": 1790580587,
+        "finish": 1790580587.569156,
+        "duration": 0.5691559314727783,
+        "processing": 0,
+        "date_start": "2026-09-28T10:29:47+03:00",
+        "date_finish": "2026-09-28T10:29:47+03:00",
+        "operating_reset_at": 1790581187,
+        "operating": 0
     }
 }
 ```
@@ -268,27 +279,42 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Object with the `fields` key [(detailed description)](#fields) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object fields {#fields}
+
+The key is the name of a sprint field in the [tasks.api.scrum.sprint.add](./tasks-api-scrum-sprint-add.md) and [tasks.api.scrum.sprint.update](./tasks-api-scrum-sprint-update.md) methods. The value is an object with the `type` key, which contains the field type: `integer` or `string`. In the [tasks.api.scrum.sprint.list](./tasks-api-scrum-sprint-list.md) method, the same fields are passed in uppercase, for example, `GROUP_ID`.
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **groupId** 
 [`integer`](../../../data-types.md) | Identifier of the group (Scrum) to which the sprint belongs ||
 || **name** 
 [`string`](../../../data-types.md) | Name of the sprint ||
 || **sort** 
-[`integer`](../../../data-types.md) | Sorting ||
+[`integer`](../../../data-types.md) | Sort order of the sprint ||
 || **createdBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who created the sprint ||
 || **modifiedBy** 
 [`integer`](../../../data-types.md) | Identifier of the user who modified the sprint ||
 || **dateStart** 
-[`string`](../../../data-types.md) | Start date of the sprint in `ISO 8601` format ||
+[`string`](../../../data-types.md) | Start date of the sprint. Method responses use `ISO 8601`; in `add` and `update`, you can pass `ISO 8601` or `timestamp` ||
 || **dateEnd** 
-[`string`](../../../data-types.md) | End date of the sprint in `ISO 8601` format ||
+[`string`](../../../data-types.md) | End date of the sprint, same formats as `dateStart` ||
 || **status** 
-[`string`](../../../data-types.md) | Status of the sprint ||
+[`string`](../../../data-types.md) | Status of the sprint. Possible values: `planned` — planned, `active` — active, `completed` — completed ||
 |#
 
 ## Error Handling
 
-The method does not return errors.
+The method has no errors of its own.
+
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
@@ -296,8 +322,8 @@ The method does not return errors.
 
 - [{#T}](./tasks-api-scrum-sprint-add.md)
 - [{#T}](./tasks-api-scrum-sprint-update.md)
-- [{#T}](./tasks-api-scrum-sprint-start.md)
-- [{#T}](./tasks-api-scrum-sprint-complete.md)
 - [{#T}](./tasks-api-scrum-sprint-get.md)
 - [{#T}](./tasks-api-scrum-sprint-list.md)
 - [{#T}](./tasks-api-scrum-sprint-delete.md)
+- [{#T}](./tasks-api-scrum-sprint-start.md)
+- [{#T}](./tasks-api-scrum-sprint-complete.md)
