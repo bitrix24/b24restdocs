@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `userfieldtype.delete` removes a user field type registered by the application. It returns _true_ or an error with a description of the reason.
+The method `userfieldtype.delete` removes a user field type registered by this application and works only in the context of an [application](../../../settings/app-installation/index.md). To change the handler address, name, description, or field height, you do not need to delete the type — use the [userfieldtype.update](./userfieldtype-update.md) method.
+
+{% note warning "" %}
+
+Fields of this type remain in Bitrix24 after deletion, and their values remain in the database. While the type is not registered, the CRM card does not display such fields, and CRM methods do not work with their values: for example, [crm.deal.get](../../crm/deals/crm-deal-get.md) does not return the value, and [crm.deal.update](../../crm/deals/crm-deal-update.md) responds with `true` but does not retain the new value. You also cannot create a new field of this type: Bitrix24 returns the error `The custom type is invalid`. If the application registers the type with the same `USER_TYPE_ID` again using the [userfieldtype.add](./userfieldtype-add.md) method, the fields and values will be restored.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -21,11 +27,9 @@ The method `userfieldtype.delete` removes a user field type registered by the ap
 
 #|
 || **Name**
-`type` | **Description** | **Restrictions** ||
+`type` | **Description** ||
 || **USER_TYPE_ID***
-[`string`](../../data-types.md) | String code of the type | 
-- a-z0-9
-- must be unique ||
+[`string`](../../data-types.md) | Type code that the application passed to [userfieldtype.add](./userfieldtype-add.md). The code is case-insensitive. You can retrieve the codes using the [userfieldtype.list](./userfieldtype-list.md) method ||
 |#
 
 ## Code Examples
@@ -33,18 +37,6 @@ The method `userfieldtype.delete` removes a user field type registered by the ap
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```curl
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "USER_TYPE_ID": "test"
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/userfieldtype.delete
-    ```
 
 - cURL (OAuth)
 
@@ -153,7 +145,7 @@ The method `userfieldtype.delete` removes a user field type registered by the ap
     ```
 - PHP
 
-    ```php        
+    ```php
     try {
         $userTypeId = 'example_user_type_id'; // Replace with the actual user type ID
         $result = $serviceBuilder
@@ -174,7 +166,7 @@ The method `userfieldtype.delete` removes a user field type registered by the ap
 
     ```js
     BX24.callMethod(
-        'userfieldtype.delete', 
+        'userfieldtype.delete',
         {
             USER_TYPE_ID: 'test'
         },
@@ -266,20 +258,24 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [error handling](../../../_includes/error-info.md) %} 
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `ERROR_ARGUMENT` | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not specified ||
-|| `ERROR_NOT_FOUND` | User Field Type not found | User field with the specified `USER_TYPE_ID` not found ||
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was called outside an application, for example via a webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a user who is not an administrator ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not passed ||
+|| `400` | `ERROR_NOT_FOUND` | User Field Type not found | The application has no type with this `USER_TYPE_ID` ||
+|| `400` | `ERROR_CORE` | Unable to delete User Field Type: \<error text\> | Bitrix24 could not delete the type registration ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./userfieldtype-add.md)
 - [{#T}](./userfieldtype-update.md)
 - [{#T}](./userfieldtype-list.md)

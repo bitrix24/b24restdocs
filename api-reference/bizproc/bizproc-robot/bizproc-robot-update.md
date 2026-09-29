@@ -25,24 +25,29 @@ It only works in the context of the [application](../../../settings/app-installa
 || **Name**
 `type` | **Description** ||
 || **CODE*** 
-[`string`](../../data-types.md) | Internal identifier of the Automation Rule ||
+[`string`](../../data-types.md) | Code of the Automation Rule that this application passed in `CODE` during registration. You can retrieve the codes using the [bizproc.robot.list](./bizproc-robot-list.md) method ||
 || **FIELDS*** 
 [`object`](../../data-types.md) | Object with [fields](#parametr-fields) of the Automation Rule ||
 |#
 
 ### FIELDS Parameter {#parametr-fields}
 
-Pass at least one field to update in `FIELDS`.
+How the method updates the fields:
+
+- `FIELDS` must contain at least one field, otherwise the method returns the `No fields to update` error
+- `PLACEMENT_HANDLER` does not count as such a field: pass it together with another field, for example, `USE_PLACEMENT: 'Y'`
+- fields that are not included in `FIELDS` remain unchanged
+- `PROPERTIES` and `RETURN_PROPERTIES` are replaced entirely: to add a parameter, pass the full set
 
 #| 
 || **Name**
 `type` | **Description** ||
 || **HANDLER**
-[`string`](../../data-types.md) | URL to which the Automation Rule will send data via the Bitrix24 queue server.
+[`string`](../../data-types.md) | Handler URL to which Bitrix24 sends the Automation Rule data via the queue server.
 
-The link must have the same domain where the application is installed ||
+It must start with `http://` or `https://`, and the host name must contain a dot, for example, `https://example.com/robot.php` ||
 || **AUTH_USER_ID** 
-[`integer`](../../data-types.md) | Identifier of the user whose token will be passed to the application ||
+[`integer`](../../data-types.md) | Identifier of the user whose token Bitrix24 passes to the handler by default. An administrator can select a different user in the Automation Rule settings ||
 || **USE_SUBSCRIPTION** 
 [`boolean`](../../data-types.md) | Should the Automation Rule wait for a response from the application? Possible values:
 - `Y` — yes
@@ -82,12 +87,12 @@ The system name of the parameter must start with a letter and can contain charac
 || **RETURN_PROPERTIES** 
 [`object`](../../data-types.md) | Object with additional results of the Automation Rule. Contains objects, each describing a [parameter of the Automation Rule](#property).
 
-This parameter controls the ability of the Automation Rule to wait for a response from the application and work with the data that will [come in the response](./bizproc-event-send.md).
+The application returns the values of these parameters using the [bizproc.event.send](./bizproc-event-send.md) method, and they become available to subsequent steps. Whether to wait for a response is set by the `USE_SUBSCRIPTION` parameter.
 
 The system name of the parameter must start with a letter and can contain characters `a-z`, `A-Z`, `0-9`, and underscore `_`
 ||
 || **DOCUMENT_TYPE** 
-[`array`](../../data-types.md) | Document type that will determine the data types for the `PROPERTIES` and `RETURN_PROPERTIES` parameters. Consists of three string-type elements: 
+[`array`](../../data-types.md) | Document type that will determine the data types for the `PROPERTIES` and `RETURN_PROPERTIES` parameters. Consists of three string-type elements:
 - module identifier
 - object identifier
 - document type
@@ -135,9 +140,11 @@ Examples:
 || **USE_PLACEMENT** 
 [`boolean`](../../data-types.md) | Allows opening additional settings for the Automation Rule in the application slider. Possible values:
 - `Y` — yes
-- `N` — no  ||
+- `N` — no ||
 || **PLACEMENT_HANDLER**
-[`string`](../../data-types.md) | URL of the placement handler on the application side ||
+[`string`](../../data-types.md) | URL of the placement handler on the application side. It is validated the same way as `HANDLER`.
+
+To enable the placement, pass the URL together with `USE_PLACEMENT: 'Y'`. The `USE_PLACEMENT: 'N'` value removes the handler registration, so you need to pass the URL again when you re-enable the placement ||
 |#
 
 ### PROPERTY Object {#property}
@@ -145,32 +152,32 @@ Examples:
 #| 
 || **Name**
 `type` | **Description** ||
-|| **Name** 
-[`string` \| `object`](../../data-types.md) | Name of the parameter ||
+|| **Name***
+[`string` \| `object`](../../data-types.md) | Name of the parameter. Without it, the method returns the `Empty property NAME` error ||
 || **Description** 
 [`string` \| `object`](../../data-types.md) | Description of the parameter ||
 || **Type** 
-[`string`](../../data-types.md) | Type of the parameter. Basic values: 
+[`string`](../../data-types.md) | Type of the parameter. Basic values:
   - `bool` — yes or no
   - `date` — date
   - `datetime` — date and time
   - `double` — number
   - `file` — file
-  - `int` — integer 
+  - `int` — integer
   - `select` — list
   - `string` — string
   - `text` — text
-  - `user` — user  ||
+  - `user` — user ||
 || **Options** 
-[`array`](../../data-types.md) | Array of values for the parameter of type list `'TYPE': select'` like:
+[`object`](../../data-types.md) | Options for a list-type parameter, `Type: 'select'`. The key is the option value, and the value is its title:
 
 ```js
-[
+{
     'value1': 'title1',
     'value2': 'title2',
     'value3': 'title3',
     'value4': 'title4'
-]
+}
 ```
 ||
 || **Required** 
@@ -182,7 +189,7 @@ Examples:
 - `Y` — yes
 - `N` — no ||
 || **Default** 
-[`any`](../../data-types.md) | Default value of the parameter ||
+[`any`](../../data-types.md) | Default value of the parameter. For `Type = 'select'`, specify the key from `Options` ||
 |#
 
 #### Examples of Objects
@@ -199,7 +206,7 @@ Below are examples of `PROPERTY` objects for different parameter types.
       },
       'Required': 'Y',
       'Multiple': 'N',
-      'Default': 'PDF',
+      'Default': 'pdf',
       'Type': 'select',
       'Options': {
           'pdf': 'PDF',
@@ -284,9 +291,9 @@ Below are examples of `PROPERTY` objects for different parameter types.
     ```js
     try
     {
-        const response = await $b24.callMethod(
-            'bizproc.robot.update',
-            {
+        const response = await $b24.actions.v2.call.make({
+            method: 'bizproc.robot.update',
+            params: {
                 'CODE': 'test_robot',
                 'FIELDS': {
                     'NAME': 'Send message to author',
@@ -298,10 +305,12 @@ Below are examples of `PROPERTY` objects for different parameter types.
                     }
                 }
             }
-        );
-        
-        const result = response.getData().result;
-        alert("Success: " + result);
+        });
+
+        if (!response.isSuccess)
+            console.error(response.getErrorMessages().join('; '));
+        else
+            console.log('Success:', response.getData().result);
     }
     catch( error )
     {
@@ -358,9 +367,9 @@ Below are examples of `PROPERTY` objects for different parameter types.
                 1,
                 ['en' => 'Localized Name'],
                 true,
-                ['property1' => 'value1'],
+                ['property1' => ['Name' => 'Parameter', 'Type' => 'string']],
                 false,
-                ['returnProperty1']
+                ['outputString' => ['Name' => 'Result', 'Type' => 'string']]
             );
 
         // Process the result
@@ -503,25 +512,27 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Application context required | Application context is required ||
-|| `ACCESS_DENIED` | Access denied! | Method executed by non-administrator ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Activity code not specified ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid activity code ||
-|| `ERROR_ACTIVITY_NOT_FOUND` | Activity or Automation Rule not found! | Automation Rule not found ||
-|| `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | Invalid handler protocol http, https ||
-|| `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | Invalid handler URL ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | Incorrectly filled parameters `PROPERTIES` or `RETURN_PROPERTIES` ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong property key <key>! | Invalid property identifier ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty property NAME <key>! | Property name not specified ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity FILTER! | Invalid filter ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity DOCUMENT_TYPE! | Invalid `DOCUMENT_TYPE` ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | No fields to update | No fields to update ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | Application context is required ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a non-administrator ||
+|| `400` | `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Automation Rule code is not specified ||
+|| `400` | `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid Automation Rule code ||
+|| `400` | `ERROR_ACTIVITY_NOT_FOUND` | Activity or Robot not found! | Automation Rule not found ||
+|| `400` | `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | Invalid handler protocol http, https ||
+|| `400` | `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | Invalid handler URL ||
+|| `400` | `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong properties array! | The `PROPERTIES` or `RETURN_PROPERTIES` parameters are specified incorrectly ||
+|| `400` | `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong property key (\<key\>)! | Invalid property identifier ||
+|| `400` | `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty property NAME (\<key\>)! | Property name not specified ||
+|| `400` | `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity FILTER! | Invalid filter ||
+|| `400` | `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity DOCUMENT_TYPE! | Invalid `DOCUMENT_TYPE` ||
+|| `400` | `ERROR_ACTIVITY_VALIDATION_FAILURE` | No fields to update | No fields to update ||
+|| `400` | `ERROR_CORE` | Unable to set placement handler: Handler already binded | The URL is already used by the settings handler of another Automation Rule or workflow action of this application: each `CODE` must have its own URL ||
+|| `400` | `ERROR_CORE` | Unable to set placement handler: \<error text\> | Failed to retain the placement handler ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-robot-add.md)

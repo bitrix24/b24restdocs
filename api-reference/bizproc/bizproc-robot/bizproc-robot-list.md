@@ -40,37 +40,13 @@ No parameters.
 - JS
 
     ```js
-    // callListMethod: Retrieves all data at once. Use only for small selections (< 1000 items) due to high memory usage.
-    
     try {
-      const response = await $b24.callListMethod(
-        'bizproc.robot.list',
-        {},
-        (progress) => { console.log('Progress:', progress) }
-      )
-      const items = response.getData() || []
-      for (const entity of items) { console.log('Entity:', entity) }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // fetchListMethod: Retrieves data in parts using an iterator. Use it for large data volumes to optimize memory usage.
-    
-    try {
-      const generator = $b24.fetchListMethod('bizproc.robot.list', {}, 'ID')
-      for await (const page of generator) {
-        for (const entity of page) { console.log('Entity:', entity) }
+      const response = await $b24.actions.v2.call.make({ method: 'bizproc.robot.list', params: {} })
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        for (const code of response.getData().result) { console.log('Robot code:', code) }
       }
-    } catch (error) {
-      console.error('Request failed', error)
-    }
-    
-    // callMethod: Manually controls pagination through the start parameter. Use it for precise control of request batches. For large datasets, it is less efficient than fetchListMethod.
-    
-    try {
-      const response = await $b24.callMethod('bizproc.robot.list', {}, 0)
-      const result = response.getData().result || []
-      for (const entity of result) { console.log('Entity:', entity) }
     } catch (error) {
       console.error('Request failed', error)
     }
@@ -107,16 +83,8 @@ No parameters.
             ->robot()
             ->list();
 
-        foreach ($result->getRobots() as $robot) {
-            print($robot->code);
-            print($robot->name);
-            print($robot->handlerUrl);
-            print($robot->authUserId);
-            print($robot->isUseSubscription ? 'Yes' : 'No');
-            print($robot->isUsePlacement ? 'Yes' : 'No');
-            if ($robot->createdDate instanceof DateTime) {
-                print($robot->createdDate->format(DateTime::ATOM));
-            }
+        foreach ($result->getRobots() as $code) {
+            print($code . PHP_EOL);
         }
     } catch (Throwable $e) {
         // Handle the exception
@@ -202,19 +170,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | List of application robot identifiers ||
+[`array`](../../data-types.md) | `CODE` values of the robots registered by this application. If there are no robots, an empty array `[]` is returned ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **403**
 
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Access denied!"
+    "error_description": "Access denied! Application context required"
 }
 ```
 
@@ -223,14 +191,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Application context required | Application context is required ||
-|| `ACCESS_DENIED` | Access denied! | The method was not executed by an administrator ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method was called outside an application, for example, through a webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a user who is not an administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-robot-add.md)

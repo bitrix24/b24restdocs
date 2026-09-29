@@ -17,15 +17,21 @@ The `bizproc.robot.delete` method removes a robot registered by the application.
 
 It only works in the context of the [application](../../../settings/app-installation/index.md).
 
-When an application is deleted or updated, Bitrix24 removes only the robots registered by this application from the list of available robots. Robots of other applications and standard robots are not affected. If a robot is already used in an automation rule, it remains in the rule as unavailable: it can be removed but cannot be configured or executed as an available robot. Here, update means updating the application, not calling the [bizproc.robot.update](./bizproc-robot-update.md) method. Upon reinstalling the application, the robot with the same code becomes available again.
+When an application is deleted or updated, Bitrix24 removes only the robots registered by this application from the list of available robots. Robots of other applications and standard robots are not affected. Here, update means updating the application, not calling the [bizproc.robot.update](./bizproc-robot-update.md) method.
+
+If a robot is already used in an automation workflow, it remains in the workflow as unavailable: it can be removed but cannot be configured or executed as an available robot. When the process reaches such a step, the robot does not run, and the entry "Application activity is not installed" appears in the process log.
+
+After the application is reinstalled or updated, it must register the robot again using the [bizproc.robot.add](./bizproc-robot-add.md) method. Bitrix24 links a workflow step to a robot by the application ID and `CODE`: workflow steps work again only if the same application registers the robot with the same `CODE`.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description**||
 || **CODE***
-[`string`](../../data-types.md) | Symbolic identifier of the application robot ||
+[`string`](../../data-types.md) | Code of the robot that this application passed in `CODE` during registration. You can retrieve the codes using the [bizproc.robot.list](./bizproc-robot-list.md) method ||
 |#
 
 ## Code Examples
@@ -49,15 +55,17 @@ When an application is deleted or updated, Bitrix24 removes only the robots regi
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'bizproc.robot.delete',
-    		{
+    	const response = await $b24.actions.v2.call.make({
+    		method: 'bizproc.robot.delete',
+    		params: {
     			'CODE': 'test_robot'
     		}
-    	);
-    	
-    	const result = response.getData().result;
-    	alert("Success: " + result);
+    	});
+
+    	if (!response.isSuccess)
+    		console.error(response.getErrorMessages().join('; '));
+    	else
+    		console.log('Success:', response.getData().result);
     }
     catch( error )
     {
@@ -210,17 +218,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `ACCESS_DENIED` | Application context required | Application context is required ||
-|| `ACCESS_DENIED` | Access denied! | Method executed by non-administrator ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Robot code not specified ||
-|| `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid robot code ||
-|| `ERROR_ACTIVITY_NOT_FOUND` | Activity or Robot not found! | Robot not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | Application context is required ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a non-administrator ||
+|| `400` | `ERROR_ACTIVITY_VALIDATION_FAILURE` | Empty activity code! | Robot code not specified ||
+|| `400` | `ERROR_ACTIVITY_VALIDATION_FAILURE` | Wrong activity code! | Invalid robot code ||
+|| `400` | `ERROR_ACTIVITY_NOT_FOUND` | Activity or Robot not found! | Robot not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./bizproc-robot-add.md)

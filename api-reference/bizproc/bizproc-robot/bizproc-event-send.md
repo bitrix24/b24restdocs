@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The `bizproc.event.send` method returns the output parameters to the Automation rule or action that were specified during the registration or update of the Automation rule or action.
 
+The call completes a step that is waiting for a response, even if `RETURN_VALUES` is not passed. To write an intermediate message to the log without completing the step, use the [bizproc.activity.log](../bizproc-activity/bizproc-activity-log.md) method.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -23,25 +25,27 @@ The `bizproc.event.send` method returns the output parameters to the Automation 
 || **Name**
 `type` | **Description**||
 || **EVENT_TOKEN***
-[`string`](../../data-types.md) | A special token that is sent to the application handler when the action or Automation rule is executed. The value of this token is received by the handler in the input data array.
+[`string`](../../data-types.md) | The run token of the Automation rule or action. Bitrix24 passes it to the application handler in the `event_token` field.
 
-An event can be sent if the Automation rule or action is registered with `'USE_SUBSCRIPTION': 'Y'` ||
+The process accepts the result only if the step with this token is still waiting for a response. Waiting is enabled by the `USE_SUBSCRIPTION: 'Y'` parameter when the Automation rule or action is registered. If the parameter is not set, the step does not wait for a response by default, and waiting can be enabled in the step settings ||
 || **RETURN_VALUES**
-[`object`](../../data-types.md) | An array of returned values from the action or Automation rule. It specifies the values of properties that were registered as additional results `RETURN_PROPERTIES` by the methods:
+[`object`](../../data-types.md) | Return values of the Automation rule or action. The keys are the parameter codes from `RETURN_PROPERTIES` that were set with the methods:
 - [bizproc.robot.add](./bizproc-robot-add.md), [bizproc.robot.update](./bizproc-robot-update.md)
-- [bizproc.activity.add](../bizproc-activity/bizproc-activity-add.md), [bizproc.activity.update](../bizproc-activity/bizproc-activity-update.md) ||
+- [bizproc.activity.add](../bizproc-activity/bizproc-activity-add.md), [bizproc.activity.update](../bizproc-activity/bizproc-activity-update.md)
+
+Keys are case-insensitive. Bitrix24 converts the value to the `Type` of this parameter. Bitrix24 does not retain keys that are not in `RETURN_PROPERTIES` ||
 || **LOG_MESSAGE**
 [`string`](../../data-types.md) | Text for the business process log.
 
-If this parameter is not passed, the method sends an empty string.
+If this parameter is not passed, the log receives the standard entry "Received application response".
 
 Event logging must be enabled in the business process template
 ||
 |#
 
-{% note info "" %}
+{% note warning "" %}
 
-`EVENT_TOKEN` must be valid and current. If the token is invalid or expired, the method will return an access error `ACCESS_DENIED`
+The method checks only the signature of `EVENT_TOKEN`: with an invalid token, it returns the `ACCESS_DENIED` error. The method responds before Bitrix24 passes the values to the process. If the step has already completed, timed out, or is not waiting for a response, the method still returns `true`, and the process does not change.
 
 {% endnote %}
 
@@ -50,6 +54,16 @@ Event logging must be enabled in the business process template
 {% include [Examples Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
+
+- cURL (Webhook)
+
+    ```bash
+    curl -X POST \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"event_token":"55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90","return_values":{"outputString":"846c55d14f552180874a628d2615e285"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/bizproc.event.send
+    ```
 
 - cURL (OAuth)
 
@@ -66,22 +80,22 @@ Event logging must be enabled in the business process template
     ```js
     try
     {
-    	const response = await $b24.callMethod(
-    		'bizproc.event.send',
-    		{
+    	const response = await $b24.actions.v2.call.make({
+    		method: 'bizproc.event.send',
+    		params: {
     			event_token: '55c1dc1c3f0d75.78875596|A51601_82584_96831_81132|hsyUws1j4XiwqPqN45eH66CcQtEvpUIP.47dd5d888e8e549d2c984713e12a4268e6e87d0208ca1f093ba1075e77f92e90',
     			return_values: {
     				outputString: '846c55d14f552180874a628d2615e285'
     			}
     		}
-    	);
-    	
-    	if(response.error())
-    		alert("Error: " + response.error());
+    	});
+
+    	if (!response.isSuccess)
+    		console.error(response.getErrorMessages().join('; '));
     	else
-    		alert("Success: " + response.getData().result);
+    		console.log('Success:', response.getData().result);
     }
-    catch( error )
+    catch (error)
     {
     	console.error('Error:', error);
     }
@@ -129,17 +143,13 @@ Event logging must be enabled in the business process template
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . $result->data();
-        }
-    
+
+        echo 'Success: ' . var_export($result[0], true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error sending bizproc event: ' . $e->getMessage();
@@ -235,7 +245,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the values were successfully sent to the process ||
+[`boolean`](../../data-types.md) | `true` if Bitrix24 accepted the request. This does not confirm that the process applied the values ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -256,12 +266,15 @@ HTTP Status: **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Message** | **Description** ||
-|| `ACCESS_DENIED` | Access denied! | Invalid or expired `EVENT_TOKEN` ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! | `EVENT_TOKEN` is not passed or its signature is invalid ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./bizproc-robot-add.md)
+- [{#T}](../bizproc-activity/index.md)
+- [{#T}](../bizproc-activity/bizproc-activity-log.md)

@@ -20,9 +20,11 @@ void BX24.callMethod(
 
 The `BX24.callMethod` function calls a Bitrix24 method on behalf of the user who opened the application. The library automatically adds authorization data to the request and converts the **params** object into a POST request string.
 
-Values in **params** can be strings, numbers, arrays, nested objects, and dates. The library passes a date as a string in ISO 8601 format. Instead of a value, you can pass a form field element: for a regular field, the library takes its value, and for an `<input type="file">` field, the selected file.
+Values in **params** can be strings, numbers, arrays, nested objects, and dates. The library passes a date as a string in ISO 8601 format. Instead of a value, you can pass a form field element: for a regular field, the library takes its value, and for an `<input type="file">` field without the `multiple` attribute, the selected file.
 
 The function returns nothing: the result is passed to the `callback` function. If you call `BX24.callMethod` before [BX24.init](../system-functions/bx24-init.md), the library defers the request until initialization completes.
+
+The function works only inside the frame of an [application](../../../settings/app-installation/index.md) and only when the BX24.js library is loaded — the [Library Overview](../index.md) describes how to load it.
 
 ## Parameters
 
@@ -34,7 +36,7 @@ The function returns nothing: the result is passed to the `callback` function. I
 || **method***
 [`string`](../../../api-reference/data-types.md) | Bitrix24 method name, for example, [user.get](../../../api-reference/user/user-get.md) ||
 || **params***
-[`object`](../../../api-reference/data-types.md) | Parameters of the called method. They are listed on the page of that method. If the method has no parameters, pass an empty object `{}`: the `callback` function must be the third argument ||
+[`object`](../../../api-reference/data-types.md) | Parameters of the called method. They are listed on the page of that method. If the method has no parameters, pass an empty object `{}`: `callback` must be the third parameter of the function ||
 || **callback**
 [`function`](../../../api-reference/data-types.md) | Function that receives the request result — an [ajaxResult](#ajax-result) object. Without it, the request is executed, but you cannot find out the result ||
 |#
@@ -64,7 +66,7 @@ BX24.init(() => {
 });
 ```
 
-Retrieve all users page by page. The [user.get](../../../api-reference/user/user-get.md) method returns up to 50 records per call. While `result.more()` returns `true`, the `result.next()` function requests the next page and passes it to the same handler. You cannot pass `start` in `params`: the library removes this parameter from the request.
+Retrieve a list of users page by page. The [user.get](../../../api-reference/user/user-get.md) method returns up to 50 records per call. While `result.more()` returns `true`, the `result.next()` method requests the next page and passes it to the same handler. You cannot pass a non-zero `start` in `params`: the library removes it from the request and from the `params` object itself.
 
 ```js
 BX24.init(() => {
@@ -84,29 +86,38 @@ BX24.init(() => {
 });
 ```
 
-Upload an employee photo from a form field using the [user.update](../../../api-reference/user/user-update.md) method. The library reads the selected file and passes it in the `PERSONAL_PHOTO` parameter. The method requires the `user` scope, and only an administrator can change another employee's profile:
+Upload an employee photo using the [user.update](../../../api-reference/user/user-update.md) method when the user selects a file in a form field. The library reads the selected file and passes it in the `PERSONAL_PHOTO` parameter. The method requires the `user` scope, and only an administrator can change another employee's profile:
 
 ```js
 // <input type="file" id="photo"> — a field on the application page
 BX24.init(() => {
-    BX24.callMethod('user.update', {
-        ID: 10,
-        PERSONAL_PHOTO: document.getElementById('photo'),
-    }, (result) => {
-        if (result.error())
+    const photo = document.getElementById('photo');
+
+    photo.addEventListener('change', () => {
+        if (photo.files.length !== 1)
         {
-            console.error(result.error().toString());
             return;
         }
 
-        console.log(result.data()); // true
+        BX24.callMethod('user.update', {
+            ID: 10,
+            PERSONAL_PHOTO: photo,
+        }, (result) => {
+            if (result.error())
+            {
+                console.error(result.error().toString());
+                return;
+            }
+
+            console.log(result.data()); // true
+        });
     });
 });
 ```
 
 ## Response Handling {#ajax-result}
 
-The `callback` function receives an `ajaxResult` object. Its `answer` property stores the raw Bitrix24 response, for example, for the [user.get](../../../api-reference/user/user-get.md) method:
+The `callback` function receives an `ajaxResult` object. Its `answer` property stores the Bitrix24 response. An abbreviated example for the [user.get](../../../api-reference/user/user-get.md) method:
 
 ```json
 {
@@ -131,7 +142,7 @@ The `callback` function receives an `ajaxResult` object. Its `answer` property s
 }
 ```
 
-The object's methods make the response easier to read.
+If the list has a next page, the response also contains the `next` field — the `start` value for that page. The object's methods make the response easier to read.
 
 ### ajaxResult Object Methods
 
@@ -142,14 +153,14 @@ The object's methods make the response easier to read.
 || `error_description()` | The error message, or `undefined` if there is no error ||
 || `more()` | `true` if the list has a next page ||
 || `total()` | The total number of records in the list. If the method did not return it, `total()` returns `NaN` ||
-|| `next(cb)` | Requests the next page of the list and passes it to the `cb` function or, if it is not provided, to the original handler. If there are no more pages, it returns `false` ||
+|| `next(cb)` | Requests the next page of the list and passes it to the `cb` function or, if it is not provided, to the original handler. The `cb` function also becomes the handler for subsequent pages. The `next(cb)` method returns `false` if there are no more pages, and `undefined` if the request has been sent ||
 |#
 
-In addition to methods, the object has properties: `answer` — the raw Bitrix24 response, `status` — the HTTP status of the response, `query` — a copy of the request settings with the method name, parameters, and `callback`. No separate method returns the request execution time: it is stored in `result.answer.time`, and its fields are described in the [Time Object](../../../api-reference/data-types.md#time) section.
+In addition to methods, the object has properties: `answer` — the Bitrix24 response, `status` — the HTTP status of the response, `query` — a copy of the request settings with the `method`, `data`, and `callback` fields. The library adds its own fields to `answer`. If Bitrix24 returns an error, these include an error object with a reference to the response itself, and `JSON.stringify(result.answer)` throws an exception. The request execution time is stored in `result.answer.time`, and there is no separate method for it. The time fields are described in the [Time Object](../../../api-reference/data-types.md#time) section.
 
 ## Error Handling {#errors}
 
-The library passes an error returned by Bitrix24 to `callback`. The `result.error()` method returns an object:
+The library passes an error returned by Bitrix24 to `callback`. The `result.error()` method returns an error object: the `ex` field contains the Bitrix24 response with the error code and message, and the `status` field contains the HTTP status. The main fields of the object:
 
 ```json
 {

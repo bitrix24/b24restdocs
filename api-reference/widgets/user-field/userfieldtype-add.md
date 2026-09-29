@@ -13,27 +13,34 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `userfieldtype.add` registers a new type of user fields. After registering the type, create a user field using the [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md) method.
+The `userfieldtype.add` method registers an application's user field type and works only in the context of an [application](../../../settings/app-installation/index.md). After registration, create a field of this type using the [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md) method: pass the full code `rest_<APP_ID>_<USER_TYPE_ID>` in `field.userTypeId`, where `APP_ID` is the application identifier from the [app.info](../../common/system/app-info.md) method. To create a field, the application also needs the `userfieldconfig` and `crm` scopes.
 
-When opening a card with a user type field, an array `PLACEMENT_OPTIONS` containing data about the field and entity is passed to the application handler.
+A custom type is needed when a field must display the application interface, for example, data from an external service. For plain text, a number, or a list, standard field types are sufficient.
+
+When a user opens a card with a field of this type, Bitrix24 loads the `HANDLER` address in the field frame and passes the field and item data in `PLACEMENT_OPTIONS`. Example for a field in a deal card:
 
 ```json
 {
     "MODE": "view",
     "ENTITY_ID": "CRM_DEAL",
-    "FIELD_NAME": "UF_CRM_TEST_TYPE_1",
-    "ENTITY_VALUE_ID": "7303",
-    "VALUE": null,
+    "FIELD_NAME": "UF_CRM_DCTEST",
+    "ENTITY_VALUE_ID": "22",
+    "VALUE": "Field value",
     "MULTIPLE": "N",
     "MANDATORY": "N",
     "XML_ID": null,
     "ENTITY_DATA": {
         "entityTypeId": 2,
-        "entityId": "7303",
+        "entityId": "22",
         "module": "crm"
-    }
+    },
+    "URI": "/crm/deal/details/22/?IFRAME=Y&IFRAME_TYPE=SIDE_SLIDER"
 }
 ```
+
+What each key means and what else the request contains is described in the section [What the Handler Receives](./index.md#handler-data).
+
+The handler loads in the field only after the application installation is complete. You can check this by the `INSTALLED` value in the response of the [app.info](../../common/system/app-info.md) method.
 
 ## Method Parameters
 
@@ -41,23 +48,31 @@ When opening a card with a user type field, an array `PLACEMENT_OPTIONS` contain
 
 #|
 || **Name**
-`type` | **Description** | **Restrictions** ||
+`type` | **Description** ||
 || **USER_TYPE_ID***
-[`string`](../../data-types.md) | String type code | 
-- a-z0-9
-- must be unique
-- the final code is formed as `rest_<APP_ID>_<USER_TYPE_ID>` and cannot exceed 50 characters, so the length of `USER_TYPE_ID` must be no more than `50 - length("rest_<APP_ID>_")` ||
+[`string`](../../data-types.md) | Type code. The method converts it to lowercase.
+
+The code must be unique among the types of all applications in Bitrix24: if it is already taken, the method returns the `Handler already binded` error.
+
+The full type code `rest_<APP_ID>_<USER_TYPE_ID>` must fit within 50 characters. The method also accepts a longer code, but the type code of the created field is truncated to 50 characters, and Bitrix24 will not find the type ||
 || **HANDLER***
-[`string`](../../data-types.md) | Custom type handler address | 
-- in the same domain as the main application address
-- must be unique ||
+[`string`](../../data-types.md) | Handler address that Bitrix24 loads into the field. It must start with `http://` or `https://`, and the host name must contain a dot.
+
+Each type of the application must have its own address: if the address is already taken, the method returns the `Handler already binded` error.
+
+For Bitrix24 over HTTPS, use an HTTPS address, otherwise the browser will not load the field content ||
 || **TITLE**
-[`string`](../../data-types.md) | Textual type name. Will be displayed in the custom field settings administrative interface | ||
+[`string`](../../data-types.md) | Type name, up to 255 characters. Displayed in the administrative interface for configuring custom fields. If not passed, the type code becomes the name ||
 || **DESCRIPTION**
-[`string`](../../data-types.md) | Textual type description. Will be displayed in the custom field settings administrative interface | ||
+[`string`](../../data-types.md) | Type description, up to 255 characters. Displayed in the administrative interface for configuring custom fields ||
 || **OPTIONS**
-[`array`](../../data-types.md) | Additional settings. Currently, one key is available: `height` — specifies the custom field height in pixels. Any positive value will be applied.
-Default — `0`. If specified `0`, the standard height for displaying this widget will be used | ||
+[`object`](../../data-types.md) | Additional settings. Currently, one key is available: `height` — the field height in pixels, an integer.
+
+Default — `0`: the field gets the standard height, which is 200 pixels in the CRM card ||
+|| **LANG_ALL**
+[`object`](../../data-types.md) | Type name and description for different languages. The object key is a two-letter language code, for example `ru` or `en`. The value is an object with the string fields `TITLE` and `DESCRIPTION`, up to 255 characters each. If a non-empty `LANG_ALL` is passed, the method ignores the `TITLE` and `DESCRIPTION` parameters.
+
+The method retains all supplied translations. [userfieldtype.list](./userfieldtype-list.md) returns one version of the name and description, selected during registration: the version in the Bitrix24 language if supplied, or another supplied version otherwise ||
 |#
 
 ## Code Examples
@@ -65,24 +80,6 @@ Default — `0`. If specified `0`, the standard height for displaying this widge
 {% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{
-        "USER_TYPE_ID": "test_type",
-        "HANDLER": "https://www.myapplication.com/handler/",
-        "TITLE": "Updated test type",
-        "DESCRIPTION": "Test userfield type for documentation with updated description",
-        "OPTIONS": {
-            "height": 60
-        }
-    }' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/userfieldtype.add
-    ```
 
 - cURL (OAuth)
 
@@ -233,17 +230,13 @@ Default — `0`. If specified `0`, the standard height for displaying this widge
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . var_export($result[0], true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding user field type: ' . $e->getMessage();
@@ -284,7 +277,7 @@ Default — `0`. If specified `0`, the standard height for displaying this widge
         [
             'USER_TYPE_ID' => 'test_type',
             'HANDLER' => 'https://www.myapplication.com/handler/',
-            'TITLE' => 'Upd ated test type',
+            'TITLE' => 'Updated test type',
             'DESCRIPTION' => 'Test userfield type for documentation with updated description',
             'OPTIONS' => [
                 'height' => 60
@@ -363,15 +356,20 @@ HTTP status: **400**
 }
 ```
 
-{% include notitle [Error handling](../../../_includes/error-info.md) %} 
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| `ERROR_CORE` | Unable to set placement handler: Handler already binded | `HANDLER` is already occupied by another user field type of this application or `USER_TYPE_ID` is already used by another application ||
-|| `ERROR_ARGUMENT` | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not set ||
-|| `ERROR_ARGUMENT` | Argument 'HANDLER' is null or empty | `HANDLER` is not set ||
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was called outside an application, for example via a webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a user who is not an administrator ||
+|| `400` | `ERROR_CORE` | Unable to set placement handler: Handler already binded | `HANDLER` is already occupied by another type of this application, or this `USER_TYPE_ID` is already registered ||
+|| `400` | `ERROR_CORE` | Error: The length of "TITLE" should not exceed 255 characters | The name, description, or language code is longer than allowed. The method creates a type record before the error occurs, and the record appears in [userfieldtype.list](./userfieldtype-list.md), but the registration is not complete — a field with this type cannot be created. Delete the type using the [userfieldtype.delete](./userfieldtype-delete.md) method and register it again ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'USER_TYPE_ID' is null or empty | `USER_TYPE_ID` is not passed ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'HANDLER' is null or empty | `HANDLER` is not passed ||
+|| `400` | `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | `HANDLER` does not specify a host name, or the host name contains no dot. For example, the address is written without `https://` or points to `localhost` ||
+|| `400` | `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | The host name in `HANDLER` is correct, but the protocol is neither `http` nor `https`, for example `ftp://` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
