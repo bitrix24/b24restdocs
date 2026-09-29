@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The `MESSAGE` block displays the text portion of the attachment.
+The `MESSAGE` block displays the text part of an attachment: a title, an explanation, or a comment. Pass the block as an element of the attachment's `BLOCKS` array — general rules and limits are described on the [Attachments in Messages ATTACH](../index.md#limits) page.
+
+For name–value pairs, use the [GRID](./grid.md) block. For a standalone link card with a description and a preview, use the [LINK](./links.md) block.
 
 ![MESSAGE Block](./_images/text.png){width=420}
 
@@ -22,26 +24,32 @@ The `MESSAGE` block displays the text portion of the attachment.
 [`string`](../../../../../../data-types.md) | Text of the block. Supports BB codes ||
 |#
 
-## Supported BB Codes
+## Supported BB Codes {#bb-codes}
+
+The codes in the table work in the web client. In attachment blocks, the mobile app parses only mentions, actions, and line breaks and displays the other codes as plain text. Tags are case-insensitive: `[B]` and `[b]` are equivalent.
 
 #| 
-|| **Code** | **Purpose** ||
-|| `USER` | Mention a user with a link to their profile in the chat ||
-|| `CHAT` | Link to the chat ||
-|| `SEND` | Clickable action "send text to chat" ||
-|| `PUT` | Clickable action "insert text into input field" ||
-|| `CALL` | Clickable action for making a call ||
-|| `BR` | Line break ||
-|| `B` | Bold text ||
-|| `U` | Underlined text ||
-|| `I` | Italic text ||
-|| `S` | Strikethrough text ||
-|| `URL` | Link ||
+|| **Code** | **Purpose** | **Example** | **Mobile App** ||
+|| `USER` | Mention a user with a link to their profile in the chat | `[USER=1]Klaus Weber[/USER]` | Yes ||
+|| `CHAT` | Link to the chat | `[CHAT=456]Sales Department[/CHAT]` | Yes ||
+|| `SEND` | Clickable action "send text to chat" | `[SEND=/start]Start[/SEND]` | Yes ||
+|| `PUT` | Clickable action "insert text into input field" | `[PUT=/help]Help[/PUT]` | Yes ||
+|| `CALL` | Clickable action for making a call | `[CALL=+4930123456789]Call[/CALL]` | Yes ||
+|| `BR` | Line break | `Line 1[BR]Line 2` | Yes ||
+|| `B` | Bold text | `[B]bold[/B]` | No ||
+|| `U` | Underlined text | `[U]underlined[/U]` | No ||
+|| `I` | Italic text | `[I]italic[/I]` | No ||
+|| `S` | Strikethrough text | `[S]strikethrough[/S]` | No ||
+|| `URL` | Link | `[URL=https://example.com]link text[/URL]` | No ||
 |#
+
+In an attachment, the web client also handles the other codes from the [Text Formatting (BB Codes)](../../message-formatting.md) article, such as `[SIZE]`, `[COLOR]`, and `[CODE]`. The full syntax is described there as well.
 
 ## Example
 
 {% include [Example Note](../../../../../../../_includes/examples.md) %}
+
+The example shows a single element of the `BLOCKS` array. Clicking "Subscribe to news" sends the text `/subscribe` to the chat.
 
 {% list tabs %}
 
@@ -49,15 +57,15 @@ The `MESSAGE` block displays the text portion of the attachment.
 
     ```js
     {
-        MESSAGE: 'The API will be available in the update [B]im 24.0.0[/B]'
+        MESSAGE: 'The API will be available in the update [B]im 24.0.0[/B][BR][SEND=/subscribe]Subscribe to news[/SEND]'
     }
     ```
 
 - Python
 
     ```python
-    attach = {
-        "MESSAGE": "The API will be available in the [B]im 24.0.0[/B] update",
+    block = {
+        "MESSAGE": "The API will be available in the [B]im 24.0.0[/B] update[BR][SEND=/subscribe]Subscribe to news[/SEND]",
     }
     ```
 
@@ -65,7 +73,7 @@ The `MESSAGE` block displays the text portion of the attachment.
 
     ```php
     [
-        'MESSAGE' => 'The API will be available in the update [B]im 24.0.0[/B]'
+        'MESSAGE' => 'The API will be available in the update [B]im 24.0.0[/B][BR][SEND=/subscribe]Subscribe to news[/SEND]'
     ]
     ```
 
@@ -77,3 +85,5 @@ The `MESSAGE` block displays the text portion of the attachment.
 - [{#T}](./index.md)
 - [{#T}](./delimiter.md)
 - [{#T}](./grid.md)
+- [{#T}](../../message-formatting.md)
+- [{#T}](../../chat-message-send.md)

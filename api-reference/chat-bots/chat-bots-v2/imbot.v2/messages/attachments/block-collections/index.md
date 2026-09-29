@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Blocks define the structure and appearance of the `ATTACH` attachment. Each element of the `BLOCKS` array is an object with a single top-level key, and this key sets the block type.
+Blocks define the structure and appearance of the `ATTACH` attachment. There are seven block types: text, link, user, properties, images, files, and delimiter. Blocks of different types can be combined in a single attachment. The format of the `ATTACH` object itself, its limits, and errors are described on the [Attachments in Messages ATTACH](../index.md) page.
+
+Each element of the `BLOCKS` array is an object with a single top-level key. The key sets the block type. In the short form of an attachment, the same rule applies to the elements of the `attach` array.
 
 ## All Block Types {#all-blocks}
 
@@ -19,81 +21,73 @@ Blocks define the structure and appearance of the `ATTACH` attachment. Each elem
 || `LINK` | [Link Block](./links.md) | A clickable link with a caption — navigation to a task, document, deal, or external page ||
 || `MESSAGE` | [Text Block](./text.md) | A text fragment of the attachment with BB code support ||
 || `DELIMITER` | [Delimiter Block](./delimiter.md) | A visual divider between meaningful parts of the attachment ||
-|| `GRID` | [Grid Block for Rows and Columns](./grid.md) | A tabular structure of name-value pairs in one of the modes: `BLOCK`, `LINE`, `ROW`, `TABLE` ||
+|| `GRID` | [Grid Block for Rows and Columns](./grid.md) | A tabular structure of name-value pairs in one of the modes: `BLOCK`, `LINE`, `ROW` ||
 || `IMAGE` | [Image Block](./images.md) | One or several images within the attachment ||
 || `FILE` | [File Block](./files.md) | A file with a name, size, and download link ||
 |#
 
+### How to Choose a Block {#choose}
+
+- object properties such as status, deadline, or responsible person — `GRID` in the `ROW` mode
+- free text with markup and clickable commands — `MESSAGE`
+- a link as a separate card with a description and a preview — `LINK`. A link inside the text — the `[URL]` BB code in `MESSAGE`
+- an employee with an avatar — `USER`
+- an image visible right in the message — `IMAGE`. A document for download — `FILE`
+
+## How to Combine Blocks {#combine}
+
 Blocks of different types are combined in a single array and displayed in the order they are listed:
 
 ```json
-"BLOCKS": [
-    {"MESSAGE": "Request #142"},
-    {"DELIMITER": {"SIZE": 200, "COLOR": "#c6c6c6"}},
-    {"GRID": [{"DISPLAY": "ROW", "NAME": "Status", "VALUE": "In progress"}]},
-    {"LINK": {"NAME": "Open the request", "LINK": "/crm/deal/details/142/"}}
-]
+{
+    "BLOCKS": [
+        {"MESSAGE": "Deal #142"},
+        {"DELIMITER": {"SIZE": 200, "COLOR": "#c6c6c6"}},
+        {"GRID": [{"DISPLAY": "ROW", "NAME": "Status", "VALUE": "In progress"}]},
+        {"LINK": {"NAME": "Open the deal", "LINK": "/crm/deal/details/142/"}}
+    ]
+}
 ```
 
-The attachment limits are common to all blocks: the serialized `ATTACH` must not exceed 60,000 characters, and only absolute URLs `http://` and `https://` or relative paths from the Bitrix24 root are allowed in block links. If the structure is incorrect, the sending method returns the `ATTACH_ERROR` error, and if the limit is exceeded — `ATTACH_OVERSIZE`. More details — [Attachments in Messages ATTACH](../index.md).
+Allowed links, the size limit, and error codes are described in the [Limitations and Errors](../index.md#limits) section, and the response format in the [What Is Returned in the Response](../index.md#response) section.
 
-Blocks describe only the request. In the response, the sending method returns only the ID of the created message, while the assembled attachment arrives in the `params` field of the Message object when the message is read or in an event — [What Is Returned in the Response](../index.md#response).
-
-All seven block types are current, and none of them are outdated. Take into account only the differences in rendering: the `TABLE` mode of the `GRID` block is not supported in every client version and may be displayed as `ROW`, and in the mobile version the elements of the `LINE` mode are displayed one below the other.
-
-## How Each Block Looks
+## How Each Block Looks {#screenshots}
 
 ### [User Block (USER)](./user.md)
-
-Displays the user card within the attachment: name, avatar, and a link to the profile or external resource.
 
 ![User Block](./_images/user.png){width=420}
 
 ### [Link Block (LINK)](./links.md)
 
-Adds a clickable link with a caption. Suitable for navigating to a task, document, deal, or external page.
-
 ![Link Block](./_images/link.png){width=420}
 
 ### [Text Block (MESSAGE)](./text.md)
-
-Outputs a text fragment of the attachment. Used for headings, explanations, comments, and main content.
 
 ![Text Block](./_images/text.png){width=420}
 
 ### [Delimiter Block (DELIMITER)](./delimiter.md)
 
-Adds a visual separator between parts of the attachment. Helps to distinguish meaningful blocks in a long card.
-
 ![Delimiter Block](./_images/delimiter.png){width=420}
 
 ### [Grid Block for Rows and Columns (GRID)](./grid.md)
 
-Forms a tabular structure from pairs of "name-value". Suitable for cards with properties and parameters.
-
 1. [Block Representation (BLOCK)](./grid.md#block-view)
 
-   ![Block Construction](./_images/grid1.png){width=420}
+   ![Block Representation](./_images/grid1.png){width=420}
 
-2. [Line Representation (LINE)](./grid.md#inline-view)
+2. [Line Representation (LINE)](./grid.md#inline-view) — in the mobile version, the elements are displayed one below the other
 
-   ![Line Construction](./_images/grid2.png){width=420}
-
-   In the mobile version, blocks are displayed one below the other.
+   ![Line Representation](./_images/grid2.png){width=420}
 
 3. [Two-Column Representation (ROW)](./grid.md#two-column-view)
 
-   ![Two-Column Construction](./_images/grid3.png){width=420}
+   ![Two-Column Representation](./_images/grid3.png){width=420}
 
 ### [Image Block (IMAGE)](./images.md)
-
-Displays one or more images within the attachment.
 
 ![Image Block](./_images/img.png){width=420}
 
 ### [File Block (FILE)](./files.md)
-
-Adds a file with a name and a link for downloading or opening.
 
 ![File Block](./_images/file.png){width=420}
 

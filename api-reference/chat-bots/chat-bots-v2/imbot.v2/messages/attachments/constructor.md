@@ -793,7 +793,7 @@ Besides the `LINK` address, the image block accepts `NAME`, `PREVIEW`, `WIDTH`, 
 
 Replace the data and the set of blocks in the example — all block types are collected in the [ATTACH Block Collection](./block-collections/index.md). The sent attachment is returned by the [imbot.v2.Chat.Message.get](../chat-message-get.md) method in the `params` field of the Message object — see [Objects and Fields](../../../entities.md#message).
 
-A sent attachment is replaced as a whole: pass the new set of blocks in `fields.attach` to the [imbot.v2.Chat.Message.update](../chat-message-update.md) method.
+A sent attachment is replaced as a whole: pass the new set of blocks in `fields.attach` to the [imbot.v2.Chat.Message.update](../chat-message-update.md) method in the full form, with the `BLOCKS` array, as in Example 2. The method does not accept the short form used in Example 1 and removes the attachment instead.
 
 Buttons below a message are set not by an attachment but by the separate `fields.keyboard` parameter — see [Working with Keyboards](../message-keyboards.md).
 
