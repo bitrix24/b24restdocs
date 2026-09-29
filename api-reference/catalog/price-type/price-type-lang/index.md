@@ -22,7 +22,7 @@ The translation uses:
 
 ## Considerations Before Calling Methods
 
-- The methods `catalog.priceTypeLang.*` are available only to administrators
+- Reading translations requires the "View Product Catalog" or "Manage Price Types" access permission. Creating, updating, and deleting translations requires the "Manage Price Types" access permission
 
 - Only one translation can be created for a specific language for each price type. The pair `catalogGroupId + lang` must be unique. Before creating or updating, check for an existing translation using [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md) with a filter on `catalogGroupId` and `lang`
 
@@ -44,7 +44,7 @@ The translation uses:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: administrator
+> Who can execute the methods: depends on the method
 
 #|
 || **Method** | **Description** ||

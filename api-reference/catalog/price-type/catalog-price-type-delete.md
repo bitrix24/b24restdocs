@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage Price Types" access permission
 
-This method deletes a price type.
+The method `catalog.priceType.delete` deletes a price type.
 
 ## Method Parameters
 
@@ -269,7 +269,7 @@ HTTP status: **400**
 ```json
 {
     "error": 200040300020,
-    "error_description": "Access Denied",
+    "error_description": "Access Denied"
 }
 ```
 

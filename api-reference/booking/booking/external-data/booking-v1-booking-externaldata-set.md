@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `booking.v1.booking.externalData.set` establishes connections for the specified booking.
+The method `booking.v1.booking.externalData.set` replaces the entire set of connections for the specified booking.
 
 ## Method Parameters
 
@@ -26,7 +26,7 @@ The method `booking.v1.booking.externalData.set` establishes connections for the
 [`integer`](../../../data-types.md) | Booking identifier.
 Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking-add.md) and [booking.v1.booking.list](../booking-v1-booking-list.md) ||
 || **externalData***
-[`array`](../../../data-types.md) | Array of objects containing items for binding [(detailed description)](#externalData) ||
+[`array`](../../../data-types.md) | Complete set of booking connections. The new value replaces all existing connections. An empty array removes all connections. The object structure is described [below](#externalData) ||
 |#
 
 ### Parameter externalData {#externalData}
@@ -54,8 +54,8 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"bookingId":14,"externalData":[{"moduleId":"crm","entityTypeId":"DEAL","value":"1"}],"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.booking.externalData.set
+    -d '{"bookingId":14,"externalData":[{"moduleId":"crm","entityTypeId":"DEAL","value":"1"}]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.externalData.set
     ```
 
 - cURL (OAuth)
@@ -64,8 +64,8 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"bookingId":14,"externalData":[{"moduleId":"crm","entityTypeId":"DEAL","value":"1"}]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.externalData.set
+    -d '{"bookingId":14,"externalData":[{"moduleId":"crm","entityTypeId":"DEAL","value":"1"}],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.booking.externalData.set
     ```
 
 - JS (TS)
@@ -341,7 +341,9 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `0` | `Required fields:` | Required parameter not provided within `externalData` ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool has been disabled by an administrator ||
 || `1021` | `Booking not found` | Booking with the specified `id` not found ||
+|| `1019` | `Failed updating booking` | Failed to update the booking ||
 || `100` | `Could not find value for parameter` | Required parameter not provided ||
 |#
 

@@ -400,6 +400,8 @@ HTTP Status: **200**
 [`catalog_price_type_group[]`](../../data-types.md#catalog_price_type_group) | An array of objects containing information about the selected price type bindings to customer groups, structure depends on the `select` parameter ||
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
+|| **next**
+[`integer`](../../../data-types.md) | Value of the `start` parameter for retrieving the next page. The field is absent if the last page has been retrieved ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#

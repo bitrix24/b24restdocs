@@ -40,11 +40,11 @@ Scenarios are linked to Automation rules, workflow actions, tasks, running proce
 ## How to choose a scenario {#choose-tutorial}
 
 #|
-|| **If needed** | **Open** ||
-|| Create your own workflow action and return the result from a handler | [How to create your own workflow action](./how-to-create-custom-activity.md) ||
-|| Create a workflow action or Automation rule that generates an invoice based on a lead or a deal | [How to add an action to create an invoice based on a lead or a deal](./activity.md) ||
-|| Add an application interface to the Automation rule settings and save parameters via `BX24.placement.call` | [How to embed your own UI into Automation rule parameters](./setting-robot.md) ||
-|| Find tasks of a terminated employee and complete associated workflows | [How to complete the workflows of a terminated employee](./how-to-kill-workflows.md) ||
-|| Find active workflows by start date and complete them in bulk | [How to complete workflows in bulk using a date filter](./how-to-filter-and-kill-workflows.md) ||
-|| View the reference guide for workflow and Automation rule methods | [Workflows and Automation rules](../../api-reference/bizproc/index.md) ||
+|| **Scenario** | **Main Methods** | **Result** ||
+|| [Create your own workflow action](./how-to-create-custom-activity.md) | [bizproc.activity.add](../../api-reference/bizproc/bizproc-activity/bizproc-activity-add.md), [bizproc.event.send](../../api-reference/bizproc/bizproc-robot/bizproc-event-send.md) | An application action that returns a result to the workflow ||
+|| [Create a smart invoice based on a lead or deal](./activity.md) | [bizproc.activity.add](../../api-reference/bizproc/bizproc-activity/bizproc-activity-add.md), [crm.item.get](../../api-reference/crm/universal/crm-item-get.md), [crm.item.productrow.list](../../api-reference/crm/universal/product-rows/crm-item-productrow-list.md), [crm.item.add](../../api-reference/crm/universal/crm-item-add.md), [crm.item.productrow.set](../../api-reference/crm/universal/product-rows/crm-item-productrow-set.md) | The smart invoice ID with the customer and product rows from the source lead or deal ||
+|| [Embed your own UI into Automation rule parameters](./setting-robot.md) | [bizproc.robot.add](../../api-reference/bizproc/bizproc-robot/bizproc-robot-add.md), [BX24.placement.call](../../api-reference/widgets/ui-interaction/bx24-placement-call.md), [bizproc.robot.list](../../api-reference/bizproc/bizproc-robot/bizproc-robot-list.md) | An Automation rule with an application interface for configuring and saving parameters ||
+|| [Complete the workflows of a terminated employee](./how-to-kill-workflows.md) | [user.get](../../api-reference/user/user-get.md), [bizproc.task.list](../../api-reference/bizproc/bizproc-task/bizproc-task-list.md), [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) | Deletion of workflows associated with the employee's incomplete tasks ||
+|| [Complete workflows in bulk using a date filter](./how-to-filter-and-kill-workflows.md) | [bizproc.workflow.instances](../../api-reference/bizproc/bizproc-workflow-instances.md), [bizproc.workflow.kill](../../api-reference/bizproc/bizproc-workflow-kill.md) | Deletion of selected workflows started before the specified date ||
+|| [View the reference guide for workflow and Automation rule methods](../../api-reference/bizproc/index.md) | The `bizproc.activity.*`, `bizproc.robot.*`, `bizproc.task.*`, and `bizproc.workflow.*` method groups | Selection of a method for your automation scenario ||
 |#

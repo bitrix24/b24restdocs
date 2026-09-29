@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View Product Catalog" or "Manage Price Types" access permission
 
-This method returns a list of available languages for translation.
+The method `catalog.priceTypeLang.getLanguages` returns a list of languages available for translation.
 
 ## Method Parameters
 
@@ -346,8 +346,10 @@ HTTP Status: **200**
 [`object`](../../../data-types.md) | Root element of the response ||
 || **languages**
 [`catalog_language[]`](../../data-types.md#catalog_language) | Array of objects containing information about available languages for translation ||
+|| **total**
+[`integer`](../../../data-types.md) | Total number of languages ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

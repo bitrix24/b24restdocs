@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage Price Types" access permission
 
-This method adds a new price type.
+The method `catalog.priceType.add` adds a new price type.
 
 ## Method Parameters
 
@@ -34,9 +34,7 @@ This method adds a new price type.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Code of the price type.
-
-To ensure the stable operation of internal services, the price type code must be specified using only English characters.
+[`string`](../../data-types.md) | Price type code. The value must not be empty
 ||
 || **base**
 [`string`](../../data-types.md) | Indicates whether the price type is base. Possible values:
@@ -58,6 +56,8 @@ Default is `100`.
 Can be used to synchronize the current price type with a similar position in an external system.
 ||
 |#
+
+After creating a price type, the method automatically adds view (`access: "N"`) and purchase (`access: "Y"`) permissions for customer groups with the identifiers `1` and `2`. You can change the set of bindings using the [catalog.priceTypeGroup.*](./price-type-group/index.md) methods.
 
 ## Code Examples
 

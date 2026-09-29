@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View Product Catalog" or "Manage Price Types" access permission
 
-The method returns a list of translations for price type names.
+The method `catalog.priceTypeLang.list` returns a filtered list of price type name translations.
 
 ## Method Parameters
 
@@ -389,8 +389,10 @@ HTTP Status: **200**
 [`catalog_price_type_lang[]`](../../data-types.md#catalog_price_type_lang) | An array of objects with information about the selected price type name translations ||
 || **total**
 [`integer`](../../../data-types.md) | Total number of records found ||
+|| **next**
+[`integer`](../../../data-types.md) | Value of the `start` parameter for retrieving the next page. The field is absent if the last page has been retrieved ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling

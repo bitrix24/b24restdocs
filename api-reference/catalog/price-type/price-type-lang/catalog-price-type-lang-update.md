@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage Price Types" access permission
 
-This method updates the translation of the price type name by its identifier.
+The method `catalog.priceTypeLang.update` updates a price type name translation by its identifier.
 
 ## Method Parameters
 
@@ -22,7 +22,7 @@ This method updates the translation of the price type name by its identifier.
 #|
 || **Name**
 `type` | **Description** ||
-|| **Id***
+|| **id***
 [`catalog_price_type_lang.id`](../../data-types.md#catalog_price_type_lang) | Identifier of the price type name translation ||
 || **fields***
 [`object`](../../../data-types.md) | Field values for updating the price type name translation ||
@@ -265,10 +265,10 @@ At least one field must be specified in the `fields` parameter.
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.priceTypeLang.update", b24.Params{
-    	"Id": 6,
-    	"fields": b24.Params{
-    		"name": "Base Price",
-    	},
+        "id": 6,
+        "fields": b24.Params{
+            "name": "Base Price",
+        },
     })
     if err != nil {
     	return fmt.Errorf("catalog.priceTypeLang.update: %w", err)
@@ -330,7 +330,7 @@ HTTP status: **200**
 || **priceTypeLang**
 [`catalog_price_type_lang`](../../data-types.md#catalog_price_type_lang) | Object containing information about the updated price type name translation ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -339,8 +339,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description":"Required fields: name"
+    "error": 201200000000,
+    "error_description": "priceTypeLang does not exist."
 }
 ```
 
@@ -363,8 +363,6 @@ HTTP status: **400**
 || `100` | Parameter `id` not specified
 || 
 || `100` | Parameter `fields` not specified or empty
-|| 
-|| `0` | Required fields of the `fields` structure not provided
 || 
 || `0` | Other errors (e.g., fatal errors)
 || 

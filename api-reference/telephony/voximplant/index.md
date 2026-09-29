@@ -38,9 +38,18 @@ Built-in telephony and the SIP connector allow you to initiate calls, receive ca
 
 ## Access Permissions
 
-Access to telephony methods depends on the user's permissions and role in Bitrix24. If permissions are insufficient, the method will return an access error.
+Requirements depend on the method group:
 
-Specific permission requirements can be found in the description of each method.
+#|
+|| **Method Group** | **Who Can Execute** ||
+|| `voximplant.callback.*`, `voximplant.infocall.*` | A user with the `Outgoing Call — Execute` permission ||
+|| `voximplant.statistic.*` | A user with the `Call Statistics — View` permission ||
+|| `voximplant.tts.*`, `voximplant.url.*` | Any user ||
+|| `voximplant.sip.*`, `voximplant.line.*` | A user with the `Manage numbers — modify` permission ||
+|| `voximplant.user.*` | A user with the `User Settings — Modify` permission within the configured [access level](./users/index.md#permissions) ||
+|#
+
+Calling [voximplant.user.get](./users/voximplant-user-get.md) from an application also requires [administrator confirmation](../../scopes/confirmation.md).
 
 {% note tip "User Documentation" %}
 

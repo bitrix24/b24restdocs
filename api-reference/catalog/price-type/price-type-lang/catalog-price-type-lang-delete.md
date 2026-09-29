@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage Price Types" access permission
 
-This method deletes the translation of the price type name by its identifier.
+The method `catalog.priceTypeLang.delete` deletes the translation of a price type name by its identifier.
 
 ## Method Parameters
 
@@ -256,7 +256,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Result of deleting the price type name translation ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -266,7 +266,7 @@ HTTP Status: **400**
 ```json
 {
     "error": 200040300020,
-    "error_description": "Access Denied",
+    "error_description": "Access Denied"
 }
 ```
 

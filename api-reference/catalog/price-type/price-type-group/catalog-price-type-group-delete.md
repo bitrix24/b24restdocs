@@ -279,7 +279,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `200040300020` | Access Denied | Insufficient permissions to edit price types ||
-|| `0` | Entity does not exist | Entity with the specified `id` does not exist ||
+|| `0` | Entity does not exist | Binding with the specified `id` does not exist ||
 || `100` | Could not find value for parameter {id} | Parameter `id` is not specified || 
 |#
 

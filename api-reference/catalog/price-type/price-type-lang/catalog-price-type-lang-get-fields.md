@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View Product Catalog" or "Manage Price Types" access permission
 
-This method returns the fields for translating the price type name.
+The method `catalog.priceTypeLang.getFields` returns the description of fields for price type name translations.
 
 No parameters.
 
@@ -276,7 +276,7 @@ HTTP status: **200**
 || **priceTypeLang**
 [`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

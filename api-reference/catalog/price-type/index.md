@@ -22,6 +22,15 @@ One of the price types must be designated as the base type. The base price type 
 3. Configure customer group access using [catalog.priceTypeGroup.*](./price-type-group/index.md)
 4. Use the price type when creating a price using [catalog.price.add](../price/catalog-price-add.md)
 
+## Result Format
+
+The methods return data in the following fields:
+
+- `catalog.priceType.add`, `catalog.priceType.get`, and `catalog.priceType.update` — a price type object in `result.priceType`
+- `catalog.priceType.list` — an array of objects in `result.priceTypes` and the total number of records in `total`
+- `catalog.priceType.delete` — the deletion result in `result`
+- `catalog.priceType.getFields` — field descriptions in `result.priceType`
+
 ## Relationship with Other Objects
 
 **Price.** When creating a price, you must specify its type. You can set and change the price using the methods [catalog.price.*](../price/index.md).
@@ -34,7 +43,7 @@ One of the price types must be designated as the base type. The base price type 
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute methods: administrator
+> Who can execute methods: depends on the method
 
 ### Main
 

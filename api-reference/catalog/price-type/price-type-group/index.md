@@ -15,6 +15,14 @@ Price type bindings to customer groups manage group access to price types in the
 >
 > User Documentation: [How to Set Access Permissions for the Product Catalog](https://helpdesk.bitrix24.com/open/25386568/)
 
+## How to Start
+
+1. Obtain the identifiers `catalogGroupId` and `groupId`, then select the access type `access`
+2. If necessary, check the available fields and their types using [catalog.priceTypeGroup.getFields](./catalog-price-type-group-get-fields.md)
+3. Create the binding using [catalog.priceTypeGroup.add](./catalog-price-type-group-add.md)
+4. Verify the result using [catalog.priceTypeGroup.list](./catalog-price-type-group-list.md)
+5. If the binding is no longer needed, delete it using [catalog.priceTypeGroup.delete](./catalog-price-type-group-delete.md)
+
 ## Relationships with Other Objects
 
 **Price Type.** The binding is created for a specific price type in the `catalogGroupId` field. You can obtain the price type identifier using the methods [catalog.priceType.list](../catalog-price-type-list.md) and [catalog.priceType.get](../catalog-price-type-get.md).
@@ -28,19 +36,11 @@ Available values:
 - `Y` — the group can purchase at the price type
 - `N` — the group can only view the price type
 
-## How to Start
-
-1. Obtain the identifiers `catalogGroupId` and `groupId`, then select the access type `access`
-2. If necessary, check the available fields and their types using [catalog.priceTypeGroup.getFields](./catalog-price-type-group-get-fields.md)
-3. Create the binding using [catalog.priceTypeGroup.add](./catalog-price-type-group-add.md)
-4. Verify the result using [catalog.priceTypeGroup.list](./catalog-price-type-group-list.md)
-5. If the binding is no longer needed, delete it using [catalog.priceTypeGroup.delete](./catalog-price-type-group-delete.md)
-
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: depending on the method
+> Who can execute the methods: depends on the method
 
 #|
 || **Method** | **Description** ||

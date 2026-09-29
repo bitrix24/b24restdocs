@@ -11,13 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage Price Types" access permission
 
-This method modifies the values of the price type fields.
+The method `catalog.priceType.update` modifies the values of price type fields.
 
 ## Method Parameters
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -35,8 +33,8 @@ This method modifies the values of the price type fields.
 #|
 || **Name**
 `type` | **Description** ||
-|| **name***
-[`string`](../../data-types.md) | Code of the price type ||
+|| **name**
+[`string`](../../data-types.md) | Price type code. The value must not be empty ||
 || **base**
 [`string`](../../data-types.md) | Indicates if the price type is base. Possible values:
 - `Y` — yes
@@ -374,8 +372,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description":"Required fields: name"
+    "error": 201000000000,
+    "error_description": "priceType does not exist."
 }
 ```
 
@@ -393,8 +391,6 @@ HTTP status: **400**
 ||
 || `100` | Parameter `fields` not specified or empty
 ||
-|| `0` | Required fields of the `fields` structure not provided
-|| 
 || `0` | Other errors (e.g., fatal errors)
 || 
 |#

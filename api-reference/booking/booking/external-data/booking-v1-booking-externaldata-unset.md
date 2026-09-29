@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `booking.v1.booking.externalData.unset` removes connections for the specified booking.
+The method `booking.v1.booking.externalData.unset` removes all connections for the specified booking. The method does not accept an individual connection identifier, so you cannot remove only one connection.
+
+To retain some connections, retrieve the current set using [booking.v1.booking.externalData.list](./booking-v1-booking-externaldata-list.md) and pass the required connections to [booking.v1.booking.externalData.set](./booking-v1-booking-externaldata-set.md).
 
 ## Method Parameters
 
@@ -39,8 +41,8 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"bookingId":14,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.booking.externalData.unset
+    -d '{"bookingId":14}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.externalData.unset
     ```
 
 - cURL (OAuth)
@@ -49,8 +51,8 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"bookingId":14}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.externalData.unset
+    -d '{"bookingId":14,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.booking.externalData.unset
     ```
 
 - JS (TS)
@@ -276,7 +278,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool has been disabled by an administrator ||
 || `1021` | `Booking not found` | Booking with the specified `id` not found ||
+|| `1019` | `Failed updating booking` | Failed to update the booking ||
 || `100` | `Could not find value for parameter` | Required parameter not provided ||
 |#
 

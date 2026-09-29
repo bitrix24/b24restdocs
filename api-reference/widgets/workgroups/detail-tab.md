@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, sonet_group`](../../scopes/permissions.md)
 
-The widget adds its own item to the menu of a workgroup or project.
+The widget adds a separate application screen to the menu of a workgroup or project. You can use the placement to:
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+- display group metrics and reports
+- open external service materials in the group context
+- add application settings or actions for a specific group
+
+`SONET_GROUP_DETAIL_TAB` works in the classic interface and Projects AI and passes the group identifier `GROUP_ID` to the handler. Select this placement if the handler needs the current group identifier as a separate parameter. [SONET_GROUP_TOOLBAR](./toolbar.md) does not have a separate `GROUP_ID` parameter—the identifier must be extracted from the path in `URI`.
+
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method must be called from the application context—you cannot register the widget using an incoming webhook. The call is available to an administrator or a user who is allowed to install the corresponding application type and has access to the application.
 
 {% note info "" %}
 

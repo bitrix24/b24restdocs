@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage Price Types" access permission
 
-This method adds a new translation for the price type name.
+The method `catalog.priceTypeLang.add` adds a new translation for the price type name.
 
 ## Method Parameters
 
@@ -334,7 +334,7 @@ HTTP Status: **200**
 || **priceTypeLang**
 [`catalog_price_type_lang`](../../data-types.md#catalog_price_type_lang) | Object containing information about the created translation of the price type name ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

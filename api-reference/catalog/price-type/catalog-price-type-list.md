@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View Product Catalog" or "Manage Price Types" access permission
 
-The method returns a list of price types based on the filter.
+The method `catalog.priceType.list` returns a list of price types based on the filter.
 
 ## Method Parameters
 
@@ -355,18 +355,20 @@ HTTP status: **200**
 
 ```json
 {
-    "priceTypes": [
-        {
-            "id": 1,
-            "name": "BASE",
-            "xmlId": "BASE"
-        },
-        {
-            "id": 2,
-            "name": "Base wholesale price",
-            "xmlId": "basewholesale"
-        }
-    ],
+    "result": {
+        "priceTypes": [
+            {
+                "id": 1,
+                "name": "BASE",
+                "xmlId": "BASE"
+            },
+            {
+                "id": 2,
+                "name": "Base wholesale price",
+                "xmlId": "basewholesale"
+            }
+        ]
+    },
     "total": 2,
     "time": {
         "start": 1712326352.63409,
@@ -390,7 +392,9 @@ HTTP status: **200**
 || **priceTypes**
 [`catalog_price_type[]`](../data-types.md#catalog_price_type) | Array of objects with information about the selected price types ||
 || **total**
-[`integer`](../../data-types.md#time) | Total number of records found ||
+[`integer`](../../data-types.md) | Total number of records found ||
+|| **next**
+[`integer`](../../data-types.md) | Value of the `start` parameter for retrieving the next page. The field is absent if the last page has been retrieved ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#

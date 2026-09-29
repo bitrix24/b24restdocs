@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `booking.v1.booking.externalData.list` returns connections for the specified booking.
+The method `booking.v1.booking.externalData.list` returns all connections for the specified booking.
 
 ## Method Parameters
 
@@ -73,16 +73,10 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     }
 
     try {
-      // booking.v1.booking.externalData.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<ExternalDataListResult>({
         method: 'booking.v1.booking.externalData.list',
         params: {
           bookingId: 123,
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -111,16 +105,10 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // booking.v1.booking.externalData.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'booking.v1.booking.externalData.list',
             params: {
               bookingId: 123,
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -282,6 +270,7 @@ HTTP Status: **200**
             }
         ]
     },
+    "total": 0,
     "time": {
         "start": 1724068028.331234,
         "finish": 1724068028.726591,
@@ -301,21 +290,25 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response. Contains an array of objects with information about connections. The structure is described [below](#externalData) ||
+|| **total**
+[`integer`](../../../data-types.md) | Service key. Always contains `0` and does not indicate the number of connections ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-#### Connections {#externalData}
+#### externalData Key {#externalData}
+
+`externalData` is an array of objects containing booking connections.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **entityTypeId**
-[`string`](../../../data-types.md) | Object type ID ||
+[`string`](../../../data-types.md) | Type of the linked object, for example `DEAL` ||
 || **moduleId**
-[`string`](../../../data-types.md) | Module identifier ||
+[`string`](../../../data-types.md) | Module identifier, for example `crm` ||
 || **value**
-[`string`](../../../data-types.md) | Element ID ||
+[`string`](../../../data-types.md) | Identifier of the linked object, for example `1` ||
 |#
 
 ## Error Handling
@@ -335,6 +328,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
+|| `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool has been disabled by an administrator ||
 || `1021` | `Booking not found` | Booking with the specified `id` not found ||
 || `100` | `Could not find value for parameter` | Required parameter not provided ||
 |#

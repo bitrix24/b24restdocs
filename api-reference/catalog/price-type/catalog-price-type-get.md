@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View Product Catalog" or "Manage Price Types" access permission
 
-The method returns information about the price type by its identifier.
+The method `catalog.priceType.get` returns information about a price type by its identifier.
 
 ## Method Parameters
 
