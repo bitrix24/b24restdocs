@@ -25,7 +25,7 @@ Choose a path based on your task:
 
 - if you need to quickly test the REST API, start with [Access to the REST API](#access) and [Your First API Request](#first-call)
 - if you need to embed the REST API into your project, study [REST API Configuration](#settings), [Code Examples](#examples), [Bitrix24 SDK](#sdk), and [API Reference](#api-reference)
-- if you need to create a solution inside Bitrix24 without publishing it in the Market, go to [Local Integrations](#local-integrations)
+- if you need to create a solution for your own Bitrix24 without publishing it in the Market, go to [Local Integrations](#local-integrations)
 - if you need to prepare an application for publication and monetization, study [Mass-Market Applications](#market)
 - if you need to repeat a ready-to-use scenario, open [Ready-to-Use Scenarios](#tutorials)
 - if you need to work with an AI agent, choose [AI Tools](#ai-tools)
@@ -35,8 +35,8 @@ Choose a path based on your task:
 Before you start, make sure that:
 
 - you have a Bitrix24 account where the REST API is available. If you do not have access, start with [How to Access the REST API](./access-to-rest-api.md)
-- an authorization method is selected: an inbound webhook, a local application, or a mass-market application. The settings are described in [Configuring and Using the REST API](../settings/index.md)
-- access permissions are configured for the Bitrix24 tools your integration needs. The list of [available scopes](../api-reference/scopes/permissions.md) depends on the methods the application will call
+- a connection method is selected: an inbound webhook, a local application, or a mass-market application. The settings are described in [Configuring and Using the REST API](../settings/index.md)
+- access permissions are configured for the Bitrix24 tools your integration needs. Which [Scopes](../api-reference/scopes/permissions.md) are required depends on the methods the integration will call. A scope grants access to a group of methods but does not extend the permissions of the user on whose behalf the request is made
 - webhook secrets, tokens, and application keys are not exposed in public code or logs
 - the integration accounts for [REST API limits](../settings/performance/limits.md) on the number of requests
 
@@ -48,11 +48,11 @@ To understand application architecture, authorization principles, working with t
 
 ## Access to the REST API {#access}
 
-The [How to Access the REST API](./access-to-rest-api.md) section describes how to activate a trial period and gain access to all Bitrix24 REST API methods and capabilities. It also contains information regarding NFR keys for partner developments.
+The [How to Access the REST API](./access-to-rest-api.md) section describes how to activate a trial period and gain access to the Bitrix24 REST API. It also contains information regarding NFR keys for partner developments.
 
 ## AI Tools {#ai-tools}
 
-The [AI Tools](../ai-tools/mcp.md) section is dedicated to development with AI agents. 
+The [AI Tools](../ai-tools/vibecode.md) section is dedicated to development with AI agents. 
 
 ## REST API Configuration {#settings}
 
@@ -68,7 +68,41 @@ The section also includes the article [Configuring Access: Cloud and On-Premise 
 
 ## Your First API Request {#first-call}
 
-The [How to Make Your First API Request](./first-rest-api-call.md) section explains how to create an inbound webhook and perform your first REST API method call. This allows you to verify the API functionality and the correctness of your settings.
+The [How to Make Your First API Request](./first-rest-api-call.md) section explains how to create an inbound webhook and perform your first REST API method call.
+
+You can test a new webhook with the [profile](../api-reference/common/users/profile.md) method: it requires no scopes or parameters and returns the data of the user who created the webhook. Replace each placeholder, including the asterisks, with the value from your webhook URL and open the address in a browser:
+
+```text
+https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/profile.json
+```
+
+The `result` field contains the data returned by the method, and the `time` field contains request metadata. See the [profile](../api-reference/common/users/profile.md) method page for the full response and field descriptions. An abbreviated response is shown below:
+
+```json
+{
+    "result": {
+        "ID": "1",
+        "NAME": "Klaus",
+        "LAST_NAME": "Weber"
+    },
+    "time": {
+        "duration": 0.0401120185852051
+    }
+}
+```
+
+This response means the webhook works. The scopes required by other methods are listed on each method's page.
+
+If the response contains the `error` and `error_description` fields instead of `result`, the request failed. For example, if the webhook code or user ID is wrong, Bitrix24 returns:
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+In this case, check the user ID and code against the webhook URL in Bitrix24. For what other codes mean, see [Error Codes](../error-codes.md).
 
 ## Code Examples {#examples}
 
@@ -80,7 +114,7 @@ The [SDK for Bitrix24 Development](../sdk/index.md) section describes ready-to-u
 
 ## Local Integrations {#local-integrations}
 
-The [Overview of Local Integration Tools](../local-integrations/index.md) section is dedicated to tools for creating integrations that operate within Bitrix24 and do not require publication in the Market. The section includes examples of working with local webhooks and applications for task automation and data exchange.
+The [Overview of Local Integration Tools](../local-integrations/index.md) section is dedicated to tools for creating integrations that work with a single Bitrix24 and do not require publication in the Market. The section includes examples of working with local webhooks and applications for task automation and data exchange.
 
 ## Ready-to-Use Scenarios {#tutorials}
 
@@ -92,4 +126,4 @@ The [Mass-Market Applications Overview](../market/index.md) section describes th
 
 ## API Reference {#api-reference}
 
-The [API Reference](../api-reference/index.md) section contains descriptions of the Bitrix24 REST API methods and capabilities. This material helps navigate the API and select methods for specific functionality.
+The [API Reference](../api-reference/index.md) section contains descriptions of the Bitrix24 REST API methods and capabilities. This material helps navigate the API and select methods for specific functionality. Both API versions — the old version and REST 3.0 — are available concurrently. See [Which API Version to Choose](../api-reference/index.md#version) for guidance.
