@@ -7,11 +7,11 @@ items:
     href: crm-requisite-add.md  
   - name: Update detail  
     href: crm-requisite-update.md  
-  - name: Get detail by id  
+  - name: Get detail by identifier
     href: crm-requisite-get.md  
   - name: Get list of details by filter  
     href: crm-requisite-list.md  
   - name: Delete detail and related objects  
     href: crm-requisite-delete.md  
   - name: Get detail fields  
-    href: crm-requisite-fields.md  
+    href: crm-requisite-fields.md

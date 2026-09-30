@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method retrieves the description of the requisite fields.
+The `crm.requisite.fields` method returns descriptions of system and custom detail fields.
+
+## Method Parameters
 
 No parameters.
 
@@ -910,6 +912,18 @@ HTTP status: **200**
             "isDynamic": false,
             "title": "RQ_CPF"
         },
+        "RQ_TAX_REGIME": {
+            "type": "crm_status",
+            "isRequired": false,
+            "isReadOnly": false,
+            "isImmutable": false,
+            "isMultiple": false,
+            "isDynamic": false,
+            "statusType": [
+                "RQ_TAX_REGIME_MX"
+            ],
+            "title": "RQ_TAX_REGIME"
+        },
         "UF_CRM_1694526604": {
             "type": "string",
             "isRequired": false,
@@ -1009,18 +1023,215 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [requisite field](./index.md#fields), and `value` is an object with [field attributes](#attributes) ||
+[`object`](../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [detail field](#result-fields), and `value` is an object with [field attributes](#attributes) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
 
 
-### Description of Attributes {#attributes}
+#### Detail Fields {#result-fields}
 
 #|
-|| Attribute purpose | Description ||
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | Details identifier. Created automatically ||
+|| **ENTITY_TYPE_ID**
+[`integer`](../../../data-types.md) | Parent object type identifier.
+
+Currently, this can only be:
+- `3` — contact
+- `4` — company
+
+The [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) method returns identifiers for all CRM object types
+
+||
+|| **ENTITY_ID**
+[`integer`](../../../data-types.md) | Parent object identifier (contact or company).
+
+The identifier can be obtained using the [crm.company.list](../../companies/crm-company-list.md) method for a company and the [crm.contact.list](../../contacts/crm-contact-list.md) method for a contact ||
+|| **PRESET_ID**
+[`integer`](../../../data-types.md) | Identifier of the requisite template.
+
+Template identifiers can be obtained using the method [crm.requisite.preset.list](../presets/crm-requisite-preset-list.md) ||
+|| **DATE_CREATE**
+[`datetime`](../../../data-types.md) | Create date ||
+|| **DATE_MODIFY**
+[`datetime`](../../../data-types.md) | Modification date ||
+|| **CREATED_BY_ID**
+[`user`](../../../data-types.md) | Identifier of the user who created the requisite ||
+|| **MODIFY_BY_ID**
+[`user`](../../../data-types.md) | Identifier of the user who changed the requisite ||
+|| **NAME**
+[`string`](../../../data-types.md) | Name of the requisite ||
+|| **CODE**
+[`string`](../../../data-types.md) | Symbolic code of the requisite ||
+|| **XML_ID**
+[`string`](../../../data-types.md) | External key, used for exchange operations.
+
+Identifier of the external information database.
+
+The purpose of the field may change by the final developer ||
+|| **ORIGINATOR_ID**
+[`string`](../../../data-types.md) | Identifier of the external information database.
+
+The purpose of the field may change by the final developer ||
+|| **ACTIVE**
+[`char`](../../../data-types.md) | Activity status.
+
+Values `Y` or `N` are used.
+
+The default value is `Y`. Currently, the field does not affect anything ||
+|| **ADDRESS_ONLY**
+[`char`](../../../data-types.md) | A status flag indicating when the requisite is used only for storing an address.
+
+Values `Y` or `N` are used. The default value is `N`.
+
+When set to `Y`, the details are not displayed in the object form, but the address is shown ||
+|| **SORT**
+[`integer`](../../../data-types.md) | Sorting.
+
+Order in the object's details list when there are multiple entries. The default value is `500` ||
+|| **RQ_NAME**
+[`string`](../../../data-types.md) | Full Name ||
+|| **RQ_FIRST_NAME**
+[`string`](../../../data-types.md) | First Name ||
+|| **RQ_LAST_NAME**
+[`string`](../../../data-types.md) | Last Name ||
+|| **RQ_SECOND_NAME**
+[`string`](../../../data-types.md) | Middle Name ||
+|| **RQ_COMPANY_ID**
+[`string`](../../../data-types.md) | Identifier of the organization ||
+|| **RQ_COMPANY_NAME**
+[`string`](../../../data-types.md) | Short name of the organization ||
+|| **RQ_COMPANY_FULL_NAME**
+[`string`](../../../data-types.md) | Full name of the organization ||
+|| **RQ_COMPANY_REG_DATE**
+[`string`](../../../data-types.md) | State registration date in string format, for example `06.04.2007` ||
+|| **RQ_DIRECTOR**
+[`string`](../../../data-types.md) | General director ||
+|| **RQ_ACCOUNTANT**
+[`string`](../../../data-types.md) | Chief accountant ||
+|| **RQ_CEO_NAME**
+[`string`](../../../data-types.md) | Full name of the first leader ||
+|| **RQ_CEO_WORK_POS**
+[`string`](../../../data-types.md) | Position of the first leader ||
+|| **RQ_CONTACT**
+[`string`](../../../data-types.md) | Contact person ||
+|| **RQ_EMAIL**
+[`string`](../../../data-types.md) | E-Mail ||
+|| **RQ_PHONE**
+[`string`](../../../data-types.md) | Phone ||
+|| **RQ_FAX**
+[`string`](../../../data-types.md) | Fax ||
+|| **RQ_IDENT_TYPE**
+[`crm_status`](../../data-types.md) | Identification method. Directory identifiers for available countries are in the `statusType` attribute. To get directory values, pass its identifier in `filter[ENTITY_ID]` of the [crm.status.list](../../status/crm-status-list.md) method ||
+|| **RQ_IDENT_DOC**
+[`string`](../../../data-types.md) | Type of document ||
+|| **RQ_IDENT_DOC_SER**
+[`string`](../../../data-types.md) | Series ||
+|| **RQ_IDENT_DOC_NUM**
+[`string`](../../../data-types.md) | Number ||
+|| **RQ_IDENT_DOC_PERS_NUM**
+[`string`](../../../data-types.md) | Personal number ||
+|| **RQ_IDENT_DOC_DATE**
+[`string`](../../../data-types.md) | Issue date in string format, for example `21.02.2015` ||
+|| **RQ_IDENT_DOC_ISSUED_BY**
+[`string`](../../../data-types.md) | Issued by ||
+|| **RQ_IDENT_DOC_DEP_CODE**
+[`string`](../../../data-types.md) | Department code ||
+|| **RQ_INN**
+[`string`](../../../data-types.md) | TIN ||
+|| **RQ_KPP**
+[`string`](../../../data-types.md) | KPP ||
+|| **RQ_USRLE**
+[`string`](../../../data-types.md) | Handelsregisternummer (for country DE) ||
+|| **RQ_IFNS**
+[`string`](../../../data-types.md) | IFNS ||
+|| **RQ_OGRN**
+[`string`](../../../data-types.md) | OGRN ||
+|| **RQ_OGRNIP**
+[`string`](../../../data-types.md) | OGRNIP ||
+|| **RQ_OKPO**
+[`string`](../../../data-types.md) | OKPO ||
+|| **RQ_OKTMO**
+[`string`](../../../data-types.md) | OKTMO ||
+|| **RQ_OKVED**
+[`string`](../../../data-types.md) | OKVED ||
+|| **RQ_EDRPOU**
+[`string`](../../../data-types.md) | EDRPOU ||
+|| **RQ_DRFO**
+[`string`](../../../data-types.md) | DRFO ||
+|| **RQ_KBE**
+[`string`](../../../data-types.md) | KBE ||
+|| **RQ_IIN**
+[`string`](../../../data-types.md) | IIN ||
+|| **RQ_BIN**
+[`string`](../../../data-types.md) | BIN ||
+|| **RQ_ST_CERT_SER**
+[`string`](../../../data-types.md) | Series of State Registration Certificate ||
+|| **RQ_ST_CERT_NUM**
+[`string`](../../../data-types.md) | Number of State Registration Certificate ||
+|| **RQ_ST_CERT_DATE**
+[`string`](../../../data-types.md) | Date of State Registration Certificate ||
+|| **RQ_VAT_PAYER**
+[`char`](../../../data-types.md) | VAT payer (for country UA).
+
+Values `Y` or `N` are used. The default value is `N` ||
+|| **RQ_VAT_ID**
+[`string`](../../../data-types.md) | VAT ID (identification number of VAT payer) ||
+|| **RQ_VAT_CERT_SER**
+[`string`](../../../data-types.md) | Series of the VAT certificate ||
+|| **RQ_VAT_CERT_NUM**
+[`string`](../../../data-types.md) | Number of the VAT certificate ||
+|| **RQ_VAT_CERT_DATE**
+[`string`](../../../data-types.md) | Date of the VAT certificate ||
+|| **RQ_RESIDENCE_COUNTRY**
+[`string`](../../../data-types.md) | Country of residence ||
+|| **RQ_BASE_DOC**
+[`string`](../../../data-types.md) | Basis for action ||
+|| **RQ_REGON**
+[`string`](../../../data-types.md) | REGON (for country PL) ||
+|| **RQ_KRS**
+[`string`](../../../data-types.md) | KRS (for country PL) ||
+|| **RQ_PESEL**
+[`string`](../../../data-types.md) | PESEL (for country PL) ||
+|| **RQ_LEGAL_FORM**
+[`string`](../../../data-types.md) | Legal form (for country FR) ||
+|| **RQ_SIRET**
+[`string`](../../../data-types.md) | Siret number (for country FR) ||
+|| **RQ_SIREN**
+[`string`](../../../data-types.md) | Siren number (for country FR) ||
+|| **RQ_CAPITAL**
+[`string`](../../../data-types.md) | Share capital (for country FR) ||
+|| **RQ_RCS**
+[`string`](../../../data-types.md) | RCS (for country FR) ||
+|| **RQ_CNPJ**
+[`string`](../../../data-types.md) | CNPJ (for country BR) ||
+|| **RQ_STATE_REG**
+[`string`](../../../data-types.md) | State Registration (IE) (for country BR) ||
+|| **RQ_MNPL_REG**
+[`string`](../../../data-types.md) | Municipal Registration (IM) (for country BR) ||
+|| **RQ_CPF**
+[`string`](../../../data-types.md) | CPF (for country BR) ||
+|| **RQ_TAX_REGIME**
+[`crm_status`](../../data-types.md) | Tax regime for country MX. The directory identifier is in the `statusType` attribute. To get directory values, pass its identifier in `filter[ENTITY_ID]` of the [crm.status.list](../../status/crm-status-list.md) method ||
+|| **UF_CRM_...** | Custom fields. For example, `UF_CRM_1694526604`.
+
+Requisites can have a set of custom fields with types: `string`, `boolean`, `double`, `datetime`.
+
+You can add a custom field to requisites using the method [crm.requisite.userfield.add](../user-fields/crm-requisite-userfield-add.md) ||
+|#
+
+#### Attribute Description {#attributes}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || type
 [`string`](../../../data-types.md) | Field type ||
+|| statusType
+[`array`](../../../data-types.md) | Directory identifiers for a `crm_status` field. To get directory values, pass its identifier in `filter[ENTITY_ID]` of the [crm.status.list](../../status/crm-status-list.md) method ||
 || isRequired
 [`boolean`](../../../data-types.md) | Required attribute
 - `true` — yes
@@ -1062,6 +1273,10 @@ HTTP status: **200**
 || settings
 [`object`](../../../data-types.md) | Custom field attribute. An object with specific settings for a particular field type. See [custom requisite fields](../user-fields/index.md) ||
 |#
+
+## Error Handling
+
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 

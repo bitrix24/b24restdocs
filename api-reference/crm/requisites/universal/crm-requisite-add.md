@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "add" access permission for the contact or company that owns the requisite
 
-This method adds a new requisite.
+The `crm.requisite.add` method adds new details for a contact or company.
 
 ## Method Parameters
 
@@ -23,10 +23,10 @@ This method adds a new requisite.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Set of fields — an object of the form `{"field": "value"[, ...]}` for adding the requisite ||
+[`object`](../../../data-types.md) | Set of fields — an object of the form `{"field": "value"[, ...]}` for adding details [(detailed description)](#fields) ||
 |#
 
-## Parameter fields
+### fields Parameter {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -34,7 +34,7 @@ This method adds a new requisite.
 || **Name**
 `type` | **Description** ||
 || **ENTITY_TYPE_ID***
-[`integer`](../../../data-types.md) | Identifier of the parent entity type. 
+[`integer`](../../../data-types.md) | Identifier of the parent object type.
 
 Currently, this can only be:
 - `3` — contact
@@ -43,7 +43,7 @@ Currently, this can only be:
 Identifiers for all CRM object types can be retrieved using the method [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md)
 ||
 || **ENTITY_ID***
-[`integer`](../../../data-types.md) | Identifier of the parent entity (contact or company).
+[`integer`](../../../data-types.md) | Identifier of the parent object: contact or company.
 
 The identifier can be obtained using the method [crm.company.list](../../companies/crm-company-list.md) for a company and the method [crm.contact.list](../../contacts/crm-contact-list.md) for a contact ||
 || **PRESET_ID***
@@ -69,15 +69,17 @@ The purpose of the field may change by the final developer ||
 
 Values `Y` or `N` are used.
 
-Currently, the field does not affect anything ||
+The default value is `Y`. Currently, the field does not affect anything ||
 || **ADDRESS_ONLY**
 [`char`](../../../data-types.md) | Status indicator when the requisite is used only for storing the address.
 
-Values `Y` or `N` are used. When set to `Y`, the requisites are not displayed in the entity card, but the address is shown ||
+Values `Y` or `N` are used. The default value is `N`.
+
+When set to `Y`, the details are not displayed in the object form, but the address is shown ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting.
 
-Order in the list of requisites of the entity when there are multiple ||
+Order in the object's list of details when there are multiple. The default value is `500` ||
 || **RQ_NAME**
 [`string`](../../../data-types.md) | Full Name ||
 || **RQ_FIRST_NAME**
@@ -93,7 +95,7 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_COMPANY_FULL_NAME**
 [`string`](../../../data-types.md) | Full name of the organization ||
 || **RQ_COMPANY_REG_DATE**
-[`string`](../../../data-types.md) | Date of state registration ||
+[`string`](../../../data-types.md) | State registration date in string format, for example `06.04.2007` ||
 || **RQ_DIRECTOR**
 [`string`](../../../data-types.md) | General director ||
 || **RQ_ACCOUNTANT**
@@ -111,7 +113,7 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_FAX**
 [`string`](../../../data-types.md) | Fax ||
 || **RQ_IDENT_TYPE**
-[`crm_status`](../../data-types.md) | Method of identification ||
+[`crm_status`](../../data-types.md) | Method of identification. [crm.requisite.fields](./crm-requisite-fields.md#result-fields) returns directory identifiers for available countries in the `statusType` attribute. To retrieve directory values, pass its identifier in `filter[ENTITY_ID]` of [crm.status.list](../../status/crm-status-list.md) ||
 || **RQ_IDENT_DOC**
 [`string`](../../../data-types.md) | Type of document ||
 || **RQ_IDENT_DOC_SER**
@@ -121,7 +123,7 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_IDENT_DOC_PERS_NUM**
 [`string`](../../../data-types.md) | Personal number ||
 || **RQ_IDENT_DOC_DATE**
-[`string`](../../../data-types.md) | Date of issue ||
+[`string`](../../../data-types.md) | Issue date in string format, for example `21.02.2015` ||
 || **RQ_IDENT_DOC_ISSUED_BY**
 [`string`](../../../data-types.md) | Issued by ||
 || **RQ_IDENT_DOC_DEP_CODE**
@@ -159,11 +161,11 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_ST_CERT_NUM**
 [`string`](../../../data-types.md) | Number of State Registration Certificate ||
 || **RQ_ST_CERT_DATE**
-[`string`](../../../data-types.md) | Date of the state registration certificate ||
+[`string`](../../../data-types.md) | State registration certificate date ||
 || **RQ_VAT_PAYER**
 [`char`](../../../data-types.md) | VAT payer (for country UA).
 
-Values `Y` or `N` are used ||
+Values `Y` or `N` are used. The default value is `N` ||
 || **RQ_VAT_ID**
 [`string`](../../../data-types.md) | VAT ID (identification number of VAT payer) ||
 || **RQ_VAT_CERT_SER**
@@ -200,6 +202,8 @@ Values `Y` or `N` are used ||
 [`string`](../../../data-types.md) | Municipal Registration (IM) (for country BR) ||
 || **RQ_CPF**
 [`string`](../../../data-types.md) | CPF (for country BR) ||
+|| **RQ_TAX_REGIME**
+[`crm_status`](../../data-types.md) | Tax regime for country MX. [crm.requisite.fields](./crm-requisite-fields.md#result-fields) returns the directory identifier in the `statusType` attribute. To retrieve directory values, pass its identifier in `filter[ENTITY_ID]` of [crm.status.list](../../status/crm-status-list.md) ||
 || **UF_CRM_...** | Custom fields. For example, `UF_CRM_1694526604`.
 
 Requisites can have a set of custom fields with types: `string`, `boolean`, `double`, `datetime`.
@@ -588,11 +592,11 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error text** | **Description** ||
-|| Empty string | ENTITY_TYPE_ID is not defined or invalid. | Identifier of the parent entity type is not defined or has an invalid value ||
-|| Empty string | ENTITY_ID is not defined or invalid. | Identifier of the parent entity is not defined or has an invalid value ||
-|| Empty string | PRESET_ID is not defined or invalid. | Identifier of the requisite template is not defined or has an invalid value ||
-|| Empty string | Entity not found. | The entity for which the requisite is being created was not found ||
-|| Empty string | Access denied. | Insufficient access permissions to add the requisite ||
+|| Empty value | ENTITY_TYPE_ID is not defined or invalid. | Identifier of the parent object type is not defined or has an invalid value ||
+|| Empty value | ENTITY_ID is not defined or invalid. | Identifier of the parent object is not defined or has an invalid value ||
+|| Empty value | PRESET_ID is not defined or invalid. | Identifier of the details template is not defined or has an invalid value ||
+|| Empty value | Entity not found. | The object for which the details are being created was not found ||
+|| Empty value | Access denied. | Insufficient access permissions to add the details ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

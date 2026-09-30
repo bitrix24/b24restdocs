@@ -13,9 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-Retrieves a list of available icons for timeline log entries.
+The `crm.timeline.icon.list` method retrieves the complete list of system and custom timeline log entry icons.
+
+## Method Parameters
 
 No parameters.
+
+The method does not use pagination. The `total` field in the response contains the number of elements in the `result.icons` array.
 
 ## Code Examples
 
@@ -63,16 +67,9 @@ No parameters.
     }
 
     try {
-      // crm.timeline.icon.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<IconListResult>({
         method: 'crm.timeline.icon.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -101,16 +98,9 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.timeline.icon.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'crm.timeline.icon.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -166,30 +156,6 @@ No parameters.
 
     try:
         bitrix_response = client.crm.timeline.icon.list().as_list().response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-    Example `as_list_fast`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.timeline.icon.list().as_list_fast(descending=True).response
         result = bitrix_response.result
         for item in result:
             print(item)
@@ -312,7 +278,7 @@ HTTP status: **200**
                 "fileUri": ""
             },
             {
-                "code": "info",
+                "code": "custom-info",
                 "isSystem": false,
                 "fileUri": "/upload/crm/13f/huhnvzds7ckoy6mk5mdze9pb7jqscpxi/e66fm2cbau9f8u32oe9jzx2qflqhj2vv"
             }
@@ -340,32 +306,43 @@ HTTP status: **200**
 || **result**
 [`object`](../../../../data-types.md) | Root element of the response.
 
-The `result` field contains an array of `icons`, each entry includes an associative array of icon fields [icon](./crm-timeline-icon-add.md#icon) ||
+The `result` field contains an [object with the icon list](#result) ||
 || **total**
 [`integer`](../../../../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
-## Error Handling
-
-HTTP status: **400**
-
-```json
-{
-    "error": "0",
-    "error_description": "Could not find value"
-}
-```
-
-{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
-
-### Possible Error Codes
+#### result Object {#result}
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Other errors (e.g., fatal) ||
+|| **Field**
+`type` | **Description** ||
+|| **icons**
+[`array`](../../../../data-types.md) | Array of [icon](#icon) objects ||
 |#
+
+#### icon Object {#icon}
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **code**
+[`string`](../../../../data-types.md) | Icon code ||
+|| **isSystem**
+[`boolean`](../../../../data-types.md) | System icon indicator:
+
+- `true` — system icon
+- `false` — custom icon
+
+||
+|| **fileUri**
+[`string`](../../../../data-types.md) | Path to the custom icon file. For a system icon, an empty string is returned ||
+|#
+
+## Error Handling
+
+{% include notitle [Error handling](../../../../../_includes/error-info.md) %}
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
 

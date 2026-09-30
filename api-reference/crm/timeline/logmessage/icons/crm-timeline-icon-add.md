@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-This method adds a new Icon.
+The `crm.timeline.icon.add` method adds a new icon.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ This method adds a new Icon.
 || **Name**
 `type` | **Description** ||
 || **code***
-[`string`](../../../../data-types.md) | Icon code (for example, `info`) ||
+[`string`](../../../../data-types.md) | Unique icon code (for example, `custom-info`). The code must not match a system icon code ||
 || **fileContent***
 [`string`](../../../../data-types.md) | Encoded `base64` content of the icon file.
 
@@ -31,8 +31,6 @@ File requirements:
 
 - Type — png
 - Size — 24x24 pixels
-- Background — transparent
-
 ||
 |#
 
@@ -48,7 +46,7 @@ File requirements:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"code":"info","fileContent":"iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU"}' \
+    -d '{"code":"custom-info","fileContent":"iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.timeline.icon.add
     ```
 
@@ -58,7 +56,7 @@ File requirements:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"code":"info","fileContent":"iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU","auth":"**put_access_token_here**"}' \
+    -d '{"code":"custom-info","fileContent":"iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.timeline.icon.add
     ```
 
@@ -85,7 +83,7 @@ File requirements:
       const response = await $b24.actions.v2.call.make<AddIconResult>({
         method: 'crm.timeline.icon.add',
         params: {
-          code: 'info',
+          code: 'custom-info',
           fileContent: 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU',
         },
         requestId: Text.getUuidRfc4122()
@@ -118,7 +116,7 @@ File requirements:
           const response = await $b24.actions.v2.call.make({
             method: 'crm.timeline.icon.add',
             params: {
-              code: 'info',
+              code: 'custom-info',
               fileContent: 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU',
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -150,7 +148,7 @@ File requirements:
 
     try:
         bitrix_response = client.crm.timeline.icon.add(
-            code="info",
+            code="custom-info",
             file_content="iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU",
         )
         result = bitrix_response.response.result
@@ -177,7 +175,7 @@ File requirements:
             ->call(
                 'crm.timeline.icon.add',
                 [
-                    'code'        => 'info',
+                    'code'        => 'custom-info',
                     'fileContent' => 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU',
                 ]
             );
@@ -204,7 +202,7 @@ File requirements:
     BX24.callMethod(
         "crm.timeline.icon.add",
         {
-            code: "info",
+            code: "custom-info",
             fileContent: "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU",
         },
         result => {
@@ -224,7 +222,7 @@ File requirements:
     $result = CRest::call(
         'crm.timeline.icon.add',
         [
-            'code' => 'info',
+            'code' => 'custom-info',
             'fileContent' => 'iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU'
         ]
     );
@@ -239,7 +237,7 @@ File requirements:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.timeline.icon.add", b24.Params{
-    	"code":        "info",
+        "code":        "custom-info",
     	"fileContent": "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAIAAABvFaqvAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TRdGqgx1UHDLUgmBBVMRRq1CECqFWaNXB5NIvaNKQpLg4Cq4FBz8Wqw4uzro6uAqC4AeIo5OToouU",
     })
     if err != nil {
@@ -273,7 +271,7 @@ HTTP status: **200**
 {
     "result": {
         "icon": {
-            "code": "info",
+            "code": "custom-info",
             "isSystem": false,
             "fileUri": "/upload/crm/13f/huhnvzds7ckoy6mk5mdze9pb7jqscpxi/e66fm2cbau9f8u32oe9jzx2qflqhj2vv"
         }
@@ -299,27 +297,39 @@ HTTP status: **200**
 || **result**
 [`object`](../../../../data-types.md) | Root element of the response.
 
-The `result` field contains the [icon](#icon) object ||
+The `result` field contains an [object with the added icon](#result) ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
-#### Icon Object {#icon}
+#### result Object {#result}
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **icon**
+[`object`](../../../../data-types.md) | Added [icon](#icon) data ||
+|#
+
+#### icon Object {#icon}
 
 #|
 || **Field**
 `type`  | **Description** ||
-||**code** | Icon code ||
-||**isSystem** | Flag field.
+|| **code**
+[`string`](../../../../data-types.md) | Icon code ||
+|| **isSystem**
+[`boolean`](../../../../data-types.md) | System icon indicator.
 
 Can have the value:
 - `true` — if the icon is standard (provided in the product)
-- `false` — if the icon was added by the user 
+- `false` — if the icon was added by the user
 
 ||
-||**fileUri** | Path to the file.
+|| **fileUri**
+[`string`](../../../../data-types.md) | Path to the file.
 
-If the icon was added by the user, the field contains the path to the icon image file ||
+For a custom icon, the field contains the path to the image file. For a system icon, an empty string is returned ||
 |#
 
 ## Error Handling
@@ -338,12 +348,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Access denied ||
-|| `INVALID_ARG_VALUE` | Invalid `fileContent` parameter specified ||
-|| `FILE_SAVE_ERROR` | Unable to save the provided icon file ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACCESS_DENIED` | Access denied | The method is called by a user without administrator permissions ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid image | The content passed in `fileContent` could not be recognized as an image ||
+|| `400` | `INVALID_ARG_VALUE` | Only png 24px on 24px is supported | The file is not in PNG format or the image dimensions are not 24x24 pixels ||
+|| `400` | `FILE_SAVE_ERROR` | File not saved | The icon file could not be saved ||
+|| `400` | `100` | Could not find value for parameter {code} | The required `code` parameter was not provided ||
+|| `400` | `100` | Could not find value for parameter {fileContent} | The required `fileContent` parameter was not provided ||
+|| `400` | `0` | Code must be unique | An icon with the specified `code` already exists ||
+|| `400` | `0` | {code} is reserved word and cannot be used | The specified `code` matches a system icon code ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "read" access permission for contacts and companies
+> Who can execute the method: a user with "read" access permission for contacts or companies
 
-This method retrieves a list of company details based on a filter.
+The `crm.requisite.list` method returns a list of details based on a filter.
 
 ## Method Parameters
 
@@ -21,13 +21,13 @@ This method retrieves a list of company details based on a filter.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | An array containing the list of fields to be selected (see [requisite fields](./index.md#fields)).
+[`array`](../../../data-types.md) | An array containing the list of fields to be selected. The [crm.requisite.fields](./crm-requisite-fields.md#result-fields) method returns field descriptions.
 
 If not provided or an empty array is passed, all available requisite fields will be selected. ||
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected requisites in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to [requisite fields](./index.md#fields).
+The [crm.requisite.fields](./crm-requisite-fields.md#result-fields) method returns possible values for `field`.
 
 An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
 
@@ -57,18 +57,18 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal ||
-  || **order**
-  [`object`](../../../data-types.md) | An object for sorting selected attributes in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+|| **order**
+[`object`](../../../data-types.md) | An object for sorting selected attributes in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to [attribute fields](./index.md#fields).
+The [crm.requisite.fields](./crm-requisite-fields.md#result-fields) method returns possible values for `field`.
 
 Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
-  ||
-  || **start**
-  [`integer`](../../../data-types.md) | A parameter used to control pagination.
+||
+|| **start**
+[`integer`](../../../data-types.md) | A parameter used to control pagination.
 
 The results page size is always static: 50 records.
 
@@ -539,7 +539,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md)| An array of objects containing information from the selected requisites. Each element contains the selected [requisite fields](./index.md#fields) ||
+[`array`](../../../data-types.md) | An array of objects containing the selected detail fields. The [crm.requisite.fields](./crm-requisite-fields.md#result-fields) method returns field descriptions ||
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**

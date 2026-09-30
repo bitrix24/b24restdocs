@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-Deletes an icon.
+The `crm.timeline.icon.delete` method deletes a custom icon and its file. System icons cannot be deleted: for a system code, the method returns the `NOT_FOUND` error.
+
+Log entries that specify the deleted code remain in the timeline but are displayed without this icon.
 
 ## Method Parameters
 
@@ -23,7 +25,7 @@ Deletes an icon.
 || **Name**
 `type` | **Description** ||
 || **code***
-[`string`](../../../../data-types.md) | Icon code (for example, `info`).
+[`string`](../../../../data-types.md) | Custom icon code (for example, `custom-info`).
 
 You can get a list of all available codes using the method [`crm.timeline.icon.list`](./crm-timeline-icon-list.md) ||
 |#
@@ -40,7 +42,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"code":"info"}' \
+    -d '{"code":"custom-info"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.timeline.icon.delete
     ```
 
@@ -50,7 +52,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"code":"info","auth":"**put_access_token_here**"}' \
+    -d '{"code":"custom-info","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.timeline.icon.delete
     ```
 
@@ -68,7 +70,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'crm.timeline.icon.delete',
         params: {
-          code: 'info',
+          code: 'custom-info',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -100,7 +102,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
           const response = await $b24.actions.v2.call.make({
             method: 'crm.timeline.icon.delete',
             params: {
-              code: 'info',
+              code: 'custom-info',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -131,7 +133,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
 
     try:
         bitrix_response = client.crm.timeline.icon.delete(
-            code="info",
+            code="custom-info",
         )
         result = bitrix_response.response.result
         print(result)
@@ -157,7 +159,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
             ->call(
                 'crm.timeline.icon.delete',
                 [
-                    'code' => 'info',
+                    'code' => 'custom-info',
                 ]
             );
     
@@ -184,7 +186,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     BX24.callMethod(
         "crm.timeline.icon.delete",
         {
-            code: "info",
+            code: "custom-info",
         },
         result => {
             if (result.error())
@@ -203,7 +205,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     $result = CRest::call(
         'crm.timeline.icon.delete',
         [
-            'code' => 'info'
+            'code' => 'custom-info'
         ]
     );
 
@@ -217,7 +219,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.timeline.icon.delete", b24.Params{
-    	"code": "info",
+        "code": "custom-info",
     })
     if err != nil {
     	return fmt.Errorf("crm.timeline.icon.delete: %w", err)
@@ -258,10 +260,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Operation result Returns:
+[`boolean`](../../../../data-types.md) | Operation result:
 
 - `true` — on successful deletion
-- `null` — on error 
  ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
@@ -274,7 +275,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Icon not found for code `info`"
+    "error_description": "Icon not found for code `custom-info`"
 }
 ```
 
@@ -283,11 +284,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Access denied ||
-|| `NOT_FOUND` | Icon with the specified `code` does not exist ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACCESS_DENIED` | Access denied | The method is called by a user without administrator permissions ||
+|| `400` | `NOT_FOUND` | Icon not found for code `{code}` | A custom icon with the specified `code` does not exist, or a system icon code was provided ||
+|| `400` | `100` | Could not find value for parameter {code} | The required `code` parameter was not provided ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}

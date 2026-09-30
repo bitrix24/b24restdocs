@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method retrieves information about the timeline log entry icon.
+The `crm.timeline.icon.get` method retrieves information about a timeline log entry icon.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ This method retrieves information about the timeline log entry icon.
 || **Name**
 `type` | **Description** ||
 || **code***
-[`string`](../../../../data-types.md) | Icon code (for example, `info`).
+[`string`](../../../../data-types.md) | Icon code (for example, `custom-info`).
 
 You can get a list of all available codes using the method [`crm.timeline.icon.list`](./crm-timeline-icon-list.md) ||
 |#
@@ -40,7 +40,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"code":"info"}' \
+    -d '{"code":"custom-info"}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.timeline.icon.get
     ```
 
@@ -50,7 +50,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"code":"info","auth":"**put_access_token_here**"}' \
+    -d '{"code":"custom-info","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.timeline.icon.get
     ```
 
@@ -77,7 +77,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
       const response = await $b24.actions.v2.call.make<IconGetResult>({
         method: 'crm.timeline.icon.get',
         params: {
-          code: 'info',
+          code: 'custom-info',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -109,7 +109,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
           const response = await $b24.actions.v2.call.make({
             method: 'crm.timeline.icon.get',
             params: {
-              code: 'info',
+              code: 'custom-info',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -140,7 +140,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
 
     try:
         bitrix_response = client.crm.timeline.icon.get(
-            code="info",
+            code="custom-info",
         )
         result = bitrix_response.response.result
         print(result)
@@ -166,7 +166,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
             ->call(
                 'crm.timeline.icon.get',
                 [
-                    'code' => 'info',
+                    'code' => 'custom-info',
                 ]
             );
     
@@ -192,7 +192,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     BX24.callMethod(
         "crm.timeline.icon.get",
         {
-            code: "info",
+            code: "custom-info",
         },
         result => {
             if (result.error())
@@ -211,7 +211,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     $result = CRest::call(
         'crm.timeline.icon.get',
         [
-            'code' => 'info'
+            'code' => 'custom-info'
         ]
     );
 
@@ -225,7 +225,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.timeline.icon.get", b24.Params{
-    	"code": "info",
+        "code": "custom-info",
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("crm.timeline.icon.get: %w", err)
@@ -258,7 +258,7 @@ HTTP status: **200**
 {
     "result": {
         "icon": {
-            "code": "info",
+            "code": "custom-info",
             "isSystem": false,
             "fileUri": "/upload/crm/13f/huhnvzds7ckoy6mk5mdze9pb7jqscpxi/e66fm2cbau9f8u32oe9jzx2qflqhj2vv"
         }
@@ -284,9 +284,36 @@ HTTP status: **200**
 || **result**
 [`object`](../../../../data-types.md) | Root element of the response.
 
-The `result` field contains the [icon](./crm-timeline-icon-add.md#icon) object ||
+The `result` field contains an [object with icon data](#result) ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **icon**
+[`object`](../../../../data-types.md) | [Icon](#icon) data ||
+|#
+
+#### icon Object {#icon}
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **code**
+[`string`](../../../../data-types.md) | Icon code ||
+|| **isSystem**
+[`boolean`](../../../../data-types.md) | System icon indicator:
+
+- `true` — system icon
+- `false` — custom icon
+
+||
+|| **fileUri**
+[`string`](../../../../data-types.md) | Path to the custom icon file. For a system icon, an empty string is returned ||
 |#
 
 ## Error Handling
@@ -305,10 +332,9 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `NOT_FOUND` | Icon with the specified `code` does not exist ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `NOT_FOUND` | Icon not found for code `{code}` | An icon with the specified `code` does not exist ||
+|| `400` | `100` | Could not find value for parameter {code} | The required `code` parameter was not provided ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}

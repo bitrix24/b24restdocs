@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "edit" access permission for the contact or company that owns the requisite
 
-This method updates an existing requisite.
+The `crm.requisite.update` method updates existing details.
 
 ## Method Parameters
 
@@ -25,17 +25,17 @@ This method updates an existing requisite.
 || **id***
 [`integer`](../../../data-types.md) | Identifier of the requisite, can be obtained using the method [crm.requisite.list](./crm-requisite-list.md) ||
 || **fields***
-[`object`](../../../data-types.md) | Set of requisite fields — an object of the form `"field": "value"[, ...]}`, the values of which need to be changed ||
+[`object`](../../../data-types.md) | Set of detail fields — an object of the form `{"field": "value"[, ...]}`, whose values need to be changed [(detailed description)](#fields) ||
 |#
 
-## Parameter fields
+### fields Parameter {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **NAME***
+|| **NAME**
 [`string`](../../../data-types.md) | Name of the requisite ||
 || **CODE**
 [`string`](../../../data-types.md) | Symbolic code of the requisite ||
@@ -58,11 +58,11 @@ Currently, the field does not affect anything ||
 || **ADDRESS_ONLY**
 [`char`](../../../data-types.md) | Status indicator when the requisite is used only for storing the address.
 
-Values `Y` or `N` are used. When set to `Y`, the requisites are not displayed in the entity card, but the address is shown ||
+Values `Y` or `N` are used. When set to `Y`, the details are not displayed in the object form, but the address is shown ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting.
 
-Order in the list of requisites of the entity when there are multiple ||
+Order in the object's details list when there are multiple entries ||
 || **RQ_NAME**
 [`string`](../../../data-types.md) | Full Name ||
 || **RQ_FIRST_NAME**
@@ -78,7 +78,7 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_COMPANY_FULL_NAME**
 [`string`](../../../data-types.md) | Full name of the organization ||
 || **RQ_COMPANY_REG_DATE**
-[`string`](../../../data-types.md) | Date of state registration ||
+[`string`](../../../data-types.md) | State registration date in string format, for example `06.04.2007` ||
 || **RQ_DIRECTOR**
 [`string`](../../../data-types.md) | General director ||
 || **RQ_ACCOUNTANT**
@@ -96,7 +96,7 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_FAX**
 [`string`](../../../data-types.md) | Fax ||
 || **RQ_IDENT_TYPE**
-[`crm_status`](../../data-types.md) | Method of identification ||
+[`crm_status`](../../data-types.md) | Identification method. The [crm.requisite.fields](./crm-requisite-fields.md#result-fields) method returns directory identifiers for available countries in the `statusType` attribute. To get directory values, pass its identifier in `filter[ENTITY_ID]` of the [crm.status.list](../../status/crm-status-list.md) method ||
 || **RQ_IDENT_DOC**
 [`string`](../../../data-types.md) | Type of document ||
 || **RQ_IDENT_DOC_SER**
@@ -106,7 +106,7 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_IDENT_DOC_PERS_NUM**
 [`string`](../../../data-types.md) | Personal number ||
 || **RQ_IDENT_DOC_DATE**
-[`string`](../../../data-types.md) | Date of issue ||
+[`string`](../../../data-types.md) | Issue date in string format, for example `21.02.2015` ||
 || **RQ_IDENT_DOC_ISSUED_BY**
 [`string`](../../../data-types.md) | Issued by ||
 || **RQ_IDENT_DOC_DEP_CODE**
@@ -144,7 +144,7 @@ Order in the list of requisites of the entity when there are multiple ||
 || **RQ_ST_CERT_NUM**
 [`string`](../../../data-types.md) | Number of State Registration Certificate ||
 || **RQ_ST_CERT_DATE**
-[`string`](../../../data-types.md) | Date of the state registration certificate ||
+[`string`](../../../data-types.md) | Date of state registration certificate ||
 || **RQ_VAT_PAYER**
 [`char`](../../../data-types.md) | VAT payer (for country UA).
 
@@ -185,6 +185,8 @@ Values `Y` or `N` are used ||
 [`string`](../../../data-types.md) | Municipal Registration (IM) (for country BR) ||
 || **RQ_CPF**
 [`string`](../../../data-types.md) | CPF (for country BR) ||
+|| **RQ_TAX_REGIME**
+[`crm_status`](../../data-types.md) | Tax regime for country MX. The [crm.requisite.fields](./crm-requisite-fields.md#result-fields) method returns the directory identifier in the `statusType` attribute. To get directory values, pass its identifier in `filter[ENTITY_ID]` of the [crm.status.list](../../status/crm-status-list.md) method ||
 || **UF_CRM_...** | Custom fields. For example, `UF_CRM_1694526604`.
 
 Requisites can have a set of custom fields with types: `string`, `boolean`, `double`, `datetime`.
@@ -466,12 +468,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns the value:
-
-- `true` — requisite changed
-- `false` — requisite not changed
-
-||
+[`boolean`](../../../data-types.md) | Returns `true` if the details were updated. If an update error occurs, the method returns an error ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -493,12 +490,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error text** | **Description** ||
-|| Empty string | The Requisite with ID '57' is not found | The requisite with the specified identifier was not found ||
-|| Empty string | ID is not defined or invalid. | The requisite identifier is not specified or has an invalid value ||
-|| Empty string | ENTITY_TYPE_ID is not defined or invalid. | The identifier of the parent entity type is not specified or has an invalid value ||
-|| Empty string | ENTITY_ID is not defined or invalid. | The identifier of the parent entity is not specified or has an invalid value ||
-|| Empty string | PRESET_ID is not defined or invalid. | The identifier of the requisite template is not specified or has an invalid value ||
-|| Empty string | Access denied. | Insufficient access permissions to modify the requisite ||
+|| Empty value | The Requisite with ID '57' is not found | The details with the specified identifier were not found ||
+|| Empty value | ID is not defined or invalid. | The details identifier is not specified or has an invalid value ||
+|| Empty value | Access denied. | Insufficient access permissions to modify the details ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

@@ -1,4 +1,4 @@
-# Get Requisite by ID crm.requisite.get
+# Get Details by Identifier crm.requisite.get
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "read" access permission for the contact or company that owns the requisite
 
-This method retrieves the requisite by its identifier `id`.
+The `crm.requisite.get` method returns details by identifier.
 
 ## Method Parameters
 
@@ -292,7 +292,7 @@ HTTP status: **200**
         "RQ_SECOND_NAME": null,
         "RQ_COMPANY_ID": null,
         "RQ_COMPANY_NAME": "Ltd. \"QuickBooks and other similar platforms\"",
-        "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\""
+        "RQ_COMPANY_FULL_NAME": "LIMITED LIABILITY COMPANY \"QuickBooks and other similar platforms\"",
         "RQ_COMPANY_REG_DATE": "06.04.2007",
         "RQ_DIRECTOR": "SMITH JOHN",
         "RQ_ACCOUNTANT": null,
@@ -345,7 +345,8 @@ HTTP status: **200**
         "RQ_CNPJ": null,
         "RQ_STATE_REG": null,
         "RQ_MNPL_REG": null,
-        "RQ_CPF": null
+        "RQ_CPF": null,
+        "RQ_TAX_REGIME": null
     },
     "time": {
         "start": 1717078089.78188,
@@ -365,9 +366,50 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-`Object`| An object containing the values of [requisite fields](./index.md#fields) ||
+[`object`](../../../data-types.md) | Object containing detail field values [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../../data-types.md) | Details identifier ||
+|| **ENTITY_TYPE_ID**
+[`integer`](../../../data-types.md) | Parent object type identifier: `3` — contact, `4` — company ||
+|| **ENTITY_ID**
+[`integer`](../../../data-types.md) | Identifier of the parent contact or company ||
+|| **PRESET_ID**
+[`integer`](../../../data-types.md) | Details template identifier ||
+|| **DATE_CREATE**
+[`datetime`](../../../data-types.md) | Details creation date ||
+|| **DATE_MODIFY**
+[`datetime`](../../../data-types.md) | Date the details were last modified ||
+|| **CREATED_BY_ID**
+[`user`](../../../data-types.md) | Identifier of the user who created the details ||
+|| **MODIFY_BY_ID**
+[`user`](../../../data-types.md) | Identifier of the user who last modified the details ||
+|| **NAME**
+[`string`](../../../data-types.md) | Details name ||
+|| **CODE**
+[`string`](../../../data-types.md) | Details symbolic code ||
+|| **XML_ID**
+[`string`](../../../data-types.md) | External key for exchange operations ||
+|| **ORIGINATOR_ID**
+[`string`](../../../data-types.md) | External information database identifier ||
+|| **ACTIVE**
+[`char`](../../../data-types.md) | Activity indicator. Possible values: `Y` and `N` ||
+|| **ADDRESS_ONLY**
+[`char`](../../../data-types.md) | Indicates details used only to store an address. Possible values: `Y` and `N` ||
+|| **SORT**
+[`integer`](../../../data-types.md) | Position in the parent object's list of details ||
+|| **RQ_...**
+`string`, `char`, `crm_status` | Detail fields whose set depends on the country and template. [crm.requisite.fields](./crm-requisite-fields.md#result-fields) returns the complete set of fields and their types ||
+|| **UF_CRM_...**
+various | Custom detail fields. The set of fields and their types depend on the Bitrix24 settings ||
 |#
 
 ## Error Handling
@@ -387,8 +429,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error text** | **Description** ||
-|| Empty string | The Requisite with ID '27' is not found | The requisite with the specified identifier was not found ||
-|| Empty string | Access denied. | Insufficient access permissions to retrieve the requisite ||
+|| Empty value | ID is not defined or invalid. | The details identifier is not specified or has an invalid value ||
+|| Empty value | The Requisite with ID '27' is not found | Details with the specified identifier were not found ||
+|| Empty value | Access denied. | Insufficient access permissions to retrieve the details ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

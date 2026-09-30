@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "delete" access permission for the contact or company that owns the requisite
 
-This method deletes a requisite and all associated objects (links to other entities, addresses, bank details).
+The `crm.requisite.delete` method deletes details and their associated objects: links to other objects, addresses, and bank details.
 
 ## Method Parameters
 
@@ -255,12 +255,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns the value:
-
-- `true` — requisite deleted
-- `false` — requisite not deleted
-
-||
+[`boolean`](../../../data-types.md) | Returns `true` if the details were deleted. If the details could not be deleted, the method returns an error ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -282,9 +277,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error text** | **Description** ||
-|| Empty string | The Requisite with ID '57' is not found | The requisite with the specified identifier was not found ||
-|| Empty string | ID is not defined or invalid. | The requisite identifier is not specified or has an invalid value ||
-|| Empty string | Access denied. | Insufficient access permissions to delete the requisite ||
+|| Empty value | The Requisite with ID '57' is not found | Details with the specified identifier were not found ||
+|| Empty value | ID is not defined or invalid. | The details identifier is not specified or has an invalid value ||
+|| Empty value | Access denied. | Insufficient access permissions to delete the details ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
