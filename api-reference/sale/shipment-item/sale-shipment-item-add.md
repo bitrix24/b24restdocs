@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.shipmentitem.add` adds an item to the shipment table part.
+The method `sale.shipmentitem.add` adds a product from a basket item to a shipment. The basket item and the shipment must belong to the same order. For the rules on distributing quantity across shipments, see the [section overview](./index.md#quantity).
 
 ## Method Parameters
 
@@ -23,10 +23,10 @@ The method `sale.shipmentitem.add` adds an item to the shipment table part.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating an item in the shipment table part ||
+[`object`](../../data-types.md) | Field values for creating an item in the shipment table part [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -34,15 +34,21 @@ The method `sale.shipmentitem.add` adds an item to the shipment table part.
 || **Name**
 `type` | **Description** ||
 || **orderDeliveryId***
-[`sale_order_shipment.id`](../data-types.md) | Shipment identifier ||
-|| **basketId***
-[`sale_basket_item.id`](../data-types.md) | Basket identifier ||
-|| **quantity***
-[`double`](../../data-types.md) | Quantity of the product ||
-|| **xmlId**
-[`string`](../../data-types.md) | External identifier.
+[`sale_order_shipment.id`](../data-types.md#sale_order_shipment) | Shipment identifier.
 
-Can be used to synchronize the current product position in the shipment with a similar position in an external system ||
+Can be retrieved using the [sale.shipment.list](../shipment/sale-shipment-list.md) method ||
+|| **basketId***
+[`sale_basket_item.id`](../data-types.md#sale_basket_item) | Basket item identifier.
+
+Can be retrieved using the [sale.basketitem.list](../basket-item/sale-basket-item-list.md) method ||
+|| **quantity***
+[`double`](../../data-types.md) | Quantity of the product in the shipment. Must be greater than `0`.
+
+The total quantity across all shipments of the order cannot exceed the quantity in the basket item ||
+|| **xmlId**
+[`string`](../../data-types.md) | External identifier. If omitted, Bitrix24 generates a value like `bx_6abcd8337a3d4`.
+
+Can be used to synchronize the shipment table part item with a similar position in an external system ||
 |#
 
 ## Code Examples
@@ -53,8 +59,8 @@ Can be used to synchronize the current product position in the shipment with a s
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"orderDeliveryId":33,"basketId":18,"quantity":1}}' \
@@ -63,8 +69,8 @@ Can be used to synchronize the current product position in the shipment with a s
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"orderDeliveryId":33,"basketId":18,"quantity":1},"auth":"**put_access_token_here**"}' \
@@ -212,11 +218,7 @@ Can be used to synchronize the current product position in the shipment with a s
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error()->ex);
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Success: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -293,8 +295,8 @@ Can be used to synchronize the current product position in the shipment with a s
     	DateInsert       string `json:"dateInsert"`
     	ID               b24.ID `json:"id"`
     	OrderDeliveryID  b24.ID `json:"orderDeliveryId"`
-    	Quantity         int    `json:"quantity"`
-    	ReservedQuantity int    `json:"reservedQuantity"`
+    	Quantity         float64 `json:"quantity"`
+    	ReservedQuantity float64 `json:"reservedQuantity"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -312,13 +314,13 @@ HTTP status: **200**
 {
     "result": {
         "shipmentItem": {
-            "basketId": 2716,
-            "dateInsert": "2024-04-11T09:10:34+02:00",
+            "basketId": 18,
+            "dateInsert": "2024-04-11T10:10:35+02:00",
             "id": 7,
-            "orderDeliveryId": 2431,
-            "quantity": 3,
+            "orderDeliveryId": 33,
+            "quantity": 1,
             "reservedQuantity": 0,
-            "xmlId": "myXmlId"
+            "xmlId": "bx_6617a2e1b3c5d"
         }
     },
     "time": {
@@ -338,11 +340,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **shipmentItem**
-[`sale_order_shipment_item`](../data-types.md) | Object with information about the added item in the shipment table part ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **shipmentItem**
+[`sale_order_shipment_item`](../data-types.md#sale_order_shipment_item) | The added item in the shipment table part ||
 |#
 
 ## Error Handling
@@ -351,7 +360,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 201250000001,
+    "error": "201250000001",
     "error_description": "Duplicate entry for key [basketId, orderDeliveryId]"
 }
 ```
@@ -362,14 +371,38 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201250000001` | An item with the specified field values `basketId` and `orderDeliveryId` already exists.
+|| `201250000001` | `Duplicate entry for key [basketId, orderDeliveryId]`
 
-To change the quantity of the product, use the method [`sale.shipmentitem.update`](./sale-shipment-item-update.md) ||
-|| `201240400002` | Shipment not found. Invalid value for the passed parameter `orderDeliveryId` ||
-|| `201240400003` | Basket not found. Invalid value for the passed parameter `basketId` ||
-|| `200040300020` | Insufficient permissions to add an item to the shipment table part ||
-|| `100` | The `fields` parameter is missing or empty ||
-|| `0` | Required fields are not provided ||
+An item with the specified field values `basketId` and `orderDeliveryId` already exists.
+
+To change the quantity of the product, use the [sale.shipmentitem.update](./sale-shipment-item-update.md) method ||
+|| `201240400002` | `shipment not exists`
+
+The shipment is not found or belongs to a different order than the basket item. Check `orderDeliveryId` ||
+|| `201240400003` | `shipment not exists`
+
+The basket item is not found. Invalid value of `basketId` ||
+|| `SALE_SHIPMENT_ITEM_LESS_AVAILABLE_QUANTITY` | `The available quantity of "<name>" is less than that specified in the shopping cart. Check if this product has been added to the order's other shipments.`
+
+The basket does not have enough unallocated product: the quantity exceeds the remainder not distributed to other shipments ||
+|| `SALE_SHIPMENT_ITEM_ERR_QUANTITY_EMPTY` | `The quantity of <name> cannot be zero or less than zero`
+
+`quantity` = `0` is passed ||
+|| `BARCODE_MORE_ITEM_QUANTITY` | `The number of barcodes is more than product quantity`
+
+A negative `quantity` value is passed ||
+|| `200040300020` | `Access Denied`
+
+Insufficient permissions to add an item to the shipment table part ||
+|| `100` | `Could not find value for parameter {fields}`
+
+The `fields` parameter is missing ||
+|| `0` | `Required fields: ...`
+
+Required fields are not provided in `fields` ||
+|| `0` | `Call to a member function setFields() on null`
+
+The shipment is already shipped (`deducted` = `Y`), products cannot be added to it ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
@@ -377,6 +410,7 @@ To change the quantity of the product, use the method [`sale.shipmentitem.update
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-shipment-item-update.md)
 - [{#T}](./sale-shipment-item-get.md)
 - [{#T}](./sale-shipment-item-list.md)

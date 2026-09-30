@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The shipment table section contains information about each product included in the shipment: name, quantity, price.
+The shipment table section is the list of products included in an order shipment. Each item links a basket item to a shipment and sets the product quantity in the `quantity` field. The product name and price are stored in the basket item, not in the table section item.
+
+The `sale.shipmentitem.*` methods add, update, retrieve, and delete shipment table section items. The item fields are described in the [sale_order_shipment_item](../data-types.md#sale_order_shipment_item) type.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -17,23 +19,43 @@ The shipment table section contains information about each product included in t
 
 ## Connection of the Shipment Table Section with Other Objects
 
-**Shipments.** Specify the shipment identifier. A list of identifiers can be obtained using the [sale.shipment.list](../shipment/sale-shipment-list.md) method.
+**Shipment.** An item is linked to a shipment through the `orderDeliveryId` field. The shipment identifier can be retrieved using the [sale.shipment.list](../shipment/sale-shipment-list.md) method.
 
-**Cart.** Specify the cart item identifier. A list of identifiers can be obtained using the [sale.basketitem.list](../basket-item/sale-basket-item-list.md) method.
+**Order.** The shipment and the basket item must belong to the same order. A list of orders can be retrieved using the [sale.order.list](../order/sale-order-list.md) method.
+
+**Basket.** An item refers to a basket item through the `basketId` field. The basket item identifier can be retrieved using the [sale.basketitem.list](../basket-item/sale-basket-item-list.md) method.
+
+## How Product Quantity Is Distributed {#quantity}
+
+The product quantity of a basket item is distributed across the order shipments. Product not added to any shipment is held in the system shipment. The [sale.shipment.*](../shipment/index.md) methods do not return the system shipment, while [sale.shipmentitem.list](./sale-shipment-item-list.md) returns its items as well. For an item of the system shipment, the [sale.shipmentitem.get](./sale-shipment-item-get.md) method returns an empty array.
+
+- The total `quantity` across all shipments cannot exceed the quantity in the basket item
+- A basket item can be included in a shipment only once
+- `basketId` and `orderDeliveryId` cannot be changed after the item is added. To move a product to another shipment, delete the item and add a new one
+- Items of the system shipment cannot be changed or deleted
+- In a shipment with `deducted` = `Y`, you cannot add or delete products or change the quantity; only `xmlId` can be changed
 
 ## How to Get Started
 
-1. Create an order using [sale.order.add](../order/sale-order-add.md) or find an existing order using [sale.order.list](../order/sale-order-list.md).
-2. Add cart items using [sale.basketitem.*](../basket-item/index.md).
-3. Create a shipment using [sale.shipment.add](../shipment/sale-shipment-add.md).
-4. Add items to the shipment using [sale.shipmentitem.add](./sale-shipment-item-add.md).
-5. Check shipment items using [sale.shipmentitem.list](./sale-shipment-item-list.md).
+1. Retrieve the shipment identifier using the [sale.shipment.list](../shipment/sale-shipment-list.md) method. If there is no shipment yet, create one using the [sale.shipment.add](../shipment/sale-shipment-add.md) method.
+2. Retrieve the basket item identifier using the [sale.basketitem.list](../basket-item/sale-basket-item-list.md) method.
+3. Add the basket item to the shipment using the [sale.shipmentitem.add](./sale-shipment-item-add.md) method.
+4. Check the shipment contents using the [sale.shipmentitem.list](./sale-shipment-item-list.md) method with a filter by `orderDeliveryId`.
+5. Change the quantity using the [sale.shipmentitem.update](./sale-shipment-item-update.md) method or remove the product from the shipment using the [sale.shipmentitem.delete](./sale-shipment-item-delete.md) method.
+
+## Response Format
+
+- The add, update, and get methods return the item in `result.shipmentItem`
+- The [sale.shipmentitem.delete](./sale-shipment-item-delete.md) method returns `true` in `result`
+- The [sale.shipmentitem.list](./sale-shipment-item-list.md) method returns up to 50 items per call in `result.shipmentItems`, the total number of records found in `total`, and the `start` value for the next page in `next`
+
+On error, the `error` and `error_description` fields are returned; the full list of codes is on the page of each method.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the methods: retrieve items — store manager, retrieve the field description — any user, add, update, and delete items — administrator
 
 #| 
 || **Method** | **Description** ||

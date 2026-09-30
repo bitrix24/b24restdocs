@@ -1,4 +1,4 @@
-# Get Fields of Shipment Item from sale.shipmentitem.getFields
+# Get Fields of a Shipment Table Part Item sale.shipmentitem.getFields
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: any user
 
-The method `sale.shipmentitem.getFields` retrieves a list of available fields for shipment item table entries.
+The method `sale.shipmentitem.getFields` returns the description of the shipment table part item fields: the field type, whether it is required, and whether it can be written. The response shows which fields to pass to [sale.shipmentitem.add](./sale-shipment-item-add.md) and [sale.shipmentitem.update](./sale-shipment-item-update.md): a field with `isReadOnly: true` cannot be written, and a field with `isImmutable: true` can be set only when adding an item.
 
 No parameters required.
 
@@ -25,8 +25,8 @@ No parameters required.
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
@@ -35,8 +35,8 @@ No parameters required.
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"auth":"**put_access_token_here**"}' \
@@ -126,7 +126,7 @@ No parameters required.
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.sale.shipmentitem.getfields().response
+        bitrix_response = client.sale.shipmentitem.get_fields().response
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:
@@ -157,11 +157,7 @@ No parameters required.
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
+        echo 'Info: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -290,36 +286,31 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **shipmentItem**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_order_shipment_item`](../data-types.md), and `value` is an object of type [`rest_field_description`](../data-types.md) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_order_shipment_item`](../data-types.md#sale_order_shipment_item), and `value` is an object of type [`rest_field_description`](../data-types.md#rest_field_description) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **401**
 
 ```json
 {
-    "error": 0,
-    "error_description": "error"
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the access token"
 }
 ```
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-### Possible Error Codes
-
-#|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read available fields of the shipment item table ||
-|| `0` | Other errors (e.g., fatal errors) ||
-|#
+The method has no errors of its own. Only general REST errors are possible, for example, `insufficient_scope` if the application or webhook does not have the `sale` scope.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-shipment-item-add.md)
 - [{#T}](./sale-shipment-item-update.md)
 - [{#T}](./sale-shipment-item-get.md)

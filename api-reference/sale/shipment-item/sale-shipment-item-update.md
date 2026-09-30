@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.shipmentitem.update` updates an item in the shipment table part collection.
+The method `sale.shipmentitem.update` changes the product quantity and the external identifier of a shipment table part item.
+
+The basket item and the shipment of an item cannot be changed: the method ignores the passed `basketId` and `orderDeliveryId` without an error. To move a product to another shipment, delete the item using the [sale.shipmentitem.delete](./sale-shipment-item-delete.md) method and add a new one using the [sale.shipmentitem.add](./sale-shipment-item-add.md) method.
+
+Items of the system shipment cannot be changed. In a shipment with `deducted` = `Y`, only `xmlId` can be changed, and `quantity` must contain the current value. For the rules on distributing quantity across shipments, see the [section overview](./index.md#quantity).
 
 ## Method Parameters
 
@@ -23,12 +27,14 @@ The method `sale.shipmentitem.update` updates an item in the shipment table part
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_shipment_item.id`](../data-types.md) | Identifier of the shipment table part item ||
+[`sale_order_shipment_item.id`](../data-types.md#sale_order_shipment_item) | Identifier of the shipment table part item.
+
+Can be retrieved using the [sale.shipmentitem.list](./sale-shipment-item-list.md) method ||
 || **fields***
-[`object`](../../data-types.md) | Field values for updating the shipment table part item ||
+[`object`](../../data-types.md) | Field values for updating the shipment table part item [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -36,11 +42,13 @@ The method `sale.shipmentitem.update` updates an item in the shipment table part
 || **Name**
 `type` | **Description** ||
 || **quantity***
-[`double`](../../data-types.md) | Quantity of the product ||
-|| **xmlId**
-[`string`](../../data-types.md) | External identifier.
+[`double`](../../data-types.md) | Quantity of the product in the shipment. Must be greater than `0`.
 
-Can be used to synchronize the current product position of the delivery with a similar position in an external system ||
+The total quantity across all shipments of the order cannot exceed the quantity in the basket item ||
+|| **xmlId**
+[`string`](../../data-types.md) | External identifier. If the field is omitted, the previous value is retained.
+
+Can be used to synchronize the shipment table part item with a similar position in an external system ||
 |#
 
 ## Code Examples
@@ -51,8 +59,8 @@ Can be used to synchronize the current product position of the delivery with a s
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":7,"fields":{"quantity":5,"xmlId":"myNewXmlId"}}' \
@@ -61,8 +69,8 @@ Can be used to synchronize the current product position of the delivery with a s
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":7,"fields":{"quantity":5,"xmlId":"myNewXmlId"},"auth":"**put_access_token_here**"}' \
@@ -211,8 +219,6 @@ Can be used to synchronize the current product position of the delivery with a s
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -288,8 +294,8 @@ Can be used to synchronize the current product position of the delivery with a s
     	DateInsert       string `json:"dateInsert"`
     	ID               b24.ID `json:"id"`
     	OrderDeliveryID  b24.ID `json:"orderDeliveryId"`
-    	Quantity         int    `json:"quantity"`
-    	ReservedQuantity int    `json:"reservedQuantity"`
+    	Quantity         float64 `json:"quantity"`
+    	ReservedQuantity float64 `json:"reservedQuantity"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -333,11 +339,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **shipmentItem**
-[`sale_order_shipment_item`](../data-types.md) | Object with information about the updated shipment table part item ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **shipmentItem**
+[`sale_order_shipment_item`](../data-types.md#sale_order_shipment_item) | The updated shipment table part item ||
 |#
 
 ## Error Handling
@@ -346,8 +359,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "Required fields: name"
+    "error": "100",
+    "error_description": "Could not find value for parameter {fields}"
 }
 ```
 
@@ -357,11 +370,36 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201240400001` | The updated shipment table part item was not found ||
-|| `200040300020` | Insufficient rights to update the shipment table part item ||
-|| `100` | The `id` parameter is not specified ||
-|| `100` | The `fields` parameter is not specified or is empty ||
-|| `0` | Required fields of the `fields` structure are not provided ||
+|| `201240400001` | `shipment item is not exists`
+
+The updated shipment table part item was not found ||
+|| `200040300020` | `Access Denied`
+
+Insufficient rights to update the shipment table part item ||
+|| `100` | `Bitrix\Sale\ShipmentItem constructor must be is public`
+
+The `id` parameter is not specified ||
+|| `100` | `Could not find value for parameter {fields}`
+
+The `fields` parameter is not specified ||
+|| `0` | `Required fields: quantity`
+
+The `quantity` field is not provided in `fields` ||
+|| `150` | `System shipment cannot be modified`
+
+The item belongs to the system shipment, which holds the unallocated product ||
+|| `SALE_SHIPMENT_ITEM_SHIPMENT_ALREADY_SHIPPED_CANNOT_EDIT` | `Shipment already done. No change is possible.`
+
+The shipment is already shipped (`deducted` = `Y`), and `quantity` differs from the current value ||
+|| `SALE_SHIPMENT_ITEM_LESS_AVAILABLE_QUANTITY` | `The available quantity of "<name>" is less than that specified in the shopping cart. Check if this product has been added to the order's other shipments.`
+
+The basket does not have enough unallocated product: the quantity exceeds the remainder not distributed to other shipments ||
+|| `SALE_SHIPMENT_ITEM_ERR_QUANTITY_EMPTY` | `The quantity of <name> cannot be zero or less than zero`
+
+`quantity` = `0` is passed ||
+|| `BARCODE_MORE_ITEM_QUANTITY` | `The number of barcodes is more than product quantity`
+
+A negative `quantity` value is passed ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
@@ -369,6 +407,7 @@ HTTP status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-shipment-item-add.md)
 - [{#T}](./sale-shipment-item-get.md)
 - [{#T}](./sale-shipment-item-list.md)

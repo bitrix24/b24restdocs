@@ -1,4 +1,4 @@
-# Accessing Fields of the sale.shipmentitem.get Element
+# Get a Shipment Table Part Item sale.shipmentitem.get
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: store manager
 
-The `sale.shipmentitem.get` method is designed to retrieve the values of all fields of the shipment item table element.
+The `sale.shipmentitem.get` method returns a shipment table part item by its identifier: the basket item, the shipment, and the product quantity. For an item of the system shipment, which holds the order's unallocated product, the method returns an empty array without an error — retrieve the contents of the system shipment using the [sale.shipmentitem.list](./sale-shipment-item-list.md) method.
 
 ## Method Parameters
 
@@ -23,7 +23,9 @@ The `sale.shipmentitem.get` method is designed to retrieve the values of all fie
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_shipment_item.id`](../data-types.md) | Identifier of the shipment item table element ||
+[`sale_order_shipment_item.id`](../data-types.md#sale_order_shipment_item) | Identifier of the shipment item table element.
+
+Can be retrieved using the [sale.shipmentitem.list](./sale-shipment-item-list.md) method ||
 |#
 
 ## Code Examples
@@ -34,8 +36,8 @@ The `sale.shipmentitem.get` method is designed to retrieve the values of all fie
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":7}' \
@@ -44,8 +46,8 @@ The `sale.shipmentitem.get` method is designed to retrieve the values of all fie
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":7,"auth":"**put_access_token_here**"}' \
@@ -175,12 +177,7 @@ The `sale.shipmentitem.get` method is designed to retrieve the values of all fie
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Data: ' . print_r($result->data(), true);
-        }
+        echo 'Data: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -244,8 +241,8 @@ The `sale.shipmentitem.get` method is designed to retrieve the values of all fie
     	DateInsert       string `json:"dateInsert"`
     	ID               b24.ID `json:"id"`
     	OrderDeliveryID  b24.ID `json:"orderDeliveryId"`
-    	Quantity         int    `json:"quantity"`
-    	ReservedQuantity int    `json:"reservedQuantity"`
+    	Quantity         float64 `json:"quantity"`
+    	ReservedQuantity float64 `json:"reservedQuantity"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -289,11 +286,27 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **shipmentItem**
-[`sale_order_shipment_item`](../data-types.md) | Information about the shipment item table element ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **shipmentItem**
+[`sale_order_shipment_item`](../data-types.md#sale_order_shipment_item) | The shipment table part item. Fields:
+- `id` — identifier of the shipment table part item, `integer`
+- `orderDeliveryId` — shipment identifier, `integer`
+- `basketId` — basket item identifier, `integer`
+- `quantity` — product quantity in the shipment, `double`
+- `reservedQuantity` — reserved quantity, `double`
+- `xmlId` — external identifier, `string`
+- `dateInsert` — date the item was added, `datetime`
+
+For an item of the system shipment, an empty array is returned ||
 |#
 
 ## Error Handling
@@ -302,8 +315,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 201240400001,
-    "error_description": "shipment item does not exist"
+    "error": "201240400001",
+    "error_description": "shipment item is not exists"
 }
 ```
 
@@ -313,9 +326,15 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201240400001` | Shipment item table element not found ||
-|| `200040300010` | Insufficient permissions to read the shipment item table element ||
-|| `100` | Parameter `id` not specified ||
+|| `201240400001` | `shipment item is not exists`
+
+The shipment item table element with the specified `id` was not found ||
+|| `200040300010` | `Access Denied`
+
+Insufficient permissions to read the shipment item table element ||
+|| `100` | `Bitrix\Sale\ShipmentItem constructor must be is public`
+
+Parameter `id` not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
@@ -323,6 +342,7 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-shipment-item-add.md)
 - [{#T}](./sale-shipment-item-update.md)
 - [{#T}](./sale-shipment-item-list.md)

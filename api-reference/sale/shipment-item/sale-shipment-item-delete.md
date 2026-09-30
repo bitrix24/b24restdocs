@@ -1,4 +1,4 @@
-# Delete Shipment Item from Collection sale.shipmentitem.delete
+# Delete a Shipment Table Part Item sale.shipmentitem.delete
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.shipmentitem.delete` removes an item from the shipment's table part.
+The method `sale.shipmentitem.delete` deletes a shipment table part item, removing the product from the shipment. The basket item remains in the order, and the product quantity returns to the system shipment. Items of the system shipment and of a shipment with `deducted` = `Y` cannot be deleted.
 
 ## Method Parameters
 
@@ -23,7 +23,9 @@ The method `sale.shipmentitem.delete` removes an item from the shipment's table 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_shipment_item.id`](../data-types.md) | Identifier of the shipment table item ||
+[`sale_order_shipment_item.id`](../data-types.md#sale_order_shipment_item) | Identifier of the shipment table item.
+
+Can be retrieved using the [sale.shipmentitem.list](./sale-shipment-item-list.md) method ||
 |#
 
 ## Code Examples
@@ -34,8 +36,8 @@ The method `sale.shipmentitem.delete` removes an item from the shipment's table 
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":5}' \
@@ -44,8 +46,8 @@ The method `sale.shipmentitem.delete` removes an item from the shipment's table 
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id":5,"auth":"**put_access_token_here**"}' \
@@ -162,9 +164,7 @@ The method `sale.shipmentitem.delete` removes an item from the shipment's table 
             ->getResponseData()
             ->getResult();
     
-        echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
+        echo 'Deleted: ' . var_export($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -180,6 +180,8 @@ The method `sale.shipmentitem.delete` removes an item from the shipment's table 
             "id": 5
         },
         function(result) {
+            if (result.error()) {
+                console.error(result.error());
             } else {
                 console.info(result.data());
             }
@@ -248,9 +250,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of deleting the shipment table item ||
+[`boolean`](../../data-types.md) | `true` — the shipment table item is deleted ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -259,8 +261,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":201240400001,
-    "error_description":"shipment item does not exist"
+    "error":"201240400001",
+    "error_description":"shipment item is not exists"
 }
 ```
 
@@ -270,16 +272,29 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `201240400001` | The item to be deleted from the shipment table was not found ||
-|| `200040300020` | Insufficient permissions to delete the shipment table item ||
-|| `100` | The `id` parameter is missing ||
+|| `201240400001` | `shipment item is not exists`
+
+The item to be deleted from the shipment table was not found. The error also occurs when deleting an item that has already been deleted ||
+|| `200040300020` | `Access Denied`
+
+Insufficient permissions to delete the shipment table item ||
+|| `100` | `Bitrix\Sale\ShipmentItem constructor must be is public`
+
+The `id` parameter is missing ||
+|| `0` | `System shipment not empty`
+
+The item belongs to the system shipment ||
+|| `SALE_SHIPMENT_ITEM_SHIPMENT_ALREADY_SHIPPED_CANNOT_EDIT` | `Shipment already done. No change is possible.`
+
+The shipment is already shipped (`deducted` = `Y`) ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-shipment-item-add.md)
 - [{#T}](./sale-shipment-item-update.md)
 - [{#T}](./sale-shipment-item-get.md)

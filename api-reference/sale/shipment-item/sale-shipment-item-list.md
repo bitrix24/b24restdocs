@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: store manager
 
-The method `sale.shipmentitem.list` retrieves a list of shipment item table elements.
+The method `sale.shipmentitem.list` returns items of shipment table parts: which basket items are included in a shipment and in what quantity.
+
+The selection also includes items of the system shipment, which holds the order's unallocated product. Its `orderDeliveryId` is not present in the response of the [sale.shipment.list](../shipment/sale-shipment-list.md) method. For details, see the [section overview](./index.md#quantity).
 
 ## Method Parameters
 
@@ -23,13 +25,17 @@ The method `sale.shipmentitem.list` retrieves a list of shipment item table elem
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the object [sale_order_shipment_item](../data-types.md#sale_order_shipment_item)).
+[`array`](../../data-types.md) | The list of fields to return. Available fields are listed in the [sale_order_shipment_item](../data-types.md#sale_order_shipment_item) object.
 
-If not provided or an empty array is passed, all available fields of the shipment item table elements will be selected. ||
+If not provided or an empty array is passed, all fields are returned ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected shipment item table elements in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the object [sale_order_shipment_item](../data-types.md#sale_order_shipment_item).
+
+To retrieve the contents of a single shipment, filter by `orderDeliveryId`.
+
+The method ignores unknown fields in `select`, `filter`, and `order` without an error. If a field name in `filter` is misspelled, the method returns all records.
 
 An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -38,25 +44,25 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `<` — less than
 - `@` — IN (an array is passed as the value)
 - `!@`— NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
+- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The substring is searched for in any position of the string
 - `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"
     - "%mol" — searching for values ending with "mol"
     - "%mol%" — searching for values where "mol" can be in any position
 
-- `%=` — LIKE (see description above)
+- `%=` — LIKE, substring search. The `%` symbol needs to be passed in the value, as for `=%`
 
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. Returns values that do not contain the substring in any position
 
 - `!=%` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
     - "mol%" — searching for values not starting with "mol"
     - "%mol" — searching for values not ending with "mol"
     - "%mol%" — searching for values where the substring "mol" is not present in any position
 
-- `!%=` — NOT LIKE (see description above)
+- `!%=` — NOT LIKE, substring search. The `%` symbol needs to be passed in the value, as for `!=%`
 
 - `=` — equal, exact match (used by default)
-- `!=` - not equal
+- `!=` — not equal
 - `!` — not equal
  ||
 || **order**
@@ -66,17 +72,19 @@ Possible values for `field` correspond to the fields of the object [sale_order_s
 
 Possible values for `order`:
 - `asc` — in ascending order
-- `desc` — in descending order ||
+- `desc` — in descending order
+
+By default, items are sorted by `id` in ascending order ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used to control pagination.
+[`integer`](../../data-types.md) | Offset for pagination. The page size is 50 records. Defaults to `0`, the first page.
 
-The page size of results is always static: 50 records.
-
-To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
+For the second page, pass `50`, for the third — `100`, and so on.
 
 The formula for calculating the value of the `start` parameter:
 
-`start = (N-1) * 50`, where `N` — the desired page number ||
+`start = (N-1) * 50`, where `N` — the desired page number.
+
+The value for the next page is returned in the `next` field of the response ||
 |#
 
 ## Code Examples
@@ -87,21 +95,21 @@ The formula for calculating the value of the `start` parameter:
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","orderDeliveryId","basketId","quantity","xmlId","dateInsert","reservedQuantity"],"filter":{"<id":10,"@orderDeliveryId":[2431,2430],"basketId":2716},"order":{"id":"desc"}}' \
+    -d '{"select":["id","orderDeliveryId","basketId","quantity","xmlId","dateInsert","reservedQuantity"],"filter":{"<id":10,"@orderDeliveryId":[2431,2430],"basketId":2716},"order":{"id":"desc"},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.shipmentitem.list
     ```
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","orderDeliveryId","basketId","quantity","xmlId","dateInsert","reservedQuantity"],"filter":{"<id":10,"@orderDeliveryId":[2431,2430],"basketId":2716},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","orderDeliveryId","basketId","quantity","xmlId","dateInsert","reservedQuantity"],"filter":{"<id":10,"@orderDeliveryId":[2431,2430],"basketId":2716},"order":{"id":"desc"},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.shipmentitem.list
     ```
 
@@ -258,7 +266,7 @@ The formula for calculating the value of the `start` parameter:
             order={
                 "id": "desc",
             },
-            start='1712819741.592596',
+            start=0,
         ).response
         result = bitrix_response.result
         print(result)
@@ -301,6 +309,7 @@ The formula for calculating the value of the `start` parameter:
                     'order' => [
                         'id' => 'desc',
                     ],
+                    'start' => 0,
                 ]
             );
     
@@ -337,7 +346,8 @@ The formula for calculating the value of the `start` parameter:
             },
             "order": {
                 "id": "desc",
-            }
+            },
+            "start": 0
         },
         function(result) {
             if (result.error()) {
@@ -373,7 +383,8 @@ The formula for calculating the value of the `start` parameter:
             ],
             'order' => [
                 "id" => "desc",
-            ]
+            ],
+            'start' => 0
         ]
     );
 
@@ -396,6 +407,7 @@ The formula for calculating the value of the `start` parameter:
     	"order": b24.Params{
     		"id": "desc",
     	},
+    	"start": 0,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("sale.shipmentitem.list: %w", err)
@@ -412,8 +424,8 @@ The formula for calculating the value of the `start` parameter:
     	DateInsert       string `json:"dateInsert"`
     	ID               b24.ID `json:"id"`
     	OrderDeliveryID  b24.ID `json:"orderDeliveryId"`
-    	Quantity         int    `json:"quantity"`
-    	ReservedQuantity int    `json:"reservedQuantity"`
+    	Quantity         float64 `json:"quantity"`
+    	ReservedQuantity float64 `json:"reservedQuantity"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -471,13 +483,22 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **shipmentItems**
-[`sale_order_shipment_item[]`](../data-types.md) | An array of objects with information about the selected shipment item table elements ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
+|| **next**
+[`integer`](../../data-types.md) | The `start` value for the next page. Returned if more records are found than fit on the current page ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **shipmentItems**
+[`sale_order_shipment_item[]`](../data-types.md#sale_order_shipment_item) | An array of shipment table part items. The set of fields in each item is defined by the `select` parameter. If nothing is found, the array is empty ||
 |#
 
 ## Error Handling
@@ -486,8 +507,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "error"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -497,14 +518,23 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the shipment item table element ||
+|| `200040300010` | `Access Denied`
+
+Insufficient permissions to read the shipment item table elements ||
+|| `100` | `Invalid order "<VALUE>"`
+
+The sort direction passed in `order` is other than `asc` and `desc` ||
+|| `100` | `Order must be a string`
+
+The sort direction in `order` is not passed as a string ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-shipment-item-add.md)
 - [{#T}](./sale-shipment-item-update.md)
 - [{#T}](./sale-shipment-item-get.md)
