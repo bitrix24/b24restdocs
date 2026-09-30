@@ -11,9 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: a user with the "Edit" access permission for the lead
 
-This method deletes the contact list from a lead.
+The method `crm.lead.contact.items.delete` clears the set of contacts linked to the specified lead.
+
+It unlinks all contacts at once, while the contacts themselves remain in CRM. The lead's `CONTACT_ID` field is cleared, and the repeat lead indicator `IS_RETURN_CUSTOMER` stays the same. To remove a single contact, use [crm.lead.contact.delete](./crm-lead-contact-delete.md).
+
+To restore the set, link the contacts again using the [crm.lead.contact.items.set](./crm-lead-contact-items-set.md) or [crm.lead.contact.add](./crm-lead-contact-add.md) method. Bitrix24 does not retain the previous `SORT` and `IS_PRIMARY` values: if you need them, retrieve the set using the [crm.lead.contact.items.get](./crm-lead-contact-items-get.md) method before clearing it. What these fields mean is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -23,7 +27,9 @@ This method deletes the contact list from a lead.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Lead identifier. The lead identifier can be obtained using the [get lead list method](../crm-lead-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the lead. Must be greater than `0`.
+
+The identifier can be retrieved using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 1` ||
 |#
 
 ## Code Examples
@@ -129,7 +135,7 @@ This method deletes the contact list from a lead.
 
     try:
         bitrix_response = client.crm.lead.contact.items.delete(
-            bitrix_id=1201,
+            bitrix_id=1,
         ).response
         result = bitrix_response.result
         print(result)
@@ -158,17 +164,13 @@ This method deletes the contact list from a lead.
                     'id' => 1,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . var_export($result[0], true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting lead contact items: ' . $e->getMessage();
@@ -240,8 +242,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+03:00",
-        "date_finish": "2024-05-03T17:19:01+03:00",
+        "date_start": "2024-05-07T17:19:01+03:00",
+        "date_finish": "2024-05-07T17:19:01+03:00",
         "operating": 0
     }
 }
@@ -253,9 +255,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Operation result ||
+[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success.
+
+The method also returns `true` when the lead had no linked contacts. For a non-existent `id`, the response is also `true` if the permission check passes: the method does not separately check whether the lead exists ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -264,8 +268,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "",
+    "error_description": "The parameter ownerEntityID is invalid or not defined."
 }
 ```
 
@@ -274,17 +278,17 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Element not found ||
-|| ` ` | Required fields not provided ||
-|| ` ` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The parameter ownerEntityID is invalid or not defined. | The `id` parameter is not passed or is less than or equal to `0` ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to edit the lead ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-lead-contact-add.md)
 - [{#T}](./crm-lead-contact-delete.md)
 - [{#T}](./crm-lead-contact-items-get.md)

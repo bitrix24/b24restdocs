@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "edit" access permission for contacts
+> Who can execute the method: a user with the "Edit" access permission for the contact and the "Read" access permission for the company being removed
 
 The method `crm.contact.company.delete` removes a company from the specified contact.
+
+Only the link between the contact and the company is removed — the company itself stays in CRM. To unlink all companies from the contact at once, use [crm.contact.company.items.delete](./crm-contact-company-items-delete.md). The structure of the binding object is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -23,20 +25,31 @@ The method `crm.contact.company.delete` removes a company from the specified con
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the contact.
+[`integer`](../../../data-types.md) | Identifier of the contact. Must be greater than `0`.
 
-The identifier can be obtained using the methods [crm.contact.list](../crm-contact-list.md) or [crm.contact.add](../crm-contact-add.md) ||
+The identifier can be retrieved using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3` ||
 || **fields***
 [`object`](../../../data-types.md) | An object containing information about which company needs to be removed from the bindings.
 
-Contains a single key `COMPANY_ID` ||
-|| **fields.COMPANY_ID***
-[`integer`](../../../data-types.md) | Identifier of the company that needs to be removed from the bindings ||
+Contains a single key `COMPANY_ID`. The field is described [below](#parameter-fields) ||
 |#
 
-{% note info "Remove Primary Binding" %}
+### Parameter fields {#parameter-fields}
 
-If the primary binding is removed, the first available binding will become the new primary binding.
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **COMPANY_ID***
+[`crm_entity`](../../data-types.md) | Identifier of the company to be removed from the contact's bindings. Must be greater than `0`.
+
+The identifiers of the linked companies can be retrieved using the method [crm.contact.company.items.get](./crm-contact-company-items-get.md) ||
+|#
+
+{% note info "Remove the Primary Company" %}
+
+If the contact's primary company is removed, the first of the remaining companies in ascending order of `SORT` becomes primary: Bitrix24 writes it to the contact field `COMPANY_ID`. If the contact has no other companies, the field is cleared.
 
 {% endnote %}
 
@@ -190,13 +203,9 @@ Example of removing the contact-company link, where:
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . var_export($result[0], true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting company from contact: ' . $e->getMessage();
@@ -291,11 +300,11 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../../data-types.md) | Root element of the response. Contains:
-- `true` — in case of success
-- `false` — in case of failure (most likely the company you are trying to remove is not linked to the contact)
+- `true` — the company is removed from the bindings
+- `false` — the company is not linked to the contact
 ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -314,20 +323,21 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter 'ownerEntityID' is invalid or not defined` | The provided `id` is less than 0 ||
-|| Empty value | `The parameter 'fields' must be array` | The `fields` parameter is not an object ||
-|| `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit contacts ||
-|| Empty value | `Not found` | Contact with the provided `id` not found ||
-|| Empty value | `The parameter 'fields' is not valid` | Can occur for several reasons:
-- if the required parameter `fields.COMPANY_ID` is not provided
-- if the provided parameter `fields.COMPANY_ID` is less than or equal to 0 ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The parameter 'ownerEntityID' is invalid or not defined. | The `id` parameter is not passed or is less than or equal to `0` ||
+|| `400` | Empty value | The parameter 'item' must be array. | The `fields` parameter is not passed or is passed as a string or a number. The error text refers to the parameter as `item` ||
+|| `400` | Empty value | The parameter 'fields' is not valid. | `fields` does not contain `COMPANY_ID`, or it is less than or equal to `0` ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to edit the contact ||
+|| `400` | Empty value | Not found. | The contact with the provided `id` was not found ||
+|| `400` | Empty value | [Company #17] You don't have permission to view this item. | The user does not have permission to read the company. The error text contains the company identifier ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-contact-company-add.md)
 - [{#T}](./crm-contact-company-fields.md)
 - [{#T}](./crm-contact-company-items-get.md)

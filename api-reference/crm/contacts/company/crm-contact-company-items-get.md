@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "read" access permission for contacts
+> Who can execute the method: a user with the "Read" access permission for the contact
 
 The method `crm.contact.company.items.get` returns a set of companies associated with the specified contact.
+
+The method returns all of the contact's bindings at once: it has no parameters for filtering, field selection, or pagination. To change the set, use [crm.contact.company.items.set](./crm-contact-company-items-set.md), and to add or remove a single company, use [crm.contact.company.add](./crm-contact-company-add.md) and [crm.contact.company.delete](./crm-contact-company-delete.md). The structure of the binding object is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -23,9 +25,9 @@ The method `crm.contact.company.items.get` returns a set of companies associated
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the contact.
+[`integer`](../../../data-types.md) | Identifier of the contact. Must be greater than `0`.
 
-The identifier can be obtained using the methods [crm.contact.list](../crm-contact-list.md) or [crm.contact.add](../crm-contact-add.md) ||
+The identifier can be retrieved using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3` ||
 |#
 
 ## Code Examples
@@ -174,13 +176,9 @@ Example of retrieving all associated companies for a contact with `id = 54`
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Data: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Data: ' . print_r($result, true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting contact company items: ' . $e->getMessage();
@@ -256,24 +254,40 @@ HTTP status: **200**
 {
     "result": [
         {
-        "COMPANY_ID": 7,
-        "SORT": 100,
-        "ROLE_ID": 0,
-        "IS_PRIMARY": "Y"
+            "COMPANY_ID": 7,
+            "SORT": 100,
+            "ROLE_ID": 0,
+            "IS_PRIMARY": "Y"
         },
         {
-        "COMPANY_ID": 8,
-        "SORT": 110,
-        "ROLE_ID": 0,
-        "IS_PRIMARY": "N"
+            "COMPANY_ID": 8,
+            "SORT": 110,
+            "ROLE_ID": 0,
+            "IS_PRIMARY": "N"
         },
         {
-        "COMPANY_ID": 9,
-        "SORT": 120,
-        "ROLE_ID": 0,
-        "IS_PRIMARY": "N"
+            "COMPANY_ID": 9,
+            "SORT": 120,
+            "ROLE_ID": 0,
+            "IS_PRIMARY": "N"
         }
     ],
+    "time": {
+        "start": 1724078791.470108,
+        "finish": 1724078791.969407,
+        "duration": 0.4992990493774414,
+        "processing": 0.19150400161743164,
+        "date_start": "2024-08-19T16:46:31+02:00",
+        "date_finish": "2024-08-19T16:46:31+02:00"
+    }
+}
+```
+
+Response when the contact has no linked companies:
+
+```json
+{
+    "result": [],
     "time": {
         "start": 1724078791.470108,
         "finish": 1724078791.969407,
@@ -291,31 +305,35 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`contact_company_binding[]`](#contact_company_binding) | Root element of the response. Contains an array with information about the companies associated with the contact ||
+[`contact_company_binding[]`](#contact_company_binding) | Root element of the response. Contains an array with information about the companies associated with the contact, sorted in ascending order of `SORT`.
+
+The method does not separately check whether the contact exists: if the permission check passes, it returns an empty array for a non-existent `id` rather than an error ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Parameter Contact_Company_Binding {#contact_company_binding}
+#### contact_company_binding Object {#contact_company_binding}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **COMPANY_ID**
-[`integer`](../../../data-types.md) | Company identifier ||
+[`integer`](../../../data-types.md) | Identifier of the linked company.
+
+Company data can be retrieved with the method [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 4` ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting index ||
 || **ROLE_ID**
-[`integer`](../../../data-types.md) | Identifier of the role (reserved) ||
+[`integer`](../../../data-types.md) | Identifier of the role. The field is reserved: the link methods do not accept it on write, and new bindings get `0` ||
 || **IS_PRIMARY**
-[`boolean`](../../../data-types.md) | Indicates whether the binding is primary. Possible values:
+[`char`](../../../data-types.md#standart-types) | Whether this is the contact's primary company. Possible values:
 - `Y` — yes
 - `N` — no ||
 |#
 
 ## Error Handling
 
-HTTP status: **200**
+HTTP status: **400**
 
 ```json
 {
@@ -329,15 +347,17 @@ HTTP status: **200**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter 'ownerEntityID' is invalid or not defined` | The `id` is less than 0 or not provided at all ||
-|| `ACCESS_DENIED` | `Access denied!` | The user does not have permission to read contacts ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The parameter ownerEntityID is invalid or not defined. | The `id` parameter is not passed or is less than or equal to `0` ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to read the contact ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-contact-company-add.md)
 - [{#T}](./crm-contact-company-delete.md)
 - [{#T}](./crm-contact-company-fields.md)

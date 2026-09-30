@@ -11,9 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
-This method retrieves the description of fields for the lead-contact relationship, used by methods in the `crm.lead.contact.*` family.
+The method `crm.lead.contact.fields` returns the description of fields for the lead-contact link.
+
+The set of binding fields is fixed, and the binding has no custom fields. The `ROLE_ID` field, which is returned in the response of [crm.lead.contact.items.get](./crm-lead-contact-items-get.md), is not included in the method output — it cannot be written. The structure of the binding object is described in the [section overview](./index.md).
+
+## Method Parameters
 
 No parameters.
 
@@ -153,18 +157,13 @@ No parameters.
             ->call(
                 'crm.lead.contact.fields'
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching lead contact fields: ' . $e->getMessage();
@@ -176,6 +175,7 @@ No parameters.
     ```js
     BX24.callMethod(
         "crm.lead.contact.fields",
+        {},
         result => {
             if (result.error())
                 console.error(result.error());
@@ -254,8 +254,8 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+02:00",
-        "date_finish": "2024-05-03T17:19:01+02:00",
+        "date_start": "2024-05-07T17:19:01+02:00",
+        "date_finish": "2024-05-07T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -267,26 +267,65 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response containing fields:
+[`object`](../../../data-types.md) | An object in the format:
+```
+{
+    field_1: value_1,
+    field_2: value_2,
+    ...,
+    field_n: value_n,
+}
+```
 
-- **SORT** — sorting index
-- **IS_PRIMARY** — primary contact flag
-- **CONTACT_ID** — contact identifier  
-||
+where:
+- `field_n` — a binding field
+- `value_n` — the field description in the [crm_rest_field_description](../../data-types.md#crm_rest_field_description) format: type, title, and the `isRequired`, `isReadOnly`, `isImmutable`, `isMultiple`, `isDynamic` flags
+
+The binding fields are described [below](#binding-fields) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Binding Fields {#binding-fields}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **CONTACT_ID**
+[`integer`](../../../data-types.md) | Identifier of the linked contact. The only required binding field — its field description includes `isRequired: true` ||
+|| **SORT**
+[`integer`](../../../data-types.md) | Sort index ||
+|| **IS_PRIMARY**
+[`char`](../../../data-types.md#standart-types) | Whether this is the lead's primary contact. Possible values:
+- `Y` — yes
+- `N` — no ||
 |#
 
 ## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|#
+
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-lead-contact-add.md)
 - [{#T}](./crm-lead-contact-delete.md)
 - [{#T}](./crm-lead-contact-items-get.md)

@@ -11,9 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
 The method `crm.contact.company.fields` returns the description of fields for the contact-company link.
+
+The set of binding fields is fixed, and the binding has no custom fields. The `ROLE_ID` field, which is returned in the response of [crm.contact.company.items.get](./crm-contact-company-items-get.md), is not included in the method output — it cannot be written. The structure of the binding object is described in the [section overview](./index.md).
+
+## Method Parameters
 
 No parameters.
 
@@ -160,13 +164,9 @@ Retrieves a list of fields for the contact-company link
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . print_r($result, true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching contact company fields: ' . $e->getMessage();
@@ -285,19 +285,53 @@ HTTP status: **200**
 
 where:
 - `field_n` — field of the element
-- `value_n` — information about the field in the format [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
+- `value_n` — information about the field in the format [crm_rest_field_description](../../data-types.md#crm_rest_field_description)
+
+The set of binding fields is described [below](#binding-fields) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Binding Fields {#binding-fields}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **COMPANY_ID**
+[`integer`](../../../data-types.md) | Identifier of the linked company. The only required field of the binding — its field description includes `isRequired: true` ||
+|| **SORT**
+[`integer`](../../../data-types.md) | Sort index ||
+|| **IS_PRIMARY**
+[`char`](../../../data-types.md#standart-types) | Whether this is the contact's primary company. Possible values:
+- `Y` — yes
+- `N` — no ||
 |#
 
 ## Error Handling
 
-The method does not return errors.
+HTTP status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-contact-company-add.md)
 - [{#T}](./crm-contact-company-delete.md)
 - [{#T}](./crm-contact-company-items-get.md)

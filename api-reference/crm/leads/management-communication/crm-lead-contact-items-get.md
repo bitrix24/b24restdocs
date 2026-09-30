@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: a user with the "Read" access permission for the lead
 
-This method retrieves a list of contacts associated with a lead.
+The method `crm.lead.contact.items.get` returns the set of contacts linked to the specified lead.
+
+The method returns all bindings of the lead at once: it has no parameters for filtering, field selection, or pagination. To change the set, use [crm.lead.contact.items.set](./crm-lead-contact-items-set.md), and to add or remove a single contact, use [crm.lead.contact.add](./crm-lead-contact-add.md) and [crm.lead.contact.delete](./crm-lead-contact-delete.md). The structure of the binding object is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -23,7 +25,9 @@ This method retrieves a list of contacts associated with a lead.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | The identifier of the lead. The lead identifier can be obtained using the [get lead list method](../crm-lead-list.md) ||
+[`integer`](../../../data-types.md) | Identifier of the lead. Must be greater than `0`.
+
+The identifier can be retrieved using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 1` ||
 |#
 
 ## Code Examples
@@ -137,7 +141,7 @@ This method retrieves a list of contacts associated with a lead.
 
     try:
         bitrix_response = client.crm.lead.contact.items.get(
-            bitrix_id=1201,
+            bitrix_id=1,
         ).response
         result = bitrix_response.result
         print(result)
@@ -170,14 +174,9 @@ This method retrieves a list of contacts associated with a lead.
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Data: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Data: ' . print_r($result, true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting lead contact items: ' . $e->getMessage();
@@ -260,8 +259,24 @@ HTTP Status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+02:00",
-        "date_finish": "2024-05-03T17:19:01+02:00",
+        "date_start": "2024-05-07T17:19:01+02:00",
+        "date_finish": "2024-05-07T17:19:01+02:00",
+        "operating": 0
+    }
+}
+```
+
+Response when the lead has no linked contacts:
+
+```json
+{
+    "result": [],
+    "time": {
+        "start": 1715091541.642592,
+        "finish": 1715091541.730599,
+        "duration": 0.08800697326660156,
+        "date_start": "2024-05-07T17:19:01+02:00",
+        "date_finish": "2024-05-07T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -273,23 +288,30 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | The result as an array of objects ||
+[`lead_contact_binding[]`](#lead_contact_binding) | Root element of the response. Contains an array with information about the contacts linked to the lead, sorted by `SORT` in ascending order.
+
+The method does not separately check whether the lead exists: if the permission check passes, it returns an empty array rather than an error for a non-existent `id` ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-The result is an array of objects, each containing the following fields:
+#### lead_contact_binding Object {#lead_contact_binding}
 
 #|
-|| **Field** | **Description** ||
+|| **Name**
+`type` | **Description** ||
 || **CONTACT_ID**
-[`integer`](../../../data-types.md) | The identifier of the contact ||
+[`integer`](../../../data-types.md) | Identifier of the linked contact.
+
+The contact data can be retrieved using the method [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 3` ||
 || **SORT**
 [`integer`](../../../data-types.md) | The sorting index ||
 || **ROLE_ID**
-[`integer`](../../../data-types.md) | The role identifier (reserved) ||
+[`integer`](../../../data-types.md) | Role identifier. The field is reserved: the link methods do not accept it on write, and new bindings receive `0` ||
 || **IS_PRIMARY**
-[`string`](../../../data-types.md) | The primary contact flag ||
+[`char`](../../../data-types.md#standart-types) | Whether this is the lead's primary contact. Possible values:
+- `Y` — yes
+- `N` — no ||
 |#
 
 ## Error Handling
@@ -298,8 +320,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "",
+    "error_description": "The parameter ownerEntityID is invalid or not defined."
 }
 ```
 
@@ -308,17 +330,17 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Element not found ||
-|| ` ` | Required fields not provided ||
-|| ` ` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The parameter ownerEntityID is invalid or not defined. | The `id` parameter is not passed or is less than or equal to `0` ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to read the lead ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-lead-contact-add.md)
 - [{#T}](./crm-lead-contact-delete.md)
 - [{#T}](./crm-lead-contact-items-set.md)

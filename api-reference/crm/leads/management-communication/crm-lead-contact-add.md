@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: a user with the "Edit" access permission for the lead and the "Read" access permission for the contact being added
 
-This method adds a contact binding to the specified lead.
+The method `crm.lead.contact.add` adds a contact to the specified lead.
+
+The lead's other contacts remain linked. To define the entire set of contacts at once, use [crm.lead.contact.items.set](./crm-lead-contact-items-set.md). The structure of the binding object and how a contact relates to the repeat lead indicator are described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -23,22 +25,16 @@ This method adds a contact binding to the specified lead.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | The identifier of the lead to which the contact should be added. The lead identifier can be obtained using the [get lead list method](../crm-lead-list.md)  ||
-|| **fields***
-[`object`](../../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a contact to the lead in the form of a structure:
+[`integer`](../../../data-types.md) | Identifier of the lead. Must be greater than `0`.
 
-```js
-fields:
-    {
-        "CONTACT_ID": "value",
-        "SORT": "value",
-        "IS_PRIMARY": "value"
-    }
-```
- ||
+The identifier can be retrieved using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 1` ||
+|| **fields***
+[`object`](../../../data-types.md) | An object with information about the contact to link to the lead.
+
+The list of available fields is described [below](#parameter-fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#parameter-fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -46,16 +42,23 @@ fields:
 || **Name**
 `type` | **Description** ||
 || **CONTACT_ID***
-[`integer`](../../../data-types.md) | The identifier of the contact ||
-|| **SORT**
-[`integer`](../../../data-types.md) | Sort index. Defaults to `10`  ||
-|| **IS_PRIMARY**
-[`string`](../../../data-types.md) | Primary contact flag
+[`crm_entity`](../../data-types.md) | Identifier of the contact to link to the lead.
 
+The identifier can be retrieved using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3`.
+
+The method does not separately check whether the contact exists, so it can create a binding to a non-existent contact ||
+|| **SORT**
+[`integer`](../../../data-types.md) | Sort index.
+
+If `SORT` is not passed, the method substitutes `i + 10`, where `i` is the highest positive sort index among the lead's contacts. If there are none, `i` equals `0` ||
+|| **IS_PRIMARY**
+[`char`](../../../data-types.md#standart-types) | Whether to make the contact primary for the lead. Possible values:
 - `Y` — yes
 - `N` — no
 
-Defaults to `N` ||
+If the lead does not have a primary contact yet, the added contact becomes primary regardless of the passed value.
+
+The value `Y` makes the added contact primary instead of the previous one: the flag of the previous contact is reset to `N`, and the new contact is written to the lead's `CONTACT_ID` field ||
 |#
 
 ## Code Examples
@@ -171,8 +174,8 @@ Defaults to `N` ||
 
     try:
         bitrix_response = client.crm.lead.contact.add(
-            bitrix_id=1201,
-            fields={"CONTACT_ID": 3401, "SORT": 10, "IS_PRIMARY": "Y"},
+            bitrix_id=1,
+            fields={"CONTACT_ID": 1010, "SORT": 10, "IS_PRIMARY": "Y"},
         ).response
         result = bitrix_response.result
         print(result)
@@ -206,17 +209,13 @@ Defaults to `N` ||
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . var_export($result[0], true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding lead contact: ' . $e->getMessage();
@@ -305,8 +304,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+02:00",
-        "date_finish": "2024-05-03T17:19:01+02:00",
+        "date_start": "2024-05-07T17:19:01+02:00",
+        "date_finish": "2024-05-07T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -318,9 +317,12 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | The result of the operation ||
+[`boolean`](../../../data-types.md) | Root element of the response. Contains:
+- `true` — the contact is added
+- `false` — the contact is already linked to the lead. In this case, the method changes nothing, including `SORT` and `IS_PRIMARY`
+||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -329,7 +331,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
+    "error": "",
     "error_description": "Not found."
 }
 ```
@@ -339,17 +341,21 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Element not found ||
-|| ` ` | Required fields not provided ||
-|| ` ` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The parameter 'ownerEntityID' is invalid or not defined. | The `id` parameter is not passed or is less than or equal to `0` ||
+|| `400` | Empty value | The parameter 'fields' must be array. | The `fields` parameter is not passed or is passed as a string or a number ||
+|| `400` | Empty value | The parameter 'fields' is not valid. | `fields` does not contain `CONTACT_ID`, or its value is less than or equal to `0` ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to edit the lead ||
+|| `400` | Empty value | Not found. | The lead with the passed `id` was not found ||
+|| `400` | Empty value | [Contact #30] You don't have permission to view this item. | The user does not have permission to read the contact. The error text contains the contact identifier ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-lead-contact-delete.md)
 - [{#T}](./crm-lead-contact-items-get.md)
 - [{#T}](./crm-lead-contact-items-set.md)

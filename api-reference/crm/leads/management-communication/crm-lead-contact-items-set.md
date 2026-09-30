@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: `any user`
+> Who can execute the method: a user with the "Edit" access permission for the lead and the "Read" access permission for the contacts
 
-This method attaches a list of contacts to the specified lead.
+The method `crm.lead.contact.items.set` establishes the set of contacts linked to the specified lead.
+
+It replaces the entire set: the contacts that are not in `items` are unlinked from the lead. To add or remove a single contact without affecting the others, use [crm.lead.contact.add](./crm-lead-contact-add.md) and [crm.lead.contact.delete](./crm-lead-contact-delete.md). The structure of the binding object is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -23,15 +25,50 @@ This method attaches a list of contacts to the specified lead.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`integer`](../../../data-types.md) | Identifier of the lead. The lead identifier can be obtained using the [get lead list method](../crm-lead-list.md) ||
-|| **items*** 
-[`object`](../../../data-types.md) | A set of contacts represented as an array of objects with the following fields:
+[`integer`](../../../data-types.md) | Identifier of the lead. Must be greater than `0`.
 
-- **CONTACT_ID^*^** — identifier of the contact
-- **SORT** — sorting index
-- **IS_PRIMARY** — primary contact flag 
-||
+The identifier can be retrieved using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 1` ||
+|| **items*** 
+[`object[]`](../../../data-types.md) | A set of objects that describe the lead's contacts. The structure of the binding object is described [below](#lead_contact_binding).
+
+An empty array unlinks all contacts from the lead.
+
+Elements without `CONTACT_ID`, or with a value less than or equal to `0`, are skipped by the method without an error ||
 |#
+
+### Parameter items {#lead_contact_binding}
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **CONTACT_ID***
+[`crm_entity`](../../data-types.md) | Identifier of the contact to link to the lead.
+
+The identifier can be retrieved using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3`.
+
+The method does not separately check whether the contact exists, so it can create a binding to a non-existent contact ||
+|| **IS_PRIMARY**
+[`char`](../../../data-types.md#standart-types) | Whether to make the contact primary for the lead. Possible values:
+- `Y` — yes
+- `N` — no
+
+The first contact in `items` with `IS_PRIMARY = Y` becomes primary, and if there is none, the first contact in `items`. For the other contacts, the flag is reset to `N`.
+
+The primary contact is written to the lead's `CONTACT_ID` field
+||
+|| **SORT**
+[`integer`](../../../data-types.md) | Sort index.
+
+If `SORT` is not passed or is less than or equal to `0`, the method calculates it from the position of the contact in `items` as `(n + 1) * 10`, where `n` is the zero-based position of the contact in `items`. The first contact gets `10`, the second one `20`, and so on ||
+|#
+
+{% note warning "" %}
+
+The rule also applies to contacts that are already linked: if you do not pass `SORT`, the method overwrites their previous sort index. To retain the order, retrieve the set using the [crm.lead.contact.items.get](./crm-lead-contact-items-get.md) method and pass `SORT` for each contact.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -160,10 +197,10 @@ This method attaches a list of contacts to the specified lead.
 
     try:
         bitrix_response = client.crm.lead.contact.items.set(
-            bitrix_id=1201,
+            bitrix_id=1,
             items=[
-            {"CONTACT_ID": 3401, "SORT": 10, "IS_PRIMARY": "Y"},
-            {"CONTACT_ID": 3402, "SORT": 20, "IS_PRIMARY": "N"},
+            {"CONTACT_ID": 1010, "SORT": 10, "IS_PRIMARY": "Y"},
+            {"CONTACT_ID": 1020, "SORT": 20, "IS_PRIMARY": "N"},
             ],
         ).response
         result = bitrix_response.result
@@ -205,17 +242,13 @@ This method attaches a list of contacts to the specified lead.
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . var_export($result[0], true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error setting lead contact items: ' . $e->getMessage();
@@ -323,8 +356,8 @@ HTTP status: **200**
         "start": 1715091541.642592,
         "finish": 1715091541.730599,
         "duration": 0.08800697326660156,
-        "date_start": "2024-05-03T17:19:01+02:00",
-        "date_finish": "2024-05-03T17:19:01+02:00",
+        "date_start": "2024-05-07T17:19:01+02:00",
+        "date_finish": "2024-05-07T17:19:01+02:00",
         "operating": 0
     }
 }
@@ -336,9 +369,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of the operation ||
+[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success.
+
+The method also returns `true` when the passed set matches the current one ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -347,8 +382,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "",
+    "error_description": "The parameter items must be array."
 }
 ```
 
@@ -357,17 +392,20 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions ||
-|| `NOT_FOUND` | Element not found ||
-|| ` ` | Required fields not provided ||
-|| ` ` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The parameter ownerEntityID is invalid or not defined. | The `id` parameter is not passed or is less than or equal to `0` ||
+|| `400` | Empty value | The parameter items must be array. | The `items` parameter is not passed or is not an array ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to edit the lead ||
+|| `400` | Empty value | Not found. | The lead with the passed `id` was not found ||
+|| `400` | Empty value | [Contact #1] You don't have permission to view this item. | The user does not have permission to read the contacts. The method checks this permission only if the call changes something in the bindings ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-lead-contact-add.md)
 - [{#T}](./crm-lead-contact-delete.md)
 - [{#T}](./crm-lead-contact-items-get.md)

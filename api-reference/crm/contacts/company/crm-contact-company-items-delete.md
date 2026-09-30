@@ -11,9 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "edit" access permission for contacts
+> Who can execute the method: a user with the "Edit" access permission for the contact
 
 The method `crm.contact.company.items.delete` clears the set of companies associated with the specified contact.
+
+The method unlinks all companies at once, and the companies themselves stay in CRM. The contact field `COMPANY_ID` is cleared. To remove a single company, use [crm.contact.company.delete](./crm-contact-company-delete.md).
+
+To restore the set, link the companies again with the method [crm.contact.company.items.set](./crm-contact-company-items-set.md) or [crm.contact.company.add](./crm-contact-company-add.md). Bitrix24 does not retain the previous values of `SORT` and `IS_PRIMARY`: if you need them, retrieve the set with the method [crm.contact.company.items.get](./crm-contact-company-items-get.md) before clearing it. The meaning of these fields is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -23,9 +27,9 @@ The method `crm.contact.company.items.delete` clears the set of companies associ
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the contact.
+[`integer`](../../../data-types.md) | Identifier of the contact. Must be greater than `0`.
 
-The identifier can be obtained using the methods [crm.contact.list](../crm-contact-list.md) or [crm.contact.add](../crm-contact-add.md) ||
+The identifier can be retrieved using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3` ||
 |#
 
 ## Code Examples
@@ -166,13 +170,9 @@ Example of deleting all linked companies for a contact with `id = 54`
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        echo 'Success: ' . var_export($result[0], true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting contact company item: ' . $e->getMessage();
@@ -257,9 +257,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success.
+
+The method also returns `true` when the contact had no linked companies. For a non-existent `id`, the response is also `true` if the permission check passes: the method does not separately check whether the contact exists ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -278,15 +280,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter 'ownerEntityID' is invalid or not defined` | The `id` is less than 0 or not provided at all ||
-|| `ACCESS_DENIED` | `Access denied!` | The user does not have permission to edit contacts ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The parameter ownerEntityID is invalid or not defined. | The `id` parameter is not passed or is less than or equal to `0` ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to edit the contact ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-contact-company-add.md)
 - [{#T}](./crm-contact-company-delete.md)
 - [{#T}](./crm-contact-company-fields.md)
