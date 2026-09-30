@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
-The method `crm.enum.addresstype` returns a list of address types. Use the `ID` of the address type as the value for the `TYPE_ID` parameter in the methods [crm.address.*](../../requisites/addresses/index.md).
+The method `crm.enum.addresstype` returns address types: legal address, physical address, shipping address, and others. Pass the type number in the `TYPE_ID` parameter of the [crm.address.*](../../requisites/addresses/index.md) methods. For example, to find the legal addresses of clients, call the [crm.address.list](../../requisites/addresses/crm-address-list.md) method with the filter `TYPE_ID: 6`.
 
 ## Method Parameters
 
@@ -156,13 +156,9 @@ No parameters.
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
+        foreach ($result as $addressType) {
+            echo $addressType['ID'] . ' — ' . $addressType['NAME'] . PHP_EOL;
         }
-
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error calling crm.enum.addresstype: ' . $e->getMessage();
@@ -296,21 +292,38 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the address type ||
+[`integer`](../../../data-types.md) | Identifier of the address type, for example, `6` — legal address ||
 || **NAME**
 [`string`](../../../data-types.md) | Name of the address type ||
 || **SYMBOL_CODE**
-[`string`](../../../data-types.md) | Symbolic code ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Symbolic code. Always `null` for address types ||
 || **SYMBOL_CODE_SHORT**
-[`string`](../../../data-types.md) | Short symbolic code ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Short symbolic code. Always `null` for address types ||
 |#
 
 ## Error Handling
 
+HTTP status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](../../requisites/addresses/crm-address-list.md)

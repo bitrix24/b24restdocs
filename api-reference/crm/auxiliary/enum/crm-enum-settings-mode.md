@@ -11,9 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
-The method `crm.enum.settings.mode` returns a list of CRM operation modes. Use this method to decode the `ID` value of the type returned by the method [crm.settings.mode.get](../../crm-settings-mode-get.md).
+The method `crm.enum.settings.mode` returns a list of CRM operation modes: their numbers and names. Use this list to show the user the name of the current mode instead of its number. For example, if the method [crm.settings.mode.get](../../crm-settings-mode-get.md) returned `1`, this number corresponds to "Classic CRM" in the list.
+
+There are two modes:
+
+#|
+|| **ID** | **Mode** | **What It Means** ||
+|| `1` | Classic CRM | Leads are enabled. A lead can be converted into other CRM objects ||
+|| `2` | Simple CRM | Leads are disabled. When a lead is created, Bitrix24 immediately converts it — into a deal and a contact by default ||
+|#
 
 ## Method Parameters
 
@@ -153,13 +161,9 @@ No parameters.
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
+        foreach ($result as $mode) {
+            echo $mode['ID'] . ' — ' . $mode['NAME'] . PHP_EOL;
         }
-
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error calling crm.enum.settings.mode: ' . $e->getMessage();
@@ -169,7 +173,7 @@ No parameters.
 - BX24.js
 
     ```js
-    BX24.callMethod("crm.enum.settings.mode", result => {
+    BX24.callMethod("crm.enum.settings.mode", {}, result => {
         if (result.error())
             console.error(result.error());
         else
@@ -265,18 +269,34 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the operation mode ||
+[`integer`](../../../data-types.md) | Identifier of the operation mode: `1` or `2` ||
 || **NAME**
 [`string`](../../../data-types.md) | Name of the operation mode ||
 || **SYMBOL_CODE**
-[`string`](../../../data-types.md) | Symbolic code ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Symbolic code. Always `null` for operation modes ||
 || **SYMBOL_CODE_SHORT**
-[`string`](../../../data-types.md) | Short symbolic code ||
+[`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Short symbolic code. Always `null` for operation modes ||
 |#
 
 ## Error Handling
 
+HTTP status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 

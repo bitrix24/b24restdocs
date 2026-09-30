@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
-The method `crm.multifield.fields` returns the description of multiple fields used to store phone numbers, email addresses, and other contact information in leads, contacts, and companies.
+The method `crm.multifield.fields` describes the fields of the [crm_multifield](../../data-types.md#crm_multifield) object. This object stores a single phone number, e-mail, website, or messenger value and consists of the `ID`, `TYPE_ID`, `VALUE`, and `VALUE_TYPE` fields. For each field, the method returns the data type, the name, and the read-only flag. For example, the response shows that you pass `VALUE` and `VALUE_TYPE`, while Bitrix24 fills in `ID` automatically. The method does not return the allowed `VALUE_TYPE` values — they are listed in the [VALUE_TYPE Values](#value-type) table.
 
 ## Method Parameters
 
@@ -160,13 +160,9 @@ No parameters.
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
+        foreach ($result as $code => $field) {
+            echo $code . ' — ' . $field['title'] . ' (' . $field['type'] . ')' . PHP_EOL;
         }
-
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching multifield fields: ' . $e->getMessage();
@@ -297,11 +293,11 @@ HTTP status: **200**
 || **ID**
 [`object`](../../../data-types.md) | Identifier of the multiple field value ||
 || **TYPE_ID**
-[`object`](../../../data-types.md) | Type of the multiple field: `PHONE`, `EMAIL`, `WEB`, `IM` ||
+[`object`](../../../data-types.md) | Type of the multiple field: `PHONE`, `EMAIL`, `WEB`, `IM`, `LINK` ||
 || **VALUE**
 [`object`](../../../data-types.md) | Value of the multiple field ||
 || **VALUE_TYPE**
-[`object`](../../../data-types.md) | Type of the multiple field value ||
+[`object`](../../../data-types.md) | Type of the multiple field value, for example `MOBILE` or `WORK`. Allowed values depend on `TYPE_ID` and are listed in the [VALUE_TYPE Values](#value-type) table ||
 |#
 
 #### Description of Field Characteristics
@@ -325,9 +321,38 @@ HTTP status: **200**
 [`string`](../../../data-types.md) | Name of the field ||
 |#
 
+#### VALUE_TYPE Values {#value-type}
+
+#|
+|| **TYPE_ID** | **VALUE_TYPE Values** ||
+|| `PHONE` — phone | `WORK` — work, `MOBILE` — mobile, `FAX` — fax, `HOME` — home, `PAGER` — pager, `MAILING` — SMS marketing, `OTHER` — other ||
+|| `EMAIL` — e-mail | `WORK` — work, `HOME` — home, `MAILING` — for newsletters, `OTHER` — other ||
+|| `WEB` — website | `WORK` — corporate, `HOME` — personal, `FACEBOOK`, `VK`, `LIVEJOURNAL`, `TWITTER`, `OTHER` — other ||
+|| `IM` — messenger | `FACEBOOK`, `TELEGRAM`, `VK`, `VIBER`, `INSTAGRAM`, `BITRIX24` — Bitrix24 Network, `OPENLINE` — Live Chat, `IMOL` — Open Channel, `OTHER` — other ||
+|| `LINK` — link | `USER` — user ||
+|#
+
+The `SKYPE`, `ICQ`, `MSN`, and `JABBER` messenger values are deprecated. Bitrix24 offers them only if these messengers were previously used in your CRM.
+
 ## Error Handling
 
+HTTP status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 

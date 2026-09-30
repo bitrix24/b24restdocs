@@ -11,15 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [crm.activity.todo.*](../../../timeline/activities/todo/index.md).
+The development of this method has been halted. The enumeration values are listed in the [CRM data types](../../../data-types.md#activity-enums) reference, and working with activities is covered in the [Activities in CRM](../../../timeline/activities/index.md) section.
 
 {% endnote %}
 
-The method `crm.enum.activitytype` returns a list of types for the `TYPE_ID` field of [activities](../../../timeline/activities/index.md).
+The method `crm.enum.activitytype` returns the types of [activities](../../../timeline/activities/index.md): meeting, call, task, email, and others. The type number is stored in the `TYPE_ID` field of an activity — for example, `2` means a call.
 
 ## Method Parameters
 
@@ -164,13 +164,9 @@ No parameters.
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
+        foreach ($result as $activityType) {
+            echo $activityType['ID'] . ' — ' . $activityType['NAME'] . PHP_EOL;
         }
-
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error calling crm.enum.activitytype: ' . $e->getMessage();
@@ -310,21 +306,38 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../../data-types.md) | Identifier of the activity type ||
+[`integer`](../../../../data-types.md) | Identifier of the activity type, for example `2` — call. `0` with an empty name — the type is not defined ||
 || **NAME**
 [`string`](../../../../data-types.md) | Name of the activity type ||
 || **SYMBOL_CODE**
-[`string`](../../../../data-types.md) | Symbolic code ||
+[`string`](../../../../data-types.md) \| [`null`](../../../../data-types.md) | Symbolic code. Always `null` for activity types ||
 || **SYMBOL_CODE_SHORT**
-[`string`](../../../../data-types.md) | Short symbolic code ||
+[`string`](../../../../data-types.md) \| [`null`](../../../../data-types.md) | Short symbolic code. Always `null` for activity types ||
 |#
 
 ## Error Handling
 
+HTTP Status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
 {% include notitle [error handling](../../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](../index.md)
+- [{#T}](../../../timeline/activities/index.md)

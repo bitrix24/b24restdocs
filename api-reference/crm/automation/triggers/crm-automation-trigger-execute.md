@@ -11,11 +11,24 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator with access to CRM in the application context
+> Who can execute the method: administrator
 
-This method initiates the execution of a trigger.
+The method `crm.automation.trigger.execute` notifies CRM automation that an application trigger has fired for an object. If this trigger is linked to a stage or status in the automation settings, it can move the object to that stage or status. For example, a telephony application executes the `call_done` trigger after a call, and the deal moves to the "In Progress" stage.
 
-The method can only be called in the application context.
+The method works only in the context of an [application](../../../../settings/app-installation/index.md). The trigger must first be registered using the [crm.automation.trigger.add](./crm-automation-trigger-add.md) method and linked to a stage in the automation settings — the workflow is described in the [triggers overview](./index.md).
+
+{% note warning "" %}
+
+A `true` response does not confirm the stage change. The method returns `true` even if the stage has not changed:
+
+- the trigger is not linked to a stage, or its conditions are not met
+- the object is already at the stage the trigger is linked to
+- the trigger's stage comes earlier in the pipeline than the object's current stage, and moving to a previous stage is not allowed in the trigger settings
+- there is no object with this `OWNER_ID`
+
+To check the result, retrieve the object's stage using the [crm.item.get](../../universal/crm-item-get.md) method.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -25,14 +38,13 @@ The method can only be called in the application context.
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`string`](../../../data-types.md) | Internal unique (within the application) identifier of the trigger. Must match the pattern `[a-z0-9\.\-_]` ||
+[`string`](../../../data-types.md) | Trigger code that the application passed during registration, for example `call_done` ||
 || **OWNER_TYPE_ID***
-[`integer`](../../../data-types.md) | Type of the CRM object according to the [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) reference (For example, `1` — lead)
+[`integer`](../../../data-types.md) | Type of the CRM object according to the [crm.enum.ownertype](../../auxiliary/enum/crm-enum-owner-type.md) reference, for example `2` — deal.
 
-Triggers exist in leads, deals, estimates, invoices, and SPAs
-||
+Triggers are available for leads, deals, estimates, invoices, and SPAs. If you pass a contact or a company, the trigger fires for the objects linked to them, such as deals ||
 || **OWNER_ID***
-[`integer`](../../../data-types.md) | Identifier of the entity ||
+[`integer`](../../../data-types.md) | Identifier of the CRM object, such as a deal. It is returned by the [crm.item.list](../../universal/crm-item-list.md) method ||
 |#
 
 ## Code Examples
@@ -41,23 +53,13 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
 
 {% list tabs %}
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"CODE":"c5u4m","OWNER_TYPE_ID":2,"OWNER_ID":6}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.automation.trigger.execute
-    ```
-
 - cURL (OAuth)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CODE":"c5u4m","OWNER_TYPE_ID":2,"OWNER_ID":6,"auth":"**put_access_token_here**"}' \
+    -d '{"CODE":"call_done","OWNER_TYPE_ID":2,"OWNER_ID":6,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.automation.trigger.execute
     ```
 
@@ -75,7 +77,7 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'crm.automation.trigger.execute',
         params: {
-          CODE: 'c5u4m',
+          CODE: 'call_done',
           OWNER_TYPE_ID: 2,
           OWNER_ID: 6,
         },
@@ -87,7 +89,7 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Trigger executed successfully:', result)
+        console.info('Trigger event sent:', result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -109,7 +111,7 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
           const response = await $b24.actions.v2.call.make({
             method: 'crm.automation.trigger.execute',
             params: {
-              CODE: 'c5u4m',
+              CODE: 'call_done',
               OWNER_TYPE_ID: 2,
               OWNER_ID: 6,
             },
@@ -123,7 +125,7 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
           }
 
           const result = response.getData().result
-          console.info('Trigger executed successfully:', result)
+          console.info('Trigger event sent:', result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -142,7 +144,7 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
 
     try:
         bitrix_response = client.crm.automation.trigger.execute(
-            code="c5u4m",
+            code="call_done",
             owner_type_id=2,
             owner_id=6,
         ).response
@@ -165,27 +167,22 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
 
     ```php
     try {
-        $response = $b24Service
+        $result = $b24Service
             ->core
             ->call(
                 'crm.automation.trigger.execute',
                 [
-                    'CODE'         => 'c5u4m',
+                    'CODE'          => 'call_done',
                     'OWNER_TYPE_ID' => 2,
-                    'OWNER_ID'     => 6,
+                    'OWNER_ID'      => 6,
                 ]
-            );
-    
-        $result = $response
+            )
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        // The SDK wraps the boolean result of the method in an array.
+        // true does not confirm the stage change: read the item to check it
+        echo $result[0] ? 'Trigger event sent' : 'Trigger event not sent';
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error executing automation trigger: ' . $e->getMessage();
@@ -198,11 +195,11 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
     BX24.callMethod(
         'crm.automation.trigger.execute',
         {
-            CODE: 'c5u4m',
+            CODE: 'call_done',
             OWNER_TYPE_ID: 2,
             OWNER_ID: 6
         },
-        function(result) 
+        function(result)
         {
             if(result.error())
                 console.error(result.error());
@@ -220,7 +217,7 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
     $result = CRest::call(
         'crm.automation.trigger.execute',
         [
-            'CODE' => 'c5u4m',
+            'CODE' => 'call_done',
             'OWNER_TYPE_ID' => 2,
             'OWNER_ID' => 6
         ]
@@ -236,7 +233,7 @@ Triggers exist in leads, deals, estimates, invoices, and SPAs
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.automation.trigger.execute", b24.Params{
-    	"CODE":          "c5u4m",
+    	"CODE":          "call_done",
     	"OWNER_TYPE_ID": 2,
     	"OWNER_ID":      6,
     })
@@ -259,14 +256,14 @@ HTTP status: **200**
 
 ```json
 {
-    "result":true,
-    "time":{
-        "start":1718891973.429101,
-        "finish":1718891986.721889,
-        "duration":13.292788028717041,
-        "processing":13.012810945510864,
-        "date_start":"2024-06-20T13:59:33+00:00",
-        "date_finish":"2024-06-20T13:59:46+00:00"
+    "result": true,
+    "time": {
+        "start": 1790706808,
+        "finish": 1790706808.400356,
+        "duration": 0.4003560543060303,
+        "processing": 0,
+        "date_start": "2026-09-29T18:33:28+00:00",
+        "date_finish": "2026-09-29T18:33:28+00:00"
     }
 }
 ```
@@ -277,9 +274,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns true if the trigger was successfully initiated ||
+[`boolean`](../../../data-types.md) | `true` if Bitrix24 accepted the trigger event ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -288,8 +285,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"",
-    "error_description":"Incorrect parameter OWNER_TYPE_ID."
+    "error": "",
+    "error_description": "Incorrect parameter OWNER_TYPE_ID."
 }
 ```
 
@@ -298,21 +295,22 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied. | User did not pass the preliminary access rights check for CRM ||
-|| ACCESS_DENIED | Access denied! Admin permissions required | Admin rights check failed ||
-|| ACCESS_DENIED | Access denied! Application context required | Method called outside of application context ||
-|| Empty string | Empty trigger code! | Empty `CODE` parameter ||
-|| Empty string | Wrong trigger code! | `CODE` parameter does not match the pattern `[a-z0-9\.\-_]` ||
-|| Empty string | Trigger with code {$code} is not registered. | Application trigger not found ||
-|| Empty string | Incorrect parameter OWNER_TYPE_ID. | Provided `owner_type_id` is not defined in CRM ||
-|| Empty string | Incorrect parameter OWNER_ID. | Provided `owner_id` parameter value is incorrect (value is not positive) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have access to CRM ||
+|| `403` | `ACCESS_DENIED` | Access denied! Admin permissions required | The method was called by a user who is not an administrator ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method was called outside an application, for example via a webhook ||
+|| `400` | Empty value | Empty trigger code! | The `CODE` parameter is not passed, is empty, or equals `0` ||
+|| `400` | Empty value | Wrong trigger code! | `CODE` contains characters other than Latin letters, digits, and `.`, `-`, `_` ||
+|| `400` | Empty value | Trigger with code call_done is not registered. | The current application has no trigger with the code from `CODE`. The error text contains the passed code instead of `call_done` ||
+|| `400` | Empty value | Incorrect parameter OWNER_TYPE_ID. | CRM has no object type with this `OWNER_TYPE_ID` ||
+|| `400` | Empty value | Incorrect parameter OWNER_ID. | `OWNER_ID` is not passed or is not greater than zero ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-automation-trigger-add.md)
 - [{#T}](./crm-automation-trigger-list.md)
 - [{#T}](./crm-automation-trigger-delete.md)

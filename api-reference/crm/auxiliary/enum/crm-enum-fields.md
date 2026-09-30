@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
-The method `crm.enum.fields` returns information about the fields of enumeration elements.
+The method `crm.enum.fields` describes the fields that make up an enumeration item: `ID`, `NAME`, `SYMBOL_CODE`, and `SYMBOL_CODE_SHORT`. For example, the response shows that `ID` is an integer and `NAME` is a string. Items returned by the [crm.enum.ownertype](./crm-enum-owner-type.md), [crm.enum.addresstype](./crm-enum-address-type.md), and [crm.enum.settings.mode](./crm-enum-settings-mode.md) methods have these fields. The [crm.enum.getorderownertypes](./crm-enum-get-order-owner-types.md) method has a different response format, so this description does not apply to it.
 
 ## Method Parameters
 
@@ -161,13 +161,9 @@ No parameters.
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
+        foreach ($result as $code => $field) {
+            echo $code . ' — ' . $field['title'] . ' (' . $field['type'] . ')' . PHP_EOL;
         }
-
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error calling crm.enum.fields: ' . $e->getMessage();
@@ -328,10 +324,29 @@ HTTP status: **200**
 
 ## Error Handling
 
+HTTP status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./crm-enum-owner-type.md)
+- [{#T}](./crm-enum-address-type.md)
+- [{#T}](./crm-enum-settings-mode.md)

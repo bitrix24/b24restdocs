@@ -11,11 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator with access to CRM in the application context
+> Who can execute the method: administrator
 
-This method deletes a trigger.
+The method `crm.automation.trigger.delete` deletes a trigger that the current application registered using the [crm.automation.trigger.add](./crm-automation-trigger-add.md) method. For example, a telephony application no longer tracks calls and deletes the `call_done` trigger. The codes of the application's triggers are returned by the [crm.automation.trigger.list](./crm-automation-trigger-list.md) method.
 
-The method can only be executed in the application context.
+The method works only in the context of an [application](../../../../settings/app-installation/index.md).
+
+{% note warning "" %}
+
+The method does not remove the trigger's binding to a stage or status — remove it manually in the CRM automation settings. If the application registers a trigger with the same `CODE` again, the old binding starts firing again.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -25,7 +31,7 @@ The method can only be executed in the application context.
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`string`](../../../data-types.md) | Internal unique (within the application) identifier of the trigger. Must match the pattern `[a-z0-9\.\-_]` ||
+[`string`](../../../data-types.md) | Trigger code that the application passed during registration, for example `call_done` ||
 |#
 
 ## Code Examples
@@ -34,23 +40,13 @@ The method can only be executed in the application context.
 
 {% list tabs %}
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"CODE":"c5u4m"}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.automation.trigger.delete
-    ```
-
 - cURL (OAuth)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CODE":"c5u4m","auth":"**put_access_token_here**"}' \
+    -d '{"CODE":"call_done","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.automation.trigger.delete
     ```
 
@@ -68,7 +64,7 @@ The method can only be executed in the application context.
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'crm.automation.trigger.delete',
         params: {
-          CODE: 'c5u4m',
+          CODE: 'call_done',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -100,7 +96,7 @@ The method can only be executed in the application context.
           const response = await $b24.actions.v2.call.make({
             method: 'crm.automation.trigger.delete',
             params: {
-              CODE: 'c5u4m',
+              CODE: 'call_done',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -131,7 +127,7 @@ The method can only be executed in the application context.
 
     try:
         bitrix_response = client.crm.automation.trigger.delete(
-            code="c5u4m",
+            code="call_done",
         ).response
         result = bitrix_response.result
         print(result)
@@ -152,25 +148,12 @@ The method can only be executed in the application context.
 
     ```php
     try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'crm.automation.trigger.delete',
-                [
-                    'CODE' => 'c5u4m',
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+        $result = $b24Service
+            ->getCRMScope()
+            ->trigger()
+            ->delete('call_done');
+
+        echo $result->isSuccess() ? 'Trigger deleted' : 'Trigger not deleted';
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting automation trigger: ' . $e->getMessage();
@@ -183,9 +166,9 @@ The method can only be executed in the application context.
     BX24.callMethod(
         'crm.automation.trigger.delete',
         {
-            "CODE": 'c5u4m'
+            "CODE": 'call_done'
         },
-        function(result) 
+        function(result)
         {
             if(result.error())
                 console.error(result.error());
@@ -203,7 +186,7 @@ The method can only be executed in the application context.
     $result = CRest::call(
         'crm.automation.trigger.delete',
         [
-            'CODE' => 'c5u4m'
+            'CODE' => 'call_done'
         ]
     );
 
@@ -217,7 +200,7 @@ The method can only be executed in the application context.
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.automation.trigger.delete", b24.Params{
-    	"CODE": "c5u4m",
+    	"CODE": "call_done",
     })
     if err != nil {
     	return fmt.Errorf("crm.automation.trigger.delete: %w", err)
@@ -256,9 +239,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if deleted successfully ||
+[`boolean`](../../../data-types.md) | `true` if the trigger is deleted ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -267,8 +250,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"",
-    "error_description":"Trigger not found"
+    "error": "",
+    "error_description": "Trigger not found"
 }
 ```
 
@@ -277,19 +260,20 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied. | User did not pass the preliminary access rights check for CRM ||
-|| ACCESS_DENIED | Access denied! Admin permissions required | Admin rights check failed ||
-|| ACCESS_DENIED | Access denied! Application context required | Method called outside of application context ||
-|| Empty string | Empty trigger code! | Empty `CODE` parameter ||
-|| Empty string | Wrong trigger code! | `CODE` parameter does not match the pattern `[a-z0-9\.\-_]` ||
-|| Empty string | Trigger not found | Trigger not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have access to CRM ||
+|| `403` | `ACCESS_DENIED` | Access denied! Admin permissions required | The method was called by a user who is not an administrator ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method was called outside an application, for example via a webhook ||
+|| `400` | Empty value | Empty trigger code! | The `CODE` parameter is not passed, is empty, or equals `0` ||
+|| `400` | Empty value | Wrong trigger code! | `CODE` contains characters other than Latin letters, digits, and `.`, `-`, `_` ||
+|| `400` | Empty value | Trigger not found | The current application has no trigger with this `CODE`, for example it has already been deleted or was registered by another application ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-automation-trigger-add.md)
 - [{#T}](./crm-automation-trigger-execute.md)
 - [{#T}](./crm-automation-trigger-list.md)

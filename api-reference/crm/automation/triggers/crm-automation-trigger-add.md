@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator with access to CRM in the application context 
+> Who can execute the method: administrator
 
-This method adds a trigger.
+The method `crm.automation.trigger.add` registers an application trigger — an event that lets CRM move a deal or another object to the desired stage or status. For example, a telephony application registers the "Call completed" trigger with the `call_done` code. Then an administrator links it to a stage in the CRM automation settings, and the application executes the trigger using the [crm.automation.trigger.execute](./crm-automation-trigger-execute.md) method. The workflow is described in the [triggers overview](./index.md).
 
-The method can only be executed in the application context, as the added triggers are tied to this application. 
+The method works only in the context of an [application](../../../../settings/app-installation/index.md): the trigger belongs to the application that registered it.
 
 ## Method Parameters
 
@@ -25,11 +25,11 @@ The method can only be executed in the application context, as the added trigger
 || **Name**
 `type` | **Description** ||
 || **CODE***
-[`string`](../../../data-types.md) | Internal unique (within the application) identifier of the trigger. Must match the pattern `[a-z0-9\.\-_]`.
+[`string`](../../../data-types.md) | Trigger code, unique within the application, for example `call_done`. Latin letters, digits, and the `.`, `-`, `_` characters are allowed.
 
-If an existing trigger identifier `CODE` is provided, the trigger name `NAME` will be updated. ||
+If the application already has a trigger with this `CODE`, the method updates its name `NAME` ||
 || **NAME***
-[`string`](../../../data-types.md) | Name of the trigger ||
+[`string`](../../../data-types.md) | Name of the trigger. It is displayed in the CRM automation settings when the trigger is linked to a stage ||
 |#
 
 ## Code Examples
@@ -38,23 +38,13 @@ If an existing trigger identifier `CODE` is provided, the trigger name `NAME` wi
 
 {% list tabs %}
 
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"CODE":"c5u4m","NAME":"trigger name"}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.automation.trigger.add
-    ```
-
 - cURL (OAuth)
 
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"CODE":"c5u4m","NAME":"trigger name","auth":"**put_access_token_here**"}' \
+    -d '{"CODE":"call_done","NAME":"Call completed","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.automation.trigger.add
     ```
 
@@ -72,8 +62,8 @@ If an existing trigger identifier `CODE` is provided, the trigger name `NAME` wi
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'crm.automation.trigger.add',
         params: {
-          CODE: 'c5u4m',
-          NAME: 'trigger name',
+          CODE: 'call_done',
+          NAME: 'Call completed',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -105,8 +95,8 @@ If an existing trigger identifier `CODE` is provided, the trigger name `NAME` wi
           const response = await $b24.actions.v2.call.make({
             method: 'crm.automation.trigger.add',
             params: {
-              CODE: 'c5u4m',
-              NAME: 'trigger name',
+              CODE: 'call_done',
+              NAME: 'Call completed',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -137,8 +127,8 @@ If an existing trigger identifier `CODE` is provided, the trigger name `NAME` wi
 
     try:
         bitrix_response = client.crm.automation.trigger.add(
-            code="c5u4m",
-            name="trigger name",
+            code="call_done",
+            name="Call completed",
         ).response
         result = bitrix_response.result
         print(result)
@@ -159,26 +149,20 @@ If an existing trigger identifier `CODE` is provided, the trigger name `NAME` wi
 
     ```php
     try {
-        $response = $b24Service
+        $result = $b24Service
             ->core
             ->call(
                 'crm.automation.trigger.add',
                 [
-                    'CODE' => 'c5u4m',
-                    'NAME' => 'trigger name',
+                    'CODE' => 'call_done',
+                    'NAME' => 'Call completed',
                 ]
-            );
-    
-        $result = $response
+            )
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        // The SDK wraps the boolean result of the method in an array
+        echo $result[0] ? 'Trigger saved' : 'Trigger not saved';
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding automation trigger: ' . $e->getMessage();
@@ -191,10 +175,10 @@ If an existing trigger identifier `CODE` is provided, the trigger name `NAME` wi
     BX24.callMethod(
         'crm.automation.trigger.add',
         {
-            "CODE": 'c5u4m',
-            "NAME": 'trigger name'
+            "CODE": 'call_done',
+            "NAME": 'Call completed'
         },
-        function(result) 
+        function(result)
         {
             if(result.error())
                 console.error(result.error());
@@ -212,8 +196,8 @@ If an existing trigger identifier `CODE` is provided, the trigger name `NAME` wi
     $result = CRest::call(
         'crm.automation.trigger.add',
         [
-            'CODE' => 'c5u4m',
-            'NAME' => 'trigger name'
+            'CODE' => 'call_done',
+            'NAME' => 'Call completed'
         ]
     );
 
@@ -227,8 +211,8 @@ If an existing trigger identifier `CODE` is provided, the trigger name `NAME` wi
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.automation.trigger.add", b24.Params{
-    	"CODE": "c5u4m",
-    	"NAME": "trigger name",
+    	"CODE": "call_done",
+    	"NAME": "Call completed",
     })
     if err != nil {
     	return fmt.Errorf("crm.automation.trigger.add: %w", err)
@@ -267,19 +251,19 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Returns `true` if the trigger was successfully added ||
+[`boolean`](../../../data-types.md) | `true` if the trigger is registered or the name of an existing trigger with the same `CODE` is updated ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **403**
 
 ```json
 {
-    "error":"ACCESS_DENIED",
-    "error_description":"Access denied! Application context required"
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied! Application context required"
 }
 ```
 
@@ -288,19 +272,20 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied. | User did not pass the preliminary access rights check for CRM ||
-|| ACCESS_DENIED | Access denied! Admin permissions required | Admin rights check failed ||
-|| ACCESS_DENIED | Access denied! Application context required | Method called outside of application context ||
-|| Empty string | Empty trigger code! | Empty parameter `CODE` ||
-|| Empty string | Wrong trigger code! | Parameter `CODE` does not match the pattern `[a-z0-9\.\-_]` ||
-|| Empty string | Empty trigger name! | Empty parameter `NAME` ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have access to CRM ||
+|| `403` | `ACCESS_DENIED` | Access denied! Admin permissions required | The method was called by a user who is not an administrator ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method was called outside an application, for example via a webhook ||
+|| `400` | Empty value | Empty trigger code! | The `CODE` parameter is not passed, is empty, or equals `0` ||
+|| `400` | Empty value | Wrong trigger code! | `CODE` contains characters other than Latin letters, digits, and `.`, `-`, `_` ||
+|| `400` | Empty value | Empty trigger name! | The `NAME` parameter is not passed, is empty, or equals `0` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-automation-trigger-execute.md)
 - [{#T}](./crm-automation-trigger-list.md)
 - [{#T}](./crm-automation-trigger-delete.md)

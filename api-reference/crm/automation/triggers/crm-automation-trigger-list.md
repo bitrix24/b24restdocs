@@ -11,29 +11,21 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator with access to CRM in the application context
+> Who can execute the method: administrator
 
-This method retrieves a list of applications and triggers.
+The method `crm.automation.trigger.list` returns the triggers that the current application registered using the [crm.automation.trigger.add](./crm-automation-trigger-add.md) method. Pass the trigger codes from the response to the [crm.automation.trigger.execute](./crm-automation-trigger-execute.md) and [crm.automation.trigger.delete](./crm-automation-trigger-delete.md) methods. For example, before deleting a trigger, the application finds its `CODE` in the list.
 
-The method can only be executed in the application context.
+The method works only in the context of an [application](../../../../settings/app-installation/index.md).
 
-No parameters.
+## Method Parameters
+
+No parameters. The method returns the whole list at once, without pagination: it ignores `start`, `filter`, and `order`.
 
 ## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
 {% list tabs %}
-
-- cURL (Webhook)
-
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.automation.trigger.list
-    ```
 
 - cURL (OAuth)
 
@@ -61,17 +53,11 @@ No parameters.
       CODE: string
     }
 
-    // crm.automation.trigger.list returns a single page (max 50 records). For the whole result set
-    // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-    // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-    // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-    // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+    // crm.automation.trigger.list returns all triggers of the current application at once
     try {
       const response = await $b24.actions.v2.call.make<TriggerItem[]>({
         method: 'crm.automation.trigger.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -99,16 +85,10 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.automation.trigger.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // crm.automation.trigger.list returns all triggers of the current application at once
           const response = await $b24.actions.v2.call.make({
             method: 'crm.automation.trigger.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -132,40 +112,14 @@ No parameters.
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.automation.trigger.list().response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-    Example `as_list`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.automation.trigger.list().as_list().response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
+        for trigger in bitrix_response.result:
+            print(trigger["CODE"], trigger["NAME"])
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
@@ -183,23 +137,14 @@ No parameters.
 
     ```php
     try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'crm.automation.trigger.list',
-                []
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
+        $result = $b24Service
+            ->getCRMScope()
+            ->trigger()
+            ->list();
+
+        foreach ($result->getTriggers() as $trigger) {
+            echo $trigger->CODE . ' — ' . $trigger->NAME . PHP_EOL;
         }
-    
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching automation triggers: ' . $e->getMessage();
@@ -212,7 +157,7 @@ No parameters.
     BX24.callMethod(
         'crm.automation.trigger.list',
         {},
-        function(result) 
+        function(result)
         {
             if(result.error())
                 console.error(result.error());
@@ -261,21 +206,21 @@ HTTP status: **200**
 {
     "result": [
         {
-            "NAME": "Trigger 1",
-            "CODE": "trigger1"
+            "NAME": "Payment received",
+            "CODE": "payment_received"
         },
         {
-            "NAME": "Trigger 2",
-            "CODE": "trigger2"
+            "NAME": "Call completed",
+            "CODE": "call_done"
         }
     ],
     "time": {
-        "start": 1718952595.479501,
-        "finish": 1718952595.594397,
-        "duration": 0.11489605903625488,
-        "processing": 0.007472038269042969,
-        "date_start": "2024-06-21T06:49:55+00:00",
-        "date_finish": "2024-06-21T06:49:55+00:00"
+        "start": 1790705980,
+        "finish": 1790705980.904287,
+        "duration": 0.9042870998382568,
+        "processing": 0,
+        "date_start": "2026-09-29T18:19:40+00:00",
+        "date_finish": "2026-09-29T18:19:40+00:00"
     }
 }
 ```
@@ -286,14 +231,25 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Returns an array of triggers added by the application with fields `NAME` and `CODE` ||
+[`object[]`](../../../data-types.md) | Array of the current application's triggers [(detailed description)](#trigger). If the application has not registered any triggers, the method returns an empty array `[]` ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Array Element {#trigger}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **NAME**
+[`string`](../../../data-types.md) | Name of the trigger, for example `Call completed`. In the CRM automation settings, it is preceded by the application name in square brackets, or by the application ID if the application has no name ||
+|| **CODE**
+[`string`](../../../data-types.md) | Trigger code within the application. Pass it to the [crm.automation.trigger.execute](./crm-automation-trigger-execute.md) and [crm.automation.trigger.delete](./crm-automation-trigger-delete.md) methods ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **403**
 
 ```json
 {
@@ -307,17 +263,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty string | Access denied. | User did not pass the preliminary access rights check for CRM ||
-|| ACCESS_DENIED | Access denied! Admin permissions required | Admin rights check failed ||
-|| ACCESS_DENIED | Access denied! Application context required | Method called outside of application context ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have access to CRM ||
+|| `403` | `ACCESS_DENIED` | Access denied! Admin permissions required | The method was called by a user who is not an administrator ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method was called outside an application, for example via a webhook ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-automation-trigger-add.md)
 - [{#T}](./crm-automation-trigger-execute.md)
 - [{#T}](./crm-automation-trigger-delete.md)
-

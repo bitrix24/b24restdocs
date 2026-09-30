@@ -13,13 +13,13 @@ Choose a tool for developing with an AI agent:
 
 **DEPRECATED**
 
-Development of the methods in this section has been halted. Use the current [CRM Enumerations](../index.md) and [CRM Activities](../../../timeline/activities/index.md) sections.
+Development of the methods in this section has been halted. The activity enumeration values are listed in the [CRM data types](../../../data-types.md#activity-enums) reference, and working with activities is covered in the [Activities in CRM](../../../timeline/activities/index.md) section.
 
 {% endnote %}
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the methods: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
 #|
 || **Method** | **Description** ||

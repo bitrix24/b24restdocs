@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
-The method `crm.enum.ownertype` returns the identifiers of CRM object types and SPA. Use the `ID` of the object type as the value for the `entityTypeId` parameter in the methods [crm.item.*](../../universal/index.md), [crm.activity.*](../../timeline/activities/index.md).
+The method `crm.enum.ownertype` returns the numeric IDs of CRM object types and SPAs. Pass the ID in the `entityTypeId` parameter of the universal methods [crm.item.*](../../universal/index.md) and in the `OWNER_TYPE_ID` or `ownerTypeId` parameter of the [activity](../../timeline/activities/index.md) methods. For example, to retrieve a deal with the [crm.item.get](../../universal/crm-item-get.md) method, pass `entityTypeId: 2`, and for an SPA, pass its ID, for example, `177`.
+
+Universal methods do not work with all types in the list: they do not support the old invoice with ID `5` and requisites with ID `8`, and return the `ENTITY_TYPE_NOT_SUPPORTED` error.
 
 {% note info " " %}
 
@@ -162,13 +164,9 @@ No parameters.
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
+        foreach ($result as $ownerType) {
+            echo $ownerType['ID'] . ' — ' . $ownerType['NAME'] . ' (' . $ownerType['SYMBOL_CODE'] . ')' . PHP_EOL;
         }
-
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error calling crm.enum.ownertype: ' . $e->getMessage();
@@ -320,7 +318,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md) | Array with owner types [(detailed description)](#result) ||
+[`array`](../../../data-types.md) | Array with object types [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -331,18 +329,34 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../../data-types.md) | Identifier of the owner type ||
+[`integer`](../../../data-types.md) | Identifier of the object type, for example, `2` — deal. For an SPA, its `entityTypeId` ||
 || **NAME**
-[`string`](../../../data-types.md) | Name of the owner type ||
+[`string`](../../../data-types.md) | Name of the object type. For an SPA, the name it was given in Bitrix24 ||
 || **SYMBOL_CODE**
-[`string`](../../../data-types.md) | Symbolic code ||
+[`string`](../../../data-types.md) | Symbolic code of the object type, for example, `DEAL`. For an SPA, `DYNAMIC_` followed by its `ID`, for example, `DYNAMIC_177` ||
 || **SYMBOL_CODE_SHORT**
-[`string`](../../../data-types.md) | Short symbolic code ||
+[`string`](../../../data-types.md) | Short symbolic code, for example, `D` for a deal. For an SPA, the letter `T` followed by the `ID` in hexadecimal: `Tb1` for `177`. The short code is also required when linking a task to a CRM object ||
 |#
 
 ## Error Handling
 
+HTTP status: **400**
+
+```json
+{
+    "error": "",
+    "error_description": "Access denied."
+}
+```
+
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Access denied. | The user does not have read access to CRM objects, including those in digital workspaces ||
+|#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 

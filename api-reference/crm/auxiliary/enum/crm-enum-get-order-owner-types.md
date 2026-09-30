@@ -13,11 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `crm.enum.getorderownertypes` returns a list of object types to which an order can be bound. Use the `id` of the object type as the value for the `ownerTypeId` parameter in the methods [crm.orderentity.*](../../universal/order-entity/crm-order-entity-add.md).
+The method `crm.enum.getorderownertypes` returns the CRM object types to which an order can be bound. For example, to link an order to a deal, pass the value `2` in the `ownerTypeId` parameter of the [crm.orderentity.add](../../universal/order-entity/crm-order-entity-add.md) method — this is the `id` of the "Deal" type.
 
 {% note info " " %}
 
-Currently, an [order binding](../../universal/order-entity/crm-order-entity-add.md) can only be done to a [deal](../../deals/index.md).
+Determine the types available for [order binding](../../universal/order-entity/crm-order-entity-add.md) from the method response, not from the list in the documentation. Usually, the response contains only a [deal](../../deals/index.md).
 
 {% endnote %}
 
@@ -162,13 +162,9 @@ No parameters.
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Data: ' . print_r($result->data(), true);
+        foreach ($result as $ownerType) {
+            echo $ownerType['id'] . ' — ' . $ownerType['name'] . PHP_EOL;
         }
-
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching order owner types: ' . $e->getMessage();
@@ -274,11 +270,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **attribute**
-[`string`](../../../data-types.md) | Object type attribute ||
+[`string`](../../../data-types.md) | Internal flag. All types return the value `DYN`; it is not needed for order binding ||
 || **code**
-[`string`](../../../data-types.md) | Object type code ||
+[`string`](../../../data-types.md) | Object type code, for example, `DEAL` ||
 || **id**
-[`integer`](../../../data-types.md) | Object type identifier ||
+[`integer`](../../../data-types.md) | Object type identifier, for example, `2` — deal. It is passed in the `ownerTypeId` parameter ||
 || **name**
 [`string`](../../../data-types.md) | Object type name ||
 |#
