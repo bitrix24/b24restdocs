@@ -1,4 +1,4 @@
-# Get Available Order Fields from sale.tradeBinding.getFields
+# Retrieve Fields of an Order Binding to a Source sale.tradeBinding.getFields
 
 {% note tip "" %}
 
@@ -13,11 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `sale.tradeBinding.getFields` returns descriptions of the order source binding fields. Field names can be passed in the `select`, `filter`, and `order` parameters of [sale.tradeBinding.list](./sale-trade-binding-list.md).
+The method `sale.tradeBinding.getFields` returns the fields of an order binding to a source that can be passed in `select`, `filter`, and `order` of the [sale.tradeBinding.list](./sale-trade-binding-list.md) method.
 
 ## Method Parameters
 
-This method has no parameters.
+No parameters.
 
 ## Code Examples
 
@@ -27,8 +27,8 @@ This method has no parameters.
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
@@ -37,8 +37,8 @@ This method has no parameters.
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"auth":"**put_access_token_here**"}' \
@@ -293,11 +293,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **tradeBinding**
-[`object`](../../data-types.md) | Object containing descriptions of order source binding fields. Each key is a field name of the [`sale_order_trade_binding`](../data-types.md#sale_order_trade_binding) object, and each value is a [`rest_field_description`](../data-types.md#rest_field_description) object ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **tradeBinding**
+[`object`](../../data-types.md) | Object containing descriptions of order source binding fields. Each key is a field name of the [`sale_order_trade_binding`](../data-types.md#sale_order_trade_binding) object, and each value is a [`rest_field_description`](../data-types.md#rest_field_description) object ||
 |#
 
 ## Error Handling
@@ -308,4 +315,5 @@ HTTP Status: **200**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-trade-binding-list.md)

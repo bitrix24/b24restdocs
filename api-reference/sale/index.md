@@ -83,7 +83,7 @@ Access permissions for the Sites and Stores sections are shared. If you change t
 || [Cart](./basket-item/index.md) | Managing products and services within an order ||
 || [Cart Properties](./basket-properties/index.md) | Managing additional product item data ||
 || [Order Sources](./trade-platform/index.md) | Managing the sources from which orders originate ||
-|| [Binding Order Sources to Orders](./trade-binding/index.md) | Linking orders to sources ||
+|| [Binding Orders to Sources](./trade-binding/index.md) | Linking orders to sources ||
 |#
 
 ### Order Properties

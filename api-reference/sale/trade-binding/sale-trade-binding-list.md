@@ -1,4 +1,4 @@
-# Get a list of orders from sources sale.tradeBinding.list
+# Retrieve a List of Order Bindings to Sources sale.tradeBinding.list
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user with the "View product catalog" access permission
 
-The method `sale.tradeBinding.list` returns a list of orders from sources.
+The method `sale.tradeBinding.list` returns order bindings to sources without the order contents — retrieve the contents with the [sale.order.get](../order/sale-order-get.md) method.
 
 ## Method Parameters
 
@@ -23,50 +23,59 @@ The method `sale.tradeBinding.list` returns a list of orders from sources.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the [sale_order_trade_binding](../data-types.md#sale_order_trade_binding) object).
+[`array`](../../data-types.md) | A list of fields to return. The available fields are listed in the [sale_order_trade_binding](../data-types.md#sale_order_trade_binding) object.
 
-If not provided or an empty array is passed, all available order fields will be selected. ||
+If not provided or an empty array is passed, all fields are returned. Unknown fields are ignored without an error ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected orders in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. When multiple fields are specified, AND logic is used.
+[`object`](../../data-types.md) | An object for filtering bindings in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. When multiple fields are specified, AND logic is used.
 
 Possible values for `field` correspond to the fields of the [sale_order_trade_binding](../data-types.md#sale_order_trade_binding) object.
 
 An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
-- `=` — equals (works with arrays as well)
-- `!=` - not equals
+- `=` — equals, exact match, the default prefix
+- `!=`, `!` — not equals
+- `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` character in the filter value does not need to be passed. The search looks for the substring in any position of the string
+- `@` — IN, the value is passed as an array
+- `!@` — NOT IN, the value is passed as an array
+- `%` — LIKE, substring search. The `%` character in the filter value does not need to be passed. The substring is searched for in any position of the string
 - `=%` — LIKE, substring search. The `%` character needs to be passed in the value. Examples:
-    - "mol%" — searching for values starting with "mol"
-    - "%mol" — searching for values ending with "mol"
-    - "%mol%" — searching for values where "mol" can be in any position
-- `%=` — LIKE (see description above)
-- `!%` — NOT LIKE, substring search. The `%` character in the filter value does not need to be passed. The search goes from both sides.
+    - `mol%` — values starting with "mol"
+    - `%mol` — values ending with "mol"
+    - `%mol%` — values where "mol" can be in any position
+- `%=` — LIKE, substring search. The `%` character needs to be passed in the value, as for `=%`
+- `!%` — NOT LIKE, substring search. The `%` character in the filter value does not need to be passed. Returns values that do not contain the substring in any position
 - `!=%` — NOT LIKE, substring search. The `%` character needs to be passed in the value. Examples:
-    - "mol%" — searching for values not starting with "mol"
-    - "%mol" — searching for values not ending with "mol"
-    - "%mol%" — searching for values where the substring "mol" is not present in any position
-- `!%=` — NOT LIKE (see description above) ||
+    - `mol%` — values not starting with "mol"
+    - `%mol` — values not ending with "mol"
+    - `%mol%` — values where the substring "mol" is not present in any position
+- `!%=` — NOT LIKE, substring search. The `%` character needs to be passed in the value, as for `!=%`
+
+To retrieve the order bindings of one source, filter by `tradingPlatformId` — the identifier from the [sale.tradePlatform.list](../trade-platform/sale-trade-platform-list.md) method.
+
+Unknown fields are ignored without an error. If a field name is misspelled, the method returns all records ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected orders in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting bindings in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [sale_order_trade_binding](../data-types.md#sale_order_trade_binding) object.
 
 Possible values for `order`:
 - `asc` — in ascending order
-- `desc` — in descending order ||
+- `desc` — in descending order
+
+By default, bindings are sorted by `id` in ascending order. Unknown fields are ignored without an error ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used for managing pagination.
+[`integer`](../../data-types.md) | The offset for pagination. The page size is 50 records. The default is `0`, the first page.
 
-The page size of results is always static: 50 records.
-
-To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
+For the second page, pass `50`; for the third, `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number ||
+`start = (N-1) * 50`, where `N` is the desired page number.
+
+The value for the next page is returned in the `next` field of the response ||
 |#
 
 ## Code Examples
@@ -77,21 +86,21 @@ The formula for calculating the `start` parameter value:
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["orderId","tradingPlatformId"],"filter":{"!=tradingPlatformID":10},"order":{"tradingPlatformId":"DESC"}}' \
+    -d '{"select":["orderId","tradingPlatformId"],"filter":{"!=tradingPlatformId":10},"order":{"tradingPlatformId":"desc"},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.tradeBinding.list
     ```
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```http
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["orderId","tradingPlatformId"],"filter":{"!=tradingPlatformID":10},"order":{"tradingPlatformId":"DESC"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["orderId","tradingPlatformId"],"filter":{"!=tradingPlatformId":10},"order":{"tradingPlatformId":"desc"},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.tradeBinding.list
     ```
 
@@ -125,8 +134,8 @@ The formula for calculating the `start` parameter value:
         method: 'sale.tradeBinding.list',
         params: {
           select: ['orderId', 'tradingPlatformId'],
-          filter: { '!=tradingPlatformID': 10 },
-          order: { tradingPlatformId: 'DESC' },
+          filter: { '!=tradingPlatformId': 10 },
+          order: { tradingPlatformId: 'desc' },
           start: 0,
         },
         requestId: Text.getUuidRfc4122()
@@ -165,8 +174,8 @@ The formula for calculating the `start` parameter value:
             method: 'sale.tradeBinding.list',
             params: {
               select: ['orderId', 'tradingPlatformId'],
-              filter: { '!=tradingPlatformID': 10 },
-              order: { tradingPlatformId: 'DESC' },
+              filter: { '!=tradingPlatformId': 10 },
+              order: { tradingPlatformId: 'desc' },
               start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -202,12 +211,12 @@ The formula for calculating the `start` parameter value:
                 "tradingPlatformId",
             ],
             filter={
-                "!=tradingPlatformID": 10,
+                "!=tradingPlatformId": 10,
             },
             order={
-                "tradingPlatformId": "DESC",
+                "tradingPlatformId": "desc",
             },
-            start='1712135957.057659',
+            start=0,
         ).response
         result = bitrix_response.result
         print(result)
@@ -234,8 +243,9 @@ The formula for calculating the `start` parameter value:
                 'sale.tradeBinding.list',
                 [
                     'select' => ['orderId', 'tradingPlatformId'],
-                    'filter' => ['!=tradingPlatformID' => 10],
-                    'order'  => ['tradingPlatformId' => 'DESC'],
+                    'filter' => ['!=tradingPlatformId' => 10],
+                    'order'  => ['tradingPlatformId' => 'desc'],
+                    'start'  => 0,
                 ]
             );
     
@@ -244,8 +254,6 @@ The formula for calculating the `start` parameter value:
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -260,8 +268,9 @@ The formula for calculating the `start` parameter value:
         "sale.tradeBinding.list",
         {
             select: ['orderId', 'tradingPlatformId'],
-            filter: {'!=tradingPlatformID': 10},
-            order: {'tradingPlatformId': 'DESC'}
+            filter: {'!=tradingPlatformId': 10},
+            order: {'tradingPlatformId': 'desc'},
+            start: 0
         },
         function(result)
         {
@@ -271,7 +280,7 @@ The formula for calculating the `start` parameter value:
             }
             else
             {
-                console.dir(result.data());
+                console.info(result.data());
             }
         }
     );
@@ -286,8 +295,9 @@ The formula for calculating the `start` parameter value:
         'sale.tradeBinding.list',
         [
             'select' => ['orderId', 'tradingPlatformId'],
-            'filter' => ['!=tradingPlatformID' => 10],
-            'order' => ['tradingPlatformId' => 'DESC']
+            'filter' => ['!=tradingPlatformId' => 10],
+            'order' => ['tradingPlatformId' => 'desc'],
+            'start' => 0
         ]
     );
 
@@ -303,11 +313,12 @@ The formula for calculating the `start` parameter value:
     res, err := client.Core().Call(ctx, "sale.tradeBinding.list", b24.Params{
     	"select": []string{"orderId", "tradingPlatformId"},
     	"filter": b24.Params{
-    		"!=tradingPlatformID": 10,
+    		"!=tradingPlatformId": 10,
     	},
     	"order": b24.Params{
-    		"tradingPlatformId": "DESC",
+    		"tradingPlatformId": "desc",
     	},
+    	"start": 0,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("sale.tradeBinding.list: %w", err)
@@ -356,16 +367,16 @@ HTTP status: **200**
         ]
     },
     "total": 3,
-    "time": {  
-        "start": 1712135957.057659,  
-        "finish": 1712135957.407821,  
-        "duration": 0.3501620292663574,  
-        "processing": 0.011919021606445312,  
-        "date_start": "2024-04-03T11:19:17+02:00",  
-        "date_finish": "2024-04-03T11:19:17+02:00",  
-        "operating_reset_at": 1705765533,  
-        "operating": 3.3076241016387939  
-    }  
+    "time": {
+        "start": 1712135957.057659,
+        "finish": 1712135957.407821,
+        "duration": 0.3501620292663574,
+        "processing": 0.011919021606445312,
+        "date_start": "2024-04-03T11:19:17+02:00",
+        "date_finish": "2024-04-03T11:19:17+02:00",
+        "operating_reset_at": 1705765533,
+        "operating": 3.3076241016387939
+    }
 }
 ```
 
@@ -375,13 +386,22 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response ||
-|| **tradeBindings**
-[`sale_order_trade_binding[]`](../data-types.md#sale_order_trade_binding) | An array of objects with information about the selected orders ||
+[`object`](../../data-types.md) | The root element of the response [(detailed description)](#result) ||
+|| **next**
+[`integer`](../../data-types.md) | The `start` value for the next page. Returned if more records are found than fit on the current page ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **tradeBindings**
+[`sale_order_trade_binding[]`](../data-types.md#sale_order_trade_binding) | An array of order bindings to sources. The set of fields in each element is defined by the `select` parameter. If nothing is found, the array is empty ||
 |#
 
 ## Error Handling
@@ -390,7 +410,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
+    "error":"200040300010",
     "error_description":"Access Denied"
 }
 ```
@@ -400,14 +420,19 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to execute the method ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | Insufficient permissions to execute the method ||
+|| `400` | `100` | Invalid order "<VALUE>" | The sort direction in `order` is other than `asc` and `desc` ||
+|| `400` | `100` | Order must be a string | The sort direction in `order` is not passed as a string ||
+|| — | `0` | — | Other errors, such as fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-trade-binding-get-fields.md)
+- [{#T}](../trade-platform/sale-trade-platform-list.md)
+- [{#T}](../order/sale-order-get.md)
 
