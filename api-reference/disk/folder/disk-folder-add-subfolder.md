@@ -28,7 +28,7 @@ The method `disk.folder.addSubFolder` creates a subfolder.
 The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is in another folder
 ||
 || **data***
-[`array`](../../data-types.md) | An array with the field `NAME`, where `NAME` is the name of the subfolder ||
+[`object`](../../data-types.md) | Subfolder parameters [(detailed description)](#data) ||
 || **rights**
 [`array`](../../data-types.md) | An array of access permissions for the folder. Each item contains:
 
@@ -39,6 +39,15 @@ The identifier can be obtained using the method [disk.storage.getChildren](../st
 The list of available `TASK_ID` identifiers can be obtained using the [disk.rights.getTasks](../rights/disk-rights-get-tasks.md) method.
 
 Additional fields, including `DOMAIN` and `OBJECT_ID`, are ignored ||
+|#
+
+### data Parameter {#data}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **NAME***
+[`string`](../../data-types.md) | Subfolder name. The maximum length is 255 characters. The name must not contain characters prohibited in file names ||
 |#
 
 {% note info "" %}
@@ -377,7 +386,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array with data about the created folder ||
+[`object`](../../data-types.md) | Object containing data about the created folder ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the folder ||
 || **NAME**
@@ -432,7 +441,10 @@ HTTP Status: **400** or **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required field `NAME` is missing in the `data` array ||
+|| `400` | `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `data` is missing ||
+|| `400` | `DISK_BASE_SERVICE_22001` | Error: required parameter NAME (DISK_BASE_SERVICE_22001) | Required field `NAME` is missing from the `data` object or an empty value was provided ||
+|| `400` | `DISK_MO_28000` | The name contains invalid characters | `NAME` contains characters prohibited in file names ||
+|| `400` | `DISK_MO_28000` | The maximum length for the "Name" field has been exceeded: 255 | The `NAME` length exceeds 255 characters ||
 || `400` | `DISK_OBJ_22000` | A folder with this name already exists | A folder with this name already exists ||
 || `400` | `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
 || `400` | Empty value | Invalid format: Right `N` should be array | The `rights` item at index `N` is not an array ||

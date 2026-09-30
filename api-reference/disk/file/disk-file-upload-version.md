@@ -27,8 +27,23 @@ The method `disk.file.uploadVersion` uploads a new version of a file.
 
 The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the file is located at the root of the storage, and using the method [disk.folder.getChildren](../folder/disk-folder-get-children.md) if the file is located in a folder ||
 || **fileContent***
-[`array`](../../data-types.md) | An array containing the file name and a string in [Base64](../../files/how-to-upload-files.md) ||
+[`array`](../../data-types.md) | New version contents [(detailed description)](#file-content) ||
 |#
+
+### fileContent Parameter {#file-content}
+
+A positional array with two items:
+
+#|
+|| **Position**
+`type` | **Description** ||
+|| **0**
+[`string`](../../data-types.md) | File name with extension ||
+|| **1**
+[`string`](../../data-types.md) | File contents in [Base64](../../files/how-to-upload-files.md#filecontent) format ||
+|#
+
+The Base64 string is included in the POST request size and is approximately one-third larger than the original file. Size and execution time limits are described in [Limitations When Working with Files](../../files/how-to-upload-files.md#limitations-when-working-with-files).
 
 ## Code Examples
 
@@ -307,7 +322,7 @@ HTTP Status: **200**
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": "0",
-        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=815094690000071b006e2cf2000004f5000007a108900724af0be51c3d5962bfd124ef&token=disk%7CaWQ9OTA0MyZfPW8zbFN4MU5lU3pFbHpLSm5Ub1JhZzRJRzFnN2FnYldE%7CImRvd25sb2FkfGRpc2t8YVdROU9UQTBNeVpmUFc4emJGTjRNVTVsVTNwRmJIcExTbTVVYjFKaFp6UkpSekZuTjJGbllsZEV8ODE1MDk0NjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDdhMTA4OTAwNzI0YWYwYmU1MWMzZDU5NjJiZmQxMjRlZiI%3D.yD9KHiasOQNb0ymK6NQjHTOCjDsSbYn%2FTAkju8323fc%3D",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
         "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/Folder/Folder/Test #2.docx"
     },
     "time": {

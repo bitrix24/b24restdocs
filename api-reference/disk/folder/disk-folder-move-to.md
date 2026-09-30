@@ -311,7 +311,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with data about the moved folder.
+[`object`](../../data-types.md) \| [`boolean`](../../data-types.md) | Object containing data about the moved folder
 
 Returns `false` if the folders are in different storages ||
 || **ID**
@@ -371,7 +371,7 @@ HTTP status: **400**
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `id` or `targetFolderId` is missing ||
 || `DISK_OBJ_22000` | A folder with this name already exists | A folder with this name already exists ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | Folder with the specified `id` or `targetFolderId` not found ||
-|| — | Could not move root folder | Attempt to move the root folder of the storage ||
+|| Empty value | Could not move root folder. | Attempt to move the root folder of the storage ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to move the folder ||
 |#
 

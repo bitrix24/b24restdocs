@@ -27,14 +27,14 @@ The method `disk.folder.uploadFile` uploads a new file to the specified folder.
 
 The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is in another folder
 ||
-|| **data***
-[`array`](../../data-types.md) | An array with the field `NAME`, where `NAME` is the name of the file.
+|| **data**
+[`object`](../../data-types.md) | New file parameters [(detailed description)](#data)
 
-Optional if the file is uploaded not directly, but via URL. An example of uploading a file via URL is provided [below](#uploadurl)  ||
+Optional if the file is uploaded via URL rather than directly. An example of uploading a file via URL is provided [below](#uploadurl) ||
 || **fileContent**
 [`array`](../../data-types.md) | An array containing the file name and a string with [Base64](../../files/how-to-upload-files.md).
 
-If the parameter is not provided, the method does not upload the file but returns the URL for uploading `UploadUrl` and the form field name `field` ||
+If the parameter is not provided, the method does not upload the file but returns the upload URL `uploadUrl` and the form field name `field` ||
 || **rights**
 [`array`](../../data-types.md) | An array of access permissions for the uploaded file. Each item contains:
 
@@ -59,6 +59,15 @@ Possible values:
 - `false` — do not generate
 
 Default is `false` ||
+|#
+
+### data Parameter {#data}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **NAME**
+[`string`](../../data-types.md) | File name. Required for direct upload. The maximum length is 255 characters. The name must not contain characters prohibited in file names ||
 |#
 
 ## Code Examples
@@ -544,13 +553,14 @@ Default is `false` ||
 
     {% endlist %}
 
-2. In response, you will receive a URL for uploading `UploadUrl` and the form field name `field`.
+2. In response, you will receive an upload URL `uploadUrl` and the form field name `field`.
 
     ```json
-    "result": {
+    {
+        "result": {
             "field": "file",
-            "uploadUrl": "https://test.bitrix24.com/rest/upload.json?auth=929b78690000071b006e2cf2000004f5000007dde54ef79d3b6e5c447d8f8a714563bd&token=disk%7CaWQ9ODkzMCZnZW5lcmF0ZVVuaXF1ZU5hbWU9MCZfPU4zS0pqUFJiVDFSengzUmpUaTVPcGM4R1VQTlFkTWU0%7CInVwbG9hZHxkaXNrfGFXUTlPRGt6TUNablpXNWxjbUYwWlZWdWFYRjFaVTVoYldVOU1DWmZQVTR6UzBwcVVGSmlWREZTZW5nelVtcFVhVFZQY0dNNFIxVlFUbEZrVFdVMHw5MjliNzg2OTAwMDAwNzFiMDA2ZTJjZjIwMDAwMDRmNTAwMDAwN2RkZTU0ZWY3OWQzYjZlNWM0NDdkOGY4YTcxNDU2M2JkIg%3D%3D.OHwSxVni%2FKX9Pw%2FyMzpfR974ImX5bC0sigTqA0UTCp8%3D"
-            },
+            "uploadUrl": "https://test.bitrix24.com/rest/upload.json?..."
+        },
         "time": {
             "start": 1769511710,
             "finish": 1769511710.411701,
@@ -561,15 +571,16 @@ Default is `false` ||
             "operating_reset_at": 1769512310,
             "operating": 0
         }
+    }
     ```
 
-3. Send the file to the received address `UploadUrl` using a POST request with the type `multipart/form-data`. The field name for the file inside this request must match the value of the `field` parameter from the response.
+3. Send the file to the received `uploadUrl` using a POST request with the `multipart/form-data` type. The file field name in this request must match the `field` value from the response.
 
-    ```
-    http --form POST "https://test.bitrix24.com/rest/upload.json?auth=929b78690000071b006e2cf2000004f5000007dde54ef79d3b6e5c447d8f8a714563bd&token=disk%7CaWQ9ODkzMCZnZW5lcmF0ZVVuaXF1ZU5hbWU9MCZfPU4zS0pqUFJiVDFSengzUmpUaTVPcGM4R1VQTlFkTWU0%7CInVwbG9hZHxkaXNrfGFXUTlPRGt6TUNablpXNWxjbUYwWlZWdWFYRjFaVTVoYldVOU1DWmZQVTR6UzBwcVVGSmlWREZTZW5nelVtcFVhVFZQY0dNNFIxVlFUbEZrVFdVMHw5MjliNzg2OTAwMDAwNzFiMDA2ZTJjZjIwMDAwMDRmNTAwMDAwN2RkZTU0ZWY3OWQzYjZlNWM0NDdkOGY4YTcxNDU2M2JkIg%3D%3D.OHwSxVni%2FKX9Pw%2FyMzpfR974ImX5bC0sigTqA0UTCp8%3D" file@/path/to/file.png
+    ```bash
+    http --form POST "https://test.bitrix24.com/rest/upload.json?..." file@/path/to/file.png
     ```
 
-4. In case of success, the server will return an array with data about the uploaded file.
+4. On success, the server returns an object containing data about the uploaded file.
 
 ### Uploading a File via URL in PHP
 
@@ -669,7 +680,7 @@ HTTP Status: **200**
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": null,
-        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=929b78690000071b006e2cf2000004f5000007dde54ef79d3b6e5c447d8f8a714563bd&token=disk%7CaWQ9OTAxMSZfPUFKQTNyWWVLZkxVdEw0VDRjY1QyOGpyN1NqYXZneFRI%7CImRvd25sb2FkfGRpc2t8YVdROU9UQXhNU1pmUFVGS1FUTnlXV1ZMWmt4VmRFdzBWRFJqWTFReU9HcHlOMU5xWVhabmVGUkl8OTI5Yjc4NjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDdkZGU1NGVmNzlkM2I2ZTVjNDQ3ZDhmOGE3MTQ1NjNiZCI%3D.XX%2BUFpxsl2eoLuCwolEaMKsrAJ5IIpIPmzg1j6QOuE0%3D",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
         "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/Folder/Folder in folder/test.png"
     },
     "time": {
@@ -685,13 +696,13 @@ HTTP Status: **200**
 }
 ```
    
-### Returned Data
+### Returned Data for Direct Upload
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array with file fields ||
+[`object`](../../data-types.md) | Object containing file fields ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the file ||
 || **NAME**
@@ -733,6 +744,23 @@ HTTP Status: **200**
 [`string`](../../data-types.md) | Link to open the file in the interface ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+### Returned Data for Upload via URL
+
+If the `fileContent` parameter is not passed, the `result` object contains parameters for the next upload request.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Parameters for uploading a file via URL ||
+|| **result.field**
+[`string`](../../data-types.md) | Name of the form field in which to pass the file ||
+|| **result.uploadUrl**
+[`string`](../../data-types.md) | URL for sending the file using POST in `multipart/form-data` format ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling

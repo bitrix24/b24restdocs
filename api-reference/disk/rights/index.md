@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Access permissions allow sharing the contents of your personal drive with other users, departments, or groups. Permissions can be assigned to the entire drive, as well as to individual folders or files.
+Access levels determine user access to folders and files in Drive. The REST API uses them when uploading files and granting access to existing folders.
 
 > Quick Navigation: [All Methods](#all-methods)
 >
@@ -18,8 +18,8 @@ Access permissions allow sharing the contents of your personal drive with other 
 ## How to Start
 
 1. Get access levels using [disk.rights.getTasks](./disk-rights-get-tasks.md)
-2. Select the required `TASK_ID`
-3. Pass `TASK_ID` when uploading a file or configuring folder access
+2. Select the required access level
+3. Pass it when uploading a file or granting access to an existing folder
 
 ## Features of Working with Access Permissions
 
@@ -29,7 +29,9 @@ The method [disk.rights.getTasks](./disk-rights-get-tasks.md) returns identifier
 - edit
 - full access
 
-Pass these identifiers as the value of the `TASK_ID` parameter to set permissions when uploading a file. For example, when uploading a file to storage using [disk.storage.uploadFile](../storage/disk-storage-upload-file.md) or to a folder using [disk.folder.uploadFile](../folder/disk-folder-upload-file.md).
+When uploading a file, pass the access level identifier in the `TASK_ID` field of an item in the `rights` array. The `rights` parameter is supported by [disk.storage.uploadFile](../storage/disk-storage-upload-file.md) and [disk.folder.uploadFile](../folder/disk-folder-upload-file.md).
+
+To grant access to an existing folder, use [disk.folder.shareToUser](../folder/disk-folder-share-to-user.md). It accepts the access level name in the `taskName` parameter rather than the `TASK_ID` identifier.
 
 ## Overview of Methods {#all-methods}
 

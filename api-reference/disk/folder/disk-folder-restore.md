@@ -292,11 +292,13 @@ HTTP status: **200**
 
 ### Returned Data
 
+Determine the current folder state by the `DELETED_TYPE` field. The `DELETE_TIME` and `DELETED_BY` fields retain the data from the last deletion after the folder is restored.
+
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with folder data ||
+[`object`](../../data-types.md) | Object containing folder data ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the folder ||
 || **NAME**
@@ -321,13 +323,13 @@ HTTP status: **200**
 || **UPDATE_TIME**
 [`datetime`](../../data-types.md) | Date and time of the last update of the folder ||
 || **DELETE_TIME**
-[`datetime`](../../data-types.md) | Date and time the folder was moved to trash ||
+[`datetime`](../../data-types.md) | Date and time the folder was last moved to the trash. The value is not cleared after restoration ||
 || **CREATED_BY**
 [`integer`](../../data-types.md) | Identifier of the user who created the folder ||
 || **UPDATED_BY**
 [`integer`](../../data-types.md) | Identifier of the user who made the last change ||
 || **DELETED_BY**
-[`integer`](../../data-types.md) | Identifier of the user who deleted the folder ||
+[`integer`](../../data-types.md) | Identifier of the user who last moved the folder to the trash. The value is not cleared after restoration ||
 || **DETAIL_URL**
 [`string`](../../data-types.md) | Link to open the folder in the interface ||
 || **time**

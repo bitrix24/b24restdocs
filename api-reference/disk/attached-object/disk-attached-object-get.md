@@ -264,7 +264,7 @@ HTTP Status: **200**
         "ENTITY_ID": "3845",
         "CREATE_TIME": "2025-12-23T10:31:24+02:00",
         "CREATED_BY": "1269",
-        "DOWNLOAD_URL": "https://test.bitrix24.com/bitrix/tools/disk/uf.php?attachedId=495&auth[auth]=d78a4a690000071b006e2cf2000004f5000007746b9ad166e1b9bd67b8848714afc5a7&action=download&ncc=1",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/bitrix/tools/disk/uf.php?...",
         "NAME": "Picture.png",
         "SIZE": "52486"
     },
@@ -299,7 +299,7 @@ HTTP Status: **200**
 || **ENTITY_ID**
 [`integer`](../../data-types.md) | Identifier of the item to which the file is attached ||
 || **CREATE_TIME**
-[`string`](../../data-types.md) | Time of the attachment creation ||
+[`datetime`](../../data-types.md) | Date and time the attachment was created ||
 || **CREATED_BY**
 [`integer`](../../data-types.md) | Identifier of the user who attached the file ||
 || **DOWNLOAD_URL**
@@ -337,6 +337,10 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](../file/disk-file-get.md)
+- [{#T}](../index.md)
+- [{#T}](../../tasks/tasks-task-get.md)
 - [{#T}](../../../tutorials/tasks/how-to-create-comment-with-file.md)
 - [{#T}](../../../tutorials/tasks/how-to-create-task-with-file.md)
 - [{#T}](../../../tutorials/tasks/how-to-upload-file-to-task.md)

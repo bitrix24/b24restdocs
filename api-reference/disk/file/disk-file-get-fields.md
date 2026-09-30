@@ -321,49 +321,70 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with the description of file fields.
-
-The structure of each field description:
-- `TYPE` — data type of the field
-- `USE_IN_FILTER` — ability to use the field in filtering
-- `USE_IN_SHOW` — availability of the field in the response ||
-|| **ID**
-[`integer`](../../data-types.md) | File identifier ||
-|| **NAME**
-[`string`](../../data-types.md) | File name ||
-|| **TYPE**
-[`enum`](../../data-types.md) | Object type ||
-|| **CODE**
-[`string`](../../data-types.md) | Symbolic code of the file ||
-|| **STORAGE_ID**
-[`integer`](../../data-types.md) | Identifier of the storage where the file is located ||
-|| **PARENT_ID**
-[`integer`](../../data-types.md) | Identifier of the parent folder ||
-|| **CREATE_TIME**
-[`datetime`](../../data-types.md) | Date and time of file creation ||
-|| **UPDATE_TIME**
-[`datetime`](../../data-types.md) | Date and time of the last file update ||
-|| **DELETE_TIME**
-[`datetime`](../../data-types.md) | Date and time the file was moved to the trash ||
-|| **CREATED_BY**
-[`integer`](../../data-types.md) | Identifier of the user who created the file ||
-|| **UPDATED_BY**
-[`integer`](../../data-types.md) | Identifier of the user who made the last change ||
-|| **DELETED_BY**
-[`integer`](../../data-types.md) | Identifier of the user who deleted the file ||
-|| **GLOBAL_CONTENT_VERSION**
-[`integer`](../../data-types.md) | Incremental version counter of the file ||
-|| **FILE_ID**
-[`integer`](../../data-types.md) | Internal value of the file identifier ||
-|| **SIZE**
-[`integer`](../../data-types.md) | Size of the file in bytes ||
-|| **DELETED_TYPE**
-[`enum`](../../data-types.md) | Status of the object's deletion ||
+[`object`](../../data-types.md) | Object containing file field descriptions [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`object`](../../data-types.md) | Description of the "File identifier" field ||
+|| **NAME**
+[`object`](../../data-types.md) | Description of the "File name" field ||
+|| **TYPE**
+[`object`](../../data-types.md) | Description of the "Object type" field ||
+|| **CODE**
+[`object`](../../data-types.md) | Description of the "File symbolic code" field ||
+|| **STORAGE_ID**
+[`object`](../../data-types.md) | Description of the "Storage identifier" field ||
+|| **PARENT_ID**
+[`object`](../../data-types.md) | Description of the "Parent folder identifier" field ||
+|| **CREATE_TIME**
+[`object`](../../data-types.md) | Description of the "File creation date and time" field ||
+|| **UPDATE_TIME**
+[`object`](../../data-types.md) | Description of the "File last update date and time" field ||
+|| **DELETE_TIME**
+[`object`](../../data-types.md) | Description of the "Date and time the file was moved to the trash" field ||
+|| **CREATED_BY**
+[`object`](../../data-types.md) | Description of the "Identifier of the user who created the file" field ||
+|| **UPDATED_BY**
+[`object`](../../data-types.md) | Description of the "Identifier of the user who changed the file" field ||
+|| **DELETED_BY**
+[`object`](../../data-types.md) | Description of the "Identifier of the user who deleted the file" field ||
+|| **GLOBAL_CONTENT_VERSION**
+[`object`](../../data-types.md) | Description of the "Global content version" field ||
+|| **FILE_ID**
+[`object`](../../data-types.md) | Description of the "Internal file identifier" field ||
+|| **SIZE**
+[`object`](../../data-types.md) | Description of the "File size" field ||
+|| **DELETED_TYPE**
+[`object`](../../data-types.md) | Description of the "Object deletion status" field ||
+|#
+
+Each field in the `result` object contains a description with the following structure.
+
+#### Field Description Structure
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TYPE**
+[`string`](../../data-types.md) | Field data type. Possible values: `integer`, `string`, `enum`, `datetime` ||
+|| **USE_IN_FILTER**
+[`boolean`](../../data-types.md) | Indicates whether the field is available for filtering ||
+|| **USE_IN_SHOW**
+[`boolean`](../../data-types.md) | Indicates whether the field is present in file data ||
 |#
 
 ## Error Handling
+
+This method has no method-specific error codes.
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

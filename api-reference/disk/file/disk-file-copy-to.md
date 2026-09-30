@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `disk.file.copyTo` copies a file to the specified folder.
 
+If the target folder already contains a file with the same name, the method returns the `DISK_OBJ_22000` error and does not create a copy.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -293,7 +295,7 @@ HTTP Status: **200**
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": null,
-        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=effc89690000071b006e2cf2000004f50000077d3d5d904ee6ccfc65bf287ca71f1fd6&token=disk%7CaWQ9OTAzNyZfPVhsRFgwaWJ2RTdLMXJlV1dhaEFPMEtoTjhVQ0s0MWNx%7CImRvd25sb2FkfGRpc2t8YVdROU9UQXpOeVpmUFZoc1JGZ3dhV0oyUlRkTE1YSmxWMWRoYUVGUE1FdG9UamhWUTBzME1XTnh8ZWZmYzg5NjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDc3ZDNkNWQ5MDRlZTZjY2ZjNjViZjI4N2NhNzFmMWZkNiI%3D.fY5cpLbXwIiIO8X3NoiCzsMVAl2i6zegF4%2Bn86l0khg%3D",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
         "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/Folder/Folder in folder/picture.png"
     },
     "time": {
@@ -315,7 +317,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with file fields ||
+[`object`](../../data-types.md) | Object containing data about the created file copy ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the file ||
 || **NAME**

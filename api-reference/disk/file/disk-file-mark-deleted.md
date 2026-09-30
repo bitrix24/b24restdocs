@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `disk.file.markDeleted` moves a file to the trash.
 
+Calling the method again for a file that is already in the trash succeeds and does not create a new deletion record. How long the file remains in the trash depends on the Bitrix24 settings.
+
 {% note info "" %}
 
 Save the file ID after deletion so that it can be restored later using the [disk.file.restore](./disk-file-restore.md) method.
@@ -287,7 +289,7 @@ HTTP Status: **200**
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": "1269",
-        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=904993690000071b006e2cf2000004f5000007bb5f672541f2cec7c7f0b65135f70180&token=disk%7CaWQ9OTAzNyZfPWVNNEllSjUwZEV7OUN1aEhETzBobFdDOWlMSEFZNk5x%7CImRvd25sb2FkfGRpc2t8YVdROU9UQXpOeVpmUFdWTk5FbGxTalV3WkVWMk9VTjFhRWhFVHpCb2JGZERPV9xNU0VGWk5rNXh8OTA0OTkzNjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDdiYjVmNjcyNTQxZjJjZWM3YzdmMGI2NTEzNWY3MDE4MCI%3D.nSSCKa7KdIxa0ToaCO31FIV3VZwvFxUTR1Mpl39508Y%3D",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
         "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/Folder/Folder in folder/picture.png"
     },
     "time": {

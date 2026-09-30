@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "Read" permission for the source folder and "Add" permission for the target folder
 
-The method `disk.folder.copyTo` copies a folder and all its contents to the specified folder.
+The method `disk.folder.copyTo` copies a folder and all its contents to the specified folder. The response contains only the new root folder object of the copy. Retrieve its contents using [disk.folder.getChildren](./disk-folder-get-children.md).
 
 ## Method Parameters
 
@@ -305,7 +305,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with data about the created folder ||
+[`object`](../../data-types.md) | Object containing data about the created folder ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the folder ||
 || **NAME**
@@ -315,7 +315,7 @@ HTTP Status: **200**
 || **STORAGE_ID**
 [`integer`](../../data-types.md) | Identifier of the storage where the folder is located ||
 || **TYPE**
-[`enum`](../../data-types.md) | Type of the object ||
+[`enum`](../../data-types.md) | Type of the object. The value is `folder` ||
 || **REAL_OBJECT_ID**
 [`integer`](../../data-types.md) | Identifier of the object ||
 || **PARENT_ID**

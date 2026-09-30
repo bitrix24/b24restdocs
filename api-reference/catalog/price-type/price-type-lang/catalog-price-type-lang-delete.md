@@ -23,7 +23,9 @@ The method `catalog.priceTypeLang.delete` deletes the translation of a price typ
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_price_type_lang.id`](../../data-types.md#catalog_price_type_lang) | Identifier of the price type name translation ||
+[`catalog_price_type_lang.id`](../../data-types.md#catalog_price_type_lang) | Identifier of the price type name translation.
+
+You can obtain the identifier using [catalog.priceTypeLang.list](./catalog-price-type-lang-list.md) ||
 |#
 
 ## Code Examples

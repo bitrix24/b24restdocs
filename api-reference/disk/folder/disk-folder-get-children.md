@@ -475,9 +475,11 @@ An empty array means that the user does not have permission to view the files an
 || **STORAGE_ID**
 [`integer`](../../data-types.md) | Identifier of the storage where the file/folder is located ||
 || **TYPE**
-[`enum`](../../data-types.md) | Type of the object ||
+[`enum`](../../data-types.md) | Type of the object. Possible values:
+- `folder` — folder
+- `file` — file ||
 || **REAL_OBJECT_ID**
-[`integer`](../../data-types.md) | Identifier of the object ||
+[`integer`](../../data-types.md) | Object identifier. The field is returned only for a folder when `TYPE = folder` ||
 || **PARENT_ID**
 [`integer`](../../data-types.md) | Identifier of the parent folder ||
 || **DELETED_TYPE**
@@ -486,11 +488,11 @@ An empty array means that the user does not have permission to view the files an
 - `3` — in the trash
 - `4` — deleted along with the parent folder ||
 || **GLOBAL_CONTENT_VERSION**
-[`integer`](../../data-types.md) | Incremental version counter of the file ||
+[`integer`](../../data-types.md) | Incremental version counter of the file. The field is returned only for a file when `TYPE = file` ||
 || **FILE_ID**
-[`integer`](../../data-types.md) | Internal value of the file identifier ||
+[`integer`](../../data-types.md) | Internal file identifier. The field is returned only for a file when `TYPE = file` ||
 || **SIZE**
-[`integer`](../../data-types.md) | Size of the file in bytes ||
+[`integer`](../../data-types.md) | Size of the file in bytes. The field is returned only for a file when `TYPE = file` ||
 || **CREATE_TIME**
 [`datetime`](../../data-types.md) | Date and time of creation of the file/folder ||
 || **UPDATE_TIME**
@@ -504,7 +506,7 @@ An empty array means that the user does not have permission to view the files an
 || **DELETED_BY**
 [`integer`](../../data-types.md) | Identifier of the user who deleted the file/folder ||
 || **DOWNLOAD_URL**
-[`string`](../../data-types.md) | Link to download the file ||
+[`string`](../../data-types.md) | Link to download the file. The field is returned only for a file when `TYPE = file` ||
 || **DETAIL_URL**
 [`string`](../../data-types.md) | Link to open the file/folder in the interface ||
 || **total**

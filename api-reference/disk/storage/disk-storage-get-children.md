@@ -422,21 +422,24 @@ HTTP status: **200**
             "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/path/Folder"
         },
         {
-            "ID": "9023",
-            "NAME": "New folder",
+            "ID": "9035",
+            "NAME": "picture.png",
             "CODE": null,
             "STORAGE_ID": "1357",
-            "TYPE": "folder",
-            "REAL_OBJECT_ID": "9023",
+            "TYPE": "file",
             "PARENT_ID": "8875",
             "DELETED_TYPE": "0",
-            "CREATE_TIME": "2026-01-26T13:30:15+02:00",
-            "UPDATE_TIME": "2026-01-26T13:30:15+02:00",
+            "GLOBAL_CONTENT_VERSION": "1",
+            "FILE_ID": "32895",
+            "SIZE": "1679",
+            "CREATE_TIME": "2026-02-02T16:01:59+02:00",
+            "UPDATE_TIME": "2026-02-02T16:01:59+02:00",
             "DELETE_TIME": null,
             "CREATED_BY": "1269",
             "UPDATED_BY": "1269",
             "DELETED_BY": null,
-            "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/path/New folder"
+            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
+            "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/picture.png"
         }
     ],
     "total": 3,
@@ -471,9 +474,11 @@ An empty array means that the user does not have permission to view the files an
 || **STORAGE_ID**
 [`integer`](../../data-types.md) | Identifier of the storage where the file/folder is located ||
 || **TYPE**
-[`enum`](../../data-types.md) | Type of the object ||
+[`enum`](../../data-types.md) | Type of the object. Possible values:
+- `folder` — folder
+- `file` — file ||
 || **REAL_OBJECT_ID**
-[`integer`](../../data-types.md) | Identifier of the object ||
+[`integer`](../../data-types.md) | Object identifier. The field is returned only for a folder when `TYPE = folder` ||
 || **PARENT_ID**
 [`integer`](../../data-types.md) | Identifier of the parent folder ||
 || **DELETED_TYPE**
@@ -482,11 +487,11 @@ An empty array means that the user does not have permission to view the files an
 - `3` — in the trash
 - `4` — deleted along with the parent folder ||
 || **GLOBAL_CONTENT_VERSION**
-[`integer`](../../data-types.md) | Incremental version counter of the file ||
+[`integer`](../../data-types.md) | Incremental version counter of the file. The field is returned only for a file when `TYPE = file` ||
 || **FILE_ID**
-[`integer`](../../data-types.md) | Internal value of the file identifier ||
+[`integer`](../../data-types.md) | Internal file identifier. The field is returned only for a file when `TYPE = file` ||
 || **SIZE**
-[`integer`](../../data-types.md) | Size of the file in bytes ||
+[`integer`](../../data-types.md) | Size of the file in bytes. The field is returned only for a file when `TYPE = file` ||
 || **CREATE_TIME**
 [`datetime`](../../data-types.md) | Date and time of file/folder creation ||
 || **UPDATE_TIME**
@@ -500,7 +505,7 @@ An empty array means that the user does not have permission to view the files an
 || **DELETED_BY**
 [`integer`](../../data-types.md) | Identifier of the user who deleted the file/folder ||
 || **DOWNLOAD_URL**
-[`string`](../../data-types.md) | Link to download the file ||
+[`string`](../../data-types.md) | Link to download the file. The field is returned only for a file when `TYPE = file` ||
 || **DETAIL_URL**
 [`string`](../../data-types.md) | Link to open the file/folder in the interface ||
 || **total**

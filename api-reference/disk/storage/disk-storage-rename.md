@@ -33,7 +33,7 @@ The method works only in the context of the [application](../../../settings/app-
 
 The identifier can be obtained using the method [disk.storage.getForApp](./disk-storage-get-for-app.md) ||
 || **newName***
-[`string`](../../data-types.md) | New name for the storage ||
+[`string`](../../data-types.md) | New storage name. The maximum length is 100 characters ||
 |#
 
 ## Code Examples
@@ -285,9 +285,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with the description of the storage fields ||
+[`object`](../../data-types.md) | Object containing application storage data ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the storage ||
+[`string`](../../data-types.md) | Identifier of the storage ||
 || **NAME**
 [`string`](../../data-types.md) | Name of the storage ||
 || **CODE**
@@ -295,11 +295,11 @@ HTTP Status: **200**
 || **MODULE_ID**
 [`string`](../../data-types.md) | Identifier of the module to which the storage belongs ||
 || **ENTITY_TYPE**
-[`string`](../../data-types.md) | Type of the object associated with the storage ||
+[`string`](../../data-types.md) | Type of the object associated with the storage. The value is `restapp` ||
 || **ENTITY_ID**
 [`string`](../../data-types.md) | Identifier of the object associated with the storage ||
 || **ROOT_OBJECT_ID**
-[`integer`](../../data-types.md) | Identifier of the root folder of the storage ||
+[`string`](../../data-types.md) | Identifier of the root folder of the storage ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -322,7 +322,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | Storage with the specified `id` not found ||
-|| — | Access denied (invalid type of storage) | Storage not associated with the application ||
+|| Empty value | Access denied (invalid type of storage) | Storage not associated with the application ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to rename the storage ||
 |#
 

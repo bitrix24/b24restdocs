@@ -246,6 +246,10 @@ HTTP status: **200**
 
 ## Error Handling
 
+This method has no method-specific error codes.
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning

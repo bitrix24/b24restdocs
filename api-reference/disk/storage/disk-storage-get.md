@@ -280,11 +280,11 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with storage data.
+[`object`](../../data-types.md) | Object containing storage data.
 
 Returns `null` if `id` is not a number ||
 || **ID**
-[`integer`](../../data-types.md) | Storage identifier ||
+[`string`](../../data-types.md) | Storage identifier ||
 || **NAME**
 [`string`](../../data-types.md) | Storage name ||
 || **CODE**
@@ -297,11 +297,12 @@ Returns `null` if `id` is not a number ||
 Possible values:
 - `user` — user storage
 - `common` — common documents storage
-- `group` — group storage  ||
+- `group` — group storage
+- `restapp` — application storage ||
 || **ENTITY_ID**  
 [`string`](../../data-types.md) | Identifier of the object associated with the storage ||
 || **ROOT_OBJECT_ID**
-[`integer`](../../data-types.md) | Identifier of the root folder of the storage ||
+[`string`](../../data-types.md) | Identifier of the root folder of the storage ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

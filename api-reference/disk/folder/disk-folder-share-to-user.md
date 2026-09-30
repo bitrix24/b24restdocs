@@ -325,6 +325,7 @@ HTTP status: **400** or **403**
 - [{#T}](./disk-folder-get-external-link.md)
 - [{#T}](./disk-folder-get-fields.md)
 - [{#T}](./disk-folder-get.md)
+- [{#T}](./disk-folder-mark-deleted.md)
 - [{#T}](./disk-folder-move-to.md)
 - [{#T}](./disk-folder-rename.md)
 - [{#T}](./disk-folder-restore.md)

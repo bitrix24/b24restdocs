@@ -253,9 +253,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with the description of the storage fields ||
+[`object`](../../data-types.md) | Object containing application storage data ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the storage ||
+[`string`](../../data-types.md) | Identifier of the storage ||
 || **NAME**
 [`string`](../../data-types.md) | Name of the storage ||
 || **CODE**
@@ -263,11 +263,11 @@ HTTP status: **200**
 || **MODULE_ID**
 [`string`](../../data-types.md) | Identifier of the module to which the storage belongs ||
 || **ENTITY_TYPE**
-[`string`](../../data-types.md) | Type of the object associated with the storage ||
+[`string`](../../data-types.md) | Type of the object associated with the storage. The value is `restapp` ||
 || **ENTITY_ID**
 [`string`](../../data-types.md) | Identifier of the object associated with the storage ||
 || **ROOT_OBJECT_ID**
-[`integer`](../../data-types.md) | Identifier of the root folder of the storage ||
+[`string`](../../data-types.md) | Identifier of the root folder of the storage ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

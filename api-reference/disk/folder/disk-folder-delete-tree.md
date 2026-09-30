@@ -27,7 +27,7 @@ If you want to move the folder to the trash, use the method [disk.folder.markDel
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.folder.getChildren](./disk-folder-get-children.md)
+The identifier can be obtained using [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is in the storage root, and using [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is in another folder
 ||
 |#
 

@@ -15,22 +15,27 @@ You can store text documents, spreadsheets, presentations, images, and other inf
 
 ## How to Start
 
-1. Retrieve the folder to upload to using the [disk.folder.get](../folder/disk-folder-get.md) or [disk.storage.getChildren](../storage/disk-storage-get-children.md) method
-2. Upload the file using the [disk.folder.uploadFile](../folder/disk-folder-upload-file.md) method
-3. Retrieve the file parameters using the [disk.file.get](./disk-file-get.md) method
-4. If necessary, move, copy, rename, or delete the file
+1. Retrieve the list of available storages using [disk.storage.getList](../storage/disk-storage-get-list.md). For application storage, use [disk.storage.getForApp](../storage/disk-storage-get-for-app.md)
+2. Retrieve the files and folders in the root using [disk.storage.getChildren](../storage/disk-storage-get-children.md). To navigate nested folders, use [disk.folder.getChildren](../folder/disk-folder-get-children.md)
+3. Upload the file to the storage root using [disk.storage.uploadFile](../storage/disk-storage-upload-file.md) or to the selected folder using [disk.folder.uploadFile](../folder/disk-folder-upload-file.md)
+4. Use the `ID` from the upload response to retrieve file parameters using [disk.file.get](./disk-file-get.md)
+5. If necessary, move the file using [disk.file.moveTo](./disk-file-move-to.md), copy it using [disk.file.copyTo](./disk-file-copy-to.md), rename it using [disk.file.rename](./disk-file-rename.md), or delete it using [disk.file.delete](./disk-file-delete.md)
 
-## How to Manage Files
+If the file identifier is unknown, find the file by name or text inside the document using [disk.file.search](./disk-file-search.md). The search can be limited to a single storage or folder.
 
-A new file should be uploaded using the [disk.folder.uploadFile](../folder/disk-folder-upload-file.md) method to a folder by its identifier.
+## Response Format and Errors
 
-You can change the location of files within the Drive structure: move them using the [disk.file.moveTo](./disk-file-move-to.md) method or copy them to other folders using the [disk.file.copyTo](./disk-file-copy-to.md) method.
+Methods that retrieve or modify a file return a file object in `result`. The result fields depend on the method.
 
-You can retrieve file field values using the [disk.file.get](./disk-file-get.md) method. For example, to check if a file has been moved to the trash.
+Common errors in this section are `ERROR_ARGUMENT` for invalid parameters, `ERROR_NOT_FOUND` for a missing file, `ACCESS_DENIED` for insufficient permissions, and `DISK_OBJ_22000` for a name conflict. The exact set of errors is specified on each method page.
 
-You can rename a file using the [disk.file.rename](./disk-file-rename.md) method.
+## Restrictions and Permissions
 
-You can search for files and folders by name or by text inside a document using the [disk.file.search](./disk-file-search.md) method. The search can be limited to a single storage or folder.
+- Reading, copying, and obtaining a public link require "Read" permission for the file
+- Renaming, moving, and working with the trash require "Edit" permission
+- Managing versions requires "Full access" permission
+- The POST request size in Bitrix24 cloud is limited to 2 GB; when sending Base64, account for an increase of approximately one-third
+- How long files remain in the trash depends on the Bitrix24 settings
 
 {% note tip "User Documentation" %}
 
@@ -42,13 +47,7 @@ You can search for files and folders by name or by text inside a document using 
 
 ## File Versions
 
-You can obtain a list of file versions using the [disk.file.getVersions](./disk-file-get-versions.md) method. This method uses the file identifier as a parameter. 
-
-To get information about a version, use the [disk.version.get](../version/disk-version-get.md) method. This method takes a parameter with the version identifier, not the file identifier.
-
-Drive tools allow you to restore the desired version of a file. This is done using the [disk.file.restoreFromVersion](./disk-file-restore-from-version.md) method.
-
-You can upload a new version of a file using the [disk.file.uploadVersion](./disk-file-upload-version.md) method.
+The `disk.file.*` methods manage the file's version list, while [disk.version.get](../version/disk-version-get.md) returns a specific version by its identifier. Restoring an earlier version creates a new current version and does not delete the history.
 
 {% note tip "User Documentation" %}
 
@@ -58,7 +57,7 @@ You can upload a new version of a file using the [disk.file.uploadVersion](./dis
 
 ## Access for External Users
 
-To provide access to a file for an external user, you need to create a public link. This will allow you to share the file with people who do not have access to Bitrix24. You can obtain a public link for a file using the [disk.file.getExternalLink](./disk-file-get-external-link.md) method.
+The [disk.file.getExternalLink](./disk-file-get-external-link.md) method creates a public link for people without access to Bitrix24. An administrator can disable public links in the Bitrix24 settings.
 
 {% note tip "User Documentation" %}
 
@@ -66,11 +65,21 @@ To provide access to a file for an external user, you need to create a public li
 
 {% endnote %}
 
-## How to Delete Files
+## Relationship with Other Objects
 
-Files can be moved to the trash using the [disk.file.markDeleted](./disk-file-mark-deleted.md) method. Deleted files can be restored using the [disk.file.restore](./disk-file-restore.md) method within 30 days.
+Files are located in storages and folders, use access permissions, and can have version history.
 
-To permanently delete a file without the possibility of recovery, you need to use the [disk.file.delete](./disk-file-delete.md) method. This will destroy the file forever. 
+**Storages.** A storage contains the Drive root folder. Retrieve files in the root using [disk.storage.getChildren](../storage/disk-storage-get-children.md), and upload a file using [disk.storage.uploadFile](../storage/disk-storage-upload-file.md).
+
+**Folders.** A folder contains files and nested folders. [disk.folder.getChildren](../folder/disk-folder-get-children.md) returns their list, while [disk.folder.uploadFile](../folder/disk-folder-upload-file.md) uploads a file to the folder.
+
+**Access permissions.** The access level determines which file operations are available to the user. Retrieve available levels using [disk.rights.getTasks](../rights/disk-rights-get-tasks.md).
+
+**Versions.** Previous states of file contents are stored as versions. Retrieve the list of versions using [disk.file.getVersions](./disk-file-get-versions.md), and data for one version using [disk.version.get](../version/disk-version-get.md).
+
+## Deleting Files
+
+The [disk.file.markDeleted](./disk-file-mark-deleted.md) method moves a file to the trash, while [disk.file.restore](./disk-file-restore.md) restores it while it remains in the trash. The [disk.file.delete](./disk-file-delete.md) method deletes a file permanently.
 
 {% note tip "User Documentation" %}
 

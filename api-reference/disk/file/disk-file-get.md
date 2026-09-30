@@ -281,7 +281,7 @@ HTTP Status: **200**
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": "0",
-        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=904993690000071b006e2cf2000004f5000007bb5f672541f2cec7c7f0b65135f70180&token=disk%7CaWQ9OTA0MyZfPTZkdUNQZrl3N1BhSXVOTGJ1bkxmU3RSNlVvOGYzejRK%7CImRvd25sb2FkfGRpc2t8YVdROU9UQTBNeVpmUFRaa2RVTlFaVmwzTjFCaFNYVk9UR0oxYmt4bVUzUlNObFZ2T0dZemVqUkt8OTA0OTkzNjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDdiYjVmNjcyNTQxZjJjZWM3YzdmMGI2NTEzNWY3MDE4MCI%3D.Kv1YxTQuB7zmzGYcQ9arBBCd35P80KyIyZJIYkwBUZ4%3D",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
         "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/Folder/Folder/Test.docx"
     },
     "time": {
@@ -313,7 +313,7 @@ HTTP Status: **200**
 || **STORAGE_ID**
 [`integer`](../../data-types.md) | Identifier of the storage where the file is located ||
 || **TYPE**
-[`enum`](../../data-types.md) | Type of the object ||
+[`enum`](../../data-types.md) | Type of the object. The value is `file` ||
 || **PARENT_ID**
 [`integer`](../../data-types.md) | Identifier of the parent folder ||
 || **DELETED_TYPE**

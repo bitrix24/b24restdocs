@@ -39,11 +39,11 @@ You can perform the following operations with Drive folders:
 
 ## External User Access
 
-To provide access to an external user for a folder, you need to create a public link. This will allow you to share the folder's contents with people who do not have access to Bitrix24. You can obtain a public link for the folder using the [disk.folder.getExternalLink](./disk-folder-get-external-link.md) method.
+To provide an external user with access to a folder, create a public link. This allows you to share the folder contents with people who do not have access to Bitrix24. The [disk.folder.getExternalLink](./disk-folder-get-external-link.md) method returns an existing public link or creates a new one.
 
 ## How to Delete Folders
 
-Folders can be moved to the trash using the [disk.folder.markDeleted](./disk-folder-mark-deleted.md) method. Deleted folders can be restored using the [disk.folder.restore](./disk-folder-restore.md) method within 30 days.
+Folders can be moved to the trash using [disk.folder.markDeleted](./disk-folder-mark-deleted.md). Deleted folders can be restored using [disk.folder.restore](./disk-folder-restore.md) while they remain in the trash. The retention period depends on the Bitrix24 settings.
 
 To permanently delete a folder without the possibility of recovery, you need to use the [disk.folder.deleteTree](./disk-folder-delete-tree.md) method. This will destroy the folder along with all nested folders and files forever.
 
@@ -52,6 +52,14 @@ To permanently delete a folder without the possibility of recovery, you need to 
 - [Trash in Bitrix24 Drive](https://helpdesk.bitrix24.com/open/19646680/)
 
 {% endnote %}
+
+## Relationship with Other Objects
+
+**Storages.** A folder is located in a Drive storage and is linked to it through the `STORAGE_ID` field. Retrieve the identifier of a folder in the storage root using [disk.storage.getChildren](../storage/disk-storage-get-children.md) or [disk.storage.addFolder](../storage/disk-storage-add-folder.md). All storage methods are listed in the [Drive Storages](../storage/index.md) overview.
+
+**Files.** A folder contains files and nested folders. [disk.folder.getChildren](./disk-folder-get-children.md) returns their list, while [disk.folder.uploadFile](./disk-folder-upload-file.md) uploads a file to the folder by its `ID`. Other file operations are listed in the [Drive Files](../file/index.md) overview.
+
+**Access permissions.** When creating a folder or uploading a file, you can pass a `rights` array with the access level identifier `TASK_ID`. Retrieve available `TASK_ID` values using [disk.rights.getTasks](../rights/disk-rights-get-tasks.md). Access level specifics are described in the [Drive Access Permissions](../rights/index.md) overview.
 
 ## Overview of Methods {#all-methods}
 

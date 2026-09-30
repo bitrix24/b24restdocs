@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `disk.file.restoreFromVersion` restores a file from a specific version.
 
+The contents of the selected version are saved as a new current version of the file. The version history is preserved. In the response, the `GLOBAL_CONTENT_VERSION` field shows the file content revision number and increases after the restore.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -291,7 +293,7 @@ HTTP Status: **200**
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": "0",
-        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=343794690000071b006e2cf2000004f500000746484b1f82771b3434ff80eb15edc8f8&token=disk%7CaWQ9OTA0MyZfPVM4bEhYNjhjOWN2cmd0QlFnUHo1U3BVUzBaRTBXM3ZP%7CImRvd25sb2FkfGRpc2t8YVdROU9UQTBNeVpmUFZNNGJFaFlOamhqT1dOMmNtZDBRbEZuVUhvMVUzQlZVekJhUlRCWE0zWlB8MzQzNzk0NjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDc0NjQ4NGIxZjgyNzcxYjM0MzRmZjgwZWIxNWVkYzhmOCI%3D.oJ%2BsjpEomvXjuciM5ixZPUhh037HG8qHi%2BdU49CNyFo%3D",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
         "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/Folder/Folder/Test №2.docx"
     },
     "time": {
@@ -332,7 +334,7 @@ HTTP Status: **200**
 - `3` — in the trash
 - `4` — deleted along with the parent folder ||
 || **GLOBAL_CONTENT_VERSION**
-[`integer`](../../data-types.md) | Incremental version counter of the file ||
+[`integer`](../../data-types.md) | File content revision number. Increases when a version is uploaded or restored ||
 || **FILE_ID**
 [`integer`](../../data-types.md) | Internal value of the file identifier ||
 || **SIZE**

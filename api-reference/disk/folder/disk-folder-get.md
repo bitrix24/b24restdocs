@@ -296,7 +296,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with folder data ||
+[`object`](../../data-types.md) | Object containing folder data ||
 || **ID**
 [`integer`](../../data-types.md) | Folder identifier ||
 || **NAME**
@@ -306,7 +306,7 @@ HTTP status: **200**
 || **STORAGE_ID**
 [`integer`](../../data-types.md) | Identifier of the storage where the folder is located ||
 || **TYPE**
-[`enum`](../../data-types.md) | Type of the object ||
+[`enum`](../../data-types.md) | Type of the object. The value is `folder` ||
 || **REAL_OBJECT_ID**
 [`integer`](../../data-types.md) | Identifier of the object ||
 || **PARENT_ID**
@@ -372,3 +372,4 @@ HTTP status: **400**
 - [{#T}](./disk-folder-restore.md)
 - [{#T}](./disk-folder-share-to-user.md)
 - [{#T}](./disk-folder-upload-file.md)
+- [Drive Folders](./index.md)

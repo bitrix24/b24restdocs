@@ -17,12 +17,12 @@ The attached file links a document from Drive to other Bitrix24 objects. This co
 
 The method `disk.attachedObject.get` operates on the record of attaching a file to a specific object, rather than the file itself. Imagine you have a file `report.docx` in Drive. When you attach it to a task and a comment in the feed, two different attachment records are created with different identifiers, but both reference the same file.
 
-To obtain the connection identifier, you need to use methods that return attached files within specific objects. For example, when working with tasks, the connection identifier can be retrieved through the method [tasks.task.get](../../tasks/tasks-task-get.md).
+The attachment identifier is passed in the `id` parameter of the `disk.attachedObject.get` method. It is returned by methods for objects to which the file is attached. For example, [tasks.task.get](../../tasks/tasks-task-get.md) returns these identifiers in the `result.task.ufTaskWebdavFiles` array if `UF_TASK_WEBDAV_FILES` is passed in the `select` parameter.
 
 ## How to Start
 
-1. Retrieve the link identifier from the method of the object to which the file is attached
-2. Pass the link identifier to [disk.attachedObject.get](./disk-attached-object-get.md)
+1. Retrieve the attachment identifier from the attached-files field of the owning object
+2. Pass the identifier in the `id` parameter of [disk.attachedObject.get](./disk-attached-object-get.md)
 3. Use `OBJECT_ID` from the response if you need to retrieve the file itself using [disk.file.*](../file/index.md)
 
 ## Relationship with Other Objects

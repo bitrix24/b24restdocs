@@ -291,7 +291,7 @@ HTTP Status: **200**
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": "0",
-        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=343794690000071b006e2cf2000004f500000746484b1f82771b3434ff80eb15edc8f8&token=disk%7CaWQ9ODk2NCZfPXU2V3NhdUVHeXBsY2thekFuTjB3ekNWMFd6d3dwVEZa%7CImRvd25sb2FkfGRpc2t8YVdROU9EazJOQ1pmUFhVMlYzTmhkVVZIZVhCc1kydGhla0Z1VGpCM2VrTldNRnQ2ZDNkd1ZFWmF8MzQzNzk0NjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDc0NjQ4NGIxZjgyNzcxYjM0MzRmZjgwZWIxNWVkYzhmOCI%3D.6Rmg3D5ED7iWrkUSMB7E1%2FTrnlxTtQ3bf8H6drXRVM4%3D",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
         "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/New File Name.png"
     },
     "time": {
@@ -377,7 +377,7 @@ HTTP Status: **400**
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #0} | Required parameter `id` or `newName` is missing ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | File with the specified `id` not found ||
 || `DISK_OBJ_22000` | A file with that name already exists | A file with that name already exists ||
-||  `0` | Empty name | An empty file name was provided ||
+|| `0` | Empty name. (0). | An empty file name was provided ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to rename the file ||
 |#
 

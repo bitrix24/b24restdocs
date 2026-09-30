@@ -15,13 +15,13 @@ Storage is the Drive in Bitrix24 where you can store documents and files, create
 
 ## Types of Storage
 
-In Bitrix24, there are three types of storage:
+The [disk.storage.getTypes](./disk-storage-get-types.md) method returns three main storage types:
 
 - My Drive — personal storage for the user
 - Company Drive — company storage
 - Group Drive — storage for the working group
 
-You can get a list of storage types using the [disk.storage.getTypes](./disk-storage-get-types.md) method.
+Application storage uses the special `restapp` type. Retrieve or create this storage using [disk.storage.getForApp](./disk-storage-get-for-app.md). The `disk.storage.getTypes` result does not include `restapp`.
 
 {% note tip "User Documentation" %}
 
@@ -34,25 +34,28 @@ You can get a list of storage types using the [disk.storage.getTypes](./disk-sto
 
 To work with storage, you need its identifier.
 
-1. Retrieve a list of available storages using the [disk.storage.getList](./disk-storage-get-list.md) method
-2. Find the required storage in the list and use its `ID`
+1. Retrieve a list of available storages using [disk.storage.getList](./disk-storage-get-list.md). For application storage, use [disk.storage.getForApp](./disk-storage-get-for-app.md)
+2. Select the required storage and save its `ID`
 3. Get the storage parameters using the [disk.storage.get](./disk-storage-get.md) method
+4. Retrieve files and folders in the root using [disk.storage.getChildren](./disk-storage-get-children.md)
 
-The description of all storage fields is returned by the [disk.storage.getFields](./disk-storage-get-fields.md) method. To work with application storage, use the [disk.storage.getForApp](./disk-storage-get-for-app.md) method.
+In the `disk.storage.get` response, the `ROOT_OBJECT_ID` field contains the root folder identifier. The `ID` and `ROOT_OBJECT_ID` fields are returned as strings. Retrieve descriptions of all storage fields using [disk.storage.getFields](./disk-storage-get-fields.md).
 
-## Working with Storage Contents
+## Relationship with Other Objects
 
-In the root of the storage, you can perform the following operations:
+A storage is the entry point for working with folders, files, and application data.
 
-- retrieve a list of files and folders using the [disk.storage.getChildren](./disk-storage-get-children.md) method
-- create a folder using the [disk.storage.addFolder](./disk-storage-add-folder.md) method
-- upload a file using the [disk.storage.uploadFile](./disk-storage-upload-file.md) method
+**Folders.** The `ROOT_OBJECT_ID` field contains the root folder identifier. [disk.storage.getChildren](./disk-storage-get-children.md) returns its contents, while [disk.storage.addFolder](./disk-storage-add-folder.md) creates a folder in it. For nested folders, use the [disk.folder.*](../folder/index.md) methods.
 
-To work with nested folders and files, use the [disk.folder.*](../folder/index.md) methods.
+**Files.** [disk.storage.uploadFile](./disk-storage-upload-file.md) uploads a file to the storage root. To continue working with the uploaded file, use its `ID` in the [disk.file.*](../file/index.md) methods.
 
-## How to Rename Storage
+**Application.** [disk.storage.getForApp](./disk-storage-get-for-app.md) returns the current application's storage. Only this storage can be renamed using [disk.storage.rename](./disk-storage-rename.md).
 
-You can only rename application storage — for this, use the [disk.storage.rename](./disk-storage-rename.md) method. Personal, company and group storages cannot be renamed.
+## Errors When Working with Storages
+
+Methods that accept a storage identifier return `ERROR_NOT_FOUND` if the storage is not found. If permissions are insufficient, read and modification methods return `ACCESS_DENIED`.
+
+The `disk.storage.getForApp` method returns `ACCESS_DENIED` outside the application context.
 
 ## Overview of Methods {#all-methods}
 

@@ -278,36 +278,52 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with the description of storage fields.
-
-The structure of the description for each field:
-- `TYPE` — data type of the field
-- `USE_IN_FILTER` — ability to use the field in filtering
-- `USE_IN_SHOW` — availability of the field when receiving a response ||
-|| **ID**
-[`integer`](../../data-types.md) | Identifier of the storage ||
-|| **NAME**
-[`string`](../../data-types.md) | Name of the storage ||
-|| **CODE**
-[`string`](../../data-types.md) | Symbolic code of the storage ||
-|| **MODULE_ID**
-[`string`](../../data-types.md) | Identifier of the module to which the storage belongs ||
-|| **ENTITY_TYPE**
-[`string`](../../data-types.md) | Type of the object associated with the storage.
-
-Possible values:
-- `user` — user storage
-- `common` — common documents storage
-- `group` — group storage  ||
-|| **ENTITY_ID**  
-[`string`](../../data-types.md) | Identifier of the object associated with the storage ||
-|| **ROOT_OBJECT_ID**
-[`integer`](../../data-types.md) | Identifier of the root folder of the storage ||
+[`object`](../../data-types.md) | Object containing storage field descriptions [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`object`](../../data-types.md) | Description of the "Storage identifier" field ||
+|| **NAME**
+[`object`](../../data-types.md) | Description of the "Storage name" field ||
+|| **CODE**
+[`object`](../../data-types.md) | Description of the "Storage symbolic code" field ||
+|| **MODULE_ID**
+[`object`](../../data-types.md) | Description of the "Module identifier" field ||
+|| **ENTITY_TYPE**
+[`object`](../../data-types.md) | Description of the "Type of the object associated with the storage" field ||
+|| **ENTITY_ID**  
+[`object`](../../data-types.md) | Description of the "Identifier of the object associated with the storage" field ||
+|| **ROOT_OBJECT_ID**
+[`object`](../../data-types.md) | Description of the "Storage root folder identifier" field ||
+|#
+
+Each field in the `result` object contains a description with the following structure.
+
+#### Field Description Structure
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TYPE**
+[`string`](../../data-types.md) | Field data type. Possible values: `integer`, `string` ||
+|| **USE_IN_FILTER**
+[`boolean`](../../data-types.md) | Indicates whether the field is available in the `filter` parameter of [disk.storage.getList](./disk-storage-get-list.md) ||
+|| **USE_IN_SHOW**
+[`boolean`](../../data-types.md) | Indicates whether the field is present in storage data ||
 |#
 
 ## Error Handling
+
+This method has no method-specific error codes.
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

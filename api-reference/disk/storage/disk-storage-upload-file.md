@@ -28,7 +28,7 @@ The method `disk.storage.uploadFile` uploads a new file to the root of the stora
 The identifier can be obtained using the method [disk.storage.getList](../storage/disk-storage-get-list.md)
 ||
 || **data***
-[`array`](../../data-types.md) | An array with the field `NAME`, where `NAME` is the name of the file ||
+[`object`](../../data-types.md) | New file parameters [(detailed description)](#data) ||
 || **fileContent***
 [`array`](../../data-types.md) | An array containing the file name and a string with [Base64](../../files/how-to-upload-files.md) ||
 || **rights**
@@ -55,6 +55,15 @@ Possible values:
 - `false` — do not generate
 
 Default is `false` ||
+|#
+
+### data Parameter {#data}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **NAME***
+[`string`](../../data-types.md) | File name. The maximum length is 255 characters. The name must not contain characters prohibited in file names ||
 |#
 
 ## Code Examples
@@ -404,7 +413,7 @@ HTTP Status: **200**
         "CREATED_BY": "1269",
         "UPDATED_BY": "1269",
         "DELETED_BY": null,
-        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=b8d880690000071b006e2cf2000004f50000078dbaf74c54ad1b4e4205aba7ab57a395&token=disk%7CaWQ9OTAzNSZfPWU5eXpWQXpsVmJrdFE0OTJ3azBKQzNFVFVMek5UMTRU%7CImRvd25sb2FkfGRpc2t8YVdROU9UQXpOU1pmUFdVNWVYcFdRWHBzVm1KcmRGRTBPVEozYXpCS1F6TkZWRlZNZWs1VU1UUlV8YjhkODgwNjkwMDAwMDcxYjAwNmUyY2YyMDAwMDA0ZjUwMDAwMDc4ZGJhZjc0YzU0YWQxYjRlNDIwNWFiYTdhYjU3YTM5NSI%3D.DJafMz5LAuRzlGbCxNLoGiCleoFwz1qGyj4iPf7n110%3D",
+        "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
         "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1269/disk/file/picture.png"
     },
     "time": {
@@ -426,7 +435,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array with file fields ||
+[`object`](../../data-types.md) | Object containing file fields ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the file ||
 || **NAME**
@@ -436,7 +445,7 @@ HTTP Status: **200**
 || **STORAGE_ID**
 [`integer`](../../data-types.md) | Identifier of the storage where the file is located ||
 || **TYPE**
-[`enum`](../../data-types.md) | Type of the object ||
+[`enum`](../../data-types.md) | Type of the object. The value is `file` ||
 || **PARENT_ID**
 [`integer`](../../data-types.md) | Identifier of the parent folder ||
 || **DELETED_TYPE**
@@ -489,7 +498,7 @@ HTTP Status: **400** or **403**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #0} | Required parameter not specified ||
 || `400` | `ERROR_NOT_FOUND` | Could not find entity with id `X` | Storage with the specified `id` not found ||
-|| `400` | `DISK_BASE_SERVICE_22001` | Error: required parameter NAME (DISK_BASE_SERVICE_22001) | Required parameter `NAME` not specified in the `data` array ||
+|| `400` | `DISK_BASE_SERVICE_22001` | Error: required parameter NAME (DISK_BASE_SERVICE_22001) | Required parameter `NAME` is missing from the `data` object ||
 || `400` | `ERROR_COULD_NOT_SAVE_FILE` | Could not save file | Failed to save the file. Check available space on the Drive and the correctness of the data encoding ||
 || `400` | Empty value | Invalid format: Right `N` should be array | The `rights` item at index `N` is not an array ||
 || `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE and TASK_ID | The `rights` item at index `N` does not contain `ACCESS_CODE` or `TASK_ID` ||

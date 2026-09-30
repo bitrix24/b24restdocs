@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with "Read" access permission for the required folder
 
-The method `disk.folder.getExternalLink` returns a public link to the folder.
+The method `disk.folder.getExternalLink` returns an active public link to the folder. If the link does not exist or has expired, the method creates a new one. While the link remains active, repeated calls return the same value.
 
 ## Method Parameters
 

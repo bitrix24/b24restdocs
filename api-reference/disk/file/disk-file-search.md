@@ -17,6 +17,8 @@ The method `disk.file.search` finds files and folders on Drive by a text query.
 
 The search works through an index that covers the names of files and folders, and for documents it also covers the text inside the file. The method does not find objects in the trash.
 
+Word matching rules are determined by the Bitrix24 full-text index. The method does not guarantee matching by the beginning of a word or all word forms, so do not use such matches as a condition in business logic.
+
 The result includes only the objects the current user has read access to. The method does not return objects from storages without internal access permissions — for example, from the storages of other modules. Chat folders are excluded from the results.
 
 The method rejects a query shorter than three characters, so it is not suitable for suggestions based on the first few characters entered. To walk through a known structure, use the [disk.storage.getChildren](../storage/disk-storage-get-children.md) and [disk.folder.getChildren](../folder/disk-folder-get-children.md) methods, and if the file identifier is already known — [disk.file.get](./disk-file-get.md).
@@ -349,7 +351,7 @@ HTTP status: **200**
             "CREATED_BY": "1",
             "UPDATED_BY": "1",
             "DELETED_BY": "0",
-            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=**put_access_token_here**&token=disk%7CaWQ9MTI3NyZfPXVqVGJUMmxoclBOb0JmQjVLWmxyWnRISWFTQ2M5V2hT",
+            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
             "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1/disk/file/Uploaded files/Imported files/Klaus Weber - Software Testing.pdf"
         }
     ],
@@ -472,7 +474,7 @@ The response of the first page, with `result` in the example shortened to 2 obje
             "CREATED_BY": "1",
             "UPDATED_BY": "1",
             "DELETED_BY": "0",
-            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=**put_access_token_here**&token=disk%7CaWQ9OTczOSZfPTFEU1hGMGtkY3E2Q3FZUTIyM2tiV3R6Tk5jZHgxMzR2",
+            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
             "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1/disk/file/Reports/report-51.txt"
         },
         {
@@ -492,7 +494,7 @@ The response of the first page, with `result` in the example shortened to 2 obje
             "CREATED_BY": "1",
             "UPDATED_BY": "1",
             "DELETED_BY": "0",
-            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=**put_access_token_here**&token=disk%7CaWQ9OTczNyZfPTBmQlVlRDFCMTA0ajNhc3ZwbFdVRnhXNUg1MFpha3JO",
+            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
             "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1/disk/file/Reports/report-50.txt"
         }
     ],
@@ -542,7 +544,7 @@ On the last page, the response has no `next` field:
             "CREATED_BY": "1",
             "UPDATED_BY": "1",
             "DELETED_BY": "0",
-            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?auth=**put_access_token_here**&token=disk%7CaWQ9OTYzOSZfPXFPZWc1bnBGZFFPcXd0anlzd3BHN2VEQ3c4UXlGdk5l",
+            "DOWNLOAD_URL": "https://test.bitrix24.com/rest/download.json?...",
             "DETAIL_URL": "https://test.bitrix24.com/company/personal/user/1/disk/file/Reports/report-01.txt"
         }
     ],

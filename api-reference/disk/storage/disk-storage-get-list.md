@@ -56,7 +56,7 @@ Possible prefix values:
 - `!=` — not equal
 - `!` — not equal
 
-The list of fields available for filtering can be obtained using the method [disk.storage.getFields](./disk-storage-get-fields.md) ||
+The list of fields available for filtering can be obtained using [disk.storage.getFields](./disk-storage-get-fields.md). The method ignores fields that are not in this list ||
 || **order**
 [`array`](../../data-types.md) | Array format:
 
@@ -405,7 +405,7 @@ HTTP Status: **200**
 
 An empty array means that the user does not have access to storages or there are no records that meet the filter criteria ||
 || **ID**
-[`integer`](../../data-types.md) | Storage identifier ||
+[`string`](../../data-types.md) | Storage identifier ||
 || **NAME**
 [`string`](../../data-types.md) | Storage name ||
 || **CODE**
@@ -422,7 +422,7 @@ Possible values:
 || **ENTITY_ID**
 [`string`](../../data-types.md) | Identifier of the object associated with the storage ||
 || **ROOT_OBJECT_ID**
-[`integer`](../../data-types.md) | Identifier of the root folder of the storage ||
+[`string`](../../data-types.md) | Identifier of the root folder of the storage ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
@@ -430,6 +430,24 @@ Possible values:
 |#
 
 ## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "100",
+    "error_description": "Unknown field definition `NOT_A_FIELD` (NOT_A_FIELD) for \\Bitrix\\Disk\\Internals\\Storage Entity."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Unknown field definition `FIELD` (`FIELD`) for \Bitrix\Disk\Internals\Storage Entity. | The `order` parameter contains a field that does not exist in the storage ||
+|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

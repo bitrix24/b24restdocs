@@ -28,7 +28,7 @@ The method `disk.storage.addFolder` creates a folder in the root of the storage.
 The identifier can be obtained using the method [disk.storage.getList](./disk-storage-get-list.md)
 ||
 || **data***
-[`array`](../../data-types.md) | Array with the field `NAME`, where `NAME` is the name of the new folder ||
+[`object`](../../data-types.md) | New folder parameters [(detailed description)](#data) ||
 || **rights**
 [`array`](../../data-types.md) | Array of access permissions for the folder. Each item contains:
 
@@ -45,6 +45,15 @@ User categories:
 The list of available `TASK_ID` identifiers for setting permissions can be obtained using the method [disk.rights.getTasks](../rights/disk-rights-get-tasks.md).
 
 Additional fields, including `DOMAIN` and `OBJECT_ID`, are ignored ||
+|#
+
+### data Parameter {#data}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **NAME***
+[`string`](../../data-types.md) | New folder name. The maximum length is 255 characters. The name must not contain characters prohibited in file names ||
 |#
 
 ## Code Examples
@@ -378,7 +387,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array with data about the created folder ||
+[`object`](../../data-types.md) | Object containing data about the created folder ||
 || **ID**
 [`integer`](../../data-types.md) | Folder identifier ||
 || **NAME**
@@ -388,7 +397,7 @@ HTTP status: **200**
 || **STORAGE_ID**
 [`integer`](../../data-types.md) | Identifier of the storage where the folder is located ||
 || **TYPE**
-[`enum`](../../data-types.md) | Type of the object ||
+[`enum`](../../data-types.md) | Type of the object. The value is `folder` ||
 || **REAL_OBJECT_ID**
 [`integer`](../../data-types.md) | Identifier of the object ||
 || **PARENT_ID**
@@ -433,7 +442,10 @@ HTTP status: **400** or **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | The required field `NAME` is missing in the `data` array ||
+|| `400` | `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `data` is missing ||
+|| `400` | `DISK_BASE_SERVICE_22001` | Error: required parameter NAME (DISK_BASE_SERVICE_22001) | Required field `NAME` is missing from the `data` object or an empty value was provided ||
+|| `400` | `DISK_MO_28000` | The name contains invalid characters | `NAME` contains characters prohibited in file names ||
+|| `400` | `DISK_MO_28000` | The maximum length for the "Name" field has been exceeded: 255 | The `NAME` length exceeds 255 characters ||
 || `400` | `DISK_OBJ_22000` | A folder with this name already exists | A folder with this name already exists ||
 || `400` | `ERROR_NOT_FOUND` | Could not find entity with id `X` | Storage with the specified `id` not found ||
 || `400` | Empty value | Invalid format: Right `N` should be array | The `rights` item at index `N` is not an array ||

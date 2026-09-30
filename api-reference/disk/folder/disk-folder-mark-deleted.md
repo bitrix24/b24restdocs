@@ -86,9 +86,9 @@ You cannot move the root folder of the storage to the trash.
       REAL_OBJECT_ID: string
       PARENT_ID: string
       DELETED_TYPE: number
-      CREATE_TIME: ISODate | null
-      UPDATE_TIME: ISODate | null
-      DELETE_TIME: ISODate | null
+      CREATE_TIME: ISODate
+      UPDATE_TIME: ISODate
+      DELETE_TIME: ISODate
       CREATED_BY: string
       UPDATED_BY: string
       DELETED_BY: string
@@ -308,7 +308,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with data about the moved folder in the trash ||
+[`object`](../../data-types.md) | Object containing data about the folder moved to the trash ||
 || **ID**
 [`integer`](../../data-types.md) | Folder identifier ||
 || **NAME**

@@ -310,45 +310,64 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with the description of folder fields.
-
-The structure of each field description:
-- `TYPE` — data type of the field
-- `USE_IN_FILTER` — ability to use the field for filtering
-- `USE_IN_SHOW` — availability of the field when receiving a response ||
-|| **ID**
-[`integer`](../../data-types.md) | Folder identifier ||
-|| **NAME**
-[`string`](../../data-types.md) | Folder name ||
-|| **TYPE**
-[`enum`](../../data-types.md) | Object type ||
-|| **CODE**
-[`string`](../../data-types.md) | Symbolic code of the folder ||
-|| **STORAGE_ID**
-[`integer`](../../data-types.md) | Identifier of the storage where the folder is located ||
-|| **REAL_OBJECT_ID**
-[`integer`](../../data-types.md) | Object identifier ||
-|| **PARENT_ID**
-[`integer`](../../data-types.md) | Identifier of the parent folder ||
-|| **CREATE_TIME**
-[`datetime`](../../data-types.md) | Date and time of folder creation ||
-|| **UPDATE_TIME**
-[`datetime`](../../data-types.md) | Date and time of the last update of the folder ||
-|| **DELETE_TIME**
-[`datetime`](../../data-types.md) | Date and time of moving the folder to the trash ||
-|| **CREATED_BY**
-[`integer`](../../data-types.md) | Identifier of the user who created the folder ||
-|| **UPDATED_BY**
-[`integer`](../../data-types.md) | Identifier of the user who made the last change ||
-|| **DELETED_BY**
-[`integer`](../../data-types.md) | Identifier of the user who deleted the folder ||
-|| **DELETED_TYPE**
-[`enum`](../../data-types.md) | Deletion status of the object ||
+[`object`](../../data-types.md) | Object containing folder field descriptions [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`object`](../../data-types.md) | Description of the "Folder identifier" field ||
+|| **NAME**
+[`object`](../../data-types.md) | Description of the "Folder name" field ||
+|| **TYPE**
+[`object`](../../data-types.md) | Description of the "Object type" field ||
+|| **CODE**
+[`object`](../../data-types.md) | Description of the "Folder symbolic code" field ||
+|| **STORAGE_ID**
+[`object`](../../data-types.md) | Description of the "Storage identifier" field ||
+|| **REAL_OBJECT_ID**
+[`object`](../../data-types.md) | Description of the "Object identifier" field ||
+|| **PARENT_ID**
+[`object`](../../data-types.md) | Description of the "Parent folder identifier" field ||
+|| **CREATE_TIME**
+[`object`](../../data-types.md) | Description of the "Folder creation date and time" field ||
+|| **UPDATE_TIME**
+[`object`](../../data-types.md) | Description of the "Folder last update date and time" field ||
+|| **DELETE_TIME**
+[`object`](../../data-types.md) | Description of the "Date and time the folder was moved to the trash" field ||
+|| **CREATED_BY**
+[`object`](../../data-types.md) | Description of the "Identifier of the user who created the folder" field ||
+|| **UPDATED_BY**
+[`object`](../../data-types.md) | Description of the "Identifier of the user who changed the folder" field ||
+|| **DELETED_BY**
+[`object`](../../data-types.md) | Description of the "Identifier of the user who deleted the folder" field ||
+|| **DELETED_TYPE**
+[`object`](../../data-types.md) | Description of the "Object deletion status" field ||
+|#
+
+Each field in the `result` object contains a description with the following structure.
+
+#### Field Description Structure
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TYPE**
+[`string`](../../data-types.md) | Field data type. Possible values: `integer`, `string`, `enum`, `datetime` ||
+|| **USE_IN_FILTER**
+[`boolean`](../../data-types.md) | Indicates whether the field is available for filtering ||
+|| **USE_IN_SHOW**
+[`boolean`](../../data-types.md) | Indicates whether the field is present in folder data ||
 |#
 
 ## Error Handling
+
+This method has no method-specific error codes.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

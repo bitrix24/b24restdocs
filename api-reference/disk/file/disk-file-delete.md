@@ -257,7 +257,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the file was successfully deleted ||
+[`boolean`](../../data-types.md) | Deletion result. Returns `true` if the file was deleted and `false` if an internal error occurred during deletion ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -289,6 +289,7 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./disk-file-copy-to.md)
 - [{#T}](./disk-file-get-external-link.md)
 - [{#T}](./disk-file-get-fields.md)

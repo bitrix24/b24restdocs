@@ -27,7 +27,7 @@ The method `disk.folder.rename` renames a folder.
 
 The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is located at the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is located in another folder ||
 || **newName***
-[`string`](../../data-types.md) | New name of the folder ||
+[`string`](../../data-types.md) | New folder name. The maximum length is 255 characters. The name must not contain characters prohibited in file names ||
 |#
 
 ## Code Examples
@@ -305,7 +305,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array with folder data ||
+[`object`](../../data-types.md) | Object containing folder data ||
 || **ID**
 [`integer`](../../data-types.md) | Folder identifier ||
 || **NAME**
@@ -361,6 +361,8 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `id` or `newName` is missing ||
+|| `DISK_MO_28001` | The name contains invalid characters | `newName` contains characters prohibited in file names ||
+|| `DISK_MO_28001` | The maximum length for the "Name" field has been exceeded: 255 | The `newName` length exceeds 255 characters ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
 || `ACCESS_DENIED` | Access denied | Insufficient permissions to rename the folder ||
 |#
