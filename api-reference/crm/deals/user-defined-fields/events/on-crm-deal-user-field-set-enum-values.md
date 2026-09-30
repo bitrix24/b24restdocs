@@ -13,7 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `onCrmDealUserFieldSetEnumValues` will trigger when the set of values for a custom list-type field is changed.
+The event `onCrmDealUserFieldSetEnumValues` will trigger when the set of values for a custom field of the `enumeration` (list) type is saved:
+
+- when such a field is added manually or via the [crm.deal.userfield.add](../crm-deal-userfield-add.md) method
+- when the list is changed manually or via the [crm.deal.userfield.update](../crm-deal-userfield-update.md) method with the `LIST` parameter
+
+The event arrives together with [onCrmDealUserFieldAdd](./on-crm-deal-user-field-add.md) or [onCrmDealUserFieldUpdate](./on-crm-deal-user-field-update.md). Bitrix24 sends it every time the list is saved, even if the values have not changed.
 
 The event refers to the set of values in the list-type field configuration, rather than the value selected for this field in a specific deal.
 
@@ -42,7 +47,6 @@ Data is transmitted as a POST request {.b24-info}
         "status": "L",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "a223c6b3710f85df22e9377d6c4f7553",
-        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
         "application_token": "51856fefc120afa4b628cc82d3935cce"
     }
 }
@@ -62,7 +66,7 @@ In this case — `ONCRMDEALUSERFIELDSETENUMVALUES` ||
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | An object containing properties of a list-type custom field.
+[`object`](../../../../data-types.md) | An object with the ID and code of the list-type custom field.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -81,10 +85,12 @@ The structure is described [below](#auth) ||
 || **ID**
 [`integer`](../../../../data-types.md) | Identifier of the custom list-type field ||
 || **ENTITY_ID**
-[`string`](../../../../data-types.md) | Symbolic identifier of the object for which the list-type field was updated. In this case — `CRM_DEAL` ||
+[`string`](../../../../data-types.md) | Symbolic code of the object the field belongs to. In this case — `CRM_DEAL` ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the updated custom list-type field ||
+[`string`](../../../../data-types.md) | Custom field code with the `UF_CRM_` prefix ||
 |#
+
+The list values are not included in the event. To retrieve the current set of values, call the [crm.deal.userfield.get](../crm-deal-userfield-get.md) method with the `ID` from the event — the values are returned in the `LIST` key.
 
 ### Parameter auth {#auth}
 
@@ -94,6 +100,7 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-crm-deal-user-field-add.md)
-- [{#T}](./on-crm-deal-user-field-delete.md)
 - [{#T}](./on-crm-deal-user-field-update.md)
+- [{#T}](./on-crm-deal-user-field-delete.md)

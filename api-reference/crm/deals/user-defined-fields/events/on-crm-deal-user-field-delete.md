@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `onCrmDealUserFieldDelete` event will trigger when a custom field is deleted.
+The `onCrmDealUserFieldDelete` event will trigger when a custom field is deleted manually or via the [crm.deal.userfield.delete](../crm-deal-userfield-delete.md) method.
 
 The event refers to the configuration of a custom field rather than the value of this field in a specific deal.
 
@@ -42,7 +42,6 @@ Data is transmitted as a POST request {.b24-info}
         "status": "L",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "a223c6b3710f85df22e9377d6c4f7553",
-        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
         "application_token": "51856fefc120afa4b628cc82d3935cce"
     }
 }
@@ -62,7 +61,7 @@ In this case — `ONCRMDEALUSERFIELDDELETE` ||
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | An object containing custom field properties.
+[`object`](../../../../data-types.md) | An object with the ID and code of the custom field.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -81,10 +80,12 @@ The structure is described [below](#auth) ||
 || **ID**
 [`integer`](../../../../data-types.md) | Identifier of the custom field ||
 || **ENTITY_ID**
-[`string`](../../../../data-types.md) | Symbolic identifier of the object for which the field was deleted. In this case — `CRM_DEAL` ||
+[`string`](../../../../data-types.md) | Symbolic code of the object the field belongs to. In this case — `CRM_DEAL` ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the deleted custom field ||
+[`string`](../../../../data-types.md) | Custom field code with the `UF_CRM_` prefix ||
 |#
+
+The settings of the deleted field are not included in the event and cannot be retrieved after deletion: the [crm.deal.userfield.get](../crm-deal-userfield-get.md) method with the `ID` from the event returns the `ERROR_NOT_FOUND` error.
 
 ### Parameter auth {#auth}
 
@@ -94,6 +95,7 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-crm-deal-user-field-add.md)
-- [{#T}](./on-crm-deal-user-field-set-enum-values.md)
 - [{#T}](./on-crm-deal-user-field-update.md)
+- [{#T}](./on-crm-deal-user-field-set-enum-values.md)

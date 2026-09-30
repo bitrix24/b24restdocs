@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `onCrmDealUserFieldAdd` event will trigger when a custom field is added.
+The `onCrmDealUserFieldAdd` event will trigger when a custom field is added manually or via the [crm.deal.userfield.add](../crm-deal-userfield-add.md) method.
 
 The event refers to the configuration of a custom field, rather than the value of this field in a specific deal.
 
@@ -42,7 +42,6 @@ Data is transmitted as a POST request {.b24-info}
         "status": "L",
         "client_endpoint": "https://some-domain.bitrix24.com/rest/",
         "member_id": "a223c6b3710f85df22e9377d6c4f7553",
-        "refresh_token": "4s386p3q0tr8dy89xvmt96234v3dljg8",
         "application_token": "51856fefc120afa4b628cc82d3935cce"
     }
 }
@@ -58,11 +57,11 @@ In this case — `ONCRMDEALUSERFIELDADD` ||
 || **event_handler_id**
 [`integer`](../../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../../data-types.md) | Object containing information about the created custom field.
+[`object`](../../../../data-types.md) | Object containing information about the added custom field.
 
 Contains a single key `FIELDS` ||
 || **data.FIELDS**
-[`object`](../../../../data-types.md) | An object containing custom field properties.
+[`object`](../../../../data-types.md) | An object with the ID and code of the custom field.
 
 The structure is described [below](#fields) ||
 || **ts**
@@ -81,10 +80,14 @@ The structure is described [below](#auth) ||
 || **ID**
 [`integer`](../../../../data-types.md) | Identifier of the custom field ||
 || **ENTITY_ID**
-[`string`](../../../../data-types.md) | Character identifier of the object for which the field was created. In this case — `CRM_DEAL` ||
+[`string`](../../../../data-types.md) | Symbolic code of the object the field belongs to. In this case — `CRM_DEAL` ||
 || **FIELD_NAME**
-[`string`](../../../../data-types.md) | Name of the created custom field ||
+[`string`](../../../../data-types.md) | Custom field code with the `UF_CRM_` prefix ||
 |#
+
+The field type, its settings, and the list values are not included in the event. To retrieve them, call the [crm.deal.userfield.get](../crm-deal-userfield-get.md) method with the `ID` from the event.
+
+If a field of the `enumeration` type is added via the `crm.deal.userfield.add` method, the [onCrmDealUserFieldSetEnumValues](./on-crm-deal-user-field-set-enum-values.md) event follows — even if the `LIST` parameter is not passed.
 
 ### Parameter auth {#auth}
 
@@ -94,6 +97,7 @@ The structure is described [below](#auth) ||
 
 - [{#T}](../../../../events/index.md)
 - [{#T}](../../../../events/event-bind.md)
+- [{#T}](./index.md)
+- [{#T}](./on-crm-deal-user-field-update.md)
 - [{#T}](./on-crm-deal-user-field-delete.md)
 - [{#T}](./on-crm-deal-user-field-set-enum-values.md)
-- [{#T}](./on-crm-deal-user-field-update.md)
