@@ -9,9 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The Knowledge Base can be embedded into the Bitrix24 interface in two ways: by displaying it in the menu or linking it to a group. This will help employees find the necessary articles and instructions more quickly.
+The Knowledge Base can be embedded into the Bitrix24 interface in two ways: by displaying it in the menu or linking it to a group.
 
-For example, the department's Knowledge Base can be linked to a group so that employees can read instructions and regulations within the group's workspace. If the Knowledge Base is needed by all employees, it can be displayed in a specific menu.
+Other embedding locations in the Sites section are registered with the [landing.repo.bind](../landing-repo-bind.md) method and are described in the [Embedding Locations in the Sites Section](../index.md) overview. The Knowledge Base is bound with the separate methods listed below because the `landing` module represents it as a separate site.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -19,37 +19,37 @@ For example, the department's Knowledge Base can be linked to a group so that em
 
 ## How to Manage Knowledge Base Embedding
 
-The Knowledge Base can be embedded into the Bitrix24 interface and managed accordingly. There are two main options: add the Knowledge Base to the menu or link it to a group.
-
 **Linking to the Menu.** This option is suitable if the Knowledge Base needs to be accessible from the same location in the interface. For example, the Knowledge Base with sales scripts can be added to the deals list. This way, the manager can access it from the deals section without switching to another area.
 
 To set up the link:
 
-1. Obtain the site ID of the Knowledge Base using the [landing.site.getList](../../site/landing-site-get-list.md) method.
-2. Define `menuCode` — the code of the location in the interface where the Knowledge Base should be added. Instructions on how to find the code are described in the parameters of the [landing.site.bindingToMenu](./landing-site-binding-to-menu.md) method.
+1. Retrieve the Knowledge Base site ID with the [landing.site.getList](../../site/landing-site-get-list.md#type-scope) method and the `scope: "KNOWLEDGE"` parameter.
+2. Determine the menu code `menuCode`, for example `crm_switcher:deal`. How to retrieve it is described in the parameters of the [landing.site.bindingToMenu](./landing-site-binding-to-menu.md) method.
 3. Execute the link using the [landing.site.bindingToMenu](./landing-site-binding-to-menu.md) method.
-4. Check the result using the [landing.site.getMenuBindings](./landing-site-get-menu-bindings.md) method. If the method returns `false`, check the bindings — the Knowledge Base may already be linked to the menu.
-5. If the link is no longer needed, it can be removed using the [landing.site.unbindingFromMenu](./landing-site-unbinding-from-menu.md) method.
+4. Check the result with the [landing.site.getMenuBindings](./landing-site-get-menu-bindings.md) method and the same `menuCode`: the binding should appear in the list.
+5. Remove the binding with the [landing.site.unbindingFromMenu](./landing-site-unbinding-from-menu.md) method if it is no longer needed.
 
-**Linking to a Group.** This option is suitable if the Knowledge Base is only needed by members of a specific group. It can be used for departments that have their own instructions, templates, and regulations.
-
-For example, the support service's Knowledge Base can be linked to the department's group. This way, employees can read instructions and response templates within the group's workspace without searching through other sections.
+**Linking to a Group.** This option is suitable if the Knowledge Base is only needed by members of a specific group. For example, a department's Knowledge Base can be linked to the department's group so that employees can read instructions and regulations within the group's workspace. Only one Knowledge Base can be linked to a group.
 
 To set up the link:
 
-1. Obtain the site ID of the Knowledge Base using the [landing.site.getList](../../site/landing-site-get-list.md) method.
-2. Get the `groupId` of the group from the group interface or using the [socialnetwork.api.workgroup.list](../../../sonet-group/socialnetwork-api-workgroup-list.md) or [sonet_group.get](../../../sonet-group/sonet-group-get.md) methods.
+1. Retrieve the Knowledge Base site ID with the [landing.site.getList](../../site/landing-site-get-list.md#type-scope) method and the `scope: "KNOWLEDGE"` parameter.
+2. Retrieve the group ID `groupId` with the [socialnetwork.api.workgroup.list](../../../sonet-group/socialnetwork-api-workgroup-list.md) or [sonet_group.get](../../../sonet-group/sonet-group-get.md) method. It is also shown in the group interface.
 3. Execute the link using the [landing.site.bindingToGroup](./landing-site-binding-to-group.md) method.
-4. Check the result using the [landing.site.getGroupBindings](./landing-site-get-group-bindings.md) method. If the method returns `false`, check the bindings: only one Knowledge Base can be linked to a single group.
-5. If the link is no longer needed, it can be removed using the [landing.site.unbindingFromGroup](./landing-site-unbinding-from-group.md) method.
+4. Check the result with the [landing.site.getGroupBindings](./landing-site-get-group-bindings.md) method and the same `groupId`: the binding should appear in the list.
+5. Remove the binding with the [landing.site.unbindingFromGroup](./landing-site-unbinding-from-group.md) method if it is no longer needed.
+
+The binding and unbinding methods do not return an error when the action is not performed: they respond with `false`. The reasons are listed on the method pages.
 
 ## Relationships with Other Objects
 
-**Site.** The Knowledge Base is represented as a separate site in the `landing` module. The site ID `id` is needed for the linking and unlinking methods.
+The Knowledge Base is related to sites of the `landing` module, menus, and Bitrix24 groups.
 
-**Interface Menu.** The `menuCode` parameter is used for linking to the menu. It determines where in the interface the Knowledge Base will be accessible.
+**Site.** A Knowledge Base is a `landing` module site of the `KNOWLEDGE` type. How the site type affects the `scope` parameter in site methods is described in [Working with Site Types and Scopes](../../types.md).
 
-**Group.** The `groupId` parameter is used for linking to a group. It specifies which group the Knowledge Base will be associated with.
+**Group.** When bound to a group, the Knowledge Base gets the `GROUP` type, and site methods find it only with `scope: "GROUP"`. After unbinding, the type changes back to `KNOWLEDGE`. That is why the `id` for [landing.site.unbindingFromGroup](./landing-site-unbinding-from-group.md) is taken from the [landing.site.getGroupBindings](./landing-site-get-group-bindings.md) response.
+
+**Menu.** The `menuCode` parameter sets the location in the interface. One Knowledge Base can be bound to several menus: call [landing.site.bindingToMenu](./landing-site-binding-to-menu.md) with a separate `menuCode` for each.
 
 ## Overview of Methods {#all-methods}
 

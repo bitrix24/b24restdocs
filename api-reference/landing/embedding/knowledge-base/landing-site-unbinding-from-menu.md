@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with View permission in the Sites section and Placement permission in the Extensions section of the Knowledge Base
+> Who can execute the method: a user with the "View" permission in the "Sites" area and the "Add to Extensions menu" permission in the "Knowledge Base" section
 
-The method `landing.site.unbindingFromMenu` removes the binding of the Knowledge Base from the specified menu.
+The method `landing.site.unbindingFromMenu` unbinds the Knowledge Base from the specified menu. Bindings of this Knowledge Base to other menus and the Knowledge Base itself are retained.
 
 ## Method Parameters
 
@@ -25,12 +25,14 @@ The method `landing.site.unbindingFromMenu` removes the binding of the Knowledge
 || **id**^*^
 [`integer`](../../../data-types.md) | Identifier of the Knowledge Base site.
 
-`id` can be obtained, for example, from the method [landing.site.getList](../../site/landing-site-get-list.md) in the `ID` field ||
+`id` can be retrieved:
+- from the `ENTITY_ID` field of the [landing.site.getMenuBindings](./landing-site-get-menu-bindings.md) method
+- from the `ID` field of the [landing.site.getList](../../site/landing-site-get-list.md#type-scope) method with the `scope: "KNOWLEDGE"` parameter — without it, `landing.site.getList` does not return Knowledge Bases ||
 || **menuCode**^*^
 [`string`](../../../data-types.md) | Menu code.
 
 `menuCode` can be obtained:
-- in the interface through the "Select Knowledge Base" option: in the URL of the opened frame, the `menuId` parameter contains the menu code (for example, `menuId=crm_switcher:deal`)
+- in the interface through the "Select Knowledge Base" option: in the URL of the opened frame, the `menuId` parameter contains the menu code, for example `menuId=crm_switcher:deal`
 - from the result of the method [landing.site.getMenuBindings](./landing-site-get-menu-bindings.md) in the `BINDING_ID` field ||
 |#
 
@@ -164,6 +166,7 @@ Example of unbinding the Knowledge Base from the menu, where:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -278,6 +281,24 @@ HTTP Status: **200**
 }
 ```
 
+If the binding is not removed:
+
+```json
+{
+    "result": false,
+    "time": {
+        "start": 1774952712,
+        "finish": 1774952712.384215,
+        "duration": 0.38421511650085449,
+        "processing": 0,
+        "date_start": "2026-03-31T13:25:12+03:00",
+        "date_finish": "2026-03-31T13:25:12+03:00",
+        "operating_reset_at": 1774953312,
+        "operating": 0
+    }
+}
+```
+
 ### Returned Data
 
 #|
@@ -287,7 +308,14 @@ HTTP Status: **200**
 [`boolean`](../../../data-types.md) | Result of the unbinding:
 
 - `true` — binding removed
-- `false` — binding not removed ||
+- `false` — binding not removed
+
+The method returns `false` without an error if:
+- no Knowledge Base site with the specified `id` is found, or the user does not have permission to view it
+- the user does not have the "Add to Extensions menu" permission in the "Knowledge Base" section
+- this Knowledge Base is not bound to the `menuCode` menu
+
+A `false` response does not distinguish between these cases. You can check the current bindings with the [landing.site.getMenuBindings](./landing-site-get-menu-bindings.md) method ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -299,7 +327,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "MISSING_PARAMS",
-    "error_description": "Not enough parameters for the call, missing: menuCode"
+    "error_description": "Some of the call parameters were missing: menuCode"
 }
 ```
 
@@ -308,11 +336,13 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `MISSING_PARAMS` | Not enough parameters for the call, missing: menuCode | Method call without `menuCode` ||
-|| `MISSING_PARAMS` | Not enough parameters for the call, missing: id | Method call without `id` ||
-|| `TYPE_ERROR` | Bitrix\\Landing\\PublicAction\\Site::unbindingFromMenu(): Argument #1 ($id) must be of type int, string given | Values provided are incompatible with the method signature ||
-|| `ACCESS_DENIED` | Insufficient permissions | User did not pass general access checks ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `MISSING_PARAMS` | Some of the call parameters were missing: menuCode | Method call without `menuCode` ||
+|| `400` | `MISSING_PARAMS` | Some of the call parameters were missing: id | Method call without `id` ||
+|| `400` | `TYPE_ERROR` | — | A non-numeric value, such as `abc`, is passed in `id` ||
+|| `400` | `TYPE_ERROR` | Invalid type of the call argument: id | The `id` parameter is passed as an array ||
+|| `400` | `TYPE_ERROR` | Invalid type of the call argument: menuCode | The `menuCode` parameter is passed as an array ||
+|| `400` | `ACCESS_DENIED` | Insufficient permission. | The method is called by an extranet user, or the user does not have the "View" permission in the "Sites" area ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

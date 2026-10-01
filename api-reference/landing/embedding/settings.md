@@ -13,24 +13,35 @@ Choose a tool for developing with an AI agent:
 
 The `LANDING_SETTINGS` widget adds an application item to the site or page settings menu in edit mode.
 
-The `landing` section uses the internal [landing.repo.bind](./landing-repo-bind.md) method for embedding, not [placement.bind](../../widgets/placement-bind.md).
+Use it when the application works with an entire site or page. For example, when it:
+
+- checks the page meta tags and headings before publishing
+- sends the page for external moderation or approval
+
+If the action applies to a single block, use [LANDING_BLOCK_<CODE> or LANDING_BLOCK_*](./block.md).
+
+The embedding location is registered with the [landing.repo.bind](./landing-repo-bind.md) method, not [placement.bind](../../widgets/placement-bind.md). The method works only in the application context; the embedding location cannot be registered through a webhook.
 
 {% note info "" %}
 
-The embedding will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
+The embedding location will not be displayed in the interface until the application installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
 
 {% endnote %}
 
 ## Where the Widget is Embedded
 
 #| 
-|| **Widget Code** | **Location** ||
+|| **Embedding Location Code** | **Location** ||
 || `LANDING_SETTINGS` | Item in the site or page settings menu ||
 |#
 
 ### Where to Find It in the Interface
 
-Open the site or page in edit mode. In the upper right corner, go to *Site Capabilities > Settings (⚙️)*. The application item with `PLACEMENT=LANDING_SETTINGS` appears as the last item in the left slider menu.
+Open the site or page in edit mode. In the upper right corner, go to *Site Capabilities > Settings*. Application items appear at the end of the left slider menu, with newer items above older ones. The item label is the `TITLE` value from the registration: if it is empty, the item appears without a label, and the application name is not substituted.
+
+Site settings and page settings open in the same slider, so the application has one item for both sections. The item is visible to everyone who opens the settings slider, even without permission to change the settings.
+
+Application items are not displayed in the settings of the Main Page, a site of type `VIBE`.
 
 ## What the Handler Receives
 
@@ -52,7 +63,7 @@ Array
     [member_id] => abcdef1234567890abcdef1234567890
     [status] => F
     [PLACEMENT] => LANDING_SETTINGS
-    [PLACEMENT_OPTIONS] => {"SITE_ID":"30","LID":"30"}
+    [PLACEMENT_OPTIONS] => {"SITE_ID":"12","LID":"30"}
 )
 ```
 
@@ -60,23 +71,29 @@ Array
 
 {% include notitle [Description of Standard Data](../../widgets/_includes/widget_data.md) %}
 
-### Additional Data
-
-#| 
-|| **Parameter** `type` | **Description** ||
-|| **APPLICATION_SCOPE** [`string`](../../data-types.md) | List of scopes available to the application ||
-|| **APPLICATION_TOKEN** [`string`](../../data-types.md) | Application token for secure event handling ||
-|| **SERVER_ENDPOINT** [`string`](../../data-types.md) | Bitrix24 authorization server address needed for updating OAuth 2.0 tokens ||
-|#
-
-### PLACEMENT_OPTIONS
+### PLACEMENT_OPTIONS {#placement-options}
 
 The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
 
 For `LANDING_SETTINGS`, the following keys are passed in the context:
 
-- `SITE_ID` — the identifier of the site where the widget is opened
-- `LID` — the identifier of the page from which the widget was called in edit mode
+#| 
+|| **Key**
+`type` | **Description** ||
+|| **SITE_ID**
+[`string`](../../data-types.md) | Identifier of the site whose settings the widget is opened in ||
+|| **LID**
+[`string`](../../data-types.md) | Identifier of the page whose editor the settings were opened from. If the settings were opened without reference to a page, `0` is passed ||
+|| **URI**
+[`string`](../../data-types.md) | Path with the query string of the page from which the widget was opened. If the page address cannot be determined, the key is not passed ||
+|#
+
+The handler retrieves site and page data by the identifiers from `PLACEMENT_OPTIONS`:
+
+- the site — with the [landing.site.getList](../site/landing-site-get-list.md) method filtered by `ID`, and its additional fields — with the [landing.site.getadditionalfields](../site/landing-site-get-additional-fields.md) method
+- the page — with the [landing.landing.getList](../page/methods/landing-landing-get-list.md) method filtered by `ID`, and its meta tags and other additional fields — with the [landing.landing.getadditionalfields](../page/methods/landing-landing-get-additional-fields.md) method
+
+If the settings are opened for a Knowledge Base or a group site, pass the `scope` parameter to these methods, otherwise they will not find the site. The values are described in [Working with Site Types and Scopes](../types.md).
 
 ## Code Examples
 
@@ -205,6 +222,7 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -223,11 +241,7 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
             );
 
         $result = $response->getResponseData()->getResult();
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Success: ' . var_export($result, true);
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error binding landing settings: ' . $e->getMessage();
@@ -293,8 +307,8 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
     	return fmt.Errorf("landing.repo.bind: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response arrives as json.RawMessage. On success, result = true.
+    // The response shape is described on the landing.repo.bind method page.
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -303,6 +317,9 @@ For `LANDING_SETTINGS`, the following keys are passed in the context:
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./landing-repo-bind.md)
 - [{#T}](./landing-repo-unbind.md)
-- [{#T}](../../widgets/ui-interaction/index.md)
+- [{#T}](../page/methods/landing-landing-get-additional-fields.md)
+- [{#T}](../site/landing-site-get-additional-fields.md)
+- [{#T}](./block.md)
 - [{#T}](../../widgets/bx24-widget-methods.md)

@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`landing`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with View access permission in the Sites section
+> Who can execute the method: a user with the "View" permission in the "Sites" area
 
 The method `landing.repo.unbind` removes the embedding placement registered by the current application in the `landing` section.
+
+{% note info "" %}
+
+The method works only in the context of an [application](../../../settings/app-installation/index.md). When called through a webhook, it removes nothing and returns `result: null` without an error.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -25,13 +31,13 @@ The method `landing.repo.unbind` removes the embedding placement registered by t
 || **code**^*^
 [`string`](../../data-types.md) | Code of the embedding placement.
 
-Available codes for the `landing` section can be found on the [LANDING_SETTINGS](./settings.md) and [LANDING_BLOCK](./block.md) pages. ||
+Available codes for the `landing` section can be found on the [LANDING_SETTINGS](./settings.md) and [LANDING_BLOCK_*](./block.md) pages. ||
 || **handler**
-[`string`](../../data-types.md) | Path of the embedding placement handler.
+[`string`](../../data-types.md) | Full address of the embedding placement handler.
 
 The `handler` value must match the `PLACEMENT_HANDLER` field that was passed during the registration of the embedding placement using the [landing.repo.bind](./landing-repo-bind.md) method.
 
-For examples of passing `PLACEMENT_HANDLER`, refer to the [LANDING_SETTINGS](./settings.md) and [LANDING_BLOCK](./block.md) pages.
+For examples of passing `PLACEMENT_HANDLER`, refer to the [LANDING_SETTINGS](./settings.md) and [LANDING_BLOCK_*](./block.md) pages.
 
 If the parameter is not provided, the method removes all embedding placements of the current application with the specified `code`.
 
@@ -44,7 +50,7 @@ If the parameter is provided, the method removes only the embedding placement wi
 
 Example of removing an embedding placement, where:
 - `code` — code of the embedding placement
-- `handler` — path of the embedding placement handler
+- `handler` — full address of the embedding placement handler
 
 {% list tabs %}
 
@@ -72,7 +78,7 @@ Example of removing an embedding placement, where:
     declare const $b24: B24Frame
 
     try {
-      const response = await $b24.actions.v2.call.make<boolean>({
+      const response = await $b24.actions.v2.call.make<boolean | null>({
         method: 'landing.repo.unbind',
         params: {
           code: 'LANDING_SETTINGS',
@@ -242,11 +248,16 @@ Example of removing an embedding placement, where:
     	return fmt.Errorf("landing.repo.unbind: %w", err)
     }
 
-    var ok bool
+    // result can be null if the method is called outside an application
+    var ok *bool
     if err := json.Unmarshal(res.Result, &ok); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println("done:", ok)
+    if ok == nil {
+    	fmt.Println("removal was not started")
+    } else {
+    	fmt.Println("done:", *ok)
+    }
     ```
 
 {% endlist %}
@@ -271,16 +282,34 @@ HTTP Status: **200**
 }
 ```
 
+If the method is called outside an application, removal is not started:
+
+```json
+{
+    "result": null,
+    "time": {
+        "start": 1775203260,
+        "finish": 1775203260.118204,
+        "duration": 0.11820411682128906,
+        "processing": 0,
+        "date_start": "2026-04-03T11:01:00+02:00",
+        "date_finish": "2026-04-03T11:01:00+02:00",
+        "operating_reset_at": 1775203860,
+        "operating": 0
+    }
+}
+```
+
 ### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) \| [`null`](../../data-types.md) | Result of removing the embedding placement
+[`boolean`](../../data-types.md) \| [`null`](../../data-types.md) | Result of removing the embedding placement:
 
 - `true` — embedding placement is removed
-- `null` — the method completed without an error, but removal was not started, for example, if the current call is not linked to an application ||
+- `null` — removal was not started. This happens if the method is called outside an application, for example through a webhook, or if `code` is passed as a number ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -292,7 +321,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "PLACEMENT_NO_EXIST",
-    "error_description": "Such embedding placement does not exist"
+    "error_description": "This embedding area does not exist"
 }
 ```
 
@@ -302,9 +331,11 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `MISSING_PARAMS` | Not enough parameters for the call, missing: code | Method call without `code` ||
-|| `400` | `PLACEMENT_NO_EXIST` | Such embedding placement does not exist | The current application does not have an embedding placement with the specified `code` and `handler` ||
-|| `400` | `ACCESS_DENIED` | Insufficient permissions. | User did not pass the general access checks for the landing module ||
+|| `400` | `MISSING_PARAMS` | Some of the call parameters were missing: code | Method call without `code` ||
+|| `400` | `TYPE_ERROR` | Invalid type of the call argument: code | The `code` parameter is passed as an array ||
+|| `400` | `TYPE_ERROR` | Invalid type of the call argument: handler | The `handler` parameter is passed as an array ||
+|| `400` | `PLACEMENT_NO_EXIST` | This embedding area does not exist | The current application has no embedding placements with the specified `code` or, if `handler` is passed, with this `code` and `handler` pair ||
+|| `400` | `ACCESS_DENIED` | Insufficient permission. | The method is called by an extranet user, or the user does not have the "View" permission in the "Sites" area ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

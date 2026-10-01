@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with View permission in the Sites section
+> Who can execute the method: a user with the "View" permission in the "Sites" area
 
-The method `landing.site.getMenuBindings` returns Knowledge Base bindings to the menu.
+The method `landing.site.getMenuBindings` returns Knowledge Base bindings to the menu. Use it to check the result of [landing.site.bindingToMenu](./landing-site-binding-to-menu.md) and to retrieve the Knowledge Base `id` and the menu code for [landing.site.unbindingFromMenu](./landing-site-unbinding-from-menu.md).
 
 ## Method Parameters
 
@@ -25,11 +25,9 @@ The method `landing.site.getMenuBindings` returns Knowledge Base bindings to the
 || **menuCode**
 [`string`](../../../data-types.md) \| [`null`](../../../data-types.md) | Menu code for filtering.
 
-If not provided, bindings for all menus will be returned.
+If not provided, bindings to all menus are returned, and the menu codes are returned in the `BINDING_ID` field.
 
-`menuCode` can be obtained:
-- in the interface through the "Select Knowledge Base" option: in the URL of the opened frame, the `menuId` parameter contains the menu code (for example, `menuId=crm_switcher:deal`)
-- from the result of the method [landing.site.getMenuBindings](./landing-site-get-menu-bindings.md) in the `BINDING_ID` field ||
+`menuCode` can be obtained in the interface through the "Select Knowledge Base" option: in the URL of the opened frame, the `menuId` parameter contains the menu code, for example `menuId=crm_switcher:deal` ||
 |#
 
 ## Code Examples
@@ -76,7 +74,7 @@ Example of obtaining menu bindings, where:
 
     // Shape of each MenuBinding returned in result[]
     type MenuBinding = {
-      ENTITY_ID: string | number
+      ENTITY_ID: string
       ENTITY_TYPE: string
       BINDING_ID: string
       TITLE: string
@@ -165,6 +163,7 @@ Example of obtaining menu bindings, where:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -271,9 +270,9 @@ HTTP Status: **200**
 {
     "result": [
         {
-            "ENTITY_ID": "39",
+            "ENTITY_ID": "31",
             "ENTITY_TYPE": "S",
-            "BINDING_ID": "socialnetwork:group_notifications",
+            "BINDING_ID": "crm_switcher:deal",
             "TITLE": "Knowledge Base",
             "PUBLIC_URL": "https://bitrix24.com/knowledge/knowledge_base/"
         }
@@ -297,29 +296,31 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object[]`](../../../data-types.md) | List of menu bindings [more details](#menu-binding-item) ||
+[`object[]`](../../../data-types.md) | List of menu bindings [(detailed description)](#menu-binding-item). The newest bindings come first, and there is no pagination. If there are no bindings, an empty array is returned.
+
+The list includes only Knowledge Bases of the `KNOWLEDGE` type: if a Knowledge Base is bound to a group, its menu bindings disappear from the list. Bindings of Knowledge Bases in the Recycle Bin are not returned ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Result Item Type {#menu-binding-item}
+#### result Object {#menu-binding-item}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ENTITY_ID**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Site identifier ||
+[`string`](../../../data-types.md) | Identifier of the bound object: the Knowledge Base site when `ENTITY_TYPE` = `S`, or the page when `ENTITY_TYPE` = `L` ||
 || **ENTITY_TYPE**
-[`string`](../../../data-types.md) | Object type:
+[`string`](../../../data-types.md) | Type of the bound object:
 
-- `S` — site
-- `L` — landing ||
+- `S` — site. The [landing.site.bindingToMenu](./landing-site-binding-to-menu.md) method binds only sites
+- `L` — page ||
 || **BINDING_ID**
 [`string`](../../../data-types.md) | Menu code ||
 || **TITLE**
-[`string`](../../../data-types.md) | Name of the bound site ||
+[`string`](../../../data-types.md) | Name of the bound site or page ||
 || **PUBLIC_URL**
-[`string`](../../../data-types.md) | Public URL of the bound site ||
+[`string`](../../../data-types.md) | Public URL of the bound site or page ||
 |#
 
 ## Error Handling
@@ -329,7 +330,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Insufficient permissions."
+    "error_description": "Insufficient permission."
 }
 ```
 
@@ -338,9 +339,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `TYPE_ERROR` | Data type error | The `menuCode` parameter is passed in an incompatible type ||
-|| `ACCESS_DENIED` | Insufficient permissions | The user did not pass general access checks ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `TYPE_ERROR` | Invalid type of the call argument: menuCode | The `menuCode` parameter is passed as an array ||
+|| `400` | `ACCESS_DENIED` | Insufficient permission. | The method is called by an extranet user, or the user does not have the "View" permission in the "Sites" area ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

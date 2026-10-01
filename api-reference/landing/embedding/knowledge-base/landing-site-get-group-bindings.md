@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with View access permission in the Sites section
+> Who can execute the method: a user with the "View" permission in the "Sites" area
 
-The method `landing.site.getGroupBindings` returns the bindings of Knowledge Bases to groups.
+The method `landing.site.getGroupBindings` returns the bindings of Knowledge Bases to groups. Use it to check the result of [landing.site.bindingToGroup](./landing-site-binding-to-group.md) and to retrieve the Knowledge Base `id` and the group ID for [landing.site.unbindingFromGroup](./landing-site-unbinding-from-group.md).
 
 ## Method Parameters
 
@@ -25,9 +25,12 @@ The method `landing.site.getGroupBindings` returns the bindings of Knowledge Bas
 || **groupId**
 [`integer`](../../../data-types.md) \| [`null`](../../../data-types.md) | The identifier of the group for filtering.
 
-If not provided, bindings for all groups will be returned.
+If not provided, bindings to all groups are returned, and the group IDs are returned in the `BINDING_ID` field.
 
-`groupId` can be obtained from the group interface or from the result of the current method in the `BINDING_ID` field for existing bindings ||
+`groupId` can be obtained from:
+- the group interface
+- the [socialnetwork.api.workgroup.list](../../../sonet-group/socialnetwork-api-workgroup-list.md) method
+- the [sonet_group.get](../../../sonet-group/sonet-group-get.md) method ||
 |#
 
 ## Code Examples
@@ -163,6 +166,7 @@ Example of retrieving group bindings, where:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -269,18 +273,11 @@ HTTP Status: **200**
 {
     "result": [
         {
-            "ENTITY_ID": "65",
+            "ENTITY_ID": "32",
             "ENTITY_TYPE": "S",
-            "BINDING_ID": "5",
+            "BINDING_ID": "174",
             "TITLE": "Knowledge Base in Dark Theme",
             "PUBLIC_URL": "https://bitrix24.com/knowledge/group/knowledge_base_in_dark_theme/"
-        },
-        {
-            "ENTITY_ID": "41",
-            "ENTITY_TYPE": "S",
-            "BINDING_ID": "119",
-            "TITLE": "Knowledge Base",
-            "PUBLIC_URL": "https://bitrix24.com/knowledge/group/knowledge_base/"
         }
     ],
     "time": {
@@ -302,28 +299,33 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object[]`](../../../data-types.md) | List of group bindings [more details](#group-binding-item) ||
+[`object[]`](../../../data-types.md) | List of group bindings [(detailed description)](#group-binding-item). The newest bindings come first, and there is no pagination.
+
+Only one Knowledge Base can be bound to a group, so with the `groupId` filter the list contains no more than one item. If there are no bindings, an empty array is returned.
+
+The list includes only Knowledge Bases of the `GROUP` type. Bindings of Knowledge Bases in the Recycle Bin are not returned. If Knowledge Bases in groups are not available on the Bitrix24 plan, the method returns an empty array ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-### Result Item Type {#group-binding-item}
+#### result Object {#group-binding-item}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **ENTITY_ID**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the site ||
+[`string`](../../../data-types.md) | Identifier of the bound object: the Knowledge Base site when `ENTITY_TYPE` = `S`, or the page when `ENTITY_TYPE` = `L` ||
 || **ENTITY_TYPE**
-[`string`](../../../data-types.md) | Type of the object:
+[`string`](../../../data-types.md) | Type of the bound object:
 
-- `S` — site ||
+- `S` — site. The [landing.site.bindingToGroup](./landing-site-binding-to-group.md) method binds only sites
+- `L` — page ||
 || **BINDING_ID**
-[`integer`](../../../data-types.md) \| [`string`](../../../data-types.md) | Identifier of the group ||
+[`string`](../../../data-types.md) | Identifier of the group ||
 || **TITLE**
-[`string`](../../../data-types.md) | Title of the bound site ||
+[`string`](../../../data-types.md) | Name of the bound site or page ||
 || **PUBLIC_URL**
-[`string`](../../../data-types.md) | Public URL of the bound site ||
+[`string`](../../../data-types.md) | Public URL of the bound site or page ||
 |#
 
 ## Error Handling
@@ -333,7 +335,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Insufficient permissions."
+    "error_description": "Insufficient permission."
 }
 ```
 
@@ -342,9 +344,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `TYPE_ERROR` | Data type error | The `groupId` parameter is passed in an incompatible type ||
-|| `ACCESS_DENIED` | Insufficient permissions | The user did not pass general access checks ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `TYPE_ERROR` | — | A non-numeric value, such as `abc`, is passed in `groupId` ||
+|| `400` | `TYPE_ERROR` | Invalid type of the call argument: groupId | The `groupId` parameter is passed as an array ||
+|| `400` | `ACCESS_DENIED` | Insufficient permission. | The method is called by an extranet user, or the user does not have the "View" permission in the "Sites" area ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

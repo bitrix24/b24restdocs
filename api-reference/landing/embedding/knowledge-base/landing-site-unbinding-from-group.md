@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`landing`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with View permission in the Sites section and editing rights for the Knowledge Base in the specified group.
+> Who can execute the method: a user with the "View" permission in the "Sites" area and permission to edit the Knowledge Base in the specified group
 
-The method `landing.site.unbindingFromGroup` removes the binding of the Knowledge Base to a Social Network group.
+The method `landing.site.unbindingFromGroup` unbinds the Knowledge Base from a Social Network group. After unbinding, the Knowledge Base gets the `KNOWLEDGE` type back.
 
 ## Method Parameters
 
@@ -25,7 +25,9 @@ The method `landing.site.unbindingFromGroup` removes the binding of the Knowledg
 || **id**^*^
 [`integer`](../../../data-types.md) | Identifier of the Knowledge Base site.
 
-`id` can be obtained, for example, from the method [landing.site.getList](../../site/landing-site-get-list.md) in the `ID` field ||
+While the Knowledge Base is bound to a group, it has the `GROUP` type. Therefore, `id` can be retrieved:
+- from the `ENTITY_ID` field of the [landing.site.getGroupBindings](./landing-site-get-group-bindings.md) method
+- from the `ID` field of the [landing.site.getList](../../site/landing-site-get-list.md#type-scope) method with the `scope: "GROUP"` parameter ||
 || **groupId**^*^
 [`integer`](../../../data-types.md) | Identifier of the Social Network group.
 
@@ -166,6 +168,7 @@ Example of unbinding the Knowledge Base from a group, where:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -280,6 +283,24 @@ HTTP Status: **200**
 }
 ```
 
+If the binding is not removed:
+
+```json
+{
+    "result": false,
+    "time": {
+        "start": 1774952712,
+        "finish": 1774952712.384215,
+        "duration": 0.38421511650085449,
+        "processing": 0,
+        "date_start": "2026-03-31T13:25:12+03:00",
+        "date_finish": "2026-03-31T13:25:12+03:00",
+        "operating_reset_at": 1774953312,
+        "operating": 0
+    }
+}
+```
+
 ### Returned Data
 
 #|
@@ -289,7 +310,15 @@ HTTP Status: **200**
 [`boolean`](../../../data-types.md) | Result of the unbinding:
 
 - `true` — binding removed
-- `false` — binding not removed ||
+- `false` — binding not removed
+
+The method returns `false` without an error if:
+- no group Knowledge Base site with the specified `id` is found, or the user does not have permission to view it
+- the user is not a member of the group or cannot edit the Knowledge Base in it
+- this Knowledge Base is not bound to the `groupId` group
+- Knowledge Bases in groups are not available on the Bitrix24 plan
+
+A `false` response does not distinguish between these cases. You can check the current bindings with the [landing.site.getGroupBindings](./landing-site-get-group-bindings.md) method ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -301,7 +330,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "Insufficient permissions."
+    "error_description": "Insufficient permission."
 }
 ```
 
@@ -310,12 +339,13 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `MISSING_PARAMS` | Insufficient call parameters, missing: groupId | Method call without `groupId` ||
-|| `MISSING_PARAMS` | Insufficient call parameters, missing: id | Method call without `id` ||
-|| `TYPE_ERROR` | Bitrix\Landing\PublicAction\Site::unbindingFromGroup(): Argument #2 ($groupId) must be of type int, string given | Parameter `groupId` passed as a string instead of `int` ||
-|| `TYPE_ERROR` | Bitrix\Landing\PublicAction\Site::unbindingFromGroup(): Argument #1 ($id) must be of type int, string given | Parameter `id` passed as a string instead of `int` ||
-|| `ACCESS_DENIED` | Insufficient permissions | User did not pass general access checks ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `MISSING_PARAMS` | Some of the call parameters were missing: groupId | Method call without `groupId` ||
+|| `400` | `MISSING_PARAMS` | Some of the call parameters were missing: id | Method call without `id` ||
+|| `400` | `TYPE_ERROR` | — | A non-numeric value, such as `abc`, is passed in `id` or `groupId` ||
+|| `400` | `TYPE_ERROR` | Invalid type of the call argument: id | The `id` parameter is passed as an array ||
+|| `400` | `TYPE_ERROR` | Invalid type of the call argument: groupId | The `groupId` parameter is passed as an array ||
+|| `400` | `ACCESS_DENIED` | Insufficient permission. | The method is called by an extranet user, or the user does not have the "View" permission in the "Sites" area ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
