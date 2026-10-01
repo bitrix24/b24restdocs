@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View Product Catalog" or "Manage Price Types" access permission
 
-The method returns a list of measurement unit ratios.
+The method `catalog.ratio.list` returns the measurement unit ratios of products matching the filter. If a product has no ratio record, Bitrix24 uses a ratio of 1 for it.
 
 ## Method Parameters
 
@@ -21,13 +21,15 @@ The method returns a list of measurement unit ratios.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | 
-An array with the list of fields to select (see the fields of the [catalog_ratio](../data-types.md#catalog_ratio) object) 
+[`array`](../../data-types.md) |
+An array with the list of fields to select (see the fields of the [catalog_ratio](../data-types.md#catalog_ratio) object).
+
+If the array is not passed or is empty, the method returns all fields
 ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected measurement unit ratios in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_ratio](../data-types.md#catalog_ratio) object. 
+Possible values for `field` correspond to the fields of the [catalog_ratio](../data-types.md#catalog_ratio) object.
 
 An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -51,6 +53,10 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
+
+The `@` and `!@` prefixes work for the `id`, `productId`, and `isDefault` fields. With the `ratio` field, the method returns an error.
+
+Substring search with the `%`, `=%`, `%=`, `!%`, `!=%`, and `!%=` prefixes works only for the `isDefault` field. The method compares numeric field values as a whole: the filter `{"%productId": "64"}` does not find the product with ID `6461`
 ||
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected fields of measurement unit ratios in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
@@ -60,6 +66,8 @@ Possible values for `field` correspond to the fields of the [catalog_ratio](../d
 Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
+
+If `order` is not passed, the method returns records in ascending order of `id`
 ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to control pagination.
@@ -74,6 +82,12 @@ The formula for calculating the `start` parameter value:
 ||
 |#
 
+{% note warning "" %}
+
+Write field names in `filter` exactly as they appear in the response: `productId`, `isDefault`. The method skips a condition with a different field name, such as `PRODUCT_ID`, without an error. If there are no other conditions, it returns the ratios of all products.
+
+{% endnote %}
+
 ## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
@@ -86,7 +100,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","productId","ratio","isDefault"],"filter":{"@productId":[1,2],">ratio":0.5,"isDefault":"Y"},"order":{"id":"desc"}}' \
+    -d '{"select":["id","productId","ratio","isDefault"],"filter":{"@productId":[533,6461],">ratio":0.5,"isDefault":"Y"},"order":{"id":"desc"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.ratio.list
     ```
 
@@ -96,7 +110,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","productId","ratio","isDefault"],"filter":{"@productId":[1,2],">ratio":0.5,"isDefault":"Y"},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","productId","ratio","isDefault"],"filter":{"@productId":[533,6461],">ratio":0.5,"isDefault":"Y"},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.ratio.list
     ```
 
@@ -133,7 +147,7 @@ The formula for calculating the `start` parameter value:
         params: {
           select: ['id', 'productId', 'ratio', 'isDefault'],
           filter: {
-            '@productId': [1, 2],
+            '@productId': [533, 6461],
             '>ratio': 0.5,
             isDefault: 'Y',
           },
@@ -179,7 +193,7 @@ The formula for calculating the `start` parameter value:
             params: {
               select: ['id', 'productId', 'ratio', 'isDefault'],
               filter: {
-                '@productId': [1, 2],
+                '@productId': [533, 6461],
                 '>ratio': 0.5,
                 isDefault: 'Y',
               },
@@ -223,7 +237,9 @@ The formula for calculating the `start` parameter value:
                 "isDefault",
             ],
             filter={
-                "productId": 1,
+                "@productId": [533, 6461],
+                ">ratio": 0.5,
+                "isDefault": "Y",
             },
             order={
                 "id": "desc",
@@ -261,7 +277,7 @@ The formula for calculating the `start` parameter value:
                         'isDefault',
                     ],
                     'filter' => [
-                        '@productId' => [1, 2],
+                        '@productId' => [533, 6461],
                         '>ratio'     => 0.5,
                         'isDefault'  => 'Y',
                     ],
@@ -270,13 +286,13 @@ The formula for calculating the `start` parameter value:
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching ratio list: ' . $e->getMessage();
@@ -296,7 +312,7 @@ The formula for calculating the `start` parameter value:
                     'isDefault',
                 ],
                 filter:{
-                    '@productId': [1, 2],
+                    '@productId': [533, 6461],
                     '>ratio': 0.5,
                     'isDefault': 'Y',
                 },
@@ -330,7 +346,7 @@ The formula for calculating the `start` parameter value:
                 'isDefault',
             ],
             'filter' => [
-                '@productId' => [1, 2],
+                '@productId' => [533, 6461],
                 '>ratio' => 0.5,
                 'isDefault' => 'Y',
             ],
@@ -352,7 +368,7 @@ The formula for calculating the `start` parameter value:
     res, err := client.Core().Call(ctx, "catalog.ratio.list", b24.Params{
     	"select": []string{"id", "productId", "ratio", "isDefault"},
     	"filter": b24.Params{
-    		"@productId": []int{1, 2},
+    		"@productId": []int{533, 6461},
     		">ratio":     0.5,
     		"isDefault":  "Y",
     	},
@@ -380,21 +396,29 @@ HTTP status: **200**
     "result": {
         "ratios": [
             {
-                "id": 1,
+                "id": 285,
                 "isDefault": "Y",
-                "productId": 1,
+                "productId": 6461,
+                "ratio": 10
+            },
+            {
+                "id": 279,
+                "isDefault": "Y",
+                "productId": 533,
                 "ratio": 1
             }
         ]
     },
-    "total": 1,
+    "total": 2,
     "time": {
-        "start": 1729676806.653016,
-        "finish": 1729676807.083635,
-        "duration": 0.4306190013885498,
-        "processing": 0.02678680419921875,
-        "date_start": "2024-10-23T12:46:46+02:00",
-        "date_finish": "2024-10-23T12:46:47+02:00"
+        "start": 1790852349,
+        "finish": 1790852349.935266,
+        "duration": 0.9352660179138184,
+        "processing": 0,
+        "date_start": "2026-10-01T13:59:09+03:00",
+        "date_finish": "2026-10-01T13:59:09+03:00",
+        "operating_reset_at": 1790852949,
+        "operating": 0
     }
 }
 ```
@@ -410,8 +434,10 @@ HTTP status: **200**
 [`catalog_ratio[]`](../data-types.md#catalog_ratio) | An array of objects with information about the selected measurement unit ratios ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
+|| **next**
+[`integer`](../../data-types.md) | The `start` parameter value for retrieving the next page. The field is absent if the last page is retrieved ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -420,8 +446,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access denied"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -430,17 +456,21 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has neither the "View Product Catalog" nor the "Manage Price Types" access permission ||
+|| `400` | `100` | Invalid order "<VALUE>" | The sort direction passed in `order` is other than `asc` and `desc` ||
+|| `400` | `100` | Order must be a string | The sort direction in `order` is not passed as a string ||
+|| `400` | `100` | Invalid value {<VALUE>} to match with parameter {filter}. Should be value of type array. | `filter` is not passed as an object. The same text with `{order}` or `{select}` means that `order` is not passed as an object or `select` is not passed as an array ||
+|| `400` | `0` | Call to a member function compile() on float | An array with the `@` or `!@` prefix is passed in `filter` for the `ratio` field ||
+|| — | `0` | — | Other errors, such as fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./catalog-ratio-get.md)
 - [{#T}](./catalog-ratio-get-fields.md)
+- [{#T}](../product/catalog-product-list.md)
 
