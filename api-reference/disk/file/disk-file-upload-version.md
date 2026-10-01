@@ -43,7 +43,7 @@ A positional array with two items:
 [`string`](../../data-types.md) | File contents in [Base64](../../files/how-to-upload-files.md#filecontent) format ||
 |#
 
-The Base64 string is included in the POST request size and is approximately one-third larger than the original file. Size and execution time limits are described in [Limitations When Working with Files](../../files/how-to-upload-files.md#limitations-when-working-with-files).
+The Base64 string is included in the POST request size and is approximately one-third larger than the original file. Size and execution time limits are described in [Limitations When Working with Files](../../files/how-to-upload-files.md#limits).
 
 ## Code Examples
 

@@ -1525,7 +1525,7 @@ These `ID` will be required when you need to [update or delete files](./how-to-u
 
 To download a file using `DOWNLOAD_URL` or `urlMachine`, send a separate `GET` request. The download procedure and link selection are described in the [How to Download Files](./how-to-download-files.md) article.
 
-## Limitations When Working with Files
+## Limitations When Working with Files {#limits}
 
 - GET requests are limited by the URL length — approximately 2048 characters. This is a general limitation of browsers and web servers, not a specific feature of Bitrix24. A Base64 string is almost always longer, so pass files via a POST request.
 

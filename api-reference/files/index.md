@@ -109,7 +109,7 @@ A file that does not fit within the request limit is uploaded to Drive in two st
 
 Uploading a call recording works the same way: [telephony.externalCall.attachRecord](../telephony/telephony-external-call-attach-record.md) with the `FILENAME` parameter and without `FILE_CONTENT` returns `uploadUrl` and `fieldName`. Other methods have no such workaround — the file has to fit within the request limit.
 
-Some methods have stricter limits: [im.v2.File.upload](../chat-bots/chat-bots-v2/im.v2/files/file-upload.md) accepts a file of up to 100 MB and returns the `FILE_TOO_LARGE` error, while [note.file.add](../note/file/note-file-add.md) is limited by the `main.max_file_size` setting or, if it is not set, by 25 MiB. The full list of limitations with figures is in the [Limitations When Working with Files](./how-to-upload-files.md#limitations-when-working-with-files) section.
+Some methods have stricter limits: [im.v2.File.upload](../chat-bots/chat-bots-v2/im.v2/files/file-upload.md) accepts a file of up to 100 MB and returns the `FILE_TOO_LARGE` error, while [note.file.add](../note/file/note-file-add.md) is limited by the `main.max_file_size` setting or, if it is not set, by 25 MiB. The full list of limitations with figures is in the [Limitations When Working with Files](./how-to-upload-files.md#limits) section.
 
 ## How to Get Started
 
