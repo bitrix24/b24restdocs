@@ -11,17 +11,39 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Permissions to execute the method:
-> - any user with editing access to the task
-> - Creator, Participant, and other Participants of the task
+> Who can execute the method: a user with read access to the task who is:
+> - a Bitrix24 administrator
+> - the task creator or their supervisor
+> - the item author or their supervisor
+> - the assignee or a participant, if their role allows editing checklists
+> - a workgroup member with permission to edit the group's tasks
 
-The method `task.checklistitem.moveafteritem` moves the checklist item `itemId` to a position after the element `afterItemId`.
+The method `task.checklistitem.moveafteritem` moves the checklist item `ITEMID` to a position after the item `AFTERITEMID`.
 
-Both elements must belong to the same task `taskId`. The elements can be in different sublists, but after the move, `itemId` will receive the same `PARENT_ID` as `afterItemId`.
+Both items must belong to the same task `TASKID`. The items can be in different sublists, but after the move, `ITEMID` will receive the same `PARENT_ID` as `AFTERITEMID`.
+
+For example, to move item `453` after item `447`, pass `ITEMID = 453` and `AFTERITEMID = 447`:
+
+```plaintext
+BEFORE:                                        AFTER:
+Checklist 1 (431)                             Checklist 1 (431)
+├── first item (433)                          ├── first item (433)
+│   ├── subitem 1 (435)                        │   ├── subitem 1 (435)
+│   ├── subitem 2 (445)                        │   └── subitem 2 (445)
+│   └── subitem 3 (453) ← PARENT_ID=433       ├── second item (447)
+├── second item (447)                          ├── subitem 3 (453) ← PARENT_ID=431
+└── third item (449)                           └── third item (449)
+```
 
 You can check permissions to modify the item using the method [task.checklistitem.isactionallowed](./task-checklist-item-is-action-allowed.md).
 
 ## Method Parameters
+
+{% note warning "" %}
+
+Pass parameters in the request in the order shown in the table. If the order is violated, the request returns an error or moves the wrong item.
+
+{% endnote %}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -39,8 +61,6 @@ The checklist item identifier can be obtained when [creating an item](./task-che
 || **AFTERITEMID*** 
 [`integer`](../../data-types.md) | Identifier of the checklist item after which the moving item should be placed.
 
-The item must belong to the same task as `ITEMID`.
-
 The checklist item identifier can be obtained when [creating an item](./task-checklist-item-add.md) or using the method [get checklist item list](./task-checklist-item-get-list.md) ||
 |#
 
@@ -56,7 +76,7 @@ The checklist item identifier can be obtained when [creating an item](./task-che
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":13,"ITEMID":475,"AFTERITEMID":447}' \
+    -d '{"TASKID":13,"ITEMID":453,"AFTERITEMID":447}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.checklistitem.moveafteritem
     ```
 
@@ -66,7 +86,7 @@ The checklist item identifier can be obtained when [creating an item](./task-che
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":13,"ITEMID":475,"AFTERITEMID":447,"auth":"**put_access_token_here**"}' \
+    -d '{"TASKID":13,"ITEMID":453,"AFTERITEMID":447,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/task.checklistitem.moveafteritem
     ```
 
@@ -89,7 +109,7 @@ The checklist item identifier can be obtained when [creating an item](./task-che
         method: 'task.checklistitem.moveafteritem',
         params: {
           TASKID: 13,
-          ITEMID: 475,
+          ITEMID: 453,
           AFTERITEMID: 447,
         },
         requestId: Text.getUuidRfc4122()
@@ -123,7 +143,7 @@ The checklist item identifier can be obtained when [creating an item](./task-che
             method: 'task.checklistitem.moveafteritem',
             params: {
               TASKID: 13,
-              ITEMID: 475,
+              ITEMID: 453,
               AFTERITEMID: 447,
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -155,7 +175,7 @@ The checklist item identifier can be obtained when [creating an item](./task-che
     try:
         bitrix_response = client.task.checklistitem.moveafteritem(
             task_id=13,
-            item_id=475,
+            item_id=453,
             after_item_id=447,
         ).response
         result = bitrix_response.result
@@ -172,6 +192,7 @@ The checklist item identifier can be obtained when [creating an item](./task-che
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -182,7 +203,7 @@ The checklist item identifier can be obtained when [creating an item](./task-che
                 'task.checklistitem.moveafteritem',
                 [
                     'TASKID' => 13,
-                    'ITEMID' => 475,
+                    'ITEMID' => 453,
                     'AFTERITEMID' => 447
                 ]
             );
@@ -207,7 +228,7 @@ The checklist item identifier can be obtained when [creating an item](./task-che
         'task.checklistitem.moveafteritem',
         {
             TASKID: 13,
-            ITEMID: 475,
+            ITEMID: 453,
             AFTERITEMID: 447
         },
         function(result){
@@ -226,7 +247,7 @@ The checklist item identifier can be obtained when [creating an item](./task-che
         'task.checklistitem.moveafteritem',
         [
             'TASKID' => 13,
-            'ITEMID' => 475,
+            'ITEMID' => 453,
             'AFTERITEMID' => 447
         ]
     );
@@ -242,15 +263,14 @@ The checklist item identifier can be obtained when [creating an item](./task-che
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "task.checklistitem.moveafteritem", b24.Params{
     	"TASKID":      13,
-    	"ITEMID":      475,
+    	"ITEMID":      453,
     	"AFTERITEMID": 447,
     })
     if err != nil {
     	return fmt.Errorf("task.checklistitem.moveafteritem: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // On success, result is null
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -294,7 +314,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "TASKS_ERROR_EXCEPTION_#8; Moving item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br>"
+    "error_description": "TASKS_ERROR_EXCEPTION_#8; Move item: action unavailable; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br>"
 }
 ```
 
@@ -304,10 +324,15 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value**  ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::moveafteritem(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID`, `ITEMID`, or `AFTERITEMID` is missing ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::moveafteritem() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `TASKID`, `ITEMID`, or `AFTERITEMID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Moving item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access rights to the task or lacks permissions to perform the action ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (afterItemId) expected by method ctaskchecklistitem::moveafteritem(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | A required parameter is missing. The parameter number and name in the message: `Param #0 (taskId)`, `Param #1 (itemId)`, or `Param #2 (afterItemId)` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::moveafteritem() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type. The parameter number and name in the message indicate which value is incorrect ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Incorrect value [] specified for field [ENTITY_ID] in item [, ]; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | There is no item with the `ITEMID` identifier ||
+|| `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` or `ITEMID` value is less than or equal to zero ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Parent item cannot be a subitem of itself; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | `AFTERITEMID` is a subitem of the item being moved `ITEMID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Move item: action unavailable; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access rights to the task or lacks permissions to perform the action ||
 |#
+
+If the `AFTERITEMID` item does not exist, the server does not respond, and the request ends with a timeout and no error code. Check the item using the [task.checklistitem.get](./task-checklist-item-get.md) method before the call.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

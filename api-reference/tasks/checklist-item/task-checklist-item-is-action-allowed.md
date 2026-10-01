@@ -13,9 +13,15 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `task.checklistitem.isactionallowed` checks whether an action is permitted for a checklist item in a task.
+The method `task.checklistitem.isactionallowed` checks whether an action is permitted for a checklist item in a task. Permissions are checked for the user on whose behalf the request is made: the webhook owner or the user for whom the application token was issued.
 
 ## Method Parameters
+
+{% note warning "" %}
+
+Pass parameters in the request in the order shown in the table. If the order is violated, the request returns an error or the check result for a different task.
+
+{% endnote %}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -32,11 +38,13 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or by using the [get checklist item list](./task-checklist-item-get-list.md) method. ||
 || **ACTIONID*** 
 [`integer`](../../data-types.md) | Identifier of the action being checked:
-- `1` — add item `ACTION_ADD`
-- `2` — modify item `ACTION_MODIFY`
-- `3` — remove item `ACTION_REMOVE`
-- `4` — mark as completed `ACTION_TOGGLE`
-- `5` — reorder item `ACTION_REORDER` ||
+- `1` — add item `ACTION_ADD`, the [task.checklistitem.add](./task-checklist-item-add.md) method
+- `2` — modify item `ACTION_MODIFY`, the [task.checklistitem.update](./task-checklist-item-update.md) method
+- `3` — remove item `ACTION_REMOVE`, the [task.checklistitem.delete](./task-checklist-item-delete.md) method
+- `4` — mark as completed `ACTION_TOGGLE`, the [task.checklistitem.complete](./task-checklist-item-complete.md) and [task.checklistitem.renew](./task-checklist-item-renew.md) methods
+- `5` — reorder item `ACTION_REORDER`, the [task.checklistitem.moveafteritem](./task-checklist-item-move-after-item.md) method
+
+For `1`, the permission to add items is checked; for `4`, the permission to change the item status. For `2`, `3`, `5`, and any other value, the permission to modify the item is checked ||
 |#
 
 ## Code Examples
@@ -163,6 +171,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -244,7 +253,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     if err := json.Unmarshal(res.Result, &ok); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println("done:", ok)
+    fmt.Println("allowed:", ok)
     ```
 
 {% endlist %}
@@ -277,7 +286,9 @@ HTTP Status: **200**
 || **result** 
 [`boolean`](../../data-types.md) | Result of the check:
 - `true` — action is allowed
-- `false` — action is not allowed or non-existent identifiers were provided ||
+- `false` — action is not allowed
+
+For a nonexistent item or an item of a different task, the method returns `false`, except when checking `ACTIONID = 1`. A Bitrix24 administrator gets `true` for any `TASKID`, `ITEMID`, and `ACTIONID` values ||
 || **time** 
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -289,7 +300,7 @@ HTTP Status: **400**
 ```json
 {
     "error":"ERROR_CORE",
-    "error_description":"TASKS_ERROR_EXCEPTION_#256; Param #2 (actionId) expected by method ctaskchecklistitem::isactionallowed(), but not given.; 256/TE/WRONG_ARGUMENTS"
+    "error_description":"TASKS_ERROR_EXCEPTION_#256; Param #2 (actionId) expected by method ctaskchecklistitem::isactionallowed(), but not given.; 256/TE/WRONG_ARGUMENTS<br>"
 }
 ```
 
@@ -299,8 +310,9 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (actionId) expected by method ctaskchecklistitem::isactionallowed(), but not given.; 256/TE/WRONG_ARGUMENTS | Required parameter not provided: `TASKID`, `ITEMID`, or `ACTIONID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::isactionallowed() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Incorrect value type provided for parameters `TASKID`, `ITEMID`, or `ACTIONID` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (actionId) expected by method ctaskchecklistitem::isactionallowed(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter not provided. The parameter number and name in the message: `Param #0 (taskId)`, `Param #1 (itemId)`, or `Param #2 (actionId)` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::isactionallowed() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type provided. The parameter number and name in the message indicate which value is incorrect ||
+|| `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` or `ITEMID` value is less than or equal to zero ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

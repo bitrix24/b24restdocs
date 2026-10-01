@@ -50,7 +50,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":8017,"ITEMID":479}' \
+    -d '{"TASKID":8017,"ITEMID":495}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.checklistitem.get
     ```
 
@@ -60,7 +60,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TASKID":8017,"ITEMID":479,"auth":"**put_access_token_here**"}' \
+    -d '{"TASKID":8017,"ITEMID":495,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/task.checklistitem.get
     ```
 
@@ -70,7 +70,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     // This snippet is an ES module: top-level await requires type="module" or a bundler.
     // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
     import { Text } from '@bitrix24/b24jssdk'
-    import type { B24Frame } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
@@ -78,14 +78,14 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     type ChecklistItemResult = {
       ID: string
       TASK_ID: string
-      PARENT_ID: string
+      PARENT_ID: string | number
       CREATED_BY: string
       TITLE: string
       SORT_INDEX: string
-      IS_COMPLETE: string
-      IS_IMPORTANT: string
+      IS_COMPLETE: 'Y' | 'N'
+      IS_IMPORTANT: 'Y' | 'N'
       TOGGLED_BY: string | null
-      TOGGLED_DATE: string
+      TOGGLED_DATE: ISODate | ''
       MEMBERS: Array<{
         ID: string
         TYPE: string
@@ -102,7 +102,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
         FILE_ID: string
         DOWNLOAD_URL: string
         VIEW_URL: string
-      }>
+      }> | []
     }
 
     try {
@@ -110,7 +110,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
         method: 'task.checklistitem.get',
         params: {
           TASKID: 8017,
-          ITEMID: 479,
+          ITEMID: 495,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -143,7 +143,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
             method: 'task.checklistitem.get',
             params: {
               TASKID: 8017,
-              ITEMID: 479,
+              ITEMID: 495,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -174,7 +174,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     try:
         bitrix_response = client.task.checklistitem.get(
             task_id=8017,
-            item_id=479,
+            item_id=495,
         ).response
         result = bitrix_response.result
         print(result)
@@ -190,6 +190,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -200,7 +201,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
                 'task.checklistitem.get',
                 [
                     'TASKID' => 8017,
-                    'ITEMID' => 479
+                    'ITEMID' => 495
                 ]
             );
 
@@ -224,7 +225,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
         'task.checklistitem.get',
         {
             TASKID: 8017,
-            ITEMID: 479
+            ITEMID: 495
         },
         function(result){
             console.info(result.data());
@@ -242,7 +243,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
         'task.checklistitem.get',
         [
             'TASKID' => 8017,
-            'ITEMID' => 479
+            'ITEMID' => 495
         ]
     );
 
@@ -257,7 +258,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "task.checklistitem.get", b24.Params{
     	"TASKID": 8017,
-    	"ITEMID": 479,
+    	"ITEMID": 495,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("task.checklistitem.get: %w", err)
@@ -372,7 +373,7 @@ HTTP Status: **200**
 || **PARENT_ID**
 [`string`](../../data-types.md) | Identifier of the parent item.
 
-A value of `0` indicates a root item ||
+The root item returns the number `0`, other items return a string ||
 || **CREATED_BY**
 [`string`](../../data-types.md) | Identifier of the item author ||
 || **TITLE**
@@ -384,25 +385,27 @@ If `PARENT_ID = 0`, the field contains the name of the checklist ||
 
 The smaller the value, the higher the item in the list or sublist ||
 || **IS_COMPLETE**
-[`boolean`](../../data-types.md) | Status of the item. Possible values:
-- `Y` — completed,
+[`string`](../../data-types.md) | Status of the item. Possible values:
+- `Y` — completed
 - `N` — not completed ||
 || **IS_IMPORTANT**
-[`boolean`](../../data-types.md) | Importance mark of the item. Possible values:
-- `Y` — important,
+[`string`](../../data-types.md) | Importance mark of the item. Possible values:
+- `Y` — important
 - `N` — ordinary ||
 || **TOGGLED_BY**
 [`string`](../../data-types.md) | Identifier of the user who last changed the status of the item.
 
-Can be `null` if the status has not been changed ||
+The value is `null` if the item status has not been changed, including for an item created as already completed ||
 || **TOGGLED_DATE**
-[`string`](../../data-types.md) | Date and time of the status change in `ISO 8601` format ||
+[`string`](../../data-types.md) | Date and time of the status change in `ISO 8601` format.
+
+An empty string if the item status has not been changed, including for an item created as already completed ||
 || **MEMBERS**
 [`array`](../../data-types.md) | List of objects with [description of participants](#members) ||
 || **ATTACHMENTS**
 [`object`](../../data-types.md) | Object with [description of attached files](#attachments).
 
-Key — attachment file identifier `ATTACHMENT_ID` ||
+Key — attachment file identifier `ATTACHMENT_ID`. If there are no files, an empty array `[]` is returned instead of an object ||
 |#
 
 #### Members Object {#members}
@@ -414,16 +417,18 @@ Key — attachment file identifier `ATTACHMENT_ID` ||
 [`string`](../../data-types.md) | User identifier ||
 || **TYPE**
 [`string`](../../data-types.md) | User's role in the checklist item. Possible values:
-- `A` — Participant,
+- `A` — Participant
 - `U` — Observer ||
 || **NAME**
 [`string`](../../data-types.md) | User's name ||
 || **PERSONAL_PHOTO**
-[`string`](../../data-types.md) | Identifier of the user's avatar file on Drive ||
+[`string`](../../data-types.md) | Identifier of the user's avatar file ||
 || **PERSONAL_GENDER**
 [`string`](../../data-types.md) | User's gender. Possible values:
-- `M` — male,
-- `F` — female ||
+- `M` — male
+- `F` — female
+
+An empty string if the gender is not specified in the profile ||
 || **IMAGE**
 [`string`](../../data-types.md) | Link to the user's avatar ||
 || **IS_COLLABER**
@@ -456,7 +461,7 @@ HTTP Status: **400**
 ```json
 {
     "error":"ERROR_CORE",
-    "error_description":"TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::get(), but not given.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E"
+    "error_description":"TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS<br>"
 }
 ```
 
@@ -466,11 +471,14 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value**  ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::get(), but not given.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameters `TASKID` and `ITEMID` are not provided ||
-|| `ERROR_CORE` | error_description":"TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::get() expected to be of type \u0022integer\u0022, but given something else.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Incorrect type of value for `TASKID` or `ITEMID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512\/TE\/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE\u003Cbr\u003E | Possible reasons:
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) expected by method ctaskchecklistitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` is not provided ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::get(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `ITEMID` is not provided ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::get() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect type of value. The parameter number and name in the message indicate which value is incorrect ||
+|| `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` or `ITEMID` value is less than or equal to zero ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#512; Check listitem not found or not accessible; 512/TE/ITEM_NOT_FOUND_OR_NOT_ACCESSIBLE<br> | Possible reasons:
 - parameter order in the method is violated
 - specified `TASKID` or `ITEMID` does not exist
+- item `ITEMID` belongs to a different task
 - user does not have access permission to the task ||
 |#
 

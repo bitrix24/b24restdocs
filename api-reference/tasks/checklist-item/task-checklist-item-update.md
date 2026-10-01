@@ -23,7 +23,7 @@ You can check the permissions to modify the item using the method [task.checklis
 
 {% note warning "" %}
 
-Pass parameters in the request according to the order in the table. If the order is violated, the request will return an error.
+Pass parameters in the request according to the order in the table. If the order is violated, the request will return an error or update a different item.
 
 {% endnote %}
 
@@ -41,7 +41,7 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
 
 The item identifier can be obtained when [adding a new item](./task-checklist-item-add.md) or using the [get checklist item list](./task-checklist-item-get-list.md) method. ||
 || **FIELDS*** 
-[`object`](../../data-types.md) | Object with [checklist item fields](#fields) ||
+[`object`](../../data-types.md) | Object with [checklist item fields](#fields). Pass only the fields you want to change ||
 |#
 
 ### FIELDS Parameter {#fields}
@@ -56,29 +56,31 @@ If `PARENT_ID` is passed with a value of `0`, then `TITLE` is the name of the ch
 || **SORT_INDEX** 
 [`integer`](../../data-types.md) | Sort index. The lower the value, the higher the item in the list or sublist. ||
 || **IS_COMPLETE** 
-[`boolean`](../../data-types.md) | Status of the item. Possible values:
+[`string`](../../data-types.md) | Status of the item. Possible values:
 - `Y` — completed
 - `N` — not completed
 
-Default is `N`. ||
+Also accepts `true` and `false`. When the status changes, the system fills in the `TOGGLED_BY` and `TOGGLED_DATE` fields. ||
 || **IS_IMPORTANT** 
-[`boolean`](../../data-types.md) | Mark indicating that the item is important. Possible values:
+[`string`](../../data-types.md) | Mark indicating that the item is important. Possible values:
 - `Y` — important
-- `N` — regular. ||
+- `N` — regular
+
+Also accepts `true` and `false`. ||
 || **MEMBERS** 
 [`object`](../../data-types.md) | Object describing the participants of the checklist item. Key — user identifier, value — object with the participant type parameter `TYPE`. Possible participant type values:
 - `'TYPE': 'A'` — participant
 - `'TYPE': 'U'` — observer
 
-The `MEMBERS` field is completely replaced. To retain current participants, pass them along with new values.
+The `MEMBERS` field is completely replaced. To retain current participants, pass them along with new values. If a participant has any other `TYPE`, the method skips the entire `MEMBERS` without an error.
 
 The system will add checklist item participants to the task in the same roles. ||
 || **PARENT_ID** 
 [`integer`](../../data-types.md) | Identifier of the parent item. Use for nested checklists.
 
 - If `PARENT_ID` is passed with a value of `0`, the system will create a new checklist in the task.
-- If there is no checklist item in the task with the specified `PARENT_ID`, the system will create a new checklist.
-- If the main checklist item is moved under another checklist item, it will move along with its sub-items while maintaining the hierarchy. The checklists will merge into one. ||
+- If there is no item with the specified `PARENT_ID`, the item is saved with this `PARENT_ID` and does not belong to any checklist. Pass only identifiers of existing items in the task.
+- If the root checklist item is moved under another checklist item, it will move along with its sub-items while maintaining the hierarchy. The checklists will merge into one. ||
 |#
 
 ## Code Examples
@@ -244,6 +246,7 @@ The system will add checklist item participants to the task in the same roles. |
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -377,8 +380,7 @@ The system will add checklist item participants to the task in the same roles. |
     	return fmt.Errorf("task.checklistitem.update: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // On success, result is null
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -410,7 +412,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-`null` | Returns `null` if the checklist item is successfully updated. ||
+`null` | Returns `null` if the checklist item is successfully updated.
+
+The method also returns `null` if you pass an empty `FIELDS` or an empty `TITLE`: the item does not change in this case. To check the result, retrieve the item using the [task.checklistitem.get](./task-checklist-item-get.md) method. ||
 || **time** 
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
 |#
@@ -422,7 +426,7 @@ HTTP Status: **400**
 ```json
 {
     "error":"ERROR_CORE",
-    "error_description":"TASKS_ERROR_EXCEPTION_#4; No access to edit the task; 4\/TE\/ACTION_NOT_ALLOWED\u003Cbr\u003E"
+    "error_description":"TASKS_ERROR_EXCEPTION_#4; Cannot edit the task due to insufficient permissions; 4/TE/ACTION_NOT_ALLOWED<br>"
 }
 ```
 
@@ -432,11 +436,17 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value**  ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; No access to edit the task; 4\/TE\/ACTION_NOT_ALLOWED\u003Cbr\u003E | No permission to edit the task to modify the checklist item. ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Incorrect value [] specified for field [ENTITY_ID] in item [, Prepare report]; 8\/TE\/ACTION_FAILED_TO_BE_PROCESSED\u003Cbr\u003E | Parameter order violation. ||
-|| `ERROR_CORE` | "TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) for method ctaskchecklistitem::update() expected to be of type \u0022integer\u0022, but given something else.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameter `TASKID` not provided or incorrect type for `TASKID`. ||
-|| `ERROR_CORE` | "TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::update(), but not given.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameter `ITEMID` not provided or incorrect type for `ITEMID`. ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFields) expected by method ctaskchecklistitem::update(), but not given.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameter `FIELDS` not provided or empty. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; Cannot edit the task due to insufficient permissions; 4/TE/ACTION_NOT_ALLOWED<br> | The item has `MEMBERS` participants, but the user lacks permission to edit the task to add them to it. The item changes have already been saved. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Incorrect value [] specified for field [ENTITY_ID] in item [, Prepare report]; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | There is no item with the `ITEMID` identifier, or the parameters are passed out of order. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) expected by method ctaskchecklistitem::update(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` not provided. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::update() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `TASKID`. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::update(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `ITEMID` not provided. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) for method ctaskchecklistitem::update() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `ITEMID`. ||
+|| `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` or `ITEMID` value is less than or equal to zero. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFields) expected by method ctaskchecklistitem::update(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `FIELDS` not provided. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Bitrix\Tasks\CheckList\Internals\CheckListTree::canAttach: Cannot create circular reference [261, 267]; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | A subitem of the item being updated is passed in `PARENT_ID`. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Bitrix\Tasks\CheckList\Internals\CheckListTree::canAttach: Cannot attach node to itself [261, 261]; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | The identifier of the item itself is passed in `PARENT_ID`. ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #2 (arFields) for method ctaskchecklistitem::update() must not contain key "ID".; 256/TE/WRONG_ARGUMENTS<br> | `FIELDS` contains a field that cannot be changed. Only the fields from the [FIELDS parameter](#fields) table can be changed. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

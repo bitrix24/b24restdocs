@@ -14,7 +14,7 @@ items:
   - name: Delete Checklist Item
     href: task-checklist-item-delete.md
   - name: Move Checklist Item
-    href: task-checklist-item-move-after-item.md  
+    href: task-checklist-item-move-after-item.md
   - name: Mark Item as Completed
     href: task-checklist-item-complete.md
   - name: Mark Item as Incomplete

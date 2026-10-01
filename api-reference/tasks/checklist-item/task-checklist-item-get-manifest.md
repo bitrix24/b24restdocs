@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 The method `task.checklistitem.getmanifest` retrieves information about methods for working with task checklist items `task.checklistitem.*`.
 
-It is recommended to use the result only as a reference, as the response structure may change at any time by the developer.
+The response structure may change without notice, so use the result only as a reference.
 
 ## Method Parameters
 
@@ -136,6 +136,7 @@ No parameters.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -476,9 +477,52 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object describing methods `task.checklistitem.*` ||
+[`object`](../../data-types.md) | Object [describing methods](#result) `task.checklistitem.*` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **Manifest version**
+[`string`](../../data-types.md) | Version of the manifest structure ||
+|| **Warning**
+[`string`](../../data-types.md) | Warning that the manifest format may change without notice ||
+|| **REST: shortname alias to class**
+[`string`](../../data-types.md) | Short object name used in method names — `checklistitem` ||
+|| **REST: writable checklistitem data fields**
+[`array`](../../data-types.md) | Fields that can be passed in `FIELDS` of the [task.checklistitem.add](./task-checklist-item-add.md) and [task.checklistitem.update](./task-checklist-item-update.md) methods ||
+|| **REST: readable checklistitem data fields**
+[`array`](../../data-types.md) | Item fields returned by [task.checklistitem.get](./task-checklist-item-get.md) and [task.checklistitem.getlist](./task-checklist-item-get-list.md) ||
+|| **REST: sortable checklistitem data fields**
+[`array`](../../data-types.md) | Fields that can be used to sort the `task.checklistitem.getlist` result ||
+|| **REST: date fields**
+[`array`](../../data-types.md) | Date and time fields ||
+|| **REST: available methods**
+[`object`](../../data-types.md) | Method descriptions. The key is the short method name, such as `add` or `getlist`, and the value is a [method description object](#method) ||
+|#
+
+#### Method Description Object {#method}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **staticMethod**
+[`boolean`](../../data-types.md) | `false` — the method works with a specific item, `true` — the method is not bound to an item. The `get` method lacks this field, but it also works with a specific item ||
+|| **mandatoryParamsCount**
+[`integer`](../../data-types.md) | Number of required parameters. The first parameters in the `params` list are required. The `getmanifest` method lacks this field ||
+|| **params**
+[`array`](../../data-types.md) | Method parameters in the order they are passed in the request. Each element contains:
+- `description` — the parameter name in the code
+- `type` — the value type: `integer` or `array`
+- `allowedKeys` — allowed keys, if the parameter is passed as an object ||
+|| **allowedKeysInReturnValue**
+[`array`](../../data-types.md) | Fields that the method returns in the response. Present for `get` and `getlist` ||
+|| **collectionInReturnValue**
+[`boolean`](../../data-types.md) | `true` if the method returns an array of items. Present for `getlist` ||
 |#
 
 ## Error Handling

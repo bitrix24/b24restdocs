@@ -11,15 +11,26 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method:
-> - any user with edit access to the task
-> - Creator, Participant, and other Participants of the task
+> Who can execute the method: a user with read access to the task who is:
+> - a Bitrix24 administrator
+> - the task creator or their supervisor
+> - the item author or their supervisor
+> - the assignee or a participant, if their role allows editing checklists
+> - a workgroup member with permission to edit the group's tasks
 
-The method `task.checklistitem.delete` removes a checklist item from a task.
+The method `task.checklistitem.delete` removes a checklist item together with all its subitems.
+
+If you delete the root item with `PARENT_ID = 0`, the entire checklist is deleted.
 
 You can check permissions for deleting an item using the method [task.checklistitem.isactionallowed](./task-checklist-item-is-action-allowed.md).
 
 ## Method Parameters
+
+{% note warning "" %}
+
+Pass parameters in the request in the order shown in the table. If the order is violated, the method treats the `TASKID` value as the item identifier and may delete a different item.
+
+{% endnote %}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -38,7 +49,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
 
 ## Code Examples
 
-{% include [Required parameters in examples](../../../_includes/examples.md) %}
+{% include [Example Note](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -157,6 +168,7 @@ The item identifier can be obtained when [adding a new item](./task-checklist-it
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -265,7 +277,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the checklist item was successfully deleted ||
+[`boolean`](../../data-types.md) | Returns `true` if the checklist item was deleted.
+
+The method also returns `true` if the task `TASKID` has no item with the identifier `ITEMID`. To make sure the item existed, retrieve it using the [task.checklistitem.get](./task-checklist-item-get.md) method before deleting it ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -277,7 +291,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "TASKS_ERROR_EXCEPTION_#8; Deleting item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br>"
+    "error_description": "TASKS_ERROR_EXCEPTION_#8; Delete item: action unavailable; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br>"
 }
 ```
 
@@ -287,9 +301,11 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value**  ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::delete(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` or `ITEMID` is missing ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type for `TASKID` or `ITEMID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Deleting item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access rights to the task or lacks permissions to perform the action ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) expected by method ctaskchecklistitem::delete(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` is missing ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (itemId) expected by method ctaskchecklistitem::delete(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `ITEMID` is missing ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::delete() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect value type. The parameter number and name in the message indicate which value is incorrect ||
+|| `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` or `ITEMID` value is less than or equal to zero ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Delete item: action unavailable; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | User does not have access rights to the task or lacks permissions to perform the action ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

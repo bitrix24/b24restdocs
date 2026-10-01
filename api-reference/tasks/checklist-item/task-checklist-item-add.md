@@ -11,15 +11,23 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method:
-> - any user with access to edit the task
-> - Creator, Participant, and other Participants of the task
+> Who can execute the method: a user with read access to the task who is:
+> - a Bitrix24 administrator
+> - the assignee or a participant, if their role allows adding checklist items
+> - the task creator or their supervisor
+> - a workgroup member with permission to edit the group's tasks
 
 The method `task.checklistitem.add` adds a new checklist item to a task.
 
 You can check permissions for adding an item using the method [task.checklistitem.isactionallowed](./task-checklist-item-is-action-allowed.md).
 
 ## Method Parameters
+
+{% note warning "" %}
+
+Pass parameters in the request in the order shown in the table. If the order is violated, the request returns an error.
+
+{% endnote %}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -48,30 +56,31 @@ If `PARENT_ID` is passed with a value of `0`, then `TITLE` is the name of the ch
 || **SORT_INDEX** 
 [`integer`](../../data-types.md) | Sort index. The lower the value, the higher the item in the list or sublist ||
 || **IS_COMPLETE** 
-[`boolean`](../../data-types.md) | Status of the item. Possible values:
+[`string`](../../data-types.md) | Status of the item. Possible values:
 - `Y` — completed
 - `N` — not completed
 
-Default is `N` ||
+Also accepts `true` and `false`. Default is `N`.
+
+If you create an item as already completed, the `TOGGLED_BY` and `TOGGLED_DATE` fields remain empty ||
 || **IS_IMPORTANT** 
-[`boolean`](../../data-types.md) | Mark indicating that the item is important. Possible values:
+[`string`](../../data-types.md) | Mark indicating that the item is important. Possible values:
 - `Y` — important
-- `N` — normal ||
+- `N` — normal
+
+Also accepts `true` and `false`. Default is `N` ||
 || **MEMBERS** 
 [`object`](../../data-types.md) | Object describing the participants of the checklist item. Key — user identifier, value — object with the participant type parameter `TYPE`. Possible participant type values:
 - `'TYPE': 'A'` — Participant
 - `'TYPE': 'U'` — Observer
 
-The system will add checklist item participants to the task in the same roles
- ||
+The system will add checklist item participants to the task in the same roles ||
 || **PARENT_ID** 
 [`integer`](../../data-types.md) | Identifier of the parent item. Use for nested checklists.
 
 - If `PARENT_ID` is passed with a value of `0`, the system will create a new checklist in the task
-- If there is no checklist item in the task with the specified `PARENT_ID`, the system will create a new checklist
-- If `PARENT_ID` is not specified in `FIELDS`, the system will add a new item to the existing top-level checklist. If there is no checklist in the task, it will create a new one
-
-||
+- If there is no item with the specified `PARENT_ID`, the item is saved with this `PARENT_ID` and does not belong to any checklist. Pass only identifiers of existing items in the task
+- If `PARENT_ID` is not specified in `FIELDS`, the system will add a new item to the existing top-level checklist. If there is no checklist in the task, it will create a new one ||
 |#
 
 ## Code Examples
@@ -233,6 +242,7 @@ The system will add checklist item participants to the task in the same roles
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -397,7 +407,7 @@ HTTP Status: **400**
 ```json
 {
     "error":"ERROR_CORE",
-    "error_description":"TASKS_ERROR_EXCEPTION_#8; Adding item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br>"
+    "error_description":"TASKS_ERROR_EXCEPTION_#8; Add item: action unavailable; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br>"
 }
 ```
 
@@ -407,10 +417,16 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value**  ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Adding item: action not allowed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | No access to the task or insufficient permissions to work with checklists in the task ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS | Required parameter `TASKID` not provided or incorrect type for `TASKID` ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arFields) expected by method ctaskchecklistitem::add(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `FIELDS` not provided or empty ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Item name not specified; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | Required field `TITLE` not provided in the `FIELDS` parameter ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Add item: action unavailable; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | No access to the task or insufficient permissions to work with checklists in the task ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) expected by method ctaskchecklistitem::add(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` not provided ||
+|| `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` value is less than or equal to zero ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::add() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | Incorrect type for `TASKID`, or the parameters are passed out of order ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arFields) expected by method ctaskchecklistitem::add(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `FIELDS` not provided ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Item name is missing; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | `FIELDS` has no `TITLE` field, or `FIELDS` is empty ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Incorrect value [] specified for field [TITLE] in item [, ]; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | An empty string is passed in `TITLE` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arFields) for method ctaskchecklistitem::add() must not contain key "FOO".; 256/TE/WRONG_ARGUMENTS<br> | `FIELDS` contains a field that is not listed in the [FIELDS parameter](#fields) table ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#4; Cannot edit the task due to insufficient permissions; 4/TE/ACTION_NOT_ALLOWED<br> | Participants are passed in `MEMBERS`, but the user lacks permission to edit the task to add them to it. The item has already been created ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Unknown user type passed [X]; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | `MEMBERS` specifies a participant type other than `A` and `U` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

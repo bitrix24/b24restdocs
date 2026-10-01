@@ -15,7 +15,15 @@ Choose a tool for developing with an AI agent:
 
 The method `task.checklistitem.getlist` retrieves a list of checklist items in a task.
 
+Items of all checklists and nesting levels are returned as a single flat list without pagination: the `start` parameter is ignored, and the response has no `next` or `total` fields. To rebuild the tree, group items by `PARENT_ID`, casting the value to a number.
+
 ## Method Parameters
+
+{% note warning "" %}
+
+Pass parameters in the request in the order shown in the table. If the order is violated, the request returns an error.
+
+{% endnote %}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -41,10 +49,14 @@ You can sort by the following fields:
 - `TOGGLED_DATE` — date and time of the item's status change
 
 The sort direction can take the following values:
-- `asc` — ascending
-- `desc` — descending
+- `asc` or `ASC` — ascending
+- `desc` or `DESC` — descending
 
-By default, the result is sorted by `ID` in descending order ||
+The method silently ignores a mixed-case value such as `Desc`. For `TOGGLED_DATE`, use lowercase only: `ASC` and `DESC` return an error
+
+Sorting applies to the entire list, not within each sublist.
+
+By default, the result is sorted by `SORT_INDEX`, then by `ID` in ascending order ||
 |#
 
 ## Code Examples
@@ -86,14 +98,14 @@ By default, the result is sorted by `ID` in descending order ||
     type ChecklistItem = {
       ID: string
       TASK_ID: string
-      PARENT_ID: string
+      PARENT_ID: string | number
       CREATED_BY: string
       TITLE: string
       SORT_INDEX: string
       IS_COMPLETE: 'Y' | 'N'
       IS_IMPORTANT: 'Y' | 'N'
       TOGGLED_BY: string | null
-      TOGGLED_DATE: ISODate | null
+      TOGGLED_DATE: ISODate | ''
       MEMBERS: Array<{
         ID: string
         TYPE: string
@@ -110,15 +122,12 @@ By default, the result is sorted by `ID` in descending order ||
         FILE_ID: string
         DOWNLOAD_URL: string
         VIEW_URL: string
-      }>
+      }> | []
     }
 
     try {
-      // task.checklistitem.getlist returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // task.checklistitem.getlist returns all checklist items of the task in one response,
+      // without pagination, so a plain call.make is enough and `start` is not needed.
       const response = await $b24.actions.v2.call.make<ChecklistItem[]>({
         method: 'task.checklistitem.getlist',
         params: {
@@ -126,7 +135,6 @@ By default, the result is sorted by `ID` in descending order ||
           ORDER: {
             IS_COMPLETE: 'ASC',
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -155,11 +163,8 @@ By default, the result is sorted by `ID` in descending order ||
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // task.checklistitem.getlist returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // task.checklistitem.getlist returns all checklist items of the task in one response,
+          // without pagination, so a plain call.make is enough and `start` is not needed.
           const response = await $b24.actions.v2.call.make({
             method: 'task.checklistitem.getlist',
             params: {
@@ -167,7 +172,6 @@ By default, the result is sorted by `ID` in descending order ||
               ORDER: {
                 IS_COMPLETE: 'ASC',
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -218,6 +222,7 @@ By default, the result is sorted by `ID` in descending order ||
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -529,7 +534,7 @@ HTTP Status: **200**
 || **PARENT_ID** 
 [`string`](../../data-types.md) | Identifier of the parent item.
 
-A value of `0` indicates a root item ||
+The root item returns the number `0`, other items return a string ||
 || **CREATED_BY** 
 [`string`](../../data-types.md) | Identifier of the item author ||
 || **TITLE** 
@@ -541,25 +546,27 @@ If `PARENT_ID = 0`, the field contains the name of the checklist ||
 
 The smaller the value, the higher the item in the list or sublist ||
 || **IS_COMPLETE** 
-[`boolean`](../../data-types.md) | Completion status of the item. Possible values:
-- `Y` — completed,
+[`string`](../../data-types.md) | Completion status of the item. Possible values:
+- `Y` — completed
 - `N` — not completed ||
 || **IS_IMPORTANT** 
-[`boolean`](../../data-types.md) | Importance mark of the item. Possible values:
-- `Y` — important,
+[`string`](../../data-types.md) | Importance mark of the item. Possible values:
+- `Y` — important
 - `N` — regular ||
 || **TOGGLED_BY** 
 [`string`](../../data-types.md) | Identifier of the user who last changed the item's status.
 
-Can be `null` if the status has not been changed ||
+The value is `null` if the item status has not been changed, including for an item created as already completed ||
 || **TOGGLED_DATE** 
-[`string`](../../data-types.md) | Date and time of the item's status change in `ISO 8601` format ||
+[`string`](../../data-types.md) | Date and time of the item's status change in `ISO 8601` format.
+
+An empty string if the item status has not been changed, including for an item created as already completed ||
 || **MEMBERS** 
 [`array`](../../data-types.md) | A list of objects with [description of participants](#members) ||
 || **ATTACHMENTS** 
 [`object`](../../data-types.md) | An object with [description of attached files](#attachments).
 
-The key is the identifier of the attached file `ATTACHMENT_ID` ||
+The key is the identifier of the attached file `ATTACHMENT_ID`. If there are no files, an empty array `[]` is returned instead of an object ||
 |#
 
 #### Members Object {#members}
@@ -571,16 +578,18 @@ The key is the identifier of the attached file `ATTACHMENT_ID` ||
 [`string`](../../data-types.md) | Identifier of the user ||
 || **TYPE** 
 [`string`](../../data-types.md) | User's role in the checklist item. Possible values:
-- `A` — Participant,
+- `A` — Participant
 - `U` — Observer ||
 || **NAME** 
 [`string`](../../data-types.md) | User's name ||
 || **PERSONAL_PHOTO** 
-[`string`](../../data-types.md) | Identifier of the user's avatar file on Drive ||
+[`string`](../../data-types.md) | Identifier of the user's avatar file ||
 || **PERSONAL_GENDER** 
 [`string`](../../data-types.md) | User's gender. Possible values:
-- `M` — male,
-- `F` — female ||
+- `M` — male
+- `F` — female
+
+An empty string if the gender is not specified in the profile ||
 || **IMAGE** 
 [`string`](../../data-types.md) | Link to the user's avatar ||
 || **IS_COLLABER** 
@@ -613,7 +622,7 @@ HTTP Status: **400**
 ```json
 {
     "error":"ERROR_CORE",
-    "error_description":"TASKS_ERROR_EXCEPTION_#8; Action failed; 8\/TE\/ACTION_FAILED_TO_BE_PROCESSED\u003Cbr\u003E"
+    "error_description":"TASKS_ERROR_EXCEPTION_#8; Action failed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br>"
 }
 ```
 
@@ -623,9 +632,14 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value**  ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Action failed; 8\/TE\/ACTION_FAILED_TO_BE_PROCESSED\u003Cbr\u003E | User does not have access to the task ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::getlist() expected to be of type \u0022integer\u0022, but given something else.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | Required parameter `TASKID` is missing or has an incorrect type ||
-|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arOrder) for method ctaskchecklistitem::getlist() must not contain key \u0022IS_COMPLETED\u0022.; 256\/TE\/WRONG_ARGUMENTS\u003Cbr\u003E | An invalid field was specified in `ORDER` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#8; Action failed; 8/TE/ACTION_FAILED_TO_BE_PROCESSED<br> | Possible reasons:
+- there is no task with the specified `TASKID`
+- the user does not have access to the task
+- `ORDER` specifies a sort direction other than `asc` and `desc` ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) expected by method ctaskchecklistitem::getlist(), but not given.; 256/TE/WRONG_ARGUMENTS<br> | Required parameter `TASKID` is missing ||
+|| `ERROR_CORE` | TASKS_ERROR_ASSERT_EXCEPTION<br> | The `TASKID` value is less than or equal to zero ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #0 (taskId) for method ctaskchecklistitem::getlist() expected to be of type "integer", but given something else.; 256/TE/WRONG_ARGUMENTS<br> | `TASKID` has an incorrect type, or the parameters are passed out of order ||
+|| `ERROR_CORE` | TASKS_ERROR_EXCEPTION_#256; Param #1 (arOrder) for method ctaskchecklistitem::getlist() must not contain key "IS_COMPLETED".; 256/TE/WRONG_ARGUMENTS<br> | `ORDER` specifies a field that cannot be used for sorting ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
