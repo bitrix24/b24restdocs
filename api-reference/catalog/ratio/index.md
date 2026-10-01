@@ -9,32 +9,53 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The measurement unit ratio indicates how a unit of product is accounted for. This allows for accurate quantity conversions during data exchanges.
+The measurement unit ratio shows how many units of a product are sold at a time. For example, if water is sold in packs of six bottles, its measurement unit is a bottle and its ratio is 6.
 
-The ratio object includes:
+Ratios can only be read through REST. They are set in the product card in Bitrix24, in the "Unit ratio" column of the variations table. If the column is not visible, enable it in the list view settings.
 
-- `id` — the identifier of the measurement unit ratio
-- `productId` — the identifier of the product to which the ratio pertains
-- `ratio` — the numerical value of the measurement unit ratio
-- `isDefault` — a flag indicating if this is the default ratio
+{% note warning "" %}
+
+The [catalog.product.add](../product/catalog-product-add.md) and [catalog.product.update](../product/catalog-product-update.md) methods do not retain the ratio. They skip the `measureRatio` field without an error and return a successful response, but the product ratio does not change.
+
+{% endnote %}
 
 > Quick navigation: [all methods](#all-methods)
 
 ## How to Start
 
-1. Retrieve the structure and field types using [catalog.ratio.getFields](./catalog-ratio-get-fields.md)
-2. Obtain a list of ratios using [catalog.ratio.list](./catalog-ratio-list.md). If you need the primary ratio for a product, select the record with `isDefault = Y`
-3. Get the data for a specific ratio by its `id` using [catalog.ratio.get](./catalog-ratio-get.md)
+1. Retrieve the product ID using the [catalog.product.list](../product/catalog-product-list.md) method
+2. Retrieve the product ratios using the [catalog.ratio.list](./catalog-ratio-list.md) method with the filter `{"productId": <product ID>}`. Write the field name exactly as it appears in the response: the method skips the `PRODUCT_ID` field without an error and returns the ratios of all products
+3. Select the record where `isDefault` equals `Y`. If there is no such record, Bitrix24 uses a ratio of 1 for the product. This happens, for example, with products created through REST
+4. Request a known record by its `id` using the [catalog.ratio.get](./catalog-ratio-get.md) method
+
+## Response Format
+
+The methods return data in the following fields:
+
+- [catalog.ratio.get](./catalog-ratio-get.md) — the ratio object in `result.ratio`
+- [catalog.ratio.list](./catalog-ratio-list.md) — an array of objects in `result.ratios`, up to 50 records per call. The total number of records found is returned in `total`. If there is a next page, `next` contains the `start` value for it
+- [catalog.ratio.getFields](./catalog-ratio-get-fields.md) — field descriptions in `result.ratio`
+
+The ratio object has four fields:
+
+- `id` — the identifier of the ratio record
+- `productId` — the product identifier
+- `ratio` — the ratio value, for example, `6`
+- `isDefault` — `Y` if this is the default ratio of the product, otherwise `N`
 
 ## Relationship with Other Objects
 
-**Product.** The ratio is linked to the product through the `productId` field. Product identifiers can be obtained using the methods [catalog.product.list](../product/catalog-product-list.md) and [catalog.product.get](../product/catalog-product-get.md).
+The ratio is linked to a product and, through the product, to a measurement unit.
+
+**Product.** The product identifier is stored in the `productId` field of the ratio. The [catalog.product.list](../product/catalog-product-list.md) method returns it, and the [catalog.product.get](../product/catalog-product-get.md) method returns the product data using that identifier.
+
+**Measurement unit.** The ratio value is specified in the product's measurement unit. The identifier of this unit is stored in the `measure` field of the product. The list of units is returned by the [catalog.measure.list](../measure/catalog-measure-list.md) method of the [catalog.measure.*](../measure/index.md) group.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the methods: administrator
+> Who can execute the methods: a user with the "View Product Catalog" or "Manage Price Types" access permission
 
 #|
 || **Method** | **Description** ||

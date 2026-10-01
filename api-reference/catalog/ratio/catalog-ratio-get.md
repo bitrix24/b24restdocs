@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View Product Catalog" or "Manage Price Types" access permission
 
-The method returns the values of the unit of measure ratio fields by identifier.
+The method `catalog.ratio.get` returns a unit of measure ratio record by its identifier.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ The method returns the values of the unit of measure ratio fields by identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_ratio.id`](../data-types.md#catalog_ratio) | Identifier of the unit of measure ratio.
+[`catalog_ratio.id`](../data-types.md#catalog_ratio) | Identifier of the ratio record, not of the product.
 
-To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list](./catalog-ratio-list.md) method.
+To find the ratios of a product, use the [catalog.ratio.list](./catalog-ratio-list.md) method with a filter on `productId`
 ||
 |#
 
@@ -41,7 +41,7 @@ To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1}' \
+    -d '{"id":285}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.ratio.get
     ```
 
@@ -51,7 +51,7 @@ To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1,"auth":"**put_access_token_here**"}' \
+    -d '{"id":285,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.ratio.get
     ```
 
@@ -79,7 +79,7 @@ To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list
       const response = await $b24.actions.v2.call.make<RatioGetResult>({
         method: 'catalog.ratio.get',
         params: {
-          id: 1,
+          id: 285,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -111,7 +111,7 @@ To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.ratio.get',
             params: {
-              id: 1,
+              id: 285,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -141,7 +141,7 @@ To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list
 
     try:
         bitrix_response = client.catalog.ratio.get(
-            bitrix_id=1,
+            bitrix_id=285,
         ).response
         result = bitrix_response.result
         print(result)
@@ -167,18 +167,16 @@ To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list
             ->call(
                 'catalog.ratio.get',
                 [
-                    'id' => 1,
+                    'id' => 285,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+
+        echo 'Success: ' . print_r($result['ratio'], true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting catalog ratio: ' . $e->getMessage();
@@ -190,7 +188,7 @@ To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list
     ```js
     BX24.callMethod(
         'catalog.ratio.get', {
-            id: 1,
+            id: 285,
         },
         function(result) {
             if (result.error()) {
@@ -210,7 +208,7 @@ To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list
     $result = CRest::call(
         'catalog.ratio.get',
         [
-            'id' => 1
+            'id' => 285
         ]
     );
 
@@ -224,7 +222,7 @@ To obtain the identifiers of unit of measure ratios, use the [catalog.ratio.list
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.ratio.get", b24.Params{
-    	"id": 1,
+    	"id": 285,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.ratio.get: %w", err)
@@ -245,19 +243,21 @@ HTTP Status: **200**
 {
     "result": {
         "ratio": {
-            "id": 1,
+            "id": 285,
             "isDefault": "Y",
-            "productId": 1,
-            "ratio": 1
+            "productId": 6461,
+            "ratio": 10
         }
     },
     "time": {
-        "start": 1729601856.749788,
-        "finish": 1729601857.530307,
-        "duration": 0.7805190086364746,
-        "processing": 0.07734394073486328,
-        "date_start": "2024-10-22T15:57:36+03:00",
-        "date_finish": "2024-10-22T15:57:37+03:00"
+        "start": 1790848012,
+        "finish": 1790848012.042359,
+        "duration": 0.042359113693237305,
+        "processing": 0,
+        "date_start": "2026-10-01T12:46:52+03:00",
+        "date_finish": "2026-10-01T12:46:52+03:00",
+        "operating_reset_at": 1790848612,
+        "operating": 0
     }
 }
 ```
@@ -272,7 +272,7 @@ HTTP Status: **200**
 || **ratio**
 [`catalog_ratio`](../data-types.md#catalog_ratio) | Object containing information about the unit of measure ratio ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -280,9 +280,9 @@ HTTP Status: **200**
 HTTP Status: **400**
 
 ```json
-{	
-    "error":200040300010,
-    "error_description":"Access Denied"
+{
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -291,20 +291,18 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to view the unit of measure ratio
-||
-|| `100` | Parameter `id` not specified
-||
-|| `0` | Unit of measure ratio does not exist
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has neither the "View Product Catalog" nor the "Manage Price Types" access permission ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not passed ||
+|| `400` | Empty value | ratio does not exist. | There is no ratio with this `id` ||
+|| — | `0` | — | Other errors, such as fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./catalog-ratio-list.md)
 - [{#T}](./catalog-ratio-get-fields.md)
+- [{#T}](../product/catalog-product-get.md)
