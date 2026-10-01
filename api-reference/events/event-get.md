@@ -9,13 +9,17 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+> Scope: [`basic`](../scopes/permissions.md)
+>
 > Who can execute the method: any user
 
-The `event.get` method allows you to retrieve a list of registered event handlers.
+The `event.get` method returns a list of event handlers that the application registered with the [event.bind](./event-bind.md) method.
 
-The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
+The method works only in the context of authorizing the [application](../../settings/app-installation/index.md). When called through a webhook, it returns the `WRONG_AUTH_TYPE` error.
 
-A user without administrator permissions receives only the handlers registered for the current user.
+An administrator receives all handlers of the application, including those registered by other users. For a user without administrator permissions, the method returns only the handlers whose `auth_type` contains that user's ID.
+
+## Method Parameters
 
 No parameters.
 
@@ -31,7 +35,9 @@ No parameters.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{}' \
+    -d '{
+        "auth": "**put_access_token_here**"
+    }' \
     https://**put_your_bitrix24_address**/rest/event.get
     ```
 
@@ -48,8 +54,9 @@ No parameters.
     // Shape of each event handler returned in result[]
     type EventHandlerItem = {
       event: string,
-      handler: string,
-      auth_type: string,
+      handler?: string,
+      auth_type?: string,
+      connector_id?: string,
       offline: number,
     }
 
@@ -138,7 +145,7 @@ No parameters.
 
 - PHP
 
-    ```php        
+    ```php
     try {
         $eventService = $serviceBuilder->getMainScope()->event();
         $result = $eventService->get();
@@ -195,10 +202,11 @@ No parameters.
     }
 
     var items []struct {
-    	Event    string `json:"event"`
-    	Handler  string `json:"handler"`
-    	AuthType string `json:"auth_type"`
-    	Offline  int    `json:"offline"`
+    	Event       string `json:"event"`
+    	Handler     string `json:"handler"`
+    	AuthType    string `json:"auth_type"`
+    	ConnectorID string `json:"connector_id"`
+    	Offline     int    `json:"offline"`
     }
     if err := json.Unmarshal(res.Result, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -228,6 +236,11 @@ HTTP status: **200**
             "handler": "https:\/\/www.my-domain.com\/handler\/",
             "auth_type": "15",
             "offline": 0
+        },
+        {
+            "event": "ONCRMDEALUPDATE",
+            "connector_id": "",
+            "offline": 1
         }
     ],
     "time": {
@@ -248,17 +261,55 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response ||
+[`array`](../data-types.md) | Event handlers of the application in the order of registration [(detailed description)](#handler). The method returns all handlers in a single response, without pagination. If there are no handlers, the method returns an empty array ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 
+#### Handler List Item {#handler}
+
+The set of fields depends on the subscription type.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **event**
+[`string`](../data-types.md) | Event code in uppercase, for example `ONCRMLEADADD` ||
+|| **handler**
+[`string`](../data-types.md) | Handler URL. Online subscriptions only ||
+|| **auth_type**
+[`string`](../data-types.md) | ID of the user on whose behalf the handler receives authorization. `0` means the user whose action triggered the event. Online subscriptions only ||
+|| **connector_id**
+[`string`](../data-types.md) | The `auth_connector` source key specified when subscribing. An empty string if no source is specified. [Offline subscriptions](./offline-events.md) only ||
+|| **offline**
+[`integer`](../data-types.md) | Subscription type: `0` — online subscription, `1` — offline subscription ||
+|#
+
 ## Error Handling
+
+HTTP status: **403**
+
+```json
+{
+    "error": "WRONG_AUTH_TYPE",
+    "error_description": "Current authorization type is denied for this method"
+}
+```
+
+{% include notitle [Error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called outside an application, for example, through a webhook ||
+|#
 
 {% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./events.md)
 - [{#T}](./event-bind.md)
 - [{#T}](./event-unbind.md)

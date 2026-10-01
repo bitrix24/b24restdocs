@@ -9,11 +9,15 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+> Scope: [`basic`](../scopes/permissions.md)
+>
 > Who can execute the method: administrator
 
-The `event.offline.clear` method clears the records in the offline event queue. The availability of offline events can be checked via the [feature.get](../common/system/feature-get.md) method.
+The `event.offline.clear` method deletes from the queue the records of a batch retrieved by the [event.offline.get](./event-offline-get.md) method with `clear=0`. This is how the application confirms that it has processed these records. Mark the records that could not be processed with the [event.offline.error](./event-offline-error.md) method. The batch workflow is described in the article [{#T}](./offline-events.md).
 
-The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
+The batch reservation mode is not available on all plans. Check its availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`.
+
+The method works only in the context of authorizing the [application](../../settings/app-installation/index.md). Permissions for event methods are described in the [Access Permissions](./index.md#access) section.
 
 ## Method Parameters
 
@@ -23,11 +27,13 @@ The method works only in the context of authorizing the [application](../../sett
 || **Name**
 `type` | **Description** ||
 || **process_id***
-[`string`](../data-types.md) | Identifier of the reserved event package. It is returned by the [event.offline.get](./event-offline-get.md) method when called with the `clear=0` parameter. The [event.offline.list](./event-offline-list.md) method does not return `process_id` ||
+[`string`](../data-types.md) | Identifier of the reserved event batch. It is returned by the [event.offline.get](./event-offline-get.md) method when called with the `clear=0` parameter. The value is also available in the `PROCESS_ID` field of the records returned by the [event.offline.list](./event-offline-list.md) method. Do not pass an empty string: the method does not return an error and deletes from the queue all of the application's records outside batches, including those marked as erroneous ||
 || **id**
-[`array`](../data-types.md) | Array of identifiers of records to be cleared. By default, all records marked with the provided `process_id` will be cleared ||
+[`array`](../data-types.md) | Array of `ID` field values of the records to delete — integers greater than `0`. Ignored if the `message_id` parameter is passed. By default and when the array is empty, all records of the `process_id` batch are deleted ||
 || **message_id**
-[`array`](../data-types.md) | Array of values of the `MESSAGE_ID` field of records to be cleared. Ignored if the `id` parameter is specified. By default, all records marked with the provided `process_id` will be cleared ||
+[`array`](../data-types.md) | Array of `MESSAGE_ID` field values of the records to delete — strings of 32 characters. By default and when the array is empty, all records of the `process_id` batch are deleted ||
+|| **auth_connector**
+[`string`](../data-types.md) | Source key. Pass the same value with which the batch was retrieved by the `event.offline.get` method, otherwise the method deletes nothing. The parameter is not available on all plans: check it using the [feature.get](../common/system/feature-get.md) method with the code `rest_auth_connector`, otherwise the method returns the `WRONG_LICENSE` error ||
 |#
 
 ## Code Examples
@@ -129,6 +135,7 @@ The method works only in the context of authorizing the [application](../../sett
     try:
         bitrix_response = client.event.offline.clear(
             process_id="yh3gu929sf0d32lsfysqas2y1hlpp09q",
+            bitrix_id=[2],
         ).response
         result = bitrix_response.result
         print(result)
@@ -258,7 +265,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Success of execution ||
+[`boolean`](../data-types.md) | Always `true` if the method did not return an error. The method does not return the number of deleted records: the response is `true` even if no records are found for the passed values ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
@@ -280,13 +287,19 @@ HTTP status: **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'PROCESS_ID' is null or empty | The `process_id` parameter is not passed ||
+|| `400` | `ERROR_ARGUMENT` | Value must be array of integers | The `id` parameter is not an array or contains a value less than `1` ||
+|| `400` | `ERROR_ARGUMENT` | Value must be array of MESSAGE_ID values | The `message_id` parameter is not an array or contains a string that is not 32 characters long ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a non-administrator ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called outside an application, for example, through a webhook ||
+|| `403` | `WRONG_LICENSE` | This feature is not enabled for the current license: auth_connector | `auth_connector` is passed, but the plan does not support source keys ||
 |#
 
 {% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./events.md)
 - [{#T}](./event-bind.md)
 - [{#T}](./event-get.md)

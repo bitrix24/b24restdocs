@@ -9,11 +9,15 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+> Scope: [`basic`](../scopes/permissions.md)
+>
 > Who can execute the method: administrator
 
-The `event.offline.error` method retains a database record marked with an error when using offline events. The availability of offline events can be verified via the [feature.get](../common/system/feature-get.md) method.
+The `event.offline.error` method marks records of a reserved [offline event](./offline-events.md) batch as erroneous. Such records are released from the reservation and are no longer included in the regular output of [event.offline.get](./event-offline-get.md). You can retrieve them with the `event.offline.get` method with the `error=1` parameter.
 
-The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
+The batch reservation mode is not available on all plans. Check its availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`.
+
+The method works only in the context of authorizing the [application](../../settings/app-installation/index.md). Permissions for event methods are described in the [Access Permissions](./index.md#access) section.
 
 ## Method Parameters
 
@@ -23,10 +27,18 @@ The method works only in the context of authorizing the [application](../../sett
 || **Name**
 `type` | **Description** ||
 || **process_id***
-[`string`](../data-types.md) | Identifier of the process that is handling the records ||
-|| **message_id**
-[`array`](../data-types.md) | Array of values for the `MESSAGE_ID` field of the records to be marked as erroneous ||
+[`string`](../data-types.md) | Identifier of the reserved event batch. It is returned by the [event.offline.get](./event-offline-get.md) method when called with the `clear=0` parameter ||
+|| **message_id***
+[`array`](../data-types.md) | Array of `MESSAGE_ID` field values from the `event.offline.get` response — the keys of the records to mark as erroneous. A key is a string of 32 characters. The method does not check the length: with an invalid key, the record is not found and no error is returned. The method does not change records that are already marked as erroneous. If you pass an empty array, the method returns `true` and changes nothing ||
+|| **auth_connector**
+[`string`](../data-types.md) | Source key. Pass the same value with which the batch was retrieved by the `event.offline.get` method, otherwise the method does not find the records. The parameter is not available on all plans: check it using the [feature.get](../common/system/feature-get.md) method with the code `rest_auth_connector`, otherwise the method returns the `WRONG_LICENSE` error ||
 |#
+
+{% note warning %}
+
+The method marks as erroneous only the records of the batch with the passed `process_id`. Records with the same `MESSAGE_ID` values that are not yet processed and do not belong to this batch are deleted from the queue. Therefore, with someone else's or an invalid `process_id`, the method marks nothing, deletes the records, and returns `true`. With an empty string in `process_id`, the method marks as erroneous the records that are not yet reserved in a batch and deletes the records with the same keys from other batches.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -42,7 +54,7 @@ The method works only in the context of authorizing the [application](../../sett
     -H "Accept: application/json" \
     -d '{
         "process_id": "yh3gu929sf0d32lsfysqas2y1hlpp09q",
-        "message_id": [2],
+        "message_id": ["b0c7f7c2a3f1e4d5c6b7a8f9e0d1c2b3"],
         "auth": "**put_access_token_here**"
     }' \
     https://**put_your_bitrix24_address**/rest/event.offline.error
@@ -63,7 +75,7 @@ The method works only in the context of authorizing the [application](../../sett
         method: 'event.offline.error',
         params: {
           process_id: 'yh3gu929sf0d32lsfysqas2y1hlpp09q',
-          message_id: [2],
+          message_id: ['b0c7f7c2a3f1e4d5c6b7a8f9e0d1c2b3'],
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -96,7 +108,7 @@ The method works only in the context of authorizing the [application](../../sett
             method: 'event.offline.error',
             params: {
               process_id: 'yh3gu929sf0d32lsfysqas2y1hlpp09q',
-              message_id: [2],
+              message_id: ['b0c7f7c2a3f1e4d5c6b7a8f9e0d1c2b3'],
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -128,7 +140,7 @@ The method works only in the context of authorizing the [application](../../sett
         bitrix_response = client.event.offline.error(
             process_id="yh3gu929sf0d32lsfysqas2y1hlpp09q",
             message_id=[
-                2,
+                "b0c7f7c2a3f1e4d5c6b7a8f9e0d1c2b3",
             ],
         ).response
         result = bitrix_response.result
@@ -156,7 +168,7 @@ The method works only in the context of authorizing the [application](../../sett
                 'event.offline.error',
                 [
                     'process_id' => 'yh3gu929sf0d32lsfysqas2y1hlpp09q',
-                    'message_id' => [2],
+                    'message_id' => ['b0c7f7c2a3f1e4d5c6b7a8f9e0d1c2b3'],
                 ]
             );
     
@@ -183,7 +195,7 @@ The method works only in the context of authorizing the [application](../../sett
         "event.offline.error",
         {
             "process_id": "yh3gu929sf0d32lsfysqas2y1hlpp09q",
-            "message_id": [2]
+            "message_id": ["b0c7f7c2a3f1e4d5c6b7a8f9e0d1c2b3"]
         },
         function(result)
         {
@@ -204,7 +216,7 @@ The method works only in the context of authorizing the [application](../../sett
         'event.offline.error',
         [
             'process_id' => 'yh3gu929sf0d32lsfysqas2y1hlpp09q',
-            'message_id' => [2]
+            'message_id' => ['b0c7f7c2a3f1e4d5c6b7a8f9e0d1c2b3']
         ]
     );
 
@@ -219,7 +231,7 @@ The method works only in the context of authorizing the [application](../../sett
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "event.offline.error", b24.Params{
     	"process_id": "yh3gu929sf0d32lsfysqas2y1hlpp09q",
-    	"message_id": []int{2},
+    	"message_id": []string{"b0c7f7c2a3f1e4d5c6b7a8f9e0d1c2b3"},
     })
     if err != nil {
     	return fmt.Errorf("event.offline.error: %w", err)
@@ -259,7 +271,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Success of execution ||
+[`boolean`](../data-types.md) | Always `true` if the method did not return an error. The method does not return the number of marked records ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
@@ -281,13 +293,18 @@ HTTP status: **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'PROCESS_ID' is null or empty | The `process_id` parameter is not passed ||
+|| `400` | `ERROR_ARGUMENT` | Value must be array of MESSAGE_ID values | The `message_id` parameter is not passed or is not an array ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a non-administrator ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called outside an application, for example, through a webhook ||
+|| `403` | `WRONG_LICENSE` | This feature is not enabled for the current license: auth_connector | `auth_connector` is passed, but the plan does not support source keys ||
 |#
 
 {% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./events.md)
 - [{#T}](./event-bind.md)
 - [{#T}](./event-get.md)

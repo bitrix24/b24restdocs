@@ -9,32 +9,36 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+> Scope: [`basic`](../scopes/permissions.md)
+>
 > Who can execute the method: any user
 
 The `event.bind` method registers a new event handler.
 
-The method works only within the context of [application](../../settings/app-installation/index.md) authorization. It can work both under a user with portal administration rights and under a regular user. For a user without administrator rights, the method is available with the following restrictions:
+The method works only within the context of [application](../../settings/app-installation/index.md) authorization. When called through a webhook, the method returns the `WRONG_AUTH_TYPE` error.
 
-1. Offline events are unavailable; attempting to install them will throw an exception.
-2. Events are installed on behalf of the current user (see the description of parameter `auth_type`). An explicit indication `auth_type` that differs from the `ID` current user will also throw an exception.
+The following restrictions apply to a user without administrator rights:
+
+- offline events are unavailable: a subscription with `event_type=offline` returns the `ACCESS_DENIED` error
+- only the user's own identifier can be specified in `auth_type`; for another user, the method returns the `ACCESS_DENIED` error
 
 {% note info %}
 
-Since requests will originate from Bitrix servers, any URL must be accessible for external GET/POST requests.
+Bitrix24 sends the event data in a POST request to the handler URL, so the address must be accessible from the internet. How to test a handler is described in the article [{#T}](./test-handler.md).
 
 {% endnote %}
 
-The interface for this method is [BX24.callBind](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-bind.md).
+The method can be called via [BX24.callBind](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-bind.md).
 
 {% note info %}
 
-When an application is deleted or updated, its actions will be removed. Therefore, they must be set from scratch in the installer of each version.
+When an application is deleted, its event handlers are removed; when it is updated, they are retained. If the installer of a new version registers the same handler again, the method returns the `ERROR_CORE` error. Before registering, check the current handlers with the [event.get](./event-get.md) method.
 
 {% endnote %}
 
 {% note info "" %}
 
-Events will not be sent to the application until the installation is complete. [Check the application installation](../../settings/app-installation/installation-finish.md)
+Events will not be sent to the application until the installation is complete. [Check the application installation](../../settings/app-installation/installation-finish.md).
 
 {% endnote %}
 
@@ -46,19 +50,19 @@ Events will not be sent to the application until the installation is complete. [
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../data-types.md) | Event name ||
+[`string`](../data-types.md) | Event code, such as `ONCRMLEADADD`. The event must belong to the application's scope or be a basic event; otherwise, the method returns the `ERROR_EVENT_NOT_FOUND` error. The list of available events is returned by the [events](./events.md) method ||
 || **handler***
-[`string`](../data-types.md) | Link to the event handler ||
+[`string`](../data-types.md) | Handler URL with the `http` or `https` scheme. The host name must contain a dot, so `localhost` is not accepted. Required for online events; ignored when `event_type=offline` ||
 || **auth_type**
-[`integer`](../data-types.md) | Identifier of the user under whom the event handler is authorized. By default, the authorization of the user whose actions triggered the event will be used ||
+[`integer`](../data-types.md) | Identifier of the user under whom the event handler is authorized. By default, for an administrator, it is the user whose action triggered the event; for a user without administrator rights, it is that user. Ignored when `event_type=offline` ||
 || **event_type**
-[`string`](../data-types.md) | Values: ```online|offline```. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
+[`string`](../data-types.md) | Subscription type: `online` or `offline`. Default is `online`. With `offline`, the event is placed in the [offline event queue](./offline-events.md) ||
 || **auth_connector**
-[`string`](../data-types.md) |  Source key. This parameter is intended for [offline events](./offline-events.md). It allows excluding false event triggers ||
+[`string`](../data-types.md) | Source key for [offline events](./offline-events.md). This key creates a separate queue that does not receive changes made by requests of the application itself with the same `auth_connector`. The same value is passed to the `event.offline.*` methods. The parameter is not available on all plans: check it with the [feature.get](../common/system/feature-get.md) method using the `rest_auth_connector` code; otherwise, the method returns the `WRONG_LICENSE` error ||
 || **options**
 [`object`](../data-types.md) | Additional settings for the registered event. The set of fields depends on the event.
 
-For the `ONOFFLINEEVENT` event, the `minTimeout` parameter is supported — the minimum interval between notifications in seconds. Default is 1. More details in the article [{#T}](./on-offline-event.md#min-timeout) ||
+For the `ONOFFLINEEVENT` event, the `minTimeout` field is supported — the minimum interval between notifications in seconds. Default is 1. More details in the article [{#T}](./on-offline-event.md#min-timeout) ||
 |#
 
 ## Code Examples
@@ -180,7 +184,7 @@ For the `ONOFFLINEEVENT` event, the `minTimeout` parameter is supported — the 
         print(f"Unexpected error: {error}")
     ```
 
-- PHP
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -266,17 +270,29 @@ HTTP status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Status** | **Code** | **Error message** | **Description** ||
-|| `400` | `ERROR_EVENT_NOT_FOUND` | Event not found | The event is incorrectly specified ||
-|| `403` | `ACCESS_DENIED` | Access denied! Offline events binding requires administrator access rights | The method was launched by someone other than the administrator when registering an offline event handler ||
-|| `403` | `ACCESS_DENIED` | Access denied! Event binding with AUTH_TYPE requires administrator access rights | The method was launched by someone other than the administrator and specified the `auth_type` of another user ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_EVENT_NOT_FOUND` | Event not found | The event was not found or does not belong to the application's scope ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'EVENT' is null or empty | The `event` parameter is not passed ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'HANDLER' is null or empty | The `handler` parameter is not passed for an online event ||
+|| `400` | `ERROR_ARGUMENT` | ```Value must be one of {online|offline}``` | An invalid `event_type` value is passed ||
+|| `400` | `ERROR_ARGUMENT` | Offline event cannot be registered for this event. | The event cannot be received offline, such as `ONOFFLINEEVENT` ||
+|| `400` | `ERROR_WRONG_HANDLER_URL` | Wrong handler URL | The handler URL has no host, or the host name has no dot ||
+|| `400` | `ERROR_UNSUPPORTED_PROTOCOL` | Unsupported handler protocol | The handler URL scheme is neither `http` nor `https` ||
+|| `400` | `ERROR_CORE` | Unable to set event handler: Handler already binded | This handler is already registered ||
+|| `400` | `ERROR_CORE` | Unable to set event handler: Process of binding the handler has already started | The same handler is being registered by a parallel request ||
+|| `403` | `ACCESS_DENIED` | Access denied! Offline events binding requires administrator access rights | An offline event handler is being registered by a user without administrator rights ||
+|| `403` | `ACCESS_DENIED` | Access denied! Event binding with AUTH_TYPE requires administrator access rights | A user without administrator rights specified another user in `auth_type` ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called outside an application, for example, through a webhook ||
+|| `403` | `WRONG_LICENSE` | This feature is not enabled for the current license: auth_connector | `auth_connector` is passed, but the plan does not support source keys ||
 |#
 
 {% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./events.md)
+- [{#T}](./test-handler.md)
 - [{#T}](./event-get.md)
 - [{#T}](./event-unbind.md)
 - [{#T}](./safe-event-handlers.md)
@@ -286,4 +302,3 @@ HTTP status: **400**, **403**
 - [{#T}](./event-offline-clear.md)
 - [{#T}](./event-offline-error.md)
 - [{#T}](./on-offline-event.md)
-- [{#T}](../../tutorials/openlines/example-connector.md)

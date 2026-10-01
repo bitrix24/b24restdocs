@@ -9,11 +9,11 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+> Scope: [`basic`](../scopes/permissions.md)
+>
 > Who can execute the method: administrator
 
-A `event.offline.list` method for reading the current queue without making changes to its state, unlike [event.offline.get](./event-offline-get.md). The availability of offline events can be checked via the [feature.get](../common/system/feature-get.md) method.
-
-The method does not mark events as processed and does not generate `process_id`. In the `PROCESS_ID` field, the value is empty until events are reserved by a call to [event.offline.get](./event-offline-get.md) with the `clear=0` parameter.
+The `event.offline.list` method reads the [offline event](./offline-events.md) queue of the application that called it. Unlike [event.offline.get](./event-offline-get.md), it does not reserve records and does not return `process_id`. To confirm records or mark them as erroneous, retrieve them with the `event.offline.get` method with `clear=0`.
 
 The method works only in the context of authorizing the [application](../../settings/app-installation/index.md).
 
@@ -25,9 +25,13 @@ The method works only in the context of authorizing the [application](../../sett
 || **Name**
 `type` | **Description** ||
 || **filter**
-[`array`](../data-types.md) | Record filter. By default, all records are returned without filtering. Filtering is supported by fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID`, `PROCESS_ID`, `ERROR` with standard operations like `=`, `>`, `<`, `<=`, etc. ||
+[`object`](../data-types.md) | Record filter. Without a filter, the method returns all records. You can filter by the fields: `ID`, `TIMESTAMP_X`, `EVENT_NAME`, `MESSAGE_ID`, `PROCESS_ID`, `ERROR`.
+
+`TIMESTAMP_X` is passed in ISO 8601 format, `ERROR` — as `0` or `1`.
+
+The operation is specified before the field name: `=`, `>`, `<`, `>=`, `<=`, `@` — the value is in the array, `%` — substring. Without an operation, an exact match is used. Example: `{">ID": 100, "=EVENT_NAME": "ONCRMLEADADD"}`. Negation `!` is not supported: the method returns the `ERROR_ARGUMENT` error ||
 || **order**
-[`array`](../data-types.md) | Record sorting. Sorting is supported by the same fields as in the filter; an array of the type ```[field=>ASC|DESC]``` is accepted as input. Default —`[ID:ASC]` ||
+[`object`](../data-types.md) | Record sorting by the same fields as in the filter, in the form `{"field": "ASC"}` or `{"field": "DESC"}`. Default is `{"ID": "ASC"}` ||
 || **start**
 [`integer`](../data-types.md) | This parameter is used to control pagination.
 
@@ -39,7 +43,7 @@ The formula for calculating the `start` parameter value:
 
 `start = (N-1) * 50`, where `N` — the number of the desired page ||
 || **auth_connector**
-[`string`](../data-types.md) | Source key. The queue of offline events is divided by sources. Pass the same `auth_connector` value as when subscribing with the [event.bind](./event-bind.md) method; otherwise, the method will return only events without a source. This parameter is available on the Professional plan and above ||
+[`string`](../data-types.md) | Source key. The queue of offline events is divided by sources. Pass the same `auth_connector` value as when subscribing with the [event.bind](./event-bind.md) method; otherwise, the method will return only events without a source. The parameter is not available on all plans: check its availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_auth_connector`, otherwise the method returns the `WRONG_LICENSE` error ||
 |#
 
 ## Code Examples
@@ -92,8 +96,8 @@ The formula for calculating the `start` parameter value:
       // event.offline.list returns a single page (max 50 records). For the whole result set
       // use a list helper: $b24.actions.v2.callList.make() returns every record as one
       // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // NOTE: the list helpers ignore `order` (they always sort by ID ASC and log a warning)
+      // — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<OfflineEventItem[]>({
         method: 'event.offline.list',
         params: {
@@ -135,8 +139,8 @@ The formula for calculating the `start` parameter value:
           // event.offline.list returns a single page (max 50 records). For the whole result set
           // use a list helper: $b24.actions.v2.callList.make() returns every record as one
           // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // NOTE: the list helpers ignore `order` (they always sort by ID ASC and log a warning)
+          // — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'event.offline.list',
             params: {
@@ -238,9 +242,6 @@ The formula for calculating the `start` parameter value:
         bitrix_response = client.event.offline.list(
             filter={
                 "ERROR": 0,
-            },
-            order={
-                "ID": "DESC",
             },
         ).as_list_fast(descending=True).response
         result = bitrix_response.result
@@ -356,12 +357,12 @@ The formula for calculating the `start` parameter value:
     }
 
     var items []struct {
-    	ID              b24.ID `json:"ID"`
-    	TimestampX      string `json:"TIMESTAMP_X"`
-    	EventName       string `json:"EVENT_NAME"`
-    	EventData       bool   `json:"EVENT_DATA"`
-    	EventAdditional bool   `json:"EVENT_ADDITIONAL"`
-    	MessageID       b24.ID `json:"MESSAGE_ID"`
+    	ID              b24.ID          `json:"ID"`
+    	TimestampX      string          `json:"TIMESTAMP_X"`
+    	EventName       string          `json:"EVENT_NAME"`
+    	EventData       json.RawMessage `json:"EVENT_DATA"`
+    	EventAdditional json.RawMessage `json:"EVENT_ADDITIONAL"`
+    	MessageID       string          `json:"MESSAGE_ID"`
     }
     if err := json.Unmarshal(res.Result, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -390,9 +391,15 @@ HTTP status: **200**
             "ID": "2",
             "TIMESTAMP_X": "2024-07-18T12:32:31+02:00",
             "EVENT_NAME": "ONCRMCOMPANYADD",
-            "EVENT_DATA": false,
-            "EVENT_ADDITIONAL": false,
-            "MESSAGE_ID": "2",
+            "EVENT_DATA": {
+                "FIELDS": {
+                    "ID": "45"
+                }
+            },
+            "EVENT_ADDITIONAL": {
+                "user_id": "1"
+            },
+            "MESSAGE_ID": "4f2a9c1e7b3d5a6f8e0c2b4d6a8f1e3c",
             "PROCESS_ID": "",
             "ERROR": "0"
         },
@@ -400,9 +407,15 @@ HTTP status: **200**
             "ID": "1",
             "TIMESTAMP_X": "2024-07-18T12:32:31+02:00",
             "EVENT_NAME": "ONCRMLEADADD",
-            "EVENT_DATA": false,
-            "EVENT_ADDITIONAL": false,
-            "MESSAGE_ID": "1",
+            "EVENT_DATA": {
+                "FIELDS": {
+                    "ID": "123"
+                }
+            },
+            "EVENT_ADDITIONAL": {
+                "user_id": 0
+            },
+            "MESSAGE_ID": "b0c7f7c2a3f1e4d5c6b7a8f9e0d1c2b3",
             "PROCESS_ID": "",
             "ERROR": "0"
         }
@@ -426,11 +439,36 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response ||
+[`array`](../data-types.md) | Queue records [(detailed description)](#event). If there are no matching records, an empty array is returned ||
 || **total**
 [`integer`](../data-types.md) | The total number of records found ||
+|| **next**
+[`integer`](../data-types.md) | The `start` value for the next page. Returned if more records are found than fit on the current page ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
+|#
+
+#### List Element {#event}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../data-types.md) | Identifier of the record in the queue ||
+|| **TIMESTAMP_X**
+[`datetime`](../data-types.md) | Time the event was written to the queue or last repeated ||
+|| **EVENT_NAME**
+[`string`](../data-types.md) | Event code, for example `ONCRMLEADADD` ||
+|| **EVENT_DATA**
+[`object`](../data-types.md) or [`boolean`](../data-types.md) | Event data — the same as passed to the handler of an online event, for example `FIELDS.ID`. If the event has no data, the field is empty: `false` or `null` ||
+|| **EVENT_ADDITIONAL**
+[`object`](../data-types.md) | Event authorization data. The `user_id` field contains the identifier of the user who performed the action. If the action was performed without a user, for example by an agent, `user_id` is `0` ||
+|| **MESSAGE_ID**
+[`string`](../data-types.md) | Record key. A repeated event with the same data updates the unreserved record instead of adding a new one. If the record is already reserved by a batch, the repeat creates a new record. Pass the value in the `message_id` parameter of the [event.offline.clear](./event-offline-clear.md) and [event.offline.error](./event-offline-error.md) methods ||
+|| **PROCESS_ID**
+[`string`](../data-types.md) | Identifier of the batch that reserved the record via the [event.offline.get](./event-offline-get.md) method with `clear=0`. An empty string if the record is not reserved ||
+|| **ERROR**
+[`string`](../data-types.md) | `1` — the record is marked as erroneous by the [event.offline.error](./event-offline-error.md) method, `0` — it is not ||
 |#
 
 ## Error Handling
@@ -450,15 +488,25 @@ HTTP status: **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! | Method was executed by a non-administrator ||
+|| `400` | `ERROR_ARGUMENT` | Filter field not allowed: … | A field not from the list was passed in `filter` ||
+|| `400` | `ERROR_ARGUMENT` | Filter operation not allowed: … | An unsupported operation was passed in `filter`, for example `!` ||
+|| `400` | `ERROR_ARGUMENT` | The filter is not an array. | The `filter` parameter was not passed as an object ||
+|| `400` | `ERROR_ARGUMENT` | The order is not an array. | The `order` parameter was not passed as an object ||
+|| `400` | `ERROR_ARGUMENT` | Order field not allowed: … | A field not from the list was passed in `order` ||
+|| `400` | `ERROR_ARGUMENT` | ```Order direction should be one of {ASC|DESC}``` | A direction other than `ASC` or `DESC` was passed in `order` ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a non-administrator ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called outside an application, for example, through a webhook ||
+|| `403` | `WRONG_LICENSE` | This feature is not enabled for the current license: auth_connector | `auth_connector` was passed, but the plan does not support source keys ||
 |#
 
 {% include [System errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./events.md)
 - [{#T}](./event-bind.md)
+- [{#T}](./test-handler.md)
 - [{#T}](./event-get.md)
 - [{#T}](./event-unbind.md)
 - [{#T}](./safe-event-handlers.md)

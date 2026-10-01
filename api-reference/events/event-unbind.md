@@ -9,14 +9,16 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+> Scope: [`basic`](../scopes/permissions.md)
+>
 > Who can execute the method: any user
 
-The `event.unbind` method unregisters a registered event handler.
+The `event.unbind` method deletes event handlers that the application registered with the [event.bind](./event-bind.md) method. BX24.js provides the [BX24.callUnbind](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-unbind.md) wrapper for this method.
 
-The method works only within the authorization context of an [application](../../settings/app-installation/index.md). It can work both when authorized as a user with Bitrix24 administration rights and as a regular user. For a user without administrator rights, the method is available with the following restrictions:
+The method works only within the authorization context of an [application](../../settings/app-installation/index.md). For a user without administrator rights, the method is available with the following restrictions:
 
-1. Offline events are unavailable
-2. Only online event handlers registered for the current user can be deleted
+- offline events are unavailable: a call with `event_type=offline` returns the `ACCESS_DENIED` error
+- only the user's own online event handlers can be deleted
 
 ## Method Parameters
 
@@ -26,23 +28,25 @@ The method works only within the authorization context of an [application](../..
 || **Name**
 `type` | **Description** ||
 || **event***
-[`string`](../data-types.md) | Event name ||
+[`string`](../data-types.md) | Event code, for example `ONCRMLEADADD`. The code is case-insensitive ||
 || **handler***
-[`string`](../data-types.md) | Link to the event handler ||
+[`string`](../data-types.md) | Handler URL specified at registration. Required for online events. With `event_type=offline`, the value is ignored ||
 || **auth_type**
-[`integer`](../data-types.md) | User identifier under which the event handler is authorized.
+[`integer`](../data-types.md) | User identifier under which the event handler is authorized. Without this parameter, an administrator deletes the handlers of all users, and a user without administrator rights deletes only their own. A user without administrator rights does not need to pass this parameter: if it is passed, only the user's own ID as an integer is allowed, while the string `"15"` or `0` returns the `ACCESS_DENIED` error. With `event_type=offline`, the parameter is ignored
 
 {% note info %}
 
-If you need to remove event handlers set with an empty `auth_type` (authorized on behalf of the user who triggered the event), but keep the other handlers, specify `auth_type=0` or an empty value for the parameter.
+To delete only the handlers that are authorized on behalf of the user who triggered the event, an administrator passes `auth_type=0`. Handlers with a different `auth_type` remain.
 
-{% endnote %} 
+{% endnote %}
 ||
 || **event_type**
-[`string`](../data-types.md) | Values: ```online|offline```. By default, `event_type=online`, and the method's behavior remains unchanged. If `event_type=offline` is called, the method works with [offline events](./offline-events.md) ||
+[`string`](../data-types.md) | Subscription type: `online` or `offline`, case-insensitive. Defaults to `online`. With `offline`, the method works with [offline events](./offline-events.md) ||
+|| **auth_connector**
+[`string`](../data-types.md) | Source key. Applies only with `event_type=offline`: the method deletes offline handlers with the same `auth_connector` that was passed to [event.bind](./event-bind.md). Without this parameter, the method deletes handlers that have no source key ||
 |#
 
-If no parameters are specified, all event handlers that meet the other requirements will be deleted.
+The method deletes all handlers of the application that match the passed parameters.
 
 ## Code Examples
 
@@ -193,9 +197,9 @@ If no parameters are specified, all event handlers that meet the other requireme
     $result = CRest::call(
         'event.unbind',
         [
-            'EVENT' => 'ONCRMLEADADD',
-            'HANDLER' => 'https://www.my-domain.com/handler/',
-            'AUTH_TYPE' => 15
+            'event' => 'ONCRMLEADADD',
+            'handler' => 'https://www.my-domain.com/handler/',
+            'auth_type' => 15
         ]
     );
 
@@ -210,7 +214,7 @@ If no parameters are specified, all event handlers that meet the other requireme
 
 HTTP status: **200**
 
-The method returns the number of event handlers deleted during the call.
+The method returns the number of deleted handlers.
 
 ```json
 {
@@ -235,9 +239,18 @@ The method returns the number of event handlers deleted during the call.
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response ||
+[`object`](../data-types.md) | Deletion result [(detailed description)](#result) ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **count**
+[`integer`](../data-types.md) | Number of deleted handlers. If no matching handlers are found, `0` ||
 |#
 
 ## Error Handling
@@ -257,18 +270,20 @@ HTTP status: **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `403` | `ACCESS_DENIED` | Access denied! Offline events unbinding requires administrator access rights | The method was launched by a non-administrator when deleting an offline event handler ||
-|| `403` | `ACCESS_DENIED` | Access denied! Event unbinding with AUTH_TYPE requires administrator access rights | The method was launched by a non-administrator and specified the `auth_type` of another user ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'EVENT' is null or empty | The `event` parameter is not passed ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'HANDLER' is null or empty | The `handler` parameter is not passed for an online event ||
+|| `400` | `ERROR_ARGUMENT` | ```Value must be one of {online|offline}``` | An invalid `event_type` value is passed ||
+|| `403` | `ACCESS_DENIED` | Access denied! Offline events unbinding requires administrator access rights | The method was called by a non-administrator with `event_type=offline` ||
+|| `403` | `ACCESS_DENIED` | Access denied! Event unbinding with AUTH_TYPE requires administrator access rights | The method was called by a non-administrator who passed an `auth_type` that is not their own ID as an integer ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called outside an application, for example, through a webhook ||
+|| `403` | `WRONG_LICENSE` | This feature is not enabled for the current license: auth_connector | `auth_connector` is passed, but the plan does not support source keys ||
 |#
 
 {% include [System errors](../../_includes/system-errors.md) %}
 
-## See Also
-
-- [{#T}](../../sdk/bx24-js-sdk/how-to-call-rest-methods/bx24-call-unbind.md)
-
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./events.md)
 - [{#T}](./event-bind.md)
 - [{#T}](./event-get.md)

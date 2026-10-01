@@ -70,7 +70,7 @@ To check that events reach your handler, see the article [{#T}](./test-handler.m
 
 ## What Comes to the Handler
 
-Bitrix24 sends a request with content-type `application/x-www-form-urlencoded`. In the examples below, the structure is shown in JSON format.
+Bitrix24 sends a request with content-type `application/x-www-form-urlencoded`. In the examples below, the structure is shown in JSON format. All values are transmitted as strings.
 
 {% list tabs %}
 
@@ -134,11 +134,11 @@ The set of top-level keys is the same for all events.
 || **event_handler_id**
 [`integer`](../data-types.md) | Identifier of the registered event handler ||
 || **data**
-[`object`](../data-types.md) | Event data. The set of keys depends on the event: for most events, it is the `FIELDS` key with the identifier of the modified object.
+[`object`](../data-types.md) | Event data, such as the `FIELDS` key with the identifier of the modified object.
 
 The composition of `data` is described on the page of the specific event ||
 || **ts**
-[`timestamp`](../data-types.md) | Date and time of the event sent from the queue ||
+[`timestamp`](../data-types.md) | Time when the event occurred in Bitrix24, as a Unix timestamp in seconds ||
 || **auth**
 [`object`](../data-types.md) | Authorization parameters and information about the Bitrix24 account where the event occurred.
 
@@ -149,13 +149,11 @@ An event reports only the fact of a change. To retrieve the object data itself, 
 
 ### Parameter auth {#auth}
 
-OAuth 2.0 tokens are tied to the user whose action triggered the event and inherit that user's permissions. A different user can be set in the `auth_type` parameter of the [event.bind](./event-bind.md) method.
+OAuth 2.0 tokens are issued on behalf of the user specified during subscription and inherit that user's permissions. Which user it is depends on the `auth_type` parameter of the [event.bind](./event-bind.md) method.
 
 The set of `auth` keys depends on the subscription method. An outbound webhook receives only `domain`, `client_endpoint`, `server_endpoint`, `member_id`, and `application_token` — OAuth 2.0 tokens and application data are not passed to a webhook.
 
-Tokens are also not passed to an application if the action was performed not by a user but by an automation rule, workflow, or agent. In this case, Bitrix24 cannot determine on whose behalf to issue a token.
-
-The `refresh_token` token does not come with every event. It is passed only with events that require long-term access to Bitrix24, such as [OnAppInstall](../common/events/on-app-install.md) and [onOfflineEvent](./on-offline-event.md). To ensure that the application can always make requests to Bitrix24, retain the tokens of the user who installed the application and use them for subsequent requests.
+The `refresh_token` token does not come with every event. It is passed only with events that require long-term access to Bitrix24, such as [OnAppInstall](../common/events/on-app-install.md) and [onOfflineEvent](./on-offline-event.md).
 
 The `application_token` key is the main way to make sure that the request came from Bitrix24. How to verify it in the handler code is described in the article [{#T}](./safe-event-handlers.md).
 
@@ -170,11 +168,22 @@ Events have two main limitations:
 
 If it is important to process all events without loss, use [Offline Events](./offline-events.md). They allow you to retrieve events from the queue manually.
 
-## Access Permissions
+## Access Permissions {#access}
 
-A regular user can register, retrieve, and delete their own online event handlers using the [event.bind](./event-bind.md), [event.get](./event-get.md), and [event.unbind](./event-unbind.md) methods. If you specify the `auth_type` of another user in `event.bind` or `event.unbind`, the method will return an access error.
+A regular user can register, retrieve, and delete their own online event handlers using the [event.bind](./event-bind.md), [event.get](./event-get.md), and [event.unbind](./event-unbind.md) methods. If you specify the `auth_type` of another user in `event.bind`, the method will return an access error. Restrictions on `auth_type` in `event.unbind` are described on the [method page](./event-unbind.md).
 
 Only an administrator can work with the offline event queue. This restriction applies to the [event.offline.get](./event-offline-get.md), [event.offline.list](./event-offline-list.md), [event.offline.clear](./event-offline-clear.md), and [event.offline.error](./event-offline-error.md) methods.
+
+## Common Errors of event.* Methods
+
+#|
+|| **Code** | **When It Occurs** ||
+|| `WRONG_AUTH_TYPE` | The method was called outside an application, for example, through an inbound webhook ||
+|| `ACCESS_DENIED` | No permission for the operation; see [Access Permissions](#access) for details ||
+|| `WRONG_LICENSE` | The plan does not support the requested feature: the `auth_connector` source key or an [event.offline.get](./event-offline-get.md) call with `clear=0` ||
+|#
+
+The full list of errors is provided on the page of each method.
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -194,6 +203,7 @@ Only an administrator can work with the offline event queue. This restriction ap
     || [event.offline.error](./event-offline-error.md) | Registers errors in the offline event queue processing ||
     || [event.offline.get](./event-offline-get.md) | Gets a list of offline events with "cleanup" ||
     || [event.offline.list](./event-offline-list.md) | Gets a list of offline events ||
+    || [event.test](./test-handler.md) | Sends the `ONAPPTEST` test event to a registered handler ||
     || [event.unbind](./event-unbind.md) | Unregisters an event handler ||
     || [events](./events.md) | Gets a list of available events ||
     |#
