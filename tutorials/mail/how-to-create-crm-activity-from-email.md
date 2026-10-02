@@ -350,6 +350,12 @@ A successful response contains an object with `result: true`.
 }
 ```
 
+{% note warning "" %}
+
+The method returns only a success indicator. The response does not contain `messageId`, the created CRM activity identifier, or link data. If you need to retrieve the e-mail later using `mail.message.get`, retain `messageId` from the `mail.message.list` response in your system before creating the activity.
+
+{% endnote %}
+
 ## 4. Check the E-mail Link
 
 The [mail.message.get](../../api-reference/mail/message/mail-message-get.md) method returns an e-mail by identifier.
@@ -474,6 +480,7 @@ Consider the tutorial limitations:
 
 - `mail.message.createcrmactivity` creates a CRM activity from an existing e-mail and does not send a new e-mail
 - the `messageId` parameter of the `mail.message.createcrmactivity` method is taken from the [mail.message.list](../../api-reference/mail/message/mail-message-list.md) or [mail.message.get](../../api-reference/mail/message/mail-message-get.md) response
+- `mail.message.createcrmactivity` does not return `messageId` or the created CRM activity identifier. Retain `messageId` in your system if you need to retrieve the original e-mail later
 - the target CRM object cannot be passed as a parameter: `mail.message.createcrmactivity` has no fields for a lead, deal, contact, or company identifier
 - calling `mail.message.createcrmactivity` again for the same e-mail may return an error or leave the existing link unchanged; check `bindings` before retrying
 - the link can be deleted using [mail.message.removecrmactivity](../../api-reference/mail/message/mail-message-removecrmactivity.md)

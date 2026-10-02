@@ -33,6 +33,11 @@ The order of selecting scopes:
 4. Review the line `Who can execute the method`.
 5. If the method requires administrator confirmation, use the scenario from the article [Calling Methods with Confirmation](./confirmation.md).
 
+## Where to Specify Scopes
+
+- **Local Application.** Open *Applications > Developer resources > Common use cases > Other > Local application*. Select scopes in the *Assign permissions* field. The [Local Applications](../../local-integrations/local-apps.md) article describes how to create an application
+- **Mass-Market Application.** In the developer account, open *My applications > Add application*. In the technical specifications, select scopes from the list of system sections used by the application. The [How to Add a Solution to the Developer Account](../../market/preparing-to-publish/how-to-add-app.md) article describes the procedure
+
 ## How Scopes Differ from User Permissions
 
 Scopes and user permissions are checked separately.

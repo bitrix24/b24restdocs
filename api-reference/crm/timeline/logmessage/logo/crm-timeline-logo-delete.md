@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-Deletes the logo.
+The `crm.timeline.logo.delete` method deletes a custom logotype. A system logotype cannot be deleted: the method returns the `NOT_FOUND` error.
+
+After deletion, the custom logotype code no longer resolves to an image. The custom logotype is no longer displayed in existing configurable activities where this code is stored in [`layout.body.logo.code`](../../activities/configurable/structure/body.md#logo-dto).
 
 ## Method Parameters
 
@@ -257,13 +259,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns:
-
-- `true` — on successful deletion
-- `null` — on error 
- ||
+[`boolean`](../../../../data-types.md) | Returns `true` on successful deletion ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -282,11 +280,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Access denied ||
-|| `NOT_FOUND` | Logo with the specified `code` does not exist ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACCESS_DENIED` | Access denied | The method was called by a user without administrator permissions ||
+|| `400` | `NOT_FOUND` | Logo not found for code `code` | The custom logotype with the specified code was not found, or a system logotype code was provided ||
+|| `400` | `100` | Required fields are not provided | `code` was not provided ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}

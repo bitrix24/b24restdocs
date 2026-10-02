@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-Retrieves information about the logo of the timeline log entry.
+The `crm.timeline.logo.get` method retrieves information about a system or custom logotype by code. The logotype code is used in the [`layout.body.logo.code`](../../activities/configurable/structure/body.md#logo-dto) field of a configurable activity.
 
 ## Method Parameters
 
@@ -282,11 +282,31 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response.
-
-The `result` field contains the [logo](./crm-timeline-logo-add.md#logo) object ||
+[`object`](../../../../data-types.md) | Root response element [(detailed description)](#result) ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **logo**
+[`object`](../../../../data-types.md) | Retrieved logotype [(detailed description)](#logo) ||
+|#
+
+##### logo Object {#logo}
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **code**
+[`string`](../../../../data-types.md) | Logotype code ||
+|| **isSystem**
+[`boolean`](../../../../data-types.md) | System logotype indicator. Returns `true` for a system logotype and `false` for a custom logotype ||
+|| **fileUri**
+[`string`](../../../../data-types.md) | Path to the custom logotype file. Returns an empty string for a system logotype ||
 |#
 
 ## Error Handling
@@ -305,10 +325,9 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `NOT_FOUND` | Logo with the specified `code` does not exist ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `NOT_FOUND` | Logo not found for code `code` | A logotype with the specified code was not found ||
+|| `400` | `100` | Required fields are not provided | `code` was not provided ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}

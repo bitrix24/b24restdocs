@@ -17,7 +17,7 @@ Importing is used when there is a need to transfer existing data into the CRM. I
 
 ## What Objects Can Be Imported
 
-Before importing, specify which objects' data needs to be transferred to the CRM. To do this, pass the `entityTypeId` in the request — a numeric code representing the CRM object where Bitrix24 will save this information.
+Before importing, select the CRM object type and pass its numeric identifier in `entityTypeId`.
 
 If you are transferring deals, pass `2`; for contacts — `3`; for new invoices — `31`. A complete list of system values can be found in the [CRM object types reference](../../data-types.md#object_type).
 
@@ -33,10 +33,9 @@ Import is available for the main CRM objects:
 
 ## How to Get Started
 
-1. Select the CRM object whose data needs to be transferred and pass its code in `entityTypeId`.
-2. Retrieve the list of fields for the selected CRM object using the [crm.item.fields](../crm-item-fields.md) method or the method for a specific CRM object: [crm.lead.fields](../../leads/crm-lead-fields.md), [crm.deal.fields](../../deals/crm-deal-fields.md), [crm.contact.fields](../../contacts/crm-contact-fields.md), [crm.company.fields](../../companies/crm-company-fields.md), [crm.quote.fields](../../quote/crm-quote-fields.md).
-3. Pass the data for a single item using the [crm.item.import](./crm-item-import.md) method or up to 20 items using the [crm.item.batchImport](./crm-item-batch-import.md) method.
-4. If you are importing custom fields, choose the format of their names via `useOriginalUfNames`: original names like `UF_CRM_2_1639669411830` or camelCase names like `ufCrm2_1639669411830`.
+1. Retrieve the list of fields for the selected object using the [crm.item.fields](../crm-item-fields.md) method. Separate field methods are also available for system objects: [crm.lead.fields](../../leads/crm-lead-fields.md), [crm.deal.fields](../../deals/crm-deal-fields.md), [crm.contact.fields](../../contacts/crm-contact-fields.md), [crm.company.fields](../../companies/crm-company-fields.md), [crm.quote.fields](../../quote/crm-quote-fields.md).
+2. Pass the data for a single item using the [crm.item.import](./crm-item-import.md) method or up to 20 items using the [crm.item.batchImport](./crm-item-batch-import.md) method.
+3. If you are importing custom fields, choose the format of their names via `useOriginalUfNames`: original names like `UF_CRM_2_1639669411830` or camelCase names like `ufCrm2_1639669411830`.
 
 ## Important Considerations
 
@@ -70,9 +69,9 @@ There are restrictions for dates:
 
 ## Linking to Other Objects
 
-**CRM Items.** Import creates items of a specific CRM type. The link is established through `entityTypeId` in the [crm.item.import](./crm-item-import.md) and [crm.item.batchImport](./crm-item-batch-import.md) methods. The identifier of the created item is returned in the response of the method.
+**CRM Items.** The [crm.item.import](./crm-item-import.md) method returns the created item identifier in `result.item.id`. The [crm.item.batchImport](./crm-item-batch-import.md) method returns the `result.items` array. Each array element contains an `item` object with the identifier or the `error` and `error_description` fields with error details.
 
-**CRM Fields.** The set of fields depends on the type of CRM object. Before importing, obtain the field description using the universal method [crm.item.fields](../crm-item-fields.md) or the fields method for the specific CRM object.
+**CRM Fields.** The set of fields depends on the object type. For a single request, pass values in the `fields` object; for a batch request, pass them in the `data` array elements.
 
 **SPAs.** To import SPA items, pass its identifier in `entityTypeId`. You can obtain the identifier using the [crm.type.list](../user-defined-object-types/crm-type-list.md) method.
 
@@ -80,7 +79,7 @@ There are restrictions for dates:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with permission to import an item of the CRM object
+> Who can execute the method: a user with permission to import CRM items
 
 #| 
 || **Method** | **Description** ||

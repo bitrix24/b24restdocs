@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: online store administrator
 
-This method removes the binding of an order to a CRM object.
+The `crm.orderentity.deleteByFilter` method deletes a binding between an order and a CRM object.
 
 ## Method Parameters
 
@@ -23,12 +23,10 @@ This method removes the binding of an order to a CRM object.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values for removing the binding ||
+[`object`](../../../data-types.md) | Field values for deleting the binding [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
-
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+### fields Parameter {#fields}
 
 #|
 || **Name**
@@ -38,14 +36,16 @@ This method removes the binding of an order to a CRM object.
 || **ownerTypeId***
 [`integer`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type).
 
-Binding is only possible to a deal or invoice
+Possible values:
+- `2` — deal
+- `31` — invoice
 ||
 || **ownerId***
 [`integer`](../../../data-types.md) | Identifier of the CRM object.
 
 For deals, it can be obtained using the [crm.deal.list](../../deals/crm-deal-list.md) method.
 
-For invoices, it can be obtained using the [crm.invoice.list](../../outdated/invoice/crm-invoice-list.md)
+For invoices, it can be obtained using the [crm.item.list](../crm-item-list.md) method with `entityTypeId = 31`
 ||
 |#
 
@@ -53,7 +53,7 @@ For invoices, it can be obtained using the [crm.invoice.list](../../outdated/inv
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-Add order binding to a deal:
+Delete an order binding from a deal:
 
 {% list tabs %}
 
@@ -315,7 +315,7 @@ HTTP status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Indicates whether the operation was successful ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -331,30 +331,22 @@ HTTP status: **400**
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
-#|  
-|| **Code** | **Description** ||
-|| `200040300020` | `Access Denied` 
-Insufficient access permissions
-||
-|| `201640400004` | `entity relation is not exists` 
-Order binding to the CRM object not found
-||
-|| `200540400001` | `order does not exist` 
-Order not found
-||
-|| `0` | `Required fields: #FIELDS#` 
-Required fields not specified (`#FIELDS#` — list of fields separated by commas)
-||
-|| `0` | Various order saving errors
-||
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | `Access Denied` | Insufficient access permissions ||
+|| `400` | `201640400004` | `entity relation is not exists` | The order binding to the CRM object was not found ||
+|| `400` | `200540400001` | `order does not exist` | The order was not found ||
+|| `400` | `0` | `Required fields: #FIELDS#` | Required fields were not specified. `#FIELDS#` lists the fields separated by commas ||
+|| `400` | `0` | Order saving error text | An error occurred while saving the order ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-order-entity-add.md)
 - [{#T}](./crm-order-entity-list.md)
 - [{#T}](./crm-order-entity-get-fields.md)

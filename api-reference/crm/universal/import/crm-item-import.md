@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user with "import" access permission for the CRM object
+> Who can execute the method: a user with permission to import CRM items
 
-A universal method for importing objects into the CRM.
+The `crm.item.import` method imports one item into the CRM.
 
-You can read about the differences between the import logic and the standard addition of items in the article [{#T}](./index.md).
+Import uses separate permissions and does not trigger item creation automation. Learn more about import specifics in the [method overview](./index.md).
 
 ## Method Parameters
 
@@ -25,61 +25,13 @@ You can read about the differences between the import logic and the standard add
 || **Name**
 `type`          | **Description** ||
 || **entityTypeId***
-[`integer`](../../../data-types.md) | Identifier of the [system](../../data-types.md#object_type) or [custom type](../user-defined-object-types/index.md) for which the entity needs to be created.
+[`integer`](../../../data-types.md) | Identifier of the [system](../../data-types.md#object_type) or [custom CRM type](../user-defined-object-types/index.md) into which the item should be imported.
 
-Numerical values for system types (Lead — 1, Deal — 2, Contact — 3, Company — 4, Invoice — 31, etc.) are provided in the [CRM object types reference](../../data-types.md#object_type). The identifier for the SPA can be obtained using the [crm.type.list](../user-defined-object-types/crm-type-list.md) method. ||
+Numerical values for system types, such as lead — `1`, deal — `2`, contact — `3`, company — `4`, and invoice — `31`, are provided in the [CRM object types reference](../../data-types.md#object_type). You can obtain a SPA identifier using the [crm.type.list](../user-defined-object-types/crm-type-list.md) method. ||
 || **fields***
-[`object`](../../../data-types.md)  | An object in the following format:
-
-```js
-{
-    field_1: value_1,
-    field_2: value_2,
-    ...,
-    field_n: value_n,
-}
-```
-
-- `field_n` — the name of the field
-- `value_n` — the value of the field
-
-For multi-fields, such as `PHONE`, `EMAIL`, provide data in the [crm_multifield](../../data-types.md#crm_multifield) structure:
-
-```js
-{
-    field_name: [
-        {
-            VALUE: "value_1",
-            VALUE_TYPE: "type_1"
-        },
-        {
-            VALUE: "value_2",
-            VALUE_TYPE: "type_2"
-        },
-        ...
-    ]
-}
-```
-
-- `field_name` — the name of the field, for example, `PHONE`
-- `VALUE` — the value of the field, for example, a phone number
-- `VALUE_TYPE` — the type of value, for example, `WORK`
-
-Each CRM object has its own set of fields. This means that the set of fields for creating a Lead does not have to match the set of fields for creating a Contact or SPA.
-
-The list of available fields for each type of object is described [below](#parameter-fields).
-
-An incorrect field in `fields` will be ignored.
-
-You can also find out the set of fields using the universal method [crm.item.fields](../crm-item-fields.md) or methods for specific CRM objects:
-- [crm.lead.fields](../../leads/crm-lead-fields.md)
-- [crm.deal.fields](../../deals/crm-deal-fields.md)
-- [crm.contact.fields](../../contacts/crm-contact-fields.md)
-- [crm.company.fields](../../companies/crm-company-fields.md)
-- [crm.quote.fields](../../quote/crm-quote-fields.md)
-||
+[`object`](../../../data-types.md) | Field values of the item being imported [(detailed description)](#fields) ||
 || **useOriginalUfNames**
-[`boolean`](../../../data-types.md) | Parameter to control the format of custom field names in the request and response.   
+[`boolean`](../../../data-types.md) | Parameter to control the format of custom field names in the request.
 Possible values:
 
 - `Y` — original names of custom fields, e.g., `UF_CRM_2_1639669411830`
@@ -88,15 +40,26 @@ Possible values:
 Default is `N`. ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+The field set depends on the CRM object type. Pass field names as object keys and field values as their values:
+
+```js
+{
+    field_1: value_1,
+    field_2: value_2
+}
+```
+
+An invalid field in `fields` will be ignored. You can get the current field set using the universal method [crm.item.fields](../crm-item-fields.md) or the methods [crm.lead.fields](../../leads/crm-lead-fields.md), [crm.deal.fields](../../deals/crm-deal-fields.md), [crm.contact.fields](../../contacts/crm-contact-fields.md), [crm.company.fields](../../companies/crm-company-fields.md), and [crm.quote.fields](../../quote/crm-quote-fields.md).
+
+Pass multiple fields, such as `PHONE` and `EMAIL`, in the [crm_multifield](../../data-types.md#crm_multifield) format.
 
 {% list tabs %}
 
 - Lead
 
-  CRM object identifier **entityTypeId:** `1`
+  CRM type identifier `entityTypeId`: `1`
 
   #|
   || **Name**
@@ -105,15 +68,15 @@ Default is `N`. ||
   [`string`](../../../data-types.md) | Name of the entity.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
-    - `entityTypeName` — name of the entity
+    - `entityTypeName` — object type name
     - `id` — identifier of the element
 
-  For example, for a lead with `id = 13` — 'Lead #13'
+  For example, for a lead with `id = 13` — `Lead #13`
   ||
   || **honorific**
-  [`crm_status`](../../data-types.md) | String identifier for the lead's salutation (e.g., `'HNR_RU_1' = 'Mr.'`).
+  [`crm_status`](../../data-types.md) | String identifier of the lead salutation, for example, `HNR_RU_1` — "Mr."
 
-  The list of available salutations can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "HONOFIRIC" }`.
+  You can get the list of available salutations using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "HONORIFIC" }`.
 
   By default — `null` ||
   || **name**
@@ -139,11 +102,11 @@ Default is `N`. ||
   || **sourceId**
   [`crm_status`](../../data-types.md) | String identifier for the source.
 
-  For example, `'CALL' = 'Call'`.
+  For example, `CALL` — "Call".
 
-  The list of available sources can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
+  You can get the list of available sources using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
 
-  By default, it takes the value of the first available source  ||
+  By default — the first available source ||
   || **sourceDescription**
   [`text`](../../../data-types.md) | Additional information about the source.
 
@@ -151,11 +114,11 @@ Default is `N`. ||
   || **stageId**
   [`crm_status`](../../data-types.md) | String identifier for the stage of the element.
 
-  For example, `'NEW' = 'Unprocessed'`.
+  For example, `NEW` — "Unprocessed".
 
-  The list of available stages can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "STATUS" }`
+  You can get the list of available stages using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "STATUS" }`
 
-  By default, it takes the value of the first available stage  ||
+  By default — the first available stage ||
   || **statusDescription**
   [`text`](../../../data-types.md) | Additional information about the stage.
 
@@ -167,7 +130,7 @@ Default is `N`. ||
   || **currencyId**
   [`crm_currency`](../../data-types.md) | Identifier for the currency of the element.
 
-  By default, it takes the default currency  ||
+  By default — the default currency ||
   || **isManualOpportunity**
   [`boolean`](../../../data-types.md) | Calculation mode for the amount. Possible values:
 
@@ -193,23 +156,23 @@ Default is `N`. ||
   || **assignedById**
   [`user`](../../../data-types.md) | Identifier of the person responsible for the element.
 
-  By default, this is the identifier of the user who calls the method  ||
+  By default — the identifier of the user who calls the method ||
   || **companyId**
   [`crm_company`](../../data-types.md) | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 4`.
+  You can retrieve the list of companies using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 4`.
 
   By default — `null` ||
   || **contactId**
   [`crm_contact`](../../data-types.md) | Identifier of the contact linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`.
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`.
 
   By default — `null` ||
   || **contactIds**
-  [`crm_contact[]`](../../data-types.md) | List of identifiers of contacts linked to the element.
+  [`crm_contact[]`](../../data-types.md) | Array of identifiers of contacts linked to the item.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`.
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`.
 
   By default — `null` ||
   || **originatorId**
@@ -225,7 +188,7 @@ Default is `N`. ||
 
   By default — `null` ||
   || **observers**
-  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of identifiers of users who will observe the item.
 
   By default — `null` ||
   || **utmSource**
@@ -250,7 +213,7 @@ Default is `N`. ||
   || **utmTerm**
   [`string`](../../../data-types.md) | Search term for the campaign. For example, keywords for contextual advertising.
 
-  By default equals `null` ||
+  By default — `null` ||
   || **ufCrm...**
   [`crm_userfield`](../../data-types.md) | User-defined field.
 
@@ -269,7 +232,7 @@ Default is `N`. ||
 
 - Deal
 
-  CRM object identifier **entityTypeId:** `2`
+  CRM type identifier `entityTypeId`: `2`
 
   #|
   || **Name**
@@ -278,41 +241,41 @@ Default is `N`. ||
   [`string`](../../../data-types.md) | Name of the element.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
-    - `entityTypeName` — name of the entity
+    - `entityTypeName` — object type name
     - `id` — identifier of the element
-      For example, for a deal with `id = 13` => 'Deal #13' ||
+      For example, for a deal with `id = 13` — `Deal #13` ||
   || **typeId**
-  [`crm_status`](../../data-types.md) | String identifier for the type of entity.
+  [`crm_status`](../../data-types.md) | String identifier of the object type.
 
-  For example, for a deal: `'SALE' = 'Sale'`
+  For example, for a deal: `SALE` — "Sale"
 
-  The list of available entity types can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "DEAL_TYPE" }`
+  You can get the list of available object types using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "DEAL_TYPE" }`
 
-  By default — the first available entity type ||
+  By default — the first available object type ||
   || **categoryId**
-  [`integer`](../../../data-types.md) | Identifier of the [direction](../category/index.md) (funnel) of the deal.
+  [`integer`](../../../data-types.md) | Identifier of the deal [funnel](../category/index.md).
 
-  By default — `0` (general) ||
+  By default — `0` (general funnel) ||
   || **stageId**
   [`crm_status`](../../data-types.md) | String identifier for the stage of the element.
 
-  For example, `'NEW' = 'Unprocessed'`.
+  For example, `NEW` — "Unprocessed".
 
-  The list of available stages can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter:
-  - If the deal is in the general funnel (direction) — `{ ENTITY_ID: "DEAL_STAGE" }`
-  - If the deal is not in the general funnel (direction) — `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }`, where
-    `categoryId` is the identifier of the funnel ([direction](../category/index.md)) of the deal
+  You can get the list of available stages using [`crm.status.list`](../../status/crm-status-list.md) with the filter:
 
-  By default — the first available stage relative to the funnel ||
+  - if the deal is in the general funnel — `{ ENTITY_ID: "DEAL_STAGE" }`
+  - if the deal is in another funnel — `{ ENTITY_ID: "DEAL_STAGE_{categoryId}" }`, where `categoryId` is the identifier of the deal [funnel](../category/index.md)
+
+  By default — the first available stage in the funnel ||
   || **isRecurring**
   [`boolean`](../../../data-types.md) | Is the deal recurring? Possible values:
 
   - `Y` — yes
   - `N` — no
 
-  By default — `N`||
+  By default — `N` ||
   || **probability**
-  [`integer`](../../../data-types.md) | Probability %.
+  [`integer`](../../../data-types.md) | Probability of successfully closing the deal, as a percentage.
 
   By default — `null` ||
   || **currencyId**
@@ -337,19 +300,19 @@ Default is `N`. ||
   || **companyId**
   [`crm_company`](../../data-types.md) | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 4`.
+  You can retrieve the list of companies using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 4`.
 
   By default — `null` ||
   || **contactId**
   [`crm_contact`](../../data-types.md) | Identifier of the contact linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`.
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`.
 
   By default — `null` ||
   || **contactIds**
-  [`crm_contact[]`](../../data-types.md) | List of identifiers of contacts linked to the element.
+  [`crm_contact[]`](../../data-types.md) | Array of identifiers of contacts linked to the item.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`.
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`.
 
   By default — `null` ||
   || **quoteId**
@@ -361,7 +324,7 @@ Default is `N`. ||
   || **closedate**
   [`date`](../../../data-types.md) | End date of the element.
 
-  By default — creation date + 7 days ||
+  By default — seven days after item creation ||
   || **opened**
   [`boolean`](../../../data-types.md) | Is the element available to everyone? Possible values:
 
@@ -380,9 +343,9 @@ Default is `N`. ||
   || **sourceId**
   [`crm_status`](../../data-types.md) | String identifier for the source.
 
-  For example, `'CALL' = 'Call'`.
+  For example, `CALL` — "Call".
 
-  The list of available sources can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
+  You can retrieve the list of available sources using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
 
   By default — the first available source ||
   || **sourceDescription**
@@ -406,7 +369,7 @@ Default is `N`. ||
 
   By default — `null`||
   || **observers**
-  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of identifiers of users who will observe the item.
 
   By default — `null` ||
   || **locationId**
@@ -452,7 +415,7 @@ Default is `N`. ||
 
 - Contact
 
-  CRM object identifier **entityTypeId:** `3`
+  CRM type identifier `entityTypeId`: `3`
 
   #|
   || **Name**
@@ -460,9 +423,9 @@ Default is `N`. ||
   || **honorific**
   [`crm_status`](../../data-types.md) | String identifier for the contact's salutation.
 
-  For example, `'HNR_RU_1' = 'Mr.'`.
+  For example, `HNR_RU_1` — "Mr."
 
-  The list of available salutations can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "HONOFIRIC" }`.
+  You can get the list of available salutations using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "HONORIFIC" }`.
 
   By default — `null` ||
   || **name**
@@ -486,21 +449,21 @@ Default is `N`. ||
 
   By default — `null` ||
   || **typeId**
-  [`crm_status`](../../data-types.md) | String identifier for the type of entity.
+  [`crm_status`](../../data-types.md) | String identifier of the object type.
 
-  For example, for a deal: `'SALE' = 'Sale'`.
+  For example, for a deal: `SALE` — "Sale".
 
-  The list of available entity types can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "CONTACT_TYPE" }`.
+  You can retrieve the list of available object types using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "CONTACT_TYPE" }`.
 
-  By default — the first available entity type  ||
+  By default — the first available object type ||
   || **sourceId**
   [`crm_status`](../../data-types.md) | String identifier for the source.
 
-  For example, `'CALL' = 'Call'`.
+  For example, `CALL` — "Call".
 
-  The list of available sources can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
+  You can retrieve the list of available sources using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
 
-  By default — the first available source  ||
+  By default — the first available source ||
   || **sourceDescription**
   [`text`](../../../data-types.md) | Additional information about the source.
 
@@ -531,7 +494,7 @@ Default is `N`. ||
   || **companyId**
   [`crm_company`](../../data-types.md) | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 4`.
+  You can retrieve the list of companies using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 4`.
 
   By default — `null` ||
   || **companyIds**
@@ -553,7 +516,7 @@ Default is `N`. ||
 
   By default — `null` ||
   || **observers**
-  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of identifiers of users who will observe the item.
 
   By default — `null` ||
   || **utmSource**
@@ -596,7 +559,7 @@ Default is `N`. ||
 
 - Company
 
-  CRM object identifier **entityTypeId:** `4`
+  CRM type identifier `entityTypeId`: `4`
 
   #|
   || **Name**
@@ -606,18 +569,18 @@ Default is `N`. ||
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
 
-    - `entityTypeName` — name of the entity
+    - `entityTypeName` — object type name
     - `id` — identifier of the element
 
-  For example, for a company with `id = 13` => 'Company #13' ||
+  For example, for a company with `id = 13` — `Company #13` ||
   || **typeId**
-  [`crm_status`](../../data-types.md) | String identifier for the type of entity.
+  [`crm_status`](../../data-types.md) | String identifier of the object type.
 
-  For example, for a deal: `'SALE' = 'Sale'`.
+  For example, for a deal: `SALE` — "Sale".
 
-  The list of available entity types can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "COMPANY_TYPE" }`.
+  You can retrieve the list of available object types using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "COMPANY_TYPE" }`.
 
-  By default — the first available entity type ||
+  By default — the first available object type ||
   || **logo**
   [`file`](../../../data-types.md) | Logo.
 
@@ -629,19 +592,19 @@ Default is `N`. ||
   || **industry**
   [`crm_status`](../../data-types.md) | String identifier for the type of industry.
 
-  For example, `'IT' = 'Information Technology'`.
+  For example, `IT` — "Information Technology".
 
-  The list of available industry types can be obtained using the [`crm.status.list`](../../status/crm-status-list.md) method with the filter `{ ENTITY_ID: "INDUSTRY"}`.
+  You can retrieve the list of available industries using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "INDUSTRY" }`.
 
-  By default — the first available industry type ||
+  By default — the first available industry ||
   || **employees**
   [`crm_status`](../../data-types.md) | String identifier for the number of employees.
 
-  The value is taken from the available list, for example, `'EMPLOYEES_1' = 'less than 50'`.
+  The value is selected from the available list, for example, `EMPLOYEES_1` — "less than 50".
 
-  The list of available employee counts can be obtained using the [`crm.status.list`](../../status/crm-status-list.md) method with the filter `{ ENTITY_ID: "EMPLOYEES" }`.
+  You can retrieve the list of available ranges using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "EMPLOYEES" }`.
 
-  By default — the first available employee count type ||
+  By default — the first available employee count range ||
   || **currencyId**
   [`crm_currency`](../../data-types.md) | Identifier for the currency of the element.
 
@@ -670,9 +633,9 @@ Default is `N`. ||
 
   By default — the identifier of the user who calls the method ||
   || **contactIds**
-  [`crm_contact[]`](../../data-types.md) | List of identifiers of contacts linked to the element.
+  [`crm_contact[]`](../../data-types.md) | Array of identifiers of contacts linked to the item.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`.
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`.
 
   By default — `null`||
   || **leadId**
@@ -692,7 +655,7 @@ Default is `N`. ||
 
   By default — `null` ||
   || **observers**
-  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of identifiers of users who will observe the item.
 
   By default — `null` ||
   || **utmSource**
@@ -743,10 +706,10 @@ Default is `N`. ||
   [`string`](../../../data-types.md) | Name of the element.
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
-    - `entityTypeName` — name of the entity
+    - `entityTypeName` — object type name
     - `id` — identifier of the element
 
-  For example, for an estimate with `id = 13` => 'Estimate #13' ||
+  For example, for an estimate with `id = 13` — `Estimate #13` ||
   || **assignedById**
   [`user`](../../../data-types.md) | Identifier of the person responsible for the element.
 
@@ -800,19 +763,19 @@ Default is `N`. ||
   || **companyId**
   [`crm_company`](../../data-types.md) | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 4`.
+  You can retrieve the list of companies using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 4`.
 
   By default — `null` ||
   || **contactId**
   [`crm_contact`](../../data-types.md) | Identifier of the contact linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`
 
   By default — `null` ||
   || **contactIds**
-  [`crm_contact[]`](../../data-types.md) | List of identifiers of contacts linked to the element.
+  [`crm_contact[]`](../../data-types.md) | Array of identifiers of contacts linked to the item.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`.
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`.
 
   By default — `null` ||
   || **locationId**
@@ -841,9 +804,9 @@ Default is `N`. ||
   || **stageId**
   [`crm_status`](../../data-types.md) | String identifier for the stage of the element.
 
-  For example, `'DRAFT' = 'New'`.
+  For example, `DRAFT` — "New".
 
-  The list of available stages can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "QUOTE_STATUS" }`.
+  You can retrieve the list of available stages using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "QUOTE_STATUS" }`.
 
   By default — the first available stage ||
   || **begindate**
@@ -853,11 +816,11 @@ Default is `N`. ||
   || **closedate**
   [`date`](../../../data-types.md) | End date of the element.
 
-  By default — creation date + 7 days ||
+  By default — seven days after item creation ||
   || **actualDate**
   [`date`](../../../data-types.md) | Valid until.
 
-  By default — creation date + 7 days ||
+  By default — seven days after item creation ||
   || **mycompanyId**
   [`crm_company`](../../data-types.md) | Identifier of my company.
 
@@ -902,7 +865,7 @@ Default is `N`. ||
 
 - Invoice
 
-  CRM object identifier **entityTypeId:** `31`
+  CRM type identifier `entityTypeId`: `31`
 
   #|
   || **Name**
@@ -912,10 +875,10 @@ Default is `N`. ||
 
   By default, it is generated using the template `{entityTypeName} #{id}`, where
 
-    - `entityTypeName` — name of the entity
+    - `entityTypeName` — object type name
     - `id` — identifier of the element
 
-  For example, for an invoice with `id = 13` => 'Invoice #13'
+  For example, for an invoice with `id = 13` — `Invoice #13`
   ||
   || **xmlId**
   [`string`](../../../data-types.md) | External code.
@@ -943,44 +906,44 @@ Default is `N`. ||
   || **closedate**
   [`date`](../../../data-types.md) | End date of the element.
 
-  By default — creation date + 7 days ||
+  By default — seven days after item creation ||
   || **companyId**
   [`crm_company`](../../data-types.md) | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 4`.
+  You can retrieve the list of companies using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 4`.
 
   By default — `null` ||
   || **contactId**
   [`crm_contact`](../../data-types.md) | Identifier of the contact linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`.
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`.
 
   By default — `null` ||
   || **contactIds**
-  [`crm_contact[]`](../../data-types.md) | List of identifiers of contacts linked to the element.
+  [`crm_contact[]`](../../data-types.md) | Array of identifiers of contacts linked to the item.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`.
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`.
 
   By default — `null` ||
   || **observers**
-  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of identifiers of users who will observe the item.
 
   By default — `null` ||
   || **stageId**
   [`crm_status`](../../data-types.md) | String identifier for the stage of the element.
 
-  For example, `'DT31_13:N' = 'New'`.
+  For example, `DT31_13:N` — "New".
 
-  The list of available stages can be obtained using [`crm.status.list`](../../status/crm-status-list.md), with the filter: `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
-  `categoryId` — identifier of the default invoice funnel. It can be obtained using [`crm.category.list`](../category/crm-category-list.md) with `entityTypeId = 31`.
+  You can retrieve the list of available stages using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SMART_INVOICE_STAGE_{categoryId}" }`, where
+  `categoryId` is the identifier of the default invoice funnel. You can retrieve it using [`crm.category.list`](../category/crm-category-list.md) with `entityTypeId = 31`.
 
   By default — the first available stage ||
   || **sourceId**
   [`crm_status`](../../data-types.md) | String identifier for the source.
 
-  For example, `'CALL' = 'Call'`.
+  For example, `CALL` — "Call".
 
-  The list of available sources can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
+  You can retrieve the list of available sources using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
 
   By default — the first available source ||
   || **sourceDescription**
@@ -1035,7 +998,7 @@ Default is `N`. ||
 
 - SPA
 
-  CRM object identifier **entityTypeId:** can be obtained using the [`crm.type.list`](../user-defined-object-types/crm-type-list.md) method or created using the [`crm.type.add`](../user-defined-object-types/crm-type-add.md) method.
+  CRM type identifier `entityTypeId`: can be retrieved using the [`crm.type.list`](../user-defined-object-types/crm-type-list.md) method or created using the [`crm.type.add`](../user-defined-object-types/crm-type-add.md) method.
 
   #|
   || **Name**
@@ -1047,7 +1010,7 @@ Default is `N`. ||
     - `entityTypeName` — name of the SPA
     - `id` — identifier of the element
 
-  For example, for the SPA element "HR" with `id = 13` => 'HR #13'  ||
+  For example, for the HR SPA item with `id = 13` — `HR #13` ||
   || **xmlId**
   [`string`](../../../data-types.md) | External code.
 
@@ -1078,11 +1041,11 @@ Default is `N`. ||
 
   Available only if the `isBeginCloseDatesEnabled` setting is enabled for the corresponding SPA.
 
-  By default — creation date + 7 days  ||
+  By default — seven days after item creation ||
   || **companyId**
   [`crm_company`](../../data-types.md) | Identifier of the company linked to the element.
 
-  The list of companies can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 4`.
+  You can retrieve the list of companies using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 4`.
 
   Available only if the `isClientEnabled` setting is enabled for the corresponding SPA.
 
@@ -1090,21 +1053,21 @@ Default is `N`. ||
   || **contactId**
   [`crm_contact`](../../data-types.md) | Identifier of the contact linked to the element.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`.
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`.
 
   Available only if the `isClientEnabled` setting is enabled for the corresponding SPA.
 
   By default — `null` ||
   || **contactIds**
-  [`crm_contact[]`](../../data-types.md) | List of identifiers of contacts linked to the element.
+  [`crm_contact[]`](../../data-types.md) | Array of identifiers of contacts linked to the item.
 
-  The list of contacts can be obtained using the [`crm.item.list`](../crm-item-list.md) method with `entityTypeId = 3`.
+  You can retrieve the list of contacts using [`crm.item.list`](../crm-item-list.md) with `entityTypeId = 3`.
 
   Available only if the `isClientEnabled` setting is enabled for the corresponding SPA.
 
   By default — `null` ||
   || **observers**
-  [`user[]`](../../../data-types.md) | Array of user identifiers who will be observers of the element.
+  [`user[]`](../../../data-types.md) | Array of identifiers of users who will observe the item.
 
   Available only if the `isObserversEnabled` setting is enabled for the corresponding SPA.
 
@@ -1112,29 +1075,29 @@ Default is `N`. ||
   || **categoryId**
   [`crm_category`](../../data-types.md) | Identifier of the funnel of the SPA element.
 
-  The list of available funnels can be obtained using [`crm.category.list`](../category/crm-category-list.md) with the corresponding `entityTypeId` ||
+  You can retrieve the list of available funnels using [`crm.category.list`](../category/crm-category-list.md) with the corresponding `entityTypeId` ||
   || **stageId**
   [`crm_status`](../../data-types.md) | String identifier for the stage of the element.
 
-  For example, `'DT1220_30:NEW' = 'Start'`.
+  For example, `DT1220_30:NEW` — "Start".
 
-  The list of available stages can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "DYNAMIC_{entityTypeId}_STAGE_{categoryId}" }`, where
+  You can retrieve the list of available stages using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "DYNAMIC_{entityTypeId}_STAGE_{categoryId}" }`, where
     - `entityTypeId` — identifier of the SPA type
-    - `categoryId` — identifier of the funnel (direction) of the SPA element
+    - `categoryId` — identifier of the SPA item funnel
 
-  [Learn more about funnels (directions)](../category/index.md).
+  [Learn more about funnels](../category/index.md).
 
   Available only if the `isStagesEnabled` setting is enabled for the corresponding SPA.
 
-  By default — the first available stage relative to the funnel  ||
+  By default — the first available stage in the funnel ||
   || **sourceId**
-  [`crm_status`](../../data-types.md) | String identifier for the source. (e.g., `'CALL' = 'Call'`).
+  [`crm_status`](../../data-types.md) | String identifier of the source, for example, `CALL` — "Call".
 
-  The list of available sources can be obtained using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
+  You can retrieve the list of available sources using [`crm.status.list`](../../status/crm-status-list.md) with the filter `{ ENTITY_ID: "SOURCE" }`.
 
   Available only if the `isSourceEnabled` setting is enabled for the corresponding SPA.
 
-  By default — the first available source  ||
+  By default — the first available source ||
   || **sourceDescription**
   [`text`](../../../data-types.md) | Additional information about the source.
 
@@ -1146,7 +1109,7 @@ Default is `N`. ||
 
   Available only if the `isLinkWithProductsEnabled` setting is enabled for the corresponding SPA.
 
-  By default — the default currency  ||
+  By default — the default currency ||
   || **isManualOpportunity**
   [`boolean`](../../../data-types.md) | Calculation mode for the amount. Possible values:
 
@@ -1173,7 +1136,7 @@ Default is `N`. ||
 
   Available only if the `isMycompanyEnabled` setting is enabled for the corresponding SPA.
 
-  By default — Identifier of the first available "my" company ||
+  By default — identifier of the first available "my" company ||
   || **ufCrm...**
   [`crm_userfield`](../../data-types.md) | User-defined field. See the section [{#T}](../user-defined-fields/index.md).
 
@@ -1188,9 +1151,9 @@ Default is `N`. ||
   ||
   |#
 
-  {% note info "SPA Settings" %}
+  {% note info "" %}
 
-  For more information on managing SPA settings, you can read in [{#T}](../user-defined-object-types/index.md)
+  Learn more about managing SPA settings in [Smart Processes: Overview of Methods and Events](../user-defined-object-types/index.md)
 
   {% endnote %}
 
@@ -1212,7 +1175,7 @@ To upload a file, the value of the custom field must be an array where the first
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"entityTypeId":2,"fields":{"title":"New deal (specifically for REST method examples)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be an additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2}}' \
+        -d '{"entityTypeId":2,"fields":{"title":"New deal","typeId":"SERVICE","isRecurring":"Y","opportunity":999.99,"currencyId":"EUR"}}' \
         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.item.import
         ```
 
@@ -1222,8 +1185,71 @@ To upload a file, the value of the custom field must be an array where the first
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"entityTypeId":2,"fields":{"title":"New deal (specifically for REST method examples)","typeId":"SERVICE","categoryId":9,"stageId":"C9:UC_KN8KFI","isReccurring":"Y","probability":50,"currencyId":"USD","isManualOpportunity":"Y","opportunity":999.99,"taxValue":99.9,"companyId":5,"contactId":4,"contactIds":[4,5],"quoteId":7,"begindate":"formatDate(monthAgo)","closedate":"formatDate(twelveDaysInAdvance)","opened":"N","comments":"commentsExample","assignedById":6,"sourceId":"WEB","sourceDescription":"There should be an additional description about the source","leadId":102,"additionalInfo":"There should be additional information","observers":[2,3],"utmSource":"google","utmMedium":"CPC","ufCrm_1721244707107":1111.1,"parentId1220":2},"auth":"**put_access_token_here**"}' \
+        -d '{"entityTypeId":2,"fields":{"title":"New deal","typeId":"SERVICE","isRecurring":"Y","opportunity":999.99,"currencyId":"EUR"},"auth":"**put_access_token_here**"}' \
         https://**put_your_bitrix24_address**/rest/crm.item.import
+        ```
+
+    - JS (TS)
+
+        ```ts
+        import { Text } from '@bitrix24/b24jssdk'
+        import type { B24Frame } from '@bitrix24/b24jssdk'
+
+        declare const $b24: B24Frame
+
+        const response = await $b24.actions.v2.call.make({
+          method: 'crm.item.import',
+          params: {
+            entityTypeId: 2,
+            fields: {
+              title: 'New deal',
+              typeId: 'SERVICE',
+              isRecurring: 'Y',
+              opportunity: 999.99,
+              currencyId: 'EUR',
+            },
+          },
+          requestId: Text.getUuidRfc4122()
+        })
+
+        if (!response.isSuccess) {
+          console.error(response.getErrorMessages().join('; '))
+        } else {
+          console.info(response.getData()!.result)
+        }
+        ```
+
+    - JS (UMD)
+
+        ```html
+        <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+        <script>
+          async function importDeal() {
+            const $b24 = await B24Js.initializeB24Frame()
+            const response = await $b24.actions.v2.call.make({
+              method: 'crm.item.import',
+              params: {
+                entityTypeId: 2,
+                fields: {
+                  title: 'New deal',
+                  typeId: 'SERVICE',
+                  isRecurring: 'Y',
+                  opportunity: 999.99,
+                  currencyId: 'EUR',
+                },
+              },
+              requestId: B24Js.Text.getUuidRfc4122()
+            })
+
+            if (!response.isSuccess) {
+              console.error(response.getErrorMessages().join('; '))
+              return
+            }
+            console.info(response.getData().result)
+          }
+
+          document.addEventListener('DOMContentLoaded', importDeal)
+        </script>
         ```
 
     - Python
@@ -1236,34 +1262,11 @@ To upload a file, the value of the custom field must be an array where the first
             bitrix_response = client.crm.item.import_(
                 entity_type_id=2,
                 fields={
-                    "title": "New deal (specifically for REST method examples)",
+                    "title": "New deal",
                     "typeId": "SERVICE",
-                    "categoryId": 9,
-                    "stageId": "C9:UC_KN8KFI",
-                    "isReccurring": "Y",
-                    "probability": 50,
-                    "currencyId": "USD",
-                    "isManualOpportunity": "Y",
+                    "isRecurring": "Y",
                     "opportunity": 999.99,
-                    "taxValue": 99.9,
-                    "companyId": 5,
-                    "contactId": 4,
-                    "contactIds": [4, 5],
-                    "quoteId": 7,
-                    "begindate": "formatDate(monthAgo)",
-                    "closedate": "formatDate(twelveDaysInAdvance)",
-                    "opened": "N",
-                    "comments": "commentsExample",
-                    "assignedById": 6,
-                    "sourceId": "WEB",
-                    "sourceDescription": "There should be an additional description about the source",
-                    "leadId": 102,
-                    "additionalInfo": "There should be additional information",
-                    "observers": [2, 3],
-                    "utmSource": "google",
-                    "utmMedium": "CPC",
-                    "ufCrm_1721244707107": 1111.1,
-                    "parentId1220": 2,
+                    "currencyId": "EUR",
                 },
             ).response
             result = bitrix_response.result
@@ -1281,75 +1284,45 @@ To upload a file, the value of the custom field must be an array where the first
             print(f"Unexpected error: {error}")
         ```
 
+    - PHP
+
+        ```php
+        try {
+            $response = $b24Service->core->call(
+                'crm.item.import',
+                [
+                    'entityTypeId' => 2,
+                    'fields' => [
+                        'title' => 'New deal',
+                        'typeId' => 'SERVICE',
+                        'isRecurring' => 'Y',
+                        'opportunity' => 999.99,
+                        'currencyId' => 'EUR',
+                    ],
+                ]
+            );
+
+            $result = $response->getResponseData()->getResult();
+            echo 'Success: ' . print_r($result->data(), true);
+        } catch (Throwable $e) {
+            error_log($e->getMessage());
+            echo 'Error importing CRM item: ' . $e->getMessage();
+        }
+        ```
+
     - BX24.js
 
         ```js
-        const formatDate = (date) => {
-            return date.toISOString().slice(0, 10);
-        };
-
-        const day = 60 * 60 * 24 * 1000;
-
-        const now = new Date();
-        const twelveDaysInAdvance = new Date(now.getTime() + 12 * day);
-        const monthAgo = new Date(now.getTime() - 30 * day);
-
-        const commentsExample = `
-        Example comment within the deal
-
-        [B]Bold text[/B]
-        [I]Italic[/I]
-        [U]Underlined[/U]
-        [S]Strikethrough[/S]
-        [B][I][U][S]Mix[/S][/U][/I][/B]
-
-        [LIST]
-        [*]List item #1
-        [*]List item #2
-        [*]List item #3
-        [/LIST]
-
-        [LIST=1]
-        [*]Numbered list item #1
-        [*]Numbered list item #2
-        [*]Numbered list item #3
-        [/LIST]
-        `;
-
         BX24.callMethod(
             'crm.item.import', 
             {
                 entityTypeId: 2,
-                fields: 
-                {
-                    title: "New deal (specifically for REST method examples)",
+                fields: {
+                    title: "New deal",
                     typeId: "SERVICE",
-                    categoryId: 9,
-                    stageId: "C9:UC_KN8KFI",
-                    isReccurring: "Y",
-                    probability: 50,
-                    currencyId: "USD",
-                    isManualOpportunity: "Y",
+                    isRecurring: "Y",
                     opportunity: 999.99,
-                    taxValue: 99.9,
-                    companyId: 5,
-                    contactId: 4,
-                    contactIds: [4, 5],
-                    quoteId: 7,
-                    begindate: formatDate(monthAgo),
-                    closedate: formatDate(twelveDaysInAdvance),
-                    opened: "N",
-                    comments: commentsExample,
-                    assignedById: 6,
-                    sourceId: "WEB",
-                    sourceDescription: "There should be an additional description about the source",
-                    leadId: 102,
-                    additionalInfo: "There should be additional information",
-                    observers: [2, 3],
-                    utmSource: "google",
-                    utmMedium: "CPC",
-                    ufCrm_1721244707107: 1111.1,
-                    parentId1220: 2,
+                    currencyId: "EUR",
                 },
             },
             (result) => 
@@ -1372,34 +1345,11 @@ To upload a file, the value of the custom field must be an array where the first
             [
                 'entityTypeId' => 2,
                 'fields' => [
-                    'title' => "New deal (specifically for REST method examples)",
+                    'title' => "New deal",
                     'typeId' => "SERVICE",
-                    'categoryId' => 9,
-                    'stageId' => "C9:UC_KN8KFI",
-                    'isReccurring' => "Y",
-                    'probability' => 50,
-                    'currencyId' => "USD",
-                    'isManualOpportunity' => "Y",
+                    'isRecurring' => "Y",
                     'opportunity' => 999.99,
-                    'taxValue' => 99.9,
-                    'companyId' => 5,
-                    'contactId' => 4,
-                    'contactIds' => [4, 5],
-                    'quoteId' => 7,
-                    'begindate' => formatDate(monthAgo),
-                    'closedate' => formatDate(twelveDaysInAdvance),
-                    'opened' => "N",
-                    'comments' => $commentsExample,
-                    'assignedById' => 6,
-                    'sourceId' => "WEB",
-                    'sourceDescription' => "There should be an additional description about the source",
-                    'leadId' => 102,
-                    'additionalInfo' => "There should be additional information",
-                    'observers' => [2, 3],
-                    'utmSource' => "google",
-                    'utmMedium' => "CPC",
-                    'ufCrm_1721244707107' => 1111.1,
-                    'parentId1220' => 2,
+                    'currencyId' => "EUR",
                 ],
             ]
         );
@@ -1407,6 +1357,31 @@ To upload a file, the value of the custom field must be an array where the first
         echo '<PRE>';
         print_r($result);
         echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the "Go SDK" section
+        res, err := client.Core().Call(ctx, "crm.item.import", b24.Params{
+            "entityTypeId": 2,
+            "fields": b24.Params{
+                "title":       "New deal",
+                "typeId":      "SERVICE",
+                "isRecurring": "Y",
+                "opportunity": 999.99,
+                "currencyId":  "EUR",
+            },
+        })
+        if err != nil {
+            return fmt.Errorf("crm.item.import: %w", err)
+        }
+
+        raw, ok := b24.Unwrap(res.Result, "item")
+        if !ok {
+            return fmt.Errorf("item key is missing from the response")
+        }
+        fmt.Printf("%s\n", raw)
         ```
 
    {% endlist %}
@@ -1431,9 +1406,9 @@ To upload a file, the value of the custom field must be an array where the first
         -d '{
             "entityTypeId": 1302,
             "fields": {
-                "ufCrm44_1721812760630": "String for a string-type custom field",
+                "ufCrm44_1721812760630": "String value for a custom String field",
                 "ufCrm44_1721812814433": 81,
-                "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
+                "ufCrm44_1721812853419": "2024-08-21",
                 "ufCrm44_1721812885588": [
                     "example.com",
                     "second-example.com"
@@ -1442,7 +1417,7 @@ To upload a file, the value of the custom field must be an array where the first
                     "green_pixel.png",
                     "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=="
                 ],
-                "ufCrm44_1721812915476": "300|USD",
+                "ufCrm44_1721812915476": "300|EUR",
                 "ufCrm44_1721812935209": "Y",
                 "ufCrm44_1721812948498": 9999.9
             }
@@ -1459,9 +1434,9 @@ To upload a file, the value of the custom field must be an array where the first
         -d '{
             "entityTypeId": 1302,
             "fields": {
-                "ufCrm44_1721812760630": "String for a string-type custom field",
+                "ufCrm44_1721812760630": "String value for a custom String field",
                 "ufCrm44_1721812814433": 81,
-                "ufCrm44_1721812853419": "'"$(date '+%Y-%m-%d')"'",
+                "ufCrm44_1721812853419": "2024-08-21",
                 "ufCrm44_1721812885588": [
                     "example.com",
                     "second-example.com"
@@ -1470,7 +1445,7 @@ To upload a file, the value of the custom field must be an array where the first
                     "green_pixel.png",
                     "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=="
                 ],
-                "ufCrm44_1721812915476": "300|USD",
+                "ufCrm44_1721812915476": "300|EUR",
                 "ufCrm44_1721812935209": "Y",
                 "ufCrm44_1721812948498": 9999.9
             },
@@ -1479,40 +1454,61 @@ To upload a file, the value of the custom field must be an array where the first
         https://**put_your_bitrix24_address**/rest/crm.item.import
         ```
 
-    - BX24.js
+    - JS (TS)
 
-        ```js
-        const greenPixelInBase64 = "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==";
+        ```ts
+        import { Text } from '@bitrix24/b24jssdk'
+        import type { B24Frame } from '@bitrix24/b24jssdk'
+        declare const $b24: B24Frame
 
-        BX24.callMethod(
-            'crm.item.import', 
-            {
+        const response = await $b24.actions.v2.call.make({
+          method: 'crm.item.import',
+          params: {
+            entityTypeId: 1302,
+            fields: {
+              ufCrm44_1721812760630: 'String value for a custom String field',
+              ufCrm44_1721812814433: 81,
+              ufCrm44_1721812853419: '2024-08-21',
+              ufCrm44_1721812885588: ['example.com', 'second-example.com'],
+              ufCrm44_1721812898903: ['green_pixel.png', 'iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=='],
+              ufCrm44_1721812915476: '300|EUR',
+              ufCrm44_1721812935209: 'Y',
+              ufCrm44_1721812948498: 9999.9,
+            },
+          },
+          requestId: Text.getUuidRfc4122()
+        })
+        console.info(response.getData()?.result)
+        ```
+
+    - JS (UMD)
+
+        ```html
+        <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+        <script>
+          async function importSmartProcessItem() {
+            const $b24 = await B24Js.initializeB24Frame()
+            const response = await $b24.actions.v2.call.make({
+              method: 'crm.item.import',
+              params: {
                 entityTypeId: 1302,
                 fields: {
-                    ufCrm44_1721812760630: "String for a string-type custom field",
-                    ufCrm44_1721812814433: 81,
-                    ufCrm44_1721812853419: (new Date()).toISOString().slice(0, 10),
-                    ufCrm44_1721812885588: [
-                        "example.com",
-                        "second-example.com",
-                    ],
-                    ufCrm44_1721812898903: [
-                        "green_pixel.png",
-                        greenpixelBase64,
-                    ],
-                    ufCrm44_1721812915476: "300|USD",
-                    ufCrm44_1721812935209: "Y",
-                    ufCrm44_1721812948498: 9999.9,
+                  ufCrm44_1721812760630: 'String value for a custom String field',
+                  ufCrm44_1721812814433: 81,
+                  ufCrm44_1721812853419: '2024-08-21',
+                  ufCrm44_1721812885588: ['example.com', 'second-example.com'],
+                  ufCrm44_1721812898903: ['green_pixel.png', 'iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=='],
+                  ufCrm44_1721812915476: '300|EUR',
+                  ufCrm44_1721812935209: 'Y',
+                  ufCrm44_1721812948498: 9999.9,
                 },
-            },
-            (result) => 
-            {
-                result.error() 
-                    ? console.error(result.error()) 
-                    : console.info(result.data())
-                ;
-            }
-        );
+              },
+              requestId: B24Js.Text.getUuidRfc4122()
+            })
+            console.info(response.getData()?.result)
+          }
+          document.addEventListener('DOMContentLoaded', importSmartProcessItem)
+        </script>
         ```
 
     - Python
@@ -1524,7 +1520,7 @@ To upload a file, the value of the custom field must be an array where the first
             bitrix_response = client.crm.item.import_(
                 entity_type_id=1302,
                 fields={
-                    "ufCrm44_1721812760630": "String for a string-type custom field",
+                    "ufCrm44_1721812760630": "String value for a custom String field",
                     "ufCrm44_1721812814433": 81,
                     "ufCrm44_1721812853419": "2024-08-21",
                     "ufCrm44_1721812885588": [
@@ -1535,7 +1531,7 @@ To upload a file, the value of the custom field must be an array where the first
                         "green_pixel.png",
                         "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==",
                     ],
-                    "ufCrm44_1721812915476": "300|USD",
+                    "ufCrm44_1721812915476": "300|EUR",
                     "ufCrm44_1721812935209": "Y",
                     "ufCrm44_1721812948498": 9999.9,
                 },
@@ -1555,6 +1551,56 @@ To upload a file, the value of the custom field must be an array where the first
             print(f"Unexpected error: {error}")
         ```
 
+    - PHP
+
+        ```php
+        try {
+            $response = $b24Service->core->call(
+                'crm.item.import',
+                [
+                    'entityTypeId' => 1302,
+                    'fields' => [
+                        'ufCrm44_1721812760630' => 'String value for a custom String field',
+                        'ufCrm44_1721812814433' => 81,
+                        'ufCrm44_1721812853419' => '2024-08-21',
+                        'ufCrm44_1721812885588' => ['example.com', 'second-example.com'],
+                        'ufCrm44_1721812898903' => ['green_pixel.png', 'iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=='],
+                        'ufCrm44_1721812915476' => '300|EUR',
+                        'ufCrm44_1721812935209' => 'Y',
+                        'ufCrm44_1721812948498' => 9999.9,
+                    ],
+                ]
+            );
+            echo 'Success: ' . print_r($response->getResponseData()->getResult()->data(), true);
+        } catch (Throwable $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+        ```
+
+    - BX24.js
+
+        ```js
+        const greenPixelInBase64 = "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==";
+
+        BX24.callMethod(
+            'crm.item.import',
+            {
+                entityTypeId: 1302,
+                fields: {
+                    ufCrm44_1721812760630: "String value for a custom String field",
+                    ufCrm44_1721812814433: 81,
+                    ufCrm44_1721812853419: "2024-08-21",
+                    ufCrm44_1721812885588: ["example.com", "second-example.com"],
+                    ufCrm44_1721812898903: ["green_pixel.png", greenPixelInBase64],
+                    ufCrm44_1721812915476: "300|EUR",
+                    ufCrm44_1721812935209: "Y",
+                    ufCrm44_1721812948498: 9999.9,
+                },
+            },
+            result => result.error() ? console.error(result.error()) : console.info(result.data())
+        );
+        ```
+
     - PHP CRest
 
         ```php
@@ -1565,9 +1611,9 @@ To upload a file, the value of the custom field must be an array where the first
             [
                 'entityTypeId' => 1302,
                 'fields' => [
-                    'ufCrm44_1721812760630' => "String for a string-type custom field",
+                    'ufCrm44_1721812760630' => "String value for a custom String field",
                     'ufCrm44_1721812814433' => 81,
-                    'ufCrm44_1721812853419' => date('Y-m-d'),
+                    'ufCrm44_1721812853419' => '2024-08-21',
                     'ufCrm44_1721812885588' => [
                         "example.com",
                         "second-example.com",
@@ -1576,7 +1622,7 @@ To upload a file, the value of the custom field must be an array where the first
                         "green_pixel.png",
                         "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg==",
                     ],
-                    'ufCrm44_1721812915476' => "300|USD",
+                    'ufCrm44_1721812915476' => "300|EUR",
                     'ufCrm44_1721812935209' => "Y",
                     'ufCrm44_1721812948498' => 9999.9,
                 ],
@@ -1588,11 +1634,33 @@ To upload a file, the value of the custom field must be an array where the first
         echo '</PRE>';
         ```
 
+    - Go
+
+        ```go
+        res, err := client.Core().Call(ctx, "crm.item.import", b24.Params{
+            "entityTypeId": 1302,
+            "fields": b24.Params{
+                "ufCrm44_1721812760630": "String value for a custom String field",
+                "ufCrm44_1721812814433": 81,
+                "ufCrm44_1721812853419": "2024-08-21",
+                "ufCrm44_1721812885588": []string{"example.com", "second-example.com"},
+                "ufCrm44_1721812898903": []string{"green_pixel.png", "iVBORw0KGgoAAAANSUhEUgAAAIAAAAAMCAYAAACqTLVoAAAALklEQVR42u3SAQEAAAQDsEsuOj3YMqwy6fBWCSCAAAIgAAIgAAIgAAIgAAJw3QLOrRH1U/gU4gAAAABJRU5ErkJggg=="},
+                "ufCrm44_1721812915476": "300|EUR",
+                "ufCrm44_1721812935209": "Y",
+                "ufCrm44_1721812948498": 9999.9,
+            },
+        })
+        if err != nil {
+            return fmt.Errorf("crm.item.import: %w", err)
+        }
+        fmt.Printf("%v\n", res.Result)
+        ```
+
    {% endlist %}
 
 ## Response Handling
 
-The method will return an `item` array with the identifier of the created item in case of success, or an error message.
+The method returns an `item` object containing the identifier of the created item.
 
 HTTP status: **200**
 
@@ -1621,29 +1689,32 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response. 
-
-Contains a single key — `item` ||
-|| **item**
-[`object`](../../../data-types.md) | Information about the created element. 
-
-Contains a single key — `id` ||
-|| **id**
-[`integer`](../../../data-types.md) | Identifier of the created entity ||
+[`object`](../../../data-types.md) | Root element of the response. Contains an object with the import result [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-{% note info " " %}
+#### Result Object {#result}
 
-By default, custom field names are passed and returned in camelCase, for example `ufCrm2_1639669411830`.
-When passing the parameter `useOriginalUfNames` with the value `Y`, custom fields will be returned with their original names, for example `UF_CRM_2_1639669411830`.
+#|
+|| **Name**
+`type` | **Description** ||
+|| **item**
+[`object`](../../../data-types.md) | Import result [(detailed description)](#item) ||
+|#
 
-{% endnote %}
+#### Item Object {#item}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../data-types.md) | Identifier of the created item ||
+|#
 
 ## Error Handling
 
-HTTP status: **401**, **400**, **403**
+HTTP status: **400**, **401**, **403**
 
 ```json
 {
@@ -1657,16 +1728,16 @@ HTTP status: **401**, **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Status** | **Code**                           | **Description**                                                       | **Value**                                                                                    ||
-|| `400`      | `NOT_FOUND`                       | SPA not found                                            | Occurs when an invalid `entityTypeId` is passed                                              ||
-|| `400`      | `ACCESS_DENIED`                   | Access denied                                                    | User does not have permission to add items of type `entityTypeId`                             ||
-|| `400`      | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field "`field`"                                   | An incorrect value for the field `field` was provided.
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `NOT_FOUND` | SPA not found | An unknown `entityTypeId` was passed ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to import items of type `entityTypeId` ||
+|| `400` | `CRM_FIELD_ERROR_VALUE_NOT_VALID` | Invalid value for field `field` | An invalid value was passed for the `field` field.
 
-For system fields of type `createdTime`, if the request is not made by an administrator ||
-|| `400`      | `100`                             | Expected iterable value for multiple field, but got `type` instead | One of the multiple fields received a value of type `type`, while an iterable type was expected. This can also occur with an incorrect request (invalid JSON or request headers). ||
-|| `400`      | `CREATE_DYNAMIC_ITEM_RESTRICTED`  | You cannot create a new item due to your plan restrictions | Plan restrictions do not allow creating SPA items                              ||
-|| `401`      | `INVALID_CREDENTIALS`             | Invalid authorization data for the request                            | Incorrect `ID` and/or code in the request path.                                       ||
-|| `403`      | `allowed_only_intranet_user`      | This action is allowed only for intranet users                   | User is not an intranet user                                                 ||
+For system fields, such as `createdTime`, the error also occurs if the request is made by a non-administrator ||
+|| `400` | `100` | Expected iterable value for multiple field, but got `type` instead | A value of type `type` was passed to a multiple field, but an iterable value was expected. The error can also occur due to invalid JSON or request headers ||
+|| `400` | `CREATE_DYNAMIC_ITEM_RESTRICTED` | You cannot create a new item due to your plan restrictions | Plan restrictions do not allow creating SPA items ||
+|| `401` | `INVALID_CREDENTIALS` | Invalid authorization data for the request | Invalid user identifier or webhook code in the request URL ||
+|| `403` | `allowed_only_intranet_user` | This action is allowed only for intranet users | The user is not an intranet user ||
 |#
 
 {% include [System errors](./../../../../_includes/system-errors.md) %}

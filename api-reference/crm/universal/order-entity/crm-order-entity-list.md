@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: online store manager
 
-The method returns a list of order bindings to CRM entities.
+The `crm.orderentity.list` method returns a list of order bindings to CRM objects.
 
 ## Method Parameters
 
@@ -60,7 +60,7 @@ Possible values for `order_N`:
 - `asc` — in ascending order
 - `desc` — in descending order
 
-If the object is not provided or an empty object is passed, sorting will be in ascending order of the [crm_orderentity.OWNER_ID](../../data-types.md#crm_orderentity) field.
+If the object is not provided or an empty object is passed, sorting will be in ascending order of the [crm_orderentity.ownerId](../../data-types.md#crm_orderentity) field.
 ||
 || **start**
 [`integer`](../../../data-types.md) | This parameter is used for pagination control.
@@ -72,8 +72,6 @@ To select the second page of results, you need to pass the value `50`. To select
 The formula for calculating the `start` parameter value:
 
 `start = (N-1) * 50`, where `N` is the desired page number.
-
-If you specify the value `-1`, all records that meet the filter conditions will be selected.
 ||
 |#
 
@@ -216,6 +214,8 @@ Get the IDs of orders linked to three deals:
 
 - Python
 
+    Example
+
     ```python
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
@@ -223,15 +223,14 @@ Get the IDs of orders linked to three deals:
         bitrix_response = client.crm.orderentity.list(
             select=[
                 "orderId",
-                "ownerTypeId",
                 "ownerId",
             ],
             filter={
-                "ownerTypeId": 2,
-                "ownerId": 15,
+                "=ownerTypeId": 2,
+                "@ownerId": [6938, 6937, 6933],
             },
             order={
-                "orderId": "desc",
+                "orderId": "asc",
             },
         ).response
         result = bitrix_response.result
@@ -258,15 +257,14 @@ Get the IDs of orders linked to three deals:
         bitrix_response = client.crm.orderentity.list(
             select=[
                 "orderId",
-                "ownerTypeId",
                 "ownerId",
             ],
             filter={
-                "ownerTypeId": 2,
-                "ownerId": 15,
+                "=ownerTypeId": 2,
+                "@ownerId": [6938, 6937, 6933],
             },
             order={
-                "orderId": "desc",
+                "orderId": "asc",
             },
         ).as_list().response
         result = bitrix_response.result
@@ -294,15 +292,11 @@ Get the IDs of orders linked to three deals:
         bitrix_response = client.crm.orderentity.list(
             select=[
                 "orderId",
-                "ownerTypeId",
                 "ownerId",
             ],
             filter={
-                "ownerTypeId": 2,
-                "ownerId": 15,
-            },
-            order={
-                "orderId": "desc",
+                "=ownerTypeId": 2,
+                "@ownerId": [6938, 6937, 6933],
             },
         ).as_list_fast(descending=True).response
         result = bitrix_response.result
@@ -501,13 +495,22 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response ||
-|| **orderEntity**
-[`crm_orderentity[]`](../../data-types.md#crm_orderentity) | An array of objects with information about the selected orders ||
+[`object`](../../../data-types.md) | Root response element [(detailed description)](#result) ||
 || **total**
 [`integer`](../../../data-types.md) | The total number of selected records ||
+|| **next**
+[`integer`](../../../data-types.md) | Offset for the next page of results. The key is present when another page is available ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **orderEntity**
+[`crm_orderentity[]`](../../data-types.md#crm_orderentity) | Array of objects containing information about the selected orders ||
 |#
 
 ## Error Handling
@@ -523,22 +526,19 @@ HTTP status: **400**
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
-#|  
-|| **Code** | **Description** ||
-|| `200040300010` | `Access Denied` 
-Insufficient access permissions
-||
-|| `200540400002` | `module sale does not exist` 
-The `Online Store` (sale) module is missing
-||
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | `Access Denied` | Insufficient access permissions ||
+|| `400` | `200540400002` | `module sale does not exist` | The Online Store module (sale) is not installed ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-order-entity-add.md)
 - [{#T}](./crm-order-entity-delete-by-filter.md)
 - [{#T}](./crm-order-entity-get-fields.md)

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 Online store orders can be linked to CRM entities. This allows you to use order information in workflows related to deals and invoices.
 
-A link is a separate record, not a field of the order or of the CRM object. An order can have only one link: if you create a link for an order that already has one, the previous link is replaced by the new one.
+A link is a separate record, not a field of the order or of the CRM object. An order can have only one link. A new link to another CRM object replaces the previous one, while adding the same link again returns the `Duplicate entry` error.
 
 > Quick Navigation: [all methods](#all-methods)
 
@@ -35,6 +35,12 @@ A link is a separate record, not a field of the order or of the CRM object. An o
 4. Create the link using the [crm.orderentity.add](./crm-order-entity-add.md) method.
 5. Check the result using the [crm.orderentity.list](./crm-order-entity-list.md) method.
 6. If the link is no longer needed, delete it using the [crm.orderentity.deleteByFilter](./crm-order-entity-delete-by-filter.md) method.
+
+## Special Considerations and Access Permissions
+
+The [crm.orderentity.list](./crm-order-entity-list.md) and [crm.orderentity.getFields](./crm-order-entity-get-fields.md) methods require read access to the online store. The [crm.orderentity.add](./crm-order-entity-add.md) and [crm.orderentity.deleteByFilter](./crm-order-entity-delete-by-filter.md) methods require write access.
+
+To add or delete a link, `orderId` must match an existing order. The delete method returns an error if a link with the specified combination of `orderId`, `ownerTypeId`, and `ownerId` does not exist. The method pages list detailed error codes.
 
 ## Overview of Methods {#all-methods}
 

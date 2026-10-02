@@ -409,7 +409,7 @@ HTTP status: **200**
 || **RQ_...**
 `string`, `char`, `crm_status` | Detail fields whose set depends on the country and template. [crm.requisite.fields](./crm-requisite-fields.md#result-fields) returns the complete set of fields and their types ||
 || **UF_CRM_...**
-various | Custom detail fields. The set of fields and their types depend on the Bitrix24 settings ||
+various | Custom detail fields. The [crm.requisite.fields](./crm-requisite-fields.md#result-fields) method returns the set of available fields and their types ||
 |#
 
 ## Error Handling

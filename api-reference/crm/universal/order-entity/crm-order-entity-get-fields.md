@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: online store manager
 
-The method returns a list of available order binding fields. Each field is described as a field settings structure [crm_rest_field_description](../../data-types.md#crm_rest_field_description).
+The `crm.orderentity.getFields` method returns a list of available order binding fields. Each field is described as a [crm_rest_field_description](../../data-types.md#crm_rest_field_description) field settings structure.
+
+## Method Parameters
 
 No parameters.
 
@@ -276,11 +278,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
-|| **orderEntity**
-[`object`](../../../data-types.md) | Object with a list of available fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field_N` is the identifier of the object [crm_orderentity](../../data-types.md#crm_orderentity), and `value` is an object of type [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
+[`object`](../../../data-types.md) | Root response element [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **orderEntity**
+[`object`](../../../data-types.md) | Object containing the list of available fields. Each key is a [crm_orderentity](../../data-types.md#crm_orderentity) field identifier, and each value is a [crm_rest_field_description](../../data-types.md#crm_rest_field_description) field description ||
 |#
 
 ## Error Handling
@@ -296,19 +305,18 @@ HTTP status: **400**
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
-#|  
-|| **Code** | **Description** ||
-|| `200040300010` | `Access Denied` 
-Insufficient access permissions
-|| 
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | `Access Denied` | Insufficient access permissions ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-order-entity-add.md)
 - [{#T}](./crm-order-entity-list.md)
 - [{#T}](./crm-order-entity-delete-by-filter.md)

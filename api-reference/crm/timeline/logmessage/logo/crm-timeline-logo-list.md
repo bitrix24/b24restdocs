@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-Retrieves a list of available logos for timeline log entries.
+The `crm.timeline.logo.list` method retrieves the complete list of available timeline logotypes, both system and custom. You can pass the selected code in the [`layout.body.logo.code`](../../activities/configurable/structure/body.md#logo-dto) field of a configurable activity.
+
+## Method Parameters
 
 No parameters.
 
@@ -63,16 +65,9 @@ No parameters.
     }
 
     try {
-      // crm.timeline.logo.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<LogoListResult>({
         method: 'crm.timeline.logo.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -100,16 +95,9 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.timeline.logo.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'crm.timeline.logo.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -158,36 +146,14 @@ No parameters.
 
     Example `as_list`
 
+    The method returns the complete list with a regular call. You can use `as_list` for consistent handling of list methods in the SDK.
+
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.timeline.logo.list().as_list().response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-    Example `as_list_fast`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.timeline.logo.list().as_list_fast(descending=True).response
         result = bitrix_response.result
         for item in result:
             print(item)
@@ -337,34 +303,38 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response.
-
-The `result` field contains an array of `logos`, each entry of which includes an associative array of logo fields [logo](./crm-timeline-logo-add.md#logo) ||
+[`object`](../../../../data-types.md) | Root response element [(detailed description)](#result) ||
 || **total**
-[`integer`](../../../../data-types.md) | The total number of records found ||
+[`integer`](../../../../data-types.md) | Number of logotypes in the `result.logos` array ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **logos**
+[`array`](../../../../data-types.md) | Array of [logo](#logo) objects ||
+|#
+
+##### logo Object {#logo}
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **code**
+[`string`](../../../../data-types.md) | Logotype code ||
+|| **isSystem**
+[`boolean`](../../../../data-types.md) | System logotype indicator. Returns `true` for a system logotype and `false` for a custom logotype ||
+|| **fileUri**
+[`string`](../../../../data-types.md) | Path to the custom logotype file. Returns an empty string for a system logotype ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
-
-```json
-{
-    "error": "0",
-    "error_description": "Could not find value"
-}
-```
-
 {% include notitle [Error handling](../../../../../_includes/error-info.md) %}
-
-### Possible Error Codes
-
-#|
-|| **Code** | **Description** ||
-|| `0` | Other errors (e.g., fatal) ||
-|#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
 

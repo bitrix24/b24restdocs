@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: online store administrator
 
-This method adds a binding of an order to a CRM object.
+The `crm.orderentity.add` method adds a binding between an order and a CRM object.
 
 ## Method Parameters
 
@@ -23,12 +23,10 @@ This method adds a binding of an order to a CRM object.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values for creating the binding ||
+[`object`](../../../data-types.md) | Field values for creating the binding [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
-
-{% include [Note on required parameters](../../../../_includes/required.md) %}
+### fields Parameter {#fields}
 
 #|
 || **Name**
@@ -38,14 +36,16 @@ This method adds a binding of an order to a CRM object.
 || **ownerTypeId***
 [`integer`](../../../data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type).
 
-Binding is only possible to a deal or invoice
+Possible values:
+- `2` — deal
+- `31` — invoice
 ||
 || **ownerId***
 [`integer`](../../../data-types.md) | Identifier of the CRM object.
 
 For deals, it can be obtained using the [crm.deal.list](../../deals/crm-deal-list.md) method.
 
-For invoices, it can be obtained using the [crm.invoice.list](../../outdated/invoice/crm-invoice-list.md)
+For invoices, it can be obtained using the [crm.item.list](../crm-item-list.md) method with `entityTypeId = 31`
 ||
 |#
 
@@ -191,6 +191,39 @@ Add order binding to a deal:
         print(f"Unexpected error: {error}")
     ```
 
+- PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'crm.orderentity.add',
+                [
+                    'fields' => [
+                        'orderId' => 5125,
+                        'ownerId' => 6933,
+                        'ownerTypeId' => 2,
+                    ],
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        if ($result->error()) {
+            error_log($result->error());
+            echo 'Error: ' . $result->error();
+        } else {
+            echo 'Success: ' . print_r($result->data(), true);
+        }
+    } catch (Throwable $e) {
+        error_log($e->getMessage());
+        echo 'Error adding order entity: ' . $e->getMessage();
+    }
+    ```
+
 - BX24.js
 
     ```js
@@ -309,11 +342,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
-|| **dealOrder**
-[`crm_orderentity`](../../data-types.md#crm_orderentity) | Object with information about the created binding ||
+[`object`](../../../data-types.md) | Root response element [(detailed description)](#result) ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **dealOrder**
+[`crm_orderentity`](../../data-types.md#crm_orderentity) | Object containing information about the created binding ||
 |#
 
 ## Error Handling
@@ -329,30 +369,22 @@ HTTP status: **400**
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
-#|  
-|| **Code** | **Description** ||
-|| `200040300020` | `Access Denied` 
-Insufficient access permissions
-||
-|| `201650000001` | `Duplicate entry for key [ownerId, ownerTypeId, orderId]` 
-Binding already exists
-||
-|| `200540400001` | `order does not exist` 
-Order not found
-||
-|| `0` | `Required fields: #FIELDS#` 
-Required fields not specified (`#FIELDS#` — list of fields separated by commas)
-||
-|| `0` | Various order saving errors
-||
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | `Access Denied` | Insufficient access permissions ||
+|| `400` | `201650000001` | `Duplicate entry for key [ownerId, ownerTypeId, orderId]` | The binding already exists ||
+|| `400` | `200540400001` | `order does not exist` | The order was not found ||
+|| `400` | `0` | `Required fields: #FIELDS#` | Required fields were not specified. `#FIELDS#` lists the fields separated by commas ||
+|| `400` | `0` | Order saving error text | An error occurred while saving the order ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-order-entity-list.md)
 - [{#T}](./crm-order-entity-delete-by-filter.md)
 - [{#T}](./crm-order-entity-get-fields.md)

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-This method adds a new Logo.
+The `crm.timeline.logo.add` method adds a new custom logotype. You can pass its code in [`layout.body.logo.code`](../../activities/configurable/structure/body.md#logo-dto) when creating or updating a configurable activity.
 
 ## Method Parameters
 
@@ -23,15 +23,14 @@ This method adds a new Logo.
 || **Name**
 `type` | **Description** ||
 || **code***
-[`string`](../../../../data-types.md) | Logo code (e.g., `info`) ||
+[`string`](../../../../data-types.md) | Unique custom logotype code, for example, `info`. The code must not match an existing custom or system logotype code ||
 || **fileContent***
 [`string`](../../../../data-types.md) | Encoded `base64` content of the logo file.
 
 File requirements:
 
-- Type — png
+- Type — PNG
 - Size — 60x60 pixels
-- Background — transparent 
 
 ||
 |#
@@ -297,25 +296,34 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | Root element of the response.
-
-The `result` field contains the [logo](#logo) object ||
+[`object`](../../../../data-types.md) | Root response element [(detailed description)](#result) ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
+#### result Object {#result}
 
-#### Logo Object {#logo}
+#|
+|| **Field**
+`type` | **Description** ||
+|| **logo**
+[`object`](../../../../data-types.md) | Added logotype [(detailed description)](#logo) ||
+|#
+
+##### logo Object {#logo}
 
 #|
 || **Field**
 `type`  | **Description** ||
-||**code** | Logo code ||
-||**isSystem** | Flag field. Can have the value:
+|| **code**
+[`string`](../../../../data-types.md) | Logotype code ||
+|| **isSystem**
+[`boolean`](../../../../data-types.md) | System logotype indicator. Possible values:
 - `true` — if the logo is standard (provided with the product)
 - `false` — if the logo was added by the user 
 ||
-||**fileUri** | Path to the file.
+|| **fileUri**
+[`string`](../../../../data-types.md) | Path to the file.
 
 If the logo was added by the user, the field contains the path to the logo image file ||
 |#
@@ -336,12 +344,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Access denied ||
-|| `INVALID_ARG_VALUE` | Invalid `fileContent` parameter specified ||
-|| `FILE_SAVE_ERROR` | Unable to save the provided logo file ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACCESS_DENIED` | Access denied | The method was called by a user without administrator permissions ||
+|| `400` | `INVALID_ARG_VALUE` | Invalid image or Only png 60px on 60px is supported | The content passed in `fileContent` is invalid, or the image is not a 60x60-pixel PNG file ||
+|| `400` | `FILE_SAVE_ERROR` | File not saved | The provided file could not be saved ||
+|| `400` | `100` | Required fields are not provided | `code` or `fileContent` was not provided ||
+|| `400` | `0` | The error text depends on the cause | The code is already used by another custom logotype or matches a system code ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}

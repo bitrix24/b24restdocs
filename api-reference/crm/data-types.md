@@ -268,11 +268,11 @@ If a thousands separator is not needed, the `THOUSANDS_VARIANT` field must be ex
 #|
 || **Value**
 `type` | **Description** ||
-|| **OWNER_ID**
+|| **ownerId**
 [`integer`](../data-types.md) | Identifier of the CRM object. ||
-|| **OWNER_TYPE_ID**
+|| **ownerTypeId**
 [`integer`](../data-types.md) | Identifier of the [CRM object type](#object_type). ||
-|| **ORDER_ID**
+|| **orderId**
 [`sale_order.id`](../sale/data-types.md#sale_order) | Identifier of the order. ||
 |#
 
