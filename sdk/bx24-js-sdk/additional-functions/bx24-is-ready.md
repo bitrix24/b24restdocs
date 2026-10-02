@@ -9,13 +9,17 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The method `BX24.isReady` checks whether the document's DOM structure is ready for operation. This method indicates that the page has been parsed by the browser and its elements are accessible for the script.
-
 ```js
-Boolean BX24.isReady()
+BX24.isReady(): boolean;
 ```
 
-## Parameters
+The `BX24.isReady` method immediately reports whether the document DOM structure is ready: the browser has parsed the application page, and its elements are accessible to the script. If your code needs to wait until the page is ready, use [BX24.ready](./bx24-ready.md).
+
+This is the library's flag, not the browser's. If the library is loaded programmatically rather than through a `<script>` tag in the markup, the method may return `false` on a page that has already been parsed. Page readiness does not mean that the library has received data from Bitrix24: for that, use [BX24.init](../system-functions/bx24-init.md).
+
+The method works on an application page where the [BX24.js library](../index.md) is connected and does not call Bitrix24. The method requires no scope of its own.
+
+## Method Parameters
 
 No parameters.
 
@@ -23,15 +27,25 @@ No parameters.
 
 {% include [Example Notes](../../../_includes/examples.md) %}
 
-```js
-BX24.ready(function () {
-    console.log(BX24.isReady()); // true
-});
+The script is placed in the page markup and runs while the browser is parsing the page:
+
+```html
+<script>
+    console.log(BX24.isReady()); // false: the browser is still parsing the page
+
+    BX24.ready(function () {
+        console.log(BX24.isReady()); // true
+    });
+</script>
 ```
 
 ## Response Handling
 
-The method synchronously returns a result of type `boolean`.
+The method synchronously returns a result of type `boolean`. Example of the result when the page is ready:
+
+```json
+true
+```
 
 ### Returned Data
 
@@ -39,10 +53,15 @@ The method synchronously returns a result of type `boolean`.
 || **Name**  
 `type` | **Description** ||  
 || **result**  
-[`boolean`](../../../api-reference/data-types.md) | `true` if the document's DOM structure is ready for operation, otherwise `false` ||  
+[`boolean`](../../../api-reference/data-types.md) | `true` if the library has recorded that the document DOM structure is ready, otherwise `false` ||
 |#
+
+## Error Handling
+
+The method does not return error codes. While the browser is parsing the page, the method returns `false`, and this is not an error.
 
 ## Continue Your Learning
 
+- [{#T}](./index.md)
 - [{#T}](./bx24-ready.md)  
 - [{#T}](../system-functions/bx24-init.md)  

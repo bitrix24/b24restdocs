@@ -9,19 +9,21 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The method `BX24.openPath` opens the specified path within Bitrix24 in a slider.
-
 ```js
-void BX24.openPath(String path[, Function callback])
+BX24.openPath(path: string, callback?: callable): void;
 ```
+
+The `BX24.openPath` method opens a Bitrix24 page in a slider over the application, for example, a deal detail form or an employee profile. When the user closes the slider, they return to the application.
+
+The method works only inside the application frame in Bitrix24. Call it after the library is initialized, in the [BX24.init](../system-functions/bx24-init.md) handler. The method requires no scope of its own: it controls the interface and does not call the REST API.
 
 {% note warning "" %}
 
-For security reasons, this method does not work in the mobile application.
+The method does not work on phones and tablets — neither in the mobile application nor in a mobile browser. The slider does not open, and `callback` receives the `METHOD_NOT_SUPPORTED_ON_DEVICE` error.
 
 {% endnote %}
 
-## Parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -29,7 +31,7 @@ For security reasons, this method does not work in the mobile application.
 || **Name**
 `type` | **Description** ||
 || **path*** 
-`string` | The path within Bitrix24. It starts with `/` and leads to a page of the same Bitrix24 where the application is open. The method does not open external addresses or paths to other domains.
+[`string`](../../../api-reference/data-types.md) | The path to a page in the same Bitrix24 instance where the application is open. The path starts with `/`. The method does not open a full address with a protocol and domain, even if it is an address of that same Bitrix24 instance.
 
 The numbers in the path are identifiers of specific objects. Substitute your own values for them:
 
@@ -42,44 +44,76 @@ The numbers in the path are identifiers of specific objects. Substitute your own
 - `/workgroups/group/4/` — a workgroup or project, where `4` is the group identifier
 - `/marketplace/` — Marketplace, no identifier required ||
 || **callback**
-`function` | Callback function. Invoked when there is an error opening the path or when the slider is closed ||
+[`callable`](../../../api-reference/data-types.md) | Callback function. It is called once: when the user closes the slider, when the path fails validation, or when the application is open on a phone [(detailed description)](#callback) ||
 |#
 
 To retrieve CRM object identifiers, use the list and creation methods, for example [crm.item.list](../../../api-reference/crm/universal/crm-item-list.md) and [crm.item.add](../../../api-reference/crm/universal/crm-item-add.md). To retrieve an employee identifier, use [user.get](../../../api-reference/user/user-get.md), and for a workgroup identifier use [sonet_group.get](../../../api-reference/sonet-group/sonet-group-get.md).
 
-Before opening, the SDK automatically adds service parameters to the path: 
-`from=rest_placement&from_app={appId}`.
+Bitrix24 opens the page with additional parameters in the address: `from=rest_placement&from_app=<application code>`. The application code is its `client_id`, for example `local.6ab58ce578dd87.16527213`. As a result, the address of the opened page differs from the path you passed — keep this in mind if you compare addresses.
 
 ## Code Example
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 ```js
 BX24.init(function () {
     BX24.openPath('/crm/deal/details/5/', function (result) {
-        console.log(result);
+        if (result.result === 'error') {
+            console.log('Failed to open the page:', result.errorCode);
+            return;
+        }
+
+        console.log('The user closed the slider');
     });
 });
 ```
 
-{% include [Examples note](../../../_includes/examples.md) %}
+## Response Handling {#callback}
 
-## Response Handling
+The method does not return data (`void`). When the user closes the slider, Bitrix24 calls `callback` and passes an object:
 
-The method does not return data (`void`).
+```json
+{
+    "result": "close"
+}
+```
 
-If a `callback` is provided, it receives a result object.
+If the path fails validation or the application is open on a phone, `callback` is called immediately, without a slider:
 
-### Callback Result
+```json
+{
+    "result": "error",
+    "errorCode": "PATH_NOT_AVAILABLE"
+}
+```
+
+### Returned Data
 
 #| 
 || **Name**
 `type` | **Description** ||
 || **result**
-`string` | Execution status: `close` or `error` ||
+[`string`](../../../api-reference/data-types.md) | Outcome: `close` — the user closed the slider, `error` — the slider did not open ||
 || **errorCode**
-`string` | Error code. Passed only when `result: "error"`. Possible values: `PATH_NOT_AVAILABLE`, `METHOD_NOT_SUPPORTED_ON_DEVICE` ||
+[`string`](../../../api-reference/data-types.md) | Error code. Present only when `result: "error"` ||
 |#
+
+## Error Handling
+
+#|
+|| **Code** | **When It Occurs** | **What to Do** ||
+|| `PATH_NOT_AVAILABLE` | The path fails validation: it is empty, does not start with `/` (like the full address `https://example.com/`), leads to another site, or contains a `%` sign that is not followed by a character code, like `/crm/%` | Pass a path relative to the Bitrix24 root, for example `/crm/deal/details/5/` ||
+|| `METHOD_NOT_SUPPORTED_ON_DEVICE` | The application is open on a phone or tablet | Show the user where to find the page, or suggest opening it on a computer ||
+|#
+
+{% note warning "" %}
+
+The method does not check whether the page exists. If you pass a path to a nonexistent page, the slider opens anyway, and after it is closed, `callback` receives `close`.
+
+{% endnote %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./bx24-open-application.md)
 - [{#T}](./bx24-close-application.md)
