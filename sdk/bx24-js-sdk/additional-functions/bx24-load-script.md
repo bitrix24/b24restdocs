@@ -1,4 +1,4 @@
-# Load the javascript file BX24.loadScript
+# Load JavaScript Files BX24.loadScript
 
 {% note tip "" %}
 
@@ -9,13 +9,21 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The method `BX24.loadScript` loads and executes one or more javascript files. If an array is provided, the files are loaded sequentially. If the DOM is not yet ready, meaning the page has not been parsed by the browser and elements are not yet available for the script, execution is deferred until [BX24.ready](./bx24-ready.md).
-
 ```js
-void BX24.loadScript(Array|String script[, Function callback])
+BX24.loadScript(script: string | array, callback?: callable): void;
 ```
 
-## Parameters
+The `BX24.loadScript` method adds one or more JavaScript files to the application page and executes them. Files from an array are loaded in sequence: each file is loaded after the previous one has finished loading. This way, you can add a library and then a script that uses it.
+
+If the page is not ready yet, the method itself waits for page readiness — the same moment when the [BX24.ready](./bx24-ready.md) handlers run. The method does not call Bitrix24, so you do not need to wait for [BX24.init](../system-functions/bx24-init.md). The method requires no scope of its own.
+
+{% note warning "" %}
+
+If a file fails to load, for example, because it is not on the server, the method stops without an error: the remaining files are not loaded, and `callback` is not called. The loading failure is visible in the browser console.
+
+{% endnote %}
+
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -23,20 +31,22 @@ void BX24.loadScript(Array|String script[, Function callback])
 || **Name** 
 `type` | **Description** ||
 || **script*** 
-```array|string``` | Path to the javascript file or an array of paths. When an array is provided, the files are loaded and executed in order ||
+[`string`\|`array`](../../../api-reference/data-types.md) | The address of a JavaScript file or an array of addresses. The browser resolves a relative address the same way as for a `<script>` tag on the application page: against the page address, or against the address in the `<base>` tag if there is one, but not against the Bitrix24 address ||
 || **callback** 
-`function` | A callback function that is executed after all files have been loaded ||
+[`callable`](../../../api-reference/data-types.md) | Callback function. It is called without parameters when all files are loaded ||
 |#
 
 ## Code Example
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
+Load a charting library, then a report script that uses it:
+
 ```js
 BX24.loadScript(
     [
-        '/local/scripts/first.js',
-        '/local/scripts/second.js'
+        'js/chart.min.js',
+        'js/report.js'
     ],
     function () {
         console.log('All scripts have been loaded');
@@ -46,9 +56,23 @@ BX24.loadScript(
 
 ## Response Handling
 
-The method does not return data (`void`).
+The method does not return data (`void`). When the last file has loaded, the library calls `callback` without parameters. If the page is already ready and an empty array is passed, `callback` runs immediately.
+
+## Error Handling
+
+The method does not return error codes.
+
+#|
+|| **Situation** | **What Happens** | **What to Do** ||
+|| A file failed to load: it is not on the server, or the network connection was lost | Loading stops silently, as described in the warning above | Check the file addresses. If the application needs to know about the failure, limit the wait for `callback` with a timer ||
+|| A file contains a syntax error | The browser does not execute this file, but loading continues, and `callback` is called | Do not treat the `callback` call as proof that every file worked: check that the required objects have appeared on the page ||
+|| `script` is not passed or is `null` | A `TypeError` exception is thrown, and `callback` is not called. If the page is not ready yet, the exception is thrown later, when the method has finished waiting for page readiness, and a `try...catch` block around the call does not catch it | Pass a file address or an array of addresses ||
+|| Something other than a function is passed as `callback` | The files load without an error, but no call is made | Pass a function ||
+|| An empty string or an array of empty strings is passed as `script` | No files are loaded, there is no error, and `callback` is called | If the addresses are built in code, check them before the call ||
+|#
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./bx24-ready.md)
 - [{#T}](./bx24-get-lang.md)

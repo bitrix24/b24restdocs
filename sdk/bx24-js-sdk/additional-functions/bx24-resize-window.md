@@ -9,13 +9,15 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The method `BX24.resizeWindow` sends a command to change the size of the application frame based on the provided width and height.
-
 ```js
-void BX24.resizeWindow(Integer width, Integer height[, Function callback])
+BX24.resizeWindow(width: integer | string, height: integer | string, callback?: callable): void;
 ```
 
-## Parameters
+The `BX24.resizeWindow` method sets the width and height of the frame in which Bitrix24 displays the application.
+
+The method works only inside the application frame in Bitrix24. Call it after the library is initialized, in the [BX24.init](../system-functions/bx24-init.md) handler. The method requires no scope of its own: it controls the interface and does not call the REST API.
+
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -23,12 +25,18 @@ void BX24.resizeWindow(Integer width, Integer height[, Function callback])
 || **Name** 
 `type` | **Description** ||
 || **width*** 
-```integer|string``` | The width of the frame in pixels. The string `'100%'` stretches the frame to the full available width. Other values are parsed using `parseInt`, and a non-numeric value falls back to `100` pixels ||
+[`integer`\|`string`](../../../api-reference/data-types.md) | The frame width in pixels, greater than zero. You can also pass a string that starts with a number, for example `'980px'` ||
 || **height*** 
-`integer` | The height of the frame in pixels. Inside the method, the value is parsed using `parseInt` and is only used if greater than `0` ||
+[`integer`\|`string`](../../../api-reference/data-types.md) | The frame height in pixels, greater than zero. The library reads a string the same way as for `width` ||
 || **callback** 
-`function` | The callback function that is executed after the resize command is sent ||
+[`callable`](../../../api-reference/data-types.md) | Callback function. It receives an object with the new frame size [(detailed description)](#callback) ||
 |#
+
+{% note warning "" %}
+
+The string `'100%'` does not stretch the frame: the library reads it as 100 pixels. To stretch the frame to the full width and fit the height to the content, use [BX24.fitWindow](./bx24-fit-window.md).
+
+{% endnote %}
 
 ## Code Example
 
@@ -36,17 +44,52 @@ void BX24.resizeWindow(Integer width, Integer height[, Function callback])
 
 ```js
 BX24.init(function () {
-    BX24.resizeWindow(980, 700, function () {
-        console.log('Resize command sent');
+    BX24.resizeWindow(980, 700, function (size) {
+        console.log('New frame size:', size.width, size.height);
     });
 });
 ```
 
-## Response Handling
+## Response Handling {#callback}
 
-The method does not return any data (`void`).
+The method does not return data (`void`). When Bitrix24 resizes the frame, it calls `callback` and passes an object with the width and height it has set:
+
+```json
+{
+    "width": 980,
+    "height": 700
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **width**
+[`integer`](../../../api-reference/data-types.md) | The frame width in pixels ||
+|| **height**
+[`integer`](../../../api-reference/data-types.md) | The frame height in pixels. This is the height that Bitrix24 has set, not the one visible on the screen — see the warning below for details ||
+|#
+
+{% note warning "" %}
+
+When the application is open on its own page in Bitrix24, the frame on the screen is never less than 600 pixels high. If you pass a smaller height, `callback` receives it, but the frame remains 600 pixels high.
+
+{% endnote %}
+
+## Error Handling
+
+The method does not return error codes. If Bitrix24 does not execute the command, `callback` is not called.
+
+#|
+|| **Situation** | **What Happens** | **What to Do** ||
+|| The width or height does not yield a positive number: `0`, a negative number, or a string such as `'auto'` is passed | The frame size does not change, and `callback` is not called | Pass both sizes as positive numbers ||
+|| The method is called in the window opened by [BX24.openApplication](./bx24-open-application.md) | The window size does not change, and `callback` is not called | Do not change the size from inside the window. Bitrix24 sets the window height, and the width can be passed with the `width` parameter in `settings` when calling [BX24.openApplication](./bx24-open-application.md#settings) ||
+|#
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./bx24-fit-window.md)
 - [{#T}](./bx24-get-scroll-size.md)

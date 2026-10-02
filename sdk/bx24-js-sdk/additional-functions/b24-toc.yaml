@@ -1,7 +1,7 @@
 title: Interface, Navigation, and Context  
-href: index.md  
-items: 
-  - name: Overview of Methods  
+href: index.md
+items:
+  - name: Overview of Methods
     href: index.md
   - name: Resize Frame  
     href: bx24-resize-window.md
@@ -19,25 +19,25 @@ items:
     href: bx24-scroll-parent-window.md
   - name: Set Event Handler for DOM Structure Readiness  
     href: bx24-ready.md
-  - name: Set Flag for DOM Structure Readiness  
+  - name: Check DOM Structure Readiness
     href: bx24-is-ready.md
   - name: Get Proxy Function  
     href: bx24-proxy.md
-  - name: Get Context Link  
+  - name: Get Proxy Function Call Context
     href: bx24-proxy-context.md
   - name: Set Function as Event Handler  
     href: bx24-bind.md
   - name: Disable Function as Event Handler  
     href: bx24-unbind.md
-  - name: Check User's Administrator Access  
+  - name: Check User Permission to Install the Application
     href: bx24-is-admin.md
-  - name: Get Language Identifier in Current Bitrix24  
+  - name: Get Interface Language Code
     href: bx24-get-lang.md
   - name: Get Bitrix24 Address  
     href: bx24-get-domain.md
-  - name: Get Frame Dimensions  
+  - name: Get Application Page Dimensions
     href: bx24-get-scroll-size.md
-  - name: Run JavaScript File  
+  - name: Load JavaScript Files
     href: bx24-load-script.md
   - name: Open Path in Slider  
     href: bx24-open-path.md

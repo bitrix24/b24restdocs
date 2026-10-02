@@ -9,101 +9,62 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The method `BX24.closeApplication` sends a command to close the pop-up window with the application.
-
-This method is recommended for use in integrations such as `CRM_*_LIST_MENU` from the [Widgets](../../../api-reference/widgets/index.md) section. For example, you can add a button that closes the application window.
-
 ```js
-void BX24.closeApplication([Function callback])
+BX24.closeApplication(callback?: callable): void;
 ```
 
-## Parameters
+The `BX24.closeApplication` method closes the window in which Bitrix24 displays the application on top of the page. This window slides out from the right, like a slider, and it is opened by the [BX24.openApplication](./bx24-open-application.md) method. The method is also useful in embedding locations that open the application in a slider, for example, in a [CRM list menu item](../../../api-reference/widgets/crm/list-menu.md). In the window, you can add a button that closes it.
+
+The application that opened the window can close it too: it calls `BX24.closeApplication` in its own frame as well.
+
+The method works only inside the application frame in Bitrix24. Call it after the library is initialized, in the [BX24.init](../system-functions/bx24-init.md) handler. The method requires no scope of its own: it controls the interface and does not call the REST API.
+
+## Method Parameters
 
 #| 
 || **Name** 
 `type` | **Description** ||
 || **callback** 
-`function` | A callback function that is executed after the close window command is sent ||
+[`callable`](../../../api-reference/data-types.md) | The library accepts the parameter, but Bitrix24 does not call this function. The [Response Handling](#response) section describes how to find out that the window has closed ||
 |#
 
 ## Code Example
 
 {% include [Example Footnote](../../../_includes/examples.md) %}
 
-A unified example for [BX24.openApplication](./bx24-open-application.md) and `BX24.closeApplication`:
+Close the window on a button click:
 
-```php
-<script src="//api.bitrix24.com/api/v1/"></script>
-<?php
-$placementOptions = array();
-if (array_key_exists('PLACEMENT_OPTIONS', $_REQUEST))
-{
-    $placementOptions = json_decode($_REQUEST['PLACEMENT_OPTIONS'], true);
-}
+```html
+<button id="close-window">Close</button>
 
-if (!isset($placementOptions['opened']))
-{
-?>
-    <span onclick="openApplication()">Open</span>
-<?php
-}
-else
-{
-?>
-    <span onclick="closeApplication()">Close</span>
-<?php
-}
-?>
 <script>
-    function openApplication()
-    {
-        BX24.openApplication(
-            { opened: true },
-            function()
-            {
-                alert('Application closed!');
-            }
-        );
-
-        setTimeout(closeApplication, 15000);
-    }
-
-    function closeApplication()
-    {
-        BX24.closeApplication();
-    }
+    BX24.init(function () {
+        document.getElementById('close-window').addEventListener('click', function () {
+            BX24.closeApplication();
+        });
+    });
 </script>
 ```
 
-### Example with Slider
+For an example in which the application opens itself in a window and closes it, see the [BX24.openApplication](./bx24-open-application.md) page.
 
-```js
-BX24.openApplication(
-    { opened: true },
-    function () {
-        console.log('Application closed');
-    },
-    {
-        width: 450,
-        label: {
-            bgColor: 'pink',
-            text: 'my task',
-            color: '#07ff0e'
-        },
-        title: 'my title'
-    }
-);
+## Response Handling {#response}
 
-setTimeout(function () {
-    BX24.closeApplication();
-}, 15000);
-```
+The method does not return data (`void`). The application that opened the window can find out that it has closed: Bitrix24 calls the `closeCallback` function passed to [BX24.openApplication](./bx24-open-application.md). The function receives one parameter — an empty array `[]`.
 
-## Response Handling
+## Error Handling
 
-The method does not return data (`void`).
+The method does not return error codes.
+
+#|
+|| **Situation** | **What Happens** | **What to Do** ||
+|| The application window is not open: the application runs on its own page in Bitrix24 and has not opened a window | Nothing happens | Show the close button only when the application is open in a window. For example, pass a window flag in the `params` parameter of the [BX24.openApplication](./bx24-open-application.md#params) method. The application in the window reads it from the `PLACEMENT_OPTIONS` request parameter ||
+|| Another slider is open on top of the application window, for example, a page from [BX24.openPath](./bx24-open-path.md) | Nothing happens: the method closes only the top slider and only if it is the application window | Wait until the user closes the top slider ||
+|| The code waits for `callback` to be called after the window closes | The function is not called | Run the required code in `closeCallback` of the [BX24.openApplication](./bx24-open-application.md) method ||
+|#
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./bx24-open-application.md)
 - [{#T}](./bx24-open-path.md)

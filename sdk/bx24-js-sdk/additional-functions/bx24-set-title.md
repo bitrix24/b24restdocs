@@ -9,15 +9,15 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The `BX24.setTitle` method sends a command to change the application page heading.
-
 ```js
-void BX24.setTitle(String title[, Function callback])
+BX24.setTitle(title: string, callback?: callable): void;
 ```
 
-The `BX24.setTitle` method changes the heading within the application container: a page or a slider. The portal page controls the heading of the top browser tab, so the command may execute successfully, but the browser tab heading will not change.
+The `BX24.setTitle` method changes the title of the Bitrix24 page above the application frame. The browser tab name does not change.
 
-## Parameters
+The method works only when the application is open on its own page in Bitrix24. In [embedding locations](../../../api-reference/widgets/index.md), for example, in a tab of a CRM detail form, Bitrix24 does not execute the command. Call the method after the library is initialized, in the [BX24.init](../system-functions/bx24-init.md) handler. The method requires no scope of its own: it controls the interface and does not call the REST API.
+
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -25,9 +25,9 @@ The `BX24.setTitle` method changes the heading within the application container:
 || **Name**
 `type` | **Description** ||
 || **title***
-`string` | New page title. Inside the method, the value is converted to a string via `toString()` ||
+[`string`](../../../api-reference/data-types.md) | The new title. The library converts a number to a string ||
 || **callback**
-`function` | Callback function, executed after sending the command to change the title ||
+[`callable`](../../../api-reference/data-types.md) | Callback function. It receives an object with the new title [(detailed description)](#callback) ||
 |#
 
 ## Code Example
@@ -36,17 +36,44 @@ The `BX24.setTitle` method changes the heading within the application container:
 
 ```js
 BX24.init(function () {
-    BX24.setTitle('New headline', function () {
-        console.log('Command to change the headline has been sent');
+    BX24.setTitle('Requests for the week', function (result) {
+        console.log('New title:', result.title);
     });
 });
 ```
 
-## Response Handling
+## Response Handling {#callback}
 
-The method does not return data (`void`).
+The method does not return data (`void`). When Bitrix24 processes the command, it calls `callback` and passes an object with the new title:
+
+```json
+{
+    "title": "Requests for the week"
+}
+```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **title**
+[`string`](../../../api-reference/data-types.md) | The new page title ||
+|#
+
+## Error Handling
+
+The method does not return error codes.
+
+#|
+|| **Situation** | **What Happens** | **What to Do** ||
+|| The method is called in an embedding location | The title does not change, and `callback` is not called | Display the title in the application's own interface ||
+|| The method is called in the window opened by [BX24.openApplication](./bx24-open-application.md) | The title of the page under the window changes. The window itself has no title. `callback` is called as usual | Display the title in the application's own interface ||
+|| `null` or `undefined` is passed in `title` | The application code fails with a JavaScript `TypeError`, and the command is not sent to Bitrix24 | Pass a string ||
+|#
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./bx24-scroll-parent-window.md)
 - [{#T}](./bx24-reload-window.md)
