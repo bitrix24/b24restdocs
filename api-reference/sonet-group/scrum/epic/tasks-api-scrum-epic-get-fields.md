@@ -170,9 +170,12 @@ No parameters.
     BX24.callMethod(
         'tasks.api.scrum.epic.getFields',
         {},
-        function(res)
-        {
-            console.log(res);
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data().fields);
+            }
         }
     );
     ```
@@ -189,11 +192,11 @@ No parameters.
     );
 
     // Processing the response from Bitrix24
-    if ($result['error']) {
+    if (isset($result['error'])) {
         echo 'Error: '.$result['error_description'];
     }
     else {
-        print_r($result['result']);
+        print_r($result['result']['fields']);
     }
     ```
 
@@ -263,12 +266,21 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Object with the `fields` key [(Detailed Description)](#fields) ||
+[`object`](../../../data-types.md) | Object describing epic fields [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### fields Object {#fields}
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **fields**
+[`object`](../../../data-types.md) | Object with epic field names and types [(detailed description)](#fields) ||
+|#
+
+#### Fields Object {#fields}
 
 The key is the epic field name in the [tasks.api.scrum.epic.add](./tasks-api-scrum-epic-add.md) and [tasks.api.scrum.epic.update](./tasks-api-scrum-epic-update.md) methods, and the value is an object with the field type `type`. In the [tasks.api.scrum.epic.list](./tasks-api-scrum-epic-list.md) method, the same fields are passed in uppercase.
 

@@ -290,13 +290,25 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	return fmt.Errorf("note.document.search.list: %w", err)
     }
 
-    var item struct {
-    	HasMore bool `json:"hasMore"`
+    type SearchItem struct {
+        DocumentID   int     `json:"documentId"`
+        CollectionID *int    `json:"collectionId"`
+        Title        string  `json:"title"`
+        Score        float64 `json:"score"`
+        Snippet      string  `json:"snippet"`
+        SharedAccess bool    `json:"sharedAccess"`
     }
-    if err := json.Unmarshal(res.Result, &item); err != nil {
+    var result struct {
+        Items   []SearchItem `json:"items"`
+        HasMore bool         `json:"hasMore"`
+    }
+    if err := json.Unmarshal(res.Result, &result); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.HasMore)
+    for _, item := range result.Items {
+        fmt.Println(item.DocumentID, item.Title)
+    }
+    fmt.Println("More results:", result.HasMore)
     ```
 
 {% endlist %}
@@ -348,28 +360,28 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with search results ||
-|| **items**
+|| **result.items**
 [`array`](../../data-types.md) | List of found documents ||
-|| **items[]**
+|| **result.items[]**
 [`object`](../../data-types.md) | Found document object ||
-|| **documentId**
+|| **result.items[].documentId**
 [`integer`](../../data-types.md) | Found document identifier ||
-|| **collectionId**
+|| **result.items[].collectionId**
 [`integer`](../../data-types.md) | Knowledge base identifier or `null` if the document is available via direct access to the document ||
-|| **title**
+|| **result.items[].title**
 [`string`](../../data-types.md) | Document title ||
-|| **score**
+|| **result.items[].score**
 [`double`](../../data-types.md) | Relative relevance of the match ||
-|| **snippet**
+|| **result.items[].snippet**
 [`string`](../../data-types.md) | HTML fragment with highlighted matches (tags <b>…</b>) ||
-|| **sharedAccess**
+|| **result.items[].sharedAccess**
 [`boolean`](../../data-types.md) | Flag for direct access to the document without access to the entire knowledge base.
 
 Possible values:
 
 - `true` — document is available via direct access
 - `false` — document is available via knowledge base access ||
-|| **hasMore**
+|| **result.hasMore**
 [`boolean`](../../data-types.md) | `true` value if there are more results beyond the current page ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||

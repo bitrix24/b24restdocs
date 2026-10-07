@@ -359,7 +359,7 @@ The file data you need is in the `VALUE` field. The other fields of the object c
 
 An empty array if there are no files ||
 || **VALUE_EXISTS**
-[`boolean`](../../../data-types.md) | Returned with the value `true` if files are attached to the epic. If there are no files, this field is absent from the response ||
+[`boolean`](../../../data-types.md) | Indicates that a stored custom field value was found. If found, the field is `true`; otherwise, the key may be absent ||
 || **FIELD_NAME**
 [`string`](../../../data-types.md) | Custom field code, always `UF_SCRUM_EPIC_FILES` ||
 || **USER_TYPE_ID**
@@ -367,10 +367,10 @@ An empty array if there are no files ||
 || **ENTITY_VALUE_ID**
 [`integer`](../../../data-types.md) | Epic identifier ||
 || **VALUE_RAW**
-[`string`](../../../data-types.md) | The `VALUE` value in PHP serialized form. If there are no files, this field is absent from the response ||
+[`string`](../../../data-types.md) | The original stored custom field value; in this example, a PHP serialized array. If no value is stored, the key may be absent ||
 |#
 
-The remaining fields describe the settings of the `UF_SCRUM_EPIC_FILES` custom field itself. They are the same for all epics and do not depend on the attached files:
+The remaining fields describe the settings of the `UF_SCRUM_EPIC_FILES` custom field, rather than the list of attached files:
 
 #|
 || **Name**

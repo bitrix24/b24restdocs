@@ -17,6 +17,8 @@ The method `tasks.api.scrum.backlog.add` adds a backlog in Scrum.
 
 It may be necessary to create a backlog during import after creating the Scrum.
 
+A group can have only one backlog. If one already exists, the method returns `Backlog already added`.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -49,10 +51,12 @@ It may be necessary to create a backlog during import after creating the Scrum.
 
 The group identifier can be obtained when creating a new group [sonet_group.create](../../sonet-group-create.md) or when retrieving a list of existing groups [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) ||
 || **createdBy***
-[`integer`](../../../data-types.md) | The identifier of the user who will create the backlog ||
+[`integer`](../../../data-types.md) | The ID of the user on whose behalf the backlog is created. If omitted, the backlog cannot be created ||
 || **modifiedBy**
-[`integer`](../../../data-types.md) | The identifier of the user who will modify the backlog ||
+[`integer`](../../../data-types.md) | The ID of the user who modified the backlog. If omitted, the method returns `0` ||
 |#
+
+When creating a backlog, the stored `modifiedBy` field is set to `createdBy`, even if a different `modifiedBy` value is passed. The `add` response returns the passed `modifiedBy` value, or `0` if the field was omitted.
 
 ## Code Examples
 
@@ -209,12 +213,7 @@ The group identifier can be obtained when creating a new group [sonet_group.crea
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Backlog ID: ' . $result['id'];
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -318,6 +317,17 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Created backlog [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id**
 [`integer`](../../../data-types.md) | The identifier of the backlog ||
 || **groupId**
@@ -345,11 +355,11 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `0` | Group id not found | The group identifier `groupId` was not provided ||
-|| `0` | Backlog already added | The error occurs when trying to create a backlog if an active backlog already exists in the group ||
+|| `0` | Backlog already added | The group already has a backlog ||
 || `0` | Access denied | Missing appropriate access permissions ||
 || `0` | createdBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||
 || `0` | modifiedBy user not found | The provided user identifier is invalid. For example, a user with such an identifier does not exist ||
-|| `0` | Unable to add backlog | Could not create the backlog ||
+|| `0` | Unable to add backlog | Could not create the backlog, including when `createdBy` was omitted ||
 || `0` | Unknown error | Another error ||
 |#
 

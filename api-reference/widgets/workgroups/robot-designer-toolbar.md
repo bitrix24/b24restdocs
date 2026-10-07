@@ -13,7 +13,11 @@ Choose a tool for developing with an AI agent:
 
 The widget adds its own button to the automation rules designer, where the task automation of a workgroup or project is configured.
 
+The button is useful when an application needs its own interface alongside automation settings, for example to prepare a scenario for group tasks or configure transfer of rules to an external service. The placement opens the application handler and does not itself add an automation rule.
+
 The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+
+An administrator registers the placement in the application context.
 
 {% note info "" %}
 
@@ -36,6 +40,10 @@ Do not confuse this placement with [`TASK_ROBOT_DESIGNER_TOOLBAR`](../task/robot
 
 ![Button in the workgroup automation rules designer](./_images/SONET_GROUP_ROBOT_DESIGNER_TOOLBAR.png "Button in the workgroup automation rules designer")
 
+### How to Verify
+
+After registering the placement and completing application installation, open the project's task automation and click the application button. Check that the handler received `PLACEMENT` with the value `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR` and the project's `GROUP_ID` in `PLACEMENT_OPTIONS`.
+
 ## What the Handler Receives
 
 Data is sent in a POST request: some parameters come in the handler URL query string, the rest in the request body {.b24-info}
@@ -52,7 +60,7 @@ Array
     [REFRESH_ID] => 4dd5e16600705a0700005a4b00000001f0f107a934a327935855b75f8c3686204e3bd5
     [SERVER_ENDPOINT] => https://oauth.bitrix.info/rest/
     [APPLICATION_TOKEN] => 5b2f8c1d7e3a9046b8c5d2f1a7e3b904
-    [APPLICATION_SCOPE] => sonet_group,task,placement
+    [APPLICATION_SCOPE] => sonet_group,placement
     [member_id] => da45a03b265edd8787f8a258d793cc5d
     [status] => L
     [PLACEMENT] => SONET_GROUP_ROBOT_DESIGNER_TOOLBAR
@@ -68,9 +76,22 @@ Array
 
 The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of the call.
 
-For `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR`, the context includes the key:
+In addition to the standard `URI` key, the context for `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR` includes:
 
 - `GROUP_ID` — identifier of the workgroup or project whose automation the user is configuring. Use it to retrieve the workgroup data with the [sonet_group.get](../../sonet-group/sonet-group-get.md) method
+
+After parsing, the example string looks like this:
+
+```json
+{
+    "GROUP_ID": "10",
+    "URI": "/workgroups/group/10/tasks/"
+}
+```
+
+## OPTIONS When Registering with placement.bind
+
+This placement has no placement-specific `OPTIONS`. Values passed to `placement.bind` are not stored.
 
 ## Code Examples
 
@@ -87,7 +108,6 @@ For `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR`, the context includes the key:
       -d '{
         "PLACEMENT": "SONET_GROUP_ROBOT_DESIGNER_TOOLBAR",
         "HANDLER": "https://your-domain.com/widgets/sonet-group-robot-designer-handler.php",
-        "TITLE": "My group automation",
         "LANG_ALL": {
           "en": {
             "TITLE": "My group automation"
@@ -117,7 +137,6 @@ For `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR`, the context includes the key:
         params: {
           PLACEMENT: 'SONET_GROUP_ROBOT_DESIGNER_TOOLBAR',
           HANDLER: 'https://your-domain.com/widgets/sonet-group-robot-designer-handler.php',
-          TITLE: 'My group automation',
           LANG_ALL: {
             en: {
               TITLE: 'My group automation',
@@ -159,7 +178,6 @@ For `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR`, the context includes the key:
             params: {
               PLACEMENT: 'SONET_GROUP_ROBOT_DESIGNER_TOOLBAR',
               HANDLER: 'https://your-domain.com/widgets/sonet-group-robot-designer-handler.php',
-              TITLE: 'My group automation',
               LANG_ALL: {
                 en: {
                   TITLE: 'My group automation',
@@ -201,7 +219,6 @@ For `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR`, the context includes the key:
                 [
                     'PLACEMENT' => 'SONET_GROUP_ROBOT_DESIGNER_TOOLBAR',
                     'HANDLER' => 'https://your-domain.com/widgets/sonet-group-robot-designer-handler.php',
-                    'TITLE' => 'My group automation',
                     'LANG_ALL' => [
                         'en' => [
                             'TITLE' => 'My group automation',
@@ -233,7 +250,6 @@ For `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR`, the context includes the key:
         {
             PLACEMENT: 'SONET_GROUP_ROBOT_DESIGNER_TOOLBAR',
             HANDLER: 'https://your-domain.com/widgets/sonet-group-robot-designer-handler.php',
-            TITLE: 'My group automation',
             LANG_ALL: {
                 en: { TITLE: 'My group automation' },
                 de: { TITLE: 'Meine Gruppenautomatisierung' }
@@ -259,7 +275,6 @@ For `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR`, the context includes the key:
         [
             'PLACEMENT' => 'SONET_GROUP_ROBOT_DESIGNER_TOOLBAR',
             'HANDLER' => 'https://your-domain.com/widgets/sonet-group-robot-designer-handler.php',
-            'TITLE' => 'My group automation',
             'LANG_ALL' => [
                 'en' => [
                     'TITLE' => 'My group automation',
@@ -283,7 +298,6 @@ For `SONET_GROUP_ROBOT_DESIGNER_TOOLBAR`, the context includes the key:
     res, err := client.Core().Call(ctx, "placement.bind", b24.Params{
     	"PLACEMENT": "SONET_GROUP_ROBOT_DESIGNER_TOOLBAR",
     	"HANDLER":   "https://your-domain.com/widgets/sonet-group-robot-designer-handler.php",
-    	"TITLE":     "My group automation",
     	"LANG_ALL": b24.Params{
     		"ru": b24.Params{
     			"TITLE": "My group automation",

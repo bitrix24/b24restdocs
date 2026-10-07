@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `placement.bind` adds a handler for the widget placement.
 
+The method works only in an application context. Calling it through a webhook returns `WRONG_AUTH_TYPE`.
+
 It can be called at any time during the application's operation; however, it is often more convenient to register your widgets during the [application installation](../../settings/app-installation/index.md).
 
 Until the application installation is complete, the registered widgets are not displayed in the Bitrix24 interface — neither to regular users nor to administrators.
@@ -28,9 +30,9 @@ Until the application installation is complete, the registered widgets are not d
 || **Name**
 `type` | **Description** ||
 || **PLACEMENT***
-[`string`](../data-types.md) | Code of the placement ||
+[`string`](../data-types.md) | Placement code. The method converts it to uppercase. The code must be available to the application under its scopes ||
 || **HANDLER***
-[`string`](../data-types.md) | URL of the widget handler ||
+[`string`](../data-types.md) | Widget handler URL. Specify an address with the `http` or `https` scheme and a host name containing a dot ||
 || **TITLE**
 [`string`](../data-types.md) | Name of the widget in the interface. Depending on the placement, this may be the name of a tab in a form, a menu item, etc. ||
 || **DESCRIPTION**
@@ -38,23 +40,21 @@ Until the application installation is complete, the registered widgets are not d
 || **GROUP_NAME**
 [`string`](../data-types.md) | Allows grouping UI elements for multiple handlers of the same widget type. For example, several dropdown items in the [top button of the CRM card](./crm/detail-toolbar.md). Supported only by certain types of widgets ||
 || **LANG_ALL**
-[`object`](../data-types.md) | Array of parameters `TITLE`, `DESCRIPTION`, and `GROUP_NAME` for specified languages. Users who have selected one of these languages in the Bitrix24 interface will see localized versions of `TITLE`, `DESCRIPTION`, and `GROUP_NAME`: 
+[`object`](../data-types.md) | Object with `TITLE`, `DESCRIPTION`, and `GROUP_NAME` for the specified languages. If a nonempty `LANG_ALL` is passed, the method uses it instead of the corresponding top-level parameters. Users whose Bitrix24 interface uses one of these languages see localized names, descriptions, and groups:
 
 ```json
-
-    "LANG_ALL": {
-        "en": {
-            "TITLE": "title",
-            "DESCRIPTION": "description",
-            "GROUP_NAME": "group"
-        },
-        "de": {
-            "TITLE": "Titel",
-            "DESCRIPTION": "Beschreibung",
-            "GROUP_NAME": "Gruppe"
-        }
+{
+    "en": {
+        "TITLE": "title",
+        "DESCRIPTION": "description",
+        "GROUP_NAME": "group"
+    },
+    "de": {
+        "TITLE": "Titel",
+        "DESCRIPTION": "Beschreibung",
+        "GROUP_NAME": "Gruppe"
     }
-
+}
 ```
 
 ||
@@ -62,12 +62,14 @@ Until the application installation is complete, the registered widgets are not d
 [`object`](../data-types.md) | Additional display parameters for the widget. Specific values depend on the placement. Currently used in widgets for messengers, in the widget [`PAGE_BACKGROUND_WORKER`](./universal/background-worker.md), and in the widget [CRM_XXX_DETAIL_ACTIVITY](../widgets/crm/detail-activity-area.md)
 
 ||
+|| **ICON**
+[`object`](../data-types.md) | Handler image. Pass `fileData` as an array containing the file name and its Base64-encoded content. The method stores the file as the registered handler's icon ||
 || **USER_ID**
 [`integer`](../data-types.md) | Identifier of the Bitrix24 user for whom the registered widget will be available. Possible values can be obtained using the [user.get](../user/user-get.md) method.
 
 Currently, this parameter is only supported by the widget [`PAGE_BACKGROUND_WORKER`](./universal/background-worker.md).
 
-If you attempt to register a placement in other widgets, you will receive the error `ERROR_PLACEMENT_USER_MODE: User mode is not available`.
+If you pass a positive `USER_ID` for a placement that does not support per-user registration, the method returns `ERROR_PLACEMENT_USER_MODE`.
 
 ||
 |#
@@ -431,11 +433,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Returns the result of adding the widget handler. Possible values:
-
-- `True`, the handler was successfully registered;
-- `False`, the handler was not registered
-||
+[`boolean`](../data-types.md) | `true` if the handler was registered successfully. On error, the method returns an error code and description ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
@@ -458,28 +456,32 @@ HTTP status: **400**, **403**, **200**
 
 #|
 || **Code** | **Description** | **Status** ||
-|| `ERROR_PLACEMENT_MAX_COUNT` | Attempted to re-register the handler for a widget that allows only one registration: `PAGE_BACKGROUND_WORKER` or [`REST_APP_URI`](./universal/app-url.md) | 200 ||
-|| `ERROR_PLACEMENT_USER_MODE` | The `USER_ID` parameter was passed for a widget that does not support registration for an individual user | 200 ||
+|| `ERROR_PLACEMENT_MAX_COUNT` | The registration limit for the placement was exceeded, for example for `PAGE_BACKGROUND_WORKER` or [`REST_APP_URI`](./universal/app-url.md) | 400 ||
+|| `ERROR_PLACEMENT_USER_MODE` | `USER_ID` was passed for a placement that does not support per-user registration | 400 ||
 || `EMPTY_ERROR_HANDLER_URL` | The required `OPTIONS[errorHandlerUrl]` parameter was not passed when registering the `PAGE_BACKGROUND_WORKER` widget | 200 ||
 || `ERROR_ARGUMENT` | A required parameter is missing or has an invalid type. The name of the invalid parameter is returned in `argument` | 400 ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | 403 ||
+|| `ERROR_PLACEMENT_NOT_FOUND` | The `PLACEMENT` code is unavailable to the application under its scopes | 400 ||
+|| `ERROR_WRONG_HANDLER_URL` | The `HANDLER` URL has no host name containing a dot, for example `localhost` | 400 ||
+|| `ERROR_UNSUPPORTED_PROTOCOL` | The `HANDLER` URL uses a scheme other than `http` or `https` | 400 ||
+|| `WRONG_AUTH_TYPE` | The method was called outside an application context, for example through a webhook | 403 ||
+|| `ACCESS_DENIED` | The caller does not have administrator permissions | 403 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
 ## Widget Handler
 
-Thus, a successful call to the method `placement.bind` has allowed you to register a widget handler. It is important that the HANDLER_URL parameter you specify points to a real and accessible URL.
+Pass the widget handler URL in `HANDLER`. After a successful `placement.bind` call, Bitrix24 registers the handler for the selected placement.
 
-{% note warning "Important" %}
+{% note warning "" %}
 
-It is required that the handler URL is **definitely** accessible from the external network. Links to localhost, local domains, and similar ways to access a local web server are not acceptable. Check the accessibility of the URL you specified using special services that monitor website availability!
+When registering the handler, the method checks for the `http` or `https` scheme and a dot in the host name. `localhost` fails this check. Ensure Bitrix24 can reach the handler from the external network: the method does not check server availability.
 
 {% endnote %}
 
-When accessing your handler, Bitrix24 will send a POST message containing information about the widget context, such as the deal identifier if the widget is embedded in the deal card in CRM, etc.
+For most placements, Bitrix24 calls the handler with a POST request. The request contains application authorization and placement context. For example, a deal card tab receives the deal ID in `PLACEMENT_OPTIONS`. Some placements call the handler differently or do not pass data.
 
-You will find examples of such data in the descriptions of [specific placements](./placements.md).
+Request format, data fields, and exceptions are described on the [placement pages](./placements.md).
 
 ## Continue Learning
 

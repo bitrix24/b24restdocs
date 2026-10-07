@@ -2,7 +2,10 @@
 
 > Scope: [`messageservice`](../../api-reference/scopes/permissions.md)
 >
-> Who can execute the methods: an administrator manages providers. The message sender or an administrator updates the delivery status
+> Who can execute the methods: an administrator must register the provider to complete the scenario
+>
+> - [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md) — an administrator
+> - [messageservice.message.status.update](../../api-reference/messageservice/messageservice-message-status-update.md) — the message sender or an administrator
 
 {% note tip "" %}
 
@@ -13,7 +16,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-An SMS provider links Bitrix24 to an external messaging service. Once the provider is registered, users can send messages from CRM cards, Automation rules, and Workflows.
+An SMS provider links Bitrix24 to an external messaging service. Once registered, users can send messages from CRM cards, Automation rules, and Workflows. The application handler passes each message to the external service, then updates its status in Bitrix24 after delivery is confirmed.
 
 The delivery channel does not have to be SMS. A provider can pass a message to any service that identifies the recipient by phone number.
 
@@ -23,42 +26,47 @@ For a detailed breakdown of the scenario, see the [SMS Integration](https://help
 
 {% endnote %}
 
-## How the Integration Works {#workflow}
+The application registers the provider using [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md) and passes the handler URL in `HANDLER`. After a message is sent, Bitrix24 calls this URL. The handler receives the number, text, and `message_id` and forwards the message to the external service. After delivery is confirmed, the application calls [messageservice.message.status.update](../../api-reference/messageservice/messageservice-message-status-update.md).
 
-Three parties are involved in the scenario:
+The scenario has four steps:
 
-- Bitrix24 — displays the provider in the interface and passes message data to the application
-- The provider application — receives the request from Bitrix24 and links it to the external sending service
-- The external service — sends the message to the recipient
+1. Register the provider using [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md)
+2. Receive the message in the `HANDLER` handler, send it to the external service, and retain `message_id`
+3. Send a test message from a CRM card and verify that the handler was called
+4. Update the delivery status using [messageservice.message.status.update](../../api-reference/messageservice/messageservice-message-status-update.md)
 
-Before sending, the application code registers the provider using the [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md) method. In the request, it passes `HANDLER` — the URL of the handler on the application server. This URL is prepared in advance by the application developer: the handler must be accessible from the internet and must accept requests from Bitrix24.
+The order matters: Bitrix24 calls `HANDLER` only after the provider is registered, and the `MESSAGE_ID` needed to update the status appears in the handler request.
 
-When a user or an Automation rule sends a message, Bitrix24 calls `HANDLER` and passes the recipient's number, the message text, and service data to the application. The application sends the message to the external service and can then pass the delivery status to Bitrix24.
+## Prepare the Data {#start}
 
-In this scenario, we will use the following methods:
+Create an [application](../../settings/app-installation/index.md) or a [Local Application](../../settings/app-installation/local-apps/index.md) with the [`messageservice`](../../api-reference/scopes/permissions.md) scope. Retain the authorization data after installation and host the handler on an external server. The handler example requires PHP with the cURL extension and access to the external messaging service API.
 
-1. [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md) — to register the SMS provider
-2. [messageservice.message.status.update](../../api-reference/messageservice/messageservice-message-status-update.md) — to update the message delivery status
+Prepare the values you will replace with your own:
 
-Next, we will break down this scenario step by step: prepare the application, register the provider, test sending from Bitrix24, and configure status handling.
+#|
+|| **Value** | **Where to Get It** ||
+|| `HANDLER_URL` | Public HTTPS URL of `handler.php`, such as `https://provider.example/api/handler.php?key=YOUR_SECRET` ||
+|| `HANDLER_SECRET` | Generate a long random secret for the `key` URL parameter ||
+|| `PROVIDER_API_URL` | Message sending endpoint of the external service ||
+|| `PROVIDER_API_TOKEN` | Access token for the external service API ||
+|| `MESSAGE_ID_LOG` | Path to a file outside the web server directory where PHP can write `message_id` ||
+|#
 
-## 1. Preparing the Application {#start}
-
-To test the scenario, create an [application](../../settings/app-installation/index.md) or a [Local application](../../settings/app-installation/local-apps/index.md). The application requires the [`messageservice`](../../api-reference/scopes/permissions.md) scope, saved authorization data after installation, and a handler on an external server.
+Pass `HANDLER_URL` in `HANDLER`. Store the secret from the URL on the application server in the `HANDLER_SECRET` environment variable. Store the other values in PHP environment variables as well.
 
 The [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md) and [messageservice.message.status.update](../../api-reference/messageservice/messageservice-message-status-update.md) methods only work within the context of an installed application. Call them from the application interface via the JS SDK or from the application server using an OAuth token. An inbound webhook is not suitable for this scenario: the methods will return error `Application context required`.
 
 If an application with an interface performs configuration in the installation wizard, complete the installation according to the rules on the [Completing Application Installation](../../settings/app-installation/installation-finish.md) page.
 
-{% note info "" %}
+{% note warning "" %}
 
-The handler URL from the `HANDLER` parameter must be accessible from an external network. Do not use `localhost`, local network addresses, or self-signed SSL certificates.
+The handler URL in `HANDLER` must be accessible from the external network. Do not use `localhost`, local network addresses, or self-signed SSL certificates. Do not publish secrets in a repository or write the full handler URL to logs.
 
 {% endnote %}
 
-## 2. Registering a Provider {#register}
+## 1. Register the Provider {#register}
 
-A provider is registered using the [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md) method. The request must pass four main parameters to the application:
+Register the provider using [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md). Pass four main parameters:
 
 - `CODE` — the symbolic code of the provider. This code distinguishes the current application's provider from other providers in Bitrix24. Allowed characters: `a-z`, `A-Z`, `0-9`, `.`, `-`, `_`
 - `TYPE` — the provider type. For an SMS provider, pass the value `SMS`
@@ -77,7 +85,7 @@ A provider is registered using the [messageservice.sender.add](../../api-referen
         {
             CODE: 'provider1',
             TYPE: 'SMS',
-            HANDLER: 'https://provider.example/api/handler',
+            HANDLER: 'https://provider.example/api/handler.php?key=YOUR_SECRET',
             NAME: 'SMS provider'
         },
         function(result)
@@ -103,7 +111,7 @@ A provider is registered using the [messageservice.sender.add](../../api-referen
     payload = {
         "CODE": "provider1",
         "TYPE": "SMS",
-        "HANDLER": "https://provider.example/api/handler",
+        "HANDLER": "https://provider.example/api/handler.php?key=YOUR_SECRET",
         "NAME": "SMS provider",
         "auth": "put_access_token_here",
     }
@@ -129,7 +137,7 @@ A provider is registered using the [messageservice.sender.add](../../api-referen
         [
             'CODE' => 'provider1',
             'TYPE' => 'SMS',
-            'HANDLER' => 'https://provider.example/api/handler',
+            'HANDLER' => 'https://provider.example/api/handler.php?key=YOUR_SECRET',
             'NAME' => 'SMS provider',
         ]
     );
@@ -160,21 +168,9 @@ If the provider is successfully registered, the method returns `true`.
 
 If you need to change the handler URL, name, or description of the provider, call [messageservice.sender.update](../../api-reference/messageservice/messageservice-sender-update.md). You can retrieve the code of an already registered provider using the [messageservice.sender.list](../../api-reference/messageservice/messageservice-sender-list.md) method.
 
-## 3. Verifying Sending from Bitrix24
+## 2. Receive the Message in the Handler {#handler}
 
-After registering the provider, send a test message from the Bitrix24 interface.
-
-1. Open a CRM card containing a customer's phone number
-2. Click **SMS/WhatsApp**
-3. Verify that the provider from your application is available in the list
-4. Enter the message text and send it
-5. Verify that the handler received the request
-
-The provider must also be available in Automation. Open the CRM Automation rule settings, add a **Send SMS** Automation rule, and check the provider list. For the application, the scenario is the same: Bitrix24 will send the message data to the handler via the `HANDLER` parameter.
-
-## 4. Processing the Bitrix24 Request {#handler}
-
-When a user or Automation sends a message, Bitrix24 calls the URL from the `HANDLER` parameter. The handler receives the message data and details about the scenario from which it was sent.
+When a user or Automation sends a message, Bitrix24 calls the URL in `HANDLER`. Host a handler at that URL to receive the message data and information about where it was sent from.
 
 The main fields required by the application to send a message to an external service are:
 
@@ -185,7 +181,7 @@ The main fields required by the application to send a message to an external ser
 - `bindings` — CRM object links. This field is provided if `module_id=crm`
 - `workflow_id`, `document_id`, `document_type` — Workflow data. These fields are provided if `module_id=bizproc`
 
-If the message is sent from a CRM contact card, the incoming data may look like this:
+If the message is sent from a CRM contact card, the data after parsing the POST request may look like this:
 
 ```json
 {
@@ -211,12 +207,97 @@ If the message is sent from a CRM contact card, the incoming data may look like 
 
 See the full list of handler fields in the [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md#handler) method description.
 
-## 5. Updating the Delivery Status {#status}
+Bitrix24 sends a POST request to the handler. In PHP, the values are available in `$_POST`. Place the following code in `handler.php` at the URL specified in `HANDLER`. The example assumes that the external service accepts JSON with `to`, `text`, and `client_message_id` fields and a token in the `Authorization` header. Replace the field names, URL, and authorization method according to the chosen service's documentation.
 
-If an external service returns a delivery result, the application can display it in Bitrix24. To do this, save the `message_id` from the request to the handler and pass the following parameters to the [messageservice.message.status.update](../../api-reference/messageservice/messageservice-message-status-update.md) method:
+```php
+<?php
+$secret = getenv('HANDLER_SECRET');
+$providerUrl = getenv('PROVIDER_API_URL');
+$providerToken = getenv('PROVIDER_API_TOKEN');
+$messageIdLog = getenv('MESSAGE_ID_LOG');
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    exit;
+}
+
+if (!$secret || !hash_equals($secret, (string)($_GET['key'] ?? ''))) {
+    http_response_code(403);
+    exit;
+}
+
+$messageTo = trim((string)($_POST['message_to'] ?? ''));
+$messageBody = (string)($_POST['message_body'] ?? '');
+$messageId = (string)($_POST['message_id'] ?? '');
+$senderCode = (string)($_POST['code'] ?? '');
+
+if ($messageTo === '' || $messageBody === '' || $messageId === ''
+    || strpbrk($messageId, "\r\n") !== false || $senderCode !== 'provider1') {
+    http_response_code(400);
+    exit;
+}
+
+if (!$providerUrl || !$providerToken || !$messageIdLog) {
+    http_response_code(500);
+    exit;
+}
+
+$payload = json_encode([
+    'to' => $messageTo,
+    'text' => $messageBody,
+    'client_message_id' => $messageId,
+], JSON_THROW_ON_ERROR);
+
+$request = curl_init($providerUrl);
+curl_setopt_array($request, [
+    CURLOPT_POST => true,
+    CURLOPT_POSTFIELDS => $payload,
+    CURLOPT_HTTPHEADER => [
+        'Content-Type: application/json',
+        'Authorization: Bearer ' . $providerToken,
+    ],
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_TIMEOUT => 15,
+]);
+
+$providerResponse = curl_exec($request);
+$providerStatus = curl_getinfo($request, CURLINFO_RESPONSE_CODE);
+curl_close($request);
+
+if ($providerResponse === false || $providerStatus < 200 || $providerStatus >= 300) {
+    error_log('Provider request failed for message_id=' . $messageId);
+    http_response_code(502);
+    exit;
+}
+
+if (file_put_contents($messageIdLog, $messageId . PHP_EOL, FILE_APPEND | LOCK_EX) === false) {
+    http_response_code(500);
+    exit;
+}
+
+http_response_code(200);
+```
+
+`MESSAGE_ID_LOG` must point to a writable file outside the web server directory. The handler records only `message_id`, without the phone number, text, or token. In a production application, retain the ID and the external service response in your own storage: you will need them when the service reports delivery. A `200` response means the external service accepted the request; it does not itself confirm delivery to the recipient.
+
+## 3. Send a Test Message
+
+After registering the provider and deploying the handler, send a test message from the Bitrix24 interface.
+
+1. Open a CRM card containing a customer's phone number
+2. Click **SMS/WhatsApp**
+3. Check that your application's provider appears in the list
+4. Enter a message and send it
+5. Check that the handler received the request and retained `message_id`
+
+The provider should also be available in Automation. Open the CRM Automation rule settings, add a **Send SMS** Automation rule, and check the provider list. The application follows the same flow: Bitrix24 sends the message data to the handler specified in `HANDLER`.
+
+## 4. Update the Delivery Status {#status}
+
+When the external service confirms delivery, the application can show the status in Bitrix24. Take the `message_id` retained by the handler and pass these parameters to [messageservice.message.status.update](../../api-reference/messageservice/messageservice-message-status-update.md):
 
 - `CODE` — provider code
-- `MESSAGE_ID` — the saved `message_id`
+- `MESSAGE_ID` — the `message_id` from `MESSAGE_ID_LOG` or the application storage. The value `65575980fa531ac284c2ee68f81ebebd` below is an example; replace it with your message's ID
 - `STATUS` — the new delivery status, for example `delivered`
 
 {% list tabs %}
@@ -314,3 +395,38 @@ The method supports the following statuses:
 - `delivered` — the message was delivered to the recipient
 - `undelivered` — the message was not delivered to the recipient
 - `failed` — a sending or message processing error occurred at the provider
+
+## Verify the Result
+
+1. Check that [messageservice.sender.add](../../api-reference/messageservice/messageservice-sender-add.md) returned `result: true` and `provider1` appears in the sender list in the CRM card
+2. Send a message from the CRM card. The handler should respond with `200`, and its `message_id` should appear in `MESSAGE_ID_LOG`. Confirm that the external service accepted the message with the same ID
+3. After delivery is confirmed, call [messageservice.message.status.update](../../api-reference/messageservice/messageservice-message-status-update.md) with the retained `MESSAGE_ID` and `delivered` status. A `result: true` response confirms that Bitrix24 accepted the update
+
+The delivery status should appear on the message in the CRM card.
+
+## Errors and Diagnostics
+
+If the message was not sent or the status was not updated, check where the scenario stopped:
+
+- the provider is missing from the list — check the `messageservice.sender.add` result, `messageservice` scope, administrator permissions, and `HANDLER` URL; then register the provider again
+- `messageservice.sender.add` returns `ERROR_SENDER_ALREADY_INSTALLED` — a provider with this `CODE` is already registered; check it with [messageservice.sender.list](../../api-reference/messageservice/messageservice-sender-list.md) and change the URL with [messageservice.sender.update](../../api-reference/messageservice/messageservice-sender-update.md)
+- the handler responds with `403` — check that the secret in the `HANDLER` URL matches `HANDLER_SECRET`; then send the message again
+- the handler responds with `400` — check that the incoming POST request contains `message_to`, `message_body`, `message_id`, and the `provider1` provider code; then send the message again
+- the handler responds with `502` — check the external service URL, token, and request format; then send a new test message
+- the handler responds with `500` — check the environment variables and write access to `MESSAGE_ID_LOG`; then send a new message
+- `messageservice.message.status.update` returns `ERROR_MESSAGE_NOT_FOUND` — pass the `message_id` from the current `HANDLER` request and check the provider `CODE`; then retry the status update
+- the method returns `ERROR_MESSAGE_STATUS_INCORRECT` — pass one of the supported `STATUS` values and retry
+- the method returns `Application context required` — call it with OAuth authorization for the installed application instead of an inbound webhook
+
+## Things to Consider
+
+- Bitrix24 sends the message to the handler asynchronously. Sending from the interface and a `200` handler response do not prove delivery to the recipient: pass `delivered` only after confirmation from the external service
+- A repeated request may cause the external service to receive the message twice. If it supports an idempotency key, use `message_id`
+- The secret in the `HANDLER` URL grants access to the handler. Do not log the URL with the `key` parameter, and replace the secret if it is exposed
+- If the application serves multiple Bitrix24 accounts, associate each request with the correct application installation
+
+## Continue Learning
+
+- [messageservice.sender.list](../../api-reference/messageservice/messageservice-sender-list.md) — retrieve registered provider codes
+- [messageservice.sender.update](../../api-reference/messageservice/messageservice-sender-update.md) — change the handler URL
+- [Handler Security](../../api-reference/events/safe-event-handlers.md) — verify the application token in incoming requests

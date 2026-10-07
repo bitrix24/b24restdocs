@@ -15,7 +15,11 @@ Choose a tool for developing with an AI agent:
 
 The method `tasks.api.scrum.backlog.update` updates the backlog.
 
+Changing `fields.groupId` moves the backlog to another group. The move is unavailable if the backlog contains tasks or the target group already has a backlog.
+
 ## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -25,19 +29,10 @@ The method `tasks.api.scrum.backlog.update` updates the backlog.
 
 You can obtain it using the method [tasks.api.scrum.backlog.get](./tasks-api-scrum-backlog-get.md) ||
 || **fields***
-[`object`](../../../data-types.md) | An object containing records about the group and user (detailed description provided below) in the following structure:
-
-```js
-"fields": {
-    "groupId": value,
-    "createdBy": value,
-    "modifiedBy": value,
-}    
-```
-||
+[`object`](../../../data-types.md) | Backlog fields to update [(detailed description)](#fields) ||
 |#
 
-### fields Parameter
+### Fields Parameter {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -53,6 +48,8 @@ The group identifier can be obtained when creating a new group [sonet_group.crea
 || **modifiedBy**
 [`integer`](../../../data-types.md) | Identifier of the user who will modify the backlog ||
 |#
+
+The method returns the passed `createdBy` value but does not store it when updating the backlog: the next [tasks.api.scrum.backlog.get](./tasks-api-scrum-backlog-get.md) call returns the previous value. If `modifiedBy` is omitted, the `update` response contains `0`, while the stored value remains unchanged.
 
 ## Code Examples
 
@@ -213,9 +210,7 @@ The group identifier can be obtained when creating a new group [sonet_group.crea
             ->getResponseData()
             ->getResult();
     
-        echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
+        echo 'Backlog ID: ' . $result['id'];
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -319,6 +314,17 @@ HTTP status: **200**
 ```
 
 ## Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Updated backlog [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+### Result Object {#result}
 
 #|
 || **Name**

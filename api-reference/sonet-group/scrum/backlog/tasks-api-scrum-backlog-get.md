@@ -25,7 +25,7 @@ You may need to obtain the `id` of the backlog to add or move a task to the back
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the group.
+[`integer`](../../../data-types.md) | Identifier of the group (Scrum), rather than the backlog ID in the `result.id` field of the response.
 
 Can be obtained when creating a new group [sonet_group.create](../../sonet-group-create.md) or when retrieving a list of existing groups [socialnetwork.api.workgroup.list](../../socialnetwork-api-workgroup-list.md) ||
 |#
@@ -173,12 +173,7 @@ Can be obtained when creating a new group [sonet_group.create](../../sonet-group
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Backlog ID: ' . $result['id'];
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -269,6 +264,17 @@ HTTP Status: **200**
 ```
 
 ## Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Group backlog [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+### Result Object {#result}
 
 #|
 || **Name**

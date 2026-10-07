@@ -236,9 +236,10 @@ HTTP Status: **200**
 
 Possible formats:
 
-- `XXX` — number of the rented line
-- `regXXX` — for cloud SIP line
-- `sipXXX` — for office SIP line ||
+- phone number — a rented or connected line
+- `regXXX` or `sipXXX` — a SIP line
+- `REST_APP:<APP_ID>` — an application line
+- `LINK_BASE_NUMBER` — the Bitrix24 base number ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#

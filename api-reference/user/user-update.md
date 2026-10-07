@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`user`](../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to invite employees or edit all users; a user with permission to edit their own profile, for that profile only
 
-The `user.update` method updates user data. This is only possible on behalf of a user with user invitation rights.
+The `user.update` method updates user data.
 
 ## Method Parameters
 
@@ -23,11 +23,9 @@ The `user.update` method updates user data. This is only possible on behalf of a
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`integer`](../data-types.md) | User identifier ||
+[`integer`](../data-types.md) | Positive ID of the user whose data you want to update ||
 || **ACTIVE**
-[`boolean`](../data-types.md) | User activity flag. Possible values: 
-- `Y` — employee is active,
-- `N` — employee is dismissed ||
+[`boolean`](../data-types.md) | User activity: `Y` — active, `N` — dismissed ||
 || **EMAIL**
 [`string`](../data-types.md) | User E-mail ||
 || **NAME**
@@ -37,13 +35,13 @@ The `user.update` method updates user data. This is only possible on behalf of a
 || **SECOND_NAME**
 [`string`](../data-types.md) | Middle name ||
 || **PERSONAL_GENDER**
-[`string`](../data-types.md) | Gender ||
+[`string`](../data-types.md) | Gender: `M` — male, `F` — female. Other values are converted to an empty string ||
 || **PERSONAL_PROFESSION**
 [`string`](../data-types.md) | Profession ||
 || **PERSONAL_WWW**
 [`string`](../data-types.md) | Homepage ||
 || **PERSONAL_BIRTHDAY**
-[`string`](../data-types.md) | Date of birth ||
+[`date`](../data-types.md) | Date of birth in ISO 8601 format, such as `1990-05-14` ||
 || **PERSONAL_PHOTO**
 [`array`](../data-types.md) | Photo, pass an array containing the file name and a [Base64](../files/how-to-upload-files.md) string ||
 || **PERSONAL_ICQ**
@@ -81,33 +79,33 @@ The `user.update` method updates user data. This is only possible on behalf of a
 || **WORK_WWW**
 [`string`](../data-types.md) | Company website ||
 || **WORK_FAX**
-[`string`](../data-types.md) | WORK_FAX ||
+[`string`](../data-types.md) | Work fax ||
 || **WORK_PAGER**
-[`string`](../data-types.md) | WORK_PAGER ||
+[`string`](../data-types.md) | Work pager ||
 || **WORK_STREET**
-[`string`](../data-types.md) | WORK_STREET ||
+[`string`](../data-types.md) | Street and building number of the company address ||
 || **WORK_MAILBOX**
-[`string`](../data-types.md) | WORK_MAILBOX ||
+[`string`](../data-types.md) | Company P.O. box ||
 || **WORK_CITY**
 [`string`](../data-types.md) | Work city ||
 || **WORK_STATE**
-[`string`](../data-types.md) | WORK_STATE ||
+[`string`](../data-types.md) | State or region of the company address ||
 || **WORK_ZIP**
-[`string`](../data-types.md) | WORK_ZIP ||
+[`string`](../data-types.md) | Company postal code ||
 || **WORK_COUNTRY**
-[`string`](../data-types.md) | WORK_COUNTRY ||
+[`string`](../data-types.md) | Country of the company address ||
 || **WORK_PROFILE**
-[`string`](../data-types.md) | WORK_PROFILE ||
+[`string`](../data-types.md) | Company's areas of business ||
 || **WORK_LOGO**
-[`array`](../data-types.md) | WORK_LOGO ||
+[`array`](../data-types.md) | Company logo. An array of file data ||
 || **WORK_NOTES**
-[`string`](../data-types.md) | WORK_NOTES ||
+[`string`](../data-types.md) | Additional company notes ||
 || **UF_SKYPE_LINK**
 [`string`](../data-types.md) | Skype chat link ||
 || **UF_ZOOM**
 [`string`](../data-types.md) | Zoom ||
 || **UF_DEPARTMENT**
-[`string`](../data-types.md) | Department ||
+[`integer[]`](../data-types.md) | IDs of the user's departments, such as `[1, 2]`. A single ID can be passed without an array. Retrieve IDs using [department.get](../departments/department-get.md) ||
 || **UF_INTERESTS**
 [`string`](../data-types.md) | Interests ||
 || **UF_SKILLS**
@@ -386,7 +384,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Success status ||
+[`boolean`](../data-types.md) | `true` if the method completed without an error. The updated profile is not included in the response ||
 || **time**
 [`time`](../data-types.md) | Request execution time information ||
 |#
@@ -407,10 +405,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error message** | **Description** ||
-|| `ERROR_CORE` | access_denied | Invalid user `ID` passed ||
-|| `ERROR_CORE` | access_denied | User does not have permission to call the method ||
-|| `ERROR_CORE` |  | Invalid user `ID` passed||
+|| **Code** | **Error Message** | **Description** ||
+|| `insufficient_scope` | The request requires higher privileges than provided by the access token | The `user` scope is required; `user_brief` and `user_basic` do not suffice ||
+|| `ERROR_CORE` | access_denied | `ID` is missing or is not a positive number ||
+|| `ERROR_CORE` | access_denied | Insufficient permission to change the specified user's data ||
+|| `ERROR_CORE` | Error text depends on the cause | Could not save the profile changes. The method returns a message describing the cause ||
 |#
 
 {% include [System errors](../../_includes/system-errors.md) %}

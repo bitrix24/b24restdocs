@@ -28,11 +28,11 @@ Call this method after [telephony.externalCall.finish](./telephony-external-call
 [`string`](../data-types.md) | The identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md).
 
 If the method is called again for the same call, the new record will replace the previously attached one. ||
-|| **RECORD_URL**
+|| **RECORD_URL***
 [`string`](../data-types.md) | The URL of the record on an external server. If this parameter is provided, Bitrix24 will download the file from the link.
 
 It is recommended to use this only if the file is reliably and quickly accessible. ||
-|| **FILENAME**
+|| **FILENAME***
 [`string`](../data-types.md) | The name of the record file.
 
 Possible extensions:
@@ -40,7 +40,13 @@ Possible extensions:
 - `mp3`
 
 In `RECORD_URL` mode:
-- if `FILENAME` is not provided, the name is taken from the URL. ||
+- if `FILENAME` is not provided, the name is taken from the URL
+
+{% note info "" %}
+
+Provide at least one of `RECORD_URL` or `FILENAME`
+
+{% endnote %} ||
 || **FILE_CONTENT**
 [`string`](../data-types.md) | The file in [Base64](../files/how-to-upload-files.md) encoding. ||
 |#
@@ -348,7 +354,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "ERROR_CORE",
+    "error": "",
     "error_description": "Required parameters are not set. Request should contain either URL or FILENAME parameter"
 }
 ```
@@ -359,13 +365,14 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | Required parameters are not set. Request should contain either URL or FILENAME parameter | Neither `RECORD_URL` nor `FILENAME` was provided ||
-|| `ERROR_CORE` | Call is not found in the statistic table. It looks like it is not finished yet. | The call was not found in the statistics. Ensure that the call is completed. ||
+|| Empty value | Required parameters are not set. Request should contain either URL or FILENAME parameter | Neither `RECORD_URL` nor `FILENAME` was provided ||
+|| Empty value | Call is not found in the statistic table. It looks like it is not finished yet. | The call was not found in the statistics. Ensure that the call is completed. ||
 || `ERROR_CORE` | File name is empty | Empty `FILENAME` ||
 || `ERROR_CORE` | Wrong file extension. Only wav and mp3 are allowed | Invalid file extension ||
 || `ERROR_CORE` | File content is empty. | Empty `FILE_CONTENT` ||
 || `ERROR_CORE` | File content is not properly encoded. Base64 encoding is expected. | `FILE_CONTENT` was not provided in Base64 format ||
 || `ERROR_CORE` | Server returns HTTP error code {N} | HTTP error when uploading the record via `RECORD_URL` ||
+|| Empty value | Record URL resolves to a non-public address and was blocked. | `RECORD_URL` points to a non-public IP address, such as a local network address. Pass the recording in `FILE_CONTENT` or upload it via `uploadUrl` ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

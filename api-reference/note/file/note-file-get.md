@@ -256,17 +256,18 @@ The new API call differs by adding the `/api/` segment to the request URL:
     }
 
     var item struct {
-    	ID         b24.ID `json:"id"`
-    	DocumentID b24.ID `json:"documentId"`
-    	Name       string `json:"name"`
-    	Size       int    `json:"size"`
-    	MimeType   string `json:"mimeType"`
-    	AssetType  string `json:"assetType"`
+        ID            b24.ID `json:"id"`
+        DocumentID    b24.ID `json:"documentId"`
+        Name          string `json:"name"`
+        Size          int    `json:"size"`
+        MimeType      string `json:"mimeType"`
+        AssetType     string `json:"assetType"`
+        AssetMarkdown string `json:"assetMarkdown"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.ID, item.DocumentID)
+    fmt.Println(item.ID, item.AssetMarkdown)
     ```
 
 {% endlist %}
@@ -308,7 +309,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object containing the result of the file data retrieval. ||
-|| **item**
+|| **result.item**
 [`object`](../../data-types.md) | File metadata object in `result.item`. [Property descriptions](#item) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||

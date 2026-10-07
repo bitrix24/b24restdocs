@@ -606,18 +606,25 @@ The method does not return attached files. You can retrieve them using the [task
 
 ## Error Handling
 
-The method has no errors of its own. An example of a general error is an application token without the `task` scope:
+If the epic list cannot be retrieved, the method returns an error:
 
-HTTP Status: **401**
+HTTP Status: **400**
 
 ```json
 {
-    "error": "insufficient_scope",
-    "error_description": "The request requires higher privileges than provided by the access token"
+    "error": "0",
+    "error_description": "Could not load list"
 }
 ```
 
 {% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Meaning** ||
+|| `400` | `0` | `Could not load list` | Could not retrieve the epic list ||
+|#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 

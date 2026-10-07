@@ -82,6 +82,9 @@ The new API call differs by adding the `/api/` segment to the request URL:
         name: string
         position: number
         policyLevel: string
+        accessLevel: string
+        isArchived: boolean
+        markdownDescription: string | null
         createdBy: number
         updatedBy: number
         createdAt: ISODate
@@ -302,29 +305,29 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Knowledge base data object ||
-|| **item**
+|| **result.item**
 [`object`](../../data-types.md) | Knowledge base object ||
-|| **item.id**
+|| **result.item.id**
 [`integer`](../../data-types.md) | Knowledge base identifier ||
-|| **item.name**
+|| **result.item.name**
 [`string`](../../data-types.md) | Knowledge base name ||
-|| **item.position**
+|| **result.item.position**
 [`integer`](../../data-types.md) | Knowledge base position in the general list ||
-|| **item.policyLevel**
+|| **result.item.policyLevel**
 [`string`](../../data-types.md) | Knowledge base access policy code, such as `private` or `portal` ||
-|| **item.accessLevel**
+|| **result.item.accessLevel**
 [`string`](../../data-types.md) | Current user's access level code, such as `full` ||
-|| **item.isArchived**
+|| **result.item.isArchived**
 [`boolean`](../../data-types.md) | Indicates whether the knowledge base is archived ||
-|| **item.markdownDescription**
+|| **result.item.markdownDescription**
 [`string`](../../data-types.md) or `null` | Additional Markdown description. Can be `null` ||
-|| **item.createdBy**
+|| **result.item.createdBy**
 [`integer`](../../data-types.md) | Knowledge base author identifier ||
-|| **item.createdAt**
+|| **result.item.createdAt**
 [`datetime`](../../data-types.md) | Knowledge base creation date and time in ISO 8601 format with a timezone offset ||
-|| **item.updatedBy**
+|| **result.item.updatedBy**
 [`integer`](../../data-types.md) | Last knowledge base editor identifier ||
-|| **item.updatedAt**
+|| **result.item.updatedAt**
 [`datetime`](../../data-types.md) | Knowledge base last modification date and time in ISO 8601 format with a timezone offset ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||

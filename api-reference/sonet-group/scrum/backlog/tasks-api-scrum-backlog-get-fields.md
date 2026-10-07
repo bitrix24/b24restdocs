@@ -155,12 +155,7 @@ No parameters.
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Fields: ' . print_r($result['fields'], true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -254,15 +249,50 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
+|| **result**
+[`object`](../../../data-types.md) | Object describing backlog fields [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **fields**
+[`object`](../../../data-types.md) | Object with backlog field names and types [(detailed description)](#fields) ||
+|#
+
+#### Fields Object {#fields}
+
+Each key is a backlog field name. Its value is an object whose `type` key contains the field type.
+
+#|
+|| **Field**
+`type` | **Description** ||
 || **groupId**
-[`integer`](../../../data-types.md) | Identifier of the group for which the backlog was created ||
+`integer` | Identifier of the group for which the backlog was created ||
 || **createdBy**
-[`integer`](../../../data-types.md) | Identifier of the user who created the backlog ||
+`integer` | Identifier of the user who created the backlog ||
 || **modifiedBy**
-[`integer`](../../../data-types.md) | Identifier of the user who modified the backlog ||
+`integer` | Identifier of the user who modified the backlog ||
 |#
 
 ## Error Handling
+
+The method has no errors of its own. An example of a general error is an application token without the `task` scope:
+
+HTTP status: **401**
+
+```json
+{
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the access token"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 

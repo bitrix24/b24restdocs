@@ -386,7 +386,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
-|| **items**
+|| **result.items**
 [`array`](../../data-types.md) | Field descriptions in `result.items`. [Properties of each element](#items) depend on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||

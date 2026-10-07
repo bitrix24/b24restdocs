@@ -93,7 +93,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
     type DocumentTreeListResult = {
       items: TreeNode[]
-      truncated: boolean
+      truncated?: boolean
     }
 
     try {
@@ -109,7 +109,10 @@ The new API call differs by adding the `/api/` segment to the request URL:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Tree roots:', result.items.length, result.truncated)
+        console.info('Tree roots:', result.items.length)
+        if (result.truncated !== undefined) {
+          console.info('Tree truncated:', result.truncated)
+        }
       }
     } catch (error) {
       console.error(error)
@@ -139,7 +142,10 @@ The new API call differs by adding the `/api/` segment to the request URL:
           }
 
           const result = response.getData().result
-          console.info('Tree roots:', result.items.length, result.truncated)
+          console.info('Tree roots:', result.items.length)
+          if (result.truncated !== undefined) {
+            console.info('Tree truncated:', result.truncated)
+          }
         } catch (error) {
           console.error(error)
         }
@@ -246,13 +252,25 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	return fmt.Errorf("note.document.tree.list: %w", err)
     }
 
-    var item struct {
-    	Truncated bool `json:"truncated"`
+    type TreeNode struct {
+        ID           int        `json:"id"`
+        CollectionID int        `json:"collectionId"`
+        ParentID     *int       `json:"parentId"`
+        Title        string     `json:"title"`
+        Position     int        `json:"position"`
+        Children     []TreeNode `json:"children"`
     }
-    if err := json.Unmarshal(res.Result, &item); err != nil {
+    var result struct {
+        Items     []TreeNode `json:"items"`
+        Truncated *bool      `json:"truncated"`
+    }
+    if err := json.Unmarshal(res.Result, &result); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Truncated)
+    fmt.Println("Root documents:", len(result.Items))
+    if result.Truncated != nil {
+        fmt.Println("Tree truncated:", *result.Truncated)
+    }
     ```
 
 {% endlist %}
@@ -305,10 +323,27 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with the document tree ||
-|| **items**
-[`array`](../../data-types.md) | Root nodes of the document tree ||
-|| **items[]**
-[`object`](../../data-types.md) | Tree document object ||
+|| **result.items**
+[`array`](../../data-types.md) | Root [tree nodes](#tree-node) of the documents ||
+|| **result.items[]**
+[`object`](../../data-types.md) | Root [tree node](#tree-node) of the documents ||
+|| **result.truncated**
+[`boolean`](../../data-types.md) | `true` if the tree exceeded the internal limit `TREE_MAX_NODES = 5000` and was truncated at root nodes.
+
+The first root document is an exception. If it alone exceeds `TREE_MAX_NODES`, the method returns its initial portion in breadth-first order so that the response is not empty.
+
+This field may be absent from the response. In that case, the response does not indicate whether the tree was truncated ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Tree Node {#tree-node}
+
+Each element of `result.items` and the nested `children` array has the same structure.
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id**
 [`integer`](../../data-types.md) | Document identifier ||
 || **collectionId**
@@ -320,13 +355,7 @@ HTTP status: **200**
 || **position**
 [`integer`](../../data-types.md) | Position of the document among neighboring pages ||
 || **children**
-[`array`](../../data-types.md) | Child pages of the document ||
-|| **truncated**
-[`boolean`](../../data-types.md) | The value of `true`, if the tree exceeded the internal limit `TREE_MAX_NODES = 5000` and was truncated by root nodes.
-
-Exception — the first root document. If it alone exceeds the internal limit `TREE_MAX_NODES`, the method will return its initial part in breadth-first order so that the response is not empty. ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`array`](../../data-types.md) | Child [tree nodes](#tree-node). An empty array if the document has no children ||
 |#
 
 ## Error Handling

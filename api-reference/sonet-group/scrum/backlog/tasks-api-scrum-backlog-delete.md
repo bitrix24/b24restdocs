@@ -167,12 +167,7 @@ It can be obtained using the backlog creation method [tasks.api.scrum.backlog.ad
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Result: ' . json_encode($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -251,6 +246,17 @@ In case of successful execution, the server will return the following response:
     }
 }
 ```
+
+## Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`array`](../../../data-types.md) | An empty array `[]` when the backlog is deleted successfully ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
 
 ## Error handling
 

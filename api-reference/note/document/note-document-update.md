@@ -118,7 +118,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
     ```ts
     import { Text } from '@bitrix24/b24jssdk'
-    import type { B24Frame } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
@@ -132,8 +132,12 @@ The new API call differs by adding the `/api/` segment to the request URL:
         position: number
         createdBy: number
         updatedBy: number
-        createdAt: string
-        updatedAt: string
+        createdAt: ISODate
+        updatedAt: ISODate
+        contentUpdatedAt: ISODate
+        isArchived: boolean
+        isTrashed: boolean
+        isOrphan: boolean
       }
     }
 
@@ -390,35 +394,35 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with the document update result ||
-|| **item**
+|| **result.item**
 [`object`](../../data-types.md) | Document object after the update ||
-|| **item.id**
+|| **result.item.id**
 [`integer`](../../data-types.md) | Document identifier ||
-|| **item.collectionId**
+|| **result.item.collectionId**
 [`integer`](../../data-types.md) | Knowledge base identifier or `null` if the document is available through direct access ||
-|| **item.parentId**
+|| **result.item.parentId**
 [`integer`](../../data-types.md) | Parent document identifier or `null` ||
-|| **item.title**
+|| **result.item.title**
 [`string`](../../data-types.md) | Document title ||
-|| **item.markdown**
+|| **result.item.markdown**
 [`string`](../../data-types.md) | Document content in Markdown ||
-|| **item.position**
+|| **result.item.position**
 [`integer`](../../data-types.md) | Document position among neighboring pages ||
-|| **item.createdBy**
+|| **result.item.createdBy**
 [`integer`](../../data-types.md) | Document author identifier ||
-|| **item.updatedBy**
+|| **result.item.updatedBy**
 [`integer`](../../data-types.md) | Identifier of the last document editor ||
-|| **item.createdAt**
+|| **result.item.createdAt**
 [`datetime`](../../data-types.md) | Document creation date and time in ISO 8601 format with a timezone offset ||
-|| **item.updatedAt**
+|| **result.item.updatedAt**
 [`datetime`](../../data-types.md) | Last document modification date and time in ISO 8601 format with a timezone offset ||
-|| **item.contentUpdatedAt**
+|| **result.item.contentUpdatedAt**
 [`datetime`](../../data-types.md) | Content modification date and time in ISO 8601 format with a timezone offset ||
-|| **item.isArchived**
+|| **result.item.isArchived**
 [`boolean`](../../data-types.md) | Indicates whether the document is archived ||
-|| **item.isTrashed**
+|| **result.item.isTrashed**
 [`boolean`](../../data-types.md) | Indicates whether the document is in the trash ||
-|| **item.isOrphan**
+|| **result.item.isOrphan**
 [`boolean`](../../data-types.md) | Indicates that no knowledge base is associated with the document ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||

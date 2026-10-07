@@ -116,6 +116,9 @@ The new API call differs by adding the `/api/` segment to the request URL:
         name: string
         position: number
         policyLevel: string
+        accessLevel: string
+        isArchived: boolean
+        markdownDescription: string | null
         createdBy: number
         updatedBy: number
         createdAt: ISODate
@@ -321,8 +324,25 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	return fmt.Errorf("note.collection.list: %w", err)
     }
 
-    // The response shape is shown below on this page.
-    fmt.Printf("%s\n", res.Result)
+    var result struct {
+        Items []struct {
+            ID   int    `json:"id"`
+            Name string `json:"name"`
+        } `json:"items"`
+        NextCursor *struct {
+            Position int `json:"position"`
+            ID       int `json:"id"`
+        } `json:"nextCursor"`
+    }
+    if err := json.Unmarshal(res.Result, &result); err != nil {
+        return fmt.Errorf("parse response: %w", err)
+    }
+    for _, item := range result.Items {
+        fmt.Println(item.ID, item.Name)
+    }
+    if result.NextCursor != nil {
+        fmt.Println("Next cursor:", result.NextCursor.Position, result.NextCursor.ID)
+    }
     ```
 
 {% endlist %}

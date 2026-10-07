@@ -22,10 +22,74 @@ Bitrix24 has two types of file fields:
 - **File.** This field is not linked to Drive. Files are uploaded directly through a [Base64 format string](../../api-reference/files/how-to-upload-files.md)
 - **File (Drive).** This field is linked to Drive. The field stores the Drive object ID. Base64 format is not processed in this field, so the file must first be uploaded to Bitrix24 Drive
 
-To attach a file to a task, perform these two methods in sequence:
+The scenario has three steps:
 
-1. [disk.folder.uploadFile](../../api-reference/disk/folder/disk-folder-upload-file.md) — uploads a file to Drive
-2. [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) — attaches a Drive file to a task
+1. Upload the file to Drive using [disk.folder.uploadFile](../../api-reference/disk/folder/disk-folder-upload-file.md)
+2. Pass the Drive object's `ID` to [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) to attach it to the task
+3. Verify the file's link to the task using [disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md)
+
+The file will appear in an existing task. Verify the attachment after attaching it: the second method returns the `attachmentId` needed for the third step.
+
+## Before You Start
+
+To run the example, you need:
+
+- an inbound webhook with the `disk` and `task` scopes, created by a user with permission to add a file to a Drive folder, edit the task, and read the file
+- the ID `folderId` of the Drive folder where you will upload the file. Retrieve it using [disk.storage.getChildren](../../api-reference/disk/storage/disk-storage-get-children.md) for a folder at the storage root or [disk.folder.getChildren](../../api-reference/disk/folder/disk-folder-get-children.md) for a nested folder. The examples use `1739`
+- the ID `taskId` of an existing task. Retrieve it using [tasks.task.list](../../api-reference/tasks/tasks-task-list.md). The examples use `3709`
+- the file to attach, located in the directory where the script runs. The source file name is `avatar.jpg`; its name on Drive, from `data.NAME`, is `ava555.jpg`
+- the file contents as a Base64 string without a `data:*/*;base64,` prefix. Pass `fileContent` as an array containing the file name and this string
+
+The webhook runs with the permissions of the user who created it. Its URL grants access to methods within its scopes: store it in server environment variables, not in browser code or a repository. For JS and PHP, set `B24_HOOK` to the full webhook URL. For Python, set `B24_DOMAIN` to the Bitrix24 domain and `B24_WEBHOOK_TOKEN` to a value in the form `USER_ID/TOKEN`.
+
+The JS example requires Node.js 22 or later and `@bitrix24/b24jssdk`. The code uses ES modules: save it in a `.mjs` file or add `"type": "module"` to `package.json`. The Python example requires Python 3.9 or later and `b24pysdk`. The PHP example requires PHP 8.4 or later and `bitrix24/b24phpsdk` version `^3.0`.
+
+Initialize the SDK before calling a method. Put the initialization code and the following snippets for your chosen language in the same script.
+
+{% include [Note on examples](../../_includes/examples.md) %}
+
+{% list tabs %}
+
+- JS
+
+    ```javascript
+    import { readFile } from 'node:fs/promises'
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    ```
+
+- PHP
+
+    ```php
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Monolog\Logger;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+
+    $log = new Logger('b24');
+    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook(getenv('B24_HOOK'));
+    ```
+
+- Python
+
+    ```python
+    import base64
+    import os
+    from pathlib import Path
+
+    from b24pysdk import BitrixWebhook, Client
+
+    token = BitrixWebhook(
+        domain=os.environ["B24_DOMAIN"],
+        webhook_token=os.environ["B24_WEBHOOK_TOKEN"],
+    )
+    client = Client(token)
+    ```
+
+{% endlist %}
 
 ## 1. Upload the File to Bitrix24 Drive
 
@@ -37,19 +101,15 @@ Use the [disk.folder.uploadFile](../../api-reference/disk/folder/disk-folder-upl
 
 Uploading the file to Drive is required because the `UF_TASK_WEBDAV_FILES` field in tasks accepts only Drive file IDs.
 
-{% include [Note on examples](../../_includes/examples.md) %}
-
 {% list tabs %}
 
 - JS
 
     ```javascript
-    import { B24Hook } from '@bitrix24/b24jssdk'
+    const fileName = 'avatar.jpg'
+    const fileBase64 = (await readFile(fileName)).toString('base64')
 
-    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
-    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
-
-    const response = await $b24.actions.v2.call.make({
+    const uploadResponse = await $b24.actions.v2.call.make({
         method: 'disk.folder.uploadFile',
         params: {
             id: 1739,
@@ -57,67 +117,60 @@ Uploading the file to Drive is required because the `UF_TASK_WEBDAV_FILES` field
                 NAME: 'ava555.jpg'
             },
             fileContent: [
-                'avatar.jpg',
-                '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAQDAwQDAwQEAwQ///+dAYq6YFKoAv/AFnAa6ArKv8AAtFJVppxCEAulxQ2DWgfMR//2Q=='
+                fileName,
+                fileBase64
             ]
         },
         requestId: 'disk-uploadfile'
     })
 
-    if (!response.isSuccess) {
-        throw new Error(response.getErrorMessages().join('; '))
+    if (!uploadResponse.isSuccess) {
+        throw new Error(uploadResponse.getErrorMessages().join('; '))
     }
 
-    const result = response.getData().result
+    const uploadedFile = uploadResponse.getData().result
+    ```
+
+- PHP
+
+    ```php
+    $fileName = 'avatar.jpg';
+    $fileBytes = file_get_contents($fileName);
+    if ($fileBytes === false) {
+        throw new RuntimeException('Could not read the file');
+    }
+    $fileBase64 = base64_encode($fileBytes);
+
+    $uploadedFile = $serviceBuilder->getDiskScope()->folder()->uploadFile(
+        1739,
+        ['NAME' => 'ava555.jpg'],
+        [
+            $fileName,
+            $fileBase64
+        ]
+    )->getFile();
+
+    echo '<PRE>';
+    print_r($uploadedFile);
+    echo '</PRE>';
     ```
 
 - Python
 
     ```python
-    from b24pysdk import BitrixWebhook, Client
+    file_name = "avatar.jpg"
+    file_base64 = base64.b64encode(Path(file_name).read_bytes()).decode("ascii")
 
-    token = BitrixWebhook(
-        domain="your-domain.bitrix24.com",
-        webhook_token="user_id/webhook_key",
-    )
-    client = Client(token)
-
-    result = client.disk.folder.uploadfile(
+    uploaded_file = client.disk.folder.uploadfile(
         bitrix_id=1739,
         data={
             "NAME": "ava555.jpg",
         },
         file_content=[
-            "avatar.jpg",
-            "/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAQDAwQDAwQEAwQ///+dAYq6YFKoAv/AFnAa6ArKv8AAtFJVppxCEAulxQ2DWgfMR//2Q==",
+            file_name,
+            file_base64,
         ],
     ).response.result
-    ```
-
-
-- PHP
-
-    ```php
-    require_once 'vendor/autoload.php';
-
-    use Bitrix24\SDK\Services\ServiceBuilderFactory;
-    use Symfony\Component\EventDispatcher\EventDispatcher;
-
-    $serviceBuilder = (new ServiceBuilderFactory(new EventDispatcher(), $log))
-        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
-
-    $result = $serviceBuilder->getDiskScope()->folder()->uploadFile(
-        1739,
-        ['NAME' => 'ava555.jpg'],
-        [
-            'avatar.jpg',
-            '/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAQDAwQDAwQEAwQ///+dAYq6YFKoAv/AFnAa6ArKv8AAtFJVppxCEAulxQ2DWgfMR//2Q=='
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result->getFile());
-    echo '</PRE>';
     ```
 {% endlist %}
 
@@ -146,53 +199,53 @@ If you pass `FILE_ID` instead of `ID` in a request that updates a File (Drive) f
 Use the [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) method with the following parameters:
 
 - `taskId` — the task ID. To get the ID, use the [tasks.task.list](../../api-reference/tasks/tasks-task-list.md) method
-- `fileId` — specify the file ID `6687` from the result of the previous method
+- `fileId` — pass the Drive object's `ID` from the previous method's response. In the example response, this is `6687`
 
 {% list tabs %}
 
 - JS
 
     ```javascript
-    const response = await $b24.actions.v2.call.make({
+    const attachResponse = await $b24.actions.v2.call.make({
         method: 'tasks.task.files.attach',
         params: {
             taskId: 3709,
-            fileId: 6687
+            fileId: Number(uploadedFile.ID)
         },
         requestId: 'task-files-attach'
     })
 
-    if (!response.isSuccess) {
-        throw new Error(response.getErrorMessages().join('; '))
+    if (!attachResponse.isSuccess) {
+        throw new Error(attachResponse.getErrorMessages().join('; '))
     }
 
-    const result = response.getData().result
+    const attachment = attachResponse.getData().result
+    ```
+
+- PHP
+
+    ```php
+    // This method has no typed wrapper, so call it through the SDK core
+    $attachment = $serviceBuilder->core->call(
+        'tasks.task.files.attach',
+        [
+            'taskId' => 3709,
+            'fileId' => $uploadedFile['ID']
+        ]
+    )->getResponseData()->getResult();
+
+    echo '<PRE>';
+    print_r($attachment);
+    echo '</PRE>';
     ```
 
 - Python
 
     ```python
-    result = client.tasks.task.files.attach(
+    attachment = client.tasks.task.files.attach(
         task_id=3709,
-        file_id=6687,
+        file_id=int(uploaded_file["ID"]),
     ).response.result
-    ```
-
-
-- PHP
-
-    ```php
-    $result = $serviceBuilder->core->call(
-        'tasks.task.files.attach',
-        [
-            'taskId' => 3709,
-            'fileId' => 6687
-        ]
-    )->getResponseData()->getResult();
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
     ```
 {% endlist %}
 
@@ -208,7 +261,7 @@ The response returns the link ID between the Drive file and the task: `423`. To 
 
 ## Check the Result
 
-Pass `attachmentId` from the response of the [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) method to the `id` parameter of the [disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md) method.
+Pass `attachmentId` from the [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) response to the `id` parameter of [disk.attachedObject.get](../../api-reference/disk/attached-object/disk-attached-object-get.md). The example response contains `423`; the code uses the ID of the current attachment.
 
 {% list tabs %}
 
@@ -218,7 +271,7 @@ Pass `attachmentId` from the response of the [tasks.task.files.attach](../../api
     const checkResponse = await $b24.actions.v2.call.make({
         method: 'disk.attachedObject.get',
         params: {
-            id: result.attachmentId
+            id: Number(attachment.attachmentId)
         },
         requestId: 'disk-attached-object-get'
     })
@@ -230,31 +283,32 @@ Pass `attachmentId` from the response of the [tasks.task.files.attach](../../api
     console.log(checkResponse.getData().result)
     ```
 
-- Python
-
-    ```python
-    file = token.call_method(
-        "disk.attachedObject.get",
-        {
-            "id": result["attachmentId"],
-        },
-    )["result"]
-
-    print(file)
-    ```
-
-
 - PHP
 
     ```php
+    // This method has no typed wrapper, so call it through the SDK core
     $file = $serviceBuilder->core->call(
         'disk.attachedObject.get',
         [
-            'id' => $result['attachmentId']
+            'id' => $attachment['attachmentId']
         ]
     )->getResponseData()->getResult();
 
     print_r($file);
+    ```
+
+- Python
+
+    ```python
+    # This method has no typed wrapper, so use a direct call
+    file = token.call_method(
+        "disk.attachedObject.get",
+        {
+            "id": attachment["attachmentId"],
+        },
+    )["result"]
+
+    print(file)
     ```
 {% endlist %}
 
@@ -265,6 +319,8 @@ The method returns the attached file data. The scenario is successful if:
 - `ENTITY_TYPE` equals `tasks_task`
 - `ENTITY_ID` equals the task identifier
 - `NAME` contains the attached file name
+
+Open the task in Bitrix24 and check that `ava555.jpg` appears among the attached files.
 
 ```json
 {
@@ -297,6 +353,10 @@ If the method returns an error, check the request data.
 |#
 
 Repeat the scenario from the step that returned the error. If the file has already been uploaded to Drive, do not upload it again: fix `taskId` or `fileId` and repeat only the [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md) call.
+
+## Things to Consider
+
+If the file is already on Drive, skip the upload and pass its `ID` to `fileId` in [tasks.task.files.attach](../../api-reference/tasks/tasks-task-files-attach.md). To use a different task, change `taskId`. In both cases, check that the webhook user has access to the file and task.
 
 ## Continue Learning
 

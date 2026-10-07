@@ -41,7 +41,13 @@ There can only be one backlog in Scrum; Bitrix24 creates it automatically.
 
 The [add backlog to Scrum](./tasks-api-scrum-backlog-add.md) method is useful only when importing data from another system, when you need to create a backlog after creating the Scrum.
 
+If the group already has a backlog, another call to `tasks.api.scrum.backlog.add` returns the `Backlog already added` error.
+
 Use the [delete backlog](./tasks-api-scrum-backlog-delete.md) method if you mistakenly added a backlog to a group or project that is not a scrum. If you delete the backlog in Scrum, Bitrix24 will automatically recreate it when opening the planning page.
+
+To retrieve a backlog, pass the Scrum ID to `tasks.api.scrum.backlog.get`. To update or delete it, use the backlog ID returned by that method.
+
+For request authorization, see [REST Authorization](../../../../settings/how-to-call-rest-api/authorization.md). For request rate limits, see [REST API Limits](../../../../settings/performance/limits.md).
 
 ## Overview of Methods {#all-methods}
 

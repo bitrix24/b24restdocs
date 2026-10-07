@@ -350,7 +350,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
-|| **item**
+|| **result.item**
 [`object`](../../data-types.md) | Field description in `result.item`. [Object properties](#item) depend on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||

@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `voximplant.line.get` returns a list of available outgoing lines.
 
+The response keys are `LINE_ID` values for [voximplant.line.outgoing.set](./voximplant-line-outgoing-set.md). The list may include SIP lines.
+
 ## Method Parameters
 
 No parameters.
@@ -200,17 +202,13 @@ No parameters.
     	return fmt.Errorf("voximplant.line.get: %w", err)
     }
 
-    var item struct {
-    	Reg150907 string `json:"reg150907"`
-    	Sip7      string `json:"sip7"`
-    	Reg151083 string `json:"reg151083"`
-    	Sip11     string `json:"sip11"`
-    	Reg151085 string `json:"reg151085"`
-    }
-    if err := json.Unmarshal(res.Result, &item); err != nil {
+    var lines map[string]string
+    if err := json.Unmarshal(res.Result, &lines); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Reg150907, item.Sip7)
+    for id, name := range lines {
+        fmt.Printf("%s: %s\n", id, name)
+    }
     ```
 
 {% endlist %}

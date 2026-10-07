@@ -261,8 +261,6 @@ The method skips a file identifier without the `n` prefix and a nonexistent file
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());

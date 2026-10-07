@@ -87,7 +87,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     // This snippet is an ES module: top-level await requires type="module" or a bundler.
     // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
     import { Text } from '@bitrix24/b24jssdk'
-    import type { B24Frame } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
@@ -98,10 +98,13 @@ The new API call differs by adding the `/api/` segment to the request URL:
         name: string
         position: number
         policyLevel: string
+        accessLevel: string
+        isArchived: boolean
+        markdownDescription: string | null
         createdBy: number
         updatedBy: number
-        createdAt: string
-        updatedAt: string
+        createdAt: ISODate
+        updatedAt: ISODate
       }
     }
 
@@ -347,29 +350,29 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with the result of knowledge base creation ||
-|| **item**
+|| **result.item**
 [`object`](../../data-types.md) | Created knowledge base object ||
-|| **item.id**
+|| **result.item.id**
 [`integer`](../../data-types.md) | Identifier of the created knowledge base ||
-|| **item.name**
+|| **result.item.name**
 [`string`](../../data-types.md) | Knowledge base name ||
-|| **item.position**
+|| **result.item.position**
 [`integer`](../../data-types.md) | Knowledge base position in the general list ||
-|| **item.policyLevel**
+|| **result.item.policyLevel**
 [`string`](../../data-types.md) | Knowledge base access policy code, such as `private` or `portal` ||
-|| **item.accessLevel**
+|| **result.item.accessLevel**
 [`string`](../../data-types.md) | Current user's access level code, such as `full` ||
-|| **item.isArchived**
+|| **result.item.isArchived**
 [`boolean`](../../data-types.md) | Indicates whether the knowledge base is archived ||
-|| **item.markdownDescription**
+|| **result.item.markdownDescription**
 [`string`](../../data-types.md) or `null` | Additional Markdown description. Can be `null` ||
-|| **item.createdBy**
+|| **result.item.createdBy**
 [`integer`](../../data-types.md) | Identifier of the knowledge base author ||
-|| **item.createdAt**
+|| **result.item.createdAt**
 [`datetime`](../../data-types.md) | Knowledge base creation date and time in ISO 8601 format with a timezone offset ||
-|| **item.updatedBy**
+|| **result.item.updatedBy**
 [`integer`](../../data-types.md) | Identifier of the last knowledge base editor ||
-|| **item.updatedAt**
+|| **result.item.updatedAt**
 [`datetime`](../../data-types.md) | Knowledge base last modification date and time in ISO 8601 format with a timezone offset ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||

@@ -25,7 +25,7 @@ The method `voximplant.line.outgoing.sip.set` sets the SIP line as the default o
 || **CONFIG_ID***
 [`integer`](../../../data-types.md) | Identifier of the SIP line configuration.
 
-You can obtain the identifier using the [voximplant.sip.get](../sip/voximplant-sip-get.md) method. ||
+You can obtain the ID using [voximplant.sip.get](../sip/voximplant-sip-get.md). A `LINE_ID` from [voximplant.line.get](./voximplant-line-get.md) cannot be used for this parameter ||
 |#
 
 ## Code Examples

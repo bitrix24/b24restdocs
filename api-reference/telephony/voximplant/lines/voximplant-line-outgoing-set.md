@@ -25,7 +25,9 @@ The method `voximplant.line.outgoing.set` sets the default outgoing line.
 || **LINE_ID***
 [`string`](../../../data-types.md) | Line identifier.
 
-Available identifiers can be retrieved using the [voximplant.line.get](./voximplant-line-get.md) method ||
+Available IDs can be retrieved using [voximplant.line.get](./voximplant-line-get.md). For a SIP line in this list, also pass its `LINE_ID`, such as `sip7`.
+
+You can also pass `LINK_BASE_NUMBER` or an available application line ID in the form `REST_APP:<APP_ID>` ||
 |#
 
 {% note info "" %}
