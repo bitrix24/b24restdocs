@@ -29,23 +29,17 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 
 ## Getting Started
 
-1. Create a knowledge base using the [note.collection.add](./collection/note-collection-add.md) method if you do not already have a container for documents
-2. Retrieve a list of available knowledge bases using the [note.collection.list](./collection/note-collection-list.md) method if you need to work with an existing structure
-3. Retrieve data for a single knowledge base using the [note.collection.get](./collection/note-collection-get.md) method if you need to open a selected knowledge base by its ID
-4. Retrieve knowledge base fields using the [note.collection.field.list](./collection/note-collection-field-list.md) and [note.collection.field.get](./collection/note-collection-field-get.md) methods if you are building a form or a table on your side
-5. Create a root document using the [note.document.add](./document/note-document-add.md) method
-6. Retrieve the document tree using the [note.document.tree.list](./document/note-document-tree-list.md) method if you need to display the page structure
-7. Read an individual document using the [note.document.get](./document/note-document-get.md) method or search for documents using the [note.document.search.list](./document/note-document-search-list.md) method
-8. Retrieve fields for documents, the tree, and search using methods `note.document.field.*`, `note.document.tree.field.*`, `note.document.search.field.*`
-9. Update a document heading and content using the [note.document.update](./document/note-document-update.md) method
-10. Upload images, videos, and standard files using the [note.file.add](./file/note-file-add.md) method
-11. Use the `assetMarkdown` from the [note.file.add](./file/note-file-add.md) response or retrieve it using the [note.file.get](./file/note-file-get.md) method, then add the attachment to a document via [note.document.update](./document/note-document-update.md)
-12. Retrieve file fields using the [note.file.field.list](./file/note-file-field-list.md) and [note.file.field.get](./file/note-file-field-get.md) methods if you are building your own form or table
-13. Archive or delete a knowledge base and documents using the corresponding methods when you need to finish working with the materials
+1. Create a knowledge base with [note.collection.add](./collection/note-collection-add.md), or choose an existing one with [note.collection.list](./collection/note-collection-list.md)
+2. Create a document with [note.document.add](./document/note-document-add.md). For a child page, pass the parent document's `parentId`
+3. Retrieve the structure with [note.document.tree.list](./document/note-document-tree-list.md), page content with [note.document.get](./document/note-document-get.md), and text matches with [note.document.search.list](./document/note-document-search-list.md)
+4. If needed, upload an attachment with [note.file.add](./file/note-file-add.md), add its `assetMarkdown` to the text, and save the document with [note.document.update](./document/note-document-update.md)
+5. To configure an integration, inspect knowledge base, document, and file fields with the `*.field.list` and `*.field.get` methods in the [methods table](#all-methods)
 
 
 ## Limitations and Recommendations
 
+- Archiving or deleting a knowledge base affects all documents in it. Deletion moves data to the trash; restoration is available through the interface
+- The `markdown` content must not exceed 1,048,576 bytes when creating or updating a document. Exceeding the limit returns `NOTE_MARKDOWN_TOO_LARGE`. Additional limits are described in the [document](./document/index.md) and [file](./file/index.md) overviews
 - Document archiving and deletion methods operate on the entire subtree rather than a single page. If a document has child pages, they will also be archived or moved to the shopping cart.
 - Access to view and edit Knowledge bases, documents, and files depends on the current user's permissions. The same scenario may be available to some employees and unavailable to others.
 
@@ -58,9 +52,9 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 
 ## Connection with Other Objects
 
-**Documents.** The Knowledge base is populated with documents. You can first create a root page and then add child pages to it to build a tree of materials organized by topic. To do this, specify the Knowledge base where the document should appear when creating a document, and for nested pages, additionally provide the parent document.
+**Documents.** The `collectionId` field links a document to a [knowledge base](./collection/index.md), and `parentId` links it to a parent page. The tree model and main fields are described in the [document overview](./document/index.md).
 
-**Files.** Files are added to a specific document rather than the entire Knowledge base. First, upload a file using the [note.file.add](./file/note-file-add.md) method, then retrieve the `assetMarkdown` from the method response or obtain it using the [note.file.get](./file/note-file-get.md) method. After that, update the document content using the [note.document.update](./document/note-document-update.md) method so that the attachment appears in the page text.
+**Files.** Attachments are linked to a document through `documentId` and represented by special blocks in its Markdown. Attachment types and upload limits are described in the [file overview](./file/index.md).
 
 
 ## Overview of Methods {#all-methods}

@@ -251,13 +251,13 @@ HTTP status: **200**
         "result": true
     },
     "time": {
-        "start": 1780391400,
-        "finish": 1780391400.229114,
-        "duration": 0.22911405563354492,
-        "processing": 0.1881120204925537,
-        "date_start": "2026-06-16T12:10:00+03:00",
-        "date_finish": "2026-06-16T12:10:00+03:00",
-        "operating_reset_at": 1780392000,
+        "start": 1791206032,
+        "finish": 1791206032.719176,
+        "duration": 0.7191760540008545,
+        "processing": 0,
+        "date_start": "2026-10-05T16:13:52+03:00",
+        "date_finish": "2026-10-05T16:13:52+03:00",
+        "operating_reset_at": 1791206632,
         "operating": 0
     }
 }
@@ -270,7 +270,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with the document archiving result ||
-|| **result**
+|| **result.result**
 [`boolean`](../../data-types.md) | `true` value if the document was successfully archived ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -315,7 +315,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Access denied | The user does not have access to the Knowledge Base module or permissions to edit the document ||
+|| `-` | Access denied | The user does not have access to the Knowledge Base module or permission to manage the knowledge base that contains the document ||
 |#
 
 #### Object Not Found Error

@@ -37,12 +37,17 @@ Available fields:
 - `name` — knowledge base name
 - `position` — knowledge base position
 - `policyLevel` — base access policy
+- `accessLevel` — current user's access level
+- `isArchived` — archive flag
+- `markdownDescription` — additional Markdown description
 - `createdBy` — knowledge base author identifier
 - `createdAt` — creation date and time
 - `updatedBy` — last editor identifier
 - `updatedAt` — last modification date and time ||
 || **select**
-[`array`](../../data-types.md) | A list of description fields to be returned in the response.
+[`array`](../../data-types.md) | An array of description property names to return in the response.
+
+By default, all description properties are returned. An empty array `[]` also returns all properties. `["*"]` is not supported.
 
 Available fields:
 
@@ -55,6 +60,7 @@ Available fields:
 - `filterable` — filter availability flag
 - `sortable` — sorting availability flag
 - `editable` — editability flag
+- `editableGroups` — groups of operations in which the field is editable
 - `multiple` — multiple value flag
 - `elementType` — item type for composite fields ||
 |#
@@ -325,13 +331,13 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1780801500,
-        "finish": 1780801500.083114,
-        "duration": 0.0831139087677002,
+        "start": 1791205952,
+        "finish": 1791205952.768685,
+        "duration": 0.7686851024627686,
         "processing": 0,
-        "date_start": "2026-06-22T09:05:00+03:00",
-        "date_finish": "2026-06-22T09:05:00+03:00",
-        "operating_reset_at": 1780802100,
+        "date_start": "2026-10-05T16:12:32+03:00",
+        "date_finish": "2026-10-05T16:12:32+03:00",
+        "operating_reset_at": 1791206552,
         "operating": 0
     }
 }
@@ -345,9 +351,42 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
 || **item**
-[`object`](../../data-types.md) | Object with field description. The response structure depends on `select` ||
+[`object`](../../data-types.md) | Field description in `result.item`. [Object properties](#item) depend on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Item Object {#item}
+
+The description depends on `select`. The table lists all properties that can be requested.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name**
+[`string`](../../data-types.md) | Field name: `id`, `name`, `position`, `policyLevel`, `accessLevel`, `isArchived`, `createdBy`, `createdAt`, `updatedBy`, `updatedAt`, `markdownDescription` ||
+|| **type**
+[`string`](../../data-types.md) | Metadata type: `int`, `string`, `bool`, `object`. Date fields return `object`, although method responses contain ISO 8601 strings ||
+|| **title**
+[`string`](../../data-types.md) | Field title. Matches `name` ||
+|| **description**
+[`string`](../../data-types.md) or `null` | Field description. `null` for these fields ||
+|| **validationRules**
+[`array`](../../data-types.md) | Array of validation rule objects. For `name`, two objects `[{}, {}]` are returned; for other fields, `[]`. Rule parameters are not serialized. Name constraints are described in [note.collection.add](./note-collection-add.md) ||
+|| **requiredGroups**
+[`array`](../../data-types.md) or `null` | Array of operation names for which the field is required. For `name`, `["add", "update"]`; for other fields, `null` ||
+|| **filterable**
+[`boolean`](../../data-types.md) | `true` if filtering is supported; `false` otherwise. For all fields, `false` ||
+|| **sortable**
+[`boolean`](../../data-types.md) | `true` if sorting is supported; `false` otherwise. `false` for all fields ||
+|| **editable**
+[`boolean`](../../data-types.md) | `true` if the field can be passed in operations from `editableGroups`; `false` otherwise. Does not replace a user permission check ||
+|| **editableGroups**
+[`array`](../../data-types.md) or `null` | Array of operation names in which the field can be set. For `name`, `["add", "update"]`; for `position`, `["add"]`; for other fields, `null` ||
+|| **multiple**
+[`boolean`](../../data-types.md) | `true` for multiple values; `false` for a single value. For all fields, `false` ||
+|| **elementType**
+[`string`](../../data-types.md) or `null` | Type of an element in a composite field. For all fields, `null` ||
 |#
 
 ## Error Handling
@@ -386,6 +425,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 Error Code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`
 
+HTTP status: **404**.
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `name` | Field `#FIELD#` not found | Specify an existing field name ||
@@ -406,7 +447,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
+|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`

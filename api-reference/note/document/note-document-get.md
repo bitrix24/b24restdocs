@@ -21,6 +21,8 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `note.document.get` method returns a single document with its content in Markdown.
 
+An archived document or a document in the trash may remain readable. Check `isArchived` and `isTrashed` to determine its state.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -275,14 +277,16 @@ HTTP status: **200**
             "collectionId": 123,
             "parentId": 10,
             "title": "Chapter 1",
-            "markdown": "
-
-# Chapter 1\N\nText in Markdown...",
+            "markdown": "# Chapter 1\n\nText in Markdown...",
             "position": 5,
             "createdBy": 1,
             "updatedBy": 1,
             "createdAt": "2026-04-20T12:00:00Z",
-            "updatedAt": "2026-04-21T09:15:30Z"
+            "updatedAt": "2026-04-21T09:15:30Z",
+            "contentUpdatedAt": "2026-04-21T09:15:30Z",
+            "isArchived": false,
+            "isTrashed": false,
+            "isOrphan": false
         }
     },
     "time": {
@@ -307,26 +311,34 @@ HTTP status: **200**
 [`object`](../../data-types.md) | Object with document data ||
 || **item**
 [`object`](../../data-types.md) | Document object ||
-|| **id**
+|| **item.id**
 [`integer`](../../data-types.md) | Document identifier ||
-|| **collectionId**
-[`integer`](../../data-types.md) | Identifier of the knowledge base or `null`, if the document is available via direct access to the document ||
-|| **parentId**
-[`integer`](../../data-types.md) | Identifier of the parent document or `null` ||
-|| **title**
+|| **item.collectionId**
+[`integer`](../../data-types.md) | Knowledge base identifier or `null` if the document is available through direct access ||
+|| **item.parentId**
+[`integer`](../../data-types.md) | Parent document identifier or `null` ||
+|| **item.title**
 [`string`](../../data-types.md) | Document title ||
-|| **markdown**
+|| **item.markdown**
 [`string`](../../data-types.md) | Document content in Markdown ||
-|| **position**
-[`integer`](../../data-types.md) | Position of the document among neighboring pages ||
-|| **createdBy**
-[`integer`](../../data-types.md) | Identifier of the document author ||
-|| **updatedBy**
+|| **item.position**
+[`integer`](../../data-types.md) | Document position among neighboring pages ||
+|| **item.createdBy**
+[`integer`](../../data-types.md) | Document author identifier ||
+|| **item.updatedBy**
 [`integer`](../../data-types.md) | Identifier of the last document editor ||
-|| **createdAt**
-[`datetime`](../../data-types.md) | Document creation date and time in UTC ||
-|| **updatedAt**
-[`datetime`](../../data-types.md) | Document last modified date and time in UTC ||
+|| **item.createdAt**
+[`datetime`](../../data-types.md) | Document creation date and time in ISO 8601 format with a timezone offset ||
+|| **item.updatedAt**
+[`datetime`](../../data-types.md) | Last document modification date and time in ISO 8601 format with a timezone offset ||
+|| **item.contentUpdatedAt**
+[`datetime`](../../data-types.md) | Content modification date and time in ISO 8601 format with a timezone offset ||
+|| **item.isArchived**
+[`boolean`](../../data-types.md) | Indicates whether the document is archived ||
+|| **item.isTrashed**
+[`boolean`](../../data-types.md) | Indicates whether the document is in the trash ||
+|| **item.isOrphan**
+[`boolean`](../../data-types.md) | Indicates that no knowledge base is associated with the document ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -379,7 +391,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Document not found | Please check that the document exists, is not archived, is not in the trash, and is accessible to the user ||
+|| `id` | Document not found | Check that the document exists and is accessible to the user ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

@@ -174,11 +174,7 @@ You can get a list of all available codes using the method [`crm.timeline.icon.l
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        echo 'Success: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -286,7 +282,7 @@ HTTP status: **200**
 
 The `result` field contains an [object with icon data](#result) ||
 || **time**
-[`time`](../../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### result Object {#result}

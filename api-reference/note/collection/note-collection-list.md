@@ -42,9 +42,13 @@ The `note.collection.list` method returns a list of Knowledge bases available to
 
 Allowed values: from `1` to `200`
 
-Default: `50` ||
+Default: `50`.
+
+The value is converted to an integer. Values above `200` are reduced to `200`; zero, negative, or nonnumeric values are replaced with `50` without a validation error ||
 || **afterCursor**
-[`object`](../../data-types.md) | Next page cursor. Pass the `nextCursor` value from the previous response. [Object structure description](#aftercursor) ||
+[`object`](../../data-types.md) | Next page cursor. Pass `result.nextCursor` from the previous response. [Object structure description](#aftercursor).
+
+Default: first page. If the cursor does not contain both `position` and `id`, or is not an object, it is ignored without a validation error ||
 |#
 
 ### Parameter afterCursor {#aftercursor}
@@ -61,6 +65,8 @@ Required if `afterCursor` is specified ||
 
 Required if `afterCursor` is specified ||
 |#
+
+Cursor fields are converted to integers. To avoid restarting pagination or skipping records, pass the cursor from the response unchanged. Keep the same `pagination.limit` in the next request. Stop when `result.nextCursor = null`.
 
 ## Code Examples
 
@@ -328,31 +334,44 @@ HTTP status: **200**
 ```json
 {
     "result": {
+        "nextCursor": null,
         "items": [
             {
-                "id": 1,
-                "name": "Product documentation",
+                "id": 9,
+                "name": "Knowledge Base 1",
                 "position": 100,
-                "policyLevel": "view",
+                "policyLevel": "private",
+                "accessLevel": "full",
+                "isArchived": false,
                 "createdBy": 1,
+                "createdAt": "2026-06-23T22:01:03+03:00",
                 "updatedBy": 1,
-                "createdAt": "2026-04-20T12:00:00Z",
-                "updatedAt": "2026-04-21T09:15:30Z"
+                "updatedAt": "2026-06-23T22:05:39+03:00",
+                "markdownDescription": null
+            },
+            {
+                "id": 7,
+                "name": "Knowledge Base 2",
+                "position": 100,
+                "policyLevel": "private",
+                "accessLevel": "full",
+                "isArchived": false,
+                "createdBy": 1,
+                "createdAt": "2026-06-22T12:16:33+03:00",
+                "updatedBy": 1,
+                "updatedAt": "2026-06-22T12:16:33+03:00",
+                "markdownDescription": null
             }
-        ],
-        "nextCursor": {
-            "position": 100,
-            "id": 1
-        }
+        ]
     },
     "time": {
-        "start": 1780639200,
-        "finish": 1780639200.224321,
-        "duration": 0.2243211269378662,
-        "processing": 0.18721413612365723,
-        "date_start": "2026-06-19T10:00:00+03:00",
-        "date_finish": "2026-06-19T10:00:00+03:00",
-        "operating_reset_at": 1780639800,
+        "start": 1791206039,
+        "finish": 1791206039.885758,
+        "duration": 0.8857579231262207,
+        "processing": 0,
+        "date_start": "2026-10-05T16:13:59+03:00",
+        "date_finish": "2026-10-05T16:13:59+03:00",
+        "operating_reset_at": 1791206639,
         "operating": 0
     }
 }
@@ -364,36 +383,37 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Object containing a list of knowledge bases ||
-|| **items**
-[`array`](../../data-types.md) | List of knowledge bases available to the user ||
-|| **items[]**
-[`object`](../../data-types.md) | Knowledge base object ||
-|| **id**
+[`object`](../../data-types.md) | Object containing a list of knowledge bases and a cursor ||
+|| **result.items**
+[`array`](../../data-types.md) | Array of knowledge base objects available to the user ||
+|| **result.items[].id**
 [`integer`](../../data-types.md) | Knowledge base identifier ||
-|| **name**
+|| **result.items[].name**
 [`string`](../../data-types.md) | Knowledge base name ||
-|| **position**
-[`integer`](../../data-types.md) | Position of the knowledge base in the overall list ||
-|| **policyLevel**
-[`string`](../../data-types.md) | Base access policy of the knowledge base.
-
-Possible values:
-
-- `none` — no access
-- `view` — view
-- `manage` — edit
-- `moderate` — administration ||
-|| **createdBy**
+|| **result.items[].position**
+[`integer`](../../data-types.md) | Position of the knowledge base in the list ||
+|| **result.items[].policyLevel**
+[`string`](../../data-types.md) | Knowledge base access policy code, such as `private` or `portal`. The current user's access level is returned separately in `accessLevel` ||
+|| **result.items[].accessLevel**
+[`string`](../../data-types.md) | Current user's access level code for the knowledge base. `full` in the example ||
+|| **result.items[].isArchived**
+[`boolean`](../../data-types.md) | `true` if the knowledge base is archived; `false` otherwise ||
+|| **result.items[].createdBy**
 [`integer`](../../data-types.md) | Knowledge base author identifier ||
-|| **updatedBy**
+|| **result.items[].updatedBy**
 [`integer`](../../data-types.md) | Last knowledge base editor identifier ||
-|| **createdAt**
-[`datetime`](../../data-types.md) | Knowledge base creation date and time in UTC ||
-|| **updatedAt**
-[`datetime`](../../data-types.md) | Knowledge base last modified date and time in UTC ||
-|| **nextCursor**
-[`object`](../../data-types.md) | Next page cursor or `null` if there are no more pages ||
+|| **result.items[].createdAt**
+[`datetime`](../../data-types.md) or `null` | Creation date and time in ISO 8601 format with a timezone offset ||
+|| **result.items[].updatedAt**
+[`datetime`](../../data-types.md) or `null` | Last modification date and time in ISO 8601 format with a timezone offset ||
+|| **result.items[].markdownDescription**
+[`string`](../../data-types.md) or `null` | Additional Markdown description. `null` in the example ||
+|| **result.nextCursor**
+[`object`](../../data-types.md) or `null` | Cursor for the next page. `null` means there are no more pages ||
+|| **result.nextCursor.position**
+[`integer`](../../data-types.md) | Position of the last knowledge base on the page. Present when `nextCursor` is not `null` ||
+|| **result.nextCursor.id**
+[`integer`](../../data-types.md) | Identifier of the last knowledge base on the page. Present when `nextCursor` is not `null` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -414,6 +434,8 @@ HTTP status: **403**
 {% include notitle [Error handling](../../../_includes/error-info-v3.md) %}
 
 ### Possible Error Codes
+
+Out-of-range `pagination.limit` values and an incomplete `pagination.afterCursor` do not cause validation errors: the values are normalized as described in [Method Parameters](#method-parameters).
 
 #### Access Errors
 

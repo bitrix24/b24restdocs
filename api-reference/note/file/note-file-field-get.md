@@ -41,7 +41,9 @@ Available fields:
 - `assetType` — attachment type for Markdown
 - `assetMarkdown` — ready-to-use Markdown block for insertion into the document ||
 || **select**
-[`array`](../../data-types.md) | A list of description fields to be returned in the response.
+[`array`](../../data-types.md) | An array of description property names to return in the response.
+
+By default, all description properties are returned. An empty array `[]` also returns all properties. Specify property names explicitly; `["*"]` is not supported.
 
 Available fields:
 
@@ -54,6 +56,7 @@ Available fields:
 - `filterable` — filter availability flag
 - `sortable` — sorting availability flag
 - `editable` — editability flag
+- `editableGroups` — groups of operations in which the field is editable
 - `multiple` — multiple value flag
 - `elementType` — item type for composite fields ||
 |#
@@ -324,13 +327,13 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1780803900,
-        "finish": 1780803900.080512,
+        "start": 1782110700,
+        "finish": 1782110700.080512,
         "duration": 0.08051204681396484,
         "processing": 0,
         "date_start": "2026-06-22T09:45:00+03:00",
         "date_finish": "2026-06-22T09:45:00+03:00",
-        "operating_reset_at": 1780804500,
+        "operating_reset_at": 1782111300,
         "operating": 0
     }
 }
@@ -344,9 +347,42 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
 || **item**
-[`object`](../../data-types.md) | Object with field description. The response structure depends on `select` ||
+[`object`](../../data-types.md) | Field description in `result.item`. [Object properties](#item) depend on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Item Object {#item}
+
+The object's properties depend on `select`: only selected properties are returned. The table describes all available properties.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name**
+[`string`](../../data-types.md) | Field name: `id`, `documentId`, `name`, `size`, `mimeType`, `assetType`, or `assetMarkdown` ||
+|| **type**
+[`string`](../../data-types.md) | Metadata type: `int` for `id`, `documentId`, and `size`; `string` for other fields ||
+|| **title**
+[`string`](../../data-types.md) | Field title. Matches `name` ||
+|| **description**
+[`string`](../../data-types.md) or `null` | Field description. `null` for file fields ||
+|| **validationRules**
+[`array`](../../data-types.md) | Array of validation rule objects. Returns `[]` for file fields. Upload constraints are checked separately by [note.file.add](./note-file-add.md#parameters) ||
+|| **requiredGroups**
+[`array`](../../data-types.md) or `null` | Array of operation names for which the field is required. For file fields, `null`. This does not describe required parameters of the upload method ||
+|| **filterable**
+[`boolean`](../../data-types.md) | `true` if filtering is supported; `false` otherwise. For all file fields, `false` ||
+|| **sortable**
+[`boolean`](../../data-types.md) | `true` if sorting is supported; `false` otherwise. `false` for all fields ||
+|| **editable**
+[`boolean`](../../data-types.md) | Metadata editability flag. `false` for all file fields. Does not determine user permissions ||
+|| **editableGroups**
+[`array`](../../data-types.md) or `null` | Array of operation names in which the field can be set. For all file fields, `null` ||
+|| **multiple**
+[`boolean`](../../data-types.md) | `true` for multiple values; `false` for a single value. For all file fields, `false` ||
+|| **elementType**
+[`string`](../../data-types.md) or `null` | Type of an element in a composite field. For all file fields, `null` because file fields are scalar ||
 |#
 
 ## Error Handling
@@ -385,6 +421,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 Error Code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`
 
+HTTP status: **404**.
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `name` | Field `#FIELD#` not found | Specify an existing field name ||
@@ -397,6 +435,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `name` | Required field `name` is not specified | Pass the `name` parameter with an existing field name ||
+|| `name` | The `name` field must be a `string` for this request | Pass the field name as a string, for example, `"assetMarkdown"` ||
 |#
 
 #### Errors in the `select` Parameter
@@ -405,7 +444,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
+|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`

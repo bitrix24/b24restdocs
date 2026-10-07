@@ -29,7 +29,9 @@ The `note.document.search.field.list` method returns a list of available fields 
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | List of description fields that must be returned in the response.
+[`array`](../../data-types.md) | An array of description property names to return in the response.
+
+By default, all description properties are returned. An empty array `[]` also returns all properties. `["*"]` is not supported.
 
 Available fields:
 
@@ -42,6 +44,7 @@ Available fields:
 - `filterable` — filter availability flag
 - `sortable` — sorting availability flag
 - `editable` — editability flag
+- `editableGroups` — groups of operations in which the field is editable
 - `multiple` — multiple value flag
 - `elementType` — item type for composite fields ||
 |#
@@ -330,7 +333,14 @@ HTTP status: **200**
                 "name": "collectionId",
                 "type": "int",
                 "title": "collectionId",
-                "filterable": false,
+                "filterable": true,
+                "sortable": false
+            },
+            {
+                "name": "query",
+                "type": "string",
+                "title": "query",
+                "filterable": true,
                 "sortable": false
             },
             {
@@ -364,13 +374,13 @@ HTTP status: **200**
         ]
     },
     "time": {
-        "start": 1780803000,
-        "finish": 1780803000.108772,
-        "duration": 0.10877203941345215,
+        "start": 1791205965,
+        "finish": 1791205965.700521,
+        "duration": 0.7005209922790527,
         "processing": 0,
-        "date_start": "2026-06-22T09:30:00+03:00",
-        "date_finish": "2026-06-22T09:30:00+03:00",
-        "operating_reset_at": 1780803600,
+        "date_start": "2026-10-05T16:12:45+03:00",
+        "date_finish": "2026-10-05T16:12:45+03:00",
+        "operating_reset_at": 1791206565,
         "operating": 0
     }
 }
@@ -384,9 +394,42 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
 || **items**
-[`array`](../../data-types.md) | Array of objects describing the fields. The response structure depends on `select` ||
+[`array`](../../data-types.md) | Field descriptions in `result.items`. [Properties of each element](#items) depend on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Items Array Element {#items}
+
+The description depends on `select`. The table lists all properties that can be requested.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name**
+[`string`](../../data-types.md) | Field name: `documentId`, `collectionId`, `query`, `title`, `score`, `snippet`, `sharedAccess` ||
+|| **type**
+[`string`](../../data-types.md) | Metadata type: `int`, `string`, `float`, `bool` ||
+|| **title**
+[`string`](../../data-types.md) | Field title. Matches `name` ||
+|| **description**
+[`string`](../../data-types.md) or `null` | Field description. `null` for these fields ||
+|| **validationRules**
+[`array`](../../data-types.md) | Array of validation rule objects. Returns `[]` for all fields ||
+|| **requiredGroups**
+[`array`](../../data-types.md) or `null` | Array of operation names for which the field is required. For all fields, `null` ||
+|| **filterable**
+[`boolean`](../../data-types.md) | `true` if filtering is supported; `false` otherwise. For `collectionId` and `query`, `true`; for other fields, `false` ||
+|| **sortable**
+[`boolean`](../../data-types.md) | `true` if sorting is supported; `false` otherwise. `false` for all fields ||
+|| **editable**
+[`boolean`](../../data-types.md) | `true` if the field can be passed in operations from `editableGroups`; `false` otherwise. Does not replace a user permission check ||
+|| **editableGroups**
+[`array`](../../data-types.md) or `null` | Array of operation names in which the field can be set. For all fields, `null` ||
+|| **multiple**
+[`boolean`](../../data-types.md) | `true` for multiple values; `false` for a single value. For all fields, `false` ||
+|| **elementType**
+[`string`](../../data-types.md) or `null` | Type of an element in a composite field. For all fields, `null` ||
 |#
 
 ## Error Handling
@@ -421,7 +464,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
+|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`

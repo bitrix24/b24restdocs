@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `note.file.field.list` method returns a list of available fields for the document file.
+The `note.file.field.list` method returns descriptions of all document file fields in one call, without pagination.
 
 ## Method Parameters
 
@@ -29,7 +29,9 @@ The `note.file.field.list` method returns a list of available fields for the doc
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | List of description fields that must be returned in the response.
+[`array`](../../data-types.md) | An array of description property names to return in the response.
+
+By default, all description properties are returned. An empty array `[]` also returns all properties. Specify property names explicitly; `["*"]` is not supported.
 
 Available fields:
 
@@ -42,6 +44,7 @@ Available fields:
 - `filterable` — filter availability flag
 - `sortable` — sorting availability flag
 - `editable` — editability flag
+- `editableGroups` — groups of operations in which the field is editable
 - `multiple` — multiple value flag
 - `elementType` — item type for composite fields ||
 |#
@@ -371,13 +374,13 @@ HTTP status: **200**
         ]
     },
     "time": {
-        "start": 1780803600,
-        "finish": 1780803600.111144,
+        "start": 1782110400,
+        "finish": 1782110400.111144,
         "duration": 0.1111440658569336,
         "processing": 0,
         "date_start": "2026-06-22T09:40:00+03:00",
         "date_finish": "2026-06-22T09:40:00+03:00",
-        "operating_reset_at": 1780804200,
+        "operating_reset_at": 1782111000,
         "operating": 0
     }
 }
@@ -391,9 +394,42 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
 || **items**
-[`array`](../../data-types.md) | Array of objects describing the fields. The response structure depends on `select` ||
+[`array`](../../data-types.md) | Field descriptions in `result.items`. [Properties of each element](#items) depend on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Items Array Element {#items}
+
+The object's properties depend on `select`: only selected properties are returned. The table describes all available properties.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name**
+[`string`](../../data-types.md) | Field name: `id`, `documentId`, `name`, `size`, `mimeType`, `assetType`, or `assetMarkdown` ||
+|| **type**
+[`string`](../../data-types.md) | Metadata type: `int` for `id`, `documentId`, and `size`; `string` for other fields ||
+|| **title**
+[`string`](../../data-types.md) | Field title. Matches `name` ||
+|| **description**
+[`string`](../../data-types.md) or `null` | Field description. `null` for file fields ||
+|| **validationRules**
+[`array`](../../data-types.md) | Array of validation rule objects. Returns `[]` for file fields. Upload constraints are checked separately by [note.file.add](./note-file-add.md#parameters) ||
+|| **requiredGroups**
+[`array`](../../data-types.md) or `null` | Array of operation names for which the field is required. For file fields, `null`. This does not describe required parameters of the upload method ||
+|| **filterable**
+[`boolean`](../../data-types.md) | `true` if filtering is supported; `false` otherwise. For all file fields, `false` ||
+|| **sortable**
+[`boolean`](../../data-types.md) | `true` if sorting is supported; `false` otherwise. `false` for all fields ||
+|| **editable**
+[`boolean`](../../data-types.md) | Metadata editability flag. `false` for all file fields. Does not determine user permissions ||
+|| **editableGroups**
+[`array`](../../data-types.md) or `null` | Array of operation names in which the field can be set. For all file fields, `null` ||
+|| **multiple**
+[`boolean`](../../data-types.md) | `true` for multiple values; `false` for a single value. For all file fields, `false` ||
+|| **elementType**
+[`string`](../../data-types.md) or `null` | Type of an element in a composite field. For all file fields, `null` because file fields are scalar ||
 |#
 
 ## Error Handling
@@ -428,7 +464,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
+|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`

@@ -270,7 +270,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with the knowledge base archiving result ||
-|| **result**
+|| **result.result**
 [`boolean`](../../data-types.md) | Value of `true` if the knowledge base was successfully archived ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||

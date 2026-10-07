@@ -38,7 +38,7 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 
 - When creating a nested page, the parent document must belong to the same knowledge base. You cannot create a child page in one knowledge base and link it to a document from another
 - The size of the `markdown` content is limited to `1 048 576` bytes. If a document becomes too large, the text must be shortened or split into multiple pages
-- You can insert an `assetMarkdown` block for an image or video into `markdown` with `width` and `align` parameters to set the attachment scale and alignment. These parameters do not apply to regular files
+- You can insert the `assetMarkdown` block returned by [note.file.add](../file/note-file-add.md) into `markdown`, for example, `[[image fileId=5001]]`. For images and videos, `width` and `align` are available; their format is described in [note.document.update](./note-document-update.md). These parameters do not apply to regular files
 - If a document has unsaved changes from the collaborative editor, an update to `markdown` may result in a conflict. In such cases, you must repeat the request with `overwrite=true` if the content truly needs to be overwritten
 - Archiving a document also affects all its child pages. This is useful for archiving an entire section rather than a single page
 - Deleting a document also works cascadingly and moves the entire subtree of pages to the shopping cart. Before deleting, consider whether the page has nested materials
@@ -52,9 +52,9 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 
 ## Connection with Other Objects
 
-**Knowledge Bases.** A document does not exist independently of a knowledge base. First, a knowledge base is created, and then pages are added to it. Therefore, working with documents usually begins after creating a knowledge base in the [Knowledge Bases](../collection/index.md) section.
+**Knowledge Bases.** When created, a document is linked to a [knowledge base](../collection/index.md) through `collectionId`.
 
-**Files.** Files are not added to the Knowledge base as a whole, but to a specific page. First, a file is uploaded using the [note.file.add](../file/note-file-add.md) method, then the `assetMarkdown` is retrieved from the method response or obtained using the [note.file.get](../file/note-file-get.md) method. After that, the page content is updated using the [note.document.update](./note-document-update.md) method so that the attachment appears within the document text.
+**Files.** Attachments are linked to a specific document. The upload and insertion steps are described in the [file methods overview](../file/index.md).
 
 
 ## Overview of Methods {#all-methods}

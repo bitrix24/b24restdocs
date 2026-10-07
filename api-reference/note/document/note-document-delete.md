@@ -257,13 +257,13 @@ HTTP status: **200**
         "result": true
     },
     "time": {
-        "start": 1780391700,
-        "finish": 1780391700.241204,
-        "duration": 0.24120402336120605,
-        "processing": 0.19732117652893066,
-        "date_start": "2026-06-16T12:15:00+03:00",
-        "date_finish": "2026-06-16T12:15:00+03:00",
-        "operating_reset_at": 1780392300,
+        "start": 1791206034,
+        "finish": 1791206034.560464,
+        "duration": 0.5604639053344727,
+        "processing": 0,
+        "date_start": "2026-10-05T16:13:54+03:00",
+        "date_finish": "2026-10-05T16:13:54+03:00",
+        "operating_reset_at": 1791206634,
         "operating": 0
     }
 }
@@ -276,7 +276,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with the document deletion result ||
-|| **result**
+|| **result.result**
 [`boolean`](../../data-types.md) | Value of `true` if the document was successfully moved to the trash ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -293,8 +293,10 @@ HTTP status: **400**
         "message": "Error validating request object",
         "validation": [
             {
-                "message": "Mandatory field `id` is missing",
-                "field": "id"
+                "message": "At least one required field must be set: id, filter"
+            },
+            {
+                "message": "Only one of the following values must be passed: id, filter"
             }
         ]
     }
@@ -311,7 +313,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Required field `id` is not specified | Add `id` to the request body ||
+|| `id` | At least one required field must be set: id, filter | Pass a positive document identifier in `id`. For an empty request or `id=0`, the `validation` array may also contain the message `Only one of the following values must be passed: id, filter` ||
 || `id` | Field `id` requires data type `#TYPE#` for this request | Ensure the provided value is of the correct type ||
 |#
 
@@ -321,7 +323,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Access denied | The user does not have access to the Knowledge Base module or permissions to edit the document ||
+|| `-` | Access denied | The user does not have access to the Knowledge Base module or permission to manage the knowledge base that contains the document ||
 |#
 
 #### Object Not Found Error

@@ -363,7 +363,11 @@ HTTP status: **200**
             "createdBy": 1,
             "updatedBy": 1,
             "createdAt": "2026-04-20T12:00:00Z",
-            "updatedAt": "2026-04-21T09:15:30Z"
+            "updatedAt": "2026-04-21T09:15:30Z",
+            "contentUpdatedAt": "2026-04-21T09:15:30Z",
+            "isArchived": false,
+            "isTrashed": false,
+            "isOrphan": false
         }
     },
     "time": {
@@ -388,26 +392,34 @@ HTTP status: **200**
 [`object`](../../data-types.md) | Object with the document update result ||
 || **item**
 [`object`](../../data-types.md) | Document object after the update ||
-|| **id**
+|| **item.id**
 [`integer`](../../data-types.md) | Document identifier ||
-|| **collectionId**
-[`integer`](../../data-types.md) | Knowledge base identifier or `null` if the document is available via direct document access ||
-|| **parentId**
+|| **item.collectionId**
+[`integer`](../../data-types.md) | Knowledge base identifier or `null` if the document is available through direct access ||
+|| **item.parentId**
 [`integer`](../../data-types.md) | Parent document identifier or `null` ||
-|| **title**
+|| **item.title**
 [`string`](../../data-types.md) | Document title ||
-|| **markdown**
+|| **item.markdown**
 [`string`](../../data-types.md) | Document content in Markdown ||
-|| **position**
+|| **item.position**
 [`integer`](../../data-types.md) | Document position among neighboring pages ||
-|| **createdBy**
-[`integer`](../../data-types.md) | Identifier of the document author ||
-|| **updatedBy**
+|| **item.createdBy**
+[`integer`](../../data-types.md) | Document author identifier ||
+|| **item.updatedBy**
 [`integer`](../../data-types.md) | Identifier of the last document editor ||
-|| **createdAt**
-[`datetime`](../../data-types.md) | Document creation date and time in UTC ||
-|| **updatedAt**
-[`datetime`](../../data-types.md) | Document last modified date and time in UTC ||
+|| **item.createdAt**
+[`datetime`](../../data-types.md) | Document creation date and time in ISO 8601 format with a timezone offset ||
+|| **item.updatedAt**
+[`datetime`](../../data-types.md) | Last document modification date and time in ISO 8601 format with a timezone offset ||
+|| **item.contentUpdatedAt**
+[`datetime`](../../data-types.md) | Content modification date and time in ISO 8601 format with a timezone offset ||
+|| **item.isArchived**
+[`boolean`](../../data-types.md) | Indicates whether the document is archived ||
+|| **item.isTrashed**
+[`boolean`](../../data-types.md) | Indicates whether the document is in the trash ||
+|| **item.isOrphan**
+[`boolean`](../../data-types.md) | Indicates that no knowledge base is associated with the document ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

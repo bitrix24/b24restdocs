@@ -27,7 +27,7 @@ The method does not automatically insert the attachment into the document conten
 
 {% endnote %}
 
-## Method Parameters
+## Method Parameters {#parameters}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -41,11 +41,15 @@ The identifier can be obtained using the [note.document.tree.list](../document/n
 || **fileName***
 [`string`](../../data-types.md) | File name with extension.
 
-Allowed extensions: `png`, `jpg`, `jpeg`, `gif`, `webp`, `svg`, `pdf`, `txt`, `md`, `csv`, `doc`, `docx`, `xls`, `xlsx`, `ppt`, `pptx`, `mp4`, `webm`, `mov` ||
+Allowed extensions: `png`, `jpg`, `jpeg`, `gif`, `webp`, `svg`, `pdf`, `txt`, `md`, `csv`, `doc`, `docx`, `xls`, `xlsx`, `ppt`, `pptx`, `mp4`, `webm`, `mov`.
+
+Extensions are case insensitive. A file with no extension or an unlisted extension is rejected with `NOTE_FILE_TYPE_NOT_ALLOWED` ||
 || **fileContent***
 [`string`](../../data-types.md) | Binary file content in [Base64](../../files/how-to-upload-files.md) encoding.
 
-The maximum file size depends on the `main.max_file_size` setting in Bitrix24. If it is not set, the `25 MiB (25 * 1024 * 1024 bytes)` limit is used ||
+Pass a nonempty Base64 string without the `data:...;base64,` prefix.
+
+The limit is checked after Base64 decoding. A positive `main.max_file_size` setting is multiplied by 1024. If the setting is missing, zero, or negative, the limit is 25 MiB (26,214,400 bytes). Exceeding the limit returns `NOTE_FILE_TOO_LARGE` ||
 |#
 
 ## Code Examples
@@ -299,20 +303,20 @@ HTTP status: **200**
             "id": 5001,
             "documentId": 77,
             "name": "diagram.png",
-            "size": 6321,
+            "size": 68,
             "mimeType": "image/png",
             "assetType": "image",
             "assetMarkdown": "[[image fileId=5001]]"
         }
     },
     "time": {
-        "start": 1780392000,
-        "finish": 1780392000.284521,
+        "start": 1781601600,
+        "finish": 1781601600.284521,
         "duration": 0.28452086448669434,
         "processing": 0.2413930892944336,
         "date_start": "2026-06-16T12:20:00+03:00",
         "date_finish": "2026-06-16T12:20:00+03:00",
-        "operating_reset_at": 1780392600,
+        "operating_reset_at": 1781602200,
         "operating": 0
     }
 }
@@ -326,7 +330,16 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with the file upload result ||
 || **item**
-[`object`](../../data-types.md) | Object of the uploaded file ||
+[`object`](../../data-types.md) | Uploaded file object in `result.item`. [Property descriptions](#item) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Item Object {#item}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id**
 [`integer`](../../data-types.md) | Identifier of the uploaded file ||
 || **documentId**
@@ -338,13 +351,17 @@ HTTP status: **200**
 || **mimeType**
 [`string`](../../data-types.md) | File MIME type ||
 || **assetType**
-[`string`](../../data-types.md) | Attachment type for the Markdown block ||
+[`string`](../../data-types.md) | Attachment type for the Markdown block, determined by the MIME type of the stored file.
+
+Possible values:
+
+- `image` — the MIME type starts with `image/`
+- `video` — the MIME type starts with `video/`
+- `file` — all other MIME types ||
 || **assetMarkdown**
 [`string`](../../data-types.md) | Ready-to-use Markdown block for inserting the file into a document via [note.document.update](../document/note-document-update.md).
 
 Before inserting an image or video, you can extend the block with scale and alignment parameters. For details, see the `markdown` field description in [note.document.update](../document/note-document-update.md) ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -415,7 +432,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `documentId` | Document not found | Please ensure that the document exists, is not archived, and is not in the trash ||
+|| `documentId` | Document not found | Check the identifier and confirm that the document exists ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

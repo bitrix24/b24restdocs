@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 Log record icons help visually distinguish entries in the CRM timeline.
 
-Using the methods in this section, you can add a custom icon, retrieve data by code, display a list of available icons, and delete an icon.
+The `crm.timeline.icon.*` methods let you add a custom icon, retrieve icon data by code, list available icons, and delete an icon.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -22,9 +22,7 @@ Using the methods in this section, you can add a custom icon, retrieve data by c
 - The methods [crm.timeline.icon.add](./crm-timeline-icon-add.md) and [crm.timeline.icon.delete](./crm-timeline-icon-delete.md) can only be managed by an administrator
 - The methods [crm.timeline.icon.get](./crm-timeline-icon-get.md) and [crm.timeline.icon.list](./crm-timeline-icon-list.md) are available to any user
 - To create an icon, pass `fileContent` in `base64`. PNG files sized `24x24` pixels are supported
-- In the responses of the methods [crm.timeline.icon.get](./crm-timeline-icon-get.md) and [crm.timeline.icon.list](./crm-timeline-icon-list.md), the `isSystem` field indicates the type of icon: `true` for system icons and `false` for custom icons
-- Only custom icons with `isSystem = false` can be deleted. If you try to delete a system icon, the method returns the `NOT_FOUND` error
-- After a custom icon is deleted, related log entries remain in the timeline but are displayed without this icon
+- System icons can be retrieved. Only custom icons can be added or deleted
 
 ## How to Work with Icons
 

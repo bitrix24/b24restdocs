@@ -29,7 +29,9 @@ The `note.document.field.list` method returns a list of available document field
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | List of description fields that must be returned in the response.
+[`array`](../../data-types.md) | An array of description property names to return in the response.
+
+By default, all description properties are returned. An empty array `[]` also returns all properties. `["*"]` is not supported.
 
 Available fields:
 
@@ -42,6 +44,7 @@ Available fields:
 - `filterable` — filter availability flag
 - `sortable` — sorting availability flag
 - `editable` — editability flag
+- `editableGroups` — groups of operations in which the field is editable
 - `multiple` — multiple value flag
 - `elementType` — item type for composite fields ||
 |#
@@ -377,28 +380,56 @@ HTTP status: **200**
             },
             {
                 "name": "createdAt",
-                "type": "string",
+                "type": "object",
                 "title": "createdAt",
                 "filterable": false,
                 "sortable": false
             },
             {
                 "name": "updatedAt",
-                "type": "string",
+                "type": "object",
                 "title": "updatedAt",
+                "filterable": false,
+                "sortable": false
+            },
+            {
+                "name": "contentUpdatedAt",
+                "type": "object",
+                "title": "contentUpdatedAt",
+                "filterable": false,
+                "sortable": false
+            },
+            {
+                "name": "isArchived",
+                "type": "bool",
+                "title": "isArchived",
+                "filterable": false,
+                "sortable": false
+            },
+            {
+                "name": "isTrashed",
+                "type": "bool",
+                "title": "isTrashed",
+                "filterable": false,
+                "sortable": false
+            },
+            {
+                "name": "isOrphan",
+                "type": "bool",
+                "title": "isOrphan",
                 "filterable": false,
                 "sortable": false
             }
         ]
     },
     "time": {
-        "start": 1780801800,
-        "finish": 1780801800.112441,
-        "duration": 0.1124410629272461,
+        "start": 1791205956,
+        "finish": 1791205956.065195,
+        "duration": 0.06519508361816406,
         "processing": 0,
-        "date_start": "2026-06-22T09:10:00+03:00",
-        "date_finish": "2026-06-22T09:10:00+03:00",
-        "operating_reset_at": 1780802400,
+        "date_start": "2026-10-05T16:12:36+03:00",
+        "date_finish": "2026-10-05T16:12:36+03:00",
+        "operating_reset_at": 1791206556,
         "operating": 0
     }
 }
@@ -412,9 +443,42 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
 || **items**
-[`array`](../../data-types.md) | Array of objects describing the fields. The response structure depends on `select` ||
+[`array`](../../data-types.md) | Field descriptions in `result.items`. [Properties of each element](#items) depend on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Items Array Element {#items}
+
+The description depends on `select`. The table lists all properties that can be requested.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name**
+[`string`](../../data-types.md) | Field name: `id`, `collectionId`, `parentId`, `title`, `markdown`, `position`, `createdBy`, `updatedBy`, `createdAt`, `updatedAt`, `contentUpdatedAt`, `isArchived`, `isTrashed`, `isOrphan` ||
+|| **type**
+[`string`](../../data-types.md) | Metadata type: `int`, `string`, `object`, `bool`. Date fields return `object`, although method responses contain ISO 8601 strings ||
+|| **title**
+[`string`](../../data-types.md) | Field title. Matches `name` ||
+|| **description**
+[`string`](../../data-types.md) or `null` | Field description. `null` for these fields ||
+|| **validationRules**
+[`array`](../../data-types.md) | Array of validation rule objects. For `title`, two objects `[{}, {}]` are returned; for other fields, `[]`. Rule parameters are not serialized. Title and Markdown constraints are described in [note.document.add](./note-document-add.md) ||
+|| **requiredGroups**
+[`array`](../../data-types.md) or `null` | Array of operation names for which the field is required. For `collectionId` and `title`, `["add"]`; for other fields, `null` ||
+|| **filterable**
+[`boolean`](../../data-types.md) | `true` if filtering is supported; `false` otherwise. For all fields, `false` ||
+|| **sortable**
+[`boolean`](../../data-types.md) | `true` if sorting is supported; `false` otherwise. `false` for all fields ||
+|| **editable**
+[`boolean`](../../data-types.md) | `true` if the field can be passed in operations from `editableGroups`; `false` otherwise. Does not replace a user permission check ||
+|| **editableGroups**
+[`array`](../../data-types.md) or `null` | Array of operation names in which the field can be set. For `collectionId` and `parentId`, `["add"]`; for `title` and `markdown`, `["add", "update"]`; for other fields, `null` ||
+|| **multiple**
+[`boolean`](../../data-types.md) | `true` for multiple values; `false` for a single value. For all fields, `false` ||
+|| **elementType**
+[`string`](../../data-types.md) or `null` | Type of an element in a composite field. For all fields, `null` ||
 |#
 
 ## Error Handling
@@ -449,7 +513,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
+|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`

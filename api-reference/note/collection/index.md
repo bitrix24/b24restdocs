@@ -37,7 +37,8 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 - `note.collection.*` methods work only with the knowledge base as a whole. To create, modify, or delete individual pages, use methods from the [Documents](../document/index.md) section
 - Archiving a knowledge base affects not only the container itself but also all documents within it. After archiving, documents remain in the knowledge base but are removed from active use
 - Deleting a knowledge base moves both the knowledge base and all documents within it to the shopping cart. If a knowledge base contains many materials, deletion will affect the entire structure at once
-- Access to creation, renaming, archiving, and deletion depends on the current user's permissions. If permissions are insufficient, the method will return an access error
+- Access depends on the current user's permissions. `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION` indicates that access was denied. When retrieving a knowledge base that does not exist or is inaccessible, `note.collection.get` returns `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
+- `note.collection.list` returns up to 200 knowledge bases per request, or up to 50 by default. See the [method page](./note-collection-list.md) for cursor handling and invalid `pagination` values
 
 {% note tip "User documentation" %}
 

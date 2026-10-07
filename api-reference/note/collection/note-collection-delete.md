@@ -270,7 +270,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with the result of the knowledge base deletion ||
-|| **result**
+|| **result.result**
 [`boolean`](../../data-types.md) | Value of `true` if the knowledge base was successfully deleted ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||

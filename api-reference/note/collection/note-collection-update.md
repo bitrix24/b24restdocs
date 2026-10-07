@@ -310,11 +310,14 @@ HTTP status: **200**
             "id": 42,
             "name": "Product documentation",
             "position": 100,
-            "policyLevel": "view",
+            "policyLevel": "private",
             "createdBy": 1,
             "createdAt": "2026-04-20T12:00:00Z",
             "updatedBy": 1,
-            "updatedAt": "2026-04-21T09:15:30Z"
+            "updatedAt": "2026-04-21T09:15:30Z",
+            "accessLevel": "full",
+            "isArchived": false,
+            "markdownDescription": null
         }
     },
     "time": {
@@ -339,22 +342,28 @@ HTTP status: **200**
 [`object`](../../data-types.md) | Object with the result of the knowledge base update. ||
 || **item**
 [`object`](../../data-types.md) | Knowledge base object after the update. ||
-|| **id**
-[`integer`](../../data-types.md) | Knowledge base identifier. ||
-|| **name**
-[`string`](../../data-types.md) | Knowledge base name. ||
-|| **position**
-[`integer`](../../data-types.md) | Knowledge base position in the general list. ||
-|| **policyLevel**
-[`string`](../../data-types.md) | Base access policy of the knowledge base. ||
-|| **createdBy**
-[`integer`](../../data-types.md) | Knowledge base author identifier. ||
-|| **createdAt**
-[`datetime`](../../data-types.md) | Knowledge base creation date and time in UTC. ||
-|| **updatedBy**
-[`integer`](../../data-types.md) | Last knowledge base editor identifier. ||
-|| **updatedAt**
-[`datetime`](../../data-types.md) | Last knowledge base modification date and time in UTC. ||
+|| **item.id**
+[`integer`](../../data-types.md) | Knowledge base identifier ||
+|| **item.name**
+[`string`](../../data-types.md) | Knowledge base name ||
+|| **item.position**
+[`integer`](../../data-types.md) | Knowledge base position in the general list ||
+|| **item.policyLevel**
+[`string`](../../data-types.md) | Knowledge base access policy code, such as `private` or `portal` ||
+|| **item.accessLevel**
+[`string`](../../data-types.md) | Current user's access level code, such as `full` ||
+|| **item.isArchived**
+[`boolean`](../../data-types.md) | Indicates whether the knowledge base is archived ||
+|| **item.markdownDescription**
+[`string`](../../data-types.md) or `null` | Additional Markdown description. Can be `null` ||
+|| **item.createdBy**
+[`integer`](../../data-types.md) | Identifier of the knowledge base author ||
+|| **item.createdAt**
+[`datetime`](../../data-types.md) | Knowledge base creation date and time in ISO 8601 format with a timezone offset ||
+|| **item.updatedBy**
+[`integer`](../../data-types.md) | Identifier of the last knowledge base editor ||
+|| **item.updatedAt**
+[`datetime`](../../data-types.md) | Knowledge base last modification date and time in ISO 8601 format with a timezone offset ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

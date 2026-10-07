@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `note.file.get` method returns file metadata and a ready-to-use Markdown block to insert the attachment into a document.
+The `note.file.get` method returns file metadata and a ready-to-use Markdown block to insert the attachment into a document. It does not return the file's binary content or a download URL.
 
 ## Method Parameters
 
@@ -282,20 +282,20 @@ HTTP status: **200**
             "id": 5001,
             "documentId": 77,
             "name": "diagram.png",
-            "size": 6321,
+            "size": 68,
             "mimeType": "image/png",
             "assetType": "image",
             "assetMarkdown": "[[image fileId=5001]]"
         }
     },
     "time": {
-        "start": 1780392300,
-        "finish": 1780392300.194822,
+        "start": 1781601900,
+        "finish": 1781601900.194822,
         "duration": 0.19482207298278809,
         "processing": 0.15441107749938965,
         "date_start": "2026-06-16T12:25:00+03:00",
         "date_finish": "2026-06-16T12:25:00+03:00",
-        "operating_reset_at": 1780392900,
+        "operating_reset_at": 1781602500,
         "operating": 0
     }
 }
@@ -309,7 +309,16 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object containing the result of the file data retrieval. ||
 || **item**
-[`object`](../../data-types.md) | Object containing file metadata. ||
+[`object`](../../data-types.md) | File metadata object in `result.item`. [Property descriptions](#item) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Item Object {#item}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id**
 [`integer`](../../data-types.md) | Identifier of the file ||
 || **documentId**
@@ -336,8 +345,6 @@ Possible values:
 To make the attachment appear in the document, pass this block to `markdown` via [note.document.update](../document/note-document-update.md).
 
 Before inserting an image or video, you can extend the block with scale and alignment parameters. For details, see the `markdown` field description in [note.document.update](../document/note-document-update.md). ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -381,8 +388,17 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `documentId` | Document not found. | Please check that the document exists, is not archived, is not in the trash, and is accessible to the user. ||
+|| `documentId` | Document not found or inaccessible | Check the identifier, confirm the document exists, and verify that the user can view it ||
 || `id` | File not found. | Please check that the file exists and is attached to the specified document. ||
+|#
+
+#### Access Error
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to Fix** ||
+|| `-` | Access to the Knowledge Base module is denied | Check the user's module access and the `note` scope. Missing permission for the document itself returns `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

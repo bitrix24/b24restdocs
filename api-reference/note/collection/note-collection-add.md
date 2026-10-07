@@ -317,11 +317,14 @@ HTTP status: **200**
             "id": 42,
             "name": "Product documentation",
             "position": 100,
-            "policyLevel": "view",
+            "policyLevel": "private",
             "createdBy": 1,
             "createdAt": "2026-04-20T12:00:00Z",
             "updatedBy": 1,
-            "updatedAt": "2026-04-20T12:00:00Z"
+            "updatedAt": "2026-04-20T12:00:00Z",
+            "accessLevel": "full",
+            "isArchived": false,
+            "markdownDescription": null
         }
     },
     "time": {
@@ -346,22 +349,28 @@ HTTP status: **200**
 [`object`](../../data-types.md) | Object with the result of knowledge base creation ||
 || **item**
 [`object`](../../data-types.md) | Created knowledge base object ||
-|| **id**
+|| **item.id**
 [`integer`](../../data-types.md) | Identifier of the created knowledge base ||
-|| **name**
+|| **item.name**
 [`string`](../../data-types.md) | Knowledge base name ||
-|| **position**
+|| **item.position**
 [`integer`](../../data-types.md) | Knowledge base position in the general list ||
-|| **policyLevel**
-[`string`](../../data-types.md) | Base access policy of the knowledge base ||
-|| **createdBy**
+|| **item.policyLevel**
+[`string`](../../data-types.md) | Knowledge base access policy code, such as `private` or `portal` ||
+|| **item.accessLevel**
+[`string`](../../data-types.md) | Current user's access level code, such as `full` ||
+|| **item.isArchived**
+[`boolean`](../../data-types.md) | Indicates whether the knowledge base is archived ||
+|| **item.markdownDescription**
+[`string`](../../data-types.md) or `null` | Additional Markdown description. Can be `null` ||
+|| **item.createdBy**
 [`integer`](../../data-types.md) | Identifier of the knowledge base author ||
-|| **createdAt**
-[`datetime`](../../data-types.md) | Date and time of knowledge base creation in UTC ||
-|| **updatedBy**
+|| **item.createdAt**
+[`datetime`](../../data-types.md) | Knowledge base creation date and time in ISO 8601 format with a timezone offset ||
+|| **item.updatedBy**
 [`integer`](../../data-types.md) | Identifier of the last knowledge base editor ||
-|| **updatedAt**
-[`datetime`](../../data-types.md) | Date and time of the last knowledge base change in UTC ||
+|| **item.updatedAt**
+[`datetime`](../../data-types.md) | Knowledge base last modification date and time in ISO 8601 format with a timezone offset ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
