@@ -21,6 +21,8 @@ items:
     href: requirements-smart-scripts.md
   - name: Requirements for BI Constructor Reports
     href: requirements-superset.md
+  - name: Guide to Developing BI Reports
+    href: guide-bi-reports.md
   - name: Requirements for Industry-Specific CRMs
     href: requirements-vertical-crm.md
   - name: Checklist Before Moderation

@@ -8,7 +8,7 @@ We offer you a minimal checklist for self-verification before submitting solutio
 - **Create a good icon** - square, up to 650*650 px with a high-quality image, free of pixelation, blurriness, etc.
 - **Attach informative screenshots**. There must be high-quality full-screen screenshots of your solution's interface in the context of Bitrix24.
 - **Provide links to your license agreement and personal data processing policy for your software**. The license agreement must genuinely refer to your application. The name must exactly match what you specified in point 1. Pay close attention to this if you are using one template for multiple solutions or if you plan to change the app's name.
-- **Select only the necessary scopes**. Remember, scopes are not issued "for future use"!
+- **Select only the necessary scopes**. Learn how to choose them in [Access Permissions for Methods and Scopes](../../api-reference/scopes/index.md). Remember, scopes are not issued "for future use"!
 - **Indicate the widget embedding locations of your application**. Don’t hesitate to specify in the description, or better yet, in the chat with the moderator, the embedding locations of the application if you are using the scope "Application Embedding". Ideally, directly in the version card of the application, select the widget embedding locations that are actually used by your solution.
 - **Meet the requirements for integrations with external services:**
   - In the description, provide a link to the website of the integrated service;

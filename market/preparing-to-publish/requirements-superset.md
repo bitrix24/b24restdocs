@@ -53,7 +53,8 @@ In addition to the [main regulations with requirements for solution formatting](
 - **DATASET NAMES, METRIC CODES, AND CALCULABLE FIELD CODES**. In the names of virtual datasets, in the metric codes, and in the codes of calculable fields, use the partner prefix followed by a dot. For example: _virtual dataset_ - `mycode.revenue_dynamic`, _metric_ - `mycode.avg_bill`;
 - **NAMES AND DESCRIPTIONS OF METRICS AND FIELDS**. Metrics and calculable fields must have a clear name and description, and the "Approved by" field must be filled with the partner's name (the same as in the application card);
 - **DASHBOARD NAMES**. The name of the dashboard must include a postfix with the partner code in square brackets. Example "Dynamics of Key Sales Indicators [`mycode`]";
-- **ADDING METRICS AND FIELDS**. Metrics and calculable fields should be added not on the chart but in the data source for further use in any charts;
+- **CHART NAMES**. A chart must have a postfix that distinguishes it from other charts in the chart list. When the chart is placed on a dashboard, its title there can be without the postfix;
+- **ADDING METRICS AND FIELDS**. Metrics and calculable fields should be added not on the chart but in the dataset for further use in any charts;
 - **USING FILTERS IN CHARTS**. Filters by date range must be applied in charts to limit the volume of loaded data. The recommended period is the current year.
 - **SETTING A LIMIT IN THE CHART**. In the chart settings, it is necessary to specify a row limit. The recommended value is 1000.
 - **USING SERVER-SIDE PAGINATION**. In the table chart, it is recommended to enable server-side pagination for faster performance.

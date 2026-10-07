@@ -6,6 +6,15 @@
 
 - When creating a new application, select the region where your solution will be available in the future.
 - You can also choose an existing solution that was previously published in another region when adding a solution to a specific region, provided that the pricing policy of your solution is available for both publication regions.
+- To publish a solution, follow these requirements:
+  1. Names, descriptions, icons, screenshots, and other informational materials must be in English and must not mention national domain zones. Links must lead to English-language resources.
+  2. Contact details:
+     - email on international domains;
+     - a website with an English-language interface;
+     - an international phone number;
+  3. The application interface must be fully localized.
+  4. For in-app purchases, orders must be recorded and paid in USD/EUR.
+  5. The end user license agreement and the privacy policy linked in the solution card must be translated into English and comply with the laws of the country or regions where you distribute your solution.
 
 ### B. Solution Card
 
@@ -18,6 +27,7 @@
   5. To be included in the **"Automation - Workflows"** category, your solution must create [its activities for Workflows](../../api-reference/bizproc/bizproc-activity/bizproc-activity-add.md);
   6. To be included in the **"Automation - Automation Rules"** or **"Automation - Triggers"** category, your solution must create [its automation rules](../../api-reference/bizproc/bizproc-robot/bizproc-robot-add.md) or [CRM triggers](../../api-reference/crm/automation/triggers/crm-automation-trigger-add.md);
   7. To be included in the **"Automation - Chat bots"** category, your solution must [create chatbots](../../api-reference/chat-bots/index.md) for the Bitrix24 messenger or Open Channels.
+  8. To be included in the **"Automation - Smart scripts"** category, your solution must create [its own smart scripts](./requirements-smart-scripts.md).
 
 {% note alert "" %}
 
@@ -37,7 +47,7 @@ If you feel that you lack the right tags, please contact the moderators in the c
 
 #### Application Description Block:
 
-1. In the **Application Description** block, depending on the publication region, descriptions are required in the mandatory language for that region. Descriptions in other available languages are optional.
+1. In the **Application Description** block, a description in English is required. English is the main language of the solution, even if the solution is developed for a specific country. You can add descriptions in other languages as an option for users to choose from.
 2. The **Short Description** of the application should contain 1-2 sentences describing the main purpose of your solution.
 3. It is not recommended to duplicate the application title in the short description. Avoid introductory words; formulate the description so that it complements the title. Remember that the short description will be displayed in application lists and should help you attract the user's interest to open your solution card.
 4. The **Full Description** of the solution should contain a list of tasks that your product solves and the capabilities it provides to Bitrix24 users. **You must indicate in the description the features of the solution that limit or affect its user properties, in particular:**
@@ -58,7 +68,7 @@ If you feel that you lack the right tags, please contact the moderators in the c
 8. The text in the **"Installation Process Description"** field should include a list of actions necessary for using the solution:
    - If the solution contains settings, indicate where to find them and describe specific options;
    - If the solution includes integration with an external system/service, specify how the integration is configured within the application and on the external service side; the description should be written for a user who is not familiar with the system/service – links to general user documentation are not sufficient.
-9. The **"Support and Feedback Information"** field must contain all available channels for official communication with clients: e-mail, phone, link to feedback form or helpdesk, social media groups. Be sure to specify the technical support operating schedule – working days and hours, response time to incoming requests. If the solution is published in English, this field should not contain links to Russian-language resources (website, helpdesk, etc.).
+9. The **"Support and Feedback Information"** field must contain all available channels for official communication with clients: e-mail, phone, link to feedback form or helpdesk, social media groups. Be sure to specify the technical support operating schedule – working days and hours, response time to incoming requests. This field must contain links only to English-language resources (website, helpdesk, etc.).
 10. **Icon** - file in JPEG and PNG format (without a transparent background), square, size no less than 250x250 pixels and no more than 650x650 pixels. Low-quality images with blurriness, noticeable pixelation, and those using third-party trademarks, including trademarks and logos owned by 1C-Bitrix, are not allowed.
 11. **Screenshots:**
     - Must contain examples of your solution's interface demonstrating demo data relevant to the solution in the context of Bitrix24.
@@ -66,6 +76,7 @@ If you feel that you lack the right tags, please contact the moderators in the c
     - If the solution has its interface within Bitrix24, the application must be open in the slider on the screenshots. Screenshots highlighting details of the internal interface (e.g., enlarged images of options, etc.) are allowed as a supplement to full-screen screenshots.
     - The size of screenshots must not exceed 1280 by 720 pixels.
     - Supported formats are JPEG and PNG.
+    - Screenshots must show only the English-language interface.
 12. You must provide a link to your own user license agreement in the **"Use my license agreement"** field, as well as a link to your own privacy policy in the **"Use my privacy policy"** field, drafted in accordance with the current legislation of the publication region. The license agreement defining the rights of the user to use your application must contain the name of the solution and the licensor. For your convenience, we have provided links to examples of such documents nearby. **Important:** the link must lead not to a download but to view the corresponding documents in the browser. Supported document formats: html, pdf, txt.
 13. Optionally, you can provide links for **"Contact the Developer"** and **"Request a Demo."** These should be links to a page about your product with any contact form (messenger, online chat, etc.).
 
@@ -151,9 +162,10 @@ For the first version of the application, this field does not need to be filled;
 - The solution will not be published in the Bitrix24 Market catalog if:
   1. Upon installation, the solution generates an empty page within the frame or a page with content without automatic redirection to the solution interface after installation is complete;
   2. The security scanner detects issues during the solution check;
-  3. Offensive, obscene information is present in the interface or demo data: calls to violence, pornography, racism, and other materials prohibited by government legislation;
-  4. The functionality of the solution does not correspond to what is stated in the title and description;
-  5. The solution is a clone of other solutions from the same developer in terms of graphic design and/or demo content;
+  3. The solution is a game, an entertainment, or a game-like product (such as horoscopes, fortune telling, entertainment quizzes, etc.);
+  4. Offensive, obscene information is present in the interface or demo data: calls to violence, pornography, racism, and other materials prohibited by government legislation;
+  5. The functionality of the solution does not correspond to what is stated in the title and description;
+  6. The solution is a clone of other solutions from the same developer in terms of graphic design and/or demo content;
 - The functionality of the solution reveals:
   1. Texts with incorrect encoding;
   2. PHP Warnings, Fatal Errors, Syntax Errors, and/or Parse Errors, and similar messages from another server platform on which the solution is implemented;

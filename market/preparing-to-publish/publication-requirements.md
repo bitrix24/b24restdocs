@@ -34,7 +34,7 @@
 
 - A solution can be added in the [Developer's area](https://vendors.bitrix24.com/).
 - Familiarize yourself with the technical [documentation on REST API](../../api-reference/index.md) and the [video course](https://helpdesk.bitrix24.com/courses/index.php?COURSE_ID=268&INDEX=Y).
-- When developing and publishing your solution, adhere to the [“Requirements for the Design and Content of Solutions in Bitrix24 Market”](./publication-requirements.md), which you agree to when submitting for moderation.
+- When developing and publishing your solution, adhere to the [“Requirements for the Design and Content of Solutions in Bitrix24 Market”](./common-requirements.md), which you agree to when submitting for moderation.
 
 ## 3. Independent Testing of the Solution
 
@@ -54,12 +54,13 @@
 ## 4. Moderation
 
 - Adding a solution to the developer's list does not mean it automatically enters the moderation queue. You must click the **"Submit For Moderation"** button for the solution you wish to publish.
-- Moderators return the solution for revision if they find at least one error or non-compliance with the [“Requirements for the Design and Content of Solutions in Bitrix24 Market”](./publication-requirements.md). If the solution does not pass moderation, you will need to resubmit it after correcting the issues. The solution will go to the end of the moderation queue.
+- Moderators return the solution for revision if they find at least one error or non-compliance with the [“Requirements for the Design and Content of Solutions in Bitrix24 Market”](./common-requirements.md). If the solution does not pass moderation, you will need to resubmit it after correcting the issues. The solution will go to the end of the moderation queue.
 - The moderator will report any found errors in the chat available in the Developer's area.
 - Moderation timelines are not regulated and depend on the current workload of the moderators.
 - A successfully moderated solution may be removed from the catalog due to subsequently discovered issues.
 - A solution may be denied publication in the Bitrix24 Market catalog without explanation by the moderators.
-- If the solution implements integration with an external system/service, you must provide test access to the system/service in advance, which will allow testing the integration's functionality. Access is provided in the chat with the moderator after submitting the solution for moderation or in a special "Test Data" field in the solution description (this data will not be published). It is necessary that within the integration setup, the moderator can configure the connection between the system/service and their test Bitrix24 (or several in turn). In other words, if the integration only works with one specific Bitrix24 prepared by the solution developer, this will not be sufficient grounds for passing moderation.
+- If the solution implements integration with an external system/service, you must provide test access to the system/service in advance, which will allow testing the integration's functionality. Access is provided in the chat with the moderator after submitting the solution for moderation or in a special "Test Data" field in the solution description (this data will not be published). For moderation purposes, within the integration setup, the moderator must be able to connect the system/service to at least two test Bitrix24 accounts (or several in turn). In other words, if the integration only works with one specific Bitrix24 prepared by the solution developer, this will not be sufficient grounds for passing moderation. If testing is not possible because there is no test Bitrix24 (only a Bitrix24 with an active commercial license is available) or because test data is difficult to obtain, Bitrix24 may request a video demonstrating the installation, setup, and main features of the solution.
+- Passing moderation does not confirm that the solution works or is secure, or that the information in the solution card is complete and accurate, and does not release the developer from responsibility for them.
 - Moderation is not a full testing process for the technical and user quality of your solutions, and moderators are not obligated to provide exhaustive information about the technical conditions under which errors occur. All solutions are tested in the standard cloud Bitrix24 on the highest tariff. In cases where additional software installation is required, the moderator has the right to refuse publication of the solution.
 
 ## 5. Publication
@@ -78,10 +79,14 @@
 
 **A**. The developer is obliged to make efforts to resolve technical issues related to the interaction of their solutions with Bitrix24, without shifting this task onto end users:
 
-- If, as a result of investigating the end user's problem, you believe it is not caused by an error in your code, but rather that the Bitrix24 REST API is not functioning or is not working as it did before, you must contact [1C-Bitrix support](https://helpdesk.bitrix24.com/ticket.php) and provide logs of specific HTTP requests (with all used parameters) demonstrating the problem.
+- If, as a result of investigating the end user's problem, you believe it is not caused by an error in your code, but rather that the Bitrix24 REST API is not functioning or is not working as it did before, you must contact [Bitrix24 support](https://helpdesk.bitrix24.com/ticket.php) and provide logs of specific HTTP requests (with all used parameters) demonstrating the problem.
 - Bitrix24 does not consult end users on the scenarios and functionality of your solutions and is not responsible for their functionality.
 - Bitrix24 is responsible for the functioning of the REST API within the framework described in the relevant documentation.
-- The resolution of technical issues related to the operation of the REST API should always be handled directly between you and 1C-Bitrix technical support without involving end users.
+- The resolution of technical issues related to the operation of the REST API should always be handled directly between you and Bitrix24 technical support without involving end users.
+- The support channel (chat or chatbot) that the developer creates when the solution is installed must be used only for consultations on the functionality and operation of the solution itself. If you use a chatbot, its welcome message should briefly state the purpose of the chat, for example: "Hello! In this chat, you can get help with the "App name" application."
+- The chat name must also be clear, reflect that the chat supports the solution, and leave no room to interpret it as the developer providing Bitrix24 services under the [Bitrix24 Partner Program](https://partners.bitrix24.com/) (hereinafter, the Services).
+- The developer may not initiate offers of Services for setting up and/or maintaining a Bitrix24 account in this chat, and may not announce their events (webinars, promotions, etc.) through chats and/or notifications in the account. If a user shows interest in services in the chat, the developer must consult only on the functionality of the solution itself. Further interest shown by the user in Services related to Bitrix24 maintenance and/or setup is not a violation of this clause.
+- If complaints about advertising of Services in the solution chat are received, Bitrix24 reserves the right to investigate the violation and request the necessary materials and/or documents from the developer.
 
 **B**. Bitrix24 reserves the right to remove from publication solutions whose developers do not adhere to the above approach.
 
