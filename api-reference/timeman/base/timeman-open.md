@@ -25,13 +25,13 @@ The method `timeman.open` starts a new workday or continues the workday after a 
 
 Defaults to the current user ||
 || **TIME**
-[`datetime`](../../data-types.md) | The start date and time of the workday in the [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) (ISO-8601) format, for example, `2025-02-12T15:52:01+00:00`. The date must match the current calendar date. 
+[`datetime`](../../data-types.md) | The start date and time of the workday in the [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) (ISO-8601) format, for example, `2025-02-12T15:52:01+00:00`. The date must match the current date in the employee's time zone.
 
 The `TIME` parameter can be passed if the workday is in the `CLOSED` status. In other cases, an error will be returned.
 
 By default, the workday opens with the current time in the employee's time zone.
 
-The system takes into account the time zone specified in the parameter and considers it the user's time zone ||
+The value is converted to the employee's time zone. For example, for an employee in the UTC+3 time zone, the value `2025-02-12T15:52:01+00:00` opens the workday at 18:52:01 local time ||
 || **REPORT**
 [`string`](../../data-types.md) | Reason for changing the workday.
 
@@ -83,6 +83,7 @@ Required under the conditions:
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type TimemanOpenResult = {
       STATUS: string
+      ID: number
       TIME_START: ISODate
       TIME_FINISH: ISODate | null
       DURATION: string
@@ -276,6 +277,7 @@ HTTP Status: **200**
 {
     "result": {
         "STATUS": "OPENED",
+        "ID": 3472,
         "TIME_START": "2025-03-27T08:00:01+02:00",
         "TIME_FINISH": null,
         "DURATION": "00:00:00",
@@ -319,6 +321,8 @@ Contains an object describing the workday ||
 - `CLOSED` — closed
 - `PAUSED` — paused
 - `EXPIRED` — expired, meaning opened until the start of the current calendar day and not closed ||
+|| **ID**
+[`integer`](../../data-types.md) | Workday record identifier ||
 || **TIME_START**
 [`datetime`](../../data-types.md) | Date and time the workday started.
 
@@ -326,7 +330,9 @@ The time zone corresponds to the time zone of the start of the workday ||
 || **TIME_FINISH**
 [`datetime`](../../data-types.md) | Date and time the workday ended.
 
-Returns `null` for an unfinished workday ||
+The time zone matches the employee's time zone at the moment the workday ends.
+
+Returns `null` if the workday is not finished, including when it is paused ||
 || **DURATION**
 [`string`](../../data-types.md) | Duration of the workday in the `HH:MM:SS` format.
 
@@ -352,9 +358,9 @@ Returns `null` for an unfinished workday ||
 || **LON_CLOSE**
 [`double`](../../data-types.md) | Geographic longitude of the point where the workday was completed ||
 || **TZ_OFFSET**
-[`integer`](../../data-types.md) | Time zone offset of the employee in which the workday started.
+[`integer`](../../data-types.md) | The employee's time zone offset from UTC in seconds at the moment the workday started.
 
-The completion time of the workday is adjusted to the time zone of the start of the day ||
+Matches the offset in the `TIME_START` value ||
 || **TIME_FINISH_DEFAULT**
 [`datetime`](../../data-types.md) | Recommended value for the end of the day, which can be displayed to the user as a default value.
 
@@ -380,9 +386,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `TIMEMAN_TOOL_DISABLED` | Working time management is disabled. | The time tracking tool is disabled ||
+|| `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
 || empty string | User not found | User with the specified `USER_ID` not found ||
-|| `WRONG_DATETIME` | Day open date should correspond to the current date | The date of opening the workday must match the current calendar date ||
+|| `WRONG_DATETIME` | Day open date should correspond to the current date | The date of opening the workday must match the current date in the employee's time zone ||
+|| `WRONG_DATETIME_FORMAT` | Wrong datetime format | The `TIME` value is not in the ATOM format ||
 || `TIME` | Unable to set time, work day is paused | Cannot pass the `TIME` parameter for a paused workday ||
 
 |#

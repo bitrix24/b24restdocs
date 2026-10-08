@@ -25,11 +25,11 @@ The method `timeman.close` ends the current workday.
 
 Defaults to the current user ||
 || **TIME**
-[`datetime`](../../data-types.md) | The end time and date of the workday in the [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) (ISO-8601) format, for example, `2025-02-12T15:52:01+00:00`. The date must match the start date of the workday.
+[`datetime`](../../data-types.md) | The end time and date of the workday in the [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) (ISO-8601) format, for example, `2025-02-12T15:52:01+00:00`. The date in the employee's timezone must match the start date of the workday.
 
-By default, the workday is closed at the current moment in the timezone where the workday was started.
+By default, the workday is closed at the current time.
 
-If the end timezone differs from the start timezone, the end time is automatically converted to the timezone in which the day was started. ||
+The value is converted to the employee's timezone. For example, for an employee in the UTC+3 timezone, the value `2025-02-12T15:52:01+00:00` closes the workday at 18:52:01 local time ||
 || **REPORT**
 [`string`](../../data-types.md) | Reason for changing the workday.
 
@@ -81,6 +81,7 @@ Required under the conditions:
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type TimemanCloseResult = {
       STATUS: string,
+      ID: number,
       TIME_START: ISODate,
       TIME_FINISH: ISODate | null,
       DURATION: string,
@@ -304,6 +305,7 @@ HTTP Status: **200**
 {
     "result": {
         "STATUS": "CLOSED",
+        "ID": 3473,
         "TIME_START": "2025-03-27T08:00:01+02:00",
         "TIME_FINISH": "2025-03-27T19:00:01+02:00",
         "DURATION": "09:37:04",
@@ -347,6 +349,8 @@ Contains an object describing the workday ||
 - `CLOSED` — closed
 - `PAUSED` — paused
 - `EXPIRED` — expired, meaning opened before the start of the current calendar day and not closed ||
+|| **ID**
+[`integer`](../../data-types.md) | Workday record identifier ||
 || **TIME_START**
 [`datetime`](../../data-types.md) | Date and time the workday started.
 
@@ -354,7 +358,9 @@ The timezone corresponds to the timezone of the start of the workday ||
 || **TIME_FINISH**
 [`datetime`](../../data-types.md) | Date and time the workday was closed.
 
-Returns `null` for an unfinished workday ||
+The timezone matches the employee's timezone at the moment the workday ends.
+
+Returns `null` if the workday is not finished, including when it is paused ||
 || **DURATION**
 [`string`](../../data-types.md) | Duration of the workday in `HH:MM:SS` format.
 
@@ -380,9 +386,9 @@ Returns `null` for an unfinished workday ||
 || **LON_CLOSE**
 [`double`](../../data-types.md) | Geographic longitude of the point where the workday was closed ||
 || **TZ_OFFSET**
-[`integer`](../../data-types.md) | Timezone offset of the employee in which the workday was started.
+[`integer`](../../data-types.md) | The employee's timezone offset from UTC in seconds at the moment the workday started.
 
-The end time of the workday is adjusted to the timezone of the start of the day ||
+Matches the offset in the `TIME_START` value ||
 || **TIME_FINISH_DEFAULT**
 [`datetime`](../../data-types.md) | Recommended value for the end of the day, which can be presented to the user as a default value.
 
@@ -408,9 +414,10 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `TIMEMAN_TOOL_DISABLED` | Working time management is disabled. | The time tracking tool is disabled ||
+|| `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
 || empty string | User not found | User with the specified `USER_ID` not found ||
-|| `WRONG_DATETIME` | Day close date should correspond to the day open date | The closing date of the workday must match the opening date ||
+|| `WRONG_DATETIME` | Day close date should correspond to the day open date | The closing date of the workday in the employee's timezone must match the opening date ||
+|| `WRONG_DATETIME_FORMAT` | Wrong datetime format | The `TIME` value is not in the ATOM format ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

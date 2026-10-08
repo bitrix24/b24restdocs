@@ -65,6 +65,7 @@ By default — the identifier of the current user ||
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type TimemanStatusResult = {
       STATUS: string
+      ID: number
       TIME_START: ISODate | null
       TIME_FINISH: ISODate | null
       DURATION: string
@@ -261,6 +262,7 @@ HTTP status: **200**
 {
     "result": {
         "STATUS": "EXPIRED",
+        "ID": 3471,
         "TIME_START": "2025-03-27T08:00:01+02:00",
         "TIME_FINISH": null,
         "DURATION": "00:00:00",
@@ -305,6 +307,8 @@ Contains an object describing the workday ||
 - `CLOSED` — closed
 - `PAUSED` — paused
 - `EXPIRED` — expired, meaning opened before the start of the current calendar day and not closed ||
+|| **ID**
+[`integer`](../../data-types.md) | Workday record identifier ||
 || **TIME_START**
 [`datetime`](../../data-types.md) | Date and time when the workday starts.
 
@@ -312,7 +316,9 @@ The time zone corresponds to the time zone at the start of the workday ||
 || **TIME_FINISH**
 [`datetime`](../../data-types.md) | Date and time the workday ends.
 
-Returns `null` for an unfinished workday ||
+The time zone matches the employee's time zone at the moment the workday ends.
+
+Returns `null` if the workday is not finished, including when it is paused ||
 || **DURATION**
 [`string`](../../data-types.md) | Duration of the workday in the format `HH:MM:SS`.
 
@@ -338,9 +344,9 @@ Returns `null` for an unfinished workday ||
 || **LON_CLOSE**
 [`double`](../../data-types.md) | Geographical longitude of the point where the workday ended ||
 || **TZ_OFFSET**
-[`integer`](../../data-types.md) | Time zone offset of the employee where the workday started.
+[`integer`](../../data-types.md) | The employee's time zone offset from UTC in seconds at the moment the workday started.
 
-The end time of the workday is adjusted to the time zone at the start of the day ||
+Matches the offset in the `TIME_START` value ||
 || **TIME_FINISH_DEFAULT**
 [`datetime`](../../data-types.md) | Recommended value for the end of the day, which can be displayed to the user as a default value.
 
@@ -366,7 +372,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `TIMEMAN_TOOL_DISABLED` | Working time management is disabled. | The time tracking tool is disabled ||
+|| `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
 || empty string | User not found | User with the specified `USER_ID` not found ||
 |#
 

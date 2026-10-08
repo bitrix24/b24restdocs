@@ -318,7 +318,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "TIMEMAN_TOOL_DISABLED",
-    "error_description": "Working time management is disabled."
+    "error_description": "Time management is disabled."
 }
 ```
 
@@ -328,7 +328,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `TIMEMAN_TOOL_DISABLED` | Working time management is disabled. | The time tracking tool is disabled ||
+|| `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

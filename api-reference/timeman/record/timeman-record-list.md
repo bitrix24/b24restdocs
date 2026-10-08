@@ -519,6 +519,15 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
+#### Tool Disabled
+
+Error Code: `TIMEMAN_TOOL_DISABLED`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `-` | Time management is disabled. | Enable the time tracking tool in the Bitrix24 settings ||
+|#
+
 #### Access Errors
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`

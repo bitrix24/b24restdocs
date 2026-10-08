@@ -648,6 +648,24 @@ Each element of the array contains the user identifier in the format `U<ID>` ||
 
 ## Error Handling
 
+HTTP status: **400**
+
+```json
+{
+    "error": "TIMEMAN_TOOL_DISABLED",
+    "error_description": "Time management is disabled."
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
+|#
+
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
