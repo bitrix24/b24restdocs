@@ -55,7 +55,7 @@ The SQL query of the dataset must contain a template that substitutes the time f
 
 **What templating in Superset is and why you need it.**
 
-In **Apache Superset**, templating lets you create **dynamic SQL queries** that adapt to user filters, date ranges, users, and URL parameters. It is based on the **Jinja** engine built into Superset. A **Jinja template** in Superset is a part of an SQL query wrapped in special syntax ({{ ... }} or {% ... %}) that is processed before the query is sent to the database.
+In **Apache Superset**, templating lets you create **dynamic SQL queries** that adapt to user filters, date ranges, users, and URL parameters. It is based on the **Jinja** engine built into Superset. A **Jinja template** in Superset is a part of an SQL query wrapped in special syntax (<code>&#123;&#123; ... &#125;&#125;</code> or <code>&#123;% ... %&#125;</code>) that is processed before the query is sent to the database.
 
 Superset first substitutes variable values and runs the Python logic inside the template, and only then sends the result to the database as a regular SQL query.
 
@@ -80,11 +80,11 @@ Superset first substitutes variable values and runs the Python logic inside the 
 
 #|
 || **Variable / function** | **Description** ||
-|| {{ from_dttm }} | Start date and time (from the time filter) ||
-|| {{ to_dttm }} | End date and time ||
-|| {{ filter_values('column_name') }} | List of values selected in the filter ||
-|| {{ current_username() }} | Name of the current user || 
-|| {{ current_user_id() }} | ID of the current user ||
+|| <code>&#123;&#123; from_dttm &#125;&#125;</code> | Start date and time (from the time filter) ||
+|| <code>&#123;&#123; to_dttm &#125;&#125;</code> | End date and time ||
+|| <code>&#123;&#123; filter_values('column_name') &#125;&#125;</code> | List of values selected in the filter ||
+|| <code>&#123;&#123; current_username() &#125;&#125;</code> | Name of the current user || 
+|| <code>&#123;&#123; current_user_id() &#125;&#125;</code> | ID of the current user ||
 |#
 
 **Usage examples:**
@@ -116,7 +116,7 @@ If "HR" and "IT" are selected, the query becomes
 **Important notes:**
 
 * filter_values() always returns a list – even if one item is selected.
-* If the filter is not set, filter_values() returns an empty list – handle this with {% if %}.
+* If the filter is not set, filter_values() returns an empty list – handle this with <code>&#123;% if %&#125;</code>.
 * Jinja template code is processed before the query runs – the result is plain SQL.
 * The most common use case is filtering by date.
 
