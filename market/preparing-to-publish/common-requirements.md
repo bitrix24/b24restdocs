@@ -166,6 +166,8 @@ For the first version of the application, this field does not need to be filled;
   4. Offensive, obscene information is present in the interface or demo data: calls to violence, pornography, racism, and other materials prohibited by government legislation;
   5. The functionality of the solution does not correspond to what is stated in the title and description;
   6. The solution is a clone of other solutions from the same developer in terms of graphic design and/or demo content;
+  7. The solution is a knowledge base or a training app about Bitrix24 features and/or how to work in Bitrix24;
+  8. The solution's only function is technical support for the developer's apps;
 - The functionality of the solution reveals:
   1. Texts with incorrect encoding;
   2. PHP Warnings, Fatal Errors, Syntax Errors, and/or Parse Errors, and similar messages from another server platform on which the solution is implemented;
