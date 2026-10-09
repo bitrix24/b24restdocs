@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to read the catalog or view warehouses and to modify measurement units
 
-This method adds a new measurement unit.
+The `catalog.measure.add` method adds a new measurement unit.
 
 ## Method Parameters
 
@@ -23,10 +23,10 @@ This method adds a new measurement unit.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating a new measurement unit ||
+[`object`](../../data-types.md) | Field values for creating a new measurement unit ([details](#fields)) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -366,11 +366,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **measure**
-[`catalog_measure`](../data-types.md#catalog_measure) | Object containing information about the created measurement unit ||
+[`object`](../../data-types.md) | Request result ([details](#result)) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **measure**
+[`catalog_measure`](../data-types.md#catalog_measure) | Created measurement unit ||
 |#
 
 ## Error Handling
@@ -389,19 +396,14 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | No access to edit
-||
-|| `200600000000` | Measurement unit with the specified `code` parameter already exists
-||
-|| `200600000010` | Measurement unit with the `isDefault` parameter set to `Y` already exists
-||
-|| `100` | Required parameter `fields` not provided
-||
-|| `0` | Required fields not set
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300020` | `Access Denied` | No permission to modify measurement units ||
+|| `400` | `200600000000` | `Duplicate entry for key [code]` | A measurement unit with this `code` already exists ||
+|| `400` | `200600000010` | `default value can be set once [isDefault]` | A default measurement unit already exists ||
+|| `400` | `100` | `Could not find value for parameter {fields}` | The required `fields` parameter was not provided ||
+|| `400` | `0` | `Required fields: code, measureTitle` | Required fields are missing; the error lists them ||
+|| `400` | `0` | `A measure with code '{code}' already exists.` | The unit code is taken; a database error occurred when saving ||
+|| `400` | `0` | `Internal error adding measure. Try adding again.` | An internal error occurred while adding the unit ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

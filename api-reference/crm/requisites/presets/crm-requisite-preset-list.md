@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "read" access permission for contacts and companies
 
-Retrieves a list of company details templates based on the filter.
+The `crm.requisite.preset.list` method retrieves a list of requisites templates based on a filter.
 
 ## Method Parameters
 
@@ -471,7 +471,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../data-types.md)| An array of objects with information about the selected templates. Each element contains the selected [template fields](#fields). ||
+[`array`](../../../data-types.md) | An array of the selected templates. Each element contains the selected [template fields](#fields) ||
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
 || **time**
@@ -480,12 +480,12 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+Example of an error for `select: ["BAD_FIELD"]`, HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"Access denied."
+    "error": "100",
+    "error_description": "Unknown field definition `BAD_FIELD` (BAD_FIELD) for \\Bitrix\\Crm\\Preset Entity."
 }
 ```
 
@@ -494,8 +494,11 @@ HTTP status: **40x**, **50x**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `Access denied` | Insufficient access permissions to retrieve the list of templates. ||
+|| **Status** | **`error` Code** | **`error_description` Text** | **Cause** ||
+|| `400` | `100` | `Unknown field definition ...` | An unknown template field was specified in `order` or `select` ||
+|| `400` | `ERROR_ARGUMENT` | `Invalid order ...` | An invalid sort direction was specified in `order` ||
+|| `400` | Empty value | `Parameter 'filter' must be array.` | The `filter` parameter was not provided as an object ||
+|| — | — | `Access denied` | Insufficient permissions to retrieve the list of templates ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -504,9 +507,9 @@ HTTP status: **40x**, **50x**
 
 - [{#T}](./crm-requisite-preset-add.md)
 - [{#T}](./crm-requisite-preset-update.md)
-- [{#T}](./crm-requisite-preset-countries.md)
 - [{#T}](./crm-requisite-preset-get.md)
 - [{#T}](./crm-requisite-preset-delete.md)
+- [{#T}](./crm-requisite-preset-countries.md)
 - [{#T}](./crm-requisite-preset-fields.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-company-with-requisite.md)
 - [{#T}](../../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contact-with-requisite.md)

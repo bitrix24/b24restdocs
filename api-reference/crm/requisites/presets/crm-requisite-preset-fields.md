@@ -13,15 +13,15 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method returns a formal description of the fields of the requisite template.
+The `crm.requisite.preset.fields` method returns formal descriptions of requisites template fields.
+
+## Method Parameters
 
 No parameters.
 
 ## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
-
-Searching for templates by country binding:
 
 {% list tabs %}
 
@@ -349,7 +349,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the field identifier and `value` is the object with [field attributes](#attributes) ||
+[`object`](../../../data-types.md) | An object in the format `{"NAME": {"type": "string", "title": "Name"}}`. Each key is a field ID, and its value is an object containing the [field attributes](#attributes) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -425,10 +425,21 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
 - false — no
 ||
 || **title**
-[`string`](../../../data-types.md) | Field identifier ||
+[`string`](../../../data-types.md) | Field name ||
 |#
 
 ## Error Handling
+
+Example of an authorization error, HTTP status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
@@ -436,7 +447,7 @@ Values of the form `#CRM_REQUISITE_PRESET_DEF_...` are reserved in CRM for ident
 
 - [{#T}](./crm-requisite-preset-add.md)
 - [{#T}](./crm-requisite-preset-update.md)
-- [{#T}](./crm-requisite-preset-countries.md)
 - [{#T}](./crm-requisite-preset-get.md)
 - [{#T}](./crm-requisite-preset-list.md)
 - [{#T}](./crm-requisite-preset-delete.md)
+- [{#T}](./crm-requisite-preset-countries.md)

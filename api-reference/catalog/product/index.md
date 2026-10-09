@@ -11,6 +11,8 @@ Choose a tool for developing with an AI agent:
 
 Using REST methods, you can create simple products or services, as well as products with variations.
 
+For a simple product, use `catalog.product.*`; for a service, use `catalog.product.service.*`. Create a product with variations through a parent product using `catalog.product.sku.*` and its related variations using `catalog.product.offer.*`. The fields for each type are described in [Catalog data types](../data-types.md); use the corresponding group's `getFieldsByFilter` method to retrieve the fields available in a specific catalog.
+
 A simple product or service is a single inventory item with a name and unit of measurement. A product variation is a trade offer where the product has additional characteristics: color and size. For each combination of characteristics, a separate inventory item with a unique SKU is created.
 
 > Quick navigation: [all methods and events](#all-methods)
@@ -41,9 +43,10 @@ A simple product or service is a single inventory item with a name and unit of m
 
 1. Get the trade catalog identifier using [catalog.catalog.list](../catalog/catalog-catalog-list.md)
 2. If products need to be distributed across sections, create sections using [catalog.section.*](../section/index.md)
-3. Create a product, service, parent product, or variation using the required method group
+3. Create a [product](./catalog-product-add.md), a [service](./service/catalog-product-service-add.md), or a [parent product](./sku/catalog-product-sku-add.md) with [variations](./offer/catalog-product-offer-add.md)
 4. Add images using [catalog.productImage.add](../product-image/catalog-product-image-add.md) or through image fields when creating a product
 5. Set the price using [catalog.price.*](../price/index.md)
+6. Verify the result with [catalog.product.get](./catalog-product-get.md) or the corresponding `get` method for a service, parent product, or variation
 
 ## Overview of Methods and Events {#all-methods}
 
@@ -79,6 +82,8 @@ A simple product or service is a single inventory item with a name and unit of m
 
 {% endlist %}
 
+Addition, update, and deletion events are described in the [Product Events Overview](./events/index.md).
+
 ### Services
 
 {% list tabs %}
@@ -106,6 +111,8 @@ A simple product or service is a single inventory item with a name and unit of m
     |#
 
 {% endlist %}
+
+For the service structure and choosing methods, see the [Services Overview](./service/index.md).
 
 ### Products with Variations: Parent Products
 
@@ -135,6 +142,8 @@ A simple product or service is a single inventory item with a name and unit of m
 
 {% endlist %}
 
+For the parent product structure and choosing methods, see the [Parent Products Overview](./sku/index.md).
+
 ### Products with Variations: Variations
 
 {% list tabs %}
@@ -162,3 +171,5 @@ A simple product or service is a single inventory item with a name and unit of m
     |#
 
 {% endlist %}
+
+For the variation structure and choosing methods, see the [Variations Overview](./offer/index.md).

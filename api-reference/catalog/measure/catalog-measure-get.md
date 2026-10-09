@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to read the catalog or view warehouses
 
-The method returns information about a unit of measurement by its ID.
+The `catalog.measure.get` method returns a measurement unit by its ID.
 
 ## Method Parameters
 
@@ -290,11 +290,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **measure**
-[`catalog_measure`](../data-types.md#catalog_measure) | Object containing information about the unit of measurement with the specified ID ||
+[`object`](../../data-types.md) | Request result ([details](#result)) ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **measure**
+[`catalog_measure`](../data-types.md#catalog_measure) | Measurement unit with the specified ID ||
 |#
 
 ## Error Handling
@@ -313,15 +320,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | No access to read
-||
-|| `200600000020` | Unit of measurement with this ID does not exist 
-||
-|| `100` | Parameter `id` not specified
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300010` | `Access Denied` | No permission to read measurement units ||
+|| `400` | `200600000020` | `measure does not exist.` | No measurement unit exists with this `id` ||
+|| `400` | `100` | `Could not find value for parameter {id}` | The required `id` parameter was not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

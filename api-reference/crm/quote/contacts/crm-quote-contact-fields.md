@@ -9,6 +9,12 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+{% note warning "DEPRECATED" %}
+
+Development of this method has stopped. There is no exact replacement for retrieving the link field descriptions. For new integrations, retrieve the description of an estimate's `contactIds` field with [crm.item.fields](../../universal/crm-item-fields.md) using `entityTypeId = 7`. It does not return descriptions of `CONTACT_ID`, `SORT`, or `IS_PRIMARY` for individual links.
+
+{% endnote %}
+
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: any user

@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to read the catalog or view warehouses and to modify measurement units
 
-This method deletes a measurement unit.
+The `catalog.measure.delete` method deletes a measurement unit.
+
+If products use the unit, assign them a different unit before deleting it. Deleting a measurement unit does not reassign it in products.
 
 ## Method Parameters
 
@@ -266,7 +268,7 @@ HTTP Status: **400**
 ```json
 {
     "error": 200040300020,
-    "error_description": "Access Denied",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -275,15 +277,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to delete
-||
-|| `200600000020` | Measurement unit with this identifier does not exist 
-||
-|| `100` | Parameter `id` not specified
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300020` | `Access Denied` | No permission to delete measurement units ||
+|| `400` | `200600000020` | `measure does not exist.` | No measurement unit exists with this `id` ||
+|| `400` | `100` | `Could not find value for parameter {id}` | The required `id` parameter was not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

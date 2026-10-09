@@ -1161,6 +1161,7 @@ HTTP status: **400**
 || Empty value | The 'USER_TYPE_ID' field is not found. | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
 || `ERROR_CORE` | Invalid custom type specified. | The provided `USER_TYPE_ID` does not exist ||
 || `ERROR_CORE` | List item with XML_ID=xml_id already exists. | The provided `XML_ID` in list items are not unique ||
+|| Empty value | `Access denied.` | The user does not have CRM administrator permissions to create a custom field ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

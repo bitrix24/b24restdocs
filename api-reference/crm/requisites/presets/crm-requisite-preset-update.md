@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "edit" access permission for both contacts and companies
 
-This method updates the requisite template.
+The `crm.requisite.preset.update` method updates a requisites template.
 
 ## Method Parameters
 
@@ -25,7 +25,7 @@ This method updates the requisite template.
 || **id***
 [`integer`](../../../data-types.md) | Identifier of the requisite template to be updated. Can be obtained using the method [`crm.requisite.preset.list`](./crm-requisite-preset-list.md) ||
 || **fields***
-[`array`](../../../data-types.md) | Set of template fields — an object of the form `{"field": "value"[, ...]}`, the values of which need to be changed ||
+[`object`](../../../data-types.md) | Template fields to update, as an object of the form `{"field": "value"[, ...]}`. `COUNTRY_ID` and `ENTITY_TYPE_ID` are set when the template is created; new values for these fields in `fields` are ignored ||
 |#
 
 ### Parameter fields
@@ -322,7 +322,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
@@ -336,9 +336,9 @@ HTTP status: **40x**, **50x**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `The Preset with ID '347' is not found` | Template with the specified identifier not found ||
-|| `Access denied` | Insufficient access permissions to update the template ||
+|| **Status** | **`error` Code** | **`error_description` Text** | **Cause** ||
+|| `400` | Empty value | `The Preset with ID '347' is not found` | No template exists with the specified ID ||
+|| — | — | `Access denied` | Insufficient permissions to update the template ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -346,8 +346,8 @@ HTTP status: **40x**, **50x**
 ## Continue Learning
 
 - [{#T}](./crm-requisite-preset-add.md)
-- [{#T}](./crm-requisite-preset-countries.md)
 - [{#T}](./crm-requisite-preset-get.md)
 - [{#T}](./crm-requisite-preset-list.md)
 - [{#T}](./crm-requisite-preset-delete.md)
+- [{#T}](./crm-requisite-preset-countries.md)
 - [{#T}](./crm-requisite-preset-fields.md)

@@ -1,7 +1,7 @@
 title: Typical use-cases and scenarios in tasks  
 href: index.md  
 items:  
-  - name: Typical use-cases for REST API in Tasks and tutorials  
+  - name: Common REST API Use Cases for Tasks
     href: index.md  
   - name: How to create a task with an attached file  
     href: how-to-create-task-with-file.md  

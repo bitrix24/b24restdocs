@@ -9,6 +9,12 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+{% note warning "DEPRECATED" %}
+
+Development of this method has stopped. For new integrations, retrieve the current `contactIds` with [crm.item.get](../../universal/crm-item-get.md), then remove the required ID from the array with [crm.item.update](../../universal/crm-item-update.md) using `entityTypeId = 7`. The universal method replaces the entire set of contacts and does not let you set `SORT` and `IS_PRIMARY` separately.
+
+{% endnote %}
+
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "modify" access permission for estimates

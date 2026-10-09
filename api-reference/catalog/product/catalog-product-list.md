@@ -13,24 +13,23 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to view the product catalog and permission to read the commercial catalog information block
 
-The method retrieves a list of products from the trade catalog based on a filter.
+The `catalog.product.list` method retrieves a list of products from the trade catalog based on a filter.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **select** 
-[`array`](../../data-types.md)| An array containing a list of fields that need to be selected (see the [catalog_product](../data-types.md#catalog_product) object fields).
-
-Required fields: `id`, `iblockId`
- ||
-|| **filter** 
+|| **select***
+[`array`](../../data-types.md)| Fields of [catalog_product](../data-types.md#catalog_product) to return. Include `id` and `iblockId`, for example `["id", "iblockId", "name"]` ||
+|| **filter***
 [`object`](../../data-types.md)| An object for filtering selected products in `{"field_1": "value_1", ... "field_N": "value_N"}` format.
 
 Possible values for `field` correspond to the fields of the [catalog_product](../data-types.md#catalog_product) object.
 
-Required fields:`iblockId`.
+Required field: `iblockId`.
 
 A key can be assigned an additional prefix that specifies the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -76,7 +75,7 @@ filter: {
 
 ||
 || **order**
-[`object`](../../data-types.md)| Object for sorting selected products in `{"field_1": "order_1", ... "field_N": "order_N"}` format.
+[`object`](../../data-types.md)| An object for sorting products in the format `{"field_1": "order_1", ... "field_N": "order_N"}`. For example, `{"id": "desc"}` returns products in descending ID order. If omitted, products are sorted by `id` in ascending order.
 
 Possible values for `field` correspond to the fields of the [catalog_product](../data-types.md#catalog_product) object.
 
@@ -86,7 +85,7 @@ Possible values for order:
 - `desc` — in descending order
  ||
 || **start** 
-[`string`](../../data-types.md)| The parameter is used to control pagination.
+[`integer`](../../data-types.md)| Offset for pagination. Defaults to `0`.
 
 The results page size is always static — 50 records.
 
@@ -763,8 +762,8 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **products**
+[`object`](../../data-types.md) | Request result containing the product list ||
+|| **result.products**
 [`catalog_product[]`](../data-types.md#catalog_product) | Array of objects containing information about the selected products ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
@@ -788,11 +787,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog ||
-|| `0` | Fields `id`, `iblockId` are not specified in the selection fields ||
-|| `0` | Field `iblockId` is not specified in the filter ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
+|| `400` | `200040300030` | `Access Denied` | No permission to read the product information block ||
+|| `400` | `200040300000` | `Iblock Not Found` | The information block in `filter.iblockId` was not found ||
+|| `400` | `0` | `Required select fields: id, iblockId` | `select` lacks one or both required fields; the error lists the missing fields ||
+|| `400` | `0` | `Required filter fields: iblockId` | `filter.iblockId` was not provided ||
+|| `400` | `0` | `Incorrect filter format` | `filter` was not provided as an object ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

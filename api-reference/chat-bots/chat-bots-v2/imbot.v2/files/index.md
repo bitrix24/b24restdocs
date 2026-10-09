@@ -19,6 +19,8 @@ The methods allow you to upload files to the chat on behalf of the bot and obtai
 2. Retain `result.file.id` from the response — this is the file ID on Drive, and `result.messageId` — the ID of the created message with the file.
 3. To provide the user or an external system with a link to the file, call [imbot.v2.File.download](./file-download.md), passing this ID in the `fileId` parameter.
 
+The `result.downloadUrl` link contains an authorization token. Reusing the link is not guaranteed.
+
 A file is always uploaded to a specific dialog: the recipient is set by the `dialogId` parameter — [Format of dialogId](../../index.md#dialog-id). The description of the File object fields is available in [Objects and Fields](../../entities.md#file).
 
 Both methods appeared only in `imbot.v2`. In the previous API, the same actions required three separate calls: uploading the file to Drive, attaching it to the chat, and sending a message. The full version mapping table is available in [Migration from imbot to imbot.v2](../../migration.md).
@@ -33,6 +35,8 @@ Both methods appeared only in `imbot.v2`. In the previous API, the same actions 
 |#
 
 How to prepare the file content — [How to Upload Files](../../../../files/how-to-upload-files.md).
+
+If a file exceeds 100 MB, [imbot.v2.File.upload](./file-upload.md) returns `FILE_TOO_LARGE`. An invalid Base64 string returns `FILE_INVALID_CONTENT`. The error response structure is described in [Response Format](../../index.md#response-format).
 
 ## Relationship with Other Objects {#relations}
 

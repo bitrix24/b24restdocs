@@ -267,12 +267,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300040` | Insufficient permissions to delete the product ||
-|| `200040300040` | Insufficient permissions to delete the information block ||
-|| `200040300010` | Insufficient permissions to view the trade catalog ||
-|| `200040300000` | Information block not found ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300040` | `Access Denied` | No permission to delete the product in the catalog or the information block element ||
+|| `400` | `200040300000` | `Iblock Not Found` | The product's information block was not found ||
+|| `400` | Empty code | `product does not exist.` | No product exists with the specified `id` ||
+|| Depends on the error | `0` | Deletion error text | Deleting the element failed. The method passes through the information block error text; a database error returns `Internal error deleting product. Try deleting again.` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

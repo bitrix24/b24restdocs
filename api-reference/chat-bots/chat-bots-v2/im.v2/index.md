@@ -42,10 +42,14 @@ The main differences from the bot platform methods:
 
 First, the application subscribes to event records, and then it periodically retrieves the accumulated queue itself.
 
-1. Subscribe to event records via [im.v2.Event.subscribe](./events/event-subscribe.md).
-2. Periodically retrieve new events via [im.v2.Event.get](./events/event-get.md).
-3. Pass `offset` to confirm already processed events.
-4. To stop recording, use [im.v2.Event.unsubscribe](./events/event-unsubscribe.md).
+1. Subscribe to event records with [im.v2.Event.subscribe](./events/event-subscribe.md)
+2. Periodically retrieve new events with [im.v2.Event.get](./events/event-get.md)
+3. Process all events in `result.events` and retain `result.nextOffset`
+4. On the next `im.v2.Event.get` call, pass the retained value as `offset` to acknowledge the processed events. If processing fails, poll again with the previous `offset`
+5. If `result.hasMore` is `true`, make the next request immediately. Otherwise, poll again later
+6. To stop recording, use [im.v2.Event.unsubscribe](./events/event-unsubscribe.md)
+
+For example, after `im.v2.Event.subscribe`, call `im.v2.Event.get` with `{"limit": 100}`. If the response contains `"nextOffset": 2002`, process the events and call `im.v2.Event.get` with `{"offset": 2002, "limit": 100}`. The response format and polling parameters are described on the [im.v2.Event.get](./events/event-get.md) page.
 
 {% note info "What is polling mode" %}
 
@@ -55,7 +59,7 @@ This distinguishes polling from webhook: in webhook mode, Bitrix24 calls the app
 
 {% endnote %}
 
-The event types that arrive in the `events[].type` field: `ONIMV2MESSAGEADD`, `ONIMV2MESSAGEUPDATE`, `ONIMV2MESSAGEDELETE`, `ONIMV2REACTIONCHANGE`, `ONIMV2JOINCHAT`. The data of each is described in [Event Formats](./events/events.md).
+The event types that arrive in `result.events[].type` are `ONIMV2MESSAGEADD`, `ONIMV2MESSAGEUPDATE`, `ONIMV2MESSAGEDELETE`, `ONIMV2REACTIONCHANGE`, and `ONIMV2JOINCHAT`. Their data is described in [Event Formats](./events/events.md).
 
 ## Working with Files {#files}
 

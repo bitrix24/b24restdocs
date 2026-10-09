@@ -11,6 +11,10 @@ Choose a tool for developing with an AI agent:
 
 Custom fields store information about a company in various data formats: string, number, link, address, and others. The group of methods `crm.company.userfield.*` creates, modifies, retrieves, and deletes such fields, and the [events of the subsection](./events/index.md) notify the application about changes in them.
 
+The [get](./crm-company-userfield-get.md) and [list](./crm-company-userfield-list.md) methods return field data, including `ID`, the `FIELD_NAME` code, the `USER_TYPE_ID` type, and `SETTINGS`. The `get` method returns labels by Bitrix24 language; `list` returns strings for the language specified in `filter.LANG`. The main object fields are described in the [get method response](./crm-company-userfield-get.md#result-fields).
+
+To create a field, determine its type and available settings, then call [add](./crm-company-userfield-add.md). Verify the created field with [get](./crm-company-userfield-get.md) or [list](./crm-company-userfield-list.md). Use [update](./crm-company-userfield-update.md) to change it or [delete](./crm-company-userfield-delete.md) to remove it.
+
 General information about companies and the other groups of methods is in the section [Companies in CRM](../index.md).
 
 > Quick navigation: [all methods and events](#all-methods)

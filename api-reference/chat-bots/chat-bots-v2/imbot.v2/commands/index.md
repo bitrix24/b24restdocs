@@ -11,6 +11,10 @@ Choose a tool for developing with an AI agent:
 
 The methods manage the slash commands of the chatbot: registration, updating, deletion, and sending a response to the command call.
 
+## Migrating from imbot to imbot.v2
+
+For a new integration, use `imbot.v2.Command.*` methods. If an integration already uses `imbot.command.*`, map the methods and events using the [migration table](../../migration.md). Both API versions operate in parallel, but the event format depends on the API version used to register the bot.
+
 > Quick navigation: [all methods](#all-methods)
 
 ## How Slash Commands Work
@@ -30,6 +34,8 @@ In the second case, the command is used as a hidden action of the button and doe
 4. If necessary, modify the command with [imbot.v2.Command.update](./command-update.md) or delete it with [imbot.v2.Command.unregister](./command-unregister.md).
 
 To check which commands are already registered for the bot, use the [imbot.v2.Command.list](./command-list.md) method.
+
+The full description of the Command object fields is in [Objects and Fields](../../entities.md#command).
 
 ## Where the Command Is Available {#scope}
 
@@ -81,6 +87,7 @@ If a single message contains several slash commands, a separate event is generat
 
 ## Continue Your Exploration
 
+- [Command Object](../../entities.md#command)
 - [API imbot.v2 Change Log](../../change-log.md)
 - [{#T}](../../index.md)
 - [{#T}](../../migration.md)

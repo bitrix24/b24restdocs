@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to view the product catalog
 
-This method downloads product files from the trade catalog based on the provided parameters.
+The `catalog.product.download` method downloads product files from the trade catalog using the provided parameters.
 
 ## Method Parameters
 
@@ -46,17 +46,19 @@ To obtain product identifiers, use [catalog.product.list](./catalog-product-list
 || **fieldName*** 
 [`string`](../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored.
 
-- `DETAIL_PICTURE` — detailed image, field available in the old product card
-- `PREVIEW_PICTURE` — preview image, field available in the old product card
-- `PROPERTY_N` — property, where `N` is the property identifier or property code
+- `detailPicture` — detailed image
+- `previewPicture` — preview image
+- `propertyN` — file property, where `N` is the property ID or code
+
+In [catalog.product.get](./catalog-product-get.md) and [catalog.product.list](./catalog-product-list.md) responses, the `fieldName` value is already included in the file's `url` and `urlMachine`. Pass it in the same form. Internally, the method converts field names to `DETAIL_PICTURE`, `PREVIEW_PICTURE`, and `PROPERTY_N`
 
 To obtain existing identifiers or property codes for products, use [catalog.productProperty.list](../product-property/catalog-product-property-list.md)
  ||
 |#
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
-
 ## Code Examples
+
+The examples use direct HTTP requests to save the binary response.
 
 {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -65,220 +67,77 @@ To obtain existing identifiers or property codes for products, use [catalog.prod
 - cURL (Webhook)
 
     ```bash
-    curl -X POST \
+    curl --fail -X POST \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
     -d '{"fields":{"fileId":6439,"productId":1243,"fieldName":"detailPicture"}}' \
+    -o product-picture.png \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.download
     ```
 
 - cURL (OAuth)
 
     ```bash
-    curl -X POST \
+    curl --fail -X POST \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
     -d '{"fields":{"fileId":6439,"productId":1243,"fieldName":"detailPicture"},"auth":"**put_access_token_here**"}' \
+    -o product-picture.png \
     https://**put_your_bitrix24_address**/rest/catalog.product.download
     ```
 
-- JS (TS)
-
-    ```ts
-    // This snippet is an ES module: top-level await requires type="module" or a bundler.
-    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
-    import { Text } from '@bitrix24/b24jssdk'
-    import type { B24Frame } from '@bitrix24/b24jssdk'
-
-    declare const $b24: B24Frame
-
-    try {
-      const response = await $b24.actions.v2.call.make<boolean>({
-        method: 'catalog.product.download',
-        params: {
-          fields: {
-            fileId: 6439,
-            productId: 1243,
-            fieldName: 'detailPicture',
-          },
-        },
-        requestId: Text.getUuidRfc4122()
-      })
-
-      // The payload is available only on a successful response
-      if (!response.isSuccess) {
-        console.error(response.getErrorMessages().join('; '))
-      } else {
-        const result = response.getData()!.result
-        console.info('Download result:', result)
-      }
-    } catch (error) {
-      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-      console.error(error)
-    }
-    ```
-
-- JS (UMD)
-
-    ```html
-    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
-    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
-    <script>
-      async function downloadProduct() {
-        try {
-          // Initialize the SDK inside a Bitrix24 frame
-          const $b24 = await B24Js.initializeB24Frame()
-
-          const response = await $b24.actions.v2.call.make({
-            method: 'catalog.product.download',
-            params: {
-              fields: {
-                fileId: 6439,
-                productId: 1243,
-                fieldName: 'detailPicture',
-              },
-            },
-            requestId: B24Js.Text.getUuidRfc4122()
-          })
-
-          // The payload is available only on a successful response
-          if (!response.isSuccess) {
-            console.error(response.getErrorMessages().join('; '))
-            return
-          }
-
-          const result = response.getData().result
-          console.info('Download result:', result)
-        } catch (error) {
-          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
-          console.error(error)
-        }
-      }
-
-      document.addEventListener('DOMContentLoaded', downloadProduct)
-    </script>
-    ```
-
-- Python
+- Python (Webhook)
 
     ```python
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+    import json
+    from urllib.request import Request, urlopen
 
-    try:
-        bitrix_response = client.catalog.product.download(
-            fields={
-                "fileId": 6439,
-                "productId": 1243,
-                "fieldName": "detailPicture",
-            },
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-- PHP
-
-    ```php
-    try {
-        $response = $b24Service
-            ->core
-            ->call(
-                'catalog.product.download',
-                [
-                    'fields' => [
-                        'fileId'    => 6439,
-                        'productId' => 1243,
-                        'fieldName' => 'detailPicture',
-                    ],
-                ]
-            );
-    
-        $result = $response
-            ->getResponseData()
-            ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
-    } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error downloading product file: ' . $e->getMessage();
-    }
-    ```
-
-- BX24.js
-
-    ```js
-    BX24.callMethod(
-        'catalog.product.download',
-        {
-            fields: {
-                fileId: 6439,
-                productId: 1243,
-                fieldName: 'detailPicture',
-            }
-        },
-        function(result) {
-            if (result.error()) {
-                console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
+    url = "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.download"
+    payload = {
+        "fields": {
+            "fileId": 6439,
+            "productId": 1243,
+            "fieldName": "detailPicture",
         }
-    );
+    }
+    request = Request(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+
+    with urlopen(request) as response, open("product-picture.png", "wb") as output:
+        output.write(response.read())
     ```
 
-- PHP CRest
+- PHP (Webhook)
 
     ```php
-    require_once('crest.php');
+    <?php
+    $url = 'https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.download';
+    $payload = json_encode([
+        'fields' => [
+            'fileId' => 6439,
+            'productId' => 1243,
+            'fieldName' => 'detailPicture',
+        ],
+    ], JSON_THROW_ON_ERROR);
 
-    $result = CRest::call(
-        'catalog.product.download',
-        [
-            'fields' => [
-                'fileId' => 6439,
-                'productId' => 1243,
-                'fieldName' => 'detailPicture',
-            ]
-        ]
-    );
+    $request = curl_init($url);
+    curl_setopt_array($request, [
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $payload,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        CURLOPT_RETURNTRANSFER => true,
+    ]);
 
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-- Go
-
-    ```go
-    // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "catalog.product.download", b24.Params{
-    	"fields": b24.Params{
-    		"fileId":    6439,
-    		"productId": 1243,
-    		"fieldName": "detailPicture",
-    	},
-    })
-    if err != nil {
-    	return fmt.Errorf("catalog.product.download: %w", err)
+    $file = curl_exec($request);
+    $status = curl_getinfo($request, CURLINFO_HTTP_CODE);
+    $error = curl_error($request);
+    curl_close($request);
+    if ($file === false || $status !== 200) {
+        throw new RuntimeException('Failed to download product file: HTTP ' . $status . ' ' . $error);
     }
-
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
+    file_put_contents('product-picture.png', $file);
     ```
 
 {% endlist %}
@@ -287,11 +146,11 @@ To obtain existing identifiers or property codes for products, use [catalog.prod
 
 HTTP status: **200**
 
-A file is returned based on the provided parameters.
+The response contains the file content. The method checks that `fileId` belongs to the specified product and `fieldName`. Save the response as a file: a successful call has no JSON `result` field.
 
 ### Returned Data
 
-A file is returned based on the provided parameters.
+The file content is returned, not a JSON `result` object. Retrieve the file ID and URL from `detailPicture`, `previewPicture`, or a file property in the [catalog.product.get](./catalog-product-get.md) response.
 
 ## Error Handling
 
@@ -309,13 +168,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the trade catalog ||
-|| `0` | The product with the specified identifier does not exist ||
-|| `0` | The specified property does not exist or is not a file ||
-|| `0` | The file with the specified identifier does not exist ||
-|| `0` | Required fields were not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
+|| `400` | Empty code | `product does not exist.` | No product exists with the specified `productId` ||
+|| `400` | `0` | `Required fields: fieldName, fileId, productId` | Required fields were not provided; the description lists the missing fields ||
+|| `400` | `0` | `Name file field is not available` | `fieldName` is not a valid product file field ||
+|| `400` | `0` | `Product file wrong` | `fileId` does not belong to the specified product and field ||
+|| `400` | `0` | `Product is empty` | The file record was not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

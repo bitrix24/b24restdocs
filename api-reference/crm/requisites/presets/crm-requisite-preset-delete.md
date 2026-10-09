@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "delete" access permission for both contacts and companies
 
-Deletes a company details template by its identifier.
+The `crm.requisite.preset.delete` method deletes a requisites template by its ID.
 
 ## Method Parameters
 
@@ -29,8 +29,6 @@ Deletes a company details template by its identifier.
 ## Code Examples
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
-
-Searching for templates by country binding:
 
 {% list tabs %}
 
@@ -265,7 +263,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
@@ -279,10 +277,10 @@ HTTP status: **40x**, **50x**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `The Preset with ID '347' is not found` | Template with the specified identifier not found ||
-|| You cannot delete the template because requisites have already been created for it | Cannot delete the template for which requisites have been created. To delete the template, first delete the requisites ||
-|| `Access denied` | Insufficient access permissions to delete the template ||
+|| **Status** | **`error` Code** | **`error_description` Text** | **Cause** ||
+|| `400` | Empty value | `The Preset with ID '347' is not found` | No template exists with the specified ID ||
+|| — | — | `You cannot delete the template because requisites have already been created for it` | To delete a template used by existing requisites, delete those requisites first ||
+|| — | — | `Access denied` | Insufficient permissions to delete the template ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -291,7 +289,7 @@ HTTP status: **40x**, **50x**
 
 - [{#T}](./crm-requisite-preset-add.md)
 - [{#T}](./crm-requisite-preset-update.md)
-- [{#T}](./crm-requisite-preset-countries.md)
 - [{#T}](./crm-requisite-preset-get.md)
 - [{#T}](./crm-requisite-preset-list.md)
+- [{#T}](./crm-requisite-preset-countries.md)
 - [{#T}](./crm-requisite-preset-fields.md)

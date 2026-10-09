@@ -691,14 +691,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400`     | Parameter 'fields' must be array | The provided `fields` is not an object ||
-|| `400`     | ID is not defined or invalid     | The passed `id` is less than zero or not passed at all ||
-|| `403` | Access denied | Occurs when:
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Parameter 'fields' must be array | The provided `fields` is not an object ||
+|| `400` | Empty value | ID is not defined or invalid | The provided `id` is less than or equal to zero or was not provided ||
+|| `400` | Empty value | Access denied | Occurs when:
 - the user does not have administrative rights
 - the user tries to change a user field not linked to companies ||
-|| `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The user field with the passed `id` does not exist ||
-|| `ERROR_CORE`               | List item with value XML_ID='XML_ID' already exists | The passed `XML_ID` for the list element must be unique within the elements of the user field list ||
+|| `400` | `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The custom field with the provided `id` does not exist ||
+|| `400` | `ERROR_CORE` | List item with value XML_ID='XML_ID' already exists | Each list item's `XML_ID` must be unique within the custom field ||
 |#
 {% include [System errors](../../../../_includes/system-errors.md) %}
 

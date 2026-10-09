@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "add" access permission for both contacts and companies
 
-This method creates a new requisites template.
+The `crm.requisite.preset.add` method creates a new requisites template.
 
 ## Method Parameters
 
@@ -339,12 +339,12 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **40x**, **50x**
+HTTP status: **400**
 
 ```json
 {
     "error": "",
-    "error_description": "ENTITY_TYPE_ID is not defined or invalid"
+    "error_description": "ENTITY_TYPE_ID is not defined or invalid."
 }
 ```
 {% include notitle [Error handling](../../../../_includes/error-info.md) %}
@@ -352,9 +352,11 @@ HTTP status: **40x**, **50x**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ENTITY_TYPE_ID is not defined or invalid` | The identifier of the parent object's type is not defined or has an invalid value ||
-|| `Access denied` | Insufficient access permissions to add the template ||
+|| **Status** | **`error` Code** | **`error_description` Text** | **Cause** ||
+|| `400` | Empty value | `ENTITY_TYPE_ID is not defined or invalid.` | The parent object type ID is missing or invalid ||
+|| `400` | Empty value | `Invalid value of field: COUNTRY_ID.` | An invalid country ID was provided ||
+|| `400` | Empty value | `Required field "NAME" is missing` | The template name was not provided or is an empty string ||
+|| — | — | `Access denied` | Insufficient permissions to add a template ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -362,10 +364,10 @@ HTTP status: **40x**, **50x**
 ## Continue Learning
 
 - [{#T}](./crm-requisite-preset-update.md)
-- [{#T}](./crm-requisite-preset-countries.md)
 - [{#T}](./crm-requisite-preset-get.md)
 - [{#T}](./crm-requisite-preset-list.md)
 - [{#T}](./crm-requisite-preset-delete.md)
+- [{#T}](./crm-requisite-preset-countries.md)
 - [{#T}](./crm-requisite-preset-fields.md)
 
 

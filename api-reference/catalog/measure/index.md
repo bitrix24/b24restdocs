@@ -11,6 +11,8 @@ Choose a tool for developing with an AI agent:
 
 Every product has a measurement unit: weight, quantity, volume, and so on. Bitrix24 offers popular options, but you can add your own.
 
+A measurement unit has a unique numeric `code`, a `measureTitle` name, and a `symbol`. The `isDefault` field indicates whether it is the default. The object structure is described in [`catalog_measure`](../data-types.md#catalog_measure), and [catalog.measure.getFields](./catalog-measure-get-fields.md) returns field properties.
+
 To set the primary measurement unit, specify the value `Y` in the `isDefault` parameter. Then, when creating a new product, it will be automatically selected in the detail form.
 
 > Quick navigation: [all methods and events](#all-methods)
@@ -18,6 +20,13 @@ To set the primary measurement unit, specify the value `Y` in the `isDefault` pa
 > User documentation:
 > - [How to add and configure units of measurement in CRM](https://helpdesk.bitrix24.com/open/7921829/)
 > - [Units of measurement in services](https://helpdesk.bitrix24.com/open/17366738/)
+
+## Getting Started
+
+1. Retrieve available fields and their properties with [catalog.measure.getFields](./catalog-measure-get-fields.md)
+2. Find an existing unit with [catalog.measure.list](./catalog-measure-list.md), or create one with [catalog.measure.add](./catalog-measure-add.md), specifying `code` and `measureTitle`
+3. Retrieve its `id` from the add or list response and pass it to [catalog.measure.get](./catalog-measure-get.md) to verify the data
+4. If needed, update the unit with [catalog.measure.update](./catalog-measure-update.md) or delete it with [catalog.measure.delete](./catalog-measure-delete.md)
 
 ## Measurement Unit Ratio
 
@@ -41,7 +50,7 @@ You can view measurement unit ratios using the methods [catalog.ratio.*](../rati
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the methods: a user with permission to read the catalog or view warehouses. Adding, updating, and deleting also require permission to modify measurement units
 
 {% list tabs %}
 

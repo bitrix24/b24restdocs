@@ -407,9 +407,56 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response, contains information about the custom field. The final list of fields depends on the field type, detailed descriptions of the fields can be found in the method [crm.company.userfield.add](./crm-company-userfield-add.md)||
+[`object`](../../../data-types.md) | Response object. Its fields are described [below](#result-fields) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Fields of the Result Object {#result-fields}
+
+#|
+|| **Field**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../../data-types.md) | Numeric custom field ID as a string ||
+|| **ENTITY_ID**
+[`string`](../../../data-types.md) | CRM object code. For a company custom field, `CRM_COMPANY` ||
+|| **FIELD_NAME**
+[`string`](../../../data-types.md) | Full field code with the `UF_CRM_` prefix ||
+|| **USER_TYPE_ID**
+[`string`](../../../data-types.md) | Custom field type. Available types are returned by [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) ||
+|| **XML_ID**
+[`string`](../../../data-types.md)\|`null` | External field code. Returns `null` if not set ||
+|| **SORT**
+[`string`](../../../data-types.md) | Sort index as a string ||
+|| **MULTIPLE**
+[`string`](../../../data-types.md) | Multiple field: `Y` for yes, `N` for no ||
+|| **MANDATORY**
+[`string`](../../../data-types.md) | Required field: `Y` for yes, `N` for no ||
+|| **SHOW_FILTER**
+[`string`](../../../data-types.md) | Filter display mode: `N` for hidden, `I` for exact match, `E` for pattern, `S` for substring ||
+|| **SHOW_IN_LIST**
+[`string`](../../../data-types.md) | Show the field in the list: `Y` for yes, `N` for no ||
+|| **EDIT_IN_LIST**
+[`string`](../../../data-types.md) | Allow editing in the list: `Y` for yes, `N` for no ||
+|| **IS_SEARCHABLE**
+[`string`](../../../data-types.md) | Include field values in search: `Y` for yes, `N` for no ||
+|| **SETTINGS**
+[`object`](../../../data-types.md) | Field settings. Keys depend on `USER_TYPE_ID`; retrieve their descriptions with [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) ||
+|| **EDIT_FORM_LABEL**
+[`object`](../../../data-types.md) | Field labels in the edit form, keyed by language code ||
+|| **LIST_COLUMN_LABEL**
+[`object`](../../../data-types.md) | List column headings, keyed by language code ||
+|| **LIST_FILTER_LABEL**
+[`object`](../../../data-types.md) | Field labels in the filter, keyed by language code ||
+|| **ERROR_MESSAGE**
+[`object`](../../../data-types.md) | Error messages, keyed by language code ||
+|| **HELP_MESSAGE**
+[`object`](../../../data-types.md) | Help text, keyed by language code ||
+|| **LIST**
+[`object[]`](../../../data-types.md) | List items if `USER_TYPE_ID` is `enumeration`. Each item contains `ID`, `SORT`, `VALUE`, and `DEF` ||
+|| **USER_TYPE_OWNER**
+[`string`](../../../data-types.md) | Application ID if the field uses a custom type registered by an application ||
 |#
 
 ## Error Handling
@@ -429,10 +476,10 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `403` | Access denied | Occurs when:
+|| Empty value | Access denied | Occurs when:
 - the user does not have read access permission for companies
 - the user attempts to access a custom field not associated with companies ||
-|| `400` | ID is not defined or invalid | The provided `id` is less than or equal to zero, or not provided at all ||
+|| Empty value | ID is not defined or invalid | The provided `id` is less than or equal to zero or was not provided ||
 || `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The custom field with the provided `id` was not found ||
 |#
 {% include [System errors](../../../../_includes/system-errors.md) %}

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to read the catalog or view warehouses and to modify measurement units
 
-This method updates the measurement unit.
+The `catalog.measure.update` method updates a measurement unit.
 
 ## Method Parameters
 
@@ -22,13 +22,13 @@ This method updates the measurement unit.
 #|
 || **Name**
 `type` | **Description** ||
-|| **Id***
+|| **id***
 [`catalog_measure.id`](../data-types.md#catalog_measure) | Identifier of the measurement unit ||
 || **fields***
-[`object`](../../data-types.md) | Field values for updating the measurement unit ||
+[`object`](../../data-types.md) | Field values for updating the measurement unit ([details](#fields)) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 #|
 || **Name**
@@ -287,7 +287,7 @@ Only one measurement unit from the entire directory can have the value `Y`
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.measure.update", b24.Params{
-    	"Id": 8,
+        "id": 8,
     	"fields": b24.Params{
     		"symbol":           "pair",
     		"symbolLetterIntl": "nrp",
@@ -355,11 +355,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **measure**
-[`catalog_measure`](../data-types.md#catalog_measure) | Object with information about the updated measurement unit ||
+[`object`](../../data-types.md) | Request result ([details](#result)) ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **measure**
+[`catalog_measure`](../data-types.md#catalog_measure) | Updated measurement unit ||
 |#
 
 ## Error Handling
@@ -368,8 +375,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description":"Required fields: code"
+    "error": 200600000000,
+    "error_description": "Duplicate entry for key [code]"
 }
 ```
 
@@ -378,23 +385,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | No access to edit
-||
-|| `200600000000` | Measurement unit with the specified `code` already exists
-||
-|| `200600000010` | Measurement unit with the `isDefault` parameter set to `Y` already exists
-||
-|| `200600000020` | Measurement unit with such an identifier does not exist
-||
-|| `100` | Parameter `id` not specified
-||
-|| `100` | Parameter `fields` not specified or empty
-||
-|| `0` | Required fields of the `fields` structure not provided
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300020` | `Access Denied` | No permission to modify measurement units ||
+|| `400` | `200600000000` | `Duplicate entry for key [code]` | A measurement unit with this `code` already exists ||
+|| `400` | `200600000010` | `default value can be set once [isDefault]` | A default measurement unit already exists ||
+|| `400` | `200600000020` | `measure does not exist.` | No measurement unit exists with this `id` ||
+|| `400` | `100` | `Could not find value for parameter {id}` | The required `id` parameter was not provided ||
+|| `400` | `100` | `Could not find value for parameter {fields}` | The required `fields` parameter was not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

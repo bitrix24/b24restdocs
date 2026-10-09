@@ -9,6 +9,12 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+{% note warning "DEPRECATED" %}
+
+Development of the `crm.quote.contact.*` methods has stopped. For new integrations, retrieve an estimate's contacts with [crm.item.get](../../universal/crm-item-get.md) and change the set with [crm.item.update](../../universal/crm-item-update.md): specify `entityTypeId = 7` and use the `contactIds` field. Retrieve the description of `contactIds` with [crm.item.fields](../../universal/crm-item-fields.md). The universal methods do not let you set `SORT` and `IS_PRIMARY` for individual links separately.
+
+{% endnote %}
+
 The group of methods crm.quote.contact.* links contacts to an estimate and removes that link. An estimate can have several contacts, one of which is considered primary. The methods with items in their name work with the entire set at once, and the rest work with a single link.
 
 > Quick navigation: [all methods](#all-methods)
@@ -41,15 +47,13 @@ All methods of the group take the estimate identifier in the `id` parameter. The
 
 ## How to Retrieve and Change the Set of Contacts
 
-The multiple field `CONTACT_IDS` is available in the methods [crm.quote.add](../crm-quote-add.md) and [crm.quote.update](../crm-quote-update.md), but it is not returned by the methods [crm.quote.get](../crm-quote-get.md) and [crm.quote.list](../crm-quote-list.md) — the only way to read the contacts of an existing estimate is the method [crm.quote.contact.items.get](./crm-quote-contact-items-get.md).
+The multiple field `CONTACT_IDS` is available in the methods [crm.quote.add](../crm-quote-add.md) and [crm.quote.update](../crm-quote-update.md), but it is not returned by the methods [crm.quote.get](../crm-quote-get.md) and [crm.quote.list](../crm-quote-list.md). Among the `crm.quote.*` methods, [crm.quote.contact.items.get](./crm-quote-contact-items-get.md) retrieves the contacts of an existing estimate.
 
 The methods change the set of contacts in different ways, and this determines which one to choose:
 
 - [crm.quote.contact.add](./crm-quote-contact-add.md) adds a single contact to those already linked. If the contact is already linked to the estimate, the method returns `false` and changes nothing
 - [crm.quote.contact.items.set](./crm-quote-contact-items-set.md) replaces the entire set: contacts that are not in the list you pass are unlinked from the estimate
 - [crm.quote.contact.delete](./crm-quote-contact-delete.md) removes a single contact from the estimate, and [crm.quote.contact.items.delete](./crm-quote-contact-items-delete.md) removes all of them at once
-
-The link can also be changed using the universal method [crm.item.update](../../universal/crm-item-update.md) with `entityTypeId = 7` — there the field is named `contactIds`. It is suitable only for replacing the entire set: `SORT` is recalculated from the position of the contact in the array, and the first contact of the list becomes the primary one. To set the order and the primary contact explicitly, or to change a single link, use the methods of this group.
 
 ## Benefits of Linking Estimates to Contacts
 

@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The keyboard consists of buttons beneath the message. They can be used to open links, perform actions, and trigger commands.
+The keyboard consists of buttons beneath a message. They can open links, perform actions, and trigger commands. Use a keyboard when an action should remain a separate button beneath the message; for an action within the text, use [BBCode](./message-formatting.md).
 
 Methods that support keyboard functionality:
 
@@ -26,15 +26,15 @@ Methods that support keyboard functionality:
 
 ## How to Add a Keyboard
 
-To add a keyboard, pass the `KEYBOARD` parameter when creating or updating a message.
+To add a keyboard when creating or updating a message, pass it in `fields.keyboard` for `imbot.v2` methods or as the top-level `KEYBOARD` parameter for `im.*` methods. `imbot.v2` calls require the `imbot` scope and access as the registered bot's owner. When authorizing with a webhook, pass `botToken` as a method parameter. Access requirements for `im.*` methods are described on their pages.
 
-`KEYBOARD` can be passed as:
+A `keyboard` or `KEYBOARD` value can be passed as:
 
 - a JSON string
 - an object with the root key `BUTTONS`
 - an array of buttons without wrapping
 
-If the `KEYBOARD` does not contain the `BUTTONS` key, the server will automatically assume that a shortened format has been provided and will wrap the array in `BUTTONS`.
+If the keyboard value does not contain the `BUTTONS` key, the server treats it as a shortened format and wraps the array in `BUTTONS`. Button field names inside `BUTTONS` are uppercase in both API versions.
 
 {% list tabs %}
 
@@ -62,6 +62,19 @@ If the `KEYBOARD` does not contain the `BUTTONS` key, the server will automatica
   ```
 
 {% endlist %}
+
+In the examples above, `KEYBOARD` is shown as a parameter of `im.*` methods. For `imbot.v2` methods, pass its contents in `fields.keyboard`, as shown in the message sending examples below.
+
+## How to Choose an Action
+
+#|
+|| **If You Need To** | **Use** | **What Happens** ||
+|| Show a separate button that performs an action in the chat interface | `ACTION` with `ACTION_VALUE` in the button | The client inserts or sends text, copies it, starts a call, or opens a dialog. An `ACTION` button does not generate a separate click event ||
+|| Receive a button click event and handle it in the bot | `COMMAND` in the button | The registered command triggers [ONIMBOTV2COMMANDADD](../events/events.md#onimbotv2commandadd) with `command.context: "keyboard"` ||
+|| Send a command directly from the message text without a separate button | [`[send=]`](./message-formatting.md) BBCode | Clicking the link in the text sends the command immediately ||
+|#
+
+A button with `ACTION: "SEND"` sends the text from `ACTION_VALUE`. To make the bot react to a specific button, register a command and specify it in `COMMAND`.
 
 ## Button Fields
 
@@ -388,3 +401,10 @@ To disable button display, pass:
 - `textarea` — entered manually
 - `keyboard` — invoked by a button
 - `menu` — invoked from the context menu
+
+## Continue Learning
+
+- [ONIMBOTV2COMMANDADD](../events/events.md#onimbotv2commandadd) — event format when a command is called from a button
+- [imbot.v2.Command.register](../commands/command-register.md) — registering a button command
+- [Text Formatting](./message-formatting.md) — BBCode for actions within a message
+- [Message Attachments](./attachments/index.md) — cards with text, links, images, and files

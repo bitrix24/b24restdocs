@@ -9,6 +9,12 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+{% note warning "DEPRECATED" %}
+
+Development of this method has stopped. For new integrations, replace the set of contacts in the `contactIds` field with [crm.item.update](../../universal/crm-item-update.md) using `entityTypeId = 7`. Array order determines contact order, and the first contact becomes primary. You cannot set `SORT` and `IS_PRIMARY` separately.
+
+{% endnote %}
+
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "modify" access permission for estimates

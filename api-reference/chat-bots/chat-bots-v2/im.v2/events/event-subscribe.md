@@ -13,9 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: authorized user
 
-The method `im.v2.Event.subscribe` subscribes the current user to event logging. After subscribing, message events are logged and become accessible through [im.v2.Event.get](./event-get.md).
+The method `im.v2.Event.subscribe` subscribes the current user to event logging. After subscribing, new events are logged and become accessible through [im.v2.Event.get](./event-get.md). Events that occurred before the subscription are not added to the log.
 
-The method is idempotent: repeated calls are safe and do not result in an error.
+Five [event types](./event-get.md#event-types) are logged: message added, updated, and deleted; reaction changed; and participant added to a chat. Records are retained for 24 hours or until they are acknowledged through `offset` when calling `im.v2.Event.get`.
+
+Calling the method again keeps the subscription active and does not delete accumulated events.
 
 ## Method Parameters
 

@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `crm.company.userfield.list` returns a list of custom fields for companies based on the filter.
 
+The method returns all matching fields in one response. Its handler does not use the `start` parameter, and it does not paginate results in batches of 50.
+
 ## Method Parameters
 
 #|
@@ -195,11 +197,6 @@ Get a list of custom fields that:
     }
 
     try {
-      // crm.company.userfield.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
       const response = await $b24.actions.v2.call.make<CrmCompanyUserfieldListItem[]>({
         method: 'crm.company.userfield.list',
         params: {
@@ -212,7 +209,6 @@ Get a list of custom fields that:
             USER_TYPE_ID: 'ASC',
             SORT: 'ASC',
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -222,7 +218,7 @@ Get a list of custom fields that:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Userfields on this page:', result.length, result)
+        console.info('Userfields:', result.length, result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -241,11 +237,6 @@ Get a list of custom fields that:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.company.userfield.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'crm.company.userfield.list',
             params: {
@@ -258,7 +249,6 @@ Get a list of custom fields that:
                 USER_TYPE_ID: 'ASC',
                 SORT: 'ASC',
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -270,7 +260,7 @@ Get a list of custom fields that:
           }
 
           const result = response.getData().result
-          console.info('Userfields on this page:', result.length, result)
+          console.info('Userfields:', result.length, result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -756,7 +746,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response, contains a list of custom fields.
+[`object[]`](../../../data-types.md) | List of custom fields. The main fields of each object are described in the response to [crm.company.userfield.get](./crm-company-userfield-get.md#result-fields).
 
 The structure of an individual custom field depends on its type. The fields `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned as `string` when passing `filter.LANG` ||
 || **total**
@@ -782,8 +772,9 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `400`     | Parameter 'order' must be array | The provided `order` is not an object ||
-|| `400`     | Parameter 'filter' must be array | The provided `filter` is not an object ||
+|| Empty value | Parameter 'order' must be array | The provided `order` is not an object ||
+|| Empty value | Parameter 'filter' must be array | The provided `filter` is not an object ||
+|| Empty value | Access denied | The user does not have permission to read companies ||
 |#
 {% include [System errors](../../../../_includes/system-errors.md) %}
 

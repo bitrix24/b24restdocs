@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to read the catalog or view warehouses
 
-The method returns a list of measurement units.
+The `catalog.measure.list` method returns a list of measurement units.
+
+To find a specific unit, pass its code in `filter`, for example `{"code": 166}`. To process the entire list, request pages with `start` values of 0, 50, 100, and so on until you have retrieved all `total` records.
 
 ## Method Parameters
 
@@ -21,15 +23,14 @@ The method returns a list of measurement units.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | 
-An array with the list of fields to select (see the fields of the [catalog_measure](../data-types.md#catalog_measure) object).
-
-If the array is not provided or an empty array is passed, all available fields of measurement units will be selected.
+[`array`](../../data-types.md) | Fields of the [catalog_measure](../data-types.md#catalog_measure) object to return. If omitted or empty, all available fields are returned
 ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_measure](../data-types.md#catalog_measure) object. 
+Possible values for `field` correspond to the fields of the [catalog_measure](../data-types.md#catalog_measure) object.
+
+For example, `{"<=code": 200}` returns units with a code no greater than `200`. If omitted, no filter is applied.
 
 An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -54,8 +55,7 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
 - `!=` — not equal
 ||
 || **order**
-[`object`](../../data-types.md) | 
-An object for sorting the selected fields of measurement units in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting measurement units in the format `{"field_1": "order_1", ... "field_N": "order_N"}`. For example, `{"code": "desc"}` returns units in descending code order.
 
 Possible values for `field` correspond to the fields of the [catalog_measure](../data-types.md#catalog_measure) object.
 
@@ -64,7 +64,7 @@ Possible values for `order`:
 - `desc` — in descending order
 ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../../data-types.md) | Offset for pagination. Defaults to `0`.
 
 The page size of results is always static — 50 records.
 
@@ -198,6 +198,8 @@ The formula for calculating the value of the `start` parameter:
 
 - Python
 
+    Example
+
     ```python
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
@@ -229,6 +231,31 @@ The formula for calculating the value of the `start` parameter:
         print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
         print(f"Unexpected error: {error}")
+    ```
+
+    Example using `as_list`: retrieve all pages as one list
+
+    ```python
+    bitrix_response = client.catalog.measure.list(
+        select=["id", "code", "symbolIntl"],
+        filter={"<=code": 200},
+        order={"code": "DESC"},
+    ).as_list().response
+
+    for measure in bitrix_response.result:
+        print(measure)
+    ```
+
+    Example using `as_list_fast`: traverse by ID without sorting by `code`
+
+    ```python
+    bitrix_response = client.catalog.measure.list(
+        select=["id", "code", "symbolIntl"],
+        filter={"<=code": 200},
+    ).as_list_fast(descending=True).response
+
+    for measure in bitrix_response.result:
+        print(measure)
     ```
 
 - PHP
@@ -336,28 +363,30 @@ HTTP status: **200**
 
 ```json
 {
-    "measures": [
-        {
-            "code": 166,
-            "id": 4,
-            "symbolIntl": "kg"
-        },
-        {
-            "code": 163,
-            "id": 3,
-            "symbolIntl": "g"
-        },
-        {
-            "code": 112,
-            "id": 2,
-            "symbolIntl": "l"
-        },
-        {
-            "code": 6,
-            "id": 1,
-            "symbolIntl": "m"
-        }
-    ],
+    "result": {
+        "measures": [
+            {
+                "code": 166,
+                "id": 4,
+                "symbolIntl": "kg"
+            },
+            {
+                "code": 163,
+                "id": 3,
+                "symbolIntl": "g"
+            },
+            {
+                "code": 112,
+                "id": 2,
+                "symbolIntl": "l"
+            },
+            {
+                "code": 6,
+                "id": 1,
+                "symbolIntl": "m"
+            }
+        ]
+    },
     "total": 4,
     "time": {
         "start": 1712326352.63409,
@@ -377,13 +406,20 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **measure**
-[`catalog_measure[]`](../data-types.md#catalog_measure) | Array of objects with information about the selected measurement units ||
+[`object`](../../data-types.md) | Request result ([details](#result)) ||
 || **total**
-[`integer`](../../data-types.md) | Total number of records found ||
+[`integer`](../../data-types.md) | Total records matching `filter` across all pages. The number of objects in the current response is the length of `result.measures` ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **measures**
+[`catalog_measure[]`](../data-types.md#catalog_measure) | Array of measurement units. Each object's fields depend on `select` ||
 |#
 
 ## Error Handling
@@ -402,13 +438,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | No access to read
-||
-|| `0` | Required fields of the `filter` structure are not provided
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300010` | `Access Denied` | No permission to read measurement units ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

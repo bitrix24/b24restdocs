@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to read the catalog or view warehouses
 
-The method returns the available fields of measurement.
+The `catalog.measure.getFields` method returns the available measurement unit fields.
+
+## Method Parameters
 
 No parameters.
 
@@ -290,11 +292,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **measure**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [catalog_measure](../data-types.md#catalog_measure) object, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+[`object`](../../data-types.md) | Request result ([details](#result)) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **measure**
+[`object`](../../data-types.md) | An object whose keys are field names from [`catalog_measure`](../data-types.md#catalog_measure) and whose values are [`rest_field_description`](../data-types.md#rest_field_description) descriptors ||
 |#
 
 ## Error Handling
@@ -313,11 +322,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | No access to read
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300010` | `Access Denied` | No permission to read measurement units ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

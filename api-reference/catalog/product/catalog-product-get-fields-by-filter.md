@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to view the product catalog
 
-This method retrieves product fields based on a filter.
+The `catalog.product.getFieldsByFilter` method retrieves product field descriptions for a specified catalog. The response shows available fields and their `isRequired`, `isReadOnly`, and `isImmutable` attributes. Use them to prepare [catalog.product.add](./catalog-product-add.md) and [catalog.product.update](./catalog-product-update.md) requests.
 
-## Parameters
+## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -597,9 +597,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **product**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the object [`catalog_product`](../data-types.md#catalog_product), and `value` is an object of type [`rest_field_description`](../data-types.md). ||
+[`object`](../../data-types.md) | Request result containing product field descriptions ||
+|| **result.product**
+[`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Each `field` identifies a [`catalog_product`](../data-types.md#catalog_product) field, and each `value` is a [`rest_field_description`](../data-types.md#rest_field_description) object ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -620,11 +620,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the trade catalog ||
-|| `100` | Filter parameter not specified or empty ||
-|| `0` | Information block identifier not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
+|| `400` | `100` | `Could not find value for parameter {filter}` | The required `filter` parameter was not provided ||
+|| `400` | `0` | `Incorrect filter format` | `filter` was not provided as an object ||
+|| `400` | `0` | `parameter - iblockId is empty` | `filter.iblockId` was not specified ||
+|| `400` | `0` | `iblock is not catalog` | The specified information block is not a trade catalog ||
+|| `400` | `0` | `productType is not allowed for this catalog` | The product type is not allowed for this catalog ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

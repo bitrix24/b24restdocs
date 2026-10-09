@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-This method adds a product to the trading catalog.
+The `catalog.product.add` method adds a product to the trade catalog.
+
+For a minimal request, pass the catalog ID `iblockId` and product name `name` in `fields`. Add other fields as needed; their availability depends on the catalog configuration and is described in [`catalog_product`](../data-types.md#catalog_product).
 
 ## Method Parameters
 
@@ -974,8 +976,8 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **element**
+[`object`](../../data-types.md) | Request result containing the created product ||
+|| **result.element**
 [`catalog_product`](../data-types.md#catalog_product) | Object with information about the added product ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
@@ -997,22 +999,21 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300050` | Insufficient rights to bind the information block element to the section ||
-|| `200040300040` | Insufficient rights to create a product ||
-|| `200040300000` | Information block with the specified identifier does not exist ||
-|| `200040300043` | Insufficient rights to edit the information block element ||
-|| `200040300010` | Insufficient permissions to read the trade catalog ||
-|| `100` | Parameter `fields` not specified or empty ||
-|| `0` | Section with the specified identifier does not exist ||
-|| `0` | VAT rate with the specified identifier does not exist ||
-|| `0` | The specified purchasing price currency does not exist ||
-|| `0` | User with the specified identifier who created the product does not exist ||
-|| `0` | User with the specified identifier who modified the product does not exist ||
-|| `0` | Required fields are not provided ||
-|| `0` | Product with the specified symbolic code already exists ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300050` | `Access Denied` | No permission to link the product to an information block section ||
+|| `400` | `200040300040` | `Access Denied` | No permission to create a product ||
+|| `400` | `200040300043` | `Access Denied` | No permission to add an information block element ||
+|| `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
+|| `400` | `200040300000` | `Iblock Not Found` | The information block in `fields.iblockId` was not found ||
+|| `400` | `100` | `Could not find value for parameter {fields}` | The required `fields` parameter was not provided ||
+|| `400` | `0` | `Section is not exists` | The product section was not found ||
+|| `400` | `0` | `VAT vatId is not exists` | The VAT rate in `fields.vatId` was not found ||
+|| `400` | `0` | `Currency purchasingCurrency is not exists` | The purchasing price currency was not found ||
+|| `400` | `0` | `User createdBy is not exists` or `User modifiedBy is not exists` | The user in `createdBy` or `modifiedBy` was not found ||
+|| `400` | `0` | `Internal error adding product. Try adding again.` | An internal error occurred while saving the product ||
 |#
+
+Validating required fields and product properties may return additional errors that identify the specific field.
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 

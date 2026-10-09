@@ -1385,6 +1385,8 @@ If this indicator is set for the field, then when creating the object, you can s
 If this indicator is set for the field, then in the operations of adding and updating the object, the field value does not need to be passed. The value is generated automatically and is intended for read-only ||
 || **isRequired**
 [`boolean`](../data-types.md) | Indicator of the mandatory field for add or update operations ||
+|| **name**
+[`string`](../data-types.md) | Field name. Returned when a display name is available for the field ||
 || **type**
 [`string`](../data-types.md) | Data type of the field values. Possible values: 
 - `integer`
@@ -1397,6 +1399,7 @@ If this indicator is set for the field, then in the operations of adding and upd
 - `date`
 - `datetime`
 - `datatype`
+- `productproperty`
 - `productpropertysettings`
 ||
 |#

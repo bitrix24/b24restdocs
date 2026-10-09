@@ -154,7 +154,8 @@ The identifier can be obtained using the methods [crm.company.userfield.add](./c
     try {
         $userfieldId = 123; // Replace with the actual userfield ID you want to delete
         $result = $serviceBuilder
-            ->getCRMScope()`r `n            ->companyUserfield()
+            ->getCRMScope()
+            ->companyUserfield()
             ->delete($userfieldId);
 
         if ($result->isSuccess()) {
@@ -268,12 +269,12 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `400` | ID is not defined or invalid | The provided `id` is either less than or equal to zero, or not provided at all ||
-|| `403` | Access denied | Occurs when:
+|| Empty value | ID is not defined or invalid | The provided `id` is less than or equal to zero or was not provided ||
+|| Empty value | Access denied | Occurs when:
 - the user does not have administrative rights
 - the user attempts to delete a custom field not associated with companies ||
 || `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The custom field with the provided `id` does not exist ||
-|| `400` | Error deleting FIELD_NAME for object ENTITY_ID | Unknown error during deletion ||
+|| `ERROR_CORE` | Error deleting custom field | Deletion failed. The error text depends on the cause ||
 |#
 {% include [System errors](../../../../_includes/system-errors.md) %}
 

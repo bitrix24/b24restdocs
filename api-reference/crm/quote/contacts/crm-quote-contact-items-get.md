@@ -9,6 +9,12 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+{% note warning "DEPRECATED" %}
+
+Development of this method has stopped. For new integrations, retrieve the linked contact IDs in the `contactIds` field with [crm.item.get](../../universal/crm-item-get.md) using `entityTypeId = 7`. This method does not return `SORT` or `IS_PRIMARY` for each link.
+
+{% endnote %}
+
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "read" access permission for estimates

@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method returns a possible list of countries for [requisite templates](./index.md). Country identifiers are used as values for the `COUNTRY_ID` field of the template.
+The `crm.requisite.preset.countries` method returns a list of countries for [requisite templates](./index.md). Country IDs are used in the template's `COUNTRY_ID` field.
+
+## Method Parameters
 
 No parameters.
 
@@ -315,6 +317,17 @@ HTTP status: **200**
 |#
 
 ## Error Handling
+
+Example of an authorization error, HTTP status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 

@@ -9,6 +9,12 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
+{% note warning "DEPRECATED" %}
+
+Development of this method has stopped. For new integrations, clear the set of contacts with [crm.item.update](../../universal/crm-item-update.md) using `entityTypeId = 7` and an empty `contactIds` array.
+
+{% endnote %}
+
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
 > Who can execute the method: a user with "read" and "modify" access permissions for estimates

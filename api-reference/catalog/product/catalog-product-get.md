@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to view the product catalog and read the information block element
 
 This method retrieves information about a product in the trade catalog by its `ID`.
 
@@ -380,8 +380,8 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **product**
+[`object`](../../data-types.md) | Request result containing the product ||
+|| **result.product**
 [`catalog_product`](../data-types.md#catalog_product) | Object containing product information ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
@@ -403,13 +403,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300000` | Information block with the specified identifier does not exist ||
-|| `200040300040` | Insufficient rights to read the information block element ||
-|| `200040300010` | Insufficient permissions to read the trade catalog ||
-|| `100` | Parameter `id` not specified ||
-|| `0` | The product does not exist ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `200040300000` | `Iblock Not Found` | The product's information block was not found ||
+|| `400` | `200040300040` | `Access Denied` | No permission to read the information block element ||
+|| `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
+|| `400` | `100` | `Could not find value for parameter {id}` | The required `id` parameter was not provided ||
+|| `400` | Empty code | `product does not exist.` | No product exists with the specified `id` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
