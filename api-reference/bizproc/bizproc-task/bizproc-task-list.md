@@ -53,6 +53,10 @@ You can specify the type of filtering before the name of the filtered field:
 
 Without a prefix, the filter compares the value for equality. The field name can be passed in any case.
 
+The field value is a string, a number, or an array of such values. An array matches records with any of the listed values, and with the `!` or `!=` prefix it excludes them.
+
+Fields and filter types that are not in the list are skipped without an error. Nested arrays and objects in the value are skipped as well. If nothing remains in the value after that, the condition for the field is not applied and the method returns records without this restriction.
+
 If `USER_ID` is present in the filter, user subordination is checked:
 - a manager can request a list of tasks for their subordinates
 - an administrator can request tasks of any users without restrictions 

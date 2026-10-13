@@ -135,7 +135,8 @@ The v2 response returns the message ID in `result.id`:
 {
     "result": {
         "id": 789,
-        "uuidMap": {}
+        "uuidMap": [],
+        "failureMap": []
     },
     "time": {
         "start": 1728626400.123,

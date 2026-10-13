@@ -58,7 +58,11 @@ You can specify the type of filtering before the name of the filtered field:
 - `>` — greater than
 - `>=` — greater than or equal to
 
-Without a prefix, the filter compares the value for equality. The field name can be passed in any case ||
+Without a prefix, the filter compares the value for equality. The field name can be passed in any case.
+
+The field value is a string, a number, or an array of such values. An array matches records with any of the listed values, and with the `!` or `!=` prefix it excludes them.
+
+Fields and filter types that are not in the list are skipped without an error. Nested arrays and objects in the value are skipped as well. If nothing remains in the value after that, the condition for the field is not applied and the method returns records without this restriction ||
 || **ORDER**
 [`object`](../data-types.md) | An object for sorting the list of running workflows in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 

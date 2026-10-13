@@ -10,7 +10,9 @@
 || **DELETED**
 [`string`](/api-reference/data-types.html) | Flag indicating whether the event is deleted. Possible values:
 - `Y` — event is deleted
-- `N` — event is not deleted ||
+- `N` — event is not deleted
+
+The `Y` value is returned only in the [calendar.event.get](/api-reference/calendar/calendar-event/calendar-event-get.html) response when the `modified_since` parameter is passed ||
 || **CAL_TYPE**
 [`string`](/api-reference/data-types.html) | Type of calendar in which the event is located ||
 || **OWNER_ID**
@@ -34,9 +36,13 @@
 || **TZ_OFFSET_TO**
 [`string`](/api-reference/data-types.html) | Time offset of the event end time relative to UTC in seconds ||
 || **DATE_FROM_TS_UTC**
-[`string`](/api-reference/data-types.html) | Start date and time of the event in UTC in timestamp format ||
+[`string`](/api-reference/data-types.html) | Start date and time of the event in timestamp format.
+
+Despite the field name, the value is shifted by the server time zone offset, so it cannot be read as UTC time. The exact start time is defined by the `DATE_FROM` and `TZ_FROM` fields ||
 || **DATE_TO_TS_UTC**
-[`string`](/api-reference/data-types.html) | End date and time of the event in UTC in timestamp format ||
+[`string`](/api-reference/data-types.html) | End date and time of the event in timestamp format.
+
+Despite the field name, the value is shifted by the server time zone offset, so it cannot be read as UTC time. The exact end time is defined by the `DATE_TO` and `TZ_TO` fields ||
 || **DT_SKIP_TIME**
 [`string`](/api-reference/data-types.html) | Flag indicating that the event lasts all day. Possible values:
 - `Y` — all day
@@ -51,6 +57,14 @@
 [`datetime`](/api-reference/data-types.html) | Date the event was created ||
 || **TIMESTAMP_X**
 [`datetime`](/api-reference/data-types.html) | Date the event was modified ||
+|| **DATE_CREATE_ISO**
+[`string`](/api-reference/data-types.html) | Date the event was created, in ISO 8601 format with the account time zone offset, for example `2026-10-08T10:27:29+03:00`.
+
+The field is not returned if the creation date is empty ||
+|| **TIMESTAMP_X_ISO**
+[`string`](/api-reference/data-types.html) | Date the event was modified, in ISO 8601 format with the account time zone offset.
+
+Pass this value to the `modified_since` parameter of the [calendar.event.get](/api-reference/calendar/calendar-event/calendar-event-get.html) method to retrieve events modified since that moment. All occurrences of a recurring event have the same value. The field is not returned if the modification date is empty ||
 || **DESCRIPTION**
 [`string`](/api-reference/data-types.html) | Description of the event ||
 || **PRIVATE_EVENT**

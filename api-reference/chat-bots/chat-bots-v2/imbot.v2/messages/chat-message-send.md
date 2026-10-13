@@ -54,9 +54,13 @@ Pass the same botToken that was specified during the chat-bot registration ||
 || **templateId**
 [`string`](../../../../data-types.md) | UUID of the message template ||
 || **forwardIds**
-[`object`](../../../../data-types.md) | Messages to forward. Format: `{uuid: messageId}`, where `uuid` is an arbitrary UUID string as the key, `messageId` is the ID of the original message. In the response, `uuidMap` will return `{uuid: newMessageId}`.
+[`object`](../../../../data-types.md) \| [`array`](../../../../data-types.md) | Messages to forward. Two formats are supported:
+- an object `{uuid: messageId}`, where `uuid` is an arbitrary UUID string as the key, `messageId` is the ID of the original message. In the response, `uuidMap` will return `{uuid: newMessageId}`, and failed forwards will be listed in `failureMap`. A repeated call with the same `uuid` does not create a new message and returns the ID of the previously created one
+- an array `[messageId, ...]`. The IDs of forwarded messages are not returned in the response, and failed forwards will be listed in `legacyFailureMap`
 
-The bot can only forward messages from chats where it is a participant. Maximum of 100 messages ||
+All forwarded messages must be from the same chat. The bot can only forward messages from chats where it is a participant. Maximum of 100 messages.
+
+If some messages fail to forward, the remaining messages are still sent and the method returns a successful response ||
 |#
 
 > Boolean parameters accept `true` and `false`. If the client does not support JSON boolean, strings `"Y"` and `"N"` can be passed.
@@ -265,7 +269,8 @@ HTTP Status: **200**
 {
     "result": {
         "id": 789,
-        "uuidMap": {}
+        "uuidMap": [],
+        "failureMap": []
     },
     "time": {
         "start": 1728626400.123,
@@ -286,9 +291,15 @@ HTTP Status: **200**
 || **result**
 [`object`](../../../../data-types.md) | Result of the message sending ||
 || **result.id**
-[`integer`](../../../../data-types.md) | ID of the sent message ||
+[`integer`](../../../../data-types.md) | ID of the sent message.
+
+Returns `null` if the request contains only `forwardIds` without text or attachments ||
 || **result.uuidMap**
-[`object`](../../../../data-types.md) | UUID → ID mapping for forwarded messages ||
+[`object`](../../../../data-types.md) | UUID → ID mapping for messages successfully forwarded in the `{uuid: messageId}` format. If there are no such messages, an empty array `[]` is returned ||
+|| **result.failureMap**
+[`object`](../../../../data-types.md) | UUID → error code mapping for messages that failed to forward in the `{uuid: messageId}` format. The field is always returned. If there are no failed forwards, an empty array `[]` is returned ||
+|| **result.legacyFailureMap**
+[`object`](../../../../data-types.md) | Original message ID → error code mapping for messages that failed to forward in the `[messageId, ...]` format. The field is returned only if such messages exist ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -317,7 +328,13 @@ HTTP Status: **400**, **403**
 || `ACCESS_DENIED` | Access denied | Bot is not a participant in the chat ||
 || `EMPTY_MESSAGE` | Message is empty | Empty message — no text or attachments ||
 || `SENDING_FAILED` | Sending failed | Error sending message ||
+|| `MESSAGES_IN_DIFFERENT_CHAT_ERROR` | MESSAGES_IN_DIFFERENT_CHAT_ERROR | Messages in `forwardIds` are in different chats ||
+|| `MESSAGE_NOT_FOUND` | MESSAGE_NOT_FOUND | A message from `forwardIds` was not found or is in a chat where the bot is not a participant ||
+|| `WRONG_UUID` | WRONG_UUID | A key in `forwardIds` is not a UUID string ||
+|| `TOO_MANY_MESSAGES` | TOO_MANY_MESSAGES | More than 100 messages were passed in `forwardIds` ||
 |#
+
+The forwarding errors in the table cancel the entire call: the message is not sent. If no message could be forwarded and no text was passed, the method also returns an error.
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
 

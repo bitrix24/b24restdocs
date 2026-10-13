@@ -41,7 +41,33 @@ Default value is one month before the current date ||
 Default value is three months after the current date ||
 || **section**
 [`array`](../../data-types.md) | Array of calendar identifiers ||
+|| **modified_since**
+[`string`](../../data-types.md) | The moment from which modified events are needed. Format: ISO 8601 with a mandatory time zone, `2026-10-13T09:00:00+03:00` or `2026-10-13T06:00:00Z`. Fractional seconds are accepted and discarded.
+
+The method returns events whose modification date is greater than or equal to the passed value, including deleted events. For details, see [Retrieving Changes](#modified-since).
+
+An empty string is treated as if the parameter was not passed ||
 |#
+
+### Retrieving Changes {#modified-since}
+
+The `modified_since` parameter lets you sync a calendar with an external system without reloading all events.
+
+1. On the first sync, retrieve events without `modified_since` and store the largest `TIMESTAMP_X_ISO` value from the response.
+
+2. On the next sync, pass this value to `modified_since`. The `TIMESTAMP_X_ISO` value can be passed as is.
+
+How change retrieval works:
+
+- the boundary is inclusive, with one-second precision. Events modified within the same second are returned again, so process them by `ID` to avoid duplicates
+
+- the `from` and `to` date range still applies together with `modified_since`. If an event is outside the selection period, its change is not returned
+
+- deleted events are returned with `DELETED` = `Y`, and their `TIMESTAMP_X_ISO` holds the moment of deletion. Without `modified_since`, the method does not return deleted events
+
+- a recurring event is returned as a separate record for each occurrence within the selection period, all with the same `ID`. This also applies to deleted recurring events
+
+- an attendee's response to an invitation does not change the event modification date, so it is not included in the changes
 
 ## Code Examples
 
@@ -258,6 +284,112 @@ Default value is three months after the current date ||
 
     {% endlist %}
 
+3. Get events of the user with `id` = `1` modified since `2026-10-13T09:00:00+03:00`, including deleted ones
+
+    {% list tabs %}
+
+    - cURL (Webhook)
+
+        ```bash
+        curl -X POST \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/json" \
+        -d '{"type":"user","ownerId":1,"modified_since":"2026-10-13T09:00:00+03:00"}' \
+        https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.get
+        ```
+
+    - cURL (OAuth)
+
+        ```bash
+        curl -X POST \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/json" \
+        -d '{"type":"user","ownerId":1,"modified_since":"2026-10-13T09:00:00+03:00","auth":"**put_access_token_here**"}' \
+        https://**put_your_bitrix24_address**/rest/calendar.event.get
+        ```
+
+    - BX24.js
+
+        ```js
+        BX24.callMethod(
+            'calendar.event.get',
+            {
+                type: 'user',
+                ownerId: 1,
+                modified_since: '2026-10-13T09:00:00+03:00'
+            }
+        );
+        ```
+
+    - Python
+
+        ```python
+        from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+        try:
+            # The b24pysdk wrapper has no argument for modified_since, so call the method by name
+            bitrix_response = bitrix_token.call_method(
+                "calendar.event.get",
+                {
+                    "type": "user",
+                    "ownerId": 1,
+                    "modified_since": "2026-10-13T09:00:00+03:00",
+                },
+            )
+            result = bitrix_response["result"]
+            print(result)
+        except BitrixAPIError as error:
+            print(
+                "Bitrix API error",
+                f"error: {error.error}",
+                f"error_description: {error.error_description}",
+                sep="\n",
+            )
+        except BitrixSDKException as error:
+            print(f"Bitrix SDK error: {error.message}")
+        except Exception as error:
+            print(f"Unexpected error: {error}")
+        ```
+
+    - PHP
+
+        ```php
+        require_once('crest.php');
+
+        $result = CRest::call(
+            'calendar.event.get',
+            [
+                'type' => 'user',
+                'ownerId' => 1,
+                'modified_since' => '2026-10-13T09:00:00+03:00'
+            ]
+        );
+
+        echo '<PRE>';
+        print_r($result);
+        echo '</PRE>';
+        ```
+
+    - Go
+
+        ```go
+        // client and ctx are already created — see the Go SDK section
+        res, err := client.Core().Call(ctx, "calendar.event.get", b24.Params{
+        	"type":           "user",
+        	"ownerId":        1,
+        	"modified_since": "2026-10-13T09:00:00+03:00",
+        }, b24.WithIdempotent())
+        if err != nil {
+        	return fmt.Errorf("calendar.event.get: %w", err)
+        }
+
+        // The response arrives as json.RawMessage — unmarshal it
+        // into a struct matching the response shape shown below on this page.
+        fmt.Printf("%s\n", res.Result)
+        ```
+
+    {% endlist %}
+
 ## Response Handling
 
 HTTP status: **200**
@@ -287,6 +419,8 @@ HTTP status: **200**
             "CREATED_BY": "1",
             "DATE_CREATE": "12/05/2024 01:48:41 pm",
             "TIMESTAMP_X": "12/05/2024 01:48:41 pm",
+            "DATE_CREATE_ISO": "2024-12-05T13:48:41+02:00",
+            "TIMESTAMP_X_ISO": "2024-12-05T13:48:41+02:00",
             "DESCRIPTION": "Description for event",
             "PRIVATE_EVENT": "",
             "ACCESSIBILITY": "free",
@@ -406,6 +540,7 @@ HTTP status: **400**
 || **Code** | **Error message** | **Description** ||
 || empty string | Required parameter "type" is not specified for method "calendar.event.get" | Required parameter `type` not provided ||
 || empty string | Access denied | Access to the method is prohibited for external users ||
+|| `ERROR_ARGUMENT` | Invalid parameter value for "modified_since" | The `modified_since` value has no time zone, no seconds, a space instead of `T`, a nonexistent date, or a non-string type ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
