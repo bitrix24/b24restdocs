@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 The `event.offline.clear` method deletes from the queue the records of a batch retrieved by the [event.offline.get](./event-offline-get.md) method with `clear=0`. This is how the application confirms that it has processed these records. Mark the records that could not be processed with the [event.offline.error](./event-offline-error.md) method. The batch workflow is described in the article [{#T}](./offline-events.md).
 
-The batch reservation mode is not available on all plans. Check its availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`.
+In cloud Bitrix24, the batch reservation mode depends on the plan: check its availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`. In on-premise Bitrix24, the mode is always available, and `feature.get` returns the string `<language>_selfhosted` instead of `Y`, for example, `en_selfhosted`.
 
 The method works only in the context of authorizing the [application](../../settings/app-installation/index.md). Permissions for event methods are described in the [Access Permissions](./index.md#access) section.
 
