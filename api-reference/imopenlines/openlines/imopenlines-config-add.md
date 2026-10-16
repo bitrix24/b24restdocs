@@ -23,7 +23,7 @@ To allow users to write to the open channel, set the connector settings using th
 || **Name**
 `type` | **Description** ||
 || **PARAMS**
-[`object`](../../data-types.md) | Object with open channel settings [(detailed description)](#params) ||
+[`object`](../../data-types.md) | Object with open channel settings [(detailed description)](#params). If omitted, the channel is created with default settings ||
 |#
 
 ### PARAMS Parameter {#params}
@@ -32,7 +32,7 @@ To allow users to write to the open channel, set the connector settings using th
 || **Name**
 `type` | **Description** ||
 || **LINE_NAME**
-[`string`](../../data-types.md) | Name of the open channel ||
+[`string`](../../data-types.md) | Name of the open channel, up to 255 characters. If omitted, the name is generated automatically ||
 || **ACTIVE**
 [`char`](../../data-types.md) | Channel activity. Possible values:
 - `Y` — channel is active
@@ -824,12 +824,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../data-types.md) | Identifier of the created open channel ||
+[`integer`](../../data-types.md), [`boolean`](../../data-types.md) | Identifier of the created open channel, or `false` if the channel could not be created ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+The method defines no error codes of its own. If the open channel could not be saved, the method returns `false` in `result`.
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 

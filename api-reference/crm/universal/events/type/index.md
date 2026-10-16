@@ -30,7 +30,30 @@ An example of a handler code for the event is described in the article [How to T
 
 In all events of this section, the handler receives the `data.FIELDS` object with a single key `ID`. It contains the primary key of the type record, not the `entityTypeId` of the smart process.
 
-To retrieve the `entityTypeId` and the remaining settings, pass this value as `id` to the [crm.type.get](../../user-defined-object-types/crm-type-get.md) method. For the deletion event, the type data is no longer available — match the `ID` against what you previously retained in your own system.
+A shortened example of the POST request body for `onCrmTypeAdd`. The full contents of `auth` are described on the [event page](on-crm-type-add.md#auth).
+
+```json
+{
+    "event": "ONCRMTYPEADD",
+    "event_handler_id": "7",
+    "data": {
+        "FIELDS": {
+            "ID": "45"
+        }
+    },
+    "ts": "1723545943",
+    "auth": {
+        "scope": "crm",
+        "domain": "some-domain.bitrix24.com"
+    }
+}
+```
+
+Authorization tokens may be absent from `auth`. If the handler runs in an application, check `auth` and retain the authorization received when the application was installed for subsequent method calls.
+
+To retrieve the `entityTypeId` and the remaining settings, pass this value as `id` to the [crm.type.get](../../user-defined-object-types/crm-type-get.md) method. This call requires read access to the smart process or administrative access to it. For the deletion event, the type data is no longer available — match the `ID` against what you previously retained in your own system.
+
+For example, an application synchronizes its list of smart processes with Bitrix24. First, it retrieves existing types using [crm.type.list](../../user-defined-object-types/crm-type-list.md), which requires administrative access to CRM. After `onCrmTypeAdd`, the application retrieves `data.FIELDS.ID`, calls `crm.type.get` with that value in the `id` parameter, and retains the settings along with the `ID`. After `onCrmTypeUpdate`, it repeats the request and updates the record. After `onCrmTypeDelete`, it removes the record from its list using the retained `ID`.
 
 ## Server Availability for Sending and Receiving Events
 

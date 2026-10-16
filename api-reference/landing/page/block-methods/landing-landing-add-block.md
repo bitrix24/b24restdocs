@@ -73,7 +73,7 @@ Default is `Y` ||
 || **CONTENT**
 [`string`](../../../data-types.md) | HTML content of the block. Allows replacing the standard content of the block with your own HTML code. The block code must still be available in the repository for the current type of page and `scope`. Before saving, the value is cleaned and validated ||
 || **RETURN_CONTENT**
-[`string`](../../../data-types.md) | If `Y` is passed, after adding the block, the method will return not only its identifier but also the block data [(detailed description)](#result-content). For any other value, the method will return only the block identifier ||
+[`string`](../../../data-types.md) | If `Y` is passed, after adding the block, the method returns an object with the block data, including its identifier [(detailed description)](#result-content). For any other value, the method returns only the block identifier ||
 |#
 
 ## Code Examples
@@ -352,6 +352,25 @@ HTTP status: **200**
 }
 ```
 
+### Example Response when `RETURN_CONTENT = 'Y'`
+
+HTTP status: **200**
+
+The following is an excerpt from the response. The remaining fields of the `result` object are described in the table.
+
+```json
+{
+    "result": {
+        "id": 29419,
+        "sections": "text,recommended,widgets_text",
+        "active": true,
+        "access": "X",
+        "anchor": "b29419",
+        "content": "<div id=\"block29419\" data-id=\"29419\" class=\"block-wrapper block-27-4-one-col-fix-text\"><section class=\"landing-block js-animation g-pt-30 g-pb-30\">\n\t<div class=\"landing-block-node-text js-animation fadeIn g-pb-1 container g-max-width-container\">\n\t\t<p>Sed feugiat porttitor nunc, non dignissim ipsum vestibulum in. Donec in blandit dolor. Vivamus a fringilla lorem, vel faucibus ante. Nunc ullamcorper, justo a iaculis elementum, enim orci viverra eros, fringilla porttitor lorem eros vel. </p>\n\t\t<p>Sed feugiat porttitor nunc, non dignissim ipsum vestibulum in. Donec in blandit dolor. Vivamus a fringilla lorem, vel faucibus ante. Nunc ullamcorper, justo a iaculis elementum, enim orci viverra eros, fringilla porttitor lorem eros vel. </p>\n\t</div>\n</section></div>"
+    }
+}
+```
+
 ### Returned Data
 
 #|
@@ -375,7 +394,12 @@ HTTP status: **200**
 || **active**
 [`boolean`](../../../data-types.md) | Indicator of the block's activity ||
 || **access**
-[`string`](../../../data-types.md) | Access level to the block ||
+[`string`](../../../data-types.md) | Access level to the block. Possible values:
+- `A` — access to blocks is denied for everyone
+- `D` — access to the block is denied
+- `V` — only the design can be changed
+- `W` — content and design can be changed, but the block cannot be deleted
+- `X` — full access ||
 || **anchor**
 [`string`](../../../data-types.md) | Local anchor of the block. By default, the new block receives an anchor in the form `b<ID>`, for example `b28597` ||
 || **php**

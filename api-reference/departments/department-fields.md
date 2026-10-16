@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `department.fields` returns a list and description of available department fields.
+Returns department field names.
+
+## Method Parameters
 
 No parameters.
 
@@ -194,17 +196,50 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response. Contains the list and description of fields ||
+[`object`](../data-types.md) | Root element of the response. Its keys are department field codes, and its values are their names ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
 
+### Fields of the `result` Object
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../data-types.md) | Name of the department identifier field. The value is `ID` ||
+|| **NAME**
+[`string`](../data-types.md) | Name of the department name field ||
+|| **SORT**
+[`string`](../data-types.md) | Name of the department sort order field ||
+|| **PARENT**
+[`string`](../data-types.md) | Name of the parent department field ||
+|| **UF_HEAD**
+[`string`](../data-types.md) \| [`null`](../data-types.md) | Name of the department manager field from the custom field settings. If the field is not configured, the value may be `null` ||
+|#
+
+The names of `NAME`, `SORT`, and `PARENT` are localized. The name of `UF_HEAD` comes from the custom field setting for the current language and may differ from the response example.
+
 ## Error Handling
+
+HTTP status: **401**
+
+```json
+{
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the webhook token"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+The method has no error codes of its own. If the webhook or application does not have the `department` scope, the REST API returns `insufficient_scope`. The example shows the response for a webhook. For an application, `error_description` ends with `provided by the access token`. Other system errors are listed below.
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./department-add.md)
 - [{#T}](./department-update.md)
 - [{#T}](./department-get.md)

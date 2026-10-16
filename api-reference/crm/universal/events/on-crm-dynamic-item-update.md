@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONCRMDYNAMICITEMUPDATE` event is triggered when an item of any [custom object type](../user-defined-object-types/index.md) in the CRM is changed.
+The `onCrmDynamicItemUpdate` event is triggered when an item of any [custom object type](../user-defined-object-types/index.md) in the CRM is changed. When you subscribe through `event.bind`, the event name is converted to uppercase, so the `event` field in the notification contains `ONCRMDYNAMICITEMUPDATE`.
 
 {% note info "" %}
 
@@ -25,7 +25,7 @@ Events will not be sent to the application until the installation is complete. [
 
 Data is transmitted as a POST request {.b24-info}
 
-Event for changing an element with `id = 24`, belonging to a smart process with `entityTypeId = 1220`:
+Event for changing an item with `id = 24` that belongs to a smart process with `entityTypeId = 1220`:
 
 ```json
 {
@@ -97,7 +97,7 @@ The structure is described [below](#auth) ||
 
 Although [universal CRM methods](../index.md) allow adding and modifying objects of standard types such as deals, leads, contacts, companies, and estimates, the event `onCrmDynamicItemUpdate` will not trigger when modifying the listed objects.
 
-To track changes to deals, leads, etc., you can use specific events:
+To track changes to deals, leads, and so on, use specific events:
 
 - [{#T}](../../deals/events/on-crm-deal-update.md)
 - [{#T}](../../leads/events/on-crm-lead-update.md)
@@ -105,7 +105,7 @@ To track changes to deals, leads, etc., you can use specific events:
 - [{#T}](../../companies/events/on-crm-company-update.md)
 - [{#T}](../../quote/events/on-crm-quote-update.md)
 
-When new invoices are modified, the event `onCrmDynamicItemUpdate` will trigger.
+The event is also triggered when [new invoices](../invoice.md) are modified.
 
 {% endnote %}
 

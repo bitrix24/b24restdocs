@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONCRMDYNAMICITEMADD` event is triggered when an item of any [custom object type](../user-defined-object-types/index.md) is added to the CRM.
+The `onCrmDynamicItemAdd` event is triggered when an item of any [custom object type](../user-defined-object-types/index.md) is added to the CRM. When you subscribe through `event.bind`, the event name is converted to uppercase, so the `event` field in the notification contains `ONCRMDYNAMICITEMADD`.
 
 {% note info "" %}
 
@@ -97,7 +97,7 @@ The structure is described [below](#auth) ||
 
 Although [universal CRM methods](../index.md) allow adding and modifying objects of standard types such as deals, leads, contacts, companies, and estimates, the `onCrmDynamicItemAdd` event will not trigger when adding the listed objects.
 
-To track new deals, leads, and so on, you can use specific events:
+To track new deals, leads, and so on, use specific events:
 
 - [{#T}](../../deals/events/on-crm-deal-add.md)
 - [{#T}](../../leads/events/on-crm-lead-add.md)
@@ -105,7 +105,7 @@ To track new deals, leads, and so on, you can use specific events:
 - [{#T}](../../companies/events/on-crm-company-add.md)
 - [{#T}](../../quote/events/on-crm-quote-add.md)
 
-The `onCrmDynamicItemAdd` event will trigger when new invoices are added.
+The event is also triggered when [new invoices](../invoice.md) are added.
 
 {% endnote %}
 

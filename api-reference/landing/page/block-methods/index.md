@@ -22,7 +22,7 @@ These methods modify blocks in the draft version of the page. If the page is alr
 ## How to Work with Blocks
 
 1. Obtain the page identifier using the [landing.landing.getList](../methods/landing-landing-get-list.md) method or use the `lid` returned by the [landing.landing.add](../methods/landing-landing-add.md), [landing.landing.addByTemplate](../methods/landing-landing-add-by-template.md), and [landing.landing.copy](../methods/landing-landing-copy.md) methods.
-2. If you need to work with an existing block, retrieve the list of blocks using the [landing.block.getList](../../block/methods/landing-block-get-list.md) method with the parameter `params.edit_mode = 1`.
+2. If you need to work with an existing block, retrieve the list of blocks using the [landing.block.getList](../../block/methods/landing-block-get-list.md) method with the parameter `params.edit_mode = 1`. Pass `result[].id` from the response in the `block` parameter of methods that operate on an existing block.
 3. Choose the appropriate action based on your scenario:
 
    - [landing.landing.addblock](./landing-landing-add-block.md) — add a new block from the repository. Available block codes are returned by [landing.block.getrepository](../../block/methods/landing-block-get-repository.md).

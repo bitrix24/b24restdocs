@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONCRMDYNAMICITEMDELETE` event is triggered when an item of any [custom object type](../user-defined-object-types/index.md) is deleted in the CRM.
+The `onCrmDynamicItemDelete` event is triggered when an item of any [custom object type](../user-defined-object-types/index.md) is deleted in the CRM. When you subscribe through `event.bind`, the event name is converted to uppercase, so the `event` field in the notification contains `ONCRMDYNAMICITEMDELETE`.
 
 {% note info "" %}
 
@@ -97,7 +97,7 @@ The structure is described [below](#auth) ||
 
 Although [universal CRM methods](../index.md) allow adding and modifying objects of standard types such as deals, leads, contacts, companies, and estimates, the event `onCrmDynamicItemDelete` will not trigger when deleting the listed objects.
 
-To track deleted deals, leads, etc., you can use special events:
+To track deleted deals, leads, and so on, use specific events:
 
 - [{#T}](../../deals/events/on-crm-deal-delete.md)
 - [{#T}](../../leads/events/on-crm-lead-delete.md)
@@ -105,7 +105,7 @@ To track deleted deals, leads, etc., you can use special events:
 - [{#T}](../../companies/events/on-crm-company-delete.md)
 - [{#T}](../../quote/events/on-crm-quote-delete.md)
 
-When deleting new invoices, the event `onCrmDynamicItemDelete` will trigger.
+The event is also triggered when [new invoices](../invoice.md) are deleted.
 
 {% endnote %}
 

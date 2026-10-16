@@ -9,7 +9,27 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Template view fields are used in the method [landing.template.getlist](./landing-template-get-list.md). This method only supports simple template fields. Fields with a dot in `select` and `filter`, such as `CREATED_BY.NAME`, are not supported.
+Template view fields define the structure Bitrix24 uses to assemble a site page: the placement of the main content and additional areas. The [landing.template.getlist](./landing-template-get-list.md) method returns these fields for templates in the current Bitrix24 account.
+
+> Scope: [`landing`](../../scopes/permissions.md)
+>
+> Who can retrieve the fields: a user with access to the "Sites and Stores" section
+
+## How to Retrieve Template Fields
+
+Pass the names of the fields you need in `params.select` of the [landing.template.getlist](./landing-template-get-list.md) method. For example, to retrieve the template's external code, the number of additional areas, and the markup with their macros:
+
+```json
+{
+    "params": {
+        "select": ["ID", "XML_ID", "AREA_COUNT", "CONTENT"]
+    }
+}
+```
+
+If `select` is omitted, the method returns all available fields. The fields in the table below can be selected, filtered, sorted, and grouped. Fields with a dot in `select` and `filter`, such as `CREATED_BY.NAME`, are not supported.
+
+## Template View Fields
 
 #| 
 || **Field** 
@@ -44,12 +64,21 @@ Default — `Y` ||
 [`datetime`](../../data-types.md) | Date and time of the last modification of the template. In the REST response, it is returned as a string. The format depends on the regional settings of the account, for example, `04/20/2020 12:48:10 pm` || 
 |#
 
-Through [landing.template.getlist](./landing-template-get-list.md), you can select, filter, sort, and group only the fields from the table above.
+## How CONTENT and AREA_COUNT Relate
+
+In `CONTENT`, the `#CONTENT#` macro marks the main area of the page. The `#AREA_1#`, `#AREA_2#`, and subsequent macros mark additional areas to which separate pages can be linked. Their number is specified in `AREA_COUNT`.
+
+For example, a fragment of template markup with one additional area might look like this:
+
+```html
+<main>#CONTENT#</main>
+<aside>#AREA_1#</aside>
+```
+
+In this example, `AREA_COUNT = 1`: `#CONTENT#` is not counted as an additional area. To find the area number for a particular template, retrieve its `CONTENT` using the [landing.template.getlist](./landing-template-get-list.md) method. The [landing.template.setSiteRef](./landing-template-set-site-ref.md) and [landing.template.setLandingRef](./landing-template-set-landing-ref.md) methods set the links between pages and areas for a site and an individual page.
 
 ## Continue Learning
 
-- [{#T}](./landing-template-get-landing-ref.md) 
-- [{#T}](./landing-template-get-site-ref.md) 
-- [{#T}](./landing-template-get-list.md) 
-- [{#T}](./landing-template-set-landing-ref.md) 
-- [{#T}](./landing-template-set-site-ref.md) 
+- Retrieve a list of templates — [{#T}](./landing-template-get-list.md)
+- Retrieve area links for a page or site — [{#T}](./landing-template-get-landing-ref.md), [{#T}](./landing-template-get-site-ref.md)
+- Set area links for a page or site — [{#T}](./landing-template-set-landing-ref.md), [{#T}](./landing-template-set-site-ref.md)

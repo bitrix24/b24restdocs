@@ -29,7 +29,7 @@ If the block is marked as deleted, first restore it using the [landing.landing.m
 || **scope**
 [`string`](../../../data-types.md) | Internal scope of the landing. It is not related to the REST scope `landing` in the method name.
 
-The value of `scope` must correspond to the type of site [(detailed description)](../../types.md) ||
+For pages of types `PAGE`, `STORE`, and `SMN`, do not pass this parameter. For `GROUP`, `KNOWLEDGE`, and `MAINPAGE`, pass the same value for `scope` [(detailed description)](../../types.md) ||
 || **lid*** 
 [`integer`](../../../data-types.md) | Identifier of the page.
 
@@ -311,6 +311,7 @@ HTTP Status: **400**
 #| 
 || **Code** | **Description** ||
 || `MISSING_PARAMS` | Required parameter `lid` or `block` is missing ||
+|| `TYPE_ERROR` | Invalid type of a call parameter, such as an array instead of `lid` or `block` ||
 || `LANDING_NOT_EXIST` | Page with identifier `lid` not found or not accessible to the current user ||
 || `ACCESS_DENIED` | Insufficient rights to modify the block ||
 || `BLOCK_NOT_FOUND` | Block with identifier `block` not found on page `lid`, already marked as deleted, or inaccessible ||

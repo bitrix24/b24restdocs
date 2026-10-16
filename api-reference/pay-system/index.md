@@ -61,6 +61,12 @@ The mode defines how the customer reaches the payment. The mode is set when the 
 6. To process the order payment, obtain `PAYMENT_ID` using the method [sale.payment.list](../sale/payment/sale-payment-list.md), then initiate the payment through [sale.paysystem.pay.payment](./sale-pay-system-pay-payment.md).
 7. For the CRM invoice, use a separate scenario: obtain `orderId` via [crm.orderentity.list](../crm/universal/order-entity/crm-order-entity-list.md), then find `PAYMENT_ID` in [sale.payment.list](../sale/payment/sale-payment-list.md) with the filter `{"=orderId": <orderId>}` and pass this identifier to [crm.item.payment.pay](../crm/universal/payment/crm-item-payment-pay.md).
 
+## What the Methods Return
+
+- [sale.paysystem.list](./sale-pay-system-list.md) returns an array of payment systems with identifiers, names, payer types, and binding types. The full structure of the [`sale_paysystem`](../sale/data-types.md#sale_paysystem) object is described in the data type reference
+- [sale.paysystem.settings.get](./sale-pay-system-settings-get.md) returns a settings object: its keys are codes from the handler's `CODES`, and its values are payment system settings
+- [sale.paysystem.pay.payment](./sale-pay-system-pay-payment.md) returns a boolean `result` indicating the outcome of the order payment. A response example is provided on the method page
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`pay_system`](../scopes/permissions.md)
@@ -90,3 +96,5 @@ The mode defines how the customer reaches the payment. The mode is set when the 
 || [sale.paysystem.settings.payment.get](./sale-pay-system-settings-payment-get.md) | Returns settings for the payment system for a specific payment ||
 || [sale.paysystem.pay.payment](./sale-pay-system-pay-payment.md) | Initiates payment for an order through the selected payment system ||
 |#
+
+Methods for old CRM invoices are listed in the [deprecated methods group](./outdated/index.md).
