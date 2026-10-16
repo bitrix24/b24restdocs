@@ -18,7 +18,27 @@
 
 ### B. Solution Card
 
-- The title must be concise and clear for Bitrix24 users.
+- The solution name must be concise, clear, and unique within the corresponding regional catalog of Bitrix24 Market.
+
+  A new solution cannot be published, and the name of a published solution cannot be changed, if the name matches the name of another developer's solution published in the same regional catalog or differs from it only in formal features that do not change how the name is perceived. Such features include, in particular, letter case, spaces, punctuation and special characters, diacritical marks, and visually similar characters from different writing systems.
+
+  This requirement does not apply to:
+
+  - publishing a new version of a solution if the solution name does not change;
+  - placing the same solution in several regional catalogs.
+
+  If the solution name changes when a new version is published, the new name is checked on general terms.
+
+  The solution name must not contain the designations "Bitrix", "Bitrix24", or "Alaio", including in other writing systems, unless the mention is directly related to the purpose and functionality of the solution.
+
+  These designations may be used in the name if they are necessary to describe the solution's functionality accurately, for example, for solutions designed for migration, import, export, synchronization, or data exchange between Bitrix24 and external systems.
+
+  The solution name must not create the impression that the solution is developed, released, or officially endorsed by Bitrix24 if this is not the case.
+
+  This requirement also applies to solutions published before it was introduced. As a general rule, if solutions from different developers in the same regional catalog have matching names, the developer whose solution was published later under the disputed name must change it. This developer receives a notification in the Developer's area and has 10 business days from receiving it to change the name or submit reasoned objections.
+
+  The name uniqueness check does not confirm that the developer holds exclusive rights to the designation and does not determine the priority of rights in a dispute. The developer confirms the rights to the designation, including trademark rights, with documents at the request of Bitrix24.
+
 - The "Category Selection" list must contain a list of sections from the Bitrix24 Market catalog where your solution will be displayed:
   1. No more than 5 categories;
   2. The category **"Miscellaneous"** is used only if you cannot find a suitable category for the main functionality of your solution;
@@ -69,7 +89,7 @@ If you feel that you lack the right tags, please contact the moderators in the c
    - If the solution contains settings, indicate where to find them and describe specific options;
    - If the solution includes integration with an external system/service, specify how the integration is configured within the application and on the external service side; the description should be written for a user who is not familiar with the system/service – links to general user documentation are not sufficient.
 9. The **"Support and Feedback Information"** field must contain all available channels for official communication with clients: e-mail, phone, link to feedback form or helpdesk, social media groups. Be sure to specify the technical support operating schedule – working days and hours, response time to incoming requests. This field must contain links only to English-language resources (website, helpdesk, etc.).
-10. **Icon** - file in JPEG and PNG format (without a transparent background), square, size no less than 250x250 pixels and no more than 650x650 pixels. Low-quality images with blurriness, noticeable pixelation, and those using third-party trademarks, including trademarks and logos owned by 1C-Bitrix, are not allowed.
+10. **Icon** - file in JPEG and PNG format (without a transparent background), square, size no less than 250x250 pixels and no more than 650x650 pixels. Low-quality images with blurriness, noticeable pixelation, and those using third-party trademarks, including trademarks and logos owned by Bitrix24, are not allowed.
 11. **Screenshots:**
     - Must contain examples of your solution's interface demonstrating demo data relevant to the solution in the context of Bitrix24.
     - Demo data must be as realistic as possible and demonstrate to the end user the process of setting up and using the application. Screenshots with empty fields, test users, empty reports, etc., are not accepted.
@@ -133,7 +153,7 @@ For the first version of the application, this field does not need to be filled;
   1. Offensive, obscene information in the version fields: calls to violence, pornography, racism, and other materials prohibited by applicable legislation;
   2. Unfilled "What's New in the Application" field, or text that does not correspond to the selected description language;
   3. Information that does not correspond to the fields (title in the description, discounts in the version description, etc.), or meaningless information;
-  4. Offers to purchase the solution, partner services, and/or 1C-Bitrix products directly from the partner;
+  4. Offers to purchase the solution, partner services, and/or Bitrix24 products directly from the partner;
   5. Descriptions of promotions, special offers, and discounts on partner solutions and/or Bitrix24 products when purchased directly from the partner;
   6. Excessive rights to Bitrix24 modules without obvious connection to the functionality of the solution;
   7. Obvious grammatical errors in the title and description;
@@ -165,7 +185,7 @@ For the first version of the application, this field does not need to be filled;
   3. The solution is a game, an entertainment, or a game-like product (such as horoscopes, fortune telling, entertainment quizzes, etc.);
   4. Offensive, obscene information is present in the interface or demo data: calls to violence, pornography, racism, and other materials prohibited by government legislation;
   5. The functionality of the solution does not correspond to what is stated in the title and description;
-  6. The solution is a clone of other solutions from the same developer in terms of graphic design and/or demo content;
+  6. The solution fully or partially imitates the name, icon, description, images, demo content, or interface of another solution in a way that may mislead users about the developer, the rights holder, the official status of the solution, or its connection with another solution or product;
   7. The solution is a knowledge base or a training app about Bitrix24 features and/or how to work in Bitrix24;
   8. The solution's only function is technical support for the developer's apps;
 - The functionality of the solution reveals:

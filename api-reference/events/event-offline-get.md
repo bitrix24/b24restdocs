@@ -18,7 +18,7 @@ The `event.offline.get` method returns to the application the first records from
 - `clear=1`, the default — returns the records and immediately deletes them from the queue
 - `clear=0` — reserves the records as a batch and returns its `process_id`. Confirm processing of the batch with the [event.offline.clear](./event-offline-clear.md) method, and mark errors with the [event.offline.error](./event-offline-error.md) method
 
-The batch reservation mode is not available on all plans. Check its availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`.
+In cloud Bitrix24, the batch reservation mode depends on the plan: check its availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`. In on-premise Bitrix24, the mode is always available, and `feature.get` returns the string `<language>_selfhosted` instead of `Y`, for example, `en_selfhosted`.
 
 The method works only in the context of authorizing the [application](../../settings/app-installation/index.md). Permissions for event methods are described in the [Access Permissions](./index.md#access) section.
 

@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 The `event.offline.error` method marks records of a reserved [offline event](./offline-events.md) batch as erroneous. Such records are released from the reservation and are no longer included in the regular output of [event.offline.get](./event-offline-get.md). You can retrieve them with the `event.offline.get` method with the `error=1` parameter.
 
-The batch reservation mode is not available on all plans. Check its availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`.
+In cloud Bitrix24, the batch reservation mode depends on the plan: check its availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`. In on-premise Bitrix24, the mode is always available, and `feature.get` returns the string `<language>_selfhosted` instead of `Y`, for example, `en_selfhosted`.
 
 The method works only in the context of authorizing the [application](../../settings/app-installation/index.md). Permissions for event methods are described in the [Access Permissions](./index.md#access) section.
 

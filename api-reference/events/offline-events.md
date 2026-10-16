@@ -116,7 +116,7 @@ In the main scenario, the queue is controlled by six parameters. Filters, sortin
 
 ### Availability Check
 
-The confirmation processing mode is available on certain plans. Check availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`.
+In cloud Bitrix24, the confirmation processing mode depends on the plan: check its availability using the [feature.get](../common/system/feature-get.md) method with the code `rest_offline_extended`. In on-premise Bitrix24, the mode is always available, and `feature.get` returns the string `<language>_selfhosted` instead of `Y`, for example, `en_selfhosted`.
 
 {% include [Examples Note](../../_includes/examples.md) %}
 

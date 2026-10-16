@@ -119,7 +119,8 @@ The response of any method consists of a `result` block containing the method da
 {
     "result": {
         "id": 789,
-        "uuidMap": {}
+        "uuidMap": [],
+        "failureMap": []
     }
 }
 ```
