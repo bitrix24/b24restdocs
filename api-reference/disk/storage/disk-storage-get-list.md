@@ -222,7 +222,7 @@ The formula for calculating the `start` parameter value:
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.disk.storage.getlist(
+        bitrix_response = client.disk.storage.get_list(
             filter={
                 "NAME": "%Bitrix24%",
             },

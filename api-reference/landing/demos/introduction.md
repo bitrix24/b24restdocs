@@ -146,15 +146,30 @@ Call [landing.site.fullExport](../site/landing-site-full-export.md). Pass the we
 - Python
 
     ```python
-    # client is a previously initialized B24PySDK instance
-    export_data = client.landing.site.full_export(
-        bitrix_id=326,
-        params={
-            "code": "myfirstsite2026",
-            "name": "Auto Repair Website",
-            "preview_url": "https://example.com/previews/myfirstsite2026",
-        },
-    ).response.result
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.landing.site.full_export(
+            bitrix_id=326,
+            params={
+                "code": "myfirstsite2026",
+                "name": "Auto Repair Website",
+                "preview_url": "https://example.com/previews/myfirstsite2026",
+            },
+        ).response
+        export_data = bitrix_response.result
+        print(export_data)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 {% endlist %}
@@ -231,12 +246,27 @@ The examples continue the code from the first step.
 - Python
 
     ```python
-    registered_template_ids = client.landing.demos.register(
-        data=export_data,
-    ).response.result
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    if not registered_template_ids:
-        raise RuntimeError("Template was not registered")
+    try:
+        bitrix_response = client.landing.demos.register(
+            data=export_data,
+        ).response
+        registered_template_ids = bitrix_response.result
+        if not registered_template_ids:
+            raise RuntimeError("Template was not registered")
+        print(registered_template_ids)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 {% endlist %}
@@ -308,19 +338,34 @@ Call [landing.demos.getList](./landing-demos-get-list.md) and find the entry who
 - Python
 
     ```python
-    templates = client.landing.demos.get_list(
-        params={
-            "select": ["ID", "XML_ID", "TITLE", "TYPE"],
-        },
-    ).response.result
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    template = next(
-        (item for item in templates if item["XML_ID"] == "myfirstsite2026"),
-        None,
-    )
+    try:
+        bitrix_response = client.landing.demos.get_list(
+            params={
+                "select": ["ID", "XML_ID", "TITLE", "TYPE"],
+            },
+        ).response
+        templates = bitrix_response.result
 
-    if template is None:
-        raise RuntimeError("Template was not found")
+        template = next(
+            (item for item in templates if item["XML_ID"] == "myfirstsite2026"),
+            None,
+        )
+        if template is None:
+            raise RuntimeError("Template was not found")
+        print(template)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
     ```
 
 {% endlist %}

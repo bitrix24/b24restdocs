@@ -139,8 +139,8 @@ You can obtain the notification identifier using the [im.notify.get](./im-notify
 
     try:
         bitrix_response = client.im.notify.answer(
-            bitrix_id=270,
-            answer_text="Answer accepted",
+            notify_id=270,
+            answer_text="I will participate",
         ).response
         result = bitrix_response.result
         print(result)

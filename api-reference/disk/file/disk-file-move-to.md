@@ -165,7 +165,7 @@ File and folder identifiers can be obtained using the [disk.storage.getChildren]
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.disk.file.moveto(
+        bitrix_response = client.disk.file.move_to(
             bitrix_id=8964,
             target_folder_id=9023,
         ).response

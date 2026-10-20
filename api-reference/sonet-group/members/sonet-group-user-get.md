@@ -136,7 +136,7 @@ The identifier can be obtained using the [sonet_group.get](../sonet-group-get.md
 
     try:
         bitrix_response = client.sonet_group.user.get(
-            bitrix_id=69,
+            group_id=69,
         ).response
         result = bitrix_response.result
         print(result)

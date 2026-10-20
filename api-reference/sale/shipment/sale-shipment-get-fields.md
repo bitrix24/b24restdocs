@@ -126,7 +126,7 @@ No parameters.
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.sale.shipment.getfields().response
+        bitrix_response = client.sale.shipment.get_fields().response
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:

@@ -244,7 +244,7 @@ The formula for calculating the `start` parameter value:
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.disk.folder.getchildren(
+        bitrix_response = client.disk.folder.get_children(
             bitrix_id=8907,
             filter={
                 ">=CREATE_TIME": "2026-01-12",

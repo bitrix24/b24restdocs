@@ -1529,7 +1529,9 @@ Pass the same `auth_connector` in modifying calls. Then Bitrix24 will not record
             fields={
                 "TITLE": "New title",
             },
-            auth_connector="my_connector",
+            params={
+                "auth_connector": "my_connector",
+            },
         ).response
         result = bitrix_response.result
         print(result)

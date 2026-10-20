@@ -152,10 +152,10 @@ Returns information about a note attached to a timeline record.
 
     try:
         bitrix_response = client.crm.timeline.note.get(
-            entity_type_id=2,
-            entity_id=15,
+            owner_type_id=1,
+            owner_id=1,
             item_type=1,
-            item_id=128,
+            item_id=2,
         ).response
         result = bitrix_response.result
         print(result)

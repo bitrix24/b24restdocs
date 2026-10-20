@@ -194,7 +194,7 @@ You can set permissions when creating a folder using the `rights` parameter. To 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.disk.folder.addsubfolder(
+        bitrix_response = client.disk.folder.add_sub_folder(
             bitrix_id=8907,
             data={
                 "NAME": "Folder inside a folder",

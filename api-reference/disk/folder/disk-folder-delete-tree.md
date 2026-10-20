@@ -138,7 +138,7 @@ You cannot delete the root folder of the storage
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.disk.folder.deletetree(
+        bitrix_response = client.disk.folder.delete_tree(
             bitrix_id=8942,
         ).response
         result = bitrix_response.result

@@ -194,6 +194,45 @@ Possible values:
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.humanresources.hcmlink.field.value.set(
+            company="hr-company-001",
+            data=[
+                {
+                    "field": "personal_number",
+                    "employee": "employee-001",
+                    "value": "TN-1001",
+                },
+            ],
+            job={
+                "id": 101,
+                "fields": {
+                    "status": "DONE",
+                    "total": 1,
+                    "sent": 1,
+                },
+            },
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php

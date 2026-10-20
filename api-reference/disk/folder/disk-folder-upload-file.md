@@ -217,6 +217,44 @@ Default is `false` ||
     </script>
     ```
 
+- Python
+
+    ```python
+    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+
+    try:
+        bitrix_response = client.disk.folder.upload_file(
+            bitrix_id=8930,
+            data={
+                "NAME": "test.png",
+            },
+            file_content=[
+                "test.png",
+                "iVBORw0KGgoAAAANSUhEUgAAAD4AAABDCAYAAADEfbZbAAAACXBIWXMAABJ0AAASdAHeZh94...rk5CYII=",
+            ],
+            generate_unique_name=True,
+            rights=[
+                {
+                    "TASK_ID": 75,
+                    "ACCESS_CODE": "U1271",
+                },
+            ],
+        ).response
+        result = bitrix_response.result
+        print(result)
+    except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
+        )
+    except BitrixSDKException as error:
+        print(f"Bitrix SDK error: {error.message}")
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+    ```
+
 - PHP
 
     ```php
@@ -456,7 +494,7 @@ Default is `false` ||
         from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
         try:
-            bitrix_response = client.disk.folder.uploadfile(
+            bitrix_response = client.disk.folder.upload_file(
                 bitrix_id=8930,
             ).response
             result = bitrix_response.result

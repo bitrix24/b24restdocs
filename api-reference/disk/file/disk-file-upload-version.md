@@ -176,7 +176,7 @@ The Base64 string is included in the POST request size and is approximately one-
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.disk.file.uploadversion(
+        bitrix_response = client.disk.file.upload_version(
             bitrix_id=9043,
             file_content=[
                 "Test No. 2.docx",

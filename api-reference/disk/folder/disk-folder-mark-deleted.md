@@ -160,7 +160,7 @@ You cannot move the root folder of the storage to the trash.
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.disk.folder.markdeleted(
+        bitrix_response = client.disk.folder.mark_deleted(
             bitrix_id=8996,
         ).response
         result = bitrix_response.result

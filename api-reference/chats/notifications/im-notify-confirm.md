@@ -144,8 +144,8 @@ For example, consider a notification that supports buttons:
 
     try:
         bitrix_response = client.im.notify.confirm(
-            bitrix_id=288,
-            notify_value="Y",
+            notify_id=288,
+            notify_value=True,
         ).response
         result = bitrix_response.result
         print(result)
