@@ -333,7 +333,7 @@ HTTP status: **200**
                 "name": "collectionId",
                 "type": "int",
                 "title": "collectionId",
-                "filterable": false,
+                "filterable": true,
                 "sortable": false
             },
             {
@@ -400,6 +400,13 @@ HTTP status: **200**
                 "sortable": false
             },
             {
+                "name": "state",
+                "type": "string",
+                "title": "state",
+                "filterable": true,
+                "sortable": false
+            },
+            {
                 "name": "isArchived",
                 "type": "bool",
                 "title": "isArchived",
@@ -456,7 +463,7 @@ The description depends on `select`. The table lists all properties that can be 
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../data-types.md) | Field name: `id`, `collectionId`, `parentId`, `title`, `markdown`, `position`, `createdBy`, `updatedBy`, `createdAt`, `updatedAt`, `contentUpdatedAt`, `isArchived`, `isTrashed`, `isOrphan` ||
+[`string`](../../data-types.md) | Field name: `id`, `collectionId`, `parentId`, `title`, `markdown`, `position`, `createdBy`, `updatedBy`, `createdAt`, `updatedAt`, `contentUpdatedAt`, `state`, `isArchived`, `isTrashed`, `isOrphan` ||
 || **type**
 [`string`](../../data-types.md) | Metadata type: `int`, `string`, `object`, `bool`. Date fields return `object`, although method responses contain ISO 8601 strings ||
 || **title**
@@ -489,7 +496,7 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION",
-        "message": "Unknown field `unknownField` for entity `DtoFieldDto`"
+        "message": "Unknown field \"unknownField\" found in entity \"DtoFieldDto\"."
     }
 }
 ```
@@ -513,14 +520,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
+|| `select` | Unknown field "#FIELD#" found in entity "DtoFieldDto" | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as an array of strings, e.g., `["name","type"]` ||
+|| `select` | Invalid field in "select": #SELECT# | Pass `select` as an array of strings, e.g., `["name","type"]` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

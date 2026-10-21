@@ -99,6 +99,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         position: number
         policyLevel: string
         accessLevel: string
+        state: 'live' | 'archived' | 'trashed'
         isArchived: boolean
         markdownDescription: string | null
         createdBy: number
@@ -326,6 +327,7 @@ HTTP status: **200**
             "updatedBy": 1,
             "updatedAt": "2026-04-20T12:00:00Z",
             "accessLevel": "full",
+            "state": "live",
             "isArchived": false,
             "markdownDescription": null
         }
@@ -362,6 +364,8 @@ HTTP status: **200**
 [`string`](../../data-types.md) | Knowledge base access policy code, such as `private` or `portal` ||
 || **result.item.accessLevel**
 [`string`](../../data-types.md) | Current user's access level code, such as `full` ||
+|| **result.item.state**
+[`string`](../../data-types.md) | Knowledge base state: `live` — active, `archived` — archived, `trashed` — in the Recycle Bin ||
 || **result.item.isArchived**
 [`boolean`](../../data-types.md) | Indicates whether the knowledge base is archived ||
 || **result.item.markdownDescription**
@@ -386,10 +390,10 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION",
-        "message": "Object validation error",
+        "message": "Error validating object.",
         "validation": [
             {
-                "message": "Mandatory field \"name\" is not filled",
+                "message": "Required field \"name\" is empty.",
                 "field": "name"
             }
         ]
@@ -407,7 +411,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `fields` | Mandatory field `fields` is not specified | Add object `fields` to the request body ||
+|| `fields` | Required field "fields" is missing | Add object `fields` to the request body ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
@@ -437,4 +441,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 - [{#T}](./note-collection-update.md)
 - [{#T}](./note-collection-archive.md)
 - [{#T}](./note-collection-delete.md)
+- [{#T}](./note-collection-move.md)
 - [{#T}](./index.md)

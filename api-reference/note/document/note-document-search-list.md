@@ -410,7 +410,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `query` | Mandatory field `query` is not specified | Add `query` to the request body ||
+|| `query` | Required field "query" is missing | Add `query` to the request body ||
 || `query`
 `pagination` | Field `#FIELD#` requires data type `#TYPE#` for such a request | Ensure the provided value is of the correct type ||
 |#
@@ -444,4 +444,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 - [{#T}](./note-document-tree-list.md)
 - [{#T}](./note-document-get.md)
+- [{#T}](./note-document-list.md)
 - [{#T}](./index.md)

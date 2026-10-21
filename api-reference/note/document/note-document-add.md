@@ -112,6 +112,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         createdAt: ISODate
         updatedAt: ISODate
         contentUpdatedAt: ISODate
+        state: 'live' | 'archived' | 'trashed'
         isArchived: boolean
         isTrashed: boolean
         isOrphan: boolean
@@ -346,6 +347,7 @@ HTTP status: **200**
             "createdAt": "2026-04-20T12:00:00Z",
             "updatedAt": "2026-04-20T12:00:00Z",
             "contentUpdatedAt": "2026-04-20T12:00:00Z",
+            "state": "live",
             "isArchived": false,
             "isTrashed": false,
             "isOrphan": false
@@ -395,12 +397,14 @@ HTTP status: **200**
 [`datetime`](../../data-types.md) | Last document modification date and time in ISO 8601 format with a timezone offset ||
 || **result.item.contentUpdatedAt**
 [`datetime`](../../data-types.md) | Content modification date and time in ISO 8601 format with a timezone offset ||
+|| **result.item.state**
+[`string`](../../data-types.md) | Document state: `live` — active, `archived` — archived, `trashed` — in the Recycle Bin ||
 || **result.item.isArchived**
-[`boolean`](../../data-types.md) | Indicates whether the document is archived ||
+[`boolean`](../../data-types.md) | Deprecated field. Use `state`. Indicates whether the document is archived ||
 || **result.item.isTrashed**
-[`boolean`](../../data-types.md) | Indicates whether the document is in the trash ||
+[`boolean`](../../data-types.md) | Deprecated field. Use `state`. Indicates whether the document is in the Recycle Bin ||
 || **result.item.isOrphan**
-[`boolean`](../../data-types.md) | Indicates that no knowledge base is associated with the document ||
+[`boolean`](../../data-types.md) | Deprecated field. Indicates that the document is in the Recycle Bin and its knowledge base has been deleted ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -413,10 +417,10 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION",
-        "message": "Object validation error",
+        "message": "Error validating object.",
         "validation": [
             {
-                "message": "Mandatory field \"title\" is not filled",
+                "message": "Required field \"title\" is empty.",
                 "field": "title"
             }
         ]
@@ -434,7 +438,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `fields` | Required field `fields` is not specified. | Add the `fields` object to the request body. ||
+|| `fields` | Required field "fields" is missing | Add the `fields` object to the request body. ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
@@ -471,7 +475,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Access denied. | The user does not have access to the Knowledge Base module or the permissions to create documents in the specified knowledge base. ||
+|| `-` | Access denied | The user does not have access to the Knowledge Base module or the permissions to create documents in the specified knowledge base. ||
 |#
 
 #### Object Not Found Error
@@ -490,4 +494,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 - [{#T}](./note-document-update.md)
 - [{#T}](./note-document-archive.md)
 - [{#T}](./note-document-delete.md)
+- [{#T}](./note-document-move.md)
 - [{#T}](./index.md)

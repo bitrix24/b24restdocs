@@ -11,10 +11,16 @@ items:
     href: note-collection-get.md
   - name: Get Knowledge Bases List
     href: note-collection-list.md
-  - name: Move Knowledge Base to Trash
+  - name: Change Knowledge Base Position
+    href: note-collection-move.md
+  - name: Move Knowledge Base to Recycle Bin
     href: note-collection-delete.md
+  - name: Restore Knowledge Base from Recycle Bin
+    href: note-collection-restore.md
   - name: Archive Knowledge Base
     href: note-collection-archive.md
+  - name: Unarchive Knowledge Base
+    href: note-collection-unarchive.md
   - name: Get Knowledge Base Field
     href: note-collection-field-get.md
   - name: Get Knowledge Base Fields List

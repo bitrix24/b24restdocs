@@ -9,10 +9,18 @@ items:
     href: note-document-update.md
   - name: Retrieve Document
     href: note-document-get.md
-  - name: Move Document to Trash
+  - name: Move Document to Recycle Bin
     href: note-document-delete.md
+  - name: Restore Document from Recycle Bin
+    href: note-document-restore.md
   - name: Archive Document
     href: note-document-archive.md
+  - name: Unarchive Document
+    href: note-document-unarchive.md
+  - name: Move Document
+    href: note-document-move.md
+  - name: Get Documents List
+    href: note-document-list.md
   - name: Get Document Tree
     href: note-document-tree-list.md
   - name: Find Documents

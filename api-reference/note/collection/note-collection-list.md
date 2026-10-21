@@ -28,8 +28,36 @@ The `note.collection.list` method returns a list of Knowledge bases available to
 #|
 || **Name**
 `type` | **Description** ||
+|| **filter**
+[`array`](../../data-types.md) | List filter in REST 3.0 format: an array of conditions of the form `["field", "operator", "value"]`. Filtering is available only by the `state` field. [Field description](#filter).
+
+The filter syntax is described in the [REST 3.0 overview](../../rest-v3.md#filter).
+
+By default, only active knowledge bases are returned ||
 || **pagination**
 [`object`](../../data-types.md) | Pagination object. [Object structure description](#pagination) ||
+|| **select**
+[`array`](../../data-types.md) | List of knowledge base fields to return in the response, for example `["id","name","state"]`. Field names match the response fields.
+
+By default, all fields are returned ||
+|#
+
+### Parameter Filter {#filter}
+
+#|
+|| **Field** | **Description** ||
+|| **state**
+[`string`](../../data-types.md) | Knowledge base state. The `=` and `in` operators are supported.
+
+Possible values:
+
+- `live` — active knowledge base
+- `archived` — archived knowledge base
+- `trashed` — knowledge base in the Recycle Bin. Only knowledge bases for which the user has the "Administration" permission are returned
+
+Default: `live`.
+
+A `state` condition can be specified only at the top level of the filter, not inside `or` logic or a negation ||
 |#
 
 ### Parameter Pagination {#pagination}
@@ -117,6 +145,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         position: number
         policyLevel: string
         accessLevel: string
+        state: 'live' | 'archived' | 'trashed'
         isArchived: boolean
         markdownDescription: string | null
         createdBy: number
@@ -362,6 +391,7 @@ HTTP status: **200**
                 "position": 100,
                 "policyLevel": "private",
                 "accessLevel": "full",
+                "state": "live",
                 "isArchived": false,
                 "createdBy": 1,
                 "createdAt": "2026-06-23T22:01:03+03:00",
@@ -375,6 +405,7 @@ HTTP status: **200**
                 "position": 100,
                 "policyLevel": "private",
                 "accessLevel": "full",
+                "state": "live",
                 "isArchived": false,
                 "createdBy": 1,
                 "createdAt": "2026-06-22T12:16:33+03:00",
@@ -416,6 +447,8 @@ HTTP status: **200**
 [`string`](../../data-types.md) | Knowledge base access policy code, such as `private` or `portal`. The current user's access level is returned separately in `accessLevel` ||
 || **result.items[].accessLevel**
 [`string`](../../data-types.md) | Current user's access level code for the knowledge base. `full` in the example ||
+|| **result.items[].state**
+[`string`](../../data-types.md) | Knowledge base state: `live` — active, `archived` — archived, `trashed` — in the Recycle Bin ||
 || **result.items[].isArchived**
 [`boolean`](../../data-types.md) | `true` if the knowledge base is archived; `false` otherwise ||
 || **result.items[].createdBy**
@@ -457,6 +490,27 @@ HTTP status: **403**
 
 Out-of-range `pagination.limit` values and an incomplete `pagination.afterCursor` do not cause validation errors: the values are normalized as described in [Method Parameters](#method-parameters).
 
+#### Request Validation Errors
+
+Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `state` | unknown state: expected one of live, archived, trashed | Pass `live`, `archived`, or `trashed` ||
+|| `state` | operator "#OPERATOR#" is not supported for state: use "=" or "in" | Use the `=` or `in` operator for `state` ||
+|| `state` | state belongs to the top-level "and" of the filter: it cannot sit under "or" or under a negation | Move the `state` condition to the top level of the filter ||
+|| `#FIELD#` | DTO "CollectionItemDto" in field "#FIELD#" requires attribute "Filterable" to perform this request | Filter only by the `state` field ||
+|#
+
+#### Unknown Field Error
+
+Error code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `select` | Unknown field "#FIELD#" found in entity "CollectionItemDto" | In `select`, specify only fields from the "Returned Data" section ||
+|#
+
 #### Access Errors
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
@@ -472,4 +526,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 - [{#T}](./note-collection-add.md)
 - [{#T}](./note-collection-update.md)
+- [{#T}](./note-collection-move.md)
 - [{#T}](./index.md)

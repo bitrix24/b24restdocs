@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Files in Knowledge Base 2.0 are linked to documents and are used as Markdown attachments: images, videos, and regular files. The `note.file.*` methods help upload a file, retrieve its metadata, determine the field schema, and return a Markdown block for insertion into a document.
+Files in Knowledge Base 2.0 are linked to documents and are used as Markdown attachments: images, videos, and regular files. The `note.file.*` methods help upload a file, retrieve its metadata or the list of all document files, determine the field schema, and return a Markdown block for insertion into a document.
 
 > Quick navigation: [All Methods](#all-methods)
 >
@@ -26,19 +26,21 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 1. Create a document using the [note.document.add](../document/note-document-add.md) method if you do not already have a page to which the file should be linked
 2. Upload a file using the [note.file.add](./note-file-add.md) method and retain the returned `id` or immediately `assetMarkdown`
 3. Add `assetMarkdown` to the document text and pass the result in `markdown` to [note.document.update](../document/note-document-update.md). To retrieve a Markdown block for a previously uploaded file, call [note.file.get](./note-file-get.md)
-4. Determine the field composition and types using the [note.file.field.list](./note-file-field-list.md) and [note.file.field.get](./note-file-field-get.md) methods if you are building a form, table, or validation on your side
+4. To find all files of a document, for example, uploaded but not yet inserted into the text, retrieve them with the [note.file.list](./note-file-list.md) method
+5. Determine the field composition and types using the [note.file.field.list](./note-file-field-list.md) and [note.file.field.get](./note-file-field-get.md) methods if you are building a form, table, or validation on your side
 
 
 ## Limitations and Features
 
 - The size limit applies to the file after Base64 decoding. A positive `main.max_file_size` setting is multiplied by 1024; otherwise, the limit is 25 MiB (26,214,400 bytes). If the limit is exceeded, `note.file.add` returns `NOTE_FILE_TOO_LARGE`
 - Allowed extensions are listed under the [fileName parameter of note.file.add](./note-file-add.md#parameters). The check is case insensitive. If the extension is missing or disallowed, the method returns `NOTE_FILE_TYPE_NOT_ALLOWED`
-- Uploading requires permission to edit the document; retrieving a file requires permission to view the document. Permissions may come from the knowledge base or be assigned to the document
+- A file uploaded with `note.file.add` and not inserted into the document text is eventually deleted by background cleanup. The period is counted from the attachment date — the `createdAt` field in the [note.file.list](./note-file-list.md) response. Insert `assetMarkdown` into the document right after uploading
+- Uploading requires permission to edit the document; retrieving a file and the list of files requires permission to view the document. Permissions may come from the knowledge base or be assigned to the document
 
 
 ## Connection with Other Objects
 
-**Documents.** A file is linked to a specific [document](../document/index.md). Calling [note.file.get](./note-file-get.md) requires both identifiers: the file's `id` and the document's `documentId`.
+**Documents.** A file is linked to a specific [document](../document/index.md). Calling [note.file.get](./note-file-get.md) requires both identifiers: the file's `id` and the document's `documentId`. You can get the identifiers of document files with the [note.file.list](./note-file-list.md) method.
 
 **Knowledge Bases.** A document belongs to a [knowledge base](../collection/index.md). The overall workflow with knowledge bases and documents is described in the [Knowledge Base 2.0 overview](../index.md).
 
@@ -53,6 +55,7 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 || **Method** | **Description** ||
 || [note.file.add](./note-file-add.md) | Uploads a file to a document ||
 || [note.file.get](./note-file-get.md) | Returns the document file data and a Markdown block for insertion into the document ||
+|| [note.file.list](./note-file-list.md) | Returns a list of document files with the attachment date ||
 || [note.file.field.get](./note-file-field-get.md) | Returns the description of a document file field ||
 || [note.file.field.list](./note-file-field-list.md) | Returns a list of document file fields ||
 |#

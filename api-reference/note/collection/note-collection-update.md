@@ -98,6 +98,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         position: number
         policyLevel: string
         accessLevel: string
+        state: 'live' | 'archived' | 'trashed'
         isArchived: boolean
         markdownDescription: string | null
         createdBy: number
@@ -319,6 +320,7 @@ HTTP status: **200**
             "updatedBy": 1,
             "updatedAt": "2026-04-21T09:15:30Z",
             "accessLevel": "full",
+            "state": "live",
             "isArchived": false,
             "markdownDescription": null
         }
@@ -355,6 +357,8 @@ HTTP status: **200**
 [`string`](../../data-types.md) | Knowledge base access policy code, such as `private` or `portal` ||
 || **result.item.accessLevel**
 [`string`](../../data-types.md) | Current user's access level code, such as `full` ||
+|| **result.item.state**
+[`string`](../../data-types.md) | Knowledge base state: `live` — active, `archived` — archived, `trashed` — in the Recycle Bin ||
 || **result.item.isArchived**
 [`boolean`](../../data-types.md) | Indicates whether the knowledge base is archived ||
 || **result.item.markdownDescription**
@@ -379,10 +383,10 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error during request object validation",
+        "message": "Error validating request object.",
         "validation": [
             {
-                "message": "Mandatory field `id` is missing",
+                "message": "Required field \"id\" is missing.",
                 "field": "id"
             }
         ]
@@ -402,14 +406,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `id`
 `fields` | Required field `#FIELD#` is not specified. | Add the specified field to the request body ||
-|| `id` | Field `#FIELD#` requires data type `#TYPE#` for this request. | Ensure the provided value is of the correct type ||
+|| `id` | This request requires data type "#TYPE#" in field "#FIELD#" | Ensure the provided value is of the correct type ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `name` | Field `#FIELD#` requires data type `#TYPE#` for this request. | Ensure the provided value is of the correct type ||
+|| `name` | This request requires data type "#TYPE#" in field "#FIELD#" | Ensure the provided value is of the correct type ||
 || `name` | Knowledge base name cannot be empty. | Pass a non-empty string in the `fields.name` field. ||
 || `name` | Knowledge base name must not exceed 255 characters. | Shorten the value of `fields.name`. ||
 |#
@@ -420,7 +424,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Access denied. | The user does not have access to the Knowledge Base module or the permissions to modify the knowledge base. ||
+|| `-` | Access denied | The user does not have access to the Knowledge Base module or the permissions to modify the knowledge base. ||
 |#
 
 #### Object Not Found Error
@@ -439,4 +443,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 - [{#T}](./note-collection-add.md)
 - [{#T}](./note-collection-archive.md)
 - [{#T}](./note-collection-delete.md)
+- [{#T}](./note-collection-move.md)
 - [{#T}](./index.md)

@@ -356,10 +356,10 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error validating request object",
+        "message": "Error validating request object.",
         "validation": [
             {
-                "message": "Mandatory field `id` is missing",
+                "message": "Required field \"id\" is missing.",
                 "field": "id"
             }
         ]
@@ -407,5 +407,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 ## Continue Learning
 
 - [{#T}](./note-file-add.md)
+- [{#T}](./note-file-list.md)
 - [{#T}](../document/note-document-update.md)
 - [{#T}](./index.md)

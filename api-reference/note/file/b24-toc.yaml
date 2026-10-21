@@ -7,6 +7,8 @@ items:
     href: note-file-add.md
   - name: Get Document File Data
     href: note-file-get.md
+  - name: Get Document Files List
+    href: note-file-list.md
   - name: Get Document File Field
     href: note-file-field-get.md
   - name: Get Document File Fields List

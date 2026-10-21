@@ -373,7 +373,7 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error during request object validation",
+        "message": "Error validating request object.",
         "validation": [
             {
                 "message": "invalid base64 payload",
@@ -441,5 +441,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 ## Continue Learning
 
 - [{#T}](./note-file-get.md)
+- [{#T}](./note-file-list.md)
 - [{#T}](../document/note-document-update.md)
 - [{#T}](./index.md)

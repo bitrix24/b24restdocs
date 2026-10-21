@@ -433,7 +433,7 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION",
-        "message": "Unknown field `unknownField` for entity `DtoFieldDto`"
+        "message": "Unknown field \"unknownField\" found in entity \"DtoFieldDto\"."
     }
 }
 ```
@@ -457,14 +457,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
+|| `select` | Unknown field "#FIELD#" found in entity "DtoFieldDto" | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as an array of strings, e.g., `["name","type"]` ||
+|| `select` | Invalid field in "select": #SELECT# | Pass `select` as an array of strings, e.g., `["name","type"]` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

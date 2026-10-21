@@ -21,7 +21,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `note.document.get` method returns a single document with its content in Markdown.
 
-An archived document or a document in the trash may remain readable. Check `isArchived` and `isTrashed` to determine its state.
+An archived document or a document in the Recycle Bin may remain readable. Check the `state` field to determine its state.
 
 ## Method Parameters
 
@@ -91,6 +91,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         createdAt: ISODate
         updatedAt: ISODate
         contentUpdatedAt: ISODate
+        state: 'live' | 'archived' | 'trashed'
         isArchived: boolean
         isTrashed: boolean
         isOrphan: boolean
@@ -288,6 +289,7 @@ HTTP status: **200**
             "createdAt": "2026-04-20T12:00:00Z",
             "updatedAt": "2026-04-21T09:15:30Z",
             "contentUpdatedAt": "2026-04-21T09:15:30Z",
+            "state": "live",
             "isArchived": false,
             "isTrashed": false,
             "isOrphan": false
@@ -337,12 +339,14 @@ HTTP status: **200**
 [`datetime`](../../data-types.md) | Last document modification date and time in ISO 8601 format with a timezone offset ||
 || **result.item.contentUpdatedAt**
 [`datetime`](../../data-types.md) | Content modification date and time in ISO 8601 format with a timezone offset ||
+|| **result.item.state**
+[`string`](../../data-types.md) | Document state: `live` — active, `archived` — archived, `trashed` — in the Recycle Bin ||
 || **result.item.isArchived**
-[`boolean`](../../data-types.md) | Indicates whether the document is archived ||
+[`boolean`](../../data-types.md) | Deprecated field. Use `state`. Indicates whether the document is archived ||
 || **result.item.isTrashed**
-[`boolean`](../../data-types.md) | Indicates whether the document is in the trash ||
+[`boolean`](../../data-types.md) | Deprecated field. Use `state`. Indicates whether the document is in the Recycle Bin ||
 || **result.item.isOrphan**
-[`boolean`](../../data-types.md) | Indicates that no knowledge base is associated with the document ||
+[`boolean`](../../data-types.md) | Deprecated field. Indicates that the document is in the Recycle Bin and its knowledge base has been deleted ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -355,10 +359,10 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error validating request object",
+        "message": "Error validating request object.",
         "validation": [
             {
-                "message": "Mandatory field `id` is missing",
+                "message": "Required field \"id\" is missing.",
                 "field": "id"
             }
         ]
@@ -376,8 +380,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Required field `id` is not specified | Add `id` to the request body ||
-|| `id` | Field `id` requires data type `#TYPE#` for such a request | Ensure the provided value is of the correct type ||
+|| `id` | Required field "id" is missing | Add `id` to the request body ||
+|| `id` | This request requires data type "#TYPE#" in field "id" | Ensure the provided value is of the correct type ||
 |#
 
 #### Access Errors
@@ -404,4 +408,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 - [{#T}](./note-document-tree-list.md)
 - [{#T}](./note-document-search-list.md)
+- [{#T}](./note-document-list.md)
 - [{#T}](./index.md)

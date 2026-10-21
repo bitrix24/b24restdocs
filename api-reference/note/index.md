@@ -13,9 +13,9 @@ Knowledge Base 2.0 helps collect internal company materials: regulations, instru
 
 The section methods work with several groups of objects:
 
-- [Knowledge Bases](./collection/index.md) — create a knowledge base, retrieve data and field schemas, rename, archive, and move to the shopping cart
-- [Documents](./document/index.md) — create documents, retrieve the page tree and content, search for documents, retrieve field schemas for documents, the tree, and search, and archive or delete page subtrees
-- [Files](./file/index.md) — upload a file to a document, retrieve data and field schemas, and return a Markdown block for inserting an attachment
+- [Knowledge Bases](./collection/index.md) — create a knowledge base, retrieve data and field schemas, rename, change the order in the list, archive, move to the Recycle Bin, and restore
+- [Documents](./document/index.md) — create documents, retrieve the page tree, list, and content, search for and move documents, retrieve field schemas for documents, the tree, and search, archive or delete page subtrees, and restore them
+- [Files](./file/index.md) — upload a file to a document, retrieve file data and the list of document files, retrieve field schemas, and return a Markdown block for inserting an attachment
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -31,16 +31,17 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 
 1. Create a knowledge base with [note.collection.add](./collection/note-collection-add.md), or choose an existing one with [note.collection.list](./collection/note-collection-list.md)
 2. Create a document with [note.document.add](./document/note-document-add.md). For a child page, pass the parent document's `parentId`
-3. Retrieve the structure with [note.document.tree.list](./document/note-document-tree-list.md), page content with [note.document.get](./document/note-document-get.md), and text matches with [note.document.search.list](./document/note-document-search-list.md)
+3. Retrieve the knowledge base structure with [note.document.tree.list](./document/note-document-tree-list.md), all available documents in all knowledge bases with [note.document.list](./document/note-document-list.md), page content with [note.document.get](./document/note-document-get.md), and text matches with [note.document.search.list](./document/note-document-search-list.md)
 4. If needed, upload an attachment with [note.file.add](./file/note-file-add.md), add its `assetMarkdown` to the text, and save the document with [note.document.update](./document/note-document-update.md)
 5. To configure an integration, inspect knowledge base, document, and file fields with the `*.field.list` and `*.field.get` methods in the [methods table](#all-methods)
 
 
 ## Limitations and Recommendations
 
-- Archiving or deleting a knowledge base affects all documents in it. Deletion moves data to the trash; restoration is available through the interface
+- Archiving or deleting a knowledge base affects all documents in it. A deleted knowledge base is restored together with its documents with the [note.collection.restore](./collection/note-collection-restore.md) method. The [note.collection.unarchive](./collection/note-collection-unarchive.md) method restores only the knowledge base itself from the archive; documents are restored separately
 - The `markdown` content must not exceed 1,048,576 bytes when creating or updating a document. Exceeding the limit returns `NOTE_MARKDOWN_TOO_LARGE`. Additional limits are described in the [document](./document/index.md) and [file](./file/index.md) overviews
-- Document archiving and deletion methods operate on the entire subtree rather than a single page. If a document has child pages, they will also be archived or moved to the shopping cart.
+- Document archiving and deletion methods operate on the entire subtree rather than a single page. If a document has child pages, they will also be archived or moved to the Recycle Bin. A subtree is restored from the Recycle Bin in full, while from the archive each document is restored separately — see the [document overview](./document/index.md) for details
+- The state of a knowledge base and a document is returned in the `state` field: `live`, `archived`, or `trashed`. The `note.collection.list` and `note.document.list` methods return only active objects by default; others are returned by the `state` filter
 - Access to view and edit Knowledge bases, documents, and files depends on the current user's permissions. The same scenario may be available to some employees and unavailable to others.
 
 {% note tip "User documentation" %}
@@ -71,8 +72,11 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 || [note.collection.update](./collection/note-collection-update.md) | Renames a knowledge base ||
 || [note.collection.get](./collection/note-collection-get.md) | Returns a single knowledge base by ID ||
 || [note.collection.list](./collection/note-collection-list.md) | Returns a list of knowledge bases available to the user ||
-|| [note.collection.delete](./collection/note-collection-delete.md) | Moves a knowledge base to the trash ||
+|| [note.collection.move](./collection/note-collection-move.md) | Changes the position of a knowledge base in the shared list ||
+|| [note.collection.delete](./collection/note-collection-delete.md) | Moves a knowledge base to the Recycle Bin ||
+|| [note.collection.restore](./collection/note-collection-restore.md) | Restores a knowledge base from the Recycle Bin ||
 || [note.collection.archive](./collection/note-collection-archive.md) | Archives a knowledge base ||
+|| [note.collection.unarchive](./collection/note-collection-unarchive.md) | Restores a knowledge base from the archive ||
 || [note.collection.field.get](./collection/note-collection-field-get.md) | Returns the description of a knowledge base field ||
 || [note.collection.field.list](./collection/note-collection-field-list.md) | Returns a list of knowledge base fields ||
 |#
@@ -84,8 +88,12 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 || [note.document.add](./document/note-document-add.md) | Creates a document ||
 || [note.document.update](./document/note-document-update.md) | Updates the title and content of a document ||
 || [note.document.get](./document/note-document-get.md) | Returns a document with content in Markdown ||
-|| [note.document.delete](./document/note-document-delete.md) | Moves a document and its child pages to the trash ||
+|| [note.document.delete](./document/note-document-delete.md) | Moves a document and its child pages to the Recycle Bin ||
+|| [note.document.restore](./document/note-document-restore.md) | Restores a document and its child pages from the Recycle Bin ||
 || [note.document.archive](./document/note-document-archive.md) | Archives a document and its child pages ||
+|| [note.document.unarchive](./document/note-document-unarchive.md) | Restores a document from the archive ||
+|| [note.document.move](./document/note-document-move.md) | Moves a document to another knowledge base, under another parent document, or to another position ||
+|| [note.document.list](./document/note-document-list.md) | Returns all documents available to the user, page by page ||
 || [note.document.tree.list](./document/note-document-tree-list.md) | Returns the document tree of a single knowledge base ||
 || [note.document.search.list](./document/note-document-search-list.md) | Searches for documents by title and content ||
 || [note.document.field.get](./document/note-document-field-get.md) | Returns the description of a document field ||
@@ -102,6 +110,7 @@ The methods in this section belong to REST 3.0. The call specifics and response 
 || **Method** | **Description** ||
 || [note.file.add](./file/note-file-add.md) | Uploads a file to a document ||
 || [note.file.get](./file/note-file-get.md) | Returns the document file data and a Markdown block for insertion into the document ||
+|| [note.file.list](./file/note-file-list.md) | Returns a list of document files with the attachment date ||
 || [note.file.field.get](./file/note-file-field-get.md) | Returns the description of a document file field ||
 || [note.file.field.list](./file/note-file-field-list.md) | Returns a list of document file fields ||
 |#

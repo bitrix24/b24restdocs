@@ -393,10 +393,10 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error during request object validation",
+        "message": "Error validating request object.",
         "validation": [
             {
-                "message": "Mandatory field `name` is missing",
+                "message": "Required field \"name\" is missing.",
                 "field": "name"
             }
         ]
@@ -425,7 +425,7 @@ HTTP status: **404**.
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `name` | Field `#FIELD#` not found | Specify an existing field name ||
+|| `name` | Field "#FIELD#" was not found | Specify an existing field name ||
 |#
 
 #### Request Validation Errors
@@ -434,7 +434,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `name` | Mandatory field `name` is not specified | Pass the `name` parameter with an existing field name ||
+|| `name` | Required field "name" is missing | Pass the `name` parameter with an existing field name ||
 |#
 
 #### Errors in the `select` Parameter
@@ -443,14 +443,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for entity `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
+|| `select` | Unknown field "#FIELD#" found in entity "DtoFieldDto" | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `editableGroups`, `multiple`, `elementType` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as an array of strings, e.g., `["name","type"]` ||
+|| `select` | Invalid field in "select": #SELECT# | Pass `select` as an array of strings, e.g., `["name","type"]` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

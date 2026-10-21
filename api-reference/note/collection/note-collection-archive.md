@@ -284,10 +284,10 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error during request object validation",
+        "message": "Error validating request object.",
         "validation": [
             {
-                "message": "Mandatory field `id` is missing",
+                "message": "Required field \"id\" is missing.",
                 "field": "id"
             }
         ]
@@ -305,8 +305,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Required field `id` is not specified | Add `id` to the request body ||
-|| `id` | The field `id` requires data type `#TYPE#` for this request | Ensure the provided value is of the correct type ||
+|| `id` | Required field "id" is missing | Add `id` to the request body ||
+|| `id` | This request requires data type "#TYPE#" in field "id" | Ensure the provided value is of the correct type ||
 |#
 
 #### Access Errors
@@ -334,4 +334,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 - [{#T}](./note-collection-add.md)
 - [{#T}](./note-collection-update.md)
 - [{#T}](./note-collection-delete.md)
+- [{#T}](./note-collection-unarchive.md)
 - [{#T}](./index.md)

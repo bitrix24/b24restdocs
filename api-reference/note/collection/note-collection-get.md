@@ -83,6 +83,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         position: number
         policyLevel: string
         accessLevel: string
+        state: 'live' | 'archived' | 'trashed'
         isArchived: boolean
         markdownDescription: string | null
         createdBy: number
@@ -281,6 +282,7 @@ HTTP status: **200**
             "updatedBy": 1,
             "updatedAt": "2026-04-21T09:15:30Z",
             "accessLevel": "full",
+            "state": "live",
             "isArchived": false,
             "markdownDescription": null
         }
@@ -317,6 +319,8 @@ HTTP status: **200**
 [`string`](../../data-types.md) | Knowledge base access policy code, such as `private` or `portal` ||
 || **result.item.accessLevel**
 [`string`](../../data-types.md) | Current user's access level code, such as `full` ||
+|| **result.item.state**
+[`string`](../../data-types.md) | Knowledge base state: `live` — active, `archived` — archived, `trashed` — in the Recycle Bin. A knowledge base in the Recycle Bin is returned only to a user with the "Administration" permission for it ||
 || **result.item.isArchived**
 [`boolean`](../../data-types.md) | Indicates whether the knowledge base is archived ||
 || **result.item.markdownDescription**
@@ -341,10 +345,10 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error during request object validation",
+        "message": "Error validating request object.",
         "validation": [
             {
-                "message": "Mandatory field `id` is missing",
+                "message": "Required field \"id\" is missing.",
                 "field": "id"
             }
         ]
@@ -362,8 +366,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Required field `id` is not specified | Add `id` to the request body ||
-|| `id` | Field `id` requires data type `#TYPE#` for such a request | Ensure the provided value is of the correct type ||
+|| `id` | Required field "id" is missing | Add `id` to the request body ||
+|| `id` | This request requires data type "#TYPE#" in field "id" | Ensure the provided value is of the correct type ||
 |#
 
 #### Object Not Found Error
@@ -372,7 +376,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Record with ID = `#ID#` not found | Please check that the knowledge base exists and the user has permission to view it ||
+|| `id` | Entity with ID #ID# was not found | Please check that the knowledge base exists and the user has permission to view it ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -381,4 +385,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 - [{#T}](./note-collection-list.md)
 - [{#T}](./note-collection-update.md)
+- [{#T}](./note-collection-unarchive.md)
+- [{#T}](./note-collection-restore.md)
 - [{#T}](./index.md)

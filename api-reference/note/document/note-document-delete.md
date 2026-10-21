@@ -1,4 +1,4 @@
-# Move a Document to the Shopping Cart note.document.delete
+# Move Document to Recycle Bin note.document.delete
 
 {% note tip "" %}
 
@@ -19,11 +19,11 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `note.document.delete` method moves a document and all its child pages to the shopping cart.
+The `note.document.delete` method moves a document and all its child pages to the Recycle Bin.
 
 {% note info "" %}
 
-A document can only be restored from the shopping cart via the interface.
+You can restore a document from the Recycle Bin with the [note.document.restore](./note-document-restore.md) method.
 
 {% endnote %}
 
@@ -277,7 +277,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with the document deletion result ||
 || **result.result**
-[`boolean`](../../data-types.md) | Value of `true` if the document was successfully moved to the trash ||
+[`boolean`](../../data-types.md) | Value of `true` if the document was successfully moved to the Recycle Bin ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -290,7 +290,7 @@ HTTP status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error validating request object",
+        "message": "Error validating request object.",
         "validation": [
             {
                 "message": "At least one required field must be set: id, filter"
@@ -314,7 +314,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `id` | At least one required field must be set: id, filter | Pass a positive document identifier in `id`. For an empty request or `id=0`, the `validation` array may also contain the message `Only one of the following values must be passed: id, filter` ||
-|| `id` | Field `id` requires data type `#TYPE#` for this request | Ensure the provided value is of the correct type ||
+|| `id` | This request requires data type "#TYPE#" in field "id" | Ensure the provided value is of the correct type ||
 |#
 
 #### Access Errors
@@ -332,7 +332,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Document not found | Check that the document exists and is not already in the trash ||
+|| `id` | Document not found | Check that the document exists and is not already in the Recycle Bin ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -342,4 +342,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 - [{#T}](./note-document-add.md)
 - [{#T}](./note-document-update.md)
 - [{#T}](./note-document-archive.md)
+- [{#T}](./note-document-restore.md)
 - [{#T}](./index.md)
