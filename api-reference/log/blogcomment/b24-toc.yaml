@@ -5,6 +5,8 @@ items:
     href: index.md
   - name: Add comment
     href: log-blogcomment-add.md
+  - name: Get post comments
+    href: log-blogcomment-get.md
   - name: Get user comments
     href: log-blogcomment-user-get.md
   - name: Delete comment

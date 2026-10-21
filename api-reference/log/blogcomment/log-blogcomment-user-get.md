@@ -33,7 +33,7 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
 || **LAST_ID**
 [`integer`](../../data-types.md) | The method will return comments with identifiers less than the specified value. ||
 || **LIMIT**
-[`integer`](../../data-types.md) | The number of records in the response. The acceptable value is from `1` to `100`. By default, `100` comments are returned. ||
+[`integer`](../../data-types.md) | The number of records in the response. The maximum value is `1000`; a larger value is replaced with `1000`. By default, `100` comments are returned. ||
 |#
 
 ## Code Examples
@@ -74,7 +74,7 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type BlogCommentUserGetResult = {
-      comments: {
+      COMMENTS: {
         id: number
         comment_id: number
         log_id: number
@@ -82,7 +82,8 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
         text: string
         attach: number[]
       }[]
-      files: Record<string, {
+      // An empty array is returned when no files are attached
+      FILES: [] | Record<string, {
         id: number
         date: ISODate
         type: string
@@ -116,7 +117,7 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Comments:', result.comments, 'Files:', result.files)
+        console.info('Comments:', result.COMMENTS, 'Files:', result.FILES)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -152,7 +153,7 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
           }
 
           const result = response.getData().result
-          console.info('Comments:', result.comments, 'Files:', result.files)
+          console.info('Comments:', result.COMMENTS, 'Files:', result.FILES)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -283,7 +284,7 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-        "comments": [
+        "COMMENTS": [
             {
                 "id": 4821,
                 "comment_id": 4821,
@@ -295,7 +296,7 @@ HTTP Status: **200**
                 ]
             }
         ],
-        "files": {
+        "FILES": {
             "90210": {
                 "id": 90210,
                 "date": "2025-01-28T11:02:18+02:00",
@@ -342,12 +343,12 @@ HTTP Status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **comments**
+|| **COMMENTS**
 [`object[]`](../../data-types.md) | An array of comments. Each element contains fields:
 - `id`, `comment_id`, `log_id`, `date` — in ISO 8601 format
 - `text` and `attach` — an array of file identifiers from the `FILES` array. ||
-|| **files**
-[`object`](../../data-types.md) | An associative array describing the files, where the key is the identifier of the Drive object. For each file, `id`, `date`, `type`, `name`, `size`, author information, and direct links `urlPreview`, `urlShow`, `urlDownload` are provided. ||
+|| **FILES**
+[`object`](../../data-types.md) | An associative array describing the files, where the key is the identifier of the Drive object. If there are no files, an empty array `[]` is returned. For each file, `id`, `date`, `type`, `name`, `size`, author information, and direct links `urlPreview`, `urlShow`, `urlDownload` are provided. ||
 |#
 
 ## Error Handling
@@ -361,4 +362,5 @@ If the user identifier is not specified or an incorrect value is provided, the m
 ## Continue Learning
 
 - [{#T}](./log-blogcomment-add.md)
+- [{#T}](./log-blogcomment-get.md)
 - [{#T}](./log-blogcomment-delete.md)

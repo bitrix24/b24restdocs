@@ -300,4 +300,5 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./log-blogcomment-add.md)
+- [{#T}](./log-blogcomment-get.md)
 - [{#T}](./log-blogcomment-user-get.md)

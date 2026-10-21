@@ -351,5 +351,6 @@ HTTP status: **400**
 
 ## Continue Learning
 
-- [{#T}](./log-blogcomment-delete.md)
+- [{#T}](./log-blogcomment-get.md)
 - [{#T}](./log-blogcomment-user-get.md)
+- [{#T}](./log-blogcomment-delete.md)

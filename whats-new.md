@@ -5,6 +5,7 @@
 ### October 21, 2026
 
 - Added Knowledge Base 2.0 methods in REST 3.0: [note.document.list](./api-reference/note/document/note-document-list.md) for retrieving all available documents, [note.document.move](./api-reference/note/document/note-document-move.md) and [note.collection.move](./api-reference/note/collection/note-collection-move.md) for moving documents and knowledge bases, [note.document.unarchive](./api-reference/note/document/note-document-unarchive.md) and [note.collection.unarchive](./api-reference/note/collection/note-collection-unarchive.md) for restoring from the archive, [note.document.restore](./api-reference/note/document/note-document-restore.md) and [note.collection.restore](./api-reference/note/collection/note-collection-restore.md) for restoring from the Recycle Bin, and [note.file.list](./api-reference/note/file/note-file-list.md) for retrieving the list of document files
+- Added the method [log.blogcomment.get](./api-reference/log/blogcomment/log-blogcomment-get.md): retrieves published comments on a News Feed post with attached files and supports pagination
 
 ### September 17, 2026
 
