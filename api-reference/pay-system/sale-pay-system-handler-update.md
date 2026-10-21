@@ -666,10 +666,15 @@ HTTP Status: **400**, **403**
 #| 
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Access denied. The application is trying to modify a handler added by another application, or insufficient rights to update the handler | 403 ||
-|| `ERROR_CHECK_FAILURE` | The value of the `ID` field or `FIELDS` is not specified | 400 ||
+|| `ERROR_CHECK_FAILURE` | Possible reasons:
+- the value of the `ID` field or `FIELDS` is not specified
+- `FIELDS[SETTINGS]` is not passed as an object, or it contains an invalid `CLIENT_TYPE`
+- in `FORM_DATA`, `CHECKOUT_DATA`, or `IFRAME_DATA`, the `FIELDS` parameter is not passed as an object — `Parameter SETTINGS[<mode>][FIELDS] is invalid`
+- a form field description is not an object, has no `CODE` key, or `CODE` is an empty string — `Parameter SETTINGS[<mode>][FIELDS] contains invalid field` | 400 ||
 || `ERROR_HANDLER_NOT_FOUND` | Handler with the specified `ID` not found | 400 ||
 || `ERROR_HANDLER_UPDATE` | Other errors. For detailed information about the error, see `error_description` | 400 ||
-|| `ERROR_UNEXPECTED_ANSWER` | Unexpected server response. One possible reason is attempting to specify a non-unique `CODE` parameter for the handler, which already exists for another handler | 400 ||
+|| `ERROR_HANDLER_ALREADY_EXIST` | Handler already exists! A handler with the code specified in the `CODE` parameter already exists | 400 ||
+|| `ERROR_UNEXPECTED_ANSWER` | Unexpected server response | 400 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

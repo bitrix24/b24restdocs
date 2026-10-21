@@ -2027,7 +2027,11 @@ HTTP Status: **400**, **403**
 #|
 || **Code** | **Description** | **Status** ||
 || `ACCESS_DENIED` | Insufficient permissions to add the handler | 403 ||
-|| `ERROR_CHECK_FAILURE` | Required field value is not specified or one of the field values is incorrect | 400 ||
+|| `ERROR_CHECK_FAILURE` | Required field value is not specified or one of the field values is incorrect.
+
+For form field descriptions in `FORM_DATA`, `CHECKOUT_DATA`, or `IFRAME_DATA`, the method returns an error:
+- `Parameter SETTINGS[<mode>][FIELDS] is invalid` — `FIELDS` is not passed as an object
+- `Parameter SETTINGS[<mode>][FIELDS] contains invalid field` — a field description is not an object, has no `CODE` key, or `CODE` is an empty string | 400 ||
 || `ERROR_HANDLER_ALREADY_EXIST` | A handler with the code specified in the `CODE` parameter already exists in the system | 400 ||
 || `ERROR_HANDLER_ADD` | Other errors. For detailed information about the error, see `error_description` | 400 ||
 |#

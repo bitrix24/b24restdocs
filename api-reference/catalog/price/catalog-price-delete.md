@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with the "Modify product sale price" access permission
+> Who can execute the method: user with the "Modify product sale price" access permission and permission to modify product prices in the catalog information block
 
 The method `catalog.price.delete` removes the product price.
 
@@ -277,6 +277,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `200040300020` | Access Denied | Insufficient permissions to delete ||
+|| `200040300030` | Access Denied | No permission to modify product prices in the catalog information block ||
 || `-` | Price does not exist | No price exists for the given identifier ||
 || `100` | Could not find value for parameter {id} | Parameter `id` not specified || 
 || `0` | | Other errors || 

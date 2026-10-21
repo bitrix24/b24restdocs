@@ -31,7 +31,9 @@ Only those files and folders for which the user has "Read" access permission are
 || **id***
 [`integer`](../../data-types.md) | Identifier of the storage.
 
-The identifier can be obtained using the method [disk.storage.getList](./disk-storage-get-list.md) ||
+The identifier can be obtained using the method [disk.storage.getList](./disk-storage-get-list.md).
+
+If you pass a non-numeric value, the method returns `"result": null` without an error ||
 || **filter**
 [`array`](../../data-types.md) | Array format:
 

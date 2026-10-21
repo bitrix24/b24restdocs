@@ -244,6 +244,7 @@ HTTP Status: **400**, **403**
 || `BOT_OWNERSHIP_ERROR` | Bot is registered by another application | Bot is registered by another application ||
 || `FILE_ACCESS_ERROR` | File access error | No permission to download the file ||
 || `FILE_NOT_FOUND` | File not found | File not found ||
+|| `VIDEO_NOTE_DOWNLOAD_RESTRICTED` | Cannot download video notes. | The file is a video message, and downloading video messages is disabled in the Bitrix24 settings ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}

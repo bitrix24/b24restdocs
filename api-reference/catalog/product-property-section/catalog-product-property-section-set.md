@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" access permission and permission to modify the property's information block
 
 The method `catalog.productPropertySection.set` sets the section settings for a product property or variation.
 
@@ -373,7 +373,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient permissions to modify the section settings of the property ||
+|| `0` | Access Denied | Insufficient permissions to view the catalog, or no permission to modify the property's information block ||
 || `0` | productPropertySection does not exist. | The property with the provided `propertyId` was not found or does not belong to the product catalog ||
 || `100` | Could not find value for parameter {fields} | The required parameter `fields` was not provided ||
 || `0` | Error setting section properties | Internal error while saving the section settings of the property ||

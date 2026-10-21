@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to view the catalog
+> Who can execute the method: user with permission to view the catalog and permission to modify the property's information block
 
 The method `catalog.productProperty.delete` removes a product property or variation.
 
@@ -265,7 +265,7 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `0` | Access Denied | Insufficient permissions to view the catalog ||
+|| `400` | `0` | Access Denied | Insufficient permissions to view the catalog, or no permission to modify the property's information block ||
 || `400` | Empty value | productProperty does not exist | Property with the specified `id` not found ||
 || `400` | `0` | The specified property does not belong to a product catalog | Property does not belong to the product catalog ||
 || `400` | `0` | Error deleting product property | Internal error while deleting the property ||

@@ -41,9 +41,9 @@ Possible values:
 This parameter is applied only when `POST_ID` is not passed. If neither parameter is passed, the method returns all posts available to the current user
 ||
 || **LOG_DATE_FROM**
-[`string`](../data-types.md) | Lower boundary of the post publication period in ISO 8601 format. If `LOG_DATE_FROM` and `LOG_DATE_TO` are specified, the `LOG_DATE_FROM` value must not be later than `LOG_DATE_TO`. An empty string does not limit the result set ||
+[`string`](../data-types.md) | Lower boundary of the post publication period in ISO 8601 format. Specified in the user's time zone. If `LOG_DATE_FROM` and `LOG_DATE_TO` are specified, the `LOG_DATE_FROM` value must not be later than `LOG_DATE_TO`. An empty string does not limit the result set ||
 || **LOG_DATE_TO**
-[`string`](../data-types.md) | Upper boundary of the post publication period in ISO 8601 format. If the value is not specified or an empty string is passed, the upper boundary of the period is not applied ||
+[`string`](../data-types.md) | Upper boundary of the post publication period in ISO 8601 format. Specified in the user's time zone. If the value is not specified or an empty string is passed, the upper boundary of the period is not applied ||
 || **FIRST_ID**
 [`integer`](../data-types.md) | News Feed entry identifier for cursor-based forward navigation. The method returns posts with identifiers greater than the specified value. If `FIRST_ID` and `LAST_ID` are passed, `FIRST_ID` is applied. A value of `0` or an empty string starts the result set from the edge of the list ||
 || **LAST_ID**
@@ -64,7 +64,9 @@ The formula for calculating the `start` parameter value:
 
 {% note info "" %}
 
-Pass `FIRST_ID` or `LAST_ID` to enable cursor mode. In this mode, the `start` parameter is ignored and `LIMIT` sets the page size. Without cursor parameters, the method uses pagination through `start`, with 50 records per page.
+Pass `FIRST_ID` or `LAST_ID` to enable cursor mode. In this mode, the `start` parameter is ignored and `LIMIT` sets the page size. The method sorts records by ID and does not count their total number, so traversing a large feed does not slow down toward its end due to the offset. Without cursor parameters, the method uses pagination through `start`, with 50 records per page, and sorts records by update date.
+
+`LOG_DATE_FROM` and `LOG_DATE_TO` limit the result set in both modes.
 
 {% endnote %}
 
@@ -309,7 +311,7 @@ Pass `FIRST_ID` or `LAST_ID` to enable cursor mode. In this mode, the `start` pa
 
 HTTP Status: **200**
 
-Example response:
+Example response without a cursor:
 
 ```json
 {
@@ -654,15 +656,33 @@ Example response:
 }
 ```
 
+When `FIRST_ID` or `LAST_ID` is passed, the response shape changes. The `result` field contains an object with posts under sequential numeric keys and the `next` field. The `next` field contains the ID of the last read feed record, not the `ID` value of the post itself. Pass this value in the same cursor parameter for the next request. The `total` field is absent in cursor mode.
+
+Abbreviated example of a response with a cursor — the remaining post fields and the service field `time` are omitted:
+
+```json
+{
+    "result": {
+        "0": {
+            "ID": "217",
+            "TITLE": "New Policy"
+        },
+        "next": 305
+    }
+}
+```
+
+If feed records were read, `next` is returned even for an incomplete page or an empty list of posts. The traversal is complete when `next` is absent. In this case, `result` is an empty array.
+
 ### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object[]`](../data-types.md) | List of News Feed posts. The fields of each item are listed in the following table rows.
+[`object[]`](../data-types.md), [`object`](../data-types.md) | List of News Feed posts. Without a cursor, an array is returned. When `FIRST_ID` or `LAST_ID` is passed, an object is returned with posts under numeric keys and the `next` field. The fields of each post are listed in the following table rows.
 
-An empty array means there are no records that meet the filter criteria. ||
+Without a cursor, an empty array means there are no records that meet the filter criteria. In cursor mode, an empty array without `next` means the end of the traversal ||
 || **ID**
 [`integer`](../data-types.md) | Message ID. ||
 || **BLOG_ID**
@@ -718,9 +738,9 @@ An empty array means there are no records that meet the filter criteria. ||
 || **FILES**
 [`array`](../data-types.md) | Array of file IDs from `UF_BLOG_POST_FILE`. ||
 || **next**
-[`integer`](../data-types.md) | Value for pagination (if available). ||
+[`integer`](../data-types.md) | Without a cursor — a top-level response value for pagination, present if there is a next page. In cursor mode — a field inside `result` with the ID of the last read feed record. The absence of the field means the end of the traversal ||
 || **total**
-[`integer`](../data-types.md) | Total number of found items. ||
+[`integer`](../data-types.md) | Total number of found items. Returned only without a cursor ||
 || **time**
 [`time`](../data-types.md#time) | Information about the execution time of the request. ||
 |#

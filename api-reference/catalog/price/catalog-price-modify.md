@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with the "Modify product sale price" permission
+> Who can execute the method: user with the "Modify product sale price" permission and permission to modify product prices in the catalog information block
 
 The method `catalog.price.modify` updates the product price collection. It allows adding, updating, and deleting different product prices in a single request.
 
@@ -58,7 +58,9 @@ The method `catalog.price.modify` updates the product price collection. It allow
 || **Name**
 `type` | **Description** ||
 || **id**
-[`catalog_price.id`](../data-types.md#catalog_price) | Price identifier. If specified, the price will be updated. If not specified, a new price will be created. The price whose identifier was not provided will be deleted. Price identifiers can be obtained using the method [catalog.price.list](./catalog-price-list.md) ||
+[`catalog_price.id`](../data-types.md#catalog_price) | Price identifier. If specified, the price will be updated. If not specified, a new price will be created. The price whose identifier was not provided will be deleted. Price identifiers can be obtained using the method [catalog.price.list](./catalog-price-list.md).
+
+Passing `id` currently results in an error, see the warning below the table ||
 || **catalogGroupId***
 [`catalog_price_type.id`](../data-types.md#catalog_price_type) | Identifier of the price type, can be obtained using the method [catalog.priceType.list](../price-type/catalog-price-type-list.md) ||
 || **price***
@@ -66,6 +68,14 @@ The method `catalog.price.modify` updates the product price collection. It allow
 || **currency***
 [`string`](../../data-types.md) | Currency identifier, can be obtained using the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
 |#
+
+{% note warning "" %}
+
+The method currently does not update existing prices. If you pass a price with `id` in `prices`, the method returns the `Validate price error. Catalog price group is wrong` error, and the product prices remain unchanged.
+
+Pass all product prices without `id`. The method deletes the current product prices and creates new ones with the passed values, so the price identifiers change. To change a single price and keep its identifier, use the [catalog.price.update](./catalog-price-update.md) method.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -79,7 +89,7 @@ The method `catalog.price.modify` updates the product price collection. It allow
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"product":{"id":8,"prices":[{"catalogGroupId":1,"currency":"USD","price":2001},{"catalogGroupId":3,"currency":"USD","price":2001},{"catalogGroupId":5,"currency":"USD","price":2001,"id":122}]}}}' \
+    -d '{"fields":{"product":{"id":8,"prices":[{"catalogGroupId":1,"currency":"USD","price":2001},{"catalogGroupId":3,"currency":"USD","price":2001},{"catalogGroupId":5,"currency":"USD","price":2001}]}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.price.modify
     ```
 
@@ -89,7 +99,7 @@ The method `catalog.price.modify` updates the product price collection. It allow
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"product":{"id":8,"prices":[{"catalogGroupId":1,"currency":"USD","price":2001},{"catalogGroupId":3,"currency":"USD","price":2001},{"catalogGroupId":5,"currency":"USD","price":2001,"id":122}]},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"product":{"id":8,"prices":[{"catalogGroupId":1,"currency":"USD","price":2001},{"catalogGroupId":3,"currency":"USD","price":2001},{"catalogGroupId":5,"currency":"USD","price":2001}]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.price.modify
     ```
 
@@ -141,7 +151,6 @@ The method `catalog.price.modify` updates the product price collection. It allow
                   catalogGroupId: 5,
                   currency: 'USD',
                   price: 2001,
-                  id: 122,
                 },
               ],
             },
@@ -195,7 +204,6 @@ The method `catalog.price.modify` updates the product price collection. It allow
                       catalogGroupId: 5,
                       currency: 'USD',
                       price: 2001,
-                      id: 122,
                     },
                   ],
                 },
@@ -247,7 +255,6 @@ The method `catalog.price.modify` updates the product price collection. It allow
                             "catalogGroupId": 5,
                             "currency": "USD",
                             "price": 2001,
-                            "id": 122,
                         },
                     ],
                 },
@@ -295,7 +302,6 @@ The method `catalog.price.modify` updates the product price collection. It allow
                                     'catalogGroupId' => 5,
                                     'currency' => 'USD',
                                     'price' => 2001,
-                                    'id' => 122
                                 ]
                             ]
                         ]
@@ -343,7 +349,6 @@ The method `catalog.price.modify` updates the product price collection. It allow
                             catalogGroupId: 5,
                             currency: 'USD',
                             price: 2001,                
-                            id: 122
                         },
                     ]
                 },
@@ -385,7 +390,6 @@ The method `catalog.price.modify` updates the product price collection. It allow
                             'catalogGroupId' => 5,
                             'currency' => 'USD',
                             'price' => 2001,
-                            'id' => 122
                         ],
                     ]
                 ],
@@ -421,7 +425,6 @@ The method `catalog.price.modify` updates the product price collection. It allow
     					"catalogGroupId": 5,
     					"currency":       "EUR",
     					"price":          2001,
-    					"id":             122,
     				},
     			},
     		},
@@ -544,7 +547,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `200040300020` | Access Denied | Insufficient rights to edit price ||
-|| `200040300030` | Access Denied | Insufficient rights to edit product ||
+|| `200040300030` | Access Denied | No permission to modify product prices in the catalog information block ||
 || `100` | Could not find value for parameter {fields} | Parameter `fields` is not specified or is empty ||
 || `0` | Required fields:  | Required fields are not provided ||
 || `0` | Validate price error. Catalog price group is wrong | Incorrect price type ||

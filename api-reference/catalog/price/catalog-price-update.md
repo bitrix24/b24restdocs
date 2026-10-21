@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "Change product sale price" access permission
+> Who can execute the method: a user with the "Change product sale price" access permission and permission to modify product prices in the catalog information block
 
 The method `catalog.price.update` updates the price of a product.
 

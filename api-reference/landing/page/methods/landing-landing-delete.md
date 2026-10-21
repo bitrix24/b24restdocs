@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `landing.landing.delete` removes a page along with its blocks and associated files.
 
+The method also deletes pages of sites moved to the Recycle Bin. The deletion permission is checked the same way as for pages of active sites.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}

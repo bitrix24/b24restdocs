@@ -235,6 +235,7 @@ HTTP Status: **400**, **403**
 || **Code** | **Description** | **Value** ||
 || `FILE_NOT_FOUND` | File not found | No file with this ID was found ||
 || `ACCESS_DENIED` | Access denied | No access to the chat ||
+|| `VIDEO_NOTE_DOWNLOAD_RESTRICTED` | Cannot download video notes. | The file is a video message, and downloading video messages is disabled in the Bitrix24 settings or is not available to guests and external users ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}

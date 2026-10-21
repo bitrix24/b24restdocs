@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "Change product sale price" access permission
+> Who can execute the method: a user with the "Change product sale price" access permission and permission to modify product prices in the catalog information block
 
 The method `catalog.price.add` adds a new price for a product.
 
@@ -370,6 +370,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `200040300020` | Access Denied | Insufficient permissions ||
+|| `200040300030` | Access Denied | No permission to modify product prices in the catalog information block ||
 || `100` | Could not find value for parameter {fields} | Parameter `fields` not specified or empty || 
 || `0` | Required fields: | Required fields not set ||
 || `0` | Validate price error. Catalog price group is wrong | Incorrect price type ||

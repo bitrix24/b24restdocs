@@ -338,6 +338,7 @@ HTTP Status: **400**
 - Drive is disabled
 - Failed to save the file in the *Saved Files* folder, for example, due to lack of space
 - Failed to create the *Saved Files* folder ||
+|| `403` | `VIDEO_NOTE_DOWNLOAD_RESTRICTED` | Cannot download video notes. | The file is a video message, and downloading video messages is disabled in the Bitrix24 settings or is not available to guests and external users ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

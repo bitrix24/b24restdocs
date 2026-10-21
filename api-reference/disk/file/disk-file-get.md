@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`disk`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Read" access permission for the specified file
+> Who can execute the method: a user with "Read" access permission for the specified file or with access to an object the file is attached to
 
 The method `disk.file.get` returns data about a file.
+
+If the user has no permissions for the Drive folder, the method checks the file attachments. The file is returned if the user can see at least one object it is attached to, such as a task or a chat message. In this case, the `DETAIL_URL` field is empty, while the `DOWNLOAD_URL` link is present.
 
 ## Method Parameters
 
@@ -342,7 +344,9 @@ HTTP Status: **200**
 || **DOWNLOAD_URL**
 [`string`](../../data-types.md) | Link to download the file ||
 || **DETAIL_URL**
-[`string`](../../data-types.md) | Link to open the file in the interface ||
+[`string`](../../data-types.md) | Link to open the file in the interface.
+
+The field is empty if the file is available to the user only through an attachment ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -366,7 +370,7 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #0} | Required parameter `id` is missing ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | File with the specified `id` not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient rights to read the file ||
+|| `ACCESS_DENIED` | Access denied | Insufficient rights to read the file, and the file is not attached to any object available to the user ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

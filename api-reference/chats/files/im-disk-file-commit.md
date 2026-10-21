@@ -661,6 +661,7 @@ HTTP Status: **400**
 || `400` | `SAVE_ERROR` | Error during saving file to chat | Possible reasons:
 - `FILE_ID` or `UPLOAD_ID` is passed empty
 - non-existent file identifiers are passed ||
+|| `400` | `DISK_QUOTA_EXCEEDED` | Disk quota exceeded | There is not enough space on Drive to copy the files from `FILE_ID` to the chat folder. The response also includes the `infoHelperCode` field ||
 || `403` | `ACCESS_ERROR` | You do not have access to the specified dialog | Insufficient rights to view the dialog or a non-existent dialog is passed ||
 |#
 

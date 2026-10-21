@@ -67,6 +67,12 @@ Default: `bb` ||
 [`integer`](../../data-types.md) | Call participant identifier.
 
 An Administrator can obtain Follow-ups for any user. For a regular user, the filter is forcibly restricted to their identifier ||
+|| **chatId**
+[`integer`](../../data-types.md) | Call chat identifier. The method returns Follow-ups only for calls from this chat.
+
+Pass the value as a number: the string `"123"` returns a validation error. If you pass `0` or a negative number, the method returns an empty list.
+
+The filter works together with `startDate` and `participantId` ||
 |#
 
 #### Parameter filter.startDate {#startdate}
@@ -558,6 +564,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `filter.participantId` | An invalid participant identifier type was passed | Pass `filter.participantId` as an integer ||
+|| `filter.chatId` | An invalid chat identifier type was passed | Pass `filter.chatId` as an integer ||
 || `mentionFormat` | A value not from the list of allowed formats was passed | Provide `bb`, `html`, or `none` ||
 |#
 

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "View Product Catalog" access permission
+> Who can execute the method: a user with the "View Product Catalog" access permission and permission to modify the property's information block
 
 The method `catalog.productPropertyEnum.delete` removes the value of a list property.
 
@@ -267,7 +267,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient rights to view the product catalog ||
+|| `0` | Access Denied | Insufficient rights to view the product catalog, or no permission to modify the property's information block ||
 || `0` | productPropertyEnum does not exist. | The list property value with the provided `id` was not found or does not belong to the product catalog ||
 || `0` | Internal error deleting enumeration value. Try deleting again. | Internal error while deleting the list value ||
 || `100` | Could not find value for parameter {id} | Required parameter `id` was not provided ||

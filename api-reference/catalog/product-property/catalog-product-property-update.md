@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to view the catalog
+> Who can execute the method: user with permission to view the catalog and permission to modify the property's information block
 
 The method `catalog.productProperty.update` modifies the fields of a product or variation property.
 
@@ -463,7 +463,11 @@ HTTP status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `0` | Required fields: iblockId | The required parameter `iblockId` is not passed in `fields` ||
-|| `400` | `0` | Access Denied | Insufficient rights to view the catalog ||
+|| `400` | `0` | Access Denied | Possible reasons:
+- insufficient rights to view the catalog
+- no permission to modify the property's information block
+- when changing `iblockId`, no permission to modify the new information block ||
+|| `400` | `0` | The specified iblock is not a product catalog | The information block passed in `iblockId` is not a product catalog ||
 || `400` | Empty value | productProperty does not exist | Property with the specified `id` not found ||
 || `400` | `0` | The specified property does not belong to a product catalog | The property does not belong to the trade catalog ||
 || `400` | `0` | Invalid property type specified | An invalid combination of `propertyType` and `userType` was provided ||

@@ -398,6 +398,8 @@ HTTP Status: **400**
 || 
 || `0` | Error saving the file
 || 
+|| `0` | `Product image was not saved.` — the preview image or the detail image was not saved to the product, and the changes were rolled back
+||
 || `0` | Product not found
 || 
 || `0` | Product identifier not specified
