@@ -1,0 +1,25 @@
+title: Placement and Channels
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get CRM Form Placement Options
+    href: crm-form-embedding-get.md
+  - name: Update CRM Form Placement Settings
+    href: crm-form-embedding-update.md
+  - name: Get a List of Placement Option Fields
+    href: crm-form-embedding-field-list.md
+  - name: Get a Placement Option Field
+    href: crm-form-embedding-field-get.md
+  - name: Get a List of Website Widgets for a CRM Form
+    href: crm-form-sitebutton-list.md
+  - name: Get a List of Website Widget Fields
+    href: crm-form-sitebutton-field-list.md
+  - name: Get a Website Widget Field
+    href: crm-form-sitebutton-field-get.md
+  - name: Get a List of Open Channels for a CRM Form
+    href: crm-form-openline-list.md
+  - name: Get a List of Open Channel Fields
+    href: crm-form-openline-field-list.md
+  - name: Get an Open Channel Field
+    href: crm-form-openline-field-get.md

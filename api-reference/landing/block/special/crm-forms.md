@@ -60,7 +60,7 @@ The `#crmFormInline` prefix means that the form is embedded into the page. A for
 
 #|
 || **Attribute** | **Value** | **What It Defines** ||
-|| `data-b24form` | A marker of the `#crmFormInline<ID>` form, where `ID` is the identifier of the CRM form | The selected form ||
+|| `data-b24form` | A marker of the `#crmFormInline<ID>` form, where `ID` is the identifier of the CRM form. The identifier can be retrieved using the [crm.form.list](../../../crm/form/crm-form-list.md) method | The selected form ||
 || `data-b24form-use-style` | `Y` or `N` | Whether the design defined in the block is used ||
 || `data-b24form-design` | JSON, the set of keys is listed below | The design of the form ||
 |#
@@ -124,7 +124,7 @@ No additional scope is required for embedding a form: the block works with the `
 
 Limitations:
 
-- the block embeds a ready-made CRM form. The form itself cannot be created or modified with the `landing.block.*` methods
+- the block embeds a ready-made CRM form. The form itself cannot be created or modified with the `landing.block.*` methods; use the [crm.form.*](../../../crm/form/index.md) methods for that
 - the subtype processes only the `.bitrix24forms` node, it does not recognize any other selector
 - the list of forms in the block settings is built from the forms available in Bitrix24. If there are no available forms, there will be nothing to choose from
 - if a block has several subtypes, all of them extend the manifest, but the `afterAdd` callback runs only for the last one in the list. In a block with `subtype: ['map', 'form']`, the automatic map setup will not work

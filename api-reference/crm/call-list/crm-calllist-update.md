@@ -32,7 +32,7 @@ The `crm.calllist.update` method allows you to add or remove participants from a
 [`array`](../../data-types.md) | Array of `ID`s of contacts or companies, which can be obtained using the [crm.item.list](../universal/crm-item-list.md) method ||
 || **WEBFORM_ID**
 [`integer`](../../data-types.md) | `ID` of the CRM form that will be displayed in the call form. 
-The `ID` can be found in the list of forms in Bitrix24 https://your-domain.com/crm/webform/ ||
+The identifier can be retrieved using the [crm.form.list](../form/crm-form-list.md) method ||
 |#
 
 ### Method Operation Features

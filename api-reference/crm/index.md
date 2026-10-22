@@ -100,7 +100,7 @@ The second way to embed an application is a [custom field](../../tutorials/crm/c
 
 ## Relationships with Other Entities
 
-CRM entities are linked to Bitrix24 users, tasks, the product catalog, and telephony.
+CRM entities are linked to Bitrix24 users, tasks, the product catalog, telephony, and CRM forms.
 
 **Users.** The person responsible for the CRM object is stored in the `assignedById` field in universal methods and in `ASSIGNED_BY_ID` in entity methods. User data can be retrieved using the [user.get](../user/user-get.md) or [user.search](../user/user-search.md) methods.
 
@@ -109,6 +109,8 @@ CRM entities are linked to Bitrix24 users, tasks, the product catalog, and telep
 **Catalog.** Product items in deals and estimates are sourced from the product catalog. Products can be managed using the [catalog.product.*](../catalog/product/index.md) methods.
 
 **Telephony.** Calls create activities in the CRM timeline. The [telephony.externalcall.finish](../telephony/telephony-external-call-finish.md) method ends the call and returns the identifier of the created activity in the `CRM_ACTIVITY_ID` parameter.
+
+**CRM forms.** Submitting a CRM form creates CRM objects according to the scheme in the `crm.entityScheme` field: a lead, a deal with a contact or company, an estimate, or a Smart Process item. Scheme identifiers, deal pipelines, and Smart Processes are returned by [crm.form.configuration.get](./form/setup/crm-form-configuration-get.md), and the codes of CRM object fields for the form are returned by [crm.form.entityfield.list](./form/setup/crm-form-entityfield-list.md). Forms are created and configured with the [crm.form.*](./form/index.md) methods. These are REST 3.0 methods: they are called at an address containing `/rest/api/`, see the [REST 3.0 overview](../rest-v3.md) for details.
 
 ## Overview of Sections and Methods {#all-methods}
 
@@ -202,6 +204,9 @@ CRM entities are linked to Bitrix24 users, tasks, the product catalog, and telep
 || [Digital Workplaces](./automated-solution/index.md) | For creating and configuring digital workplaces for Smart Processes | [crm.automatedsolution.add](./automated-solution/crm-automated-solution-add.md), [crm.automatedsolution.list](./automated-solution/crm-automated-solution-list.md)
 
 [All methods in the section](./automated-solution/index.md) ||
+|| [CRM Forms](./form/index.md) | For creating forms that collect website requests and create CRM objects, and for retrieving the form embed code | [crm.form.list](./form/crm-form-list.md), [crm.form.add](./form/crm-form-add.md), [crm.form.embedding.get](./form/placement/crm-form-embedding-get.md)
+
+[All methods in the section](./form/index.md) ||
 || [Auxiliary Objects](./auxiliary/index.md) | For working with enumerations, multiple fields, and other auxiliary CRM objects | [crm.enum.ownertype](./auxiliary/enum/crm-enum-owner-type.md)
 
 [All methods in the section](./auxiliary/index.md) ||

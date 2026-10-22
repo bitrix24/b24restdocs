@@ -77,6 +77,10 @@ items:
     include:
       path: automation/b24-toc.yaml
       mode: link
+  - name: CRM Forms
+    include:
+      path: form/b24-toc.yaml
+      mode: link
   - name: Auxiliary Objects
     include:
       path: auxiliary/b24-toc.yaml

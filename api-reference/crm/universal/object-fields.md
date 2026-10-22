@@ -191,7 +191,7 @@ The value of a field of the `file` type arrives as an object:
 || **utmTerm**
 [`string`](../../data-types.md#standart-types) | Read and write, for an invoice and smart processes — response only | Search condition of the campaign, for example keywords of contextual advertising ||
 || **webformId**
-[`integer`](../../data-types.md#standart-types) | Read and write, for a deal, contact, and company — set on creation only | Identifier of the CRM form that created the item. The `crm.item.fields` method returns the field type as `crm_webform` ||
+[`integer`](../../data-types.md#standart-types) | Read and write, for a deal, contact, and company — set on creation only | Identifier of the CRM form that created the item. The `crm.item.fields` method returns the field type as `crm_webform`. Form data can be retrieved using the [crm.form.get](../form/crm-form-get.md) method ||
 |#
 
 ## Fields by Object Type {#by-object}

@@ -1,0 +1,35 @@
+title: CRM Forms
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Data Types and Object Structure in the CRM Forms REST API
+    href: data-types.md
+  - name: Get a List of CRM Forms
+    href: crm-form-list.md
+  - name: Get a CRM Form
+    href: crm-form-get.md
+  - name: Validate a CRM Form Configuration
+    href: crm-form-validate.md
+  - name: Create a CRM Form
+    href: crm-form-add.md
+  - name: Update a CRM Form
+    href: crm-form-update.md
+  - name: Activate a CRM Form
+    href: crm-form-activate.md
+  - name: Deactivate a CRM Form
+    href: crm-form-deactivate.md
+  - name: Delete a CRM Form
+    href: crm-form-delete.md
+  - name: Get a List of CRM Form Fields
+    href: crm-form-field-list.md
+  - name: Get a CRM Form Field
+    href: crm-form-field-get.md
+  - name: Form Setup Directories
+    include:
+      path: setup/b24-toc.yaml
+      mode: link
+  - name: Placement and Channels
+    include:
+      path: placement/b24-toc.yaml
+      mode: link

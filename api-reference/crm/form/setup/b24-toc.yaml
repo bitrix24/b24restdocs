@@ -1,0 +1,29 @@
+title: Form Setup Directories
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get the CRM Form Builder Configuration
+    href: crm-form-configuration-get.md
+  - name: Get a List of Builder Configuration Fields
+    href: crm-form-configuration-field-list.md
+  - name: Get a Builder Configuration Field
+    href: crm-form-configuration-field-get.md
+  - name: Get a List of CRM Form Scenarios
+    href: crm-form-scenario-list.md
+  - name: Get a List of Scenario Fields
+    href: crm-form-scenario-field-list.md
+  - name: Get a Scenario Field
+    href: crm-form-scenario-field-get.md
+  - name: Get a List of Scenario Categories
+    href: crm-form-scenariocategory-list.md
+  - name: Get a List of Scenario Category Fields
+    href: crm-form-scenariocategory-field-list.md
+  - name: Get a Scenario Category Field
+    href: crm-form-scenariocategory-field-get.md
+  - name: Get CRM Object Fields for a Form
+    href: crm-form-entityfield-list.md
+  - name: Get a List of Field Directory Fields
+    href: crm-form-entityfield-field-list.md
+  - name: Get a Field Directory Field
+    href: crm-form-entityfield-field-get.md

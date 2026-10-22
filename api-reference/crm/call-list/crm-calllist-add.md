@@ -30,7 +30,7 @@ The method `crm.calllist.add` creates a new call list.
 [`integer[]`](../../data-types.md) | Array of numeric identifiers of contacts or companies, which can be obtained using the [crm.item.list](../universal/crm-item-list.md) method ||
 || **WEBFORM_ID**
 [`integer`](../../data-types.md) | `ID` of the CRM form that will be displayed in the call list form. 
-The `ID` can be found in the list of forms in Bitrix24 https://your-domain.com/crm/webform/ ||
+The identifier can be retrieved using the [crm.form.list](../form/crm-form-list.md) method ||
 |#
 
 ## Code Examples
