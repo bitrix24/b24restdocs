@@ -29,7 +29,7 @@ This page helps you choose the type of application and create it on your own Bit
 
 **OAuth 2.0.** A server-side application accesses the REST API on behalf of an employee over the OAuth 2.0 protocol. How to retrieve and refresh tokens is described in the [{#T}](../settings/oauth/index.md) article.
 
-**Events and widgets.** A server-side application subscribes to [events](../api-reference/events/index.md) and adds [widgets](../api-reference/widgets/index.md) to the Bitrix24 interface.
+**Events and widgets.** A server-side application subscribes to [events](../api-reference/events/index.md). Both server-side and static applications add [widgets](../api-reference/widgets/index.md) to the Bitrix24 interface. To learn how to add a widget from a static application, see [Static Local Application](./static-local-app.md#widgets).
 
 ## How to Get Started
 

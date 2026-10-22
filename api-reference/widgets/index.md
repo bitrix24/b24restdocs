@@ -75,7 +75,7 @@ The required set is specified in the header of each placement page — rely on i
 
 Application permissions are not the only condition. Only the employees who have access to the application see the widget: Bitrix24 checks the access every time the widget is displayed.
 
-The `placement.bind`, `placement.unbind`, and `placement.get` methods are available only to the Bitrix24 administrator, and `placement.list` to any user. All of them work in the application context: a call made with a webhook returns the `WRONG_AUTH_TYPE` error.
+The `placement.bind` and `placement.unbind` methods are available to the Bitrix24 administrator and, in a local application, also to an employee with permission to create applications. The `placement.get` and `placement.list` methods are available to any user with access to the application. All of them work in the application context: a call made with a webhook returns the `WRONG_AUTH_TYPE` error.
 
 ## How to Get Started
 

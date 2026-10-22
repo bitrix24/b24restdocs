@@ -11,11 +11,19 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`, `depending on the placement`](../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: administrator or an employee with permission to create applications
 
 The method `placement.bind` adds a handler for the widget placement.
 
 The method works only in an application context. Calling it through a webhook returns `WRONG_AUTH_TYPE`.
+
+A widget can be registered by:
+
+- the Bitrix24 administrator — in any application
+- an employee with the *Who can create apps for everyone* permission — in a local application the employee has access to. The permission is configured as described in [How to Configure Access to Application Creation](../../local-integrations/local-apps.md#local-app-access)
+- the owner of a personal application — in their own application
+
+An employee without administrator permissions registers a widget for all users or for themselves: any other `USER_ID` returns the `ACCESS_DENIED` error.
 
 It can be called at any time during the application's operation; however, it is often more convenient to register your widgets during the [application installation](../../settings/app-installation/index.md).
 
@@ -464,7 +472,7 @@ HTTP status: **400**, **403**, **200**
 || `ERROR_WRONG_HANDLER_URL` | The `HANDLER` URL has no host name containing a dot, for example `localhost` | 400 ||
 || `ERROR_UNSUPPORTED_PROTOCOL` | The `HANDLER` URL uses a scheme other than `http` or `https` | 400 ||
 || `WRONG_AUTH_TYPE` | The method was called outside an application context, for example through a webhook | 403 ||
-|| `ACCESS_DENIED` | The caller does not have administrator permissions | 403 ||
+|| `ACCESS_DENIED` | The caller does not have permission to register the application's widgets, or `USER_ID` specifies another user | 403 ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

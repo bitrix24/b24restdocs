@@ -85,6 +85,83 @@ After creation, the application appears in *Applications > Developer resources >
 
 REST API calls are made on behalf of the employee who opened the application. Method availability is limited by the employee's permissions and the permissions selected when creating the application.
 
+## Add a Widget {#widgets}
+
+A static application can embed its pages in the Bitrix24 interface as [widgets](../api-reference/widgets/index.md) — for example, add a tab to the company card. The widget handler is an HTML page from the same archive.
+
+As an example, add a `contacts.html` page to the archive and register it as a company card tab `CRM_COMPANY_DETAIL_TAB`. When creating the application, select the `crm` and `placement` permissions.
+
+### Handler Address
+
+Bitrix24 places all archive files in a single folder and retains only the addresses of `index.html` and `install.html` in the application settings. Build the address of any other page relative to the page that is currently open:
+
+```js
+const handler = new URL('contacts.html', location.href).href.split('?')[0];
+// https://apps-b1234567.bitrix24-cdn.com/b1234567/app_local/899dc6eb61c4c5a88228db3e189b83cd/contacts.html
+```
+
+The domain and the folder path depend on the Bitrix24 account, so do not hardcode the address.
+
+### Registering the Widget
+
+Register the tab with the method [placement.bind](../api-reference/widgets/placement-bind.md) from the `index.html` code. The call succeeds if the application was opened by the Bitrix24 administrator or by an employee with the *Who can create apps for everyone* permission — how to grant it is described in [How to Configure Access to Application Creation](./local-apps.md#local-app-access). For other employees, the method returns the `ACCESS_DENIED` error.
+
+```js
+BX24.init(() => {
+    BX24.callMethod('placement.bind', {
+        PLACEMENT: 'CRM_COMPANY_DETAIL_TAB',
+        HANDLER: new URL('contacts.html', location.href).href.split('?')[0],
+        TITLE: 'Contacts',
+    }, (result) => {
+        if (result.error())
+        {
+            console.error(result.error());
+        }
+    });
+});
+```
+
+Registering the same address for the same placement again returns the `Handler already binded` error. To check which widgets are already registered, call [placement.get](../api-reference/widgets/placement-get.md).
+
+### Widget Data
+
+The handler page retrieves the placement code and its parameters with the method [BX24.placement.info](../api-reference/widgets/ui-interaction/bx24-placement-info.md) after `BX24.init`. A static page cannot read them from the request body.
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="//api.bitrix24.com/api/v1"></script>
+</head>
+<body>
+    <p id="company">Loading...</p>
+
+    <script>
+        BX24.init(() => {
+            const info = BX24.placement.info();
+            // {"placement": "CRM_COMPANY_DETAIL_TAB", "options": {"ID": "1", ...}}
+            document.getElementById('company').textContent = 'Company ID: ' + info.options.ID;
+        });
+    </script>
+</body>
+</html>
+```
+
+### Replacing the Archive
+
+When you replace the archive, Bitrix24 moves the files to a new folder and deletes the old one. The addresses of `index.html` and `install.html` in the application settings are updated automatically. The widget addresses registered with `placement.bind` stay the same and point to deleted files, so the tab in the card shows a 404 error.
+
+After every archive replacement, register the widgets again:
+
+1. Retrieve the list of widgets with the method [placement.get](../api-reference/widgets/placement-get.md)
+2. Remove the widgets with old addresses with the method [placement.unbind](../api-reference/widgets/placement-unbind.md)
+3. Register them again with `placement.bind` using addresses from the new folder
+
+`install.html` does not open after the archive is replaced, because the application is already installed. It is therefore convenient to run the check in `index.html` every time it opens: if a widget address does not start with the address of the current folder `new URL('./', location.href)`, register the widget again.
+
+To replace the archive, open the application for editing in the *Applications > Developer resources > Integrations* list. If the form opens with the *Server* type selected, switch it to *Static* — the archive upload field appears.
+
 ## Continue Exploring
 
 - [{#T}](local-apps.md)

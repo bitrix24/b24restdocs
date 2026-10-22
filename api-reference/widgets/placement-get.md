@@ -11,11 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: any user with access to the application
 
 The method `placement.get` returns the list of widget handlers that the application registered with the method [placement.bind](./placement-bind.md). For each handler, the method returns the embedding point code, the handler address, the user for whom the widget is registered, the settings, and the names in different languages.
 
 Use the method to check the current registrations: before calling [placement.bind](./placement-bind.md) again or before removing a handler with the method [placement.unbind](./placement-unbind.md). The list of embedding points available to the application is returned by another method — [placement.list](./placement-list.md).
+
+An administrator receives all handlers of the application. Any other user receives the handlers registered for all users and for that user.
 
 {% note info "" %}
 
@@ -361,7 +363,7 @@ HTTP Status: **403**
 #|
 || **Status** | **Code** | **Description** | **Meaning** ||
 || `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was called outside the application context, for example via a webhook ||
-|| `403` | `ACCESS_DENIED` | Access denied! | The method was called by a user without administrator permissions ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have access to the application ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

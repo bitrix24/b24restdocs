@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement`](../scopes/permissions.md)
 >
-> Who can execute the method: administrator, authorized in the application
+> Who can execute the method: administrator or an employee with permission to create applications
 
 The method `placement.unbind` removes the registered widget handler.
+
+A handler can be removed by the same users who can register it with the method [placement.bind](./placement-bind.md):
+
+- the Bitrix24 administrator — in any application
+- an employee with the *Who can create apps for everyone* permission — in a local application the employee has access to
+- the owner of a personal application — in their own application
 
 {% note info "" %}
 
@@ -316,7 +322,7 @@ HTTP Status: **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | Method call not from application context ||
-|| `403` | `ACCESS_DENIED` | Access denied! | User is not an administrator ||
+|| `403` | `ACCESS_DENIED` | Access denied! | User does not have permission to remove the application's widgets, or `USER_ID` specifies another user ||
 || `400` | `ERROR_ARGUMENT` | Argument 'PLACEMENT' is null or empty | 'PLACEMENT' not provided or empty value passed ||
 || `400` | `ERROR_ARGUMENT` | The value of an argument 'PLACEMENT' must be of type string | 'PLACEMENT' parameter passed is not a string ||
 |#
