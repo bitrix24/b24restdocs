@@ -1,0 +1,25 @@
+title: Forum Message Custom Fields
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Add Forum Message Custom Field
+    href: forum-message-field-custom-add.md
+  - name: Update Forum Message Custom Field
+    href: forum-message-field-custom-update.md
+  - name: Get Forum Message Custom Field
+    href: forum-message-field-custom-get.md
+  - name: Get List of Forum Message Custom Fields
+    href: forum-message-field-custom-list.md
+  - name: Delete Forum Message Custom Field
+    href: forum-message-field-custom-delete.md
+  - name: Add List Value to Custom Field
+    href: forum-message-field-custom-enum-add.md
+  - name: Update Custom Field List Value
+    href: forum-message-field-custom-enum-update.md
+  - name: Get Custom Field List Value
+    href: forum-message-field-custom-enum-get.md
+  - name: Get Custom Field List Values
+    href: forum-message-field-custom-enum-list.md
+  - name: Delete Custom Field List Value
+    href: forum-message-field-custom-enum-delete.md

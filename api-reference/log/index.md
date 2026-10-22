@@ -31,7 +31,7 @@ The News Feed in Bitrix24 helps employees share information and follow company e
 
 {% endnote %}
 
-**Calendar Events**. These are automatically displayed in the News Feed. You can create and edit calendar events using methods from the [calendar.events.*](./../calendar/events/index.md) group.
+**Calendar Events**. These are automatically displayed in the News Feed. You can create and edit calendar events using methods from the [calendar.events.*](./../calendar/events/index.md) group. Comments on events are stored as forum messages and are deleted by the [forum.message.delete](./../forum/message/forum-message-delete.md) method.
 
 **Tasks**. These are automatically displayed in the News Feed. To create and edit tasks, use methods from the [tasks.*](./../tasks/index.md) group.
 

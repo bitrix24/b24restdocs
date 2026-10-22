@@ -1,0 +1,13 @@
+title: Information Blocks
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Get Information Block Element
+    href: iblock-element-get.md
+  - name: Get List of Information Block Elements
+    href: iblock-element-list.md
+  - name: Get List of Information Block Element Fields
+    href: iblock-element-field-list.md
+  - name: Get Information Block Element Field
+    href: iblock-element-field-get.md

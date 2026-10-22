@@ -99,6 +99,8 @@ The REST 3.0 methods are described in the following sections:
 || [Event Log](./event-log/index.md) | Retrieve the entries of the Bitrix24 event log ||
 || [Time Tracking Records](./timeman/record/index.md) | Retrieve and modify time tracking records ||
 || [Call Follow-up](./telephony/follow-up/index.md) | Retrieve the materials that the AI assistant generates after a video call ||
+|| [Forum](./forum/index.md) | Delete forum messages and comments, create and configure custom fields of messages and values of "List" type fields ||
+|| [Information Blocks](./iblock/index.md) | Retrieve information block elements with properties. Work only with information blocks that have REST access enabled in the admin panel ||
 |#
 
 A method of the same section can exist in both versions with different parameters and a different response. For example, `tasks.task.get` exists both in the [old version](./tasks/tasks-task-get.md) and in [REST 3.0](./tasks/tasks-task-get-rest-v3.md). Rely on the REST 3.0 note at the beginning of the method page.

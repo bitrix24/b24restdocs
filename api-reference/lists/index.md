@@ -13,7 +13,7 @@ Universal lists are a tool for creating and managing structured information. The
 
 Universal lists integrate with Bitrix24 modules, enabling data processing automation and access management. For example, a list of employee vacation requests can start an approval workflow and restrict changes to elements by access permissions.
 
-Each list represents an [information block](*iblock). Use the group of methods [lists.*](./lists/index.md) to work with lists.
+Each list represents an [information block](*iblock). Use the group of methods [lists.*](./lists/index.md) to work with lists. The REST 3.0 methods [iblock.element.*](../iblock/index.md) read elements only of information blocks with REST access enabled in the admin panel, so in cloud Bitrix24 retrieve list elements using the [lists.element.get](./elements/lists-element-get.md) method.
 
 > Quick navigation: [all methods](#all-methods)
 >

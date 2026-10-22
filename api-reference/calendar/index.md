@@ -23,6 +23,8 @@ Calendar events are scheduled activities or meetings. A group of methods [calend
 
 **Group.** The calendar is linked to a group by the calendar owner's ID `ownerId` for the calendar type `group`. The ID can be obtained by [creating a new group](../sonet-group/sonet-group-create.md) or by [getting the list of groups](../sonet-group/socialnetwork-api-workgroup-list.md).
 
+**Comments.** Comments on calendar events are stored as forum messages. You can delete a comment using the [forum.message.delete](../forum/message/forum-message-delete.md) method of the [Forum](../forum/index.md) section. A comment can be deleted by its author or an administrator.
+
 {% note tip "User documentation" %}
 
 - [How to create a group or project](https://helpdesk.bitrix24.com/open/22796428/)

@@ -71,6 +71,10 @@ items:
     include:
       path: sale/b24-toc.yaml
       mode: link
+  - name: Information Blocks
+    include:
+      path: iblock/b24-toc.yaml
+      mode: link
   - name: Calendar
     include:
       path: calendar/b24-toc.yaml
@@ -146,6 +150,10 @@ items:
   - name: Time Tracking
     include:
       path: timeman/b24-toc.yaml
+      mode: link
+  - name: Forum
+    include:
+      path: forum/b24-toc.yaml
       mode: link
   - name: Data Storage
     include:

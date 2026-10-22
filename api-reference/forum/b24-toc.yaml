@@ -1,0 +1,13 @@
+title: Forum
+href: index.md
+items:
+  - name: Overview of Sections
+    href: index.md
+  - name: Messages
+    include:
+      path: message/b24-toc.yaml
+      mode: link
+  - name: Message Custom Fields
+    include:
+      path: userfield/b24-toc.yaml
+      mode: link

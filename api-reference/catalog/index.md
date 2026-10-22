@@ -63,7 +63,7 @@ See the complete scenario for creating a product with properties and a price in 
 - [Products](./product/index.md), [Parent Products](./product/sku/index.md), [Variations](./product/offer/index.md), [Services](./product/service/index.md), [Product and Variation Images](./product-image/index.md), [Product and Variation Properties](./product-property/index.md)
 - [Price](./price/index.md), [Price Types](./price-type/index.md), [Price Rounding Rules](./rounding-rule/index.md), [Markups](./extra/index.md)
 - [Units of Measure](./measure/index.md), [Unit of Measure Coefficient](./ratio/index.md), [VAT Rates](./vat/index.md)
-- [Inventory Management](./document/index.md), [Inventory Document Products](./document/document-element/index.md), [Inventory Document Custom Fields](./userfield-document/index.md), [Working with CRM Suppliers](./documentcontractor/index.md)
+- [Inventory Management](./document/index.md), [Inventory Document Products](./document/document-element/index.md), [Inventory Document Custom Fields](./userfield-document/index.md), [Working with CRM Vendors](./documentcontractor/index.md), [Inventory Management Vendors](./contractor/index.md)
 
 Some method names of the new version are written in lowercase only, for example `catalog.pricetype.list` and `catalog.roundingrule.list`.
 
@@ -145,5 +145,6 @@ By default, only the Bitrix24 administrator can edit the catalog and configure a
 || [Inventory Management](./document/index.md) | Methods for working with inventory accounting documents ||
 || [Inventory Document Products](./document/document-element/index.md) | Methods for working with product lines in accounting documents ||
 || [Inventory Document Custom Fields](./userfield-document/index.md) | Methods for working with custom fields in accounting documents ||
-|| [Working with CRM Suppliers](./documentcontractor/index.md) | Methods for working with vendors in inventory accounting documents ||
+|| [Working with CRM Vendors](./documentcontractor/index.md) | Methods for working with vendors in inventory accounting documents ||
+|| [Inventory Management Vendors](./contractor/index.md) | Methods for working with the inventory management vendor directory ||
 |#

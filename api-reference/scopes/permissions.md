@@ -60,8 +60,10 @@ Some methods work only in the application context. When a webhook calls such a m
 || **department** | [Company Structure](../departments/index.md) | Company Structure ||
 || **disk** | [Drive](../disk/index.md) | Bitrix24.Drive ||
 || **entity** | [Data store](../entity/index.md) | Data store ||
+|| **forum** | [Forum](../forum/index.md) | Forum, comments ||
 || **humanresources** | [Company Structure REST 3.0](../departments/index.md) | Company Structure ||
 || **humanresources.hcmlink** | [e-Signature Integration with HR Systems](../sign/hcm-link/index.md) | e-Signature ||
+|| **iblock** | [Information Blocks](../iblock/index.md) | Information blocks ||
 || **im** | [Chat and Notifications](../chats/index.md) | Chat and Notifications ||
 || **imbot** | [Creating and managing Chatbots](../chat-bots/index.md) | Chat bots ||
 || **imopenlines** | [Open Channels](../imopenlines/index.md), [Connectors for external messengers](../imopenlines/imconnector/index.md) | Open Channels ||
