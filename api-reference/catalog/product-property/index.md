@@ -55,6 +55,16 @@ The type is set when creating the property and cannot be changed.
 4. If the property has the List type, add values using [catalog.productPropertyEnum.*](../product-property-enum/index.md)
 5. Use the property code in product, service, parent product, or variation methods
 
+## Properties in REST 3.0
+
+In [REST 3.0](../../rest-v3.md), properties have the [catalog.product.property.add](./catalog-product-property-add-rest-v3.md) method for adding, the `catalog.product.property.field.list` and `catalog.product.property.field.get` methods for retrieving the field schema, and the [catalog.product.property.type.list](./catalog-product-property-type-list.md) directory of property types. A property can be retrieved, updated, and deleted with the methods of the previous API version.
+
+Specifics of the adding method:
+
+- the method creates a string property; the property type cannot be passed
+- the `multiple` and `isRequired` flags are passed as the strings `Y` or `N`
+- only `id` and `controlId` are filled in the response. The field values of the new property can be retrieved using the [catalog.productProperty.get](./catalog-product-property-get.md) method
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
@@ -64,9 +74,15 @@ The type is set when creating the property and cannot be changed.
 #|
 || **Method** | **Description** ||
 || [catalog.productProperty.add](./catalog-product-property-add.md) | Adds a product or variation property ||
+|| [catalog.product.property.add](./catalog-product-property-add-rest-v3.md) | Adds a product or variation property v 3.0 ||
 || [catalog.productProperty.update](./catalog-product-property-update.md) | Updates the fields of a product or variation property ||
 || [catalog.productProperty.get](./catalog-product-property-get.md) | Returns the values of the fields of a product or variation property ||
 || [catalog.productProperty.list](./catalog-product-property-list.md) | Returns a list of product or variation properties ||
 || [catalog.productProperty.delete](./catalog-product-property-delete.md) | Deletes a product or variation property ||
 || [catalog.productProperty.getFields](./catalog-product-property-get-fields.md) | Returns the fields of a product or variation property ||
+|| [catalog.product.property.field.list](./catalog-product-property-field-list.md) | Returns a list of product property fields v 3.0 ||
+|| [catalog.product.property.field.get](./catalog-product-property-field-get.md) | Returns the description of a product property field ||
+|| [catalog.product.property.type.list](./catalog-product-property-type-list.md) | Returns a list of product property types ||
+|| [catalog.product.property.type.field.list](./catalog-product-property-type-field-list.md) | Returns a list of product property type fields ||
+|| [catalog.product.property.type.field.get](./catalog-product-property-type-field-get.md) | Returns the description of a product property type field ||
 |#

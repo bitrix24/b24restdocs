@@ -1,19 +1,35 @@
-title: Head Products
+title: Parent Products
 href: index.md
 items: 
   - name: Overview of Methods
     href: index.md
-  - name: Add Head Product
+  - name: Add Parent Product
     href: catalog-product-sku-add.md
-  - name: Update Head Product Fields
+  - name: Add Parent Product v 3.0
+    href: catalog-product-sku-add-rest-v3.md
+  - name: Update Parent Product Fields
     href: catalog-product-sku-update.md
-  - name: Get Head Product Field Values
+  - name: Update Parent Product Fields v 3.0
+    href: catalog-product-sku-update-rest-v3.md
+  - name: Get Parent Product Field Values
     href: catalog-product-sku-get.md
-  - name: Get List of Head Products
+  - name: Get Parent Product Field Values v 3.0
+    href: catalog-product-sku-get-rest-v3.md
+  - name: Get List of Parent Products
     href: catalog-product-sku-list.md
-  - name: Download Head Product Files
+  - name: Get List of Parent Products v 3.0
+    href: catalog-product-sku-list-rest-v3.md
+  - name: Download Parent Product Files
     href: catalog-product-sku-download.md
-  - name: Delete Head Product
+  - name: Download Parent Product Files v 3.0
+    href: catalog-product-sku-download-rest-v3.md
+  - name: Delete Parent Product
     href: catalog-product-sku-delete.md
-  - name: Get Head Product Fields by Filter
+  - name: Delete Parent Product v 3.0
+    href: catalog-product-sku-delete-rest-v3.md
+  - name: Get Parent Product Fields by Filter
     href: catalog-product-sku-get-fields-by-filter.md
+  - name: Get List of Parent Product Fields v 3.0
+    href: catalog-product-sku-field-list.md
+  - name: Get Parent Product Field
+    href: catalog-product-sku-field-get.md

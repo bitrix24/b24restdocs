@@ -57,9 +57,10 @@ See the complete scenario for creating a product with properties and a price in 
 
 ## Trade Catalog in REST 3.0
 
-[REST 3.0](../rest-v3.md) provides methods for trade catalogs, sections, units of measurement, VAT rates, prices, price types, rounding rules, markups, and unit of measurement coefficients. Methods available in both API versions are marked `v 3.0` in the tables. The specifics of the new version are described on the overview pages of the subsections:
+[REST 3.0](../rest-v3.md) provides methods for trade catalogs, sections, products, services, products with variations, product images and properties, units of measurement, VAT rates, prices, price types, rounding rules, markups, and unit of measurement coefficients. Methods available in both API versions are marked `v 3.0` in the tables. The specifics of the new version are described on the overview pages of the subsections:
 
 - [Trade Catalog](./catalog/index.md), [Catalog Sections](./section/index.md)
+- [Products](./product/index.md), [Parent Products](./product/sku/index.md), [Variations](./product/offer/index.md), [Services](./product/service/index.md), [Product and Variation Images](./product-image/index.md), [Product and Variation Properties](./product-property/index.md)
 - [Price](./price/index.md), [Price Types](./price-type/index.md), [Price Rounding Rules](./rounding-rule/index.md), [Markups](./extra/index.md)
 - [Units of Measure](./measure/index.md), [Unit of Measure Coefficient](./ratio/index.md), [VAT Rates](./vat/index.md)
 

@@ -1,4 +1,4 @@
-# Delete Head Product catalog.product.sku.delete
+# Delete Parent Product catalog.product.sku.delete
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-This method deletes the head product.
+This method deletes the parent product.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ This method deletes the head product.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the head product.
+[`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the parent product.
 
-To obtain the identifiers of head products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md) ||
+To obtain the identifiers of parent products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md) ||
 |#
 
 ## Code Examples
@@ -253,7 +253,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of deleting the head product ||
+[`boolean`](../../../data-types.md) | Result of deleting the parent product ||
 || **time**
 [`time`](../../../data-types.md) | Information about the execution time of the request ||
 |#
@@ -275,7 +275,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** ||
-|| `200040300040` | Insufficient permissions to delete the head product
+|| `200040300040` | Insufficient permissions to delete the parent product
 || 
 || `200040300040` | Insufficient permissions to delete the information block
 || 

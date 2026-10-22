@@ -43,19 +43,38 @@ Differences between a parent product and a simple product:
 4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
 5. Set variation prices using [catalog.price.*](../../price/index.md)
 
+## Parent Products in REST 3.0
+
+In [REST 3.0](../../../rest-v3.md), parent products have methods for adding, updating, retrieving, deleting, and downloading files, as well as the `catalog.product.sku.field.list` and `catalog.product.sku.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table. The general specifics of the new version product methods are described in the [products overview](../index.md).
+
+Specifics of the new version methods:
+
+- a parent product without variations gets type `6`, and after the first variation is added, type `3`. If the last variation is deleted, the parent product becomes a simple product and is no longer returned by the `catalog.product.sku.*` methods
+- the [catalog.product.sku.delete](./catalog-product-sku-delete-rest-v3.md) method deletes the parent product together with all its variations
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the methods:
+> - administrator — for methods of the previous API version
+> - a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permissions for the information block — for retrieving parent products in REST 3.0. Adding, updating, and deleting also require the "Create product", "Edit product", or "Delete product" access permission
 
 #|
 || **Method** | **Description** ||
 || [catalog.product.sku.add](./catalog-product-sku-add.md) | Adds a parent product to the trade catalog ||
+|| [catalog.product.sku.add](./catalog-product-sku-add-rest-v3.md) | Adds a parent product to the trade catalog v 3.0 ||
 || [catalog.product.sku.update](./catalog-product-sku-update.md) | Updates fields of the parent product ||
+|| [catalog.product.sku.update](./catalog-product-sku-update-rest-v3.md) | Updates fields of the parent product v 3.0 ||
 || [catalog.product.sku.get](./catalog-product-sku-get.md) | Returns field values of the parent product by identifier ||
+|| [catalog.product.sku.get](./catalog-product-sku-get-rest-v3.md) | Returns field values of the parent product by identifier v 3.0 ||
 || [catalog.product.sku.list](./catalog-product-sku-list.md) | Returns a list of parent products by filter ||
+|| [catalog.product.sku.list](./catalog-product-sku-list-rest-v3.md) | Returns a list of parent products by filter v 3.0 ||
 || [catalog.product.sku.download](./catalog-product-sku-download.md) | Downloads files of the parent product based on the provided parameters ||
+|| [catalog.product.sku.download](./catalog-product-sku-download-rest-v3.md) | Downloads files of the parent product based on the provided parameters v 3.0 ||
 || [catalog.product.sku.delete](./catalog-product-sku-delete.md) | Deletes a parent product ||
+|| [catalog.product.sku.delete](./catalog-product-sku-delete-rest-v3.md) | Deletes a parent product v 3.0 ||
 || [catalog.product.sku.getFieldsByFilter](./catalog-product-sku-get-fields-by-filter.md) | Returns fields of the parent product by filter ||
+|| [catalog.product.sku.field.list](./catalog-product-sku-field-list.md) | Returns a list of parent product fields v 3.0 ||
+|| [catalog.product.sku.field.get](./catalog-product-sku-field-get.md) | Returns the description of a parent product field ||
 |#

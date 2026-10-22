@@ -55,19 +55,39 @@ To work with parent products, use the methods [catalog.product.sku.*](../sku/ind
 4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
 5. Set variation prices using [catalog.price.*](../../price/index.md)
 
+## Variations in REST 3.0
+
+In [REST 3.0](../../../rest-v3.md), variations have methods for adding, updating, retrieving, deleting, and downloading files, as well as the `catalog.product.offer.field.list` and `catalog.product.offer.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table. The general specifics of the new version product methods are described in the [products overview](../index.md).
+
+Specifics of the new version methods:
+
+- a variation is linked to its parent product through the `PROPERTY_{skuPropertyId}` property in `fields.properties`. There is no `parentId` field, unlike in the previous version. The `skuPropertyId` property identifier is returned by the [catalog.catalog.get](../../catalog/catalog-catalog-get-rest-v3.md) method for the variations catalog
+- in the [catalog.product.offer.update](./catalog-product-offer-update-rest-v3.md) method, pass the link as an object `{"VALUE": id}`: the method does not save a number
+- variations of a single parent product cannot be found by a filter on the link property
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the methods:
+> - administrator — for methods of the previous API version
+> - a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permissions for the information block — for retrieving variations in REST 3.0. Adding, updating, and deleting also require the "Create product", "Edit product", or "Delete product" access permission
 
 #|
 || **Method** | **Description** ||
 || [catalog.product.offer.add](./catalog-product-offer-add.md) | Adds a product variation ||
+|| [catalog.product.offer.add](./catalog-product-offer-add-rest-v3.md) | Adds a product variation v 3.0 ||
 || [catalog.product.offer.update](./catalog-product-offer-update.md) | Updates fields of a product variation ||
+|| [catalog.product.offer.update](./catalog-product-offer-update-rest-v3.md) | Updates fields of a product variation v 3.0 ||
 || [catalog.product.offer.get](./catalog-product-offer-get.md) | Returns field values of a product variation by identifier ||
+|| [catalog.product.offer.get](./catalog-product-offer-get-rest-v3.md) | Returns field values of a product variation by identifier v 3.0 ||
 || [catalog.product.offer.list](./catalog-product-offer-list.md) | Returns a list of product variations by filter ||
+|| [catalog.product.offer.list](./catalog-product-offer-list-rest-v3.md) | Returns a list of product variations by filter v 3.0 ||
 || [catalog.product.offer.download](./catalog-product-offer-download.md) | Downloads files of a product variation based on provided parameters ||
+|| [catalog.product.offer.download](./catalog-product-offer-download-rest-v3.md) | Downloads files of a product variation based on provided parameters v 3.0 ||
 || [catalog.product.offer.delete](./catalog-product-offer-delete.md) | Deletes a product variation ||
+|| [catalog.product.offer.delete](./catalog-product-offer-delete-rest-v3.md) | Deletes a product variation v 3.0 ||
 || [catalog.product.offer.getFieldsByFilter](./catalog-product-offer-get-fields-by-filter.md) | Returns fields of a product variation by filter ||
+|| [catalog.product.offer.field.list](./catalog-product-offer-field-list.md) | Returns a list of product variation fields v 3.0 ||
+|| [catalog.product.offer.field.get](./catalog-product-offer-field-get.md) | Returns the description of a product variation field ||
 |#

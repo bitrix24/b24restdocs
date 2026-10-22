@@ -5,15 +5,31 @@ items:
     href: index.md
   - name: Add Service
     href: catalog-product-service-add.md
+  - name: Add Service v 3.0
+    href: catalog-product-service-add-rest-v3.md
   - name: Update Service Fields
     href: catalog-product-service-update.md
+  - name: Update Service Fields v 3.0
+    href: catalog-product-service-update-rest-v3.md
   - name: Get Service Field Values 
     href: catalog-product-service-get.md
+  - name: Get Service Field Values v 3.0
+    href: catalog-product-service-get-rest-v3.md
   - name: Get List of Services
     href: catalog-product-service-list.md
+  - name: Get List of Services v 3.0
+    href: catalog-product-service-list-rest-v3.md
   - name: Download Service Files
     href: catalog-product-service-download.md
+  - name: Download Service Files v 3.0
+    href: catalog-product-service-download-rest-v3.md
   - name: Delete Service
     href: catalog-product-service-delete.md
+  - name: Delete Service v 3.0
+    href: catalog-product-service-delete-rest-v3.md
   - name: Get Service Fields by Filter
     href: catalog-product-service-get-fields-by-filter.md
+  - name: Get List of Service Fields v 3.0
+    href: catalog-product-service-field-list.md
+  - name: Get Service Field
+    href: catalog-product-service-field-get.md

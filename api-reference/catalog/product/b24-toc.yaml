@@ -5,18 +5,42 @@ items:
     href: index.md
   - name: Add product
     href: catalog-product-add.md
+  - name: Add product v 3.0
+    href: catalog-product-add-rest-v3.md
   - name: Update product
     href: catalog-product-update.md
+  - name: Update product v 3.0
+    href: catalog-product-update-rest-v3.md
   - name: Get product by id
     href: catalog-product-get.md
+  - name: Get product by id v 3.0
+    href: catalog-product-get-rest-v3.md
   - name: Get list of products by filter
     href: catalog-product-list.md
+  - name: Get list of products by filter v 3.0
+    href: catalog-product-list-rest-v3.md
   - name: Download product files
     href: catalog-product-download.md
+  - name: Download product files v 3.0
+    href: catalog-product-download-rest-v3.md
   - name: Delete product
     href: catalog-product-delete.md
+  - name: Delete product v 3.0
+    href: catalog-product-delete-rest-v3.md
   - name: Get product fields by filter
     href: catalog-product-get-fields-by-filter.md
+  - name: Get list of product fields v 3.0
+    href: catalog-product-field-list.md
+  - name: Get product field
+    href: catalog-product-field-get.md
+  - name: Get product fields by filter v 3.0
+    href: catalog-product-fields-get-by-filter.md
+  - name: Get list of product types
+    href: catalog-product-type-list.md
+  - name: Get list of product type fields
+    href: catalog-product-type-field-list.md
+  - name: Get product type field
+    href: catalog-product-type-field-get.md
   - name: Parent products
     include:
       path: sku/b24-toc.yaml

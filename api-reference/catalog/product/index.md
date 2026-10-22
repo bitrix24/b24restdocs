@@ -48,6 +48,20 @@ A simple product or service is a single inventory item with a name and unit of m
 5. Set the price using [catalog.price.*](../price/index.md)
 6. Verify the result with [catalog.product.get](./catalog-product-get.md) or the corresponding `get` method for a service, parent product, or variation
 
+## Products in REST 3.0
+
+In [REST 3.0](../../rest-v3.md), products, services, parent products, and variations have methods for adding, updating, retrieving, deleting, and downloading files, as well as the `*.field.list` and `*.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the tables. The directory of product types is returned by the [catalog.product.type.list](./catalog-product-type-list.md) method.
+
+Specifics of the new version methods:
+
+- product properties are passed in `fields.properties` with the `PROPERTY_{id}` keys. In the `update` methods, pass the value of a single property as an object `{"VALUE": ...}`: the method does not save a value passed as a string
+- the `list` methods require a condition on `iblockId` with the `=` operator in `filter`. Filtering by property values is not supported. A page returns no more than 50 records
+- the `add` and `update` methods do not save the `previewPicture` and `detailPicture` images. Upload images using the [catalog.product.image.add](../product-image/catalog-product-image-add-rest-v3.md) method
+- in the response, `previewPicture` and `detailPicture` contain the file identifier. The file can be retrieved using the [catalog.product.download](./catalog-product-download-rest-v3.md) method
+- when inventory management is enabled, `quantity`, `purchasingPrice`, and `purchasingCurrency` are not saved
+- the [catalog.product.fields.getbyfilter](./catalog-product-fields-get-by-filter.md) method returns the fields of a simple product and is called in lowercase only
+- in addition to catalog permissions, the methods check the user's permissions for the catalog information block: to read, edit, or delete a product
+
 ## Overview of Methods and Events {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
@@ -63,12 +77,24 @@ A simple product or service is a single inventory item with a name and unit of m
     #|
     || **Method** | **Description** ||
     || [catalog.product.add](./catalog-product-add.md) | Adds a product ||
+    || [catalog.product.add](./catalog-product-add-rest-v3.md) | Adds a product v 3.0 ||
     || [catalog.product.update](./catalog-product-update.md) | Updates product fields ||
+    || [catalog.product.update](./catalog-product-update-rest-v3.md) | Updates product fields v 3.0 ||
     || [catalog.product.get](./catalog-product-get.md) | Returns product field values by identifier ||
+    || [catalog.product.get](./catalog-product-get-rest-v3.md) | Returns product field values by identifier v 3.0 ||
     || [catalog.product.list](./catalog-product-list.md) | Returns a list of products by filter ||
+    || [catalog.product.list](./catalog-product-list-rest-v3.md) | Returns a list of products by filter v 3.0 ||
     || [catalog.product.download](./catalog-product-download.md) | Downloads product files by provided parameters ||
+    || [catalog.product.download](./catalog-product-download-rest-v3.md) | Downloads product files by provided parameters v 3.0 ||
     || [catalog.product.delete](./catalog-product-delete.md) | Deletes a product ||
+    || [catalog.product.delete](./catalog-product-delete-rest-v3.md) | Deletes a product v 3.0 ||
     || [catalog.product.getFieldsByFilter](./catalog-product-get-fields-by-filter.md) | Returns product fields by filter ||
+    || [catalog.product.field.list](./catalog-product-field-list.md) | Returns a list of product fields v 3.0 ||
+    || [catalog.product.field.get](./catalog-product-field-get.md) | Returns the description of a product field ||
+    || [catalog.product.fields.getbyfilter](./catalog-product-fields-get-by-filter.md) | Returns product fields by filter v 3.0 ||
+    || [catalog.product.type.list](./catalog-product-type-list.md) | Returns a list of product types ||
+    || [catalog.product.type.field.list](./catalog-product-type-field-list.md) | Returns a list of product type fields ||
+    || [catalog.product.type.field.get](./catalog-product-type-field-get.md) | Returns the description of a product type field ||
     |#
 
 - Events
@@ -93,12 +119,20 @@ Addition, update, and deletion events are described in the [Product Events Overv
     #|
     || **Method** | **Description** ||
     || [catalog.product.service.add](./service/catalog-product-service-add.md) | Adds a service ||
+    || [catalog.product.service.add](./service/catalog-product-service-add-rest-v3.md) | Adds a service v 3.0 ||
     || [catalog.product.service.update](./service/catalog-product-service-update.md) | Updates service fields ||
+    || [catalog.product.service.update](./service/catalog-product-service-update-rest-v3.md) | Updates service fields v 3.0 ||
     || [catalog.product.service.get](./service/catalog-product-service-get.md) | Returns service field values by identifier ||
+    || [catalog.product.service.get](./service/catalog-product-service-get-rest-v3.md) | Returns service field values by identifier v 3.0 ||
     || [catalog.product.service.list](./service/catalog-product-service-list.md) | Returns a list of services by filter ||
+    || [catalog.product.service.list](./service/catalog-product-service-list-rest-v3.md) | Returns a list of services by filter v 3.0 ||
     || [catalog.product.service.download](./service/catalog-product-service-download.md) | Downloads service files by provided parameters ||
+    || [catalog.product.service.download](./service/catalog-product-service-download-rest-v3.md) | Downloads service files by provided parameters v 3.0 ||
     || [catalog.product.service.delete](./service/catalog-product-service-delete.md) | Deletes a service ||
+    || [catalog.product.service.delete](./service/catalog-product-service-delete-rest-v3.md) | Deletes a service v 3.0 ||
     || [catalog.product.service.getFieldsByFilter](./service/catalog-product-service-get-fields-by-filter.md) | Returns service fields by filter ||
+    || [catalog.product.service.field.list](./service/catalog-product-service-field-list.md) | Returns a list of service fields v 3.0 ||
+    || [catalog.product.service.field.get](./service/catalog-product-service-field-get.md) | Returns the description of a service field ||
     |#
 
 - Events
@@ -123,12 +157,20 @@ For the service structure and choosing methods, see the [Services Overview](./se
     #|
     || **Method** | **Description** ||
     || [catalog.product.sku.add](./sku/catalog-product-sku-add.md) | Adds a parent product ||
+    || [catalog.product.sku.add](./sku/catalog-product-sku-add-rest-v3.md) | Adds a parent product v 3.0 ||
     || [catalog.product.sku.update](./sku/catalog-product-sku-update.md) | Updates parent product fields ||
+    || [catalog.product.sku.update](./sku/catalog-product-sku-update-rest-v3.md) | Updates parent product fields v 3.0 ||
     || [catalog.product.sku.get](./sku/catalog-product-sku-get.md) | Returns parent product field values by identifier ||
+    || [catalog.product.sku.get](./sku/catalog-product-sku-get-rest-v3.md) | Returns parent product field values by identifier v 3.0 ||
     || [catalog.product.sku.list](./sku/catalog-product-sku-list.md) | Returns a list of parent products by filter ||
+    || [catalog.product.sku.list](./sku/catalog-product-sku-list-rest-v3.md) | Returns a list of parent products by filter v 3.0 ||
     || [catalog.product.sku.download](./sku/catalog-product-sku-download.md) | Downloads parent product files by provided parameters ||
+    || [catalog.product.sku.download](./sku/catalog-product-sku-download-rest-v3.md) | Downloads parent product files by provided parameters v 3.0 ||
     || [catalog.product.sku.delete](./sku/catalog-product-sku-delete.md) | Deletes a parent product ||
+    || [catalog.product.sku.delete](./sku/catalog-product-sku-delete-rest-v3.md) | Deletes a parent product v 3.0 ||
     || [catalog.product.sku.getFieldsByFilter](./sku/catalog-product-sku-get-fields-by-filter.md) | Returns parent product fields by filter ||
+    || [catalog.product.sku.field.list](./sku/catalog-product-sku-field-list.md) | Returns a list of parent product fields v 3.0 ||
+    || [catalog.product.sku.field.get](./sku/catalog-product-sku-field-get.md) | Returns the description of a parent product field ||
     |#
 
 - Events
@@ -153,12 +195,20 @@ For the parent product structure and choosing methods, see the [Parent Products 
     #|
     || **Method** | **Description** ||
     || [catalog.product.offer.add](./offer/catalog-product-offer-add.md) | Adds a product variation ||
+    || [catalog.product.offer.add](./offer/catalog-product-offer-add-rest-v3.md) | Adds a product variation v 3.0 ||
     || [catalog.product.offer.update](./offer/catalog-product-offer-update.md) | Updates product variation fields ||
+    || [catalog.product.offer.update](./offer/catalog-product-offer-update-rest-v3.md) | Updates product variation fields v 3.0 ||
     || [catalog.product.offer.get](./offer/catalog-product-offer-get.md) | Returns product variation field values by identifier ||
+    || [catalog.product.offer.get](./offer/catalog-product-offer-get-rest-v3.md) | Returns product variation field values by identifier v 3.0 ||
     || [catalog.product.offer.list](./offer/catalog-product-offer-list.md) | Returns a list of product variations by filter ||
+    || [catalog.product.offer.list](./offer/catalog-product-offer-list-rest-v3.md) | Returns a list of product variations by filter v 3.0 ||
     || [catalog.product.offer.download](./offer/catalog-product-offer-download.md) | Downloads product variation files by provided parameters ||
+    || [catalog.product.offer.download](./offer/catalog-product-offer-download-rest-v3.md) | Downloads product variation files by provided parameters v 3.0 ||
     || [catalog.product.offer.delete](./offer/catalog-product-offer-delete.md) | Deletes a product variation ||
+    || [catalog.product.offer.delete](./offer/catalog-product-offer-delete-rest-v3.md) | Deletes a product variation v 3.0 ||
     || [catalog.product.offer.getFieldsByFilter](./offer/catalog-product-offer-get-fields-by-filter.md) | Returns product variation fields by filter ||
+    || [catalog.product.offer.field.list](./offer/catalog-product-offer-field-list.md) | Returns a list of product variation fields v 3.0 ||
+    || [catalog.product.offer.field.get](./offer/catalog-product-offer-field-get.md) | Returns the description of a product variation field ||
     |#
 
 - Events

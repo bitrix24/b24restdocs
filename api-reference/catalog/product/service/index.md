@@ -47,19 +47,35 @@ Services are intangible goods: consultations, work, or actions. They can be used
 4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
 5. Set the service price using [catalog.price.*](../../price/index.md)
 
+## Services in REST 3.0
+
+In [REST 3.0](../../../rest-v3.md), services have methods for adding, updating, retrieving, deleting, and downloading files, as well as the `catalog.product.service.field.list` and `catalog.product.service.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table. The general specifics of the new version product methods are described in the [products overview](../index.md).
+
+The [catalog.product.service.add](./catalog-product-service-add-rest-v3.md) method assigns type `7` to the service itself, so you do not need to pass the type.
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the methods:
+> - administrator — for methods of the previous API version
+> - a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permissions for the information block — for retrieving services in REST 3.0. Adding, updating, and deleting also require the "Create product", "Edit product", or "Delete product" access permission
 
 #|
 || **Method** | **Description** ||
 || [catalog.product.service.add](./catalog-product-service-add.md) | Adds a service ||
+|| [catalog.product.service.add](./catalog-product-service-add-rest-v3.md) | Adds a service v 3.0 ||
 || [catalog.product.service.update](./catalog-product-service-update.md) | Updates the service fields ||
+|| [catalog.product.service.update](./catalog-product-service-update-rest-v3.md) | Updates the service fields v 3.0 ||
 || [catalog.product.service.get](./catalog-product-service-get.md) | Returns the values of service fields by identifier ||
+|| [catalog.product.service.get](./catalog-product-service-get-rest-v3.md) | Returns the values of service fields by identifier v 3.0 ||
 || [catalog.product.service.list](./catalog-product-service-list.md) | Returns a list of services by filter ||
+|| [catalog.product.service.list](./catalog-product-service-list-rest-v3.md) | Returns a list of services by filter v 3.0 ||
 || [catalog.product.service.download](./catalog-product-service-download.md) | Downloads service files based on the provided parameters ||
+|| [catalog.product.service.download](./catalog-product-service-download-rest-v3.md) | Downloads service files based on the provided parameters v 3.0 ||
 || [catalog.product.service.delete](./catalog-product-service-delete.md) | Deletes a service ||
+|| [catalog.product.service.delete](./catalog-product-service-delete-rest-v3.md) | Deletes a service v 3.0 ||
 || [catalog.product.service.getFieldsByFilter](./catalog-product-service-get-fields-by-filter.md) | Returns service fields by filter ||
+|| [catalog.product.service.field.list](./catalog-product-service-field-list.md) | Returns a list of service fields v 3.0 ||
+|| [catalog.product.service.field.get](./catalog-product-service-field-get.md) | Returns the description of a service field ||
 |#

@@ -5,15 +5,31 @@ items:
     href: index.md
   - name: Add Product Variation
     href: catalog-product-offer-add.md
+  - name: Add Product Variation v 3.0
+    href: catalog-product-offer-add-rest-v3.md
   - name: Update Product Variation Fields
     href: catalog-product-offer-update.md
+  - name: Update Product Variation Fields v 3.0
+    href: catalog-product-offer-update-rest-v3.md
   - name: Get Product Variation Field Values
     href: catalog-product-offer-get.md
+  - name: Get Product Variation Field Values v 3.0
+    href: catalog-product-offer-get-rest-v3.md
   - name: Get List of Product Variations
     href: catalog-product-offer-list.md
+  - name: Get List of Product Variations v 3.0
+    href: catalog-product-offer-list-rest-v3.md
   - name: Download Product Variation Files
     href: catalog-product-offer-download.md
+  - name: Download Product Variation Files v 3.0
+    href: catalog-product-offer-download-rest-v3.md
   - name: Delete Product Variation
     href: catalog-product-offer-delete.md
+  - name: Delete Product Variation v 3.0
+    href: catalog-product-offer-delete-rest-v3.md
   - name: Get Product Variation Fields by Filter
     href: catalog-product-offer-get-fields-by-filter.md
+  - name: Get List of Product Variation Fields v 3.0
+    href: catalog-product-offer-field-list.md
+  - name: Get Product Variation Field
+    href: catalog-product-offer-field-get.md

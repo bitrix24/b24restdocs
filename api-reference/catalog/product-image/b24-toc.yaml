@@ -5,11 +5,23 @@ items:
     href: index.md
   - name: Add an Image to a Product
     href: catalog-product-image-add.md
+  - name: Add an Image to a Product v 3.0
+    href: catalog-product-image-add-rest-v3.md
   - name: Get Product Image Information
     href: catalog-product-image-get.md
+  - name: Get Product Image Information v 3.0
+    href: catalog-product-image-get-rest-v3.md
   - name: Get a List of Product Images
     href: catalog-product-image-list.md
+  - name: Get a List of Product Images v 3.0
+    href: catalog-product-image-list-rest-v3.md
   - name: Remove an Image from a Product
     href: catalog-product-image-delete.md
+  - name: Remove an Image from a Product v 3.0
+    href: catalog-product-image-delete-rest-v3.md
   - name: Get Product Image Fields
     href: catalog-product-image-get-fields.md
+  - name: Get a List of Product Image Fields v 3.0
+    href: catalog-product-image-field-list.md
+  - name: Get a Product Image Field
+    href: catalog-product-image-field-get.md
