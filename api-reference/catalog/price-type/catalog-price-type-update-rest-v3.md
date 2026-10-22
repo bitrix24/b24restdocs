@@ -21,12 +21,6 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `catalog.pricetype.update` method changes the fields of a price type and returns its fields after the change.
 
-{% note warning "" %}
-
-In REST 3.0, the method name is written in lowercase: `catalog.pricetype.update`. Calling `catalog.priceType.update` at the `/rest/api/` address returns the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error.
-
-{% endnote %}
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}

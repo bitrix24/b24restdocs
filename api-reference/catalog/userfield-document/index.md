@@ -37,6 +37,16 @@ The `catalog.userfield.document.*` methods read and update the values of custom 
 3. Get the current field values using [catalog.userfield.document.list](./catalog-userfield-document-list.md)
 4. Update the values using [catalog.userfield.document.update](./catalog-userfield-document-update.md)
 
+## Custom Fields in REST 3.0
+
+In [REST 3.0](../../rest-v3.md), the methods are named `catalog.document.userfield.*`, not `catalog.userfield.document.*`: the old names at the `/rest/api/` address return the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error. There are methods for retrieving values, updating values, and retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
+
+Specifics of the new version methods:
+
+- the [catalog.document.userfield.list](./catalog-userfield-document-list-rest-v3.md) method requires a condition on `docType` with the `=` operator in `filter`
+- the [catalog.document.userfield.update](./catalog-userfield-document-update-rest-v3.md) method requires the type of the document itself in `fields.docType`
+- in the `list` response, value keys are `UF_*`; in `update`, a value can be passed by the `UF_*` or `FIELD_{id}` key
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
@@ -46,5 +56,9 @@ The `catalog.userfield.document.*` methods read and update the values of custom 
 #|
 || **Method** | **Description** ||
 || [catalog.userfield.document.list](./catalog-userfield-document-list.md) | Returns a list of values for custom fields of inventory accounting documents ||
+|| [catalog.document.userfield.list](./catalog-userfield-document-list-rest-v3.md) | Returns a list of values for custom fields of inventory accounting documents v 3.0 ||
+|| [catalog.document.userfield.field.list](./catalog-userfield-document-field-list.md) | Returns a list of fields for document custom fields v 3.0 ||
+|| [catalog.document.userfield.field.get](./catalog-userfield-document-field-get.md) | Returns the description of a field for document custom fields ||
 || [catalog.userfield.document.update](./catalog-userfield-document-update.md) | Updates the values of custom fields for inventory accounting documents ||
+|| [catalog.document.userfield.update](./catalog-userfield-document-update-rest-v3.md) | Updates the values of custom fields for inventory accounting documents v 3.0 ||
 |#

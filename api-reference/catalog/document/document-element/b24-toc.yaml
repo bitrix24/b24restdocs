@@ -5,11 +5,23 @@ items:
     href: index.md  
   - name: Add product to document  
     href: catalog-document-element-add.md  
+  - name: Add product to inventory document v 3.0
+    href: catalog-document-element-add-rest-v3.md
   - name: Modify product in document  
     href: catalog-document-element-update.md  
+  - name: Update product in inventory document v 3.0
+    href: catalog-document-element-update-rest-v3.md
   - name: Retrieve list of products in documents  
     href: catalog-document-element-list.md  
+  - name: Get list of products in inventory documents v 3.0
+    href: catalog-document-element-list-rest-v3.md
   - name: Remove product from document  
     href: catalog-document-element-delete.md  
+  - name: Remove product from inventory document v 3.0
+    href: catalog-document-element-delete-rest-v3.md
   - name: Get product fields of document  
     href: catalog-document-element-get-fields.md  
+  - name: Get list of inventory document product fields v 3.0
+    href: catalog-document-element-field-list.md
+  - name: Get inventory document product field
+    href: catalog-document-element-field-get.md

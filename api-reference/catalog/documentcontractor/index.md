@@ -34,6 +34,15 @@ Vendors are individuals and legal entities that supply goods. In CRM, they are a
 
 **CRM.** Vendors are CRM entities. To work with them, use the universal methods [crm.item.\*](../../crm/universal/index.md).
 
+## Document Vendors in REST 3.0
+
+In [REST 3.0](../../rest-v3.md), the methods are named `catalog.document.contractor.*`, not `catalog.documentcontractor.*`: the old names at the `/rest/api/` address return the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error. There are methods for adding, retrieving a list, and deleting bindings, as well as methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
+
+Specifics of the new version methods:
+
+- a vendor can be bound only to a stock receipt document `A`: several contacts and one company
+- the methods work only if vendors are managed in CRM
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
@@ -43,7 +52,12 @@ Vendors are individuals and legal entities that supply goods. In CRM, they are a
 #|
 || **Method** | **Description** ||
 || [catalog.documentcontractor.add](./catalog-documentcontractor-add.md) | Adds a vendor binding to the document ||
+|| [catalog.document.contractor.add](./catalog-documentcontractor-add-rest-v3.md) | Adds a vendor binding to the document v 3.0 ||
 || [catalog.documentcontractor.list](./catalog-documentcontractor-list.md) | Returns a list of vendor bindings to documents by filter ||
+|| [catalog.document.contractor.list](./catalog-documentcontractor-list-rest-v3.md) | Returns a list of vendor bindings to documents by filter v 3.0 ||
 || [catalog.documentcontractor.delete](./catalog-documentcontractor-delete.md) | Removes the vendor binding from the document by binding ID ||
+|| [catalog.document.contractor.delete](./catalog-documentcontractor-delete-rest-v3.md) | Removes the vendor binding from the document by binding ID v 3.0 ||
 || [catalog.documentcontractor.getFields](./catalog-documentcontractor-get-fields.md) | Returns the description of fields for binding a vendor to a document ||
+|| [catalog.document.contractor.field.list](./catalog-documentcontractor-field-list.md) | Returns a list of vendor binding fields v 3.0 ||
+|| [catalog.document.contractor.field.get](./catalog-documentcontractor-field-get.md) | Returns the description of a vendor binding field ||
 |#

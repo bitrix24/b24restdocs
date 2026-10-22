@@ -94,7 +94,7 @@ The REST 3.0 methods are described in the following sections:
 || [Tasks](./tasks/index.md) | Create and modify tasks, work with the task chat, results, files, and access permissions ||
 || [Knowledge Base 2.0](./note/index.md) | Maintain knowledge bases, documents, and attached files ||
 || [E-mail](./mail/index.md) | Work with mailboxes, messages, and recipients ||
-|| [Trade Catalog](./catalog/index.md) | Work with trade catalogs, catalog sections, products, services, variations, product images and properties, prices, price types, rounding rules, markups, units of measurement, ratios, and VAT rates ||
+|| [Trade Catalog](./catalog/index.md) | Work with trade catalogs, catalog sections, products, services, variations, product images and properties, inventory documents, prices, price types, rounding rules, markups, units of measurement, ratios, and VAT rates ||
 || [Company Structure](./departments/index.md) | Work with departments, teams, members, and roles — the `humanresources.*` group of methods. The `department.*` methods of the same section belong to the old version ||
 || [Event Log](./event-log/index.md) | Retrieve the entries of the Bitrix24 event log ||
 || [Time Tracking Records](./timeman/record/index.md) | Retrieve and modify time tracking records ||

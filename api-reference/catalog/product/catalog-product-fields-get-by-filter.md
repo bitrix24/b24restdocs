@@ -21,12 +21,6 @@ The method belongs to REST 3.0. The call specifics and response format of the ne
 
 The method `catalog.product.fields.getbyfilter` returns the description of the fields of a simple product in the specified trade catalog, including the catalog properties.
 
-{% note info "" %}
-
-In REST 3.0, the method name is written in lowercase: `catalog.product.fields.getbyfilter`. Calling `catalog.product.fields.getByFilter` at the `/rest/api/` address returns the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error.
-
-{% endnote %}
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}

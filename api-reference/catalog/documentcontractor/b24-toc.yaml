@@ -5,9 +5,19 @@ items:
     href: index.md
   - name: Add Vendor Binding to Document
     href: catalog-documentcontractor-add.md
+  - name: Add Vendor to Inventory Document v 3.0
+    href: catalog-documentcontractor-add-rest-v3.md
   - name: Remove Binding from Document
     href: catalog-documentcontractor-delete.md
+  - name: Remove Vendor Binding from Document v 3.0
+    href: catalog-documentcontractor-delete-rest-v3.md
   - name: Get Binding Fields
     href: catalog-documentcontractor-get-fields.md
+  - name: Get List of Vendor Binding Fields v 3.0
+    href: catalog-documentcontractor-field-list.md
+  - name: Get Vendor Binding Field
+    href: catalog-documentcontractor-field-get.md
   - name: Get List of Document Bindings
     href: catalog-documentcontractor-list.md
+  - name: Get List of Vendor Bindings to Documents v 3.0
+    href: catalog-documentcontractor-list-rest-v3.md

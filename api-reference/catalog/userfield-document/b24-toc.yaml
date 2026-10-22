@@ -5,5 +5,13 @@ items:
     href: index.md  
   - name: Update Field Values  
     href: catalog-userfield-document-update.md  
+  - name: Update Inventory Document Custom Field Values v 3.0
+    href: catalog-userfield-document-update-rest-v3.md
   - name: Retrieve List of Field Values  
     href: catalog-userfield-document-list.md  
+  - name: Get List of Inventory Document Custom Field Values v 3.0
+    href: catalog-userfield-document-list-rest-v3.md
+  - name: Get List of Fields for Document Custom Fields v 3.0
+    href: catalog-userfield-document-field-list.md
+  - name: Get Field for Document Custom Fields
+    href: catalog-userfield-document-field-get.md

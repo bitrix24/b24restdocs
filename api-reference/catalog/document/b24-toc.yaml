@@ -5,26 +5,68 @@ items:
     href: index.md  
   - name: Add inventory document  
     href: catalog-document-add.md  
+  - name: Create inventory document v 3.0
+    href: catalog-document-add-rest-v3.md
   - name: Modify document
     href: catalog-document-update.md
+  - name: Update inventory document v 3.0
+    href: catalog-document-update-rest-v3.md
   - name: Get list of documents
     href: catalog-document-list.md
+  - name: Get list of inventory documents v 3.0
+    href: catalog-document-list-rest-v3.md
+  - name: Get inventory document by ID
+    href: catalog-document-get.md
   - name: Delete document  
     href: catalog-document-delete.md  
+  - name: Delete inventory document v 3.0
+    href: catalog-document-delete-rest-v3.md
   - name: Perform bulk deletion of documents  
     href: catalog-document-delete-list.md  
+  - name: Delete multiple inventory documents v 3.0
+    href: catalog-document-delete-list-rest-v3.md
   - name: Process document
     href: catalog-document-conduct.md
+  - name: Process inventory document v 3.0
+    href: catalog-document-conduct-rest-v3.md
   - name: Perform bulk processing of documents
     href: catalog-document-conduct-list.md
+  - name: Process multiple inventory documents v 3.0
+    href: catalog-document-conduct-list-rest-v3.md
   - name: Cancel document processing
     href: catalog-document-cancel.md
+  - name: Cancel inventory document processing v 3.0
+    href: catalog-document-cancel-rest-v3.md
   - name: Perform bulk cancellation of documents
     href: catalog-document-cancel-list.md
+  - name: Cancel processing of multiple documents v 3.0
+    href: catalog-document-cancel-list-rest-v3.md
+  - name: Process single inventory document v 3.0
+    href: catalog-document-confirm-rest-v3.md
+  - name: Cancel processing of single document v 3.0
+    href: catalog-document-unconfirm-rest-v3.md
   - name: Get information about inventory management mode  
     href: catalog-document-mode-status.md  
+  - name: Check inventory management status v 3.0
+    href: catalog-document-mode-status-rest-v3.md
+  - name: Get inventory management status and mode
+    href: catalog-document-mode-status-details.md
+  - name: Get list of inventory management status fields v 3.0
+    href: catalog-document-mode-field-list.md
+  - name: Get inventory management status field
+    href: catalog-document-mode-field-get.md
   - name: Get fields of inventory document
     href: catalog-document-get-fields.md
+  - name: Get list of inventory document fields v 3.0
+    href: catalog-document-field-list.md
+  - name: Get inventory document field
+    href: catalog-document-field-get.md
+  - name: Get inventory document types
+    href: catalog-document-type-list.md
+  - name: Get list of document type fields v 3.0
+    href: catalog-document-type-field-list.md
+  - name: Get document type field
+    href: catalog-document-type-field-get.md
   - name: Products in inventory document  
     include:  
       path: document-element/b24-toc.yaml  

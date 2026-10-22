@@ -21,12 +21,6 @@ The method belongs to REST 3.0. The call specifics and response format of the ne
 
 The method `catalog.roundingrule.add` creates a price rounding rule for a price type and returns its fields.
 
-{% note warning "" %}
-
-In REST 3.0, the method group name is written in lowercase: `catalog.roundingrule.*`. Calling `catalog.roundingRule.*` at the `/rest/api/` address returns the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error.
-
-{% endnote %}
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}

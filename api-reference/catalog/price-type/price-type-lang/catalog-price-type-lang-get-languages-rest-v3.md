@@ -21,12 +21,6 @@ The method belongs to REST 3.0. The call specifics and response format of the ne
 
 The method `catalog.pricetype.lang.getlanguages` returns the list of languages into which a price type name can be translated.
 
-{% note warning "" %}
-
-In REST 3.0, the method name is written in lowercase only. Calling `catalog.pricetype.lang.getLanguages` at the `/rest/api/` address returns the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error.
-
-{% endnote %}
-
 ## Method Parameters
 
 No parameters.

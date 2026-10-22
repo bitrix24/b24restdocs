@@ -21,12 +21,6 @@ The method belongs to REST 3.0. The call specifics and response format of the ne
 
 The method `catalog.roundingrule.field.list` returns the list of available price rounding rule fields.
 
-{% note warning "" %}
-
-In REST 3.0, the method group name is written in lowercase: `catalog.roundingrule.*`. Calling `catalog.roundingRule.*` at the `/rest/api/` address returns the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error.
-
-{% endnote %}
-
 ## Method Parameters
 
 #|

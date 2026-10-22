@@ -21,12 +21,6 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `catalog.pricetype.get` method returns the fields of a price type by its identifier.
 
-{% note warning "" %}
-
-In REST 3.0, the method name is written in lowercase: `catalog.pricetype.get`. Calling `catalog.priceType.get` at the `/rest/api/` address returns the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error.
-
-{% endnote %}
-
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}

@@ -12,6 +12,10 @@ Choose a tool for developing with an AI agent:
 The methods `catalog.document.element.*` add, modify, or remove product items in inventory management documents. You can specify the quantity and purchase price of the product, as well as the warehouse for receipt or write-off.
 
 > Quick navigation: [all methods](#all-methods)
+>
+> User documentation:
+> - [Create a Stock Receipt](https://helpdesk.bitrix24.com/open/25801187/)
+> - [Transfers](https://helpdesk.bitrix24.com/open/23188106/)
 
 ## How to Start
 
@@ -49,6 +53,12 @@ To obtain product IDs, use the methods:
 
 To obtain warehouse IDs, use the [catalog.store.list](../../store/catalog-store-list.md) method.
 
+## Document Products in REST 3.0
+
+In [REST 3.0](../../../rest-v3.md), document products have methods for adding, updating, retrieving a list, and deleting, as well as the `catalog.document.element.field.list` and `catalog.document.element.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
+
+The adding, updating, and deleting methods work only with an unprocessed document. To change the products of a processed document, first cancel its processing using the [catalog.document.cancel](../catalog-document-cancel-rest-v3.md) method.
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
@@ -58,8 +68,14 @@ To obtain warehouse IDs, use the [catalog.store.list](../../store/catalog-store-
 #|
 || **Method** | **Description** ||
 || [catalog.document.element.add](./catalog-document-element-add.md) | Adds a product item to the inventory management document ||
+|| [catalog.document.element.add](./catalog-document-element-add-rest-v3.md) | Adds a product item to the inventory management document v 3.0 ||
 || [catalog.document.element.update](./catalog-document-element-update.md) | Modifies an existing product item in the inventory management document ||
+|| [catalog.document.element.update](./catalog-document-element-update-rest-v3.md) | Modifies an existing product item in the inventory management document v 3.0 ||
 || [catalog.document.element.list](./catalog-document-element-list.md) | Returns product items of documents by filter ||
+|| [catalog.document.element.list](./catalog-document-element-list-rest-v3.md) | Returns product items of documents by filter v 3.0 ||
 || [catalog.document.element.delete](./catalog-document-element-delete.md) | Removes a product item from the document before processing ||
+|| [catalog.document.element.delete](./catalog-document-element-delete-rest-v3.md) | Removes a product item from the document before processing v 3.0 ||
 || [catalog.document.element.getFields](./catalog-document-element-get-fields.md) | Returns the description of product fields from the inventory management document ||
+|| [catalog.document.element.field.list](./catalog-document-element-field-list.md) | Returns a list of product fields for the inventory management document v 3.0 ||
+|| [catalog.document.element.field.get](./catalog-document-element-field-get.md) | Returns the description of a product field in the inventory management document ||
 |#
