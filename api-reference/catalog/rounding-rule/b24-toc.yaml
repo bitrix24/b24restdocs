@@ -5,16 +5,30 @@ items:
     href: index.md
   - name: Add Price Rounding Rule
     href: catalog-rounding-rule-add.md
+  - name: Create Price Rounding Rule v 3.0
+    href: catalog-rounding-rule-add-rest-v3.md
   - name: Update Price Rounding Rule
     href: catalog-rounding-rule-update.md
+  - name: Update Price Rounding Rule v 3.0
+    href: catalog-rounding-rule-update-rest-v3.md
   - name: Get Rounding Rule Field Values
     href: catalog-rounding-rule-get.md
+  - name: Get Price Rounding Rule Field Values v 3.0
+    href: catalog-rounding-rule-get-rest-v3.md
   - name: Get List of Rounding Rules
     href: catalog-rounding-rule-list.md
+  - name: Get List of Price Rounding Rules by Filter v 3.0
+    href: catalog-rounding-rule-list-rest-v3.md
   - name: Delete Price Rounding Rule
     href: catalog-rounding-rule-delete.md
+  - name: Delete Price Rounding Rule v 3.0
+    href: catalog-rounding-rule-delete-rest-v3.md
   - name: Get Price Rounding Rule Fields
     href: catalog-rounding-rule-get-fields.md
+  - name: Get List of Price Rounding Rule Fields v 3.0
+    href: catalog-rounding-rule-field-list.md
+  - name: Get Price Rounding Rule Field
+    href: catalog-rounding-rule-field-get.md
   - name: Events
     include:
       path: events/b24-toc.yaml

@@ -28,6 +28,18 @@ This allows for pricing to be configured based on the type of customer, region, 
 4. Check the price using [catalog.price.get](./catalog-price-get.md) or [catalog.price.list](./catalog-price-list.md)
 5. Track changes through [price events](./events/index.md)
 
+## Prices in REST 3.0
+
+In [REST 3.0](../../rest-v3.md), prices have methods for adding, updating, retrieving, and deleting, as well as the `catalog.price.field.list` and `catalog.price.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
+
+Specifics of the new version methods:
+
+- REST 3.0 has no `catalog.price.modify` method. To change a price and keep its identifier, use [catalog.price.update](./catalog-price-update-rest-v3.md)
+- the product and the price type are set when the price is created. The `catalog.price.update` method does not change `productId` and `catalogGroupId`, even if you pass them in `fields`
+- a base type price has no markup: `extraId` is reset to `0`. A non-existent `extraId` is also reset to `0`
+- for a non-existent product, the [catalog.price.add](./catalog-price-add-rest-v3.md) method returns the `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION` access error, not a "not found" error
+- empty `extraId`, `quantityFrom`, and `quantityTo` are returned as `0`
+
 ## Relationship with Other Objects
 
 **Price Type.** Each price belongs to a specific price type. The price type can be set and changed using the methods [catalog.priceType.*](../price-type/index.md).
@@ -65,12 +77,19 @@ This allows for pricing to be configured based on the type of customer, region, 
     #|
     || **Method** | **Description** ||
     || [catalog.price.add](./catalog-price-add.md) | Adds a product price ||
+    || [catalog.price.add](./catalog-price-add-rest-v3.md) | Adds a product price v 3.0 ||
     || [catalog.price.update](./catalog-price-update.md) | Updates a product price ||
+    || [catalog.price.update](./catalog-price-update-rest-v3.md) | Updates a product price v 3.0 ||
     || [catalog.price.get](./catalog-price-get.md) | Returns the values of the product price fields by identifier ||
+    || [catalog.price.get](./catalog-price-get-rest-v3.md) | Returns the values of the product price fields by identifier v 3.0 ||
     || [catalog.price.list](./catalog-price-list.md) | Returns a list of product prices by filter ||
+    || [catalog.price.list](./catalog-price-list-rest-v3.md) | Returns a list of product prices by filter v 3.0 ||
     || [catalog.price.delete](./catalog-price-delete.md) | Deletes a product price ||
+    || [catalog.price.delete](./catalog-price-delete-rest-v3.md) | Deletes a product price v 3.0 ||
     || [catalog.price.modify](./catalog-price-modify.md) | Updates the collection of product prices ||
     || [catalog.price.getFields](./catalog-price-get-fields.md) | Returns the fields of product prices ||
+    || [catalog.price.field.list](./catalog-price-field-list.md) | Returns a list of price fields v 3.0 ||
+    || [catalog.price.field.get](./catalog-price-field-get.md) | Returns the description of a price field ||
     |#
 
 - Events

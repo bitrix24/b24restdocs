@@ -5,16 +5,30 @@ items:
     href: index.md
   - name: Add Unit of Measurement
     href: catalog-measure-add.md
+  - name: Add Unit of Measurement v 3.0
+    href: catalog-measure-add-rest-v3.md
   - name: Update Unit of Measurement
     href: catalog-measure-update.md
+  - name: Update Unit of Measurement v 3.0
+    href: catalog-measure-update-rest-v3.md
   - name: Get Unit of Measurement Information by ID
     href: catalog-measure-get.md
+  - name: Get Unit of Measurement Information by ID v 3.0
+    href: catalog-measure-get-rest-v3.md
   - name: Get List of Units of Measurement
     href: catalog-measure-list.md
+  - name: Get List of Units of Measurement v 3.0
+    href: catalog-measure-list-rest-v3.md
   - name: Delete Unit of Measurement
     href: catalog-measure-delete.md
+  - name: Delete Unit of Measurement v 3.0
+    href: catalog-measure-delete-rest-v3.md
   - name: Get Available Fields of Units of Measurement
     href: catalog-measure-get-fields.md
+  - name: Get List of Unit of Measurement Fields v 3.0
+    href: catalog-measure-field-list.md
+  - name: Get Unit of Measurement Field
+    href: catalog-measure-field-get.md
   - name: Events
     include:
       path: events/b24-toc.yaml

@@ -31,6 +31,18 @@ The methods return data in the following fields:
 - `catalog.priceType.delete` — the deletion result in `result`
 - `catalog.priceType.getFields` — field descriptions in `result.priceType`
 
+## Price Types in REST 3.0
+
+In [REST 3.0](../../rest-v3.md), price types, bindings to customer groups, and name translations have their own methods, including the `*.field.list` and `*.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the tables.
+
+Specifics of the new version methods:
+
+- method names are written in lowercase: `catalog.pricetype.list`, `catalog.pricetype.group.add`, `catalog.pricetype.lang.getlanguages`. Calling `catalog.priceType.list` at the `/rest/api/` address returns the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error
+- the `base` field accepts `true` or `false`. The value `true` for another type removes the flag from the previous base type, and `false` for the base type leaves Bitrix24 without a base price type
+- a new price type is available for viewing and purchasing only to the administrators group. The `catalog.pricetype.group.*` methods grant access to other groups
+- the [catalog.pricetype.delete](./catalog-price-type-delete-rest-v3.md) method deletes the prices of this type, bindings to customer groups, name translations, and rounding rules along with the price type. The base type cannot be deleted
+- the new version has no methods for retrieving bindings and translations. Use the [catalog.priceTypeGroup.list](./price-type-group/catalog-price-type-group-list.md) and [catalog.priceTypeLang.list](./price-type-lang/catalog-price-type-lang-list.md) methods
+
 ## Relationship with Other Objects
 
 **Price.** When creating a price, you must specify its type. You can set and change the price using the methods [catalog.price.*](../price/index.md).
@@ -54,11 +66,18 @@ The methods return data in the following fields:
     #|
     || **Method** | **Description** ||
     || [catalog.priceType.add](./catalog-price-type-add.md) | Adds a new price type ||
+    || [catalog.pricetype.add](./catalog-price-type-add-rest-v3.md) | Adds a new price type v 3.0 ||
     || [catalog.priceType.update](./catalog-price-type-update.md) | Modifies the values of the price type fields ||
+    || [catalog.pricetype.update](./catalog-price-type-update-rest-v3.md) | Modifies the values of the price type fields v 3.0 ||
     || [catalog.priceType.get](./catalog-price-type-get.md) | Returns information about the price type by its identifier ||
+    || [catalog.pricetype.get](./catalog-price-type-get-rest-v3.md) | Returns information about the price type by its identifier v 3.0 ||
     || [catalog.priceType.list](./catalog-price-type-list.md) | Returns a list of price types by filter ||
+    || [catalog.pricetype.list](./catalog-price-type-list-rest-v3.md) | Returns a list of price types by filter v 3.0 ||
     || [catalog.priceType.delete](./catalog-price-type-delete.md) | Deletes a price type ||
+    || [catalog.pricetype.delete](./catalog-price-type-delete-rest-v3.md) | Deletes a price type v 3.0 ||
     || [catalog.priceType.getFields](./catalog-price-type-get-fields.md) | Returns the fields of the price type ||
+    || [catalog.pricetype.field.list](./catalog-price-type-field-list.md) | Returns a list of price type fields v 3.0 ||
+    || [catalog.pricetype.field.get](./catalog-price-type-field-get.md) | Returns the description of a price type field ||
     |#
 
 - Events
@@ -77,12 +96,18 @@ The methods return data in the following fields:
 #|
 || **Method** | **Description** ||
 || [catalog.priceTypeLang.add](./price-type-lang/catalog-price-type-lang-add.md) | Adds a translation for the price type name ||
+|| [catalog.pricetype.lang.add](./price-type-lang/catalog-price-type-lang-add-rest-v3.md) | Adds a translation for the price type name v 3.0 ||
 || [catalog.priceTypeLang.update](./price-type-lang/catalog-price-type-lang-update.md) | Updates the translation for the price type name ||
+|| [catalog.pricetype.lang.update](./price-type-lang/catalog-price-type-lang-update-rest-v3.md) | Updates the translation for the price type name v 3.0 ||
 || [catalog.priceTypeLang.get](./price-type-lang/catalog-price-type-lang-get.md) | Returns the values of the fields for the translation of the price type name ||
 || [catalog.priceTypeLang.list](./price-type-lang/catalog-price-type-lang-list.md) | Returns a list of translations of price type names by filter ||
 || [catalog.priceTypeLang.delete](./price-type-lang/catalog-price-type-lang-delete.md) | Deletes the translation for the price type name ||
+|| [catalog.pricetype.lang.delete](./price-type-lang/catalog-price-type-lang-delete-rest-v3.md) | Deletes the translation for the price type name v 3.0 ||
 || [catalog.priceTypeLang.getLanguages](./price-type-lang/catalog-price-type-lang-get-languages.md) | Returns the available languages for translation ||
+|| [catalog.pricetype.lang.getlanguages](./price-type-lang/catalog-price-type-lang-get-languages-rest-v3.md) | Returns the available languages for translation v 3.0 ||
 || [catalog.priceTypeLang.getFields](./price-type-lang/catalog-price-type-lang-get-fields.md) | Returns the fields for the translation of the price type name ||
+|| [catalog.pricetype.lang.field.list](./price-type-lang/catalog-price-type-lang-field-list.md) | Returns a list of price type name translation fields v 3.0 ||
+|| [catalog.pricetype.lang.field.get](./price-type-lang/catalog-price-type-lang-field-get.md) | Returns the description of a price type name translation field ||
 |#
 
 ### Binding Price Types to Customer Groups
@@ -90,7 +115,11 @@ The methods return data in the following fields:
 #|
 || **Method** | **Description** ||
 || [catalog.priceTypeGroup.add](./price-type-group/catalog-price-type-group-add.md) | Adds a binding of the price type to a customer group ||
+|| [catalog.pricetype.group.add](./price-type-group/catalog-price-type-group-add-rest-v3.md) | Adds a binding of the price type to a customer group v 3.0 ||
 || [catalog.priceTypeGroup.list](./price-type-group/catalog-price-type-group-list.md) | Returns a list of bindings of price types to customer groups ||
 || [catalog.priceTypeGroup.delete](./price-type-group/catalog-price-type-group-delete.md) | Deletes the binding of the price type to a customer group ||
+|| [catalog.pricetype.group.delete](./price-type-group/catalog-price-type-group-delete-rest-v3.md) | Deletes the binding of the price type to a customer group v 3.0 ||
 || [catalog.priceTypeGroup.getFields](./price-type-group/catalog-price-type-group-get-fields.md) | Returns the fields for the binding of price types to customer groups ||
+|| [catalog.pricetype.group.field.list](./price-type-group/catalog-price-type-group-field-list.md) | Returns a list of fields for the binding of a price type to a customer group v 3.0 ||
+|| [catalog.pricetype.group.field.get](./price-type-group/catalog-price-type-group-field-get.md) | Returns the description of a field for the binding of a price type to a customer group ||
 |#

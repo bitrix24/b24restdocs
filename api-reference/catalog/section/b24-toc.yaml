@@ -5,13 +5,27 @@ items:
     href: index.md
   - name: Add Catalog Section
     href: catalog-section-add.md
+  - name: Add Catalog Section v 3.0
+    href: catalog-section-add-rest-v3.md
   - name: Update Catalog Section
     href: catalog-section-update.md
+  - name: Update Catalog Section v 3.0
+    href: catalog-section-update-rest-v3.md
   - name: Get Field Values of Catalog Section
     href: catalog-section-get.md
+  - name: Get Field Values of Catalog Section v 3.0
+    href: catalog-section-get-rest-v3.md
   - name: Get List of Catalog Sections
     href: catalog-section-list.md
+  - name: Get List of Catalog Sections v 3.0
+    href: catalog-section-list-rest-v3.md
   - name: Delete Catalog Section
     href: catalog-section-delete.md
+  - name: Delete Catalog Section v 3.0
+    href: catalog-section-delete-rest-v3.md
   - name: Get Fields of Catalog Section
     href: catalog-section-get-fields.md
+  - name: Get List of Catalog Section Fields v 3.0
+    href: catalog-section-field-list.md
+  - name: Get Catalog Section Field
+    href: catalog-section-field-get.md

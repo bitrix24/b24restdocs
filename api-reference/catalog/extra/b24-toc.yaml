@@ -5,7 +5,15 @@ items:
     href: index.md
   - name: Get margin field values
     href: catalog-extra-get.md
+  - name: Get margin field values by ID v 3.0
+    href: catalog-extra-get-rest-v3.md
   - name: Get list of margins
     href: catalog-extra-list.md
+  - name: Get list of margins v 3.0
+    href: catalog-extra-list-rest-v3.md
   - name: Get margin fields
     href: catalog-extra-get-fields.md
+  - name: Get list of margin fields v 3.0
+    href: catalog-extra-field-list.md
+  - name: Get margin field
+    href: catalog-extra-field-get.md

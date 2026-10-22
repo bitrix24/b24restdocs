@@ -5,13 +5,27 @@ items:
     href: index.md
   - name: Add VAT Rate
     href: catalog-vat-add.md
+  - name: Add VAT Rate v 3.0
+    href: catalog-vat-add-rest-v3.md
   - name: Update VAT Rate
     href: catalog-vat-update.md
+  - name: Update VAT Rate v 3.0
+    href: catalog-vat-update-rest-v3.md
   - name: Get VAT Rate Parameters
     href: catalog-vat-get.md
+  - name: Get VAT Rate Parameters v 3.0
+    href: catalog-vat-get-rest-v3.md
   - name: Get List of VAT Rates
     href: catalog-vat-list.md
+  - name: Get List of VAT Rates v 3.0
+    href: catalog-vat-list-rest-v3.md
   - name: Delete VAT Rate
     href: catalog-vat-delete.md
+  - name: Delete VAT Rate v 3.0
+    href: catalog-vat-delete-rest-v3.md
   - name: Get VAT Rate Fields
     href: catalog-vat-get-fields.md
+  - name: Get List of VAT Rate Fields v 3.0
+    href: catalog-vat-field-list.md
+  - name: Get VAT Rate Field
+    href: catalog-vat-field-get.md

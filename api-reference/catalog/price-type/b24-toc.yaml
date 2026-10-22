@@ -5,16 +5,30 @@ items:
     href: index.md
   - name: Create Price Type
     href: catalog-price-type-add.md
+  - name: Create Price Type v 3.0
+    href: catalog-price-type-add-rest-v3.md
   - name: Update Price Type
     href: catalog-price-type-update.md
+  - name: Update Price Type v 3.0
+    href: catalog-price-type-update-rest-v3.md
   - name: Get Price Type Field Values
     href: catalog-price-type-get.md
+  - name: Get Price Type Field Values v 3.0
+    href: catalog-price-type-get-rest-v3.md
   - name: Get List of Price Types
     href: catalog-price-type-list.md
+  - name: Get List of Price Types by Filter v 3.0
+    href: catalog-price-type-list-rest-v3.md
   - name: Delete Price Type
     href: catalog-price-type-delete.md
+  - name: Delete Price Type v 3.0
+    href: catalog-price-type-delete-rest-v3.md
   - name: Get Price Type Fields
     href: catalog-price-type-get-fields.md
+  - name: Get List of Price Type Fields v 3.0
+    href: catalog-price-type-field-list.md
+  - name: Get Price Type Field
+    href: catalog-price-type-field-get.md
   - name: Translations of Price Type Names
     include:
       path: price-type-lang/b24-toc.yaml

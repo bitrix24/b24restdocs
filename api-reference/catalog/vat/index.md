@@ -24,6 +24,15 @@ If a product or catalog has a VAT rate, general CRM taxes do not apply to them.
 3. Specify the VAT rate in trade catalog or product settings
 4. Change the rate using [catalog.vat.update](./catalog-vat-update.md), if needed
 
+## VAT Rates in REST 3.0
+
+In [REST 3.0](../../rest-v3.md), VAT rates have methods for adding, updating, retrieving, and deleting, as well as the `catalog.vat.field.list` and `catalog.vat.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
+
+Specifics of the new version methods:
+
+- the `active` field accepts and returns `true` or `false`; the values `Y` and `N` are not supported
+- when creating a rate using the [catalog.vat.add](./catalog-vat-add-rest-v3.md) method, `name` and `rate` are required. A rate without VAT with `rate` set to `null` cannot be created
+
 ## Relationship with Other Objects
 
 **Trade Catalog.** Find out what VAT rate is set for the trade catalog using the method [catalog.catalog.get](../catalog/catalog-catalog-get.md).
@@ -39,14 +48,23 @@ If a product or catalog has a VAT rate, general CRM taxes do not apply to them.
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the methods: administrator
+> Who can execute the methods:
+> - administrator — for methods of the previous API version
+> - a user with the "View product catalog" or "Manage tax rates" access permission — for retrieving rates in REST 3.0. Adding, updating, and deleting require the "Manage tax rates" access permission
 
 #|
 || **Method** | **Description** ||
 || [catalog.vat.add](./catalog-vat-add.md) | Adds a VAT rate ||
+|| [catalog.vat.add](./catalog-vat-add-rest-v3.md) | Adds a VAT rate v 3.0 ||
 || [catalog.vat.update](./catalog-vat-update.md) | Modifies a VAT rate ||
+|| [catalog.vat.update](./catalog-vat-update-rest-v3.md) | Modifies a VAT rate v 3.0 ||
 || [catalog.vat.get](./catalog-vat-get.md) | Returns the VAT rate field values by identifier ||
+|| [catalog.vat.get](./catalog-vat-get-rest-v3.md) | Returns the VAT rate field values by identifier v 3.0 ||
 || [catalog.vat.list](./catalog-vat-list.md) | Returns a list of VAT rates by filter ||
+|| [catalog.vat.list](./catalog-vat-list-rest-v3.md) | Returns a list of VAT rates by filter v 3.0 ||
 || [catalog.vat.delete](./catalog-vat-delete.md) | Deletes a VAT rate ||
+|| [catalog.vat.delete](./catalog-vat-delete-rest-v3.md) | Deletes a VAT rate v 3.0 ||
 || [catalog.vat.getFields](./catalog-vat-get-fields.md) | Returns the fields of the VAT rate ||
+|| [catalog.vat.field.list](./catalog-vat-field-list.md) | Returns a list of VAT rate fields v 3.0 ||
+|| [catalog.vat.field.get](./catalog-vat-field-get.md) | Returns the description of a VAT rate field ||
 |#

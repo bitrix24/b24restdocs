@@ -5,18 +5,32 @@ items:
     href: index.md
   - name: Add price
     href: catalog-price-add.md
+  - name: Add product price v 3.0
+    href: catalog-price-add-rest-v3.md
   - name: Update price
     href: catalog-price-update.md 
+  - name: Update product price v 3.0
+    href: catalog-price-update-rest-v3.md
   - name: Refresh price collection
     href: catalog-price-modify.md
   - name: Get price fields
     href: catalog-price-get-fields.md
+  - name: Get list of price fields v 3.0
+    href: catalog-price-field-list.md
+  - name: Get price field
+    href: catalog-price-field-get.md
   - name: Get price list
     href: catalog-price-list.md           
+  - name: Get price list by filter v 3.0
+    href: catalog-price-list-rest-v3.md
   - name: Delete price
     href: catalog-price-delete.md
+  - name: Delete product price v 3.0
+    href: catalog-price-delete-rest-v3.md
   - name: Get price field values
     href: catalog-price-get.md    
+  - name: Get product price by ID v 3.0
+    href: catalog-price-get-rest-v3.md
   - name: Events
     include:
       path: events/b24-toc.yaml

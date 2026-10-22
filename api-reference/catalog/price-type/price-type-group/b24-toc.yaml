@@ -5,9 +5,17 @@ items:
     href: index.md  
   - name: Add Binding  
     href: catalog-price-type-group-add.md  
+  - name: Add Price Type Binding to Customer Group v 3.0
+    href: catalog-price-type-group-add-rest-v3.md
   - name: Get List of Bindings  
     href: catalog-price-type-group-list.md  
   - name: Delete Binding  
     href: catalog-price-type-group-delete.md  
+  - name: Delete Price Type Binding to Customer Group v 3.0
+    href: catalog-price-type-group-delete-rest-v3.md
   - name: Get Binding Fields  
     href: catalog-price-type-group-get-fields.md  
+  - name: Get List of Price Type Binding Fields v 3.0
+    href: catalog-price-type-group-field-list.md
+  - name: Get Price Type Binding Field
+    href: catalog-price-type-group-field-get.md

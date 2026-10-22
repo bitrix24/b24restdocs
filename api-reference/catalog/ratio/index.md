@@ -43,6 +43,12 @@ The ratio object has four fields:
 - `ratio` — the ratio value, for example, `6`
 - `isDefault` — `Y` if this is the default ratio of the product, otherwise `N`
 
+## Ratios in REST 3.0
+
+In [REST 3.0](../../rest-v3.md), ratios are read-only: there are methods for retrieving a ratio and a list of ratios, as well as the `catalog.ratio.field.list` and `catalog.ratio.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
+
+In the new version, the `isDefault` field accepts and returns `true` or `false`. The values `Y` and `N` in the filter cause an error.
+
 ## Relationship with Other Objects
 
 The ratio is linked to a product and, through the product, to a measurement unit.
@@ -60,6 +66,10 @@ The ratio is linked to a product and, through the product, to a measurement unit
 #|
 || **Method** | **Description** ||
 || [catalog.ratio.get](./catalog-ratio-get.md) | Returns the field values of the measurement unit ratio by identifier ||
+|| [catalog.ratio.get](./catalog-ratio-get-rest-v3.md) | Returns the field values of the measurement unit ratio by identifier v 3.0 ||
 || [catalog.ratio.list](./catalog-ratio-list.md) | Returns a list of measurement unit ratios ||
+|| [catalog.ratio.list](./catalog-ratio-list-rest-v3.md) | Returns a list of measurement unit ratios v 3.0 ||
 || [catalog.ratio.getFields](./catalog-ratio-get-fields.md) | Returns the available fields of the measurement unit ratio ||
+|| [catalog.ratio.field.list](./catalog-ratio-field-list.md) | Returns a list of measurement unit ratio fields v 3.0 ||
+|| [catalog.ratio.field.get](./catalog-ratio-field-get.md) | Returns the description of a measurement unit ratio field ||
 |#

@@ -28,6 +28,16 @@ To set the primary measurement unit, specify the value `Y` in the `isDefault` pa
 3. Retrieve its `id` from the add or list response and pass it to [catalog.measure.get](./catalog-measure-get.md) to verify the data
 4. If needed, update the unit with [catalog.measure.update](./catalog-measure-update.md) or delete it with [catalog.measure.delete](./catalog-measure-delete.md)
 
+## Measurement Units in REST 3.0
+
+In [REST 3.0](../../rest-v3.md), measurement units have methods for adding, updating, retrieving, and deleting, as well as the `catalog.measure.field.list` and `catalog.measure.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
+
+Specifics of the new version methods:
+
+- the `isDefault` field accepts and returns `true` or `false`; the values `Y` and `N` are not supported
+- there can be only one default unit. To change it, first pass `isDefault: false` for the current unit using the [catalog.measure.update](./catalog-measure-update-rest-v3.md) method, then pass `isDefault: true` for the new one
+- empty string fields are returned as an empty string, not `null`
+
 ## Measurement Unit Ratio
 
 If you sell products by fractions or in packs, specify the measurement unit ratio in the product detail form. Examples:
@@ -59,11 +69,18 @@ You can view measurement unit ratios using the methods [catalog.ratio.*](../rati
     #|
     || **Method** | **Description** ||
     || [catalog.measure.add](./catalog-measure-add.md) | Adds a measurement unit ||
+    || [catalog.measure.add](./catalog-measure-add-rest-v3.md) | Adds a measurement unit v 3.0 ||
     || [catalog.measure.update](./catalog-measure-update.md) | Updates a measurement unit ||
+    || [catalog.measure.update](./catalog-measure-update-rest-v3.md) | Updates a measurement unit v 3.0 ||
     || [catalog.measure.get](./catalog-measure-get.md) | Returns information about a measurement unit by its identifier ||
+    || [catalog.measure.get](./catalog-measure-get-rest-v3.md) | Returns information about a measurement unit by its identifier v 3.0 ||
     || [catalog.measure.list](./catalog-measure-list.md) | Returns a list of measurement units ||
+    || [catalog.measure.list](./catalog-measure-list-rest-v3.md) | Returns a list of measurement units v 3.0 ||
     || [catalog.measure.delete](./catalog-measure-delete.md) | Deletes a measurement unit ||
+    || [catalog.measure.delete](./catalog-measure-delete-rest-v3.md) | Deletes a measurement unit v 3.0 ||
     || [catalog.measure.getFields](./catalog-measure-get-fields.md) | Returns available fields of measurement units ||
+    || [catalog.measure.field.list](./catalog-measure-field-list.md) | Returns a list of measurement unit fields v 3.0 ||
+    || [catalog.measure.field.get](./catalog-measure-field-get.md) | Returns the description of a measurement unit field ||
     |#
 
 - Events

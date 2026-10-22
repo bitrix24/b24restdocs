@@ -55,6 +55,16 @@ The sections of the Commercial Catalog cover essential data and settings:
 
 See the complete scenario for creating a product with properties and a price in the tutorial [How to Add a Product with Custom Property Values](../../tutorials/catalog/index.md).
 
+## Trade Catalog in REST 3.0
+
+[REST 3.0](../rest-v3.md) provides methods for trade catalogs, sections, units of measurement, VAT rates, prices, price types, rounding rules, markups, and unit of measurement coefficients. Methods available in both API versions are marked `v 3.0` in the tables. The specifics of the new version are described on the overview pages of the subsections:
+
+- [Trade Catalog](./catalog/index.md), [Catalog Sections](./section/index.md)
+- [Price](./price/index.md), [Price Types](./price-type/index.md), [Price Rounding Rules](./rounding-rule/index.md), [Markups](./extra/index.md)
+- [Units of Measure](./measure/index.md), [Unit of Measure Coefficient](./ratio/index.md), [VAT Rates](./vat/index.md)
+
+Some method names of the new version are written in lowercase only, for example `catalog.pricetype.list` and `catalog.roundingrule.list`.
+
 ## Access Permissions
 
 By default, only the Bitrix24 administrator can edit the catalog and configure access permissions. The administrator can also grant this permission to other employees.

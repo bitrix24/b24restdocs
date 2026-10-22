@@ -5,7 +5,15 @@ items:
     href: index.md
   - name: Get Ratio Field Values
     href: catalog-ratio-get.md
+  - name: Get Ratio Field Values v 3.0
+    href: catalog-ratio-get-rest-v3.md
   - name: Get Ratio Fields
     href: catalog-ratio-get-fields.md
+  - name: Get List of Ratio Fields v 3.0
+    href: catalog-ratio-field-list.md
+  - name: Get Ratio Field
+    href: catalog-ratio-field-get.md
   - name: Get List of Measurement Unit Ratios
     href: catalog-ratio-list.md
+  - name: Get List of Measurement Unit Ratios v 3.0
+    href: catalog-ratio-list-rest-v3.md
