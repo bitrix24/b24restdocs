@@ -47,6 +47,7 @@ Files are not stored on their own — they are stored in the fields of Bitrix24 
 || CRM comment | Field `FILES` | [crm.timeline.comment.add](../crm/timeline/comments/crm-timeline-comment-add.md), [crm.timeline.comment.update](../crm/timeline/comments/crm-timeline-comment-update.md) ||
 || Catalog | Fields `previewPicture` and `detailPicture`, or a product property; a property value has its own `valueId`, which is required for updating and deleting | [catalog.product.add](../catalog/product/catalog-product-add.md), [catalog.product.update](../catalog/product/catalog-product-update.md) ||
 || Additional product images | Parameter `fileContent` | [catalog.productImage.add](../catalog/product-image/catalog-product-image-add.md) ||
+|| Product images in REST 3.0 | The `fields.file.upload` field. REST v3 product methods do not save files yet, so images are uploaded only by this method | [catalog.product.image.add REST v3](../catalog/product-image/catalog-product-image-add-rest-v3.md) ||
 || Lists | Item property such as `PROPERTY_1075` | [lists.element.add](../lists/elements/lists-element-add.md), [lists.element.update](../lists/elements/lists-element-update.md) ||
 || Data storage | Property of the "file" type | [entity.item.add](../entity/items/entity-item-add.md), [entity.item.update](../entity/items/entity-item-update.md) ||
 || Feed | Field `FILES`, and `UF_BLOG_POST_FILE` for posts | [log.blogpost.add](../log/log-blogpost-add.md), [log.blogpost.update](../log/log-blogpost-update.md), [log.blogcomment.add](../log/blogcomment/log-blogcomment-add.md) ||
@@ -82,6 +83,7 @@ The shape of a file field in the response differs from tool to tool.
 || List item | An object where the key is the `ID` of the property value and the value is the `ID` of the file | [lists.element.get.file.url](../lists/elements/lists-element-get-file-url.md) ||
 || Feed post | An array of file `ID` | There is no link in the response: the post files are stored on the author's Drive ||
 || Product | In a property — an array of objects where `value` contains `id`, `url`, and `urlMachine`, and `valueId` is the identifier of the value; in fields `previewPicture` and `detailPicture` — a single object with `id`, `url`, and `urlMachine` | The links arrive directly in the [catalog.product.get](../catalog/product/catalog-product-get.md) response ||
+|| Product in REST 3.0 | In the `previewPicture` and `detailPicture` fields — the file identifier as a string | [catalog.product.download REST v3](../catalog/product/catalog-product-download-rest-v3.md) returns the link in the `src` field ||
 || File on Drive | A file object: `ID`, name, size, `DOWNLOAD_URL` | The link arrives directly in the [disk.file.get](../disk/file/disk-file-get.md) response ||
 |#
 

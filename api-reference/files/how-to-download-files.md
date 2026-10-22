@@ -34,6 +34,7 @@ Links for applications contain an authorization token. Do not publish them, do n
 || CRM custom field of the `file` type | [crm.item.get](../crm/universal/crm-item-get.md), [crm.item.list](../crm/universal/crm-item-list.md) | `urlMachine` ||
 || CRM timeline comment | [crm.timeline.comment.get](../crm/timeline/comments/crm-timeline-comment-get.md), [crm.timeline.comment.list](../crm/timeline/comments/crm-timeline-comment-list.md) | File `id` in `FILES`, then `DOWNLOAD_URL` from [disk.file.get](../disk/file/disk-file-get.md) ||
 || Feed post or comment | [log.blogpost.get](../log/log-blogpost-get.md), [log.blogcomment.user.get](../log/blogcomment/log-blogcomment-user-get.md) | `FILES`, then `DOWNLOAD_URL` from [disk.file.get](../disk/file/disk-file-get.md) ||
+|| Feed post comments | [log.blogcomment.get](../log/blogcomment/log-blogcomment-get.md) | The `urlDownload` link in the `FILES` object; a separate [disk.file.get](../disk/file/disk-file-get.md) call is not needed ||
 || File on Drive | [disk.file.get](../disk/file/disk-file-get.md) | `DOWNLOAD_URL` ||
 || Attached Drive file, for example in a task or list | [disk.attachedObject.get](../disk/attached-object/disk-attached-object-get.md) | `OBJECT_ID`, then `DOWNLOAD_URL` from [disk.file.get](../disk/file/disk-file-get.md) ||
 || Task files | [tasks.task.get](../tasks/tasks-task-get.md), [tasks.task.get REST v3](../tasks/tasks-task-get-rest-v3.md) | `UF_TASK_WEBDAV_FILES` for individual files, `archiveLink` for an archive ||
@@ -41,6 +42,7 @@ Links for applications contain an authorization token. Do not publish them, do n
 || Data storage item | [entity.item.get](../entity/items/entity-item-get.md) | File field value; the field name depends on the storage configuration ||
 || User photo | [user.get](../user/user-get.md) | URL in the `PERSONAL_PHOTO` field ||
 || Catalog product | [catalog.product.get](../catalog/product/catalog-product-get.md), [catalog.product.list](../catalog/product/catalog-product-list.md) | `urlMachine` from the product field or the [catalog.product.download](../catalog/product/catalog-product-download.md) method ||
+|| Catalog product in REST 3.0 | [catalog.product.get REST v3](../catalog/product/catalog-product-get-rest-v3.md), [catalog.product.list REST v3](../catalog/product/catalog-product-list-rest-v3.md) | File identifier from the product field, then `src` from [catalog.product.download REST v3](../catalog/product/catalog-product-download-rest-v3.md) ||
 || Telephony call recording | [voximplant.statistic.get](../telephony/voximplant/voximplant-statistic-get.md) | `CALL_RECORD_URL` ||
 || Document generator template | [documentgenerator.template.get](../document-generator/templates/document-generator-template-get.md), [documentgenerator.template.list](../document-generator/templates/document-generator-template-list.md), [crm.documentgenerator.template.get](../crm/document-generator/templates/crm-document-generator-template-get.md), [crm.documentgenerator.template.list](../crm/document-generator/templates/crm-document-generator-template-list.md) | `downloadMachine` ||
 || Document generator document | [documentgenerator.document.add](../document-generator/document-generator-document-add.md), [documentgenerator.document.list](../document-generator/document-generator-document-list.md), [crm.documentgenerator.document.add](../crm/document-generator/documents/crm-document-generator-document-add.md), [crm.documentgenerator.document.list](../crm/document-generator/documents/crm-document-generator-document-list.md) | `downloadUrlMachine` ||
@@ -280,6 +282,35 @@ The [catalog.product.get](../catalog/product/catalog-product-get.md) and [catalo
 ```
 
 To download the file, use `urlMachine` or call [catalog.product.download](../catalog/product/catalog-product-download.md). The `catalog.product.download` method returns the file body directly.
+
+In REST 3.0, the [catalog.product.get](../catalog/product/catalog-product-get-rest-v3.md) method returns only the file identifier as a string in the `previewPicture` and `detailPicture` fields; the response contains no link. To get the file, call [catalog.product.download](../catalog/product/catalog-product-download-rest-v3.md) and pass the following in `fields`:
+
+- `productId` — the product identifier
+- `fieldName` — the field name in uppercase: `PREVIEW_PICTURE`, `DETAIL_PICTURE`, or `PROPERTY_{id}`
+- `fileId` — the file identifier
+
+```bash
+curl -X POST \
+-H "Content-Type: application/json" \
+-H "Accept: application/json" \
+-d '{"fields":{"productId":7527,"fieldName":"PREVIEW_PICTURE","fileId":39429}}' \
+https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.download
+```
+
+The method returns the `file` object, and the link to the file is in the `src` field.
+
+```json
+{
+    "result": {
+        "file": {
+            "id": 39429,
+            "fileName": "tshirt-preview.png",
+            "contentType": "image/png",
+            "src": "https://cdn-com.bitrix24.com/b1234567/iblock/cf3/cf383e376005a22cf23e42dab0e1506a/tshirt-preview.png"
+        }
+    }
+}
+```
 
 ## Download a Document Generator Template or Document {#document-generator}
 
