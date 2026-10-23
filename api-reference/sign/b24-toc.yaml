@@ -11,6 +11,14 @@ items:
     href: sign-b2e-hcmlink-document-get.md
   - name: Get Company Provider List
     href: sign-b2e-company-provider-list.md
+  - name: Add Signing Provider
+    href: sign-b2e-provider-add.md
+  - name: Update Signing Provider
+    href: sign-b2e-provider-update.md
+  - name: Get Signing Provider List
+    href: sign-b2e-provider-tail.md
+  - name: Delete Signing Provider
+    href: sign-b2e-provider-delete.md
   - name: List of User-Signed Documents
     href: sign-b2e-personal-tail.md
   - name: List of Signed Documents in Company Safe

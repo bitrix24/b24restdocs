@@ -17,7 +17,9 @@ Bitrix24 e-Signature allows you to sign HR documents with employees using a digi
 > - [Bitrix24 e-Signature for HR: service for signing HR documents](https://helpdesk.bitrix24.com/open/20687576/)
 > - [Configure access permissions to e-Signature for HR](https://helpdesk.bitrix24.com/open/21579950/)
 
-The `sign.b2e.*` methods work with documents in e-Signature. Use them to send a document for signing, retrieve document data, retrieve a list of signing providers, and retrieve lists of signed documents.
+The `sign.b2e.*` methods work with documents in e-Signature. Use them to send a document for signing, retrieve document data, retrieve a list of the company's signing providers, and retrieve lists of signed documents.
+
+The `sign.b2e.provider.*` methods connect your own signing providers to Bitrix24. They are called by an administrator from an application with OAuth authorization, and the methods reject calls made through a webhook. The methods work only if e-Signature for HR is available on Bitrix24.
 
 The `humanresources.hcmlink.*` methods manage e-Signature integration data with HR systems through HCM Link: companies, employees, mappings, and field values.
 
@@ -28,6 +30,7 @@ These methods can only be executed in the context of authorization of the [appli
 #|
 || **If You Need To** | **Use** ||
 || Send documents for signing and retrieve signing information | `sign.b2e.*` methods ||
+|| Connect your own signing provider to Bitrix24 | [sign.b2e.provider.*](#providers) methods ||
 || Track changes in document and signing participant statuses | `OnSignB2e*` events ||
 || Transfer data from an HR system to fill e-Signature documents | [humanresources.hcmlink.*](./hcm-link/index.md) methods ||
 |#
@@ -35,6 +38,8 @@ These methods can only be executed in the context of authorization of the [appli
 ## Link to Other Objects
 
 **CRM company.** The e-Signature document is sent on behalf of a company. In the `sign.b2e.document.send` and `sign.b2e.company.provider.list` methods, you can specify the company using `company.crmId` or `companyCrmId`. This is the identifier of the CRM company connected as "my company". You can retrieve it using the [crm.item.list](../crm/universal/crm-item-list.md) method with the `entityTypeId = 4` parameter and the `isMyCompany = Y` filter.
+
+**Signing provider.** The methods work with providers at two levels. The [sign.b2e.company.provider.list](./sign-b2e-company-provider-list.md) method shows the providers connected to a specific company. Take `uid` from its response to pass the provider in the `companyProviderUid` parameter of the [sign.b2e.document.send](./sign-b2e-document-send.md) method. The [sign.b2e.provider.*](#providers) methods manage the list of external Bitrix24 providers: they register the provider service, its pages, and its public key. An external provider has a numeric `id`. It cannot be used to send a document: `companyProviderUid` takes `uid` from the `sign.b2e.company.provider.list` response.
 
 **Employee and user.** Signing participants and the responsible person are linked to Bitrix24 users through `userId`. If the company is connected to HCM Link, you can pass the employee's `employeeId` or `employeeCode` from the HR system instead of `userId`.
 
@@ -46,7 +51,7 @@ These methods can only be executed in the context of authorization of the [appli
 
 ## Scope Features
 
-**sign.b2e** — used in methods for working with e-Signature documents and signing events.
+**sign.b2e** — used in methods for working with e-Signature documents, external signing provider methods, and signing events.
 
 **crm** — used in the methods:
 - [sign.b2e.document.send](./sign-b2e-document-send.md)
@@ -90,6 +95,20 @@ These methods can only be executed in the context of authorization of the [appli
     |#
 
 {% endlist %}
+
+### External Signing Providers {#providers}
+
+> Scope: [`sign.b2e`](../scopes/permissions.md)
+>
+> Who can execute the method: administrator
+
+#|
+|| **Method** | **Description** ||
+|| [sign.b2e.provider.add](./sign-b2e-provider-add.md) | Connects an external signing provider ||
+|| [sign.b2e.provider.update](./sign-b2e-provider-update.md) | Updates the data of an external signing provider ||
+|| [sign.b2e.provider.tail](./sign-b2e-provider-tail.md) | Returns a list of external signing providers ||
+|| [sign.b2e.provider.delete](./sign-b2e-provider-delete.md) | Disconnects an external signing provider ||
+|#
 
 ### Integration with HR Systems
 

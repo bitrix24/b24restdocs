@@ -2,6 +2,10 @@
 
 ## 2026
 
+### October 23, 2026
+
+- Added the [sign.b2e.provider.*](./api-reference/sign/index.md#providers) methods to the e-Signature section: an administrator can connect their own signing provider to Bitrix24 with the [sign.b2e.provider.add](./api-reference/sign/sign-b2e-provider-add.md) method, update its data with the [sign.b2e.provider.update](./api-reference/sign/sign-b2e-provider-update.md) method, retrieve the list of providers with the [sign.b2e.provider.tail](./api-reference/sign/sign-b2e-provider-tail.md) method, and disconnect a provider with the [sign.b2e.provider.delete](./api-reference/sign/sign-b2e-provider-delete.md) method. The methods work only from an application with OAuth authorization
+
 ### October 22, 2026
 
 - Added the [crm.form.*](./api-reference/crm/form/index.md) methods in REST 3.0 for working with CRM forms: searching for forms and retrieving their configuration, creating forms with configuration validation before saving, partial updates, activating and deactivating with the active forms limit taken into account, deleting, CRM form builder and CRM object field directories, the website embed code and button and auto-display settings, and viewing the website widgets and Open Channels of a form
