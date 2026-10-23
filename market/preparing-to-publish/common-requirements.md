@@ -89,7 +89,10 @@ If you feel that you lack the right tags, please contact the moderators in the c
    - If the solution contains settings, indicate where to find them and describe specific options;
    - If the solution includes integration with an external system/service, specify how the integration is configured within the application and on the external service side; the description should be written for a user who is not familiar with the system/service – links to general user documentation are not sufficient.
 9. The **"Support and Feedback Information"** field must contain all available channels for official communication with clients: e-mail, phone, link to feedback form or helpdesk, social media groups. Be sure to specify the technical support operating schedule – working days and hours, response time to incoming requests. This field must contain links only to English-language resources (website, helpdesk, etc.).
-10. **Icon** - file in JPEG and PNG format (without a transparent background), square, size no less than 250x250 pixels and no more than 650x650 pixels. Low-quality images with blurriness, noticeable pixelation, and those using third-party trademarks, including trademarks and logos owned by Bitrix24, are not allowed.
+10. **Icon** - file in JPEG and PNG format (without a transparent background), square, size no less than 250x250 pixels and no more than 650x650 pixels. Low-quality images with blurriness or noticeable pixelation are not allowed.
+
+    The use of Bitrix24 or third-party trademarks and logos in solution icons is not permitted. By publishing a solution whose icon contains third-party trademarks and/or logos, the developer warrants that they have all necessary rights to use them and can provide evidence of such lawful use. If a rights holder submits a claim, the solution may be removed from publication until the matter is resolved.
+
 11. **Screenshots:**
     - Must contain examples of your solution's interface demonstrating demo data relevant to the solution in the context of Bitrix24.
     - Demo data must be as realistic as possible and demonstrate to the end user the process of setting up and using the application. Screenshots with empty fields, test users, empty reports, etc., are not accepted.
