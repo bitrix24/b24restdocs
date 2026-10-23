@@ -211,6 +211,11 @@ Resource IDs can be obtained using the method [booking.v1.resource.list](../reso
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
         )
     except BitrixSDKException as error:
         print(f"Bitrix SDK error: {error.message}")
@@ -395,6 +400,15 @@ HTTP status: **400**
 }
 ```
 
+Example response if the booking overlaps another booking of a resource that has overbooking disabled:
+
+```json
+{
+    "error": "1026",
+    "error_description": "The “Room 1” resource is already booked for this time. Select a different time."
+}
+```
+
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
@@ -405,7 +419,11 @@ HTTP status: **400**
 || `0` | `Required fields:` | Required parameter not passed within `fields` ||
 || `100` | `Could not find value for parameter` | Required parameter not passed ||
 || `422` | `Invalid date period` | Incorrect time period ||
+|| `1026` | `The “Room 1” resource is already booked for this time. Select a different time.` | The booking overlaps another booking of a resource that has overbooking disabled. The message is returned in the user's language and includes the resource name ||
+|| `1026` | `Booking intersects with existing bookings: 15, 16` | The booking overlaps existing bookings: the resource already has two bookings for this time, or overbooking is not available on the plan. The message includes the IDs of the overlapping bookings ||
 |#
+
+If a booking has several resources, error `1026` is returned when at least one of them has overbooking disabled and is already booked for this time.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

@@ -46,6 +46,28 @@ The list of available types can be retrieved using the [booking.v1.resourceType.
 [`string`](../../data-types.md) | How the resource is displayed. Possible values:
 - `Y` — in the schedule columns
 - `N` — when resources overlap ||
+|| **isOverbookingAllowed**
+[`string`](../../data-types.md) | Whether overbooking is allowed, that is, whether another client can be booked for a time slot the resource already has booked. Possible values:
+- `Y` — allowed. The resource can have no more than two bookings at the same time. Works only if overbooking is available on the plan
+- `N` — not allowed. A booking cannot be created or changed so that it overlaps another booking of the resource
+
+If the field is not passed, the value does not change.
+
+If you disable overbooking, bookings that already overlap remain as they are. Their time cannot be changed so that they still overlap ||
+|| **isDealCreationEnabled**
+[`string`](../../data-types.md) | Whether to create a deal automatically for the resource's bookings. Possible values:
+- `Y` — create
+- `N` — do not create
+
+With `N`, the selected pipeline is kept in the resource and used again when deal creation is turned back on ||
+|| **dealCategoryId**
+[`integer`](../../data-types.md) | Identifier of the deal pipeline for the resource's bookings. `0` is the default pipeline.
+
+If the field is not passed, the pipeline does not change.
+
+You can get the list of pipelines using the [crm.category.list](../../crm/universal/category/crm-category-list.md) method with `entityTypeId = 2`.
+
+If the value differs from the saved one, the method validates the pipeline: it must exist, and the user calling the method must have permission to add deals to it. If the value has not changed, no validation is performed ||
 || **isInfoNotificationOn**
 [`string`](../../data-types.md) | Booking message to the client. Possible values:
 - `Y` — enabled
@@ -134,7 +156,7 @@ The method updates only the fields you pass; the rest retain their previous valu
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":10,"fields":{"name":"New Name","description":"New Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate","infoNotificationDelay":300,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":0,"confirmationNotificationRepetitionsInterval":0,"confirmationCounterDelay":7200}}' \
+    -d '{"id":10,"fields":{"name":"New Name","description":"New Description","typeId":1,"isMain":"N","isOverbookingAllowed":"Y","isDealCreationEnabled":"Y","dealCategoryId":0,"isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate","infoNotificationDelay":300,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":0,"confirmationNotificationRepetitionsInterval":0,"confirmationCounterDelay":7200}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resource.update
     ```
 
@@ -144,7 +166,7 @@ The method updates only the fields you pass; the rest retain their previous valu
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":10,"fields":{"name":"New Name","description":"New Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate","infoNotificationDelay":300,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":0,"confirmationNotificationRepetitionsInterval":0,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
+    -d '{"id":10,"fields":{"name":"New Name","description":"New Description","typeId":1,"isMain":"N","isOverbookingAllowed":"Y","isDealCreationEnabled":"Y","dealCategoryId":0,"isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"Y","templateTypeReminder":"base","isFeedbackNotificationOn":"N","templateTypeFeedback":"animate","isDelayedNotificationOn":"N","templateTypeDelayed":"animate","infoNotificationDelay":300,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":0,"confirmationNotificationRepetitionsInterval":0,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/booking.v1.resource.update
     ```
 
@@ -168,6 +190,9 @@ The method updates only the fields you pass; the rest retain their previous valu
             description: 'New description',
             typeId: 1,
             isMain: 'N',
+            isOverbookingAllowed: 'Y',
+            isDealCreationEnabled: 'Y',
+            dealCategoryId: 0,
             isInfoNotificationOn: 'Y',
             templateTypeInfo: 'inanimate',
             isConfirmationNotificationOn: 'Y',
@@ -224,6 +249,9 @@ The method updates only the fields you pass; the rest retain their previous valu
                 description: 'New description',
                 typeId: 1,
                 isMain: 'N',
+                isOverbookingAllowed: 'Y',
+                isDealCreationEnabled: 'Y',
+                dealCategoryId: 0,
                 isInfoNotificationOn: 'Y',
                 templateTypeInfo: 'inanimate',
                 isConfirmationNotificationOn: 'Y',
@@ -275,6 +303,9 @@ The method updates only the fields you pass; the rest retain their previous valu
             "description": "Updated description",
             "typeId": 1,
             "isMain": "N",
+            "isOverbookingAllowed": "Y",
+            "isDealCreationEnabled": "Y",
+            "dealCategoryId": 0,
             "isInfoNotificationOn": "Y",
             "templateTypeInfo": "inanimate",
             "isConfirmationNotificationOn": "Y",
@@ -297,6 +328,11 @@ The method updates only the fields you pass; the rest retain their previous valu
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
         )
     except BitrixSDKException as error:
         print(f"Bitrix SDK error: {error.message}")
@@ -319,6 +355,9 @@ The method updates only the fields you pass; the rest retain their previous valu
                         'description' => 'New Description',
                         'typeId' => 1,
                         'isMain' => 'N',
+                        'isOverbookingAllowed' => 'Y',
+                        'isDealCreationEnabled' => 'Y',
+                        'dealCategoryId' => 0,
                         'isInfoNotificationOn' => 'Y',
                         'templateTypeInfo' => 'inanimate',
                         'isConfirmationNotificationOn' => 'Y',
@@ -367,6 +406,9 @@ The method updates only the fields you pass; the rest retain their previous valu
                 description: "New Description",
                 typeId: 1,
                 isMain: "N",
+                isOverbookingAllowed: "Y",
+                isDealCreationEnabled: "Y",
+                dealCategoryId: 0,
                 isInfoNotificationOn: "Y",
                 templateTypeInfo: "inanimate",
                 isConfirmationNotificationOn: "Y",
@@ -410,6 +452,9 @@ The method updates only the fields you pass; the rest retain their previous valu
                 'description' => 'New Description',
                 'typeId' => 1,
                 'isMain' => 'N',
+                'isOverbookingAllowed' => 'Y',
+                'isDealCreationEnabled' => 'Y',
+                'dealCategoryId' => 0,
                 'isInfoNotificationOn' => 'Y',
                 'templateTypeInfo' => 'inanimate',
                 'isConfirmationNotificationOn' => 'Y',
@@ -448,6 +493,9 @@ The method updates only the fields you pass; the rest retain their previous valu
     		"description":                     "New Description",
     		"typeId":                          1,
     		"isMain":                          "N",
+    		"isOverbookingAllowed":            "Y",
+    		"isDealCreationEnabled":           "Y",
+    		"dealCategoryId":                  0,
     		"isInfoNotificationOn":            "Y",
     		"templateTypeInfo":                "inanimate",
     		"isConfirmationNotificationOn":    "Y",
@@ -531,8 +579,12 @@ HTTP status: **400**
 || `100` | `Could not find value for parameter` | Required parameter not provided ||
 || `1007` | `Resource not found` | Non-existent resource `id` specified ||
 || `1007` | `Failed updating resource` | The resource could not be saved ||
+|| `1007` | `Deal category does not exist` | `dealCategoryId` contains the identifier of a pipeline that does not exist. Occurs only if the value differs from the saved one ||
+|| `1007` | `Access denied to add deals in the chosen category` | The user does not have permission to add deals to the pipeline from `dealCategoryId`. Occurs only if the value differs from the saved one ||
+|| `1007` | `Deal category cannot be chosen while the crm module is off` | `dealCategoryId` is passed, but the CRM module is not available. Occurs only if the value differs from the saved one ||
 || `1013` | `Resource type with id {id} does not exist` | Non-existent `typeId` specified ||
 || `422` | `Invalid value of the {field} field` | An invalid value of an enumerated field, for example `templateTypeInfo` ||
+|| `422` | `Invalid value of the dealCategoryId field` | `dealCategoryId` is not an integer ||
 || `0` | `Feature is not available` | The Booking tool is not available on the current plan ||
 || `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#

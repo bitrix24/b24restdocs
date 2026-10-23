@@ -36,6 +36,8 @@ The methods only work when the Booking tool is enabled in the Bitrix24 settings.
 
 **Slots.** Slots define the times when a resource is available for booking: for example, only on Tuesdays and Thursdays from 11:00 AM to 3:00 PM. Slots are retained within the resource itself, so changing them triggers the [onBookingResourceUpdate](./events/on-booking-resource-update.md) event, just as updating the resource does.
 
+**CRM Deal.** A resource defines whether a deal is created for its bookings and in which pipeline. To set this, use the `isDealCreationEnabled` and `dealCategoryId` fields in the [booking.v1.resource.add](./booking-v1-resource-add.md) and [booking.v1.resource.update](./booking-v1-resource-update.md) methods.
+
 ## Overview of Methods and Events {#all-methods}
 
 > Scope: [`booking`](../../scopes/permissions.md)

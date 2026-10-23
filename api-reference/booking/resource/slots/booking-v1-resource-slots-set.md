@@ -38,15 +38,19 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
 #|
 || **Name**
 `type` | **Description** ||
-|| **from***
-[`integer`](../../../data-types.md) | Time in minutes from the start of the day from which booking is available. Value in the range from 0 to 1440. For example, `540` means booking is available from 9:00 AM ||
-|| **to***
-[`integer`](../../../data-types.md) | Time in minutes from the start of the day until which booking is available. Value in the range from 0 to 1440 and strictly greater than `from`. For example, `1080` means booking is available until 6:00 PM ||
+|| **from**
+[`integer`](../../../data-types.md) | Time in minutes from the start of the day from which booking is available. Value in the range from 0 to 1440. For example, `540` means booking is available from 9:00 AM.
+
+Mandatory if `isCompanySchedule` is not provided or equals `N` ||
+|| **to**
+[`integer`](../../../data-types.md) | Time in minutes from the start of the day until which booking is available. Value in the range from 0 to 1440 and strictly greater than `from`. For example, `1080` means booking is available until 6:00 PM.
+
+Mandatory if `isCompanySchedule` is not provided or equals `N` ||
 || **timezone***
 [`string`](../../../data-types.md) | Time zone in the IANA format relative to which the slot time is set. For example, `Europe/Berlin`.
 
 An unknown time zone is silently replaced with `UTC` by the method ||
-|| **weekDays***
+|| **weekDays**
 [`array`](../../../data-types.md) | An array of available weekdays for the slot. Possible values:
 - `Mon` — Monday
 - `Tue` — Tuesday
@@ -54,12 +58,42 @@ An unknown time zone is silently replaced with `UTC` by the method ||
 - `Thu` — Thursday
 - `Fri` — Friday
 - `Sat` — Saturday
-- `Sun` — Sunday ||
+- `Sun` — Sunday
+
+Mandatory if `isCompanySchedule` is not provided or equals `N` ||
 || **slotSize***
 [`integer`](../../../data-types.md) | Booking duration in minutes. The value cannot be negative ||
+|| **isCompanySchedule**
+[`string`](../../../data-types.md) | Whether the resource uses the working time from the company schedule. Possible values:
+- `Y` — working hours and days are taken from the company schedule
+- `N` — the slot has its own schedule defined by `from`, `to`, and `weekDays`
+
+Default is `N` ||
 |#
 
-All five slot fields are mandatory. The method ignores the `id` field: slot identifiers are assigned by Bitrix24.
+The `timezone` and `slotSize` fields are always mandatory. The `from`, `to`, and `weekDays` fields are mandatory for a slot with its own schedule, that is, when `isCompanySchedule` is not provided or equals `N`.
+
+If `isCompanySchedule` equals `Y`:
+
+- the `from`, `to`, and `weekDays` fields can be omitted. If they are provided, the method ignores them and takes the hours and days from the company schedule
+- the slot must be the only element of the `slots` array, otherwise the method returns the `1007` error
+
+Example of parameters for a resource that follows the company schedule:
+
+```json
+{
+    "resourceId": 10,
+    "slots": [
+        {
+            "timezone": "Europe/Berlin",
+            "slotSize": 30,
+            "isCompanySchedule": "Y"
+        }
+    ]
+}
+```
+
+The method ignores the `id` field: slot identifiers are assigned by Bitrix24.
 
 ## Code Examples
 
@@ -78,7 +112,7 @@ Example of setting time slots for a resource:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"resourceId":10,"slots":[{"from":540,"to":1080,"timezone":"Europe/Berlin","weekDays":["Mon","Tue","Wed","Thu","Fri"],"slotSize":30}]}' \
+    -d '{"resourceId":10,"slots":[{"from":540,"to":1080,"timezone":"Europe/Berlin","weekDays":["Mon","Tue","Wed","Thu","Fri"],"slotSize":30,"isCompanySchedule":"N"}]}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resource.slots.set
     ```
 
@@ -88,7 +122,7 @@ Example of setting time slots for a resource:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"resourceId":10,"slots":[{"from":540,"to":1080,"timezone":"Europe/Berlin","weekDays":["Mon","Tue","Wed","Thu","Fri"],"slotSize":30}],"auth":"**put_access_token_here**"}' \
+    -d '{"resourceId":10,"slots":[{"from":540,"to":1080,"timezone":"Europe/Berlin","weekDays":["Mon","Tue","Wed","Thu","Fri"],"slotSize":30,"isCompanySchedule":"N"}],"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/booking.v1.resource.slots.set
     ```
 
@@ -114,6 +148,7 @@ Example of setting time slots for a resource:
               timezone: 'Europe/Berlin',
               weekDays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
               slotSize: 30,
+              isCompanySchedule: 'N',
             },
           ],
         },
@@ -155,6 +190,7 @@ Example of setting time slots for a resource:
                   timezone: 'Europe/Berlin',
                   weekDays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
                   slotSize: 30,
+                  isCompanySchedule: 'N',
                 },
               ],
             },
@@ -200,6 +236,7 @@ Example of setting time slots for a resource:
                         "Fri",
                     ],
                     "slotSize": 30,
+                    "isCompanySchedule": "N",
                 },
             ],
         ).response
@@ -230,11 +267,12 @@ Example of setting time slots for a resource:
                     'resourceId' => 10,
                     'slots'      => [
                         [
-                            'from'     => 540,
-                            'to'       => 1080,
-                            'timezone' => 'Europe/Berlin',
-                            'weekDays' => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-                            'slotSize' => 30
+                            'from'              => 540,
+                            'to'                => 1080,
+                            'timezone'          => 'Europe/Berlin',
+                            'weekDays'          => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                            'slotSize'          => 30,
+                            'isCompanySchedule' => 'N'
                         ]
                     ]
                 ]
@@ -269,7 +307,8 @@ Example of setting time slots for a resource:
                     to: 1080,
                     timezone: "Europe/Berlin",
                     weekDays: ["Mon", "Tue", "Wed", "Thu", "Fri"],
-                    slotSize: 30
+                    slotSize: 30,
+                    isCompanySchedule: "N"
                 }
             ]
         },
@@ -297,7 +336,8 @@ Example of setting time slots for a resource:
                     'to' => 1080,
                     'timezone' => 'Europe/Berlin',
                     'weekDays' => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-                    'slotSize' => 30
+                    'slotSize' => 30,
+                    'isCompanySchedule' => 'N'
                 ]
             ]
         ]
@@ -316,11 +356,12 @@ Example of setting time slots for a resource:
     	"resourceId": 10,
     	"slots": []b24.Params{
     		{
-    			"from":     540,
-    			"to":       1080,
-    			"timezone": "Europe/Berlin",
-    			"weekDays": []string{"Mon", "Tue", "Wed", "Thu", "Fri"},
-    			"slotSize": 30,
+    			"from":              540,
+    			"to":                1080,
+    			"timezone":          "Europe/Berlin",
+    			"weekDays":          []string{"Mon", "Tue", "Wed", "Thu", "Fri"},
+    			"slotSize":          30,
+    			"isCompanySchedule": "N",
     		},
     	},
     })
@@ -385,13 +426,14 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `1009` | `Resource not found` | Resource with the specified `resourceId` not found ||
-|| `0` | `Required fields: timezone, weekDays, slotSize` | Required fields are missing in the slot object. The message lists only the missing ones ||
-|| `422` | `Invalid range fields` | Invalid values in the slot object: `from` or `to` outside the 0–1440 range, `from` greater than or equal to `to`, an empty or unknown weekday, a negative `slotSize`. The method does not indicate which field or which slot caused the error ||
+|| `0` | `Required fields: timezone, slotSize` | The required `timezone` or `slotSize` fields are missing in the slot object. The message lists only the missing ones ||
+|| `422` | `Invalid range fields` | Invalid values in the slot object: `from` or `to` outside the 0–1440 range, `from` greater than or equal to `to`, an empty or unknown weekday, a negative `slotSize`, an invalid `isCompanySchedule` value. Also returned if `from`, `to`, or `weekDays` are not provided for a slot with its own schedule. The method does not indicate which field or which slot caused the error ||
 || `422` | `Array's element must be array, string given` | An element of the `slots` array is not an object ||
 || `100` | `Could not find value for parameter {resourceId}` | The `resourceId` parameter is not provided ||
 || `100` | `Could not find value for parameter {slots}` | The `slots` parameter is not provided ||
 || `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 || `1007` | `Failed updating resource` | The resource could not be saved ||
+|| `1007` | `Company schedule can be used only as a single slot range` | A slot with `isCompanySchedule` = `Y` is provided together with other slots ||
 || `0` | `Feature is not available` | The Booking tool is not available on the current plan ||
 |#
 

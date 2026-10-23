@@ -72,6 +72,7 @@ Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource
         confirmationNotificationDelay: number | null,
         confirmationNotificationRepetitions: number | null,
         confirmationNotificationRepetitionsInterval: number | null,
+        dealCategoryId: number | null,
         delayedCounterDelay: number | null,
         delayedNotificationDelay: number | null,
         description: string | null,
@@ -79,10 +80,12 @@ Can be obtained from the methods [booking.v1.resource.add](./booking-v1-resource
         infoNotificationDelay: number | null,
         isCancellationNotificationOn: string,
         isConfirmationNotificationOn: string,
+        isDealCreationEnabled: string,
         isDelayedNotificationOn: string,
         isFeedbackNotificationOn: string,
         isInfoNotificationOn: string,
         isMain: string,
+        isOverbookingAllowed: string,
         isReminderNotificationOn: string,
         name: string | null,
         reminderNotificationDelay: number | null,
@@ -288,6 +291,7 @@ HTTP status: **200**
             "confirmationNotificationDelay": 86400,
             "confirmationNotificationRepetitions": null,
             "confirmationNotificationRepetitionsInterval": 10800,
+            "dealCategoryId": null,
             "delayedCounterDelay": 300,
             "delayedNotificationDelay": 300,
             "description": null,
@@ -295,10 +299,12 @@ HTTP status: **200**
             "infoNotificationDelay": null,
             "isCancellationNotificationOn": "Y",
             "isConfirmationNotificationOn": "Y",
+            "isDealCreationEnabled": "Y",
             "isDelayedNotificationOn": "N",
             "isFeedbackNotificationOn": "N",
             "isInfoNotificationOn": "Y",
             "isMain": "Y",
+            "isOverbookingAllowed": "Y",
             "isReminderNotificationOn": "Y",
             "name": "Name",
             "reminderNotificationDelay": -1,
@@ -352,6 +358,12 @@ Numeric and string fields are returned as `null` when no value is set. For examp
 [`integer`](../../data-types.md) | Number of confirmation messages sent to the client, excluding the first one ||
 || **confirmationNotificationRepetitionsInterval**
 [`integer`](../../data-types.md) | Interval between booking confirmation messages, in seconds ||
+|| **dealCategoryId**
+[`integer`](../../data-types.md) | Identifier of the deal pipeline for the resource's bookings.
+
+`null` — no pipeline is selected, or the default pipeline is selected: REST returns its identifier `0` as `null`, as with other numeric fields. In both cases, deals are created in the default pipeline.
+
+If the pipeline was deleted in CRM after the resource was saved, the method returns its identifier as is. Deals for this resource's bookings are not created until another pipeline is selected in the resource ||
 || **delayedCounterDelay**
 [`integer`](../../data-types.md) | Time in seconds after which the counter is activated in the calendar ||
 || **delayedNotificationDelay**
@@ -370,6 +382,10 @@ Numeric and string fields are returned as `null` when no value is set. For examp
 [`string`](../../data-types.md) | Message to the client requesting booking confirmation. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
+|| **isDealCreationEnabled**
+[`string`](../../data-types.md) | Whether to create a deal automatically for the resource's bookings. Possible values:
+- `Y` — create
+- `N` — do not create ||
 || **isDelayedNotificationOn**
 [`string`](../../data-types.md) | Reminder when the client is running late. Possible values:
 - `Y` — enabled
@@ -386,6 +402,12 @@ Numeric and string fields are returned as `null` when no value is set. For examp
 [`string`](../../data-types.md) | How the resource is displayed. Possible values:
 - `Y` — in the schedule columns
 - `N` — when resources overlap ||
+|| **isOverbookingAllowed**
+[`string`](../../data-types.md) | Whether overbooking is allowed, that is, whether another client can be booked for a time slot the resource already has booked. Possible values:
+- `Y` — allowed. The resource can have no more than two bookings at the same time. Works only if overbooking is available on the plan
+- `N` — not allowed. A booking cannot be created or changed so that it overlaps another booking of the resource
+
+Default is `Y` ||
 || **isReminderNotificationOn**
 [`string`](../../data-types.md) | Booking reminder. Possible values:
 - `Y` — enabled

@@ -71,6 +71,8 @@ The method recognizes parameter and field names only in the form given in the ta
 - `N` — when resources overlap
 
 Pass the value as a string. Values of other types, such as `true`, are ignored by the method ||
+|| **isOverbookingAllowed**
+[`string`](../../data-types.md) | Whether overbooking is allowed. Possible values: `Y` — allowed, `N` — not allowed ||
 || **typeId**
 [`integer`](../../data-types.md) \| [`array`](../../data-types.md) | Resource type identifier or an array of identifiers. For an array, the method returns the resources of all listed types.
 
@@ -138,16 +140,19 @@ Sorting by other fields is not supported — such fields are ignored by the meth
       confirmationNotificationDelay: number
       confirmationNotificationRepetitions: number | null
       confirmationNotificationRepetitionsInterval: number
+      dealCategoryId: number | null
       delayedCounterDelay: number
       delayedNotificationDelay: number
       description: string | null
       id: number
       infoNotificationDelay: number | null
       isConfirmationNotificationOn: string
+      isDealCreationEnabled: string
       isDelayedNotificationOn: string
       isFeedbackNotificationOn: string
       isInfoNotificationOn: string
       isMain: string
+      isOverbookingAllowed: string
       isReminderNotificationOn: string
       name: string
       reminderNotificationDelay: number
@@ -258,6 +263,11 @@ Sorting by other fields is not supported — such fields are ignored by the meth
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:
+        print(
+            "Bitrix API error",
+            f"error: {error.error}",
+            f"error_description: {error.error_description}",
+            sep="\n",
         )
     except BitrixSDKException as error:
         print(f"Bitrix SDK error: {error.message}")
@@ -409,16 +419,19 @@ HTTP status: **200**
                 "confirmationNotificationDelay": 86400,
                 "confirmationNotificationRepetitions": null,
                 "confirmationNotificationRepetitionsInterval": 10800,
+                "dealCategoryId": null,
                 "delayedCounterDelay": 300,
                 "delayedNotificationDelay": 300,
                 "description": null,
                 "id": 5,
                 "infoNotificationDelay": null,
                 "isConfirmationNotificationOn": "Y",
+                "isDealCreationEnabled": "Y",
                 "isDelayedNotificationOn": "Y",
                 "isFeedbackNotificationOn": "N",
                 "isInfoNotificationOn": "Y",
                 "isMain": "Y",
+                "isOverbookingAllowed": "Y",
                 "isReminderNotificationOn": "Y",
                 "name": "Sedan 1",
                 "reminderNotificationDelay": -1,
@@ -434,16 +447,19 @@ HTTP status: **200**
                 "confirmationNotificationDelay": 86400,
                 "confirmationNotificationRepetitions": null,
                 "confirmationNotificationRepetitionsInterval": 10800,
+                "dealCategoryId": null,
                 "delayedCounterDelay": 300,
                 "delayedNotificationDelay": 300,
                 "description": null,
                 "id": 7,
                 "infoNotificationDelay": null,
                 "isConfirmationNotificationOn": "Y",
+                "isDealCreationEnabled": "Y",
                 "isDelayedNotificationOn": "Y",
                 "isFeedbackNotificationOn": "N",
                 "isInfoNotificationOn": "Y",
                 "isMain": "Y",
+                "isOverbookingAllowed": "Y",
                 "isReminderNotificationOn": "Y",
                 "name": "Sedan 2",
                 "reminderNotificationDelay": -1,
@@ -501,6 +517,12 @@ Numeric and string fields are returned as `null` when no value is set. For examp
 [`integer`](../../data-types.md) | Number of confirmation messages sent to the client, excluding the first one ||
 || **confirmationNotificationRepetitionsInterval**
 [`integer`](../../data-types.md) | Interval between booking confirmation messages, in seconds ||
+|| **dealCategoryId**
+[`integer`](../../data-types.md) | Identifier of the deal pipeline for the resource's bookings.
+
+`null` — no pipeline is selected, or the default pipeline is selected: REST returns its identifier `0` as `null`, as with other numeric fields. In both cases, deals are created in the default pipeline.
+
+If the pipeline was deleted in CRM after the resource was saved, the method returns its identifier as is. Deals for this resource's bookings are not created until another pipeline is selected in the resource ||
 || **delayedCounterDelay**
 [`integer`](../../data-types.md) | Time in seconds after which the counter is activated in the calendar ||
 || **delayedNotificationDelay**
@@ -519,6 +541,10 @@ Numeric and string fields are returned as `null` when no value is set. For examp
 [`string`](../../data-types.md) | Message to the client requesting booking confirmation. Possible values:
 - `Y` — enabled
 - `N` — disabled ||
+|| **isDealCreationEnabled**
+[`string`](../../data-types.md) | Whether to create a deal automatically for the resource's bookings. Possible values:
+- `Y` — create
+- `N` — do not create ||
 || **isDelayedNotificationOn**
 [`string`](../../data-types.md) | Reminder when the client is running late. Possible values:
 - `Y` — enabled
@@ -535,6 +561,12 @@ Numeric and string fields are returned as `null` when no value is set. For examp
 [`string`](../../data-types.md) | How the resource is displayed. Possible values:
 - `Y` — in the schedule columns
 - `N` — when resources overlap ||
+|| **isOverbookingAllowed**
+[`string`](../../data-types.md) | Whether overbooking is allowed, that is, whether another client can be booked for a time slot the resource already has booked. Possible values:
+- `Y` — allowed. The resource can have no more than two bookings at the same time. Works only if overbooking is available on the plan
+- `N` — not allowed. A booking cannot be created or changed so that it overlaps another booking of the resource
+
+Default is `Y` ||
 || **isReminderNotificationOn**
 [`string`](../../data-types.md) | Booking reminder. Possible values:
 - `Y` — enabled

@@ -73,6 +73,7 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
         timezone: string
         weekDays: string[]
         slotSize: number
+        isCompanySchedule: 'Y' | 'N'
       }[]
     }
 
@@ -243,12 +244,13 @@ Can be obtained using the methods [booking.v1.resource.add](../booking-v1-resour
 
     // Numeric fields with the value 0 arrive as null, hence the pointers
     var items []struct {
-    	From     *int     `json:"from"`
-    	ID       b24.ID   `json:"id"`
-    	SlotSize *int     `json:"slotSize"`
-    	Timezone string   `json:"timezone"`
-    	To       int      `json:"to"`
-    	WeekDays []string `json:"weekDays"`
+    	From              *int     `json:"from"`
+    	ID                b24.ID   `json:"id"`
+    	IsCompanySchedule string   `json:"isCompanySchedule"`
+    	SlotSize          *int     `json:"slotSize"`
+    	Timezone          string   `json:"timezone"`
+    	To                int      `json:"to"`
+    	WeekDays          []string `json:"weekDays"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -271,6 +273,7 @@ HTTP status: **200**
             {
                 "from": 540,
                 "id": 11,
+                "isCompanySchedule": "N",
                 "slotSize": 60,
                 "timezone": "Europe/Berlin",
                 "to": 1080,
@@ -338,6 +341,12 @@ Numeric fields with the value `0` are returned as `null`. This applies to `from`
 - `Sun` — Sunday ||
 || **slotSize**
 [`integer`](../../../data-types.md) | Booking duration in minutes ||
+|| **isCompanySchedule**
+[`string`](../../../data-types.md) | Whether the resource uses the working time from the company schedule. Possible values:
+- `Y` — working hours and days are taken from the company schedule
+- `N` — the slot has its own schedule
+
+If the value is `Y`, the `from`, `to`, and `weekDays` fields contain the current company schedule at the time of the request. They change along with the company schedule without calling [booking.v1.resource.slots.set](./booking-v1-resource-slots-set.md) again. The `timezone` and `slotSize` fields are settings of the resource itself ||
 |#
 
 ## Error Handling

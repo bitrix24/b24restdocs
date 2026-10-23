@@ -47,6 +47,26 @@ The list of available types can be retrieved using the [booking.v1.resourceType.
 - `N` — when resources overlap
 
 Default is `Y` ||
+|| **isOverbookingAllowed**
+[`string`](../../data-types.md) | Whether overbooking is allowed, that is, whether another client can be booked for a time slot the resource already has booked. Possible values:
+- `Y` — allowed. The resource can have no more than two bookings at the same time. Works only if overbooking is available on the plan
+- `N` — not allowed. A booking cannot be created or changed so that it overlaps another booking of the resource
+
+Default is `Y` ||
+|| **isDealCreationEnabled**
+[`string`](../../data-types.md) | Whether to create a deal automatically for the resource's bookings. Possible values:
+- `Y` — create
+- `N` — do not create
+
+Default is `Y` ||
+|| **dealCategoryId**
+[`integer`](../../data-types.md) | Identifier of the deal pipeline for the resource's bookings. `0` is the default pipeline.
+
+If no pipeline is selected, deals are created in the default pipeline.
+
+You can get the list of pipelines using the [crm.category.list](../../crm/universal/category/crm-category-list.md) method with `entityTypeId = 2`.
+
+The method validates the pipeline you pass: it must exist, and the user calling the method must have permission to add deals to it ||
 || **isInfoNotificationOn**
 [`string`](../../data-types.md) | Booking message to the client. Possible values:
 - `Y` — enabled
@@ -175,7 +195,7 @@ A resource does not inherit notification configurations from its type: when a re
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"Name","description":"Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoNotificationDelay":60,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":1,"confirmationNotificationRepetitionsInterval":3600,"confirmationCounterDelay":7200}}' \
+    -d '{"fields":{"name":"Name","description":"Description","typeId":1,"isMain":"N","isOverbookingAllowed":"Y","isDealCreationEnabled":"Y","dealCategoryId":0,"isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoNotificationDelay":60,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":1,"confirmationNotificationRepetitionsInterval":3600,"confirmationCounterDelay":7200}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.resource.add
     ```
 
@@ -185,7 +205,7 @@ A resource does not inherit notification configurations from its type: when a re
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"Name","description":"Description","typeId":1,"isMain":"N","isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoNotificationDelay":60,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":1,"confirmationNotificationRepetitionsInterval":3600,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"name":"Name","description":"Description","typeId":1,"isMain":"N","isOverbookingAllowed":"Y","isDealCreationEnabled":"Y","dealCategoryId":0,"isInfoNotificationOn":"Y","templateTypeInfo":"inanimate","isConfirmationNotificationOn":"Y","templateTypeConfirmation":"animate","isReminderNotificationOn":"N","templateTypeReminder":"base","isFeedbackNotificationOn":"Y","templateTypeFeedback":"inanimate","isDelayedNotificationOn":"Y","templateTypeDelayed":"inanimate","infoNotificationDelay":60,"reminderNotificationDelay":-1,"delayedNotificationDelay":300,"delayedCounterDelay":7200,"confirmationNotificationDelay":86400,"confirmationNotificationRepetitions":1,"confirmationNotificationRepetitionsInterval":3600,"confirmationCounterDelay":7200},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/booking.v1.resource.add
     ```
 
@@ -209,6 +229,9 @@ A resource does not inherit notification configurations from its type: when a re
             description: 'Description',
             typeId: 1,
             isMain: 'N',
+            isOverbookingAllowed: 'Y',
+            isDealCreationEnabled: 'Y',
+            dealCategoryId: 0,
             isInfoNotificationOn: 'Y',
             templateTypeInfo: 'inanimate',
             isConfirmationNotificationOn: 'Y',
@@ -264,6 +287,9 @@ A resource does not inherit notification configurations from its type: when a re
                 description: 'Description',
                 typeId: 1,
                 isMain: 'N',
+                isOverbookingAllowed: 'Y',
+                isDealCreationEnabled: 'Y',
+                dealCategoryId: 0,
                 isInfoNotificationOn: 'Y',
                 templateTypeInfo: 'inanimate',
                 isConfirmationNotificationOn: 'Y',
@@ -317,6 +343,9 @@ A resource does not inherit notification configurations from its type: when a re
                 "description": "Description",
                 "typeId": 1,
                 "isMain": "N",
+                "isOverbookingAllowed": "Y",
+                "isDealCreationEnabled": "Y",
+                "dealCategoryId": 0,
                 "isInfoNotificationOn": "Y",
                 "templateTypeInfo": "inanimate",
                 "isConfirmationNotificationOn": "Y",
@@ -366,6 +395,9 @@ A resource does not inherit notification configurations from its type: when a re
                         'description' => 'Description',
                         'typeId' => 1,
                         'isMain' => 'N',
+                        'isOverbookingAllowed' => 'Y',
+                        'isDealCreationEnabled' => 'Y',
+                        'dealCategoryId' => 0,
                         'isInfoNotificationOn' => 'Y',
                         'templateTypeInfo' => 'inanimate',
                         'isConfirmationNotificationOn' => 'Y',
@@ -413,6 +445,9 @@ A resource does not inherit notification configurations from its type: when a re
                 description: "Description",
                 typeId: 1,
                 isMain: "N",
+                isOverbookingAllowed: "Y",
+                isDealCreationEnabled: "Y",
+                dealCategoryId: 0,
                 isInfoNotificationOn: "Y",
                 templateTypeInfo: "inanimate",
                 isConfirmationNotificationOn: "Y",
@@ -455,6 +490,9 @@ A resource does not inherit notification configurations from its type: when a re
                 'description' => 'Description',
                 'typeId' => 1,
                 'isMain' => 'N',
+                'isOverbookingAllowed' => 'Y',
+                'isDealCreationEnabled' => 'Y',
+                'dealCategoryId' => 0,
                 'isInfoNotificationOn' => 'Y',
                 'templateTypeInfo' => 'inanimate',
                 'isConfirmationNotificationOn' => 'Y',
@@ -492,6 +530,9 @@ A resource does not inherit notification configurations from its type: when a re
     		"description":                     "Description",
     		"typeId":                          1,
     		"isMain":                          "N",
+    		"isOverbookingAllowed":            "Y",
+    		"isDealCreationEnabled":           "Y",
+    		"dealCategoryId":                  0,
     		"isInfoNotificationOn":            "Y",
     		"templateTypeInfo":                "inanimate",
     		"isConfirmationNotificationOn":    "Y",
@@ -578,8 +619,12 @@ HTTP Status: **400**
 || `100` | `Could not find value for parameter {fields}` | The required parameter `fields` is missing ||
 || `1006` | `ResourceType not found` | `typeId` is not specified ||
 || `1006` | `Failed creating new resource` | The resource could not be saved ||
+|| `1006` | `Deal category does not exist` | `dealCategoryId` contains the identifier of a pipeline that does not exist ||
+|| `1006` | `Access denied to add deals in the chosen category` | The user does not have permission to add deals to the pipeline from `dealCategoryId` ||
+|| `1006` | `Deal category cannot be chosen while the crm module is off` | `dealCategoryId` is passed, but the CRM module is not available ||
 || `1013` | `Resource type with id {id} does not exist` | A non-existent `typeId` is specified ||
 || `422` | `Invalid value of the {field} field` | An invalid value of an enumerated field, for example `templateTypeInfo` ||
+|| `422` | `Invalid value of the dealCategoryId field` | `dealCategoryId` is not an integer ||
 || `0` | `Feature is not available` | The Booking tool is not available on the current plan ||
 || `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#

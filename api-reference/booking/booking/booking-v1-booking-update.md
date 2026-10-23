@@ -421,6 +421,15 @@ HTTP Status: **400**
 }
 ```
 
+Example response if the booking overlaps another booking of a resource that has overbooking disabled:
+
+```json
+{
+    "error": "1026",
+    "error_description": "The “Room 1” resource is already booked for this time. Select a different time."
+}
+```
+
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
@@ -432,7 +441,11 @@ HTTP Status: **400**
 || `0` | `Required fields:` | Required parameter not passed within `fields` ||
 || `100` | `Could not find value for parameter ` | Required parameter not passed ||
 || `422` | `Invalid date period` | Incorrect time period ||
+|| `1026` | `The “Room 1” resource is already booked for this time. Select a different time.` | The booking overlaps another booking of a resource that has overbooking disabled. The message is returned in the user's language and includes the resource name ||
+|| `1026` | `Booking intersects with existing bookings: 15, 16` | The booking overlaps existing bookings: the resource already has two bookings for this time, or overbooking is not available on the plan. The message includes the IDs of the overlapping bookings ||
 |#
+
+The method checks for overlaps with other bookings and returns error `1026` only if the booking time, resources, or recurrence rule change. If a booking already overlaps another one, changing its client, note, or other fields succeeds.
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
