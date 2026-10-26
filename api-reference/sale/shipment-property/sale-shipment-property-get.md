@@ -23,7 +23,9 @@ The method `sale.shipmentproperty.get` retrieves the shipment property.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_shipment_property.id`](../data-types.md) | Identifier of the shipment property ||
+[`sale_shipment_property.id`](../data-types.md#sale_shipment_property) | Identifier of the shipment property.
+
+You can retrieve the identifier using the [sale.shipmentproperty.list](./sale-shipment-property-list.md) method. The [sale.shipmentproperty.add](./sale-shipment-property-add.md) method returns the identifier of a new property ||
 |#
 
 ## Code Examples
@@ -330,7 +332,15 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **property**
-[`sale_shipment_property`](../data-types.md) | Information about the shipment property ||
+[`sale_shipment_property`](../data-types.md#sale_shipment_property) | Shipment property. Key fields:
+- `id` — property identifier
+- `personTypeId`, `propsGroupId` — identifiers of the payer type and property group
+- `name`, `code` — name and symbolic code of the property
+- `type` — property type: `STRING`, `Y/N`, `NUMBER`, `ENUM`, `FILE`, `DATE`, `LOCATION`, or `ADDRESS`
+- `active`, `required`, `multiple` — whether the property is active, required, and multiple: `Y` or `N`
+- `settings` — settings that depend on the property type. The [sale.shipmentproperty.getFieldsByType](./sale-shipment-property-get-fields-by-type.md) method returns the set of settings for a type
+
+All fields are described in the [sale_order_property](../data-types.md#sale_order_property) type ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -341,8 +351,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":200840400001,
-   "error_description":"property does not exist"
+   "error":"200840400001",
+   "error_description":"property is not exists"
 }
 ```
 

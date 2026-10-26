@@ -1,4 +1,4 @@
-# After Saving the Order Property OnPropertyValueEntitySaved
+# After Saving the Order Property Value OnPropertyValueEntitySaved
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `OnPropertyValueEntitySaved` occurs immediately after the value of the order property is saved.
+The `OnPropertyValueEntitySaved` event occurs right after an order property value is created or changed manually or with the [sale.propertyvalue.modify](../property-value/sale-property-value-modify.md) method. If the value did not change when the order was saved, the event is not sent.
 
 {% note info "" %}
 
@@ -92,7 +92,7 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order_property_value.id`](../data-types.md) | Identifier of the order property value. To retrieve all fields of the order property value by identifier, use the method [sale.propertyvalue.get](../property-value/sale-property-value-get.md) ||
+[`sale_order_property_value.id`](../data-types.md#sale_order_property_value) | Identifier of the order property value. To retrieve all fields of the order property value by identifier, use the method [sale.propertyvalue.get](../property-value/sale-property-value-get.md) ||
 |#
 
 ### Parameter auth {#auth}
@@ -103,4 +103,7 @@ The structure is described [below](#fields) ||
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-property-value-deleted.md)
+- [{#T}](./on-sale-order-saved.md)
+- [{#T}](./on-order-entity-saved.md)

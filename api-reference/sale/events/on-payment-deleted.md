@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `OnPaymentDeleted` event occurs when a payment is directly deleted from the database.
+The `OnPaymentDeleted` event occurs when a payment is deleted from the database manually, with the [sale.payment.delete](../payment/sale-payment-delete.md) method, or together with the order.
 
 {% note info "" %}
 
@@ -92,7 +92,7 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order_payment.id`](../data-types.md) | Identifier of the payment. To retrieve all payment fields by identifier, use the method [sale.payment.get](../payment/sale-payment-get.md) ||
+[`sale_order_payment.id`](../data-types.md#sale_order_payment) | Identifier of the deleted payment. The payment has already been deleted, so the [sale.payment.get](../payment/sale-payment-get.md) method will not return its data. If the handler needs the payment fields, store them in advance, for example, on the [OnPaymentEntitySaved](./on-payment-entity-saved.md) event ||
 |#
 
 ### Parameter auth {#auth}
@@ -103,4 +103,6 @@ The structure is described [below](#fields) ||
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-payment-entity-saved.md)
+- [{#T}](./on-order-deleted.md)

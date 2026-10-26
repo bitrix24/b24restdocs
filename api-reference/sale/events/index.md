@@ -30,6 +30,24 @@ An example of a handler code for an event is described in the article [How to Te
 
 - Events are not sent to the application until the application installation is complete. More details can be found in the article [Check Application Installation](../../../settings/app-installation/installation-finish.md).
 - The handler receives the identifier of the modified object. Request the complete information about the object using a dedicated method: [sale.order.get](../order/sale-order-get.md), [sale.payment.get](../payment/sale-payment-get.md), [sale.shipment.get](../shipment/sale-shipment-get.md), or the methods of the [Property Values](../property-value/index.md) section.
+- Events are delivered after the request that triggered them completes. For deletion events, the object has already been deleted by then, so the dedicated method will not return its data. If the handler needs the fields of the object being deleted, store them in advance using the save events.
+
+## Which Event to Choose
+
+All events pass the object identifier `ID` in `data.FIELDS`. The [OnSaleOrderSaved](./on-sale-order-saved.md) and [OnSaleBeforeOrderDelete](./on-sale-before-order-delete.md) events also pass the external order identifier `XML_ID` and the action `ACTION` with the value `save` or `delete`.
+
+- To retrieve an order after any change, subscribe to [OnSaleOrderSaved](./on-sale-order-saved.md). The event arrives at the end of saving, when the order, payments, shipments, and property values have already been saved. Within a single request to Bitrix24, the handler receives it once, even if the order was saved several times.
+- To track every save of the order fields, use [OnOrderEntitySaved](./on-order-entity-saved.md). The event arrives right after the order fields are written, before payments, shipments, and property values are saved.
+- To retrieve the external identifier `XML_ID` of an order being deleted, use [OnSaleBeforeOrderDelete](./on-sale-before-order-delete.md). To find out that an order has been deleted from the database, use [OnOrderDeleted](./on-order-deleted.md).
+
+### Order of Events When an Order Is Deleted
+
+When an order is deleted manually or with the [sale.order.delete](../order/sale-order-delete.md) method, events arrive in the following order:
+
+1. The order is canceled and saved: [OnOrderEntitySaved](./on-order-entity-saved.md) and [OnSaleOrderSaved](./on-sale-order-saved.md) arrive.
+2. [OnSaleBeforeOrderDelete](./on-sale-before-order-delete.md). After it, `OnSaleOrderSaved` is not sent for this order.
+3. [OnPropertyValueDeleted](./on-property-value-deleted.md), [OnPaymentDeleted](./on-payment-deleted.md), and [OnShipmentDeleted](./on-shipment-deleted.md) for each property value, payment, and shipment of the order.
+4. [OnOrderDeleted](./on-order-deleted.md).
 
 ## Server Availability for Sending and Receiving Events
 
@@ -43,14 +61,14 @@ An example of a handler code for an event is described in the article [How to Te
 
 #| 
 || **Event** | **Triggered** ||
-|| [OnSaleOrderSaved](./on-sale-order-saved.md) | At the end of order saving ||
-|| [OnSaleBeforeOrderDelete](./on-sale-before-order-delete.md) | Before order deletion ||
-|| [OnPropertyValueEntitySaved](./on-property-value-entity-saved.md) | After saving order property value ||
-|| [OnPaymentEntitySaved](./on-payment-entity-saved.md) | After saving payment ||
-|| [OnShipmentEntitySaved](./on-shipment-entity-saved.md) | After saving shipment ||
-|| [OnOrderEntitySaved](./on-order-entity-saved.md) | After saving order ||
-|| [OnPropertyValueDeleted](./on-property-value-deleted.md) | When order property value is deleted ||
-|| [OnPaymentDeleted](./on-payment-deleted.md) | When payment is deleted from the database ||
-|| [OnShipmentDeleted](./on-shipment-deleted.md) | When shipment is deleted from the database ||
-|| [OnOrderDeleted](./on-order-deleted.md) | When order is deleted from the database ||
+|| [OnSaleOrderSaved](./on-sale-order-saved.md) | At the end of saving an order manually or with the [sale.order.add](../order/sale-order-add.md), [sale.order.update](../order/sale-order-update.md) methods, as well as with the methods for payments, shipments, and order property values ||
+|| [OnSaleBeforeOrderDelete](./on-sale-before-order-delete.md) | Before an order is deleted from the database manually or with the [sale.order.delete](../order/sale-order-delete.md) method ||
+|| [OnPropertyValueEntitySaved](./on-property-value-entity-saved.md) | After an order property value is saved manually or with the [sale.propertyvalue.modify](../property-value/sale-property-value-modify.md) method ||
+|| [OnPaymentEntitySaved](./on-payment-entity-saved.md) | After a payment is saved manually or with the [sale.payment.add](../payment/sale-payment-add.md), [sale.payment.update](../payment/sale-payment-update.md) methods ||
+|| [OnShipmentEntitySaved](./on-shipment-entity-saved.md) | After a shipment is saved manually or with the [sale.shipment.add](../shipment/sale-shipment-add.md), [sale.shipment.update](../shipment/sale-shipment-update.md) methods ||
+|| [OnOrderEntitySaved](./on-order-entity-saved.md) | Each time an order is saved manually or with the [sale.order.add](../order/sale-order-add.md), [sale.order.update](../order/sale-order-update.md) methods or the methods for payments, shipments, and order property values, and also when an order is deleted ||
+|| [OnPropertyValueDeleted](./on-property-value-deleted.md) | When an order property value is deleted from the database manually, with the [sale.propertyvalue.delete](../property-value/sale-property-value-delete.md) method, or together with the order ||
+|| [OnPaymentDeleted](./on-payment-deleted.md) | When a payment is deleted from the database manually, with the [sale.payment.delete](../payment/sale-payment-delete.md) method, or together with the order ||
+|| [OnShipmentDeleted](./on-shipment-deleted.md) | When a shipment is deleted from the database manually, with the [sale.shipment.delete](../shipment/sale-shipment-delete.md) method, or together with the order ||
+|| [OnOrderDeleted](./on-order-deleted.md) | After an order is deleted from the database manually or with the [sale.order.delete](../order/sale-order-delete.md) method ||
 |#

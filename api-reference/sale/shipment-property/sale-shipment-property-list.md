@@ -21,18 +21,43 @@ The method `sale.shipmentproperty.list` retrieves a list of shipment properties.
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array containing the list of fields to select (see the fields of the [sale_shipment_property](../data-types.md) object).
- 
-If not provided or an empty array is passed, all available property fields will be selected.
+[`array`](../../data-types.md) | An array of fields to return.
+
+Available fields:
+- `id` — property identifier
+- `personTypeId` — payer type identifier
+- `propsGroupId` — property group identifier
+- `name` — name
+- `type` — property type
+- `code` — symbolic code
+- `active` — whether the property is active
+- `util` — system property
+- `userProps` — included in the customer profile
+- `isFiltered` — available in the shipment list filter
+- `sort` — sort order
+- `description` — description
+- `required` — whether the property is required
+- `multiple` — whether the property is multiple
+- `xmlId` — external identifier
+- `defaultValue` — default value
+- `settings` — property type settings
+- `isProfileName`, `isPayer`, `isEmail`, `isPhone`, `isZip`, `isAddress` — purpose of the value of a `STRING` property
+- `isLocation`, `isLocation4tax`, `inputFieldLocation` — purpose of the value of a `LOCATION` property
+- `isAddressFrom`, `isAddressTo` — purpose of the value of an `ADDRESS` property
+
+If not provided or an empty array is passed, all property fields are returned.
+
+The method ignores unknown fields. If `select` contains only unknown fields, all property fields are returned
  ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected shipment properties in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
  
-Possible values for `field` correspond to the fields of the [sale_shipment_property](../data-types.md) object.
+Possible values for `field` correspond to the fields of the [sale_shipment_property](../data-types.md#sale_shipment_property) object.
 
 An additional prefix can be assigned to the key to clarify the filter behavior. Possible prefix values:
 
 - `=` — equals (works with arrays as well)
+- `@` — the value is in a list; pass the value as an array, for example, `{"@type": ["STRING", "NUMBER"]}`
 - `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
 - `>` — greater than
 - `<` — less than
@@ -50,16 +75,20 @@ An additional prefix can be assigned to the key to clarify the filter behavior. 
     - `"%mol"` — searching for values not ending with "mol"
     - `"%mol%"` — searching for values where the substring "mol" is not present in any position
 - `!%=` — NOT LIKE (see description above)
+
+The method ignores conditions on unknown fields and does not return an error
 ||
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected shipment properties in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
  
-Possible values for `field` correspond to the fields of the [sale_shipment_property](../data-types.md) object.
+Possible values for `field` correspond to the fields of the [sale_shipment_property](../data-types.md#sale_shipment_property) object.
  
 Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
+
+If not provided, properties are sorted by `id` in ascending order
 ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
@@ -70,7 +99,9 @@ To select the second page of results, you need to pass the value `50`. To select
  
 The formula for calculating the `start` parameter value:
  
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the desired page number.
+
+If not provided, defaults to `0`, which is the first page
  ||
 |#
 
@@ -86,7 +117,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","active","code","defaultValue","description","inputFieldLocation","isAddress","isAddressFrom","isAddressTo","isEmail","isFiltered","isLocation","isLocation4tax","isPayer","isPhone","isProfileName","isZip","multiple","name","personTypeId","propsGroupId","required","settings","sort","type","userProps","util","xmlId"],"filter":{"@type":"STRING","%code":"EMAIL"},"order":{"id":"desc"}}' \
+    -d '{"select":["id","active","code","defaultValue","description","inputFieldLocation","isAddress","isAddressFrom","isAddressTo","isEmail","isFiltered","isLocation","isLocation4tax","isPayer","isPhone","isProfileName","isZip","multiple","name","personTypeId","propsGroupId","required","settings","sort","type","userProps","util","xmlId"],"filter":{"=type":"STRING","%code":"EMAIL"},"order":{"id":"desc"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.shipmentproperty.list
     ```
 
@@ -96,7 +127,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","active","code","defaultValue","description","inputFieldLocation","isAddress","isAddressFrom","isAddressTo","isEmail","isFiltered","isLocation","isLocation4tax","isPayer","isPhone","isProfileName","isZip","multiple","name","personTypeId","propsGroupId","required","settings","sort","type","userProps","util","xmlId"],"filter":{"@type":"STRING","%code":"EMAIL"},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","active","code","defaultValue","description","inputFieldLocation","isAddress","isAddressFrom","isAddressTo","isEmail","isFiltered","isLocation","isLocation4tax","isPayer","isPhone","isProfileName","isZip","multiple","name","personTypeId","propsGroupId","required","settings","sort","type","userProps","util","xmlId"],"filter":{"=type":"STRING","%code":"EMAIL"},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/sale.shipmentproperty.list
     ```
 
@@ -183,7 +214,7 @@ The formula for calculating the `start` parameter value:
             'xmlId',
           ],
           filter: {
-            '@type': 'STRING',
+            '=type': 'STRING',
             '%code': 'EMAIL',
           },
           order: {
@@ -257,7 +288,7 @@ The formula for calculating the `start` parameter value:
                 'xmlId',
               ],
               filter: {
-                '@type': 'STRING',
+                '=type': 'STRING',
                 '%code': 'EMAIL',
               },
               order: {
@@ -324,7 +355,7 @@ The formula for calculating the `start` parameter value:
                 "xmlId",
             ],
             filter={
-                "@type": "STRING",
+                "=type": "STRING",
                 "%code": "EMAIL",
             },
             order={
@@ -387,7 +418,7 @@ The formula for calculating the `start` parameter value:
                         'xmlId',
                     ],
                     'filter' => [
-                        '@type' => 'STRING',
+                        '=type' => 'STRING',
                         '%code' => 'EMAIL',
                     ],
                     'order' => [
@@ -444,7 +475,7 @@ The formula for calculating the `start` parameter value:
                 "xmlId",
             ],
             "filter": {
-                "@type": "STRING",
+                "=type": "STRING",
                 "%code": "EMAIL",
             },
             "order": {
@@ -500,7 +531,7 @@ The formula for calculating the `start` parameter value:
                 "xmlId",
             ],
             'filter' => [
-                "@type" => "STRING",
+                "=type" => "STRING",
                 "%code" => "EMAIL",
             ],
             'order' => [
@@ -521,7 +552,7 @@ The formula for calculating the `start` parameter value:
     res, err := client.Core().Call(ctx, "sale.shipmentproperty.list", b24.Params{
     	"select": []string{"id", "active", "code", "defaultValue", "description", "inputFieldLocation", "isAddress", "isAddressFrom", "isAddressTo", "isEmail", "isFiltered", "isLocation", "isLocation4tax", "isPayer", "isPhone", "isProfileName", "isZip", "multiple", "name", "personTypeId", "propsGroupId", "required", "settings", "sort", "type", "userProps", "util", "xmlId"},
     	"filter": b24.Params{
-    		"@type": "STRING",
+    		"=type": "STRING",
     		"%code": "EMAIL",
     	},
     	"order": b24.Params{
@@ -677,7 +708,15 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
 || **properties**
-[`sale_shipment_property[]`](../data-types.md) | An array of objects with information about the selected properties ||
+[`sale_shipment_property[]`](../data-types.md#sale_shipment_property) | An array of shipment properties. Key property fields:
+- `id` — property identifier
+- `personTypeId`, `propsGroupId` — identifiers of the payer type and property group
+- `name`, `code` — name and symbolic code of the property
+- `type` — property type: `STRING`, `Y/N`, `NUMBER`, `ENUM`, `FILE`, `DATE`, `LOCATION`, or `ADDRESS`
+- `active`, `required`, `multiple` — whether the property is active, required, and multiple: `Y` or `N`
+- `settings` — settings that depend on the property type
+
+If `select` is passed, the objects contain only the selected fields. All fields are described in the [sale_order_property](../data-types.md#sale_order_property) type ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
@@ -702,6 +741,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `200040300010` | Insufficient rights to read shipment properties ||
+|| `100` | An invalid sort direction was passed in `order`. Allowed values: `asc`, `desc` ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 

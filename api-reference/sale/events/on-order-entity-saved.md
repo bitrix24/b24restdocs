@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `OnOrderEntitySaved` event occurs immediately after the order is saved.
+The `OnOrderEntitySaved` event occurs right after the order fields are written to the database, before payments, shipments, and order property values are saved. To retrieve the order after all related objects are saved, use the [OnSaleOrderSaved](./on-sale-order-saved.md) event.
 
 {% note info "" %}
 
@@ -92,7 +92,7 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order.id`](../data-types.md) | Order identifier. To retrieve all fields of the order by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
+[`sale_order.id`](../data-types.md#sale_order) | Order identifier. To retrieve all fields of the order by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
 |#
 
 ### Parameter auth {#auth}
@@ -103,6 +103,7 @@ The structure is described [below](#fields) ||
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-order-deleted.md)
 - [{#T}](./on-sale-order-saved.md)
 - [{#T}](./on-sale-before-order-delete.md)

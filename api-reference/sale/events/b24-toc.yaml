@@ -7,7 +7,7 @@ items:
     href: on-sale-order-saved.md
   - name: Before Deleting the Order
     href: on-sale-before-order-delete.md
-  - name: After Saving the Order Property
+  - name: After Saving the Order Property Value
     href: on-property-value-entity-saved.md
   - name: After Saving the Payment
     href: on-payment-entity-saved.md
@@ -15,7 +15,7 @@ items:
     href: on-shipment-entity-saved.md
   - name: After Saving the Order
     href: on-order-entity-saved.md
-  - name: When Deleting the Order Property from the Database
+  - name: When Deleting the Order Property Value from the Database
     href: on-property-value-deleted.md
   - name: When Deleting the Payment from the Database
     href: on-payment-deleted.md

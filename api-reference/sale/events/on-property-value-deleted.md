@@ -1,4 +1,4 @@
-# When Deleting an Order Property from the Database OnPropertyValueDeleted
+# When Deleting an Order Property Value from the Database OnPropertyValueDeleted
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `OnPropertyValueDeleted` event is triggered when an order property value is deleted.
+The `OnPropertyValueDeleted` event is triggered when an order property value is deleted from the database manually, with the [sale.propertyvalue.delete](../property-value/sale-property-value-delete.md) method, or together with the order.
 
 {% note info "" %}
 
@@ -92,7 +92,7 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order_property_value.id`](../data-types.md) | Identifier of the order property value. To retrieve all fields of the order property value by identifier, use the method [sale.propertyvalue.get](../property-value/sale-property-value-get.md) ||
+[`sale_order_property_value.id`](../data-types.md#sale_order_property_value) | Identifier of the deleted order property value. The value has already been deleted, so the [sale.propertyvalue.get](../property-value/sale-property-value-get.md) method will not return its data. If the handler needs the value fields, store them in advance, for example, on the [OnPropertyValueEntitySaved](./on-property-value-entity-saved.md) event ||
 |#
 
 ### Parameter auth {#auth}
@@ -103,4 +103,6 @@ The structure is described [below](#fields) ||
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-property-value-entity-saved.md)
+- [{#T}](./on-order-deleted.md)

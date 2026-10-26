@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `OnSaleOrderSaved` event occurs at the end of the order saving process, when the order and all related entities have already been saved.
+The `OnSaleOrderSaved` event occurs at the end of the order saving process, when the order and all related objects have already been saved: payments, shipments, and order property values. Within a single request to Bitrix24, the handler receives the event once, even if the order was saved several times.
 
 {% note info "" %}
 
@@ -94,7 +94,7 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order.id`](../data-types.md) | Order identifier. To retrieve all fields of the order by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
+[`sale_order.id`](../data-types.md#sale_order) | Order identifier. To retrieve all fields of the order by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
 || **XML_ID***
 [`string`](../../data-types.md) | External order identifier ||
 || **ACTION***
@@ -109,6 +109,7 @@ The structure is described [below](#fields) ||
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-sale-before-order-delete.md)
 - [{#T}](./on-order-entity-saved.md)
 - [{#T}](./on-order-deleted.md)

@@ -36,39 +36,45 @@ Common parameters applicable to shipment properties of any type:
 || **Name**
 `type` | **Description** ||
 || **personTypeId***
-[`sale_person_type.id`](../data-types.md) | Identifier of the payer type ||
+[`sale_person_type.id`](../data-types.md#sale_person_type) | Identifier of the payer type.
+
+You can retrieve the identifier using the [sale.persontype.list](../person-type/sale-person-type-list.md) method ||
 || **propsGroupId***
-[`sale_order_property_group.id`](../data-types.md) | Identifier of the property group ||
+[`sale_order_property_group.id`](../data-types.md#sale_order_property_group) | Identifier of the property group. The group must belong to the payer type specified in `personTypeId`.
+
+You can retrieve the identifier using the [sale.propertygroup.list](../property-group/sale-property-group-list.md) method, and create a group using the [sale.propertygroup.add](../property-group/sale-property-group-add.md) method ||
 || **name***
 [`string`](../../data-types.md) | Name of the shipment property ||
 || **type***
-[`string`](../../data-types.md) | Type of the shipment property.
+[`string`](../../data-types.md) | Type of the shipment property. The type cannot be changed after creation.
+
 Possible values:
-- `STRING`
-- `Y/N`
-- `NUMBER`
-- `ENUM`
-- `FILE`
-- `DATE`
-- `LOCATION`
-- `ADDRESS`
- ||
+- `STRING` — string
+- `Y/N` — yes or no
+- `NUMBER` — number
+- `ENUM` — list
+- `FILE` — file
+- `DATE` — date
+- `LOCATION` — location
+- `ADDRESS` — address
+
+The [sale.shipmentproperty.getFieldsByType](./sale-shipment-property-get-fields-by-type.md) method returns the fields and settings available for the type ||
 || **code**
-[`string`](../../data-types.md) | Symbolic code of the shipment property ||
+[`string`](../../data-types.md) | Symbolic code of the shipment property. If not provided, the code remains empty ||
 || **active**
 [`string`](../../data-types.md) | Indicator of the activity status of the shipment property.
 Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `Y` (the property is added as active) ||
+If not provided, defaults to `Y` ||
 || **util**
 [`string`](../../data-types.md) | Indicator of whether the shipment property is a system property. System properties are not displayed in the public part.
 Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N`
+If not provided, defaults to `N`
  ||
 || **userProps**
 [`string`](../../data-types.md) | Indicator of whether the shipment property is included in the customer profile.
@@ -76,16 +82,16 @@ Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 || **isFiltered**
 [`string`](../../data-types.md) | Indicator of whether the shipment property is available in the filter on the shipment list page.
 Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting ||
+[`integer`](../../data-types.md) | Sort order of the property. If not provided, defaults to `100` ||
 || **description**
 [`string`](../../data-types.md) | Description of the shipment property ||
 || **required**
@@ -94,23 +100,24 @@ Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 || **multiple**
 [`string`](../../data-types.md) | Indicator of whether the shipment property is multiple. For multiple properties, it is possible to specify several values.
 Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 || **xmlId**
-[`string`](../../data-types.md) | External identifier of the shipment property ||
+[`string`](../../data-types.md) | External identifier of the shipment property. If not provided, it is generated automatically in the format `bx_<string>` ||
 || **defaultValue**
 [`any`](../../data-types.md) | Default value of the shipment property.
-For multiple shipment properties (multiple), an array of values is supported ||
+
+For multiple properties where `multiple` is `Y`, you can pass an array of values ||
 || **settings**
 [`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}` for passing additional settings for the shipment property.
 
-The list of supported keys for this object depends on the property type. For some property types (e.g., Y/N), additional properties are not provided. The description of the **settings** parameter for different property types is provided [below](#parameter-settings) ||
+The list of supported keys for this object depends on the property type. The `Y/N`, `LOCATION`, and `ADDRESS` types have no settings. The description of the **settings** parameter for different property types is provided [below](#parametr-settings) ||
 |#
 
 Parameters applicable to shipment properties of type `STRING`
@@ -120,93 +127,93 @@ Parameters applicable to shipment properties of type `STRING`
 `type` | **Description** ||
 || **isProfileName**
 [`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as the user profile name.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 || **isPayer**
 [`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as the payer's name.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N`||
+If not provided, defaults to `N` ||
 || **isEmail**
 [`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as an e-mail (e.g., when registering a new user during order placement).
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N`||
+If not provided, defaults to `N` ||
 || **isPhone**
 [`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as a phone number.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N`||
+If not provided, defaults to `N` ||
 || **isZip**
 [`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as a postal code.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N`||
+If not provided, defaults to `N` ||
 || **isAddress**
 [`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as an address.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N`||
+If not provided, defaults to `N` ||
 |#
 
-Parameters applicable to shipment properties of type `LOCATION`			
+Parameters applicable to shipment properties of type `LOCATION`
 
 #|
 || **Name**
 `type` | **Description** ||
 || **isLocation**
 [`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as the customer's location for calculating delivery costs.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 || **isLocation4tax**
 [`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as the customer's location for determining tax rates.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 || **inputFieldLocation**
 [`string`](../../data-types.md) | Deprecated field. Not used ||
 |#
 
-Parameters applicable to shipment properties of type `ADDRESS`			
+Parameters applicable to shipment properties of type `ADDRESS`
 
 #|
 || **Name**
 `type` | **Description** ||
 || **isAddressFrom**
 [`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as the customer's address from which the order needs to be picked up for calculating delivery costs.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 || **isAddressTo**
 [`string`](../../data-types.md) | Indicator of whether the value of this shipment property should be used as the customer's address to which the order needs to be delivered for calculating delivery costs.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 |#
 
-### Parameter settings
+### Parameter settings {#parametr-settings}
 
 Parameters applicable to shipment properties of type `STRING`
 
@@ -224,11 +231,12 @@ Regular expression for validating a phone number ```^((8|\+1)[\- ]?)?(\(?\d{3}\)
 Regular expression for validating the date format DD/MM/YYYY:
 ```^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$``` ||
 || **multiline**
-[`string`](../../data-types.md) | Indicator of whether to display a multiline input field for the shipment property value. Possible values: 
+[`string`](../../data-types.md) | Indicator of whether to display a multiline input field for the shipment property value.
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 || **cols**
 [`integer`](../../data-types.md) | Deprecated parameter. Not used ||
 || **rows**
@@ -258,11 +266,11 @@ Parameters applicable to shipment properties of type `ENUM`
 || **multielement**
 [`string`](../../data-types.md) | Indicator of whether to display the shipment property as a list of checkboxes.
 Value is used in some user interfaces.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 || **size**
 [`integer`](../../data-types.md) | Number of displayed values of the shipment property. Value is used in some user interfaces ||
 |#
@@ -285,11 +293,11 @@ Parameters applicable to shipment properties of type `DATE`
 `type` | **Description** ||
 || **time**
 [`string`](../../data-types.md) | Indicator of whether to add the option to select time when working with the value of this shipment property. Value is used in some user interfaces.
-Possible values: 
+Possible values:
 - `Y` — yes
 - `N` — no
 
-If not provided, the default value is `N` ||
+If not provided, defaults to `N` ||
 |#
 
 ## Code Examples
@@ -301,21 +309,21 @@ If not provided, the default value is `N` ||
 - cURL (Webhook)
 
     ```http
-    -X POST \
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"personTypeId":3,"propsGroupId":6,"name":"Phone (for contacting the courier)","type":"STRING","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/sale.shipmentproperty.add
+    -d '{"fields":{"personTypeId":3,"propsGroupId":6,"name":"Phone (for contacting the courier)","type":"STRING","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"}}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.shipmentproperty.add
     ```
 
 - cURL (OAuth)
 
     ```http
-    -X POST \
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"personTypeId":3,"propsGroupId":6,"name":"Phone (for contacting the courier)","type":"STRING","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"}}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/sale.shipmentproperty.add
+    -d '{"fields":{"personTypeId":3,"propsGroupId":6,"name":"Phone (for contacting the courier)","type":"STRING","code":"PHONE","active":"Y","util":"N","userProps":"Y","isFiltered":"N","sort":500,"description":"property description","required":"Y","multiple":"N","settings":{"multiline":"Y","maxlength":100},"xmlId":"","defaultValue":"","isProfileName":"Y","isPayer":"Y","isEmail":"N","isPhone":"N","isZip":"N","isAddress":"N"},"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/sale.shipmentproperty.add
     ```
 
 - JS (TS)
@@ -781,7 +789,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **property**
-[`sale_shipment_property`](../data-types.md) | Object containing information about the added shipment property ||
+[`sale_shipment_property`](../data-types.md#sale_shipment_property) | Object containing information about the added shipment property. The fields are described in the [sale_order_property](../data-types.md#sale_order_property) type ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -804,7 +812,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** ||
 || `200850000005` | An empty value is specified for the payer type ||
-|| `200850000006` | Internal error adding property ||
+|| `200850000006` | Property saving error, for example, the property group is not found or belongs to a different payer type ||
 || `200850000009` | Error occurs when trying to create a shipment property with the `multiple` parameter set to `Y`, if the `isFiltered` parameter is not provided.
 Filtering by multiple shipment properties is not supported ||
 || `200850000010` | Error occurs when trying to create a shipment property with the `multiple` parameter set to `Y`, if the `isFiltered` parameter is not equal to `N`.

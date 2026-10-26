@@ -21,6 +21,8 @@ Shipping properties are additional parameters that can be set for the shipment o
 
 **Property Groups.** Associate the shipping property with the appropriate group: personal data, delivery information, company data, contact information. You can create or modify property groups using the methods [sale.propertygroup.*](../property-group/index.md).
 
+**Property Types.** The type defines the format of the property value: `STRING` — string, `Y/N` — yes or no, `NUMBER` — number, `ENUM` — list, `FILE` — file, `DATE` — date, `LOCATION` — location, `ADDRESS` — address. The type is set when the property is created and cannot be changed. The [sale.shipmentproperty.getFieldsByType](./sale-shipment-property-get-fields-by-type.md) method returns the fields and settings available for a type.
+
 **Shipping Property Values.** Change the values of a specific shipment property using the methods [sale.shipmentpropertyvalue.*](../shipment-property-value/index.md).
 
 ## How to Get Started

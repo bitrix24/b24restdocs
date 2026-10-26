@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `OnPaymentEntitySaved` occurs immediately after the payment is saved.
+The `OnPaymentEntitySaved` event occurs right after a payment is created or changed manually or with the [sale.payment.add](../payment/sale-payment-add.md), [sale.payment.update](../payment/sale-payment-update.md) methods. If the payment did not change when the order was saved, the event is not sent.
 
 {% note info "" %}
 
@@ -92,7 +92,7 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order_payment.id`](../data-types.md) | Identifier of the payment. To retrieve all payment fields by identifier, use the method [sale.payment.get](../payment/sale-payment-get.md) ||
+[`sale_order_payment.id`](../data-types.md#sale_order_payment) | Identifier of the payment. To retrieve all payment fields by identifier, use the method [sale.payment.get](../payment/sale-payment-get.md) ||
 |#
 
 ### Parameter auth {#auth}
@@ -103,4 +103,7 @@ The structure is described [below](#fields) ||
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-payment-deleted.md)
+- [{#T}](./on-sale-order-saved.md)
+- [{#T}](./on-order-entity-saved.md)

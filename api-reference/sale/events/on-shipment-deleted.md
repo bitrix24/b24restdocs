@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `OnShipmentDeleted` event occurs when a shipment is directly deleted from the database.
+The `OnShipmentDeleted` event occurs when a shipment is deleted from the database manually, with the [sale.shipment.delete](../shipment/sale-shipment-delete.md) method, or together with the order.
 
 {% note info "" %}
 
@@ -92,7 +92,7 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order_shipment.id`](../data-types.md) | Identifier of the shipment. To retrieve all fields of the shipment by identifier, use the method [sale.shipment.get](../shipment/sale-shipment-get.md) ||
+[`sale_order_shipment.id`](../data-types.md#sale_order_shipment) | Identifier of the deleted shipment. The shipment has already been deleted, so the [sale.shipment.get](../shipment/sale-shipment-get.md) method will not return its data. If the handler needs the shipment fields, store them in advance, for example, on the [OnShipmentEntitySaved](./on-shipment-entity-saved.md) event ||
 |#
 
 ### Parameter auth {#auth}
@@ -103,4 +103,6 @@ The structure is described [below](#fields) ||
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-shipment-entity-saved.md)
+- [{#T}](./on-order-deleted.md)

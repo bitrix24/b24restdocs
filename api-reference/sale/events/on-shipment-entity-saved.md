@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `OnShipmentEntitySaved` event occurs immediately after the shipment is saved.
+The `OnShipmentEntitySaved` event occurs right after a shipment is created or changed manually or with the [sale.shipment.add](../shipment/sale-shipment-add.md), [sale.shipment.update](../shipment/sale-shipment-update.md) methods. If the shipment did not change when the order was saved, the event is not sent.
 
 {% note info "" %}
 
@@ -92,7 +92,7 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order_shipment.id`](../data-types.md) | Identifier of the shipment. To retrieve all fields of the shipment by identifier, use the method [sale.shipment.get](../shipment/sale-shipment-get.md) ||
+[`sale_order_shipment.id`](../data-types.md#sale_order_shipment) | Identifier of the shipment. To retrieve all fields of the shipment by identifier, use the method [sale.shipment.get](../shipment/sale-shipment-get.md) ||
 |#
 
 ### Parameter auth {#auth}
@@ -103,4 +103,7 @@ The structure is described [below](#fields) ||
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-shipment-deleted.md)
+- [{#T}](./on-sale-order-saved.md)
+- [{#T}](./on-order-entity-saved.md)

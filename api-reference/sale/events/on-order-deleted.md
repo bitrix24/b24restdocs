@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `OnOrderDeleted` event is triggered when an order is directly deleted from the database.
+The `OnOrderDeleted` event is triggered after an order is deleted from the database manually or with the [sale.order.delete](../order/sale-order-delete.md) method. The [OnSaleBeforeOrderDelete](./on-sale-before-order-delete.md) event fires earlier, before the order is deleted from the database.
 
 {% note info "" %}
 
@@ -92,7 +92,7 @@ The structure is described [below](#fields) ||
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`sale_order.id`](../data-types.md) | Order identifier. To retrieve all fields of the order by identifier, use the method [sale.order.get](../order/sale-order-get.md) ||
+[`sale_order.id`](../data-types.md#sale_order) | Identifier of the deleted order. The order has already been deleted, so the [sale.order.get](../order/sale-order-get.md) method will not return its data. To retrieve the external identifier `XML_ID` of the order being deleted, use the [OnSaleBeforeOrderDelete](./on-sale-before-order-delete.md) event ||
 |#
 
 ### Parameter auth {#auth}
@@ -103,6 +103,7 @@ The structure is described [below](#fields) ||
 
 - [{#T}](../../events/index.md)
 - [{#T}](../../events/event-bind.md)
+- [{#T}](./index.md)
 - [{#T}](./on-order-entity-saved.md)
 - [{#T}](./on-sale-order-saved.md)
 - [{#T}](./on-sale-before-order-delete.md)

@@ -23,7 +23,9 @@ The method `sale.shipmentproperty.delete` deletes a shipment property.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_shipment_property.id`](../data-types.md) | Identifier of the shipment property ||
+[`sale_shipment_property.id`](../data-types.md#sale_shipment_property) | Identifier of the shipment property.
+
+You can retrieve the identifier using the [sale.shipmentproperty.list](./sale-shipment-property-list.md) method. The [sale.shipmentproperty.add](./sale-shipment-property-add.md) method returns the identifier of a new property ||
 |#
 
 ## Code Examples
@@ -162,11 +164,7 @@ The method `sale.shipmentproperty.delete` deletes a shipment property.
             ->getResponseData()
             ->getResult();
     
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Info: ' . $result->data();
-        }
+        echo 'Success: ' . print_r($result, true);
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -263,8 +261,8 @@ HTTP status: **400**
 
 ```json
 {	
-   "error":200840400001,
-   "error_description":"property does not exist"
+   "error":"200840400001",
+   "error_description":"property is not exists"
 }
 ```
 

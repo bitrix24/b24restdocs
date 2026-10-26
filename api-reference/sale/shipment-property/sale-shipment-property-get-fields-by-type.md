@@ -23,17 +23,17 @@ The method `sale.shipmentproperty.getfieldsbytype` retrieves the available field
 || **Name**
 `type` | **Description** ||
 || **type***
-[`string`](../../data-types.md) | Shipment property type
+[`string`](../../data-types.md) | Shipment property type.
+
 Possible values:
-`STRING`
-`Y/N`
-`NUMBER`
-`ENUM`
-`FILE`
-`DATE`
-`LOCATION`
-`ADDRESS`
- ||
+- `STRING` — string
+- `Y/N` — yes or no
+- `NUMBER` — number
+- `ENUM` — list
+- `FILE` — file
+- `DATE` — date
+- `LOCATION` — location
+- `ADDRESS` — address ||
 |#
 
 ## Code Examples
@@ -256,142 +256,190 @@ HTTP Status: **200**
 
 ```json
 {
-   "result": {
-      "property": {
-         "active": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
-         },
-         "code": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
-         },
-         "defaultValue": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
-         },
-         "description": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
-         },
-         "id": {
-            "isImmutable": false,
-            "isReadOnly": true,
-            "isRequired": false,
-            "type": "integer"
-         },
-         "isFiltered": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
-         },
-         "multiple": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
-         },
-         "name": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": true,
-            "type": "string"
-         },
-         "personTypeId": {
-            "isImmutable": true,
-            "isReadOnly": false,
-            "isRequired": true,
-            "type": "integer"
-         },
-         "propsGroupId": {
-            "isImmutable": true,
-            "isReadOnly": false,
-            "isRequired": true,
-            "type": "integer"
-         },
-         "required": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
-         },
-         "settings": {
-            "fields": {
-               "max": {
-                  "isImmutable": false,
-                  "isReadOnly": false,
-                  "isRequired": false,
-                  "type": "integer"
-               },
-               "min": {
-                  "isImmutable": false,
-                  "isReadOnly": false,
-                  "isRequired": false,
-                  "type": "integer"
-               },
-               "step": {
-                  "isImmutable": false,
-                  "isReadOnly": false,
-                  "isRequired": false,
-                  "type": "integer"
-               }
+    "result": {
+        "property": {
+            "active": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "char"
             },
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "datatype"
-         },
-         "sort": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "integer"
-         },
-         "type": {
-            "isImmutable": true,
-            "isReadOnly": false,
-            "isRequired": true,
-            "type": "string"
-         },
-         "userProps": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
-         },
-         "util": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
-         },
-         "xmlId": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
-         }
-      }
-   },
-   "time": {
-      "start": 1712325081.703631,
-      "finish": 1712325082.067712,
-      "duration": 0.36408114433288574,
-      "processing": 0.023890972137451172,
-      "date_start": "2024-04-05T16:51:21+02:00",
-      "date_finish": "2024-04-05T16:51:22+02:00"
-   }
+            "code": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "defaultValue": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "any"
+            },
+            "description": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "id": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "isFiltered": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "char"
+            },
+            "multiple": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "char"
+            },
+            "name": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
+            },
+            "personTypeId": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
+            },
+            "propsGroupId": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
+            },
+            "required": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "char"
+            },
+            "settings": {
+                "fields": {
+                    "max": {
+                        "isImmutable": false,
+                        "isReadOnly": false,
+                        "isRequired": false,
+                        "type": "integer"
+                    },
+                    "min": {
+                        "isImmutable": false,
+                        "isReadOnly": false,
+                        "isRequired": false,
+                        "type": "integer"
+                    },
+                    "step": {
+                        "isImmutable": false,
+                        "isReadOnly": false,
+                        "isRequired": false,
+                        "type": "integer"
+                    }
+                },
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "datatype"
+            },
+            "sort": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "type": {
+                "isImmutable": true,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
+            },
+            "userProps": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "char"
+            },
+            "util": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "char"
+            },
+            "xmlId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            }
+        }
+    },
+    "time": {
+        "start": 1793012310,
+        "finish": 1793012310.892729,
+        "duration": 0.8927290439605713,
+        "processing": 0,
+        "date_start": "2026-10-26T12:58:30+02:00",
+        "date_finish": "2026-10-26T12:58:30+02:00",
+        "operating_reset_at": 1793012880,
+        "operating": 0
+    }
 }
 ```
+
+### Returned Data
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Root element of the response ||
+|| **property**
+[`object`](../../data-types.md) | Shipment property fields available for the specified type. The key is the field name, and the value is an object describing the field. The structure is described [below](#field)
+
+The set of fields depends on the type:
+- all types — common fields `id`, `personTypeId`, `propsGroupId`, `name`, `type`, `code`, `active`, `util`, `userProps`, `isFiltered`, `sort`, `description`, `required`, `multiple`, `defaultValue`, `settings`, `xmlId`
+- `STRING` — additionally `isProfileName`, `isPayer`, `isEmail`, `isPhone`, `isZip`, `isAddress`
+- `LOCATION` — additionally `isLocation`, `isLocation4tax`, `inputFieldLocation`
+- `ADDRESS` — additionally `isAddressFrom`, `isAddressTo`
+
+Field values are described in the [sale_order_property](../data-types.md#sale_order_property) type ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Field Description {#field}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **type**
+[`string`](../../data-types.md) | Field value type: `integer`, `string`, `char`, or `any`. For the `defaultValue` field, it is `any`; for the `settings` field, it is `datatype` ||
+|| **isRequired**
+[`boolean`](../../data-types.md) | The field is required when creating a property ||
+|| **isReadOnly**
+[`boolean`](../../data-types.md) | The field is read-only: its value cannot be set when creating or updating a property ||
+|| **isImmutable**
+[`boolean`](../../data-types.md) | The field is set only when creating a property and cannot be changed afterwards ||
+|| **fields**
+[`object`](../../data-types.md) | Present only in the `settings` field. Settings available for the property type, in the same format: the key is the setting name, and the value is the field description.
+
+The set of settings depends on the type:
+- `STRING` — `minlength`, `maxlength`, `pattern`, `multiline`, `cols`, `rows`, `size`
+- `NUMBER` — `min`, `max`, `step`
+- `ENUM` — `multielement`, `size`
+- `FILE` — `maxsize`, `accept`
+- `DATE` — `time`
+- `Y/N`, `LOCATION`, `ADDRESS` — no settings, `fields` is an empty array ||
+|#
 
 ## Error Handling
 
@@ -399,8 +447,8 @@ HTTP Status: **400**
 
 ```json
 {
-   "error": 0,
-   "error_description": "error"
+   "error":"200850000008",
+   "error_description":"type is out of range"
 }
 ```
 
@@ -410,7 +458,9 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** ||
+|| `200850000008` | An invalid `type` value was passed ||
 || `200040300010` | Insufficient permissions to read available shipment property fields ||
+|| `100` | The `type` parameter is not specified ||
 || `0` | Other errors (e.g., fatal errors) ||
 |#
 
