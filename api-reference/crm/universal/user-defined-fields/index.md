@@ -33,13 +33,14 @@ The documentation has several sections about custom fields. Choose the one that 
 
 **CRM Objects.** Object methods `crm.*.userfield.*` use reference information from this section for [leads](../../leads/userfield/index.md), [deals](../../deals/user-defined-fields/index.md), [contacts](../../contacts/userfield/index.md), [companies](../../companies/userfields/index.md), [estimates](../../quote/user-field/index.md), and [requisites](../../requisites/user-fields/index.md).
 
-## Key Terms
+## Key Terms {#key-terms}
 
 - `ENTITY_ID` — code of the CRM object to which the field is linked
 - `FIELD_NAME` — code of the custom field in the format `UF_CRM_*`
 - `USER_TYPE_ID` — data type of the custom field; a complete list of values is returned by [crm.userfield.types](./crm-userfield-types.md)
 - `SETTINGS` — field settings that depend on the selected type
 - `LIST` — set of elements for the `enumeration` type field
+- `MULTIPLE` — multiple field flag: `Y` or `N`. Values of a multiple field are passed as an array to [crm.item.add](../crm-item-add.md) and [crm.item.update](../crm-item-update.md), even if there is only one value, and [crm.item.get](../crm-item-get.md) returns them as an array
 
 ## How to Get Started
 

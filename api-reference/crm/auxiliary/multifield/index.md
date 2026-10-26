@@ -11,6 +11,14 @@ Choose a tool for developing with an AI agent:
 
 In multiple fields, CRM stores the phone numbers, e-mail addresses, websites, and messenger contacts of leads, contacts, and companies. A single field can hold several values — for example, a contact's work and mobile phone numbers. Each value has its own subtype: `WORK`, `MOBILE`, and others.
 
+Another multiple field, `LINK`, is a service field: Open Channels use it to retain the ID of the user linked to the object through a chat. The field is populated automatically, so you do not need to pass it.
+
+{% note info "" %}
+
+This section covers only the system multiple fields with contact details that CRM passes in `fm` or in the `PHONE`, `EMAIL`, `WEB`, `IM`, and `LINK` fields. Multiple custom fields `UF_CRM_*` are described in [Custom Fields in CRM](../../universal/user-defined-fields/index.md#key-terms).
+
+{% endnote %}
+
 > Quick Navigation: [All Methods](#all-methods)
 
 ## How to Populate a Multiple Field
@@ -39,7 +47,7 @@ How you pass contact details depends on the methods you use: universal or deprec
 
 **Universal methods.** The [crm.item.add](../../universal/crm-item-add.md), [crm.item.update](../../universal/crm-item-update.md), and [crm.item.get](../../universal/crm-item-get.md) methods work with contact details in the `fm` field. When creating an object, pass an array of objects with the `typeId`, `valueType`, and `value` keys to this field, for example `{"typeId": "PHONE", "valueType": "WORK", "value": "+493012345678"}`. In the read response, each value also has an `id`.
 
-**Deprecated methods.** The development of the lead, contact, and company methods has been halted. They accept and return contact details in the `PHONE`, `EMAIL`, `WEB`, and `IM` fields. The value of each field is an array of [crm_multifield](../../data-types.md#crm_multifield) objects. Methods for each object:
+**Deprecated methods.** The development of the lead, contact, and company methods has been halted. They accept and return contact details in the `PHONE`, `EMAIL`, `WEB`, and `IM` fields, as well as the `LINK` service field. The value of each field is an array of [crm_multifield](../../data-types.md#crm_multifield) objects. Methods for each object:
 
 - lead — [crm.lead.add](../../leads/crm-lead-add.md), [crm.lead.update](../../leads/crm-lead-update.md), [crm.lead.get](../../leads/crm-lead-get.md)
 - contact — [crm.contact.add](../../contacts/crm-contact-add.md), [crm.contact.update](../../contacts/crm-contact-update.md), [crm.contact.get](../../contacts/crm-contact-get.md)

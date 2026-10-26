@@ -103,7 +103,8 @@ Activity fields reference service enumerations. The field value is an integer fr
 Can take values `WORK`, `MOBILE`, `FAX`, `HOME`, `PAGER`, `MAILING`, `OTHER` for phone,
 `WORK`, `HOME`, `MAILING`, `OTHER` for email,
 `WORK`, `HOME`, `VK`, `LIVEJOURNAL`, `TWITTER`, `OTHER` for website,
-`TELEGRAM`, `VK`, `SKYPE`, `VIBER`, `BITRIX24`, `OPENLINE`, `IMOL`, `ICQ`, `MSN`, `JABBER`, `OTHER` for messenger. ||
+`TELEGRAM`, `VK`, `SKYPE`, `VIBER`, `BITRIX24`, `OPENLINE`, `IMOL`, `ICQ`, `MSN`, `JABBER`, `OTHER` for messenger,
+`USER` for the `LINK` service field. ||
 |#
 
 ### crm_item_product_row

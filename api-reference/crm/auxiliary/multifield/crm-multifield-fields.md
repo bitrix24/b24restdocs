@@ -329,7 +329,7 @@ HTTP status: **200**
 || `EMAIL` — e-mail | `WORK` — work, `HOME` — home, `MAILING` — for newsletters, `OTHER` — other ||
 || `WEB` — website | `WORK` — corporate, `HOME` — personal, `FACEBOOK`, `VK`, `LIVEJOURNAL`, `TWITTER`, `OTHER` — other ||
 || `IM` — messenger | `FACEBOOK`, `TELEGRAM`, `VK`, `VIBER`, `INSTAGRAM`, `BITRIX24` — Bitrix24 Network, `OPENLINE` — Live Chat, `IMOL` — Open Channel, `OTHER` — other ||
-|| `LINK` — link | `USER` — user ||
+|| `LINK` — service link | `USER` — ID of the user linked to the object through an Open Channel chat. The field is populated automatically ||
 |#
 
 The `SKYPE`, `ICQ`, `MSN`, and `JABBER` messenger values are deprecated. Bitrix24 offers them only if these messengers were previously used in your CRM.
