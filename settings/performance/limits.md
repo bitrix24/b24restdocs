@@ -30,7 +30,7 @@ In the Bitrix24 self-hosted version, request execution time depends on server se
 
 ### SQL Query Time Limit
 
-Bitrix24 can limit the execution time of a single SQL query inside a REST method. The limit applies to classic methods and REST 3.0 methods. In the self-hosted version, it is disabled by default. An administrator enables it in the `rest` module settings and sets the limit in seconds, 30 seconds by default. The setting is available only if the database supports it.
+Bitrix24 limits the execution time of a single SQL query inside a REST method. The limit applies to classic methods and REST 3.0 methods. In the cloud version, the limit value is set by the Bitrix24 configuration. In the self-hosted version, it is disabled by default. An administrator enables it in the `rest` module settings and sets the limit in seconds, 30 seconds by default. The setting is available only if the database supports it.
 
 If an SQL query does not fit within the limit, the method returns the `BITRIX_REST_V3_EXCEPTION_LIMITER_QUERYTIMELIMITEXCEPTION` error with the text "Request canceled: query time limit exceeded" and HTTP status 503. The `Retry-After` header contains the limit in seconds. Classic methods based on Engine controllers return HTTP status 400 without `Retry-After`. In [batch](../how-to-call-rest-api/batch.md), the error is returned in the result of the subrequest that exceeded the limit.
 

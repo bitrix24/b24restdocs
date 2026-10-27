@@ -83,10 +83,7 @@ In this example, the API takes the `tasks_list` subrequest result, extracts the 
 
 A value from `$ref` or `$refArray` is cast to the type of the field it is substituted into. This works in `fields`, in nested objects, and in `filter`, including the `in` condition. If the value cannot be cast, batch returns the `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION` error with HTTP status 400. For example, this happens if you substitute string task titles into a filter by `id`.
 
-The following values are not cast:
-
-- values passed explicitly in the request. The string `"289"` in a filter by `id` causes the `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION` error
-- a value from `$ref` substituted into the `id` parameter. If you substitute a string, batch returns the `INTERNAL_SERVER_ERROR` error with HTTP status 500
+Values passed explicitly in the request are not cast. The string `"289"` in a filter by `id` causes the `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION` error.
 
 ## Code Examples
 
