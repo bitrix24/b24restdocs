@@ -11,7 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method:
+> - any user — for their own workday
+> - a user with the "Anybody's Clock-in And Clock-out" or "Edit All Records" permission — for another employee's workday
 
 The method `timeman.status` retrieves information about the current workday.
 
@@ -21,9 +23,11 @@ The method `timeman.status` retrieves information about the current workday.
 || **Name**
 `type` | **Description** ||
 || **USER_ID**
-[`integer`](../../data-types.md) | User identifier.
+
 
-By default — the identifier of the current user ||
+Defaults to the current user.
+
+To pass the ID of another employee, the "Anybody's Clock-in And Clock-out" or "Edit All Records" permission is required ||
 |#
 
 ## Code examples
@@ -374,9 +378,12 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
 || empty string | User not found | User with the specified `USER_ID` not found ||
+|| empty string | User does not have access to managing other users work time | The user does not have permission to manage other employees' work time. The error occurs if the ID of another employee is passed in `USER_ID` ||
 |#
 
-## Continue exploring 
+{% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue exploring
 
 - [{#T}](./index.md)
 - [{#T}](./timeman-open.md)

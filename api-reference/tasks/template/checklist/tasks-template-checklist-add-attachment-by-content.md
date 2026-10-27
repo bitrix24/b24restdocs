@@ -36,13 +36,17 @@ The checklist item identifier can be obtained when [creating a new item](./tasks
 
 ### Parameter attachmentParameters {#attachmentparameters}
 
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
-|| **NAME**
-[`string`](../../../data-types.md) | Name of the created file ||
-|| **CONTENT**
-[`string`](../../../data-types.md) | Content of the file in base64 format ||
+|| **NAME***
+[`string`](../../../data-types.md) | Name of the created file with an extension, for example `report.txt` ||
+|| **CONTENT***
+[`string`](../../../data-types.md) | Content of the file in base64 format.
+
+The file is saved to the uploaded files folder on Drive of the user who calls the method. The method has no separate size limit; the [general request size limits](../../../files/how-to-upload-files.md#limits) apply ||
 |#
 
 {% note tip "Typical Use-Cases and Scenarios" %}
@@ -125,7 +129,8 @@ The checklist item identifier can be obtained when [creating a new item](./tasks
           image: string
           isCollaber: boolean
         }>
-        attachments: unknown[]
+        // Key is the attachment id, value is the Disk file id with the "n" prefix; [] when there are no files
+        attachments: Record<string, string> | []
         nodeId: number | null
         templateId: number
       }
@@ -440,16 +445,20 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
-|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing ||
-|| `400` | `100` | Could not find value for parameter {attachmentParameters} | Required parameter `attachmentParameters` is missing or empty ||
-|| `400` | `0` | An error occurred while adding the attachment | Non-existent or empty `checkListItemId` specified ||
-|| `400` | `0` | Modification of the item: action is not available | The user does not have permission to modify the task template ||
+|| `400` | `100` | Could not find value for parameter {checkListItemId} | Required parameter `checkListItemId` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {templateId}. Should be value of type int. | `templateId` contains a value of a different type instead of a number ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {checkListItemId}. Should be value of type int. | `checkListItemId` contains a value of a different type instead of a number ||
+|| `400` | `0` | Access to task template was denied | No permission to read the template, `templateId` is less than or equal to `0`, or the `checkListItemId` item is not in the template or has been deleted ||
+|| `400` | `100` | Could not find value for parameter {attachmentParameters} | Required parameter `attachmentParameters` is missing ||
+|| `400` | `0` | Error adding attachment | `NAME` or `CONTENT` is missing in `attachmentParameters`, or `CONTENT` could not be decoded from base64 ||
+|| `400` | `0` | Edit item: action unavailable | No permission to modify the task template ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-template-checklist-add.md)
 - [{#T}](./tasks-template-checklist-update.md)
 - [{#T}](./tasks-template-checklist-get.md)

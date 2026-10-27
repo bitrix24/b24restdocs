@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `booking.v1.booking.client.set` sets clients for the specified booking.
+The method `booking.v1.booking.client.set` replaces the list of booking clients with the provided list.
 
 ## Method Parameters
 
@@ -24,25 +24,48 @@ The method `booking.v1.booking.client.set` sets clients for the specified bookin
 `type` | **Description** ||
 || **bookingId***
 [`integer`](../../../data-types.md) | Booking identifier.
-Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking-add.md) and [booking.v1.booking.list](../booking-v1-booking-list.md)  ||
+
+Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking-add.md) and [booking.v1.booking.list](../booking-v1-booking-list.md) ||
 || **clients***
-[`array`](../../../data-types.md) | An array of objects containing information about clients [(detailed description)](#clients) ||
+[`array`](../../../data-types.md) | Array of booking clients [(detailed description)](#clients). The array can contain several contacts and companies.
+
+The method replaces the entire current list: clients that are not in the array are unlinked from the booking. To add a client to those already linked, retrieve the current list using the method [booking.v1.booking.client.list](./booking-v1-booking-client-list.md) and pass it together with the new client.
+
+An empty array `[]` removes all clients, like the method [booking.v1.booking.client.unset](./booking-v1-booking-client-unset.md). The exception is a booking linked to a deal that already has no clients: in this case, the method fills in the contacts and the company from the deal ||
 |#
 
 ### Parameter clients {#clients}
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
+Pass the object keys in lowercase: `id`, `type`, `module`, `code`. The method does not recognize uppercase keys and returns the `Required fields` error.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Client identifier, can be obtained using the method [crm.item.list](../../../crm/universal/crm-item-list.md) for contacts and companies ||
+[`integer`](../../../data-types.md) | Identifier of an existing CRM contact or company.
+
+You can retrieve the identifier using the method [crm.item.list](../../../crm/universal/crm-item-list.md): with `entityTypeId = 3` for contacts, with `entityTypeId = 4` for companies ||
 || **type***
-[`object`](../../../data-types.md) | Client type in the format `{"module": "crm", "code": "CONTACT"}`.
-Possible values for `code`:
+[`object`](../../../data-types.md) | Client type [(detailed description)](#type) ||
+|#
+
+### Parameter type {#type}
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **module***
+[`string`](../../../data-types.md) | Client module. Possible value: `crm` ||
+|| **code***
+[`string`](../../../data-types.md) | Client type code. Possible values:
 - `CONTACT` — [CRM contact](../../../crm/contacts/index.md)
 - `COMPANY` — [CRM company](../../../crm/companies/index.md)
-  
-The object structure is returned by the method [booking.v1.clienttype.list](../../booking-v1-clienttype-list.md) ||
+
+The list of available types is returned by the method [booking.v1.clienttype.list](../../booking-v1-clienttype-list.md) ||
 |#
 
 ## Code Examples
@@ -57,8 +80,8 @@ The object structure is returned by the method [booking.v1.clienttype.list](../.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"bookingId":14,"clients":[{"id":1,"type":{"module":"crm","code":"CONTACT"}},{"id":2,"type":{"module":"crm","code":"CONTACT"}}],"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.booking.client.set
+    -d '{"bookingId":14,"clients":[{"id":1,"type":{"module":"crm","code":"CONTACT"}},{"id":2,"type":{"module":"crm","code":"CONTACT"}}]}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.client.set
     ```
 
 - cURL (OAuth)
@@ -67,8 +90,8 @@ The object structure is returned by the method [booking.v1.clienttype.list](../.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"bookingId":14,"clients":[{"id":1,"type":{"module":"crm","code":"CONTACT"}},{"id":2,"type":{"module":"crm","code":"CONTACT"}}]}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.client.set
+    -d '{"bookingId":14,"clients":[{"id":1,"type":{"module":"crm","code":"CONTACT"}},{"id":2,"type":{"module":"crm","code":"CONTACT"}}],"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.booking.client.set
     ```
 
 - JS (TS)
@@ -244,17 +267,10 @@ The object structure is returned by the method [booking.v1.clienttype.list](../.
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error setting booking client: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -307,14 +323,14 @@ The object structure is returned by the method [booking.v1.clienttype.list](../.
                         'module' => 'crm',
                         'code' => 'CONTACT'
                     ]
-                },
+                ],
                 [
                     'id' => 2,
                     'type' => [
                         'module' => 'crm',
                         'code' => 'CONTACT'
                     ]
-                }
+                ]
             ]
         ]
     );
@@ -396,7 +412,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 1021,
+    "error": "1021",
     "error_description": "Booking not found"
 }
 ```
@@ -407,14 +423,20 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `0` | `Required fields:` | Required parameter not provided within `clients` ||
-|| `1021` | `Booking not found` | Booking with the specified `id` not found ||
-|| `100` | `Could not find value for parameter` | Required parameter not provided ||
+|| `100` | `Could not find value for parameter {bookingId}` | The required parameter `bookingId` is not provided ||
+|| `100` | `Could not find value for parameter {clients}` | The required parameter `clients` is not provided ||
+|| `100` | `Invalid value {abc} to match with parameter {bookingId}. Should be value of type int.` | `bookingId` contains a value of a different type instead of a number ||
+|| `100` | `Invalid value {abc} to match with parameter {clients}. Should be value of type array.` | `clients` is not an array ||
+|| `0` | `Required fields: id, type` | An element of `clients` is missing `id`, `type`, `type.module`, or `type.code`, or the keys are passed in uppercase. The error text lists the missing fields ||
+|| `1021` | `Booking not found` | Booking with the specified `bookingId` not found ||
+|| `1025` | `Client type not found` | `type` contains an unknown `module` and `code` pair, for example `"code": "LEAD"` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-booking-client-unset.md)
 - [{#T}](./booking-v1-booking-client-list.md)
+- [{#T}](../../booking-v1-clienttype-list.md)

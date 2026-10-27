@@ -2,7 +2,7 @@
 
 > Scope: [`cashbox`](../../api-reference/scopes/permissions.md)
 >
-> Who can execute methods: administrator
+> Who can execute methods: CRM administrator with the "Edit CRM preferences" permission
 
 {% note tip "" %}
 
@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 In Bitrix24, you can connect an external cash register and automatically print receipts. When a customer pays for an order, Bitrix24 sends the receipt data to the specified URL. An external service then generates and registers the fiscal receipt.
 
-As a result of the scenario, a REST cash register will appear in the Sales Center, and the external service will be able to accept receipt-print requests and return the print status.
+As a result of the scenario, a REST cash register will appear in Sales enablement, and the external service will be able to accept receipt-print requests and return the print status.
 
 The scenario consists of three steps.
 
@@ -31,7 +31,8 @@ Prepare the values used in the examples:
 - a public HTTPS address of the receipt print page `PRINT_URL`
 - a public HTTPS address of the receipt status page `CHECK_URL`
 - a unique cash register handler code, for example `my_rest_cashbox`
-- the authorization data of the external cash register that the administrator will enter in the cash register settings
+- the authorization data of the external cash register that the administrator will enter in the cash register settings. The external service uses this data to verify requests to `PRINT_URL`
+- a server for the `PRINT_URL` and `CHECK_URL` pages. The examples in this tutorial are written in Node.js with the `express` package
 
 Do not place login credentials, passwords, or access tokens in public code. Pass secrets through environment variables or secure application storage.
 
@@ -418,7 +419,7 @@ If the cashbox is added successfully, the method returns its identifier. Store t
 }
 ```
 
-You can verify that the cashbox is connected to Bitrix24 in the Sales Center.
+You can verify that the cashbox is connected to Bitrix24 in Sales enablement.
 
 ![Cash Register](_images/add_cash.png)
 
@@ -432,11 +433,13 @@ The `PRINT_URL` page is the address to which Bitrix24 sends the receipt data for
 
 Input data processing, document generation, and the return of the printing result occur at `PRINT_URL`.
 
+Bitrix24 sends the data in a POST request in the `application/x-www-form-urlencoded` format. In addition to the receipt data, the request contains the `cashbox_params` object — the values of the `CONFIG` fields that the administrator filled in the cash register settings in step 2. The external service uses the login and password from `cashbox_params.AUTH` to verify that the request came from the configured cash register.
+
 Minimum `PRINT_URL` page logic:
 
 1. Receive receipt data from Bitrix24
-2. Verify that the request contains receipt data
-3. Pass the receipt to the external cash register
+2. Compare `cashbox_params.AUTH.LOGIN` and `cashbox_params.AUTH.PASSWORD` with the values stored by the external service. If they do not match, return `ERRORS`
+3. Verify that the request contains receipt data and pass the receipt to the external cash register
 4. Return `UUID` if the receipt is accepted for printing, or an `ERRORS` array if printing is impossible
 5. Store the relation between `UUID` and the order or receipt in the external system so that the `CHECK_URL` page can return the status
 
@@ -447,15 +450,29 @@ import express from 'express'
 import { randomUUID } from 'crypto'
 
 const app = express()
-app.use(express.json())
+// Bitrix24 sends data in the application/x-www-form-urlencoded format
 app.use(express.urlencoded({ extended: true }))
 
+// Login and password that the administrator enters in the cash register settings in step 2.
+// In the step 2 example, these are rest_login and rest_password. Store them in environment variables, not in code
+const CASHBOX_LOGIN = process.env.CASHBOX_LOGIN
+const CASHBOX_PASSWORD = process.env.CASHBOX_PASSWORD
+
+// In-memory receipt storage, for the example only
 const checks = new Map()
 
 app.post('/rest_print.php', async (req, res) => {
     const payload = req.body
+    const auth = payload?.cashbox_params?.AUTH ?? {}
 
-    if (!payload || Object.keys(payload).length === 0) {
+    if (auth.LOGIN !== CASHBOX_LOGIN || auth.PASSWORD !== CASHBOX_PASSWORD) {
+        res.json({
+            ERRORS: ['Invalid cash register authorization data']
+        })
+        return
+    }
+
+    if (!payload.items || !payload.payments) {
         res.json({
             ERRORS: ['Receipt data was not passed']
         })
@@ -464,6 +481,8 @@ app.post('/rest_print.php', async (req, res) => {
 
     const uuid = randomUUID()
 
+    // Pass the payload to the external cash register here. When the cash register prints the receipt,
+    // update the record: status = 'DONE' and the fiscal details, or status = 'ERROR' and the error text
     checks.set(uuid, {
         status: 'WAIT',
         createdAt: Date.now(),
@@ -474,18 +493,19 @@ app.post('/rest_print.php', async (req, res) => {
         UUID: uuid
     })
 })
+
+app.listen(3000)
 ```
 
-In a production service, store `UUID`, the status, and the receipt data in a database rather than in process memory.
+In a production service, store `UUID`, the status, and the receipt data in a database rather than in process memory. The server must be available at the HTTPS address specified in `PRINT_URL`: for example, run it behind a reverse proxy with a TLS certificate.
 
 - If printing fails, the JSON array looks like this:
 
    ```json
    {
        "ERRORS": [
-           "Error message",
-           "Error message",
-           ...
+           "Invalid cash register authorization data",
+           "Receipt data was not passed"
        ]
    }
    ```
@@ -514,11 +534,13 @@ Minimum `CHECK_URL` page logic:
 4. If printing finished with an error, return `STATUS: ERROR` and the error text
 5. If the receipt is printed, return `STATUS: DONE` and the fiscal details
 
-Example `CHECK_URL` handler in Node.js:
+In a request to `CHECK_URL`, Bitrix24 passes only the `uuid` field in lowercase — the value returned by the `PRINT_URL` page. This request does not contain a login or password, so respond only to `uuid` values issued by your service.
+
+Example `CHECK_URL` handler in Node.js. The code continues the `PRINT_URL` example and uses the same `checks` storage:
 
 ```js
 app.post('/rest_check.php', async (req, res) => {
-    const uuid = req.body.UUID
+    const uuid = req.body.uuid
 
     if (!uuid || !checks.has(uuid)) {
         res.json({
@@ -695,7 +717,7 @@ If the receipt is successfully saved, the method returns `true`.
 
 ## Check the Result
 
-After configuring the cash register, open the Sales Center and verify that the REST cash register is available in the list of cash registers. After a test payment, verify that the external service received the request to `PRINT_URL`, returned `UUID`, and that Bitrix24 received the status through `CHECK_URL` or the `sale.cashbox.check.apply` method.
+After configuring the cash register, open Sales enablement and verify that the REST cash register is available in the list of cash registers. After a test payment, verify that the external service received the request to `PRINT_URL`, returned `UUID`, and that Bitrix24 received the status through `CHECK_URL` or the `sale.cashbox.check.apply` method.
 
 Through REST, check the handler and the cash register using the [sale.cashbox.handler.list](../../api-reference/sale/cashbox/sale-cashbox-handler-list.md) and [sale.cashbox.list](../../api-reference/sale/cashbox/sale-cashbox-list.md) methods.
 
@@ -713,7 +735,7 @@ Through REST, check the handler and the cash register using the [sale.cashbox.ha
     const cashboxResponse = await $b24.actions.v2.call.make({
         method: 'sale.cashbox.list',
         params: {
-            SELECT: ['ID', 'NAME', 'ACTIVE', 'EMAIL'],
+            SELECT: ['ID', 'NAME', 'NUMBER_KKM', 'ACTIVE', 'ENABLED'],
             FILTER: { '=NAME': 'REST cash register' },
         },
         requestId: 'cashbox-list',
@@ -730,7 +752,7 @@ Through REST, check the handler and the cash register using the [sale.cashbox.ha
     cashboxes = token.call_method(
         "sale.cashbox.list",
         {
-            "SELECT": ["ID", "NAME", "ACTIVE", "EMAIL"],
+            "SELECT": ["ID", "NAME", "NUMBER_KKM", "ACTIVE", "ENABLED"],
             "FILTER": {"=NAME": "REST cash register"},
         },
     )
@@ -746,7 +768,7 @@ Through REST, check the handler and the cash register using the [sale.cashbox.ha
     $handlerResponse = $sb->core->call('sale.cashbox.handler.list', []);
 
     $cashboxResponse = $sb->core->call('sale.cashbox.list', [
-        'SELECT' => ['ID', 'NAME', 'ACTIVE', 'EMAIL'],
+        'SELECT' => ['ID', 'NAME', 'NUMBER_KKM', 'ACTIVE', 'ENABLED'],
         'FILTER' => ['=NAME' => 'REST cash register'],
     ]);
 
@@ -755,13 +777,51 @@ Through REST, check the handler and the cash register using the [sale.cashbox.ha
     ```
 {% endlist %}
 
-The scenario is successful if three results are confirmed:
+The `sale.cashbox.handler.list` method returns all REST cash register handlers. Find the handler with `CODE: "my_rest_cashbox"` in the response: its `ID` matches the `result` value from step 1, and `SETTINGS` contains the `PRINT_URL` and `CHECK_URL` addresses. A fragment of the response, with the `CONFIG` block shortened:
 
-- the `sale.cashbox.handler.add` method returned the handler identifier
-- the `sale.cashbox.add` method returned the cash register identifier
+```json
+{
+    "result": [
+        {
+            "ID": "1",
+            "NAME": "My REST cash register",
+            "CODE": "my_rest_cashbox",
+            "SORT": "100",
+            "SETTINGS": {
+                "PRINT_URL": "https://example.com/rest_print.php",
+                "CHECK_URL": "https://example.com/rest_check.php",
+                "CONFIG": {}
+            }
+        }
+    ]
+}
+```
+
+The `sale.cashbox.list` method returns the cash register with the `ID` from step 2. The values `ACTIVE: "Y"` and `ENABLED: "Y"` indicate that the cash register is enabled and can accept receipts:
+
+```json
+{
+    "result": [
+        {
+            "ID": "1",
+            "NAME": "REST cash register",
+            "NUMBER_KKM": "1",
+            "ACTIVE": "Y",
+            "ENABLED": "Y"
+        }
+    ]
+}
+```
+
+The `sale.cashbox.list` method does not return the handler code: the `REST_CODE` field is not available in `SELECT`. Check the link between the cash register and the `my_rest_cashbox` handler in the cash register card in Sales enablement. Via REST, the link is confirmed by a successful `sale.cashbox.add` response in step 2: if there is no handler with the passed `REST_CODE`, the method returns the `ERROR_CHECK_FAILURE` error with the text `Rest handler with code ... not found`.
+
+The scenario is successful if:
+
+- `sale.cashbox.handler.list` contains a handler with `CODE: "my_rest_cashbox"` and the required addresses
+- `sale.cashbox.list` contains a cash register with the `ID` from step 2, `ACTIVE: "Y"`, and `ENABLED: "Y"`
 - the `sale.cashbox.check.apply` method returned `true` if the print result was submitted manually
 
-## Errors and Diagnostics
+## Errors and Diagnostics {#errors}
 
 If a method returns an error, verify the request data and the external service state.
 
@@ -773,13 +833,15 @@ If a method returns an error, verify the request data and the external service s
 || `ERROR_CHECK_NOT_FOUND` | The receipt with the specified `UUID` was not found. Check that `UUID` matches the value returned by the `PRINT_URL` page ||
 || `ERROR_HANDLER_ADD`, `ERROR_CASHBOX_ADD`, `ERROR_CHECK_APPLY` | An error occurred while adding the handler, creating the cash register, or saving the print result. Review `error_description` for details ||
 || Print error at `PRINT_URL` | Return the `ERRORS` array and retain the error text in the external service logs ||
+|| `Invalid cash register authorization data` from `PRINT_URL` | The login or password in the cash register settings does not match the values of the external service. Compare `SETTINGS.AUTH` of the cash register from step 2 with the `CASHBOX_LOGIN` and `CASHBOX_PASSWORD` variables ||
+|| `Receipt with this UUID was not found` from `CHECK_URL` | The external service did not find the `uuid` from the request. Check that the `UUID` from the `PRINT_URL` response is saved in the service storage ||
 || `WAIT` status at `CHECK_URL` | The receipt has not been printed yet. Repeat the status check after the receipt is processed by the external cash register ||
 |#
 
 ## What to Consider
 
 - rerunning the example with the same `CODE` may fail because the handler code must be unique
-- `PRINT_URL` and `CHECK_URL` must be publicly available over HTTPS
+- `PRINT_URL` and `CHECK_URL` must be publicly available over HTTPS. Bitrix24 does not sign requests to them: verify the login and password from `cashbox_params` at `PRINT_URL` and respond at `CHECK_URL` only to known `uuid` values
 - store cash register settings data, such as login and password, on the application side and do not display it in the interface without masking
 
 ## Continue Learning

@@ -51,9 +51,9 @@ The complete composition of the data is covered in the article [{#T}](../api-ref
 
 ## How to Receive Events {#events}
 
-Bitrix24 itself attaches the handlers to the initial installation address. The [ONAPPINSTALL](../api-reference/common/events/on-app-install.md) event arrives there when the *Application completes the installation itself* checkbox is off, the [ONAPPUSERREADY](../api-reference/common/events/on-app-user-ready.md) event — regardless of the checkbox.
+Bitrix24 itself attaches the handlers to the initial installation address. The [ONAPPINSTALL](../api-reference/common/events/on-app-install.md) event arrives there when the *Application completes the installation itself* checkbox is off.
 
-`ONAPPUSERREADY` arrives after Bitrix24 has created a [system user](../settings/system-user.md) for the application. The authorization of this technical account is passed in the `data` object, while `auth` of the same request carries the authorization of the user who installed the application. What exactly arrives in the event is described in the article [{#T}](../api-reference/common/events/on-app-user-ready.md).
+The [ONAPPUSERREADY](../api-reference/common/events/on-app-user-ready.md) event does not arrive for a local application: Bitrix24 does not create a [system user](../settings/system-user.md) for local applications. The application works only with the tokens of the user who installed it.
 
 The application subscribes to the remaining events itself, and they do not arrive at the address from the *Your handler path* field.
 
@@ -195,7 +195,7 @@ The user details are returned in the `result` key, while `time` is added to the 
 
 ## Permissions and Security {#security}
 
-- **User permissions.** The tokens are issued to the user who installed the application, so a call is limited by their permissions in Bitrix24. The application works on their behalf permanently, not only at the moment of installation. If the application has received the `ONAPPUSERREADY` event, it also has the authorization of the system user — that one does not depend on the user who installed the application.
+- **User permissions.** The tokens are issued to the user who installed the application, so a call is limited by their permissions in Bitrix24. The application works on their behalf permanently, not only at the moment of installation. A local application has no system user, so when this user is dismissed, the application is not transferred to a system user.
 - **Application scopes.** The set of scopes is selected at creation and changed in the application card.
 - **Secrets and tokens.** Retain the application ID, the secret key, and both tokens on your server. The secret key takes part in requests to the authorization server only. Do not place these values in client-side code, do not retain them in a repository, and do not pass them to third parties.
 - **The settings file.** Close external network access to `settings.json`: by default it lies in a folder available at the application address, and it holds the tokens.

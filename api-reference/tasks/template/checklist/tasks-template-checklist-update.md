@@ -40,25 +40,29 @@ The identifier of the checklist item can be obtained when [creating a new item](
 || **Name**
 `type` | **Description** ||
 || **TITLE**
-[`string`](../../../data-types.md) | Text of the checklist item.
+[`string`](../../../data-types.md) | Text of the checklist item. An empty string is ignored, and the item text does not change.
 
-If `PARENT_ID` is passed with a value of `0`, then `TITLE` is the name of the checklist. ||
+If the item's `PARENT_ID` is `0`, then `TITLE` is the name of the checklist ||
 || **PARENT_ID**
-[`integer`](../../../data-types.md) | Identifier of the parent item. Use for nested checklists.
+[`integer`](../../../data-types.md) | Identifier of the new parent item. You can retrieve it using the [tasks.template.checklist.list](./tasks-template-checklist-list.md) method.
 
-- If `PARENT_ID` is passed with a value of `0`, the system will create a new checklist in the task template.
-- If there is no checklist item in the template with the specified `PARENT_ID`, the system will create a new checklist.
-- If the main checklist item is moved under another checklist item, it will move along with its sub-items while maintaining the hierarchy. The checklists will merge into one. ||
+- If you pass `0`, the item becomes a root item, a separate checklist of the template
+- The item with the specified `PARENT_ID` must be in the same template. Otherwise, the method returns the `Edit item: action unavailable` error
+- The item moves together with its sub-items while maintaining the hierarchy. If you move a root item under an item of another checklist, the checklists merge into one
+
+To place an item next to a specific item, it is more convenient to use the [tasks.template.checklist.moveAfter](./tasks-template-checklist-move-after.md) and [tasks.template.checklist.moveBefore](./tasks-template-checklist-move-before.md) methods ||
 || **SORT_INDEX**
-[`integer`](../../../data-types.md) | Sort index. The lower the value, the higher the item in the list or sublist. ||
+[`integer`](../../../data-types.md) | Sort index among items at the same level. The lower the value, the higher the item ||
 || **IS_COMPLETE**
 [`boolean`](../../../data-types.md) | Completion status of the item. Possible values:
-- `Y` — completed
-- `N` — not completed ||
+- `Y` or `true` — completed
+- `N` or `false` — not completed
+
+You can also change the status using the [tasks.template.checklist.complete](./tasks-template-checklist-complete.md) and [tasks.template.checklist.renew](./tasks-template-checklist-renew.md) methods ||
 || **IS_IMPORTANT**
 [`boolean`](../../../data-types.md) | Mark indicating that the item is important. Possible values:
-- `Y` — important
-- `N` — ordinary ||
+- `Y` or `true` — important
+- `N` or `false` — ordinary ||
 || **MEMBERS**
 [`object`](../../../data-types.md) | Object describing the participants of the checklist item. Key — user identifier, value — object with the participant type parameter `TYPE`. Possible participant type values:
 - `'TYPE': 'A'` — Participant
@@ -136,8 +140,13 @@ The system will add the checklist item participants to the task in the same role
           id: string
           type: string
           name: string
+          personalPhoto: string
+          personalGender: string
+          image: string
+          isCollaber: boolean
         }>
-        attachments: unknown[]
+        // Key is the attachment id, value is the Disk file id with the "n" prefix; [] when there are no files
+        attachments: Record<string, string> | []
         nodeId: number | null
         templateId: number
       }
@@ -436,20 +445,29 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing. ||
-|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing. ||
-|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing or empty. ||
-|| `400` | `0` | Bitrix\Tasks\CheckList\CheckListFacade::onAfterUpdate(): Argument #1 ($taskId) must be of type int, string given, called in /var/www/html/bitrix/modules/tasks/lib/checklist/checklistfacade.php on line 313 | Empty or invalid type `templateId` provided. ||
-|| `400` | `0` | Invalid value [] for field [ENTITY_ID] in item [, Checklist item name] | Non-existent, empty, or invalid type `checkListItemId` provided. ||
-|| `400` | `0` | Updating item: action not available | User does not have permission to modify the task template. ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
+|| `400` | `100` | Could not find value for parameter {checkListItemId} | Required parameter `checkListItemId` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {templateId}. Should be value of type int. | `templateId` contains a non-numeric value ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {checkListItemId}. Should be value of type int. | `checkListItemId` contains a non-numeric value ||
+|| `400` | `0` | Access to task template was denied | No permission to read the template, `templateId` is less than or equal to `0`, or the `checkListItemId` item is not in the template or has been deleted ||
+|| `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing ||
+|| `400` | `0` | Editable fields are not specified | `fields` is empty ||
+|| `400` | `0` | Edit item: action unavailable | No permission to modify the task template, or `fields.PARENT_ID` contains an item that is not in the template ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-template-checklist-add.md)
 - [{#T}](./tasks-template-checklist-get.md)
 - [{#T}](./tasks-template-checklist-list.md)
 - [{#T}](./tasks-template-checklist-delete.md)
+- [{#T}](./tasks-template-checklist-move-after.md)
+- [{#T}](./tasks-template-checklist-move-before.md)
 - [{#T}](./tasks-template-checklist-complete.md)
+- [{#T}](./tasks-template-checklist-renew.md)
+- [{#T}](./tasks-template-checklist-add-attachment-by-content.md)
+- [{#T}](./tasks-template-checklist-add-attachments-from-disk.md)
+- [{#T}](./tasks-template-checklist-remove-attachments.md)

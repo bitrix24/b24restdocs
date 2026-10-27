@@ -24,8 +24,15 @@ The method `booking.v1.booking.client.list` returns a list of clients for the sp
 `type` | **Description** ||
 || **bookingId***
 [`integer`](../../../data-types.md) | Booking identifier.
-Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking-add.md) and [booking.v1.booking.list](../booking-v1-booking-list.md)  ||
+
+Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking-add.md) and [booking.v1.booking.list](../booking-v1-booking-list.md) ||
 |#
+
+{% note info "" %}
+
+The method returns all clients of the booking in a single response. It has no pagination, filtering, or sorting, and ignores the `start` parameter.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -74,17 +81,13 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
       }[]
     }
 
-    // booking.v1.booking.client.list returns a single page (max 50 records). For the whole result set
-    // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-    // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-    // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-    // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+    // booking.v1.booking.client.list returns all clients of the booking in one response:
+    // the method has no pagination and ignores `start`, so a single call.make is enough
     try {
       const response = await $b24.actions.v2.call.make<BookingClientListResult>({
         method: 'booking.v1.booking.client.list',
         params: {
           bookingId: 123,
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -113,16 +116,12 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // booking.v1.booking.client.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // booking.v1.booking.client.list returns all clients of the booking in one response:
+          // the method has no pagination and ignores `start`, so a single call.make is enough
           const response = await $b24.actions.v2.call.make({
             method: 'booking.v1.booking.client.list',
             params: {
               bookingId: 123,
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -185,16 +184,10 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error listing booking clients: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -286,6 +279,7 @@ HTTP status: **200**
             }
         ]
     },
+    "total": 0,
     "time": {
         "start": 1724068028.331234,
         "finish": 1724068028.726591,
@@ -304,25 +298,46 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response. Contains an array of objects with client information. The structure is described [below](#bookingClient) ||
+[`object`](../../../data-types.md) | Root element of the response [(detailed description)](#result) ||
+|| **total**
+[`integer`](../../../data-types.md) | Service field, always `0`. Count the clients by the length of the `bookingClient` array ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-#### Client {#bookingClient}
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **bookingClient**
+[`array`](../../../data-types.md) | Array of booking clients [(detailed description)](#bookingClient). Clients are listed in the order in which they were passed to [booking.v1.booking.client.set](./booking-v1-booking-client-set.md).
+
+If the booking has no clients, an empty array `[]` is returned ||
+|#
+
+#### Object bookingClient {#bookingClient}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../../../data-types.md) | Client identifier, which can be used to retrieve client data using the method [crm.item.get](../../../crm/universal/crm-item-get.md) for contacts and companies ||
+[`integer`](../../../data-types.md) | Identifier of the CRM contact or company. Client data can be retrieved using the method [crm.item.get](../../../crm/universal/crm-item-get.md): with `entityTypeId = 3` for a contact, with `entityTypeId = 4` for a company ||
 || **type**
-[`object`](../../../data-types.md) | Client type in the format `{"module": "crm", "code": "CONTACT"}`.
-Values of `code`:
-- `CONTACT` — [CRM contact](../../../crm/contacts/index.md)
-- `COMPANY` — [CRM company](../../../crm/companies/index.md)
+[`object`](../../../data-types.md) | Client type [(detailed description)](#type) ||
+|#
 
-The structure of the object is returned by the method [booking.v1.clienttype.list](../../booking-v1-clienttype-list.md) ||
+#### Object type {#type}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **code**
+[`string`](../../../data-types.md) | Client type code:
+- `CONTACT` — [CRM contact](../../../crm/contacts/index.md)
+- `COMPANY` — [CRM company](../../../crm/companies/index.md) ||
+|| **module**
+[`string`](../../../data-types.md) | Client module. Possible value: `crm` ||
 |#
 
 ## Error Handling
@@ -331,7 +346,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 1021,
+    "error": "1021",
     "error_description": "Booking not found"
 }
 ```
@@ -342,13 +357,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `1021` | `Booking not found` | Booking with the specified `id` not found ||
-|| `100` | `Could not find value for parameter` | Required parameter not provided ||
+|| `100` | `Could not find value for parameter {bookingId}` | The required parameter `bookingId` is not provided ||
+|| `100` | `Invalid value {abc} to match with parameter {bookingId}. Should be value of type int.` | `bookingId` contains a value of a different type instead of a number ||
+|| `1021` | `Booking not found` | Booking with the specified `bookingId` not found ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./booking-v1-booking-client-unset.md)
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-booking-client-set.md)
+- [{#T}](./booking-v1-booking-client-unset.md)

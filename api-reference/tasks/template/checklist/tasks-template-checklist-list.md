@@ -36,11 +36,13 @@ You can filter by the following fields:
 - `TITLE` — text of the checklist item
 - `SORT_INDEX` — sort index
 - `IS_COMPLETE` — completion status of the item
-- `IS_IMPORTANT` — importance mark of the item
+- `IS_IMPORTANT` — importance mark of the item: `Y` — important, `N` — ordinary
+
+You can pass the status and importance as `Y` and `N` or as `true` and `false`. The method skips fields not in this list without returning an error.
 
 The `templateId` parameter is forcibly added to the filter as `TEMPLATE_ID`, even if a different value is provided in `filter` ||
 || **select** 
-[`array`](../../../data-types.md) | List of fields to select.
+[`array`](../../../data-types.md) | List of fields to select. If the parameter is not passed, the method returns all fields.
 
 You can specify the following fields in the selection:
 - `ID` — identifier of the checklist item
@@ -51,27 +53,35 @@ You can specify the following fields in the selection:
 - `IS_COMPLETE` — completion status of the item
 - `IS_IMPORTANT` — importance mark of the item
 - `MEMBERS` — list of participants for the item
-- `ATTACHMENTS` — list of attachments for the item ||
+- `ATTACHMENTS` — list of attachments for the item
+
+If `select` does not include `ID`, the identifier remains only as the item key in `checkListItems` ||
 || **order** 
 [`object`](../../../data-types.md) | Object for sorting the result in the form `{ "field": "sort value", ... }`.
 
 You can sort by the following fields:
 - `ID` — identifier of the checklist item
+- `TEMPLATE_ID` — identifier of the task template
 - `PARENT_ID` — identifier of the parent item
-- `CREATED_BY` — identifier of the item author
 - `TITLE` — text of the checklist item
 - `SORT_INDEX` — sort index
 - `IS_COMPLETE` — completion status of the item
 - `IS_IMPORTANT` — importance mark of the item
-- `TOGGLED_BY` — identifier of the user who last changed the item's status
-- `TOGGLED_DATE` — date and time of the status change
 
 The sorting direction can take the following values:
 - `asc` — ascending
 - `desc` — descending
 
-By default, the result is sorted by `ID` in descending order ||
+The method skips fields not in this list without returning an error.
+
+By default, the result is sorted by `TEMPLATE_ID` in descending order, then by `SORT_INDEX` in ascending order and by `ID` in descending order ||
 |#
+
+{% note info "" %}
+
+The method returns all matching items in a single response. It has no pagination and ignores the `start` parameter.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -164,11 +174,8 @@ By default, the result is sorted by `ID` in descending order ||
     }
 
     try {
-      // tasks.template.checklist.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // tasks.template.checklist.list returns all matching items in one response:
+      // the method has no pagination and ignores `start`, so a single call.make is enough
       const response = await $b24.actions.v2.call.make<CheckListItemsResult>({
         method: 'tasks.template.checklist.list',
         params: {
@@ -190,7 +197,6 @@ By default, the result is sorted by `ID` in descending order ||
             SORT_INDEX: 'asc',
             ID: 'desc',
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -222,11 +228,8 @@ By default, the result is sorted by `ID` in descending order ||
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // tasks.template.checklist.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // tasks.template.checklist.list returns all matching items in one response:
+          // the method has no pagination and ignores `start`, so a single call.make is enough
           const response = await $b24.actions.v2.call.make({
             method: 'tasks.template.checklist.list',
             params: {
@@ -248,7 +251,6 @@ By default, the result is sorted by `ID` in descending order ||
                 SORT_INDEX: 'asc',
                 ID: 'desc',
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -533,12 +535,109 @@ HTTP Status: **200**
 || **Name** 
 `type` | **Description** ||
 || **checkListItems** 
-[`object`](../../../data-types.md) | Object where the key is the identifier of the checklist item and the value is the description of the checklist item [(detailed description)](#checklistitem).
+[`object`](../../../data-types.md) | Object where the key is the identifier of the checklist item and the value is the description of the item [(detailed description)](#checklistitem).
 
-The set of fields in the response depends on the `select` parameter ||
+Items follow the sort order from `order`. In JavaScript, an object with numeric keys is iterated in ascending key order, so to display items in the required order, sort them by `sortIndex` and `parentId`.
+
+If there are no items, an empty array `[]` is returned ||
 |#
 
-{% include [Decoding the checkListItem Object](./_includes/checklist-item-response.md) %}
+#### Object checkListItem {#checklistitem}
+
+The set of fields depends on the `select` parameter: the response includes only the fields listed in it. If `select` is not passed, all fields from the table are returned.
+
+The method returns values as strings, except for the `parentId` of a root item, which is returned as the number `0`. This distinguishes the response from the [tasks.template.checklist.get](./tasks-template-checklist-get.md) and [tasks.template.checklist.add](./tasks-template-checklist-add.md) methods, where numbers and flags are typed.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`string`](../../../data-types.md) | Identifier of the checklist item ||
+|| **templateId**
+[`string`](../../../data-types.md) | Identifier of the task template ||
+|| **parentId**
+[`string`](../../../data-types.md) \| [`integer`](../../../data-types.md) | Identifier of the parent item. For a root item, the number `0` ||
+|| **title**
+[`string`](../../../data-types.md) | Text of the checklist item ||
+|| **sortIndex**
+[`string`](../../../data-types.md) | Sorting index among items at the same level. The lower the value, the higher the item ||
+|| **isComplete**
+[`string`](../../../data-types.md) | Completion status of the item:
+- `Y` — completed
+- `N` — not completed ||
+|| **isImportant**
+[`string`](../../../data-types.md) | Importance flag of the item:
+- `Y` — important
+- `N` — regular ||
+|| **members**
+[`array`](../../../data-types.md) | Array of item participants [(detailed description)](#members).
+
+If there are no participants, an empty array `[]` is returned ||
+|| **attachments**
+[`object`](../../../data-types.md) | Object where the key is the attachment identifier and the value is the file description [(detailed description)](#attachments).
+
+If there are no attachments, an empty array `[]` is returned ||
+|#
+
+#### Object members {#members}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`string`](../../../data-types.md) | Identifier of the user ||
+|| **type**
+[`string`](../../../data-types.md) | Role of the user in the checklist item:
+- `A` — Participant
+- `U` — Observer ||
+|| **name**
+[`string`](../../../data-types.md) | User's first and last name ||
+|| **personalPhoto**
+[`string`](../../../data-types.md) | Identifier of the user's avatar file ||
+|| **personalGender**
+[`string`](../../../data-types.md) | Gender of the user:
+- `M` — Male
+- `F` — Female
+- empty string — not specified ||
+|| **image**
+[`string`](../../../data-types.md) | Link to the user's avatar ||
+|| **isCollaber**
+[`boolean`](../../../data-types.md) | Indicator that the user is an external participant from a collab ||
+|#
+
+#### Object attachments {#attachments}
+
+Example value:
+
+```json
+"attachments": {
+    "621": {
+        "attachmentId": 621,
+        "name": "report.txt",
+        "size": "28",
+        "fileId": "10921",
+        "downloadUrl": "/bitrix/tools/disk/uf.php?attachedId=621&action=download&ncc=1",
+        "viewUrl": "/bitrix/tools/disk/uf.php?attachedId=621&action=show&ncc=1"
+    }
+}
+```
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **attachmentId**
+[`integer`](../../../data-types.md) | Attachment identifier. Pass it in the `attachmentsIds` parameter of the [tasks.template.checklist.removeAttachments](./tasks-template-checklist-remove-attachments.md) method to delete the attachment ||
+|| **name**
+[`string`](../../../data-types.md) | File name ||
+|| **size**
+[`string`](../../../data-types.md) | File size in bytes ||
+|| **fileId**
+[`string`](../../../data-types.md) | Identifier of the file on Drive ||
+|| **downloadUrl**
+[`string`](../../../data-types.md) | Relative link to download the file ||
+|| **viewUrl**
+[`string`](../../../data-types.md) | Relative link to view the file ||
+|#
 
 ## Error Handling
 
@@ -547,7 +646,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Access to the task template is denied"
+    "error_description": "Access to task template was denied"
 }
 ```
 
@@ -557,14 +656,16 @@ HTTP Status: **400**
 
 #| 
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `0` | Access to the task template is denied | Insufficient rights to read the template ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {templateId}. Should be value of type int. | `templateId` contains a value that cannot be converted to a number ||
+|| `400` | `0` | Access to task template was denied | Insufficient rights to read the template ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-template-checklist-add.md)
 - [{#T}](./tasks-template-checklist-update.md)
 - [{#T}](./tasks-template-checklist-get.md)

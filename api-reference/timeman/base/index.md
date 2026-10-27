@@ -11,56 +11,41 @@ Choose a tool for developing with an AI agent:
 
 Time tracking in Bitrix24 records the hours worked by an employee. To do this, the employee marks the start and end of the workday in the system.
 
-The methods `timeman.*` are used to manage the workday of the token holder or webhook. To manage the workdays of other employees, the user needs access permission to edit others' workdays.
+The methods in this section open, pause, and close an employee's workday, and return its state and the working time settings. To work with another employee's workday, the user needs the "Anybody's Clock-in And Clock-out" or "Edit All Records" permission.
 
 > Quick navigation: [all methods](#all-methods)
 >
-> User documentation: [Worktime](https://helpdesk.bitrix24.com/open/24856218/)
+> User documentation: [Worktime](https://helpdesk.bitrix24.com/open/24856218/), [Work Schedules](https://helpdesk.bitrix24.com/open/18039560)
 
 ## How to Get Started
 
-1. Obtain the `USER_ID` of the employee whose workday you need to manage
+1. Obtain the employee's `USER_ID` if you need to manage another employee's workday
 2. Check the current workday status using [timeman.status](./timeman-status.md)
 3. If the workday is not open, start it using [timeman.open](./timeman-open.md)
 4. If the employee goes on a break, pause the day using [timeman.pause](./timeman-pause.md)
 5. When work is completed, close the workday using [timeman.close](./timeman-close.md)
-6. Retrieve the user's working time settings using [timeman.settings](./timeman-settings.md) if you need to account for the work schedule and change approval rules
+6. If you need to account for the work schedule and change approval rules, retrieve the working time settings using [timeman.settings](./timeman-settings.md)
 
-## Linking the Workday to Other Objects
+## Linking to Other Objects
 
-**User.** The workday is linked to the user by the identifier `USER_ID`. The user ID can be obtained using the [user.get](../../user/user-get.md) method.
+A workday always belongs to a specific user.
 
-## Managing the Workday
+**User.** The methods in this section work with the workday of the employee passed in the `USER_ID` parameter. If the parameter is not passed, the owner of the token or webhook is used. The employee ID can be obtained using the [user.get](../../user/user-get.md) method.
 
-The [timeman.open](./timeman-open.md) method starts the workday for the employee `USER_ID`. The system determines the time zone of the current workday based on the `TIME` parameter of the method. If the `TIME` parameter is not specified, the default time zone of the user set in the profile is used.
+## General Rules for Working with the Workday
 
-To set a break or lunch period, use the [timeman.pause](./timeman-pause.md) method.
+**Method response.** The methods `timeman.open`, `timeman.pause`, `timeman.close`, and `timeman.status` return the same workday object. Its fields are described on the [timeman.status](./timeman-status.md) page. Key fields:
 
-The workday can be ended using the [timeman.close](./timeman-close.md) method:
+- `STATUS` — the state of the day: `OPENED`, `PAUSED`, `CLOSED`, or `EXPIRED`. If an action does not apply to the current state, `timeman.open` and `timeman.pause` do not return an error but return the day unchanged, so check `STATUS` in the response
+- `DURATION` — the duration of the day, equal to `00:00:00` until the day is closed
+- `TIME_LEAKS` — the total duration of breaks
+- `ACTIVE` — the value `false` means that the change to the day is awaiting approval by a supervisor
 
-- by default, the workday ends at the current moment
-- the time zone of the start of the day is used
-- the end date must match the start date
+**Resuming the day.** The `timeman.open` method continues a paused or closed workday. The time between the pause or closure and the resumption is counted as a break in the `TIME_LEAKS` field.
 
-If the time zone of the end of the day differs from the start time zone, the end time is automatically recalculated to the time zone in which the day was started.
+**Common errors.** Any method in this section returns `TIMEMAN_TOOL_DISABLED` if the Time Tracking tool is disabled. When the `USER_ID` of another employee is passed, the method returns the error `User not found` if the employee is not found, and `User does not have access to managing other users work time` if the user has no permission to manage another employee's workday.
 
-To continue the workday after a break or closure, use the [timeman.open](./timeman-open.md) method again.
-
-The current status can be checked using the [timeman.status](./timeman-status.md) method.
-
-## Time Format
-
-The time parameter `TIME` is accepted in the [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) standard format (ISO-8601), for example, `2025-02-12T15:52:01+00:00`. The system considers the time zone specified in the parameter and treats it as the user's time zone.
-
-## Work Schedule Settings
-
-Work schedule settings define the mode and duration of the employee's work. The settings can be obtained using the [timeman.settings](./timeman-settings.md) method.
-
-{% note tip "User documentation" %}
-
-- [Work Schedules](https://helpdesk.bitrix24.com/open/18039560)
-
-{% endnote %}
+**Time and time zone.** The `TIME` parameter is passed in the [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) format (ISO-8601), for example `2025-02-12T15:52:01+00:00`. The value is converted to the employee's time zone. The opening date must match the employee's current date, and the closing date must match the start date of the day.
 
 ## Overview of Methods {#all-methods}
 

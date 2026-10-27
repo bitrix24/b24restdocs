@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The event `ONBOOKINGWAITLISTITEMDELETE` will trigger when a record is deleted from the waitlist either manually or via the [booking.v1.waitlist.delete](../booking-v1-waitlist-delete.md) method.
+The event `ONBOOKINGWAITLISTITEMDELETE` will trigger when a record is deleted from the waitlist either manually or via the [booking.v1.waitlist.delete](../booking-v1-waitlist-delete.md) method, and also when a booking is created from the record via the [booking.v1.booking.createfromwaitlist](../../booking/booking-v1-booking-createfromwaitlist.md) method. When moving, the event arrives after the `onBookingAdd` event.
 
 {% note info "" %}
 

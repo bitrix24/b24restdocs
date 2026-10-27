@@ -15,7 +15,7 @@ The `tasks.template.checklist.*` methods work with a task template checklist. Th
 
 For checklists of existing tasks, use the [task.checklistitem.*](../../checklist-item/index.md) method group.
 
-> Quick navigation: [all methods and events](#all-methods)
+> Quick navigation: [all methods](#all-methods)
 >
 > User documentation:
 > - [Task templates](https://helpdesk.bitrix24.com/open/20883624/)
@@ -23,16 +23,12 @@ For checklists of existing tasks, use the [task.checklistitem.*](../../checklist
 
 ## Getting Started
 
-1. Create a task template using the [tasks.template.add](../tasks-template-add.md) method. The identifier of the new template can be obtained in the response of the method. It is used in all `tasks.template.checklist.*` methods in the `templateId` parameter.
-2. Create the checklist structure using the [tasks.template.checklist.add](./tasks-template-checklist-add.md) method. If you need to create a nested item, pass the parent item's identifier in the `PARENT_ID` field.
-3. Retrieve information about a checklist item using the [tasks.template.checklist.get](./tasks-template-checklist-get.md) method if you need to check its parameters. Use this when you need to get a single item by its known `checkListItemId`.
-4. Get the list of items using the [tasks.template.checklist.list](./tasks-template-checklist-list.md) method if you need to check the checklist structure and obtain item identifiers.
-5. Modify the content of an item using the [tasks.template.checklist.update](./tasks-template-checklist-update.md) method if you need to adjust the name, description, or other parameters.
-6. Change the order of items using the [tasks.template.checklist.moveAfter](./tasks-template-checklist-move-after.md) and [tasks.template.checklist.moveBefore](./tasks-template-checklist-move-before.md) methods if you need to rearrange an item relative to another item.
-7. Change the status of an item using the [tasks.template.checklist.complete](./tasks-template-checklist-complete.md) and [tasks.template.checklist.renew](./tasks-template-checklist-renew.md) methods if you need to mark an item as completed or return it to work.
-8. Add attachments using the [tasks.template.checklist.addAttachmentByContent](./tasks-template-checklist-add-attachment-by-content.md) and [tasks.template.checklist.addAttachmentsFromDisk](./tasks-template-checklist-add-attachments-from-disk.md) methods if the item needs to contain files.
-9. If attachments are no longer needed, remove them using the [tasks.template.checklist.removeAttachments](./tasks-template-checklist-remove-attachments.md) method.
-10. If an item is no longer needed, delete it using the [tasks.template.checklist.delete](./tasks-template-checklist-delete.md) method.
+1. Create a task template using the [tasks.template.add](../tasks-template-add.md) method. Pass the template identifier from the response to all `tasks.template.checklist.*` methods in the `templateId` parameter.
+2. Create a checklist using the [tasks.template.checklist.add](./tasks-template-checklist-add.md) method: first the root item with `PARENT_ID` = `0`, which is the checklist title, then items with the `PARENT_ID` of the root item.
+3. Retrieve the checklist structure and item identifiers using the [tasks.template.checklist.list](./tasks-template-checklist-list.md) method.
+4. Update an item using the [tasks.template.checklist.update](./tasks-template-checklist-update.md) method, or delete it together with its subitems using the [tasks.template.checklist.delete](./tasks-template-checklist-delete.md) method.
+
+The order, status, and attachments of items are changed by separate methods, listed in the [overview of methods](#all-methods).
 
 ## Relationship with Other Objects
 
@@ -50,11 +46,11 @@ Use one of the methods to get the list of files:
 - [disk.storage.getchildren](../../../disk/storage/disk-storage-get-children.md)
 - [disk.folder.getchildren](../../../disk/folder/disk-folder-get-children.md)
 
-{% note tip "User Documentation" %}
+## Method Specifics
 
-- [How to Work with Task Templates](https://helpdesk.bitrix24.com/open/20883624/)
-
-{% endnote %}
+- **Response format of `list`.** The [tasks.template.checklist.list](./tasks-template-checklist-list.md) method returns values as strings and flags as `Y` and `N`. Other methods return numbers and `true` or `false`. The `list` method has no pagination: all items are returned in a single response
+- **Attachment identifiers.** In the `attachments` object, the key is the attachment identifier, which is passed in `attachmentsIds` of the [tasks.template.checklist.removeAttachments](./tasks-template-checklist-remove-attachments.md) method. A value such as `n10921` is the identifier of the file on Drive
+- **Deleting an item.** The [tasks.template.checklist.delete](./tasks-template-checklist-delete.md) method deletes an item together with all its subitems; the files remain on Drive
 
 ## Overview of Methods {#all-methods}
 

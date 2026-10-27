@@ -44,27 +44,35 @@ If `PARENT_ID` is passed with a value of `0`, then `TITLE` is the name of the ch
 || **PARENT_ID*** 
 [`integer`](../../../data-types.md) | Identifier of the parent item.
 
-To create a new checklist, pass `PARENT_ID` with a value of `0`.
+To create a new checklist, pass `PARENT_ID` with a value of `0`. To add an item to an existing checklist, pass the identifier of the root or a nested item. You can retrieve it using the [tasks.template.checklist.list](./tasks-template-checklist-list.md) method.
 
-If there is no checklist item in the template with the specified `PARENT_ID`, the system will create a new checklist ||
+The item with the specified `PARENT_ID` must belong to the same template. If it does not, the method returns the error `Add item: action unavailable` ||
 || **SORT_INDEX** 
-[`integer`](../../../data-types.md) | Sort index. The lower the value, the higher the item in the list or sublist ||
+[`integer`](../../../data-types.md) | Sort index among items at the same level. The lower the value, the higher the item.
+
+By default, the item is added to the end: `SORT_INDEX` is one greater than the maximum among items at the same level. The first item at a level gets `0` ||
 || **IS_COMPLETE** 
 [`boolean`](../../../data-types.md) | Status of the item. Possible values:
-- `Y` — completed
-- `N` — not completed
+- `Y` or `true` — completed
+- `N` or `false` — not completed
 
 Default is `N` ||
 || **IS_IMPORTANT** 
 [`boolean`](../../../data-types.md) | Mark indicating that the item is important. Possible values:
-- `Y` — important
-- `N` — ordinary ||
+- `Y` or `true` — important
+- `N` or `false` — ordinary
+
+Default is `N` ||
 || **MEMBERS** 
 [`object`](../../../data-types.md) | Object describing the participants of the checklist item. Key — user identifier, value — object with the participant type parameter `TYPE`. Possible participant type values:
 - `'TYPE': 'A'` — Participant
 - `'TYPE': 'U'` — Observer
 
-The system will add the participants of the checklist item to the task in the same roles ||
+You can retrieve the user identifier using the [user.get](../../../user/user-get.md) method.
+
+The system will add the participants of the checklist item to the task in the same roles.
+
+Default is no participants ||
 |#
 
 ## Code Examples
@@ -146,8 +154,10 @@ The system will add the participants of the checklist item to the task in the sa
         isComplete: boolean
         isImportant: boolean
         completedCount: number
-        members: { type: string; id: number }[]
-        attachments: unknown[]
+        // add returns members in the short form: only type and a numeric id
+        members: Array<{ type: string; id: number }>
+        // Key is the attachment id, value is the Disk file id with the "n" prefix; [] when there are no files
+        attachments: Record<string, string> | []
         nodeId: number | null
         templateId: number
       }
@@ -499,17 +509,26 @@ HTTP Status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {templateId}. Should be value of type int. | `templateId` contains a value of a different type instead of a number ||
+|| `400` | `0` | Access to task template was denied | `templateId` contains a value less than or equal to `0` ||
 || `400` | `0` | Item name is not specified | Required parameter `fields.TITLE` is missing or has an invalid value ||
 || `400` | `0` | Invalid value [] for field [PARENT_ID] in element [, Item name] | Required parameter `fields.PARENT_ID` is missing or has an invalid value ||
-|| `400` | `0` | Adding item: action is not available | User does not have permission to add a checklist item to the task template ||
+|| `400` | `0` | Add item: action unavailable | No permission to modify the task template, or `fields.PARENT_ID` contains an item that is not in the template ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-template-checklist-update.md)
 - [{#T}](./tasks-template-checklist-get.md)
 - [{#T}](./tasks-template-checklist-list.md)
 - [{#T}](./tasks-template-checklist-delete.md)
+- [{#T}](./tasks-template-checklist-move-after.md)
+- [{#T}](./tasks-template-checklist-move-before.md)
 - [{#T}](./tasks-template-checklist-complete.md)
+- [{#T}](./tasks-template-checklist-renew.md)
+- [{#T}](./tasks-template-checklist-add-attachment-by-content.md)
+- [{#T}](./tasks-template-checklist-add-attachments-from-disk.md)
+- [{#T}](./tasks-template-checklist-remove-attachments.md)

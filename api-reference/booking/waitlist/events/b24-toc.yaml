@@ -7,5 +7,5 @@ items:
     href: on-booking-waitlistitem-add.md 
   - name: When updating a record in the waitlist
     href: on-booking-waitlistitem-update.md
-  - name: When deleting a record in the waitlist
+  - name: When deleting a record from the waitlist
     href: on-booking-waitlistitem-delete.md

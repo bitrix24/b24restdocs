@@ -25,19 +25,20 @@ Let us go through two cases where the price is set by the integration rather tha
 
 Both cases are covered by the same method, only the set of fields differs. If the price must not be changed and has to come from the catalog, use [sale.basketitem.addCatalogProduct](../../api-reference/sale/basket-item/sale-basket-item-add-catalog-product.md) — it substitutes the price and the product attributes on its own.
 
-The scenario consists of two steps, and they are independent. Complete the one that fits your task, or both in a row, as in the examples below.
+The scenario consists of three steps. The first step prepares the data, while the second and third are independent: complete the one that fits your task, or both in a row, as in the examples below.
 
-1. Add a product from the catalog and assign your own price using the method [sale.basketitem.add](../../api-reference/sale/basket-item/sale-basket-item-add.md)
-2. Add a line item that is not in the catalog using the same method with a different set of fields
+1. Retrieve the order identifier and its currency using the method [sale.order.list](../../api-reference/sale/order/sale-order-list.md)
+2. Add a product from the catalog and assign your own price using the method [sale.basketitem.add](../../api-reference/sale/basket-item/sale-basket-item-add.md)
+3. Add a line item that is not in the catalog using the same method with a different set of fields
 
-The result of both steps is verified with the methods [sale.basketitem.list](../../api-reference/sale/basket-item/sale-basket-item-list.md) and [sale.order.get](../../api-reference/sale/order/sale-order-get.md).
+The result of steps 2 and 3 is verified with the methods [sale.basketitem.list](../../api-reference/sale/basket-item/sale-basket-item-list.md) and [sale.order.get](../../api-reference/sale/order/sale-order-get.md).
 
-## Prepare the Data
+## Before You Start
 
 Collect the values before the first call.
 
-- `orderId` — identifier of the order the line item is added to. The order must already exist: the method only adds a row to it. The list of orders is returned by [sale.order.list](../../api-reference/sale/order/sale-order-list.md), and a new order can be created with the method [sale.order.add](../../api-reference/sale/order/sale-order-add.md). The examples use order `891`
-- `currency` — currency of the line item. It must match the currency of the order, otherwise the method returns an error. The examples use the currency `EUR`
+- `orderId` — identifier of the order the line item is added to. The order must already exist: the method only adds a row to it. How to retrieve the identifier is shown in [step 1](#get-order). The examples use order `891`
+- `currency` — currency of the line item. It must match the currency of the order, otherwise the method returns an error. The order currency is returned by the same step 1. The examples use the currency `EUR`
 - `productId` — identifier of the product from the catalog. You can find it with the method [catalog.product.list](../../api-reference/catalog/product/catalog-product-list.md). The examples use product `7075`. For a line item that is not in the catalog, pass `0`
 
 The identifiers `891` and `7075` are example values. Replace them with your own.
@@ -63,7 +64,147 @@ The method does not verify this condition and saves any three numbers you pass. 
 
 {% include [Note on examples](../../_includes/examples.md) %}
 
-## 1\. Add a Product from the Catalog and Assign Your Own Price
+## 1. Retrieve the Order and Its Currency {#get-order}
+
+A line item is added to an existing order, and its currency must match the order currency. Take both values from the response of the method [sale.order.list](../../api-reference/sale/order/sale-order-list.md). If you already know `orderId` and the order currency, go to step 2.
+
+Request the most recent order. To select a specific order, replace the filter, for example with `{"=accountNumber": "891"}`.
+
+{% list tabs %}
+
+- JS
+
+    ```js
+    import { B24Hook } from '@bitrix24/b24jssdk'
+
+    const $b24 = B24Hook.fromWebhookUrl(process.env.B24_HOOK)
+    // B24_HOOK = 'https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/'
+
+    const response = await $b24.actions.v2.call.make({
+        method: 'sale.order.list',
+        params: {
+            select: ['id', 'accountNumber', 'currency'],
+            order: { id: 'desc' },
+        },
+        requestId: 'order-list'
+    })
+
+    if (response.isSuccess) {
+        const [order] = response.getData().result.orders
+        // order.id is the value for orderId, order.currency is the value for currency
+        console.log(order.id, order.currency)
+    } else {
+        console.error(response.getErrorMessages().join('; '))
+    }
+    ```
+
+- Python
+
+    ```python
+    from b24pysdk import BitrixWebhook, Client
+    from b24pysdk.errors import BitrixAPIError
+
+    client = Client(
+        BitrixWebhook(
+            domain="your-domain.bitrix24.com",
+            webhook_token="user_id/webhook_key",
+        )
+    )
+
+    try:
+        result = client.sale.order.list(
+            select=["id", "accountNumber", "currency"],
+            order={"id": "desc"},
+        ).response.result
+        order = result["orders"][0]
+        # order["id"] is the value for orderId, order["currency"] is the value for currency
+        print(order["id"], order["currency"])
+    except BitrixAPIError as error:
+        print(error)
+    ```
+
+- PHP
+
+    ```php
+    <?php
+    // composer require bitrix24/b24phpsdk:"^3.0"
+    require_once 'vendor/autoload.php';
+
+    use Bitrix24\SDK\Services\ServiceBuilderFactory;
+    use Symfony\Component\EventDispatcher\EventDispatcher;
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+
+    $log = new Logger('b24');
+    $log->pushHandler(new StreamHandler('php://stdout'));
+
+    $sb = (new ServiceBuilderFactory(new EventDispatcher(), $log))
+        ->initFromWebhook('https://your-domain.bitrix24.com/rest/USER_ID/TOKEN/');
+
+    $response = $sb->core->call('sale.order.list', [
+        'select' => ['id', 'accountNumber', 'currency'],
+        'order' => ['id' => 'desc'],
+    ]);
+
+    $order = $response->getResponseData()->getResult()['orders'][0];
+    // $order['id'] is the value for orderId, $order['currency'] is the value for currency
+    echo $order['id'] . ' ' . $order['currency'];
+    ```
+
+- Go
+
+    ```go
+    // The Go example in step 2 is self-contained: it creates an order with the
+    // addOrder function and takes its identifier. To work with an existing
+    // order, request it as follows:
+    res, err := core.Call(ctx, "sale.order.list", b24.Params{
+    	"select": []string{"id", "accountNumber", "currency"},
+    	"order":  b24.Params{"id": "desc"},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("sale.order.list: %w", err)
+    }
+    var out struct {
+    	Orders []struct {
+    		ID       b24.ID `json:"id"`
+    		Currency string `json:"currency"`
+    	} `json:"orders"`
+    }
+    if err := json.Unmarshal(res.Result, &out); err != nil {
+    	return err
+    }
+    if len(out.Orders) == 0 {
+    	return fmt.Errorf("there are no orders in Bitrix24")
+    }
+    orderID, currency := out.Orders[0].ID, out.Orders[0].Currency
+    ```
+
+{% endlist %}
+
+Response:
+
+```json
+{
+    "result": {
+        "orders": [
+            {
+                "accountNumber": "891",
+                "currency": "EUR",
+                "id": 891
+            }
+        ]
+    }
+}
+```
+
+Take two values from the response:
+
+- `id` — pass it to `orderId` in steps 2 and 3
+- `currency` — pass it to the line item `currency`. If the currencies differ, the `sale.basketitem.add` method returns the error `200140400011`
+
+If the `orders` array is empty, there are no orders in Bitrix24. Create an order using the method [sale.order.add](../../api-reference/sale/order/sale-order-add.md) and take `id` from its response.
+
+## 2. Add a Product from the Catalog and Assign Your Own Price
 
 Pass the product identifier in `productId` and set the price manually. The name, unit of measurement, and external codes are taken by the method from the product card.
 
@@ -426,7 +567,7 @@ Response:
 
 The name `name`, the unit of measurement `measureCode` and `measureName`, and the external codes `catalogXmlId` and `productXmlId` came from the product card. Save the line item `id` — it is located in `result.basketItem.id`. This identifier is passed to the `id` parameter of the methods [sale.basketitem.update](../../api-reference/sale/basket-item/sale-basket-item-update.md) and [sale.basketitem.delete](../../api-reference/sale/basket-item/sale-basket-item-delete.md) if the row has to be modified or deleted.
 
-## 2\. Add a Line Item That Is Not in the Catalog
+## 3. Add a Line Item That Is Not in the Catalog
 
 For a one-time service or contract work there is no product in the catalog, so pass `productId: 0` and fill in the attributes yourself.
 
@@ -722,7 +863,7 @@ The total 6200 is 4 × 1100 plus 2 × 900. The tax 163.64 is 10 % of 1800: this 
 
 In the interface the result is visible in the order card: the new rows appear in the list of products.
 
-## If the Method Returns an Error
+## Errors and Diagnostics {#errors}
 
 Check the request data.
 

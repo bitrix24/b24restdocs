@@ -31,7 +31,11 @@ The identifier of the task template can be obtained when [creating a new templat
 
 The identifier of the checklist item can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md) ||
 || **attachmentsIds*** 
-[`array`](../../../data-types.md) | Array of attachment identifiers to be removed ||
+[`array`](../../../data-types.md) | Array of attachment identifiers to be removed, for example `[621, 623]`.
+
+An attachment identifier is a key of the `attachments` object in the response of the [tasks.template.checklist.get](./tasks-template-checklist-get.md) and [tasks.template.checklist.list](./tasks-template-checklist-list.md) methods. For the response `{"621": "n10921"}`, pass `621`, not `n10921`.
+
+The method skips identifiers that the item does not have without returning an error. The files are detached from the item but remain on Drive ||
 |#
 
 ## Code Examples
@@ -108,7 +112,8 @@ The identifier of the checklist item can be obtained when [creating a new item](
           image: string
           isCollaber: boolean
         }>
-        attachments: unknown[]
+        // Key is the attachment id, value is the Disk file id with the "n" prefix; [] when there are no files
+        attachments: Record<string, string> | []
         nodeId: number | null
         templateId: number
       }
@@ -395,17 +400,20 @@ HTTP Status: **400**
 #| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
-|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing ||
+|| `400` | `100` | Could not find value for parameter {checkListItemId} | Required parameter `checkListItemId` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {templateId}. Should be value of type int. | `templateId` contains a non-numeric value ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {checkListItemId}. Should be value of type int. | `checkListItemId` contains a non-numeric value ||
+|| `400` | `0` | Access to task template was denied | No permission to read the template, `templateId` is less than or equal to `0`, or the `checkListItemId` item is not in the template or has been deleted ||
 || `400` | `100` | Could not find value for parameter {attachmentsIds} | Required parameter `attachmentsIds` is missing ||
-|| `400` | `100` | Invalid value {} to match with parameter {attachmentsIds}. Should be value of type array. | Empty or invalid type for `attachmentsIds` ||
-|| `400` | `0` | Invalid value [] for field [ENTITY_ID] in element [, ] | Non-existent, empty, or invalid type for `checkListItemId` ||
-|| `400` | `0` | Changing item: action is not available | User does not have permission to modify the task template ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {attachmentsIds}. Should be value of type array. | `attachmentsIds` contains a value that is not an array ||
+|| `400` | `0` | Edit item: action unavailable | No permission to modify the task template ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-template-checklist-add.md)
 - [{#T}](./tasks-template-checklist-update.md)
 - [{#T}](./tasks-template-checklist-get.md)

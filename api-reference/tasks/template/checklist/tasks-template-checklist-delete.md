@@ -32,6 +32,12 @@ The task template identifier can be obtained when [creating a new template](../t
 The checklist item identifier can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md) ||
 |#
 
+{% note warning "" %}
+
+The method deletes the item together with all nested items and their participants. If you pass the root item with `parentId` = `0`, the entire checklist is deleted. Deleted items cannot be restored. Attached files are detached but remain on Drive.
+
+{% endnote %}
+
 ## Code Examples
 
 {% include [Note on Examples](../../../../_includes/examples.md) %}
@@ -294,18 +300,26 @@ HTTP Status: **400**
 #| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
-|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing ||
-|| `400` | `0` | Bitrix\Tasks\CheckList\CheckListFacade::onAfterUpdate(): Argument #1 ($taskId) must be of type int, string given, called in /var/www/html/bitrix/modules/tasks/lib/checklist/checklistfacade.php on line 313 | Empty or invalid type `templateId` provided ||
-|| `400` | `0` | Invalid value [] for field [ENTITY_ID] in item [, ] | Non-existent, empty, or invalid type `checkListItemId` provided ||
-|| `400` | `0` | Deleting item: action not available | User does not have permission to modify the task template ||
+|| `400` | `100` | Could not find value for parameter {checkListItemId} | Required parameter `checkListItemId` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {templateId}. Should be value of type int. | `templateId` contains a value of a different type instead of a number ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {checkListItemId}. Should be value of type int. | `checkListItemId` contains a value of a different type instead of a number ||
+|| `400` | `0` | Access to task template was denied | No permission to read the template, `templateId` is less than or equal to `0`, or the `checkListItemId` item is not in the template or has been deleted ||
+|| `400` | `0` | Delete item: action unavailable | No permission to modify the task template ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-template-checklist-add.md)
 - [{#T}](./tasks-template-checklist-update.md)
 - [{#T}](./tasks-template-checklist-get.md)
 - [{#T}](./tasks-template-checklist-list.md)
+- [{#T}](./tasks-template-checklist-move-after.md)
+- [{#T}](./tasks-template-checklist-move-before.md)
 - [{#T}](./tasks-template-checklist-complete.md)
+- [{#T}](./tasks-template-checklist-renew.md)
+- [{#T}](./tasks-template-checklist-add-attachment-by-content.md)
+- [{#T}](./tasks-template-checklist-add-attachments-from-disk.md)
+- [{#T}](./tasks-template-checklist-remove-attachments.md)

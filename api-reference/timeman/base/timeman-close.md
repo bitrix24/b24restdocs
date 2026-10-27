@@ -11,7 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method:
+> - any user — for their own workday
+> - a user with the "Anybody's Clock-in And Clock-out" or "Edit All Records" permission — for another employee's workday
 
 The method `timeman.close` ends the current workday.
 
@@ -21,9 +23,11 @@ The method `timeman.close` ends the current workday.
 || **Name**
 `type` | **Description** ||
 || **USER_ID**
-[`integer`](../../data-types.md) | User identifier. 
+
 
-Defaults to the current user ||
+Defaults to the current user.
+
+To pass the ID of another employee, the "Anybody's Clock-in And Clock-out" or "Edit All Records" permission is required ||
 || **TIME**
 [`datetime`](../../data-types.md) | The end time and date of the workday in the [ATOM](https://www.php.net/manual/en/class.datetimeinterface.php#datetimeinterface.constants.atom) (ISO-8601) format, for example, `2025-02-12T15:52:01+00:00`. The date in the employee's timezone must match the start date of the workday.
 
@@ -416,13 +420,15 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
 || empty string | User not found | User with the specified `USER_ID` not found ||
+|| empty string | User does not have access to managing other users work time | The user does not have permission to manage other employees' work time. The error occurs if the ID of another employee is passed in `USER_ID` ||
 || `WRONG_DATETIME` | Day close date should correspond to the day open date | The closing date of the workday in the employee's timezone must match the opening date ||
 || `WRONG_DATETIME_FORMAT` | Wrong datetime format | The `TIME` value is not in the ATOM format ||
+|| `ALERT_WARNING` | Cannot perform this action | The workday is already closed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./timeman-open.md)

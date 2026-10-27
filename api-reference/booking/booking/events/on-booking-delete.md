@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONBOOKINGDELETE` event will trigger when a booking is deleted manually or via the [booking.v1.booking.delete](../booking-v1-booking-delete.md) method.
+The `ONBOOKINGDELETE` event will trigger when a booking is deleted manually or via the [booking.v1.booking.delete](../booking-v1-booking-delete.md) method, and also when a booking is moved to the waitlist via the [booking.v1.waitlist.createfrombooking](../../waitlist/booking-v1-waitlist-createfrombooking.md) method. When moving, the event arrives after the `onBookingWaitListItemAdd` event.
 
 {% note info "" %}
 

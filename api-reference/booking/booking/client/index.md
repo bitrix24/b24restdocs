@@ -23,6 +23,8 @@ You can add a customer to a resource booking: either a contact or a company. Mes
 
 **Company.** To attach a company to the booking, pass the `ID` of the company in the [booking.v1.booking.client.set](./booking-v1-booking-client-set.md) method. You can retrieve the `ID` of the company using the [crm.item.list](../../../crm/universal/crm-item-list.md) method with the `entityTypeId = 4` parameter.
 
+**Deal.** If the booking is linked to a deal and has no clients, an empty client list in [booking.v1.booking.client.set](./booking-v1-booking-client-set.md) or a call to [booking.v1.booking.client.unset](./booking-v1-booking-client-unset.md) fills in the contacts and the company from the deal. The link between the booking and a deal is returned by the [booking.v1.booking.externalData.list](../external-data/booking-v1-booking-externaldata-list.md) method.
+
 {% note info "" %}
 
 If the client is new, first add them to the CRM using the [crm.item.add](../../../crm/universal/crm-item-add.md) method with the `entityTypeId = 3` for a contact or `entityTypeId = 4` for a company.
@@ -34,9 +36,9 @@ If the client is new, first add them to the CRM using the [crm.item.add](../../.
 1. Retrieve the `ID` of the booking using the [booking.v1.booking.add](../booking-v1-booking-add.md) or [booking.v1.booking.list](../booking-v1-booking-list.md) method
 2. Find a contact or company in the CRM using the [crm.item.list](../../../crm/universal/crm-item-list.md) method
 3. If the customer does not exist in the CRM, create a contact or company using the [crm.item.add](../../../crm/universal/crm-item-add.md) method
-4. Pass the `ID` of the booking and the customer to the [booking.v1.booking.client.set](./booking-v1-booking-client-set.md) method
+4. Pass the `ID` of the booking and the full list of customers to the [booking.v1.booking.client.set](./booking-v1-booking-client-set.md) method. The method replaces the current list, so to add a customer, pass it together with those already linked
 5. Verify the link using the [booking.v1.booking.client.list](./booking-v1-booking-client-list.md) method
-6. If necessary, remove the customer from the booking using the [booking.v1.booking.client.unset](./booking-v1-booking-client-unset.md) method
+6. To unlink all customers, call [booking.v1.booking.client.unset](./booking-v1-booking-client-unset.md). To unlink one customer, pass a list without it to `set`
 
 ## Overview of Methods {#all-methods}
 
@@ -46,7 +48,7 @@ If the client is new, first add them to the CRM using the [crm.item.add](../../.
 
 #|
 || **Method** | **Description** ||
-|| [booking.v1.booking.client.list](./booking-v1-booking-client-list.md) | Returns the contact and company associated with the booking ||
-|| [booking.v1.booking.client.set](./booking-v1-booking-client-set.md) | Adds a contact or company to the booking ||
-|| [booking.v1.booking.client.unset](./booking-v1-booking-client-unset.md) | Removes a contact or company from the booking ||
+|| [booking.v1.booking.client.set](./booking-v1-booking-client-set.md) | Replaces the list of contacts and companies of the booking ||
+|| [booking.v1.booking.client.unset](./booking-v1-booking-client-unset.md) | Unlinks all clients from the booking ||
+|| [booking.v1.booking.client.list](./booking-v1-booking-client-list.md) | Returns the contacts and companies linked to the booking ||
 |#

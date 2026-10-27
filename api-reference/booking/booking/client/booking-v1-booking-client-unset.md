@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `booking.v1.booking.client.unset` removes clients for the specified booking.
+The method `booking.v1.booking.client.unset` unlinks all clients from the booking.
 
 ## Method Parameters
 
@@ -24,8 +24,17 @@ The method `booking.v1.booking.client.unset` removes clients for the specified b
 `type` | **Description** ||
 || **bookingId***
 [`integer`](../../../data-types.md) | Booking identifier.
+
 Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking-add.md) and [booking.v1.booking.list](../booking-v1-booking-list.md) ||
 |#
+
+{% note info "" %}
+
+The method removes all clients at once, you cannot select a specific client. To unlink one client, retrieve the list using the method [booking.v1.booking.client.list](./booking-v1-booking-client-list.md) and pass the remaining clients to [booking.v1.booking.client.set](./booking-v1-booking-client-set.md). The contacts and companies themselves are not deleted from the CRM.
+
+If the booking is linked to a deal and already has no clients, the call does not clear the list but fills in the contacts and the company from the deal. You can check the link to a deal using the method [booking.v1.booking.externalData.list](../external-data/booking-v1-booking-externaldata-list.md).
+
+{% endnote %}
 
 ## Code Examples
 
@@ -39,8 +48,8 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"bookingId":14,"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/booking.v1.booking.client.unset
+    -d '{"bookingId":14}' \
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.client.unset
     ```
 
 - cURL (OAuth)
@@ -49,8 +58,8 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"bookingId":14}' \
-    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/booking.v1.booking.client.unset
+    -d '{"bookingId":14,"auth":"**put_access_token_here**"}' \
+    https://**put_your_bitrix24_address**/rest/booking.v1.booking.client.unset
     ```
 
 - JS (TS)
@@ -162,16 +171,10 @@ Can be obtained using the methods [booking.v1.booking.add](../booking-v1-booking
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error unsetting booking client: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -265,7 +268,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 1021,
+    "error": "1021",
     "error_description": "Booking not found"
 }
 ```
@@ -276,13 +279,15 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `1021` | `Booking not found` | Booking with the specified `id` not found ||
-|| `100` | `Could not find value for parameter` | Required parameter not provided ||
+|| `100` | `Could not find value for parameter {bookingId}` | The required parameter `bookingId` is not provided ||
+|| `100` | `Invalid value {abc} to match with parameter {bookingId}. Should be value of type int.` | `bookingId` contains a value of a different type instead of a number ||
+|| `1021` | `Booking not found` | Booking with the specified `bookingId` not found ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./booking-v1-booking-client-set.md)
 - [{#T}](./booking-v1-booking-client-list.md)

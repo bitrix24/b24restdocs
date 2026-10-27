@@ -11,11 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method:
+> - any user — for their own workday
+> - a user with the "Anybody's Clock-in And Clock-out" or "Edit All Records" permission — for another employee's workday
 
-The method `timeman.pause` pauses the current workday.
+The method `timeman.pause` pauses an open workday. To continue the day after a pause, use the [timeman.open](./timeman-open.md) method.
 
-If the workday is completed, the method will resume it and add the time that has passed since completion to the duration.
+If the workday is already paused or closed, the method does not change it and returns the current state without an error. Check the `STATUS` value in the response.
 
 ## Method Parameters
 
@@ -23,9 +25,11 @@ If the workday is completed, the method will resume it and add the time that has
 || **Name**
 `type` | **Description** ||
 || **USER_ID**
-[`integer`](../../data-types.md) | User identifier.
+
 
-By default — the identifier of the current user ||
+Defaults to the current user.
+
+To pass the ID of another employee, the "Anybody's Clock-in And Clock-out" or "Edit All Records" permission is required ||
 |#
 
 ## Code Examples
@@ -181,7 +185,6 @@ By default — the identifier of the current user ||
             ->getResponseData()
             ->getResult();
     
-        echo 'Success: ' . print_r($result, true);
         echo 'Info: ' . print_r($result, true);
     
     } catch (Throwable $e) {
@@ -359,7 +362,7 @@ HTTP status: **400**
 ```json
 {
     "error":"",
-    "error_description":"User not found"
+    "error_description":"User does not have access to managing other users work time"
 }
 ```
 
@@ -371,11 +374,12 @@ HTTP status: **400**
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
 || empty string | User not found | User with the specified `USER_ID` not found ||
+|| empty string | User does not have access to managing other users work time | The user does not have permission to manage other employees' work time. The error occurs if the ID of another employee is passed in `USER_ID` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./timeman-open.md)

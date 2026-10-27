@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permissions to modify the task template
 
-The method `tasks.template.checklist.renew` removes the completion mark from a checklist item of the task template.
+The method `tasks.template.checklist.renew` removes the completion mark from a checklist item of the task template. To mark an item as completed, use the [tasks.template.checklist.complete](./tasks-template-checklist-complete.md) method.
 
 ## Method Parameters
 
@@ -89,8 +89,17 @@ The identifier of the checklist item can be obtained when [creating a new item](
         isComplete: boolean
         isImportant: boolean
         completedCount: number
-        members: unknown[]
-        attachments: unknown[]
+        members: Array<{
+          id: string
+          type: string
+          name: string
+          personalPhoto: string
+          personalGender: string
+          image: string
+          isCollaber: boolean
+        }>
+        // Key is the attachment id, value is the Disk file id with the "n" prefix; [] when there are no files
+        attachments: Record<string, string> | []
         nodeId: number | null
         templateId: number
       }
@@ -357,16 +366,26 @@ HTTP Status: **400**
 #| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
-|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing ||
-|| `400` | `0` | Bitrix\Tasks\CheckList\CheckListFacade::onAfterUpdate(): Argument #1 ($taskId) must be of type int, string given, called in /var/www/html/bitrix/modules/tasks/lib/checklist/checklistfacade.php on line 313 | Empty or invalid type for `templateId` ||
-|| `400` | `0` | Incorrect value [] for field [ENTITY_ID] in item [, ] | Non-existent, empty, or invalid type for `checkListItemId` ||
-|| `400` | `0` | Changing the status of the item: action not available | User does not have permission to modify the task template ||
+|| `400` | `100` | Could not find value for parameter {checkListItemId} | Required parameter `checkListItemId` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {templateId}. Should be value of type int. | `templateId` contains a non-numeric value ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {checkListItemId}. Should be value of type int. | `checkListItemId` contains a non-numeric value ||
+|| `400` | `0` | Access to task template was denied | No permission to read the template, `templateId` is less than or equal to `0`, or the `checkListItemId` item is not in the template or has been deleted ||
+|| `400` | `0` | Edit item status: action unavailable | No permission to modify the task template ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./tasks-template-checklist-add.md)
 - [{#T}](./tasks-template-checklist-update.md)
+- [{#T}](./tasks-template-checklist-get.md)
 - [{#T}](./tasks-template-checklist-list.md)
+- [{#T}](./tasks-template-checklist-delete.md)
+- [{#T}](./tasks-template-checklist-move-after.md)
+- [{#T}](./tasks-template-checklist-move-before.md)
 - [{#T}](./tasks-template-checklist-complete.md)
+- [{#T}](./tasks-template-checklist-add-attachment-by-content.md)
+- [{#T}](./tasks-template-checklist-add-attachments-from-disk.md)
+- [{#T}](./tasks-template-checklist-remove-attachments.md)

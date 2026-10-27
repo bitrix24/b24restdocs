@@ -35,6 +35,15 @@ Prepare the values used in the examples.
 - the payer type identifier `personTypeId`. You can retrieve the list of types using the [sale.persontype.list](../../api-reference/sale/person-type/sale-person-type-list.md) method
 - the property group identifier `propsGroupId`. You can retrieve the list of groups using the [sale.propertygroup.list](../../api-reference/sale/property-group/sale-property-group-list.md) method
 
+### Security {#security}
+
+- An administrator webhook grants full access to the store settings. Store the webhook URL or OAuth tokens on the server in environment variables or a secure vault. Do not place them in client-side code, repositories, or logs
+- The `CALCULATE_URL`, `CREATE_DELIVERY_REQUEST_URL`, and `CANCEL_DELIVERY_REQUEST_URL` endpoints must accept HTTPS only: Bitrix24 sends recipient addresses and data in these requests
+- Bitrix24 does not sign requests to the handler URLs. Compare the delivery service identifier in the request, `DELIVERY_SERVICE.ID` or `DELIVERY_ID`, with the profile identifiers you saved in step 2, and reject requests with unknown values
+- Validate the types and required fields of the incoming JSON before calculating the cost and creating a delivery request. Do not write the full personal data of the recipient to logs
+
+The request format for the handler URLs is described in [{#T}](../../api-reference/sale/delivery/webhooks/index.md).
+
 ## 1. Create a Delivery Handler
 
 Register a handler using [sale.delivery.handler.add](../../api-reference/sale/delivery/handler/sale-delivery-handler-add.md). Pass four parameters to the method.
@@ -884,7 +893,7 @@ The scenario is successful if the method responses confirm these results:
 - `sale.propertyRelation.add` returned the links between the properties and the delivery profiles
 - `sale.delivery.extra.service.add` returned the identifier of the extra service
 
-## Errors and Diagnostics
+## Errors and Diagnostics {#errors}
 
 If a method returns an error, verify the request data and the values passed between the steps.
 
@@ -905,7 +914,7 @@ If a method returns an error, verify the request data and the values passed betw
 
 - rerunning the example with the same `CODE` may fail because the handler code must be unique
 - delivery profiles are created in step 2; save their identifiers before you configure properties and extra services
-- the external service must accept requests on the HTTPS endpoints specified in the handler settings
+- the external service must accept requests on the HTTPS endpoints specified in the handler settings and validate them according to the rules in the [Security](#security) section
 
 ## Continue Learning
 

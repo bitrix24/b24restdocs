@@ -31,7 +31,7 @@ The task template identifier can be obtained when [creating a new template](../t
 
 The checklist item identifier can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md) ||
 || **filesIds***
-[`array`](../../../data-types.md) | An array of file identifiers from Drive. Prefix each identifier with `n`, for example, `["n5065", "n5067"]`.
+[`array`](../../../data-types.md) | An array of file identifiers from Drive. Prefix each identifier with `n`, for example, `["n5065", "n5067"]`. The method skips values without the prefix without an error and does not attach the file.
 
 You can obtain file identifiers in two ways.
 
@@ -118,7 +118,8 @@ Use one of the methods to get the list of files:
           image: string
           isCollaber: boolean
         }>
-        attachments: Record<string, string>
+        // Key is the attachment id, value is the Disk file id with the "n" prefix; [] when there are no files
+        attachments: Record<string, string> | []
         nodeId: number | null
         templateId: number
       }
@@ -385,7 +386,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **checkListItem**
-[`object`](../../../data-types.md) | Checklist item after attachments have been added [(detailed description)](#checklistitem) ||
+[`object`](../../../data-types.md) | Checklist item after attachments have been added [(detailed description)](#checklistitem).
+
+The `attachments` field returns all attachments of the item, including those added by this call. The key is the attachment identifier, which is passed in `attachmentsIds` of the [tasks.template.checklist.removeAttachments](./tasks-template-checklist-remove-attachments.md) method. The value is the identifier of the file on Drive with the `n` prefix, the same one that was passed in `filesIds` ||
 |#
 
 {% include [Decoding the checkListItem Object](./_includes/checklist-item-response.md) %}
@@ -408,17 +411,21 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
-|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing ||
+|| `400` | `100` | Could not find value for parameter {checkListItemId} | Required parameter `checkListItemId` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {templateId}. Should be value of type int. | `templateId` contains a value of a different type instead of a number ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {checkListItemId}. Should be value of type int. | `checkListItemId` contains a value of a different type instead of a number ||
+|| `400` | `0` | Access to task template was denied | No permission to read the template, `templateId` is less than or equal to `0`, or the `checkListItemId` item is not in the template or has been deleted ||
 || `400` | `100` | Could not find value for parameter {filesIds} | Required parameter `filesIds` is missing ||
-|| `400` | `100` | Invalid value {} to match with parameter {filesIds}. Should be value of type array. | An empty or invalid type `filesIds` was provided ||
-|| `400` | `0` | Invalid value [] for field [ENTITY_ID] in element [, ] | An invalid, empty, or incorrect type `checkListItemId` was provided ||
-|| `400` | `0` | Item modification: action not available | The user does not have permission to modify the task template ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {filesIds}. Should be value of type array. | `filesIds` contains a value of a different type instead of an array ||
+|| `400` | `ERROR_CORE` | File could not be found.<br> | `filesIds` contains the identifier of a file that does not exist on Drive ||
+|| `400` | `0` | Edit item: action unavailable | No permission to modify the task template ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-template-checklist-add.md)
 - [{#T}](./tasks-template-checklist-update.md)
 - [{#T}](./tasks-template-checklist-get.md)

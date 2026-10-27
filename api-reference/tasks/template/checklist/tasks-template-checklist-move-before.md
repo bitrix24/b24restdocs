@@ -31,9 +31,13 @@ The task template identifier can be obtained when [creating a new template](../t
 
 The checklist item identifier can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md) ||
 || **beforeItemId*** 
-[`integer`](../../../data-types.md) | The identifier of the item before which the element should be placed.
+[`integer`](../../../data-types.md) | The identifier of the item before which the moved item is placed. The item must belong to the same `templateId` template.
 
-The checklist item identifier can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md) ||
+The checklist item identifier can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md).
+
+The moved item takes the `sortIndex` of the `beforeItemId` item. The `beforeItemId` item and the items below it at the same level shift down by one.
+
+You can move an item to a different level: it becomes a sibling of the `beforeItemId` item and takes its `parentId`, and its nested items move with it. You cannot specify a subitem of the item being moved ||
 |#
 
 ## Code Examples
@@ -93,6 +97,17 @@ The checklist item identifier can be obtained when [creating a new item](./tasks
         sortIndex: number
         isComplete: boolean
         isImportant: boolean
+        members: Array<{
+          id: string
+          type: string
+          name: string
+          personalPhoto: string
+          personalGender: string
+          image: string
+          isCollaber: boolean
+        }>
+        // Key is the attachment id, value is the Disk file id with the "n" prefix; [] when there are no files
+        attachments: Record<string, string> | []
         templateId: number
       }
     }
@@ -378,17 +393,21 @@ HTTP Status: **400**
 #| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
-|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing ||
-|| `400` | `100` | Could not find value for parameter {afterItemId} | Required parameter `afterItemId` is missing ||
-|| `400` | `0` | Bitrix\Tasks\CheckList\CheckListFacade::onAfterUpdate(): Argument #1 ($taskId) must be of type int, string given, called in /var/www/html/bitrix/modules/tasks/lib/checklist/checklistfacade.php on line 313 | Empty or invalid type for `templateId` ||
-|| `400` | `0` | Invalid value [] for field [ENTITY_ID] in element [, ] | Non-existent, empty, or invalid type for `checkListItemId` ||
-|| `400` | `0` | Moving item: action unavailable | User does not have permission to modify the task template ||
+|| `400` | `100` | Could not find value for parameter {checkListItemId} | Required parameter `checkListItemId` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {templateId}. Should be value of type int. | `templateId` contains a non-numeric value ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {checkListItemId}. Should be value of type int. | `checkListItemId` contains a non-numeric value ||
+|| `400` | `0` | Access to task template was denied | No permission to read the template, `templateId` is less than or equal to `0`, or the `checkListItemId` item is not in the template or has been deleted ||
+|| `400` | `100` | Could not find value for parameter {beforeItemId} | Required parameter `beforeItemId` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {beforeItemId}. Should be value of type int. | `beforeItemId` contains a non-numeric value ||
+|| `400` | `0` | Move item: action unavailable | No permission to modify the task template, or the `beforeItemId` item is not in this template ||
+|| `400` | `0` | Parent item cannot be a subitem of itself | `beforeItemId` contains a subitem of the item being moved ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-template-checklist-add.md)
 - [{#T}](./tasks-template-checklist-update.md)
 - [{#T}](./tasks-template-checklist-get.md)

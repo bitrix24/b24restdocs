@@ -29,7 +29,9 @@ The task template identifier can be obtained when [creating a new template](../t
 || **checkListItemId*** 
 [`integer`](../../../data-types.md) | Identifier of the checklist item in the template.
 
-The checklist item identifier can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md) ||
+The checklist item identifier can be obtained when [creating a new item](./tasks-template-checklist-add.md) or by using the [method to get the list of items](./tasks-template-checklist-list.md).
+
+The item must belong to the `templateId` template. If the template has no such item, the method returns the `Access to task template was denied` error ||
 |#
 
 ## Code Examples
@@ -89,8 +91,17 @@ The checklist item identifier can be obtained when [creating a new item](./tasks
         isComplete: boolean
         isImportant: boolean
         completedCount: number
-        members: object[]
-        attachments: Record<string, string>
+        members: Array<{
+          id: string
+          type: string
+          name: string
+          personalPhoto: string
+          personalGender: string
+          image: string
+          isCollaber: boolean
+        }>
+        // Key is the attachment id, value is the Disk file id with the "n" prefix; [] when there are no files
+        attachments: Record<string, string> | []
         nodeId: number | null
         templateId: number
       }
@@ -347,11 +358,7 @@ HTTP Status: **200**
 || **Name** 
 `type` | **Description** ||
 || **checkListItem** 
-[`object`](../../../data-types.md) | Data of the checklist item [(detailed description)](#checklistitem).
-
-Contains empty field values:
-- if an empty or incorrect type `templateId` is specified
-- if a non-existent, empty, or incorrect type `checkListItemId` is specified ||
+[`object`](../../../data-types.md) | Data of the checklist item [(detailed description)](#checklistitem) ||
 |#
 
 {% include [Decoding the checkListItem Object](./_includes/checklist-item-response.md) %}
@@ -363,7 +370,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Access to the task template is denied"
+    "error_description": "Access to task template was denied"
 }
 ```
 
@@ -374,16 +381,25 @@ HTTP Status: **400**
 #| 
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is missing ||
-|| `400` | `100` | Bitrix\Tasks\CheckList\Internals\CheckList All parameters in the constructor must have real class type | Required parameter `checkListItemId` is missing ||
-|| `400` | `0` | Access to the task template is denied | Insufficient rights to read the template ||
+|| `400` | `100` | Could not find value for parameter {checkListItemId} | Required parameter `checkListItemId` is missing ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {templateId}. Should be value of type int. | `templateId` contains a non-numeric value ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {checkListItemId}. Should be value of type int. | `checkListItemId` contains a non-numeric value ||
+|| `400` | `0` | Access to task template was denied | No permission to read the template, `templateId` is less than or equal to `0`, or the `checkListItemId` item is not in the template or has been deleted ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-template-checklist-add.md)
 - [{#T}](./tasks-template-checklist-update.md)
 - [{#T}](./tasks-template-checklist-list.md)
 - [{#T}](./tasks-template-checklist-delete.md)
+- [{#T}](./tasks-template-checklist-move-after.md)
+- [{#T}](./tasks-template-checklist-move-before.md)
 - [{#T}](./tasks-template-checklist-complete.md)
+- [{#T}](./tasks-template-checklist-renew.md)
+- [{#T}](./tasks-template-checklist-add-attachment-by-content.md)
+- [{#T}](./tasks-template-checklist-add-attachments-from-disk.md)
+- [{#T}](./tasks-template-checklist-remove-attachments.md)
