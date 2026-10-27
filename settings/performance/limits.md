@@ -28,6 +28,12 @@ To reduce the timeout risk:
 
 In the Bitrix24 self-hosted version, request execution time depends on server settings.
 
+### SQL Query Time Limit
+
+Bitrix24 can limit the execution time of a single SQL query inside a REST method. The limit applies to classic methods and REST 3.0 methods. In the self-hosted version, it is disabled by default. An administrator enables it in the `rest` module settings and sets the limit in seconds, 30 seconds by default. The setting is available only if the database supports it.
+
+If an SQL query does not fit within the limit, the method returns the `BITRIX_REST_V3_EXCEPTION_LIMITER_QUERYTIMELIMITEXCEPTION` error with the text "Request canceled: query time limit exceeded" and HTTP status 503. The `Retry-After` header contains the limit in seconds. Classic methods based on Engine controllers return HTTP status 400 without `Retry-After`. In [batch](../how-to-call-rest-api/batch.md), the error is returned in the result of the subrequest that exceeded the limit.
+
 ## Request Rate Limits
 
 The Bitrix24 request rate limit operates on the Leaky Bucket Algorithm principle. An application can perform intensive requests briefly, but it cannot maintain such intensity constantly.
@@ -124,6 +130,7 @@ Bitrix24 checks the accumulated value before executing each call. The call after
 #|
 || **Error** | **Cause** | **What to do** ||
 || `QUERY_LIMIT_EXCEEDED` | Bitrix24 HTTP request intensity exceeded | Decrease request frequency and retry calls with increasing delay. Do not run multiple parallel series of requests from a single IP address ||
+|| `BITRIX_REST_V3_EXCEPTION_LIMITER_QUERYTIMELIMITEXCEPTION` | An SQL query inside the method ran longer than the limit | Retry the call no earlier than after the time in the `Retry-After` header. Narrow the selection: add filters, reduce the page size, remove unnecessary fields ||
 || `OPERATION_TIME_LIMIT` | Accumulated method execution time has exceeded the limit for the application or webhook | Suspend calls to the blocked method for the same application or webhook. For the first retry, refer to `operating_reset_at` from the last successful response. If the error persists, wait for the next bucket reset ||
 |#
 

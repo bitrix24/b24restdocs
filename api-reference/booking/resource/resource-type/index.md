@@ -52,9 +52,9 @@ Other Bitrix24 modules also have resource types. To retrieve only your own, pass
 
 You can create and modify resource types both through the Bitrix24 interface and using the [booking.v1.resourceType.add](./booking-v1-resourcetype-add.md) and [booking.v1.resourceType.update](./booking-v1-resourcetype-update.md) methods.
 
-The code is mandatory when updating, and its value must differ from the codes of all existing types, including the code of the type being updated — see the details on the [booking.v1.resourceType.update](./booking-v1-resourcetype-update.md) page.
+The name and code of a type must be unique: the method returns an error if another type already uses them. When updating, you can pass only the fields that change — see the details on the [booking.v1.resourceType.update](./booking-v1-resourcetype-update.md) page.
 
-A type can only be deleted using the [booking.v1.resourceType.delete](./booking-v1-resourcetype-delete.md) method, and only if no resource is linked to it.
+A type can only be deleted using the [booking.v1.resourceType.delete](./booking-v1-resourcetype-delete.md) method, and only if no active resource is linked to it.
 
 Notification configurations of a type are not transferred to resources: a resource receives its own default values when created.
 

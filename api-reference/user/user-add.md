@@ -403,6 +403,7 @@ HTTP status: **400**
 || `ERROR_NO_GROUP` | Group is specified incorrectly | Group is incorrectly specified when adding a user ||
 || `ERROR_ARGUMENT` | no_extranet_field | When calling the method, the group the user should belong to was not specified ||
 || `ERROR_CORE` |  | Error updating user fields ||
+|| `ERROR_CORE` | Error text depends on the cause | Could not send the invitation via Bitrix24.Network ||
 |#
 
 {% include [System errors](../../_includes/system-errors.md) %}

@@ -29,7 +29,9 @@ The method `department.update` modifies the department data in the company struc
 || **SORT**
 [`integer`](../data-types.md) | Sorting field of the department ||
 || **PARENT**
-[`integer`](../data-types.md) | Identifier of the parent department ||
+[`integer`](../data-types.md) | Identifier of the parent department.
+
+Pass a number. If a non-numeric string is passed, including an empty one, the method returns the `PARENT must be numeric.` error ||
 || **UF_HEAD**
 [`integer`](../data-types.md) | Identifier of the user who will be the head of the department ||
 |#
@@ -275,6 +277,7 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ERROR_CORE` | Department not found | The department being updated was not found ||
+|| `ERROR_ARGUMENT` | PARENT must be numeric. | A non-numeric string, including an empty one, is passed in `PARENT` ||
 || `ERROR_CORE` | Access denied | Insufficient permissions to modify the department ||
 |#
 

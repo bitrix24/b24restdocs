@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 The method `booking.v1.resourceType.delete` removes a resource type.
 
-A type can only be deleted if no resource is linked to it. Reassign the resources to another type using [booking.v1.resource.update](../booking-v1-resource-update.md) or remove them using [booking.v1.resource.delete](../booking-v1-resource-delete.md). Deletion is irreversible.
+A type can only be deleted if no active resource is linked to it. Deleted resources do not prevent the type from being deleted. Reassign the resources to another type using [booking.v1.resource.update](../booking-v1-resource-update.md) or remove them using [booking.v1.resource.delete](../booking-v1-resource-delete.md). Deletion is irreversible. The `code` of a deleted type can be assigned to a new type right away.
 
 ## Method Parameters
 
@@ -279,8 +279,8 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `100` | `Could not find value for parameter {id}` | Required parameter not provided ||
-|| `1012` | `Resource type not found` | Resource type with such `id` not found ||
-|| `1012` | `The type can not be deleted. There are resources of  type` | At least one resource is linked to the type. First remove or reassign the resources using [booking.v1.resource.update](../booking-v1-resource-update.md) ||
+|| `1013` | `Resource type has not been found` | Resource type with such `id` not found ||
+|| `1057` | `The type can not be deleted. There are resources of type` | At least one active resource is linked to the type. First remove or reassign the resources using [booking.v1.resource.update](../booking-v1-resource-update.md) ||
 || `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 

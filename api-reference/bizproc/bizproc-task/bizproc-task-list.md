@@ -753,7 +753,7 @@ Each object contains [fields](#fields) of the task specified in the `SELECT` par
 || **WORKFLOW_STARTED**
 [`datetime`](../../data-types.md) | Workflow start date ||
 || **WORKFLOW_STARTED_BY**
-[`user`](../../data-types.md) | Who started the workflow ||
+[`user`](../../data-types.md) | Who started the workflow. For workflows started by automation rules and stage triggers, the value is `0` ||
 || **OVERDUE_DATE**
 [`datetime`](../../data-types.md) | Deadline ||
 || **WORKFLOW_TEMPLATE_ID**

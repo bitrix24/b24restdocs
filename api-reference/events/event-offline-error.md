@@ -294,7 +294,7 @@ HTTP status: **403**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `ERROR_ARGUMENT` | Argument 'PROCESS_ID' is null or empty | The `process_id` parameter is not passed ||
-|| `400` | `ERROR_ARGUMENT` | Value must be array of MESSAGE_ID values | The `message_id` parameter is not passed or is not an array ||
+|| `400` | `ERROR_ARGUMENT` | Value must be array of MESSAGE_ID values | The `message_id` parameter is not passed, is not an array, or contains elements that are not strings or numbers, for example nested arrays ||
 || `403` | `ACCESS_DENIED` | Access denied! | The method was called by a non-administrator ||
 || `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was called outside an application, for example, through a webhook ||
 || `403` | `WRONG_LICENSE` | This feature is not enabled for the current license: auth_connector | `auth_connector` is passed, but the plan does not support source keys ||

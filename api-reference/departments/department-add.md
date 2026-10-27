@@ -27,7 +27,9 @@ The method `department.add` adds a new department to the company's structure.
 || **SORT**
 [`integer`](../data-types.md) | Department sorting field ||
 || **PARENT***
-[`integer`](../data-types.md) | Identifier of the parent department ||
+[`integer`](../data-types.md) | Identifier of the parent department.
+
+Pass a number. If the parameter is not passed, the method returns the `Argument 'PARENT' is null or empty` error. If a non-numeric string is passed, including an empty one, the method returns the `PARENT must be numeric.` error ||
 || **UF_HEAD**
 [`integer`](../data-types.md) | Identifier of the user who will become the head of the department ||
 |#
@@ -265,6 +267,8 @@ HTTP status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || `ERROR_CORE` | Department name not provided.\u003Cbr\u003E | Required parameter `NAME` is missing ||
+|| `ERROR_ARGUMENT` | Argument 'PARENT' is null or empty | The required `PARENT` parameter is not passed. The response contains the `argument` field with the `PARENT` value ||
+|| `ERROR_ARGUMENT` | PARENT must be numeric. | A non-numeric string, including an empty one, is passed in `PARENT` ||
 || `ERROR_CORE` | There can only be one top-level department in the company structure | Incorrect `PARENT` parameter specified ||
 || `ERROR_CORE` | Access denied | Insufficient rights to add a department ||
 |#

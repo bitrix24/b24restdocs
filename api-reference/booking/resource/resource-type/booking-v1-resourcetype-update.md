@@ -26,7 +26,9 @@ The method `booking.v1.resourceType.update` updates information about an existin
 [`integer`](../../../data-types.md) | Identifier of the resource type.
 Can be obtained from the methods [booking.v1.resourceType.add](./booking-v1-resourcetype-add.md) and [booking.v1.resourceType.list](./booking-v1-resourcetype-list.md) ||
 || **fields***
-[`object`](../../../data-types.md) | An object containing field values to update the resource type [(detailed description)](#fields) ||
+[`object`](../../../data-types.md) | An object containing field values to update the resource type [(detailed description)](#fields).
+
+Pass at least one field. If `fields` is empty, the method returns the `422` error ||
 |#
 
 ### Parameter fields {#fields}
@@ -35,11 +37,13 @@ Can be obtained from the methods [booking.v1.resourceType.add](./booking-v1-reso
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../../data-types.md) | Resource type name ||
-|| **code***
+[`string`](../../../data-types.md) | Resource type name.
+
+The name must not match the name of another resource type. Otherwise the method returns the `1053` error ||
+|| **code**
 [`string`](../../../data-types.md) | Symbolic code of the resource type.
 
-The field is mandatory, and its value must differ from the codes of all existing types, including the code of the type being updated. Otherwise the method returns an error ||
+The code must not match the code of another resource type. Otherwise the method returns the `1011` error. You can pass the current code of the type being updated again ||
 || **isInfoNotificationOn**
 [`string`](../../../data-types.md) | Booking message to the client. Possible values:
 - `Y` — enabled
@@ -519,8 +523,9 @@ HTTP Status: **400**
 || `1007` | Resource type not found | A non-existent `id` of the resource type was specified ||
 || `100` | Could not find value for parameter \{id\} | A required parameter was not provided ||
 || `422` | Invalid value of the {field} field | An invalid value of an enumerated field, for example `templateTypeConfirmation` ||
-|| `1011` | Resource type with code "X" already exists | This `code` is already taken by another type or by the type being updated ||
-|| `0` | ResourceTypeRepository::getByModuleIdAndCode(): Argument #2 ($code) must be of type string, null given | The `code` field is not provided in `fields` ||
+|| `422` | Invalid value of the fields field | An empty `fields` object was passed ||
+|| `1011` | Resource type with code "X" already exists | This `code` is already taken by another resource type ||
+|| `1053` | Resource type name is already taken | This `name` is already taken by another resource type ||
 || `0` | Booking tool is disabled. Please contact your administrator. | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 

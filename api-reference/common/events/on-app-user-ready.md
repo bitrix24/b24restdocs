@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONAPPUSERREADY` event is triggered after the application installation is completed successfully, when Bitrix24 has created or reactivated the application [system user](../../../settings/system-user.md). The event is not sent to local applications.
+The `ONAPPUSERREADY` event is triggered after the application installation is completed successfully, when Bitrix24 has created or reactivated the application [system user](../../../settings/system-user.md). The event is not sent to local applications. If the *Create system user* checkbox is cleared during installation, the system user is not created and the event is not sent.
 
 The handler is transferred together with the application configuration.
 

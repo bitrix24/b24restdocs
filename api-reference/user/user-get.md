@@ -57,8 +57,8 @@ A key can be assigned an additional prefix that clarifies the filter behavior. P
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `@` — IN (an array is passed as a value)
-- `!@`— NOT IN (an array is passed as a value)
+- `@` — IN (an array is passed as a value). If an empty array is passed for a non-string custom field `UF_*`, the method returns an empty result
+- `!@`— NOT IN (an array is passed as a value). A condition with an empty array for a non-string custom field `UF_*` is ignored
 - `%` — LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search looks for a substring in any position of the string
 - `=%` — LIKE, substring search. The `%` symbol must be passed in the value. Examples:
     - "mol%" — searching for values starting with "mol"

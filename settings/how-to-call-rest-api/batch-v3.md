@@ -79,6 +79,15 @@ To collect the values of one field from all result items, use `$refArray`:
 
 In this example, the API takes the `tasks_list` subrequest result, extracts the `id` field from each item, and passes the resulting array to the next request.
 
+### Type Casting
+
+A value from `$ref` or `$refArray` is cast to the type of the field it is substituted into. This works in `fields`, in nested objects, and in `filter`, including the `in` condition. If the value cannot be cast, batch returns the `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION` error with HTTP status 400. For example, this happens if you substitute string task titles into a filter by `id`.
+
+The following values are not cast:
+
+- values passed explicitly in the request. The string `"289"` in a filter by `id` causes the `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION` error
+- a value from `$ref` substituted into the `id` parameter. If you substitute a string, batch returns the `INTERNAL_SERVER_ERROR` error with HTTP status 500
+
 ## Code Examples
 
 {% include [Note on examples](../../_includes/examples.md) %}
@@ -548,7 +557,7 @@ HTTP status: **400**
 #|
 || **Code** | **HTTP Status** | **Cause** | **What to Check** ||
 || `BITRIX_REST_V3_EXCEPTION_INVALIDJSONEXCEPTION` | 400 | The request body is not valid JSON | Check brackets, quotation marks, and Content-Type `application/json` ||
-|| `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION` | 400 | The nested method parameters failed validation | Check `query` and the requirements on the nested method page ||
+|| `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION` | 400 | The nested method parameters failed validation, or a value from `$ref` or `$refArray` cannot be cast to the field type | Check `query`, the requirements on the nested method page, and the type of the substituted values ||
 || `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION` | 400 | The `$ref` reference or `select` expression could not be parsed, or an `as` name is duplicated | Check the subrequest name, field path, and uniqueness of `as` ||
 || `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION` | 400 | The nested method did not find an object with the specified ID | Check the object ID ||
 || `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION` | 403 | The user does not have access to the object | Check the user permissions ||

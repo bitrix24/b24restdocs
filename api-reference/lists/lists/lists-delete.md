@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "Full access" permission for the required list
 
-The method `lists.delete` removes a universal list.
+The method `lists.delete` removes a universal list. The deletion cannot be rolled back: unlike `lists.add` and `lists.update`, the method commits changes to the database immediately, even if an error occurs during deletion.
 
 ## Method parameters
 

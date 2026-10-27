@@ -278,7 +278,11 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #0} | Required parameter `id` is missing ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | File with the specified `id` not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient permissions to obtain the file link ||
+|| `ACCESS_DENIED` | Access denied | HTTP status **403**. Possible reasons:
+- the user does not have permission to manage the public link to the file
+- public links are disabled in the Bitrix24 settings
+
+The response does not indicate which reason applies ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -30,7 +30,9 @@ There are two types of system users.
 
 When integrations are transferred, the system user inherits the terminated employee's access groups — webhooks and applications continue to work with the same permissions. An application works with a clone of the user whose authorization tokens it used. Permissions are retained, and the transfer is transparent for the application.
 
-When an application is installed, a system user is created once for this application and exists while the application is installed. Bitrix24 takes the time zone, language, and access groups from the employee who installed the application. Elevated roles of the employee who installed the application are not inherited: in the company structure, the system user receives the role of a regular employee.
+When you install an application, clicking *Install* opens a window with the *Create system user* checkbox. If you clear the checkbox, the system user is not created and the `ONAPPUSERREADY` event is not sent, while the `ONAPPINSTALL` event is sent as usual. The choice is retained on the first installation of the application. When installing via `CRestUtil::InstallApp`, the system user is not created. Applications installed before the checkbox appeared receive a system user on update, as before.
+
+A system user is created once for the application and exists while the application is installed. Bitrix24 takes the time zone, language, and access groups from the employee who installed the application. Elevated roles of the employee who installed the application are not inherited: in the company structure, the system user receives the role of a regular employee.
 
 When the application is deleted, the system user is deactivated. Related integrations are disabled together with it: the application and its webhooks.
 

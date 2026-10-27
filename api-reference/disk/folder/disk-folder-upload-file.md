@@ -822,6 +822,7 @@ HTTP Status: **400** or **403**
 || `400` | `ERROR_NOT_FOUND` | Could not find entity with id `X` | The folder with the specified `id` was not found ||
 || `400` | `DISK_BASE_SERVICE_22001` | Error: required parameter NAME (DISK_BASE_SERVICE_22001) | The required parameter `NAME` in the `data` array is not specified ||
 || `400` | `ERROR_COULD_NOT_SAVE_FILE` | Could not save file | Failed to save the file. Check free space on the Disk and the correctness of data encoding ||
+|| `400` | `QUOTA_BAD` | `Disk quota exceeded.<br>` | The Bitrix24 disk space quota is exhausted. The error text comes in the Bitrix24 language and ends with the `<br>` tag ||
 || `400` | Empty value | Invalid format: Right `N` should be array | The `rights` item at index `N` is not an array ||
 || `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE and TASK_ID | The `rights` item at index `N` does not contain `ACCESS_CODE` or `TASK_ID` ||
 || `400` | Empty value | Invalid format: Right `N` should contain ACCESS_CODE as not empty string | `ACCESS_CODE` is not a string or is an empty string ||

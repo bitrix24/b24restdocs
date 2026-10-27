@@ -440,7 +440,9 @@ HTTP status: **200**
                 "templateTypeFeedback": "inanimate",
                 "templateTypeInfo": "inanimate",
                 "templateTypeReminder": "base",
-                "typeId": 1
+                "typeId": 1,
+                "unavailableFrom": null,
+                "unavailableUntil": null
             },
             {
                 "confirmationCounterDelay": 10800,
@@ -468,7 +470,9 @@ HTTP status: **200**
                 "templateTypeFeedback": "inanimate",
                 "templateTypeInfo": "inanimate",
                 "templateTypeReminder": "base",
-                "typeId": 1
+                "typeId": 1,
+                "unavailableFrom": null,
+                "unavailableUntil": null
             }
         ]
     },
@@ -605,6 +609,14 @@ The value `-1` means the reminder arrives on the morning of the booking day ||
 [`integer`](../../data-types.md) | Resource type identifier.
 
 Information about the type can be retrieved using the [booking.v1.resourceType.get](./resource-type/booking-v1-resourcetype-get.md) method ||
+|| **unavailableFrom**
+[`integer`](../../data-types.md) | Start of the resource suspension, Unix time in seconds. Read-only.
+
+`null` means the resource is not suspended or is suspended starting from the current moment. In the latter case, the `unavailableUntil` field is set ||
+|| **unavailableUntil**
+[`integer`](../../data-types.md) | End of the resource suspension, Unix time in seconds. Read-only.
+
+`null` means the resource is not suspended ||
 |#
 
 ## Error Handling

@@ -25,7 +25,9 @@ The method `disk.folder.getExternalLink` returns an active public link to the fo
 || **id***
 [`integer`](../../data-types.md) | Identifier of the folder.
 
-The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is in another folder ||
+The identifier can be obtained using the method [disk.storage.getChildren](../storage/disk-storage-get-children.md) if the folder is in the root of the storage, and using the method [disk.folder.getChildren](./disk-folder-get-children.md) if the folder is in another folder.
+
+You cannot pass the root folder of a storage: the method returns the `DISK_OBJ_22004` error ||
 |#
 
 ## Code Examples
@@ -277,7 +279,14 @@ HTTP Status: **400**
 || **Code** | **Description** | **Value** ||
 || `ERROR_ARGUMENT` | Invalid value of parameter {Parameter #1} | Required parameter `id` is missing ||
 || `ERROR_NOT_FOUND` | Could not find entity with id `X` | Folder with the specified `id` was not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient permissions to obtain the link to the folder ||
+|| `DISK_OBJ_22004` | A public link cannot be created for the root folder of a storage (DISK_OBJ_22004). | The `id` of the storage root folder is specified. A public link to the storage root cannot be created.
+
+If a link to the root was created earlier, the method returns its address, but the page at this address does not open ||
+|| `ACCESS_DENIED` | Access denied | HTTP status **403**. Possible reasons:
+- the user does not have permission to manage the public link to the folder
+- public links are disabled in the Bitrix24 settings
+
+The response does not indicate which reason applies ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

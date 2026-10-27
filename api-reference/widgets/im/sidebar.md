@@ -466,6 +466,7 @@ Possible values:
 || **Error** | **How to Resolve** ||
 || `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
 || `placement.bind` returns `ERROR_ARGUMENT` | The required `OPTIONS[iconName]` parameter is missing. The code of the empty field arrives in `argument` ||
+|| `placement.bind` returns `INVALID_ERROR_ICON_NAME` with the description `Field iconName is invalid.` and HTTP status 200 | An empty string or an invalid value was passed in `OPTIONS[iconName]`. Pass an icon name of Latin letters, spaces, and `-`, no longer than 50 characters ||
 || The item did not appear in the *Applications* block of the chat sidebar | Complete the application installation and reopen the chat ||
 || Registration fails because of the `context` value | Use only the valid values: `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
 || The item is visible in chats other than those set by `context` | `ALL` was passed along with the other values, and the other values are ignored. Pass either `ALL` or a list of specific contexts separated by `;` ||

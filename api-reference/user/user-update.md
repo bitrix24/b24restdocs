@@ -409,6 +409,9 @@ HTTP status: **400**
 || `insufficient_scope` | The request requires higher privileges than provided by the access token | The `user` scope is required; `user_brief` and `user_basic` do not suffice ||
 || `ERROR_CORE` | access_denied | `ID` is missing or is not a positive number ||
 || `ERROR_CORE` | access_denied | Insufficient permission to change the specified user's data ||
+|| `ERROR_ARGUMENT` | invalid_type_field | An array or object is passed in a string field. The field name is returned in the `argument` response field.
+
+The following are string fields: `NAME`, `LAST_NAME`, `SECOND_NAME`, `EMAIL`, `TITLE`, `XML_ID`, `TIME_ZONE`, and the `WORK_*` and `PERSONAL_*` fields, except `PERSONAL_PHOTO` and `WORK_LOGO`. Custom fields `UF_*` accept arrays ||
 || `ERROR_CORE` | Error text depends on the cause | Could not save the profile changes. The method returns a message describing the cause ||
 |#
 

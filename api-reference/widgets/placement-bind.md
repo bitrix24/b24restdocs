@@ -67,7 +67,9 @@ Until the application installation is complete, the registered widgets are not d
 
 ||
 || **OPTIONS**
-[`object`](../data-types.md) | Additional display parameters for the widget. Specific values depend on the placement. Currently used in widgets for messengers, in the widget [`PAGE_BACKGROUND_WORKER`](./universal/background-worker.md), and in the widget [CRM_XXX_DETAIL_ACTIVITY](../widgets/crm/detail-activity-area.md)
+[`object`](../data-types.md) | Additional display parameters for the widget. Specific values depend on the placement. Currently used in widgets for messengers, in the widget [`PAGE_BACKGROUND_WORKER`](./universal/background-worker.md), and in the widget [CRM_XXX_DETAIL_ACTIVITY](../widgets/crm/detail-activity-area.md). Placements that do not accept `OPTIONS`, for example `CRM_DEAL_DETAIL_TAB`, discard the parameter without an error.
+
+The length of `OPTIONS` after JSON encoding must not exceed 2048 characters. Cyrillic characters and the `/` character are escaped during encoding and take up more space than Latin characters. The limit includes the default values that the placement adds. For example, for `IM_TEXTAREA` they take 96 characters, so 1952 characters remain for the values you pass. The length is checked before the field contents. If the limit is exceeded, the method returns the `ERROR_ARGUMENT` error
 
 ||
 || **ICON**
@@ -466,8 +468,10 @@ HTTP status: **400**, **403**, **200**
 || **Code** | **Description** | **Status** ||
 || `ERROR_PLACEMENT_MAX_COUNT` | The registration limit for the placement was exceeded, for example for `PAGE_BACKGROUND_WORKER` or [`REST_APP_URI`](./universal/app-url.md) | 400 ||
 || `ERROR_PLACEMENT_USER_MODE` | `USER_ID` was passed for a placement that does not support per-user registration | 400 ||
+|| `INVALID_ERROR_ICON_NAME` | `Field iconName is invalid.` — an invalid value, for example an empty string, was passed in `OPTIONS[iconName]` when registering the [`IM_SIDEBAR`](./im/sidebar.md) widget | 200 ||
 || `EMPTY_ERROR_HANDLER_URL` | The required `OPTIONS[errorHandlerUrl]` parameter was not passed when registering the `PAGE_BACKGROUND_WORKER` widget | 200 ||
 || `ERROR_ARGUMENT` | A required parameter is missing or has an invalid type. The name of the invalid parameter is returned in `argument` | 400 ||
+|| `ERROR_ARGUMENT` | `OPTIONS exceeds 2048 characters after JSON encoding` — the length of `OPTIONS` after JSON encoding exceeds 2048 characters | 400 ||
 || `ERROR_PLACEMENT_NOT_FOUND` | The `PLACEMENT` code is unavailable to the application under its scopes | 400 ||
 || `ERROR_WRONG_HANDLER_URL` | The `HANDLER` URL has no host name containing a dot, for example `localhost` | 400 ||
 || `ERROR_UNSUPPORTED_PROTOCOL` | The `HANDLER` URL uses a scheme other than `http` or `https` | 400 ||

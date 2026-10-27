@@ -32,7 +32,7 @@ The method `booking.v1.resourceType.add` adds a new resource type.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../../data-types.md) | Resource type name ||
+[`string`](../../../data-types.md) | Resource type name. Must differ from the names of other resource types ||
 || **code***
 [`string`](../../../data-types.md) | Symbolic code of the resource type. Must be unique among the types of the `booking` module.
 
@@ -557,6 +557,7 @@ HTTP Status: **400**
 || `100` | `Could not find value for parameter {fields}` | The `fields` parameter is not provided ||
 || `422` | `Invalid value of the {field} field` | An invalid value of an enumerated field, for example `templateTypeConfirmation` ||
 || `1010` | `Resource type with code "X" already exists` | A resource type with this `code` already exists ||
+|| `1053` | `Resource type name is already taken` | A resource type with this `name` already exists ||
 || `0` | `Booking tool is disabled. Please contact your administrator.` | The Booking tool is disabled in the Bitrix24 settings ||
 |#
 

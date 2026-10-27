@@ -66,6 +66,8 @@ The recommended order of working with a list:
 
 4. Populate the list with items using the method [lists.element.add](./elements/lists-element-add.md). Fill in the created fields and link items to sections.
 
+The `lists.add`, `lists.update`, `lists.section.*`, `lists.element.add`, `lists.element.update`, and `lists.element.delete` methods run as a whole or not at all: if an error occurs, all changes are rolled back. Deleting a list with the [lists.delete](./lists/lists-delete.md) method cannot be rolled back.
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`lists`](../scopes/permissions.md)

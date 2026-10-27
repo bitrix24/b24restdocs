@@ -41,7 +41,7 @@ Available fields:
 - `ENTITY` — entity identifier by document
 - `DOCUMENT_ID` — document identifier
 - `STARTED` — date the workflow was started
-- `STARTED_BY` — who started the workflow
+- `STARTED_BY` — who started the workflow. For workflows started by automation rules and stage triggers, the value is `0`
 - `TEMPLATE_ID` — identifier of the workflow template
 
 Default value: `['ID', 'MODIFIED', 'OWNED_UNTIL']` ||
