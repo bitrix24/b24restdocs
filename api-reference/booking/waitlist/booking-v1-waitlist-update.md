@@ -184,16 +184,10 @@ The method `booking.v1.waitlist.update` updates the information of a record in t
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error updating waitlist: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

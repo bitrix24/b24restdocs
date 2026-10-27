@@ -224,15 +224,9 @@ Example of adding a deal-contact link, where:
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Data: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding deal contact: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

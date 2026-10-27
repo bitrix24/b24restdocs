@@ -166,16 +166,10 @@ This method removes a task from the Scrum kanban. The task will remain in the sp
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting task: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

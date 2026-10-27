@@ -112,16 +112,10 @@ No parameters.
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . implode(', ', $result->data());
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error calling bizproc.activity.list: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

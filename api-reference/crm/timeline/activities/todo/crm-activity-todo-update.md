@@ -221,18 +221,10 @@ The `crm.activity.todo.update` method updates a universal activity.
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-            // The data processing logic you need
-            processData($result->data());
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error updating todo activity: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

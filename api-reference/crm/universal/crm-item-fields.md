@@ -201,21 +201,14 @@ Retrieve the list of fields for SPA elements with `entityTypeId = 1268`
                     'useOriginalUfNames' => 'N',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            return;
-        }
-    
-        echo 'Success: ' . print_r($result->data(), true);
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error fetching CRM item fields: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

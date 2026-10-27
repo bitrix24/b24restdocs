@@ -196,21 +196,14 @@ Set a common detail form for deals in the pipeline with `id = 9`
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            return;
-        }
-    
-        echo 'Success: ' . print_r($result->data(), true);
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

@@ -172,16 +172,10 @@ Example of retrieving all linked contacts for a deal with `id = 1875`.
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Data: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting deal contact items: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

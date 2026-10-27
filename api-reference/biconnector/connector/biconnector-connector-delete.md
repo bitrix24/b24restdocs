@@ -193,22 +193,16 @@ A connector can be deleted if it has no sources. If any sources remain, the meth
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
+        $data = $result;
+
+        // Methods of this section put errors inside result and answer with HTTP 200
+        if (isset($data['error'])) {
+            echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
         } else {
-            $data = $result->data();
-
-            // Methods of this section put errors inside result and answer with HTTP 200
-            if (isset($data['error'])) {
-                echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
-            } else {
-                echo 'Info: ' . print_r($data, true);
-            }
+            echo 'Info: ' . print_r($data, true);
         }
-
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting connector: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

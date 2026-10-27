@@ -198,16 +198,10 @@ The method `sale.propertyRelation.deleteByFilter` removes the property relation.
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting property relation: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

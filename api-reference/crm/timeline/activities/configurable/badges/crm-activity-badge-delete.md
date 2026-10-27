@@ -164,16 +164,10 @@ A badge that is already used in activities cannot be deleted: the method returns
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting activity badge: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

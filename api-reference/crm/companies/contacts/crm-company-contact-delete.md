@@ -202,15 +202,9 @@ If such a binding is removed, the contact's `COMPANY_ID` field switches to anoth
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting contact from company: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

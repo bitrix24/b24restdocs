@@ -285,16 +285,10 @@ If you pass a positive `USER_ID` for a placement that does not support per-user 
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error binding placement: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

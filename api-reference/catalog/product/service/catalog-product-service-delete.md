@@ -163,16 +163,10 @@ To obtain service identifiers, you need to use [catalog.product.service.list](./
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting product service: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

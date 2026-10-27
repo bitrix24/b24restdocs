@@ -176,16 +176,10 @@ The method does not check whether the code exists and does not return an error f
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting feature: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

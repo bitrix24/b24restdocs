@@ -202,18 +202,10 @@ The method `sale.cashbox.check.apply` saves the result of printing a receipt tha
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-            // Your required data processing logic
-            processData($result->data());
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error applying cash register check: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

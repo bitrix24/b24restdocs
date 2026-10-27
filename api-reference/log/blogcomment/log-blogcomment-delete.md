@@ -171,14 +171,9 @@ The user identifier can be obtained using the method [user.get](../../user/user-
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Deleted: ' . print_r($result->data(), true);
-        }
+        print_r($result);
     } catch (Throwable $exception) {
-        error_log($exception->getMessage());
-        echo 'Error deleting comment: ' . $exception->getMessage();
+        echo $exception->getMessage();
     }
     ```
 

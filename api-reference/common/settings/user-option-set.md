@@ -175,16 +175,10 @@ If the `options` parameter is not passed, the request parameters themselves are 
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo $result->data();
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error setting user options: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

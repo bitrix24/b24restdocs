@@ -182,14 +182,9 @@ At least one of the parameters must be provided: `RATING` or `COMMENT`.
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        print_r($result);
     } catch (Throwable $exception) {
-        error_log($exception->getMessage());
-        echo 'Error voting as head: ' . $exception->getMessage();
+        echo $exception->getMessage();
     }
     ```
 

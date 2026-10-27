@@ -175,16 +175,10 @@ The method marks as erroneous only the records of the batch with the passed `pro
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Data: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error handling offline event: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

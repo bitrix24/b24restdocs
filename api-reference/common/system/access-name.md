@@ -189,17 +189,10 @@ If the parameter is not provided, is empty, or is passed as a string instead of 
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error calling access.name: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

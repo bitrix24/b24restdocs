@@ -335,22 +335,16 @@ Return only the required fields:
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
+        $data = $result;
+
+        // Methods of this section put errors inside result and answer with HTTP 200
+        if (isset($data['error'])) {
+            echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
         } else {
-            $data = $result->data();
-
-            // Methods of this section put errors inside result and answer with HTTP 200
-            if (isset($data['error'])) {
-                echo 'BIconnector error: ' . $data['error']['error'] . ': ' . $data['error']['error_description'];
-            } else {
-                echo 'Data: ' . print_r($data, true);
-            }
+            echo 'Data: ' . print_r($data, true);
         }
-
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error fetching source list: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

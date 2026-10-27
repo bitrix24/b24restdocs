@@ -252,11 +252,7 @@ At least one parameter must be provided: `FIND` or `FIND_LINES`. If both are pro
 
         $result = $response->getResponseData()->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            var_dump($result->data());
-        }
+        print_r($result);
     } catch (Throwable $exception) {
         echo $exception->getMessage();
     }

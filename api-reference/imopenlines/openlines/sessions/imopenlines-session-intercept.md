@@ -164,14 +164,9 @@ The identifier can be obtained using the [imopenlines.session.open](./imopenline
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        print_r($result);
     } catch (Throwable $exception) {
-        error_log($exception->getMessage());
-        echo 'Error intercepting session: ' . $exception->getMessage();
+        echo $exception->getMessage();
     }
     ```
 

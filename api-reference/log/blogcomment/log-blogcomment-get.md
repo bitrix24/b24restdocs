@@ -214,14 +214,9 @@ If you pass neither `FIRST_ID` nor `LAST_ID`, the method returns the latest comm
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Comments: ' . print_r($result->data(), true);
-        }
+        print_r($result);
     } catch (Throwable $exception) {
-        error_log($exception->getMessage());
-        echo 'Error getting blog comments: ' . $exception->getMessage();
+        echo $exception->getMessage();
     }
     ```
 

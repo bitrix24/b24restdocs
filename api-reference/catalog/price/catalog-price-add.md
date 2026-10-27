@@ -213,16 +213,10 @@ The method `catalog.price.add` adds a new price for a product.
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error()->ex);
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding price: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

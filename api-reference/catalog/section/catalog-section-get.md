@@ -177,16 +177,10 @@ The method `catalog.section.get` returns the field values of the trade catalog s
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting catalog section: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

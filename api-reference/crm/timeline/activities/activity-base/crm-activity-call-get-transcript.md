@@ -186,20 +186,15 @@ You can obtain the identifier using the [crm.activity.list](./crm-activity-list.
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            $data = $result->data();
+        $data = $result;
 
-            if ($data === null) {
-                echo 'There is no transcript for this call';
-            } else {
-                echo $data['transcription'];
-            }
+        if (empty($data)) {
+            echo 'There is no transcript for this call';
+        } else {
+            echo $data['transcription'];
         }
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting call transcript: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

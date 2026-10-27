@@ -165,15 +165,9 @@ The identifier can be obtained using the methods [crm.deal.recurring.list](./crm
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . var_export($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting recurring deal setting: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

@@ -171,17 +171,10 @@ To perform the payment, there must be a payment associated with the specified pa
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error calling sale.paysystem.pay.payment: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

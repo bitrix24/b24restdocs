@@ -191,16 +191,10 @@ You can obtain the identifiers of payer types using the method [sale.persontype.
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting business value person domain: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

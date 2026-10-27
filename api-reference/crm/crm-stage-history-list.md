@@ -268,9 +268,6 @@ Get stage movement history for the deal with `ID=1`
     
         echo 'Success: ' . print_r($result, true);
         
-        if ($result->more()) {
-            $result->next();
-        }
     
     } catch (Throwable $e) {
         error_log($e->getMessage());
@@ -563,9 +560,6 @@ Get stage movement history for the SPA with `entityTypeId=130` and element `OWNE
     
         echo 'Success: ' . print_r($result, true);
         
-        if ($result->more()) {
-            $result->next();
-        }
     
     } catch (Throwable $e) {
         error_log($e->getMessage());

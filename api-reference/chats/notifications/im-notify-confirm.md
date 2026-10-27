@@ -176,11 +176,7 @@ For example, consider a notification that supports buttons:
 
         $result = $response->getResponseData()->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            var_dump($result->data());
-        }
+        print_r($result);
     } catch (Throwable $exception) {
         echo $exception->getMessage();
     }

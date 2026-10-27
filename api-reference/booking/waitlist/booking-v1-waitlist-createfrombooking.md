@@ -162,17 +162,10 @@ It can be obtained using the methods [booking.v1.booking.add](../booking/booking
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error creating waitlist from booking: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

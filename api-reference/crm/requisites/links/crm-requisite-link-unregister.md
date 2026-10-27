@@ -180,16 +180,10 @@ Object identifiers can be obtained using the following methods: [crm.deal.list](
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error unregistering requisite link: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

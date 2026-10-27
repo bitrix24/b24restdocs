@@ -247,17 +247,9 @@ Set the following linked contacts for the deal with `id = 1875`:
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-            // Your required data processing logic
-            processData($result->data());
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error setting deal contact items: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

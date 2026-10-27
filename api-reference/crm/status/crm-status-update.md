@@ -193,17 +193,10 @@ The method `crm.status.update` updates the parameters of an existing CRM status 
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error updating status: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error updating status: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

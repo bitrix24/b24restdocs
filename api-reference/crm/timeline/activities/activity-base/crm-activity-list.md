@@ -343,15 +343,9 @@ Each array item can contain `OWNER_TYPE_ID` — the object type identifier, `OWN
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Activities: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting activity list: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -850,15 +844,9 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Activities: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting activity list: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -1211,15 +1199,9 @@ When using multiple pairs in `BINDINGS`, duplication may occur in the results. F
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Activity communications: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting activity communications: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -1585,15 +1567,9 @@ HTTP status: **200**
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Activity files: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting activity files: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

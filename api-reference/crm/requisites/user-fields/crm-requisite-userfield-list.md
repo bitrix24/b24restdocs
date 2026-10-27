@@ -376,9 +376,6 @@ The purpose of the field may change by the final developer ||
     
         echo 'Success: ' . print_r($result, true);
     
-        if ($result->more()) {
-            $result->next();
-        }
     
     } catch (Throwable $e) {
         error_log($e->getMessage());

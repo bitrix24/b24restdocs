@@ -195,15 +195,9 @@ A call to the new API differs by the `/api/` parameter added to the request:
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

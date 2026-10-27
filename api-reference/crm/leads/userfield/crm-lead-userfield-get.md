@@ -179,16 +179,10 @@ The identifier can be obtained using the methods [crm.lead.userfield.add](./crm-
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Data: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting company user field: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

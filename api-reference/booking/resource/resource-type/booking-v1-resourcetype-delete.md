@@ -165,15 +165,9 @@ Can be obtained through the methods [booking.v1.resourceType.add](./booking-v1-r
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting resource type: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

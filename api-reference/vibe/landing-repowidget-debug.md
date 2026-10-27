@@ -154,16 +154,10 @@ In a request with form fields, pass `1` or `0`: the string `false` enables the m
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error calling landing repowidget debug: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

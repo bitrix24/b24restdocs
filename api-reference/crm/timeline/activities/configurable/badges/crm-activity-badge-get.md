@@ -175,16 +175,10 @@ A badge is looked up only by code — it has no identifier. If no badge is regis
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting activity badge: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

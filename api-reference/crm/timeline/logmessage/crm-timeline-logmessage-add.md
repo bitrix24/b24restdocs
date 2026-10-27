@@ -231,16 +231,10 @@ A list of available codes can be obtained using the method [crm.timeline.icon.li
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding log message: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

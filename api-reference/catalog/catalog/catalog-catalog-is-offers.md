@@ -161,16 +161,10 @@ The method checks if the trade catalog is a variation catalog.
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error checking if catalog is offers: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

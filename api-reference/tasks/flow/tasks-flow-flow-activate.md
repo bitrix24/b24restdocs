@@ -165,16 +165,10 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error activating flow: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

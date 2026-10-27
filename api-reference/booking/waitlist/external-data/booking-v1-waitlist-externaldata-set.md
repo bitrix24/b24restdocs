@@ -207,16 +207,10 @@ Currently, connections can only be established with [deals](../../../crm/deals/i
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error setting external data: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

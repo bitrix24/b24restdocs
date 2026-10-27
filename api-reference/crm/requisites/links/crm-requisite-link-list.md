@@ -334,9 +334,6 @@ Bank requisite identifiers can be obtained using the method [crm.requisite.bankd
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        if ($result->more()) {
-            $result->next();
-        }
     
     } catch (Throwable $e) {
         error_log($e->getMessage());

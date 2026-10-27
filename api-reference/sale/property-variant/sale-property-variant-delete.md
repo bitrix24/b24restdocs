@@ -161,16 +161,10 @@ The method `sale.propertyvariant.delete` deletes a property variant value of an 
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Info: ' . $result->data();
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting property variant: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

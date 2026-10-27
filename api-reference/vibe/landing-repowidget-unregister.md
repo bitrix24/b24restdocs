@@ -145,16 +145,10 @@ You can retrieve the code from the `XML_ID` field in the response of the [landin
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error unregistering repowidget: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

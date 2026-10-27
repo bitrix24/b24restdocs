@@ -200,16 +200,10 @@ Example of removing a deal-contact link, where:
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting deal contact: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

@@ -319,17 +319,10 @@ If any other value is passed, it will be converted to `N` ||
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: Recurring deal setting ID - ' . $result->data();
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding recurring deal settings: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

@@ -300,16 +300,9 @@ Sorting by other fields is not supported — such fields are ignored by the meth
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error calling booking.v1.resource.list: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

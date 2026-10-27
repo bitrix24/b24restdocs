@@ -162,17 +162,10 @@ The stage will not be deleted if it contains tasks.
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Info: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting stage: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

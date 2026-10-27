@@ -168,16 +168,10 @@ Default is `0` ||
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding workflow template: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

@@ -264,11 +264,7 @@ Notifications are sorted first by descending creation date, then by descending i
 
         $result = $response->getResponseData()->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            var_dump($result->data());
-        }
+        print_r($result);
     } catch (Throwable $exception) {
         echo $exception->getMessage();
     }

@@ -178,16 +178,10 @@ If not specified, the check will be performed for the current IP address ||
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error()->ex);
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error checking network range: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

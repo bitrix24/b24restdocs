@@ -178,16 +178,10 @@ The method retrieves information about the fields of the sales funnels (directio
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Data: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error calling crm.category.fields: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

@@ -195,11 +195,7 @@ You can obtain the user ID using the methods [user.get](../../user/user-get.md),
 
         $result = $response->getResponseData()->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Notification ID: ' . $result->data();
-        }
+        print_r($result);
     } catch (Throwable $exception) {
         echo $exception->getMessage();
     }

@@ -1303,7 +1303,7 @@ To upload a file, the value of the custom field must be an array where the first
             );
 
             $result = $response->getResponseData()->getResult();
-            echo 'Success: ' . print_r($result->data(), true);
+            echo 'Success: ' . print_r($result, true);
         } catch (Throwable $e) {
             error_log($e->getMessage());
             echo 'Error importing CRM item: ' . $e->getMessage();

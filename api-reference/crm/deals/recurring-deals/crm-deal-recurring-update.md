@@ -307,16 +307,9 @@ The list of available funnels can be obtained using the method [crm.category.lis
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . var_export($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error updating recurring deal settings: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

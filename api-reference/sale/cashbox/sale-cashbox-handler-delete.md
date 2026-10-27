@@ -162,16 +162,10 @@ If there are cashboxes linked to the handler, it will not be deleted — you mus
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting cashbox handler: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

@@ -223,24 +223,14 @@ You can find the schedule identifier in the list of schedules on the *Employees 
                     'id' => 1
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            var_dump($result->data());
-            if ($result->more()) {
-                $result->next();
-            }
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting schedule: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

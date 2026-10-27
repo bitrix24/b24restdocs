@@ -195,16 +195,10 @@ The parameter is required for connectors registered with the `CHAT_GROUP` parame
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . $result->data();
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error setting chat name: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

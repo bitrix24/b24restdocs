@@ -240,27 +240,22 @@ There is no method for deleting a call list among the call list methods. You can
                     'select' => ['ID']
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            return;
-        }
-    
-        $deals = $result->data();
-    
+
+        $deals = $result;
+
         // If there are no activities, exit
         if (count($deals) === 0) {
             echo "No activities named 'Call list #13' were found.";
             return;
         }
-    
+
         // Take the ID of the first activity
         $dealId = $deals[0]['ID'];
-    
+
         // Call the delete method
         $deleteResponse = $b24Service
             ->core
@@ -270,20 +265,14 @@ There is no method for deleting a call list among the call list methods. You can
                     'id' => $dealId,
                 ]
             );
-    
+
         $deleteResult = $deleteResponse
             ->getResponseData()
             ->getResult();
-    
-        if ($deleteResult->error()) {
-            error_log("Error deleting activity ID " . $dealId . ": " . $deleteResult->error());
-        } else {
-            echo "Activity ID " . $dealId . " was successfully deleted.";
-        }
-    
+
+        echo "Activity ID " . $dealId . " was successfully deleted.";
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

@@ -219,15 +219,9 @@ If `SORT` is not passed, the method substitutes `i + 10`, where `i` is the maxim
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding company contact: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

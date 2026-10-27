@@ -276,16 +276,10 @@ If you need to add an extranet user, you must pass the following fields: `EXTRAN
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding user: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

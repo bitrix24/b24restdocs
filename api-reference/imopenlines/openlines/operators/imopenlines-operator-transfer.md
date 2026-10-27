@@ -184,14 +184,9 @@ It is recommended to pass only one parameter: `TRANSFER_ID`, `USER_ID`, or `QUEU
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
+        print_r($result);
     } catch (Throwable $exception) {
-        error_log($exception->getMessage());
-        echo 'Error transferring dialog: ' . $exception->getMessage();
+        echo $exception->getMessage();
     }
     ```
 

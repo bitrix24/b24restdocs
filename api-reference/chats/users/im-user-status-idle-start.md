@@ -166,11 +166,7 @@ This method was designed for the previous version of the chat. In the current M1
 
         $result = $response->getResponseData()->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            var_dump($result->data());
-        }
+        print_r($result);
     } catch (Throwable $exception) {
         echo $exception->getMessage();
     }

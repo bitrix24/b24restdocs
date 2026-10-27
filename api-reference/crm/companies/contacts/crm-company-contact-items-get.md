@@ -175,15 +175,9 @@ The identifier can be obtained using the method [crm.item.list](../../universal/
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting company contact items: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

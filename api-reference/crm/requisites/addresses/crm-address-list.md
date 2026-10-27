@@ -350,9 +350,6 @@ Searching for addresses linked to the Detail type:
     
         echo 'Success: ' . print_r($result, true);
     
-        if ($result->more()) {
-            $result->next();
-        }
     
     } catch (Throwable $e) {
         error_log($e->getMessage());

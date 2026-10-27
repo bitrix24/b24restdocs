@@ -278,17 +278,10 @@ The formula for calculating the value of the `start` parameter:
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        if ($result->error()) {
-            error_log($result->error());
-            echo 'Error: ' . $result->error();
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error calling catalog.measure.list: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 

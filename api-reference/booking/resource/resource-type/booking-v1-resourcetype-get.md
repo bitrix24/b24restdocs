@@ -188,15 +188,9 @@ Can be obtained from the methods [booking.v1.resourceType.add](./booking-v1-reso
             ->getResponseData()
             ->getResult();
 
-        if ($result->error()) {
-            error_log($result->error());
-        } else {
-            echo 'Success: ' . print_r($result->data(), true);
-        }
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting resource type: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
