@@ -15,7 +15,7 @@ On this page, you will learn how to configure a webhook, perform a test request,
 
 ## How to Create an Inbound Webhook
 
-1. In the Bitrix24 left menu, open the *Applications > Developer resources* section.
+1. In the Bitrix24 left menu, open the *Developer resources* section.
 2. Go to the *Common use cases > Other > Inbound webhook* tab. A slider will appear containing the pre-generated webhook code.
 
 If the *Inbound webhook* item is missing, the permission to create webhooks is disabled. Ask the administrator to [grant access to webhook creation](#webhook-app-access).

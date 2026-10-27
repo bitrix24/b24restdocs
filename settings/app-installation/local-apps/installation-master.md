@@ -28,7 +28,7 @@ The page at this URL serves as the installation wizard. It can perform one-time 
 
 ## Where to Configure the Installation Wizard
 
-In Bitrix24, open *Applications > Developer resources > Other > Local application* and select the application type.
+In Bitrix24, open *Developer resources > Other > Local application* and select the application type.
 
 ### Server Application
 

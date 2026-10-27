@@ -45,7 +45,7 @@ The order of the steps is set by the platform: until the bot is registered, the 
 The bot is registered on behalf of the application, so first prepare a local application and a handler.
 
 1. Host the handler on a public HTTPS URL, for example `https://example.com/handler`
-2. In the *Applications > Developer resources > Other > Local application* section, create a server-side application
+2. In the *Developer resources > Other > Local application* section, create a server-side application
 3. In the *Initial installation path* field, specify the handler address
 4. Leave the *Application completes the installation itself* option disabled — otherwise Bitrix24 does not register the `ONAPPINSTALL` event handler and the application does not receive the tokens
 5. In the *Your handler path* field, specify the same handler address

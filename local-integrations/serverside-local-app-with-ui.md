@@ -114,7 +114,7 @@ Bitrix24 issues the application ID and the secret key only after the form is sav
 
 2. Open `checkserver.php` in a browser at your server address. The script verifies that the cURL module is available and that CRest can retain its files. If the check fails, resolve the issues reported by the script before moving on to the form: CRest will not retain the settings without cURL and without write permission.
 
-3. Open the local application form: *Applications > Developer resources*, the *Common use cases* tab, then *Other > Local application*.
+3. Open the local application form: *Developer resources*, the *Common use cases* tab, then *Other > Local application*.
 
     ![Adding an application](./_images/local_add_sm.jpg)
 
@@ -132,7 +132,7 @@ Bitrix24 issues the application ID and the secret key only after the form is sav
 
     ![Application addition form](./_images/server-ui-local-form_1-new.png)
 
-9. Save the form. The application appears in the *Applications > Developer resources > Integrations* list.
+9. Save the form. The application appears in the *Developer resources > Integrations* list.
 
     ![List of integrations](./_images/server-ui-local-added_new.png)
 

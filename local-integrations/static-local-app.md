@@ -67,7 +67,7 @@ The example uses [BX24.js](../sdk/bx24-js-sdk/index.md). When the application op
 
 ## Create the Application
 
-1. Open *Applications > Developer resources > Other > Local application*. If the *Local application* item is missing, ask the administrator to [configure access to application creation](./local-apps.md#local-app-access)
+1. Open *Developer resources > Other > Local application*. If the *Local application* item is missing, ask the administrator to [configure access to application creation](./local-apps.md#local-app-access)
     ![Adding an application](./_images/local_add_sm.jpg)
 
     ![](./_images/local_add_4.jpg)
@@ -79,7 +79,7 @@ The example uses [BX24.js](../sdk/bx24-js-sdk/index.md). When the application op
 6. In the *Assign permissions* section, select the permissions required for the application's REST API calls
 7. Click *Create*
 
-After creation, the application appears in *Applications > Developer resources > Integrations*.
+After creation, the application appears in *Developer resources > Integrations*.
 
 ![List of integrations](./_images/server-ui-local-added_new.png)
 
@@ -160,7 +160,7 @@ After every archive replacement, register the widgets again:
 
 `install.html` does not open after the archive is replaced, because the application is already installed. It is therefore convenient to run the check in `index.html` every time it opens: if a widget address does not start with the address of the current folder `new URL('./', location.href)`, register the widget again.
 
-To replace the archive, open the application for editing in the *Applications > Developer resources > Integrations* list. If the form opens with the *Server* type selected, switch it to *Static* — the archive upload field appears.
+To replace the archive, open the application for editing in the *Developer resources > Integrations* list. If the form opens with the *Server* type selected, switch it to *Static* — the archive upload field appears.
 
 ## Continue Exploring
 

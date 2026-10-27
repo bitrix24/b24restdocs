@@ -25,7 +25,7 @@ This page helps you choose the type of application and create it on your own Bit
 
 ## Connection with Other Objects
 
-**Developer resources.** Local applications are created and found in the *Applications > Developer resources* section. What else the section holds is described in the [{#T}](./developers-area.md) article.
+**Developer resources.** Local applications are created and found in the *Developer resources* section. What else the section holds is described in the [{#T}](./developers-area.md) article.
 
 **OAuth 2.0.** A server-side application accesses the REST API on behalf of an employee over the OAuth 2.0 protocol. How to retrieve and refresh tokens is described in the [{#T}](../settings/oauth/index.md) article.
 
@@ -39,11 +39,11 @@ This page helps you choose the type of application and create it on your own Bit
 
 3. Prepare the code: for a static application, an archive with a page in HTML and JS; for a server-side one, a page or a handler available over HTTPS before you add the application to Bitrix24.
 
-4. Open the local application form: *Applications > Developer resources*, the *Common use cases* tab, then *Other > Local application*.
+4. Open the local application form: *Developer resources*, the *Common use cases* tab, then *Other > Local application*.
 
 5. Fill in the form: the name, the access permissions, and the fields of the selected type — the archive with the page, the handler address, or the initial installation address.
 
-6. Save the application. It will appear in the *Applications > Developer resources > Integrations* list.
+6. Save the application. It will appear in the *Developer resources > Integrations* list.
 
 7. Store the application code and the secret key in the code on your server — Bitrix24 shows them after the form is saved. If the application needs no interface, leave the *Menu item text* fields empty: the application will not appear in the left menu.
 
@@ -71,7 +71,7 @@ The Vibecode connector also controls permissions to create applications. If *Per
 
 - **Authorization.** A static application runs inside the Bitrix24 interface, and the JS SDK retrieves the authorization of the employee who opened it automatically. A server-side application with an interface uses a simplified variant of OAuth 2.0: the application acts on behalf of the employee who opened it, and Bitrix24 passes the tokens to the application page in a POST request — there is no need to request them separately. A server-side application without an interface implements the full OAuth 2.0 protocol: it retains the tokens itself in the [ONAPPINSTALL](../api-reference/common/events/on-app-install.md) event handler and refreshes them itself.
 - **Secrets.** Keep the application code, the secret key, and the tokens obtained with them on your server. Do not place them in client-side code that loads in the browser, and do not retain them in a repository.
-- **Permissions.** The set of application permissions — `scope` — is selected at creation time. The application works within the selected `scope` and the permissions of the employee who created it: a method returns an error if the required `scope` is missing or the employee has no permissions for the object. The permission codes are listed in the [{#T}](../api-reference/scopes/permissions.md) article.
+- **Permissions.** The set of application permissions — `scope` — is selected at creation time. The application works within the selected `scope` and the permissions of the employee on whose behalf it calls methods. A static application and a server-side application with a user interface act on behalf of the employee who opened the application, and a server-side application without a user interface acts on behalf of the employee who installed it. A method returns an error if the required `scope` is missing or the employee has no permissions for the object. The permission codes are listed in the [{#T}](../api-reference/scopes/permissions.md) article.
 - **Events.** A static application does not receive events: it has no server-side handler Bitrix24 could pass them to. If the application has to react to data changes, choose a server-side one or an [outbound webhook](./local-webhooks.md).
 
 ## How to Choose the Application Type {#choose-app}

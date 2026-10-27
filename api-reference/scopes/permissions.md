@@ -18,7 +18,7 @@ A scope is a code for a group of methods. It defines which Bitrix24 tools an app
 For an application, scopes are selected when it is added, and the place depends on the solution type.
 
 - A mass-market solution is added in the Developer's Area. Scopes are specified in the technical specifications as the system sections the application interacts with. The procedure is described in the article [How to Add a Solution in the Developer's Area](../../market/preparing-to-publish/how-to-add-app.md).
-- A local application is added in Bitrix24, in *Applications > Developer resources*. The procedure is described in the article [Local Applications](../../local-integrations/local-apps.md).
+- A local application is added in Bitrix24, in *Developer resources*. The procedure is described in the article [Local Applications](../../local-integrations/local-apps.md).
 
 For a webhook, scopes are selected when it is created, in the *Assign permissions* section. Requests run within the selected scopes and with the permissions of the employee who created the webhook. For details, see [Inbound and Outbound Webhooks](../../local-integrations/local-webhooks.md).
 

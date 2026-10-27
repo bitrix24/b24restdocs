@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The *Applications > Developer resources* page contains tools for creating local integrations: [webhooks](./local-webhooks.md), [local applications](./local-apps.md), common use cases, and REST load monitoring.
+The *Developer resources* page contains tools for creating local integrations: [webhooks](./local-webhooks.md), [local applications](./local-apps.md), common use cases, and REST load monitoring.
+
+The *Developer resources* item is in the Bitrix24 left menu. In the classic interface, it belongs to the *Applications* group. In the new interface, it is a separate item right below that group.
 
 For quick REST API calls in one Bitrix24 account, choose an inbound webhook. To send Bitrix24 events to an external handler, create an outbound webhook. If the integration needs its own interface or application event handling, create a local application.
 

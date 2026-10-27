@@ -123,7 +123,7 @@ The example is built on CRest, but the application type itself is tied neither t
 
 2. Open `checkserver.php` in a browser at your server address. The script verifies that the cURL module is available and that CRest can retain its files. If the check fails, resolve the issues reported by the script before moving on to the form: CRest will not retain the tokens without cURL and without write permission.
 
-3. Open the local application form: *Applications > Developer resources*, the *Common use cases* tab, then *Other > Local application*.
+3. Open the local application form: *Developer resources*, the *Common use cases* tab, then *Other > Local application*.
 
     ![Adding an application](./_images/local_add_sm.jpg)
 
@@ -143,7 +143,7 @@ The example is built on CRest, but the application type itself is tied neither t
 
     ![Local application form without a user interface](./_images/local-server-no-ui-form-new.png)
 
-10. Save the form. The application appears in the *Applications > Developer resources > Integrations* list.
+10. Save the form. The application appears in the *Developer resources > Integrations* list.
 
 11. Copy the values of the *Application ID (client_id)* and *Application key (client_secret)* fields from the application card into the `C_REST_CLIENT_ID` and `C_REST_CLIENT_SECRET` constants of the `settings.php` file and upload the modified file to the server.
 

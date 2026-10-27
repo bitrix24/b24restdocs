@@ -42,9 +42,9 @@ Inbound webhook permissions are defined by the employee who created it and the s
 
 ### How to Create an Inbound Webhook
 
-Create webhooks in *Applications > Developer resources*. If a ready-made scenario fits your case, select it on the *Common use cases* tab and open its settings. If there is no suitable scenario, create an inbound webhook on the *Common use cases > Other* tab.
+Create webhooks in *Developer resources*. If a ready-made scenario fits your case, select it on the *Common use cases* tab and open its settings. If there is no suitable scenario, create an inbound webhook on the *Common use cases > Other* tab.
 
-1. Open *Applications > Developer resources*
+1. Open *Developer resources*
 2. Go to *Common use cases > Other > Inbound webhook*
 3. In the request builder, select a method and fill in parameters if required
 4. Click *Execute* to test the call
@@ -169,7 +169,7 @@ An outbound webhook does not call a method by itself. It passes an event to your
 
 ### How to Create an Outbound Webhook
 
-1. Open *Applications > Developer resources*
+1. Open *Developer resources*
 2. Go to *Common use cases > Other > Outbound webhook*
 3. Specify your handler URL
 4. Select the event the webhook should react to

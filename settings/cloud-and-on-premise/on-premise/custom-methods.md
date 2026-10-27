@@ -173,7 +173,7 @@ If the core generated an old-style error through `$APPLICATION->ThrowException()
 
 ## Step 3. Grant Access to Your Scope {#step-scope}
 
-Your scope appears in the list of permissions when a [local application](../../../local-integrations/local-apps.md) or an [inbound webhook](../../../local-integrations/local-webhooks.md) is created — in the *Applications > Developer resources* section. It is displayed by its code, `mycompany` for example: it has no title in the interface language.
+Your scope appears in the list of permissions when a [local application](../../../local-integrations/local-apps.md) or an [inbound webhook](../../../local-integrations/local-webhooks.md) is created — in the *Developer resources* section. It is displayed by its code, `mycompany` for example: it has no title in the interface language.
 
 The list of scopes is cached for seven days. The cache is force-reset only when modules are installed or removed, and an event handler in `init.php` is not a module. Therefore, after adding a new scope, reset the cache by calling `\Bitrix\Rest\Engine\ScopeManager::cleanCache()`.
 

@@ -28,7 +28,7 @@ Ready-made method sequences for these tasks are collected in the article [Local 
 
 1. Define the integration task and choose a tool in the [table](#choose-tool).
 2. Check the [access permissions](#rights): the required `scope` and the permissions of the employee on whose behalf the integration will access Bitrix24.
-3. Create the integration in the [Developer resources](./developers-area.md) section — *Applications > Developer resources*. For a server-side application, place the handler on your server in advance and make it available over HTTPS.
+3. Create the integration in the [Developer resources](./developers-area.md) section. For a server-side application, place the handler on your server in advance and make it available over HTTPS.
 4. Test the first request in the request builder or follow the [How to Make Your First API Request](../first-steps/first-rest-api-call.md) guide.
 5. Review a ready-made scenario from the article [Local Integrations: Use Case Scenarios](./use-cases.md) and build your own sequence of methods.
 
@@ -80,7 +80,7 @@ A static application does not receive Bitrix24 events — it has no server-side 
 
 ## Access Permissions and Security {#rights}
 
-- **Permissions.** The integration works within the permissions of the employee who created it and the list of [scopes](../api-reference/scopes/permissions.md) selected at creation. A method returns an error if the required `scope` is missing or the employee has no permissions for the object.
+- **Permissions.** The integration works within the list of [scopes](../api-reference/scopes/permissions.md) selected at creation and the permissions of the employee on whose behalf it calls methods. A webhook acts on behalf of the employee who created it. A static application and a server-side application with a user interface act on behalf of the employee who opened the application. A server-side application without a user interface acts on behalf of the employee who installed it. A method returns an error if the required `scope` is missing or the employee has no permissions for the object.
 - **REST API access.** A local integration works only if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md).
 - **Protocol.** Webhook requests are performed over HTTPS only. The handler of a server-side application must also be available over HTTPS before you add the application to Bitrix24.
 - **Secret code.** A leaked URL grants access to Bitrix24 within the webhook's permissions until the webhook is deleted or expires. Do not pass the webhook URL to external systems and do not publish it in client-side code.
@@ -88,7 +88,7 @@ A static application does not receive Bitrix24 events — it has no server-side 
 
 ## Developer Resources
 
-The [Developer resources](./developers-area.md) section brings together tools for working with local integrations. You can open it through the left menu in Bitrix24 by navigating to *Applications > Developer resources*.
+The [Developer resources](./developers-area.md) section brings together tools for working with local integrations. The *Developer resources* item is in the Bitrix24 left menu. In the classic interface, it belongs to the *Applications* group. In the new interface, it is a separate item right below that group.
 
 ### Common use cases
 
