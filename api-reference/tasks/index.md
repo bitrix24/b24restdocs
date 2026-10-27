@@ -17,7 +17,11 @@ Tasks in Bitrix24 are a unified workspace that helps organize team workflows: as
 
 ## Task method features
 
-When using task methods, you must follow the parameter order specified in the parameter tables. Otherwise, the request will execute with errors.
+Methods of the `task.*` groups, such as `task.checklistitem.*`, `task.elapseditem.*`, and `task.commentitem.*`, read parameters by position. Pass parameters in the order listed in the method's parameter table, otherwise the request fails with an error. The `tasks.task.*` methods accept named parameters in any order.
+
+## Current and deprecated methods
+
+Use the `tasks.task.*` methods for new development. The `task.item.*`, `task.items.*`, `task.logitem.*`, and `task.comment.*` methods are deprecated and kept only to support existing integrations. They are listed in the [Deprecated Task Methods](./deprecated/index.md) article. The page of each deprecated method specifies the current method that replaces it.
 
 ## Tasks in REST 3.0
 
@@ -46,7 +50,7 @@ If you need to avoid filling in the same fields manually for recurring tasks, us
 
 Create a link to tasks using the [task.dependence.add](./task-dependence-add.md) method. Delete them using the [task.dependence.delete](./task-dependence-delete.md) method.
 
-When creating a task, fill in the system fields: specify the responsible person, observers, deadline, tags, and so on.
+When creating a task, fill in the system fields: specify the responsible person, observers, deadline, tags, and so on. All system fields are described in the [Task Fields](./fields.md) article.
 
 If system fields are not enough, you can create your own user fields. They allow you to store information in various data formats: string, number, date with time, and yes/no. You can create, change, retrieve, or delete task user fields using the [task.item.userfield.*](./user-field/index.md) method group.
 
@@ -321,14 +325,29 @@ Comment methods are not applicable to the new task card. Task discussions are he
 
 {% endnote %}
 
-#|
-|| **Method** | **Description** ||
-|| [task.commentitem.add](./comment-item/task-comment-item-add.md) | Creates a new comment for a task ||
-|| [task.commentitem.update](./comment-item/task-comment-item-update.md) | Updates comment data ||
-|| [task.commentitem.get](./comment-item/task-comment-item-get.md) | Gets a comment for a task ||
-|| [task.commentitem.getlist](./comment-item/task-comment-item-get-list.md) | Gets a list of comments for a task ||
-|| [task.commentitem.delete](./comment-item/task-comment-item-delete.md) | Deletes a comment ||
-|#
+{% list tabs %}
+
+- Methods
+
+    #|
+    || **Method** | **Description** ||
+    || [task.commentitem.add](./comment-item/task-comment-item-add.md) | Creates a new comment for a task ||
+    || [task.commentitem.update](./comment-item/task-comment-item-update.md) | Updates comment data ||
+    || [task.commentitem.get](./comment-item/task-comment-item-get.md) | Gets a comment for a task ||
+    || [task.commentitem.getlist](./comment-item/task-comment-item-get-list.md) | Gets a list of comments for a task ||
+    || [task.commentitem.delete](./comment-item/task-comment-item-delete.md) | Deletes a comment ||
+    |#
+
+- Events
+
+    #|
+    || **Event** | **Triggered** ||
+    || [OnTaskCommentAdd](./comment-item/events-comment/on-task-comment-add.md) | When a comment is added to a task. In the new card, triggered when a message is added to the task chat ||
+    || [OnTaskCommentUpdate](./comment-item/events-comment/on-task-comment-update.md) | When a comment is updated in a task. Not triggered in the new card ||
+    || [OnTaskCommentDelete](./comment-item/events-comment/on-task-comment-delete.md) | When a comment is deleted from a task. Not triggered in the new card ||
+    |#
+
+{% endlist %}
 
 ### Time spent
 
@@ -385,4 +404,40 @@ Comment methods are not applicable to the new task card. Task discussions are he
 || [tasks.flow.Flow.delete](./flow/tasks-flow-flow-delete.md) | Deletes a flow ||
 || [tasks.flow.Flow.isExists](./flow/tasks-flow-flow-is-exists.md) | Checks whether a flow with this name exists ||
 || [tasks.flow.Flow.activate](./flow/tasks-flow-flow-activate.md) | Enables or disables a flow ||
+|| [tasks.flow.Flow.pin](./flow/tasks-flow-flow-pin.md) | Pins or unpins a flow in the list ||
 |#
+
+### Task templates
+
+Template fields are described in the [Task Template Fields](./template/fields.md) article.
+
+#|
+|| **Method** | **Description** ||
+|| [tasks.template.add](./template/tasks-template-add.md) | Adds a task template ||
+|| [tasks.template.update](./template/tasks-template-update.md) | Modifies a task template ||
+|| [tasks.template.get](./template/tasks-template-get.md) | Retrieves a task template by `id` ||
+|| [tasks.template.delete](./template/tasks-template-delete.md) | Deletes a task template ||
+|| [tasks.template.fields](./template/tasks-template-fields.md) | Retrieves the description of task template fields ||
+|#
+
+### Task template checklists
+
+#|
+|| **Method** | **Description** ||
+|| [tasks.template.checklist.add](./template/checklist/tasks-template-checklist-add.md) | Adds a checklist item ||
+|| [tasks.template.checklist.update](./template/checklist/tasks-template-checklist-update.md) | Updates a checklist item ||
+|| [tasks.template.checklist.get](./template/checklist/tasks-template-checklist-get.md) | Retrieves a checklist item by `id` ||
+|| [tasks.template.checklist.list](./template/checklist/tasks-template-checklist-list.md) | Retrieves a list of checklist items ||
+|| [tasks.template.checklist.delete](./template/checklist/tasks-template-checklist-delete.md) | Deletes a checklist item ||
+|| [tasks.template.checklist.moveAfter](./template/checklist/tasks-template-checklist-move-after.md) | Moves an item after the specified one ||
+|| [tasks.template.checklist.moveBefore](./template/checklist/tasks-template-checklist-move-before.md) | Moves an item before the specified one ||
+|| [tasks.template.checklist.complete](./template/checklist/tasks-template-checklist-complete.md) | Marks an item as completed ||
+|| [tasks.template.checklist.renew](./template/checklist/tasks-template-checklist-renew.md) | Returns an item to an incomplete state ||
+|| [tasks.template.checklist.addAttachmentByContent](./template/checklist/tasks-template-checklist-add-attachment-by-content.md) | Adds an attachment from content ||
+|| [tasks.template.checklist.addAttachmentsFromDisk](./template/checklist/tasks-template-checklist-add-attachments-from-disk.md) | Adds attachments from Drive ||
+|| [tasks.template.checklist.removeAttachments](./template/checklist/tasks-template-checklist-remove-attachments.md) | Removes attachments from a checklist item ||
+|#
+
+### Deprecated methods
+
+The `task.item.*`, `task.items.*`, `task.logitem.*`, and `task.comment.*` methods are listed in the [Deprecated Task Methods](./deprecated/index.md) article. The replacement for each method is specified on its page.

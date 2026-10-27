@@ -84,9 +84,9 @@ Specify the widget embedding code in the `PLACEMENT` parameter of the method [pl
 
 Scrum and Flow are implemented based on workgroups.
 
-To create a Scrum, use the method [creating a new group](./sonet-group-create.md). To make a group a Scrum, fill in the `SCRUM_MASTER_ID` field.
+To create a Scrum, use the method [creating a new group](./sonet-group-create.md). To make a group a Scrum, fill in the `SCRUM_MASTER_ID` field. After that, you work with the Scrum using the `tasks.api.scrum.*` methods: backlog — [tasks.api.scrum.backlog.*](./scrum/backlog/index.md), sprints — [tasks.api.scrum.sprint.*](./scrum/sprint/index.md), epics — [tasks.api.scrum.epic.*](./scrum/epic/index.md), tasks — [tasks.api.scrum.task.*](./scrum/task/index.md), Kanban — [tasks.api.scrum.kanban.*](./scrum/kanban/index.md). The workflow is described in the [Scrum methods overview](./scrum/index.md).
 
-To link a Flow to a group, use the identifier `groupId`. To obtain the identifier, use the method [creating a new group](./sonet-group-create.md) or the method [getting a list of groups](./socialnetwork-api-workgroup-list.md).
+To link a Flow to a group, use the identifier `groupId`. To obtain the identifier, use the method [creating a new group](./sonet-group-create.md) or the method [getting a list of groups](./socialnetwork-api-workgroup-list.md). Flows are created and configured using the [tasks.flow.Flow.*](../tasks/flow/index.md) methods.
 
 ## Overview of Methods and Events {#all-methods}
 

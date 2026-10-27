@@ -19,11 +19,11 @@ Bitrix24 e-Signature allows you to sign HR documents with employees using a digi
 
 The `sign.b2e.*` methods work with documents in e-Signature. Use them to send a document for signing, retrieve document data, retrieve a list of the company's signing providers, and retrieve lists of signed documents.
 
-The `sign.b2e.provider.*` methods connect your own signing providers to Bitrix24. They are called by an administrator from an application with OAuth authorization, and the methods reject calls made through a webhook. The methods work only if e-Signature for HR is available on Bitrix24.
+The `sign.b2e.provider.*` methods connect your own signing providers to Bitrix24. They are called by an administrator. The methods work only if e-Signature for HR is available on Bitrix24.
 
 The `humanresources.hcmlink.*` methods manage e-Signature integration data with HR systems through HCM Link: companies, employees, mappings, and field values.
 
-These methods can only be executed in the context of authorization of the [application](../../settings/app-installation/index.md).
+These methods can only be executed in the context of authorization of the [application](../../settings/app-installation/index.md). The methods reject calls made through a webhook with the `WRONG_AUTH_TYPE` error.
 
 ## How to Select a Method Group
 
@@ -48,6 +48,19 @@ These methods can only be executed in the context of authorization of the [appli
 **Document file.** The `sign.b2e.document.send` method accepts a PDF file in the `files[].fileContent` parameter, encoded in Base64. After signing, the file can be retrieved from the user's signed document lists or from the company safe. If the document is linked to HCM Link, signed file data can be retrieved using the [sign.b2e.hcmlink.document.get](./sign-b2e-hcmlink-document-get.md) method by the signing participant identifier.
 
 **Signing statuses.** The `OnSignB2eDocumentStatusChanged` and `OnSignB2eMemberStatusChanged` events report changes in document and participant statuses. The `OnSignHcmLinkB2eDocumentSigned` event reports that a document linked to HCM Link has been signed. Document details can be retrieved using the [sign.b2e.document.get](./sign-b2e-document-get.md) method by `uid`.
+
+## How to Get Started
+
+1. Retrieve the company's signing providers using the [sign.b2e.company.provider.list](./sign-b2e-company-provider-list.md) method and take the `uid` of the required provider
+2. Send the document for signing using the [sign.b2e.document.send](./sign-b2e-document-send.md) method. Retain the document `uid` from the response
+3. Subscribe to the [OnSignB2eDocumentStatusChanged](./events/on-sign-b2e-document-status-changed.md) event to find out when the document status changes
+4. Retrieve the statuses of the document and its participants using the [sign.b2e.document.get](./sign-b2e-document-get.md) method by `uid`. Links to signed files are returned in the `file_url` field by the [sign.b2e.personal.tail](./sign-b2e-personal-tail.md) and [sign.b2e.mysafe.tail](./sign-b2e-mysafe-tail.md) methods
+
+## Limitations
+
+- The methods work only if e-Signature for HR is available on Bitrix24
+- The `sign.b2e.document.send` method accepts a single PDF file encoded in Base64. You cannot send multiple files in one document
+- Method permissions depend on the user's permissions in e-Signature for HR: documents can be sent by a user with permission to create documents in e-Signature for HR, and the company safe is available to a user with access to the "Company Safe" section
 
 ## Scope Features
 

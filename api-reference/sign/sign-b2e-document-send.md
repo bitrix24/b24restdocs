@@ -27,9 +27,9 @@ This method works only in the context of application authorization [application]
 || **fields*** 
 [`object`](../data-types.md) | Parameters for sending the document for signing [(detailed description)](#fields) ||
 || **language**
-[`string`](../data-types.md) | Language for localizing statuses in the response.
+[`string`](../data-types.md) | Language of status names in the response. A Bitrix24 interface language code, for example `ru` or `en`.
 
-Defaults to `en` ||
+If the language is not supported, names are returned in English. Defaults to `en` ||
 |#
 
 ### Parameter fields {#fields}
@@ -52,7 +52,9 @@ Defaults to `en` ||
 || **externalSettings*** 
 [`object`](../data-types.md) | External parameters of the document [(detailed description)](#external-settings) ||
 || **language**
-[`string`](../data-types.md) | Language of the document ||
+[`string`](../data-types.md) | Language of the document. The method accepts the parameter, but it currently has no effect on the document.
+
+The language of status names in the response is set by the top-level `language` parameter, not by this one ||
 || **message**
 [`string`](../data-types.md) | Message text for the employee. The employee will see the message in the chat together with the invitation to sign the document.
 
@@ -671,7 +673,7 @@ Returned only for companies linked to HCM Link ||
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP Status: **400**
 
 ```json
 {
@@ -685,36 +687,36 @@ HTTP Status: **200**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **When it occurs** ||
-|| `ACCESS_DENIED` | Access denied! | Insufficient permissions ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Call not from application context ||
-|| `BAD_REQUEST` | Empty request fields | `fields` object not provided ||
-|| `BAD_REQUEST` | companyProviderUid field is required | `companyProviderUid` not provided ||
-|| `BAD_REQUEST` | The responsible field is required | `responsible` not provided ||
-|| `BAD_REQUEST` | At least one signing party with role signer is required | No participant with role `signer` in `members` ||
-|| `BAD_REQUEST` | At least one signing party with role assignee is required | No participant with role `assignee` in `members` ||
-|| `BAD_REQUEST` | Invalid role ... | Role provided outside of allowed values ||
-|| `BAD_REQUEST` | Employee ID is required | `employeeId`/`employeeCode` not provided and `userId` not provided ||
-|| `BAD_REQUEST` | Employee with code ... was not found | Employee with specified `employeeCode` not found ||
-|| `BAD_REQUEST` | Employee with ID ... was not found | Employee with specified `employeeId` not found ||
-|| `BAD_REQUEST` | Could not find employee for specified User ID | User by `userId` not found ||
-|| `BAD_REQUEST` | Could not find user for specified employee | User not found for employee ||
-|| `BAD_REQUEST` | At least one file is required to sign the document | `files` array not provided ||
-|| `BAD_REQUEST` | Signing multiple files is currently not supported | More than one file provided in `files` ||
-|| `BAD_REQUEST` | The specified file type is not supported | `fileType` other than `application/pdf` specified ||
-|| `BAD_REQUEST` | Invalid file name | Invalid file name ||
-|| `BAD_REQUEST` | Invalid file name. File extension is not specified | File extension not specified ||
-|| `BAD_REQUEST` | The specified file extension is not supported | File extension not supported ||
-|| `BAD_REQUEST` | Region document type is required. Use value '12.999' as a default value | `regionDocumentType` not provided when codes list is available ||
-|| `BAD_REQUEST` | Region document type is not valid. Use value '12.999' as a default value | Unsupported `regionDocumentType` provided ||
-|| `BAD_REQUEST` | Signing provider is not available | Provider not available for the company ||
-|| `BAD_REQUEST` | Signing provider has expired | Signing provider has expired ||
-|| `BAD_REQUEST` | External date create field is required | `externalSettings.externalDateCreate` not provided ||
-|| `BAD_REQUEST` | External ID field is required | `externalSettings.externalId` not provided ||
-|| `BAD_REQUEST` | External date create invalid field value | Invalid date format in `externalSettings.externalDateCreate` ||
-|| `BAD_REQUEST` | External ID maximum length of 255 is exceeded | `externalSettings.externalId` length exceeded ||
-|| `INTERNAL_ERROR` | Internal error | Error sending document or generating response ||
-|| `-` | humanresources module is not installed | `humanresources` module not installed when using HCM Link fields ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without user authorization ||
+|| `403` | `ACCESS_DENIED` | Access denied! | e-Signature for HR is not available on Bitrix24, the application lacks the `sign.b2e` or `crm` scope, or the user does not have permission to create documents in e-Signature for HR. Also occurs if HCM Link data is passed but the `humanresources.hcmlink` scope is not connected ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was not called from an application with OAuth authorization, for example, through a webhook ||
+|| `400` | `BAD_REQUEST` | [fields] Empty request fields. | `fields` object not provided ||
+|| `400` | `BAD_REQUEST` | [companyProviderUid] field is required | `companyProviderUid` not provided, including when `fields` is empty ||
+|| `400` | `BAD_REQUEST` | The responsible field is required | `responsible` not provided ||
+|| `400` | `BAD_REQUEST` | At least one signing party with role signer is required | No participant with role `signer` in `members` ||
+|| `400` | `BAD_REQUEST` | At least one signing party with role assignee is required | No participant with role `assignee` in `members` ||
+|| `400` | `BAD_REQUEST` | Invalid role ... | Role provided outside of allowed values ||
+|| `400` | `BAD_REQUEST` | Employee ID is required | `employeeId`/`employeeCode` not provided and `userId` not provided ||
+|| `400` | `BAD_REQUEST` | Employee with code ... was not found | Employee with specified `employeeCode` not found ||
+|| `400` | `BAD_REQUEST` | Employee with ID ... was not found | Employee with specified `employeeId` not found ||
+|| `400` | `BAD_REQUEST` | Could not find employee for specified User ID | User by `userId` not found ||
+|| `400` | `BAD_REQUEST` | Could not find user for specified employee | User not found for employee ||
+|| `400` | `BAD_REQUEST` | At least one file is required to sign the document | `files` array not provided ||
+|| `400` | `BAD_REQUEST` | Signing multiple files is currently not supported | More than one file provided in `files` ||
+|| `400` | `BAD_REQUEST` | The specified file type is not supported | `fileType` other than `application/pdf` specified ||
+|| `400` | `BAD_REQUEST` | Invalid file name | Invalid file name ||
+|| `400` | `BAD_REQUEST` | Invalid file name. File extension is not specified | File extension not specified ||
+|| `400` | `BAD_REQUEST` | The specified file extension is not supported | File extension not supported ||
+|| `400` | `BAD_REQUEST` | Region document type is required. Use value '12.999' as a default value | `regionDocumentType` not provided when codes list is available ||
+|| `400` | `BAD_REQUEST` | Region document type is not valid. Use value '12.999' as a default value | Unsupported `regionDocumentType` provided ||
+|| `400` | `BAD_REQUEST` | Signing provider is not available | Provider not available for the company ||
+|| `400` | `BAD_REQUEST` | Signing provider has expired | Signing provider has expired ||
+|| `400` | `BAD_REQUEST` | External date create field is required | `externalSettings.externalDateCreate` not provided ||
+|| `400` | `BAD_REQUEST` | External ID field is required | `externalSettings.externalId` not provided ||
+|| `400` | `BAD_REQUEST` | External date create invalid field value | Invalid date format in `externalSettings.externalDateCreate` ||
+|| `400` | `BAD_REQUEST` | External ID maximum length of 255 is exceeded | `externalSettings.externalId` length exceeded ||
+|| `400` | `INTERNAL_ERROR` | Internal error | Error sending document or generating response ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

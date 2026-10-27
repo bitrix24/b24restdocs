@@ -241,6 +241,8 @@ If there are no tasks in the daily plan, returns an empty array ||
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
+The method has no parameters, so it has no method-specific errors. It can return only system errors.
+
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning

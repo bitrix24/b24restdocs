@@ -25,13 +25,17 @@ The method `task.stages.canmovetask` checks whether the current user can move ta
 || **Name**
 `type` | **Description** ||
 || **entityId*** 
-[`integer`](../../data-types.md) | `ID` of the object ||
+[`integer`](../../data-types.md) | Object ID: a user ID for `entityType = U` or a group ID for `entityType = G`.
+
+You can retrieve a user ID with the [user.get](../../user/user-get.md) method and a group ID with the [sonet_group.get](../../sonet-group/sonet-group-get.md) method ||
 || **entityType*** 
 [`string`](../../data-types.md) | Type of the object: 
-- `U` — user
-- `G` — group
+- `U` — user, "My Planner" stages
+- `G` — group, Kanban stages
 
-In the case of `U` ("My Plan"), the value `true` will only be returned if the `entityId` contains the identifier of the current user ||
+In the case of `U`, the value `true` will only be returned if the `entityId` contains the identifier of the current user.
+
+The method treats any value other than `G` as `U` and does not return an error ||
 |#
 
 ## Code Examples
@@ -269,13 +273,31 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result** 
-[`boolean`](../../data-types.md) | Returns `true` if the current user can move the task.
+[`boolean`](../../data-types.md) | Returns `true` if the current user can move tasks between the object's stages.
 
-Otherwise — `false`
-|| 
+Returns `false` if the user lacks permissions, if `entityId` does not match the current user for `entityType = U`, or if no group with the specified `entityId` exists. In these cases, the method does not return an access error ||
 |#
 
 ## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "DISPATCHER_ERROR",
+    "error_description": "Argument \"entitytype\" is required, but no value passed for task.stages.canmovetask"
+}
+```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Code** | **Description** | **Value** ||
+|| `DISPATCHER_ERROR` | Argument "entityid" is required, but no value passed for task.stages.canmovetask | The required parameter `entityId` is missing ||
+|| `DISPATCHER_ERROR` | Argument "entitytype" is required, but no value passed for task.stages.canmovetask | The required parameter `entityType` is missing ||
+|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

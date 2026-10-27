@@ -36,7 +36,9 @@ Basic values:
 - `files` — Drive
 - `blog` — messages
 
-Additional values may be available depending on the installed modules and event handlers ||
+Additional values may be available depending on the installed modules and event handlers.
+
+To find out which tools are enabled in a group, use the [socialnetwork.api.workgroup.get](./socialnetwork-api-workgroup-get.md) method: pass `FEATURES` in `select`, and the tool codes are returned in the `featureName` field ||
 || **OPERATION***
 [`string`](../data-types.md) | Symbolic code of the operation within the functionality.
 

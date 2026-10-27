@@ -15,6 +15,12 @@ Choose a tool for developing with an AI agent:
 
 The method `sonet_group.delete` removes a workgroup or project.
 
+{% note warning "" %}
+
+Deletion is irreversible. The group's member list, news feed, and Drive with all its files are deleted along with the group
+
+{% endnote %}
+
 ## Method parameters
 
 {% include [Note on required parameters](../../_includes/required.md) %}

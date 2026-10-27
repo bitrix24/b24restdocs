@@ -31,9 +31,9 @@ The parameter accepts a value from 1 to 1000.
 
 By default, 20 records are displayed per page ||
 || **offset**
-[`integer`](../data-types.md) | This parameter is used to manage pagination. It is similar to the standard [start](../../settings/performance/huge-data.md) parameter.
+[`integer`](../data-types.md) | Number of records to skip from the beginning of the list. It is similar to the standard [start](../../settings/performance/huge-data.md) parameter. To retrieve the next page, increase `offset` by the `limit` value.
 
-The page size of results depends on the **limit** parameter
+Defaults to 0
 ||
 |#
 
@@ -76,11 +76,8 @@ The page size of results depends on the **limit** parameter
     }
 
     try {
-      // sign.b2e.mysafe.tail returns a single page (max 1000 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // Returns up to `limit` documents (1-1000, default 20) starting from `offset`.
+      // To get the next page, repeat the call with offset increased by limit.
       const response = await $b24.actions.v2.call.make<SafeDocument[]>({
         method: 'sign.b2e.mysafe.tail',
         params: {
@@ -114,11 +111,8 @@ The page size of results depends on the **limit** parameter
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // sign.b2e.mysafe.tail returns a single page (max 1000 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // Returns up to `limit` documents (1-1000, default 20) starting from `offset`.
+          // To get the next page, repeat the call with offset increased by limit.
           const response = await $b24.actions.v2.call.make({
             method: 'sign.b2e.mysafe.tail',
             params: {
@@ -332,7 +326,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../data-types.md) | Identifier of the signed document ||
+[`integer`](../data-types.md) | Identifier of the signing participant to whom the signed file belongs. The `file_url` link is generated from it ||
 || **title**
 [`string`](../data-types.md) | Document title ||
 || **create_date**
@@ -360,7 +354,7 @@ Returned if safe document grouping by folders is enabled ||
 
 ## Error Handling
 
-HTTP status: **401**
+HTTP status: **403**
 
 ```json
 {
@@ -372,6 +366,13 @@ HTTP status: **401**
 {% include notitle [error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without user authorization ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was not called from an application with OAuth authorization, for example, through a webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! Access denied | e-Signature for HR is not available on Bitrix24, or the user does not have access to the "Company Safe" section ||
+|#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 

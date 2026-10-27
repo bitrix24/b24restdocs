@@ -86,7 +86,9 @@ The user ID can be obtained using the [user.get](../user/user-get.md) method.
 
 Specifying the owner is available only to administrators. For all others, the current user automatically becomes the owner ||
 || **IMAGE**
-[`file`](../data-types.md) | The group's avatar in [Base64](../files/how-to-upload-files.md#how-to-encode-a-file-in-base64) format ||
+[`file`](../data-types.md) | The group's avatar. An array of two elements: the file name and the file content in [Base64](../files/how-to-upload-files.md#how-to-encode-a-file-in-base64) format, for example `["avatar.png", "iVBORw0KGgo..."]`.
+
+If `IMAGE_FILE_ID` is passed, the `IMAGE` parameter is ignored ||
 || **IMAGE_FILE_ID**
 [`integer`](../data-types.md) | The file ID from Drive for setting the avatar.
 
@@ -94,7 +96,9 @@ The file ID can be obtained using the [disk.storage.getchildren](../disk/storage
 
 If both `IMAGE_FILE_ID` and `IMAGE` are provided, `IMAGE_FILE_ID` takes precedence ||
 || **SITE_ID**
-[`array`](../data-types.md) | A list of site IDs to which the group is linked
+[`array`](../data-types.md) | A list of site IDs to which the group is linked.
+
+An array of strings — site IDs, for example `["s1"]`. The current site of a group is returned in the `SITE_ID` field of the [sonet_group.get](./sonet-group-get.md) method.
 
 Default — the current site ||
 || **SUBJECT_ID**

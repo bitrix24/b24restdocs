@@ -27,17 +27,17 @@ The method works only in the context of application authorization [application](
 || **companyUuid*** 
 [`string`](../data-types.md) | UUID of the company in HCM Link.
 
-Required if the `companyCrmId` parameter is not provided.
+Required if the `companyCrmId` parameter is not provided. You can retrieve the UUID using the [humanresources.hcmlink.company.list](./hcm-link/humanresources-hcmlink-company-list.md) method.
 
 Requires additional scope [`humanresources.hcmlink`](../scopes/permissions.md) ||
 || **companyCrmId*** 
 [`integer`](../data-types.md) | Identifier of the company in CRM, connected in the integration as "my company".
 
-Required if the `companyUuid` parameter is not provided ||
+Required if the `companyUuid` parameter is not provided. You can retrieve the identifier using the [crm.item.list](../crm/universal/crm-item-list.md) method with the `entityTypeId = 4` parameter and the `isMyCompany = Y` filter ||
 || **language** 
-[`string`](../data-types.md) | Language for localizing provider names.
+[`string`](../data-types.md) | Language of provider names. A Bitrix24 interface language code, for example `ru` or `en`.
 
-Defaults to `en` ||
+If the language is not supported, names are returned in English. Defaults to `en` ||
 || **limit** 
 [`integer`](../data-types.md) | Number of records per page.
 
@@ -45,7 +45,7 @@ The parameter accepts values from 1 to 1000.
 
 Defaults to 100 ||
 || **offset** 
-[`integer`](../data-types.md) | Parameter for managing pagination.
+[`integer`](../data-types.md) | Number of providers to skip from the beginning of the list. To retrieve the next page, increase `offset` by the `limit` value.
 
 Defaults to 0 ||
 |#
@@ -88,11 +88,8 @@ You must provide either the `companyUuid` or `companyCrmId` parameter.
     }
 
     try {
-      // sign.b2e.company.provider.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // Returns up to `limit` providers (1-1000, default 100) starting from `offset`.
+      // To get the next page, repeat the call with offset increased by limit.
       const response = await $b24.actions.v2.call.make<ProviderItem[]>({
         method: 'sign.b2e.company.provider.list',
         params: {
@@ -131,11 +128,8 @@ You must provide either the `companyUuid` or `companyCrmId` parameter.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // sign.b2e.company.provider.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // Returns up to `limit` providers (1-1000, default 100) starting from `offset`.
+          // To get the next page, repeat the call with offset increased by limit.
           const response = await $b24.actions.v2.call.make({
             method: 'sign.b2e.company.provider.list',
             params: {
@@ -362,12 +356,12 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP Status: **400**
 
 ```json
 {
-    "error": "ACCESS_DENIED",
-    "error_description": "Access denied!"
+    "error": "510",
+    "error_description": "Company was not found."
 }
 ```
 
@@ -376,14 +370,13 @@ HTTP Status: **200**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** | **When it occurs** ||
-|| `ACCESS_DENIED` | Access denied! | Insufficient permissions ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Call not from application context ||
-|| `510` | Company was not found. | Company not found by `companyUuid` or `companyCrmId` ||
-|| `510` | My company ... not found | CRM company not found ||
-|| `-` | Parameter 'companyUuid' or 'companyCrmId' is required | Company identifiers not provided ||
-|| `-` | humanresources module is not installed | `humanresources` module not installed when using `companyUuid` ||
-|| `-` | Error while autoregistering providers | Error in auto-registering virtual providers. Check my company data in CRM ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without user authorization ||
+|| `403` | `ACCESS_DENIED` | Access denied! | e-Signature for HR is not available on Bitrix24, the application lacks the `sign.b2e` or `crm` scope, or the user does not have permission to create documents in e-Signature for HR. Also occurs if `companyUuid` is passed but the `humanresources.hcmlink` scope is not connected ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was not called from an application with OAuth authorization, for example, through a webhook ||
+|| `400` | Empty value | Parameter 'companyUuid' or 'companyCrmId' is required | Neither `companyUuid` nor `companyCrmId` was passed ||
+|| `400` | `510` | Company was not found. | The company was not found by `companyUuid` or `companyCrmId`. The method also returns this error if a non-identifier value, such as an array, is passed in `companyCrmId` ||
+|| `400` | `0` | Error while autoregistering providers | Failed to register the company's providers in the signing service. Check the company details in CRM: the company must have a tax ID ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}

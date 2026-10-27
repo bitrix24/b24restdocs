@@ -24,12 +24,14 @@ The method works only in the context of application authorization [application](
 #|
 || **Name**
 `type` | **Description** ||
-|| **uid**
-[`string`](../data-types.md) | Unique identifier of the document ||
-|| **language**
-[`string`](../data-types.md) | Language for localizing statuses in the response.
+|| **uid***
+[`string`](../data-types.md) | Unique identifier of the document.
 
-Defaults to `en` ||
+You can retrieve `uid` from the response of the [sign.b2e.document.send](./sign-b2e-document-send.md) method or from the `data.documentUid` field of the [OnSignB2eDocumentStatusChanged](./events/on-sign-b2e-document-status-changed.md) and [OnSignB2eMemberStatusChanged](./events/on-sign-b2e-member-status-changed.md) events ||
+|| **language**
+[`string`](../data-types.md) | Language of status names in the response. A Bitrix24 interface language code, for example `ru` or `en`.
+
+If the language is not supported, names are returned in English. Defaults to `en` ||
 |#
 
 ## Code Examples
@@ -380,12 +382,12 @@ Returned only for companies linked with HCM Link ||
 
 ## Error Handling
 
-HTTP Status: **200**
+HTTP Status: **400**
 
 ```json
 {
-    "error": "ACCESS_DENIED",
-    "error_description": "Access denied!"
+    "error": "",
+    "error_description": "Document not found."
 }
 ```
 
@@ -394,12 +396,14 @@ HTTP Status: **200**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **When it occurs** ||
-|| `ACCESS_DENIED` | Access denied! | Insufficient permissions ||
-|| `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | Call not from application context ||
-|| `INTERNAL_ERROR` | Internal error | Error generating response ||
-|| `-` | Document UID is required | Parameter `uid` not provided ||
-|| `-` | Document not found | Document with the specified `uid` not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without user authorization ||
+|| `403` | `ACCESS_DENIED` | Access denied! | e-Signature for HR is not available on Bitrix24, the application lacks the `sign.b2e` or `crm` scope, or the user does not have the required permission in e-Signature for HR ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was not called from an application with OAuth authorization, for example, through a webhook ||
+|| `400` | `INTERNAL_ERROR` | Internal error | Error generating the response ||
+|| `400` | Empty value | Document UID is required. | The `uid` parameter was not passed or is an empty string ||
+|| `500` | `INTERNAL_SERVER_ERROR` | Internal server error | An array or object was passed in `uid`. Pass `uid` as a string ||
+|| `400` | Empty value | Document not found. | No document with the specified `uid` exists ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

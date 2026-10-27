@@ -294,7 +294,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **200**, **403**
+HTTP status: **400**
 
 ```json
 {
@@ -308,13 +308,13 @@ HTTP status: **200**, **403**
 ### Possible Error Codes
 
 #|
-|| **Status** | **Code** | **Description** | **When It Occurs** ||
-|| `403` | `ACCESS_DENIED` | Access denied | Insufficient permissions ||
-|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method | The method was not called in the application context ||
-|| `200` | Empty value | Module humanresources is not available | The `humanresources` module is not available ||
-|| `200` | `SIGN_HCMLINK_DOCUMENT_NOT_FOUND` | Document not found | The document was not found or is not linked to HCM Link ||
-|| `200` | `SIGN_HCMLINK_DOCUMENT_NOT_LINKED` | No employee or company linked to the document | No employee or HCM Link company is linked to the document ||
-|| `200` | `SIGN_HCMLINK_NO_SIGNED_FILE_EXIST` | Signed file for this document does not exist | The signed document file was not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Access denied | e-Signature for HR is not available on Bitrix24, or the user lacks permissions ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was not called from an application with OAuth authorization, for example, through a webhook ||
+|| `400` | Empty value | Module humanresources is not available | The `humanresources` module is not available ||
+|| `400` | `SIGN_HCMLINK_DOCUMENT_NOT_FOUND` | Document not found | The document was not found or is not linked to HCM Link. The method also returns this error if `id` is not passed or equals `0` ||
+|| `400` | `SIGN_HCMLINK_DOCUMENT_NOT_LINKED` | No employee or company linked to the document | No employee or HCM Link company is linked to the document ||
+|| `400` | `SIGN_HCMLINK_NO_SIGNED_FILE_EXIST` | Signed file for this document does not exist | The signed document file was not found ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

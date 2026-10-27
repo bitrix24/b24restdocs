@@ -66,11 +66,7 @@ No parameters.
     }
 
     try {
-      // sonet_group.user.groups returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // sonet_group.user.groups takes no parameters and returns all groups of the current user in one call: there is no pagination.
       const response = await $b24.actions.v2.call.make<UserGroupItem[]>({
         method: 'sonet_group.user.groups',
         params: {},
@@ -101,11 +97,7 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // sonet_group.user.groups returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // sonet_group.user.groups takes no parameters and returns all groups of the current user in one call: there is no pagination.
           const response = await $b24.actions.v2.call.make({
             method: 'sonet_group.user.groups',
             params: {},
@@ -278,6 +270,8 @@ HTTP status: **200**
 || **result**
 [`array`](../data-types.md) | Array of groups the current user belongs to.
 
+The array includes groups where the user is the owner, a moderator, or a member. Groups the user has requested to join or has been invited to are not returned.
+
 An empty array means that the user is not a member of any group or project ||
 || **GROUP_ID**
 [`integer`](../data-types.md) | Group identifier ||
@@ -304,6 +298,10 @@ This field is returned only for extranet groups:
 |#
 
 ## Error Handling
+
+The method has no method-specific errors. Only general REST API errors are possible.
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
 
 {% include [system errors](../../_includes/system-errors.md) %}
 

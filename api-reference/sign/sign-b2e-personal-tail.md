@@ -31,9 +31,9 @@ The parameter accepts a value from 1 to 1000.
 
 By default, 20 records are displayed per page ||
 || **offset**
-[`integer`](../data-types.md) | This parameter is used for pagination control. It is similar to the standard parameter [start](../../settings/performance/huge-data.md).
+[`integer`](../data-types.md) | Number of records to skip from the beginning of the list. It is similar to the standard parameter [start](../../settings/performance/huge-data.md). To retrieve the next page, increase `offset` by the `limit` value.
  
-The page size of results depends on the **limit** parameter
+Defaults to 0
 ||
 |#
 
@@ -312,7 +312,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../data-types.md) | Identifier of the signed document ||
+[`integer`](../data-types.md) | Identifier of the signing participant to whom the signed file belongs. The `file_url` link is generated from it ||
 || **title**
 [`string`](../data-types.md) | Title of the document ||
 || **signed_date**
@@ -323,7 +323,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **401**
+HTTP status: **403**
 
 ```json
 {
@@ -335,6 +335,13 @@ HTTP status: **401**
 {% include notitle [error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! User authorization required | The request was made without user authorization ||
+|| `403` | `WRONG_AUTH_TYPE` | Current authorization type is denied for this method Application context required | The method was not called from an application with OAuth authorization, for example, through a webhook ||
+|| `403` | `ACCESS_DENIED` | Access denied! Access denied | e-Signature for HR is not available on Bitrix24 ||
+|#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 

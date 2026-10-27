@@ -22,10 +22,12 @@ Access to the data depends on permissions:
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
-|| **taskId**
+|| **taskId***
 [`integer`](../data-types.md) | Task ID. 
 
 The task ID can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list](./tasks-task-list.md) method. ||
@@ -35,6 +37,8 @@ The task ID can be obtained when [creating a new task](./tasks-task-add.md) or b
 By default, it returns all fields except for custom ones. It is recommended to specify particular fields in the selection, as default fields may change.
 
 System fields `UF_CRM_TASK`, `UF_TASK_WEBDAV_FILES`, and `UF_MAIL_MESSAGE` are not returned by default. Specify one of these fields in `SELECT` to get their values. 
+
+To retrieve the tasks that the current task depends on, specify `RELATED_TASKS`. The method returns a `relatedTasks` object of the form `{"ID": "task title"}`
 
 To retrieve custom fields, specify them in `SELECT`. You can find the names of custom fields using the [tasks.task.getFields](./tasks-task-get-fields.md) method. ||
 |#

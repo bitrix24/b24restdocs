@@ -279,21 +279,25 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "",
-    "error_description": "User has no permissions to set owner"
+    "error": "100",
+    "error_description": "Invalid workgroup/project ID"
 }
 ```
 
 {% include notitle [error handling](../../_includes/error-info.md) %}
 
+The error text is returned in the user's language.
+
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| — | `Invalid workgroup/project ID` | An invalid `GROUP_ID` was provided or the group/project was not found. ||
-|| — | `Invalid user ID` | An invalid `USER_ID` was provided. ||
-|| — | `Insufficient permissions to complete the operation.` | Not enough permissions to change the owner. ||
-|| — | `Cannot complete operation.` | Failed to change the owner. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Invalid workgroup/project ID | `GROUP_ID` is missing or has an invalid value ||
+|| `400` | `510` | Invalid workgroup/project ID | No group or project with the specified `GROUP_ID` exists ||
+|| `400` | `100` | Invalid user ID | `USER_ID` is missing or has an invalid value ||
+|| `400` | `ERROR_ADD_USER2GROUP` | User specified is incorrect | No user with the specified `USER_ID` exists ||
+|| `400` | `403` | Insufficient permissions to complete the operation | The user is not allowed to change the group owner ||
+|| `400` | `100` | Cannot complete operation | Failed to change the owner ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

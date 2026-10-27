@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `tasks.task.getFields` returns a description of standard and custom fields of a task.
+The method `tasks.task.getFields` returns a description of standard and custom fields of a task. Use it to find the field codes for `fields` in [tasks.task.add](./tasks-task-add.md) and [tasks.task.update](./tasks-task-update.md), for `select` and `filter` in [tasks.task.get](./tasks-task-get.md) and [tasks.task.list](./tasks-task-list.md), and the allowed values of list fields.
 
 ## Method Parameters
 
@@ -628,16 +628,69 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Object with [task field descriptions](./fields.md) ||
+[`object`](../data-types.md) | Root object of the response ||
+|| **fields**
+[`object`](../data-types.md) | An object where each key is a task field code, such as `TITLE` or `UF_CRM_TASK`, and each value is an object describing the field [(detailed description)](#field-description).
+
+Contains standard and custom task fields. The purpose of standard fields is described in the [Task Fields](./fields.md) article ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
+#### Field Description Object {#field-description}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **title**
+[`string`](../data-types.md) | Field name. For some fields, `null` is returned, for example for `ACCOMPLICES`, `AUDITORS`, `CREATED_DATE` ||
+|| **type**
+[`string`](../data-types.md) | Type of the field value. Possible values:
+- `integer` — integer
+- `double` — floating-point number
+- `string` — string
+- `boolean` — boolean value
+- `datetime` — date and time
+- `enum` — a value from the `values` list
+- `array` — array
+- `crm` — link to CRM objects
+- `disk_file` — Drive files
+- `mail_message` — link to an email ||
+|| **values**
+[`object`](../data-types.md) \| [`array`](../data-types.md) | Allowed field values. Returned only for fields of the `enum` type.
+
+Usually an object where each key is a field value and each value is its label, for example `{"Y": "Yes", "N": "No"}`. For the `DURATION_TYPE` field, an array of values without labels is returned ||
+|| **default**
+[`integer`](../data-types.md) \| [`string`](../data-types.md) | Default value. Can be `null`. Returned only for fields that have a default value ||
+|| **required**
+[`boolean`](../data-types.md) | Required field flag. Returned with the value `true` only for required fields: `TITLE`, `CREATED_BY`, `RESPONSIBLE_ID` ||
+|| **primary**
+[`boolean`](../data-types.md) | Primary key flag. Returned with the value `true` only for the `ID` field ||
+|#
+
 ## Error Handling
+
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
+
+The method has no parameters, so it has no method-specific errors. It can return only system errors, for example `INVALID_CREDENTIALS` if the webhook code is invalid.
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 
+- [{#T}](./index.md)
+- [{#T}](./fields.md)
+- [{#T}](./tasks-task-add.md)
+- [{#T}](./tasks-task-update.md)
 - [{#T}](./tasks-task-get.md)
 - [{#T}](./tasks-task-list.md)
+- [{#T}](./user-field/index.md)
