@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "Manage tax rates" access permission
 
-This method retrieves information about the VAT rate by its identifier.
+The method `catalog.vat.get` returns a VAT rate by its identifier.
 
 ## Method Parameters
 
@@ -23,7 +23,10 @@ This method retrieves information about the VAT rate by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_vat.id`](../data-types.md#catalog_vat) | Identifier of the VAT rate ||
+[`catalog_vat.id`](../data-types.md#catalog_vat) | Identifier of the VAT rate.
+
+To retrieve the rate identifiers, use the [catalog.vat.list](./catalog-vat-list.md) method
+||
 |#
 
 ## Code Examples
@@ -38,7 +41,7 @@ This method retrieves information about the VAT rate by its identifier.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":7}' \
+    -d '{"id":3}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.vat.get
     ```
 
@@ -48,7 +51,7 @@ This method retrieves information about the VAT rate by its identifier.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":7,"auth":"**put_access_token_here**"}' \
+    -d '{"id":3,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.vat.get
     ```
 
@@ -68,7 +71,7 @@ This method retrieves information about the VAT rate by its identifier.
         active: string
         id: number
         name: string
-        rate: number
+        rate: number | null
         sort: number
         timestampX: ISODate | null
       }
@@ -78,7 +81,7 @@ This method retrieves information about the VAT rate by its identifier.
       const response = await $b24.actions.v2.call.make<VatGetResult>({
         method: 'catalog.vat.get',
         params: {
-          id: 7,
+          id: 3,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -110,7 +113,7 @@ This method retrieves information about the VAT rate by its identifier.
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.vat.get',
             params: {
-              id: 7,
+              id: 3,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -140,7 +143,7 @@ This method retrieves information about the VAT rate by its identifier.
 
     try:
         bitrix_response = client.catalog.vat.get(
-            bitrix_id=7,
+            bitrix_id=3,
         ).response
         result = bitrix_response.result
         print(result)
@@ -166,7 +169,7 @@ This method retrieves information about the VAT rate by its identifier.
             ->call(
                 'catalog.vat.get',
                 [
-                    'id' => 7
+                    'id' => 3
                 ]
             );
     
@@ -174,7 +177,7 @@ This method retrieves information about the VAT rate by its identifier.
             ->getResponseData()
             ->getResult();
 
-        print_r($result);
+        print_r($result['vat']);
     } catch (Throwable $e) {
         echo $e->getMessage();
     }
@@ -206,7 +209,7 @@ This method retrieves information about the VAT rate by its identifier.
     $result = CRest::call(
         'catalog.vat.get',
         [
-            'id' => 7
+            'id' => 3
         ]
     );
 
@@ -220,7 +223,7 @@ This method retrieves information about the VAT rate by its identifier.
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.vat.get", b24.Params{
-    	"id": 7,
+    	"id": 3,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.vat.get: %w", err)
@@ -240,22 +243,23 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-        {
+        "vat": {
             "active": "Y",
-            "id": 7,
-            "name": "Tax 13%",
-            "rate": 13,
-            "sort": 10,
-            "timestampX": "2024-09-16T11:23:55+02:00"
+            "id": 3,
+            "name": "VAT 19%",
+            "rate": 19,
+            "sort": 999,
+            "timestampX": "2026-03-04T21:41:19+01:00"
         }
     },
     "time": {
-        "start": 1716558215.93495,
-        "finish": 1716558216.20731,
-        "duration": 0.272363901138306,
-        "processing": 0.028817892074585,
-        "date_start": "2024-05-24T15:43:35+02:00",
-        "date_finish": "2024-05-24T15:43:36+02:00",
+        "start": 1793118105,
+        "finish": 1793118105.040866,
+        "duration": 0.04086589813232422,
+        "processing": 0,
+        "date_start": "2026-10-27T17:21:45+01:00",
+        "date_finish": "2026-10-27T17:21:45+01:00",
+        "operating_reset_at": 1793118660,
         "operating": 0
     }
 }
@@ -269,8 +273,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **vat**
-[`catalog_vat`](../data-types.md#catalog_vat) | Object containing information about the VAT rate with the specified identifier
-||
+[`catalog_vat`](../data-types.md#catalog_vat) | Object with the VAT rate fields: `active`, `id`, `name`, `rate`, `sort`, `timestampX`. For a rate without VAT, the `rate` field is `null` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -281,8 +284,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300010,
-    "error_description": "Access Denied"
+    "error": "200800000000",
+    "error_description": "vat does not exist."
 }
 ```
 
@@ -291,23 +294,21 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
-||
-|| `200800000000` | No VAT rate exists with this identifier 
-||
-|| `100` | Parameter `id` not specified
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has neither the "View product catalog" nor the "Manage tax rates" access permission ||
+|| `400` | `200800000000` | vat does not exist. | No VAT rate with this `id` exists ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
+|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./catalog-vat-add.md)
 - [{#T}](./catalog-vat-update.md)
 - [{#T}](./catalog-vat-list.md)
 - [{#T}](./catalog-vat-delete.md)
 - [{#T}](./catalog-vat-get-fields.md)
+- [{#T}](../catalog/catalog-catalog-update.md)

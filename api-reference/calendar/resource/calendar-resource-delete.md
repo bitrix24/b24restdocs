@@ -256,7 +256,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"resourceId\" for the method \"calendar.resource.delete\" is not set"
+    "error_description": "The mandatory parameter \"resourceId\" is not specified for the method \"calendar.resource.delete\""
 }
 ```
 
@@ -266,7 +266,7 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "resourceId" for the method "calendar.resource.delete" is not set | The required parameter `resourceId` was not provided ||
+|| Empty value | The mandatory parameter "resourceId" is not specified for the method "calendar.resource.delete" | The required parameter `resourceId` was not provided ||
 || Empty value | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
 || Empty value | An error occurred while deleting the resource | Another error ||
 |#

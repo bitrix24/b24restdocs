@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method retrieves the participation status of the current user in the event.
+The `calendar.meeting.status.get` method retrieves the participation status of the current user in the event.
 
 ## Method Parameters
 
@@ -253,7 +253,11 @@ HTTP status: **200**
 - `Y` — agreed
 - `N` — declined
 - `Q` — invited but not yet responded
- ||
+- `H` — the current user is the event organizer
+
+If the event is a meeting but the current user is not a participant, the method returns `null` ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -263,7 +267,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "An error occurred while retrieving the status"
+    "error_description": "Error while retrieving status"
 }
 ```
 
@@ -272,14 +276,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "eventId" for the method "calendar.meeting.status.set" is not set | The required parameter `eventId` was not provided ||
-|| Empty value | An error occurred while retrieving the status | Another error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "eventId" is not specified for the method "calendar.meeting.status.get" | The required parameter `eventId` was not provided ||
+|| `400` | Empty value | Error while retrieving status | The event with the passed `eventId` does not exist or is not a meeting with participants ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./calendar-meeting-status-set.md)

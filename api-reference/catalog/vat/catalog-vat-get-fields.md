@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "Manage tax rates" access permission
 
-The method returns the fields of the VAT rate.
+The method `catalog.vat.getFields` returns the description of the VAT rate fields: type, whether the field is required, and whether it can be modified.
+
+## Method Parameters
 
 No parameters.
 
@@ -261,12 +263,13 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1712325642.686926,
-        "finish": 1712325642.949075,
-        "duration": 0.2621490955352783,
-        "processing": 0.004400968551635742,
-        "date_start": "2024-09-05T16:00:42+02:00",
-        "date_finish": "2024-09-05T16:00:42+02:00",
+        "start": 1793117803,
+        "finish": 1793117803.940944,
+        "duration": 0.9409439563751221,
+        "processing": 0,
+        "date_start": "2026-10-27T17:16:43+01:00",
+        "date_finish": "2026-10-27T17:16:43+01:00",
+        "operating_reset_at": 1793118360,
         "operating": 0
     }
 }
@@ -280,8 +283,13 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **vat**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value"}`, where `field` is the identifier of the object 
-[catalog_vat](../data-types.md#catalog_vat), and `value` is an object of type [rest_field_description](../data-types.md)
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [catalog_vat](../data-types.md#catalog_vat) object field, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description).
+
+The method returns the fields `active`, `id`, `name`, `rate`, `sort`, `timestampX`. For each field, the following is specified:
+- `type` — value type: `char`, `integer`, `string`, `double`, or `datetime`
+- `isRequired` — whether the field is required when creating and updating
+- `isReadOnly` — the field is read-only
+- `isImmutable` — the field cannot be changed after creation
 ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -293,7 +301,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -303,17 +311,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has neither the "View product catalog" nor the "Manage tax rates" access permission ||
+|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./catalog-vat-add.md)
 - [{#T}](./catalog-vat-update.md)
 - [{#T}](./catalog-vat-get.md)

@@ -573,7 +573,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"settings\" for the method \"calendar.user.settings.set\" is not set"
+    "error_description": "The mandatory parameter \"settings\" is not specified for the method \"calendar.user.settings.set\""
 }
 ```
 {% include notitle [error handling](../../_includes/error-info.md) %}
@@ -582,7 +582,7 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "settings" for the method "calendar.user.settings.set" is not set | The required parameter `settings` was not provided ||
+|| Empty value | The mandatory parameter "settings" is not specified for the method "calendar.user.settings.set" | The required parameter `settings` was not provided ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

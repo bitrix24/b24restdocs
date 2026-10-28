@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method deletes an event.
+The `calendar.event.delete` method deletes an event.
 
 ## Method Parameters
 
@@ -246,6 +246,8 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`boolean`](../../data-types.md) | Returns `true` if the deletion was successful ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -255,7 +257,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "Event id not specified"
+    "error_description": "Event ID is not specified"
 }
 ```
 {% include notitle [error handling](../../../_includes/error-info.md) %}
@@ -263,9 +265,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | Event id not specified | Required parameter `id` not provided ||
-|| Empty value | An error occurred while deleting the event | The user does not have access permission to the calendar, the calendar does not exist, or another error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Event ID is not specified | Required parameter `id` not provided ||
+|| `400` | Empty value | Error while deleting event | The user does not have access permission to the calendar, the calendar does not exist, or another error ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./calendar-event-add.md)
+- [{#T}](./calendar-event-get-by-id.md)
+- [{#T}](./calendar-event-get.md)
+- [{#T}](./events/on-calendar-entry-delete.md)

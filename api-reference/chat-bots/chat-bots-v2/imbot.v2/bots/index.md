@@ -29,7 +29,7 @@ These parameters are set during registration and determine how the bot will oper
 #|
 || **Parameter** | **What It Determines** | **Where It Is Described in Detail** ||
 || `fields.code` | The unique code of the bot within the application. It allows `imbot.v2.Bot.register` to recognize a repeated registration and return the existing bot | [imbot.v2.Bot.register](./bot-register.md) ||
-|| `fields.botToken` | The authorization token of the bot. Required for webhook calls, not needed for OAuth. Maximum length — 40 characters | [Authorization](../../index.md#auth) ||
+|| `fields.botToken` | The authorization token of the bot. Required for webhook calls, not needed for OAuth. Use a token of no more than 40 characters: this limit applies when the token is changed | [Authorization](../../index.md#auth) ||
 || `fields.type` | The behavior of the bot in chats: `bot`, `supervisor`, `personal`, `openline`. The type determines whether the bot receives all chat messages or only mentions | [Bot Types](../../index.md#bot-types) ||
 || `fields.eventMode` | The event delivery method: `fetch` — the bot retrieves events itself, `webhook` — Bitrix24 sends them to the bot's URL | [Event Delivery Modes](../events/index.md) ||
 |#

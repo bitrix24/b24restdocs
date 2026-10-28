@@ -738,7 +738,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"filter['resourceTypeIdList']\" is not set for the method \"calendar.resource.booking.list\""
+    "error_description": "The mandatory parameter \"filter['resourceTypeIdList']\" is not specified for the method \"calendar.resource.booking.list\""
 }
 ```
 
@@ -749,7 +749,7 @@ HTTP Status: **400**
 #|
 || **Code** | **Error Message** | **Description** ||
 || Empty value | Access denied | Access to the method is prohibited for external users ||
-|| Empty value | The required parameter "filter['resourceTypeIdList']" is not set for the method "calendar.resource.booking.list" | Neither of the required parameters `resourceTypeIdList` or `resourceIdList` was provided ||
+|| Empty value | The mandatory parameter "filter['resourceTypeIdList']" is not specified for the method "calendar.resource.booking.list" | Neither of the required parameters `resourceTypeIdList` or `resourceIdList` was provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

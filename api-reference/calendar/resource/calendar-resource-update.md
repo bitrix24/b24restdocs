@@ -266,7 +266,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"name\" for the method \"calendar.resource.update\" is not set"
+    "error_description": "The mandatory parameter \"name\" is not specified for the method \"calendar.resource.update\""
 }
 ```
 {% include notitle [error handling](../../../_includes/error-info.md) %}
@@ -275,8 +275,8 @@ HTTP status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "resourceId" for the method "calendar.resource.update" is not set | The required parameter `resourceId` is missing ||
-|| Empty value | The required parameter "name" for the method "calendar.resource.update" is not set | The required parameter `name` is missing ||
+|| Empty value | The mandatory parameter "resourceId" is not specified for the method "calendar.resource.update" | The required parameter `resourceId` is missing ||
+|| Empty value | The mandatory parameter "name" is not specified for the method "calendar.resource.update" | The required parameter `name` is missing ||
 || Empty value | Access denied | The method is called by an external user or the user is not allowed to modify resources ||
 || Empty value | An error occurred while updating the resource | Another error ||
 |#

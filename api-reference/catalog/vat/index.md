@@ -19,10 +19,11 @@ If a product or catalog has a VAT rate, general CRM taxes do not apply to them.
 
 ## How to Start
 
-1. Create a VAT rate using [catalog.vat.add](./catalog-vat-add.md)
-2. Get the VAT rate identifier using [catalog.vat.get](./catalog-vat-get.md) or [catalog.vat.list](./catalog-vat-list.md)
-3. Specify the VAT rate in trade catalog or product settings
-4. Change the rate using [catalog.vat.update](./catalog-vat-update.md), if needed
+1. Check whether the rate you need exists using [catalog.vat.list](./catalog-vat-list.md). A rate without VAT may already exist on the account: its `rate` is `null`, and such a rate cannot be created using `catalog.vat.add`. If the rate does not exist, create it using [catalog.vat.add](./catalog-vat-add.md) — the method returns its `id`
+2. Assign the rate by passing its `id` in the `vatId` field
+   - to a catalog — using [catalog.catalog.update](../catalog/catalog-catalog-update.md) in REST 3.0
+   - to a product — using [catalog.product.update](../product/catalog-product-update.md). The `vatIncluded` field sets whether VAT is included in the product price
+3. Change the rate using [catalog.vat.update](./catalog-vat-update.md), if needed. In the previous API version, the method requires `name` and `rate` in every call
 
 ## VAT Rates in REST 3.0
 
@@ -49,8 +50,8 @@ Specifics of the new version methods:
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can execute the methods:
-> - administrator — for methods of the previous API version
-> - a user with the "View product catalog" or "Manage tax rates" access permission — for retrieving rates in REST 3.0. Adding, updating, and deleting require the "Manage tax rates" access permission
+> - a user with the "View product catalog" or "Manage tax rates" access permission — for retrieving rates and the field description
+> - a user with the "Manage tax rates" access permission — for adding, updating, and deleting rates
 
 #|
 || **Method** | **Description** ||

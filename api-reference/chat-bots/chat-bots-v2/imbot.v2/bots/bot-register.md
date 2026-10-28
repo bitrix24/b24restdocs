@@ -46,13 +46,7 @@ If the bot runs as part of an application, events will not be sent to the applic
 
 Pass the unique botToken — this key will be tied to the chat bot and will be required for all subsequent calls to imbot.v2* via webhook.
 
-Maximum length — **40 characters**.
-
-{% note warning "" %}
-
-As of 06.08.2026, tokens longer than 40 characters will be **rejected** with the error `BOT_TOKEN_INVALID_LENGTH`. If you are using a long token — update it via [imbot.v2.Bot.update](./bot-update.md) before this date.
-
-{% endnote %} ||
+The method accepts a token of any length. Use a token of no more than 40 characters: this limit applies when you change the token via [imbot.v2.Bot.update](./bot-update.md) ||
 || **properties*** 
 [`object`](../../../../data-types.md) | Properties of the bot's profile. Parameter descriptions — [below](#properties) || 
 || **type** 

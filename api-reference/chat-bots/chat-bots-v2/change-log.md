@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Change history for the API `imbot.v2`: new features, fixes, and changes with breaking changes. Entries are listed from newest to oldest.
+Change history for the API `imbot.v2`: new features, fixes, and changes with breaking changes. Entries are listed from newest to oldest and grouped by REST API revision. The revision of a specific Bitrix24 account is returned by the [imbot.v2.Revision.get](./imbot.v2/revision-get.md) method in the `rest` field: changes from revisions with a higher number are not yet available on that Bitrix24 account.
 
 ## Record Prefixes
 
@@ -23,23 +23,25 @@ Code format: `BOT-{TYPE}-{MMDD}-{N}`, where `MMDD` is the publication date, and 
 
 > Publication date: 06.05.2026
 
-### BOT-BC-0506-1: Bot.register, upcoming botToken length limit {#bot-bc-0506-1}
+### BOT-BC-0506-1: Bot.register, botToken length limit {#bot-bc-0506-1}
 
-> Limit application: from 06.08.2026 (in three months)
+The change has not taken effect, and backward compatibility is preserved.
 
-**Currently (temporarily)**
+**Previously**
 
-[imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md) accepts `botToken` of any length — for compatibility with integrations that previously registered bots with long tokens, such as 64-character SHA-256-hex.
+[imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md) accepted `botToken` of any length. A 40-character limit with the `BOT_TOKEN_INVALID_LENGTH` error was announced for 06.08.2026.
 
-**From 06.08.2026**
+**Now**
 
-[imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md) will start rejecting `botToken` longer than **40 characters** with the error `BOT_TOKEN_INVALID_LENGTH`. The same limit already applies to token rotation via [imbot.v2.Bot.update](./imbot.v2/bots/bot-update.md) (`fields.botToken`) — see [#BOT-NEW-0501-2](#bot-new-0501-2).
+No change: [imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md) accepts `botToken` of any length, and no limit has been introduced for registration.
 
-**What integrators should do**
+The 40-character limit applies to a new token when you rotate it via [imbot.v2.Bot.update](./imbot.v2/bots/bot-update.md) in the `fields.botToken` parameter. A longer token is rejected with the `BOT_TOKEN_INVALID_LENGTH` error, see [#BOT-NEW-0501-2](#bot-new-0501-2).
 
-If you have bots registered with `botToken` longer than 40 characters, replace the token with one no longer than 40 characters within three months via `Bot.update {fields: {botToken: '...'}}`. The request authorization remains the old (long) token, while the new one is passed in `fields`. After 06.08.2026, re-registering a bot with a long token, for example, during state loss and `register-on-startup`, will be rejected. Already registered bots will continue to operate unchanged.
+**Impact on integrators**
 
-**Affected method:** [imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md)
+For new bots, set a `botToken` of no more than 40 characters. Bots with a long token keep working. To switch to a short token, call `Bot.update {fields: {botToken: '...'}}`: the request is authorized with the old long token, and the new one is passed in `fields`.
+
+**Affected methods:** [imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md), [imbot.v2.Bot.update](./imbot.v2/bots/bot-update.md)
 
 ## REST Revision 35 {#rest-revision-35}
 
@@ -71,7 +73,7 @@ If your code has a workaround with manual `event.unbind` after `Bot.update {even
 
 The ability to change `botToken` via `fields.botToken` has been added to [imbot.v2.Bot.update](./imbot.v2/bots/bot-update.md). Request authorization is performed with the old token, while the new one is passed in `fields`.
 
-After a successful rotation, all `ONIMBOTV2*` subscriptions are re-bound to the new `APPLICATION_TOKEN` (if the bot is in `webhook` mode), and the old token immediately loses access. Everything is done in a single transaction.
+After a successful rotation, all `ONIMBOTV2*` subscriptions are moved to the new `APPLICATION_TOKEN` if the bot works in `webhook` mode. The old token immediately loses access. Everything is done in a single transaction.
 
 In case of token collision, the code `BOT_TOKEN_ROTATION_FAILED` is returned. **The length of `botToken` must not exceed 40 characters.**
 
@@ -97,7 +99,7 @@ If your code read `result.bot.appId` or `data.bot.appId` — the field is now ab
 
 > Publication date: 08.04.2026
 
-### BOT-NEW-0408-1: Documentation, general error codes for BotController
+### BOT-NEW-0408-1: Documentation, general error codes for BotController {#bot-new-0408-1}
 
 Descriptions of basic error codes that may occur at the `BotController` level have been added to all `imbot.v2` methods:
 
@@ -106,11 +108,11 @@ Descriptions of basic error codes that may occur at the `BotController` level ha
 - `BOT_NOT_FOUND`: bot not found
 - `BOT_OWNERSHIP_ERROR`: bot does not belong to the application
 
-### BOT-NEW-0408-2: Documentation, additional materials
+### BOT-NEW-0408-2: Documentation, additional materials {#bot-new-0408-2}
 
 Links to documentation on advanced messaging capabilities: text formatting, `Attach` attachments, `Keyboard` keyboards have been added to [Quick Start](./quick-start.md).
 
-### BOT-FIX-0408-3: Command.list, fixed localization display
+### BOT-FIX-0408-3: Command.list, fixed localization display {#bot-fix-0408-3}
 
 **Previously**
 
@@ -120,9 +122,13 @@ Links to documentation on advanced messaging capabilities: text formatting, `Att
 
 `title` and `params` are correctly returned in the interface language with a fallback to the default language.
 
+**Impact on integrators**
+
+Command titles and parameters can be retrieved from the method response, so you do not need to keep a copy of them on your side.
+
 **Affected method:** [imbot.v2.Command.list](./imbot.v2/commands/command-list.md)
 
-### BOT-FIX-0408-4: Bot.register / Bot.update, normalization of backgroundId
+### BOT-FIX-0408-4: Bot.register / Bot.update, normalization of backgroundId {#bot-fix-0408-4}
 
 **Previously**
 
@@ -130,11 +136,15 @@ Links to documentation on advanced messaging capabilities: text formatting, `Att
 
 **Now**
 
-`backgroundId` is normalized through `Background::normalizeBackgroundId()`. Invalid values are set to `null`. Allowed values: `azure`, `mint`, `steel`, `slate`, `teal`, `cornflower`, `sky`, `peach`, `frost`.
+`backgroundId` is validated against the list of allowed values. Invalid values are set to `null` without an error. Allowed values: `azure`, `mint`, `steel`, `slate`, `teal`, `cornflower`, `sky`, `peach`, `frost`.
+
+**Impact on integrators**
+
+Check `backgroundId` in the method response: if the value was not saved, the response contains `null`.
 
 **Affected methods:** [imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md), [imbot.v2.Bot.update](./imbot.v2/bots/bot-update.md)
 
-### BOT-FIX-0408-5: Chat.TextField.enabled, support for P2P chats
+### BOT-FIX-0408-5: Chat.TextField.enabled, support for P2P chats {#bot-fix-0408-5}
 
 **Previously**
 
@@ -144,9 +154,13 @@ Links to documentation on advanced messaging capabilities: text formatting, `Att
 
 The method checks the bot's membership in the chat instead of the edit permission. It works in any chats where the bot is a participant.
 
+**Impact on integrators**
+
+The method can be called in private chats between a user and the bot.
+
 **Affected method:** [imbot.v2.Chat.TextField.enabled](./imbot.v2/ui/chat-text-field-enabled.md)
 
-### BOT-FIX-0408-6: Error code BOT_TOKEN_NOT_SPECIFIED
+### BOT-FIX-0408-6: Error code BOT_TOKEN_NOT_SPECIFIED {#bot-fix-0408-6}
 
 **Previously**
 
@@ -155,6 +169,10 @@ When calling methods via webhook without `botToken`, the error `CLIENT_ID_NOT_SP
 **Now**
 
 `BOT_TOKEN_NOT_SPECIFIED` is returned, which corresponds to the actual reason for the error.
+
+**Impact on integrators**
+
+If your code handled the `CLIENT_ID_NOT_SPECIFIED` error, replace it with `BOT_TOKEN_NOT_SPECIFIED`.
 
 **Affected methods:** [imbot.v2.Bot.register](./imbot.v2/bots/bot-register.md), [imbot.v2.Bot.list](./imbot.v2/bots/bot-list.md), [imbot.v2.Bot.get](./imbot.v2/bots/bot-get.md), [imbot.v2.Bot.update](./imbot.v2/bots/bot-update.md), [imbot.v2.Bot.unregister](./imbot.v2/bots/bot-unregister.md)
 
@@ -166,7 +184,7 @@ When calling methods via webhook without `botToken`, the error `CLIENT_ID_NOT_SP
 
 The method [imbot.v2.Revision.get](./imbot.v2/revision-get.md) has been added to retrieve API revision numbers. It allows determining the compatibility of Bitrix24 with specific methods and fields and does not require `botId` and `botToken`.
 
-### BOT-FIX-0402-2: Chat.Message.send, normalization of boolean fields
+### BOT-FIX-0402-2: Chat.Message.send, normalization of boolean fields {#bot-fix-0402-2}
 
 **Previously**
 
@@ -178,9 +196,9 @@ All four boolean fields are correctly normalized. Allowed values are `true`, `fa
 
 **Affected method:** [imbot.v2.Chat.Message.send](./imbot.v2/messages/chat-message-send.md)
 
----
+## Earlier Changes {#early-changes}
 
-## BOT-BC-0330-1: Command.register, parameters moved to fields {#command-register-fields}
+### BOT-BC-0330-1: Command.register, parameters moved to fields {#command-register-fields}
 
 > Publication date: 30.03.2026 | Support for the old format until: 30.09.2026
 
@@ -216,13 +234,11 @@ Command parameters are grouped in the `fields` object, as in other `imbot.v2` me
 
 **Compatibility**
 
-If `fields` is provided, the new format is used. If `fields` is absent, the legacy format is used. The old flat format is supported until 30.09.2026.
+If `fields` is provided, the new format is used. If `fields` is absent, the legacy format is used. The 30.09.2026 support deadline has passed, but the method still accepts the flat format. Pass the parameters in `fields`: support for the legacy format may be discontinued without notice.
 
 **Affected method:** [imbot.v2.Command.register](./imbot.v2/commands/command-register.md)
 
----
-
-## BOT-BC-0325-1: Event.get, pagination through nextOffset {#event-get-next-offset}
+### BOT-BC-0325-1: Event.get, pagination through nextOffset {#event-get-next-offset}
 
 > Publication date: 25.03.2026 | Support for the old format until: 25.09.2026
 
@@ -232,7 +248,7 @@ The response contained the field `lastEventId`, and the client had to compute th
 
 **Now**
 
-The response contains the field `nextOffset`. To get the next batch, pass this value in the `offset` parameter.
+The response contains the field `nextOffset`. To get the next batch, pass this value in the `offset` parameter. The `lastEventId` field has been removed from the response.
 
 ```json
 {
@@ -258,9 +274,7 @@ If `hasMore: false`, there are no new events, but `nextOffset` still needs to be
 
 **Affected method:** [imbot.v2.Event.get](./imbot.v2/events/event-get.md)
 
----
-
-## See also
+## Continue Learning
 
 - [Quick Start](./quick-start.md): getting started with the bot platform
 - [Migration from imbot to imbot.v2](./migration.md): transitioning from the legacy API

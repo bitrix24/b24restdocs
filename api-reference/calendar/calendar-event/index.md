@@ -42,6 +42,15 @@ You can find out the current user's participation status in the event using the 
 
 The [calendar.accessibility.get](./calendar-accessibility-get.md) method retrieves the availability of users from the list.
 
+## Limitations and Specifics
+
+- for the company calendar, pass `type` = `company_calendar` and `ownerId` = `0`
+- to synchronize a calendar with an external system, pass the `modified_since` parameter to [calendar.event.get](./calendar-event-get.md#modified-since). The method returns only modified events, including deleted ones
+- dates in the `DATE_FROM`, `DATE_TO`, `DATE_CREATE`, and `TIMESTAMP_X` fields are returned in the format from the account settings, for example `11/20/2026 10:00:00 am`. For machine processing, use the `DATE_CREATE_ISO` and `TIMESTAMP_X_ISO` fields in ISO 8601 format
+- to book a meeting room, pass the string `calendar_<meeting room ID>` in `location` of the [calendar.event.add](./calendar-event-add.md) and [calendar.event.update](./calendar-event-update.md) methods. If the meeting room is occupied, the method returns the `CALENDAR_LOCATION_OCCUPANCY_CONFLICT` error with HTTP status 200
+- the `DATE_FROM_TS_UTC` and `DATE_TO_TS_UTC` fields are shifted by the server time zone offset. The exact event time is defined by the `DATE_FROM` and `TZ_FROM`, `DATE_TO` and `TZ_TO` fields
+- the [calendar.meeting.status.set](./calendar-meeting-status-set.md) method returns `true` even if the status has not changed. Check the result with the [calendar.meeting.status.get](./calendar-meeting-status-get.md) method
+
 ## Overview of Methods and Events {#all-methods}
 
 > Scope: [`calendar`](../../scopes/permissions.md)
@@ -58,7 +67,7 @@ The [calendar.accessibility.get](./calendar-accessibility-get.md) method retriev
     || [calendar.event.update](./calendar-event-update.md) | Updates an event ||
     || [calendar.event.getbyid](./calendar-event-get-by-id.md) | Retrieves an event by `id` ||
     || [calendar.event.get](./calendar-event-get.md) | Retrieves a list of calendar events ||
-    || [calendar.event.getNearest](./calendar-event-get-nearest.md) | Retrieves a list of future events ||
+    || [calendar.event.get.nearest](./calendar-event-get-nearest.md) | Retrieves a list of future events ||
     || [calendar.event.delete](./calendar-event-delete.md) | Deletes an event ||
     || [calendar.meeting.status.get](./calendar-meeting-status-get.md) | Retrieves the current user's participation status in the event ||
     || [calendar.meeting.status.set](./calendar-meeting-status-set.md) | Sets the participation status in the event for the current user ||

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method retrieves the availability of users from the list.
+The `calendar.accessibility.get` method retrieves the availability of users from the list.
 
 ## Method Parameters
 
@@ -275,39 +275,53 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-        "1": [
+        "1269": [
             {
-                "ID": "1213",
-                "NAME": "Event name",
-                "DATE_FROM": "02.12.2024 11:00:00",
-                "DATE_TO": "02.12.2024 12:00:00",
-                "DATE_FROM_TS_UTC": "1733158800",
-                "DATE_TO_TS_UTC": "1733162400",
-                "~USER_OFFSET_FROM": -21600,
-                "~USER_OFFSET_TO": -21600,
+                "ID": "8373",
+                "NAME": "Sales team stand-up",
+                "DATE_FROM": "11/20/2026 10:00:00 am",
+                "DATE_TO": "11/20/2026 11:00:00 am",
+                "DATE_FROM_TS_UTC": "1795147200",
+                "DATE_TO_TS_UTC": "1795150800",
+                "~USER_OFFSET_FROM": 0,
+                "~USER_OFFSET_TO": 0,
                 "DT_SKIP_TIME": "N",
-                "TZ_FROM": "America/Managua",
-                "TZ_TO": "America/Managua",
+                "TZ_FROM": "Europe/Berlin",
+                "TZ_TO": "Europe/Berlin",
                 "ACCESSIBILITY": "busy",
                 "IMPORTANCE": "normal",
-                "EVENT_TYPE": "#collab#"
-            },
-            {
-                "ID": "1216",
-                ...
+                "EVENT_TYPE": null
             }
         ],
-        "2": [
+        "1271": [
             {
-                "ID": 1,
-                ...
-            },
-            {
-                "ID": 2,
-                ...
+                "ID": "8375",
+                "NAME": "Sales team stand-up",
+                "DATE_FROM": "11/20/2026 10:00:00 am",
+                "DATE_TO": "11/20/2026 11:00:00 am",
+                "DATE_FROM_TS_UTC": "1795147200",
+                "DATE_TO_TS_UTC": "1795150800",
+                "~USER_OFFSET_FROM": 0,
+                "~USER_OFFSET_TO": 0,
+                "DT_SKIP_TIME": "N",
+                "TZ_FROM": "Europe/Berlin",
+                "TZ_TO": "Europe/Berlin",
+                "ACCESSIBILITY": "busy",
+                "IMPORTANCE": "normal",
+                "EVENT_TYPE": null
             }
         ],
-        "34": []
+        "1": []
+    },
+    "time": {
+        "start": 1793117690,
+        "finish": 1793117690.055119,
+        "duration": 0.05511903762817383,
+        "processing": 0,
+        "date_start": "2026-10-27T19:14:50+03:00",
+        "date_finish": "2026-10-27T19:14:50+03:00",
+        "operating_reset_at": 1793118240,
+        "operating": 0
     }
 }
 ```
@@ -322,7 +336,9 @@ HTTP Status: **200**
 
 The key of the object is the user ID from the request.
 
-The value is an array of objects, each describing an [event](#event) in which the user is busy during the specified period ||
+The value is an array of objects, each describing an [event](#event) in which the user is busy during the specified period. If the user has no events in the period or the user is not found, the array is empty ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Event Object {#event}
@@ -339,27 +355,31 @@ The value is an array of objects, each describing an [event](#event) in which th
 || **DATE_TO**
 [`datetime`](../../data-types.md) | End date and time of the event ||
 || **DATE_FROM_TS_UTC**
-[`string`](../../data-types.md) | Start date and time of the event in UTC in timestamp format ||
+[`string`](../../data-types.md) | Start date and time of the event in timestamp format.
+
+Despite the field name, the value is shifted by the server time zone offset, so it cannot be read as UTC time. The exact start time is defined by the `DATE_FROM` and `TZ_FROM` fields ||
 || **DATE_TO_TS_UTC**
-[`string`](../../data-types.md) | End date and time of the event in UTC in timestamp format ||
+[`string`](../../data-types.md) | End date and time of the event in timestamp format.
+
+Despite the field name, the value is shifted by the server time zone offset, so it cannot be read as UTC time. The exact end time is defined by the `DATE_TO` and `TZ_TO` fields ||
 || **~USER_OFFSET_FROM**
-[`integer`](../../data-types.md) | Time offset of the start of the event relative to UTC in seconds ||
+[`integer`](../../data-types.md) | Time offset of the start of the event relative to the current user's time zone in seconds ||
 || **~USER_OFFSET_TO**
-[`integer`](../../data-types.md) | Time offset of the end of the event relative to UTC in seconds ||
+[`integer`](../../data-types.md) | Time offset of the end of the event relative to the current user's time zone in seconds ||
 || **DT_SKIP_TIME**
-[`integer`](../../data-types.md) | Flag indicating that the event lasts all day. Possible values:
+[`string`](../../data-types.md) | Flag indicating that the event lasts all day. Possible values:
 - `Y` — all day
 - `N` — not all day ||
 || **TZ_FROM**
-[`integer`](../../data-types.md) | Time zone of the event start date ||
+[`string`](../../data-types.md) | Time zone of the event start date ||
 || **TZ_TO**
-[`integer`](../../data-types.md) | Time zone of the event end date ||
+[`string`](../../data-types.md) | Time zone of the event end date ||
 || **ACCESSIBILITY**
-[`integer`](../../data-types.md) | Availability of event participants. Possible values:
+[`string`](../../data-types.md) | Availability of event participants. Possible values:
 
-- `busy` — busy
-- `absent` — absent
-- `quest` — tentative
+- `busy` — occupied
+- `absent` — away
+- `quest` — undecided
 - `free` — free ||
 || **IMPORTANCE**
 [`string`](../../data-types.md) | Importance of the event. Possible values:
@@ -376,7 +396,8 @@ An event can be created through:
 - `#shared_crm#` — CRM slots
 - `#collab#` — collaboration
 - `#shared_collab#` — collaboration slots
-||
+
+For a regular event, `null` ||
 |#
 
 ## Error Handling
@@ -386,7 +407,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"from\" for the method \"calendar.accessibility.get\" is not set."
+    "error_description": "The mandatory parameter \"from\" is not specified for the method \"calendar.accessibility.get\""
 }
 ```
 
@@ -395,16 +416,16 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "from" for the method "calendar.accessibility.get" is not set. | The required parameter `from` is missing ||
-|| Empty value | The required parameter "to" for the method "calendar.accessibility.get" is not set. | The required parameter `to` is missing ||
-|| Empty value | The required parameter "users" for the method "calendar.accessibility.get" is not set. | The required parameter `users` is missing ||
-|| Empty value | Access denied | Access to the method is prohibited for external users ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "from" is not specified for the method "calendar.accessibility.get" | The required parameter `from` is missing ||
+|| `400` | Empty value | The mandatory parameter "to" is not specified for the method "calendar.accessibility.get" | The required parameter `to` is missing ||
+|| `400` | Empty value | The mandatory parameter "users" is not specified for the method "calendar.accessibility.get" | The required parameter `users` is missing ||
+|| `400` | Empty value | Access denied | Access to the method is prohibited for external users ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./calendar-meeting-status-get.md)

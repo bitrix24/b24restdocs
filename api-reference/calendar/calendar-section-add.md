@@ -356,7 +356,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"type\" for the method \"calendar.section.add\" is not set."
+    "error_description": "The mandatory parameter \"type\" is not specified for the method \"calendar.section.add\""
 }
 ```
 
@@ -366,8 +366,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "type" for the method "calendar.section.add" is not set. | The required parameter `type` is not provided ||
-|| Empty value | The required parameter "ownerId" for the method "calendar.section.add" is not set. | The required parameter `ownerId` is not provided and the `type` parameter is not equal to `user` ||
+|| Empty value | The mandatory parameter "type" is not specified for the method "calendar.section.add" | The required parameter `type` is not provided ||
+|| Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.section.add" | The required parameter `ownerId` is not provided and the `type` parameter is not equal to `user` ||
 || Empty value | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
 || Empty value | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
 || Empty value | Access denied | No permission to create a calendar with the provided `type` ||

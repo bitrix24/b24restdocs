@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method retrieves information about a calendar event by its identifier.
+The `calendar.event.getbyid` method retrieves information about a calendar event by its identifier.
 
 ## Method Parameters
 
@@ -343,7 +343,9 @@ HTTP status: **200**
         "SECTION_DAV_XML_ID": null,
         "DATE_FROM_FORMATTED": "Wed Dec 11 2024 17:59:00",
         "DATE_TO_FORMATTED": "Wed Dec 11 2024 18:59:00",
+        "IS_DAYLIGHT_SAVING_TZ": "N",
         "SECT_ID": "4",
+        "OPTIONS": null,
         "ATTENDEE_LIST": [
             {
                 "id": 1,
@@ -376,6 +378,19 @@ HTTP status: **200**
 
 ### Returned Data
 
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Calendar event [(detailed description)](#event).
+
+If no event with the passed `id` exists, `null` ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Event Object {#event}
+
 {% include notitle [calendar event fields](.././_includes/calendar_event_fields.md) %}
 
 ## Error Handling
@@ -385,7 +400,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"id\" for the method \"calendar.event.getbyid\" is not set"
+    "error_description": "The mandatory parameter \"id\" is not specified for the method \"calendar.event.getbyid\""
 }
 ```
 
@@ -394,9 +409,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "id" for the method "calendar.event.getbyid" is not set | The required parameter `id` was not provided ||
-|| Empty value | Access denied | Access to the method is prohibited for external users ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "id" is not specified for the method "calendar.event.getbyid" | The required parameter `id` was not provided ||
+|| `400` | Empty value | Access denied | Access to the method is prohibited for external users ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./calendar-event-add.md)
+- [{#T}](./calendar-event-update.md)
+- [{#T}](./calendar-event-get.md)
+- [{#T}](./calendar-event-delete.md)

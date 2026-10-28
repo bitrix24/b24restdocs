@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "Manage tax rates" access permission
 
-The method returns a list of VAT rates based on the filter.
+The method `catalog.vat.list` returns a list of VAT rates with filtering, sorting, and pagination.
 
 ## Method Parameters
 
@@ -21,14 +21,14 @@ The method returns a list of VAT rates based on the filter.
 || **Name**
 `type` | **Description** ||
 || **select** 
-[`array`](../../data-types.md)| An array of fields to select (see fields of the [catalog_vat](../data-types.md#catalog_vat) object).
+[`array`](../../data-types.md)| An array of VAT rate fields to return. Available fields: `active`, `id`, `name`, `rate`, `sort`, `timestampX`. The fields are described in the [catalog_vat](../data-types.md#catalog_vat) object.
 
-If the array is not provided or an empty array is passed, all available fields of the VAT rate will be selected.
+If the array is not provided or is empty, the method returns all fields. The method skips unknown fields without an error
 ||
 || **filter** 
 [`object`](../../data-types.md)| An object for filtering the selected VAT rates in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_vat](../data-types.md#catalog_vat) object.
+Possible values for `field`: `active`, `id`, `name`, `rate`, `sort`, `timestampX`. For example, `{"active": "N"}` returns only inactive rates.
 
 An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -52,16 +52,20 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
+
+The method skips unknown fields in the filter without an error and returns rates without applying such a condition. Check the field names against the list above
 ||
 || **order**
 [`object`](../../data-types.md)| An object for sorting the selected VAT rates in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_vat](../data-types.md#catalog_vat) object.
+Possible values for `field`: `active`, `id`, `name`, `rate`, `sort`, `timestampX`.
 
 Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
+
+If `order` is not provided, the method does not set an explicit sort order. For a stable order when paging through results, pass a sort order, for example `{"id": "asc"}`. The method skips unknown fields in `order` without an error
 ||
 || **start** 
 [`integer`](../../data-types.md)| This parameter is used for managing pagination.
@@ -88,7 +92,7 @@ The formula for calculating the value of the `start` parameter:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","name","rate"],"filter":{">=sort":200},"order":{"id":"ASC"}}' \
+    -d '{"select":["id","name","rate"],"filter":{"active":"Y"},"order":{"id":"ASC"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.vat.list
     ```
 
@@ -98,7 +102,7 @@ The formula for calculating the value of the `start` parameter:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","name","rate"],"filter":{">=sort":200},"order":{"id":"ASC"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","name","rate"],"filter":{"active":"Y"},"order":{"id":"ASC"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.vat.list
     ```
 
@@ -117,7 +121,7 @@ The formula for calculating the value of the `start` parameter:
       vats: {
         id: number
         name: string
-        rate: number
+        rate: number | null
       }[]
     }
 
@@ -136,7 +140,7 @@ The formula for calculating the value of the `start` parameter:
             'rate',
           ],
           filter: {
-            '>=sort': 200,
+            active: 'Y',
           },
           order: {
             id: 'ASC',
@@ -184,7 +188,7 @@ The formula for calculating the value of the `start` parameter:
                 'rate',
               ],
               filter: {
-                '>=sort': 200,
+                active: 'Y',
               },
               order: {
                 id: 'ASC',
@@ -262,7 +266,7 @@ The formula for calculating the value of the `start` parameter:
                         'rate'
                     ],
                     'filter' => [
-                        '>=sort' => 200
+                        'active' => 'Y'
                     ],
                     'order' => [
                         'id' => "ASC"
@@ -274,10 +278,8 @@ The formula for calculating the value of the `start` parameter:
             ->getResponseData()
             ->getResult();
     
-        echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
-    
+        echo 'Success: ' . print_r($result['vats'], true);
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error listing VAT: ' . $e->getMessage();
@@ -296,7 +298,7 @@ The formula for calculating the value of the `start` parameter:
                 'rate'
             ],
             filter: {
-                '>=sort': 200
+                active: 'Y'
             },
             order: {
                 'id': "ASC"
@@ -307,8 +309,11 @@ The formula for calculating the value of the `start` parameter:
             if(result.error())
                 console.error(result.error());
             else
+            {
                 console.log(result.data());
-            result.next();
+                if(result.more())
+                    result.next();
+            }
         }
     );
     ```
@@ -327,7 +332,7 @@ The formula for calculating the value of the `start` parameter:
                 'rate'
             ],
             'filter' => [
-                '>=sort' => 200
+                'active' => 'Y'
             ],
             'order' => [
                 'id' => 'ASC'
@@ -347,7 +352,7 @@ The formula for calculating the value of the `start` parameter:
     res, err := client.Core().Call(ctx, "catalog.vat.list", b24.Params{
     	"select": []string{"id", "name", "rate"},
     	"filter": b24.Params{
-    		">=sort": 200,
+    		"active": "Y",
     	},
     	"order": b24.Params{
     		"id": "ASC",
@@ -370,26 +375,34 @@ HTTP Status: **200**
 
 ```json
 {
-    "vats": [
-        {
-            "id": 2,
-            "name": "VAT 0%",
-            "rate": 0
-        },
-        {
-            "id": 3,
-            "name": "VAT 20%",
-            "rate": 20
-        }
-    ],
-    "total": 2,
+    "result": {
+        "vats": [
+            {
+                "id": 1,
+                "name": "No VAT",
+                "rate": null
+            },
+            {
+                "id": 3,
+                "name": "VAT 19%",
+                "rate": 19
+            },
+            {
+                "id": 7,
+                "name": "VAT 7%",
+                "rate": 7
+            }
+        ]
+    },
+    "total": 3,
     "time": {
-        "start": 1712326352.63409,
-        "finish": 1712326352.8319,
-        "duration": 0.197818040847778,
-        "processing": 0.00833678245544434,
-        "date_start": "2024-04-05T16:12:32+02:00",
-        "date_finish": "2024-04-05T16:12:32+02:00",
+        "start": 1793118107,
+        "finish": 1793118107.896136,
+        "duration": 0.8961360454559326,
+        "processing": 0,
+        "date_start": "2026-10-27T17:21:47+01:00",
+        "date_finish": "2026-10-27T17:21:47+01:00",
+        "operating_reset_at": 1793118660,
         "operating": 0
     }
 }
@@ -402,11 +415,10 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **vat**
-[`catalog_vat[]`](../data-types.md#catalog_vat) | An array of objects with information about the selected VAT rates
-||
+|| **vats**
+[`catalog_vat[]`](../data-types.md#catalog_vat) | Array of VAT rates on the current page, up to 50 items. Each item contains the fields from `select`. For a rate without VAT, the `rate` field is `null` ||
 || **total**
-[`integer`](../../data-types.md#time) | Total number of records found ||
+[`integer`](../../data-types.md) | Total number of rates matching the filter. If `total` is greater than 50, retrieve the next pages using the `start` parameter ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -417,7 +429,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -427,17 +439,16 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has neither the "View product catalog" nor the "Manage tax rates" access permission ||
+|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./catalog-vat-add.md)
 - [{#T}](./catalog-vat-update.md)
 - [{#T}](./catalog-vat-get.md)

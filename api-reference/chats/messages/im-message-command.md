@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: chat participant
 
-The method `im.message.command` executes a chat-bot command in the context of a message.
+The method `im.message.command` sends a command to a chat bot on behalf of the current user in the context of a message, the same way as clicking a keyboard button with the `COMMAND` parameter.
+
+{% note warning "" %}
+
+The method does not check that the bot exists and has registered the command. The `true` response means that the command has been passed for processing.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -29,14 +35,22 @@ The identifier can be obtained using the method [im.dialog.messages.get](./im-di
 || **BOT_ID***
 [`integer`](../../data-types.md) | The identifier of the bot.
 
-The identifier can be obtained using the method [imbot.bot.list](../../chat-bots/outdated/bots/imbot-bot-list.md). ||
+It matches the identifier of the bot user, for example, `author_id` of a bot message in the response of the [im.dialog.messages.get](./im-dialog-messages-get.md) method. The bot owner can retrieve the identifier with the [imbot.v2.Bot.list](../../chat-bots/chat-bots-v2/imbot.v2/bots/bot-list.md) method ||
 || **COMMAND***
 [`string`](../../data-types.md) | The bot command.
 
-The text is specified when registering the command by the chat-bot through the method [imbot.command.register](../../chat-bots/outdated/commands/imbot-command-register.md) ||
+The command code without the `/` character, for example, `task`. The bot sets the command when registering it with the [imbot.v2.Command.register](../../chat-bots/chat-bots-v2/imbot.v2/commands/command-register.md) method.
+
+The bot receives the command in the [ONIMBOTV2COMMANDADD](../../chat-bots/chat-bots-v2/imbot.v2/events/events.md#onimbotv2commandadd) event with the value `command.context: "keyboard"` ||
 || **COMMAND_PARAMS**
-[`string`](../../data-types.md) | Command parameter ||
+[`string`](../../data-types.md) | Command parameters — the text passed to the bot after the command ||
 |#
+
+{% note warning "" %}
+
+If the `MESSAGE_ID` message is in a private chat with the bot, pass the parameters in the `application/x-www-form-urlencoded` format. If you pass them in JSON, the method returns `true`, but the bot does not receive the command. Both formats work in group chats.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -285,7 +299,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | `true` if the command was executed successfully ||
+[`boolean`](../../data-types.md) | `true` if the command has been passed for processing. The existence of the bot and the command is not checked ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -310,7 +324,8 @@ HTTP Status: **400**
 || `MESSAGE_ID_ERROR` | Message ID can't be empty | `MESSAGE_ID` is missing or incorrect ||
 || `BOT_ID_ERROR` | Bot ID can't be empty | `BOT_ID` is missing or incorrect ||
 || `COMMAND_ERROR` | Command can't be empty | `COMMAND` is missing ||
-|| `PARAMS_ERROR` | Incorrect params | Command parameters are incorrect ||
+|| `PARAMS_ERROR` | Incorrect params | The `MESSAGE_ID` message was not found, or the current user is not a participant of the chat that contains it ||
+|| `COPILOT_SUGGESTS_QUENCH_FAILED` | Could not save suggestion state. | Failed to save the state of CoPilot suggestions in the chat. The error text is returned in the language of the Bitrix24 account ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -320,3 +335,5 @@ HTTP Status: **400**
 - [{#T}](./im-message-add.md)
 - [{#T}](./keyboards.md)
 - [{#T}](./menu.md)
+- [{#T}](../../chat-bots/chat-bots-v2/imbot.v2/commands/command-register.md)
+- [{#T}](../../chat-bots/chat-bots-v2/imbot.v2/commands/command-answer.md)

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage tax rates" access permission
 
-This method deletes a VAT rate.
+The method `catalog.vat.delete` deletes a VAT rate by its identifier.
 
 ## Method Parameters
 
@@ -23,7 +23,10 @@ This method deletes a VAT rate.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_vat.id`](../data-types.md#catalog_vat) | Identifier of the VAT rate ||
+[`catalog_vat.id`](../data-types.md#catalog_vat) | Identifier of the VAT rate.
+
+To retrieve the rate identifiers, use the [catalog.vat.list](./catalog-vat-list.md) method
+||
 |#
 
 ## Code Examples
@@ -38,7 +41,7 @@ This method deletes a VAT rate.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":7}' \
+    -d '{"id":37}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.vat.delete
     ```
 
@@ -48,7 +51,7 @@ This method deletes a VAT rate.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":7,"auth":"**put_access_token_here**"}' \
+    -d '{"id":37,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.vat.delete
     ```
 
@@ -66,7 +69,7 @@ This method deletes a VAT rate.
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'catalog.vat.delete',
         params: {
-          id: 7,
+          id: 37,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -98,7 +101,7 @@ This method deletes a VAT rate.
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.vat.delete',
             params: {
-              id: 7,
+              id: 37,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -128,7 +131,7 @@ This method deletes a VAT rate.
 
     try:
         bitrix_response = client.catalog.vat.delete(
-            bitrix_id=7,
+            bitrix_id=37,
         ).response
         result = bitrix_response.result
         print(result)
@@ -154,7 +157,7 @@ This method deletes a VAT rate.
             ->call(
                 'catalog.vat.delete',
                 [
-                    'id' => 7
+                    'id' => 37
                 ]
             );
     
@@ -174,7 +177,7 @@ This method deletes a VAT rate.
     BX24.callMethod(
         'catalog.vat.delete', 
         { 
-            id: 7
+            id: 37
         }, 
         function(result)
         {
@@ -194,7 +197,7 @@ This method deletes a VAT rate.
     $result = CRest::call(
         'catalog.vat.delete',
         [
-            'id' => 7
+            'id' => 37
         ]
     );
 
@@ -208,7 +211,7 @@ This method deletes a VAT rate.
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.vat.delete", b24.Params{
-    	"id": 7,
+    	"id": 37,
     })
     if err != nil {
     	return fmt.Errorf("catalog.vat.delete: %w", err)
@@ -231,12 +234,13 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1716558215.93495,
-        "finish": 1716558216.20731,
-        "duration": 0.272363901138306,
-        "processing": 0.028817892074585,
-        "date_start": "2024-05-24T15:43:35+02:00",
-        "date_finish": "2024-05-24T15:43:36+02:00",
+        "start": 1793118231,
+        "finish": 1793118231.542946,
+        "duration": 0.5429461002349854,
+        "processing": 0,
+        "date_start": "2026-10-27T17:23:51+01:00",
+        "date_finish": "2026-10-27T17:23:51+01:00",
+        "operating_reset_at": 1793118780,
         "operating": 0
     }
 }
@@ -248,7 +252,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the VAT rate deletion ||
+[`boolean`](../../data-types.md) | `true` if the rate is deleted. On error, the method returns `error` and `error_description` instead of `result` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -259,8 +263,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300020,
-    "error_description": "Access Denied"
+    "error": "200800000000",
+    "error_description": "vat does not exist."
 }
 ```
 
@@ -269,21 +273,19 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to delete
-||
-|| `200800000000` | No VAT rate exists with this identifier
-||
-|| `100` | Parameter `id` not specified
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Manage tax rates" access permission ||
+|| `400` | `200800000000` | vat does not exist. | No VAT rate with this `id` exists, or it has already been deleted ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
+|| `400` | `0` | Error deleting VAT | Failed to delete the VAT rate ||
+|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./catalog-vat-add.md)
 - [{#T}](./catalog-vat-update.md)
 - [{#T}](./catalog-vat-get.md)

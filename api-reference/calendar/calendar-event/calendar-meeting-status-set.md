@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method sets the participation status in an event for the current user.
+The `calendar.meeting.status.set` method sets the participation status in an event for the current user.
 
 ## Method Parameters
 
@@ -30,7 +30,9 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 [`string`](../../data-types.md) | Participation status in the event. Possible values: 
 - `Y` — accepted
 - `N` — declined
-- `Q` — invited, but not yet responded ||
+- `Q` — invited, but not yet responded
+
+The value is case-insensitive: `y` is equivalent to `Y`. The event organizer status `H` cannot be set ||
 |#
 
 ## Code Examples
@@ -259,9 +261,17 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Success of setting the status.
+[`boolean`](../../data-types.md) | Result of the call. The method always returns `true`; the `false` value is never returned.
 
-Returns `true` if the status is set successfully ||
+`true` does not guarantee that the status has changed. The status does not change, but the method still returns `true`, if:
+- the current user is the event organizer, their status remains `H`
+- the current user is not an event participant
+- the event is not a meeting with participants
+- no event with the passed `eventId` exists
+
+To make sure the status is set, retrieve it with the [calendar.meeting.status.get](./calendar-meeting-status-get.md) method ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -271,7 +281,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"status\" for the method \"calendar.meeting.status.set\" is not set"
+    "error_description": "The mandatory parameter \"status\" is not specified for the method \"calendar.meeting.status.set\""
 }
 ```
 
@@ -280,15 +290,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "status" for the method "calendar.meeting.status.set" is not set | The required parameter `status` is not provided ||
-|| Empty value | The required parameter "eventId" for the method "calendar.meeting.status.set" is not set | The required parameter `eventId` is not provided ||
-|| Empty value | Invalid value for the parameter "status" | The value provided for the `status` parameter is different from `Q`, `Y`, or `N` ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "status" is not specified for the method "calendar.meeting.status.set" | The required parameter `status` is not provided ||
+|| `400` | Empty value | The mandatory parameter "eventId" is not specified for the method "calendar.meeting.status.set" | The required parameter `eventId` is not provided ||
+|| `400` | Empty value | Invalid parameter value for "status" | The value provided for the `status` parameter is different from `Q`, `Y`, or `N` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./calendar-meeting-status-get.md)

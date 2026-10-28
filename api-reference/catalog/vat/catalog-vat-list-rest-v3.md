@@ -394,8 +394,8 @@ HTTP status: **200**
             {
                 "id": 9,
                 "active": true,
-                "name": "VAT 22%",
-                "rate": 22
+                "name": "VAT 19%",
+                "rate": 19
             }
         ]
     },

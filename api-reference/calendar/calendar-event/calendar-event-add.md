@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method adds a new event to the calendar.
+The `calendar.event.add` method adds a new event to the calendar.
 
 ## Method Parameters
 
@@ -83,11 +83,11 @@ The value should be passed as a string, for example, `Europe/Riga`.
 || **color**
 [`string`](../../data-types.md) | Background color of the event.
 
-The `#` symbol in the color must be passed in unicode format — `%23` ||
+HEX format, for example `#9cbe1c`. In a JSON request body, pass `#` as is. In a URL string, encode `#` as `%23`: `color=%239cbe1c` ||
 || **text_color**
 [`string`](../../data-types.md) | Text color of the event.
 
-The `#` symbol in the color must be passed in unicode format — `%23` ||
+HEX format, for example `#283033`. In a JSON request body, pass `#` as is. In a URL string, encode `#` as `%23`: `text_color=%23283033` ||
 || **accessibility**
 [`string`](../../data-types.md) | Availability during the event time: 
 - `busy` — busy 
@@ -106,7 +106,7 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 - `N` — not private
 ||
 || **rrule**
-[`object`](../../data-types.md) | Recurrence of the event in the form of an object according to the iCalendar standard. The structure is described [below](#rrule)
+[`object`](../../data-types.md) | Recurrence of the event in the form of an object according to the iCalendar standard [(detailed description)](#rrule)
 ||
 || **is_meeting**
 [`string`](../../data-types.md) | Indicator of a meeting with event participants. Possible values:
@@ -117,15 +117,23 @@ The `#` symbol in the color must be passed in unicode format — `%23` ||
 For a meeting with participants, pass the list of attendees in `attendees`
 ||
 || **location**
-[`string`](../../data-types.md) | Venue ||
+[`string`](../../data-types.md) | Venue. You can pass an arbitrary string, for example `Office, 3rd floor`.
+
+To book a meeting room, pass a string in the form `calendar_<meeting room ID>`, for example `calendar_1`. The method checks whether the meeting room is free at the specified time ||
+|| **doCheckOccupancy**
+[`string`](../../data-types.md) | Whether to check the occupancy of the meeting room from `location`. Possible values:
+- `Y` — check. If the meeting room is occupied, the method returns the `CALENDAR_LOCATION_OCCUPANCY_CONFLICT` error
+- `N` — do not check
+
+Default is `Y` ||
 || **remind**
-[`array`](../../data-types.md) | Array of objects describing reminders for the event. The structure is described [below](#remind) ||
+[`array`](../../data-types.md) | Array of objects describing reminders for the event [(detailed description)](#remind) ||
 || **attendees**
 [`array`](../../data-types.md) | List of identifiers of event participants.
 
 If you do not pass this parameter for a meeting with participants, the attendee will be the user on whose behalf the method is executed ||
 || **meeting**
-[`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting) ||
+[`object`](../../data-types.md) | Object with meeting parameters [(detailed description)](#meeting) ||
 || **crm_fields**
  [`array`](../../data-types.md) | Array of CRM object identifiers to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
  - `CO_` — company
@@ -464,7 +472,6 @@ Priority of timezone parameter processing:
 
 - PHP
 
-
     ```php
     try {
         $response = $b24Service
@@ -674,7 +681,6 @@ Priority of timezone parameter processing:
 
 {% endlist %}
 
-
 ### How to Add a Recurring Event to the Company Calendar
 
 {% list tabs %}
@@ -685,7 +691,7 @@ Priority of timezone parameter processing:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"type":"company_calendar","ownerId":"","from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false}}' \
+    -d '{"type":"company_calendar","ownerId":0,"from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/calendar.event.add
     ```
 
@@ -695,7 +701,7 @@ Priority of timezone parameter processing:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"type":"company_calendar","ownerId":"","from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false},"auth":"**put_access_token_here**"}' \
+    -d '{"type":"company_calendar","ownerId":0,"from":"2025-01-31T18:00:00","to":"2025-01-31T20:00:00","section":1,"name":"Important Meeting","skip_time":"N","timezone_from":"Europe/Berlin","timezone_to":"Europe/Berlin","description":"Event description","color":"#FF0000","text_color":"#000000","accessibility":"busy","importance":"high","private_event":"N","rrule":{"FREQ":"WEEKLY","COUNT":10,"INTERVAL":1,"BYDAY":["MO","WE","FR"]},"is_meeting":"Y","location":"Conference Room","remind":[{"type":"min","count":30}],"attendees":[29,93],"meeting":{"notify":true,"reinvite":false,"allow_invite":true,"hide_guests":false},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/calendar.event.add
     ```
 
@@ -717,7 +723,7 @@ Priority of timezone parameter processing:
         method: 'calendar.event.add',
         params: {
           type: 'company_calendar',
-          ownerId: '',
+          ownerId: 0,
           from: '2025-01-31T18:00:00',
           to: '2025-01-31T20:00:00',
           section: 1,
@@ -726,8 +732,8 @@ Priority of timezone parameter processing:
           timezone_from: 'Europe/Berlin',
           timezone_to: 'Europe/Berlin',
           description: 'Event description',
-          color: '%23FF0000',
-          text_color: '%23000000',
+          color: '#FF0000',
+          text_color: '#000000',
           accessibility: 'busy',
           importance: 'high',
           private_event: 'N',
@@ -781,7 +787,7 @@ Priority of timezone parameter processing:
             method: 'calendar.event.add',
             params: {
               type: 'company_calendar',
-              ownerId: '',
+              ownerId: 0,
               from: '2025-01-31T18:00:00',
               to: '2025-01-31T20:00:00',
               section: 1,
@@ -790,8 +796,8 @@ Priority of timezone parameter processing:
               timezone_from: 'Europe/Berlin',
               timezone_to: 'Europe/Berlin',
               description: 'Event description',
-              color: '%23FF0000',
-              text_color: '%23000000',
+              color: '#FF0000',
+              text_color: '#000000',
               accessibility: 'busy',
               importance: 'high',
               private_event: 'N',
@@ -843,7 +849,7 @@ Priority of timezone parameter processing:
     try:
         bitrix_response = client.calendar.event.add(
             type="company_calendar",
-            owner_id="",
+            owner_id=0,
             from_date="2025-01-31T18:00:00",
             to="2025-01-31T20:00:00",
             section=1,
@@ -903,7 +909,6 @@ Priority of timezone parameter processing:
     ```
 - PHP
 
-
     ```php
     try {
         $response = $b24Service
@@ -912,7 +917,7 @@ Priority of timezone parameter processing:
                 'calendar.event.add',
                 [
                     'type'           => 'company_calendar',
-                    'ownerId'        => '',
+                    'ownerId'        => 0,
                     'from'           => '2025-01-31T18:00:00',
                     'to'             => '2025-01-31T20:00:00',
                     'section'        => 1,
@@ -921,8 +926,8 @@ Priority of timezone parameter processing:
                     'timezone_from'  => 'Europe/Berlin',
                     'timezone_to'    => 'Europe/Berlin',
                     'description'    => 'Event description',
-                    'color'          => '%23FF0000',
-                    'text_color'     => '%23000000',
+                    'color'          => '#FF0000',
+                    'text_color'     => '#000000',
                     'accessibility'  => 'busy',
                     'importance'     => 'high',
                     'private_event'  => 'N',
@@ -966,7 +971,7 @@ Priority of timezone parameter processing:
         'calendar.event.add',
         {
             type: 'company_calendar', // Calendar type: company calendar
-            ownerId: '', // For the company calendar, ownerId is empty
+            ownerId: 0,
             from: '2025-01-31T18:00:00', // Start date and time of the event
             to: '2025-01-31T20:00:00', // End date and time of the event
             section: 1, // Calendar identifier
@@ -975,8 +980,8 @@ Priority of timezone parameter processing:
             timezone_from: 'Europe/Berlin', // Timezone of the event start
             timezone_to: 'Europe/Berlin', // Timezone of the event end
             description: 'Event description', // Event description
-            color: '%23FF0000', // Background color of the event (red)
-            text_color: '%23000000', // Text color of the event (black)
+            color: '#FF0000', // Background color of the event (red)
+            text_color: '#000000', // Text color of the event (black)
             accessibility: 'busy', // Availability during the event: busy
             importance: 'high', // Event importance: high
             private_event: 'N', // Event is not private
@@ -1018,7 +1023,7 @@ Priority of timezone parameter processing:
         'calendar.event.add',
         [
             'type' => 'company_calendar', // Calendar type: company calendar
-            'ownerId' => '', // For the company calendar, ownerId is empty
+            'ownerId' => 0,
             'from' => '2025-01-31T18:00:00', // Start date and time of the event
             'to' => '2025-01-31T20:00:00', // End date and time of the event
             'section' => 1, // Calendar identifier (replace with actual)
@@ -1067,7 +1072,7 @@ Priority of timezone parameter processing:
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "calendar.event.add", b24.Params{
     	"type":          "company_calendar",
-    	"ownerId":       "",
+    	"ownerId":       0,
     	"from":          "2025-01-31T18:00:00",
     	"to":            "2025-01-31T20:00:00",
     	"section":       1,
@@ -1141,6 +1146,8 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`integer`](../../data-types.md) | Identifier of the created event ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -1150,26 +1157,53 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"name\" for the method \"calendar.event.add\" is not set"
+    "error_description": "The mandatory parameter \"name\" is not specified for the method \"calendar.event.add\""
 }
 ```
+
+Meeting room occupancy errors are returned with HTTP status **200**:
+
+```json
+{
+    "error": "CALENDAR_LOCATION_OCCUPANCY_CONFLICT",
+    "error_description": "The meeting room is occupied at the specified time",
+    "additional": {
+        "occupancy": {
+            "dates": [],
+            "truncated": false
+        }
+    }
+}
+```
+
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "type" for the method "calendar.event.add" is not set | The required parameter `type` is not passed ||
-|| Empty value | The required parameter "ownerId" for the method "calendar.event.add" is not set | The required parameter `ownerId` is not passed ||
-|| Empty value | The required parameter "name" for the method "calendar.event.add" is not set | The required parameter `name` is not passed ||
-|| Empty value | The required parameter "from" for the method "calendar.event.add" is not set | The required parameter `from` or `from_ts` is not passed ||
-|| Empty value | The required parameter "to" for the method "calendar.event.add" is not set | The required parameter `to` or `to_ts` is not passed ||
-|| Empty value | Invalid value for the parameter "name" | Incorrect data format in the `name` field ||
-|| Empty value | Invalid value for the parameter "description" | Incorrect data format in the `description` field ||
-|| Empty value | Access denied | Creation of events in the specified calendar is prohibited ||
-|| Empty value | You specified an invalid calendar section ID or the user does not have access to it | An identifier of an inaccessible or non-existent calendar is passed ||
-|| Empty value | The list of event links to CRM must be an array | Incorrect data format in the `crm_fields` field ||
-|| Empty value | An error occurred while creating the event | Another error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "type" is not specified for the method "calendar.event.add" | The required parameter `type` is not passed ||
+|| `400` | Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.event.add" | The required parameter `ownerId` is not passed ||
+|| `400` | Empty value | The mandatory parameter "name" is not specified for the method "calendar.event.add" | The required parameter `name` is not passed ||
+|| `400` | Empty value | The mandatory parameter "from" is not specified for the method "calendar.event.add" | The required parameter `from` or `from_ts` is not passed ||
+|| `400` | Empty value | The mandatory parameter "to" is not specified for the method "calendar.event.add" | The required parameter `to` or `to_ts` is not passed ||
+|| `400` | Empty value | Invalid parameter value for "name" | Incorrect data format in the `name` field ||
+|| `400` | Empty value | Invalid parameter value for "description" | Incorrect data format in the `description` field ||
+|| `400` | Empty value | Access denied | Creation of events in the specified calendar is prohibited ||
+|| `400` | Empty value | You have specified an invalid calendar section ID or the current user does not have access to it | An identifier of an inaccessible or non-existent calendar is passed ||
+|| `400` | Empty value | Event to CRM association list must be an array | Incorrect data format in the `crm_fields` field ||
+|| `400` | Empty value | Error while creating event | Another error ||
+|| `400` | Empty value | Invalid parameter value for "doCheckOccupancy" | A value other than `Y` or `N` is passed in `doCheckOccupancy` ||
+|| `200` | `CALENDAR_LOCATION_OCCUPANCY_CONFLICT` | The meeting room is occupied at the specified time | The meeting room from `location` is occupied at the specified time or does not exist. The response contains the `additional.occupancy` object with the fields `dates` — an array of occupancy dates in the `YYYY-MM-DDThh:mm:ssZ` format, and `truncated` — a flag indicating that the list of dates is incomplete. Dates are returned only if the user has access to view them; otherwise, the array is empty ||
+|| `200` | `CALENDAR_LOCATION_OCCUPANCY_LOCKED` | The meeting room is currently selected for another event. Try again later or select another one | Another event is booking the meeting room at this moment. Repeat the request later ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./calendar-event-update.md)
+- [{#T}](./calendar-event-get-by-id.md)
+- [{#T}](./calendar-event-get.md)
+- [{#T}](./calendar-event-delete.md)

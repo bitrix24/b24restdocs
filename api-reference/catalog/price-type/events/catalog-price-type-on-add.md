@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `CATALOG.PRICE.TYPE.ON.ADD` event is triggered when a price type is added.
+The `CATALOG.PRICE.TYPE.ON.ADD` event is triggered when a price type is added manually or using the [catalog.priceType.add](../catalog-price-type-add.md) and [catalog.pricetype.add](../catalog-price-type-add-rest-v3.md) methods. The [CATALOG.PRICE.TYPE.ON.UPDATE](./catalog-price-type-on-update.md) event with the same `ID` arrives immediately after it.
 
 {% note info "" %}
 

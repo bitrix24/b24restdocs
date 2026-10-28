@@ -41,7 +41,7 @@ The webhook URL contains `{webhook_token}` — it is a secret: it grants access 
 
 Values used throughout the scenario:
 
-- `botToken` — the bot token. Choose it yourself when registering the bot and pass it in all subsequent `imbot.v2` calls via the webhook. It is a secret, so keep it like an access key. The maximum length is 40 characters; see the details on the [{#T}](./imbot.v2/bots/bot-register.md) page
+- `botToken` — the bot token. Choose it yourself when registering the bot and pass it in all subsequent `imbot.v2` calls via the webhook. It is a secret, so keep it like an access key. Use a token of no more than 40 characters; see the details on the [{#T}](./imbot.v2/bots/bot-register.md) page
 - `botId` — the bot ID. It comes in the registration response; you do not need to make it up
 - `dialogId` — the dialog ID. For a group chat, it comes ready-made in the chat creation response and looks like `chat5235`. For a private conversation, it is the user ID
 

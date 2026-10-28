@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage tax rates" access permission
 
-This method adds a new VAT rate.
+The method `catalog.vat.add` creates a VAT rate.
 
 ## Method Parameters
 
@@ -34,7 +34,7 @@ This method adds a new VAT rate.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Name of the VAT rate ||
+[`string`](../../data-types.md) | Name of the VAT rate, for example `VAT 7%` ||
 || **active**
 [`string`](../../data-types.md) | Indicator of the VAT rate's activity. Possible values:
 - `Y` — active
@@ -43,9 +43,9 @@ This method adds a new VAT rate.
 Default is `Y`
 ||
 || **rate***
-[`double`](../../data-types.md) | Value of the VAT rate ||
+[`double`](../../data-types.md) | Rate value in percent, for example `7` or `19`. The value `null` is not accepted: a rate without VAT cannot be created using this method ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting.
+[`integer`](../../data-types.md) | Sort order of the rate in lists. The lower the value, the higher the rate appears in the list.
 
 Default is `100`
 ||
@@ -63,7 +63,7 @@ Default is `100`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"Tax 13%","rate":13,"sort":10,"active":"Y"}}' \
+    -d '{"fields":{"name":"VAT 7%","rate":7,"sort":500,"active":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.vat.add
     ```
 
@@ -73,7 +73,7 @@ Default is `100`
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"name":"Tax 13%","rate":13,"sort":10,"active":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"name":"VAT 7%","rate":7,"sort":500,"active":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.vat.add
     ```
 
@@ -104,9 +104,9 @@ Default is `100`
         method: 'catalog.vat.add',
         params: {
           fields: {
-            name: 'Tax 13%',
-            rate: 13,
-            sort: 10,
+            name: 'VAT 7%',
+            rate: 7,
+            sort: 500,
             active: 'Y',
           },
         },
@@ -141,9 +141,9 @@ Default is `100`
             method: 'catalog.vat.add',
             params: {
               fields: {
-                name: 'Tax 13%',
-                rate: 13,
-                sort: 10,
+                name: 'VAT 7%',
+                rate: 7,
+                sort: 500,
                 active: 'Y',
               },
             },
@@ -176,9 +176,9 @@ Default is `100`
     try:
         bitrix_response = client.catalog.vat.add(
             fields={
-                "name": "Tax 13%",
-                "rate": 13,
-                "sort": 10,
+                "name": "VAT 7%",
+                "rate": 7,
+                "sort": 500,
                 "active": "Y",
             },
         ).response
@@ -207,9 +207,9 @@ Default is `100`
                 'catalog.vat.add',
                 [
                     'fields' => [
-                        'name'   => 'Tax 13%',
-                        'rate'   => 13,
-                        'sort'   => 10,
+                        'name'   => 'VAT 7%',
+                        'rate'   => 7,
+                        'sort'   => 500,
                         'active' => "Y",
                     ],
                 ]
@@ -219,7 +219,7 @@ Default is `100`
             ->getResponseData()
             ->getResult();
 
-        print_r($result);
+        print_r($result['vat']);
     } catch (Throwable $e) {
         echo $e->getMessage();
     }
@@ -232,9 +232,9 @@ Default is `100`
     'catalog.vat.add',
             {
                 fields: {
-                        name: 'Tax 13%',
-                        rate: 13,
-                        sort: 10,
+                        name: 'VAT 7%',
+                        rate: 7,
+                        sort: 500,
                         active: "Y",
                 }
             },
@@ -256,9 +256,9 @@ Default is `100`
         'catalog.vat.add',
         [
             'fields' => [
-                'name' => 'Tax 13%',
-                'rate' => 13,
-                'sort' => 10,
+                'name' => 'VAT 7%',
+                'rate' => 7,
+                'sort' => 500,
                 'active' => "Y"
             ]
         ]
@@ -275,9 +275,9 @@ Default is `100`
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.vat.add", b24.Params{
     	"fields": b24.Params{
-    		"name":   "Tax 13%",
-    		"rate":   13,
-    		"sort":   10,
+    		"name":   "VAT 7%",
+    		"rate":   7,
+    		"sort":   500,
     		"active": "Y",
     	},
     })
@@ -292,12 +292,12 @@ Default is `100`
     }
 
     var item struct {
-    	Active     string `json:"active"`
-    	ID         b24.ID `json:"id"`
-    	Name       string `json:"name"`
-    	Rate       int    `json:"rate"`
-    	Sort       int    `json:"sort"`
-    	TimestampX string `json:"timestampX"`
+    	Active     string  `json:"active"`
+    	ID         b24.ID  `json:"id"`
+    	Name       string  `json:"name"`
+    	Rate       float64 `json:"rate"`
+    	Sort       int     `json:"sort"`
+    	TimestampX string  `json:"timestampX"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -316,20 +316,21 @@ HTTP status: **200**
     "result": {
         "vat": {
             "active": "Y",
-            "id": 5,
-            "name": "Tax 13%",
-            "rate": 13,
-            "sort": 10,
-            "timestampX": "2024-09-16T11:20:38+02:00"
+            "id": 37,
+            "name": "VAT 7%",
+            "rate": 7,
+            "sort": 500,
+            "timestampX": "2026-10-27T17:17:29+01:00"
         }
     },
     "time": {
-        "start": 1716552521.40908,
-        "finish": 1716552521.69852,
-        "duration": 0.289434909820557,
-        "processing": 0.011207103729248,
-        "date_start": "2024-09-16T11:20:38+02:00",
-        "date_finish": "2024-09-16T11:20:38+02:00",
+        "start": 1793117849,
+        "finish": 1793117849.807201,
+        "duration": 0.8072009086608887,
+        "processing": 0,
+        "date_start": "2026-10-27T17:17:29+01:00",
+        "date_finish": "2026-10-27T17:17:29+01:00",
+        "operating_reset_at": 1793118420,
         "operating": 0
     }
 }
@@ -343,8 +344,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **vat**
-[`catalog_vat`](../data-types.md#catalog_vat) | Object containing information about the created VAT rate
-||
+[`catalog_vat`](../data-types.md#catalog_vat) | The created VAT rate with all fields: `active`, `id`, `name`, `rate`, `sort`, `timestampX`. Use the `id` value in the `vatId` field of a trade catalog or product ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -355,8 +355,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300020,
-    "error_description": "Access Denied"
+    "error": "0",
+    "error_description": "Required fields: rate"
 }
 ```
 
@@ -365,23 +365,24 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to edit
-||
-|| `100` | Required parameter `fields` not provided
-||
-|| `0` | Required fields not set
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Manage tax rates" access permission ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `0` | Required fields: name | The `name` field is missing in `fields` ||
+|| `400` | `0` | Required fields: rate | The `rate` field is missing in `fields` or `null` is passed ||
+|| `400` | `0` | Error adding VAT | Failed to save the VAT rate ||
+|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./catalog-vat-update.md)
 - [{#T}](./catalog-vat-get.md)
 - [{#T}](./catalog-vat-list.md)
 - [{#T}](./catalog-vat-delete.md)
 - [{#T}](./catalog-vat-get-fields.md)
+- [{#T}](../catalog/catalog-catalog-update.md)
+- [{#T}](../product/catalog-product-update.md)

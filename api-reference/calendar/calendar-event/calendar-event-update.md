@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method updates an existing event.
+The `calendar.event.update` method updates an existing event.
 
 ## Method Parameters
 
@@ -25,7 +25,7 @@ This method updates an existing event.
 || **id***
 [`integer`](../../data-types.md) | Event identifier.
 
-You can obtain the identifier using the [calendar.event.get](./calendar-event-get.md) or [calendar.event.get.nearest](./calendar-event-get-nearest.md) methods. ||
+You can obtain the identifier using the [calendar.event.get](./calendar-event-get.md) or [calendar.event.get.nearest](./calendar-event-get-nearest.md) methods ||
 || **type***
 [`string`](../../data-types.md) | Calendar type: 
 - `user` — user calendar
@@ -34,29 +34,29 @@ You can obtain the identifier using the [calendar.event.get](./calendar-event-ge
 || **ownerId***
 [`integer`](../../data-types.md) | Calendar owner identifier. 
 
-For the company calendar, the `ownerId` parameter is `0`. ||
+For the company calendar, the `ownerId` parameter is `0` ||
 || **from**
 [`datetime`\|`date`](../../data-types.md) | Start date and time of the event.
 
-You can specify the date without time. To do this, pass the value `Y` in the `skip_time` parameter. ||
+You can specify the date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
 || **to**
 [`datetime`\|`date`](../../data-types.md) | End date of the event.
 
-You can specify the date without time. To do this, pass the value `Y` in the `skip_time` parameter. ||
+You can specify the date without time. To do this, pass the value `Y` in the `skip_time` parameter ||
 || **from_ts**
-[`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `from` parameter. ||
+[`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `from` parameter ||
 || **to_ts**
-[`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `to` parameter. ||
+[`integer`](../../data-types.md) | Date and time in timestamp format. Can be used instead of the `to` parameter ||
 || **section**
-[`integer`](../../data-types.md) | Calendar identifier. ||
+[`integer`](../../data-types.md) | Calendar identifier ||
 || **name**
-[`string`](../../data-types.md) | Event name. ||
+[`string`](../../data-types.md) | Event name ||
 || **skip_time**
 [`string`](../../data-types.md) | Pass the date value without time in the `from` and `to` parameters. Possible values:
 - `Y` — use only the date
 - `N` — use date and time
 
-Date format according to ISO-8601 standard. ||
+Date format according to ISO-8601 standard ||
 || **timezone_from**
 [`string`](../../data-types.md) | Timezone of the start date and time of the event. Default is the current user's timezone.
 
@@ -70,15 +70,15 @@ The value should be passed as a string, for example, `Europe/Riga`.
 
 [Timezone handling features](#timezone-features) ||
 || **description**
-[`text`](../../data-types.md) | Event description. ||
+[`text`](../../data-types.md) | Event description ||
 || **color**
 [`string`](../../data-types.md) | Background color of the event.
 
-The `#` symbol in the color must be passed in unicode format — `%23`. ||
+HEX format, for example `#9cbe1c`. In a JSON request body, pass `#` as is. In a URL string, encode `#` as `%23`: `color=%239cbe1c` ||
 || **text_color**
 [`string`](../../data-types.md) | Text color of the event.
 
-The `#` symbol in the color must be passed in unicode format — `%23`. ||
+HEX format, for example `#283033`. In a JSON request body, pass `#` as is. In a URL string, encode `#` as `%23`: `text_color=%23283033` ||
 || **accessibility**
 [`string`](../../data-types.md) | Availability during the event time: 
 - `busy` — busy 
@@ -98,24 +98,32 @@ The `#` symbol in the color must be passed in unicode format — `%23`. ||
  [`string`](../../data-types.md) | Parameter for partial editing of a recurring event. Possible values:
  - `this` — changes apply only to the current event. Must specify `current_date_from`. 
  - `next` — changes apply to the current and all following events. Must specify `current_date_from`. 
- - `all` — changes apply to all events in the recurrence chain. ||
+ - `all` — changes apply to all events in the recurrence chain ||
 || **current_date_from**
 [`date`](../../data-types.md) | Date of the current event for partial editing of a recurring event.
 
-Required only for `recurrence_mode` with values `this` or `next`. ||
+Required only for `recurrence_mode` with values `this` or `next` ||
 || **rrule**
-[`object`](../../data-types.md) | Recurrence of the event in the form of an object according to the iCalendar standard. The structure is described [below](#rrule). ||
+[`object`](../../data-types.md) | Recurrence of the event in the form of an object according to the iCalendar standard [(detailed description)](#rrule) ||
 || **is_meeting**
 [`string`](../../data-types.md) | Indicator of a meeting with event participants. Possible values:
 
 - `Y` — meeting with participants
 - `N` — meeting without participants
 
-For a meeting with participants, pass the list of participants in `attendees`. ||
+For a meeting with participants, pass the list of participants in `attendees` ||
 || **location**
-[`string`](../../data-types.md) | Location. ||
+[`string`](../../data-types.md) | Location. You can pass an arbitrary string, for example `Office, 3rd floor`.
+
+To book a meeting room, pass a string in the form `calendar_<meeting room ID>`, for example `calendar_1`. The method checks whether the meeting room is free at the specified time ||
+|| **doCheckOccupancy**
+[`string`](../../data-types.md) | Whether to check the occupancy of the meeting room from `location`. Possible values:
+- `Y` — check. If the meeting room is occupied, the method returns the `CALENDAR_LOCATION_OCCUPANCY_CONFLICT` error
+- `N` — do not check
+
+Default is `Y` ||
 || **remind**
-[`array`](../../data-types.md) | Array of objects describing reminders for the event. The structure is described [below](#remind). ||
+[`array`](../../data-types.md) | Array of objects describing reminders for the event [(detailed description)](#remind) ||
 || **attendees**
 [`array`](../../data-types.md) | List of participant identifiers for the event.
 
@@ -131,13 +139,13 @@ The parameter does not grant permissions to the calendar, does not change the us
 
 You can retrieve the current organizer identifier in the response of the [calendar.event.getbyid](./calendar-event-get-by-id.md) and [calendar.event.get](./calendar-event-get.md) methods in the `MEETING_HOST` field ||
 || **meeting**
-[`object`](../../data-types.md) | Object with meeting parameters. The structure is described [below](#meeting). ||
+[`object`](../../data-types.md) | Object with meeting parameters [(detailed description)](#meeting) ||
 || **crm_fields**
  [`array`](../../data-types.md) | Array of CRM object identifiers to link to the event. To link objects, list their identifiers with [prefixes](../../crm/data-types.md#object_type):
  - `CO_` — company
  - `C_` — contact 
  - `L_` — lead
- - `D_` — deal. ||
+ - `D_` — deal ||
 |#
 
 ### Timezone Handling Features {#timezone-features}
@@ -186,9 +194,9 @@ Priority of timezone parameter processing:
 - `YEARLY` — yearly
 ||
 || **COUNT**
-[`integer`](../../data-types.md) | Number of recurrences. ||
+[`integer`](../../data-types.md) | Number of recurrences ||
 || **INTERVAL**
-[`integer`](../../data-types.md) | Interval between recurrences. ||
+[`integer`](../../data-types.md) | Interval between recurrences ||
 ||**BYDAY**
 [`array`](../../data-types.md) | Days of the week
 - `SU` — Sunday
@@ -197,9 +205,9 @@ Priority of timezone parameter processing:
 - `WE` — Wednesday
 - `TH` — Thursday
 - `FR` — Friday
-- `SA` — Saturday. ||
+- `SA` — Saturday ||
 || **UNTIL**
-[`date`](../../data-types.md) | End date of recurrences. ||
+[`date`](../../data-types.md) | End date of recurrences ||
 |#
 
 ### remind Parameter {#remind}
@@ -211,9 +219,9 @@ Priority of timezone parameter processing:
 [`string`](../../data-types.md) | Time type of reminder
 - `min` — minutes
 - `hour` – hours
-- `day` — days. ||
+- `day` — days ||
 || **count**
-[`integer`](../../data-types.md) | Numerical value of the time interval. ||
+[`integer`](../../data-types.md) | Numerical value of the time interval ||
 |#
 
 ### meeting Parameter {#meeting}
@@ -222,13 +230,13 @@ Priority of timezone parameter processing:
 || **Name**
 `type` | **Description** ||
 || **notify**
-[`boolean`](../../data-types.md) | Flag for notification of confirmation or refusal from participants. ||
+[`boolean`](../../data-types.md) | Flag for notification of confirmation or refusal from participants ||
 || **reinvite**
-[`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event. ||
+[`boolean`](../../data-types.md) | Flag for requesting re-confirmation of participation when editing the event ||
 || **allow_invite**
-[`boolean`](../../data-types.md) | Flag allowing participants to invite others to the event. ||
+[`boolean`](../../data-types.md) | Flag allowing participants to invite others to the event ||
 || **hide_guests**
-[`boolean`](../../data-types.md) | Flag for hiding the list of participants. ||
+[`boolean`](../../data-types.md) | Flag for hiding the list of participants ||
 |#
 
 ## Code Examples
@@ -768,7 +776,9 @@ HTTP status: **200**
     || **Name**
     `type` | **Description** ||
     || **result**
-    [`integer`](../../data-types.md) | Identifier of the updated event. ||
+    [`integer`](../../data-types.md) | Identifier of the updated event ||
+    || **time**
+    [`time`](../../data-types.md#time) | Information about the request execution time ||
     |#
 
 - Recurring Event
@@ -777,17 +787,26 @@ HTTP status: **200**
     || **Name**
     `type` | **Description** ||
     || **result**
-    [`object`](../../data-types.md) | Root element of the response. ||
+    [`object`](../../data-types.md) | Data of the new series of the recurring event [(detailed description)](#result-recurrence) ||
+    || **time**
+    [`time`](../../data-types.md#time) | Information about the request execution time ||
+    |#
+
+    #### result Object {#result-recurrence}
+
+    #|
+    || **Name**
+    `type` | **Description** ||
     || **originalDate**
-    [`datetime`](../../data-types.md) | Start date of the new series of the recurring event. ||
+    [`datetime`](../../data-types.md) | Start date of the new series of the recurring event ||
     || **originalDavXmlId**
-    [`string`](../../data-types.md) | Event identifier for synchronization. ||
+    [`string`](../../data-types.md) | Event identifier for synchronization ||
     || **instanceTz**
-    [`string`](../../data-types.md) | Event timezone. ||
+    [`string`](../../data-types.md) | Event timezone ||
     || **recEventId**
-    [`integer`](../../data-types.md) | Identifier of the new series of the recurring event. ||
+    [`integer`](../../data-types.md) | Identifier of the new series of the recurring event ||
     || **id**
-    [`integer`](../../data-types.md) | Identifier of the previous series of the recurring event. ||
+    [`integer`](../../data-types.md) | Identifier of the previous series of the recurring event ||
     |#
 
 {% endlist %}
@@ -799,7 +818,22 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"ownerId\" for the method \"calendar.event.update\" is not set."
+    "error_description": "The mandatory parameter \"ownerId\" is not specified for the method \"calendar.event.update\""
+}
+```
+
+Meeting room occupancy errors are returned with HTTP status **200**:
+
+```json
+{
+    "error": "CALENDAR_LOCATION_OCCUPANCY_CONFLICT",
+    "error_description": "The meeting room is occupied at the specified time",
+    "additional": {
+        "occupancy": {
+            "dates": [],
+            "truncated": false
+        }
+    }
 }
 ```
 
@@ -808,17 +842,28 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "id" for the method "calendar.event.update" is not set. | The required parameter `id` is not provided. ||
-|| Empty value | The required parameter "ownerId" for the method "calendar.event.update" is not set. | The required parameter `ownerId` is not provided. ||
-|| Empty value | The required parameter "type" for the method "calendar.event.update" is not set. | The required parameter `type` is not provided. ||
-|| Empty value | Invalid value for the "name" parameter. | Incorrect data format in the `name` field. ||
-|| Empty value | Invalid value for the "description" parameter. | Incorrect data format in the `description` field. ||
-|| Empty value | Access denied. | Updating events in the specified calendar is prohibited. ||
-|| Empty value | You specified an invalid calendar section ID or the user does not have access to it. | An identifier of an inaccessible or non-existent calendar is provided. ||
-|| Empty value | An invalid editing type for the recurring event is specified. | An incorrect value for the `recurrence_mode` field is provided. ||
-|| Empty value | The event's CRM links list must be an array. | Incorrect data format in the `crm_fields` field. ||
-|| Empty value | An error occurred while changing the event. | Another error. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "id" is not specified for the method "calendar.event.update" | The required parameter `id` is not provided ||
+|| `400` | Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.event.update" | The required parameter `ownerId` is not provided ||
+|| `400` | Empty value | The mandatory parameter "type" is not specified for the method "calendar.event.update" | The required parameter `type` is not provided ||
+|| `400` | Empty value | Invalid parameter value for "name" | Incorrect data format in the `name` field ||
+|| `400` | Empty value | Invalid parameter value for "description" | Incorrect data format in the `description` field ||
+|| `400` | Empty value | Access denied | Updating events in the specified calendar is prohibited ||
+|| `400` | Empty value | You have specified an invalid calendar section ID or the current user does not have access to it | An identifier of an inaccessible or non-existent calendar is provided ||
+|| `400` | Empty value | Invalid edit type for recurring event | An incorrect value for the `recurrence_mode` field is provided ||
+|| `400` | Empty value | Event to CRM association list must be an array | Incorrect data format in the `crm_fields` field ||
+|| `400` | Empty value | Error while editing event | Another error ||
+|| `400` | Empty value | Invalid parameter value for "doCheckOccupancy" | A value other than `Y` or `N` is passed in `doCheckOccupancy` ||
+|| `200` | `CALENDAR_LOCATION_OCCUPANCY_CONFLICT` | The meeting room is occupied at the specified time | The meeting room from `location` is occupied at the specified time or does not exist. The response contains the `additional.occupancy` object with the fields `dates` — an array of occupancy dates in the `YYYY-MM-DDThh:mm:ssZ` format, and `truncated` — a flag indicating that the list of dates is incomplete. Dates are returned only if the user has access to view them; otherwise, the array is empty ||
+|| `200` | `CALENDAR_LOCATION_OCCUPANCY_LOCKED` | The meeting room is currently selected for another event. Try again later or select another one | Another event is booking the meeting room at this moment. Repeat the request later ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
+
+## Continue Learning
+
+- [{#T}](./index.md)
+- [{#T}](./calendar-event-add.md)
+- [{#T}](./calendar-event-get-by-id.md)
+- [{#T}](./calendar-event-get.md)
+- [{#T}](./calendar-event-delete.md)

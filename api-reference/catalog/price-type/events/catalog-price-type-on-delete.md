@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `CATALOG.PRICE.TYPE.ON.DELETE` event is triggered when a price type is deleted.
+The `CATALOG.PRICE.TYPE.ON.DELETE` event is triggered when a price type is deleted manually or using the [catalog.priceType.delete](../catalog-price-type-delete.md) and [catalog.pricetype.delete](../catalog-price-type-delete-rest-v3.md) methods.
 
 {% note info "" %}
 

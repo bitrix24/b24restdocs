@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `CATALOG.PRICE.TYPE.ON.UPDATE` event is triggered when a price type is updated.
+The `CATALOG.PRICE.TYPE.ON.UPDATE` event is triggered when a price type is updated manually or using the [catalog.priceType.update](../catalog-price-type-update.md) and [catalog.pricetype.update](../catalog-price-type-update-rest-v3.md) methods.
+
+The event also arrives when a price type is added, immediately after the [CATALOG.PRICE.TYPE.ON.ADD](./catalog-price-type-on-add.md) event with the same `ID`. To avoid processing a new price type as an updated one, check whether the add event for this `ID` has already arrived.
 
 {% note info "" %}
 

@@ -277,7 +277,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"type\" for the method \"calendar.section.delete\" is not set."
+    "error_description": "The mandatory parameter \"type\" is not specified for the method \"calendar.section.delete\""
 }
 ```
 
@@ -287,8 +287,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "type" for the method "calendar.section.delete" is not set. | The required parameter `type` was not provided ||
-|| Empty value | The required parameter "ownerId" for the method "calendar.section.delete" is not set. | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
+|| Empty value | The mandatory parameter "type" is not specified for the method "calendar.section.delete" | The required parameter `type` was not provided ||
+|| Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.section.delete" | The required parameter `ownerId` was not provided and the `type` parameter is not equal to `user` ||
 || Empty value | Section ID is not set. | The required parameter `id` was not provided ||
 || Empty value | Access denied. | The calendar with the specified `id` does not exist or there are no rights to edit the calendar ||
 || Empty value | An error occurred while deleting the section. | Another error ||

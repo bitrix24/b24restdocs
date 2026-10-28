@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage tax rates" access permission
 
-This method updates the VAT rate.
+The method `catalog.vat.update` updates a VAT rate.
 
 ## Method Parameters
 
@@ -23,7 +23,10 @@ This method updates the VAT rate.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_vat.id`](../data-types.md#catalog_vat) | Identifier of the VAT rate ||
+[`catalog_vat.id`](../data-types.md#catalog_vat) | Identifier of the VAT rate.
+
+To retrieve the rate identifiers, use the [catalog.vat.list](./catalog-vat-list.md) method
+||
 || **fields***
 [`object`](../../data-types.md) | Field values for updating the VAT rate ([detailed description](#fields)) ||
 |#
@@ -36,16 +39,18 @@ This method updates the VAT rate.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Name of the VAT rate ||
+[`string`](../../data-types.md) | Name of the VAT rate. Pass it in every call: without `name`, the method returns the `Required fields: name` error. To keep the name unchanged, pass the current value from [catalog.vat.get](./catalog-vat-get.md) ||
 || **active**
 [`string`](../../data-types.md) | Indicator of the VAT rate's activity. Possible values:
 - `Y` — active
 - `N` — inactive
+
+If not passed, the value does not change
 ||
 || **rate***
-[`double`](../../data-types.md) | Value of the VAT rate ||
+[`double`](../../data-types.md) | Rate value in percent, for example `7` or `19`. Pass it in every call: without `rate`, the method returns the `Required fields: rate` error ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting
+[`integer`](../../data-types.md) | Sort order of the rate in lists. If not passed, the value does not change
 ||
 |#
 
@@ -61,7 +66,7 @@ This method updates the VAT rate.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":6,"fields":{"name":"Tax 23%","rate":23,"sort":20,"active":"Y"}}' \
+    -d '{"id":37,"fields":{"name":"VAT 19%","rate":19,"sort":510,"active":"Y"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.vat.update
     ```
 
@@ -71,7 +76,7 @@ This method updates the VAT rate.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":6,"fields":{"name":"Tax 23%","rate":23,"sort":20,"active":"Y"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":37,"fields":{"name":"VAT 19%","rate":19,"sort":510,"active":"Y"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.vat.update
     ```
 
@@ -101,11 +106,11 @@ This method updates the VAT rate.
       const response = await $b24.actions.v2.call.make<CatalogVatUpdateResult>({
         method: 'catalog.vat.update',
         params: {
-          id: 6,
+          id: 37,
           fields: {
-            name: 'Tax 23%',
-            rate: 23,
-            sort: 20,
+            name: 'VAT 19%',
+            rate: 19,
+            sort: 510,
             active: 'Y',
           },
         },
@@ -139,11 +144,11 @@ This method updates the VAT rate.
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.vat.update',
             params: {
-              id: 6,
+              id: 37,
               fields: {
-                name: 'Tax 23%',
-                rate: 23,
-                sort: 20,
+                name: 'VAT 19%',
+                rate: 19,
+                sort: 510,
                 active: 'Y',
               },
             },
@@ -175,11 +180,11 @@ This method updates the VAT rate.
 
     try:
         bitrix_response = client.catalog.vat.update(
-            bitrix_id=6,
+            bitrix_id=37,
             fields={
-                "name": "Tax 23%",
-                "rate": 23,
-                "sort": 20,
+                "name": "VAT 19%",
+                "rate": 19,
+                "sort": 510,
                 "active": "Y",
             },
         ).response
@@ -207,11 +212,11 @@ This method updates the VAT rate.
             ->call(
                 'catalog.vat.update',
                 [
-                    'id' => 6,
+                    'id' => 37,
                     'fields' => [
-                        'name'   => "Tax 23%",
-                        'rate'   => 23,
-                        'sort'   => 20,
+                        'name'   => "VAT 19%",
+                        'rate'   => 19,
+                        'sort'   => 510,
                         'active' => "Y"
                     ]
                 ]
@@ -221,7 +226,7 @@ This method updates the VAT rate.
             ->getResponseData()
             ->getResult();
 
-        print_r($result);
+        print_r($result['vat']);
     } catch (Throwable $e) {
         echo $e->getMessage();
     }
@@ -233,11 +238,11 @@ This method updates the VAT rate.
     BX24.callMethod(
         'catalog.vat.update', 
         {
-            id: 6,
+            id: 37,
             fields: {
-                name: "Tax 23%",
-                rate: 23,
-                sort: 20,
+                name: "VAT 19%",
+                rate: 19,
+                sort: 510,
                 active: "Y"
             }
         },
@@ -259,11 +264,11 @@ This method updates the VAT rate.
     $result = CRest::call(
         'catalog.vat.update',
         [
-            'id' => 6,
+            'id' => 37,
             'fields' => [
-                'name' => 'Tax 23%',
-                'rate' => 23,
-                'sort' => 20,
+                'name' => 'VAT 19%',
+                'rate' => 19,
+                'sort' => 510,
                 'active' => "Y"
             ]
         ]
@@ -279,11 +284,11 @@ This method updates the VAT rate.
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.vat.update", b24.Params{
-    	"id": 6,
+    	"id": 37,
     	"fields": b24.Params{
-    		"name":   "Tax 23%",
-    		"rate":   23,
-    		"sort":   20,
+    		"name":   "VAT 19%",
+    		"rate":   19,
+    		"sort":   510,
     		"active": "Y",
     	},
     })
@@ -298,12 +303,12 @@ This method updates the VAT rate.
     }
 
     var item struct {
-    	Active     string `json:"active"`
-    	ID         b24.ID `json:"id"`
-    	Name       string `json:"name"`
-    	Rate       int    `json:"rate"`
-    	Sort       int    `json:"sort"`
-    	TimestampX string `json:"timestampX"`
+    	Active     string  `json:"active"`
+    	ID         b24.ID  `json:"id"`
+    	Name       string  `json:"name"`
+    	Rate       float64 `json:"rate"`
+    	Sort       int     `json:"sort"`
+    	TimestampX string  `json:"timestampX"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -322,20 +327,21 @@ HTTP status: **200**
     "result": {
         "vat": {
             "active": "Y",
-            "id": 6,
-            "name": "Tax 23%",
-            "rate": 23,
-            "sort": 20,
-            "timestampX": "2024-09-16T11:53:04+02:00"
+            "id": 37,
+            "name": "VAT 19%",
+            "rate": 19,
+            "sort": 510,
+            "timestampX": "2026-10-27T17:23:50+01:00"
         }
     },
     "time": {
-        "start": 1712327086.69665,
-        "finish": 1712327086.95303,
-        "duration": 0.256376028060913,
-        "processing": 0.0112268924713135,
-        "date_start": "2024-04-05T16:24:46+02:00",
-        "date_finish": "2024-04-05T16:24:46+02:00",
+        "start": 1793118230,
+        "finish": 1793118230.267268,
+        "duration": 0.26726794242858887,
+        "processing": 0,
+        "date_start": "2026-10-27T17:23:50+01:00",
+        "date_finish": "2026-10-27T17:23:50+01:00",
+        "operating_reset_at": 1793118780,
         "operating": 0
     }
 }
@@ -349,8 +355,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **vat**
-[`catalog_vat`](../data-types.md#catalog_vat) | Object with information about the updated VAT rate
-||
+[`catalog_vat`](../data-types.md#catalog_vat) | The VAT rate after the update with all fields: `active`, `id`, `name`, `rate`, `sort`, `timestampX` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -361,8 +366,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description":"Required fields: code"
+    "error": "0",
+    "error_description": "Required fields: name"
 }
 ```
 
@@ -371,25 +376,22 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to edit
-||
-|| `200800000000` | No VAT rate exists with this identifier
-||
-|| `100` | Parameter `id` not specified
-||
-|| `100` | Parameter `fields` not specified or empty
-||
-|| `0` | Required fields in the `fields` structure not provided
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Manage tax rates" access permission ||
+|| `400` | `200800000000` | vat does not exist. | No VAT rate with this `id` exists ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `0` | Required fields: name | The `name` field is missing in `fields` ||
+|| `400` | `0` | Required fields: rate | The `rate` field is missing in `fields` ||
+|| `400` | `0` | Error updating VAT | Failed to save the VAT rate changes ||
+|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./catalog-vat-add.md)
 - [{#T}](./catalog-vat-get.md)
 - [{#T}](./catalog-vat-list.md)

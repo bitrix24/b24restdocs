@@ -1361,7 +1361,7 @@ Can be used to synchronize the current catalog section with a similar position i
 - `N` — inactive
 ||
 || **rate**
-[`double`](../data-types.md) | Amount of the VAT rate ||
+[`double`](../data-types.md) | Rate value in percent, for example `19`. For a rate without VAT, the value is `null` ||
 || **sort**
 [`integer`](../data-types.md) | Sorting ||
 || **timestampX**

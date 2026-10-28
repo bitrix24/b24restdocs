@@ -364,7 +364,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "",
-    "error_description": "The required parameter \"type\" for the method \"calendar.section.update\" is not set"
+    "error_description": "The mandatory parameter \"type\" is not specified for the method \"calendar.section.update\""
 }
 ```
 
@@ -374,8 +374,8 @@ HTTP Status: **400**
 
 #|
 || **Code** | **Error Message** | **Description** ||
-|| Empty value | The required parameter "type" for the method "calendar.section.update" is not set | The required parameter `type` is missing ||
-|| Empty value | The required parameter "ownerId" for the method "calendar.section.update" is not set | The required parameter `ownerId` is missing and the `type` parameter is not equal to `user` ||
+|| Empty value | The mandatory parameter "type" is not specified for the method "calendar.section.update" | The required parameter `type` is missing ||
+|| Empty value | The mandatory parameter "ownerId" is not specified for the method "calendar.section.update" | The required parameter `ownerId` is missing and the `type` parameter is not equal to `user` ||
 || Empty value | Section ID is not set | The required parameter `id` is missing ||
 || Empty value | Invalid value for the "name" parameter | Incorrect data format in the `name` field ||
 || Empty value | Invalid value for the "description" parameter | Incorrect data format in the `description` field ||
