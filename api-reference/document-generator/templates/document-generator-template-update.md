@@ -85,6 +85,10 @@ Possible values:
 ||
 || **sort**
 [`integer`](../../data-types.md) | Sort index ||
+|| **timezone**
+[`string`](../../data-types.md) | Time zone used to display dates in documents generated from the template. Pass an IANA time zone identifier, for example `Europe/Berlin`.
+
+An empty string resets the template time zone: dates are displayed in the shared time zone set in the document template settings, or in the server time zone if none is selected. If the field is not passed, the current value is kept ||
 |#
 
 ## Code Examples
@@ -142,6 +146,7 @@ Possible values:
         sort: string
         createTime: ISODate | null
         updateTime: ISODate | null
+        timezone: string | null
       }
     }
 
@@ -396,6 +401,7 @@ HTTP Status: **200**
             "sort": "700",
             "createTime": "2026-03-23T16:51:25+02:00",
             "updateTime": "2026-03-23T17:26:39+02:00",
+            "timezone": null,
             "downloadMachine": "https://mysite.com/rest/documentgenerator.api.template.download.json?auth=6d53c1690000071b00000844000001f7f0f1075612a492ef6fe0b4127e521b543e4376&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTU3JnRzPTAmXz1UdDBpNDBOU2hvQkxtN1Y5VmhEZm1MbTU2ZmQ0d3puNA%3D%3D%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZHxkb2N1bWVudGdlbmVyYXRvcnxZV04wYVc5dVBXUnZZM1Z0Wlc1MFoyVnVaWEpoZEc5eUxtRndhUzUwWlcxd2JHRjBaUzVrYjNkdWJHOWhaQ1pUU1ZSRlgwbEVQWE14Sm1sa1BUVTNKblJ6UFRBbVh6MVVkREJwTkRCT1UyaHZRa3h0TjFZNVZtaEVabTFNYlRVMlptUTBkM3B1TkE9PXw2ZDUzYzE2OTAwMDAwNzFiMDAwMDA4NDQwMDAwMDFmN2YwZjEwNzU2MTJhNDkyZWY2ZmUwYjQxMjdlNTIxYjU0M2U0Mzc2Ig%3D%3D.6kAmDGdiQCSZI%2Bcm%2Fg86RUqVH5dMvSDxHbx20yjOYK4%3D"
         }
     },
@@ -482,6 +488,10 @@ Key and value are equal to the access code ||
 [`datetime`](../../data-types.md) | Date and time of creation ||
 || **updateTime**
 [`datetime`](../../data-types.md) | Date and time of update ||
+|| **timezone**
+[`string`](../../data-types.md) | Template time zone in IANA format, for example `Europe/Berlin`.
+
+`null` means the template has no time zone of its own: dates are displayed in the shared time zone set in the document template settings, or in the server time zone if none is selected ||
 |#
 
 ## Error Handling
@@ -504,6 +514,7 @@ HTTP Status: **400**
 || `400` | `100` | Bitrix\DocumentGenerator\Template constructor must be public | Required parameter `id` not provided ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
 || `400` | `0` | Template not found | Template with the specified `id` not found ||
+|| `400` | `TIMEZONE_INVALID` | Timezone must be a canonical IANA identifier | The `timezone` field contains a value that is not an IANA time zone identifier, for example the offset `+01:00` ||
 || `400` | `0` | You do not have permissions to modify this template | Insufficient rights to modify the specified template ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient rights to modify templates ||
 |#

@@ -102,6 +102,10 @@ Default is `Y` ||
 Default is `N` ||
 || **sort**
 [`integer`](../../data-types.md) | Sort index ||
+|| **timezone**
+[`string`](../../data-types.md) | Time zone used to display dates in documents generated from the template. Pass an IANA time zone identifier, for example `Europe/Berlin`.
+
+If the field is not passed or is an empty string, dates are displayed in the shared time zone set in the document template settings, or in the server time zone if none is selected ||
 |#
 
 ## Code Examples
@@ -159,6 +163,7 @@ Default is `N` ||
       sort: string
       createTime: ISODate
       updateTime: ISODate
+      timezone: string | null
     }
   }
 
@@ -434,6 +439,7 @@ HTTP Status: **200**
             "sort": "500",
             "createTime": "2026-03-23T16:51:25+01:00",
             "updateTime": "2026-03-23T16:51:25+01:00",
+            "timezone": null,
             "downloadMachine": "https://mysite.com/rest/documentgenerator.api.template.download.json?auth=6d53c1690000071b00000844000001f7f0f1075612a492ef6fe0b4127e521b543e4376&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZTSVRFX0lEPXMxJmlkPTU3JnRzPTAmXz1IeG56TmtsQklGNjRsQlBkNkNiekNwd1U2bnduQk40Mw%3D%3D%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS50ZW1wbGF0ZS5kb3dubG9hZCZkb2N1bWVudGdlbmVyYXRvcnxZV04wYVc5dVBXUnZZM1Z0Wlc1MFoyVnVaWEpoZEc5eUxtRndhUzUwWlcxd2JHRjBaUzVrYjNkdWJHOWhaQ1pUU1ZSRlgwbEVQWE14Sm1sa1BUVTNKblJ6UFRBbVh6MUllRzU2VG10c1FrbEdOalJzUWxCa05rTmlla053ZDFVMmJuZHVRazQwTXc9PXw2ZDUzYzE2OTAwMDAwNzFiMDAwMDA4NDQwMDAwMDFmN2YwZjEwNzU2MTJhNDkyZWY2ZmUwYjQxMjdlNTIxYjU0M2U0Mzc2Ig%3D%3D.vtTu%2B9Ac%2BT5VgeyDm1jiVBGsmCQagvrqjACd%2BNgDigA%3D"
         }
     },
@@ -520,6 +526,10 @@ Key and value are equal to the access code ||
 [`datetime`](../../data-types.md) | Creation date and time ||
 || **updateTime**
 [`datetime`](../../data-types.md) | Update date and time ||
+|| **timezone**
+[`string`](../../data-types.md) | Template time zone in IANA format, for example `Europe/Berlin`.
+
+`null` means the template has no time zone of its own: dates are displayed in the shared time zone set in the document template settings, or in the server time zone if none is selected ||
 |#
 
 ## Error Handling
@@ -543,6 +553,7 @@ HTTP Status: **400**
 || `400` | `100` | Invalid value to match with parameter {fields}. Should be value of type array | Parameter `fields` not passed as an object ||
 || `400` | `0` | Empty required fields: name, numeratorId, region | Required fields for creating a template not provided: `name`, `numeratorId`, `region`. The error lists the fields that are missing in the request ||
 || `400` | `0` | Missing file content | Template file not provided ||
+|| `400` | `TIMEZONE_INVALID` | Timezone must be a canonical IANA identifier | The `timezone` field contains a value that is not an IANA time zone identifier, for example the offset `+01:00` ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to modify templates ||
 |#
 

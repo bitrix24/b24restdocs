@@ -90,6 +90,8 @@ The formula for calculating the `start` parameter value:
 [`string`](../../data-types.md) | Template symbolic code ||
 || **region**
 [`string`](../../data-types.md) | Template region ||
+|| **timezone**
+[`string`](../../data-types.md) | Template time zone in IANA format, for example `Europe/Berlin` ||
 || **sort**
 [`integer`](../../data-types.md) | Sort index ||
 || **createTime**
@@ -182,6 +184,7 @@ The formula for calculating the `start` parameter value:
       name: string
       code: string
       region: string
+      timezone: string | null
       sort: string
       createTime: ISODate | null
       updateTime: ISODate | null
@@ -457,6 +460,7 @@ HTTP Status: **200**
                 "name": "SUPPLY_CONTRACT_NEW Template",
                 "code": "REST_TEMPLATE",
                 "region": "de",
+                "timezone": null,
                 "sort": "700",
                 "createTime": "2026-03-23T16:51:25+01:00",
                 "updateTime": "2026-03-23T17:26:39+01:00",
@@ -543,6 +547,10 @@ HTTP Status: **200**
 [`string`](../../data-types.md) | Template symbolic code ||
 || **region**
 [`string`](../../data-types.md) | Template region ||
+|| **timezone**
+[`string`](../../data-types.md) | Template time zone in IANA format, for example `Europe/Berlin`.
+
+`null` means the template has no time zone of its own: dates are displayed in the shared time zone set in the document template settings, or in the server time zone if none is selected ||
 || **sort**
 [`string`](../../data-types.md) | Sort index ||
 || **createTime**
