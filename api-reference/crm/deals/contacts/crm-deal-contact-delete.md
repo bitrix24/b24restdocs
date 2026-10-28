@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "modify" access permission for deals.
+> Who can execute the method: a user with the "modify" access permission for the deal and the "read" access permission for the contact being unlinked
 
 The method `crm.deal.contact.delete` removes a contact from the specified deal.
+
+The method removes a single binding and does not delete the contact itself. The other contacts of the deal do not change. To unlink all contacts at once, use [crm.deal.contact.items.delete](./crm-deal-contact-items-delete.md). How the link works and how to choose a method is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -39,14 +41,16 @@ Can be obtained using the methods [crm.deal.list](../crm-deal-list.md) or [crm.d
 || **Name**
 `type` | **Description** ||
 || **CONTACT_ID***
-[`crm_entity`](../../data-types.md) | Identifier of the contact to be removed from the bindings.
+[`integer`](../../../data-types.md) | Identifier of the contact to be removed from the bindings.
 
-The identifier can be obtained using the methods [crm.contact.list](../../contacts/crm-contact-list.md) or [crm.contact.add](../../contacts/crm-contact-add.md) ||
+You can retrieve the identifier of a contact linked to the deal using the method [crm.deal.contact.items.get](./crm-deal-contact-items-get.md) ||
 |#
 
-{% note info "Remove Primary Binding" %}
+{% note info "Remove the Primary Contact" %}
 
-If the primary binding is removed, the first available binding will become the new primary.
+If you unlink the primary contact, the remaining contact with the lowest `SORT` becomes primary, and its identifier is written to the deal field `CONTACT_ID`.
+
+If you unlink the last contact, the deal is left without a primary contact and the `CONTACT_ID` field becomes empty
 
 {% endnote %}
 
@@ -163,8 +167,10 @@ Example of removing a deal-contact link, where:
 
     try:
         bitrix_response = client.crm.deal.contact.delete(
-            bitrix_id=123,
-            fields={"CONTACT_ID": 456},
+            bitrix_id=1875,
+            fields={
+                "CONTACT_ID": 55,
+            },
         ).response
         result = bitrix_response.result
         print(result)
@@ -306,7 +312,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -320,13 +326,14 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter 'ownerEntityID' is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
-|| Empty value | `The parameter 'item' must be array.` | The `fields` is not an object ||
-|| Empty value | `Access denied.` | The user does not have permission to modify deals ||
-|| `ACCESS_DENIED` | `Access denied!` | No permission to modify the deal ||
-|| Empty value | `Not found.` | The deal with the provided `id` was not found ||
-|| Empty value | `The parameter 'fields' is not valid.` | Can occur for several reasons:
+|| **Status** | **Code** | **Description** | **Value** ||
+|| 400 | Empty value | `The parameter 'ownerEntityID' is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
+|| 400 | Empty value | `The parameter 'item' must be array.` | The `fields` parameter is not provided or is not an object ||
+|| 400 | Empty value | `Access denied.` | The deal with the provided `id` was not found, and the user does not have the "modify" access permission for deals ||
+|| 403 | `ACCESS_DENIED` | `Access denied!` | No "modify" access permission for the deal ||
+|| 400 | Empty value | `Not found.` | The deal with the provided `id` was not found ||
+|| 400 | Empty value | `[Contact #55] You don't have permission to view this item.` | The user does not have the "read" access permission for the contact from `fields.CONTACT_ID`. The contact identifier is substituted in the text ||
+|| 400 | Empty value | `The parameter 'fields' is not valid.` | Can occur for several reasons:
 - if the required parameter `fields.CONTACT_ID` is not provided
 - if the provided parameter `fields.CONTACT_ID` is less than or equal to 0 ||
 |#
@@ -335,8 +342,9 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-deal-contact-add.md)
-- [{#T}](./crm-deal-contact-fields.md)
 - [{#T}](./crm-deal-contact-items-get.md)
 - [{#T}](./crm-deal-contact-items-set.md)
 - [{#T}](./crm-deal-contact-items-delete.md)
+- [{#T}](./crm-deal-contact-fields.md)

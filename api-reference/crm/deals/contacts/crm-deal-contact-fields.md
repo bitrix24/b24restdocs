@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `crm.deal.contact.fields` returns a description of the fields for the deal-contact connection.
 
+You need the description to build the binding object for [crm.deal.contact.add](./crm-deal-contact-add.md) and [crm.deal.contact.items.set](./crm-deal-contact-items-set.md).
+
 ## Method Parameters
 
 No parameters.
@@ -281,17 +283,27 @@ HTTP Status: **200**
 
 where:
 - `field_n` — field of the object
-- `value_n` — information about the field in the format [crm_rest_field_description](../../data-types.md#crm_rest_field_description) ||
+- `value_n` — information about the field in the format [crm_rest_field_description](../../data-types.md#crm_rest_field_description)
+
+The method returns three fields:
+- `CONTACT_ID` (`integer`) — identifier of the contact, the only required field
+- `IS_PRIMARY` (`char`) — indicates the primary contact of the deal, `Y` or `N`. A deal has only one primary contact
+- `SORT` (`integer`) — sort index, sets the order of the contact in the deal detail form ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
+The method does not return errors.
+
+{% include notitle [Error handling](../../../../_includes/error-info.md) %}
+
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-deal-contact-add.md)
 - [{#T}](./crm-deal-contact-delete.md)
 - [{#T}](./crm-deal-contact-items-get.md)

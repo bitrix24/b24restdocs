@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "read" access permission for deals
+> Who can execute the method: a user with the "read" access permission for the deal
 
 The method `crm.deal.contact.items.get` returns a set of contacts associated with the specified deal.
+
+The methods [crm.deal.get](../crm-deal-get.md) and [crm.deal.list](../crm-deal-list.md) do not return the set of contacts, so you need this method to read the bindings. If you only need the contact identifiers, without `SORT` and `IS_PRIMARY`, [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 2` returns them in the `contactIds` field. How the link works is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -140,7 +142,7 @@ Example of retrieving all linked contacts for a deal with `id = 1875`.
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.crm.deal.contact.items.get(bitrix_id=123).response
+        bitrix_response = client.crm.deal.contact.items.get(bitrix_id=1875).response
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:
@@ -285,12 +287,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`deal_contact_binding[]`](#deal_contact_binding) | Root element of the response. Contains an array with information about contacts linked to the deal ||
+[`deal_contact_binding[]`](#deal_contact_binding) | Root element of the response. Contains an array with information about contacts linked to the deal, sorted by `SORT` in ascending order.
+
+If the deal has no contacts, an empty array `[]` is returned ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
-### Parameter deal_contact_binding {#deal_contact_binding}
+#### Object deal_contact_binding {#deal_contact_binding}
 
 #|
 || **Name**
@@ -298,23 +302,23 @@ HTTP Status: **200**
 || **CONTACT_ID**
 [`integer`](../../../data-types.md) | Identifier of the contact ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sorting index ||
+[`integer`](../../../data-types.md) | Sorting index. A contact with a lower value appears higher in the deal detail form ||
 || **ROLE_ID**
-[`integer`](../../../data-types.md) | Role identifier (system field) ||
+[`integer`](../../../data-types.md) | Role identifier. A system field: it cannot be set, and it is not described in the response of [crm.deal.contact.fields](./crm-deal-contact-fields.md) ||
 || **IS_PRIMARY**
-[`char`](../../../data-types.md) | Indicates whether the binding is primary. Possible values:
+[`char`](../../../data-types.md) | Indicates whether the contact is the primary contact of the deal. A deal has only one primary contact, and its identifier is retained in the deal field `CONTACT_ID`. Possible values:
 - `Y` — yes
 - `N` — no ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400**, **403**
 
 ```json
 {
     "error": "",
-    "error_description": "Not found."
+    "error_description": "Not found"
 }
 ```
 
@@ -323,19 +327,20 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter ownerEntityID is invalid or not defined.` | The provided `id` is less than 1 or not provided at all ||
-|| Empty value | `Access denied.` | The user does not have permission to read deals ||
-|| `ACCESS_DENIED` | `Access denied!` | No permission to read the deal ||
-|| Empty value | `Not found.` | The deal with the provided `id` was not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| 400 | Empty value | `The parameter ownerEntityID is invalid or not defined.` | The provided `id` is less than 1 or not provided at all ||
+|| 400 | Empty value | `Access denied` | The deal with the provided `id` was not found, and the user does not have the "read" access permission for deals ||
+|| 403 | `ACCESS_DENIED` | `Access denied!` | No "read" access permission for the deal ||
+|| 400 | Empty value | `Not found` | The deal with the provided `id` was not found ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-deal-contact-add.md)
 - [{#T}](./crm-deal-contact-delete.md)
-- [{#T}](./crm-deal-contact-fields.md)
 - [{#T}](./crm-deal-contact-items-set.md)
 - [{#T}](./crm-deal-contact-items-delete.md)
+- [{#T}](./crm-deal-contact-fields.md)

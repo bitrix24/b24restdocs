@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "read" and "modify" access permissions for deals
+> Who can execute the method: a user with the "read" and "modify" access permissions for the deal
 
 The method `crm.deal.contact.items.delete` removes all contact associations with the specified deal.
+
+The method unlinks all contacts at once and does not delete the contacts themselves. To remove a single contact, use [crm.deal.contact.delete](./crm-deal-contact-delete.md). After the call, the deal field `CONTACT_ID` is cleared. You can restore the set only by linking the contacts again with [crm.deal.contact.items.set](./crm-deal-contact-items-set.md) — the previous `SORT` and `IS_PRIMARY` values are not retained. How the link works is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -132,7 +134,7 @@ Example of removing all associated contacts from the deal with `id = 1875`.
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.crm.deal.contact.items.delete(bitrix_id=123).response
+        bitrix_response = client.crm.deal.contact.items.delete(bitrix_id=1875).response
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:
@@ -251,14 +253,16 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success.
+
+The method also returns `true` when the deal had no linked contacts ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **400**, **403**
 
 ```json
 {
@@ -272,19 +276,20 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter ownerEntityID is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
-|| Empty value | `Access denied` | The user does not have read access permission for deals ||
-|| `ACCESS_DENIED` | `Access denied!` | No read or modify access permission for the deal ||
-|| Empty value | `Not found` | The deal with the provided `id` was not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| 400 | Empty value | `The parameter ownerEntityID is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
+|| 400 | Empty value | `Access denied` | The deal with the provided `id` was not found, and the user does not have the "read" access permission for deals ||
+|| 403 | `ACCESS_DENIED` | `Access denied!` | No "read" or "modify" access permission for the deal ||
+|| 400 | Empty value | `Not found` | The deal with the provided `id` was not found ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-deal-contact-add.md)
 - [{#T}](./crm-deal-contact-delete.md)
-- [{#T}](./crm-deal-contact-fields.md)
 - [{#T}](./crm-deal-contact-items-get.md)
 - [{#T}](./crm-deal-contact-items-set.md)
+- [{#T}](./crm-deal-contact-fields.md)

@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "modify" access permission for deals
+> Who can execute the method: a user with the "modify" access permission for the deal
 
 The method `crm.deal.contact.items.set` sets a set of contacts associated with the specified deal. Contacts not included in the provided list will be unlinked.
+
+To add or remove a single contact without affecting the others, use [crm.deal.contact.add](./crm-deal-contact-add.md) or [crm.deal.contact.delete](./crm-deal-contact-delete.md). How the link works and how to choose a method is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -28,10 +30,14 @@ The method `crm.deal.contact.items.set` sets a set of contacts associated with t
 Can be obtained using the methods [crm.deal.list](../crm-deal-list.md) or [crm.deal.add](../crm-deal-add.md)
 ||
 || **items***
-[`object[]`](../../../data-types.md) | A set of objects describing the linked contacts to the deal [(detailed description)](#deal_contact_binding) ||
+[`object[]`](../../../data-types.md) | A set of objects describing the contacts linked to the deal [(detailed description)](#deal_contact_binding).
+
+If you pass an empty array `[]`, the method unlinks all contacts from the deal.
+
+The method silently skips elements without a valid `CONTACT_ID`. If the same contact is passed several times, the last occurrence is retained together with its `IS_PRIMARY` and `SORT`, so pass each contact only once ||
 |#
 
-### Structure of the binding object {#deal_contact_binding}
+### Object deal_contact_binding {#deal_contact_binding}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -39,21 +45,25 @@ Can be obtained using the methods [crm.deal.list](../crm-deal-list.md) or [crm.d
 || **Name**
 `type` | **Description** ||
 || **CONTACT_ID***
-[`crm_entity`](../../data-types.md) | Identifier of the contact to be linked to the deal
+[`integer`](../../../data-types.md) | Identifier of the contact to be linked to the deal
 
-The identifier can be obtained using the methods [crm.contact.list](../../contacts/crm-contact-list.md) or [crm.contact.add](../../contacts/crm-contact-add.md) ||
+You can retrieve the identifier using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3`.
+
+The method does not check that the contact exists: a binding to a nonexistent identifier is created as well ||
 || **IS_PRIMARY**
-[`char`](../../../data-types.md) | Indicates whether the binding is primary. Possible values:
+[`char`](../../../data-types.md) | Indicates whether the contact is the primary contact of the deal. Possible values:
 - `Y` — yes
 - `N` — no
 
-If there is no binding with `IS_PRIMARY = Y`, it will be set for the first binding in `items`.
+If no binding has `IS_PRIMARY = Y`, the first contact in `items` with a valid `CONTACT_ID` becomes primary.
 
-If multiple bindings with `IS_PRIMARY = Y` are provided, the first binding with `IS_PRIMARY = Y` will be considered primary ||
+If `IS_PRIMARY = Y` is passed for several bindings, the first of these contacts becomes primary.
+
+The identifier of the primary contact is written to the deal field `CONTACT_ID` ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting index
 
-By default `(i + 1) * 10`, where `i` is the index of the element in the `items` array, starting from 0 ||
+If `SORT` is not provided or is not greater than 0, `(i + 1) * 10` is used, where `i` is the index of the element in the `items` array, starting from 0. Skipped elements without a valid `CONTACT_ID` are also counted in the index ||
 |#
 
 ## Code Examples
@@ -194,10 +204,21 @@ Set the following linked contacts for the deal with `id = 1875`:
 
     try:
         bitrix_response = client.crm.deal.contact.items.set(
-            bitrix_id=123,
+            bitrix_id=1875,
             items=[
-                {"CONTACT_ID": 456, "SORT": 10, "IS_PRIMARY": "Y"},
-                {"CONTACT_ID": 789, "SORT": 20, "IS_PRIMARY": "N"},
+                {
+                    "CONTACT_ID": 55,
+                    "IS_PRIMARY": "Y",
+                    "SORT": 100,
+                },
+                {
+                    "CONTACT_ID": 54,
+                    "SORT": 200,
+                },
+                {
+                    "CONTACT_ID": 56,
+                    "SORT": 400,
+                },
             ],
         ).response
         result = bitrix_response.result
@@ -378,14 +399,16 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | Root element of the response. Contains `true` in case of success.
+
+The method also returns `true` when the passed set matches the current one ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -399,21 +422,22 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter ownerEntityID is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
-|| Empty value | `The parameter items must be array.` | The `items` is not an array ||
-|| Empty value | `Access denied.` | The user does not have permission to modify deals ||
-|| `ACCESS_DENIED` | `Access denied!` | No permission to modify the deal ||
-|| Empty value | `Not found.` | The deal with the provided `id` was not found ||
-|| `ERROR_CORE` | `-` | Internal error while normalizing bindings ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| 400 | Empty value | `The parameter ownerEntityID is invalid or not defined.` | The `id` is less than 1 or not provided at all ||
+|| 400 | Empty value | `The parameter items must be array.` | The `items` parameter is not provided or is not an array ||
+|| 400 | Empty value | `Access denied.` | The deal with the provided `id` was not found, and the user does not have the "modify" access permission for deals ||
+|| 403 | `ACCESS_DENIED` | `Access denied!` | No "modify" access permission for the deal ||
+|| 400 | Empty value | `Not found.` | The deal with the provided `id` was not found ||
+|| 400 | Empty value | `[Contact #1] You don't have permission to view this item.` | The set changes, and the user does not have the "read" access permission for the contact with the identifier `1`. Due to an implementation detail, the method checks the permission for this contact rather than for the contacts from `items` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-deal-contact-add.md)
 - [{#T}](./crm-deal-contact-delete.md)
-- [{#T}](./crm-deal-contact-fields.md)
 - [{#T}](./crm-deal-contact-items-get.md)
 - [{#T}](./crm-deal-contact-items-delete.md)
+- [{#T}](./crm-deal-contact-fields.md)
