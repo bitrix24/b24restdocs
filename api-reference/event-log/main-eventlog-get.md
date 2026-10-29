@@ -298,7 +298,7 @@ HTTP Status: **200**
 {
     "result": {
         "item": {
-            "id": 839,
+            "id": 1250,
             "timestampX": "2026-01-30T15:50:24+03:00",
             "severity": "SECURITY",
             "auditTypeId": "USER_AUTHORIZE",
@@ -327,6 +327,8 @@ HTTP Status: **200**
 ```
 
 ### Returned Data
+
+The fields from `id` to `description` describe a log entry object in `result.item`. The response contains only the fields listed in `select`.
 
 #|
 || **Name**
@@ -382,13 +384,23 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
+#### Request Validation Errors
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `id` | Required field "id" is missing | Add `id` to the request body ||
+|| `id` | This request requires data type "#TYPE#" in field "id" | Pass the numeric identifier of a log entry ||
+|#
+
 #### Access Errors
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | No administrator rights or missing scope main ||
+|| `-` | Access denied | No permission to view the event log or missing scope `main` ||
 |#
 
 #### Data Not Found Errors
@@ -398,6 +410,22 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 #|
 || **Field** | **Error Description** | **How to Fix** ||
 || `id` | Entry with ID = `#ID#` not found | Specify `id` of an existing log entry ||
+|#
+
+#### Select Parameter Errors
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `select` | Unknown field "#FIELD#" found in entity "EventLogDto" | Pass only the fields listed in the `select` parameter description ||
+|#
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as an array of strings, for example `["id","severity"]` ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

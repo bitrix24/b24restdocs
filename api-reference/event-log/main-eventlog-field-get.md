@@ -379,15 +379,46 @@ HTTP Status: **200**
 
 ### Returned Data
 
+Only the description fields listed in `select` are returned in `item`.
+
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
 [`object`](../data-types.md) | Object with response data ||
 || **item**
-[`object`](../data-types.md) | Object with field description. The response structure depends on `select`  ||
+[`object`](../data-types.md) | Object with field description. [Description of properties](#item) ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object item {#item}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name**
+[`string`](../data-types.md) | Field name. Used in `select`, `filter`, and `order` of the [main.eventlog.list](./main-eventlog-list.md) and [main.eventlog.get](./main-eventlog-get.md) methods ||
+|| **type**
+[`string`](../data-types.md) | Field data type, for example `int`, `string`, or `object` ||
+|| **title**
+[`string`](../data-types.md) | Field title for the interface ||
+|| **description**
+[`string`](../data-types.md) or `null` | Field description. `null` means there is no description ||
+|| **validationRules**
+[`array`](../data-types.md) | Validation rules for the field value. An empty array means there are no rules ||
+|| **requiredGroups**
+[`array`](../data-types.md) or `null` | Groups the field is required in. `null` means there are no group restrictions ||
+|| **filterable**
+[`boolean`](../data-types.md) | `true` — the field can be used in `filter` ||
+|| **sortable**
+[`boolean`](../data-types.md) | `true` — the field can be used in `order` and in `cursor.field` ||
+|| **editable**
+[`boolean`](../data-types.md) | `true` — the field value can be changed ||
+|| **multiple**
+[`boolean`](../data-types.md) | `true` — the field stores multiple values ||
+|| **elementType**
+[`string`](../data-types.md) or `null` | Element type for composite fields. `null` means the field is simple ||
 |#
 
 ## Error Handling
@@ -419,7 +450,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | No administrator rights or missing scope main ||
+|| `-` | Access denied | No permission to view the event log or missing scope `main` ||
 |#
 
 #### Data Not Found Errors

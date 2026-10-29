@@ -59,9 +59,25 @@ Available fields are similar to those in `select`.
 - `field` — sorting field, default `id`
 - `order` — sorting direction `ASC` or `DESC`, default `ASC`
 - `value` — starting value, default `0`
-- `limit` — record limit, default `50`
+- `limit` — record limit, default `50`, maximum value `1000`
 ||
 |#
+
+### Polling Loop
+
+The method returns not a stream but a single batch of records, and it does not return a cursor for the next batch in the response. To get the next batch, call the method again and pass the value of the `cursor.field` field from the last retrieved record to `cursor.value`.
+
+1. Send the first request with `cursor.value` set to a known boundary: `0` for `ASC` or the maximum `id` for `DESC`
+2. Take `result.items` from the response. If the array is empty, there are no new records yet — repeat the request with the same `cursor.value` later
+3. If records arrived, take the value of the `cursor.field` field in the last record of `result.items` and pass it to `cursor.value` of the next request
+4. Repeat steps 2–3. Records retrieved in previous batches do not come back: the method selects records strictly greater than `cursor.value` when `order = ASC` and strictly less when `order = DESC`
+
+Loop limitations:
+
+- `cursor.limit` — from `1` to `1000` records per request, `50` by default
+- the field from `cursor.field` cannot be passed in `filter` at the same time, otherwise the method returns `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
+- `cursor.field` must support sorting (the `sortable` flag): `id`, `timestampX`, `auditTypeId`, `userId`, `guestId`. The full list with flags is returned by [main.eventlog.field.list](./main-eventlog-field-list.md)
+- pass other selection conditions in `filter`; they are applied together with the cursor condition
 
 ## Code Examples
 
@@ -381,7 +397,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     		"value": 446313,
     		"order": "ASC",
     	},
-    })
+    }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("main.eventlog.tail: %w", err)
     }
@@ -426,9 +442,8 @@ HTTP Status: **200**
                 "moduleId": "main",
                 "itemId": "1463",
                 "userId": 1463,
-                "description": "{\"userId\":1463,\"applicationId\":\"mobile\",\"applicationPasswordId\":977,\"requestId\":\"1649cc2c8540e12c1f3aeb1e670c13f8\\\"-\\\"0\",\"method\":\"appPassword\"}"
+                "description": "{\"userId\":1463,\"applicationId\":\"mobile\",\"applicationPasswordId\":977,\"requestId\":\"1649cc2c8540e12c1f3aeb1e670c13f8-0\",\"method\":\"appPassword\"}"
             },
-            // ....
             {
                 "id": 446325,
                 "timestampX": "2026-01-30T15:03:02+02:00",
@@ -455,6 +470,8 @@ HTTP Status: **200**
 ```
 
 ### Returned Data
+
+Records in `items` contain the same fields as the records of the [main.eventlog.list](./main-eventlog-list.md) method.
 
 #|
 || **Name**
@@ -518,7 +535,34 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | No administrator rights or missing scope main ||
+|| `-` | Access denied | No permission to view the event log or missing scope `main` ||
+|#
+
+#### Request Validation Errors
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `filter` | This request requires the "Filterable" attribute in field "#FIELD#" of the "EventLogDto" DTO | Filter only by fields with the `filterable` flag ||
+|| `cursor.field` | This request requires the "Sortable" attribute in field "#FIELD#" of the "EventLogDto" DTO | Use only fields with the `sortable` flag for `cursor.field` ||
+|#
+
+#### Select and Filter Parameter Errors
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `select` | Unknown field "#FIELD#" found in entity "EventLogDto" | Pass only the fields listed in the `select` parameter description ||
+|| `filter` | Unknown field "#FIELD#" found in entity "EventLogDto" | Remove the field that does not exist in a log entry from `filter` ||
+|#
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as an array of strings, for example `["id","timestampX"]` ||
 |#
 
 #### Filtering Errors
@@ -527,7 +571,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `filter` | Unable to recognize filter expression `#FILTER#` | Remove the field specified in `cursor.field` from `filter` ||
+|| `filter` | Unable to recognize filter expression `#FILTER#` | Pass conditions in the `["field", "operator", value]` format and remove the field specified in `cursor.field` from `filter` ||
 |#
 
 #### Pagination Errors

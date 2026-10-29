@@ -474,6 +474,8 @@ HTTP Status: **200**
 
 ### Returned Data
 
+Only the description fields listed in `select` are returned in `items`. The fields from `name` to `elementType` describe a single log record field.
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -481,6 +483,30 @@ HTTP Status: **200**
 [`object`](../data-types.md) | Object containing the response data ||
 || **items**
 [`array`](../data-types.md) | Array of objects describing the fields. The response structure depends on `select`  ||
+|| **items[]**
+[`object`](../data-types.md) | Description of a single log record field: name, type, title, and usage flags ||
+|| **items[].name**
+[`string`](../data-types.md) | Field name. Used in `select`, `filter`, and `order` of the [main.eventlog.list](./main-eventlog-list.md) and [main.eventlog.get](./main-eventlog-get.md) methods ||
+|| **items[].type**
+[`string`](../data-types.md) | Field data type, for example `int`, `string`, or `object` ||
+|| **items[].title**
+[`string`](../data-types.md) | Field title for the interface ||
+|| **items[].description**
+[`string`](../data-types.md) or `null` | Field description. `null` means there is no description ||
+|| **items[].validationRules**
+[`array`](../data-types.md) | Validation rules for the field value. An empty array means there are no rules ||
+|| **items[].requiredGroups**
+[`array`](../data-types.md) or `null` | Groups the field is required in. `null` means there are no group restrictions ||
+|| **items[].filterable**
+[`boolean`](../data-types.md) | `true` — the field can be used in `filter` ||
+|| **items[].sortable**
+[`boolean`](../data-types.md) | `true` — the field can be used in `order` and in `cursor.field` ||
+|| **items[].editable**
+[`boolean`](../data-types.md) | `true` — the field value can be changed ||
+|| **items[].multiple**
+[`boolean`](../data-types.md) | `true` — the field stores multiple values ||
+|| **items[].elementType**
+[`string`](../data-types.md) or `null` | Element type for composite fields. `null` means the field is simple ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
@@ -508,7 +534,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | No administrator rights or missing main scope ||
+|| `-` | Access denied | No permission to view the event log or missing scope `main` ||
 |#
 
 #### Errors in the select Parameter

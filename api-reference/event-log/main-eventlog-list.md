@@ -50,7 +50,7 @@ Available fields:
 - `["field", "operator", value]`
 - `["field", value]`, default operator `=`
 
-Available fields are similar to those in `select`.
+Only fields with the `filterable` flag can be used in the filter: `id`, `timestampX`, `auditTypeId`, `userId`, `guestId`. The full list with flags is returned by [main.eventlog.field.list](./main-eventlog-field-list.md).
   
 [More about filtering in REST 3.0](../rest-v3.md#filter) ||
 || **order**
@@ -60,13 +60,15 @@ Available values:
 - `ASC` — ascending
 - `DESC` — descending
 
-Available fields for sorting are similar to those in `select`. ||
+Only fields with the `sortable` flag can be used for sorting ||
 || **pagination**
 [`object`](../data-types.md) | Pagination parameters:  
 - `page` — page number 
-- `limit` — number of entries per page, default `50`
+- `limit` — number of entries per page, default `50`, maximum value `1000`
 - `offset` — record offset. If `page` and `limit` are provided, the offset is calculated automatically ||
 |#
+
+The method returns a single page of entries and does not return the total count. An empty `result.items` array marks the last page. The page limit is from `1` to `1000` entries, `50` by default.
 
 ## Code Examples
 
@@ -134,7 +136,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     }
 
     try {
-      // main.eventlog.list returns a single page (max 50 records). For the whole result set
+      // main.eventlog.list returns a single page (50 records by default). For the whole result set
       // use a list helper: $b24.actions.v3.callList.make() returns every record as one
       // array, $b24.actions.v3.fetchList.make() yields them in chunks (async generator).
       // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
@@ -192,7 +194,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // main.eventlog.list returns a single page (max 50 records). For the whole result set
+          // main.eventlog.list returns a single page (50 records by default). For the whole result set
           // use a list helper: $b24.actions.v3.callList.make() returns every record as one
           // array, $b24.actions.v3.fetchList.make() yields them in chunks (async generator).
           // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
@@ -487,7 +489,7 @@ HTTP Status: **200**
         "items": [
             {
                 "id": 443585,
-                "timestampX": "2026-01-22T02:52:25+02:00",
+                "timestampX": "2026-01-30T02:52:25+02:00",
                 "severity": "SECURITY",
                 "auditTypeId": "USER_AUTHORIZE",
                 "moduleId": "main",
@@ -495,10 +497,9 @@ HTTP Status: **200**
                 "userId": 751,
                 "description": "{\u0022userId\u0022:751,\u0022requestId\u0022:\u00225636cd3e45c524c55a68a19dccb72c3b-0\u0022,\u0022method\u0022:\u0022external\u0022}"
             },
-            // ...
             {
                 "id": 443623,
-                "timestampX": "2026-01-22T05:21:51+02:00",
+                "timestampX": "2026-01-30T05:21:51+02:00",
                 "severity": "SECURITY",
                 "auditTypeId": "USER_AUTHORIZE",
                 "moduleId": "main",
@@ -522,6 +523,8 @@ HTTP Status: **200**
 ```
 
 ### Returned Data
+
+The fields from `id` to `description` describe a single log entry in the `items` array.
 
 #|
 || **Name**
@@ -585,7 +588,43 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | No administrator rights or missing scope main ||
+|| `-` | Access denied | No permission to view the event log or missing scope `main` ||
+|#
+
+#### Request Validation Errors
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `filter` | This request requires the "Filterable" attribute in field "#FIELD#" of the "EventLogDto" DTO | Filter only by fields with the `filterable` flag ||
+|| `order` | This request requires the "Sortable" attribute in field "#FIELD#" of the "EventLogDto" DTO | Sort only by fields with the `sortable` flag ||
+|#
+
+#### Select and Filter Parameter Errors
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `select` | Unknown field "#FIELD#" found in entity "EventLogDto" | Pass only the fields listed in the `select` parameter description ||
+|| `filter` | Unknown field "#FIELD#" found in entity "EventLogDto" | Remove the field that does not exist in a log entry from `filter` ||
+|#
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `select` | Unable to recognize select expression `#SELECT#` | Pass `select` as an array of strings, for example `["id","timestampX"]` ||
+|#
+
+#### Filtering Errors
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `filter` | Unable to recognize filter expression `#FILTER#` | Pass conditions in the `["field", "operator", value]` format and use only fields with the `filterable` flag ||
 |#
 
 #### Pagination Errors
@@ -597,6 +636,15 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 || `limit`
 `offset`
 `page` | Cannot recognize pagination parameter `#PAGE#` | Provide numeric values. `limit` must not be equal to `0` ||
+|#
+
+#### Sorting Errors
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDORDEREXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `order` | Unable to recognize sort expression `#ORDER#` | Pass `order` as an object like `{"id": "ASC"}` and use only fields with the `sortable` flag ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
