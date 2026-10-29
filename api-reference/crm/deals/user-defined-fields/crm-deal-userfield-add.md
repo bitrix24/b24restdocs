@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator
+> Who can execute the method: a user with the "Allow to modify settings" access permission in CRM
 
-The `crm.deal.userfield.add` method creates a new custom field for deals.
+The `crm.deal.userfield.add` method creates a new custom field that appears in all deals in Bitrix24.
 
 ## Method Parameters
 
@@ -49,7 +49,7 @@ An incorrect field in `fields` will be ignored ||
 || **Name**
 `type` | **Description** ||
 || **USER_TYPE_ID***
-[`string`](../../../data-types.md) | Data type of the custom field. Possible values:
+[`string`](../../../data-types.md) | Data type of the custom field. The method [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) returns the list of types available in Bitrix24. Possible values:
 - `string` — string
 - `integer` — integer
 - `double` — number
@@ -69,7 +69,7 @@ An incorrect field in `fields` will be ignored ||
 - [custom field types](../../universal/user-defined-fields/userfield-type.md)
 ||
 || **FIELD_NAME***
-[`string`](../../../data-types.md) | Field code. Unique within deals.
+[`string`](../../../data-types.md) | Field code. Unique within deals. The full field name with the prefix is the key used to write the field value with the method [crm.deal.update](../crm-deal-update.md) and read it with the method [crm.deal.get](../crm-deal-get.md).
 
 The prefix `UF_CRM_` is always added to the code, and the system builds the full field name itself:
 - `MANAGER_NOTE` becomes `UF_CRM_MANAGER_NOTE`
@@ -82,7 +82,9 @@ Allowed characters: `A-Z`, `0-9`, and `_`. Lowercase letters are converted to up
 || **LABEL**
 [`string`](../../../data-types.md) | Default name of the custom field.
 
-The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided for them ||
+The provided value will be set in the following fields: `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE`, if no value is provided for them.
+
+If `LABEL` is not provided, the full field name is used instead, for example, `UF_CRM_MANAGER_NOTE` ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External code ||
 || **LIST_FILTER_LABEL**
@@ -110,15 +112,15 @@ When a `lang_map` type value is provided, the value from `LABEL` will be set for
 
 By default, the value passed in `LABEL` is set for all language identifiers ||
 || **ERROR_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Error message||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Error message. A string and a `lang_map` are processed the same way as for `LIST_FILTER_LABEL` ||
 || **HELP_MESSAGE**
-[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Help||
+[`string`](../../../data-types.md)\|[`lang_map`](../../data-types.md#lang-ids) | Help. A string and a `lang_map` are processed the same way as for `LIST_FILTER_LABEL` ||
 || **MULTIPLE**
-[`boolean`](../../../data-types.md) | Is the field multiple. Possible values:
+[`char`](../../../data-types.md) | Is the field multiple. Possible values:
 - `Y` — yes
 - `N` — no
 
-Fields of type `boolean` cannot be multiple.
+Fields of type `boolean` cannot be multiple: if you pass `MULTIPLE = Y`, the method saves `N` without an error.
 
 By default, `N` ||
 || **MANDATORY**
@@ -128,11 +130,16 @@ By default, `N` ||
 
 By default, `N` ||
 || **SHOW_FILTER**
-[`boolean`](../../../data-types.md) | Show the field in the filter. Possible values:
+[`char`](../../../data-types.md) | Show the field in the filter. Possible values:
 - `Y` — yes
 - `N` — no
 
-By default, `N` ||
+By default, `N`.
+
+The method saves not the passed value but the filter mode that [crm.deal.userfield.get](./crm-deal-userfield-get.md) and [crm.deal.userfield.list](./crm-deal-userfield-list.md) return:
+- for the `employee` type, `Y` is saved as `I` — exact match
+- for other types, `Y` is saved as `E` — mask
+- for the `money`, `url`, `address`, `file` types and [custom types](../../universal/user-defined-fields/userfield-type.md), `N` is always saved ||
 || **SETTINGS**
 [`object`](../../../data-types.md) | Additional field parameters. Each `USER_TYPE_ID` field type has its own set of available settings, described [below](#settings) ||
 || **LIST**
@@ -144,7 +151,7 @@ By default `[]` ||
 
 By default `100` ||
 || **SHOW_IN_LIST**
-[`boolean`](../../../data-types.md) | Show the custom field in the list.
+[`char`](../../../data-types.md) | Show the custom field in the list.
 
 This parameter does not affect anything within `crm`.
 
@@ -152,15 +159,15 @@ Possible values:
 - `Y` — yes
 - `N` — no
 
-By default `N` ||
+By default `Y` ||
 || **EDIT_IN_LIST**
-[`boolean`](../../../data-types.md) | Allow user editing. Possible values:
+[`char`](../../../data-types.md) | Allow user editing. Possible values:
 - `Y` — yes
 - `N` — no
 
 By default `Y`. The value `N` is not supported by all field types within `crm` ||
 || **IS_SEARCHABLE**
-[`boolean`](../../../data-types.md) | Are the field values included in the search.
+[`char`](../../../data-types.md) | Are the field values included in the search.
 
 This parameter does not affect anything within `crm`.
 
@@ -173,7 +180,9 @@ By default `N` ||
 
 ### Parameter SETTINGS {#settings}
 
-Each type of custom field has its own set of additional settings. This method only supports those described below.
+Each type of custom field has its own set of additional settings. The method saves only the settings described below and ignores other `SETTINGS` keys. For the `money`, `url`, `address`, `file`, `employee` types and custom types, the method ignores `SETTINGS` entirely, and the field gets the default type settings.
+
+The method [crm.deal.userfield.get](./crm-deal-userfield-get.md) returns the full set of type settings. This set is described by the method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md).
 
 {% list tabs %}
 
@@ -251,7 +260,7 @@ Each type of custom field has its own set of additional settings. This method on
     }
     ```
     where:
-    - `VALUE` — default value of type `datetime` or `date`
+    - `VALUE` — default value of type `datetime` or `date` in ISO 8601 format, for example, `2026-10-28T10:00:00+01:00`
     - `TYPE` — default value type:
       - `NONE` — do not set a default value
       - `NOW` — use current time/date
@@ -276,10 +285,11 @@ Each type of custom field has its own set of additional settings. This method on
     - `LIST` — list
     - `UI` — autocomplete list
     - `CHECKBOX` — checkboxes
-    - `DIALOG` — entity selection dialog
+    - `DIALOG` — item selection dialog
 
     Default `LIST` ||
-    || **LIST_HEIGHT** | List height. Must be greater than 0.
+    || **LIST_HEIGHT**
+    [`integer`](../../../data-types.md) | List height. Must be greater than 0.
 
     Available only with `DISPLAY = LIST` or `DISPLAY = UI`.
 
@@ -316,7 +326,7 @@ Each type of custom field has its own set of additional settings. This method on
 
     Default `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
+    [`char`](../../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -338,31 +348,31 @@ Each type of custom field has its own set of additional settings. This method on
 
 - crm
 
-    If none of the following options are passed, binding to leads `LEAD = Y` will be enabled by default.
+    Each option is `N` by default. If all options are `N`, Bitrix24 enables binding to leads `LEAD = Y`.
 
     #|
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`](../../../data-types.md) | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
+    [`char`](../../../data-types.md) | Whether binding to [Leads](../../leads/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default `N` ||
     || **CONTACT**
-    [`boolean`](../../../data-types.md) | Whether binding to [Contacts](../index.md) is enabled. Possible values:
+    [`char`](../../../data-types.md) | Whether binding to [Contacts](../../contacts/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default `N` ||
     || **COMPANY**
-    [`boolean`](../../../data-types.md) | Whether binding to [Companies](../../companies/index.md) is enabled. Possible values:
+    [`char`](../../../data-types.md) | Whether binding to [Companies](../../companies/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default `N` ||
     || **DEAL**
-    [`boolean`](../../../data-types.md) | Is the link to [Deals](../index.md) enabled? Possible values:
+    [`char`](../../../data-types.md) | Is the link to [Deals](../index.md) enabled? Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -381,15 +391,15 @@ Each type of custom field has its own set of additional settings. This method on
 
 List elements with an empty or missing `VALUE` will be ignored ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index. Must be greater than or equal to 0.
+[`integer`](../../../data-types.md) | Sort index. A value of `0` or less is not saved; the item gets `500` instead.
 
-By default `0` ||
+By default `500` ||
 || **DEF**
-[`boolean`](../../../data-types.md) | Is the list item a default value? Possible values:
+[`char`](../../../data-types.md) | Is the list item a default value? Possible values:
 - `Y` — yes
 - `N` — no
 
-For a multiple field, several `DEF = Y` are allowed. For non-multiple, the first passed list item will be considered default `DEF = Y`.
+For a multiple field, several `DEF = Y` are allowed. For a non-multiple field, the first passed list item with `DEF = Y` is considered the default.
 
 Default is `N` ||
 || **XML_ID**
@@ -410,7 +420,7 @@ Default is `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Field 'Hello, world!'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","ru":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","ru":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","ru":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","ru":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}}}' \
+    -d '{"fields":{"LABEL":"Field “Hello, world!”","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","ru":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","ru":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","ru":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","ru":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.userfield.add
     ```
 
@@ -420,7 +430,7 @@ Default is `N` ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"LABEL":"Field 'Hello, world!'","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","ru":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","ru":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","ru":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","ru":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"LABEL":"Field “Hello, world!”","USER_TYPE_ID":"string","FIELD_NAME":"HELLO_WORLD","MULTIPLE":"Y","MANDATORY":"Y","SHOW_FILTER":"Y","SETTINGS":{"DEFAULT_VALUE":"Hello, world! Default value","ROWS":3},"SORT":1000,"EDIT_IN_LIST":"Y","LIST_FILTER_LABEL":"Hello, world! Filter","LIST_COLUMN_LABEL":{"en":"Hello, World! Column","ru":"Hello, world! Column","de":"Hallo, Welt! Spalte"},"EDIT_FORM_LABEL":{"en":"Hello, World! Edit","ru":"Hello, world! Edit","de":"Hallo, Welt! Bearbeiten"},"ERROR_MESSAGE":{"en":"Hello, World! Error","ru":"Hello, world! Error","de":"Hallo, Welt! Fehler"},"HELP_MESSAGE":{"en":"Hello, World! Help","ru":"Hello, world! Help","de":"Hallo, Welt! Hilfe"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.deal.userfield.add
     ```
 
@@ -431,7 +441,7 @@ Default is `N` ||
         'crm.deal.userfield.add',
         {
             fields: {
-                LABEL: "Field 'Hello, world!'",
+                LABEL: "Field “Hello, world!”",
                 USER_TYPE_ID: "string",
                 FIELD_NAME: "HELLO_WORLD",
                 MULTIPLE: "Y",
@@ -480,10 +490,10 @@ Default is `N` ||
     ```php
     try {
         $userfieldItemFields = [
-            'FIELD_NAME' => 'Test Field',
+            'FIELD_NAME' => 'TEST_FIELD',
             'USER_TYPE_ID' => 'string',
             'XML_ID' => 'test_field_1',
-            'SORT' => '100',
+            'SORT' => 100,
             'MULTIPLE' => 'N',
             'MANDATORY' => 'N',
             'SHOW_FILTER' => 'Y',
@@ -495,8 +505,6 @@ Default is `N` ||
             'LIST_FILTER_LABEL' => 'Test Field Filter Label',
             'ERROR_MESSAGE' => 'Error occurred',
             'HELP_MESSAGE' => 'Help message for Test Field',
-            'LIST' => '',
-            'SETTINGS' => '',
         ];
 
         $result = $serviceBuilder
@@ -519,7 +527,7 @@ Default is `N` ||
         'crm.deal.userfield.add',
         [
             'fields' => [
-                'LABEL' => "Field 'Hello, world!'",
+                'LABEL' => "Field “Hello, world!”",
                 'USER_TYPE_ID' => "string",
                 'FIELD_NAME' => "HELLO_WORLD",
                 'MULTIPLE' => "Y",
@@ -570,7 +578,7 @@ Default is `N` ||
     try:
         bitrix_response = client.crm.deal.userfield.add(
             fields={
-                "LABEL": "Field 'Hello, world!'",
+                "LABEL": "Field “Hello, world!”",
                 "USER_TYPE_ID": "string",
                 "FIELD_NAME": "HELLO_WORLD",
                 "MULTIPLE": "Y",
@@ -627,7 +635,7 @@ Default is `N` ||
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.deal.userfield.add", b24.Params{
     	"fields": b24.Params{
-    		"LABEL":        "Field 'Hello, world!'",
+    		"LABEL":        "Field “Hello, world!”",
     		"USER_TYPE_ID": "string",
     		"FIELD_NAME":   "HELLO_WORLD",
     		"MULTIPLE":     "Y",
@@ -960,14 +968,19 @@ HTTP status: **400**
 
 ### Possible Error Codes
 
+If both `USER_TYPE_ID` and `FIELD_NAME` are not provided, both errors are returned in one `error_description`, separated by a line break.
+
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `The 'FIELD_NAME' field is not found.` | Either an empty `FIELD_NAME` was provided, or it was not provided at all ||
-|| `ERROR_CORE` | `Field name is too long (more than 50 characters).` | The full field name including the prefix `UF_CRM_` contains more than 50 characters, that is, more than 43 characters were provided in `FIELD_NAME` ||
-|| `ERROR_CORE` | `Field name contains invalid characters. Allowed characters are: A-Z, 0-9 and _.` | The provided `FIELD_NAME` contains characters other than `A-Z`, `0-9`, and `_` ||
-|| Empty value | `The 'USER_TYPE_ID' field is not found.` | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
-|| `ERROR_CORE` | `Incorrect custom type specified.` | The provided `USER_TYPE_ID` does not exist ||
-|| `ERROR_CORE` | `List item with value XML_ID=xml_id already exists.` | The provided `XML_ID` in list items are not unique ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user does not have the "Allow to modify settings" access permission in CRM ||
+|| `400` | Empty value | `The 'FIELD_NAME' field is not found.` | Either an empty `FIELD_NAME` was provided, or it was not provided at all ||
+|| `400` | `ERROR_CORE` | `The field name is too long (exceeds 50 symbols).` | The full field name including the prefix `UF_CRM_` contains more than 50 characters, that is, more than 43 characters were provided in `FIELD_NAME` ||
+|| `400` | `ERROR_CORE` | `The field name contains invalid symbols. Valid symbols are: A-Z, 0-9 and _.` | The provided `FIELD_NAME` contains characters other than `A-Z`, `0-9`, and `_` ||
+|| `400` | Empty value | `The 'USER_TYPE_ID' field is not found.` | Either an empty `USER_TYPE_ID` was provided, or it was not provided at all ||
+|| `400` | `ERROR_CORE` | `The custom type is invalid.` | The provided `USER_TYPE_ID` does not exist ||
+|| `400` | `ERROR_CORE` | `The field UF_CRM_CODE for entity CRM_DEAL already exists.` | A deal field with this `FIELD_NAME` already exists ||
+|| `400` | `ERROR_CORE` | `List element with XML_ID=xml_id already exists.` | The provided `XML_ID` in list items are not unique ||
+|| `500` | `INTERNAL_SERVER_ERROR` | Depends on the cause | Deals already have 1016 custom fields, or the field creation did not complete within `max_execution_time`. For details, see [Errors When Working with Custom Fields](./index.md#errors) ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
@@ -978,3 +991,6 @@ HTTP status: **400**
 - [{#T}](./crm-deal-userfield-get.md)
 - [{#T}](./crm-deal-userfield-list.md)
 - [{#T}](./crm-deal-userfield-delete.md)
+- [{#T}](../crm-deal-update.md)
+- [{#T}](./index.md)
+- [{#T}](../../../../tutorials/field-types/how-to-add-precision-to-user-field.md)

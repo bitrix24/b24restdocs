@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: CRM administrator
+> Who can execute the method: a user with the "Allow to modify settings" access permission in CRM
 
-The method `crm.deal.userfield.delete` removes a custom field from deals.
+The method `crm.deal.userfield.delete` removes a custom deal field together with its values in all deals; the values cannot be restored.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `crm.deal.userfield.delete` removes a custom field from deals.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field associated with the deal.
+[`integer`](../../../data-types.md) | Identifier of the custom deal field.
 
 The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-deal-userfield-add.md) or [crm.deal.userfield.list](./crm-deal-userfield-list.md) ||
 |#
@@ -130,7 +130,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.crm.deal.userfield.delete(bitrix_id=42).response
+        bitrix_response = client.crm.deal.userfield.delete(bitrix_id=432).response
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:
@@ -150,7 +150,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
 
     ```php
     try {
-        $userfieldId = 123; // Replace with the actual userfield ID you want to delete
+        $userfieldId = 432; // Replace with the actual userfield ID you want to delete
         $result = $serviceBuilder
             ->getCRMScope()
             ->dealUserfield()
@@ -266,13 +266,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400` | `ID is not defined or invalid` | The provided `id` is either less than or equal to zero, or not provided at all ||
-|| `403` | `Access denied` | Occurs when:
-- the user does not have administrative rights
-- the user attempts to delete a custom field not associated with deals ||
-|| `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` does not exist ||
-|| `400` | Error deleting `FIELD_NAME` for object `ENTITY_ID` | Unknown error during deletion ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The provided `id` is less than or equal to zero or not provided ||
+|| `400` | Empty value | `Access denied.` | Occurs when:
+- the user does not have the "Allow to modify settings" access permission in CRM
+- the field with the provided `id` belongs to another object, for example, leads ||
+|| `400` | `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found.` | The custom field with the provided `id` does not exist ||
+|| `400` | `ERROR_CORE` | `Error deleting UF_CRM_CODE for CRM_DEAL object.` | Unknown error during deletion ||
+|| `500` | `INTERNAL_SERVER_ERROR` | Depends on the cause | The deletion did not complete within `max_execution_time`. For details, see [Errors When Working with Custom Fields](./index.md#errors) ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -280,6 +281,7 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-deal-userfield-add.md)
+- [{#T}](./crm-deal-userfield-update.md)
 - [{#T}](./crm-deal-userfield-get.md)
 - [{#T}](./crm-deal-userfield-list.md)
-- [{#T}](./crm-deal-userfield-update.md)
+- [{#T}](./index.md)

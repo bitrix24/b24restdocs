@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "modify" access permission for deals.
+> Who can execute the method: a user with the "modify" access permission for the deal and the "read" access permission for the contact being linked
 
 The method `crm.deal.contact.add` adds a contact to the specified deal.
+
+The method works with a single binding and does not affect the other contacts of the deal. To set the entire set of contacts at once, use [crm.deal.contact.items.set](./crm-deal-contact-items-set.md). How the link works and how to choose a method is described in the [section overview](./index.md).
 
 ## Method Parameters
 
@@ -28,22 +30,7 @@ The method `crm.deal.contact.add` adds a contact to the specified deal.
 Can be obtained using the methods [crm.deal.list](../crm-deal-list.md) or [crm.deal.add](../crm-deal-add.md).
 ||
 || **fields***
-[`object`](../../../data-types.md) | Object in the format:
-
-```
-{
-    field_1: value_1,
-    field_2: value_2,
-    ...,
-    field_n: value_n,
-}
-```
-
-where:
-- `field_n` — field name
-- `value_n` — field value
-
-The list of available fields is described in [(detailed description)](#parameter-fields) ||
+[`object`](../../../data-types.md) | Object with the fields of the contact-to-deal binding [(detailed description)](#parameter-fields) ||
 |#
 
 ### Parameter fields {#parameter-fields}
@@ -54,17 +41,23 @@ The list of available fields is described in [(detailed description)](#parameter
 || **Name**
 `type` | **Description** ||
 || **CONTACT_ID***
-[`crm_entity`](../../data-types.md) | Identifier of the contact to be linked to the deal.
+[`integer`](../../../data-types.md) | Identifier of the contact to be linked to the deal.
 
-The identifier can be obtained using the methods [crm.contact.list](../../contacts/crm-contact-list.md) or [crm.contact.add](../../contacts/crm-contact-add.md) ||
+You can retrieve the identifier using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3`.
+
+The method does not check that the contact exists: with a nonexistent identifier, it creates the binding and returns `true` ||
 || **IS_PRIMARY**
-[`char`](../../../data-types.md) | Indicates whether the link is primary. Possible values:
+[`char`](../../../data-types.md) | Indicates whether the contact is the primary contact of the deal. Possible values:
 - `Y` — yes
 - `N` — no
 
-If the parameter is not provided and the deal does not have a primary link, the added link will be marked as primary. ||
+If the deal has no primary contact, the contact being added becomes primary regardless of the value. Otherwise, `Y` makes the contact primary and removes the flag from the previous one, while `N` or an omitted parameter leaves the primary contact unchanged.
+
+The identifier of the primary contact is written to the deal field `CONTACT_ID` ||
 || **SORT**
-[`integer`](../../../data-types.md) | Sort index ||
+[`integer`](../../../data-types.md) | Sort index. Sets the order of the contact in the deal detail form.
+
+If not provided, the maximum `SORT` among the deal bindings plus 10 is used ||
 |#
 
 ## Code Examples
@@ -74,6 +67,8 @@ If the parameter is not provided and the deal does not have a primary link, the 
 Example of adding a deal-contact link, where:
 - deal identifier — `1875`
 - contact identifier — `55`
+- primary contact flag — `IS_PRIMARY = Y`
+- sort index — `1000`
 
 {% list tabs %}
 
@@ -184,8 +179,12 @@ Example of adding a deal-contact link, where:
 
     try:
         bitrix_response = client.crm.deal.contact.add(
-            bitrix_id=123,
-            fields={"CONTACT_ID": 456, "SORT": 10, "IS_PRIMARY": "Y"},
+            bitrix_id=1875,
+            fields={
+                "CONTACT_ID": 55,
+                "IS_PRIMARY": "Y",
+                "SORT": 1000,
+            },
         ).response
         result = bitrix_response.result
         print(result)
@@ -260,12 +259,12 @@ Example of adding a deal-contact link, where:
     $result = CRest::call(
         'crm.deal.contact.add',
         [
-        'id' => 1875,
-        'fields' => [
-            'CONTACT_ID' => 55,
-            'IS_PRIMARY' => 'Y',
-            'SORT' => 1000,
-        ]
+            'id' => 1875,
+            'fields' => [
+                'CONTACT_ID' => 55,
+                'IS_PRIMARY' => 'Y',
+                'SORT' => 1000,
+            ]
         ]
     );
 
@@ -327,7 +326,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../../data-types.md) | Root element of the response. Contains:
 - `true` — link added
-- `false` — link not added, contact already linked to the deal
+- `false` — link not added, contact already linked to the deal. The existing binding does not change, and the passed `IS_PRIMARY` and `SORT` are ignored. To change them, use [crm.deal.contact.items.set](./crm-deal-contact-items-set.md)
 ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
@@ -335,7 +334,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP Status: **400**, **403**
 
 ```json
 {
@@ -349,13 +348,14 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | `The parameter 'ownerEntityID' is invalid or not defined.` | The provided `id` is less than 1 or not provided at all ||
-|| Empty value | `The parameter 'fields' must be array.` | An object was not provided in `fields` ||
-|| Empty value | `Access denied.` | The user does not have permission to modify deals ||
-|| `ACCESS_DENIED` | `Access denied!` | No permission to modify the deal ||
-|| Empty value | `Not found.` | The deal with the provided `id` was not found ||
-|| Empty value | `The parameter 'fields' is not valid.` | Can occur for several reasons:
+|| **Status** | **Code** | **Description** | **Value** ||
+|| 400 | Empty value | `The parameter 'ownerEntityID' is invalid or not defined.` | The provided `id` is less than 1 or not provided at all ||
+|| 400 | Empty value | `The parameter 'fields' must be array.` | The `fields` parameter is not provided or is not an object ||
+|| 400 | Empty value | `Access denied.` | The deal with the provided `id` was not found, and the user does not have the "modify" access permission for deals ||
+|| 403 | `ACCESS_DENIED` | `Access denied!` | No "modify" access permission for the deal ||
+|| 400 | Empty value | `Not found.` | The deal with the provided `id` was not found ||
+|| 400 | Empty value | `[Contact #55] You don't have permission to view this item.` | The user does not have the "read" access permission for the contact from `fields.CONTACT_ID`. The contact identifier is substituted in the text ||
+|| 400 | Empty value | `The parameter 'fields' is not valid.` | Can occur for several reasons:
 - if the required parameter `fields.CONTACT_ID` is not provided
 - if the provided parameter `fields.CONTACT_ID` is less than or equal to 0 ||
 |#
@@ -364,8 +364,9 @@ HTTP Status: **400**
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-deal-contact-delete.md)
-- [{#T}](./crm-deal-contact-fields.md)
 - [{#T}](./crm-deal-contact-items-get.md)
 - [{#T}](./crm-deal-contact-items-set.md)
 - [{#T}](./crm-deal-contact-items-delete.md)
+- [{#T}](./crm-deal-contact-fields.md)

@@ -1,17 +1,17 @@
-title: Contacts for a deal
+title: Linking Deals to Contacts
 href: index.md
 items:
-  - name: Overview of methods 
+  - name: Overview of methods
     href: index.md
-  - name: Add a single contact
+  - name: Add a contact to a deal
     href: crm-deal-contact-add.md
-  - name: Add multiple contacts
-    href: crm-deal-contact-items-set.md
-  - name: Get fields for the deal-contact relationship
-    href: crm-deal-contact-fields.md
-  - name: Get contacts associated with the deal
-    href: crm-deal-contact-items-get.md
   - name: Remove a contact from the specified deal
     href: crm-deal-contact-delete.md
+  - name: Get the contacts associated with the specified deal
+    href: crm-deal-contact-items-get.md
+  - name: Set the contacts associated with the specified deal
+    href: crm-deal-contact-items-set.md
   - name: Remove a set of contacts associated with the specified deal
     href: crm-deal-contact-items-delete.md
+  - name: Get fields for the deal-contact relationship
+    href: crm-deal-contact-fields.md

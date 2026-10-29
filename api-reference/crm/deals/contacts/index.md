@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-The group of methods `crm.deal.contact.*` links contacts to a deal and removes that link. A deal can have several linked contacts, one of which is considered primary. The methods `crm.deal.contact.*` work with a single contact, and the methods `crm.deal.contact.items.*` work with the entire set of contacts at once.
+The group of methods `crm.deal.contact.*` links contacts to a [deal](../index.md) and removes that link. A deal can have several linked contacts, one of which is considered primary. The methods `crm.deal.contact.*` work with a single contact, and the methods `crm.deal.contact.items.*` work with the entire set of contacts at once.
+
+The group is current. Development of the main `crm.deal.*` methods has been discontinued in favor of `crm.item.*`, but the contact linking methods continue to work and are not marked as deprecated.
 
 > Quick navigation: [all methods](#all-methods)
 
@@ -19,24 +21,27 @@ The link is described by three fields, and their composition is returned by the 
 
 #|
 || **Field** | **Type** | **Description** ||
-|| `CONTACT_ID` | [`integer`](../../../data-types.md) | Identifier of the contact, a required field. You can retrieve it using the method [crm.contact.list](../../contacts/crm-contact-list.md) ||
-|| `IS_PRIMARY` | [`char`](../../../data-types.md) | Indicates the primary contact of the deal, `Y` or `N`. The first linked contact becomes the primary one, as does the contact for which `Y` is explicitly passed ||
-|| `SORT` | [`integer`](../../../data-types.md) | Order of the contact in the deal detail form ||
+|| `CONTACT_ID` | [`integer`](../../../data-types.md) | Identifier of the contact, a required field. You can retrieve it using the method [crm.item.list](../../universal/crm-item-list.md) with `entityTypeId = 3` ||
+|| `IS_PRIMARY` | [`char`](../../../data-types.md) | Indicates the primary contact of the deal, `Y` or `N`. A deal has only one primary contact, and its identifier is retained in the deal field `CONTACT_ID` ||
+|| `SORT` | [`integer`](../../../data-types.md) | Order of the contact in the deal detail form. If you do not pass it, Bitrix24 sets the value itself — the rule differs between [crm.deal.contact.add](./crm-deal-contact-add.md) and [crm.deal.contact.items.set](./crm-deal-contact-items-set.md) ||
 |#
 
-A deal has only one company. Its identifier is retained in the deal field `COMPANY_ID` and is changed using the method [crm.deal.update](../crm-deal-update.md). A separate group of methods is needed only for contacts, because a deal can have several of them.
+A deal has only one company. Its identifier is retained in the field `companyId` — in the `crm.deal.*` methods it is `COMPANY_ID` — and is changed using the method [crm.item.update](../../universal/crm-item-update.md).
 
-## How to Retrieve and Change the Set of Contacts
+## How to Choose a Method
 
-The multiple field `CONTACT_IDS` is available in the methods [crm.deal.add](../crm-deal-add.md) and [crm.deal.update](../crm-deal-update.md), but it is not returned by the methods [crm.deal.get](../crm-deal-get.md) and [crm.deal.list](../crm-deal-list.md). To read the contacts of an existing deal, use the method [crm.deal.contact.items.get](./crm-deal-contact-items-get.md).
-
-The methods change the set of contacts in different ways, and this determines which one to choose:
-
-- [crm.deal.contact.add](./crm-deal-contact-add.md) adds a single contact to those already linked. If the contact is already linked to the deal, the method returns `false` and changes nothing
-- [crm.deal.contact.items.set](./crm-deal-contact-items-set.md) replaces the entire set: contacts that are not in the list you pass are unlinked from the deal
-- [crm.deal.contact.delete](./crm-deal-contact-delete.md) removes a single contact from the deal, and [crm.deal.contact.items.delete](./crm-deal-contact-items-delete.md) removes all of them at once
-
-The link can also be changed using the universal method [crm.item.update](../../universal/crm-item-update.md) with `entityTypeId = 2` — there the field is named `contactIds`.
+#|
+|| **If You Need To** | **Open the Method** ||
+|| Add a single contact without affecting the others | [crm.deal.contact.add](./crm-deal-contact-add.md) ||
+|| Remove a single contact without affecting the others | [crm.deal.contact.delete](./crm-deal-contact-delete.md) ||
+|| Retrieve the deal contacts with their order and the primary flag | [crm.deal.contact.items.get](./crm-deal-contact-items-get.md). The methods [crm.deal.get](../crm-deal-get.md) and [crm.deal.list](../crm-deal-list.md) do not return the set of contacts ||
+|| Retrieve only the identifiers of the deal contacts | [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 2`, the `contactIds` field ||
+|| Replace the entire set of contacts and set `SORT` and the primary contact | [crm.deal.contact.items.set](./crm-deal-contact-items-set.md). Contacts that are not in the list you pass are unlinked ||
+|| Change `SORT` or the primary contact for contacts that are already linked | [crm.deal.contact.items.set](./crm-deal-contact-items-set.md) — read the set using the method [crm.deal.contact.items.get](./crm-deal-contact-items-get.md) and pass it in full with the new values ||
+|| Replace the set of contacts together with other deal fields | [crm.item.update](../../universal/crm-item-update.md) with `entityTypeId = 2` and the `contactIds` field. `SORT` is determined by the position of the identifier in the array, and the first contact becomes the primary one ||
+|| Unlink all contacts from the deal | [crm.deal.contact.items.delete](./crm-deal-contact-items-delete.md) ||
+|| Retrieve the description of the link fields | [crm.deal.contact.fields](./crm-deal-contact-fields.md) ||
+|#
 
 ## Benefits of Linking Deals to Contacts
 
@@ -56,7 +61,7 @@ The link can also be changed using the universal method [crm.item.update](../../
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method — changing the set of contacts requires the "modify" access permission for deals, and reading it requires the "read" permission
+> Who can execute the method: depending on the method — reading the set of contacts requires the "read" access permission for the deal, and changing it requires the "modify" access permission for the deal. The exact permissions are listed on the method pages
 
 #|
 || **Method** | **Description** ||
