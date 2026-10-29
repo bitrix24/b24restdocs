@@ -62,15 +62,35 @@ To work with documents in the Document Generator REST scenario:
 
 **Roles and Permissions.** Access permissions determine who can modify templates, documents, and settings of the Document Generator. To configure roles, use the group of methods [documentgenerator.role.*](./role/index.md).
 
-## Feature of Document Conversion to PDF
+## Access Permissions {#access}
 
-The conversion of a file to PDF is performed asynchronously. The `pdfUrl` field is returned in the response only after the PDF has been generated, so it is usually absent immediately after the document is created. To check the conversion result again, call the [documentgenerator.document.get](./document-generator-document-get.md) method.
+Permissions for the Document Generator are configured using the [documentgenerator.role.*](./role/index.md) methods. Each method checks its own permission:
+
+- document methods `documentgenerator.document.*` — the permission to view documents. In addition, [documentgenerator.document.add](./document-generator-document-add.md) checks the permission to create documents from the template, and `update`, `delete`, `getfields`, and `enablepublicurl` check the permission to modify the specific document
+- template, numerator, and region methods — the permission to modify templates, including for the `get` and `list` methods
+- role methods — the permission to modify the generator settings. In addition, access permission management must be available on the plan
+
+## Result of Document Methods
+
+The [documentgenerator.document.add](./document-generator-document-add.md), [documentgenerator.document.update](./document-generator-document-update.md), and [documentgenerator.document.get](./document-generator-document-get.md) methods return the `document` object in `result`. The object fields and the conditions under which they are returned are described on the [documentgenerator.document.get](./document-generator-document-get.md#document) page.
+
+The conversion of a document to PDF is performed asynchronously. The `pdfUrl` field is returned in the response only after the PDF has been generated, so it is usually absent immediately after the document is created. To check the conversion result again, call the [documentgenerator.document.get](./document-generator-document-get.md) method.
+
+## Common Errors
+
+An error is returned in the `error` and `error_description` fields. Most errors in this section have no code: the `error` field contains `0`, and `error_description` describes the reason. Common reasons:
+
+- a permission is missing — for example, `You do not have permissions to view documents` or `You do not have permissions to modify templates`
+- the object is not found — for example, `Document was not found` or `Template was not found`
+- no access to a specific document — an error with the `DOCGEN_ACCESS_ERROR` code and the `Access denied` text
+
+The full list of a method's errors is in the "Error Handling" section on its page.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`documentgenerator`](../scopes/permissions.md)
 >
-> Who can execute methods: depending on the method
+> Who can execute methods: depends on the method group, see the [Access Permissions](#access) section for details
 
 ### Documents
 

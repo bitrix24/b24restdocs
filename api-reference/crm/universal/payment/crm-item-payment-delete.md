@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the payment order
+> Who can execute the method: a user with permission to modify the order the payment belongs to
 
-Deletes a payment.
+The `crm.item.payment.delete` method deletes an unpaid payment. A paid payment cannot be deleted: first remove the paid mark using the [crm.item.payment.unpay](./crm-item-payment-unpay.md) method.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ Deletes a payment.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier ||
+[`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier. You can retrieve the payment identifiers of a CRM object using the [crm.item.payment.list](./crm-item-payment-list.md) method ||
 |#
 
 ## Code Examples
@@ -225,7 +225,7 @@ Deletes a payment.
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -249,7 +249,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../api-reference/data-types.md) | Result of payment deletion  ||
+[`boolean`](../../../../api-reference/data-types.md) | `true` if the payment has been deleted ||
 || **time**
 [`time`](../../../../api-reference/data-types.md) | Information about the request execution time ||
 |#
@@ -260,8 +260,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Insufficient permissions"
+    "error": "SALE_PAYMENT_DELETE_EXIST_PAID",
+    "error_description": "Partial payment done. Cancel payment"
 }
 ```
 
@@ -270,16 +270,20 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Payment not found or access denied ||
-|| `100` | Parameter id not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `SALE_PAYMENT_DELETE_EXIST_PAID` | Partial payment done. Cancel payment | The payment has been made. First remove the paid status using the [crm.item.payment.unpay](./crm-item-payment-unpay.md) method ||
+|| `400` | `0` | Payment has not been found | The payment with the passed `id` was not found ||
+|| `400` | `ACCESS_DENIED` | Access denied | No permission to modify the order the payment belongs to ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
 |#
 
-{% include notitle [System errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./products-in-payment/index.md)
+- [{#T}](./delivery-in-payment/index.md)
 - [{#T}](./crm-item-payment-update.md)
 - [{#T}](./crm-item-payment-get.md)
 - [{#T}](./crm-item-payment-list.md)

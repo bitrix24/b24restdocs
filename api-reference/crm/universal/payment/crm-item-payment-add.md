@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: requires access permission to modify the CRM object to which the payment is added.
 
-Creates a payment for a CRM object.
+The `crm.item.payment.add` method creates an empty payment with the amount `0` in a deal or invoice. Products and delivery are added to the payment by the [crm.item.payment.product.add](./products-in-payment/crm-item-payment-product-add.md) and [crm.item.payment.delivery.add](./delivery-in-payment/crm-item-payment-delivery-add.md) methods, and the payment amount is recalculated automatically.
 
 ## Method Parameters
 
@@ -23,9 +23,18 @@ Creates a payment for a CRM object.
 || **Name**
 `type` | **Description** ||
 || **entityId***
-[`integer`](../../../../api-reference/data-types.md) | Identifier of the CRM object. ||
+[`integer`](../../../../api-reference/data-types.md) | Identifier of the deal or invoice. You can retrieve the identifier using the [crm.item.list](../crm-item-list.md) method ||
 || **entityTypeId***
-[`integer`](../../../../api-reference/data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type). ||
+[`integer`](../../../../api-reference/data-types.md) | Identifier of the [CRM object type](../../data-types.md#object_type). Payments support only two types:
+- `2` — deal
+- `31` — invoice
+
+For other types, such as a lead `1` or a smart process, the method returns the `Cannot create payment for this entity.` error ||
+|| **fields**
+[`object`](../../../../api-reference/data-types.md) | Fields of the new payment. One key is supported:
+- `paySystemId` — identifier of the payment system. You can retrieve the list of payment systems using the [sale.paysystem.list](../../../pay-system/sale-pay-system-list.md) method
+
+If the parameter is not passed, the payment gets the default payment system. The method ignores other keys ||
 |#
 
 ## Code Examples
@@ -234,7 +243,7 @@ Creates a payment for a CRM object.
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -269,8 +278,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Entity with identifier №13123000 does not exist"
+    "error": "0",
+    "error_description": "Cannot create payment for this entity."
 }
 ```
 
@@ -279,18 +288,23 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Access denied ||
-|| `0` | Invalid CRM object type  ||
-|| `0` | The provided CRM object was not found ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Cannot create payment for this entity | The passed `entityTypeId` does not support payments. Payments are supported only for deals `2` and invoices `31` ||
+|| `400` | `0` | Entity ID #`entityId` does not exist | The CRM object with the passed `entityId` was not found ||
+|| `400` | `0` | You cannot create more payments on your current plan | The payment limit of the Bitrix24 plan has been reached ||
+|| `400` | `ACCESS_DENIED` | Access denied | No permission to modify the CRM object, or a nonexistent `entityTypeId` was passed ||
+|| `400` | `100` | Could not find value for parameter {`parameter name`} | The required parameter `entityId` or `entityTypeId` was not provided ||
 |#
 
-{% include notitle [System errors](../../../../_includes/system-errors.md) %}
+The method returns the code `0` for several different errors. To determine the cause, check the text in `error_description`.
+
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./products-in-payment/index.md)
+- [{#T}](./delivery-in-payment/index.md)
 - [{#T}](./crm-item-payment-delete.md)
 - [{#T}](./crm-item-payment-get.md)
 - [{#T}](./crm-item-payment-list.md)

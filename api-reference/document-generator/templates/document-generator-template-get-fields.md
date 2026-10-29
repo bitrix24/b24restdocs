@@ -371,8 +371,8 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Bitrix\DocumentGenerator\Template constructor must be public | Required parameter `id` not provided ||
-|| `400` | `0` | Template not found | Template with the specified `id` not found ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `id` not provided ||
+|| `400` | `0` | Template was not found | Template with the specified `id` not found ||
 || `400` | `0` | Cannot get fields from deleted template | Cannot retrieve fields from a deleted template ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient permissions to work with templates ||
 |#

@@ -21,8 +21,8 @@ A universal activity is always created in the timeline of a specific CRM entity.
 
 **CRM entity.** The link is defined by the `ownerTypeId` and `ownerId` parameters.
 
-- `ownerTypeId` stores the type of the CRM object, for example `2` for a deal. You can find the type values in the [CRM Object Types](../../../data-types.md#object_type) reference.
-- `ownerId` stores the identifier of the CRM entity. It is returned by the [crm.item.list](../../../universal/crm-item-list.md) and [crm.item.add](../../../universal/crm-item-add.md) methods.
+- `ownerTypeId` stores the type of the CRM object, for example `2` for a deal. You can find the type values in the [CRM Object Types](../../../data-types.md#object_type) reference
+- `ownerId` stores the identifier of the CRM entity. It is returned by the [crm.item.list](../../../universal/crm-item-list.md) and [crm.item.add](../../../universal/crm-item-add.md) methods
 
 **Another timeline activity.** A universal activity can be linked to an existing activity through the `parentActivityId` parameter of the [crm.activity.todo.add](./crm-activity-todo-add.md) method.
 
@@ -30,11 +30,11 @@ A universal activity is always created in the timeline of a specific CRM entity.
 
 ## How to Work with Universal Activities
 
-1. Identify the CRM entity whose timeline will store the activity, and pass its type and identifier in `ownerTypeId` and `ownerId`.
-2. Create the activity using the [crm.activity.todo.add](./crm-activity-todo-add.md) method. The `deadline` is required.
-3. Retrieve the activity using the [crm.activity.get](../activity-base/crm-activity-get.md) method, or the list of activities of the entity using the [crm.activity.list](../activity-base/crm-activity-list.md) method with the filter `PROVIDER_ID` = `CRM_TODO`.
-4. Update the entire activity using the [crm.activity.todo.update](./crm-activity-todo-update.md) method, or a single property using one of the `updateColor`, `updateDeadline`, `updateDescription`, or `updateResponsibleUser` methods.
-5. Delete the activity using the [crm.activity.delete](../activity-base/crm-activity-delete.md) method.
+1. Identify the CRM entity whose timeline will store the activity, and pass its type and identifier in `ownerTypeId` and `ownerId`
+2. Create the activity using the [crm.activity.todo.add](./crm-activity-todo-add.md) method. The `deadline` is required
+3. Retrieve the activity using the [crm.activity.get](../activity-base/crm-activity-get.md) method, or the list of activities of the entity using the [crm.activity.list](../activity-base/crm-activity-list.md) method with the filter `PROVIDER_ID` = `CRM_TODO`
+4. Update the entire activity using the [crm.activity.todo.update](./crm-activity-todo-update.md) method, or a single property using one of the `updateColor`, `updateDeadline`, `updateDescription`, or `updateResponsibleUser` methods
+5. Delete the activity using the [crm.activity.delete](../activity-base/crm-activity-delete.md) method
 
 ## Which Update Method to Choose
 
@@ -46,6 +46,30 @@ A universal activity is always created in the timeline of a specific CRM entity.
 || Change only the color of the activity in the timeline | [crm.activity.todo.updateColor](./crm-activity-todo-update-color.md) ||
 || Change only the responsible user | [crm.activity.todo.updateResponsibleUser](./crm-activity-todo-update-responsible-user.md) ||
 |#
+
+## Limitations and Specifics
+
+- Only an open activity can be updated. For a closed activity, the update methods return an error
+- The `crm.activity.todo.update` method overwrites the activity: if you do not pass `title`, `description`, or `pingOffsets`, the title and description become empty, and the reminders are deleted
+- If you pass `parentActivityId` when creating an activity, the previous activity is closed
+- The deadline is passed in ISO 8601 format, for example `2026-11-03T15:00:00+01:00`
+- The `colorId` color is passed as a string: `default` or a value from `1` to `7`
+
+## How to Read Activity Properties
+
+The `crm.activity.todo.*` methods return only the activity identifier. Read the activity properties using the [crm.activity.get](../activity-base/crm-activity-get.md) method. The parameters of the `crm.activity.todo.*` methods are stored in the activity fields:
+
+#|
+|| **Parameter** | **Field in the crm.activity.get Response** ||
+|| `title` | `SUBJECT` ||
+|| `description` | `DESCRIPTION` ||
+|| `deadline` | `DEADLINE` ||
+|| `responsibleId` | `RESPONSIBLE_ID` ||
+|| `parentActivityId` | `ASSOCIATED_ENTITY_ID` ||
+|| `colorId` | `SETTINGS.COLOR`, if the color is set ||
+|#
+
+For a universal activity, `PROVIDER_ID` = `CRM_TODO`. The `crm.activity.get` method does not return the `pingOffsets` reminders.
 
 ## Overview of Methods {#all-methods}
 

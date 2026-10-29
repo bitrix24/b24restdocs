@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for the CRM object associated with the payment
+> Who can execute the method: a user with "edit" access permission for the CRM object associated with the payment. The payment must not be paid
 
-The method `crm.item.payment.product.setQuantity` changes the product quantity in a payment product item.
+The method `crm.item.payment.product.setQuantity` changes the product quantity in a payment product item. The payment amount is recalculated automatically.
 
 ## Method Parameters
 
@@ -23,13 +23,9 @@ The method `crm.item.payment.product.setQuantity` changes the product quantity i
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the product item in the payment.
-
-It can be obtained using the method [`crm.item.payment.product.list`](./crm-item-payment-product-list.md) ||
+[`integer`](../../../../data-types.md) | Identifier of the product item in the payment. You can retrieve it using the [crm.item.payment.product.list](./crm-item-payment-product-list.md) method — the `id` field in the response ||
 || **quantity***
-[`integer`](../../../../data-types.md) | New product quantity.
-
-The value must be greater than zero, and the total quantity of this product item across all payments must not exceed the quantity in the original product row ||
+[`integer`](../../../../data-types.md) | New product quantity — an integer greater than `0`. The total quantity of this product in all payments of the order must not exceed the quantity in the deal or invoice product row ||
 |#
 
 ## Code Examples
@@ -238,7 +234,7 @@ The value must be greater than zero, and the total quantity of this product item
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -262,7 +258,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation ||
+[`boolean`](../../../../data-types.md) | `true` if the quantity was changed ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
@@ -273,8 +269,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Payable item has not been found"
+    "error": "0",
+    "error_description": "Insufficient product stock."
 }
 ```
 
@@ -283,21 +279,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Product item not found ||
-|| `ACCESS_DENIED` | Access denied: the user does not have permission to edit the payment, or the payment is already marked as paid ||
-|| `0` | Product quantity must be greater than zero ||
-|| `0` | Insufficient product quantity to add to payment ||
-|| `0` | Internal error when changing the product quantity ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Product quantity must be greater than zero | A value of `0` or less was passed in `quantity` ||
+|| `400` | `0` | Insufficient product stock | The total quantity of this product in all payments would exceed the quantity in the product row of the CRM object ||
+|| `400` | `0` | Payable item has not been found | The product item with the passed `id` was not found in payments ||
+|| `400` | `ACCESS_DENIED` | Access denied | The payment is already paid, or the user does not have permission to modify the payment. To change the contents of a paid payment, first call [crm.item.payment.unpay](../crm-item-payment-unpay.md) ||
+|| `400` | `0` | Set quantity internal error | Internal error while changing the quantity ||
+|| `400` | `100` | Could not find value for parameter {`parameter name`} | The required parameter `id` or `quantity` was not provided ||
 |#
 
-### Error Handling Features
+The method returns code `0` for several different errors. To determine the cause, check the text in `error_description`.
 
-For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
-
-{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

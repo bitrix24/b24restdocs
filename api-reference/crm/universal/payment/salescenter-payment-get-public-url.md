@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`salescenter`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: any user. A webhook or application requires the `salescenter` scope
 
-This method generates a link for a specific payment. The payment method selected will be passed to this particular payment.
+The `salescenter.payment.getPublicUrl` method returns a public link to the payment page, a short link, and a QR code with the short link. The payment method that the client selects on the page is written to this payment.
 
 ## Method Parameters
 
@@ -23,7 +23,26 @@ This method generates a link for a specific payment. The payment method selected
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier ||
+[`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier. You can retrieve the payment identifiers of a CRM object using the [crm.item.payment.list](./crm-item-payment-list.md) method ||
+|| **options**
+[`object`](../../../data-types.md) | QR code settings. One key is supported: `qr` [(detailed description)](#options) ||
+|#
+
+### Parameter options.qr {#options}
+
+If `options.qr` is not passed, the QR code is generated at 380 × 380 pixels without padding.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **w**
+[`integer`](../../../data-types.md) | Image width in pixels ||
+|| **h**
+[`integer`](../../../data-types.md) | Image height in pixels ||
+|| **p**
+[`integer`](../../../data-types.md) | Padding around the QR code in pixels ||
+|| **wq**
+[`integer`](../../../data-types.md) | Width of the quiet zone around the QR code in modules ||
 |#
 
 ## Code Examples
@@ -245,7 +264,7 @@ This method generates a link for a specific payment. The payment method selected
 
 {% endlist %}
 
-## Successful Response
+## Response Handling
 
 HTTP status: **200**
 
@@ -275,17 +294,28 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response ||
-|| **result.payment**
-[`object`](../../../data-types.md) | Object containing payment link data ||
-|| **result.payment.url**
-[`string`](../../../data-types.md) | Payment link ||
-|| **result.payment.shortUrl**
-[`string`](../../../data-types.md) | Short payment link ||
-|| **result.payment.qr**
-[`string`](../../../data-types.md) | QR code containing the short payment link ||
+[`object`](../../../data-types.md) | Root element of the response. Usually contains the `payment` key.
+
+If a site is connected to CRM but its phone number is not confirmed, the link cannot be retrieved. In this case, instead of `payment`, the method returns two keys:
+- `connectedSiteId` — identifier of the connected site
+- `isPhoneConfirmed` — whether the phone number is confirmed, `false` in this case ||
+|| **payment**
+[`object`](../../../data-types.md) | Payment link data [(detailed description)](#payment) ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
+|#
+
+#### Object payment {#payment}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **url**
+[`string`](../../../data-types.md) | Full link to the payment page ||
+|| **shortUrl**
+[`string`](../../../data-types.md) | Short link to the payment page ||
+|| **qr**
+[`string`](../../../data-types.md) | QR code with the short link: a PNG image encoded in base64 without the `data:` prefix. To display it in a browser, add the `data:image/png;base64,` prefix ||
 |#
 
 ## Error Handling
@@ -304,16 +334,24 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `200640400001` | Payment not found ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200640400001` | payment is not exists | The payment with the passed `id` was not found ||
+|| `400` | `0` | Parameter id must be integer | The value passed in `id` is not a number ||
+|| `400` | `0` | Public url is not available | The public payment page is not available in this Bitrix24 ||
+|| `400` | `0` | Error retrieving url info | Failed to generate the payment link ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `salescenter` scope ||
 |#
 
-{% include notitle [system errors](../../../../_includes/system-errors.md) %}
+The method returns the code `0` for several different errors. To determine the cause, check the text in `error_description`.
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./products-in-payment/index.md)
+- [{#T}](./delivery-in-payment/index.md)
 - [{#T}](./crm-item-payment-add.md)
 - [{#T}](./crm-item-payment-update.md)
 - [{#T}](./crm-item-payment-get.md)

@@ -501,7 +501,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Template not found"
+    "error_description": "Template was not found."
 }
 ```
 
@@ -511,9 +511,9 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Bitrix\DocumentGenerator\Template constructor must be public | Required parameter `id` not provided ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `id` not provided ||
 || `400` | `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
-|| `400` | `0` | Template not found | Template with the specified `id` not found ||
+|| `400` | `0` | Template was not found | Template with the specified `id` not found ||
 || `400` | `TIMEZONE_INVALID` | Timezone must be a canonical IANA identifier | The `timezone` field contains a value that is not an IANA time zone identifier, for example the offset `+01:00` ||
 || `400` | `0` | You do not have permissions to modify this template | Insufficient rights to modify the specified template ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient rights to modify templates ||

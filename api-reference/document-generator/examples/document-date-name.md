@@ -238,7 +238,7 @@ The method returns the data of the created document. The `values` field returns 
 ## If the Method Returns an Error
 
 - `Empty required parameter "value"` — the required parameter `value` is not provided
-- `Template not found` — no template exists with the specified `templateId`
+- `Template was not found` — no template exists with the specified `templateId`
 
 The date is displayed as is — check that it is passed in `values` in Atom format and that `TYPE` = `DATE` is specified for this field in `fields`.
 

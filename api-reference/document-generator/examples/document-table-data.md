@@ -202,7 +202,7 @@ The response does not contain the expanded table rows: it only confirms that the
 ## If the Method Returns an Error
 
 - `Empty required parameter "value"` — the required parameter `value` is not provided
-- `Template not found` — no template exists with the specified `templateId`
+- `Template was not found` — no template exists with the specified `templateId`
 
 The table has one row instead of several — `ArrayDataProvider` is not specified in `fields['Table']['PROVIDER']`, so the array was processed as a regular value.
 

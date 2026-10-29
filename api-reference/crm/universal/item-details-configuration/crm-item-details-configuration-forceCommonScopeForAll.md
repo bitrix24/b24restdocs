@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: Administrator
 
-The method `crm.item.details.configuration.forceCommonScopeForAll` enforces a common detail form for all users, removing their personal detail form settings.
+The method `crm.item.details.configuration.forceCommonScopeForAll` deletes the personal detail form configurations of all users, after which everyone sees the common configuration. The method does not accept the `userId` and `scope` parameters: if they are passed, they are ignored.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}
 
@@ -299,7 +299,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response. Returns `true` on success ||
+[`boolean`](../../../data-types.md) | Root element of the response. Returns `true` if the personal configurations are deleted. The method also returns `true` when there were no personal configurations ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -311,7 +311,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "Parameter 'entityTypeId' is not defined"
+    "error_description": "Parameter 'entityTypeID' is not defined"
 }
 ```
 
@@ -320,10 +320,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` not provided ||
-|| Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
-|| Empty value | Access denied. | The user does not have administrative rights ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Parameter 'entityTypeID' is not defined | The required parameter `entityTypeId` is not passed, or a non-existent CRM object type is passed ||
+|| `400` | Empty value | The entity type '`entityTypeName`' is not supported in current context. | The CRM object type does not support detail form configuration, for example `ACTIVITY` ||
+|| `400` | Empty value | Access denied. | The user does not have permission to configure the common view of the detail form ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

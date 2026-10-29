@@ -292,10 +292,10 @@ HTTP Status: **200**
                 "stampsEnabled": true,
                 "CurrentDate": "2026-03-18T00:00:00+02:00",
                 "ClientName": "Ltd. Daisy",
-                "ClientPhone": "+1 999 123-45-67",
+                "ClientPhone": "+49 30 12345678",
                 "Total": "125000",
                 "Comment": "Payment within 5 business days after signing",
-                "UserName": "John Smith"
+                "UserName": "Klaus Weber"
             },
             "publicUrlView": {
                 "time": "2026-03-19T15:08:05+02:00"
@@ -352,7 +352,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../data-types.md) | Document ID ||
+[`string`](../data-types.md) | Document ID. In the [documentgenerator.document.add](./document-generator-document-add.md) response, it is returned as a number ||
 || **title**
 [`string`](../data-types.md) | Document title ||
 || **number**
@@ -362,15 +362,9 @@ HTTP Status: **200**
 || **provider**
 [`string`](../data-types.md) | Data provider class ||
 || **value**
-[`string`](../data-types.md) | External object identifier ||
+[`string`](../data-types.md) | External identifier of the object for which the document was created ||
 || **values**
 [`object`](../data-types.md) | Document field values [(detailed description)](#document-values) ||
-|| **fileId**
-[`integer`](../data-types.md) | DOCX file ID of the document ||
-|| **imageId**
-[`integer`](../data-types.md) | Document image file ID ||
-|| **pdfId**
-[`integer`](../data-types.md) | PDF file ID of the document ||
 || **stampsEnabled**
 [`boolean`](../data-types.md) | Indicates if stamps and signatures are enabled ||
 || **downloadUrl**
@@ -378,41 +372,51 @@ HTTP Status: **200**
 || **downloadUrlMachine**
 [`string`](../data-types.md) | Link to download DOCX for the application ||
 || **pdfUrl**
-[`string`](../data-types.md) | Link to download PDF if PDF has already been generated ||
+[`string`](../data-types.md) | Link to download PDF.
+
+The field is returned only when the PDF has already been generated. Conversion is asynchronous, so the field is usually absent immediately after the document is created or updated ||
 || **pdfUrlMachine**
-[`string`](../data-types.md) | Link to download PDF for the application ||
+[`string`](../data-types.md) | Link to download PDF for the application. Returned together with `pdfUrl` ||
 || **printUrl**
-[`string`](../data-types.md) | Link to view or print PDF if PDF has already been generated ||
+[`string`](../data-types.md) | Link to view or print PDF. Returned together with `pdfUrl` ||
 || **printUrlMachine**
-[`string`](../data-types.md) | Link to view or print PDF for the application ||
+[`string`](../data-types.md) | Link to view or print PDF for the application. Returned together with `pdfUrl` ||
 || **imageUrl**
-[`string`](../data-types.md) | Link to download image if the image has already been generated ||
+[`string`](../data-types.md) | Link to download the document image.
+
+The field is returned only when the image has already been generated ||
 || **imageUrlMachine**
-[`string`](../data-types.md) | Link to download image for the application ||
+[`string`](../data-types.md) | Link to download image for the application. Returned together with `imageUrl` ||
 || **publicUrl**
-[`string`](../data-types.md) | Public link to the document if it is enabled ||
+[`string`](../data-types.md) | Public link to the document. If the link is not enabled, `null`.
+
+You can enable the link using the [documentgenerator.document.enablepublicurl](./document-generator-document-enable-public-url.md) method ||
+|| **publicUrlView**
+[`object`](../data-types.md) | Data about viewing the public link [(detailed description)](#public-url-view).
+
+The field is returned only if the public link is enabled ||
 || **isTransformationError**
-[`boolean`](../data-types.md) | Indicates if there was a document conversion error ||
+[`boolean`](../data-types.md) | Indicates if there was an error converting the document to PDF and image ||
 || **transformationErrorCode**
-[`string`](../data-types.md) | Conversion error code if it occurred ||
+[`string`](../data-types.md) | Conversion error code. The field is returned only if `isTransformationError` = `true` ||
 || **transformationErrorMessage**
-[`string`](../data-types.md) | Conversion error message if it occurred ||
+[`string`](../data-types.md) | Conversion error message. The field is returned only if `isTransformationError` = `true` ||
 || **transformationCancelReason**
-[`string`](../data-types.md) | Reason for cancellation of conversion if it was canceled ||
+[`string`](../data-types.md) | Reason for cancellation of conversion. The field is returned only if the conversion was canceled ||
 || **pullTag**
 [`string`](../data-types.md) | Tag for subscribing to conversion status updates ||
 || **emailDiskFile**
-[`integer`](../data-types.md) | File ID on Drive for sending by e-mail ||
+[`integer`](../data-types.md) | File ID on Drive for sending by e-mail: the PDF file if it has been generated, otherwise the DOCX file. If the file is not stored on Drive, `0` ||
 || **createTime**
 [`datetime`](../data-types.md) | Document creation time ||
-|| **updateTime**
-[`datetime`](../data-types.md) | Document last update time ||
 || **createdBy**
-[`string`](../data-types.md) | Document author ID ||
+[`string`](../data-types.md) | Document author ID. In the [documentgenerator.document.add](./document-generator-document-add.md) response, it is returned as a number.
+
+In the [documentgenerator.document.update](./document-generator-document-update.md) response, it is `null`, and `createTime` contains the modification time. The [documentgenerator.document.get](./document-generator-document-get.md) method returns the actual values ||
+|| **updateTime**
+[`datetime`](../data-types.md) | Document last modification time ||
 || **updatedBy**
-[`integer`](../data-types.md) | ID of the user who updated the document ||
-|| **publicUrlView**
-[`object`](../data-types.md) | Data about viewing the public link [(detailed description)](#public-url-view) ||
+[`string`](../data-types.md) | ID of the user who last modified the document. If the document has not been modified, `null`. In the [documentgenerator.document.update](./document-generator-document-update.md) response, it is returned as a number ||
 |#
 
 #### Values Object {#document-values}
@@ -434,7 +438,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **time**
-[`datetime`](../data-types.md) | Time of the last view of the public link ||
+[`datetime`](../data-types.md) | Time of the last view of the public link. If the link has not been opened yet, `null` ||
 |#
 
 ## Error Handling
@@ -444,7 +448,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Document not found"
+    "error_description": "Document was not found."
 }
 ```
 
@@ -454,9 +458,10 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Bitrix\DocumentGenerator\Document constructor must be is public | Required parameter `id` not provided ||
-|| `400` | `0` | Document not found | Document with the specified `id` not found ||
-|| `400` | `0` | You do not have permissions to view documents | Insufficient rights to modify the document ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `400` | `0` | Document was not found | Document with the specified `id` not found ||
+|| `400` | `0` | You do not have permissions to view documents | No permission to view documents ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document with the specified `id` ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

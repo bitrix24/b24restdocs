@@ -41,6 +41,26 @@ The basic event triggers for elements of different smart processes. The handler 
 - `ID` — identifier of the smart process element
 - `ENTITY_TYPE_ID` — identifier of the smart process to which the element belongs
 
+An example of the data the handler receives when a smart process element with `entityTypeId = 1220` is created. The `auth` parameter is omitted; the full example is on the [onCrmDynamicItemAdd](./on-crm-dynamic-item-add.md) event page:
+
+```json
+{
+    "event": "ONCRMDYNAMICITEMADD",
+    "event_handler_id": "4",
+    "data": {
+        "FIELDS": {
+            "ID": "22",
+            "ENTITY_TYPE_ID": "1220"
+        }
+    },
+    "ts": "1723534033"
+}
+```
+
+The values arrive as strings. For an event with the `_{entityTypeId}` suffix, `data.FIELDS` has the same content, and `event` contains the name with the suffix.
+
+Retrieve all fields of the element using the [crm.item.get](../crm-item-get.md) method: pass `entityTypeId` and `id` from `data.FIELDS`. After the element is deleted, the method no longer returns its data.
+
 To process events of the desired smart process, check the value of `data.FIELDS.ENTITY_TYPE_ID`. The `entityTypeId` of the smart process can be obtained using the method [crm.type.list](../user-defined-object-types/crm-type-list.md).
 
 **Event for a Single Smart Process.** If the handler needs to receive events for only a specific smart process, use the event with the suffix `_{entityTypeId}`. This suffix indicates which smart process the event relates to.
@@ -52,7 +72,7 @@ Before subscribing, check if such an event is available:
 - for the application — using the method [events](../../../events/events.md)
 - for the outbound webhook — in the [outbound webhook builder](../../../../local-integrations/local-webhooks.md)
 
-If the event with the suffix is not available, subscribe to the basic event [onCrmDynamicItemAdd](./on-crm-dynamic-item-add.md), [onCrmDynamicItemUpdate](./on-crm-dynamic-item-update.md), or [onCrmDynamicItemDelete](./on-crm-dynamic-item-delete.md). In the handler, check the `data.FIELDS.ENTITY_TYPE_ID` field: it contains the `entityTypeId` of the smart process to which the element belongs.
+If the event with the suffix is not available, subscribe to the basic events and check `data.FIELDS.ENTITY_TYPE_ID` in the handler.
 
 ## Server Availability for Sending and Receiving Events
 

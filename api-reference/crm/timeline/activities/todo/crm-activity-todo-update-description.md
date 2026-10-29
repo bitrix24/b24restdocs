@@ -23,13 +23,19 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the activity being updated, for example `999` ||
+[`integer`](../../../../data-types.md) | Identifier of the activity being updated, for example `999`.
+
+You can retrieve the identifier using the [crm.activity.list](../activity-base/crm-activity-list.md) method with the filter `PROVIDER_ID` = `CRM_TODO`. A closed activity cannot be updated ||
 || **ownerTypeId***
-[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is linked, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) in whose timeline the activity is located, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked, for example `1` ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity in whose timeline the activity is located, for example `1`.
+
+The `ownerTypeId` and `ownerId` values are returned by the [crm.activity.get](../activity-base/crm-activity-get.md) method in the `OWNER_TYPE_ID` and `OWNER_ID` fields. If the activity does not belong to this entity, the method returns the `NOT_FOUND` error ||
 || **value***
-[`string`](../../../../data-types.md) | New description of the activity ||
+[`string`](../../../../data-types.md) | New description of the activity. Supports BB code, for example `[b]important[/b]`.
+
+The method does not limit the description length. An empty string `""` clears the description ||
 |#
 
 ## Code Examples
@@ -148,7 +154,7 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
         bitrix_response = client.crm.activity.todo.update_description(
             bitrix_id=999,
             owner_type_id=2,
-            owner_id=101,
+            owner_id=1,
             value="Prepare contract draft",
         ).response
         result = bitrix_response.result
@@ -181,7 +187,7 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
                     'value'       => 'New activity description',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -202,7 +208,7 @@ The method `crm.activity.todo.updateDescription` changes the description in the 
             ownerTypeId: 2,
             ownerId: 1,
             value: 'New activity description'
-        }, 
+        },
         result => {
             if (result.error())
                 console.error(result.error());
@@ -284,9 +290,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | On success, returns an object containing the identifier of the updated activity `id`, on error = `null` ||
+[`object`](../../../../data-types.md) | Object with the identifier of the updated activity [(detailed description)](#result) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../../data-types.md) | Identifier of the updated activity, matches the passed `id` ||
 |#
 
 ## Error Handling
@@ -295,8 +310,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "CAN_NOT_UPDATE_COMPLETED_TODO",
+    "error_description": "Cannot edit completed activity."
 }
 ```
 
@@ -305,20 +320,23 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `100` | Required fields are missing ||
-|| `NOT_FOUND` | CRM object not found ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
-|| `CAN_NOT_UPDATE_COMPLETED_TODO` | Closed activity cannot be modified ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {value} | The required parameter `id`, `ownerTypeId`, `ownerId`, or `value` is not passed. The description contains the parameter name ||
+|| `400` | `NOT_FOUND` | Item was not found | No activity with this `id` exists, or it does not belong to the CRM entity from `ownerTypeId` and `ownerId` ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to edit the CRM entity ||
+|| `400` | `CAN_NOT_UPDATE_COMPLETED_TODO` | Cannot edit completed activity | The activity is closed and cannot be updated ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-activity-todo-add.md)
 - [{#T}](./crm-activity-todo-update.md)
 - [{#T}](./crm-activity-todo-update-deadline.md)
 - [{#T}](./crm-activity-todo-update-color.md)
 - [{#T}](./crm-activity-todo-update-responsible-user.md)
+- [{#T}](../activity-base/crm-activity-get.md)
+- [{#T}](../activity-base/crm-activity-list.md)
+- [{#T}](../activity-base/crm-activity-delete.md)

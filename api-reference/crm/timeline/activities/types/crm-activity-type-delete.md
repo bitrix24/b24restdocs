@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: administrator, only in the context of an [application](../../../../../settings/app-installation/index.md)
 
-The `crm.activity.type.delete` method deletes a custom activity type.
+The `crm.activity.type.delete` method deletes a custom activity type registered by the current application.
 
 ## Method Parameters
 
@@ -23,7 +23,9 @@ The `crm.activity.type.delete` method deletes a custom activity type.
 || **Name**
 `type` | **Description** ||
 || **TYPE_ID***
-[`string`](../../../../data-types.md) | String value of the case type, for example `1C` ||
+[`string`](../../../../data-types.md) | Activity type code, for example `ERP`. You can retrieve the codes of the application's types using the [crm.activity.type.list](./crm-activity-type-list.md) method.
+
+Only a type registered by the current application can be deleted. The icon file of the type is deleted along with it ||
 |#
 
 ## Code Examples
@@ -38,7 +40,7 @@ The `crm.activity.type.delete` method deletes a custom activity type.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"TYPE_ID":"1C","auth":"**put_access_token_here**"}' \
+    -d '{"TYPE_ID":"ERP","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.type.delete
     ```
 
@@ -56,7 +58,7 @@ The `crm.activity.type.delete` method deletes a custom activity type.
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'crm.activity.type.delete',
         params: {
-          TYPE_ID: '1C',
+          TYPE_ID: 'ERP',
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -88,7 +90,7 @@ The `crm.activity.type.delete` method deletes a custom activity type.
           const response = await $b24.actions.v2.call.make({
             method: 'crm.activity.type.delete',
             params: {
-              TYPE_ID: '1C',
+              TYPE_ID: 'ERP',
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -119,7 +121,7 @@ The `crm.activity.type.delete` method deletes a custom activity type.
 
     try:
         bitrix_response = client.crm.activity.type.delete(
-            type_id="CUSTOM_CALL",
+            type_id="ERP",
         ).response
         result = bitrix_response.result
         print(result)
@@ -145,10 +147,10 @@ The `crm.activity.type.delete` method deletes a custom activity type.
             ->call(
                 'crm.activity.type.delete',
                 [
-                    'TYPE_ID' => '1C',
+                    'TYPE_ID' => 'ERP',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -165,7 +167,7 @@ The `crm.activity.type.delete` method deletes a custom activity type.
     BX24.callMethod(
         "crm.activity.type.delete",
         {
-            "TYPE_ID": '1C',
+            "TYPE_ID": 'ERP',
         }, result => {
             if (result.error())
                 console.error(result.error());
@@ -183,7 +185,7 @@ The `crm.activity.type.delete` method deletes a custom activity type.
     $result = CRest::call(
         'crm.activity.type.delete',
         [
-            'TYPE_ID' => '1C'
+            'TYPE_ID' => 'ERP'
         ]
     );
 
@@ -197,7 +199,7 @@ The `crm.activity.type.delete` method deletes a custom activity type.
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.activity.type.delete", b24.Params{
-    	"TYPE_ID": "1C",
+    	"TYPE_ID": "ERP",
     })
     if err != nil {
     	return fmt.Errorf("crm.activity.type.delete: %w", err)
@@ -237,10 +239,10 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Root element of the response. Contains:
-- `true` — on success
-- `false` — on failure
-||
+[`boolean`](../../../../data-types.md) | Result of the deletion:
+
+- `true` — the type is deleted
+- `false` — the type is found but could not be deleted ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -251,8 +253,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "",
+    "error_description": "Type not found"
 }
 ```
 
@@ -261,16 +263,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `Access denied! Application context required` | The method works only in the context of applications ||
-|| `Admin permissions required` | The method is only available to administrators ||
-|| `INVALID_ARG_VALUE` | Custom activity type with the specified `TYPE_ID` does not exist ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Admin permissions required | The method is called by a user without administrator permissions ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method is called via an inbound webhook or without application authorization ||
+|| `400` | Empty value | Type not found | `TYPE_ID` is not passed, or no type with this code is registered by the current application ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./crm-activity-type-list.md)
+- [{#T}](./index.md)
 - [{#T}](./crm-activity-type-add.md)
+- [{#T}](./crm-activity-type-list.md)

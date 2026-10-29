@@ -221,6 +221,60 @@ Possible values:
     - PHP
 
         ```php
+        try {
+            $response = $b24Service
+                ->core
+                ->call(
+                    'crm.item.details.configuration.get',
+                    [
+                        'entityTypeId' => 2,
+                        'userId'       => 1,
+                        'scope'        => 'C',
+                        'extras'       => [
+                            'dealCategoryId' => 9,
+                        ],
+                    ]
+                );
+
+            $result = $response
+                ->getResponseData()
+                ->getResult();
+
+            print_r($result);
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+        }
+        ```
+
+    - BX24.js
+
+        ```js
+        BX24.callMethod(
+            'crm.item.details.configuration.get',
+            {
+                entityTypeId: 2,
+                userId: 1,
+                scope: 'C',
+                extras: {
+                    dealCategoryId: 9,
+                },
+            },
+            (result) => {
+                if (result.error())
+                {
+                    console.error(result.error());
+
+                    return;
+                }
+
+                console.info(result.data());
+            },
+        );
+        ```
+
+    - PHP CRest
+
+        ```php
         require_once('crest.php');
 
         $result = CRest::call(
@@ -415,6 +469,56 @@ Possible values:
     - PHP
 
         ```php
+        try {
+            $response = $b24Service
+                ->core
+                ->call(
+                    'crm.item.details.configuration.get',
+                    [
+                        'entityTypeId' => 1032,
+                        'extras'       => [
+                            'categoryId' => 5,
+                        ],
+                    ]
+                );
+
+            $result = $response
+                ->getResponseData()
+                ->getResult();
+
+            print_r($result);
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+        }
+        ```
+
+    - BX24.js
+
+        ```js
+        BX24.callMethod(
+            'crm.item.details.configuration.get',
+            {
+                entityTypeId: 1032,
+                extras: {
+                    categoryId: 5,
+                },
+            },
+            (result) => {
+                if (result.error())
+                {
+                    console.error(result.error());
+
+                    return;
+                }
+
+                console.info(result.data());
+            },
+        );
+        ```
+
+    - PHP CRest
+
+        ```php
         require_once('crest.php');
 
         $result = CRest::call(
@@ -470,7 +574,7 @@ HTTP status: **200**
     "result": [
         {
             "name": "main",
-            "title": "About the deal",
+            "title": "About deal",
             "type": "section",
             "elements": [
                 {
@@ -493,7 +597,7 @@ HTTP status: **200**
                     "name": "CLIENT",
                     "optionFlags": "1",
                     "options": {
-                        "defaultCountry": "RU"
+                        "defaultCountry": "GB"
                     }
                 },
                 {
@@ -586,7 +690,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`section[]`](#section)\|`null` | Root element of the response. Contains the configuration of the sections of the detail form. Returns `null` if there is no configuration ||
+[`section[]`](#section)\|`null` | Root element of the response. Contains the configuration of the sections of the detail form [(detailed description)](#section).
+
+Returns `null` if no configuration is saved for the selected `scope`, for example after calling [crm.item.details.configuration.reset](./crm-item-details-configuration-reset.md). In this case, the detail form is displayed according to the common configuration or the default settings ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -603,9 +709,9 @@ Describes a specific section with fields inside the element card
 || **title**
 [`string`](../../../data-types.md) | Title of the section ||
 || **type**
-[`string`](../../../data-types.md) | Type of the section ||
+[`string`](../../../data-types.md) | Type of the section. Always `section` ||
 || **elements**
-[`section_element[]`](#section_element) | List of fields displayed in the entity card with additional settings ||
+[`section_element[]`](#section_element) | List of the section's fields in their display order in the detail form [(detailed description)](#section_element) ||
 |#
 
 #### Section_Element
@@ -616,13 +722,36 @@ Configuration of a specific field within the section
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../../data-types.md) | Field identifier ||
+[`string`](../../../data-types.md) | Field identifier. The list of fields is returned by the [crm.item.fields](../crm-item-fields.md) method ||
 || **optionFlags**
-[`string`](../../../data-types.md) | Values:
-- `"1"` — always show
-- `"0"` — not always show ||
+[`string`](../../../data-types.md)\|[`integer`](../../../data-types.md) | Whether the field is always shown:
+- `1` — always show, even if the field is empty
+- `0` — show only if the field is filled in
+
+The value is returned as it was saved: as the string `"1"` or the number `1`. If the flag was not set, the key is absent ||
 || **options**
-[`object`](../../../data-types.md) | Additional field options ||
+[`object`](../../../data-types.md) | Additional field options. Returned only if the options are set [(detailed description)](#section_elementoptions) ||
+|#
+
+#### section_element.options
+
+The set of options depends on the field.
+
+#|
+|| **Name**
+`type` | **Fields where the option is available** | **Description** ||
+|| **defaultAddressType**
+[`integer`](../../../data-types.md) | `ADDRESS` | Identifier of the default address type. Address types are returned by the [crm.enum.addresstype](../../auxiliary/enum/crm-enum-address-type.md) method ||
+|| **defaultCountry**
+[`string`](../../../data-types.md) | `PHONE`, `CLIENT`, `COMPANY`, `CONTACT`, `MYCOMPANY_ID` | Country code for the phone number format — two Latin letters, for example `GB` ||
+|| **isPayButtonVisible**
+[`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the payment acceptance button is shown:
+- `true` — shown
+- `false` — hidden ||
+|| **isPaymentDocumentsVisible**
+[`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the "Payment and delivery" block is shown:
+- `true` — shown
+- `false` — hidden ||
 |#
 
 ## Error Handling
@@ -632,7 +761,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "Parameter 'entityTypeId' is not defined"
+    "error_description": "Parameter 'entityTypeID' is not defined"
 }
 ```
 
@@ -641,10 +770,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` not provided ||
-|| Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type || 
-|| Empty value | Access denied. | The user does not have administrative rights ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Parameter 'entityTypeID' is not defined | The required parameter `entityTypeId` is not passed, or a non-existent CRM object type is passed ||
+|| `400` | Empty value | The entity type '`entityTypeName`' is not supported in current context. | The CRM object type does not support detail form configuration, for example `ACTIVITY` ||
+|| `400` | Empty value | Access denied. | Another user's personal settings are requested, and the user does not have administrator permissions ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}

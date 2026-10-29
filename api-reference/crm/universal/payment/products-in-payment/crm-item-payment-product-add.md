@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "edit" access permission for the CRM object associated with the payment
+> Who can execute the method: a user with "edit" access permission for the CRM object associated with the payment. The payment must not be paid
 
-The method `crm.item.payment.product.add` adds a product item to the payment.
+The method `crm.item.payment.product.add` adds a product from a deal or invoice product row to a payment. The payment amount increases by the product price multiplied by `quantity`.
 
 ## Method Parameters
 
@@ -23,18 +23,13 @@ The method `crm.item.payment.product.add` adds a product item to the payment.
 || **Name**
 `type` | **Description** ||
 || **paymentId***
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
-Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md)
- ||
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. You can retrieve the payment identifiers of a CRM object using the [crm.item.payment.list](../crm-item-payment-list.md) method ||
 || **rowId***
-[`integer`](../../../../data-types.md) | Identifier of the product item in the CRM object associated with the payment.
-
-It can be obtained using the method [`crm.item.productrow.list`](../../../../crm/universal/product-rows/crm-item-productrow-list.md)
- ||
+[`integer`](../../../../data-types.md) | Identifier of the product row of the deal or invoice that the payment belongs to. You can retrieve it using the [crm.item.productrow.list](../../product-rows/crm-item-productrow-list.md) method — the `id` field in the response ||
 || **quantity***
-[`integer`](../../../../data-types.md)| Product quantity.
+[`integer`](../../../../data-types.md) | Product quantity — an integer from `1` to the unallocated remainder of the product row. The remainder is the quantity in the product row minus the quantity of this product in all payments of the order.
 
-The value must be greater than zero and must not exceed the remaining quantity that has not yet been allocated among the order payments ||
+If the product has already been fully allocated to other payments, the method returns the `Product was not found.` error ||
 |#
 
 ## Code Examples
@@ -228,9 +223,29 @@ The value must be greater than zero and must not exceed the remaining quantity t
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "crm.item.payment.product.add", b24.Params{
+    	"paymentId": 1039,
+    	"rowId":     17587,
+    	"quantity":  2,
+    })
+    if err != nil {
+    	return fmt.Errorf("crm.item.payment.product.add: %w", err)
+    }
+
+    var id int
+    if err := json.Unmarshal(res.Result, &id); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    fmt.Println("item ID:", id)
+    ```
+
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -254,7 +269,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../../../data-types.md) | Identifier of the product item in the payment ||
+[`integer`](../../../../data-types.md) | Identifier of the created product item in the payment. Use it in the [crm.item.payment.product.setQuantity](./crm-item-payment-product-set-quantity.md) and [crm.item.payment.product.delete](./crm-item-payment-product-delete.md) methods ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
@@ -265,8 +280,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Payment has not been found"
+    "error": "0",
+    "error_description": "Insufficient product stock."
 }
 ```
 
@@ -275,23 +290,20 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Payment not found ||
-|| `ACCESS_DENIED` | Access denied: the user does not have permission to edit the payment, or the payment is already marked as paid ||
-|| `0` | The link between the order and the CRM object was not found ||
-|| `0` | The CRM object does not support linking to catalog products ||
-|| `0` | Product item not found ||
-|| `0` | Insufficient product quantity to add to payment ||
-|| `0` | Product quantity must be greater than zero ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Product quantity must be greater than zero | A value of `0` or less was passed in `quantity` ||
+|| `400` | `0` | Insufficient product stock | The total quantity of this product in all payments would exceed the quantity in the product row of the CRM object ||
+|| `400` | `0` | Product was not found | The CRM object that the payment belongs to has no product row with the passed `rowId`, or the product has already been fully allocated to payments ||
+|| `400` | `0` | Payment has not been found | The payment with the passed `paymentId` was not found ||
+|| `400` | `ACCESS_DENIED` | Access denied | The payment is already paid, or the user does not have permission to modify the payment. To change the contents of a paid payment, first call [crm.item.payment.unpay](../crm-item-payment-unpay.md) ||
+|| `400` | `0` | Order binding has not been found | The payment's order is not linked to a CRM object ||
+|| `400` | `0` | Entity does not support links with catalog products | The CRM object that the payment belongs to does not support products ||
+|| `400` | `100` | Could not find value for parameter {`parameter name`} | The required parameter `paymentId`, `rowId`, or `quantity` was not provided ||
 |#
 
-### Error Handling Features
+The method returns code `0` for several different errors. To determine the cause, check the text in `error_description`.
 
-For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
-
-{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

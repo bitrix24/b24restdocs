@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`documentgenerator`](../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to modify documents
+> Who can execute the method: a user with permission to view documents and to modify this document
 
 The method `documentgenerator.document.delete` removes a document by its identifier.
 
@@ -258,7 +258,7 @@ HTTP status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Document not found"
+    "error_description": "Document was not found."
 }
 ```
 
@@ -268,9 +268,11 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Bitrix\DocumentGenerator\Document constructor must be public | Required parameter `id` not provided ||
-|| `400` | `0` | Document not found | Document with the specified `id` not found ||
-|| `400` | `0` | You do not have permissions to view documents | Insufficient rights to modify the document ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `400` | `0` | Document was not found | Document with the specified `id` not found ||
+|| `400` | `0` | You do not have permissions to view documents | No permission to view documents. The method checks this permission first, then the permission to modify the document ||
+|| `400` | `0` | You do not have permissions to modify this document | The user can view documents but has no permission to modify the document with the specified `id` ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document with the specified `id` ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

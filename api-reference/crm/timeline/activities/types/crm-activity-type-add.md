@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: administrator, only in the context of an [application](../../../../../settings/app-installation/index.md)
 
-The `crm.activity.type.add` method registers a custom activity type by specifying a name and an icon.
+The `crm.activity.type.add` method registers a custom activity type with a name and an icon.
 
 ## Method Parameters
 
@@ -23,19 +23,7 @@ The `crm.activity.type.add` method registers a custom activity type by specifyin
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md#object_type) | Field values for adding a new custom activity type in the form of a structure:
-
-```json
-fields:
-{
-    "TYPE_ID": 'value',
-    "NAME": 'value',
-    "ICON_FILE": 'value',
-    "IS_CONFIGURABLE_TYPE": 'value',
-}
-```
-
-A detailed description is provided [below](#parametr-fields)
+[`object`](../../../../data-types.md) | Object with the fields of the new activity type. Pass field keys in uppercase, for example `TYPE_ID`: the method does not recognize the `type_id` key. [Field description](#parametr-fields) ||
 |#
 
 ### Parameter fields {#parametr-fields}
@@ -46,13 +34,24 @@ A detailed description is provided [below](#parametr-fields)
 || **Name**
 `type` | **Description** ||
 || **TYPE_ID***
-[`string`](../../../../data-types.md) | String value of the deal type, for example `1C`. When creating a case, this field `PROVIDER_TYPE_ID` ||
-|| **NAME**
-[`string`](../../../../data-types.md) | Name of the deal type, for example `Case 1c` for a deal. By default, an empty string ||
+[`string`](../../../../data-types.md) | Activity type code, for example `ERP`. No longer than 100 characters, unique among the current application's types.
+
+The `CONFIGURABLE` code cannot be used together with `IS_CONFIGURABLE_TYPE` = `Y`: it is reserved.
+
+After registration, pass the code in the `PROVIDER_TYPE_ID` field of the [crm.activity.add](../activity-base/crm-activity-add.md) method together with `PROVIDER_ID` = `REST_APP`, or in the `typeId` field of the [crm.activity.configurable.add](../configurable/crm-activity-configurable-add.md) method ||
+|| **NAME***
+[`string`](../../../../data-types.md) | Activity type name, for example `ERP activity`. No longer than 255 characters ||
 || **ICON_FILE**
-[`attached_diskfile`](../../../data-types.md#attached_diskfile) | Icon file for the activity type, described according to [rules](../../../../files/how-to-upload-files.md) ||
+[`array`](../../../../data-types.md) | Activity type icon — an [array of the file name and its Base64 content](../../../../files/how-to-upload-files.md#array), for example `["icon.png", "iVBORw0KGgo..."]`.
+
+If the parameter is not passed or the file cannot be read, the type is created without an icon ||
 || **IS_CONFIGURABLE_TYPE**
-[`string`](../../../../data-types.md) | Default value is `N`. Value `Y` indicates that the type will be used for [configurable activities](../configurable/crm-activity-configurable-add.md) ||
+[`string`](../../../../data-types.md) | Indicates whether the type is used for configurable activities:
+
+- `Y` — the type for the [crm.activity.configurable.add](../configurable/crm-activity-configurable-add.md) method
+- `N` — the type for the [crm.activity.add](../activity-base/crm-activity-add.md) method, the default value
+
+Any value other than `Y` is treated as `N` ||
 |#
 
 ## Code Examples
@@ -67,18 +66,8 @@ A detailed description is provided [below](#parametr-fields)
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"TYPE_ID":"1C","NAME":"Case 1C","ICON_FILE":"@type-icon","IS_CONFIGURABLE_TYPE":"N"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"TYPE_ID":"ERP","NAME":"ERP activity","ICON_FILE":["icon.png","iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="],"IS_CONFIGURABLE_TYPE":"N"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.type.add
-    ```
-
-    After this, you only need to specify your type when creating an activity, and the icon and name will be loaded automatically.
-    
-    ```bash
-    curl -X POST \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -d '{"fields":{"OWNER_TYPE_ID":1,"OWNER_ID":selectedEntityId,"PROVIDER_ID":"REST_APP","PROVIDER_TYPE_ID":"1C","SUBJECT":"New case","COMPLETED":"N","RESPONSIBLE_ID":1,"DESCRIPTION":"Description of the new case"},"auth":"**put_access_token_here**"}' \
-    https://**put_your_bitrix24_address**/rest/crm.activity.add
     ```
 
 - JS (TS)
@@ -96,9 +85,9 @@ A detailed description is provided [below](#parametr-fields)
         method: 'crm.activity.type.add',
         params: {
           fields: {
-            TYPE_ID: '1C',
-            NAME: '1C activity',
-            ICON_FILE: document.getElementById('type-icon'), // file input node
+            TYPE_ID: 'ERP',
+            NAME: 'ERP activity',
+            ICON_FILE: ['icon.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='], // file name and Base64 content
             IS_CONFIGURABLE_TYPE: 'N',
           },
         },
@@ -133,9 +122,9 @@ A detailed description is provided [below](#parametr-fields)
             method: 'crm.activity.type.add',
             params: {
               fields: {
-                TYPE_ID: '1C',
-                NAME: '1C activity',
-                ICON_FILE: document.getElementById('type-icon'), // file input node
+                TYPE_ID: 'ERP',
+                NAME: 'ERP activity',
+                ICON_FILE: ['icon.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='], // file name and Base64 content
                 IS_CONFIGURABLE_TYPE: 'N',
               },
             },
@@ -169,14 +158,12 @@ A detailed description is provided [below](#parametr-fields)
     try:
         bitrix_response = client.crm.activity.type.add(
             fields={
-                "TYPE_ID": "CUSTOM_CALL",
-                "NAME": "Custom call",
-                "ICON_FILE": {
-                    "fileData": [
-                        "activity-type.svg",
-                        "PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==",
-                    ],
-                },
+                "TYPE_ID": "ERP",
+                "NAME": "ERP activity",
+                "ICON_FILE": [
+                    "icon.png",
+                    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+                ],
                 "IS_CONFIGURABLE_TYPE": "N",
             },
         ).response
@@ -205,14 +192,14 @@ A detailed description is provided [below](#parametr-fields)
                 'crm.activity.type.add',
                 [
                     'fields' => [
-                        'TYPE_ID'            => '1C',
-                        'NAME'               => 'Case 1C',
-                        'ICON_FILE'          => $_FILES['type-icon'], // file input node
+                        'TYPE_ID'            => 'ERP',
+                        'NAME'               => 'ERP activity',
+                        'ICON_FILE'          => ['icon.png', base64_encode(file_get_contents('icon.png'))],
                         'IS_CONFIGURABLE_TYPE' => 'N',
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -231,36 +218,10 @@ A detailed description is provided [below](#parametr-fields)
         {
             fields:
             {
-                "TYPE_ID": '1C',
-                "NAME": "Case 1C",
+                "TYPE_ID": 'ERP',
+                "NAME": "ERP activity",
                 'ICON_FILE': document.getElementById('type-icon'), // file input node
                 "IS_CONFIGURABLE_TYPE": "N"
-            }
-        }, result => {
-            if (result.error())
-                console.error(result.error());
-            else
-                console.dir(result.data());
-        }
-    );
-    ```
-
-    After this, you only need to specify your type when creating an activity, and the icon and name will be loaded automatically. 
-
-    ```js
-    BX24.callMethod(
-        'crm.activity.add',
-        {
-            fields:
-            {
-                "OWNER_TYPE_ID": 1,
-                "OWNER_ID": selectedEntityId,
-                "PROVIDER_ID": 'REST_APP',
-                "PROVIDER_TYPE_ID": '1C',
-                "SUBJECT": "New case",
-                "COMPLETED": "N",
-                "RESPONSIBLE_ID": 1,
-                "DESCRIPTION": "Description of the new case"
             }
         }, result => {
             if (result.error())
@@ -280,36 +241,10 @@ A detailed description is provided [below](#parametr-fields)
         'crm.activity.type.add',
         [
             'fields' => [
-                'TYPE_ID' => '1C',
-                'NAME' => 'Case 1C',
-                'ICON_FILE' => $_FILES['type-icon'], // Assuming file input is handled
+                'TYPE_ID' => 'ERP',
+                'NAME' => 'ERP activity',
+                'ICON_FILE' => ['icon.png', base64_encode(file_get_contents('icon.png'))],
                 'IS_CONFIGURABLE_TYPE' => 'N'
-            ]
-        ]
-    );
-
-    echo '<PRE>';
-    print_r($result);
-    echo '</PRE>';
-    ```
-
-    After this, you only need to specify your type when creating an activity, and the icon and name will be loaded automatically. 
-
-     ```php
-    require_once('crest.php');
-
-    $result = CRest::call(
-        'crm.activity.add',
-        [
-            'fields' => [
-                'OWNER_TYPE_ID' => 1,
-                'OWNER_ID' => $selectedEntityId, // Assuming this variable is defined
-                'PROVIDER_ID' => 'REST_APP',
-                'PROVIDER_TYPE_ID' => '1C',
-                'SUBJECT' => 'New case',
-                'COMPLETED' => 'N',
-                'RESPONSIBLE_ID' => 1,
-                'DESCRIPTION' => 'Description of the new case'
             ]
         ]
     );
@@ -323,11 +258,12 @@ A detailed description is provided [below](#parametr-fields)
 
     ```go
     // client and ctx are already created — see the Go SDK section
+    // iconBytes is the content of the icon file, for example from os.ReadFile("icon.png")
     res, err := client.Core().Call(ctx, "crm.activity.type.add", b24.Params{
     	"fields": b24.Params{
-    		"TYPE_ID":              "1C",
-    		"NAME":                 "Case 1C",
-    		"ICON_FILE":            "@type-icon",
+    		"TYPE_ID":              "ERP",
+    		"NAME":                 "ERP activity",
+    		"ICON_FILE":            []string{"icon.png", base64.StdEncoding.EncodeToString(iconBytes)},
     		"IS_CONFIGURABLE_TYPE": "N",
     	},
     })
@@ -369,10 +305,10 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Root element of the response. Contains:
-- `true` — on success
-- `false` — on failure (an error occurred)
-||
+[`boolean`](../../../../data-types.md) | Result of the registration:
+
+- `true` — the type is registered
+- `false` — the type is not registered: `TYPE_ID` or `NAME` is not passed, a value exceeds the allowed length, or field keys are not passed in uppercase ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -383,8 +319,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "",
+    "error_description": "Type is already registered"
 }
 ```
 
@@ -393,17 +329,19 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `Access denied! Application context required` | The method works only in the context of applications ||
-|| `Admin permissions required` | The method is only available to administrators ||
-|| `INVALID_ARG_VALUE` | The required field `TYPE_ID` is not filled ||
-|| `INVALID_ARG_VALUE` | A custom activity type with the specified `TYPE_ID` already exists ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Admin permissions required | The method is called by a user without administrator permissions ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method is called via an inbound webhook or without application authorization ||
+|| `400` | Empty value | Type is already registered | A type with this `TYPE_ID` is already registered by the current application ||
+|| `400` | Empty value | Type ID "CONFIGURABLE" is reserved | `TYPE_ID` = `CONFIGURABLE` is passed together with `IS_CONFIGURABLE_TYPE` = `Y` ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-activity-type-list.md)
 - [{#T}](./crm-activity-type-delete.md)
+- [{#T}](../activity-base/crm-activity-add.md)
+- [{#T}](../configurable/crm-activity-configurable-add.md)

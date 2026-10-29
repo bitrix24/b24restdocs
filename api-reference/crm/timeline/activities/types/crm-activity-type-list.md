@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: administrator, only in the context of an [application](../../../../../settings/app-installation/index.md)
 
-The `crm.activity.type.list` method retrieves a list of custom activity types registered by the application.
+The `crm.activity.type.list` method retrieves a list of custom activity types registered by the current application.
 
 ## Method Parameters
 
@@ -54,16 +54,10 @@ No parameters.
     }
 
     try {
-      // crm.activity.type.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // crm.activity.type.list returns all types of the current application at once, without pagination
       const response = await $b24.actions.v2.call.make<ActivityTypeItem[]>({
         method: 'crm.activity.type.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -91,16 +85,10 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.activity.type.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // crm.activity.type.list returns all types of the current application at once, without pagination
           const response = await $b24.actions.v2.call.make({
             method: 'crm.activity.type.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -155,7 +143,7 @@ No parameters.
                 'crm.activity.type.list',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -217,12 +205,6 @@ No parameters.
     for _, it := range items {
     	fmt.Println(it.TypeID, it.Name)
     }
-
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
-    if res.Total != nil {
-    	fmt.Println("total:", *res.Total)
-    }
     ```
 
 {% endlist %}
@@ -235,8 +217,8 @@ HTTP status: **200**
 {
     "result": [
         {
-            "TYPE_ID": "1C",
-            "NAME": "1C case",
+            "TYPE_ID": "ERP",
+            "NAME": "ERP activity",
             "IS_CONFIGURABLE_TYPE": "Y",
             "ICON_ID": "0"
         }
@@ -259,19 +241,37 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | The root element of the response containing an array of objects with information about custom activity types registered by the application ||
+[`array`](../../../../data-types.md) | Array of the current application's activity types [(detailed description)](#type). If the application has not registered any types, an empty array `[]` is returned ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
 
+#### Element of the result Array {#type}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TYPE_ID**
+[`string`](../../../../data-types.md) | Activity type code. It is passed in `PROVIDER_TYPE_ID` of the [crm.activity.add](../activity-base/crm-activity-add.md) method and in `typeId` of the [crm.activity.configurable.add](../configurable/crm-activity-configurable-add.md) method ||
+|| **NAME**
+[`string`](../../../../data-types.md) | Activity type name ||
+|| **IS_CONFIGURABLE_TYPE**
+[`string`](../../../../data-types.md) | Indicates whether the type is used for configurable activities:
+
+- `Y` — the type is used in [crm.activity.configurable.add](../configurable/crm-activity-configurable-add.md)
+- `N` — the type is used in [crm.activity.add](../activity-base/crm-activity-add.md) ||
+|| **ICON_ID**
+[`string`](../../../../data-types.md) | Identifier of the icon file, for example `"39755"`. The value `"0"` means that no icon is uploaded ||
+|#
+
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **403**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "ACCESS_DENIED",
+    "error_description": "Access denied! Application context required"
 }
 ```
 
@@ -280,15 +280,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `Access denied! Application context required` | The method works only in the context of applications ||
-|| `Admin permissions required` | The method is only available to administrators ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! Admin permissions required | The method is called by a user without administrator permissions ||
+|| `403` | `ACCESS_DENIED` | Access denied! Application context required | The method is called via an inbound webhook or without application authorization ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-activity-type-add.md)
 - [{#T}](./crm-activity-type-delete.md)
+- [{#T}](../activity-base/crm-activity-add.md)
+- [{#T}](../configurable/crm-activity-configurable-add.md)

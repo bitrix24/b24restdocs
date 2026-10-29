@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the payment order
+> Who can execute the method: a user with permission to read the order the payment belongs to
 
-Retrieves brief information about the payment.
+The `crm.item.payment.get` method returns the status, amount, and payment system of a payment by its identifier.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ Retrieves brief information about the payment.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier ||
+[`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier. You can retrieve the payment identifiers of a CRM object using the [crm.item.payment.list](./crm-item-payment-list.md) method ||
 |#
 
 ## Code Examples
@@ -245,31 +245,33 @@ Retrieves brief information about the payment.
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
 ```json
 {
-   "result":{
-      "id":1036,
-      "accountNumber":"3653\/1",
-      "paid": "Y",
-      "datePaid":"2024-05-20T12:32:02+03:00",
-      "empPaidId":1,
-      "paySystemId":6,
-      "sum":0,
-      "currency":"USD",
-      "paySystemName":"Cash"
-   },
-   "time":{
-      "start":1716203536.414886,
-      "finish":1716203536.798211,
-      "duration":0.38332509994506836,
-      "processing":0.052394866943359375,
-      "date_start":"2024-05-20T14:12:16+03:00",
-      "date_finish":"2024-05-20T14:12:16+03:00"
-   }
+    "result": {
+        "id": 1036,
+        "accountNumber": "1049/1",
+        "paid": "Y",
+        "datePaid": "2026-10-28T16:59:33+01:00",
+        "empPaidId": 1,
+        "paySystemId": 11,
+        "sum": 3000,
+        "currency": "USD",
+        "paySystemName": "Cash"
+    },
+    "time": {
+        "start": 1793203175,
+        "finish": 1793203175.965445,
+        "duration": 0.9654450416564941,
+        "processing": 0,
+        "date_start": "2026-10-28T16:59:35+01:00",
+        "date_finish": "2026-10-28T16:59:35+01:00",
+        "operating_reset_at": 1793203740,
+        "operating": 0
+    }
 }
 ```
 
@@ -279,12 +281,12 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`sale_order_payment_crm_simple`](#sale_order_payment_crm_simple) | Object containing brief information about the payment  ||
+[`sale_order_payment_crm_simple`](#sale_order_payment_crm_simple) | Payment data [(detailed description)](#sale_order_payment_crm_simple) ||
 || **time**
 [`time`](../../../../api-reference/data-types.md) | Information about the request execution time ||
 |#
 
-### Key Result. Object of Type sale_order_payment_crm_simple {#sale_order_payment_crm_simple}
+#### sale_order_payment_crm_simple {#sale_order_payment_crm_simple}
 
 #|
 || **Name**
@@ -292,27 +294,28 @@ HTTP status: **200**
 || **id**
 [`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier ||
 || **accountNumber**
-[`string`](../../../../api-reference/data-types.md) | System payment number ||
+[`string`](../../../../api-reference/data-types.md) | Payment number in the `order number/payment sequence number` format, for example `1045/1` ||
 || **paid**
-[`string`](../../../../api-reference/data-types.md) | Payment status
-
-Possible values:
-- `Y` – Paid
-- `N` – Not paid ||
+[`string`](../../../../api-reference/data-types.md) | Payment status:
+- `Y` — paid
+- `N` — not paid ||
 || **datePaid**
-[`datetime`](../../../../api-reference/data-types.md) | Payment date ||
+[`datetime`](../../../../api-reference/data-types.md) | Date and time when the payment was last marked as paid. `null` if the payment has never been made.
+
+The value is kept after [crm.item.payment.unpay](./crm-item-payment-unpay.md) ||
 || **empPaidId**
-[`user.id`](../../../../api-reference/data-types.md)| User who made the payment ||
+[`user.id`](../../../../api-reference/data-types.md) | Identifier of the user who last marked the payment as paid. `null` if the payment has never been made.
+
+The value is kept after [crm.item.payment.unpay](./crm-item-payment-unpay.md) ||
 || **paySystemId**
 [`sale_paysystem.id`](../../../sale/data-types.md#sale_paysystem) | Payment system identifier ||
 || **sum**
-[`double`](../../../../api-reference/data-types.md) | Payment amount ||
+[`double`](../../../../api-reference/data-types.md) | Payment amount. It is recalculated automatically when products and delivery are added to or removed from the payment ||
 || **currency**
 [`string`](../../../../api-reference/data-types.md) | Payment currency ||
 || **paySystemName**
 [`string`](../../../../api-reference/data-types.md) | Name of the payment system ||
 |#
-
 
 ## Error Handling
 
@@ -320,8 +323,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Insufficient permissions"
+    "error": "0",
+    "error_description": "Payment has not been found"
 }
 ```
 
@@ -330,16 +333,19 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Payment not found or access denied ||
-|| `100` | Parameter id not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Payment has not been found | The payment with the passed `id` was not found ||
+|| `400` | `ACCESS_DENIED` | Access denied | No permission to read the order the payment belongs to ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
 |#
 
-{% include notitle [System errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./products-in-payment/index.md)
+- [{#T}](./delivery-in-payment/index.md)
 - [{#T}](./crm-item-payment-update.md)
 - [{#T}](./crm-item-payment-delete.md)
 - [{#T}](./crm-item-payment-list.md)

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the payment order
+> Who can execute the method: a user with permission to modify the order the payment belongs to
 
-Changes the payment status to "Unpaid".
+The `crm.item.payment.unpay` method removes the paid mark from a payment: it sets `paid` to `N`. The payment is not deleted, and the `datePaid` and `empPaidId` fields keep the values of the last payment. You can delete a payment using the [crm.item.payment.delete](./crm-item-payment-delete.md) method.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ Changes the payment status to "Unpaid".
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier ||
+[`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier. You can retrieve the payment identifiers of a CRM object using the [crm.item.payment.list](./crm-item-payment-list.md) method ||
 |#
 
 ## Code Examples
@@ -225,7 +225,7 @@ Changes the payment status to "Unpaid".
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -249,7 +249,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../api-reference/data-types.md) | Result of the operation  ||
+[`boolean`](../../../../api-reference/data-types.md) | `true` if the paid mark has been removed. A repeated call for an unpaid payment also returns `true` ||
 || **time**
 [`time`](../../../../api-reference/data-types.md) | Information about the request execution time ||
 |#
@@ -260,8 +260,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Insufficient permissions"
+    "error": "0",
+    "error_description": "Payment has not been found"
 }
 ```
 
@@ -270,16 +270,19 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Payment not found or access denied ||
-|| `100` | Parameter id not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Payment has not been found | The payment with the passed `id` was not found ||
+|| `400` | `ACCESS_DENIED` | Access denied | No permission to modify the order the payment belongs to ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
 |#
 
-{% include notitle [System errors](../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./products-in-payment/index.md)
+- [{#T}](./delivery-in-payment/index.md)
 - [{#T}](./crm-item-payment-delete.md)
 - [{#T}](./crm-item-payment-get.md)
 - [{#T}](./crm-item-payment-list.md)

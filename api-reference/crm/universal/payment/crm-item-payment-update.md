@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the payment order
+> Who can execute the method: a user with permission to modify the order the payment belongs to
 
-This method updates a limited set of payment fields (see [`sale.payment.update`](../../../sale/payment/sale-payment-update.md) for extended functionality with payment fields).
+The `crm.item.payment.update` method changes the payment status and payment system. Other payment fields can be changed using the [sale.payment.update](../../../sale/payment/sale-payment-update.md) method.
 
 ## Method Parameters
 
@@ -23,25 +23,28 @@ This method updates a limited set of payment fields (see [`sale.payment.update`]
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier ||
+[`sale_order_payment.id`](../../../sale/data-types.md#sale_order_payment) | Payment identifier. You can retrieve the payment identifiers of a CRM object using the [crm.item.payment.list](./crm-item-payment-list.md) method ||
 || **fields***
-[`object`](../../../../api-reference/data-types.md) | Field values for updating the payment  ||
+[`object`](../../../../api-reference/data-types.md) | Payment fields to change [(detailed description)](#fields). Fields that are not passed keep their current values ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
+
+The method accepts only two fields. Other keys are ignored. If `fields` contains no supported key, the method returns the `Empty fields` error.
 
 #|
 || **Name**
 `type` | **Description** ||
 || **paid**
-[`string`](../../../../api-reference/data-types.md) | Payment status.
+[`string`](../../../../api-reference/data-types.md) | Payment status:
+- `Y` — paid
+- `N` — not paid
 
-Possible values:
-- `Y` – Paid
-- `N` – Not paid ||
+Works the same way as the [crm.item.payment.pay](./crm-item-payment-pay.md) and [crm.item.payment.unpay](./crm-item-payment-unpay.md) methods ||
 || **paySystemId**
-[`sale_paysystem.id`](../../../sale/data-types.md#sale_paysystem) | Payment system identifier
- ||
+[`sale_paysystem.id`](../../../sale/data-types.md#sale_paysystem) | Payment system identifier. You can retrieve the list of payment systems using the [sale.paysystem.list](../../../pay-system/sale-pay-system-list.md) method.
+
+The payment system name in the `paySystemName` field of the payment is updated automatically ||
 |#
 
 ## Code Examples
@@ -271,7 +274,7 @@ Possible values:
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -295,7 +298,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../api-reference/data-types.md) | Result of the operation  ||
+[`boolean`](../../../../api-reference/data-types.md) | `true` if the payment has been updated ||
 || **time**
 [`time`](../../../../api-reference/data-types.md) | Information about the request execution time ||
 |#
@@ -306,8 +309,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Insufficient permissions"
+    "error": "0",
+    "error_description": "Empty fields"
 }
 ```
 
@@ -316,17 +319,24 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Payment not found or access denied ||
-|| `0` | Payment system not found  ||
-|| `100` | Parameter id not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Empty fields | `fields` contains neither `paid` nor `paySystemId` ||
+|| `400` | `0` | Payment system has not been found | The payment system with the passed `paySystemId` was not found ||
+|| `400` | `0` | Payment has not been found | The payment with the passed `id` was not found ||
+|| `400` | `BX_ERROR` | Insufficient funds on internal account | `paid` = `Y` was passed, the payment uses the "Internal account" payment system, and the client's internal account does not have enough funds ||
+|| `400` | `ACCESS_DENIED` | Access denied | No permission to modify the order the payment belongs to ||
+|| `400` | `100` | Could not find value for parameter {`parameter name`} | The required parameter `id` or `fields` was not provided ||
 |#
 
-{% include notitle [System errors](../../../../_includes/system-errors.md) %}
+The method returns the code `0` for several different errors. To determine the cause, check the text in `error_description`.
+
+{% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
+- [{#T}](./products-in-payment/index.md)
+- [{#T}](./delivery-in-payment/index.md)
 - [{#T}](./crm-item-payment-delete.md)
 - [{#T}](./crm-item-payment-get.md)
 - [{#T}](./crm-item-payment-list.md)

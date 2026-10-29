@@ -275,7 +275,7 @@ The response only confirms that the document was created. Expanded nested lists 
 ## If the Method Returns an Error
 
 - `Empty required parameter "value"` — the required parameter `value` is not provided
-- `Template not found` — no template exists with the specified `templateId`
+- `Template was not found` — no template exists with the specified `templateId`
 
 The same list of speakers is displayed in all blocks — the codes of the inner lists do not match the placeholders passed in the items of the outer list.
 

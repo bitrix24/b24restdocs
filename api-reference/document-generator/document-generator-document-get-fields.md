@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`documentgenerator`](../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to modify documents
+> Who can execute the method: a user with permission to view documents and to modify this document
 
 The method `documentgenerator.document.getfields` returns the fields of the document, along with their current and base values.
 
@@ -27,9 +27,7 @@ The method `documentgenerator.document.getfields` returns the fields of the docu
 
 You can obtain the document identifier after [creating the document](./document-generator-document-add.md) or by using the [get document list method](./document-generator-document-list.md) ||
 || **values**
-[`object`](../data-types.md) | Optional parameter.
-
-Field values that the method temporarily substitutes before forming `documentFields`.
+[`object`](../data-types.md) | Field values in the `{"FieldCode":"Value"}` format, for example `{"Title":"Supply agreement"}`. The method substitutes them only in the response — the document does not change.
 
 Use `values` to check in advance how the values will be interpreted and displayed when [creating](./document-generator-document-add.md) or [updating](./document-generator-document-update.md) the document.
 
@@ -48,7 +46,7 @@ If `values` is not provided, the method will return a structure of fields with c
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":51,"values":{"DocumentNumber":"DG-2026-001","CurrentDate":"2026-03-18T00:00:00+02:00","ClientName":"Ltd. Chamomile","ClientPhone":"+1 999 123-45-67","Total":"51000","Comment":"Payment within 5 business days after signing","UserName":"John Smith"}}' \
+    -d '{"id":51,"values":{"DocumentNumber":"DG-2026-001","CurrentDate":"2026-03-18T00:00:00+02:00","ClientName":"Müller GmbH","ClientPhone":"+49 30 12345678","Total":"51000","Comment":"Payment within 5 business days after signing","UserName":"Klaus Weber"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/documentgenerator.document.getfields
   ```
 
@@ -58,7 +56,7 @@ If `values` is not provided, the method will return a structure of fields with c
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":51,"values":{"DocumentNumber":"DG-2026-001","CurrentDate":"2026-03-18T00:00:00+02:00","ClientName":"Ltd. Chamomile","ClientPhone":"+1 999 123-45-67","Total":"51000","Comment":"Payment within 5 business days after signing","UserName":"John Smith"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":51,"values":{"DocumentNumber":"DG-2026-001","CurrentDate":"2026-03-18T00:00:00+02:00","ClientName":"Müller GmbH","ClientPhone":"+49 30 12345678","Total":"51000","Comment":"Payment within 5 business days after signing","UserName":"Klaus Weber"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/documentgenerator.document.getfields
   ```
 
@@ -96,7 +94,7 @@ If `values` is not provided, the method will return a structure of fields with c
             DocumentNumber: 'DG-2026-001',
             CurrentDate: '2026-03-18T00:00:00+03:00',
             ClientName: 'LLC Romashka',
-            ClientPhone: '+49 999 123-45-67',
+            ClientPhone: '+49 30 12345678',
             Total: '51000',
             Comment: 'Payment within 5 business days after signing',
             UserName: 'Ivan Petrov',
@@ -137,7 +135,7 @@ If `values` is not provided, the method will return a structure of fields with c
                 DocumentNumber: 'DG-2026-001',
                 CurrentDate: '2026-03-18T00:00:00+03:00',
                 ClientName: 'LLC Romashka',
-                ClientPhone: '+49 999 123-45-67',
+                ClientPhone: '+49 30 12345678',
                 Total: '51000',
                 Comment: 'Payment within 5 business days after signing',
                 UserName: 'Ivan Petrov',
@@ -176,7 +174,7 @@ If `values` is not provided, the method will return a structure of fields with c
               "DocumentNumber": "DG-2026-001",
               "CurrentDate": "2026-03-18T00:00:00+03:00",
               "ClientName": "Müller GmbH",
-              "ClientPhone": "+49 999 123-45-67",
+              "ClientPhone": "+49 30 12345678",
               "Total": "125000",
               "Comment": "Payment within 5 business days after signing",
               "UserName": "Klaus Weber",
@@ -208,11 +206,11 @@ If `values` is not provided, the method will return a structure of fields with c
               'values' => [
                   'DocumentNumber' => 'DG-2026-001',
                   'CurrentDate' => '2026-03-18T00:00:00+02:00',
-                  'ClientName' => 'Ltd. Chamomile',
-                  'ClientPhone' => '+1 999 123-45-67',
+                  'ClientName' => 'Müller GmbH',
+                  'ClientPhone' => '+49 30 12345678',
                   'Total' => '51000',
                   'Comment' => 'Payment within 5 business days after signing',
-                  'UserName' => 'John Smith',
+                  'UserName' => 'Klaus Weber',
               ],
           ]
       );
@@ -234,11 +232,11 @@ If `values` is not provided, the method will return a structure of fields with c
           values: {
               DocumentNumber: 'DG-2026-001',
               CurrentDate: '2026-03-18T00:00:00+02:00',
-              ClientName: 'Ltd. Chamomile',
-              ClientPhone: '+1 999 123-45-67',
+              ClientName: 'Müller GmbH',
+              ClientPhone: '+49 30 12345678',
               Total: '51000',
               Comment: 'Payment within 5 business days after signing',
-              UserName: 'John Smith'
+              UserName: 'Klaus Weber'
           }
       },
       function(result)
@@ -267,11 +265,11 @@ If `values` is not provided, the method will return a structure of fields with c
           'values' => [
               'DocumentNumber' => 'DG-2026-001',
               'CurrentDate' => '2026-03-18T00:00:00+02:00',
-              'ClientName' => 'Ltd. Chamomile',
-              'ClientPhone' => '+1 999 123-45-67',
+              'ClientName' => 'Müller GmbH',
+              'ClientPhone' => '+49 30 12345678',
               'Total' => '51000',
               'Comment' => 'Payment within 5 business days after signing',
-              'UserName' => 'John Smith',
+              'UserName' => 'Klaus Weber',
           ],
       ]
   );
@@ -288,11 +286,11 @@ If `values` is not provided, the method will return a structure of fields with c
     	"values": b24.Params{
     		"DocumentNumber": "DG-2026-001",
     		"CurrentDate":    "2026-03-18T00:00:00+03:00",
-    		"ClientName":     "Ltd. Chamomile",
-    		"ClientPhone":    "+49 999 123-45-67",
+    		"ClientName":     "Müller GmbH",
+    		"ClientPhone":    "+49 30 12345678",
     		"Total":          "51000",
     		"Comment":        "Payment within 5 business days after signing",
-    		"UserName":       "John Smith",
+    		"UserName":       "Klaus Weber",
     	},
     }, b24.WithIdempotent())
     if err != nil {
@@ -333,11 +331,11 @@ HTTP Status: **200**
                 "default": ""
             },
             "ClientName": {
-                "value": "Ltd. Chamomile",
+                "value": "Müller GmbH",
                 "default": ""
             },
             "ClientPhone": {
-                "value": "+1 999 123-45-67",
+                "value": "+49 30 12345678",
                 "default": ""
             },
             "Total": {
@@ -349,7 +347,7 @@ HTTP Status: **200**
                 "default": ""
             },
             "UserName": {
-                "value": "John Smith",
+                "value": "Klaus Weber",
                 "default": ""
             },
             "DocumentTitle": {
@@ -397,7 +395,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **documentFields**
-[`object`](../data-types.md) | Set of document fields by field code [(detailed description)](#document-fields) ||
+[`object`](../data-types.md) | Document fields. The key is the field code from the template, the value is an object that describes the field [(detailed description)](#document-fields) ||
 |#
 
 #### DocumentFields Object {#document-fields}
@@ -406,23 +404,25 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **title**
-[`string`](../data-types.md) | Field name ||
+[`string`](../data-types.md) | Field name. Returned only for fields described by the data provider, for example `DocumentTitle` ||
 || **value**
-[`string`](../data-types.md) | Current field value ||
+[`string`](../data-types.md) | Current field value. If the `values` parameter is passed, contains the value from it. Returned for all fields ||
 || **default**
-[`string`](../data-types.md) | Base field value ||
+[`string`](../data-types.md) | Base field value. Returned for all fields ||
 || **group**
-[`array`](../data-types.md) | Field group in the template ||
+[`array`](../data-types.md) | Field group in the template. Returned together with `title` ||
 || **chain**
 [`string`](../data-types.md) \| [`array`](../data-types.md) | Field chain, if available.
 
-Can be a string (e.g., `this.DOCUMENT.DOCUMENT_NUMBER`) or an array (e.g., `[{}, "getTitle"]`) ||
+Can be a string (e.g., `this.DOCUMENT.DOCUMENT_NUMBER`) or an array (e.g., `[{}, "getTitle"]`). Returned together with `title` ||
 || **required**
 [`string`](../data-types.md) | Field required indicator
 
 Possible values:
 - `Y` - field is required
-- `N` - field is optional ||
+- `N` - field is optional
+
+Returned together with `title` ||
 || **type**
 [`string`](../data-types.md) | Field type, if specified ||
 |#
@@ -444,9 +444,11 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Bitrix\DocumentGenerator\Document constructor must be public | Required parameter `id` not provided ||
-|| `400` | `0` | Document not found | Document with the specified `id` not found ||
-|| `400` | `0` | You do not have permissions to view documents | Insufficient rights to modify the document ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `400` | `0` | Document was not found | Document with the specified `id` not found ||
+|| `400` | `0` | You do not have permissions to view documents | No permission to view documents. The method checks this permission first, then the permission to modify the document ||
+|| `400` | `0` | You do not have permissions to modify this document | The user can view documents but has no permission to modify the document with the specified `id` ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document with the specified `id` ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

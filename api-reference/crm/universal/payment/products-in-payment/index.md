@@ -29,9 +29,10 @@ The methods `crm.item.payment.product.*` allow you to add a product item to a pa
 
 The methods take into account the product quantity in the original product row and the quantity already allocated across all order payments.
 
-- In `crm.item.payment.product.add`, the `rowId` parameter must refer to a product row in the same CRM object as the payment. If the product row belongs to another object, the method returns the `Product not found` error
-- If the entire quantity in the product row has already been allocated among payments, `crm.item.payment.product.add` returns the `Product not found` error. If the product has been partially allocated, you can add no more than the available remainder; otherwise, the method returns the `Insufficient product quantity to add to payment` error
-- The method `crm.item.payment.product.setQuantity` checks the total product quantity across all order payments. If the new item quantity exceeds the available remainder after accounting for other payments, the method returns the `Insufficient product quantity to add to payment` error and does not update the item
+- In `crm.item.payment.product.add`, the `rowId` parameter must refer to a product row in the same CRM object as the payment. If the product row belongs to another object, the method returns the `Product was not found` error
+- If the entire quantity in the product row has already been allocated among payments, `crm.item.payment.product.add` returns the `Product was not found` error. If the product has been partially allocated, you can add no more than the available remainder; otherwise, the method returns the `Insufficient product stock` error
+- The method `crm.item.payment.product.setQuantity` checks the total product quantity across all order payments. If the new item quantity exceeds the available remainder after accounting for other payments, the method returns the `Insufficient product stock` error and does not update the item
+- You can change products only in an unpaid payment. For a paid payment, the `add`, `setQuantity`, and `delete` methods return the `ACCESS_DENIED` error — the same one as when permissions are insufficient
 
 ## Linking Product Items in Payment with Other Objects
 

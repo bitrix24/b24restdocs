@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the order from which the delivery item is removed.
+> Who can execute the method: a user with permission to modify the payment. The payment must not be paid
 
-Removes a delivery item from the payment.
+The method `crm.item.payment.delivery.delete` removes a delivery item from a payment. The payment amount decreases by the delivery cost, while the delivery document itself remains in the order — you can add it again using the [crm.item.payment.delivery.add](./crm-item-payment-delivery-add.md) method.
 
 ## Method Parameters
 
@@ -23,8 +23,7 @@ Removes a delivery item from the payment.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment. 
-Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-payment-delivery-list.md)  ||
+[`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment. You can retrieve it using the [crm.item.payment.delivery.list](./crm-item-payment-delivery-list.md) method — the `id` field in the response ||
 |#
 
 ## Code Examples
@@ -226,7 +225,7 @@ Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-p
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -250,7 +249,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation ||
+[`boolean`](../../../../data-types.md) | `true` if the item was deleted ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
@@ -261,8 +260,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Payable item has not been found"
+    "error": "0",
+    "error_description": "Payable item has not been found"
 }
 ```
 
@@ -271,18 +270,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Delivery item not found ||
-|| `0` | Access denied ||
-|| `100` | Parameter id not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Payable item has not been found | The delivery item with the passed `id` was not found in payments ||
+|| `400` | `ACCESS_DENIED` | Access denied | The payment is already paid, or the user does not have permission to modify the payment. To change the contents of a paid payment, first call [crm.item.payment.unpay](../crm-item-payment-unpay.md) ||
+|| `400` | `0` | Internal delete error | Internal error while deleting the item ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
 |#
 
-### Error Handling Features
+The method returns code `0` for several different errors. To determine the cause, check the text in `error_description`.
 
-For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
-
-{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

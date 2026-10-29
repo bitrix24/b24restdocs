@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the order to which the delivery item is added.
+> Who can execute the method: a user with permission to modify the payment. The payment must not be paid
 
-Adds a delivery item to a payment.
+The method `crm.item.payment.delivery.add` adds a delivery document from the same order to a payment. The item is created with a quantity of `1`, and the payment amount increases by the delivery cost. If the delivery document is already in the payment, the method does not create a duplicate and returns the `id` of the existing item.
 
 ## Method Parameters
 
@@ -23,11 +23,9 @@ Adds a delivery item to a payment.
 || **Name**
 `type` | **Description** ||
 || **paymentId***
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
-Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) ||
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. You can retrieve the payment identifiers of a CRM object using the [crm.item.payment.list](../crm-item-payment-list.md) method ||
 || **deliveryId***
-[`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment) | Identifier of the delivery. 
-Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-item-delivery-list.md) (key id) ||
+[`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment) | Identifier of the delivery document. You can retrieve it using the [crm.item.delivery.list](../../delivery/crm-item-delivery-list.md) method — the `id` field in the response. The delivery document must belong to the same order as the payment ||
 |#
 
 ## Code Examples
@@ -236,7 +234,7 @@ Can be obtained using the method [`crm.item.delivery.list`](../../delivery/crm-i
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -260,7 +258,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment ||
+[`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment. Use it in the [crm.item.payment.delivery.setDelivery](./crm-item-payment-delivery-set-delivery.md) and [crm.item.payment.delivery.delete](./crm-item-payment-delivery-delete.md) methods ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
@@ -271,8 +269,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Payment has not been found"
+    "error": "0",
+    "error_description": "Shipment was not found"
 }
 ```
 
@@ -281,19 +279,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Payment not found ||
-|| `0` | Access denied ||
-|| `0` | Delivery item not found ||
-|| `100` | Required parameters not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Shipment was not found | The delivery document with the passed `deliveryId` was not found in the payment's order ||
+|| `400` | `0` | Payment has not been found | The payment with the passed `paymentId` was not found ||
+|| `400` | `ACCESS_DENIED` | Access denied | The payment is already paid, or the user does not have permission to modify the payment. To change the contents of a paid payment, first call [crm.item.payment.unpay](../crm-item-payment-unpay.md) ||
+|| `400` | `100` | Could not find value for parameter {`parameter name`} | The required parameter `paymentId` or `deliveryId` was not provided ||
 |#
 
-### Error Handling Features
+The method returns code `0` for several different errors. To determine the cause, check the text in `error_description`.
 
-For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
-
-{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

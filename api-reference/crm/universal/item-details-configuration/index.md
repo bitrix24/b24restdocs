@@ -25,6 +25,30 @@ The methods `crm.item.details.configuration.*` manage the sections of the detail
 4. Save changes using the method [crm.item.details.configuration.set](./crm-item-details-configuration-set.md) or reset the settings to default values via [crm.item.details.configuration.reset](./crm-item-details-configuration-reset.md).
 5. To make the common configuration mandatory for all users, use [crm.item.details.configuration.forceCommonScopeForAll](./crm-item-details-configuration-forceCommonScopeForAll.md).
 
+## Detail Form Configuration Structure
+
+A configuration is an array of sections. The [crm.item.details.configuration.get](./crm-item-details-configuration-get.md) and [crm.item.details.configuration.set](./crm-item-details-configuration-set.md) methods use the same structure, so you can modify the `get` response and pass it to `set` without conversion.
+
+```json
+[
+    {
+        "name": "main",
+        "title": "About deal",
+        "type": "section",
+        "elements": [
+            { "name": "TITLE", "optionFlags": 1 },
+            { "name": "CLIENT", "options": { "defaultCountry": "GB" } }
+        ]
+    }
+]
+```
+
+- a `section` contains the `name` code, the `title` heading, the `type` with the `section` value, and the `elements` list of fields
+- a `section_element` field contains the `name` field code, the `optionFlags` flag, and the `options`. The field code is taken from the response of the [crm.item.fields](../crm-item-fields.md) method
+- the order of sections and fields in the arrays sets their display order in the detail form
+
+The `set` method replaces the configuration entirely: sections and fields that are not in the passed array disappear from the detail form. If no configuration is saved for the `scope`, the `get` method returns `null`.
+
 ## Scope of Settings
 
 The `scope` parameter defines whose settings will be changed.
@@ -61,9 +85,10 @@ The funnel identifier is returned by the [crm.category.list](../category/crm-cat
 
 ## Common Causes of Errors
 
-- An unsupported CRM object type has been specified.
-- Incorrect `extras` parameters have been provided for the selected type.
-- Insufficient permissions to modify the common configuration.
+- `entityTypeId` is not passed, or an object type without a detail form is specified — the `Parameter 'entityTypeID' is not defined` and `The entity type '...' is not supported in current context.` errors
+- `extras` keys that do not match the selected object type are passed
+- no administrator permissions to change the common configuration or another user's personal settings — the `Access denied.` error
+- an incomplete section without `name` or `title` is passed to `set`
 
 ## Overview of Methods {#all-methods}
 

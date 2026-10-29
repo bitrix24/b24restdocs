@@ -16,7 +16,7 @@ Choose a tool for developing with an AI agent:
 >   - A user can set common and others' settings only if they are an administrator
 
 
-The method `crm.item.details.configuration.set` sets the configurations for the card of a specific CRM object. It records the personal settings of the specified user or common configurations for all users.
+The method `crm.item.details.configuration.set` saves the personal or common configuration of the sections of a CRM object detail form. The passed `data` completely replaces the current configuration: sections and fields that are not in `data` disappear from the detail form.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}
 
@@ -30,7 +30,9 @@ The method `crm.item.details.configuration.set` sets the configurations for the 
 || **entityTypeId***
 [`integer`](../../../data-types.md) | Identifier of the [system](./../../index.md) or [custom type](./../user-defined-object-types/index.md) of CRM entities ||
 || **data***
-[`section[]`](#section)| List of `section` describing the configuration of field sections in the item card. The structure of `section` is described below ||
+[`section[]`](#section) | Array of detail form sections in display order [(detailed description)](#section).
+
+Pass the entire configuration, not only the changes: the method does not merge `data` with the saved configuration. To change one section, retrieve the current configuration using the [crm.item.details.configuration.get](./crm-item-details-configuration-get.md) method, modify it, and pass it in full ||
 || **userId**
 [`user`](../../../data-types.md) | Identifier of the user for whom you want to set the configuration.
 
@@ -63,12 +65,14 @@ Describes a specific section with fields within the item card.
 [`string`](../../../data-types.md) | Unique name of the section ||
 || **title***
 [`string`](../../../data-types.md) | Title of the section. Displayed in the item card ||
-|| **type***
-[`string`](../../../data-types.md) | Type of the section. 
+|| **type**
+[`string`](../../../data-types.md) | Type of the section. Only the `section` value is allowed.
 
-Currently, only the value `'section'` is available ||
+If the parameter is not passed, `section` is used ||
 || **elements**
-[`section_element[]`](#section_element) | Array of `section_element`, describing the configuration of fields in the section ||
+[`section_element[]`](#section_element) | Array of the section's fields in display order [(detailed description)](#section_element).
+
+If the parameter is not passed, the section is saved without fields ||
 |#
 
 #### Section_Element
@@ -104,7 +108,7 @@ By default, the value is `0` ||
 `CLIENT`
 `COMPANY`
 `CONTACT`
-`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example `"RU"`              | `Calculated` ||
+`MYCOMPANY_ID` | Country code for the default phone number format — a string of two Latin letters. For example `"GB"`              | `Calculated` ||
 || **isPayButtonVisible**
 [`boolean`](../../../data-types.md) | `OPPORTUNITY_WITH_CURRENCY` | Whether the payment acceptance button is shown.
 
@@ -848,17 +852,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` not provided ||
-|| Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
-|| Empty value | Access denied. | The user does not have administrative rights ||
-|| Empty value | Parameter 'data' must be array. | The `data` parameter is not an array ||
-|| Empty value | The data must be indexed array. | A non-indexed array was passed in `data` ||
-|| Empty value | There are no data to write. | An empty array was passed in `data` ||
-|| Empty value | Section at index `i` have type `data[i].type`. The expected type is 'section'. | The value in `data[i].type` is different from `'section'` || 
-|| Empty value | Section at index `i` does not have name. | An empty value was passed in `data[i].name` ||
-|| Empty value | Section at index `i` does not have title. | An empty value was passed in `data[i].title` ||
-|| Empty value | Element at index `j` in section at index `i` does not have name. | An empty value was passed in `data[i].elements[j].name` ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Parameter 'entityTypeID' is not defined | The required parameter `entityTypeId` is not passed, or a non-existent CRM object type is passed ||
+|| `400` | Empty value | The entity type '`entityTypeName`' is not supported in current context. | The CRM object type does not support detail form configuration, for example `ACTIVITY` ||
+|| `400` | Empty value | Access denied. | Shared settings or another user's personal settings are being changed, and the user does not have administrator permissions ||
+|| `400` | Empty value | Parameter 'data' must be array. | The `data` parameter is not an array ||
+|| `400` | Empty value | The data must be indexed array. | A non-indexed array was passed in `data` ||
+|| `400` | Empty value | There are no data to write. | An empty array was passed in `data` ||
+|| `400` | Empty value | Section at index `i` have type `data[i].type`. The expected type is 'section'. | The value in `data[i].type` is different from `'section'` ||
+|| `400` | Empty value | Section at index `i` does not have name. | An empty value was passed in `data[i].name` ||
+|| `400` | Empty value | Section at index `i` does not have title. | An empty value was passed in `data[i].title` ||
+|| `400` | Empty value | Element at index `j` in section at index `i` does not have name. | An empty value was passed in `data[i].elements[j].name` ||
 |#
 
 {% include [System errors](./../../../../_includes/system-errors.md) %}

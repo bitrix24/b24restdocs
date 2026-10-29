@@ -152,7 +152,7 @@ What to take from the response:
 ## If the Method Returns an Error
 
 - `Empty required parameter "value"` — the required parameter `value` is not provided
-- `Template not found` — no template exists with the specified `templateId`
+- `Template was not found` — no template exists with the specified `templateId`
 - `Cannot create document on deleted template` — the template is marked as deleted, create the document from another template
 
 The document was created, but the fields are empty — the codes in `values` do not match the template placeholders. Compare them with the response of the [documentgenerator.template.getfields](../templates/document-generator-template-get-fields.md) method.

@@ -1,4 +1,4 @@
-# Update the color of the universal deal crm.activity.todo.updateColor
+# Update Color of Universal Activity crm.activity.todo.updateColor
 
 {% note tip "" %}
 
@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with edit access permission for the CRM object to which the activity is linked
 
-The method `crm.activity.todo.updateColor` updates the color of the universal deal.
+The method `crm.activity.todo.updateColor` updates the color of a universal activity.
 
 ## Method Parameters
 
@@ -23,16 +23,28 @@ The method `crm.activity.todo.updateColor` updates the color of the universal de
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the deal being updated, for example `999` ||
+[`integer`](../../../../data-types.md) | Identifier of the activity being updated, for example `999`.
+
+You can retrieve the identifier using the [crm.activity.list](../activity-base/crm-activity-list.md) method with the filter `PROVIDER_ID` = `CRM_TODO`. A closed activity cannot be updated ||
 || **ownerTypeId***
-[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal is linked, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) in whose timeline the activity is located, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the deal is linked, for example, `1` ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity in whose timeline the activity is located, for example `1`.
+
+The `ownerTypeId` and `ownerId` values are returned by the [crm.activity.get](../activity-base/crm-activity-get.md) method in the `OWNER_TYPE_ID` and `OWNER_ID` fields. If the activity does not belong to this entity, the method returns the `NOT_FOUND` error ||
 || **colorId***
-[`string`](../../../../data-types.md) | Identifier of the deal's color in the timeline, for example `1`. There are 8 available colors, values from 1 to 7 and the default color if none is specified:
+[`string`](../../../../data-types.md) | Identifier of the new color of the activity in the timeline. Pass the value as a string, for example `"3"`: a number causes the `100` error. Possible values:
 
+- `default` — yellow, the default color
+- `1` — blue
+- `2` — turquoise
+- `3` — orange
+- `4` — green
+- `5` — purple
+- `6` — gray
+- `7` — pink
 
-||
+If the value is not in the list, the method returns the `0` error with the description `Invalid color value.` ||
 |#
 
 ## Code Examples
@@ -151,8 +163,8 @@ The method `crm.activity.todo.updateColor` updates the color of the universal de
         bitrix_response = client.crm.activity.todo.update_color(
             bitrix_id=999,
             owner_type_id=2,
-            owner_id=101,
-            color_id="5",
+            owner_id=1,
+            color_id="3",
         ).response
         result = bitrix_response.result
         print(result)
@@ -184,7 +196,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal de
                     'colorId'     => '3',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -205,7 +217,7 @@ The method `crm.activity.todo.updateColor` updates the color of the universal de
             ownerTypeId: 2,
             ownerId: 1,
             colorId: '3'
-        }, 
+        },
         result => {
             if (result.error())
                 console.error(result.error());
@@ -287,9 +299,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | On success, returns an object containing the identifier of the updated deal `id`, on error = `null` ||
+[`object`](../../../../data-types.md) | Object with the identifier of the updated activity [(detailed description)](#result) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../../data-types.md) | Identifier of the updated activity, matches the passed `id` ||
 |#
 
 ## Error Handling
@@ -298,8 +319,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "0",
+    "error_description": "Invalid color value."
 }
 ```
 
@@ -308,21 +329,25 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `100` | Required fields are missing ||
-|| `NOT_FOUND` | CRM object not found ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
-|| `CAN_NOT_UPDATE_COLOR_COMPLETED_TODO` | Cannot change color in a closed deal ||
-|| `CAN_NOT_UPDATE_WRONG_COLOR_TODO` | Invalid color value ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {colorId} | The required parameter `id`, `ownerTypeId`, `ownerId`, or `colorId` is not passed. The description contains the parameter name ||
+|| `400` | `NOT_FOUND` | Item was not found | No activity with this `id` exists, or it does not belong to the CRM entity from `ownerTypeId` and `ownerId` ||
+|| `400` | `100` | Invalid value {3} to match with parameter {colorId}. Should be value of type string. | The `colorId` value is passed as a number, not a string ||
+|| `400` | `0` | Invalid color value | The `colorId` value is not in the list of allowed values ||
+|| `400` | `0` | Cannot change color for closed activity | The activity is closed and cannot be updated ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to edit the CRM entity ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-activity-todo-add.md)
 - [{#T}](./crm-activity-todo-update.md)
 - [{#T}](./crm-activity-todo-update-deadline.md)
 - [{#T}](./crm-activity-todo-update-description.md)
 - [{#T}](./crm-activity-todo-update-responsible-user.md)
+- [{#T}](../activity-base/crm-activity-get.md)
+- [{#T}](../activity-base/crm-activity-list.md)
+- [{#T}](../activity-base/crm-activity-delete.md)

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "read" access permission for the CRM object associated with the payment
 
-The method `crm.item.payment.product.list` returns a list of product items for a specific payment.
+The method `crm.item.payment.product.list` returns all product items of a payment in a single response, without pagination.
 
 ## Method Parameters
 
@@ -23,55 +23,32 @@ The method `crm.item.payment.product.list` returns a list of product items for a
 || **Name**
 `type` | **Description** ||
 || **paymentId***
-[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. 
-Can be obtained using the method [`sale.payment.list`](../../../../sale/payment/sale-payment-list.md) ||
+[`sale_order_payment.id`](../../../../sale/data-types.md#sale_order_payment) | Identifier of the payment. You can retrieve the payment identifiers of a CRM object using the [crm.item.payment.list](../crm-item-payment-list.md) method ||
 || **filter**
-[`object`](../../../../data-types.md) | Object for filtering selected payment product items in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../../../data-types.md) | Filter in the format `{"field": "value"}`. Available fields:
+- `id` — identifier of the product item in the payment
+- `quantity` — quantity
+- `entityId` — identifier of the product in the order basket
 
-By default, no filter is applied.
-
-Possible values for `field`:
-- `id`
-- `quantity`
-
-An additional prefix can be specified for the key to clarify the filter behavior. Possible prefix values:
-
-- `=` — equals, exact match (used by default)
-- `%` — LIKE, substring search. The % symbol should not be included in the filter value. The search looks for the substring in any position of the string.
-- `>` — greater than
-- `<` — less than
+You can add an operator prefix to the key:
+- `=` — equals, used by default
 - `!=` — not equal
-- `!%` — NOT LIKE, substring search. The % symbol should not be included in the filter value. The search is conducted from both sides
-- `>=` — greater than or equal to
-- `<=` — less than or equal to
-- `@` — IN, an array is passed as the value
-- `!@` — NOT IN, an array is passed as the value
-- `=%` — LIKE, substring search. The % symbol must be included in the value. Examples: 
-    - `"mol%"` — searching for values starting with "mol"
-    - `"%mol"` — searching for values ending with "mol"
-    - `"%mol%"` — searching for values where "mol" can be in any position
-- `%=` — LIKE (see description above)
-- `!=%` — NOT LIKE, substring search. The % symbol must be included in the value. Examples:
-    - `"mol%"` — searching for values not starting with "mol"
-    - `"%mol"` — searching for values not ending with "mol"
-    - `"%mol%"` — searching for values where the substring "mol" is not present in any position
-- `!%=` — NOT LIKE (see description above)
-||
+- `>`, `>=`, `<`, `<=` — greater than, greater than or equal to, less than, less than or equal to
+- `@` — in an array of values
+- `!@` — not in an array of values
+
+All filter fields are numeric, so the substring search operators `%`, `=%`, `%=`, and their negations do not apply: the method accepts them without an error but finds no matches.
+
+If you pass another field, the method returns the `Internal server error.` error. By default, no filter is applied. In the Python SDK, `filter` is a required method argument: if you do not need a filter, pass `{}` ||
 || **order**
-[`object`](../../../../data-types.md) | Object for sorting selected payment product items in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../../../data-types.md) | Sort order in the format `{"field": "direction"}`. The fields are the same as in `filter`. Direction:
+- `ASC` — ascending
+- `DESC` — descending
 
-By default, records are sorted by `id` in ascending order.
-
-Possible values for `field`:
-- `id`
-- `quantity`
-
-Possible values for `order`:
-
-- `asc` — in ascending order
-- `desc` — in descending order
- ||
+Defaults to `{"id": "ASC"}` ||
 |#
+
+The method does not support the `start` parameter: all payment items are returned in a single response.
 
 ## Code Examples
 
@@ -246,36 +223,6 @@ Possible values for `order`:
         print(f"Unexpected error: {error}")
     ```
 
-    Example `as_list_fast`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.item.payment.product.list(
-            payment_id=1039,
-            filter={
-                ">=quantity": 2,
-                "@id": [1195, 1196],
-            },
-        ).as_list_fast(descending=True).response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
 - PHP
 
     ```php
@@ -385,7 +332,7 @@ Possible values for `order`:
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -418,12 +365,12 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-`crm_item_payment_product[]` | Array of objects containing information about the selected payment product items ||
+[`crm_item_payment_product[]`](#crm_item_payment_product) | Array of product items of the payment [(detailed description)](#crm_item_payment_product). If there are no items, an empty array is returned ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
 
-### Key result. Object of type crm_item_payment_product
+#### crm_item_payment_product {#crm_item_payment_product}
 
 #|
 || **Name**
@@ -446,8 +393,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Payment has not been found"
+    "error": "0",
+    "error_description": "Payment has not been found"
 }
 ```
 
@@ -456,18 +403,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Payment not found ||
-|| `ACCESS_DENIED` | Access denied: the user does not have permission to read the payment ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Payment has not been found | The payment with the passed `paymentId` was not found ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to read the payment ||
+|| `400` | `100` | Internal server error. | An unsupported field was passed in `filter` or `order` ||
+|| `400` | `100` | Could not find value for parameter {paymentId} | The required parameter `paymentId` was not provided ||
 |#
 
-### Error Handling Features
+The method returns code `0` for several different errors. To determine the cause, check the text in `error_description`.
 
-For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
-
-{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

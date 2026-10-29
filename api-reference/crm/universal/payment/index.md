@@ -27,7 +27,7 @@ Not all CRM objects support payments.
 || Invoice | `31` ||
 |#
 
-For other objects, such as a lead or a smart process, the [crm.item.payment.add](./crm-item-payment-add.md) method returns an error stating that payment creation is not available for this entity, and [crm.item.payment.list](./crm-item-payment-list.md) returns an empty list.
+For other objects, such as a lead or a smart process, the [crm.item.payment.add](./crm-item-payment-add.md) method returns an error with the code `0` and the text `Cannot create payment for this entity.`, and [crm.item.payment.list](./crm-item-payment-list.md) returns an empty array.
 
 **Payment Systems.** The payment data returns `paySystemId` and `paySystemName`. You can access available payment systems using the [sale.paysystem.list](../../../pay-system/sale-pay-system-list.md) method.
 
@@ -48,10 +48,13 @@ For other objects, such as a lead or a smart process, the [crm.item.payment.add]
 
 ## Limitations and Features
 
-- For the `crm.item.payment.*` methods, a correct pair of `entityTypeId` and `entityId` for the CRM object is required.
-- The methods [crm.item.payment.product.*](./products-in-payment/index.md) and [crm.item.payment.delivery.*](./delivery-in-payment/index.md) only work with an existing payment by `paymentId`.
-- In list methods, apply `filter` and `order` in a format compatible with [sale.payment.list](../../../sale/payment/sale-payment-list.md).
-- The [salescenter.payment.getPublicUrl](./salescenter-payment-get-public-url.md) method works in the `salescenter` scope and is used only for generating a public link.
+- Only the [crm.item.payment.add](./crm-item-payment-add.md) and [crm.item.payment.list](./crm-item-payment-list.md) methods accept the `entityTypeId` and `entityId` pair. Other methods work with a payment by its `id`, and the line item methods work by `paymentId` or the `id` of the line item
+- A new payment is created with the amount `0`. The amount is recalculated automatically when products and delivery are added to or removed from the payment
+- Products and delivery cannot be changed in a paid payment: the [crm.item.payment.product.*](./products-in-payment/index.md) and [crm.item.payment.delivery.*](./delivery-in-payment/index.md) methods return the `ACCESS_DENIED` error. A paid payment cannot be deleted either. First remove the paid mark using the [crm.item.payment.unpay](./crm-item-payment-unpay.md) method
+- The [crm.item.payment.unpay](./crm-item-payment-unpay.md) method does not clear the `datePaid` and `empPaidId` fields: they keep the data of the last payment
+- List methods return all records in a single response and do not support the `start` parameter. The `filter` and `order` parameters accept fields from the method response. The exception is [crm.item.payment.delivery.list](./delivery-in-payment/crm-item-payment-delivery-list.md): set the delivery document in the filter with the `entityId` field, not `deliveryId`
+- Many errors are returned with the code `0`. Determine the cause by the text in `error_description`
+- The [salescenter.payment.getPublicUrl](./salescenter-payment-get-public-url.md) method requires the `salescenter` scope
 
 ## Overview of Methods {#all-methods}
 

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`documentgenerator`](../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to modify documents
+> Who can execute the method: a user with permission to view documents and to modify this document
 
 The method `documentgenerator.document.enablepublicurl` enables or disables the public link for a document.
 
@@ -28,10 +28,10 @@ The method `documentgenerator.document.enablepublicurl` enables or disables the 
 You can obtain the document identifier after [creating a document](./document-generator-document-add.md) or by using the [get document list method](./document-generator-document-list.md) ||
 || **status**
 [`integer`](../data-types.md) | Status of the public link:
-- `1` - enable
-- `0` - disable
+- `1` — enable
+- `0` — disable
 
-Default is `1` ||
+Any value other than `1` disables the link — the method does not return an error for an invalid value. Default is `1` ||
 |#
 
 ## Code Examples
@@ -293,7 +293,7 @@ HTTP status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Document not found"
+    "error_description": "Document was not found."
 }
 ```
 
@@ -303,9 +303,11 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Bitrix\DocumentGenerator\Document constructor must be is public | Required parameter `id` not provided ||
-|| `400` | `0` | Document not found | Document with the specified `id` not found ||
-|| `400` | `0` | You do not have permissions to view documents | Insufficient permissions to modify the document ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `400` | `0` | Document was not found | Document with the specified `id` not found ||
+|| `400` | `0` | You do not have permissions to view documents | No permission to view documents. The method checks this permission first, then the permission to modify the document ||
+|| `400` | `0` | You do not have permissions to modify this document | The user can view documents but has no permission to modify the document with the specified `id` ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document with the specified `id` ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

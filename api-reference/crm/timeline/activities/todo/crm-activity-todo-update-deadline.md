@@ -23,13 +23,21 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the activity being updated, for example `999` ||
+[`integer`](../../../../data-types.md) | Identifier of the activity being updated, for example `999`.
+
+You can retrieve the identifier using the [crm.activity.list](../activity-base/crm-activity-list.md) method with the filter `PROVIDER_ID` = `CRM_TODO`. A closed activity cannot be updated ||
 || **ownerTypeId***
-[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity is linked, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) in whose timeline the activity is located, for example `2` for a deal ||
 || **ownerId***
-[`integer`](../../../../data-types.md) | Identifier of the CRM object to which the activity is linked, for example, `1` ||
+[`integer`](../../../../data-types.md) | Identifier of the CRM entity in whose timeline the activity is located, for example `1`.
+
+The `ownerTypeId` and `ownerId` values are returned by the [crm.activity.get](../activity-base/crm-activity-get.md) method in the `OWNER_TYPE_ID` and `OWNER_ID` fields. If the activity does not belong to this entity, the method returns the `NOT_FOUND` error ||
 || **value***
-[`datetime`](../../../../data-types.md) | New deadline for the activity ||
+[`datetime`](../../../../data-types.md) | New deadline for the activity in ISO 8601 format, for example `2026-11-03T15:00:00+01:00`.
+
+If you do not specify a time zone, the time is interpreted in the time zone of the user on whose behalf the request is executed. If you pass only a date, for example `2026-11-03`, the deadline is set to the start of the day, `00:00`.
+
+If the activity is linked to a calendar event, the event is moved to the new deadline. This requires permission to edit the event ||
 |#
 
 ## Code Examples
@@ -54,7 +62,7 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":999,"ownerTypeId":2,"ownerId":1,"value":"**put_current_date_here**","auth":"**put_access_token_here**"}' \
+    -d '{"id":999,"ownerTypeId":2,"ownerId":1,"value":"2026-11-05T12:30:00+01:00","auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.activity.todo.updateDeadline
     ```
 
@@ -150,7 +158,7 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
         bitrix_response = client.crm.activity.todo.update_deadline(
             bitrix_id=999,
             owner_type_id=2,
-            owner_id=101,
+            owner_id=1,
             value=datetime.now() + timedelta(days=3),
         ).response
         result = bitrix_response.result
@@ -180,10 +188,10 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
                     'id'          => 999,
                     'ownerTypeId' => 2,
                     'ownerId'     => 1,
-                    'value'       => date('Y-m-d H:i:s'),
+                    'value'       => date(DATE_ATOM),
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -203,8 +211,8 @@ The method `crm.activity.todo.updateDeadline` changes the deadline of a universa
             id: 999,
             ownerTypeId: 2,
             ownerId: 1,
-            value: new Date()
-        }, 
+            value: new Date().toISOString()
+        },
         result => {
             if (result.error())
                 console.error(result.error());
@@ -286,9 +294,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../../data-types.md) | On success, returns an object containing the identifier of the updated activity `id`, on error = `null` ||
+[`object`](../../../../data-types.md) | Object with the identifier of the updated activity [(detailed description)](#result) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../../../data-types.md) | Identifier of the updated activity, matches the passed `id` ||
 |#
 
 ## Error Handling
@@ -297,8 +314,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Not found."
+    "error": "WRONG_DATETIME_FORMAT",
+    "error_description": "Incorrect date format."
 }
 ```
 
@@ -307,21 +324,25 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `100` | Required fields not provided ||
-|| `NOT_FOUND` | CRM object not found ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
-|| `WRONG_DATETIME_FORMAT` | Incorrect date format || 
-|| `CAN_NOT_UPDATE_COMPLETED_TODO` | Completed activity cannot be modified ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {value} | The required parameter `id`, `ownerTypeId`, `ownerId`, or `value` is not passed. The description contains the parameter name ||
+|| `400` | `NOT_FOUND` | Item was not found | No activity with this `id` exists, or it does not belong to the CRM entity from `ownerTypeId` and `ownerId` ||
+|| `400` | `WRONG_DATETIME_FORMAT` | Incorrect date format | The `value` could not be recognized as a date ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to edit the CRM entity ||
+|| `400` | `ACCESS_DENIED` | Insufficient permissions to change activity calendar event | The activity is linked to a calendar event, and the user does not have permission to edit this event ||
+|| `400` | `CAN_NOT_UPDATE_COMPLETED_TODO` | Cannot edit completed activity | The activity is closed and cannot be updated ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./crm-activity-todo-add.md)
 - [{#T}](./crm-activity-todo-update.md)
 - [{#T}](./crm-activity-todo-update-description.md)
 - [{#T}](./crm-activity-todo-update-color.md)
 - [{#T}](./crm-activity-todo-update-responsible-user.md)
+- [{#T}](../activity-base/crm-activity-get.md)
+- [{#T}](../activity-base/crm-activity-list.md)
+- [{#T}](../activity-base/crm-activity-delete.md)

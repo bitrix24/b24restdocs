@@ -157,7 +157,7 @@ The `stampsEnabled` field in the response shows whether stamps and signatures ar
 ## If the Method Returns an Error
 
 - `Empty required parameter "value"` — the required parameter `value` is not provided
-- `Template not found` — no template exists with the specified `templateId`
+- `Template was not found` — no template exists with the specified `templateId`
 
 A link is shown in the document instead of an image — `TYPE` = `IMAGE` or `TYPE` = `STAMP` is not specified for this field in `fields`.
 

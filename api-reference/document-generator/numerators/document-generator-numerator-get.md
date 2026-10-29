@@ -373,7 +373,7 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Bitrix\Main\Numerator\Numerator constructor must be public | Required parameter `id` is missing ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` is missing ||
 || `400` | `100` | Could not construct parameter {numerator} | An invalid or non-existent numerator identifier was provided ||
 || `400` | `0` | Numerator was not found. | The numberer with the specified identifier was not found or belongs to a different type ||
 || `400` | `0` | You do not have permissions to modify templates | Insufficient rights to modify document generator templates ||

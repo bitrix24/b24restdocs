@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: requires access permission to modify the payment order
+> Who can execute the method: a user with permission to modify the payment. The payment must not be paid
 
-Reassigns a delivery position to another delivery document.
+The method `crm.item.payment.delivery.setDelivery` replaces the delivery document in a payment item. The item keeps its `id` and quantity, and the payment amount is recalculated. The previous delivery document remains in the order.
 
 ## Method Parameters
 
@@ -23,12 +23,11 @@ Reassigns a delivery position to another delivery document.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment. 
-Can be obtained using the method [`crm.item.payment.delivery.list`](./crm-item-payment-delivery-list.md)  ||
+[`integer`](../../../../data-types.md) | Identifier of the delivery item in the payment. You can retrieve it using the [crm.item.payment.delivery.list](./crm-item-payment-delivery-list.md) method — the `id` field in the response ||
 || **deliveryId***
-[`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment) | Identifier of the delivery.
+[`sale_order_shipment.id`](../../../../sale/data-types.md#sale_order_shipment) | Identifier of the delivery document. You can retrieve it using the [crm.item.delivery.list](../../delivery/crm-item-delivery-list.md) method — the `id` field in the response. Pass a delivery document from the same order as the payment.
 
-This can be obtained using the [`crm.item.delivery.list`](../../delivery/crm-item-delivery-list.md) method (key id)  ||
+The method does not check that the delivery document exists: for a nonexistent `deliveryId`, it returns `true` and writes this identifier to the item ||
 |#
 
 ## Code Examples
@@ -237,7 +236,7 @@ This can be obtained using the [`crm.item.delivery.list`](../../delivery/crm-ite
 
 {% endlist %}
 
-## Response on Success
+## Response Handling
 
 HTTP status: **200**
 
@@ -261,7 +260,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation ||
+[`boolean`](../../../../data-types.md) | `true` if the delivery document in the item was replaced ||
 || **time**
 [`time`](../../../../data-types.md) | Information about the request execution time ||
 |#
@@ -272,8 +271,8 @@ HTTP status: **400**
 
 ```json
 {
-   "error":0,
-   "error_description":"Payable item has not been found"
+    "error": "0",
+    "error_description": "Payable item has not been found"
 }
 ```
 
@@ -282,18 +281,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Delivery item not found ||
-|| `0` | Access denied ||
-|| `100` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Payable item has not been found | The delivery item with the passed `id` was not found in payments ||
+|| `400` | `ACCESS_DENIED` | Access denied | The payment is already paid, or the user does not have permission to modify the payment. To change the contents of a paid payment, first call [crm.item.payment.unpay](../crm-item-payment-unpay.md) ||
+|| `400` | `100` | Could not find value for parameter {`parameter name`} | The required parameter `id` or `deliveryId` was not provided ||
 |#
 
-### Error Handling Features
+The method returns code `0` for several different errors. To determine the cause, check the text in `error_description`.
 
-For business errors, the method may return `error: 0`. In this case, refer to `error_description` and match it with the list of errors above.
-
-{% include notitle [System errors](../../../../../_includes/system-errors.md) %}
+{% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 

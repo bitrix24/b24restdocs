@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`documentgenerator`](../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to modify documents
+> Who can execute the method: a user with permission to view documents and to modify this document
 
 The method `documentgenerator.document.update` updates a document with new field values.
 
@@ -104,7 +104,7 @@ For `NAME`:
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":51,"values":{"DocumentNumber":"DC-2026-001","CurrentDate":"2026-03-20T00:00:00+02:00","ClientName":"Ltd. Chamomile","ClientPhone":"+1 999 123-45-67","Total":"130000","Comment":"Payment within 3 business days after signing","UserName":"John Smith"},"stampsEnabled":1}' \
+    -d '{"id":51,"values":{"DocumentNumber":"DC-2026-001","CurrentDate":"2026-03-20T00:00:00+02:00","ClientName":"Müller GmbH","ClientPhone":"+49 30 12345678","Total":"130000","Comment":"Payment within 3 business days after signing","UserName":"Klaus Weber"},"stampsEnabled":1}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/documentgenerator.document.update
   ```
 
@@ -114,7 +114,7 @@ For `NAME`:
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":51,"values":{"DocumentNumber":"DC-2026-001","CurrentDate":"2026-03-20T00:00:00+02:00","ClientName":"Ltd. Chamomile","ClientPhone":"+1 999 123-45-67","Total":"130000","Comment":"Payment within 3 business days after signing","UserName":"John Smith"},"stampsEnabled":1,"auth":"**put_access_token_here**"}' \
+    -d '{"id":51,"values":{"DocumentNumber":"DC-2026-001","CurrentDate":"2026-03-20T00:00:00+02:00","ClientName":"Müller GmbH","ClientPhone":"+49 30 12345678","Total":"130000","Comment":"Payment within 3 business days after signing","UserName":"Klaus Weber"},"stampsEnabled":1,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/documentgenerator.document.update
   ```
 
@@ -168,7 +168,7 @@ For `NAME`:
             DocumentNumber: 'DG-2026-001',
             CurrentDate: '2026-03-20T00:00:00+03:00',
             ClientName: 'Romashka LLC',
-            ClientPhone: '+49 999 123-45-67',
+            ClientPhone: '+49 30 12345678',
             Total: '130000',
             Comment: 'Payment within 3 business days after signing',
             UserName: 'Ivan Petrov',
@@ -210,7 +210,7 @@ For `NAME`:
                 DocumentNumber: 'DG-2026-001',
                 CurrentDate: '2026-03-20T00:00:00+03:00',
                 ClientName: 'Romashka LLC',
-                ClientPhone: '+49 999 123-45-67',
+                ClientPhone: '+49 30 12345678',
                 Total: '130000',
                 Comment: 'Payment within 3 business days after signing',
                 UserName: 'Ivan Petrov',
@@ -250,7 +250,7 @@ For `NAME`:
               "DocumentNumber": "DG-2026-001",
               "CurrentDate": "2026-03-20T00:00:00+03:00",
               "ClientName": "Müller GmbH",
-              "ClientPhone": "+49 999 123-45-67",
+              "ClientPhone": "+49 30 12345678",
               "Total": "130000",
               "Comment": "Payment within 3 business days after signing",
               "UserName": "Klaus Weber",
@@ -283,11 +283,11 @@ For `NAME`:
               'values' => [
                   'DocumentNumber' => 'DC-2026-001',
                   'CurrentDate' => '2026-03-20T00:00:00+02:00',
-                  'ClientName' => 'Ltd. Chamomile',
-                  'ClientPhone' => '+1 999 123-45-67',
+                  'ClientName' => 'Müller GmbH',
+                  'ClientPhone' => '+49 30 12345678',
                   'Total' => '130000',
                   'Comment' => 'Payment within 3 business days after signing',
-                  'UserName' => 'John Smith',
+                  'UserName' => 'Klaus Weber',
               ],
               'stampsEnabled' => 1,
           ]
@@ -310,11 +310,11 @@ For `NAME`:
           values: {
               DocumentNumber: 'DC-2026-001',
               CurrentDate: '2026-03-20T00:00:00+02:00',
-              ClientName: 'Ltd. Chamomile',
-              ClientPhone: '+1 999 123-45-67',
+              ClientName: 'Müller GmbH',
+              ClientPhone: '+49 30 12345678',
               Total: '130000',
               Comment: 'Payment within 3 business days after signing',
-              UserName: 'John Smith'
+              UserName: 'Klaus Weber'
           },
           stampsEnabled: 1
       },
@@ -344,11 +344,11 @@ For `NAME`:
           'values' => [
               'DocumentNumber' => 'DC-2026-001',
               'CurrentDate' => '2026-03-20T00:00:00+02:00',
-              'ClientName' => 'Ltd. Chamomile',
-              'ClientPhone' => '+1 999 123-45-67',
+              'ClientName' => 'Müller GmbH',
+              'ClientPhone' => '+49 30 12345678',
               'Total' => '130000',
               'Comment' => 'Payment within 3 business days after signing',
-              'UserName' => 'John Smith',
+              'UserName' => 'Klaus Weber',
           ],
           'stampsEnabled' => 1,
       ]
@@ -365,12 +365,12 @@ For `NAME`:
     	"id": 51,
     	"values": b24.Params{
     		"DocumentNumber": "DC-2026-001",
-    		"CurrentDate":    "2026-03-20T00:00:00+03:00",
-    		"ClientName":     "Ltd. Chamomile",
-    		"ClientPhone":    "+49 999 123-45-67",
+    		"CurrentDate":    "2026-03-20T00:00:00+02:00",
+    		"ClientName":     "Müller GmbH",
+    		"ClientPhone":    "+49 30 12345678",
     		"Total":          "130000",
     		"Comment":        "Payment within 3 business days after signing",
-    		"UserName":       "John Smith",
+    		"UserName":       "Klaus Weber",
     	},
     	"stampsEnabled": 1,
     })
@@ -413,10 +413,10 @@ HTTP Status: **200**
             "title": "SUPPLY_CONTRACT Template 1773843147554 DC-2026-001",
             "number": "DC-2026-001",
             "id": "51",
-            "createTime": "2026-03-18T17:27:48+02:00",
-            "createdBy": "503",
-            "updateTime": "2026-03-18T17:27:48+02:00",
-            "updatedBy": null,
+            "createTime": "2026-03-19T15:08:20+02:00",
+            "createdBy": null,
+            "updateTime": "2026-03-19T15:08:19+02:00",
+            "updatedBy": 503,
             "stampsEnabled": true,
             "isTransformationError": false,
             "value": "SUPPLY_CONTRACT_2026_015",
@@ -424,12 +424,13 @@ HTTP Status: **200**
                 "productsTableVariant": "",
                 "_creationMethod": "rest",
                 "stampsEnabled": true,
+                "DocumentNumber": "DC-2026-001",
                 "CurrentDate": "2026-03-20T00:00:00+02:00",
-                "ClientName": "Ltd. Chamomile",
-                "ClientPhone": "+1 999 123-45-67",
+                "ClientName": "Müller GmbH",
+                "ClientPhone": "+49 30 12345678",
                 "Total": "130000",
-                "Comment": "Payment within 5 business days after signing",
-                "UserName": "John Smith"
+                "Comment": "Payment within 3 business days after signing",
+                "UserName": "Klaus Weber"
             },
             "publicUrlView": {
                 "time": "2026-03-19T15:08:05+02:00"
@@ -437,14 +438,8 @@ HTTP Status: **200**
             "templateId": "53",
             "provider": "Bitrix\\DocumentGenerator\\DataProvider\\Rest",
             "pullTag": "TRANSFORMDOCUMENT51",
-            "imageUrl": "/bitrix/services/main/ajax.php?action=documentgenerator.api.document.getimage&SITE_ID=s1&id=51&ts=1773844068",
-            "pdfUrl": "/bitrix/services/main/ajax.php?action=documentgenerator.api.document.getpdf&SITE_ID=s1&id=51&ts=1773844068",
-            "printUrl": "/bitrix/services/main/ajax.php?action=documentgenerator.api.document.showpdf&SITE_ID=s1&id=51&print=y&ts=1773844068",
             "emailDiskFile": 5573,
-            "downloadUrlMachine": "https://mysite.com/rest/documentgenerator.api.document.getfile.json?auth=1fe8bb690000071b00000844000001f7f0f107826a2f4f01a384d1dcdb624764d8ea63&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS5kb2N1bWVudC5nZXRmaWxlJlNJVEVfSUQ9czEmaWQ9NTEmdHM9MTc3Mzg0NDA2OCZfPVptQjFqSzNTNlhtMm5EbUR6OFV6YlJydExGbGtaOGpF%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS5kb2N1bWVudC5nZXRmaWxlfGRvY3VtZW50Z2VuZXJhdG9yfFlXTjBhVzl1UFdSdlkzVnRaVzUwWjJWdVpYSmhkRzl5TG1Gd2FTNWtiMk4xYldWdWRDNW5aWFJtYVd4bEpsTkpWRVZmU1VROWN6RW1hV1E5TlRFbWRITTlNVGMzTXpnME5EQTJPQ1pmUFZwdFFqRnFTek5UTmxodE1tNUViVVI2T0ZWNllsSnlkRXhHYkd0YU9HcEZ8MWZlOGJiNjkwMDAwMDcxYjAwMDAwODQ0MDAwMDAxZjdmMGYxMDc4MjZhMmY0ZjAxYTM4NGQxZGNkYjYyNDc2NGQ4ZWE2MyI%3D.Cifk0KKcqbktmPy6ARfXPn7dO71%2FP4MY5xys1%2FGF%2FBc%3D",
-            "imageUrlMachine": "https://mysite.com/rest/documentgenerator.api.document.getimage.json?auth=1fe8bb690000071b00000844000001f7f0f107826a2f4f01a384d1dcdb624764d8ea63&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS5kb2N1bWVudC5nZXRpbWFnZSZTSVRFX0lEPXMxJmlkPTUxJnRzPTE3NzM4NDQwNjgmXz1GOTV5aUg2SnN2UTlrZjRnQnNBN2Z6NXpxVjIxSzB1Zg%3D%3D%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS5kb2N1bWVudC5nZXRpbWFnZXxkb2N1bWVudGdlbmVyYXRvcnxZV04wYVc5dVBXUnZZM1Z0Wlc1MFoyVnVaWEpoZEc5eUxtRndhUzVrYjJOMWJXVnVkQzVuWlhScGJXRm5aU1pUU1ZSRlgwbEVQWE14Sm1sa1BUVXhKblJ6UFRFM056TTRORFF3TmpnbVh6MUdPVFY1YVVnMlNuTjJVVGxyWmpSblFuTkJOMlo2TlhweFZqSXhTekIxWmc9PXwxZmU4YmI2OTAwMDAwNzFiMDAwMDA4NDQwMDAwMDFmN2YwZjEwNzgyNmEyZjRmMDFhMzg0ZDFkY2RiNjI0NzY0ZDhlYTYzIg%3D%3D.r2wwtKof5kdIyUr8xek%2B8XThT4RG48ZMcLABVjsa0Zk%3D",
-            "pdfUrlMachine": "https://mysite.com/rest/documentgenerator.api.document.getpdf.json?auth=1fe8bb690000071b00000844000001f7f0f107826a2f4f01a384d1dcdb624764d8ea63&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS5kb2N1bWVudC5nZXRwZGYmU0lURV9JRD1zMSZpZD01MSZ0cz0xNzczODQ0MDY4Jl89UnUxUGRvM2RWV0xXTEhXZDhhNW9VeThDTlVsWlJTd3M%3D%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS5kb2N1bWVudC5nZXRwZGZ8ZG9jdW1lbnRnZW5lcmF0b3J8WVdOMGFXOXVQV1J2WTNWdFpXNTBaMlZ1WlhKaGRHOXlMbUZ3YVM1a2IyTjFiV1Z1ZEM1blpYUndaR1ltVTBsVVJWOUpSRDF6TVNacFpEMDFNU1owY3oweE56Y3pPRFEwTURZNEpsODlVblV4VUdSdk0yUldWMHhYVEVoWFpEaGhOVzlWZVRoRFRsVnNXbEpUZDNNPXwxZmU4YmI2OTAwMDAwNzFiMDAwMDA4NDQwMDAwMDFmN2YwZjEwNzgyNmEyZjRmMDFhMzg0ZDFkY2RiNjI0NzY0ZDhlYTYzIg%3D%3D.u%2Bkuio%2FsYEU93FKvdsODqjyEAZ7WpP0M9We%2BurZvjUk%3D",
-            "printUrlMachine": "https://mysite.com/rest/documentgenerator.api.document.showpdf.json?auth=1fe8bb690000071b00000844000001f7f0f107826a2f4f01a384d1dcdb624764d8ea63&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS5kb2N1bWVudC5zaG93cGRmJlNJVEVfSUQ9czEmaWQ9NTEmcHJpbnQ9eSZ0cz0xNzczODQ0MDY4Jl89cXFmSUhjODk1MTI4RXRWQXE3Nk5UNEdzN1dHWTlZdjU%3D%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS5kb2N1bWVudC5zaG93cGRmfGRvY3VtZW50Z2VuZXJhdG9yfFlXTjBhVzl1UFdSdlkzVnRaVzUwWjJWdVpYSmhkRzl5TG1Gd2FTNWtiMk4xYldWdWRDNXphRzkzY0dSbUpsTkpWRVZmU1VROWN6RW1hV1E5TlRFbWNISnBiblE5ZVNaMGN6MHhOemN6T0RRME1EWTRKbDg5Y1hGbVNVaGpPRGsxTVRJNFJYUldRWEUzTms1VU5FZHpOMWRIV1RsWmRqVT18MWZlOGJiNjkwMDAwMDcxYjAwMDAwODQ0MDAwMDAxZjdmMGYxMDc4MjZhMmY0ZjAxYTM4NGQxZGNkYjYyNDc2NGQ4ZWE2MyI%3D.s%2F4zPE4fPTMvZImi5pumUXn5s0oB5nwVbw3rFIM34eo%3D"
+            "downloadUrlMachine": "https://mysite.com/rest/documentgenerator.api.document.getfile.json?auth=1fe8bb690000071b00000844000001f7f0f107826a2f4f01a384d1dcdb624764d8ea63&token=documentgenerator%7CYWN0aW9uPWRvY3VtZW50Z2VuZXJhdG9yLmFwaS5kb2N1bWVudC5nZXRmaWxlJlNJVEVfSUQ9czEmaWQ9NTEmdHM9MTc3Mzg0NDA2OCZfPVptQjFqSzNTNlhtMm5EbUR6OFV6YlJydExGbGtaOGpF%7CImRvY3VtZW50Z2VuZXJhdG9yLmFwaS5kb2N1bWVudC5nZXRmaWxlfGRvY3VtZW50Z2VuZXJhdG9yfFlXTjBhVzl1UFdSdlkzVnRaVzUwWjJWdVpYSmhkRzl5TG1Gd2FTNWtiMk4xYldWdWRDNW5aWFJtYVd4bEpsTkpWRVZmU1VROWN6RW1hV1E5TlRFbWRITTlNVGMzTXpnME5EQTJPQ1pmUFZwdFFqRnFTek5UTmxodE1tNUViVVI2T0ZWNllsSnlkRXhHYkd0YU9HcEZ8MWZlOGJiNjkwMDAwMDcxYjAwMDAwODQ0MDAwMDAxZjdmMGYxMDc4MjZhMmY0ZjAxYTM4NGQxZGNkYjYyNDc2NGQ4ZWE2MyI%3D.Cifk0KKcqbktmPy6ARfXPn7dO71%2FP4MY5xys1%2FGF%2FBc%3D"
         }
     },
     "time": {
@@ -486,7 +481,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`string`](../data-types.md) | Document identifier ||
+[`string`](../data-types.md) | Document identifier. In the [documentgenerator.document.add](./document-generator-document-add.md) response, it is returned as a number ||
 || **title**
 [`string`](../data-types.md) | Document title ||
 || **number**
@@ -496,51 +491,61 @@ HTTP Status: **200**
 || **provider**
 [`string`](../data-types.md) | Data provider class ||
 || **value**
-[`string`](../data-types.md) | External identifier of the object ||
-|| **fileId**
-[`integer`](../data-types.md) | Identifier of the DOCX file on Drive ||
-|| **imageId**
-[`integer`](../data-types.md) | Identifier of the preview image on Drive ||
-|| **pdfId**
-[`integer`](../data-types.md) | Identifier of the PDF file on Drive ||
+[`string`](../data-types.md) | External identifier of the object for which the document was created ||
 || **values**
 [`object`](../data-types.md) | Field values of the document [(detailed description)](#document-values) ||
 || **stampsEnabled**
 [`boolean`](../data-types.md) | Indicator of enabled stamps and signatures ||
 || **downloadUrl**
-[`string`](../data-types.md) | Link to download DOCX for the user ||
-|| **pdfUrl**
-[`string`](../data-types.md) | Link to download PDF for the user ||
-|| **imageUrl**
-[`string`](../data-types.md) | Link to preview image for the user ||
-|| **printUrl**
-[`string`](../data-types.md) | Link to print PDF for the user ||
+[`string`](../data-types.md) | Link to download DOCX ||
 || **downloadUrlMachine**
 [`string`](../data-types.md) | Link to download DOCX for the application ||
+|| **pdfUrl**
+[`string`](../data-types.md) | Link to download PDF.
+
+The field is returned only when the PDF has already been generated. Conversion is asynchronous, so the field is usually absent immediately after the document is created or updated ||
 || **pdfUrlMachine**
-[`string`](../data-types.md) | Link to download PDF for the application ||
-|| **imageUrlMachine**
-[`string`](../data-types.md) | Link to preview image for the application ||
+[`string`](../data-types.md) | Link to download PDF for the application. Returned together with `pdfUrl` ||
+|| **printUrl**
+[`string`](../data-types.md) | Link to view or print the PDF. Returned together with `pdfUrl` ||
 || **printUrlMachine**
-[`string`](../data-types.md) | Link to print PDF for the application ||
+[`string`](../data-types.md) | Link to view or print the PDF for the application. Returned together with `pdfUrl` ||
+|| **imageUrl**
+[`string`](../data-types.md) | Link to download the document image.
+
+The field is returned only when the image has already been generated ||
+|| **imageUrlMachine**
+[`string`](../data-types.md) | Link to download the image for the application. Returned together with `imageUrl` ||
 || **publicUrl**
-[`string`](../data-types.md) | Public link to the document, if enabled ||
+[`string`](../data-types.md) | Public link to the document. If the link is not enabled, `null`.
+
+You can enable the link using the [documentgenerator.document.enablepublicurl](./document-generator-document-enable-public-url.md) method ||
 || **publicUrlView**
-[`object`](../data-types.md) | Parameters of the public link [(detailed description)](#public-url-view) ||
+[`object`](../data-types.md) | Data on viewing the public link [(detailed description)](#public-url-view).
+
+The field is returned only if the public link is enabled ||
 || **isTransformationError**
-[`boolean`](../data-types.md) | Indicator of document conversion error ||
+[`boolean`](../data-types.md) | Indicator of an error when converting the document to PDF and image ||
+|| **transformationErrorCode**
+[`string`](../data-types.md) | Conversion error code. The field is returned only if `isTransformationError` = `true` ||
+|| **transformationErrorMessage**
+[`string`](../data-types.md) | Conversion error text. The field is returned only if `isTransformationError` = `true` ||
+|| **transformationCancelReason**
+[`string`](../data-types.md) | Reason the conversion was canceled. The field is returned only if the conversion was canceled ||
 || **pullTag**
 [`string`](../data-types.md) | Tag for subscribing to conversion status updates ||
 || **emailDiskFile**
-[`integer`](../data-types.md) | Identifier of the file on Drive for sending by e-mail ||
+[`integer`](../data-types.md) | Identifier of the file on Drive for sending by e-mail: the PDF file if it has been generated, otherwise the DOCX file. If the file is not stored on Drive, `0` ||
 || **createTime**
 [`datetime`](../data-types.md) | Document creation time ||
-|| **updateTime**
-[`datetime`](../data-types.md) | Document last update time ||
 || **createdBy**
-[`string`](../data-types.md) | Identifier of the document author ||
+[`string`](../data-types.md) | Identifier of the document author. In the [documentgenerator.document.add](./document-generator-document-add.md) response, it is returned as a number.
+
+In the [documentgenerator.document.update](./document-generator-document-update.md) response, it is `null`, and `createTime` contains the modification time. The [documentgenerator.document.get](./document-generator-document-get.md) method returns the actual values ||
+|| **updateTime**
+[`datetime`](../data-types.md) | Time of the last document modification ||
 || **updatedBy**
-[`integer`](../data-types.md) | Identifier of the user who updated the document ||
+[`string`](../data-types.md) | Identifier of the user who last modified the document. If the document has not been modified, `null`. In the [documentgenerator.document.update](./document-generator-document-update.md) response, it is returned as a number ||
 |#
 
 #### Object values {#document-values}
@@ -564,7 +569,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **time**
-[`datetime`](../data-types.md) | Date and time until which the public link is valid ||
+[`datetime`](../data-types.md) | Time of the last view of the public link. If the link has not been opened yet, `null` ||
 |#
 
 ## Error Handling
@@ -574,7 +579,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Document not found"
+    "error_description": "Document was not found."
 }
 ```
 
@@ -584,9 +589,11 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Bitrix\DocumentGenerator\Document constructor must be public | Required parameter `id` not provided ||
-|| `400` | `0` | Document not found | Document with the specified `id` not found ||
-|| `400` | `0` | You do not have permissions to view documents | Insufficient rights to modify the document ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` not provided ||
+|| `400` | `0` | Document was not found | Document with the specified `id` not found ||
+|| `400` | `0` | You do not have permissions to view documents | No permission to view documents. The method checks this permission first, then the permission to modify the document ||
+|| `400` | `0` | You do not have permissions to modify this document | The user can view documents but has no permission to modify the document with the specified `id` ||
+|| `400` | `DOCGEN_ACCESS_ERROR` | Access denied | No access to the document with the specified `id` ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

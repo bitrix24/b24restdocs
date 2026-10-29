@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 >   - Any user has the right to reset their personal settings
 >   - A user can reset shared and others' settings only if they are an administrator
 
-The method `crm.item.details.configuration.reset` resets the item card settings to their default values. It removes the personal settings of the specified user or the shared settings defined for all users.
+The method `crm.item.details.configuration.reset` deletes the saved personal or shared configuration of a CRM object detail form. After a personal configuration is reset, the detail form is displayed according to the shared one; after the shared configuration is reset, it is displayed according to the default settings.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}
 
@@ -69,7 +69,7 @@ Possible values:
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-Reset the shared configuration for deal cards in the pipeline with `id = 9` for the user with `id = 1`
+Reset the shared configuration of the deal detail form in the pipeline with `id = 9`
 
 {% list tabs %}
 
@@ -328,7 +328,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response. Returns `true` if the settings were successfully reset ||
+[`boolean`](../../../data-types.md) | Root element of the response. Returns `true` if the settings are reset.
+
+The method also returns `true` when no configuration was saved for the selected `scope`: there is no error in this case. After the reset, the [crm.item.details.configuration.get](./crm-item-details-configuration-get.md) method with the same parameters returns `null` ||
 || **time**
 [`time`](../../../data-types.md) | Information about the request execution time ||
 |#
@@ -340,7 +342,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "Parameter 'entityTypeId' is not defined"
+    "error_description": "Parameter 'entityTypeID' is not defined"
 }
 ```
 
@@ -349,10 +351,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty value | Parameter 'entityTypeId' is not defined | Required parameter `entityTypeId` not provided ||
-|| Empty value | The entity type '`entityTypeName`' is not supported in current context. | The method does not support this entity type ||
-|| Empty value | Access denied. | The user does not have administrative rights ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Parameter 'entityTypeID' is not defined | The required parameter `entityTypeId` is not passed, or a non-existent CRM object type is passed ||
+|| `400` | Empty value | The entity type '`entityTypeName`' is not supported in current context. | The CRM object type does not support detail form configuration, for example `ACTIVITY` ||
+|| `400` | Empty value | Access denied. | Shared settings or another user's personal settings are being reset, and the user does not have administrator permissions ||
 |#
 
 {% include [System errors](./../../../../_includes/system-errors.md) %}

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`documentgenerator`](../scopes/permissions.md)
 >
-> Who can execute the method: a user with document creation permissions
+> Who can execute the method: a user with permission to view documents and to create documents from the template
 
 The method `documentgenerator.document.add` creates a new document based on a template.
 
@@ -131,7 +131,7 @@ For `NAME`:
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"templateId":53,"value":"SUPPLY_CONTRACT_2026_015","values":{"DocumentNumber":"SC-2026-001","CurrentDate":"2026-03-18T00:00:00+01:00","ClientName":"ABC Corp","ClientPhone":"+1 999 123-45-67","Total":"125000","Comment":"Payment within 5 business days after signing","UserName":"John Smith"},"fields":{"CurrentDate":{"TYPE":"DATE","FORMAT":{"format":"d.m.Y"},"TITLE":"Contract Date"}},"stampsEnabled":1}' \
+    -d '{"templateId":53,"value":"SUPPLY_CONTRACT_2026_015","values":{"DocumentNumber":"SC-2026-001","CurrentDate":"2026-03-18T00:00:00+01:00","ClientName":"ABC Corp","ClientPhone":"+49 30 12345678","Total":"125000","Comment":"Payment within 5 business days after signing","UserName":"Klaus Weber"},"fields":{"CurrentDate":{"TYPE":"DATE","FORMAT":{"format":"d.m.Y"},"TITLE":"Contract Date"}},"stampsEnabled":1}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/documentgenerator.document.add
   ```
 
@@ -141,7 +141,7 @@ For `NAME`:
   curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"templateId":53,"value":"SUPPLY_CONTRACT_2026_015","values":{"DocumentNumber":"SC-2026-001","CurrentDate":"2026-03-18T00:00:00+01:00","ClientName":"ABC Corp","ClientPhone":"+1 999 123-45-67","Total":"125000","Comment":"Payment within 5 business days after signing","UserName":"John Smith"},"fields":{"CurrentDate":{"TYPE":"DATE","FORMAT":{"format":"d.m.Y"},"TITLE":"Contract Date"}},"stampsEnabled":1,"auth":"**put_access_token_here**"}' \
+    -d '{"templateId":53,"value":"SUPPLY_CONTRACT_2026_015","values":{"DocumentNumber":"SC-2026-001","CurrentDate":"2026-03-18T00:00:00+01:00","ClientName":"ABC Corp","ClientPhone":"+49 30 12345678","Total":"125000","Comment":"Payment within 5 business days after signing","UserName":"Klaus Weber"},"fields":{"CurrentDate":{"TYPE":"DATE","FORMAT":{"format":"d.m.Y"},"TITLE":"Contract Date"}},"stampsEnabled":1,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/documentgenerator.document.add
   ```
 
@@ -189,7 +189,7 @@ For `NAME`:
             DocumentNumber: 'DG-2026-001',
             CurrentDate: '2026-03-18T00:00:00+03:00',
             ClientName: 'Romashka LLC',
-            ClientPhone: '+49 999 123-45-67',
+            ClientPhone: '+49 30 12345678',
             Total: '125000',
             Comment: 'Payment within 5 business days after signing',
             UserName: 'Ivan Petrov',
@@ -241,7 +241,7 @@ For `NAME`:
                 DocumentNumber: 'DG-2026-001',
                 CurrentDate: '2026-03-18T00:00:00+03:00',
                 ClientName: 'Romashka LLC',
-                ClientPhone: '+49 999 123-45-67',
+                ClientPhone: '+49 30 12345678',
                 Total: '125000',
                 Comment: 'Payment within 5 business days after signing',
                 UserName: 'Ivan Petrov',
@@ -291,7 +291,7 @@ For `NAME`:
               "DocumentNumber": "DG-2026-001",
               "CurrentDate": "2026-03-18T00:00:00+03:00",
               "ClientName": "Müller GmbH",
-              "ClientPhone": "+49 999 123-45-67",
+              "ClientPhone": "+49 30 12345678",
               "Total": "125000",
               "Comment": "Payment within 5 business days after signing",
               "UserName": "Klaus Weber",
@@ -335,10 +335,10 @@ For `NAME`:
                   'DocumentNumber' => 'SC-2026-001',
                   'CurrentDate' => '2026-03-18T00:00:00+01:00',
                   'ClientName' => 'ABC Corp',
-                  'ClientPhone' => '+1 999 123-45-67',
+                  'ClientPhone' => '+49 30 12345678',
                   'Total' => '125000',
                   'Comment' => 'Payment within 5 business days after signing',
-                  'UserName' => 'John Smith',
+                  'UserName' => 'Klaus Weber',
               ],
               'fields' => [
                   'CurrentDate' => [
@@ -372,10 +372,10 @@ For `NAME`:
               DocumentNumber: 'SC-2026-001',
               CurrentDate: '2026-03-18T00:00:00+01:00',
               ClientName: 'ABC Corp',
-              ClientPhone: '+1 999 123-45-67',
+              ClientPhone: '+49 30 12345678',
               Total: '125000',
               Comment: 'Payment within 5 business days after signing',
-              UserName: 'John Smith'
+              UserName: 'Klaus Weber'
           },
           fields: {
               CurrentDate: {
@@ -416,10 +416,10 @@ For `NAME`:
               'DocumentNumber' => 'SC-2026-001',
               'CurrentDate' => '2026-03-18T00:00:00+01:00',
               'ClientName' => 'ABC Corp',
-              'ClientPhone' => '+1 999 123-45-67',
+              'ClientPhone' => '+49 30 12345678',
               'Total' => '125000',
               'Comment' => 'Payment within 5 business days after signing',
-              'UserName' => 'John Smith',
+              'UserName' => 'Klaus Weber',
           ],
           'fields' => [
               'CurrentDate' => [
@@ -448,10 +448,10 @@ For `NAME`:
     		"DocumentNumber": "SC-2026-001",
     		"CurrentDate":    "2026-03-18T00:00:00+03:00",
     		"ClientName":     "ABC Corp",
-    		"ClientPhone":    "+49 999 123-45-67",
+    		"ClientPhone":    "+49 30 12345678",
     		"Total":          "125000",
     		"Comment":        "Payment within 5 business days after signing",
-    		"UserName":       "John Smith",
+    		"UserName":       "Klaus Weber",
     	},
     	"fields": b24.Params{
     		"CurrentDate": b24.Params{
@@ -517,10 +517,10 @@ HTTP Status: **200**
                 "DocumentNumber": "SC-2026-001",
                 "CurrentDate": "2026-03-18T00:00:00+01:00",
                 "ClientName": "ABC Corp",
-                "ClientPhone": "+1 999 123-45-67",
+                "ClientPhone": "+49 30 12345678",
                 "Total": "125000",
                 "Comment": "Payment within 5 business days after signing",
-                "UserName": "John Smith"
+                "UserName": "Klaus Weber"
             },
             "templateId": "53",
             "provider": "Bitrix\\DocumentGenerator\\DataProvider\\Rest",
@@ -568,41 +568,71 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **id**
-[`integer`](../data-types.md) | Document identifier ||
+[`string`](../data-types.md) | Document identifier. In the [documentgenerator.document.add](./document-generator-document-add.md) response, it is returned as a number ||
 || **title**
 [`string`](../data-types.md) | Document title ||
 || **number**
 [`string`](../data-types.md) | Document number ||
 || **templateId**
-[`integer`](../data-types.md) | Template identifier ||
+[`string`](../data-types.md) | Template identifier ||
 || **provider**
 [`string`](../data-types.md) | Data provider class ||
 || **value**
-[`string`](../data-types.md) | External identifier of the object ||
+[`string`](../data-types.md) | External identifier of the object for which the document was created ||
 || **values**
 [`object`](../data-types.md) | Field values of the document [(detailed description)](#document-values) ||
 || **stampsEnabled**
 [`boolean`](../data-types.md) | Indicator of enabled seals and signatures ||
 || **downloadUrl**
-[`string`](../data-types.md) | Link to download DOCX for the user ||
+[`string`](../data-types.md) | Link to download DOCX ||
 || **downloadUrlMachine**
 [`string`](../data-types.md) | Link to download DOCX for the application ||
+|| **pdfUrl**
+[`string`](../data-types.md) | Link to download PDF.
+
+The field is returned only when the PDF has already been generated. Conversion is asynchronous, so the field is usually absent immediately after the document is created or updated ||
+|| **pdfUrlMachine**
+[`string`](../data-types.md) | Link to download PDF for the application. Returned together with `pdfUrl` ||
+|| **printUrl**
+[`string`](../data-types.md) | Link to view or print the PDF. Returned together with `pdfUrl` ||
+|| **printUrlMachine**
+[`string`](../data-types.md) | Link to view or print the PDF for the application. Returned together with `pdfUrl` ||
+|| **imageUrl**
+[`string`](../data-types.md) | Link to download the document image.
+
+The field is returned only when the image has already been generated ||
+|| **imageUrlMachine**
+[`string`](../data-types.md) | Link to download the image for the application. Returned together with `imageUrl` ||
 || **publicUrl**
-[`string`](../data-types.md) | Public link to the document, if enabled ||
+[`string`](../data-types.md) | Public link to the document. If the link is not enabled, `null`.
+
+You can enable the link using the [documentgenerator.document.enablepublicurl](./document-generator-document-enable-public-url.md) method ||
+|| **publicUrlView**
+[`object`](../data-types.md) | Data on viewing the public link [(detailed description)](#public-url-view).
+
+The field is returned only if the public link is enabled ||
 || **isTransformationError**
-[`boolean`](../data-types.md) | Indicator of document conversion error ||
+[`boolean`](../data-types.md) | Indicator of an error when converting the document to PDF and image ||
+|| **transformationErrorCode**
+[`string`](../data-types.md) | Conversion error code. The field is returned only if `isTransformationError` = `true` ||
+|| **transformationErrorMessage**
+[`string`](../data-types.md) | Conversion error text. The field is returned only if `isTransformationError` = `true` ||
+|| **transformationCancelReason**
+[`string`](../data-types.md) | Reason the conversion was canceled. The field is returned only if the conversion was canceled ||
 || **pullTag**
 [`string`](../data-types.md) | Tag for subscribing to conversion status updates ||
 || **emailDiskFile**
-[`integer`](../data-types.md) | File identifier on Drive for sending by e-mail ||
+[`integer`](../data-types.md) | File identifier on Drive for sending by e-mail: the PDF file if it has been generated, otherwise the DOCX file. If the file is not stored on Drive, `0` ||
 || **createTime**
 [`datetime`](../data-types.md) | Document creation time ||
-|| **updateTime**
-[`datetime`](../data-types.md) | Last update time of the document ||
 || **createdBy**
-[`integer`](../data-types.md) | Identifier of the document author ||
+[`string`](../data-types.md) | Identifier of the document author. In the [documentgenerator.document.add](./document-generator-document-add.md) response, it is returned as a number.
+
+In the [documentgenerator.document.update](./document-generator-document-update.md) response, it is `null`, and `createTime` contains the modification time. The [documentgenerator.document.get](./document-generator-document-get.md) method returns the actual values ||
+|| **updateTime**
+[`datetime`](../data-types.md) | Time of the last document modification ||
 || **updatedBy**
-[`integer`](../data-types.md) | Identifier of the user who updated the document ||
+[`string`](../data-types.md) | Identifier of the user who last modified the document. If the document has not been modified, `null`. In the [documentgenerator.document.update](./document-generator-document-update.md) response, it is returned as a number ||
 |#
 
 #### Object values {#document-values}
@@ -616,6 +646,15 @@ HTTP Status: **200**
 [`boolean`](../data-types.md) | Indicator of enabled seals and signatures ||
 || **<field_code>**
 [`string`](../data-types.md) | Field value from the template by its code ||
+|#
+
+#### Object publicUrlView {#public-url-view}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **time**
+[`datetime`](../data-types.md) | Time of the last view of the public link. If the link has not been opened yet, `null` ||
 |#
 
 {% note info "" %}
@@ -641,12 +680,13 @@ HTTP Status: **400**, **403**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | Bitrix\DocumentGenerator\Template constructor must be is public | Required parameter `templateId` is not provided ||
+|| `400` | `100` | Could not find value for parameter {templateId} | Required parameter `templateId` is not provided ||
 || `400` | `0` | Empty required parameter "value" | Required parameter `value` is not provided ||
 || `400` | `0` | Cannot create document on deleted template | Cannot create a document based on a deleted template ||
-|| `400` | `0` | Template not found | No template exists with the specified `templateId` ||
+|| `400` | `0` | Template was not found | No template exists with the specified `templateId` ||
 || `400` | `0` | Cannot create document | Failed to create document ||
-|| `400` | `0` | You do not have permissions to view documents | Insufficient permissions to view documents ||
+|| `400` | `0` | You do not have permissions to view documents | No permission to view documents ||
+|| `400` | `0` | You do not have permissions to create document on this template | No permission to create documents from the template with the specified `templateId` ||
 || `400` | `0` | Maximum count of documents has been reached | Document limit reached on the plan ||
 || `403` | `DOCGEN_ACCESS_ERROR` | Access denied | Insufficient permissions to create document ||
 |#
