@@ -1,4 +1,4 @@
-# Custom Fields for Deals: Overview of Methods
+# Custom Fields for Deals: Overview of Methods and Events
 
 {% note tip "" %}
 
@@ -19,60 +19,20 @@ Custom fields store information about a deal in various data formats: string, nu
 
 The field name is assembled by Bitrix24, not by the developer. The `UF_CRM_` prefix is always added to the code you pass in the `FIELD_NAME` parameter of the method [crm.deal.userfield.add](./crm-deal-userfield-add.md): the code `MANAGER_NOTE` becomes the name `UF_CRM_MANAGER_NOTE`. The complete conversion rules are described on the method page.
 
-The resulting name is the key used to read and write the field value in the other deal methods:
+The resulting name is the key used to write and read the field value in deal methods, for example, [crm.deal.add](../crm-deal-add.md) and [crm.deal.list](../crm-deal-list.md). The method [crm.deal.fields](../crm-deal-fields.md) returns custom fields together with system ones.
 
-- in the response of the methods [crm.deal.get](../crm-deal-get.md) and [crm.deal.list](../crm-deal-list.md), the value arrives in the `UF_CRM_MANAGER_NOTE` field
-- in the methods [crm.deal.add](../crm-deal-add.md) and [crm.deal.update](../crm-deal-update.md), the value is passed in `fields` under the same name
-- the method [crm.deal.fields](../crm-deal-fields.md) returns custom fields together with system ones
+## How to Get Started
 
-## Types of Custom Fields
+1. Choose a field type. The method [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) returns the list of types with identifiers for the `USER_TYPE_ID` parameter, for example, `double` for a number. The method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md) describes the characteristics common to any field: whether it is required, whether it is multiple, the sort order.
+2. Find out the type settings for the `SETTINGS` parameter with the method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md), for example, `PRECISION` for the number precision. The method `crm.deal.userfield.add` does not accept all type settings. The supported settings are listed on the [method page](./crm-deal-userfield-add.md#settings).
+3. Create the field with the method [crm.deal.userfield.add](./crm-deal-userfield-add.md). The method returns the field identifier.
+4. Retrieve the field name with the `UF_CRM_` prefix using the method [crm.deal.userfield.get](./crm-deal-userfield-get.md) by the identifier, or find it in the response of [crm.deal.userfield.list](./crm-deal-userfield-list.md).
+5. Write the value to a deal with the method [crm.deal.update](../crm-deal-update.md): `"fields": {"UF_CRM_MANAGER_NOTE": "Call back on Friday"}`. For an `enumeration` field, pass the `ID` of an item from the `LIST` array.
+6. Read the value with the method [crm.deal.get](../crm-deal-get.md) — it arrives in the `UF_CRM_MANAGER_NOTE` field.
 
-The field type is set with the `USER_TYPE_ID` parameter at creation. The list of available types with their identifiers and names is returned by the method [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md).
+The `crm.deal.userfield.*` methods work only with deal fields. To manage fields of different objects with a single group of methods, use [userfieldconfig.*](../../universal/userfieldconfig/index.md). How to choose between the two groups of methods is described on the page [Custom Fields in CRM](../../universal/user-defined-fields/index.md).
 
-```json
-{
-    "result": [
-        {
-            "ID": "double",
-            "title": "Number"
-        }
-    ]
-}
-```
-
-The method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md) returns the characteristics that can be set for any custom field — whether it is mandatory or multiple, its sort order, and others.
-
-```json
-{
-    "result": {
-        "MANDATORY": {
-            "type": "char",
-            "title": "Mandatory"
-        }
-    }
-}
-```
-
-## Settings for Custom Fields
-
-Each field type has its own set of additional settings — the `SETTINGS` parameter. The list of settings supported by a specific type is returned by the method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md).
-
-```json
-{
-    "result": {
-        "DEFAULT_VALUE": {
-            "type": "double",
-            "title": "Default value"
-        },
-        "PRECISION": {
-            "type": "int",
-            "title": "Precision"
-        }
-    }
-}
-```
-
-## Errors When Working with Custom Fields
+## Errors When Working with Custom Fields {#errors}
 
 When creating or deleting custom fields, the request may be interrupted with an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md). This is an internal server error. The cause can be found in the server logs at the time of the request.
 
@@ -81,11 +41,11 @@ When creating or deleting custom fields, the request may be interrupted with an 
 
 ### Common Causes of Server Errors
 
-1. You can create 1016 custom fields for deals — this is a limitation of the database architecture. If there are already 1016 fields for deals in Bitrix24, attempting to create a new field will result in the method [crm.deal.userfield.add](./crm-deal-userfield-add.md) returning an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md).
+1. You can create 1016 custom fields for deals — this is a limitation of the database architecture. If there are already 1016 fields for deals in Bitrix24, attempting to create a new field will result in the method [crm.deal.userfield.add](./crm-deal-userfield-add.md) returning the error `INTERNAL_SERVER_ERROR`.
 
     You can check the number of custom fields for deals using the method [crm.deal.userfield.list](./crm-deal-userfield-list.md).
 
-2. There is a limitation on servers for the execution time of a single request — `max_execution_time`. The standard time is 60 seconds. If the request takes longer, it is interrupted with an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md).
+2. There is a limitation on servers for the execution time of a single request — `max_execution_time`. The standard time is 60 seconds. If the request takes longer, it is interrupted with the error `INTERNAL_SERVER_ERROR`.
 
     The time for [creating](./crm-deal-userfield-add.md) or [deleting](./crm-deal-userfield-delete.md) a custom field for deals depends on the number of deals. When a field is created, it is added to all deal detail forms. When a field is deleted, it is removed from all detail forms. The fewer deals in Bitrix24, the faster fields are created and deleted.
 
@@ -97,7 +57,7 @@ The events notify about the configuration of the fields themselves, not about ch
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method — creating, modifying, and deleting a field is available to a CRM administrator with the "Allow to change settings" access permission, while any user with the "read" access permission for deals can retrieve a field and a list of fields. Any user can subscribe to the events
+> Who can execute the method: depending on the method. A user with the "Allow to modify settings" access permission in CRM can create, modify, and delete a field. Any user with the "read" access permission for deals can retrieve a field and a list of fields. Any user can subscribe to the events
 
 {% list tabs %}
 

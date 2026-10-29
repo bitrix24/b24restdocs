@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user with "read" access permission for deals
 
-The method `crm.deal.userfield.get` returns a custom deal field by its identifier.
+The method `crm.deal.userfield.get` returns a custom deal field description by its identifier: name, type, settings, and labels in all languages.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `crm.deal.userfield.get` returns a custom deal field by its identifie
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field associated with the deal.
+[`integer`](../../../data-types.md) | Identifier of the custom deal field.
 
 The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-deal-userfield-add.md) or [crm.deal.userfield.list](./crm-deal-userfield-list.md) ||
 |#
@@ -40,7 +40,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":399}' \
+    -d '{"id":6997}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.deal.userfield.get
     ```
 
@@ -50,7 +50,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":399,"auth":"**put_access_token_here**"}' \
+    -d '{"id":6997,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/crm.deal.userfield.get
     ```
 
@@ -84,7 +84,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
       const response = await $b24.actions.v2.call.make<CrmDealUserfield>({
         method: 'crm.deal.userfield.get',
         params: {
-          id: 399,
+          id: 6997,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -116,7 +116,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
           const response = await $b24.actions.v2.call.make({
             method: 'crm.deal.userfield.get',
             params: {
-              id: 399,
+              id: 6997,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -146,7 +146,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
-        bitrix_response = client.crm.deal.userfield.get(bitrix_id=42).response
+        bitrix_response = client.crm.deal.userfield.get(bitrix_id=6997).response
         result = bitrix_response.result
         print(result)
     except BitrixAPIError as error:
@@ -171,10 +171,10 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
             ->call(
                 'crm.deal.userfield.get',
                 [
-                    'id' => 399,
+                    'id' => 6997,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -191,7 +191,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
     BX24.callMethod(
         'crm.deal.userfield.get',
         {
-            id: 399,
+            id: 6997,
         },
         (result) => {
             result.error()
@@ -210,7 +210,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
     $result = CRest::call(
         'crm.deal.userfield.get',
         [
-            'id' => 399
+            'id' => 6997
         ]
     );
 
@@ -224,7 +224,7 @@ The identifier can be obtained using the methods [crm.deal.userfield.add](./crm-
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.deal.userfield.get", b24.Params{
-    	"id": 399,
+    	"id": 6997,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("crm.deal.userfield.get: %w", err)
@@ -408,9 +408,68 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response, contains information about the custom field. The final list of fields depends on the field type, detailed descriptions of the fields can be found in the method [crm.deal.userfield.add](./crm-deal-userfield-add.md) ||
+[`object`](../../../data-types.md) | Custom field description [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+Numeric values of `ID` and `SORT` are returned as strings.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../../data-types.md) | Custom field identifier ||
+|| **ENTITY_ID**
+[`string`](../../../data-types.md) | The object the field belongs to. For deals, always `CRM_DEAL` ||
+|| **FIELD_NAME**
+[`string`](../../../data-types.md) | Field name with the `UF_CRM_` prefix. Deal methods use this name to write and read the field value, for example, [crm.deal.update](../crm-deal-update.md) and [crm.deal.get](../crm-deal-get.md). The method itself does not return field values in deals ||
+|| **USER_TYPE_ID**
+[`string`](../../../data-types.md) | Field type. For the list of values, see the `USER_TYPE_ID` parameter of the method [crm.deal.userfield.add](./crm-deal-userfield-add.md#parameter-fields) ||
+|| **USER_TYPE_OWNER**
+[`string`](../../../data-types.md) | Identifier of the application that registered the [custom field type](../../universal/user-defined-fields/userfield-type.md). Returned only for fields of a custom type ||
+|| **XML_ID**
+[`string`](../../../data-types.md) | External code. If not set, `null` ||
+|| **SORT**
+[`string`](../../../data-types.md) | Sort index ||
+|| **MULTIPLE**
+[`char`](../../../data-types.md) | Whether the field is multiple: `Y` or `N` ||
+|| **MANDATORY**
+[`char`](../../../data-types.md) | Whether the field is required: `Y` or `N` ||
+|| **SHOW_FILTER**
+[`char`](../../../data-types.md) | Whether to show the field in the list filter. Possible values:
+- `N` — do not show
+- `I` — exact match
+- `E` — mask
+- `S` — substring ||
+|| **SHOW_IN_LIST**
+[`char`](../../../data-types.md) | Whether to show the field in the list: `Y` or `N` ||
+|| **EDIT_IN_LIST**
+[`char`](../../../data-types.md) | Whether the user can edit the field: `Y` or `N` ||
+|| **IS_SEARCHABLE**
+[`char`](../../../data-types.md) | Whether the field values are included in search: `Y` or `N` ||
+|| **SETTINGS**
+[`object`](../../../data-types.md) | The full set of the field type settings. Besides the settings accepted by [crm.deal.userfield.add](./crm-deal-userfield-add.md#settings), it may contain service keys of the type, for example, `SIZE`, `MIN_LENGTH`, and `MAX_LENGTH` for a string. The method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) returns the list of type settings ||
+|| **EDIT_FORM_LABEL**
+[`lang_map`](../../data-types.md#lang-ids) | Label in the edit form in all Bitrix24 languages ||
+|| **LIST_COLUMN_LABEL**
+[`lang_map`](../../data-types.md#lang-ids) | Column header in the list in all languages ||
+|| **LIST_FILTER_LABEL**
+[`lang_map`](../../data-types.md#lang-ids) | Filter label in all languages ||
+|| **ERROR_MESSAGE**
+[`lang_map`](../../data-types.md#lang-ids) | Error message in all languages ||
+|| **HELP_MESSAGE**
+[`lang_map`](../../data-types.md#lang-ids) | Help text in all languages ||
+|| **LIST**
+[`object[]`](../../../data-types.md) | List items. Returned only for `enumeration` fields, sorted by `SORT`. Each item contains:
+- `ID` — item identifier; pass it as the field value when writing to a deal
+- `SORT` — sort index
+- `VALUE` — item value
+- `DEF` — whether the item is the default: `Y` or `N`
+
+The method does not return the item external code `XML_ID`; [crm.deal.userfield.list](./crm-deal-userfield-list.md) returns it ||
 |#
 
 ## Error Handling
@@ -429,12 +488,12 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `403` | `Access denied` | Occurs when:
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The provided `id` is less than or equal to zero or not provided ||
+|| `400` | Empty value | `Access denied.` | Occurs when:
 - the user does not have "read" access permission for deals
-- the user attempts to access a custom field not linked to deals ||
-|| `400` | `ID is not defined or invalid` | The provided `id` is less than or equal to zero, or not provided at all ||
-|| `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found` | The custom field with the provided `id` was not found ||
+- the field with the provided `id` belongs to another object, for example, leads ||
+|| `400` | `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found.` | The custom field with the provided `id` was not found ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -445,3 +504,5 @@ HTTP Status: **400**
 - [{#T}](./crm-deal-userfield-update.md)
 - [{#T}](./crm-deal-userfield-list.md)
 - [{#T}](./crm-deal-userfield-delete.md)
+- [{#T}](../crm-deal-get.md)
+- [{#T}](./index.md)

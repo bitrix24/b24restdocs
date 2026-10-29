@@ -13,9 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user with "read" access permission for deals
 
-The method `crm.deal.userfield.list` returns a list of custom fields for deals based on the filter.
+The method `crm.deal.userfield.list` returns a list of custom fields for deals based on the filter: field names, types, and settings.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,10 +33,12 @@ The method `crm.deal.userfield.list` returns a list of custom fields for deals b
 }
 ```
 
-- `field_n` — the name of the field by which the selection of custom fields will be filtered
+- `field_n` — the field to filter by
 - `value_n` — the filter value
 
-All conditions for individual fields are combined using `AND`. See the [list of available fields for filtering](#filterable) below. ||
+If `filter` is not provided, the method returns all custom deal fields.
+
+All conditions for individual fields are combined using `AND`. Only exact match is supported: the method silently ignores conditions with the `>`, `<`, `!`, `%` prefixes and conditions with an array of values. See the [list of available fields for filtering](#filterable) below. ||
 || **order**
 [`object`](../../../data-types.md) | Object format:
 ```
@@ -46,14 +50,14 @@ All conditions for individual fields are combined using `AND`. See the [list of 
 }
 ```
 
-- `field_n` — the name of the field by which the selection of elements will be sorted
+- `field_n` — the field to sort by
 - `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
 Available fields for sorting:
 - `ID` — identifier of the custom field
-- `FIELD_NAME` — code of the custom field
+- `FIELD_NAME` — field name with the `UF_CRM_` prefix
 - `USER_TYPE_ID` — type of the custom field
 - `XML_ID` — external code
 - `SORT` — sort index
@@ -76,7 +80,7 @@ By default:
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the custom field ||
 || **FIELD_NAME**
-[`string`](../../../data-types.md) | Code of the custom field ||
+[`string`](../../../data-types.md) | Field name with the `UF_CRM_` prefix ||
 || **USER_TYPE_ID**
 [`string`](../../../data-types.md) | Type of the custom field. Possible values:
 - `string` — string
@@ -96,18 +100,19 @@ By default:
 - `iblock_element` — binding to information block elements
 - `crm` — binding to CRM elements
 - [custom field types](../../universal/user-defined-fields/userfield-type.md)
-||
+
+The method [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) returns the full list of types available in Bitrix24 ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External code ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sort index ||
 || **MULTIPLE**
-[`boolean`](../../../data-types.md) | Whether the custom field is multiple.
+[`char`](../../../data-types.md) | Whether the custom field is multiple.
 Possible values:
 - `Y` — yes
 - `N` — no ||
 || **MANDATORY**
-[`boolean`](../../../data-types.md) | Whether the custom field is mandatory. Possible values:
+[`char`](../../../data-types.md) | Whether the custom field is mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
@@ -117,20 +122,20 @@ Possible values:
 - `E` — mask
 - `S` — substring ||
 || **SHOW_IN_LIST**
-[`boolean`](../../../data-types.md) | Whether to show in the list. Possible values:
+[`char`](../../../data-types.md) | Whether to show in the list. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`](../../../data-types.md) | Whether to allow user editing. Possible values:
+[`char`](../../../data-types.md) | Whether to allow user editing. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_SEARCHABLE**
-[`boolean`](../../../data-types.md) | Whether the field values are searchable. Possible values:
+[`char`](../../../data-types.md) | Whether the field values are searchable. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **LANG**
-[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). When filtering by this parameter, a set of fields with values in the provided language will be returned:
+[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). If you pass `LANG`, the method returns the field labels in this language:
 - `EDIT_FORM_LABEL` — label in the edit form
 - `LIST_COLUMN_LABEL` — header in the list
 - `LIST_FILTER_LABEL` — filter label in the list
@@ -198,11 +203,7 @@ Thanks to the filter by the `LANG` parameter, we will additionally receive field
     }
 
     try {
-      // crm.deal.userfield.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // crm.deal.userfield.list has no pagination: all matching fields come in one response
       const response = await $b24.actions.v2.call.make<CrmDealUserfieldListItem[]>({
         method: 'crm.deal.userfield.list',
         params: {
@@ -215,7 +216,6 @@ Thanks to the filter by the `LANG` parameter, we will additionally receive field
             USER_TYPE_ID: 'ASC',
             SORT: 'ASC',
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -225,7 +225,7 @@ Thanks to the filter by the `LANG` parameter, we will additionally receive field
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Userfields on this page:', result.length, result)
+        console.info('Userfields found:', result.length, result)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -244,11 +244,7 @@ Thanks to the filter by the `LANG` parameter, we will additionally receive field
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.deal.userfield.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // crm.deal.userfield.list has no pagination: all matching fields come in one response
           const response = await $b24.actions.v2.call.make({
             method: 'crm.deal.userfield.list',
             params: {
@@ -261,7 +257,6 @@ Thanks to the filter by the `LANG` parameter, we will additionally receive field
                 USER_TYPE_ID: 'ASC',
                 SORT: 'ASC',
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -273,7 +268,7 @@ Thanks to the filter by the `LANG` parameter, we will additionally receive field
           }
 
           const result = response.getData().result
-          console.info('Userfields on this page:', result.length, result)
+          console.info('Userfields found:', result.length, result)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -286,73 +281,17 @@ Thanks to the filter by the `LANG` parameter, we will additionally receive field
 
 - Python
 
-    Example
-
     ```python
 
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.crm.deal.userfield.list(
-            filter={"MANDATORY": "N", "USER_TYPE_ID": "string"},
-            order={"SORT": "ASC", "ID": "ASC"},
+            filter={"MULTIPLE": "Y", "MANDATORY": "Y", "LANG": "de"},
+            order={"USER_TYPE_ID": "ASC", "SORT": "ASC"},
         ).response
         result = bitrix_response.result
         print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-    Example `as_list`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.deal.userfield.list(
-            filter={"MANDATORY": "N"},
-            order={"ID": "ASC"},
-        ).as_list().response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-    Example `as_list_fast`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.deal.userfield.list(
-            filter={"MANDATORY": "N"},
-            order={"ID": "DESC"},
-        ).as_list_fast(descending=True).response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
@@ -386,7 +325,7 @@ Thanks to the filter by the `LANG` parameter, we will additionally receive field
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -432,7 +371,7 @@ Thanks to the filter by the `LANG` parameter, we will additionally receive field
         [
             'filter' => [
                 'MULTIPLE' => "Y",
-                'MANDATORY' => "N",
+                'MANDATORY' => "Y",
                 'LANG' => "de",
             ],
             'order' => [
@@ -481,8 +420,7 @@ Thanks to the filter by the `LANG` parameter, we will additionally receive field
     	fmt.Println(it.ID, it.EntityID)
     }
 
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
+    // The method returns all fields in one response; Total equals their count.
     if res.Total != nil {
     	fmt.Println("total:", *res.Total)
     }
@@ -505,7 +443,7 @@ HTTP status: **200**
             "XML_ID": null,
             "SORT": "100",
             "MULTIPLE": "Y",
-            "MANDATORY": "N",
+            "MANDATORY": "Y",
             "SHOW_FILTER": "I",
             "SHOW_IN_LIST": "Y",
             "EDIT_IN_LIST": "Y",
@@ -527,7 +465,7 @@ HTTP status: **200**
             "XML_ID": null,
             "SORT": "150",
             "MULTIPLE": "Y",
-            "MANDATORY": "N",
+            "MANDATORY": "Y",
             "SHOW_FILTER": "E",
             "SHOW_IN_LIST": "Y",
             "EDIT_IN_LIST": "Y",
@@ -589,7 +527,7 @@ HTTP status: **200**
             "XML_ID": null,
             "SORT": "150",
             "MULTIPLE": "Y",
-            "MANDATORY": "N",
+            "MANDATORY": "Y",
             "SHOW_FILTER": "E",
             "SHOW_IN_LIST": "Y",
             "EDIT_IN_LIST": "Y",
@@ -617,7 +555,7 @@ HTTP status: **200**
             "XML_ID": null,
             "SORT": "1",
             "MULTIPLE": "Y",
-            "MANDATORY": "N",
+            "MANDATORY": "Y",
             "SHOW_FILTER": "N",
             "SHOW_IN_LIST": "Y",
             "EDIT_IN_LIST": "Y",
@@ -689,36 +627,9 @@ HTTP status: **200**
             "LIST_FILTER_LABEL": "MEETING ROOM BOOKING",
             "ERROR_MESSAGE": null,
             "HELP_MESSAGE": null
-        },
-        {
-            "ID": "6997",
-            "ENTITY_ID": "CRM_DEAL",
-            "FIELD_NAME": "UF_CRM_HELLO_WORLD",
-            "USER_TYPE_ID": "string",
-            "XML_ID": null,
-            "SORT": "2000",
-            "MULTIPLE": "Y",
-            "MANDATORY": "N",
-            "SHOW_FILTER": "N",
-            "SHOW_IN_LIST": "Y",
-            "EDIT_IN_LIST": "N",
-            "IS_SEARCHABLE": "N",
-            "SETTINGS": {
-                "SIZE": 20,
-                "ROWS": 10,
-                "REGEXP": "",
-                "MIN_LENGTH": 0,
-                "MAX_LENGTH": 0,
-                "DEFAULT_VALUE": "Hello, world! Default value (modified)"
-            },
-            "EDIT_FORM_LABEL": "Hello, world! Edit (modified)",
-            "LIST_COLUMN_LABEL": "Hello, world! Column (modified)",
-            "LIST_FILTER_LABEL": "Hello, world! Filter (modified)",
-            "ERROR_MESSAGE": "Hello, world! Error (modified)",
-            "HELP_MESSAGE": "Hello, world! Help (modified)"
         }
     ],
-    "total": 5,
+    "total": 4,
     "time": {
         "start": 1753793143.219832,
         "finish": 1753793143.529472,
@@ -738,13 +649,53 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response, contains a list of custom fields.
+[`object[]`](../../../data-types.md) | Array of custom deal fields [(detailed description)](#result). If no fields match, an empty array `[]`.
 
-The structure of an individual custom field depends on its type. The fields `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned either as `string` when passing `filter.LANG`, or are not returned at all. ||
+The method has no pagination: all matching fields come in one response, and the `start` parameter is ignored ||
 || **total**
-[`integer`](../../../data-types.md) | The number of found custom fields ||
+[`integer`](../../../data-types.md) | The number of found custom fields. Equals the length of the `result` array ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### result Array Element {#result}
+
+Numeric values of `ID` and `SORT` are returned as strings.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../../data-types.md) | Custom field identifier. Used in the methods [crm.deal.userfield.get](./crm-deal-userfield-get.md), [crm.deal.userfield.update](./crm-deal-userfield-update.md), and [crm.deal.userfield.delete](./crm-deal-userfield-delete.md) ||
+|| **ENTITY_ID**
+[`string`](../../../data-types.md) | The object the field belongs to. For deals, always `CRM_DEAL` ||
+|| **FIELD_NAME**
+[`string`](../../../data-types.md) | Field name with the `UF_CRM_` prefix. Deal methods use this name to write and read the field value, for example, [crm.deal.update](../crm-deal-update.md) and [crm.deal.get](../crm-deal-get.md). The method itself does not return field values in deals ||
+|| **USER_TYPE_ID**
+[`string`](../../../data-types.md) | Field type; for values, see the [list of fields for filtering](#filterable) ||
+|| **USER_TYPE_OWNER**
+[`string`](../../../data-types.md) | Identifier of the application that registered the [custom field type](../../universal/user-defined-fields/userfield-type.md). Returned only for fields of a custom type ||
+|| **XML_ID**
+[`string`](../../../data-types.md) | External code. If not set, `null` ||
+|| **SORT**
+[`string`](../../../data-types.md) | Sort index ||
+|| **MULTIPLE**, **MANDATORY**, **SHOW_IN_LIST**, **EDIT_IN_LIST**, **IS_SEARCHABLE**
+[`char`](../../../data-types.md) | Field flags with the values `Y` or `N`; for their meaning, see the [list of fields for filtering](#filterable) ||
+|| **SHOW_FILTER**
+[`char`](../../../data-types.md) | Filter mode: `N`, `I`, `E`, or `S`; for the decoding, see the [list of fields for filtering](#filterable) ||
+|| **SETTINGS**
+[`object`](../../../data-types.md) | Field type settings, for example, `DEFAULT_VALUE` or `PRECISION`. The set of keys depends on `USER_TYPE_ID`. The method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) returns the list of keys for a type. The default value of `datetime` fields is returned in ISO 8601 format ||
+|| **EDIT_FORM_LABEL**, **LIST_COLUMN_LABEL**, **LIST_FILTER_LABEL**, **ERROR_MESSAGE**, **HELP_MESSAGE**
+[`string`](../../../data-types.md) | Field labels in the language from `filter.LANG`. Returned only if `LANG` is passed in the filter. If there is no label in this language, `null`.
+
+The method [crm.deal.userfield.get](./crm-deal-userfield-get.md) returns labels in all languages at once ||
+|| **LIST**
+[`object[]`](../../../data-types.md) | List items. Returned only for `enumeration` fields, sorted by `SORT`. Each item contains:
+- `ID` — item identifier; pass it as the field value when writing to a deal
+- `SORT` — sort index
+- `VALUE` — item value
+- `DEF` — whether the item is the default: `Y` or `N`
+- `XML_ID` — item external code ||
 |#
 
 ## Error Handling
@@ -763,9 +714,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400`     | `Parameter 'order' must be array` | The provided `order` is not an object ||
-|| `400`     | `Parameter 'filter' must be array` | The provided `filter` is not an object ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter 'order' must be array.` | The provided `order` is not an object ||
+|| `400` | Empty value | `Parameter 'filter' must be array.` | The provided `filter` is not an object ||
+|| `400` | Empty value | `Access denied.` | The user does not have "read" access permission for deals ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -776,5 +728,8 @@ HTTP status: **400**
 - [{#T}](./crm-deal-userfield-update.md)
 - [{#T}](./crm-deal-userfield-get.md)
 - [{#T}](./crm-deal-userfield-delete.md)
+- [{#T}](../crm-deal-get.md)
+- [{#T}](../crm-deal-update.md)
+- [{#T}](./index.md)
 - [{#T}](../../../../tutorials/field-types/how-to-add-precision-to-user-field.md)
 - [{#T}](../../../../tutorials/crm/how-to-edit-crm-objects/how-to-set-paid-date-to-deal.md)
