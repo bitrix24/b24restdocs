@@ -36,7 +36,7 @@ The method `im.v2.File.upload` uploads a file to the chat on behalf of the curre
 || **name***
 [`string`](../../../../data-types.md) | File name with extension ||
 || **content***
-[`string`](../../../../data-types.md) | File content in [Base64](../../../../files/how-to-upload-files.md) encoding. Maximum size — 100 MB ||
+[`string`](../../../../data-types.md) | File content in [Base64](../../../../files/how-to-upload-files.md) encoding. The maximum file size after decoding is 100 MB ||
 || **message**
 [`string`](../../../../data-types.md) | Text of the message sent along with the file ||
 |#
@@ -65,7 +65,7 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"dialogId":"chat5","fields":{"name":"report.pdf","content":"SGVsbG8gV29ybGQh","message":"Here is the report"}}' \
+      -d '{"dialogId":"chat5","fields":{"name":"report.txt","content":"SGVsbG8gV29ybGQh","message":"Here is the report"}}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/im.v2.File.upload
     ```
 
@@ -75,28 +75,99 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"dialogId":"chat5","fields":{"name":"report.pdf","content":"SGVsbG8gV29ybGQh","message":"Here is the report"},"auth":"**put_access_token_here**"}' \
+      -d '{"dialogId":"chat5","fields":{"name":"report.txt","content":"SGVsbG8gV29ybGQh","message":"Here is the report"},"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/im.v2.File.upload
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try {
-      const response = await $b24.callMethod('im.v2.File.upload', {
-        dialogId: 'chat5',
-        fields: {
-          name: 'report.pdf',
-          content: 'SGVsbG8gV29ybGQh',
-          message: 'Here is the report',
-        },
-      });
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-      const { result } = response.getData();
-      console.log('result:', result);
-    } catch (error) {
-      console.error('Error:', error);
+    declare const $b24: B24Frame
+
+    // Minimal shape of result; the API returns the full File object
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type FileUploadResult = {
+      file: {
+        id: number
+        name: string
+      }
+      messageId: number
+      chatId: number
+      dialogId: string
     }
+
+    try {
+      const response = await $b24.actions.v2.call.make<FileUploadResult>({
+        method: 'im.v2.File.upload',
+        params: {
+          dialogId: 'chat5',
+          fields: {
+            name: 'report.txt',
+            content: 'SGVsbG8gV29ybGQh',
+            message: 'Here is the report',
+          },
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('File ID:', result.file.id, '| Message ID:', result.messageId)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function uploadFile() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'im.v2.File.upload',
+            params: {
+              dialogId: 'chat5',
+              fields: {
+                name: 'report.txt',
+                content: 'SGVsbG8gV29ybGQh',
+                message: 'Here is the report',
+              },
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('File ID:', result.file.id, '| Message ID:', result.messageId)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', uploadFile)
+    </script>
     ```
 
 - Python
@@ -108,7 +179,7 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
         bitrix_response = client.im.v2.file.upload(
             dialog_id="chat5",
             fields={
-                "name": "report.pdf",
+                "name": "report.txt",
                 "content": "SGVsbG8gV29ybGQh",
                 "message": "Here is the report",
             },
@@ -139,8 +210,9 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
                 [
                     'dialogId' => 'chat5',
                     'fields' => [
-                        'name' => 'report.pdf',
-                        'content' => base64_encode(file_get_contents('/path/to/report.pdf')),
+                        'name' => 'report.txt',
+                        // for your own file: base64_encode(file_get_contents('/path/to/report.txt'))
+                        'content' => 'SGVsbG8gV29ybGQh',
                         'message' => 'Here is the report',
                     ],
                 ]
@@ -165,8 +237,8 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
         {
             dialogId: 'chat5',
             fields: {
-                name: 'report.pdf',
-                content: btoa('...'),
+                name: 'report.txt',
+                content: 'SGVsbG8gV29ybGQh',
                 message: 'Here is the report',
             },
         },
@@ -190,8 +262,9 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
         [
             'dialogId' => 'chat5',
             'fields' => [
-                'name' => 'report.pdf',
-                'content' => base64_encode(file_get_contents('/path/to/report.pdf')),
+                'name' => 'report.txt',
+                // for your own file: base64_encode(file_get_contents('/path/to/report.txt'))
+                'content' => 'SGVsbG8gV29ybGQh',
                 'message' => 'Here is the report',
             ],
         ]
@@ -211,7 +284,7 @@ More details: [How to upload files](../../../../files/how-to-upload-files.md#how
     res, err := client.Core().Call(ctx, "im.v2.File.upload", b24.Params{
     	"dialogId": "chat5",
     	"fields": b24.Params{
-    		"name":    "report.pdf",
+    		"name":    "report.txt",
     		"content": "SGVsbG8gV29ybGQh",
     		"message": "Here is the report",
     	},
@@ -245,25 +318,25 @@ HTTP Status: **200**
             "chatId": 4415,
             "date": "2026-08-11T15:28:50+02:00",
             "type": "file",
-            "name": "report.pdf",
-            "extension": "pdf",
-            "size": 35341,
+            "name": "report.txt",
+            "extension": "txt",
+            "size": 12,
             "image": false,
             "status": "done",
             "progress": 100,
             "authorId": 1,
             "authorName": "Klaus Weber",
             "urlPreview": "",
-            "urlShow": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=9817&exact=N&fileName=report.pdf",
-            "urlDownload": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=9817&exact=N&fileName=report.pdf",
+            "urlShow": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=9817&exact=N&fileName=report.txt",
+            "urlDownload": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=9817&exact=N&fileName=report.txt",
             "viewerAttrs": {
                 "viewer": "",
                 "viewerType": "code",
-                "src": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=9817&exact=N&fileName=report.pdf",
+                "src": "https://some-domain.bitrix24.com/bitrix/services/main/ajax.php?action=disk.api.file.download&SITE_ID=s1&humanRE=1&fileId=9817&exact=N&fileName=report.txt",
                 "objectId": "9817",
                 "viewerGroupBy": "4415",
                 "imChatId": 4415,
-                "title": "report.pdf",
+                "title": "report.txt",
                 "unifiedLink": "https://some-domain.bitrix24.com/file/5tqNA6utERA5MIWnKpFX",
                 "actions": "[{\"type\":\"download\"}]"
             },
@@ -332,7 +405,7 @@ HTTP Status: **200**
 || **size**
 [`integer`](../../../../data-types.md) | Size of the file in bytes ||
 || **image**
-[`boolean`](../../../../data-types.md) | `false` for a regular file. For an image — an object with width and height ||
+[```object | boolean```](../../../../data-types.md#compound-types) | `false` for a regular file. For an image — an object with the height and width, for example `{"height": 600, "width": 800}` ||
 || **status**
 [`string`](../../../../data-types.md) | Upload status, for example `done` ||
 || **progress**
@@ -348,9 +421,9 @@ HTTP Status: **200**
 || **urlDownload**
 [`string`](../../../../data-types.md) | Link to download the file ||
 || **viewerAttrs**
-[`object`](../../../../data-types.md) | Attributes for the built-in Bitrix24 viewer ||
+[`object`](../../../../data-types.md) | Internal attributes for the built-in Bitrix24 viewer: the view type `viewerType`, the file address `src`, the file link `unifiedLink`, the actions `actions` as a JSON string, and others. Integrations do not need to parse them: to download the file, use `urlDownload` or the [im.v2.File.download](./file-download.md) method ||
 || **mediaUrl**
-[`object`](../../../../data-types.md) | Links to media file previews by size ||
+[`object`](../../../../data-types.md) | Links to previews by size. For an image, the `preview.250` key contains the preview address; for other files, an empty string ||
 || **isTranscribable**
 [`boolean`](../../../../data-types.md) | Indicates a file that can be transcribed into text ||
 || **isVideoNote**
@@ -363,12 +436,12 @@ A complete description of all object fields can be found on the [Objects and Fie
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "FILE_TOO_LARGE",
-    "error_description": "File too large"
+    "error_description": "File size exceeds maximum allowed"
 }
 ```
 
@@ -381,11 +454,12 @@ HTTP Status: **400**, **403**
 || `FILE_EMPTY` | File name and content are required | The file name or content was not passed ||
 || `FILE_INVALID_CONTENT` | Invalid base64 content | The file content is not a Base64 string ||
 || `CHAT_NOT_FOUND` | CHAT_NOT_FOUND | The chat from `dialogId` was not found ||
-|| `FOLDER_ERROR` | Failed to get chat folder | Failed to get chat folder ||
-|| `UPLOAD_FAILED` | File upload failed | File upload error ||
-|| `SEND_FAILED` | Failed to send message | Message sending error ||
-|| `FILE_TOO_LARGE` | File is too large | File size exceeds 100 MB ||
-|| `ACCESS_DENIED` | Access denied | No access to the chat ||
+|| `FILE_FOLDER_ERROR` | Could not get chat folder | Failed to retrieve the chat folder ||
+|| `FILE_UPLOAD_FAILED` | File upload failed | Failed to store the file on Drive ||
+|| `FILE_SEND_FAILED` | Failed to send file message | The file was stored, but the message containing it was not sent ||
+|| `FILE_TOO_LARGE` | File size exceeds maximum allowed | File size exceeds 100 MB ||
+|| `ACCESS_DENIED` | ACCESS_DENIED | The user is not a member of the chat or cannot send messages to it ||
+|| `100` | `Could not find value for parameter {fields}` | The `fields` object was not passed. Without `dialogId`, the error text is `Could not find value for parameter {chatId}` ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}

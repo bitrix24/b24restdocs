@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 The method `imbot.v2.Bot.get` returns information about the bot. It is used to verify the bot's installation.
 
-For the owner application, it returns an extended format including `moduleId`, `eventMode`, and counters. For other applications, it returns a brief format.
+For the owner application, the method returns the extended format of the Bot object. For other applications and for requests with a different `botToken`, it returns the brief format, without the [Additional Owner-Only Fields](#bot-owner-fields).
 
 ## Method Parameters
 
@@ -25,13 +25,13 @@ For the owner application, it returns an extended format including `moduleId`, `
 || **Name** 
 `Type` | **Description** ||
 || **botId** 
-[`integer`](../../../../data-types.md) | Bot ID. Required if `code` is not specified ||
+[`integer`](../../../../data-types.md) | Bot ID from the `result.bot.id` field of the [imbot.v2.Bot.register](./bot-register.md) response. Required if `code` is not specified ||
 || **code** 
 [`string`](../../../../data-types.md) | Bot code. Required if `botId` is not specified ||
 || **botToken** 
 [`string`](../../../../data-types.md) | Unique bot authorization token. Required for webhook authorization, not needed for OAuth.
 
-Pass the same botToken that was specified during the chatbot registration ||
+Pass the same botToken that was specified during the chatbot registration. With a different token, the method returns the bot in the brief format ||
 |#
 
 {% note info "" %}
@@ -66,19 +66,89 @@ You must provide one of the parameters: `botId` or `code`.
       https://**put_your_bitrix24_address**/rest/imbot.v2.Bot.get
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try {
-      const response = await $b24.callMethod('imbot.v2.Bot.get', {
-        code: 'support_bot',
-      });
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-      const { result } = response.getData();
-      console.log('result:', result);
-    } catch (error) {
-      console.error('Error:', error);
+    declare const $b24: B24Frame
+
+    // Minimal shape of result; the API returns the full Bot and User objects
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type BotGetResult = {
+      bot: {
+        id: number
+        code: string
+        type: string
+      }
+      users: Array<{
+        id: number
+        name: string
+      }>
     }
+
+    try {
+      const response = await $b24.actions.v2.call.make<BotGetResult>({
+        method: 'imbot.v2.Bot.get',
+        params: {
+          botToken: 'my_bot_token',
+          code: 'support_bot',
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Bot ID:', result.bot.id, '| Code:', result.bot.code)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function getBot() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'imbot.v2.Bot.get',
+            params: {
+              botToken: 'my_bot_token',
+              code: 'support_bot',
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Bot ID:', result.bot.id, '| Code:', result.bot.code)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', getBot)
+    </script>
     ```
 
 - Python
@@ -88,6 +158,7 @@ You must provide one of the parameters: `botId` or `code`.
 
     try:
         bitrix_response = client.imbot.v2.bot.get(
+            bot_token="my_bot_token",
             code="support_bot",
         ).response
         result = bitrix_response.result
@@ -114,6 +185,7 @@ You must provide one of the parameters: `botId` or `code`.
             ->call(
                 'imbot.v2.Bot.get',
                 [
+                    'botToken' => 'my_bot_token',
                     'code' => 'support_bot',
                 ]
             );
@@ -154,7 +226,10 @@ You must provide one of the parameters: `botId` or `code`.
 
     $result = CRest::call(
         'imbot.v2.Bot.get',
-        ['code' => 'support_bot']
+        [
+            'botToken' => 'my_bot_token',
+            'code' => 'support_bot',
+        ]
     );
 
     if (!empty($result['error'])) {
@@ -220,8 +295,8 @@ HTTP Status: **200**
         "finish": 1728626400.234,
         "duration": 0.111,
         "processing": 0.045,
-        "date_start": "2024-10-11T10:00:00+02:00",
-        "date_finish": "2024-10-11T10:00:00+02:00"
+        "date_start": "2024-10-11T08:00:00+02:00",
+        "date_finish": "2024-10-11T08:00:00+02:00"
     }
 }
 ```
@@ -243,6 +318,8 @@ HTTP Status: **200**
 
 ### Fields of the Bot Object {#bot-object}
 
+These fields are returned in both formats.
+
 #| 
 || **Field** 
 `Type` | **Description** ||
@@ -262,6 +339,15 @@ HTTP Status: **200**
 [```string|null```](../../../../data-types.md) | Chat background ID or `null` ||
 || **language** 
 [`string`](../../../../data-types.md) | Language of the bot ||
+|#
+
+#### Additional Fields (Owner Only) {#bot-owner-fields}
+
+These fields are returned only in the extended format: to the application that registered the bot, or in response to a webhook request with the same `botToken`.
+
+#|
+|| **Field**
+`Type` | **Description** ||
 || **moduleId** 
 [`string`](../../../../data-types.md) | Module identifier ||
 || **eventMode** 
@@ -277,6 +363,8 @@ HTTP Status: **200**
 |#
 
 ### Fields of the User Object {#user-object}
+
+The table and the response example show the main fields. The method returns the full User object.
 
 #| 
 || **Field** 
@@ -297,7 +385,7 @@ Full description of all object fields can be found on the [Objects and Fields](.
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
@@ -312,8 +400,8 @@ HTTP Status: **400**, **403**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is required for webhook authorization ||
-|| `PARAMS_REQUIRED` | Required parameters are missing | Neither `botId` nor `code` is provided ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token not specified (botToken is required for webhook auth) | `botToken` is not specified. Required for webhook authorization ||
+|| `PARAMS_REQUIRED` | botId or code is required | Neither `botId` nor `code` is provided ||
 || `BOT_NOT_FOUND` | Bot not found | Bot not found ||
 |#
 

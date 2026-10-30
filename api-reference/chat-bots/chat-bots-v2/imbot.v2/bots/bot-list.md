@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`imbot`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: owner of the registered bot
+> Who can execute the method: authorized user
 
-The `imbot.v2.Bot.list` method returns a list of bots for the current application in an extended format.
+The `imbot.v2.Bot.list` method returns a list of bots for the current application in an extended format. When called via a webhook, it returns the bots registered with the passed `botToken`. It replaces the [imbot.bot.list](../../../outdated/bots/imbot-bot-list.md) method of the first API version; the parameter mapping is in the [Migration Table](../../migration.md#methods).
 
 ## Method Parameters
 
@@ -30,11 +30,11 @@ Pass the same botToken that was specified during the chatbot registration ||
 [`object`](../../../../data-types.md) | Filter for results.
 
 Available filter fields:
-- `type` — type of the bot. Description of types — [Bot Types](../../index.md#bot-types) ||
+- `type` — type of the bot, a string, for example `bot` or `supervisor`. For a description of the types, see [Bot Types](../../index.md#bot-types) ||
 || **limit**
-[`integer`](../../../../data-types.md) | Number of bots per page. Default is `50` ||
+[`integer`](../../../../data-types.md) | Number of bots per page. Default is `50`. With a value of `0` or less, the method returns all bots of the application ||
 || **offset**
-[`integer`](../../../../data-types.md) | Offset for pagination. Default is `0` ||
+[`integer`](../../../../data-types.md) | Offset for pagination. Default is `0`. To retrieve the next page, increase `offset` by `limit` while `hasNextPage` in the response is `true`. A negative value causes an error ||
 |#
 
 ## Code Examples
@@ -63,20 +63,92 @@ Available filter fields:
       https://**put_your_bitrix24_address**/rest/imbot.v2.Bot.list
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try {
-      const response = await $b24.callMethod('imbot.v2.Bot.list', {
-        filter: { type: 'bot' },
-        limit: 10,
-      });
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
 
-      const { result } = response.getData();
-      console.log('result:', result);
-    } catch (error) {
-      console.error('Error:', error);
+    declare const $b24: B24Frame
+
+    // Minimal shape of result; the API returns the full Bot and User objects
+    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type BotListResult = {
+      bots: Array<{
+        id: number
+        code: string
+        type: string
+      }>
+      users: Array<{
+        id: number
+        name: string
+      }>
+      hasNextPage: boolean
     }
+
+    try {
+      const response = await $b24.actions.v2.call.make<BotListResult>({
+        method: 'imbot.v2.Bot.list',
+        params: {
+          botToken: 'my_bot_token',
+          filter: { type: 'bot' },
+          limit: 10,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Bots:', result.bots.length, '| Has next page:', result.hasNextPage)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function listBots() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'imbot.v2.Bot.list',
+            params: {
+              botToken: 'my_bot_token',
+              filter: { type: 'bot' },
+              limit: 10,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Bots:', result.bots.length, '| Has next page:', result.hasNextPage)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', listBots)
+    </script>
     ```
 
 - Python
@@ -86,6 +158,7 @@ Available filter fields:
 
     try:
         bitrix_response = client.imbot.v2.bot.list(
+            bot_token="my_bot_token",
             filter={
                 "type": "bot",
             },
@@ -115,6 +188,7 @@ Available filter fields:
             ->call(
                 'imbot.v2.Bot.list',
                 [
+                    'botToken' => 'my_bot_token',
                     'filter' => ['type' => 'bot'],
                     'limit' => 10,
                 ]
@@ -158,6 +232,7 @@ Available filter fields:
     $result = CRest::call(
         'imbot.v2.Bot.list',
         [
+            'botToken' => 'my_bot_token',
             'filter' => ['type' => 'bot'],
             'limit' => 10,
         ]
@@ -239,8 +314,8 @@ HTTP Status: **200**
         "finish": 1728626400.234,
         "duration": 0.111,
         "processing": 0.045,
-        "date_start": "2024-10-11T10:00:00+02:00",
-        "date_finish": "2024-10-11T10:00:00+02:00"
+        "date_start": "2024-10-11T08:00:00+02:00",
+        "date_finish": "2024-10-11T08:00:00+02:00"
     }
 }
 ```
@@ -299,6 +374,8 @@ HTTP Status: **200**
 
 ### Fields of the User Object {#user-object}
 
+The table and the response example show the main fields. The method returns the full User object.
+
 #|
 || **Field**
 `Type` | **Description** ||
@@ -318,18 +395,18 @@ Complete description of all object fields is available on the [Objects and Field
 
 {% note info "" %}
 
-The method always returns a successful response. If the application has no bots or an unknown value for `filter.type` is provided, an empty array `bots` is returned.
+If the application has no bots, or an unknown `filter.type` value or a different `botToken` is passed, the method returns an empty `bots` array without an error.
 
 {% endnote %}
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "BOT_TOKEN_NOT_SPECIFIED",
-    "error_description": "Bot token is not specified"
+    "error_description": "Bot token not specified (botToken is required for webhook auth)"
 }
 ```
 
@@ -339,7 +416,9 @@ HTTP Status: **400**, **403**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token is not specified | `botToken` is not specified. Required for webhook authorization ||
+|| `BOT_TOKEN_NOT_SPECIFIED` | Bot token not specified (botToken is required for webhook auth) | `botToken` is not specified. Required for webhook authorization ||
+|| `100` | Invalid value {…} to match with parameter {…}. Should be value of type … | `limit` or `offset` is not an integer, or `filter` is not an object ||
+|| `400` | Internal server error. | A negative `offset` value is passed ||
 |#
 
 {% include [System Errors](../../../../../_includes/system-errors.md) %}
@@ -351,3 +430,4 @@ HTTP Status: **400**, **403**
 - [{#T}](./bot-get.md)
 - [{#T}](./bot-update.md)
 - [{#T}](./bot-unregister.md)
+- [{#T}](../../migration.md)
