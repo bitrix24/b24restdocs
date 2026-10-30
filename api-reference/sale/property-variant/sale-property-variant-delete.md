@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyvariant.delete` deletes a property variant value of an order. It is applicable only for properties of type `ENUM`.
+The method `sale.propertyvariant.delete` deletes a property variant value of an order. In orders where this variant is already selected, the stored property value does not change.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `sale.propertyvariant.delete` deletes a property variant value of an 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_property_variant.id`](../data-types.md) | Identifier of the property variant ||
+[`sale_order_property_variant.id`](../data-types.md) | Variant identifier. You can retrieve it using the [sale.propertyvariant.list](./sale-property-variant-list.md) method ||
 |#
 
 ## Code Examples
@@ -246,7 +246,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of deleting the property variant ||
+[`boolean`](../../data-types.md) | `true` if the variant is deleted ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -257,8 +257,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":201540400001,
-    "error_description":"property variant does not exist"
+    "error": "201540400001",
+    "error_description": "property variant is not exists"
 }
 ```
 
@@ -267,11 +267,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201540400001` | The property variant to be deleted was not found ||
-|| `200040300020` | Insufficient permissions to delete the property variant ||
-|| `100` | The `id` parameter is missing ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `201540400001` | property variant is not exists | The variant with the specified `id` was not found ||
+|| `400` | `200040300020` | Access Denied | The user does not have permission to change store settings ||
+|| `400` | `100` | Could not find value for parameter {id} | The required `id` parameter is not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

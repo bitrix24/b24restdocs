@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyvariant.get` retrieves the variant value of an order property. It is applicable only for properties of type `ENUM`.
+The method `sale.propertyvariant.get` retrieves a value variant of an order property by its identifier.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `sale.propertyvariant.get` retrieves the variant value of an order pr
 || **Name**
 `type` | **Description** ||
 || **id***
-[`sale_order_property_variant.id`](../data-types.md) | Identifier of the property variant ||
+[`sale_order_property_variant.id`](../data-types.md) | Variant identifier. You can retrieve it using the [sale.propertyvariant.list](./sale-property-variant-list.md) method ||
 |#
 
 ## Code Examples
@@ -284,11 +284,30 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Result of retrieving the property variant ||
+[`object`](../../data-types.md) | Root element of the response ||
 || **propertyVariant**
-[`sale_order_property_variant`](../data-types.md) | Information about the property variant ||
+[`sale_order_property_variant`](#sale_order_property_variant) | Variant data [(detailed description)](#sale_order_property_variant) ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
+|#
+
+#### sale_order_property_variant {#sale_order_property_variant}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Variant identifier ||
+|| **orderPropsId**
+[`integer`](../../data-types.md) | Identifier of the order property the variant belongs to ||
+|| **name**
+[`string`](../../data-types.md) | Variant name displayed to the customer ||
+|| **value**
+[`string`](../../data-types.md) | Symbolic code of the variant. Stored in the order as the property value ||
+|| **sort**
+[`integer`](../../data-types.md) | Display order of the variant in the list ||
+|| **description**
+[`string`](../../data-types.md) | Variant description. `null` if no description is set ||
 |#
 
 ## Error Handling
@@ -297,8 +316,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 201540400001,
-    "error_description": "property variant does not exist"
+    "error": "201540400001",
+    "error_description": "property variant is not exists"
 }
 ```
 
@@ -307,11 +326,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201540400001` | Property variant not found ||
-|| `200040300010` | Insufficient permissions to read the property variant ||
-|| `100` | Parameter `id` not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `201540400001` | property variant is not exists | The variant with the specified `id` was not found ||
+|| `400` | `200040300010` | Access Denied | The user does not have permission to read store settings ||
+|| `400` | `100` | Could not find value for parameter {id} | The required `id` parameter is not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

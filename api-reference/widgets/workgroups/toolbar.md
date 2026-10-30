@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`placement, sonet_group`](../../scopes/permissions.md)
 
-The widget adds its own item to the extensions menu of a workgroup or project.
+The widget adds its own item to the extensions menu of a workgroup or project. You can use the placement to:
 
-The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method.
+- open an application report or summary for the current group
+- run an action on the group: export data to an external system, synchronize members, create a set of tasks from a template
+- show the application settings for a specific group
+
+Choose this placement if the action only needs to know the group it was called from. If the application needs a separate screen in the group menu, an item in Projects AI, or the group identifier as a separate parameter, use [{#T}](./detail-tab.md).
+
+The placement code is specified in the `PLACEMENT` parameter of the [placement.bind](../placement-bind.md) method. The method must be called from the application context — you cannot register the widget through an inbound webhook. The call is available to an administrator or to a user who is allowed to install applications of the corresponding type and has access to the application itself.
 
 {% note info "" %}
 
@@ -32,13 +38,26 @@ The widget is not displayed in the interface until the application installation 
 
 Open the workgroup, click *•••* to the right of the group name and select *Extensions*. The application item is displayed in this submenu next to the knowledge base items and Bitrix24 Market.
 
+How the item is built:
+
+- the name is taken from `TITLE` or `LANG_ALL` of the `placement.bind` method; if the name is not set, the application name is used
+- items with the same `GROUP_NAME` are combined into a nested submenu with this name
+- on click, Bitrix24 opens the application and passes the placement data to the handler
+
 {% note warning "" %}
 
-The group menu with the *Extensions* item exists only in the classic interface. In the new Projects AI view, the placement is registered by the `placement.bind` method, but it has no rendering location — the item will not appear. To add your own item to the workgroup menu in both cases, use [{#T}](./detail-tab.md)
+The group menu with the *Extensions* item exists only in the classic interface. In the new Projects AI view, the placement is registered by the `placement.bind` method, but it has no rendering location — the item will not appear
 
 {% endnote %}
 
 ![Extensions menu item of a workgroup or project](./_images/SONET_GROUP_TOOLBAR.png "Extensions menu item of a workgroup or project")
+
+### How to Check
+
+1. Call `placement.bind` with the `SONET_GROUP_TOOLBAR` code. The method returns `true`
+2. Call [placement.get](../placement-get.md). The response must contain an element with `placement` = `SONET_GROUP_TOOLBAR` and your `handler`
+3. Open the workgroup in the classic interface, click *•••* → *Extensions*, and select the application item. Check that the handler received `PLACEMENT` with the value `SONET_GROUP_TOOLBAR` and the group path in `PLACEMENT_OPTIONS.URI`
+4. To remove the item, call [placement.unbind](../placement-unbind.md) with the same `PLACEMENT` and `HANDLER`. The method returns the number of removed handlers in `count`
 
 ## What the Handler Receives
 
@@ -75,6 +94,10 @@ The value of `PLACEMENT_OPTIONS` is passed as a JSON string with the context of 
 `SONET_GROUP_TOOLBAR` has no keys of its own — the context contains only the universal `URI` key. The workgroup identifier does not arrive as a separate parameter, so take it from the path in `URI`. For the value `/workgroups/group/10/tasks/`, the workgroup identifier is `10`. Use it to retrieve the workgroup data with the [sonet_group.get](../../sonet-group/sonet-group-get.md) method.
 
 If your handler needs the workgroup identifier explicitly, use [{#T}](./detail-tab.md) or [{#T}](./robot-designer-toolbar.md) — these placements pass it in the `GROUP_ID` key.
+
+## OPTIONS When Registering via placement.bind
+
+This placement has no `OPTIONS` parameters of its own. The `placement.bind` method does not save the passed values.
 
 ## Code Examples
 

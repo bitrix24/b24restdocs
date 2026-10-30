@@ -38,7 +38,7 @@ You can obtain the identifier using the [voximplant.sip.get](./voximplant-sip-ge
 
 {% note info "" %}
 
-To make changes, at least one of the following fields must be provided: `TITLE`, `SERVER`, `LOGIN`, `PASSWORD`.
+To make changes, at least one of the following fields must be provided: `TITLE`, `SERVER`, `LOGIN`, `PASSWORD`. If none of them is passed, the method returns `1` and changes nothing.
 
 {% endnote %}
 
@@ -285,7 +285,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**, **404**
+HTTP Status: **404**
 
 ```json
 {
@@ -299,21 +299,21 @@ HTTP Status: **400**, **403**, **404**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_NOT_FOUND` | `Specified CONFIG_ID is not found` | SIP line with the specified `CONFIG_ID` was not found among the lines of the current application. ||
-|| `CHECK_FIELDS_ERROR` | `Server address not specified` | An empty or incorrect value was provided for the `SERVER` parameter. ||
-|| `CHECK_FIELDS_ERROR` | `Login for connecting to the server not specified` | An empty or incorrect value was provided for the `LOGIN` parameter. ||
-|| `CHECK_FIELDS_ERROR` | `Password for connecting to the server cannot exceed 100 characters` | The limit for the `PASSWORD` parameter has been exceeded. ||
-|| `TITLE_EXISTS` | `The specified connection name is already registered in the system` | A line with that name already exists. ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to update the SIP line. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `404` | `ERROR_NOT_FOUND` | Specified CONFIG_ID is not found | SIP line with the specified `CONFIG_ID` was not found among the lines of the current application. Unlike [voximplant.sip.delete](./voximplant-sip-delete.md), this method returns this error with status 404 ||
+|| `400` | `CHECK_FIELDS_ERROR` | Server address is not specified | An empty or incorrect value was provided for the `SERVER` parameter ||
+|| `400` | `CHECK_FIELDS_ERROR` | Server login is not specified | An empty or incorrect value was provided for the `LOGIN` parameter ||
+|| `400` | `CHECK_FIELDS_ERROR` | Server password must not exceed 100 characters | The limit for the `PASSWORD` parameter has been exceeded ||
+|| `400` | `TITLE_EXISTS` | The specified connection name is already used in the system | A line with that name already exists ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Insufficient permissions to update the SIP line ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./voximplant-sip-add.md)
-- [{#T}](./voximplant-sip-update.md)
 - [{#T}](./voximplant-sip-get.md)
 - [{#T}](./voximplant-sip-delete.md)
 - [{#T}](./voximplant-sip-status.md)

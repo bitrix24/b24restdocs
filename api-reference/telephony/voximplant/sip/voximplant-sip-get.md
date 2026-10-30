@@ -488,7 +488,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object[]`](../../../data-types.md) | Array of SIP line records created by the current application. The composition of records depends on the `FILTER` conditions.
+[`object[]`](../../../data-types.md) | Array of SIP line records created by the current application [(detailed description)](#sip). The composition of records depends on the `FILTER` conditions.
 
 An empty array means that there are no records matching the `FILTER` conditions. ||
 || **total**
@@ -497,6 +497,53 @@ An empty array means that there are no records matching the `FILTER` conditions.
 [`integer`](../../../data-types.md) | Offset for the next page (if any). ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request. ||
+|#
+
+#### Element of the result Array {#sip}
+
+The `ID` and `APP_ID` fields are not returned in the response. The set of other fields depends on the PBX type: `REG_ID` is returned only for `cloud`, and the `INCOMING_*` fields only for `office`.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **TYPE**
+[`string`](../../../data-types.md) | PBX type:
+
+- `cloud` — cloud PBX
+- `office` — office PBX ||
+|| **TITLE**
+[`string`](../../../data-types.md) | Connection name. An empty string if the name was not set at creation ||
+|| **CONFIG_ID**
+[`string`](../../../data-types.md) | Identifier of the SIP line configuration, for example, `"3"`. Used in [voximplant.sip.update](./voximplant-sip-update.md), [voximplant.sip.delete](./voximplant-sip-delete.md), and [voximplant.line.outgoing.sip.set](../lines/voximplant-line-outgoing-sip-set.md) ||
+|| **REG_ID**
+[`string`](../../../data-types.md) | Identifier of the SIP registration, for example, `"150907"`. Only for `cloud`. Used in [voximplant.sip.status](./voximplant-sip-status.md) ||
+|| **SERVER**
+[`string`](../../../data-types.md) | SIP registration server address ||
+|| **LOGIN**
+[`string`](../../../data-types.md) | Login for connecting to the server ||
+|| **PASSWORD**
+[`string`](../../../data-types.md) | Password for connecting to the server ||
+|| **INCOMING_SERVER**
+[`string`](../../../data-types.md) | Server address for incoming calls. Only for `office`: it is specified in the office PBX settings ||
+|| **INCOMING_LOGIN**
+[`string`](../../../data-types.md) | Login for incoming calls. Only for `office` ||
+|| **INCOMING_PASSWORD**
+[`string`](../../../data-types.md) | Password for incoming calls. Only for `office` ||
+|| **AUTH_USER**
+[`string`](../../../data-types.md)\|[`null`](../../../data-types.md) | User name for SIP authorization ||
+|| **OUTBOUND_PROXY**
+[`string`](../../../data-types.md)\|[`null`](../../../data-types.md) | SIP proxy address for the outbound connection ||
+|| **DETECT_LINE_NUMBER**
+[`string`](../../../data-types.md) | Line number detection flag:
+
+- `Y` — line number detection is enabled
+- `N` — line number detection is disabled ||
+|| **LINE_DETECT_HEADER_ORDER**
+[`string`](../../../data-types.md) | Order of SIP headers for line number detection, for example, `diversion;to` ||
+|| **REGISTRATION_STATUS_CODE**
+[`string`](../../../data-types.md)\|[`null`](../../../data-types.md) | Status code of the last SIP registration, for example, `"200"`. Updated when [voximplant.sip.status](./voximplant-sip-status.md) is called ||
+|| **REGISTRATION_ERROR_MESSAGE**
+[`string`](../../../data-types.md)\|[`null`](../../../data-types.md) | Error text of the last SIP registration. An empty string or `null` if there is no error ||
 |#
 
 ## Error Handling
@@ -515,17 +562,17 @@ HTTP Status: **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to retrieve the list of SIP lines. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Insufficient permissions to retrieve the list of SIP lines ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./voximplant-sip-add.md)
 - [{#T}](./voximplant-sip-update.md)
-- [{#T}](./voximplant-sip-get.md)
 - [{#T}](./voximplant-sip-delete.md)
 - [{#T}](./voximplant-sip-status.md)
 - [{#T}](./voximplant-sip-connector-status.md)

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyvariant.getFields` retrieves the available fields of property value variants.
+The method `sale.propertyvariant.getFields` retrieves the fields of a property value variant with their types and flags indicating whether they are required and modifiable.
 
 No parameters.
 
@@ -263,12 +263,14 @@ HTTP Status: **200**
         }
     },
     "time": {
-        "start": 1711634366.714184,
-        "finish": 1711634366.95501,
-        "duration": 0.24082589149475098,
-        "processing": 0.0055849552154541016,
-        "date_start": "2024-03-28T16:59:26+02:00",
-        "date_finish": "2024-03-28T16:59:26+02:00"
+        "start": 1793263619,
+        "finish": 1793263619.094287,
+        "duration": 0.09428691864013672,
+        "processing": 0,
+        "date_start": "2026-10-29T11:46:59+01:00",
+        "date_finish": "2026-10-29T11:46:59+01:00",
+        "operating_reset_at": 1793264160,
+        "operating": 0
     }
 }
 ```
@@ -281,7 +283,11 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **propertyVariant**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [sale_order_property_variant](../data-types.md), and `value` is an object of type [rest_field_description](../../data-types.md) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [sale_order_property_variant](../data-types.md), and `value` is an object of type [rest_field_description](../../data-types.md).
+
+The method returns the fields `id`, `orderPropsId`, `name`, `value`, `sort`, `description`, and `xnlId`. The `xnlId` field describes the external code of the variant; the field name in the response contains a typo. The [sale.propertyvariant.get](./sale-property-variant-get.md) and [sale.propertyvariant.list](./sale-property-variant-list.md) methods do not return this field.
+
+The `isImmutable` flag of the `orderPropsId` field is `true`: the variant's property is set on creation and cannot be changed ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -292,8 +298,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "error"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -302,9 +308,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read available fields of property value variants ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have permission to read store settings ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -13,13 +13,15 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The `user.fields` method allows you to retrieve a list of user field names. The method returns a standard list of fields; the use of custom fields is not supported.
+The `user.fields` method returns the codes and names of user profile fields: standard fields and custom fields with the `UF_USR_` prefix.
 
 {% note info "" %}
 
 The list of Bitrix24 user fields that will be retrieved as a result of the method execution depends on the scope of the application/webhook. The fields available in each version are listed in the [User Scope Versions](user-scope.md) article.
 
 {% endnote %}
+
+## Method Parameters
 
 No parameters.
 
@@ -45,7 +47,7 @@ No parameters.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{}' \
+    -d '{"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/user.fields
     ```
 
@@ -197,23 +199,21 @@ No parameters.
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "user.fields", nil, b24.WithIdempotent())
+    res, err := client.Core().Call(ctx, "user.fields", b24.Params{}, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("user.fields: %w", err)
     }
 
-    var item struct {
-    	ID         string `json:"ID"`
-    	XMLID      string `json:"XML_ID"`
-    	Active     string `json:"ACTIVE"`
-    	Name       string `json:"NAME"`
-    	LastName   string `json:"LAST_NAME"`
-    	SecondName string `json:"SECOND_NAME"`
-    }
-    if err := json.Unmarshal(res.Result, &item); err != nil {
+    // result is a "field code: field name" object
+    var fields map[string]*string
+    if err := json.Unmarshal(res.Result, &fields); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.ID, item.XMLID)
+    for code, title := range fields {
+    	if title != nil {
+    		fmt.Println(code, *title)
+    	}
+    }
     ```
 
 {% endlist %}
@@ -223,81 +223,84 @@ No parameters.
 HTTP status: **200**
 
 ```json
-    {
-        "result":{
-            "ID":"ID",
-            "XML_ID":"External code",
-            "ACTIVE":"Activity",
-            "NAME":"First Name",
-            "LAST_NAME":"Last Name",
-            "SECOND_NAME":"Middle Name",
-            "TITLE":"User List",
-            "EMAIL":"E-Mail",
-            "LAST_LOGIN":"Last Authorization",
-            "DATE_REGISTER":"Registration Date",
-            "TIME_ZONE":"TIME_ZONE",
-            "IS_ONLINE":"IS_ONLINE",
-            "TIMESTAMP_X":"TIMESTAMP_X",
-            "LAST_ACTIVITY_DATE":"LAST_ACTIVITY_DATE",
-            "PERSONAL_GENDER":"Gender",
-            "PERSONAL_PROFESSION":"Profession",
-            "PERSONAL_WWW":"Homepage",
-            "PERSONAL_BIRTHDAY":"Date of Birth",
-            "PERSONAL_PHOTO":"Photo",
-            "PERSONAL_ICQ":"ICQ",
-            "PERSONAL_PHONE":"Personal Phone",
-            "PERSONAL_FAX":"Fax",
-            "PERSONAL_MOBILE":"Personal Mobile",
-            "PERSONAL_PAGER":"Pager",
-            "PERSONAL_STREET":"Residential Street",
-            "PERSONAL_CITY":"Residential City",
-            "PERSONAL_STATE":"State / Region",
-            "PERSONAL_ZIP":"Zip Code",
-            "PERSONAL_COUNTRY":"Country",
-            "PERSONAL_MAILBOX":"P.O. Box",
-            "PERSONAL_NOTES":"Additional Notes",
-            "WORK_PHONE":"Company Phone",
-            "WORK_COMPANY":"Company",
-            "WORK_POSITION":"Job Title",
-            "WORK_DEPARTMENT":"Department",
-            "WORK_WWW":"Company Website",
-            "WORK_FAX":"WORK_FAX",
-            "WORK_PAGER":"WORK_PAGER",
-            "WORK_STREET":"WORK_STREET",
-            "WORK_MAILBOX":"WORK_MAILBOX",
-            "WORK_CITY":"Work City",
-            "WORK_STATE":"WORK_STATE",
-            "WORK_ZIP":"WORK_ZIP",
-            "WORK_COUNTRY":"WORK_COUNTRY",
-            "WORK_PROFILE":"WORK_PROFILE",
-            "WORK_LOGO":"WORK_LOGO",
-            "WORK_NOTES":"WORK_NOTES",
-            "UF_SKYPE_LINK":"Skype Chat Link",
-            "UF_ZOOM":"Zoom",
-            "UF_EMPLOYMENT_DATE":"Hire Date",
-            "UF_TIMEMAN":"Time Tracking",
-            "UF_DEPARTMENT":"Units",
-            "UF_INTERESTS":"Interests",
-            "UF_SKILLS":"Skills",
-            "UF_WEB_SITES":"Other Websites",
-            "UF_XING":"Xing",
-            "UF_LINKEDIN":"LinkedIn",
-            "UF_TWITTER":"Twitter",
-            "UF_SKYPE":"Skype",
-            "UF_DISTRICT":"District",
-            "UF_PHONE_INNER":"Extension",
-            "USER_TYPE":"USER_TYPE"
-        },
-        "time":{
-            "start":1721719975.764591,
-            "finish":1721719975.786585,
-            "duration":0.02199411392211914,
-            "processing":0.0005099773406982422,
-            "date_start":"2024-07-23T07:32:55+00:00",
-            "date_finish":"2024-07-23T07:32:55+00:00",
-            "operating":0
-        }
+{
+    "result": {
+        "ID": "ID",
+        "XML_ID": "External code",
+        "ACTIVE": "Activity",
+        "NAME": "First Name",
+        "LAST_NAME": "Last Name",
+        "SECOND_NAME": "Middle Name",
+        "TITLE": "User List",
+        "EMAIL": "E-Mail",
+        "LAST_LOGIN": "Last Authorization",
+        "DATE_REGISTER": "Registration Date",
+        "TIME_ZONE": "TIME_ZONE",
+        "IS_ONLINE": "IS_ONLINE",
+        "TIMESTAMP_X": "TIMESTAMP_X",
+        "LAST_ACTIVITY_DATE": "LAST_ACTIVITY_DATE",
+        "PERSONAL_GENDER": "Gender",
+        "PERSONAL_PROFESSION": "Profession",
+        "PERSONAL_WWW": "Homepage",
+        "PERSONAL_BIRTHDAY": "Date of Birth",
+        "PERSONAL_PHOTO": "Photo",
+        "PERSONAL_ICQ": "ICQ",
+        "PERSONAL_PHONE": "Personal Phone",
+        "PERSONAL_FAX": "Fax",
+        "PERSONAL_MOBILE": "Personal Mobile",
+        "PERSONAL_PAGER": "Pager",
+        "PERSONAL_STREET": "Residential Street",
+        "PERSONAL_CITY": "Residential City",
+        "PERSONAL_STATE": "State / Region",
+        "PERSONAL_ZIP": "Zip Code",
+        "PERSONAL_COUNTRY": "Country",
+        "PERSONAL_MAILBOX": "P.O. Box",
+        "PERSONAL_NOTES": "Additional Notes",
+        "WORK_PHONE": "Company Phone",
+        "WORK_COMPANY": "Company",
+        "WORK_POSITION": "Job Title",
+        "WORK_DEPARTMENT": "Department",
+        "WORK_WWW": "Company Website",
+        "WORK_FAX": "WORK_FAX",
+        "WORK_PAGER": "WORK_PAGER",
+        "WORK_STREET": "WORK_STREET",
+        "WORK_MAILBOX": "WORK_MAILBOX",
+        "WORK_CITY": "Work City",
+        "WORK_STATE": "WORK_STATE",
+        "WORK_ZIP": "WORK_ZIP",
+        "WORK_COUNTRY": "WORK_COUNTRY",
+        "WORK_PROFILE": "WORK_PROFILE",
+        "WORK_LOGO": "WORK_LOGO",
+        "WORK_NOTES": "WORK_NOTES",
+        "UF_SKYPE_LINK": "Skype Chat Link",
+        "UF_ZOOM": "Zoom",
+        "UF_EMPLOYMENT_DATE": "Hire Date",
+        "UF_TIMEMAN": "Time Tracking",
+        "UF_DEPARTMENT": "Units",
+        "UF_INTERESTS": "Interests",
+        "UF_SKILLS": "Skills",
+        "UF_WEB_SITES": "Other Websites",
+        "UF_XING": "Xing",
+        "UF_LINKEDIN": "LinkedIn",
+        "UF_FACEBOOK": "Facebook",
+        "UF_TWITTER": "Twitter",
+        "UF_SKYPE": "Microsoft Teams",
+        "UF_DISTRICT": "District",
+        "UF_PHONE_INNER": "Extension",
+        "UF_USR_1623996826645": "Signature",
+        "USER_TYPE": "USER_TYPE"
+    },
+    "time": {
+        "start": 1793286069,
+        "finish": 1793286069.582253,
+        "duration": 0.5822529792785645,
+        "processing": 0,
+        "date_start": "2026-10-29T18:01:09+01:00",
+        "date_finish": "2026-10-29T18:01:09+01:00",
+        "operating_reset_at": 1793286660,
+        "operating": 0
     }
+}
 ```
 
 ### Returned Data
@@ -306,12 +309,39 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response, which contains custom fields ||
+[`object`](../data-types.md) | An object of the form `{"field code": "field name"}`; all values are strings. Call the method before using `select` in [user.get](./user-get.md) or writing data with [user.update](./user-update.md) to find out the field codes available in the current scope version.
+
+Contains the standard profile fields allowed by the scope version. The list for each version is in the [User Scope Versions](user-scope.md) article. Types and descriptions of the standard fields are in the [user fields](user-current.md#user-fields) table.
+
+Custom fields with the `UF_USR_` prefix are returned with the name specified when the field was created.
+
+Names are taken from the Bitrix24 interface and may not match the purpose of the field. For example, the `TITLE` field (salutation) is named "User List". Some standard fields have no localized name, and their value matches the code, for example `"TIME_ZONE": "TIME_ZONE"` ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+HTTP status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+{% include notitle [Error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+The method has no parameters, so it has no errors of its own. The method returns only system errors, for example:
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `401` | `INVALID_CREDENTIALS` | Invalid request credentials | Invalid webhook code or authorization token ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application has none of the scope versions: `user`, `user_basic`, or `user_brief` ||
+|#
 
 {% include [System errors](../../_includes/system-errors.md) %}
 
@@ -322,3 +352,4 @@ HTTP status: **200**
 - [{#T}](./user-get.md)
 - [{#T}](./user-current.md)
 - [{#T}](./user-search.md)
+- [{#T}](./userfields/index.md)

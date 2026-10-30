@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 > - any user with access to edit the task
 > - task Creator
 
-The method `tasks.task.update` updates a task.
+The method `tasks.task.update` changes task fields and returns the full task after the update.
 
 ## Method Parameters
 
@@ -29,7 +29,7 @@ The method `tasks.task.update` updates a task.
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [get task list method](./tasks-task-list.md) ||
 || **fields***
-[`object`](../data-types.md) | Values of [task fields](./fields.md). At least one field must be provided in the parameter; otherwise, the method will return an error.
+[`object`](../data-types.md) | Values of the [task fields](./fields.md) to change. Pass only the fields you are changing: fields that are not passed retain their current values. The method ignores unknown fields. If you pass an empty object `{}`, the method changes nothing and returns the task.
 
 You can pass the `SE_PARAMETER` parameter to the method — a list of objects with additional task parameters. Possible values for the `CODE` codes:
 - `1` — deadlines are determined by the deadlines of subtasks
@@ -358,10 +358,10 @@ HTTP Status: **200**
 {
     "result": {
         "task": {
-            "id": "8157",
+            "id": "11",
+            "parentId": null,
             "title": "Task Example",
-            "description": "Task description with [B]formatting[/B]",
-            "description": "",
+            "description": "Task description",
             "mark": null,
             "priority": "1",
             "multitask": "N",
@@ -370,23 +370,23 @@ HTTP Status: **200**
             "stageId": "0",
             "sprintId": null,
             "backlogId": null,
-            "createdBy": "503",
-            "createdDate": "2025-10-06T17:40:12+02:00",
-            "responsibleId": "503",
-            "changedBy": "503",
-            "changedDate": "2025-10-07T16:32:02+02:00",
-            "statusChangedBy": "503",
-            "closedBy": "0",
+            "createdBy": "1",
+            "createdDate": "2026-10-29T15:35:23+01:00",
+            "responsibleId": "1",
+            "changedBy": "1",
+            "changedDate": "2026-10-29T15:35:24+01:00",
+            "statusChangedBy": null,
+            "closedBy": null,
             "closedDate": null,
-            "activityDate": "2025-10-07T16:29:55+02:00",
+            "activityDate": "2026-10-29T15:35:24+01:00",
             "dateStart": null,
-            "deadline": "2025-12-31T23:59:00+02:00",
-            "startDatePlan": "2024-11-02T11:06:00+02:00",
-            "endDatePlan": "2024-11-02T19:06:00+02:00",
-            "guid": "{1a90e51d-5423-4c1e-b1a2-664a519b4612}",
+            "deadline": "2026-12-31T23:59:00+01:00",
+            "startDatePlan": null,
+            "endDatePlan": null,
+            "guid": "{aa8a90e4-69a4-453a-b384-76f1a95569a1}",
             "xmlId": null,
-            "commentsCount": "4",
-            "serviceCommentsCount": "4",
+            "commentsCount": null,
+            "serviceCommentsCount": null,
             "allowChangeDeadline": "N",
             "allowTimeTracking": "N",
             "taskControl": "N",
@@ -395,55 +395,48 @@ HTTP Status: **200**
             "timeEstimate": "0",
             "timeSpentInLogs": null,
             "matchWorkTime": "N",
-            "forumTopicId": "1439",
-            "forumId": "11",
+            "forumTopicId": null,
+            "forumId": null,
             "siteId": "s1",
-            "subordinate": "Y",
+            "subordinate": "N",
             "exchangeModified": null,
             "exchangeId": null,
-            "outlookVersion": "8",
-            "viewedDate": "2025-10-07T16:30:34+02:00",
+            "outlookVersion": "2",
+            "viewedDate": null,
             "sorting": null,
             "durationFact": null,
             "isMuted": "N",
             "isPinned": "N",
             "isPinnedInGroup": "N",
             "flowId": null,
+            "chatId": 5747,
             "descriptionInBbcode": "Y",
             "status": "2",
-            "statusChangedDate": "2025-10-07T16:22:24+02:00",
-            "durationPlan": "0",
+            "statusChangedDate": "2026-10-29T15:35:24+01:00",
+            "durationPlan": null,
             "durationType": "days",
             "favorite": "N",
             "groupId": "0",
-            "auditors": ["503", "547"],
+            "auditors": [],
             "accomplices": [],
             "checklist": [],
             "group": [],
             "creator": {
-                "id": "503",
-                "name": "Maria Johnson",
-                "link": "/company/personal/user/503/",
-                "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
-                "workPosition": "Administrator"
+                "id": "1",
+                "name": "Klaus Weber",
+                "link": "/company/personal/user/1/",
+                "icon": "https://test.bitrix24.com/upload/resize_cache/main/avatar.png",
+                "workPosition": null
             },
             "responsible": {
-                "id": "503",
-                "name": "Maria Johnson",
-                "link": "/company/personal/user/503/",
-                "icon": "https://mysite.com/b17053/resize_cache/45749/c0120a8d7c10d63c83e32398d1ec4d9e/main/c89/c89c6b7301880958ea704b5a8470635c/4R5A1256.png",
-                "workPosition": "Administrator"
+                "id": "1",
+                "name": "Klaus Weber",
+                "link": "/company/personal/user/1/",
+                "icon": "https://test.bitrix24.com/upload/resize_cache/main/avatar.png",
+                "workPosition": null
             },
             "accomplicesData": [],
-            "auditorsData": {
-                "547": {
-                    "id": "547",
-                    "name": "Helen",
-                    "link": "/company/personal/user/547/",
-                    "icon": "/bitrix/images/tasks/default_avatar.png",
-                    "workPosition": "Lawyer"
-                }
-            },
+            "auditorsData": [],
             "newCommentsCount": 0,
             "action": {
                 "accept": false,
@@ -480,7 +473,7 @@ HTTP Status: **200**
                     "id": null,
                     "copiedId": null,
                     "entityId": null,
-                    "userId": 503,
+                    "userId": 1,
                     "createdBy": null,
                     "parentId": null,
                     "title": "",
@@ -500,14 +493,14 @@ HTTP Status: **200**
         }
     },
     "time": {
-        "start": 1759843922,
-        "finish": 1759843922.725389,
-        "duration": 0.7253890037536621,
+        "start": 1793277324,
+        "finish": 1793277324.579209,
+        "duration": 0.5792090892791748,
         "processing": 0,
-        "date_start": "2025-10-07T16:32:02+02:00",
-        "date_finish": "2025-10-07T16:32:02+02:00",
-        "operating_reset_at": 1759844522,
-        "operating": 0.4929828643798828
+        "date_start": "2026-10-29T15:35:24+01:00",
+        "date_finish": "2026-10-29T15:35:24+01:00",
+        "operating_reset_at": 1793277900,
+        "operating": 0.20716381072998047
     }
 }
 ```
@@ -518,9 +511,9 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Object with response data ||
+[`object`](../data-types.md) | Root element of the response ||
 || **task**
-[`object`](../data-types.md) | Object with [task description](./fields.md) after the operation is performed ||
+[`object`](../data-types.md) | All task fields after the update, including those that were not passed. [Task field description](./fields.md) ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
 |#
@@ -532,7 +525,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "Cannot bind the node to itself\u003Cbr\u003E"
+    "error_description": "Cannot link node to itself\u003Cbr\u003E"
 }
 ```
 
@@ -541,18 +534,18 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | wrong task id | The value in the `taskId` parameter is of an incorrect type ||
-|| `100` | CTaskItem All parameters in the constructor must have real class type (internal error) | The required parameter `taskId` is missing ||
-|| `0` | Action on the task is not allowed (internal error) | The user does not have permission to update the task or does not have access to the task ||
-|| `100` | Could not find value for parameter {fields} (internal error) | The `fields` parameter is missing or empty ||
-|| `ERROR_CORE` | The user specified in the "Responsible" field was not found\u003Cbr\u003E | The `RESPONSIBLE_ID` field contains the identifier of a non-existent user ||
-|| `ERROR_CORE` | Invalid status\u003Cbr\u003E | An incorrect value is specified in the `STATUS` field ||
-|| `ERROR_CORE` | The task specified in the "Parent Task" field was not found\u003Cbr\u003E | The `PARENT_ID` field contains the identifier of a non-existent task ||
-|| `ERROR_CORE` | Cannot bind the node to itself\u003Cbr\u003E | The `PARENT_ID` field contains the identifier of the same task as in the `taskId` parameter ||
-|| `ERROR_CORE` | Creating cyclic links in tasks is prohibited\u003Cbr\u003E | The `PARENT_ID` field contains the identifier of a subtask `taskId`. A subtask cannot become a parent task ||
-|| `ERROR_CORE` | The end date specified in the scheduling is earlier than the start date\u003Cbr\u003E | The date and time in the `END_DATE_PLAN` field is earlier than in `START_DATE_PLAN` ||
-|| `ERROR_CORE` | The duration of the task specified in the scheduling is too long\u003Cbr\u003E | The value in the `END_DATE_PLAN` field specifies a date that is too far in the future ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | wrong task id | The `taskId` parameter is not a number ||
+|| `400` | `100` | Could not find value for {taskId} | The required `taskId` parameter is not provided ||
+|| `400` | `0` | This task action is not allowed | The task with the specified `taskId` was not found, or the user does not have permission to change the task ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `ERROR_CORE` | User specified as assignee was not found.\u003Cbr\u003E | The `RESPONSIBLE_ID` field contains the identifier of a non-existent user ||
+|| `400` | `ERROR_CORE` | Incorrect status\u003Cbr\u003E | The `STATUS` field contains a value not in the list `1`, `2`, `3`, `4`, `5`, `6`. In the current version, the method may not return this error: an invalid value is ignored, and the status remains unchanged ||
+|| `400` | `ERROR_CORE` | A task specified in the field \u0026quot;Subtask\u0026quot; was not found.\u003Cbr\u003E | The `PARENT_ID` field contains the identifier of a non-existent task ||
+|| `400` | `ERROR_CORE` | Cannot link node to itself\u003Cbr\u003E | The `PARENT_ID` field contains the identifier of the same task as in the `taskId` parameter ||
+|| `400` | `ERROR_CORE` | Tasks cannot use circular references.\u003Cbr\u003E | The `PARENT_ID` field contains the identifier of a subtask `taskId`. A subtask cannot become a parent task ||
+|| `400` | `ERROR_CORE` | The planned end date is earlier than the start date.\u003Cbr\u003E | The date and time in the `END_DATE_PLAN` field is earlier than in `START_DATE_PLAN` ||
+|| `400` | `ERROR_CORE` | The planned task duration period is too long\u003Cbr\u003E | The value in the `END_DATE_PLAN` field specifies a date that is too far in the future ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -560,6 +553,7 @@ HTTP Status: **400**
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./tasks-task-update-rest-v3.md)
 - [{#T}](./tasks-task-add.md)
 - [{#T}](./tasks-task-get.md)
 - [{#T}](./tasks-task-list.md)

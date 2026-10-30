@@ -25,6 +25,12 @@ In Bitrix24, you can configure custom fields for employees. This allows you to s
 
 The methods for working with the employee profile are described in the [Users](../index.md) section.
 
+## What the Methods Return
+
+- [user.userfield.add](./user-userfield-add.md) returns the ID of the created field as a number. Pass it in the `id` parameter of the `update` and `delete` methods
+- [user.userfield.update](./user-userfield-update.md) and [user.userfield.delete](./user-userfield-delete.md) return `true` on success
+- [user.userfield.list](./user-userfield-list.md) returns an array of fields with the `UF_USR_` prefix. Each field has an `ID`, a `FIELD_NAME` code, a `USER_TYPE_ID` type, a `MULTIPLE` flag, `SETTINGS`, and labels. System profile fields are not included in the list
+
 {% note warning "" %}
 
 The `user.userfield.*` methods work in the `user.userfield` scope and can be executed only by an administrator. An application with the limited `user_brief` or `user_basic` scopes also needs the `user.userfield` scope to read the values of custom fields.
@@ -65,7 +71,7 @@ When creating or deleting custom fields, the request may be interrupted with an 
 
 - On-premise Bitrix24 — request the server error log from the server or hosting administrator. Then, contact [technical support](../../../bitrix-support.md) and attach the log for analysis.
 
-### Common Causes of Server Errors
+### Common Causes of Server Errors {#server-errors}
 
 1. You can create 1016 custom fields for users — this is a database architecture limitation. If the limit is reached, attempting to create a new field will return an [INTERNAL_SERVER_ERROR](../../../error-codes.md) from the [user.userfield.add](./user-userfield-add.md) method.
 

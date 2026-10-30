@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `mailservice.update` modifies the parameters of an existing mail service.
+The method `mailservice.update` modifies the parameters of a mail service of the current site. Pass only the fields you need to change: the other fields retain their previous values.
+
+{% note warning "" %}
+
+The method ignores fields with an empty value. You cannot clear `LINK` or `SERVER`, and the values `PORT: 0` and `SORT: 0` are not retained.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -23,7 +29,7 @@ The method `mailservice.update` modifies the parameters of an existing mail serv
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`integer`](../data-types.md) | Identifier of the mail service. 
+[`integer`](../data-types.md) | Identifier of the mail service.
 
 You can obtain the identifier using the [mailservice.list](./mailservice-list.md) method. ||
 || **ACTIVE**
@@ -33,7 +39,7 @@ You can obtain the identifier using the [mailservice.list](./mailservice-list.md
 || **NAME**
 [`string`](../data-types.md) | Name of the service ||
 || **SERVER**
-[`string`](../data-types.md) | IMAP server address. Stored in lowercase in the database. ||
+[`string`](../data-types.md) | IMAP server address, for example, `imap.my-mail.com`. Stored in lowercase ||
 || **PORT**
 [`integer`](../data-types.md) | IMAP server port ||
 || **ENCRYPTION**
@@ -43,9 +49,7 @@ You can obtain the identifier using the [mailservice.list](./mailservice-list.md
 || **LINK**
 [`string`](../data-types.md) | Web interface address of the service ||
 || **ICON**
-[`file`](../data-types.md)
-[`integer`](../data-types.md)
-[`string`](../data-types.md) | Service logo. You can provide a file or an existing file identifier. ||
+[`array`](../data-types.md)\|[`integer`](../data-types.md) | Service logo. Pass an [array of the file name and its Base64-encoded content](../files/how-to-upload-files.md#array), for example, `["logo.png", "iVBORw0KGgo..."]`, or the ID of a previously uploaded file ||
 || **SORT**
 [`integer`](../data-types.md) | Sort index ||
 |#
@@ -187,13 +191,14 @@ You can obtain the identifier using the [mailservice.list](./mailservice-list.md
     try:
         bitrix_response = client.mailservice.update(
             bitrix_id=31,
-            active=True,
-            name="SDK Mail Service Updated",
-            server="imap-updated.example.com",
+            # The SDK passes boolean values as Y and N
+            active=False,
+            name="Updated Mail Service",
+            server="imap.my2-mail.com",
             port=993,
             encryption=True,
-            link="https://mail-updated.example.com",
-            sort=300,
+            link="https://mail.my2-mail.com/",
+            sort=600,
         ).response
         result = bitrix_response.result
         print(result)
@@ -353,7 +358,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "Mail service not found"
+    "error_description": "E-mail service was not found."
 }
 ```
 
@@ -363,16 +368,17 @@ HTTP Status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ERROR_CORE` | Access denied | Insufficient rights to add a mail service ||
-|| `400` | `ERROR_CORE` | Mail service ID not specified | Required parameter `ID` not provided ||
-|| `400` | `ERROR_CORE` | Mail service not found | Mail service with the specified `ID` not found ||
-|| `400` | `ERROR_CORE` | Invalid value for "*field_name*" | An invalid value for the specified field was provided ||
+|| `400` | `ERROR_CORE` | Access denied | Insufficient rights to update a mail service. Only an administrator can update a service ||
+|| `400` | `ERROR_CORE` | E-mail service ID is not specified | Required parameter `ID` not provided ||
+|| `400` | `ERROR_CORE` | E-mail service was not found | Mail service with the specified `ID` not found on the current site ||
+|| `400` | `ERROR_CORE` | The value of "*field_name*" is invalid | An invalid value for the specified field was provided, for example, `ENCRYPTION` is neither `Y` nor `N` ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./mailservice-add.md)
 - [{#T}](./mailservice-get.md)
 - [{#T}](./mailservice-list.md)

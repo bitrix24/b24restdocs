@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The `user.userfield.update` method updates a custom field.
+The `user.userfield.update` method changes the settings and labels of a custom profile field. The `FIELD_NAME` code, the `USER_TYPE_ID` type, and the `MULTIPLE` flag cannot be changed after the field is created.
 
 ## Method Parameters
 
@@ -28,10 +28,10 @@ The `user.userfield.update` method updates a custom field.
 To obtain custom field identifiers, use the [user.userfield.list](./user-userfield-list.md) method.
  ||
 || **fields**
-[`object`](../../data-types.md)| Field values for updating the custom field ||
+[`object`](../../data-types.md)| Field settings to change [(detailed description)](#fields). Settings and labels that are not passed keep their current values. If `fields` is not passed, the method changes nothing and returns `true` ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 #|
 || **Name**
@@ -40,43 +40,33 @@ To obtain custom field identifiers, use the [user.userfield.list](./user-userfie
 [`string`](../../data-types.md)| External code ||
 || **SORT**
 [`integer`](../../data-types.md)| Sort order ||
-|| **MANDATORY**
-[`boolean`](../../data-types.md)| Whether the custom field is mandatory. Possible values:
-- `Y` — yes
-- `N` — no ||
 || **SHOW_FILTER**
-[`boolean`](../../data-types.md)| Whether to show the field in the list filter. Possible values:
-- `Y` — yes
-- `N` — no ||
-|| **SHOW_IN_LIST**
-[`boolean`](../../data-types.md)| Whether to show the field in the list. Possible values:
-- `Y` — yes
-- `N` — no ||
-- || **EDIT_IN_LIST**
-[`boolean`](../../data-types.md)| Whether to allow editing the field in the list. Possible values:
-- `Y` — yes
-- `N` — no ||
-- || **IS_SEARCHABLE**
-[`boolean`](../../data-types.md)| Whether the field is included in the search. Possible values:
-- `Y` — yes
+[`string`](../../data-types.md)| Whether to show the field in the list filter. Possible values:
+- `Y` — yes. The method saves the value `E`, a mask filter, which is returned by [user.userfield.list](./user-userfield-list.md)
 - `N` — no ||
 || **SETTINGS**
-[`object`](../../data-types.md)| An object in `{"field_1": "value_1", ... "field_N": "value_N"}` format to pass additional custom field settings. Settings are described [below](#settings) ||
+[`object`](../../data-types.md)| Additional field settings. The set depends on the field type [(detailed description)](#settings).
+
+Pass only the settings you need to change: the method merges them into the saved settings rather than replacing them entirely ||
+|| **LIST**
+[`object[]`](../../data-types.md)| Value options for an `enumeration` field [(detailed description)](#list) ||
 || **EDIT_FORM_LABEL**
-[`string`](../../data-types.md)| Caption in the edit form. You can pass a string or an object with language-specific captions in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
+[`string`](../../data-types.md) \| [`object`](../../data-types.md) | Caption in the edit form. You can pass a string or an object with language-specific captions in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../data-types.md)| Column header in the list. You can pass a string or an object with language-specific captions in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
+[`string`](../../data-types.md) \| [`object`](../../data-types.md) | Column header in the list. You can pass a string or an object with language-specific captions in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
 || **LIST_FILTER_LABEL**
-[`string`](../../data-types.md)| Filter header in the list. You can pass a string or an object with language-specific captions in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
+[`string`](../../data-types.md) \| [`object`](../../data-types.md) | Filter header in the list. You can pass a string or an object with language-specific captions in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
 || **ERROR_MESSAGE**
-[`string`](../../data-types.md)| Error message for invalid input. You can pass a string or an object with language-specific texts in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
+[`string`](../../data-types.md) \| [`object`](../../data-types.md) | Error message for invalid input. You can pass a string or an object with language-specific texts in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
 || **HELP_MESSAGE**
-[`string`](../../data-types.md)| Tooltip text for the field. You can pass a string or an object with language-specific texts in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
+[`string`](../../data-types.md) \| [`object`](../../data-types.md) | Tooltip text for the field. You can pass a string or an object with language-specific texts in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be applied to all languages ||
 || **LABEL**
 [`string`](../../data-types.md)| Default custom field name. 
 
 The value will be set in fields `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` if no value is provided for them ||
 |#
+
+The method ignores, without an error, parameters that cannot be changed: the `FIELD_NAME` code, the `USER_TYPE_ID` type, the `MULTIPLE` flag, as well as `MANDATORY`, `SHOW_IN_LIST`, `EDIT_IN_LIST`, and `IS_SEARCHABLE`.
 
 ### Parameter SETTINGS {#settings}
 
@@ -145,6 +135,8 @@ Each type of custom field has its own set of additional configurations.
 
 - datetime
 
+    For a `date` field, the method does not change `SETTINGS`: the default value can be set only on creation with the [user.userfield.add](./user-userfield-add.md) method.
+
     #|
     || **Name**
     `type` | **Description** ||
@@ -153,10 +145,10 @@ Each type of custom field has its own set of additional configurations.
 
     Object format:
 
-    ```
+    ```json
     {
-        VALUE: datetime|date,
-        TYPE: 'NONE'|'NOW'|'FIXED',
+        "VALUE": "2026-01-15",
+        "TYPE": "FIXED"
     }
     ```
 
@@ -165,14 +157,14 @@ Each type of custom field has its own set of additional configurations.
     - `TYPE` — type of default value:
       - `NONE` — do not set a default value
       - `NOW` — use current time/date
-      - `FIXED` — use time/date from `VALUE`
+      - `FIXED` — use time/date from `VALUE`. Currently, the `FIXED` value is saved incorrectly: the method returns the date `1970-01-01`. Use `NOW` or `NONE`
 
     Default value:
 
-    ```
+    ```json
     {
-        VALUE: '',
-        TYPE: 'NONE',
+        "VALUE": "",
+        "TYPE": "NONE"
     }
     ```
     ||
@@ -191,7 +183,8 @@ Each type of custom field has its own set of additional configurations.
     - `DIALOG` — entity selection dialog
 
     Default `LIST` ||
-    || **LIST_HEIGHT** | List height. Must be greater than 0.
+    || **LIST_HEIGHT**
+    [`integer`](../../data-types.md) | List height. Must be greater than 0.
 
     Available only when `DISPLAY = LIST` or `DISPLAY = UI`.
 
@@ -228,7 +221,7 @@ Each type of custom field has its own set of additional configurations.
 
     Default `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
+    [`string`](../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -250,94 +243,56 @@ Each type of custom field has its own set of additional configurations.
 
 - crm
 
-    If none of the following options are passed, linking to leads (`LEAD = Y`) will be enabled by default.
+    The method changes only the bindings that are passed; the rest keep their current values.
 
     #|
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`](../../data-types.md) | Whether binding to [Leads](../../crm/leads/index.md) is enabled. Possible values:
+    [`string`](../../data-types.md) | Whether binding to [Leads](../../crm/leads/index.md) is enabled. Possible values:
     - `Y` — yes
-    - `N` — no
-
-    Default is `N` ||
+    - `N` — no ||
     || **CONTACT**
-    [`boolean`](../../data-types.md) | Whether binding to [Contacts](../../crm/contacts/index.md) is enabled. Possible values:
+    [`string`](../../data-types.md) | Whether binding to [Contacts](../../crm/contacts/index.md) is enabled. Possible values:
     - `Y` — yes
-    - `N` — no
-
-    Default is `N` ||
+    - `N` — no ||
     || **COMPANY**
-    [`boolean`](../../data-types.md) | Whether binding to [Companies](../../crm/companies/index.md) is enabled. Possible values:
+    [`string`](../../data-types.md) | Whether binding to [Companies](../../crm/companies/index.md) is enabled. Possible values:
     - `Y` — yes
-    - `N` — no
-
-    Default is `N` ||
+    - `N` — no ||
     || **DEAL**
-    [`boolean`](../../data-types.md) | Whether binding to [Deals](../../crm/deals/index.md) is enabled. Possible values:
+    [`string`](../../data-types.md) | Whether binding to [Deals](../../crm/deals/index.md) is enabled. Possible values:
     - `Y` — yes
-    - `N` — no
-
-    Default is `N` ||
+    - `N` — no ||
     |#
 
-- Python
-
-    ```python
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    bitrix_id = 176
-    fields = {
-        "XML_ID": "UF_USR_SKILLS_PROFILE_V2",
-        "SORT": 200,
-        "MANDATORY": "N",
-        "SHOW_FILTER": "Y",
-        "SHOW_IN_LIST": "Y",
-        "EDIT_IN_LIST": "Y",
-        "IS_SEARCHABLE": "Y",
-        "SETTINGS": {
-            "DEFAULT_VALUE": "Senior Python integration engineer",
-            "ROWS": 4,
-        },
-        "EDIT_FORM_LABEL": {
-            "en": "Skills profile",
-        },
-        "LIST_COLUMN_LABEL": {
-            "en": "Skills profile",
-        },
-        "LIST_FILTER_LABEL": {
-            "en": "Skills profile",
-        },
-        "ERROR_MESSAGE": {
-            "en": "Skills profile is invalid",
-        },
-        "HELP_MESSAGE": {
-            "en": "Update the short integration skills summary.",
-        },
-        "LABEL": "Skills profile",
-    }
-
-    try:
-        bitrix_response = client.user.userfield.update(
-            bitrix_id=bitrix_id,
-            fields=fields,
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print("Bitrix SDK error", error.message, sep="\n")
-    except Exception as error:
-        print("Unexpected error", error, sep="\n")
-    ```
 {% endlist %}
 
+For `file`, `url`, `address`, `money`, and `employee` fields, the method does not change `SETTINGS`: the passed settings are ignored, and the saved field settings stay the same. For an `employee` field, the `SHOW_FILTER` = `Y` value is saved as `I`, an exact match filter.
+
+### Parameter LIST {#list}
+
+Value options for an `enumeration` field. Pass only the options you need to change, add, or delete: the other options are retained.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../data-types.md) | ID of an existing option. It is returned by the [user.userfield.list](./user-userfield-list.md) method in the `LIST` array. An option without `ID` is added as a new one ||
+|| **VALUE**
+[`string`](../../data-types.md) | Option text ||
+|| **SORT**
+[`integer`](../../data-types.md) | Option order in the list ||
+|| **DEF**
+[`string`](../../data-types.md) | Default option:
+- `Y` — yes
+- `N` — no ||
+|| **XML_ID**
+[`string`](../../data-types.md) | External code of the option. If you do not pass `XML_ID` when changing an option, the method generates a new external code ||
+|| **DEL**
+[`string`](../../data-types.md) | Delete the option with the specified `ID`:
+- `Y` — delete ||
+|#
 
 ## Code Examples
 
@@ -598,13 +553,14 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start":1747311864.008399,
-        "finish":1747311865.063292,
-        "duration":1.0548930168151855,
-        "processing":0.17107510566711426,
-        "date_start":"2025-05-15T14:24:24+02:00",
-        "date_finish":"2025-05-15T14:24:25+02:00",
-        "operating":0
+        "start": 1793288729,
+        "finish": 1793288730.001057,
+        "duration": 1.0010569095611572,
+        "processing": 1,
+        "date_start": "2026-10-29T18:45:29+01:00",
+        "date_finish": "2026-10-29T18:45:30+01:00",
+        "operating_reset_at": 1793289300,
+        "operating": 0
     }
 }
 ```
@@ -615,7 +571,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Contains `true` in case of a successful custom field update||
+[`boolean`](../../data-types.md) | `true` if the field is updated ||
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
 |#
@@ -626,8 +582,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"",
-    "error_description":"Access denied."
+    "error": "",
+    "error_description": "Access denied."
 }
 ```
 
@@ -636,9 +592,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | A field with this `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | Not specified or an invalid `id` was entered ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty string | Access denied. | The user does not have administrator permissions, the field with the passed `id` is not found, or it is a system profile field without the `UF_USR_` prefix. System fields cannot be changed via REST ||
+|| `400` | Empty string | ID is not defined or invalid. | The `id` is not passed or the passed value is less than `1` ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `user.userfield` scope ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

@@ -24,6 +24,24 @@ You can subscribe to task events through:
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../events/test-handler.md).
 
+## Data Received in Events
+
+The handler receives the task identifier: in the [OnTaskAdd](./on-task-add.md) and [OnTaskUpdate](./on-task-update.md) events, in the `data.FIELDS_AFTER.ID` field; in the [OnTaskDelete](./on-task-delete.md) event, in the `data.FIELDS_BEFORE.ID` field.
+
+To retrieve all task fields, use the [tasks.task.get](../tasks-task-get.md) method. After a task is deleted, the method no longer returns its data.
+
+## Methods That Trigger OnTaskUpdate {#on-task-update-methods}
+
+The [OnTaskUpdate](./on-task-update.md) event is triggered by the following methods:
+
+- [tasks.task.update](../tasks-task-update.md) — updating a task
+- [tasks.task.start](../status/tasks-task-start.md), [tasks.task.pause](../status/tasks-task-pause.md), [tasks.task.defer](../status/tasks-task-defer.md), [tasks.task.complete](../status/tasks-task-complete.md), [tasks.task.renew](../status/tasks-task-renew.md) — changing the task status
+- [tasks.task.delegate](../tasks-task-delegate.md) — delegating a task
+- [tasks.task.files.attach](../tasks-task-files-attach.md) — attaching a file to a task
+- [tasks.task.startwatch](../user-actions/tasks-task-start-watch.md), [tasks.task.stopwatch](../user-actions/tasks-task-stop-watch.md) — starting and stopping watching a task
+- [task.dependence.add](../task-dependence-add.md) — creating a dependency between tasks
+- [task.stages.movetask](../stages/task-stages-move-task.md) — moving a task through stages
+
 ## Server Availability for Sending and Receiving Events
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../_includes/events-index.md) %}
@@ -36,14 +54,7 @@ An example of a handler code for the event is described in the article [How to T
 
 #|
 || **Event** | **Triggered** ||
-|| [OnTaskAdd](./on-task-add.md) | When a task is added manually or via the method [task.task.add](../tasks-task-add.md) ||
-|| [OnTaskUpdate](./on-task-update.md) | When a task is updated manually or through methods:
-- [task update](../tasks-task-update.md)
-- status update, for example, via the method [setting status to Completed](../status/tasks-task-complete.md)
-- [delegation](../tasks-task-delegate.md)
-- [attaching a file to a task](../tasks-task-files-attach.md)
-- observing a task, for example, via the method [starting observation](../user-actions/tasks-task-start-watch.md)
-- managing dependencies between tasks, for example, via the method [creating a dependency](../task-dependence-add.md)
-- [moving a task through stages](../stages/task-stages-move-task.md) ||
-|| [OnTaskDelete](./on-task-delete.md) | When a task is deleted manually or via the method [task.task.delete](../tasks-task-delete.md) ||
+|| [OnTaskAdd](./on-task-add.md) | When a task is added manually or via the method [tasks.task.add](../tasks-task-add.md) ||
+|| [OnTaskUpdate](./on-task-update.md) | When a task is updated manually or via REST methods. The list of methods is in the [Methods That Trigger OnTaskUpdate](#on-task-update-methods) section ||
+|| [OnTaskDelete](./on-task-delete.md) | When a task is deleted manually or via the method [tasks.task.delete](../tasks-task-delete.md) ||
 |#

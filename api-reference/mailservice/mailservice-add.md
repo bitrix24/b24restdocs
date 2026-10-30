@@ -29,21 +29,21 @@ The method `mailservice.add` creates a mail service for the current Bitrix24.
 - `Y` — yes
 - `N` — no
 
-Default value: `Y` ||
+Default value: `Y`. Any other value causes an error ||
 || **SERVER**
-[`string`](../data-types.md) | IMAP server address. Stored in lowercase in the database ||
+[`string`](../data-types.md) | IMAP server address, for example, `imap.my-mail.com`. Stored in lowercase ||
 || **PORT**
 [`integer`](../data-types.md) | IMAP server port ||
-|| **ENCRYPTION**
+|| **ENCRYPTION***
 [`string`](../data-types.md) | Secure connection status. Allowed values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+There is no default value: if the parameter is missing or has any other value, the method returns an error ||
 || **LINK**
 [`string`](../data-types.md) | Web interface address of the mail service ||
 || **ICON**
-[`file`](../data-types.md)
-[`integer`](../data-types.md)
-[`string`](../data-types.md) | Service logo. You can provide a file or an existing file ID ||
+[`array`](../data-types.md)\|[`integer`](../data-types.md) | Service logo. Pass an [array of the file name and its Base64-encoded content](../files/how-to-upload-files.md#array), for example, `["logo.png", "iVBORw0KGgo..."]`, or the ID of a previously uploaded file ||
 || **SORT**
 [`integer`](../data-types.md) | Sort index. Default value: `100` ||
 |#
@@ -181,6 +181,7 @@ Default value: `Y` ||
     try:
         bitrix_response = client.mailservice.add(
             name="SDK Mail Service",
+            # The SDK passes boolean values as Y and N
             encryption=True,
             active=True,
             server="imap.example.com",
@@ -353,14 +354,18 @@ HTTP status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `ERROR_CORE` | Access denied | Insufficient permissions to add the mail service ||
-|| `400` | `ERROR_CORE` | Required field "Name" not filled | Required parameter `NAME` not provided ||
-|| `400` | `ERROR_CORE` | Invalid value for "*field_name*" | Invalid value provided for the specified field ||
+|| `400` | `ERROR_CORE` | The field Name is required | Required parameter `NAME` not provided ||
+|| `400` | `ERROR_CORE` | The value of "Secure connection" is invalid | The `ENCRYPTION` parameter is not passed, or its value is neither `Y` nor `N` ||
+|| `400` | `ERROR_CORE` | The value of "*field_name*" is invalid | An invalid value is passed for the specified field, for example, `ACTIVE` is neither `Y` nor `N`.
+
+If there are several errors, their texts come in a single string separated by `; ` ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./mailservice-update.md)
 - [{#T}](./mailservice-get.md)
 - [{#T}](./mailservice-list.md)

@@ -222,11 +222,35 @@ No parameters.
 
 HTTP Status: **200**
 
+Example response if the connector is not paid:
+
 ```json
 {
     "result": {
         "FREE_MINUTES": 60,
         "PAID": false
+    },
+    "time": {
+        "start": 1773323233,
+        "finish": 1773323233.979212,
+        "duration": 0.9792120456695557,
+        "processing": 0,
+        "date_start": "2026-03-12T16:47:13+01:00",
+        "date_finish": "2026-03-12T16:47:13+01:00",
+        "operating_reset_at": 1773323833,
+        "operating": 0.1122438907623291
+    }
+}
+```
+
+Example response if the connector is paid:
+
+```json
+{
+    "result": {
+        "FREE_MINUTES": 0,
+        "PAID": true,
+        "PAID_DATE_END": "2026-12-31T00:00:00+01:00"
     },
     "time": {
         "start": 1773323233,
@@ -251,9 +275,12 @@ HTTP Status: **200**
 || **FREE_MINUTES**
 [`integer`](../../../data-types.md) | Number of free minutes available for setting up and testing the integration ||
 || **PAID**
-[`boolean`](../../../data-types.md) | Indicates whether the SIP connector is paid ||
+[`boolean`](../../../data-types.md) | Indicates whether the SIP connector is paid:
+
+- `true` — the connector is paid
+- `false` — the connector is not paid ||
 || **PAID_DATE_END**
-[`string`](../../../data-types.md) | End date of the paid period. This field is returned if the connector is paid ||
+[`string`](../../../data-types.md) | End date of the paid period in ISO 8601 format, for example, `2026-12-31T00:00:00+01:00`. This field is returned only if `PAID` = `true` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -274,16 +301,17 @@ HTTP Status: **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to retrieve the status of the SIP connector ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Insufficient permissions to retrieve the status of the SIP connector ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./voximplant-sip-add.md)
-- [{#T}](./voximplant-sip-delete.md)
-- [{#T}](./voximplant-sip-get.md)
-- [{#T}](./voximplant-sip-status.md)
 - [{#T}](./voximplant-sip-update.md)
+- [{#T}](./voximplant-sip-get.md)
+- [{#T}](./voximplant-sip-delete.md)
+- [{#T}](./voximplant-sip-status.md)

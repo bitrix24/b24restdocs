@@ -569,9 +569,9 @@ HTTP status: **200**
 HTTP status: **400**
 
 ```json
-{	
-   "error":"",
-   "error_description":"Access denied."
+{
+    "error": "",
+    "error_description": "Access denied."
 }
 ```
 
@@ -580,9 +580,9 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | A field with this `id` does not exist or access is denied ||
-|| Empty string | Access denied. | Not enough permissions to retrieve the list of custom fields ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty string | Access denied. | Not enough permissions to retrieve the list of custom fields ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `user.userfield` scope ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

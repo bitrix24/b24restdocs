@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyvariant.add` adds a variant value for a property. It is applicable only for properties of type `ENUM`.
+The method `sale.propertyvariant.add` adds a value variant to an order property of the `ENUM` type.
 
 ## Method Parameters
 
@@ -23,10 +23,10 @@ The method `sale.propertyvariant.add` adds a variant value for a property. It is
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating a property variant ||
+[`object`](../../data-types.md) | Fields of the new variant [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -34,16 +34,22 @@ The method `sale.propertyvariant.add` adds a variant value for a property. It is
 || **Name**
 `type` | **Description** ||
 || **orderPropsId***
-[`sale_order_property.id`](../data-types.md) | Property identifier ||
+[`sale_order_property.id`](../data-types.md) | Identifier of an order property of the `ENUM` type. You can retrieve it using the [sale.property.list](../property/sale-property-list.md) method with the `{"type": "ENUM"}` filter ||
 || **name***
-[`string`](../../data-types.md) | Name of the property variant value ||
+[`string`](../../data-types.md) | Variant name displayed to the customer ||
 || **value***
-[`string`](../../data-types.md) | Symbolic code of the property variant value ||
+[`string`](../../data-types.md) | Symbolic code of the variant. Stored in the order as the property value. The method does not check the code for uniqueness within the property ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting ||
+[`integer`](../../data-types.md) | Display order of the variant in the list. Defaults to `100` ||
 || **description**
-[`string`](../../data-types.md) | Description of the property variant value ||
+[`string`](../../data-types.md) | Variant description ||
 |#
+
+{% note warning "" %}
+
+The method does not check the property type and adds a variant to a property of any type, such as `STRING`. Variants are used only in properties of the `ENUM` type, so check the `type` field of the property with the [sale.property.get](../property/sale-property-get.md) method before the call.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -349,9 +355,28 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **propertyVariant**
-[`sale_order_property_variant`](../data-types.md) | Object with information about the added property variant value ||
+[`sale_order_property_variant`](#sale_order_property_variant) | Variant data [(detailed description)](#sale_order_property_variant) ||
 || **time**
 [`time`](../../data-types.md) | Information about the execution time of the request ||
+|#
+
+#### sale_order_property_variant {#sale_order_property_variant}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Variant identifier ||
+|| **orderPropsId**
+[`integer`](../../data-types.md) | Identifier of the order property the variant belongs to ||
+|| **name**
+[`string`](../../data-types.md) | Variant name displayed to the customer ||
+|| **value**
+[`string`](../../data-types.md) | Symbolic code of the variant. Stored in the order as the property value ||
+|| **sort**
+[`integer`](../../data-types.md) | Display order of the variant in the list ||
+|| **description**
+[`string`](../../data-types.md) | Variant description. `null` if no description is set ||
 |#
 
 ## Error Handling
@@ -360,7 +385,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
+    "error": "0",
     "error_description": "Required fields: name"
 }
 ```
@@ -370,14 +395,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201550000003` | Property not found for which the property variant value is being added ||
-|| `200040300020` | Insufficient permissions to add the property variant value ||
-|| `100` | Parameter `fields` is not specified or is empty ||
-|| `0` | Required fields of the `fields` structure are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
-|| `ERROR_NO_VALUE` | Empty value for the symbolic code of the property variant value provided ||
-|| `ERROR_NO_NAME` | Empty value for the name of the property variant value provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Required fields: `list of fields` | The required fields `orderPropsId`, `name`, or `value` are not provided ||
+|| `400` | `201550000003` | property id is not exists | The property with the specified `orderPropsId` was not found ||
+|| `400` | `ERROR_NO_VALUE` | The property value variant is not specified | An empty string is passed in `value` ||
+|| `400` | `ERROR_NO_NAME` | Name of the property value variant is not specified | An empty string is passed in `name` ||
+|| `400` | `200040300020` | Access Denied | The user does not have permission to change store settings ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with the Manage Numbers — Edit access permission
 
-The method `voximplant.sip.status` returns the current SIP registration status for the cloud PBX.
+The method `voximplant.sip.status` returns the current SIP registration status for the cloud PBX. An office PBX has no `REG_ID`, so the method is not used for it.
 
 ## Method Parameters
 
@@ -25,7 +25,7 @@ The method `voximplant.sip.status` returns the current SIP registration status f
 || **REG_ID***
 [`integer`](../../../data-types.md) | Identifier of the SIP registration.
 
-The identifier can be obtained using the [voximplant.sip.get](./voximplant-sip-get.md) method. ||
+The identifier, for example, `150907`, is returned by the [voximplant.sip.add](./voximplant-sip-add.md) and [voximplant.sip.get](./voximplant-sip-get.md) methods for lines of the `cloud` type ||
 |#
 
 ## Code Examples
@@ -278,15 +278,24 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Object containing the SIP registration status ||
+[`object`](../../../data-types.md) | Object containing the SIP registration status [(detailed description)](#result) ||
+|| **time**
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **REG_ID**
 [`integer`](../../../data-types.md) | Identifier of the SIP registration ||
 || **LAST_UPDATED**
-[`string`](../../../data-types.md) | Date and time of the last update of the SIP registration status ||
+[`string`](../../../data-types.md) | Date and time of the last update of the SIP registration status in the `YYYY-MM-DD HH:MM:SS` format in UTC, for example, `2026-03-12 09:10:51`. The value does not include a time zone ||
 || **ERROR_MESSAGE**
-[`string`](../../../data-types.md) | Text description of the registration error ||
+[`string`](../../../data-types.md)\|[`null`](../../../data-types.md) | Text description of the registration error, for example, `Unable to resolve hostname`. An empty string or `null` if there is no error ||
 || **STATUS_CODE**
-[`integer`](../../../data-types.md) | Numeric code of the registration status or error ||
+[`integer`](../../../data-types.md)\|[`null`](../../../data-types.md) | SIP registration status code, for example, `200` for a successful registration or `502` for an error. `null` while the registration is in progress ||
 || **STATUS_RESULT**
 [`string`](../../../data-types.md) | Result of the registration.
 
@@ -296,18 +305,18 @@ Possible values:
 - `error` — an error occurred during SIP registration
 - `in_progress` — SIP registration is currently in progress
 - `wait` — SIP registration is waiting to start ||
-|| **time**
-[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
+
+The method also saves the retrieved status in the line settings. It is returned in the `REGISTRATION_STATUS_CODE` and `REGISTRATION_ERROR_MESSAGE` fields of the [voximplant.sip.get](./voximplant-sip-get.md) method.
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "REG_ID_NOT_FOUND",
-    "error_description": "Settings not found"
+    "error_description": "Configuration was not found."
 }
 ```
 
@@ -316,17 +325,18 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `REG_ID_NOT_FOUND` | `Settings not found` | SIP registration with the specified `REG_ID` was not found ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to retrieve the SIP registration status ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `REG_ID_NOT_FOUND` | Configuration was not found | SIP registration with the specified `REG_ID` was not found, or `REG_ID` was not passed ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Insufficient permissions to retrieve the SIP registration status ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./voximplant-sip-add.md)
-- [{#T}](./voximplant-sip-connector-status.md)
-- [{#T}](./voximplant-sip-delete.md)
-- [{#T}](./voximplant-sip-get.md)
 - [{#T}](./voximplant-sip-update.md)
+- [{#T}](./voximplant-sip-get.md)
+- [{#T}](./voximplant-sip-delete.md)
+- [{#T}](./voximplant-sip-connector-status.md)

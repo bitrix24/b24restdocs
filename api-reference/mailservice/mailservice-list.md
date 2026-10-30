@@ -13,11 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `mailservice.list` returns a list of active mail services.
+The method `mailservice.list` returns a list of active mail services of the current site.
 
 ## Method Parameters
 
 No parameters.
+
+The method returns all active services in a single array sorted by the `SORT` field and, for equal values, by `NAME`. There is no pagination, and the `start` parameter is not used. Inactive services are not included in the list; you can retrieve them by `ID` using the [mailservice.get](./mailservice-get.md) method
 
 ## Code Examples
 
@@ -62,10 +64,10 @@ No parameters.
       SORT: string
       NAME: string
       SERVER: string
-      PORT: string
-      ENCRYPTION: string
-      LINK: string
-      ICON: string
+      PORT: string | null
+      ENCRYPTION: string | null
+      LINK: string | null
+      ICON: string | null
       SMTP_SERVER: string | null
       SMTP_PORT: string | null
       SMTP_LOGIN_AS_IMAP: string
@@ -75,16 +77,10 @@ No parameters.
     }
 
     try {
-      // mailservice.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // mailservice.list returns all active services of the current site at once, without pagination
       const response = await $b24.actions.v2.call.make<MailServiceItem[]>({
         method: 'mailservice.list',
-        params: {
-          start: 0,
-        },
+        params: {},
         requestId: Text.getUuidRfc4122()
       })
 
@@ -112,16 +108,10 @@ No parameters.
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // mailservice.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // mailservice.list returns all active services of the current site at once, without pagination
           const response = await $b24.actions.v2.call.make({
             method: 'mailservice.list',
-            params: {
-              start: 0,
-            },
+            params: {},
             requestId: B24Js.Text.getUuidRfc4122()
           })
 
@@ -272,7 +262,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object[]`](../data-types.md) | Array of objects with information about mail services. 
+[`object[]`](../data-types.md) | Array of objects with information about mail services.
 
 The structure of the mail service object is described in detail [below](#mail-services) ||
 || **time**
@@ -285,29 +275,29 @@ The structure of the mail service object is described in detail [below](#mail-se
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../data-types.md) | Identifier of the mail service ||
+[`string`](../data-types.md) | Identifier of the mail service, for example, `"31"` ||
 || **SITE_ID**
 [`string`](../data-types.md) | Identifier of the site in Bitrix24 ||
 || **ACTIVE**
 [`string`](../data-types.md) | Service activity, values `Y` or `N` ||
 || **SORT**
-[`integer`](../data-types.md) | Sort index ||
+[`string`](../data-types.md) | Sort index, for example, `"100"` ||
 || **NAME**
 [`string`](../data-types.md) | Name of the service ||
 || **SERVER**
-[`string`](../data-types.md) | IMAP server address in lowercase ||
+[`string`](../data-types.md) | IMAP server address in lowercase. For the built-in `bitrix24` service, it is an empty string ||
 || **PORT**
-[`integer`](../data-types.md) | IMAP server port ||
+[`string`](../data-types.md)\|[`null`](../data-types.md) | IMAP server port, for example, `"993"`. `null` if the port is not set ||
 || **ENCRYPTION**
-[`string`](../data-types.md) | Indicator of secure connection, values `Y` or `N` ||
+[`string`](../data-types.md)\|[`null`](../data-types.md) | Indicator of secure connection, values `Y` or `N`. `null` if the indicator is not set ||
 || **LINK**
-[`string`](../data-types.md) | Address of the service's web interface ||
+[`string`](../data-types.md)\|[`null`](../data-types.md) | Address of the service's web interface. `null` if the address is not set ||
 || **ICON**
-[`string`](../data-types.md) | Path to the service's logo image ||
+[`string`](../data-types.md)\|[`null`](../data-types.md) | Address of the service's logo. For an uploaded logo, it is the full URL of the file; for a built-in service, it is a path from the Bitrix24 root, for example, `/bitrix/images/mail/mailservice-icon/post-gmail-icon.svg`. `null` if the logo is not uploaded and the service name does not match a built-in one ||
 || **SMTP_SERVER**
 [`string`](../data-types.md)\|[`null`](../data-types.md) | SMTP server, if configured ||
 || **SMTP_PORT**
-[`integer`](../data-types.md)\|[`null`](../data-types.md) | SMTP port, if configured ||
+[`string`](../data-types.md)\|[`null`](../data-types.md) | SMTP port, if configured ||
 || **SMTP_LOGIN_AS_IMAP**
 [`string`](../data-types.md) | Use IMAP login for SMTP, values `Y` or `N` ||
 || **SMTP_PASSWORD_AS_IMAP**
@@ -325,7 +315,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "No mail services found"
+    "error_description": "E-mail services were not found."
 }
 ```
 
@@ -335,13 +325,14 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | ERROR_CORE | No mail services found | No active mail services ||
+|| `400` | `ERROR_CORE` | E-mail services were not found | The current site has no active mail services. The method returns an error instead of an empty array ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./mailservice-add.md)
 - [{#T}](./mailservice-update.md)
 - [{#T}](./mailservice-get.md)

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `user.current` retrieves information about the [current](*current_key*) user.
+The method `user.current` returns the profile of the user whose token is used in the request: for a saved administrator token, this is the administrator; for a token from the application frame, this is the user who opened the application.
 
 {% note info "" %}
 
@@ -21,7 +21,11 @@ The list of Bitrix24 user fields that will be received as a result of the method
 
 {% endnote %}
 
-The method has no parameters. However, by making a REST request to the `DOMAIN` domain using data from `$_REQUEST` and adding `AUTH_ID` to the request for Bitrix24 access, you can determine which user opened the page in the Bitrix24 context.
+## Method Parameters
+
+No parameters.
+
+To find out which user opened the application in the Bitrix24 frame, call the method with the `AUTH_ID` token from the request to the application on the `DOMAIN` domain.
 
 ## Code Examples
 
@@ -45,7 +49,7 @@ The method has no parameters. However, by making a REST request to the `DOMAIN` 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{}' \
+    -d '{"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/user.current
     ```
 
@@ -69,7 +73,7 @@ The method has no parameters. However, by making a REST request to the `DOMAIN` 
       LAST_LOGIN: ISODate | ''
       DATE_REGISTER: ISODate | ''
       IS_ONLINE: string
-      LAST_ACTIVITY_DATE: string | null
+      LAST_ACTIVITY_DATE?: string
       PERSONAL_GENDER: string
       PERSONAL_BIRTHDAY: string
       WORK_POSITION: string
@@ -236,33 +240,42 @@ The method has no parameters. However, by making a REST request to the `DOMAIN` 
 HTTP status: **200**
 
 ```json
-    {
-        "result":{
-            "ID":"3",
-            "ACTIVE":true,
-            "NAME":"John",
-            "LAST_NAME":"Smith",
-            "EMAIL":"test@gmail.com",
-            "LAST_LOGIN":"2024-07-23T08:07:26+00:00",
-            "DATE_REGISTER":"2024-07-22T00:00:00+00:00",
-            "IS_ONLINE":"Y",
-            "LAST_ACTIVITY_DATE":"2024-07-23 08:08:50",
-            "PERSONAL_GENDER":"",
-            "PERSONAL_BIRTHDAY":"",
-            "WORK_POSITION":"",
-            "UF_EMPLOYMENT_DATE":"",
-            "UF_DEPARTMENT":[1]
-        },
-        "time":{
-            "start":1721722262.960948,
-            "finish":1721722262.985244,
-            "duration":0.024296045303344727,
-            "processing":0.0012989044189453125,
-            "date_start":"2024-07-23T08:11:02+00:00",
-            "date_finish":"2024-07-23T08:11:02+00:00",
-            "operating":0
-        }
+{
+    "result": {
+        "ID": "1",
+        "XML_ID": "10001",
+        "ACTIVE": true,
+        "NAME": "Klaus",
+        "LAST_NAME": "Weber",
+        "EMAIL": "weber@example.com",
+        "LAST_LOGIN": "2026-10-29T15:13:52+01:00",
+        "DATE_REGISTER": "2025-10-02T03:00:00+02:00",
+        "TIME_ZONE": "Europe/Berlin",
+        "IS_ONLINE": "Y",
+        "TIMESTAMP_X": "10/27/2026 12:12:19 pm",
+        "LAST_ACTIVITY_DATE": "2026-10-29 17:58:08",
+        "PERSONAL_GENDER": "M",
+        "PERSONAL_BIRTHDAY": "",
+        "PERSONAL_PHOTO": "https://cdn-com.bitrix24.com/b1/main/a1b/a1b2c3/avatar.png",
+        "PERSONAL_MOBILE": "+4915100000000",
+        "WORK_POSITION": "Sales Manager",
+        "UF_EMPLOYMENT_DATE": "",
+        "UF_DEPARTMENT": [
+            1
+        ],
+        "UF_USR_USER_DEALS": false
+    },
+    "time": {
+        "start": 1793286068,
+        "finish": 1793286068.341957,
+        "duration": 0.34195709228515625,
+        "processing": 0,
+        "date_start": "2026-10-29T18:01:08+01:00",
+        "date_finish": "2026-10-29T18:01:08+01:00",
+        "operating_reset_at": 1793286660,
+        "operating": 0
     }
+}
 ```
 
 ### Returned Data
@@ -271,12 +284,183 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response, which contains information about the user ||
+[`object`](../data-types.md) | User profile [(detailed description)](#user-fields) ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 
+#### User Fields {#user-fields}
+
+The method returns only the fields allowed by the scope version. The list for each version is in the [User Scope Versions](user-scope.md) article. A field with a `null` value is omitted from the response; empty strings are returned.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../data-types.md) | User ID. A number as a string ||
+|| **XML_ID**
+[`string`](../data-types.md) | External user code ||
+|| **ACTIVE**
+[`boolean`](../data-types.md) | Whether the user is active:
+- `true` — active
+- `false` — dismissed ||
+|| **NAME**
+[`string`](../data-types.md) | First name ||
+|| **LAST_NAME**
+[`string`](../data-types.md) | Last name ||
+|| **SECOND_NAME**
+[`string`](../data-types.md) | Middle name ||
+|| **TITLE**
+[`string`](../data-types.md) | Salutation ||
+|| **EMAIL**
+[`string`](../data-types.md) | E-mail ||
+|| **LAST_LOGIN**
+[`string`](../data-types.md) | Date and time of the last login in ISO 8601 format, for example `2026-10-29T15:13:52+01:00` ||
+|| **DATE_REGISTER**
+[`string`](../data-types.md) | Registration date in ISO 8601 format ||
+|| **TIME_ZONE**
+[`string`](../data-types.md) | User time zone, for example `Europe/Berlin` ||
+|| **IS_ONLINE**
+[`string`](../data-types.md) | Whether the user is online:
+- `Y` — online
+- `N` — not online ||
+|| **TIMESTAMP_X**
+[`string`](../data-types.md) | Date and time of the last profile change in the site format, for example `10/27/2026 12:12:19 pm` ||
+|| **LAST_ACTIVITY_DATE**
+[`string`](../data-types.md) | Date and time of the last activity in the `YYYY-MM-DD HH:MM:SS` format ||
+|| **PERSONAL_GENDER**
+[`string`](../data-types.md) | Gender:
+- `M` — male
+- `F` — female
+- empty string — not specified ||
+|| **PERSONAL_PROFESSION**
+[`string`](../data-types.md) | Profession ||
+|| **PERSONAL_WWW**
+[`string`](../data-types.md) | Personal website ||
+|| **PERSONAL_BIRTHDAY**
+[`string`](../data-types.md) | Date of birth in ISO 8601 format. An empty string if not specified ||
+|| **PERSONAL_PHOTO**
+[`string`](../data-types.md) | Profile photo link ||
+|| **PERSONAL_ICQ**
+[`string`](../data-types.md) | ICQ ||
+|| **PERSONAL_PHONE**
+[`string`](../data-types.md) | Personal phone ||
+|| **PERSONAL_FAX**
+[`string`](../data-types.md) | Personal fax ||
+|| **PERSONAL_MOBILE**
+[`string`](../data-types.md) | Personal mobile ||
+|| **PERSONAL_PAGER**
+[`string`](../data-types.md) | Pager ||
+|| **PERSONAL_STREET**
+[`string`](../data-types.md) | Residential street ||
+|| **PERSONAL_CITY**
+[`string`](../data-types.md) | Residential city ||
+|| **PERSONAL_STATE**
+[`string`](../data-types.md) | Residential region or territory ||
+|| **PERSONAL_ZIP**
+[`string`](../data-types.md) | Residential postal code ||
+|| **PERSONAL_COUNTRY**
+[`string`](../data-types.md) | Residential country code. `0` if the country is not specified ||
+|| **PERSONAL_MAILBOX**
+[`string`](../data-types.md) | P.O. Box ||
+|| **PERSONAL_NOTES**
+[`string`](../data-types.md) | Additional notes ||
+|| **WORK_PHONE**
+[`string`](../data-types.md) | Company phone ||
+|| **WORK_COMPANY**
+[`string`](../data-types.md) | Company ||
+|| **WORK_POSITION**
+[`string`](../data-types.md) | Job title ||
+|| **WORK_DEPARTMENT**
+[`string`](../data-types.md) | Department, a text field. Departments from the company structure are stored in `UF_DEPARTMENT` ||
+|| **WORK_WWW**
+[`string`](../data-types.md) | Company website ||
+|| **WORK_FAX**
+[`string`](../data-types.md) | Work fax ||
+|| **WORK_PAGER**
+[`string`](../data-types.md) | Work pager ||
+|| **WORK_STREET**
+[`string`](../data-types.md) | Street of the company address ||
+|| **WORK_MAILBOX**
+[`string`](../data-types.md) | Company P.O. box ||
+|| **WORK_CITY**
+[`string`](../data-types.md) | Work city ||
+|| **WORK_STATE**
+[`string`](../data-types.md) | State or region of the company address ||
+|| **WORK_ZIP**
+[`string`](../data-types.md) | Company postal code ||
+|| **WORK_COUNTRY**
+[`string`](../data-types.md) | Country code of the company address. `0` if the country is not specified ||
+|| **WORK_PROFILE**
+[`string`](../data-types.md) | Company's areas of business ||
+|| **WORK_LOGO**
+[`string`](../data-types.md) | Company logo ||
+|| **WORK_NOTES**
+[`string`](../data-types.md) | Notes about the workplace ||
+|| **UF_SKYPE_LINK**
+[`string`](../data-types.md) | Skype chat link ||
+|| **UF_ZOOM**
+[`string`](../data-types.md) | Zoom ||
+|| **UF_EMPLOYMENT_DATE**
+[`string`](../data-types.md) | Hiring date in ISO 8601 format. An empty string if not specified ||
+|| **UF_TIMEMAN**
+[`string`](../data-types.md) | Whether time tracking is enabled for the user: `1` — enabled, any other value — disabled ||
+|| **UF_DEPARTMENT**
+[`integer[]`](../data-types.md) | IDs of departments from the company structure. Retrieve departments using [department.get](../departments/department-get.md) ||
+|| **UF_INTERESTS**
+[`string`](../data-types.md) | Interests ||
+|| **UF_SKILLS**
+[`string`](../data-types.md) | Skills ||
+|| **UF_WEB_SITES**
+[`string`](../data-types.md) | Other websites ||
+|| **UF_XING**
+[`string`](../data-types.md) | Xing ||
+|| **UF_LINKEDIN**
+[`string`](../data-types.md) | LinkedIn ||
+|| **UF_FACEBOOK**
+[`string`](../data-types.md) | Facebook ||
+|| **UF_TWITTER**
+[`string`](../data-types.md) | Twitter ||
+|| **UF_SKYPE**
+[`string`](../data-types.md) | Microsoft Teams. The field code is kept from Skype ||
+|| **UF_DISTRICT**
+[`string`](../data-types.md) | District ||
+|| **UF_PHONE_INNER**
+[`string`](../data-types.md) | Extension number ||
+|| **USER_TYPE**
+[`string`](../data-types.md) | User type. Main values:
+- `employee` — employee
+- `extranet` — external extranet user
+- `email` — user who writes from email
+- `bot` — chatbot ||
+|| **UF_USR_\***
+`various` | Custom profile fields. The value type depends on the field type: a string, a number, an array, or, for a file, an object with the `id`, `showUrl`, and `downloadData` keys. Fields are created by the [user.userfield.*](./userfields/index.md) methods ||
+|#
+
+The `USER_TYPE` field is returned by the [user.get](./user-get.md) and [user.search](./user-search.md) methods. The `user.current` method does not return this field.
+
 ## Error Handling
+
+HTTP status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
+{% include notitle [Error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+The method has no parameters, so it has no errors of its own. The method returns only system errors, for example:
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `401` | `INVALID_CREDENTIALS` | Invalid request credentials | Invalid webhook code or authorization token ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application has none of the scope versions: `user`, `user_basic`, or `user_brief` ||
+|#
 
 {% include [System errors](../../_includes/system-errors.md) %}
 
@@ -288,5 +472,3 @@ HTTP status: **200**
 - [{#T}](./user-search.md)
 - [{#T}](./user-fields.md)
 - [{#T}](../../tutorials/crm/how-to-get-lists/get-activity-list-by-deals.md)
-
-[*key_current]: The user whose token you used during the REST call. If you are using a saved admin token, `administrator` will be returned. If you are using a token that arrives in a POST request to the application frame, it will be the user who entered the application.

@@ -21,14 +21,13 @@ The user profile is a key object in Bitrix24. Without a profile, an employee can
 
 ## How to Work with Users
 
-Use the methods:
+1. Find out which profile fields are available to the application using the [user.fields](./user-fields.md) method. The set of fields depends on the [scope version](user-scope.md).
+2. Find a user and their `ID`: by filter using the [user.get](./user-get.md) method, or by name, position, or department using the [user.search](./user-search.md) method. To retrieve the profile of the user on whose behalf the request is executed, use [user.current](./user-current.md).
+3. Invite a new employee using the [user.add](./user-add.md) method. For an employee, pass the `UF_DEPARTMENT` department; for an external user, pass `EXTRANET` and `SONET_GROUP_ID`.
+4. Update the profile using the [user.update](./user-update.md) method.
+5. To terminate an employee, pass the `ACTIVE` field with the `N` value to [user.update](./user-update.md). To reinstate them, pass `Y`.
 
-- [user.current](./user-current.md) to retrieve the profile of the user on whose behalf the request is executed,
-- [user.get](./user-get.md) to retrieve a list of employees by filter and find out the `ID` of the required user,
-- [user.search](./user-search.md) to find a user by personal data with accelerated search,
-- [user.fields](./user-fields.md) to retrieve a list of profile fields,
-- [user.add](./user-add.md) to invite new users,
-- [user.update](./user-update.md) to edit existing user profiles, terminate or reinstate an employee.
+The `user.get` and `user.search` methods return up to 50 users per call. To retrieve the next page, pass `start` = `(N-1) * 50`.
 
 {% note tip "User Documentation" %}
 
@@ -46,58 +45,27 @@ You can add your own fields to an employee profile, for example, a list of skill
 
 ## Relationships with Other Objects
 
-**CRM.** The user `ID` is used in system fields:
+The user `ID` from [user.get](./user-get.md) or [user.search](./user-search.md) is passed to fields and parameters of methods in other sections.
 
-- editable: responsible person, observers,
-- read-only: who created, who modified, who moved to the stage.
+**CRM.** The user `ID` is stored in the responsible person and observer fields, which can be modified. The "created by", "modified by", and "moved to stage by" fields are read-only. Read and modify the fields using the [crm.item.*](../crm/universal/index.md) methods.
 
-Use the methods [crm.item.*](../crm/universal/index.md) to read or modify fields.
+**Tasks.** The `ID` is specified in the creator, assignee, participant, and observer fields of the [tasks.task.*](../tasks/index.md) methods. The time spent by an employee is tracked by the [task.elapseditem.*](../tasks/elapsed-item/index.md) methods.
 
-**Calendar.** To work with an employee's calendar, specify the user `ID` in the `ownerID` field in the methods [calendar.section.*](../calendar/index.md). To create or modify a meeting with multiple participants, specify the user `IDs` in the `host` and `attendees` fields in the methods [calendar.event.*](../calendar/calendar-event/index.md).
+**Calendar.** An employee's calendar is selected by the `ID` in the `ownerID` field of the [calendar.section.*](../calendar/index.md) methods. The meeting host and attendees are passed in the `host` and `attendees` fields of the [calendar.event.*](../calendar/calendar-event/index.md) methods.
 
-**News Feed.** Use user `IDs` in the methods:
+**Chats.** User `IDs` set the chat owner and participants in the [im.chat.*](../chats/index.md), [im.chat.user.*](../chats/chat-users/index.md), and [im.user.*](../chats/users/index.md) methods.
 
-- [log.blogpost.*](../log/index.md) to address a post to specific employees,
-- [log.blogpost.getusers.important](../log/log-blogpost-getusers-important.md) to check who among the employees has read an important post.
+**Company Structure.** An employee's departments are stored in the `UF_DEPARTMENT` profile field. Departments and the assignment of employees to them are managed by the [department.*](../departments/index.md) methods.
 
-**Online Store.** The user `ID` is used in system fields:
+**Workgroups and Projects.** Group membership and member roles are changed by the [sonet_group.user.*](../sonet-group/members/index.md) methods. To turn a group into a [Scrum](../sonet-group/scrum/index.md), pass the user `ID` in the `SCRUM_MASTER_ID` field.
 
-- editable: responsible for the order, shipment, payment,
-- read-only: who changed the status, who marked, who canceled, who processed a return.
-
-Use the methods [sale.order.*](../sale/order/index.md), [sale.payment.*](../sale/payment/index.md), [sale.shipment.*](../sale/shipment/index.md) to read or modify fields.
-
-**Chats.** Use user `IDs` in the methods [im.chat.*](../chats/index.md), [im.chat.user.*](../chats/chat-users/index.md), [im.user.*](../chats/users/index.md) to assign a chat owner, edit the list of participants, or retrieve information about chat participants.
-
-**Mail.** The [mail.*](../mail/index.md) methods work with emails and mailboxes available to the current user. Employee recipients can be found using the [mail.recipient.listemployees](../mail/recipient/mail-recipient-listemployees.md) method. Practical scenarios are collected in the [Mail: Common Use Cases](../../tutorials/mail/index.md) section.
-
-**Open Channels.** Use user `IDs`:
-
-- to configure the queue of responsible employees in the methods [imopenlines.config.*](../imopenlines/openlines/index.md),
-- to assign dialogues to employees in the methods [imopenlines.bot.session.*](../imopenlines/openlines/chat-bots/index.md), [imopenlines.crm.chat.user.*](../imopenlines/openlines/chats/index.md), [imopenlines.operator.*](../imopenlines/openlines/operators/index.md).
-
-**Telephony.** Use the user `ID`:
-
-- to route a phone call to them in the methods [telephony.externalcall.*](../telephony/index.md),
-- to obtain call statistics for the employee using the method [voximplant.statistic.get](../telephony/voximplant/voximplant-statistic-get.md),
-- to configure a SIP device in the methods [voximplant.user.*](../telephony/voximplant/users/index.md).
-
-**Time Tracking.** Use user `IDs`:
-
-- to manage the user's workday in the methods [timeman.*](../timeman/base/index.md),
-- to configure the tool for time control in the methods [timeman.timecontrol.*](../timeman/timecontrol/index.md),
-- to retrieve information about the work schedule using the method [timeman.schedule.get](../timeman/schedule/index.md).
-
-**Tasks.** The user `ID` is used in system fields:
-
-- editable: Creator, executor, Participants, observers,
-- read-only: who modified the task, who changed the status, who completed the task.
-
-Use the methods [tasks.task.*](../tasks/index.md) to read or modify fields. To find out or edit the time spent on a task for a user — [task.elapseditem.*](../tasks/elapsed-item/index.md).
-
-**Workgroups and Projects.** Use user `IDs` in the methods [sonet_group.user.*](../sonet-group/members/index.md) to change the composition of group members and their roles. Specify the user `ID` in the `SCRUM_MASTER_ID` field to create a [Scrum](../sonet-group/scrum/index.md) group.
-
-**Company Structure.** Use user `IDs` to manage the assignment of employees to company departments in the methods [department.*](../departments/index.md).
+**Other Sections.** The user `ID` is also used in:
+- [news feed](../log/index.md) — post recipients and read tracking with the [log.blogpost.getusers.important](../log/log-blogpost-getusers-important.md) method
+- [open channels](../imopenlines/openlines/index.md) — the operator queue and dialogue assignment in the [imopenlines.bot.session.*](../imopenlines/openlines/chat-bots/index.md), [imopenlines.crm.chat.user.*](../imopenlines/openlines/chats/index.md), and [imopenlines.operator.*](../imopenlines/openlines/operators/index.md) methods
+- [telephony](../telephony/index.md) — the call recipient, statistics with the [voximplant.statistic.get](../telephony/voximplant/voximplant-statistic-get.md) method, and the SIP device in the [voximplant.user.*](../telephony/voximplant/users/index.md) methods
+- [mail](../mail/index.md) — the methods work with the current user's mailboxes, recipients are found by [mail.recipient.listemployees](../mail/recipient/mail-recipient-listemployees.md), and scenarios are collected in the [Mail: Common Use Cases](../../tutorials/mail/index.md) section
+- [online store](../sale/order/index.md) — the person responsible for the order, [payment](../sale/payment/index.md), and [shipment](../sale/shipment/index.md)
+- [time tracking](../timeman/base/index.md) — the workday, [time control](../timeman/timecontrol/index.md), and [work schedule](../timeman/schedule/index.md)
 
 ### User Binding Type
 
@@ -173,6 +141,16 @@ To ensure the security of employee data, three versions of the `user` scope are 
 || [user.search](user-search.md) | Retrieves a list of users with accelerated search by personal data ||
 || [user.current](user-current.md) | Retrieves information about the current user ||
 || [user.fields](user-fields.md) | Retrieves a list of user profile fields ||
+|#
+
+### Related Methods and Events
+
+#|
+|| **Method or Event** | **Description** ||
+|| [user.admin](../common/users/user-admin.md) | Checks whether the current user is an administrator ||
+|| [user.access](../common/users/user-access.md) | Checks whether the current user has at least one of the passed access codes ||
+|| [user.option.get](../common/settings/user-option-get.md), [user.option.set](../common/settings/user-option-set.md) | Retrieve and retain application configurations for the current user ||
+|| [onUserAdd](../common/events/on-user-add.md) | The event on adding a user. Fires after the invited user completes registration ||
 |#
 
 The methods for working with custom profile fields are collected in the [Custom Fields](./userfields/index.md) subsection.

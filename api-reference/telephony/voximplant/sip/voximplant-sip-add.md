@@ -35,8 +35,8 @@ Not required for calling the method, but necessary for working registration with
 
 Possible values:
 
-- `cloud` - cloud PBX
-- `office` - office PBX
+- `cloud` — cloud PBX
+- `office` — office PBX
 
 Default: `cloud` ||
 || **TITLE**
@@ -448,12 +448,12 @@ Returned when creating an office PBX ||
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
     "error": "CHECK_FIELDS_ERROR",
-    "error_description": "Server address not specified"
+    "error_description": "Server address is not specified."
 }
 ```
 
@@ -462,20 +462,20 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `CHECK_FIELDS_ERROR` | `Server address not specified` | Required parameter `SERVER` is missing ||
-|| `CHECK_FIELDS_ERROR` | `Login for connecting to the server not specified` | Required parameter `LOGIN` is missing ||
-|| `CHECK_FIELDS_ERROR` | `Password for connecting to the server cannot exceed 100 characters` | Exceeded limit for parameter `PASSWORD` ||
-|| `TITLE_EXISTS` | `The specified connection name is already registered in the system` | A line with this name already exists ||
-|| `MAX_CLOUD_PBX` | `You cannot connect more than 10 virtual PBXs.` | Exceeded limit for cloud SIP lines ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to create a SIP line ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `CHECK_FIELDS_ERROR` | Server address is not specified | Required parameter `SERVER` is missing ||
+|| `400` | `CHECK_FIELDS_ERROR` | Server login is not specified | Required parameter `LOGIN` is missing ||
+|| `400` | `CHECK_FIELDS_ERROR` | Server password must not exceed 100 characters | Exceeded limit for parameter `PASSWORD` ||
+|| `400` | `TITLE_EXISTS` | The specified connection name is already used in the system | A line with this name already exists ||
+|| `400` | `MAX_CLOUD_PBX` | You cannot connect more than 10 cloud hosted PBX's | Exceeded limit for cloud SIP lines ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Insufficient permissions to create a SIP line ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./voximplant-sip-add.md)
+- [{#T}](./index.md)
 - [{#T}](./voximplant-sip-update.md)
 - [{#T}](./voximplant-sip-get.md)
 - [{#T}](./voximplant-sip-delete.md)

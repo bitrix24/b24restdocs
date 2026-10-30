@@ -13,41 +13,41 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.propertyvariant.list` retrieves a list of property value variants. This method is applicable only for properties of type `ENUM`.
+The method `sale.propertyvariant.list` retrieves a list of order property value variants. To retrieve the variants of a single property, pass its `orderPropsId` in `filter`.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array of fields to be selected (see fields of the object [sale_order_property_variant](../data-types.md)).
+[`array`](../../data-types.md) | Variant fields to return: `id`, `orderPropsId`, `name`, `value`, `sort`, `description`. [Field description](#sale_order_property_variant).
 
-If the array is not provided or an empty array is passed, all available fields of the property value variants will be selected. ||
+If the parameter is not provided or the array is empty, all fields are returned ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected property value variants in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | A filter in the format `{"field": "value"}`. Available fields: `id`, `orderPropsId`, `name`, `value`, `sort`, `description`.
 
-Possible values for `field` correspond to the fields of the object [sale_order_property_variant](../data-types.md).
+To retrieve the variants of a single property, pass `{"orderPropsId": property ID}`. You can retrieve the property identifier using the [sale.property.list](../property/sale-property-list.md) method.
 
-An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
-- `+` — filtering by the exact value of the specified field; this also includes elements where the field value is undefined (NULL)
-- `>=` — greater than or equal to
-- `>` — greater than
-- `<=` — less than or equal to
-- `<` — less than
-- `%` — LIKE, substring search. The % symbol in the filter value does not need to be passed. The search looks for a substring at any position in the string
-- `!=` — not equal
-- `!` — not equal
-||
+You can add an operator prefix to the key:
+- `+` — equal to or the value is not set (`NULL`)
+- `>=`, `>`, `<=`, `<` — greater than or equal to, greater than, less than or equal to, less than
+- `%` — contains a substring; do not pass the `%` character in the value
+- `!=` or `!` — not equal to
+
+The method ignores a field that the variant does not have, without returning an error ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected property value variants in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | Sorting in the format `{"field": "direction"}`. The fields are the same as in `filter`. Direction:
+- `asc` — ascending
+- `desc` — descending
 
-Possible values for `field` correspond to the fields of the object [sale_order_property_variant](../data-types.md).
+Defaults to `{"id": "asc"}` ||
+|| **start**
+[`integer`](../../data-types.md) | Offset for pagination. The method returns up to 50 records per call. To retrieve page N, pass `start` = `(N-1) * 50`.
 
-Possible values for `order`:
-- `asc` — in ascending order
-- `desc` — in descending order
-||
+Defaults to `0` ||
 |#
 
 ## Code Examples
@@ -389,9 +389,32 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **propertyVariants**
-[`sale_order_property_variant[]`](../data-types.md) | Array of objects containing information about the selected property value variants ||
+[`sale_order_property_variant[]`](#sale_order_property_variant) | Array of variants [(detailed description)](#sale_order_property_variant). Contains up to 50 records ||
+|| **total**
+[`integer`](../../data-types.md) | Total number of variants matching the filter ||
+|| **next**
+[`integer`](../../data-types.md) | The `start` value for the next page. Returned only if there are more records than on the current page ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+#### sale_order_property_variant {#sale_order_property_variant}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Variant identifier ||
+|| **orderPropsId**
+[`integer`](../../data-types.md) | Identifier of the order property the variant belongs to ||
+|| **name**
+[`string`](../../data-types.md) | Variant name displayed to the customer ||
+|| **value**
+[`string`](../../data-types.md) | Symbolic code of the variant. Stored in the order as the property value ||
+|| **sort**
+[`integer`](../../data-types.md) | Display order of the variant in the list ||
+|| **description**
+[`string`](../../data-types.md) | Variant description. `null` if no description is set ||
 |#
 
 ## Error Handling
@@ -400,8 +423,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "error"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -410,9 +433,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read property value variants ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have permission to read store settings ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -257,7 +257,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "Mail service not found"
+    "error_description": "E-mail service was not found."
 }
 ```
 
@@ -267,15 +267,16 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ERROR_CORE` | Access denied | Insufficient rights to add a mail service ||
-|| `400` | `ERROR_CORE` | Mail service ID not specified | Required parameter `ID` not provided ||
-|| `400` | `ERROR_CORE` | Mail service not found | Mail service with the specified `ID` not found ||
+|| `400` | `ERROR_CORE` | Access denied | Insufficient rights to delete a mail service. Only an administrator can delete a service ||
+|| `400` | `ERROR_CORE` | E-mail service ID is not specified | Required parameter `ID` not provided ||
+|| `400` | `ERROR_CORE` | E-mail service was not found | Mail service with the specified `ID` not found on the current site ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./mailservice-add.md)
 - [{#T}](./mailservice-update.md)
 - [{#T}](./mailservice-get.md)

@@ -13,11 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `task.planner.getlist` retrieves a list of task identifiers from the current user's "Daily Plan." To get detailed information about the tasks, use the method [tasks.task.get](../tasks-task-get.md).
+The method `task.planner.getList` retrieves task identifiers from the "Daily Plan" of the user on whose behalf the request is executed. To retrieve task data, use the method [tasks.task.get](../tasks-task-get.md).
 
 ## Method Parameters
 
-No parameters.
+No parameters. You cannot retrieve another user's plan: the method always returns the plan of the user executing the request.
 
 ## Code Examples
 
@@ -239,9 +239,26 @@ If there are no tasks in the daily plan, returns an empty array ||
 
 ## Error Handling
 
+HTTP Status: **401**
+
+```json
+{
+    "error": "INVALID_CREDENTIALS",
+    "error_description": "Invalid request credentials"
+}
+```
+
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
-The method has no parameters, so it has no method-specific errors. It can return only system errors.
+### Possible Error Codes
+
+The method has no parameters, so it has no errors of its own. It returns only system errors, for example:
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `401` | `INVALID_CREDENTIALS` | Invalid request credentials | Invalid webhook code or authorization token ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `task` scope ||
+|#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

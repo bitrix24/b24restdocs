@@ -69,7 +69,7 @@ Choose a different type of application if:
 
 - **REST API access.** A local application works only if Bitrix24 has [access to the REST API](../first-steps/access-to-rest-api.md).
 - **Permission to create applications.** An application can be created by a Bitrix24 administrator or by an employee who has been granted such a permission. If the *Local application* item is missing from the interface, ask the administrator to [configure access to application creation](./local-apps.md#local-app-access).
-- **Web server.** The example is written in PHP, so you need a server with PHP, the cURL module, and a valid SSL certificate. The application pages must be available over HTTPS before you add the application to Bitrix24: their addresses are specified in the creation form itself. Server requirements are described in the article [{#T}](../sdk/crest-php-sdk/index.md).
+- **Web server.** The example is written in PHP, so you need a server with PHP, the cURL module, and a valid SSL certificate. The application pages must be available over HTTPS by the time the application is first opened: Bitrix24 then shows the initial installation page. Server requirements are described in the article [{#T}](../sdk/crest-php-sdk/index.md).
 - **Permission to embed.** Bitrix24 opens the application page in a frame, so the server must not prohibit embedding with the `X-Frame-Options` and `Content-Security-Policy` headers. How to allow embedding for your Bitrix24 address is described in the article [{#T}](./site-does-not-allow-connection.md).
 
 ## What the Example Contains {#example}

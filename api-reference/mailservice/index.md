@@ -60,7 +60,7 @@ The set of service fields is described in the [response object](./mailservice-ge
 Rules that apply across the section:
 
 - field names are written in uppercase, and boolean values are passed as the strings `Y` and `N`
-- `NAME` is required when creating a service, and the `get`, `update`, and `delete` methods require `ID`. The `update` and `delete` methods return `true`
+- the `NAME` and `ENCRYPTION` fields are required when creating a service: `ENCRYPTION` has no default value. The `get`, `update`, and `delete` methods require `ID`. The `update` and `delete` methods return `true`
 - only the `NAME`, `ACTIVE`, `SERVER`, `PORT`, `ENCRYPTION`, `LINK`, `ICON`, and `SORT` fields can be set when creating and updating a service. All the other fields of the response object, including `ID`, `SITE_ID`, `UPLOAD_OUTGOING`, and the `SMTP_*` fields of the SMTP server, cannot be set via REST
 - only an IMAP service can be created via REST: the connection type is set by the system and is not returned in the response
 - the [mailservice.update](./mailservice-update.md) method ignores fields with an empty value, so it cannot clear `LINK` or `SERVER`, and `PORT: 0` and `SORT: 0` are not retained. The rule differs in [mailservice.add](./mailservice-add.md): empty `ACTIVE` and `SORT` are replaced with the default values
@@ -77,7 +77,7 @@ Rules that apply across the section:
 The section's own method errors come with HTTP status 400 and a single `ERROR_CORE` code. Only the text in `error_description` differs, so such cases cannot be distinguished by the error code — parse the description. The text depends on the interface language, so do not rely on it as a stable contract. Typical causes:
 
 - insufficient rights
-- the required `ID` or `NAME` parameter is not passed
+- the required `ID`, `NAME`, or `ENCRYPTION` parameter is not passed
 - a service with the specified `ID` is not found
 - an invalid field value is passed
 - the site has no active services — in this case, [mailservice.list](./mailservice-list.md) returns an error instead of an empty array

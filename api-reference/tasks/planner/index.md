@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 "Plan for the Day" helps a user collect tasks, activities, and meetings that need to be completed during the working day.
 
-The section method retrieves a list of task IDs from the "Plan for the Day" of the user on whose behalf the request is being made. Using these IDs, you can retrieve detailed task data and build a daily work list within an application.
+The section method retrieves a list of task IDs from the "Plan for the Day" of the user on whose behalf the request is being made. The method is called without parameters and returns an array of numbers, for example `[7811, 8017, 7789]`. If the plan is empty, an empty array is returned. Using these IDs, you can retrieve task data and build a daily work list within an application.
 
 > Quick navigation: [All Methods](#all-methods)
 >

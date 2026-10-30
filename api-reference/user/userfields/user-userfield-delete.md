@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The `user.userfield.delete` method deletes a custom field.
+The `user.userfield.delete` method deletes a custom profile field together with its values for all employees.
 
 ## Method Parameters
 
@@ -28,6 +28,12 @@ The `user.userfield.delete` method deletes a custom field.
 To get custom field identifiers, use the [user.userfield.list](./user-userfield-list.md) method.
  ||
 |#
+
+{% note warning "" %}
+
+Deletion is irreversible: the field and its values are erased from the profiles of all employees and cannot be restored. The more employees there are in Bitrix24, the longer the request takes. For more details, see [Common Causes of Server Errors](./index.md#server-errors).
+
+{% endnote %}
 
 ## Code Examples
 
@@ -132,7 +138,7 @@ To get custom field identifiers, use the [user.userfield.list](./user-userfield-
     ```python
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
-    bitrix_id = 176
+    bitrix_id = 123
 
     try:
         bitrix_response = client.user.userfield.delete(
@@ -148,9 +154,9 @@ To get custom field identifiers, use the [user.userfield.list](./user-userfield-
             sep="\n",
         )
     except BitrixSDKException as error:
-        print("Bitrix SDK error", error.message, sep="\n")
+        print(f"Bitrix SDK error: {error.message}")
     except Exception as error:
-        print("Unexpected error", error, sep="\n")
+        print(f"Unexpected error: {error}")
     ```
 
 - PHP
@@ -243,13 +249,14 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start":1747310916.827703,
-        "finish":1747310918.05313,
-        "duration":1.2254269123077393,
-        "processing":0.2228090763092041,
-        "date_start":"2025-05-15T14:08:36+02:00",
-        "date_finish":"2025-05-15T14:08:38+02:00",
-        "operating":0
+        "start": 1793288731,
+        "finish": 1793288731.158602,
+        "duration": 0.15860199928283691,
+        "processing": 0,
+        "date_start": "2026-10-29T18:45:31+01:00",
+        "date_finish": "2026-10-29T18:45:31+01:00",
+        "operating_reset_at": 1793289240,
+        "operating": 0.1366438865661621
     }
 }
 ```
@@ -260,7 +267,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of custom field deletion ||
+[`boolean`](../../data-types.md) | `true` if the field is deleted ||
 || **time**
 [`time`](../../data-types.md#time) | Request execution time information ||
 |#
@@ -270,9 +277,9 @@ HTTP status: **200**
 HTTP status: **400**
 
 ```json
-{	
-   "error":"",
-   "error_description":"Access denied."
+{
+    "error": "",
+    "error_description": "Access denied."
 }
 ```
 
@@ -281,9 +288,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Field with such `id` does not exist or access is denied ||
-|| Empty string | ID is not defined or invalid | Not specified or incorrect `id` entered ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty string | Access denied. | The user does not have administrator permissions, the field with the passed `id` is not found, or it is a system profile field without the `UF_USR_` prefix. System fields cannot be changed via REST ||
+|| `400` | Empty string | ID is not defined or invalid. | The `id` is not passed or the passed value is less than `1` ||
+|| `400` | `ERROR_CORE` | Fail to delete user field. | Internal error while deleting the field ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `user.userfield` scope ||
+|| `500` | `INTERNAL_SERVER_ERROR` | Internal server error | The request did not complete within `max_execution_time`, usually in a Bitrix24 account with many employees. For more details, see [Common Causes of Server Errors](./index.md#server-errors) ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

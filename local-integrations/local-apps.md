@@ -37,7 +37,7 @@ This page helps you choose the type of application and create it on your own Bit
 
 2. Decide whether the application needs an interface inside Bitrix24 and a server of its own. This determines the type of application — select it in the [How to Choose the Application Type](#choose-app) table.
 
-3. Prepare the code: for a static application, an archive with a page in HTML and JS; for a server-side one, a page or a handler available over HTTPS before you add the application to Bitrix24.
+3. Prepare the code: for a static application, an archive with a page in HTML and JS; for a server-side one, a page or a handler on your own server. The address must start with `https://` or `http://`; use HTTPS for a production application. If the application receives tokens through the [installation callback](../settings/app-installation/local-apps/installation-callback.md), the handler must be running before you save the form: Bitrix24 sends the authorization data to it immediately after saving.
 
 4. Open the local application form: *Developer resources*, the *Common use cases* tab, then *Other > Local application*.
 

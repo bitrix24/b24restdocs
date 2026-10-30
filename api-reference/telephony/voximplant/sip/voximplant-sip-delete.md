@@ -15,6 +15,12 @@ Choose a tool for developing with an AI agent:
 
 The method `voximplant.sip.delete` removes an existing SIP line created by the current application.
 
+{% note warning "" %}
+
+Deletion is irreversible. For a cloud PBX, the method first deletes the `REG_ID` SIP registration: if it cannot be deleted, the line remains and the method returns the `REG_ID_NOT_FOUND` error. If the deleted line was the default outgoing line, the first of the remaining lines becomes the outgoing one, or the default Bitrix24 number if no lines remain
+
+{% endnote %}
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
@@ -264,7 +270,7 @@ HTTP Status: **200**
 
 ## Error Handling
 
-HTTP Status: **400**, **403**
+HTTP Status: **400**
 
 ```json
 {
@@ -278,19 +284,19 @@ HTTP Status: **400**, **403**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_NOT_FOUND` | `Specified CONFIG_ID is not found` | SIP line with the specified `CONFIG_ID` was not found among the lines of the current application ||
-|| `REG_ID_NOT_FOUND` | `Settings not found` | SIP registration associated with the line being deleted was not found ||
-|| `ACCESS_DENIED` | `Access denied!` | Insufficient permissions to delete the SIP line ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_NOT_FOUND` | Specified CONFIG_ID is not found | SIP line with the specified `CONFIG_ID` was not found among the lines of the current application ||
+|| `400` | `REG_ID_NOT_FOUND` | Configuration was not found | Failed to delete the cloud PBX SIP registration associated with the line. The line is not deleted ||
+|| `403` | `ACCESS_DENIED` | Access denied! | Insufficient permissions to delete the SIP line ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./voximplant-sip-add.md)
 - [{#T}](./voximplant-sip-update.md)
 - [{#T}](./voximplant-sip-get.md)
-- [{#T}](./voximplant-sip-delete.md)
 - [{#T}](./voximplant-sip-status.md)
 - [{#T}](./voximplant-sip-connector-status.md)

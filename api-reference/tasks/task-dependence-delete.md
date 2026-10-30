@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method removes the dependency of one task on another.
+The method `task.dependence.delete` deletes a dependency between two tasks in the Gantt chart. The tasks themselves are not changed.
 
 ## Method Parameters
 
@@ -23,9 +23,11 @@ This method removes the dependency of one task on another.
 || **Name**
 `type` | **Description** ||
 || **taskIdFrom***
-[`integer`](../data-types.md) | The identifier of the task from which the dependency is removed. The task identifier is returned by the [method for creating a new task](./tasks-task-add.md) ||
+[`integer`](../data-types.md) | Identifier of the task that the second task depends on. The same value that was passed in `taskIdFrom` when creating the dependency with the [task.dependence.add](./task-dependence-add.md) method ||
 || **taskIdTo***
-[`integer`](../data-types.md) | The identifier of the task for which the dependency is removed ||
+[`integer`](../data-types.md) | Identifier of the dependent task. The same value that was passed in `taskIdTo` when creating the dependency.
+
+The order matters: if you swap `taskIdFrom` and `taskIdTo`, the method does not find the dependency and returns an error ||
 |#
 
 The task identifier can be obtained when [creating a new task](./tasks-task-add.md) or by using the [method for retrieving the list of tasks](./tasks-task-list.md).
@@ -238,20 +240,18 @@ The task identifier can be obtained when [creating a new task](./tasks-task-add.
 
 HTTP status: **200**
 
-Example of a successfully executed request
-
 ```json
 {
-    "result": {
-        []
-    },
+    "result": [],
     "time": {
-        "start": 1712137817.343984,
-        "finish": 1712137817.605804,
-        "duration": 0.26182007789611816,
-        "processing": 0.018325090408325195,
-        "date_start": "2024-04-03T12:50:17+02:00",
-        "date_finish": "2024-04-03T12:50:17+02:00"
+        "start": 1793277236,
+        "finish": 1793277237.005083,
+        "duration": 1.0050830841064453,
+        "processing": 1,
+        "date_start": "2026-10-29T15:33:56+01:00",
+        "date_finish": "2026-10-29T15:33:57+01:00",
+        "operating_reset_at": 1793277780,
+        "operating": 0
     }
 }
 ```
@@ -262,7 +262,7 @@ Example of a successfully executed request
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | In case of success, contains an empty array ||
+[`array`](../data-types.md) | An empty array `[]` if the dependency is deleted ||
 || **time**
 [`time`](../data-types.md) | Information about the execution time of the request ||
 |#
@@ -273,8 +273,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "ILLEGAL_NEW_LINK",
-    "error_description": "The dependency between tasks does not exist"
+    "error": "ACTION_FAILED",
+    "error_description": "Link does not exist (nodes: 4265, 4263)"
 }
 ```
 
@@ -283,9 +283,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ILLEGAL_NEW_LINK` | The dependency between tasks does not exist ||
-|| `ACTION_NOT_ALLOWED` | It is not possible to delete the dependency between tasks ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACTION_FAILED` | Link does not exist (nodes: `taskIdTo`, `taskIdFrom`) | There is no dependency between the tasks: it has already been deleted, was never created, or `taskIdFrom` and `taskIdTo` are swapped ||
+|| `400` | `ACTION_NOT_ALLOWED.RESTRICTED` | This task action is not allowed | The user does not have permission to read one of the tasks ||
+|| `400` | `DISPATCHER_ERROR` | Argument "`parameter name`" is required, but no value passed for task.dependence.delete | The required `taskIdFrom` or `taskIdTo` parameter is not provided ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

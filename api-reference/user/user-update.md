@@ -25,7 +25,11 @@ The `user.update` method updates user data.
 || **ID***
 [`integer`](../data-types.md) | Positive ID of the user whose data you want to update ||
 || **ACTIVE**
-[`boolean`](../data-types.md) | User activity: `Y` — active, `N` — dismissed ||
+[`boolean`](../data-types.md) | User activity flag:
+- `true` or `Y` — active
+- `false` or `N` — dismissed
+
+The read methods [user.get](./user-get.md) and [user.current](./user-current.md) return this field as `true` or `false` ||
 || **EMAIL**
 [`string`](../data-types.md) | User E-mail ||
 || **NAME**
@@ -399,14 +403,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `insufficient_scope` | The request requires higher privileges than provided by the access token | The `user` scope is required; `user_brief` and `user_basic` do not suffice ||
-|| `ERROR_CORE` | access_denied | `ID` is missing or is not a positive number ||
-|| `ERROR_CORE` | access_denied | Insufficient permission to change the specified user's data ||
-|| `ERROR_ARGUMENT` | invalid_type_field | An array or object is passed in a string field. The field name is returned in the `argument` response field.
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `insufficient_scope` | The request requires higher privileges than provided by the access token | The `user` scope is required; `user_brief` and `user_basic` do not suffice ||
+|| `400` | `ERROR_CORE` | access_denied | `ID` is missing or is not a positive number ||
+|| `400` | `ERROR_CORE` | access_denied | Insufficient permission to change the specified user's data ||
+|| `400` | `ERROR_ARGUMENT` | invalid_type_field | An array or object is passed in a string field. The field name is returned in the `argument` response field.
 
 The following are string fields: `NAME`, `LAST_NAME`, `SECOND_NAME`, `EMAIL`, `TITLE`, `XML_ID`, `TIME_ZONE`, and the `WORK_*` and `PERSONAL_*` fields, except `PERSONAL_PHOTO` and `WORK_LOGO`. Custom fields `UF_*` accept arrays ||
-|| `ERROR_CORE` | Error text depends on the cause | Could not save the profile changes. The method returns a message describing the cause ||
+|| `400` | `ERROR_CORE` | Error text depends on the cause | Could not save the profile changes. The method returns a message describing the cause ||
 |#
 
 {% include [System errors](../../_includes/system-errors.md) %}

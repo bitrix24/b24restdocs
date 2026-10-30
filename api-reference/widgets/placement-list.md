@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user authorized in the application
 
-The method `placement.list` returns the placements available to the application.
+The method `placement.list` returns the codes of placements that the application can register with the [placement.bind](./placement-bind.md) method. Handlers that the application has already registered are returned by the [placement.get](./placement-get.md) method.
 
 {% note info "" %}
 
@@ -29,25 +29,35 @@ The method works only in the context of the [application](../../settings/app-ins
 || **Name**
 `type` | **Description** ||
 || **SCOPE**
-[`string`](../data-types.md) | Limits the list to a specific application scope.
+[`string`](../data-types.md) | Code of the scope for which placements are needed, for example `crm`, `task`, or `sonet_group`. The codes are listed on the [Available Scopes in Bitrix24](../scopes/permissions.md) page.
 
-If the parameter is provided and not empty, the method returns placements only for the specified scope. ||
+If the parameter is provided and not empty, the method returns placements only for the specified scope. The scope does not have to be among the application's permissions.
+
+If the parameter is passed as an empty string, the method returns only global placements that do not belong to any scope, for example `LEFT_MENU`, `REST_APP_URI`, `IM_SIDEBAR`.
+
+If the scope does not exist or has no placements, the method returns an empty array without an error ||
 || **FULL**
 [`boolean`](../data-types.md) | Flag to retrieve the full list of placements.
 
 If the parameter is not provided or is set to `false`, the method returns placements for the current application's scope and global placements.
 
-If the parameter is set to `true`, the method returns placements for all service scopes.
+If the parameter is set to `true`, the method returns placements for all scopes of the account.
 
 The parameter is considered only if `SCOPE` is not provided. ||
 |#
+
+{% note info "" %}
+
+The method returns the entire list in a single response, without pagination: the `start` parameter is ignored even if the list contains more than 50 codes. The contents of the list depend on the account: on the installed modules and the created SPAs. Service placements that cannot be registered from an application are not included in the list.
+
+{% endnote %}
 
 ## Code Examples
 
 {% include [Examples Note](../../_includes/examples.md) %}
 
-Example of retrieving the placements available to the application, where:
-- `SCOPE` — the application's scope for which placements are needed.
+Example of retrieving CRM placements, where:
+- `SCOPE` — code of the scope for which placements are needed
 
 {% list tabs %}
 
@@ -74,16 +84,11 @@ Example of retrieving the placements available to the application, where:
     declare const $b24: B24Frame
 
     try {
-      // placement.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // placement.list returns the full list of placement codes in one response
       const response = await $b24.actions.v2.call.make<string[]>({
         method: 'placement.list',
         params: {
           SCOPE: 'crm',
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -112,16 +117,11 @@ Example of retrieving the placements available to the application, where:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // placement.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // placement.list returns the full list of placement codes in one response
           const response = await $b24.actions.v2.call.make({
             method: 'placement.list',
             params: {
               SCOPE: 'crm',
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -300,7 +300,7 @@ HTTP Status: **200**
 || **result**
 [`string[]`](../data-types.md) | A list of codes of the placements available to the application.
 
-Each element of the array is a placement code. ||
+Each element of the array is a placement code that can be passed in the `PLACEMENT` parameter of the [placement.bind](./placement-bind.md) method. Codes of SPA placements contain the SPA type identifier, for example `CRM_DYNAMIC_136_LIST_TOOLBAR`. Placement descriptions are collected on the [Placement Catalog](./placements.md) page ||
 || **time**
 [`time`](../data-types.md#time) | Information about the execution time of the request. ||
 |#

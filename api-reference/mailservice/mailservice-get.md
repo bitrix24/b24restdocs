@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The `mailservice.get` method returns the parameters of the mail service by its identifier.
+The `mailservice.get` method returns the parameters of a mail service of the current site by its identifier. The method also returns an inactive service.
 
 ## Method Parameters
 
@@ -300,29 +300,29 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../data-types.md) | Identifier of the mail service ||
+[`string`](../data-types.md) | Identifier of the mail service, for example, `"31"` ||
 || **SITE_ID**
 [`string`](../data-types.md) | Identifier of the site in Bitrix24 ||
 || **ACTIVE**
 [`string`](../data-types.md) | Service activity, values `Y` or `N` ||
 || **SORT**
-[`integer`](../data-types.md) | Sort index ||
+[`string`](../data-types.md) | Sort index, for example, `"100"` ||
 || **NAME**
 [`string`](../data-types.md) | Name of the service ||
 || **SERVER**
-[`string`](../data-types.md) | IMAP server address in lowercase ||
+[`string`](../data-types.md) | IMAP server address in lowercase. For the built-in `bitrix24` service, it is an empty string ||
 || **PORT**
-[`integer`](../data-types.md) | IMAP server port ||
+[`string`](../data-types.md)\|[`null`](../data-types.md) | IMAP server port, for example, `"993"`. `null` if the port is not set ||
 || **ENCRYPTION**
-[`string`](../data-types.md) | Secure connection indicator, values `Y` or `N` ||
+[`string`](../data-types.md)\|[`null`](../data-types.md) | Secure connection indicator, values `Y` or `N`. `null` if the indicator is not set ||
 || **LINK**
-[`string`](../data-types.md) | Address of the service's web interface ||
+[`string`](../data-types.md)\|[`null`](../data-types.md) | Address of the service's web interface. `null` if the address is not set ||
 || **ICON**
-[`string`](../data-types.md) | Path to the service's logo image ||
+[`string`](../data-types.md)\|[`null`](../data-types.md) | Address of the service's logo. For an uploaded logo, it is the full URL of the file; for a built-in service, it is a path from the Bitrix24 root, for example, `/bitrix/images/mail/mailservice-icon/post-gmail-icon.svg`. `null` if the logo is not uploaded and the service name does not match a built-in one ||
 || **SMTP_SERVER**
 [`string`](../data-types.md)\|[`null`](../data-types.md) | SMTP server, if configured ||
 || **SMTP_PORT**
-[`integer`](../data-types.md)\|[`null`](../data-types.md) | SMTP port, if configured ||
+[`string`](../data-types.md)\|[`null`](../data-types.md) | SMTP port, if configured ||
 || **SMTP_LOGIN_AS_IMAP**
 [`string`](../data-types.md) | Use IMAP login for SMTP, values `Y` or `N` ||
 || **SMTP_PASSWORD_AS_IMAP**
@@ -340,7 +340,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ERROR_CORE",
-    "error_description": "Mail service not found"
+    "error_description": "E-mail service was not found."
 }
 ```
 
@@ -350,14 +350,15 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `ERROR_CORE` | Mail service ID not specified | Required parameter `ID` not provided ||
-|| `400` | `ERROR_CORE` | Mail service not found | Mail service with the specified `ID` not found ||
+|| `400` | `ERROR_CORE` | E-mail service ID is not specified | Required parameter `ID` not provided ||
+|| `400` | `ERROR_CORE` | E-mail service was not found | Mail service with the specified `ID` not found on the current site ||
 |#
 
 {% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./mailservice-add.md)
 - [{#T}](./mailservice-update.md)
 - [{#T}](./mailservice-list.md)

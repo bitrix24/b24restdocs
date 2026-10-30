@@ -5,9 +5,9 @@ items:
     href: index.md
   - name: Add Custom Field
     href: user-userfield-add.md
-  - name: Delete Custom Field
-    href: user-userfield-delete.md
-  - name: Get List of Custom Fields
-    href: user-userfield-list.md
   - name: Update Custom Field
     href: user-userfield-update.md
+  - name: Get List of Custom Fields
+    href: user-userfield-list.md
+  - name: Delete Custom Field
+    href: user-userfield-delete.md

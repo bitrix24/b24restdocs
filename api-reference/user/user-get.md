@@ -37,9 +37,11 @@ If `sort` or `order` is not a string, the method also applies the default sortin
 || **order**
 [`string`](../data-types.md) | Sorting direction:
 - `ASC` — ascending
-- `DESC` — descending ||
+- `DESC` — descending
+
+Any other value causes the `Invalid order` error ||
 || **FILTER**
-[`string`](../data-types.md) | Additionally, you can specify any parameters from [user.add](./user-add.md) to filter by their values. In addition to the main fields, the following additional ones are available:
+[`object`](../data-types.md) | Additionally, you can specify any parameters from [user.add](./user-add.md) to filter by their values. In addition to the main fields, the following additional ones are available:
 - `UF_DEPARTMENT` — belonging to the company structure;
 - `UF_PHONE_INNER` — internal telephone number;
 - `IS_ONLINE` — [Y\|N] allows showing only authorized or non-authorized users.
@@ -48,6 +50,7 @@ If `sort` or `order` is not a string, the method also applies the default sortin
     - `employee` — employee, 
     - `extranet` — extranet user, 
     - `email` — mail user
+    - `bot` — chatbot
 - `ACTIVE` — when set to *true*, excludes terminated users from the request.
   
 Filtering parameters can take array values.
@@ -67,7 +70,7 @@ A key can be assigned an additional prefix that clarifies the filter behavior. P
 
 - `%=` — LIKE (see description above)
 
-- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides.
+- `!%` — NOT LIKE, substring search. The `%` symbol does not need to be passed in the filter value. The search goes from both sides
 
 - `!=%` — NOT LIKE, substring search. The `%` symbol must be passed in the value. Examples:
     - "mol%" — searching for values that do not start with "mol"
@@ -365,6 +368,33 @@ Formula for calculating the value of the `start` parameter:
     echo '<PRE>';
     print_r($result);
     echo '</PRE>';
+    ```
+
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.get", b24.Params{
+    	"UF_DEPARTMENT": 1,
+    	"SORT":          "ID",
+    	"ORDER":         "asc",
+    	"start":         10,
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("user.get: %w", err)
+    }
+
+    var items []struct {
+    	ID       b24.ID `json:"ID"`
+    	Name     string `json:"NAME"`
+    	LastName string `json:"LAST_NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Name, it.LastName)
+    }
     ```
 
 {% endlist %}
@@ -1175,14 +1205,39 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The response root element, which contains the filtered list of users ||
+[`array`](../data-types.md) | An array of users, up to 50 records per page. User fields are described in the [field table](user-current.md#user-fields). If there are no users, an empty array is returned ||
 || **total**
-[`integer`](../data-types.md) | The total number of records found ||
+[`integer`](../data-types.md) | The total number of users found. Not returned if `start` exceeds the number of records ||
+|| **next**
+[`integer`](../data-types.md) | The `start` value for the next page. Returned if there are more records than on the current page ||
 || **time**
 [`time`](../data-types.md) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+HTTP status: **400**
+
+```json
+{
+    "error": "ERROR_ARGUMENT",
+    "error_description": "Invalid order \"ZZZ\"",
+    "argument": ""
+}
+```
+
+{% include notitle [Error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | Invalid order "`value`" | The `order` parameter contains a value other than `ASC` or `DESC` ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application has none of the scope versions: `user`, `user_basic`, or `user_brief` ||
+|| `401` | `INVALID_CREDENTIALS` | Invalid request credentials | Invalid webhook code or authorization token ||
+|#
+
+The method ignores an invalid `FILTER` or an unknown field in it without an error and returns the list without that condition.
 
 {% include [System errors](../../_includes/system-errors.md) %}
 

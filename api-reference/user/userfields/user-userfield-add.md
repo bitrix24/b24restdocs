@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The `user.userfield.add` method adds a custom field.
+The `user.userfield.add` method creates a custom field in the employee profile and returns its ID. The `UF_USR_` prefix is automatically added to the `FIELD_NAME` code. The type and multiplicity of the field cannot be changed after it is created.
 
 ## Method Parameters
 
@@ -41,7 +41,7 @@ The `user.userfield.add` method adds a custom field.
 
 The resulting field code is returned by the [user.userfield.list](./user-userfield-list.md) method ||
 || **USER_TYPE_ID***
-[`string`](../../data-types.md)| Custom field type. Possible values:
+[`string`](../../data-types.md)| Custom field type. The type cannot be changed after the field is created. Possible values:
 - `string` — string
 - `integer` — integer
 - `double` — number
@@ -63,47 +63,38 @@ The resulting field code is returned by the [user.userfield.list](./user-userfie
 || **SORT**
 [`integer`](../../data-types.md)| Sort order ||
 || **MULTIPLE**
-[`boolean`](../../data-types.md)| Whether the field is multiple. Possible values:
+[`string`](../../data-types.md)| Whether the field is multiple. Cannot be changed after the field is created. Possible values:
 - `Y` — yes
 - `N` — no
- ||
-|| **MANDATORY**
-[`boolean`](../../data-types.md)| Whether the custom field is required. Possible values:
-- `Y` — yes
-- `N` — no ||
+
+Default is `N` ||
 || **SHOW_FILTER**
-[`boolean`](../../data-types.md)| Whether to show the field in the list filter. Possible values:
-- `Y` — yes
-- `N` — no ||
-|| **SHOW_IN_LIST**
-[`boolean`](../../data-types.md)| Whether to show the field in the list. Possible values:
-- `Y` — yes
-- `N` — no ||
-- || **EDIT_IN_LIST**
-[`boolean`](../../data-types.md)| Whether to edit the field in the list. Possible values:
-- `Y` — yes
-- `N` — no ||
-- || **IS_SEARCHABLE**
-[`boolean`](../../data-types.md)| Whether the field is included in search. Possible values:
-- `Y` — yes
-- `N` — no ||
+[`string`](../../data-types.md)| Whether to show the field in the list filter. Possible values:
+- `Y` — yes. The method saves the value `E`, a mask filter, which is returned by [user.userfield.list](./user-userfield-list.md)
+- `N` — no
+
+Default is `N` ||
 || **SETTINGS**
-[`object`](../../data-types.md)| An object in `{"field_1": "value_1", ... "field_N": "value_N"}` format to pass additional custom field settings. Settings are described [below](#settings) ||
+[`object`](../../data-types.md)| Additional field settings. The set depends on the `USER_TYPE_ID` type [(detailed description)](#settings) ||
+|| **LIST**
+[`object[]`](../../data-types.md)| Value options for an `enumeration` field [(detailed description)](#list) ||
 || **EDIT_FORM_LABEL**
-[`string`](../../data-types.md)| Label in the editing form. You can pass a string or an object with labels by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
+[`string`](../../data-types.md) \| [`object`](../../data-types.md) | Label in the editing form. You can pass a string or an object with labels by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
 || **LIST_COLUMN_LABEL**
-[`string`](../../data-types.md)| Column header in the list. You can pass a string or an object with labels by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
+[`string`](../../data-types.md) \| [`object`](../../data-types.md) | Column header in the list. You can pass a string or an object with labels by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
 || **LIST_FILTER_LABEL**
-[`string`](../../data-types.md)| Filter header in the list. You can pass a string or an object with labels by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
+[`string`](../../data-types.md) \| [`object`](../../data-types.md) | Filter header in the list. You can pass a string or an object with labels by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
 || **ERROR_MESSAGE**
-[`string`](../../data-types.md)| Error message for invalid input. You can pass a string or an object with texts by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
+[`string`](../../data-types.md) \| [`object`](../../data-types.md) | Error message for invalid input. You can pass a string or an object with texts by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
 || **HELP_MESSAGE**
-[`string`](../../data-types.md)| Tooltip text for the field. You can pass a string or an object with texts by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
+[`string`](../../data-types.md) \| [`object`](../../data-types.md) | Tooltip text for the field. You can pass a string or an object with texts by language in `{"de": "...", "en": "..."}` format. If a string is passed, the value will be set for all languages ||
 || **LABEL**
 [`string`](../../data-types.md)| Default custom field name. 
 
 The value will be set in fields `LIST_FILTER_LABEL`, `LIST_COLUMN_LABEL`, `EDIT_FORM_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` if no value is provided in them ||
 |#
+
+The method does not accept the `MANDATORY`, `SHOW_IN_LIST`, `EDIT_IN_LIST`, and `IS_SEARCHABLE` parameters and ignores them without an error. The field is always created with `MANDATORY` = `N`, `SHOW_IN_LIST` = `Y`, `EDIT_IN_LIST` = `Y`, `IS_SEARCHABLE` = `N`.
 
 ### Parameter SETTINGS {#settings}
 
@@ -180,10 +171,10 @@ Each custom field type has its own set of additional configurations.
 
     Object format:
 
-    ```
+    ```json
     {
-        VALUE: datetime|date,
-        TYPE: 'NONE'|'NOW'|'FIXED',
+        "VALUE": "2026-01-15",
+        "TYPE": "FIXED"
     }
     ```
 
@@ -192,14 +183,14 @@ Each custom field type has its own set of additional configurations.
     - `TYPE` — type of the default value:
       - `NONE` — do not set a default value
       - `NOW` — use current time/date
-      - `FIXED` — use time/date from `VALUE`
+      - `FIXED` — use time/date from `VALUE`. For a `datetime` field, the `FIXED` value is currently saved incorrectly: the method returns the date `1970-01-01`. Use `NOW` or `NONE`
 
     Default value:
 
-    ```
+    ```json
     {
-        VALUE: '',
-        TYPE: 'NONE',
+        "VALUE": "",
+        "TYPE": "NONE"
     }
     ```
     ||
@@ -218,7 +209,8 @@ Each custom field type has its own set of additional configurations.
     - `DIALOG` — entity selection dialog
 
     Default `LIST` ||
-    || **LIST_HEIGHT** | List height. Must be greater than 0.
+    || **LIST_HEIGHT**
+    [`integer`](../../data-types.md) | List height. Must be greater than 0.
 
     Available only when `DISPLAY = LIST` or `DISPLAY = UI`.
 
@@ -255,7 +247,7 @@ Each custom field type has its own set of additional configurations.
 
     Default `1` ||
     || **ACTIVE_FILTER**
-    [`boolean`](../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
+    [`string`](../../data-types.md) | Whether to show items with the activity flag enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
@@ -283,92 +275,67 @@ Each custom field type has its own set of additional configurations.
     || **Name**
     `type` | **Description** ||
     || **LEAD**
-    [`boolean`](../../data-types.md) | Whether binding to [Leads](../../crm/leads/index.md) is enabled. Possible values:
+    [`string`](../../data-types.md) | Whether binding to [Leads](../../crm/leads/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
-    Default is `N` ||
+    Default is `N`. If no binding is enabled, `LEAD` is enabled ||
     || **CONTACT**
-    [`boolean`](../../data-types.md) | Whether binding to [Contacts](../../crm/contacts/index.md) is enabled. Possible values:
+    [`string`](../../data-types.md) | Whether binding to [Contacts](../../crm/contacts/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **COMPANY**
-    [`boolean`](../../data-types.md) | Whether binding to [Companies](../../crm/companies/index.md) is enabled. Possible values:
+    [`string`](../../data-types.md) | Whether binding to [Companies](../../crm/companies/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     || **DEAL**
-    [`boolean`](../../data-types.md) | Whether binding to [Deals](../../crm/deals/index.md) is enabled. Possible values:
+    [`string`](../../data-types.md) | Whether binding to [Deals](../../crm/deals/index.md) is enabled. Possible values:
     - `Y` — yes
     - `N` — no
 
     Default is `N` ||
     |#
 
-- Python
-
-    ```python
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    fields = {
-        "FIELD_NAME": "UF_USR_SKILLS_PROFILE",
-        "USER_TYPE_ID": "string",
-        "XML_ID": "UF_USR_SKILLS_PROFILE",
-        "SORT": 150,
-        "MULTIPLE": "N",
-        "MANDATORY": "N",
-        "SHOW_FILTER": "Y",
-        "SHOW_IN_LIST": "Y",
-        "EDIT_IN_LIST": "Y",
-        "IS_SEARCHABLE": "Y",
-        "SETTINGS": {
-            "DEFAULT_VALUE": "Python integration engineer",
-            "ROWS": 3,
-        },
-        "EDIT_FORM_LABEL": {
-            "en": "Skills profile",
-        },
-        "LIST_COLUMN_LABEL": {
-            "en": "Skills profile",
-        },
-        "LIST_FILTER_LABEL": {
-            "en": "Skills profile",
-        },
-        "ERROR_MESSAGE": {
-            "en": "Skills profile is invalid",
-        },
-        "HELP_MESSAGE": {
-            "en": "Store a short integration skills summary.",
-        },
-        "LABEL": "Skills profile",
-    }
-
-    try:
-        bitrix_response = client.user.userfield.add(
-            fields=fields,
-        ).response
-        result = bitrix_response.result
-        print(result)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print("Bitrix SDK error", error.message, sep="\n")
-    except Exception as error:
-        print("Unexpected error", error, sep="\n")
-    ```
 {% endlist %}
+
+For `file`, `url`, `address`, `money`, and `employee` fields, the method does not accept `SETTINGS`: the passed settings are ignored, and the field gets the default system settings. For an `employee` field, the `SHOW_FILTER` = `Y` value is saved as `I`, an exact match filter.
+
+### Parameter LIST {#list}
+
+Value options for an `enumeration` field. Passed in `fields` as an array of objects.
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **VALUE***
+[`string`](../../data-types.md) | Option text. Options with an empty `VALUE` are not saved ||
+|| **SORT**
+[`integer`](../../data-types.md) | Option order in the list ||
+|| **DEF**
+[`string`](../../data-types.md) | Default option:
+- `Y` — yes
+- `N` — no
+
+For a field with `MULTIPLE` = `N`, only one option can be the default: the first one with `DEF` = `Y` ||
+|| **XML_ID**
+[`string`](../../data-types.md) | External code of the option. If not passed, it is generated automatically ||
+|#
 
 {% note info "" %}
 
 If it is necessary to create a custom field with an added custom type via the API, you must specify `rest_<app_number>_<added_type_USER_TYPE_ID>` in the `USER_TYPE_ID` field. For example, `rest_436278_test_type`.
+
+{% endnote %}
+
+{% note warning "" %}
+
+The field is added to the profiles of all employees, so in a Bitrix24 account with many users the request takes a long time and may be interrupted by a timeout. For more details, see [Common Causes of Server Errors](./index.md#server-errors).
 
 {% endnote %}
 
@@ -390,10 +357,7 @@ If it is necessary to create a custom field with an added custom type via the AP
             "XML_ID": "UF_CRM_DEALS",
             "SORT": 100,
             "MULTIPLE": "Y",
-            "MANDATORY": "N",
             "SHOW_FILTER": "N",
-            "SHOW_IN_LIST": "Y",
-            "EDIT_IN_LIST": "Y",
             "SETTINGS": {
                 "DEAL": "Y"
             },
@@ -418,10 +382,7 @@ If it is necessary to create a custom field with an added custom type via the AP
             "XML_ID": "UF_CRM_DEALS",
             "SORT": 100,
             "MULTIPLE": "Y",
-            "MANDATORY": "N",
             "SHOW_FILTER": "N",
-            "SHOW_IN_LIST": "Y",
-            "EDIT_IN_LIST": "Y",
             "SETTINGS": {
                 "DEAL": "Y"
             },
@@ -458,10 +419,7 @@ If it is necessary to create a custom field with an added custom type via the AP
             XML_ID: 'UF_CRM_DEALS',
             SORT: 100,
             MULTIPLE: 'Y',
-            MANDATORY: 'N',
             SHOW_FILTER: 'N',
-            SHOW_IN_LIST: 'Y',
-            EDIT_IN_LIST: 'Y',
             SETTINGS: {
               DEAL: 'Y',
             },
@@ -507,10 +465,7 @@ If it is necessary to create a custom field with an added custom type via the AP
                 XML_ID: 'UF_CRM_DEALS',
                 SORT: 100,
                 MULTIPLE: 'Y',
-                MANDATORY: 'N',
                 SHOW_FILTER: 'N',
-                SHOW_IN_LIST: 'Y',
-                EDIT_IN_LIST: 'Y',
                 SETTINGS: {
                   DEAL: 'Y',
                 },
@@ -549,15 +504,12 @@ If it is necessary to create a custom field with an added custom type via the AP
     try:
         bitrix_response = client.user.userfield.add(
             fields={
-                "FIELD_NAME": "UF_USER_DEALS",
+                "FIELD_NAME": "UF_USR_DEALS",
                 "USER_TYPE_ID": "crm",
                 "XML_ID": "UF_CRM_DEALS",
                 "SORT": 100,
                 "MULTIPLE": "Y",
-                "MANDATORY": "N",
                 "SHOW_FILTER": "N",
-                "SHOW_IN_LIST": "Y",
-                "EDIT_IN_LIST": "Y",
                 "SETTINGS": {
                     "DEAL": "Y",
                 },
@@ -596,10 +548,7 @@ If it is necessary to create a custom field with an added custom type via the AP
                         'XML_ID' => 'UF_CRM_DEALS',
                         'SORT' => 100,
                         'MULTIPLE' => 'Y',
-                        'MANDATORY' => 'N',
                         'SHOW_FILTER' => 'N',
-                        'SHOW_IN_LIST' => 'Y',
-                        'EDIT_IN_LIST' => 'Y',
                         'SETTINGS' => [
                             'DEAL' => 'Y',
                         ],
@@ -636,10 +585,7 @@ If it is necessary to create a custom field with an added custom type via the AP
                 XML_ID: "UF_CRM_DEALS",
                 SORT: 100,
                 MULTIPLE: "Y",
-                MANDATORY: "N",
                 SHOW_FILTER: "N",
-                SHOW_IN_LIST: "Y",
-                EDIT_IN_LIST: "Y",
                 SETTINGS: {
                     DEAL: "Y",
                 },
@@ -673,10 +619,7 @@ If it is necessary to create a custom field with an added custom type via the AP
                 'XML_ID' => 'UF_CRM_DEALS',
                 'SORT' => 100,
                 'MULTIPLE' => 'Y',
-                'MANDATORY' => 'N',
                 'SHOW_FILTER' => 'N',
-                'SHOW_IN_LIST' => 'Y',
-                'EDIT_IN_LIST' => 'Y',
                 'SETTINGS' => [
                     'DEAL' => 'Y',
                 ],
@@ -704,10 +647,7 @@ If it is necessary to create a custom field with an added custom type via the AP
     		"XML_ID":       "UF_CRM_DEALS",
     		"SORT":         100,
     		"MULTIPLE":     "Y",
-    		"MANDATORY":    "N",
     		"SHOW_FILTER":  "N",
-    		"SHOW_IN_LIST": "Y",
-    		"EDIT_IN_LIST": "Y",
     		"SETTINGS": b24.Params{
     			"DEAL": "Y",
     		},
@@ -735,15 +675,16 @@ HTTP status: **200**
 
 ```json
 {
-    "result":177,
-    "time":{
-        "start":1747301035.550121,
-        "finish":1747301037.514112,
-        "duration":1.9639909267425537,
-        "processing":0.5865437984466553,
-        "date_start":"2025-05-15T11:23:55+02:00",
-        "date_finish":"2025-05-15T11:23:57+02:00",
-        "operating":0
+    "result": 6008111,
+    "time": {
+        "start": 1793288724,
+        "finish": 1793288724.469025,
+        "duration": 0.4690248966217041,
+        "processing": 0,
+        "date_start": "2026-10-29T18:45:24+01:00",
+        "date_finish": "2026-10-29T18:45:24+01:00",
+        "operating_reset_at": 1793289240,
+        "operating": 0.11251688003540039
     }
 }
 ```
@@ -775,13 +716,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| ERROR_ARGUMENT | Argument 'USER_TYPE_ID' is null or empty | Not specified `USER_TYPE_ID` ||
-|| ERROR_ARGUMENT | Argument 'HANDLER' is null or empty | Not specified `HANDLER` ||
-|| ERROR_CORE | Field \*** for USER object already exists | Field \*** for `USER` object already exists ||
-|| ERROR_CORE | Fail to create new user field | Error while creating field ||
-|| Empty string | The \u0027FIELD_NAME\u0027 field is not found. | Mandatory field `FIELD_NAME` is not specified ||
-|| Empty string | The \u0027USER_TYPE_ID\u0027 field is not found. | Mandatory field `USER_TYPE_ID` is not specified ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_CORE` | The field UF_USR_\*\*\* for entity USER already exists. | A field with this `FIELD_NAME` already exists ||
+|| `400` | `ERROR_CORE` | The custom type is invalid. | The `USER_TYPE_ID` contains a type that is not in the list ||
+|| `400` | `ERROR_CORE` | Fail to create new user field | Error while creating field ||
+|| `400` | Empty string | The \u0027FIELD_NAME\u0027 field is not found. | Mandatory field `FIELD_NAME` is not specified ||
+|| `400` | Empty string | The \u0027USER_TYPE_ID\u0027 field is not found. | Mandatory field `USER_TYPE_ID` is not specified ||
+|| `400` | Empty string | Access denied. | The user does not have administrator permissions ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `user.userfield` scope ||
+|| `500` | `INTERNAL_SERVER_ERROR` | Internal server error | The limit of 1016 custom fields is exceeded, or the request did not complete within `max_execution_time`. For more details, see [Common Causes of Server Errors](./index.md#server-errors) ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -791,3 +734,5 @@ HTTP status: **400**
 - [{#T}](./user-userfield-update.md)
 - [{#T}](./user-userfield-list.md)
 - [{#T}](./user-userfield-delete.md)
+- [{#T}](../user-update.md)
+- [{#T}](../user-get.md)

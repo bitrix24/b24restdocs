@@ -327,6 +327,32 @@ The method automatically selects full-text search or a beginning-of-string searc
     echo '</PRE>';
     ```
 
+- Go
+
+    ```go
+    // client and ctx are already created — see the Go SDK section
+    res, err := client.Core().Call(ctx, "user.search", b24.Params{
+    	"FILTER": b24.Params{
+    		"FIND": "Klaus",
+    	},
+    }, b24.WithIdempotent())
+    if err != nil {
+    	return fmt.Errorf("user.search: %w", err)
+    }
+
+    var items []struct {
+    	ID       b24.ID `json:"ID"`
+    	Name     string `json:"NAME"`
+    	LastName string `json:"LAST_NAME"`
+    }
+    if err := json.Unmarshal(res.Result, &items); err != nil {
+    	return fmt.Errorf("parse response: %w", err)
+    }
+    for _, it := range items {
+    	fmt.Println(it.ID, it.Name, it.LastName)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
@@ -427,9 +453,28 @@ The method returns fields available to the application or webhook scope. You can
 
 ## Error Handling
 
-The method does not return specific errors.
+HTTP status: **400**
+
+```json
+{
+    "error": "ERROR_ARGUMENT",
+    "error_description": "Invalid order \"ZZZ\"",
+    "argument": ""
+}
+```
 
 {% include notitle [error handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_ARGUMENT` | Invalid order "`value`" | The `order` parameter contains a value other than `ASC` or `DESC` ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application has none of the scope versions: `user`, `user_basic`, or `user_brief` ||
+|| `401` | `INVALID_CREDENTIALS` | Invalid request credentials | Invalid webhook code or authorization token ||
+|#
+
+If no one matches `FIND`, the method returns an empty array without an error. The method ignores an invalid `FILTER` and returns the list without a condition.
 
 {% include [system errors](../../_includes/system-errors.md) %}
 

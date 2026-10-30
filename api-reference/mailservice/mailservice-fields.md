@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `mailservice.fields` returns localized names of the mail service fields.
+The method `mailservice.fields` returns the names of the mail service fields in the Bitrix24 language. The names are suitable for interface labels. The response contains neither the SMTP fields nor `UPLOAD_OUTGOING`.
 
 ## Method Parameters
 
@@ -188,18 +188,12 @@ No parameters.
     	return fmt.Errorf("mailservice.fields: %w", err)
     }
 
-    var item struct {
-    	ID     string `json:"ID"`
-    	SiteID string `json:"SITE_ID"`
-    	Active string `json:"ACTIVE"`
-    	Name   string `json:"NAME"`
-    	Server string `json:"SERVER"`
-    	Port   string `json:"PORT"`
-    }
-    if err := json.Unmarshal(res.Result, &item); err != nil {
+    // The key is the field code, the value is its name
+    var labels map[string]string
+    if err := json.Unmarshal(res.Result, &labels); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.ID, item.SiteID)
+    fmt.Println(labels["NAME"], labels["SERVER"])
     ```
 
 {% endlist %}
@@ -275,12 +269,31 @@ HTTP status: **200**
 
 ## Error Handling
 
+The method does not return its own errors. Only system errors are possible, for example, when the method is called without the `mailservice` scope.
+
+HTTP status: **401**
+
+```json
+{
+    "error": "insufficient_scope",
+    "error_description": "The request requires higher privileges than provided by the webhook token"
+}
+```
+
 {% include notitle [Error Handling](../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `401` | `insufficient_scope` | The request requires higher privileges than provided by the webhook token | The webhook or application does not have the `mailservice` scope ||
+|#
 
 {% include [System Errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./mailservice-add.md)
 - [{#T}](./mailservice-update.md)
 - [{#T}](./mailservice-get.md)
