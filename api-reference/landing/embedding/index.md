@@ -26,9 +26,9 @@ In the "Sites" section, there are three main embedding options. Each uses its ow
 To configure:
 
 1. Select the embedding location [LANDING_SETTINGS](./settings.md).
-2. Register the embedding location using the [landing.repo.bind](./landing-repo-bind.md) method. Do not use [placement.bind](../../widgets/placement-bind.md) for this scenario.
+2. Register the embedding location using the [landing.repo.bind](./landing-repo-bind.md) or [placement.bind](../../widgets/placement-bind.md) method.
 3. In the handler, parse `PLACEMENT_OPTIONS` to obtain the site and page identifiers.
-4. If the embedding location is no longer needed, it can be removed using the method [landing.repo.unbind](./landing-repo-unbind.md).
+4. If the embedding location is no longer needed, remove it the same way it was registered: with the [landing.repo.unbind](./landing-repo-unbind.md) or [placement.unbind](../../widgets/placement-unbind.md) method.
 
 **Actions with a Block.** Use [LANDING_BLOCK_*](./block.md) if the action needs to be available while editing a block. This option is suitable when the application works not with the entire page but with a specific block. For example, you can add an action for a text block that opens the translation interface, or an action for an image block that initiates a link check for a file.
 

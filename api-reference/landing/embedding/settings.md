@@ -20,7 +20,7 @@ Use it when the application works with an entire site or page. For example, when
 
 If the action applies to a single block, use [LANDING_BLOCK_<CODE> or LANDING_BLOCK_*](./block.md).
 
-The embedding location is registered with the [landing.repo.bind](./landing-repo-bind.md) method, not [placement.bind](../../widgets/placement-bind.md). The method works only in the application context; the embedding location cannot be registered through a webhook.
+The embedding location is registered with the [landing.repo.bind](./landing-repo-bind.md) or [placement.bind](../../widgets/placement-bind.md) method. Remove it the same way it was registered: with the [landing.repo.unbind](./landing-repo-unbind.md) or [placement.unbind](../../widgets/placement-unbind.md) method. These methods work only in the application context; the embedding location cannot be registered through a webhook.
 
 {% note info "" %}
 

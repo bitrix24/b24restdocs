@@ -73,14 +73,6 @@ This parameter is used if the creation folder is not determined by `fields.ID` |
 [`string`](../../../data-types.md) | Type of templates from which the page is created. Site types from the article [Working with Site Types and Scopes](../../types.md) are used.
 
 If not provided, the site type is taken. For sites of types `STORE` and `SMN`, the default value is `PAGE` ||
-|| **PREPARE_BLOCKS**
-[`boolean`](../../../data-types.md) | Enables preparation of template blocks when creating the page.
-
-Works only together with `PREPARE_BLOCKS_DATA`. Pass boolean `true` ||
-|| **PREPARE_BLOCKS_DATA**
-[`object`](../../../data-types.md) | Additional data for preparing template blocks when creating the page.
-
-In `PREPARE_BLOCKS_DATA`, first specify the block code from the page template, and inside - parameters for this block [(detailed description)](#prepare-blocks-data) ||
 || **ADD_IN_MENU**
 [`string`](../../../data-types.md) | Flag for adding the created page to the site menu. Supported values are `Y` and `N`.
 
@@ -90,53 +82,6 @@ The logic triggers only when the value is `Y`, if the page is not already added 
 || **MENU_CODE**
 [`string`](../../../data-types.md) | Together with `BLOCK_ID`, specifies the menu code within the block where the link to the created page should be added ||
 |#
-
-### Parameter PREPARE_BLOCKS_DATA {#prepare-blocks-data}
-
-Allows you to pass settings for individual template blocks even before the page is created.
-
-Used only together with `PREPARE_BLOCKS: true`. If `PREPARE_BLOCKS` is not provided or is not passed as boolean `true`, the parameter is ignored.
-
-Structure of the object:
-
-```json
-{
-    "block_code_from_template": {
-        "ACTION": "changeComponentParams",
-        "PARAMS": {
-            "PARAMETER_NAME": "value"
-        }
-    }
-}
-```
-
-#|
-|| **Name**
-`type` | **Description** ||
-|| **ACTION**
-[`string`](../../../data-types.md) | What needs to be done with the block. The value `changeComponentParams` is supported ||
-|| **PARAMS**
-[`object`](../../../data-types.md) | Component parameters that need to be substituted into the block when creating the page.
-
-Replacement applies only to parameters that are defined as an empty string in the block template ||
-|#
-
-The set of supported parameters depends on the specific block. For example, the following parameters may be used in blocks:
-
-#|
-|| **Parameter** | **Description** ||
-|| `IBLOCK_ID` | Identifier of the catalog information block ||
-|| `SECTION_ID` | Identifier of the catalog section ||
-|| `ELEMENT_ID` | Identifier of the catalog element ||
-|| `REQUISITE` | Identifier of the company requisite in the format `{COMPANY_ID}_{REQUISITE_ID}` for blocks `69.1.contacts` and `69.2.requisites` ||
-|| `BANK_REQUISITE` | Identifier of the bank requisite in the format `{COMPANY_ID}_{BANK_REQUISITE_ID}` for the block `69.3.bank_requisites` ||
-|#
-
-The block code must match the block code in the template.
-
-If [landing.demos.getPageList](../../demos/landing-demos-get-page-list.md) returns the composition of blocks for the selected template, the block code can be taken from `DATA.items[].code`.
-
-If the composition of blocks is not returned, create a test page and check the block codes using the [landing.block.getList](../../block/methods/landing-block-get-list.md) method.
 
 ## Code Examples
 

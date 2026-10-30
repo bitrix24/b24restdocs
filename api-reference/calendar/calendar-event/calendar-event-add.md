@@ -1195,6 +1195,7 @@ Meeting room occupancy errors are returned with HTTP status **200**:
 || `400` | Empty value | Error while creating event | Another error ||
 || `400` | Empty value | Invalid parameter value for "doCheckOccupancy" | A value other than `Y` or `N` is passed in `doCheckOccupancy` ||
 || `200` | `CALENDAR_LOCATION_OCCUPANCY_CONFLICT` | The meeting room is occupied at the specified time | The meeting room from `location` is occupied at the specified time or does not exist. The response contains the `additional.occupancy` object with the fields `dates` — an array of occupancy dates in the `YYYY-MM-DDThh:mm:ssZ` format, and `truncated` — a flag indicating that the list of dates is incomplete. Dates are returned only if the user has access to view them; otherwise, the array is empty ||
+|| `200` | `CALENDAR_LOCATION_OCCUPANCY_INVALID_INTERVAL` | ROOM OCCUPANCY INTERVAL IS INVALID | The availability of the meeting room from `location` cannot be checked against the event dates. The error occurs if an event with a meeting room starts on or before January 1, 1970. To save the event without the check, pass `doCheckOccupancy` with the value `N` ||
 || `200` | `CALENDAR_LOCATION_OCCUPANCY_LOCKED` | The meeting room is currently selected for another event. Try again later or select another one | Another event is booking the meeting room at this moment. Repeat the request later ||
 |#
 
