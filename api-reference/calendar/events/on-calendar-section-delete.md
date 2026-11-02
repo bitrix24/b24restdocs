@@ -13,13 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONCALENDARSECTIONDELETE` event is triggered when a section or resource is deleted.
-
-{% note info " " %}
-
-Technically, a resource is a calendar section. Each resource is placed in a special type of calendar, and a separate section is created for it. Events `OnCalendarSection*` are triggered when resources are added, updated, or deleted.
-
-{% endnote %}
+The `ONCALENDARSECTIONDELETE` event is triggered when a calendar section or resource is deleted.
 
 {% note info "" %}
 
@@ -31,7 +25,7 @@ Events will not be sent to the application until the installation is complete. [
 
 Data is transmitted as a POST request {.b24-info}
 
-Example: event for deleting a calendar section object with `id = 202`.
+Example: event for a calendar section or resource with `id = 202`.
 
 ```json
 {
@@ -57,7 +51,7 @@ Example: event for deleting a calendar section object with `id = 202`.
 ```
 
 #|
-|| **Name**
+|| **Parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../data-types.md) | Symbolic code of the event.
@@ -66,15 +60,17 @@ In this case — `ONCALENDARSECTIONDELETE` ||
 || **event_handler_id**
 [`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../data-types.md) | An object containing information about a remote calendar section object.
+[`object`](../../data-types.md) | An object containing information about the deleted calendar section or resource.
 
 Contains a single key — `id` ||
 || **data.id**
-[`string`](../../data-types.md) | Identifier of the calendar section object ||
+[`string`](../../data-types.md) | Identifier of the deleted calendar section or resource.
+
+Only the identifier is transmitted in the event. It is sent after the section is deleted, so the remaining object fields can no longer be retrieved ||
 || **ts**
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
-[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#

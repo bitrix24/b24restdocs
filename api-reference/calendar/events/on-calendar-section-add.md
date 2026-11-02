@@ -15,12 +15,6 @@ Choose a tool for developing with an AI agent:
 
 The `ONCALENDARSECTIONADD` event is triggered when a calendar section or resource is added.
 
-{% note info " " %}
-
-Technically, a resource is a calendar section. Each resource is placed in a special type of calendar, and a separate section is created for it. Events `OnCalendarSection*` are triggered when resources are added, updated, or deleted.
-
-{% endnote %}
-
 {% note info "" %}
 
 Events will not be sent to the application until the installation is complete. [Check the application installation](../../../settings/app-installation/installation-finish.md)
@@ -31,7 +25,7 @@ Events will not be sent to the application until the installation is complete. [
 
 Data is transmitted as a POST request {.b24-info}
 
-Example: event for creating a calendar section object with `id = 202`.
+Example: event for a calendar section or resource with `id = 202`.
 
 ```json
 {
@@ -40,7 +34,7 @@ Example: event for creating a calendar section object with `id = 202`.
     "data": {
         "id": "202"
     },
-    "ts":"1734608536",
+    "ts": "1734608536",
     "auth": {
         "access_token": "s6p6eclrvim6da22ft9ch94ekreb52lv",
         "expires_in": "3600",
@@ -57,7 +51,7 @@ Example: event for creating a calendar section object with `id = 202`.
 ```
 
 #|
-|| **Name**
+|| **Parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../data-types.md) | Symbolic code of the event.
@@ -66,15 +60,17 @@ In this case — `ONCALENDARSECTIONADD` ||
 || **event_handler_id**
 [`integer`](../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../data-types.md) | Object containing information about the added calendar section object.
+[`object`](../../data-types.md) | Object containing information about the added calendar section or resource.
 
 Contains a single key — `id` ||
 || **data.id**
-[`string`](../../data-types.md) | Identifier of the calendar section object ||
+[`string`](../../data-types.md) | Identifier of the added calendar section or resource.
+
+Only the identifier is transmitted in the event. The procedure for retrieving the remaining section fields and identifying a resource is described in the [How to Distinguish a Calendar Section from a Resource](./index.md#section-or-resource) section ||
 || **ts**
 [`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
 || **auth**
-[`object`](../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#

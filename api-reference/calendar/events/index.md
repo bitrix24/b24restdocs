@@ -1,4 +1,4 @@
-# Calendar Section and Resource Events: Overview of Events
+# Overview of Events When Working with Calendar Sections and Resources
 
 {% note tip "" %}
 
@@ -29,6 +29,46 @@ An example of a handler code for the event is described in the article [How to T
 ## Server Availability for Sending and Receiving Events
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../_includes/events-index.md) %}
+
+## Event Data Structure {#event-data}
+
+All events in this section transmit the same set of fields.
+
+#|
+|| **Parameter**
+`type` | **Description** ||
+|| **event**
+[`string`](../../data-types.md) | Symbolic code of the event: `ONCALENDARSECTIONADD`, `ONCALENDARSECTIONUPDATE`, or `ONCALENDARSECTIONDELETE` ||
+|| **event_handler_id**
+[`integer`](../../data-types.md) | Identifier of the event handler ||
+|| **data**
+[`object`](../../data-types.md) | Object with the event data. Contains a single key, `id` ||
+|| **data.id**
+[`string`](../../data-types.md) | Identifier of the calendar section or resource affected by the action. The object type is not transmitted in the event data. The way to determine the type is described in the [How to Distinguish a Calendar Section from a Resource](#section-or-resource) section ||
+|| **ts**
+[`timestamp`](../../data-types.md) | Date and time of the event sent from the [event queue](../../events/index.md) ||
+|| **auth**
+[`object`](../../data-types.md) | Authorization parameters and information about the Bitrix24 account where the event occurred. The structure is described in the article [Events: Overview of Methods and Events](../../events/index.md#auth) ||
+|#
+
+### How to Distinguish a Calendar Section from a Resource {#section-or-resource}
+
+The `OnCalendarSection*` events are triggered for both a calendar section and a resource. Only the section `id` is transmitted in `data`. There is no separate type attribute in the event: a resource is stored as a calendar section with the `resource` type.
+
+To determine the object by its identifier, compare `data.id` with the list of resources from [calendar.resource.list](../resource/calendar-resource-list.md). A match with an `ID` in the response means that the event relates to a resource. The fields of a regular calendar section are returned by [calendar.section.get](../calendar-section-get.md): pass the calendar `type` and `ownerId` and find the entry with the required `ID` in the response; the `CAL_TYPE` field contains the section type. There is no separate lookup of a section by `ID` alone in the API.
+
+This approach does not work for the `ONCALENDARSECTIONDELETE` event: it is sent after deletion, and the methods no longer return the record.
+
+A shortened payload example for a resource with `id = 197`; the full example with the `auth` parameters is on the [OnCalendarSectionAdd](./on-calendar-section-add.md) page:
+
+```json
+{
+    "event": "ONCALENDARSECTIONADD",
+    "data": {
+        "id": "197"
+    }
+}
+```
 
 ## Overview of Events {#all-events}
 
