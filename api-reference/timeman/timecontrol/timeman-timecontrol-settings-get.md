@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: administrator, and in cloud Bitrix24 also an integrator
 
-The method `timeman.timecontrol.settings.get` retrieves the settings of the time control module.
+The method `timeman.timecontrol.settings.get` retrieves the time control configurations. You can change them using the [timeman.timecontrol.settings.set](./timeman-timecontrol-settings-set.md) method.
 
 ## Method Parameters
 
@@ -62,11 +62,11 @@ No parameters.
       register_idle: boolean
       register_desktop: boolean
       report_request_type: string
-      report_request_users: number[]
+      report_request_users: Array<number | string>
       report_simple_type: string
-      report_simple_users: number[]
+      report_simple_users: Array<number | string>
       report_full_type: string
-      report_full_users: number[]
+      report_full_users: Array<number | string>
     }
 
     try {
@@ -263,7 +263,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **active**
-[`boolean`](../../data-types.md) | Activity of the time control module ||
+[`boolean`](../../data-types.md) | Whether time control is enabled ||
 || **minimum_idle_for_report**
 [`integer`](../../data-types.md) | Minimum idle time in minutes after which a report is required ||
 || **register_offline**
@@ -278,14 +278,15 @@ HTTP status: **200**
 - `user` — for specific users
 - `none` — for no one ||
 || **report_request_users**
-[`array`](../../data-types.md) | Array of user IDs for whom report requests are required.
+[`array`](../../data-types.md) | Array of user IDs for whom report requests are required. The IDs can be returned as numbers or strings, for example, `["1"]`.
 
 Filled if `report_request_type` is set to `user` ||
 || **report_simple_type**
 [`string`](../../data-types.md) | Type of simple report. Possible values:
 - `all` — for everyone
 - `user` — for specific users
-- `none` — for no one ||
+
+The method does not return the `none` value: if the simple report is not available to anyone, `user` and an empty `report_simple_users` are returned ||
 || **report_simple_users**
 [`array`](../../data-types.md) | Array of user IDs with access to the simple report.
 
@@ -294,11 +295,12 @@ Filled if `report_simple_type` is set to `user` ||
 [`string`](../../data-types.md) | Type of full report. Possible values:
 - `all` — for everyone
 - `user` — for specific users
-- `none` — for no one ||
+
+The method does not return the `none` value: if the full report is not available to anyone, `user` and an empty `report_full_users` are returned ||
 || **report_full_users**
 [`array`](../../data-types.md) | Array of user IDs with access to the full report.
 
-Filled if `report_full_type` is set to `user` ||
+Filled if `report_full_type` is set to `user`. Until the full report has been configured, `[0]` is returned: the report is not available to anyone ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -310,7 +312,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to use this method"
+    "error_description": "You don't have access to user this method"
 }
 ```
 
@@ -321,7 +323,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
-|| `ACCESS_ERROR` | You don't have access to use this method | You do not have access to this method ||
+|| `ACCESS_ERROR` | You don't have access to user this method | The method was called by a user who is not an administrator. In cloud Bitrix24, the method is also available to an integrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

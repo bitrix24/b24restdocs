@@ -19,7 +19,9 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `tasks.task.result.addfromchatmessage` creates a task result from a task chat message.
+The method `tasks.task.result.addfromchatmessage` creates a result from a message in the task chat. If the result author is not a task participant, for example, an administrator, Bitrix24 adds them to the observers.
+
+Calling the method again with the same `messageId` creates another result. To avoid duplicates, check the result list before the call using [tasks.task.result.list](./tasks-task-result-list-rest-v3.md) with a filter by `taskId` and `messageId`.
 
 ## Method Parameters
 
@@ -29,7 +31,7 @@ The method `tasks.task.result.addfromchatmessage` creates a task result from a t
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Object with [message fields](#fields) ||
+[`object`](../../data-types.md) | Object with [result fields](#fields) ||
 |#
 
 ### Parameter fields {#fields}
@@ -40,7 +42,11 @@ The method `tasks.task.result.addfromchatmessage` creates a task result from a t
 || **messageId***
 [`integer`](../../data-types.md) | Identifier of the task chat message.
 
-The identifier can be obtained when sending a message using the [tasks.task.chat.message.send](../tasks-task-chat-message-send.md) method ||
+How to retrieve it:
+- the `result.messages[].id` field of the [im.dialog.messages.get](../../chats/messages/im-dialog-messages-get.md) response with `DIALOG_ID` in the format `chat{chatId}`. The `chatId` value is returned by [tasks.task.get](../tasks-task-get-rest-v3.md). The call requires the `im` scope
+- the `data.FIELDS_AFTER.MESSAGE_ID` field of the [OnTaskCommentAdd](../comment-item/events-comment/on-task-comment-add.md) event, for a new message
+
+The [tasks.task.chat.message.send](../tasks-task-chat-message-send.md) method does not return the message identifier ||
 |#
 
 ## Code Examples
@@ -99,7 +105,7 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/tasks.task.res
         createdAt: ISODate
         updatedAt: ISODate | null
         status: string
-        fileIds: number[]
+        fileIds: number[] | null
         rights: {
           edit: boolean
           remove: boolean
@@ -312,9 +318,9 @@ HTTP Status: **200**
             "text": "Task work completed",
             "authorId": 1,
             "createdAt": "2026-04-30T10:25:00+02:00",
-            "updatedAt": null,
+            "updatedAt": "2026-04-30T10:25:00+02:00",
             "status": "open",
-            "fileIds": [],
+            "fileIds": null,
             "rights": {
                 "edit": true,
                 "remove": true
@@ -323,13 +329,13 @@ HTTP Status: **200**
         }
     },
     "time": {
-        "start": 1777530300,
-        "finish": 1777530300.123456,
+        "start": 1777533900,
+        "finish": 1777533900.123456,
         "duration": 0.123456,
         "processing": 0.1,
         "date_start": "2026-04-30T10:25:00+02:00",
         "date_finish": "2026-04-30T10:25:00+02:00",
-        "operating_reset_at": 1777530900,
+        "operating_reset_at": 1777534500,
         "operating": 0
     }
 }
@@ -343,11 +349,47 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
 || **item**
-[`object`](../../data-types.md) | Object of the task result.
-
-The fields of the object match the response of the method [tasks.task.result.add](./tasks-task-result-add.md#item) ||
+[`object`](../../data-types.md) | Object of the task result [(detailed description)](#item) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object item {#item}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Result identifier ||
+|| **taskId**
+[`integer`](../../data-types.md) | Identifier of the task whose chat the message belongs to ||
+|| **text**
+[`string`](../../data-types.md) | Result text, which is the message text ||
+|| **authorId**
+[`integer`](../../data-types.md) | Identifier of the result author, the user who called the method ||
+|| **createdAt**
+[`datetime`](../../data-types.md) | Result creation date ||
+|| **updatedAt**
+[`datetime`](../../data-types.md) | Result update date. On creation, it matches `createdAt` ||
+|| **status**
+[`string`](../../data-types.md) | Result status. Possible values: `open`, `closed` ||
+|| **fileIds**
+[`array`](../../data-types.md) | Result file identifiers. If there are no files, the method returns `null` or an empty array, so check for both values ||
+|| **rights**
+[`object`](../../data-types.md) | Current user's rights on the result [(detailed description)](#rights) ||
+|| **messageId**
+[`integer`](../../data-types.md) | Identifier of the chat message the result was created from ||
+|#
+
+#### Object rights {#rights}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **edit**
+[`boolean`](../../data-types.md) | Returns `true` if the current user can edit the result ||
+|| **remove**
+[`boolean`](../../data-types.md) | Returns `true` if the current user can delete the result ||
 |#
 
 ## Error Handling
@@ -379,8 +421,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `messageId` | Required field `messageId` is missing | Provide the message identifier in `fields.messageId` ||
-|| `fileIds` | Field `fileIds` is not available for filling | Do not pass `fileIds` in the `fields` parameter ||
+|| `messageId` | Required field "messageId" is empty | Provide the message identifier in `fields.messageId` ||
+|| `fileIds` | Field "fileIds" is read-only | Do not pass `fileIds` in the `fields` parameter ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
@@ -389,15 +431,13 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error Description** | **How to Fix** ||
 || `fields` | Required field `fields` is missing | Provide a `fields` object with the `messageId` field ||
 || `messageId` | Field `messageId` requires data type `int` for this request | Provide `messageId` as a number ||
-|| `messageId` | `Message is not from task chat` | Specify the message identifier from the task chat ||
-|| `taskId` | `Task not found` | Check that the task associated with the chat exists ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `fields` | Unknown field for entity `ResultDto` | Only pass the `messageId` field in `fields` ||
+|| `fields` | Unknown field "#FIELD#" found in entity "ResultDto" | Only pass the `messageId` field in `fields` ||
 |#
 
 #### Access Error
@@ -408,7 +448,7 @@ HTTP Status: **403**
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `messageId` | Access denied | Check user permissions to create a result from the chat message ||
+|| `messageId` | Access denied | The message does not exist, is not from the task chat, or the user has no access to the task. Check the message identifier and the user's permissions on the task ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

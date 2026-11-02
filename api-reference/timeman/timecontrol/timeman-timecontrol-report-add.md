@@ -13,9 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `timeman.timecontrol.report.add` sends an absence report and adds it to the calendar.
+The method `timeman.timecontrol.report.add` sends an absence report. If you pass `CALENDAR: Y`, the method also adds an event to the employee's calendar.
 
-By default, a user can only send a report for themselves. A portal administrator can send a report for anyone—this requires specifying the user ID in the `USER_ID` parameter.
+By default, a user can only send a report for themselves. An administrator can send a report on behalf of another employee: pass their identifier in `USER_ID`. In cloud Bitrix24, an integrator can do this too.
 
 ## Method Parameters
 
@@ -29,15 +29,15 @@ By default, a user can only send a report for themselves. A portal administrator
 
 You can obtain record identifiers using the [timeman.timecontrol.reports.get](./timeman-timecontrol-reports-get.md#reports) method ||
 || **USER_ID**
-[`integer`](../../data-types.md) | User identifier. Can only be specified by an administrator.
+[`integer`](../../data-types.md) | User identifier. The method takes the parameter into account only if it is called by an administrator, and in cloud Bitrix24 also by an integrator. For other users, the method sends the report on their own behalf.
 
 You can obtain the user identifier using the [user.get](../../user/user-get.md) method ||
 || **TEXT***
 [`string`](../../data-types.md) | Report text ||
 || **TYPE**
-[`string`](../../data-types.md) | Report type:
-- `WORK` — work-related
-- `PRIVATE` — personal
+[`string`](../../data-types.md) | Absence type:
+- `WORK` — for work-related matters
+- `PRIVATE` — for personal matters
 
 Default value is `PRIVATE` ||
 || **CALENDAR**
@@ -45,7 +45,7 @@ Default value is `PRIVATE` ||
 - `Y` — yes
 - `N` — no
 
-Default value is `Y` ||
+Default value is `N` ||
 |#
 
 ## Code Examples
@@ -89,7 +89,7 @@ Default value is `Y` ||
         method: 'timeman.timecontrol.report.add',
         params: {
           REPORT_ID: 123,
-          TEXT: 'Worked on project',
+          TEXT: 'Worked on the project',
           TYPE: 'WORK',
           CALENDAR: 'Y',
         },
@@ -124,7 +124,7 @@ Default value is `Y` ||
             method: 'timeman.timecontrol.report.add',
             params: {
               REPORT_ID: 123,
-              TEXT: 'Worked on project',
+              TEXT: 'Worked on the project',
               TYPE: 'WORK',
               CALENDAR: 'Y',
             },
@@ -157,7 +157,7 @@ Default value is `Y` ||
     try:
         bitrix_response = client.timeman.timecontrol.report.add(
             report_id=123,
-            text="Worked on project",
+            text="Worked on the project",
             type="WORK",
             calendar="Y",
         ).response
@@ -296,10 +296,21 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Execution result. Returns `true` if the report was added successfully ||
+[`boolean`](../../data-types.md) | Execution result. Returns `true` if the method completed without errors ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
+
+{% note warning "" %}
+
+If `USER_ID` is not passed, the method returns `true` but does not store the report when:
+
+- there is no record with the passed `REPORT_ID`
+- the record belongs to another employee
+
+To make sure the report was added, check the `report_text` field of the record using [timeman.timecontrol.reports.get](./timeman-timecontrol-reports-get.md). This requires access to reports. See [Access Permissions](../index.md#access) for details.
+
+{% endnote %}
 
 ## Error Handling
 
@@ -319,14 +330,15 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
-|| `ACCESS_ERROR` | You don't have access for this report | You do not have access to this report ||
+|| `ACCESS_ERROR` | You don't have access for this report | The administrator passed `USER_ID`, but there is no record with `REPORT_ID` or it belongs to another employee ||
 || `TEXT_EMPTY` | Text can't be empty | The report text cannot be empty ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./timeman-timecontrol-reports-get.md)
 - [{#T}](./timeman-timecontrol-reports-users-get.md)
+- [{#T}](./timeman-timecontrol-settings-get.md)

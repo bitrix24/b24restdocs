@@ -11,15 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to the task
+> Who can execute the method: the comment author or an administrator with access to the task
 
-The method `tasks.task.result.deleteFromComment` unpins a comment as the result of a task. To remove a comment from the result, use the method [task.commentitem.delete](../comment-item/task-comment-item-delete.md).
+The method `tasks.task.result.deleteFromComment` unpins a comment as the result of a task. To delete the comment itself, use the method [task.commentitem.delete](../comment-item/task-comment-item-delete.md).
 
 A user can only unpin their own comment. An administrator can unpin comments from any user.
 
 {% note warning " " %}
 
-When working with the [new task card](../tasks-new.md) with chat from version `tasks 25.700.0`, the method does not work.
+Starting from module version `tasks 25.700.0`, the method does not work in the [new task card](../tasks-new.md) with chat. In the new card, a result is deleted using the REST 3.0 method [tasks.task.result.delete](./tasks-task-result-delete.md).
 
 {% endnote %}
 
@@ -31,9 +31,9 @@ When working with the [new task card](../tasks-new.md) with chat from version `t
 || **Name**
 `type` | **Description** ||
 || **commentId*** 
-[`integer`](../../data-types.md) | The identifier of the comment for which the result needs to be unpinned. 
+[`integer`](../../data-types.md) | The identifier of the comment for which the result needs to be unpinned.
 
-The comment identifier can be obtained when [adding a new comment](../comment-item/task-comment-item-add.md) or by using the [get list of comments](../comment-item/task-comment-item-get-list.md) method for the task ||
+You can retrieve it when [adding a new comment](../comment-item/task-comment-item-add.md) or by using the [get list of comments](../comment-item/task-comment-item-get-list.md) method for the task ||
 |#
 
 ## Code Examples
@@ -271,8 +271,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":"ERROR_CORE",
-    "error_description":"TASKS_ERROR_EXCEPTION_#4; Action is not allowed; 4/TE/ACTION_NOT_ALLOWED.<br>"
+    "error":"0",
+    "error_description":"Comment not found."
 }
 ```
 
@@ -282,9 +282,11 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `0` | Access denied. | The user does not have access rights to the task or the comment does not belong to the user ||
+|| `0` | Access denied. | The user does not have access to the task ||
+|| `0` | Access denied. | The comment was left by another user, and only an administrator can unpin another user's comment ||
+|| `0` | Comment not found. | A comment with such an identifier does not exist, or the [new task card](../tasks-new.md) is enabled in Bitrix24, where comments became chat messages ||
+|| `100` | Could not find value for parameter {commentId} | The required parameter `commentId` is not passed ||
 || `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | The value of incorrect type was passed in the `commentId` parameter. It should be of type `integer` ||
-|| `0` | Comment not found. | A comment with such an identifier does not exist ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

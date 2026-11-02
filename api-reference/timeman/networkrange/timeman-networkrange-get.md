@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: administrator, and in cloud Bitrix24 also an integrator
 
 The method `timeman.networkrange.get` retrieves the ranges of network addresses for the office network.
 
@@ -257,7 +257,9 @@ HTTP status: **200**
 || **result**
 [`array`](../../data-types.md) | The root element of the response.
 
-Contains a list of objects. Each object contains a description of the [network address range](#ip_range) ||
+A list of office network [address ranges](#ip_range).
+
+If no office network ranges are set, the method returns an empty array ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -280,7 +282,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to use this method"
+    "error_description": "You don't have access to user this method"
 }
 ```
 
@@ -291,12 +293,12 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
-|| `ACCESS_ERROR` | You don't have access to use this method | The method is only available to the administrator ||
+|| `ACCESS_ERROR` | You don't have access to user this method | The method was called by a user who is not an administrator. In cloud Bitrix24, the method is also available to an integrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./timeman-networkrange-set.md)

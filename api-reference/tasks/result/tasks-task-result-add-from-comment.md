@@ -11,15 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to the task
+> Who can execute the method: the comment author or an administrator with access to the task
 
 The method `tasks.task.result.addFromComment` pins a comment as the result of task execution.
 
-A user can pin only their own comment as a result. An administrator can pin any user's comment, making them the author of the result.
+A user can pin only their own comment as a result. An administrator can pin any user's comment and becomes the author of the result.
 
 {% note warning " " %}
 
-When working with the [new task detail form](../tasks-new.md) with chat from version `tasks 25.700.0`, the method does not work.
+Starting from module version `tasks 25.700.0`, the method does not work in the [new task card](../tasks-new.md) with chat. In the new card, a result is created from a chat message using the REST 3.0 method [tasks.task.result.addfromchatmessage](./tasks-task-result-addfromchatmessage.md).
 
 {% endnote %}
 
@@ -33,7 +33,9 @@ When working with the [new task detail form](../tasks-new.md) with chat from ver
 || **commentId***
 [`integer`](../../data-types.md) | The identifier of the comment to be pinned as a result.
 
-The comment identifier can be obtained when [adding a new comment](../comment-item/task-comment-item-add.md) or by using the [method to get the list of comments](../comment-item/task-comment-item-get-list.md) ||
+You can retrieve it when [adding a new comment](../comment-item/task-comment-item-add.md) or by using the [method to get the list of comments](../comment-item/task-comment-item-get-list.md) ||
+|| **params**
+[`object`](../../data-types.md) | Response settings. To make the method return information about attached files, pass `{"WITH_FILE_INFO": "Y"}`: the response will contain the `files` field with file identifiers and the `fileInfo` field with their description ||
 |#
 
 ## Code Examples
@@ -300,7 +302,7 @@ HTTP Status: **200**
 || **createdBy**
 [`integer`](../../data-types.md) | The identifier of the user who pinned the result ||
 || **createdAt**
-[`string`](../../data-types.md) | The date and time the result was pinned in ISO 8601 format ||
+[`string`](../../data-types.md) | The date and time the original comment was created in ISO 8601 format, not the moment the result was pinned ||
 || **updatedAt**
 [`string`](../../data-types.md) | The date and time of the last modification of the result in ISO 8601 format ||
 || **status**
@@ -308,18 +310,22 @@ HTTP Status: **200**
 - `0` — result is open
 - `1` — result is closed
 
-The result becomes closed after the task is completed and retains this status after the task is resumed. Only new results in an unfinished task will be open.
+Bitrix24 closes results when the task is completed, and they remain closed after the task is resumed.
 
-A comment with an open result cannot be added again to the result. If the result is closed, adding is possible
+A comment with an open result cannot be pinned again. If the result is closed, the comment can be pinned again
  ||
 || **text**
 [`string`](../../data-types.md) | The text of the result ||
 || **formattedText**
 [`string`](../../data-types.md) | The formatted text of the result ||
 || **files**
-`null` | Has a value of `null`. 
+`null` \| [`array`](../../data-types.md) | Identifiers of files attached to the result. If you do not pass `{"WITH_FILE_INFO": "Y"}` in `params`, the field is `null`.
 
-The list of files attached to the result can be obtained using the method [tasks.task.result.list](./tasks-task-result-list.md) ||
+You can also retrieve the list of files using the [tasks.task.result.list](./tasks-task-result-list.md) method ||
+|| **fileInfo**
+[`object`](../../data-types.md) \| [`array`](../../data-types.md) | Description of attached files: the key is the file identifier, and the value is an object with file data.
+
+The field is returned only if you pass `{"WITH_FILE_INFO": "Y"}` in `params` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -344,7 +350,8 @@ HTTP Status: **400**
 || `0` | Access denied. | The user does not have permission to access the task or the comment does not belong to the user ||
 || `0` | Result already exists. | The comment is already pinned as a result ||
 || `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | The parameter `commentId` has an invalid type value. It should be of type `integer` ||
-|| `0` | Comment not found. | A comment with such an identifier does not exist ||
+|| `0` | Comment not found. | A comment with such an identifier does not exist, or the [new task card](../tasks-new.md) is enabled in Bitrix24, where comments became chat messages ||
+|| `100` | Could not find value for parameter {commentId} | The required parameter `commentId` is not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

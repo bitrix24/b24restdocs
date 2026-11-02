@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`tasks`](../../scopes/permissions.md)
 >
-> Who can execute the method: author of the result
+> Who can execute the method: author of the result or an administrator
 
 {% note info "" %}
 
@@ -29,7 +29,7 @@ The method `tasks.task.result.delete` deletes the task result.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the result ||
+[`integer`](../../data-types.md) | Identifier of the result. It is returned by the [tasks.task.result.add](./tasks-task-result-add.md), [tasks.task.result.addfromchatmessage](./tasks-task-result-addfromchatmessage.md), and [tasks.task.result.list](./tasks-task-result-list-rest-v3.md) methods ||
 |#
 
 ## Code Examples
@@ -255,13 +255,13 @@ HTTP Status: **200**
         "result": true
     },
     "time": {
-        "start": 1777530600,
-        "finish": 1777530600.123456,
+        "start": 1777534200,
+        "finish": 1777534200.123456,
         "duration": 0.123456,
         "processing": 0.1,
         "date_start": "2026-04-30T10:30:00+02:00",
         "date_finish": "2026-04-30T10:30:00+02:00",
-        "operating_reset_at": 1777531200,
+        "operating_reset_at": 1777534800,
         "operating": 0
     }
 }
@@ -284,8 +284,14 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns `true` if the result was deleted ||
+[`boolean`](../../data-types.md) | Returns `true` if the method completed without errors ||
 |#
+
+{% note warning "" %}
+
+When called by an administrator, the method returns `true` even for a result that does not exist, for example, one that has already been deleted or has an incorrect `id`. To make sure the result was deleted, check the task result list using [tasks.task.result.list](./tasks-task-result-list-rest-v3.md).
+
+{% endnote %}
 
 ## Error Handling
 
@@ -325,6 +331,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 `filter` | Only one of the values must be provided: `id`, `filter` | Provide only the `id` parameter ||
 |#
 
+The error texts mention `filter`, but the method does not support deletion by filter. If you pass `filter` without `id`, the method returns the error "Required field `id` is missing".
+
 #### Access Error
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
@@ -333,7 +341,7 @@ HTTP Status: **403**
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `id` | Access denied | Check the user's permissions to delete the result ||
+|| `id` | Access denied | Call the method on behalf of the result author or an administrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

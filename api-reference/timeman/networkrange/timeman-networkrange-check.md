@@ -11,11 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: administrator, and in cloud Bitrix24 also an integrator
 
 The method `timeman.networkrange.check` checks whether an IP address falls within the ranges of the office network.
 
-For the method to work correctly, at least one range must be set.
+If the office network has no ranges, the method treats any IP address as an office address. Set the ranges using the [timeman.networkrange.set](./timeman-networkrange-set.md) method.
+
+The method treats the `127.0.0.1` address as an office address and returns a range named `localhost` for it.
 
 ## Method Parameters
 
@@ -23,9 +25,9 @@ For the method to work correctly, at least one range must be set.
 || **Name**
 `type` | **Description** ||
 || **IP**
-[`string`](../../data-types.md) | The IP address to check. For example, `10.10.255.25`.
+[`string`](../../data-types.md) | The IP address to check. For example, `10.10.255.255`.
 
-If not specified, the check will be performed for the current IP address ||
+If not passed, the method checks the address the request came from ||
 |#
 
 ## Code Examples
@@ -234,6 +236,12 @@ If not specified, the check will be performed for the current IP address ||
     	return fmt.Errorf("timeman.networkrange.check: %w", err)
     }
 
+    // If the IP address is not in the office network, result is false
+    if string(res.Result) == "false" {
+    	fmt.Println("The IP address is not in the office network")
+    	return nil
+    }
+
     var item struct {
     	IP    string `json:"ip"`
     	Range string `json:"range"`
@@ -271,17 +279,33 @@ HTTP Status: **200**
 }
 ```
 
+If the IP address is not in any office network range, the method returns `false`:
+
+```json
+{
+    "result": false,
+    "time": {
+        "start": 1742997578.1675889,
+        "finish": 1742997578.205729,
+        "duration": 0.038140058517456055,
+        "processing": 0.0028028488159179688,
+        "date_start": "2025-03-26T16:59:38+02:00",
+        "date_finish": "2025-03-26T16:59:38+02:00",
+        "operating_reset_at": 1742998178,
+        "operating": 0
+    }
+}
+```
+
 ### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root element of the response.
+[`object`](../../data-types.md) \| [`boolean`](../../data-types.md) | The root element of the response.
 
-Contains an object describing the range that includes the IP address.
-
-Returns `false` if the IP address is not included in any office network range ||
+An object describing the range that includes the IP address, or `false` ||
 || **ip**
  [`string`](../../data-types.md) | The IP address that was checked ||
 || **range**
@@ -299,7 +323,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to use this method"
+    "error_description": "You don't have access to user this method"
 }
 ```
 
@@ -310,12 +334,12 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
-|| `ACCESS_ERROR` | You don't have access to use this method | The method is only available to administrators ||
+|| `ACCESS_ERROR` | You don't have access to user this method | The method was called by a user who is not an administrator. In cloud Bitrix24, the method is also available to an integrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./timeman-networkrange-get.md)

@@ -11,7 +11,10 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with report viewing permission
+> Who can execute the method:
+> - a department head — for their subordinates
+> - an administrator and a user who has access to the full report in the time control settings — for any employee
+> - a user who has access to the simple report — for themselves
 
 The method `timeman.timecontrol.reports.get` retrieves a report on identified absences.
 
@@ -26,21 +29,30 @@ The method `timeman.timecontrol.reports.get` retrieves a report on identified ab
 [`integer`](../../data-types.md) | User ID for whom the reports are requested.
 
 You can obtain the user ID using the [user.get](../../user/user-get.md) method. ||
-|| **MONTH***
-[`integer`](../../data-types.md) | Month number ||
-|| **YEAR***
-[`integer`](../../data-types.md) | Year ||
+|| **MONTH**
+[`integer`](../../data-types.md) | Month number from `1` to `12`.
+
+If the parameter is not passed or the value is out of range, the method uses the current month ||
+|| **YEAR**
+[`integer`](../../data-types.md) | Year.
+
+If the parameter is not passed, the method uses the current year ||
 || **IDLE_MINUTES**
-[`integer`](../../data-types.md) | Maximum time of absence at the workplace that is not counted as absence.
+[`integer`](../../data-types.md) | Threshold in minutes: the method does not include absences of this duration or shorter in the report.
 
 This parameter is available to the manager and administrator.
 
 If not specified, the time from the module settings is used. ||
 || **WORKDAY_HOURS**
-[`integer`](../../data-types.md) | Duration of the workday in hours.
-
-Default is 8 hours. ||
+[`integer`](../../data-types.md) | Duration of the workday in hours. The method uses it to calculate the working time shortfall for the day ||
 |#
+
+{% note warning "" %}
+
+- If you do not pass `USER_ID`, the method does not return an error: an administrator receives `result: false`. For a user that does not exist, the response contains `user: false`
+- If you do not pass `WORKDAY_HOURS`, the method assumes a one-hour workday: the `workday_duration_config` field equals `3600`. Pass the duration explicitly, for example, `8`
+
+{% endnote %}
 
 ## Code Examples
 
@@ -105,7 +117,7 @@ Default is 8 hours. ||
             active: boolean
             entry_id: string
             report_type: string
-            report_text: string
+            report_text: string | null
             system_text: string | null
             source_start: string
             source_finish: string
@@ -124,7 +136,7 @@ Default is 8 hours. ||
         first_name: string
         last_name: string
         work_position: string
-        avatar: string
+        avatar: string | null
         personal_gender: string
         last_activity_date: ISODate
       }
@@ -346,7 +358,7 @@ HTTP Status: **200**
                     "reports": [
                         {
                             "id": "27",
-                            "user_id": "503",
+                            "user_id": "3",
                             "type": "TM_START",
                             "date_start": "2025-05-26T14:44:47+02:00",
                             "date_finish": "2025-05-26T14:44:47+02:00",
@@ -365,7 +377,30 @@ HTTP Status: **200**
                         },
                         {
                             "id": "29",
-                            ...
+                            "user_id": "3",
+                            "type": "TM_PAUSE",
+                            "date_start": "2025-05-26T14:45:05+02:00",
+                            "date_finish": "2025-05-26T14:45:05+02:00",
+                            "duration": 0,
+                            "active": false,
+                            "entry_id": "2237",
+                            "report_type": "PRIVATE",
+                            "report_text": "Lunch",
+                            "system_text": null,
+                            "source_start": "TM_EVENT",
+                            "source_finish": "TM_EVENT",
+                            "ip_start": "192.168.1.15",
+                            "ip_finish": "192.168.1.15",
+                            "ip_start_network": {
+                                "ip": "192.168.1.15",
+                                "range": "192.168.0.0-192.168.255.255",
+                                "name": "Office"
+                            },
+                            "ip_finish_network": {
+                                "ip": "192.168.1.15",
+                                "range": "192.168.0.0-192.168.255.255",
+                                "name": "Office"
+                            }
                         }
                     ],
                     "workday_time_leaks_real": 0
@@ -382,17 +417,17 @@ HTTP Status: **200**
             "avatar": "http://test.bitrix24.com/upload/resize_cache/45749/7acf4ca766af5d8/main/c89/c89c6b73470635c/4R5A1256.png",
             "personal_gender": "F",
             "last_activity_date": "2025-05-29T17:15:56+02:00"
-        },
-        "time": {
-            "start": 1748528193.688745,
-            "finish": 1748528193.730104,
-            "duration": 0.04135894775390625,
-            "processing": 0.014277935028076172,
-            "date_start": "2025-05-29T17:16:33+02:00",
-            "date_finish": "2025-05-29T17:16:33+02:00",
-            "operating_reset_at": 1748528793,
-            "operating": 0
         }
+    },
+    "time": {
+        "start": 1748528193.688745,
+        "finish": 1748528193.730104,
+        "duration": 0.04135894775390625,
+        "processing": 0.014277935028076172,
+        "date_start": "2025-05-29T17:16:33+02:00",
+        "date_finish": "2025-05-29T17:16:33+02:00",
+        "operating_reset_at": 1748528793,
+        "operating": 0
     }
 }
 ```
@@ -410,7 +445,7 @@ If the method returns an empty array `days`, configure the time control tool.
             REPORT_SIMPLE_TYPE: 'all',
             REPORT_FULL_TYPE: 'all',
             report_request_type: 'user',
-            report_request_users: 3,
+            report_request_users: [3],
         },
         function(result){
             if(result.error())
@@ -425,8 +460,8 @@ If the method returns an empty array `days`, configure the time control tool.
     );
     ```
 
-2. Open or close the user's workday.
-3. Execute the method `timeman.timecontrol.reports.get`. The response will include data in `days`.
+2. Open the user's workday using the [timeman.open](../base/timeman-open.md) method or close it using the [timeman.close](../base/timeman-close.md) method
+3. Call `timeman.timecontrol.reports.get` for the month in which you opened the day and check `days`
 
 ### Returned Data
 
@@ -457,7 +492,7 @@ If the method returns an empty array `days`, configure the time control tool.
 || **Name**
 `type` | **Description** ||
 || **index**
-[`integer`](../../data-types.md) | Weekday index in the format `YYYYMMDD`, for example, `20250526` for May 26, 2025 ||
+[`string`](../../data-types.md) | Date in the format `YYYYMMDD`, for example, `20250526` for May 26, 2025 ||
 || **day_title**
 [`string`](../../data-types.md) | Date in site format ||
 || **workday_date_start**
@@ -471,7 +506,7 @@ If `workday_complete = false`, the date is indicated at the moment of report gen
 || **workday_time_leaks_user**
 [`integer`](../../data-types.md) | Duration of break in seconds ||
 || **workday_time_leaks_final**
-[`integer`](../../data-types.md) | Duration of time in seconds that the user underworked or overworked. 
+[`integer`](../../data-types.md) | Duration of time in seconds that the user underworked or overworked.
 - Positive number — amount of underworked time in seconds
 - Negative number — amount of time worked beyond the required time, i.e., overtime. ||
 || **workday_duration**
@@ -484,7 +519,7 @@ If `workday_complete = false`, the date is indicated at the moment of report gen
 || **workday_duration_config**
 [`integer`](../../data-types.md) | Required duration of the workday in seconds ||
 || **reports**
-[`array`](../../data-types.md) | List of objects with records of [identified absences](#reports). 
+[`array`](../../data-types.md) | List of objects with records of [identified absences](#reports).
 
 Values are displayed in full detail of the report and for the manager. ||
 || **workday_time_leaks_real**
@@ -525,14 +560,14 @@ If `active = true`, the field contains the date at the moment of report generati
 || **entry_id**
 [`string`](../../data-types.md) | Time record ID ||
 || **report_type**
-[`string`](../../data-types.md) | Absence type. Possible values:
-- `work` — for work matters
-- `private` — for personal matters
-- `none` — type not specified, equated to `private` ||
+[`string`](../../data-types.md) | Absence type from the employee's report. Possible values:
+- `WORK` — for work matters
+- `PRIVATE` — for personal matters
+- `0` — the employee has not submitted a report yet ||
 || **report_text**
-[`string`](../../data-types.md) | Description of the reason for absence ||
+[`string`](../../data-types.md) | Description of the reason for absence. `null` if the employee has not submitted a report yet ||
 || **system_text**
-[`string`](../../data-types.md) | System description of the reason for absence. For manager only ||
+[`string`](../../data-types.md) | System description of the reason for absence, or `null`. For manager only ||
 || **source_start**
 [`string`](../../data-types.md) | Data source for the start of the record. Possible values:
 
@@ -558,11 +593,11 @@ If `active = true`, the field contains the date at the moment of report generati
 || **ip_finish**
 [`string`](../../data-types.md) | IP address at the end of the record. For manager only ||
 || **ip_start_network**
-[`boolean`](../../data-types.md) \| [`object`](../../data-types.md) | Object with [IP address decoding](#ip_network) for the start of the record, if the IP address is not within the office network. For office network, it will return `false`.
+[`boolean`](../../data-types.md) \| [`object`](../../data-types.md) | Object with the [office network range](#ip_network) for the start of the record, if the IP address is within the office network. If the address is not within the office network, the field is `false`.
 
 For manager only ||
 || **ip_finish_network**
-[`boolean`](../../data-types.md) \| [`object`](../../data-types.md) | Object with [IP address decoding](#ip_network) for the end of the record, if the IP address is not within the office network. For office network, it will return `false`.
+[`boolean`](../../data-types.md) \| [`object`](../../data-types.md) | Object with the [office network range](#ip_network) for the end of the record, if the IP address is within the office network. If the address is not within the office network, the field is `false`.
 
 For manager only ||
 |#
@@ -625,14 +660,15 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
-|| `ACCESS_ERROR` | You don't have access to this method | You do not have access to this method ||
-|| `USER_ACCESS_ERROR` | You don't have access to report for this user | You do not have access to this user's reports ||
+|| `ACCESS_ERROR` | You don't have access to this method | The user is neither a department head nor an administrator, and neither the simple nor the full report is available to them in the time control settings. If time control is disabled, any employee except a department head and an administrator receives this error ||
+|| `USER_ACCESS_ERROR` | You don't have access to report for this user | No access to this employee's reports: for example, a department head requests a report on an employee from another department ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./timeman-timecontrol-report-add.md)
 - [{#T}](./timeman-timecontrol-reports-users-get.md)
+- [{#T}](./timeman-timecontrol-settings-set.md)

@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: administrator, and in cloud Bitrix24 also an integrator
 
 The method `timeman.networkrange.set` sets the network address ranges for the office network.
+
+The method replaces the entire list of ranges: pass both the new ranges and the existing ones you want to retain. You can retrieve the current list using the [timeman.networkrange.get](./timeman-networkrange-get.md) method.
 
 ## Method Parameters
 
@@ -23,20 +25,21 @@ The method `timeman.networkrange.set` sets the network address ranges for the of
 || **Name**
 `type` | **Description** ||
 || **RANGES***
-[`string`](../../data-types.md) | Network address ranges in the form of a list of objects. Each object contains a description of the [network address range](#ip_range).
+[`array`](../../data-types.md) | Network address ranges in the form of a list of objects. Each object contains a description of the [network address range](#ip_range). An empty array clears the list of ranges.
 
-```php
-ranges: [
-    {
-        "ip_range": "10.0.0.0-10.255.255.255",
-        "name": "Office Network 10.x.x.x"
-    },
-    {
-        "ip_range": "10.10.0.1",
-        "name": "Address 10.10.0.1"
-    },
-    ...
-]
+```json
+{
+    "RANGES": [
+        {
+            "ip_range": "10.0.0.0-10.255.255.255",
+            "name": "Office Network 10.x.x.x"
+        },
+        {
+            "ip_range": "10.10.0.1",
+            "name": "Address 10.10.0.1"
+        }
+    ]
+}
 ```
 
 The range can contain:
@@ -96,15 +99,15 @@ The range can contain:
           ranges: [
             {
               ip_range: '10.0.0.0-10.255.255.255',
-              name: 'Office network 10.x.x.x',
+              name: 'Office Network 10.x.x.x',
             },
             {
               ip_range: '172.16.0.0-172.31.255.255',
-              name: 'Office network 172.x.x.x',
+              name: 'Office Network 172.x.x.x',
             },
             {
               ip_range: '192.168.0.0-192.168.255.255',
-              name: 'Office network 192.168.x.x',
+              name: 'Office Network 192.168.x.x',
             },
           ],
         },
@@ -141,15 +144,15 @@ The range can contain:
               ranges: [
                 {
                   ip_range: '10.0.0.0-10.255.255.255',
-                  name: 'Office network 10.x.x.x',
+                  name: 'Office Network 10.x.x.x',
                 },
                 {
                   ip_range: '172.16.0.0-172.31.255.255',
-                  name: 'Office network 172.x.x.x',
+                  name: 'Office Network 172.x.x.x',
                 },
                 {
                   ip_range: '192.168.0.0-192.168.255.255',
-                  name: 'Office network 192.168.x.x',
+                  name: 'Office Network 192.168.x.x',
                 },
               ],
             },
@@ -184,15 +187,15 @@ The range can contain:
             ranges=[
                 {
                     "ip_range": "10.0.0.0-10.255.255.255",
-                    "name": "Office network 10.x.x.x",
+                    "name": "Office Network 10.x.x.x",
                 },
                 {
                     "ip_range": "172.16.0.0-172.31.255.255",
-                    "name": "Office network 172.x.x.x",
+                    "name": "Office Network 172.x.x.x",
                 },
                 {
                     "ip_range": "192.168.0.0-192.168.255.255",
-                    "name": "Office network 192.168.x.x",
+                    "name": "Office Network 192.168.x.x",
                 },
             ],
         ).response
@@ -370,7 +373,7 @@ HTTP Status: **200**
 }
 ```
 
-### In case of range parsing error
+### If a Range Contains an Error
 
 HTTP Status: **200**
 
@@ -404,11 +407,13 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response. Can have values:
-- `true` — all ranges were successfully set
-- `false` — there are ranges with errors ||
-|| **error_range**
- [`array`](../../data-types.md) | Array of [ranges](#ip_range) where errors were found ||
+[`object`](../../data-types.md) | Root element of the response ||
+|| **result.result**
+[`boolean`](../../data-types.md) | Whether the ranges were stored. Can have values:
+- `true` — all ranges were stored
+- `false` — there are ranges with errors. In this case, the method does not store any range, and the previous list remains unchanged ||
+|| **result.error_ranges**
+ [`array`](../../data-types.md) | Array of [ranges](#ip_range) where errors were found. Returned only if `result.result` is `false` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -442,13 +447,13 @@ HTTP Status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
-|| `ACCESS_ERROR` | You don't have access to use this method | The method is only available to the administrator ||
-|| `INVALID_FORMAT` | A wrong format for the RANGES field is passed | An incorrect format was passed in the `RANGES` parameter ||
+|| `ACCESS_ERROR` | You don't have access to user this method | The method was called by a user who is not an administrator. In cloud Bitrix24, the method is also available to an integrator ||
+|| `INVALID_FORMAT` | A wrong format for the RANGES field is passed | The `RANGES` parameter was not passed or was not passed as an array ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./timeman-networkrange-get.md)

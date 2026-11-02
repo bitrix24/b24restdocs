@@ -29,7 +29,7 @@ The method `tasks.task.result.update` updates the text of the task result.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the result ||
+[`integer`](../../data-types.md) | Identifier of the result. It is returned by the [tasks.task.result.add](./tasks-task-result-add.md), [tasks.task.result.addfromchatmessage](./tasks-task-result-addfromchatmessage.md), and [tasks.task.result.list](./tasks-task-result-list-rest-v3.md) methods ||
 || **fields***
 [`object`](../../data-types.md) | Object with [result fields](#fields) ||
 |#
@@ -97,7 +97,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         createdAt: ISODate | null
         updatedAt: ISODate | null
         status: string
-        fileIds: number[]
+        fileIds: number[] | null
         rights: {
           edit: boolean
           remove: boolean
@@ -112,7 +112,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         params: {
           id: 17,
           fields: {
-            text: 'Work on the task has been completed and verified',
+            text: 'Task has been completed and verified',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -147,7 +147,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             params: {
               id: 17,
               fields: {
-                text: 'Work on the task has been completed and verified',
+                text: 'Task has been completed and verified',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -177,7 +177,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     fields = {
-        "text": "The work on the task is completed and verified",
+        "text": "Task has been completed and verified",
     }
 
     try:
@@ -328,13 +328,13 @@ HTTP Status: **200**
         }
     },
     "time": {
-        "start": 1777530000,
-        "finish": 1777530000.123456,
+        "start": 1777533600,
+        "finish": 1777533600.123456,
         "duration": 0.123456,
         "processing": 0.1,
         "date_start": "2026-04-30T10:20:00+02:00",
         "date_finish": "2026-04-30T10:20:00+02:00",
-        "operating_reset_at": 1777530600,
+        "operating_reset_at": 1777534200,
         "operating": 0
     }
 }
@@ -348,11 +348,47 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
 || **item**
-[`object`](../../data-types.md) | Object of the task result.
-
-The fields of the object match the response of the method [tasks.task.result.add](./tasks-task-result-add.md#item) ||
+[`object`](../../data-types.md) | Object of the task result [(detailed description)](#item) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object item {#item}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Result identifier ||
+|| **taskId**
+[`integer`](../../data-types.md) | Task identifier ||
+|| **text**
+[`string`](../../data-types.md) | New result text ||
+|| **authorId**
+[`integer`](../../data-types.md) | Result author identifier ||
+|| **createdAt**
+[`datetime`](../../data-types.md) | Result creation date ||
+|| **updatedAt**
+[`datetime`](../../data-types.md) | Result update date ||
+|| **status**
+[`string`](../../data-types.md) | Result status. Possible values: `open`, `closed` ||
+|| **fileIds**
+[`array`](../../data-types.md) | Result file identifiers. If there are no files, the method returns `null` or an empty array ||
+|| **rights**
+[`object`](../../data-types.md) | Current user's rights on the result [(detailed description)](#rights) ||
+|| **messageId**
+[`integer`](../../data-types.md) | Identifier of the chat message the result was created from. The method retains it when the text is updated. `null` if the result was not created from a message ||
+|#
+
+#### Object rights {#rights}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **edit**
+[`boolean`](../../data-types.md) | Returns `true` if the current user can edit the result ||
+|| **remove**
+[`boolean`](../../data-types.md) | Returns `true` if the current user can delete the result ||
 |#
 
 ## Error Handling
@@ -387,7 +423,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `id`
 `filter` | At least one required field is not filled: `id`, `filter` | Provide the result identifier in the `id` parameter ||
 || `id`
-`filter` | Only one of the values must be provided: `id`, `filter` | Provide only one parameter: `id` or `filter` ||
+`filter` | Only one of the values must be provided: `id`, `filter` | Provide only the `id` parameter. The method does not support the `filter` parameter ||
+|| `id` | Required field `id` is missing | The request contains `filter` but no `id`. Provide the result identifier in the `id` parameter ||
 || `fields` | Required field `fields` is missing | Provide a `fields` object with the `text` field ||
 |#
 
@@ -395,15 +432,16 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `text` | Required field `text` is missing | Provide the new result text in `fields.text` ||
-|| `fileIds` | Field `fileIds` is not available for filling | Do not provide `fileIds` in the `fields` parameter ||
+|| `text` | Required field "text" is empty | Provide the new result text in `fields.text` ||
+|| — | Add text or a file to the task status summary | An empty string was passed in `fields.text`. Provide non-empty text ||
+|| `fileIds`, `status`, and other response fields | Field "#FIELD#" is read-only | Provide only `text` in `fields` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `fields` | Unknown field for entity `ResultDto` | Only provide the `text` field in `fields` ||
+|| `fields` | Unknown field "#FIELD#" found in entity "ResultDto" | Only provide the `text` field in `fields` ||
 |#
 
 #### Access Error
@@ -414,7 +452,7 @@ HTTP Status: **403**
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `id` | Access denied | Check the user's permissions to modify the result ||
+|| `id` | Access denied | Call the method on behalf of the result author ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

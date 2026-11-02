@@ -406,9 +406,38 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Object containing response data ||
 || **items**
-[`array`](../../data-types.md) | Array of objects describing fields. The response structure depends on `select` ||
+[`array`](../../data-types.md) | Array of objects with the [field description](#field). The response structure depends on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Field Description Object {#field}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name**
+[`string`](../../data-types.md) | Field name, for example, `startTime` ||
+|| **type**
+[`string`](../../data-types.md) | Data type: `int`, `bool`, or `object`. For `startTime` and `endTime`, it is `object`, while in the [timeman.record.list](./timeman-record-list.md) response these fields are returned as an ISO 8601 string ||
+|| **title**
+[`string`](../../data-types.md) | Field title. Matches `name` ||
+|| **description**
+[`string`](../../data-types.md) | Field description. Always `null` for record fields ||
+|| **validationRules**
+[`array`](../../data-types.md) | Value validation rules. Always an empty array for record fields ||
+|| **requiredGroups**
+[`array`](../../data-types.md) | Required field groups. Always `null` for record fields ||
+|| **filterable**
+[`boolean`](../../data-types.md) | Whether the field can be used for filtering in the [timeman.record.list](./timeman-record-list.md) method ||
+|| **sortable**
+[`boolean`](../../data-types.md) | Whether the field can be used for sorting ||
+|| **editable**
+[`boolean`](../../data-types.md) | Whether the field value can be changed. Always `false` for record fields ||
+|| **multiple**
+[`boolean`](../../data-types.md) | Whether the field can contain multiple values ||
+|| **elementType**
+[`string`](../../data-types.md) | Element type for composite fields. `null` for other fields ||
 |#
 
 ## Error Handling
@@ -419,7 +448,7 @@ HTTP Status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION",
-        "message": "Unknown field `unknownField` for object `DtoFieldDto`"
+        "message": "Unknown field \"unknownField\" found in entity \"DtoFieldDto\"."
     }
 }
 ```
@@ -430,11 +459,13 @@ HTTP Status: **400**
 
 #### Access Errors
 
-Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+Error Code: `BITRIX_REST_V3_EXCEPTION_INSUFFICIENTSCOPEEXCEPTION`
+
+HTTP Status: **403**
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | Check time tracking read permissions and the `timeman` scope ||
+|| `-` | Insufficient access permissions: required scope is missing. | Add the `timeman` scope to the webhook or app ||
 |#
 
 #### Errors in the select parameter
@@ -443,7 +474,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for object `DtoFieldDto` | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
+|| `select` | Unknown field "#FIELD#" found in entity "DtoFieldDto" | Only pass fields from the list: `name`, `type`, `title`, `description`, `validationRules`, `requiredGroups`, `filterable`, `sortable`, `editable`, `multiple`, `elementType` ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`

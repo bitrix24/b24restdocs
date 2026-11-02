@@ -19,7 +19,9 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `tasks.task.result.add` adds a result to a task.
+The method `tasks.task.result.add` adds a result to a task. If the result author is not a task participant, for example, an administrator, Bitrix24 adds them to the observers.
+
+REST 3.0 task methods require the `tasks` scope, even though it is marked as deprecated in the [scope list](../../scopes/permissions.md). With the `task` scope, the method returns the `BITRIX_REST_V3_EXCEPTION_INSUFFICIENTSCOPEEXCEPTION` error.
 
 ## Method Parameters
 
@@ -40,9 +42,9 @@ The method `tasks.task.result.add` adds a result to a task.
 || **taskId***
 [`integer`](../../data-types.md) | Task identifier.
 
-The identifier can be obtained when [creating a task](../tasks-task-add-rest-v3.md), [getting a task](../tasks-task-get-rest-v3.md), or using the old method of [getting a list of tasks](../tasks-task-list-rest-v3.md) ||
+You can retrieve it when [creating a task](../tasks-task-add-rest-v3.md), [getting a task](../tasks-task-get-rest-v3.md), or using the method for [getting a list of tasks](../tasks-task-list-rest-v3.md) ||
 || **text***
-[`string`](../../data-types.md) | Result text ||
+[`string`](../../data-types.md) | Result text. The method does not accept an empty string ||
 |#
 
 ## Code Examples
@@ -99,7 +101,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         createdAt: ISODate,
         updatedAt: ISODate | null,
         status: string,
-        fileIds: number[],
+        fileIds: number[] | null,
         rights: {
           edit: boolean,
           remove: boolean,
@@ -114,7 +116,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         params: {
           fields: {
             taskId: 51,
-            text: 'Task work has been completed',
+            text: 'Task completed',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -149,7 +151,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             params: {
               fields: {
                 taskId: 51,
-                text: 'Task work has been completed',
+                text: 'Task completed',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -180,7 +182,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
     fields = {
         "taskId": 51,
-        "text": "The work on the task is completed",
+        "text": "Task completed",
     }
 
     try:
@@ -319,7 +321,7 @@ HTTP Status: **200**
             "text": "Task completed",
             "authorId": 1,
             "createdAt": "2026-04-30T10:15:00+02:00",
-            "updatedAt": null,
+            "updatedAt": "2026-04-30T10:15:00+02:00",
             "status": "open",
             "fileIds": [],
             "rights": {
@@ -330,13 +332,13 @@ HTTP Status: **200**
         }
     },
     "time": {
-        "start": 1777529700,
-        "finish": 1777529700.123456,
+        "start": 1777533300,
+        "finish": 1777533300.123456,
         "duration": 0.123456,
         "processing": 0.1,
         "date_start": "2026-04-30T10:15:00+02:00",
         "date_finish": "2026-04-30T10:15:00+02:00",
-        "operating_reset_at": 1777530300,
+        "operating_reset_at": 1777533900,
         "operating": 0
     }
 }
@@ -375,11 +377,11 @@ HTTP Status: **200**
 || **status**
 [`string`](../../data-types.md) | Result status. Possible values: `open`, `closed` ||
 || **fileIds**
-[`array`](../../data-types.md) | Result file identifiers ||
+[`array`](../../data-types.md) | Result file identifiers. If there are no files, the method returns `null` or an empty array ||
 || **rights**
 [`object`](../../data-types.md) | Current user's rights on the result [(detailed description)](#rights) ||
 || **messageId**
-[`integer`](../../data-types.md) | Chat message identifier if the result was created from a message ||
+[`integer`](../../data-types.md) | Identifier of the chat message the result was created from. For a result added from text, it is `null` ||
 |#
 
 #### Object rights {#rights}
@@ -401,11 +403,11 @@ HTTP Status: **400**
 {
     "error": {
         "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION",
-        "message": "Validation error",
+        "message": "Error validating object.",
         "validation": [
             {
                 "field": "text",
-                "message": "The required field \"text\" is not filled"
+                "message": "Required field \"text\" is empty."
             }
         ]
     }
@@ -422,9 +424,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `taskId` | Required field `taskId` is not specified | Provide the task identifier in `fields.taskId` ||
-|| `text` | Required field `text` is not specified | Provide the result text in `fields.text` ||
-|| `fileIds` | Field `fileIds` is not available for filling | Do not provide `fileIds` in the `fields` parameter ||
+|| `taskId` | Required field "taskId" is empty | Provide the task identifier in `fields.taskId` ||
+|| `text` | Required field "text" is empty | Provide the result text in `fields.text` ||
+|| `fileIds` | Field "fileIds" is read-only | Do not provide `fileIds` in the `fields` parameter ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
@@ -433,9 +435,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error Description** | **How to Fix** ||
 || `fields` | Required field `fields` is not specified | Provide the `fields` object with `taskId` and `text` fields ||
 || `taskId` | Field `taskId` requires `int` data type for this request | Provide `taskId` as a number ||
-|| `taskId` | `Task id must be positive` | Provide a positive task identifier ||
-|| `taskId` | `Task id must be set` | Provide the task identifier in `fields.taskId` ||
-|| `taskId` | `Task not found` | Specify the identifier of an existing task ||
+|| — | `Task id must be positive` | `0` or `null` was passed in `taskId`. Provide a positive task identifier ||
+|| — | `Task not found` | Specify the identifier of an existing task ||
+|| — | Add text or a file to the task status summary | An empty string was passed in `fields.text`. Provide non-empty text ||
 |#
 
 #### Access Error

@@ -11,28 +11,35 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: administrator, and in cloud Bitrix24 also an integrator
 
-The method `timeman.timecontrol.settings.set` sets the configurations for the time control module.
+The method `timeman.timecontrol.settings.set` sets the time control configurations. Pass only the settings you want to change: the method leaves the rest as they are. The current values are returned by the [timeman.timecontrol.settings.get](./timeman-timecontrol-settings-get.md) method.
+
+Pass the report type and the user list together: if you pass only the type, the method clears the user list. This applies to the following pairs:
+
+- `REPORT_REQUEST_TYPE` and `REPORT_REQUEST_USERS`
+- `REPORT_SIMPLE_TYPE` and `REPORT_SIMPLE_USERS`
+- `REPORT_FULL_TYPE` and `REPORT_FULL_USERS`
 
 {% note warning "" %}
 
-Data collection for time control begins once the corresponding registration settings are activated. It is not possible to retrieve data for the period prior to activation — the system does not retain historical information retrospectively.
+Bitrix24 collects time control data only after you enable status registration. There will be no data for the period before that.
 
 {% endnote %}
 
 ## Method Parameters
 
+All parameters are optional.
+
 #| 
 || **Name**
 `type` | **Description** ||
 || **ACTIVE**
-[`boolean`](../../data-types.md) | Activate the time control module. Possible values:
-- `true` or `1` — enable the module
-- `0` — disable the module. The option `'ACTIVE': false` does not disable the module
-||
+[`boolean`](../../data-types.md) | Enables and disables time control. Possible values:
+- `true` or `1` — enable
+- `false` or `0` — disable ||
 || **MINIMUM_IDLE_FOR_REPORT**
-[`integer`](../../data-types.md) | Minimum idle time in minutes after which a report is required ||
+[`integer`](../../data-types.md) | Minimum idle time in minutes after which a report is required. The method stores a value of `0` or less as `1` ||
 || **REGISTER_OFFLINE**
 [`boolean`](../../data-types.md) | Register offline status ||
 || **REGISTER_IDLE**
@@ -47,26 +54,32 @@ Data collection for time control begins once the corresponding registration sett
 || **REPORT_REQUEST_USERS**
 [`array`](../../data-types.md) | Array of user IDs for whom report requests are required.
 
-Filled if `REPORT_REQUEST_TYPE` is set to `user` ||
+Pass it if `REPORT_REQUEST_TYPE` is set to `user` ||
 || **REPORT_SIMPLE_TYPE**
 [`string`](../../data-types.md) | Type of simple report. Possible values:
 - `all` — for everyone
 - `user` — for specific users
-- `none` — for no one ||
+- `none` — for no one. The method stores the `user` value with an empty user list ||
 || **REPORT_SIMPLE_USERS**
 [`array`](../../data-types.md) | Array of user IDs with access to the simple report.
 
-Filled if `REPORT_SIMPLE_TYPE` is set to `user` ||
+Pass it if `REPORT_SIMPLE_TYPE` is set to `user` ||
 || **REPORT_FULL_TYPE**
 [`string`](../../data-types.md) | Type of full report. Possible values:
 - `all` — for everyone
 - `user` — for specific users
-- `none` — for no one ||
+- `none` — for no one. The method stores the `user` value with an empty user list ||
 || **REPORT_FULL_USERS**
 [`array`](../../data-types.md) | Array of user IDs with access to the full report.
 
-Filled if `REPORT_FULL_TYPE` is set to `user`  ||
+Pass it if `REPORT_FULL_TYPE` is set to `user` ||
 |#
+
+{% note warning "" %}
+
+If you pass parameters as form data rather than in a JSON body, the `false` value of the `ACTIVE`, `REGISTER_OFFLINE`, `REGISTER_IDLE`, and `REGISTER_DESKTOP` flags arrives as a string, and the method treats it as enabling the flag. To disable a flag, pass `0`.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -358,7 +371,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_ERROR",
-    "error_description": "You don't have access to use this method"
+    "error_description": "You don't have access to user this method"
 }
 ```
 
@@ -369,7 +382,7 @@ HTTP Status: **400**
 #| 
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
-|| `ACCESS_ERROR` | You don't have access to use this method | You do not have access to this method ||
+|| `ACCESS_ERROR` | You don't have access to user this method | The method was called by a user who is not an administrator. In cloud Bitrix24, the method is also available to an integrator ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -33,7 +33,7 @@ The method `timeman.record.list` returns a list of time records for an employee.
 - `["field", "operator", value]`
 - `["field", value]`, default operator is `=`
 
-The `userId` parameter is required.
+A condition on `userId` is required, for example, `["userId", 1]`. Only the `=` operator works for `userId`: for `in`, `>`, and other operators, the method returns the `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTFILTERVALIDATIONEXCEPTION` error.
 
 Available fields:
 - `userId` — employee identifier
@@ -52,10 +52,11 @@ Available fields:
 - `endTime` — end time of the work interval
 - `duration` — duration of the work interval in seconds
 - `breakLength` — duration of breaks in seconds
-- `state` — state of the record
-- `isApproved` — approval status of the record ||
+- `isApproved` — approval status of the record
+
+The record state `state` cannot be retrieved through `select`: it is returned only if `select` is not passed ||
 || **order**
-[`object`](../../data-types.md) | Sorting results in the format `{ "field": "value" }`.
+[`object`](../../data-types.md) | Sorting results in the format `{ "field": "value" }`. Without this parameter, the method returns records from newest to oldest.
 
 Available values:
 - `ASC` — ascending
@@ -70,7 +71,7 @@ Available fields for sorting:
 || **pagination**
 [`object`](../../data-types.md) | Pagination parameters:
 - `page` — page number
-- `limit` — number of records per page, default is `50`
+- `limit` — number of records per page, default is `50`, maximum is `1000`
 - `offset` — record offset. If `page` and `limit` are provided, the offset is calculated automatically ||
 |#
 
@@ -121,7 +122,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     type TimemanRecordItem = {
       id: number
       startTime: ISODate
-      endTime: ISODate
+      endTime: ISODate | null
       duration: number
     }
 
@@ -131,11 +132,6 @@ The new API call differs by adding the `/api/` segment to the request URL:
     }
 
     try {
-      // timeman.record.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `pagination` variant when sort matters.
       const response = await $b24.actions.v3.call.make<TimemanRecordListResult>({
         method: 'timeman.record.list',
         params: {
@@ -185,11 +181,6 @@ The new API call differs by adding the `/api/` segment to the request URL:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // timeman.record.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `pagination` variant when sort matters.
           const response = await $b24.actions.v3.call.make({
             method: 'timeman.record.list',
             params: {
@@ -266,7 +257,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
     pagination = {
         "page": 1,
-        "limit": 20,
+        "limit": 50,
         "offset": 0,
     }
 
@@ -491,9 +482,47 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Object containing response data ||
 || **items**
-[`array`](../../data-types.md) | Array of objects with records. The response structure depends on `select` ||
+[`array`](../../data-types.md) | Array of [work time records](#item). The set of fields depends on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Record Object {#item}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Record identifier ||
+|| **userId**
+[`integer`](../../data-types.md) | Employee identifier ||
+|| **startTime**
+[`string`](../../data-types.md) | Start time of the work interval in ISO 8601 format ||
+|| **endTime**
+[`string`](../../data-types.md) | End time of the work interval in ISO 8601 format. `null` if the interval has not ended yet ||
+|| **duration**
+[`integer`](../../data-types.md) | Duration of the work interval in seconds ||
+|| **breakLength**
+[`integer`](../../data-types.md) | Duration of breaks in seconds ||
+|| **state**
+[`object`](../../data-types.md) | Record state [(detailed description)](#state). Returned only if `select` is not passed ||
+|| **isApproved**
+[`boolean`](../../data-types.md) | Whether the record is approved ||
+|#
+
+#### Object state {#state}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **status**
+[`string`](../../data-types.md) | Record status. Possible values:
+- `opened` — the interval is open
+- `paused` — paused
+- `closed` — the interval is closed
+- `unknown` — the status is not defined ||
+|| **recommendedCloseTime**
+[`integer`](../../data-types.md) | Recommended time to close the interval. Always `null` in the response of this method ||
 |#
 
 ## Error Handling
@@ -503,12 +532,12 @@ HTTP Status: **400**
 ```json
 {
     "error": {
-        "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION",
-        "message": "Error during request object validation",
+        "code": "BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTFILTERVALIDATIONEXCEPTION",
+        "message": "Error validating request object filters.",
         "validation": [
             {
-                "field": "filter.userId",
-                "message": "Required field `filter.userId` is not specified"
+                "message": "Filter for required field \"userId\" is required.",
+                "field": "filter.userId"
             }
         ]
     }
@@ -532,9 +561,20 @@ Error Code: `TIMEMAN_TOOL_DISABLED`
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
+HTTP Status: **403**
+
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `filter.userId` | Access denied | Check the read permission for time records for the specified employee and the `timeman` scope ||
+|| — | Access denied | The user does not have permission to read this employee's records. Check the time tracking permissions ||
+|#
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INSUFFICIENTSCOPEEXCEPTION`
+
+HTTP Status: **403**
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| — | Insufficient access permissions: required scope is missing. | Add the `timeman` scope to the webhook or app ||
 |#
 
 #### Request Validation Errors
@@ -543,7 +583,15 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `filter.userId` | Required field `filter.userId` is not specified | Provide a filter with a condition for `userId` ||
+|| `filter` | Field value must not be empty | Pass the `filter` parameter with a condition on `userId` ||
+|| `filter.userId` | Required field "filter.userId" is missing | `0` was passed in `userId`. Provide the employee identifier ||
+|#
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTFILTERVALIDATIONEXCEPTION`
+
+#|
+|| **Field** | **Error Description** | **How to Fix** ||
+|| `filter.userId` | Filter for required field "userId" is required | Add the `["userId", ID]` condition with the `=` operator to `filter` ||
 |#
 
 #### Filter Errors
@@ -552,7 +600,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `filter.userId` | Multiple different `userId` values were provided in one request | Only provide one employee identifier in the filter ||
+|| — | Invalid filter "Multiple different values for filter.userId are not allowed." | Pass one employee identifier in the filter ||
 |#
 
 #### Pagination Errors

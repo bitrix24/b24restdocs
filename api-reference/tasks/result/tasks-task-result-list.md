@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `tasks.task.result.list` retrieves a list of results associated with a task.
 
+REST 3.0 has a method with the same name, [tasks.task.result.list](./tasks-task-result-list-rest-v3.md), with filtering, field selection, and pagination.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -25,8 +27,15 @@ The method `tasks.task.result.list` retrieves a list of results associated with 
 || **taskId*** 
 [`integer`](../../data-types.md) | The identifier of the task from which to retrieve results.
 
-The task identifier can be obtained when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
+You can retrieve it when [creating a new task](../tasks-task-add.md) or by using the [get task list method](../tasks-task-list.md) ||
+|| **params**
+[`object`](../../data-types.md) | Additional data in the response. To retrieve it, pass the required key with the value `Y`, for example, `{"WITH_USER_INFO": "Y"}`:
+- `WITH_USER_INFO` — the `userInfo` object with the name and avatar of the result author
+- `WITH_FILE_INFO` — the `fileInfo` object with data on attached files
+- `WITH_PARSED_TEXT` — the `parsedText` field with text for the mobile app. With it, the method also returns `fileInfo` ||
 |#
+
+The method returns all task results in one response and has no pagination.
 
 ## Code Examples
 
@@ -79,16 +88,11 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
     }
 
     try {
-      // tasks.task.result.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // tasks.task.result.list returns all results of the task in one response, without pagination
       const response = await $b24.actions.v2.call.make<TaskResultItem[]>({
         method: 'tasks.task.result.list',
         params: {
           taskId: 8017,
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -117,16 +121,11 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // tasks.task.result.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // tasks.task.result.list returns all results of the task in one response, without pagination
           const response = await $b24.actions.v2.call.make({
             method: 'tasks.task.result.list',
             params: {
               taskId: 8017,
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -182,31 +181,6 @@ The task identifier can be obtained when [creating a new task](../tasks-task-add
         bitrix_response = client.tasks.task.result.list(
             task_id=8017,
         ).as_list().response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
-    Example `as_list_fast`
-
-    ```python
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.tasks.task.result.list(
-            task_id=8017,
-        ).as_list_fast(descending=True).response
         result = bitrix_response.result
         for item in result:
             print(item)
@@ -367,17 +341,28 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | An array of objects, where each object describes a task result ||
+[`array`](../../data-types.md) | An array of [task results](#result-item) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the time taken for the request ||
+|#
+
+#### Element result {#result-item}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **id**
 [`integer`](../../data-types.md) | The identifier of the result ||
 || **taskId**
 [`integer`](../../data-types.md) | The identifier of the task ||
 || **commentId**
-[`integer`](../../data-types.md) | The identifier of the comment marked as a result ||
+[`integer`](../../data-types.md) | The identifier of the comment marked as a result.
+
+Equals `0` if the result was created by REST 3.0 methods, for example, [tasks.task.result.add](./tasks-task-result-add.md) or [tasks.task.result.addfromchatmessage](./tasks-task-result-addfromchatmessage.md) ||
 || **createdBy**
-[`integer`](../../data-types.md) | The identifier of the user who marked the result ||
+[`integer`](../../data-types.md) | The identifier of the result author ||
 || **createdAt**
-[`string`](../../data-types.md) | The date and time the result was marked in ISO 8601 format ||
+[`string`](../../data-types.md) | The date and time the result was created in ISO 8601 format. For a result created from a comment, this is the comment creation date ||
 || **updatedAt**
 [`string`](../../data-types.md) | The date and time of the last modification of the result in ISO 8601 format ||
 || **status**
@@ -385,9 +370,7 @@ HTTP Status: **200**
 - `0` — result is open
 - `1` — result is closed
 
-The result becomes closed after the task is completed and retains this status after the task is resumed. Only new results in an unfinished task will be open.
-
-A comment with an open result cannot be added again to the result. If the result is closed, adding is possible ||
+Bitrix24 closes results when the task is completed, and they remain closed after the task is resumed. A result added to an already completed task using [tasks.task.result.add](./tasks-task-result-add.md) remains open ||
 || **text**
 [`string`](../../data-types.md) | The text of the result ||
 || **formattedText**
@@ -395,10 +378,45 @@ A comment with an open result cannot be added again to the result. If the result
 || **files**
 [`array`](../../data-types.md) | A list of identifiers of files attached to the result.
 
-Contains an empty array if there are no files in the comment ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the time taken for the request ||
+Contains an empty array if there are no files in the result ||
+|| **userInfo**
+[`object`](../../data-types.md) | Data of the result author: the key is the user identifier, and the value is a [user object](#userinfo).
+
+The method returns the field if you pass the `WITH_USER_INFO: Y` key in `params` ||
+|| **fileInfo**
+[`object`](../../data-types.md) \| [`array`](../../data-types.md) | Data of attached files: the key is the file identifier, and the value is an object with file data. If there are no files, an empty array is returned.
+
+The method returns the field if you pass the `WITH_FILE_INFO: Y` or `WITH_PARSED_TEXT: Y` key in `params` ||
+|| **parsedText**
+[`string`](../../data-types.md) | Result text prepared for the mobile app.
+
+The method returns the field if you pass the `WITH_PARSED_TEXT: Y` key in `params` ||
 |#
+
+#### User Object in userInfo {#userinfo}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`string`](../../data-types.md) | User identifier, for example, `"1"` ||
+|| **name**
+[`string`](../../data-types.md) | First name ||
+|| **secondName**
+[`string`](../../data-types.md) | Middle name. `null` if not filled in ||
+|| **lastName**
+[`string`](../../data-types.md) | Last name ||
+|| **formattedName**
+[`string`](../../data-types.md) | First and last name in the format used in Bitrix24 ||
+|| **avatar**
+[`string`](../../data-types.md) | Path to the avatar. If there is no photo, the path to the default image is returned ||
+|#
+
+{% note warning "" %}
+
+For a task that does not exist, an administrator receives an empty `result` array without an error. Any other user receives the `Access denied.` error in this case.
+
+{% endnote %}
 
 ## Error Handling
 
@@ -406,8 +424,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":"100",
-    "error_description":"Invalid value {value} to match with parameter {commentId}. Should be value of type int."
+    "error":"0",
+    "error_description":"Access denied."
 }
 ```
 
@@ -417,8 +435,10 @@ HTTP Status: **400**
 
 #| 
 || **Code** | **Description** | **Value** ||
-|| `0` | Access denied. | The user does not have access to the task or a task with such `ID` does not exist ||
-|| `100` | Invalid value {value} to match with parameter {commentId}. Should be value of type int. | An invalid type value was passed in the `taskId` parameter. It should be of type `integer` ||
+|| `0` | Access denied. | The user does not have access to the task ||
+|| `0` | Task not found. | `0` was passed in the `taskId` parameter ||
+|| `100` | Could not find value for parameter {taskId} | The required parameter `taskId` is not passed ||
+|| `100` | Invalid value {value} to match with parameter {taskId}. Should be value of type int. | An invalid type value was passed in the `taskId` parameter. It should be of type `integer` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

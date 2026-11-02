@@ -21,6 +21,8 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The method `tasks.task.result.list` returns a list of task results.
 
+A method with the same name exists in the previous API version: [tasks.task.result.list](./tasks-task-result-list.md) returns the same results in a different format and without pagination.
+
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
@@ -44,7 +46,7 @@ The field for sorting can take the following values:
 - `status` — status of the result
 - `messageId` — chat message identifier ||
 || **filter***
-[`array`](../../data-types.md) | An array of conditions for filtering the list of results. Be sure to pass the condition for `taskId`.
+[`array`](../../data-types.md) | An array of conditions for filtering the list of results. Be sure to pass the condition for `taskId`, for example, `["taskId", 51]`.
 
 Each condition is an array with the field name, operator, and value. For the operator `=`, you can only pass the field name and value.
 
@@ -53,7 +55,7 @@ Condition formats:
 - `["id", ">=", 17]`
 - `["id", "in", [17, 18, 19]]`
 
-Available filter operators: `=`, `>`, `<`, `<=`, `>=`, `!=`, `in`, `between`.
+Operators:
 
 - `=` — equals
 - `>` — greater than
@@ -65,15 +67,15 @@ Available filter operators: `=`, `>`, `<`, `<=`, `>=`, `!=`, `in`, `between`.
 - `between` — is within the range of values
 
 The filterable field can take the following values:
-- `taskId` — task identifier. Required field
+- `taskId` — task identifier, only with the `=` operator: for `in`, `>`, and other operators, the method returns the `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTFILTERVALIDATIONEXCEPTION` error
 - `id` — result identifier
 - `authorId` — author identifier of the result
-- `status` — status of the result. Possible values: `open`, `closed`
+- `status` — status of the result: `open` or `closed`
 - `messageId` — chat message identifier from which the result was created ||
 || **select**
 [`array`](../../data-types.md) | An array of fields to select.
 
-If the parameter is not passed, the method will return the default fields.
+If the parameter is not passed, the method returns all fields except `author`.
 
 The field can take the following values:
 - `id` — result identifier
@@ -91,10 +93,16 @@ The field can take the following values:
 [`object`](../../data-types.md) | An object for managing pagination.
 
 Pagination parameters:
-- `page` — page number
-- `limit` — number of items per page
-- `offset` — offset from the beginning of the list ||
+- `page` — page number, starting from `1`
+- `limit` — number of items per page, `50` by default. The method reduces a value greater than `1000` to `1000`, and for `0` or a negative value returns the `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION` error
+- `offset` — offset from the beginning of the list. If you pass `page` and `limit`, the method calculates the offset itself ||
 |#
+
+{% note warning "" %}
+
+The `status` filter accepts only `open` and `closed`. The method ignores any other value without an error and returns results with any status.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -259,7 +267,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
     }
 
     pagination = {
-        "limit": 50,
+        "limit": 10,
+        "offset": 0,
     }
 
     try:
@@ -438,13 +447,13 @@ HTTP status: **200**
         ]
     },
     "time": {
-        "start": 1777529700,
-        "finish": 1777529700.123456,
+        "start": 1777533300,
+        "finish": 1777533300.123456,
         "duration": 0.123456,
         "processing": 0.1,
         "date_start": "2026-04-30T10:15:00+02:00",
         "date_finish": "2026-04-30T10:15:00+02:00",
-        "operating_reset_at": 1777530300,
+        "operating_reset_at": 1777533900,
         "operating": 0
     }
 }
@@ -467,9 +476,70 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **items**
-[`array`](../../data-types.md) | An array of task results.
+[`array`](../../data-types.md) | An array of task results [(detailed description)](#item). The set of fields depends on the `select` parameter ||
+|#
 
-The fields of the elements depend on the `select` parameter and match the fields of the result object in the method [tasks.task.result.add](./tasks-task-result-add.md#item) ||
+#### Element items {#item}
+
+The `id` field is always returned, even if it is not in `select`.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Result identifier ||
+|| **taskId**
+[`integer`](../../data-types.md) | Task identifier ||
+|| **text**
+[`string`](../../data-types.md) | Result text ||
+|| **authorId**
+[`integer`](../../data-types.md) | Result author identifier ||
+|| **author**
+[`object`](../../data-types.md) | Author data [(detailed description)](#author). The method returns the field only if you specify it in `select` ||
+|| **createdAt**
+[`datetime`](../../data-types.md) | Date and time the result was created in ISO 8601 format ||
+|| **updatedAt**
+[`datetime`](../../data-types.md) | Date and time the result was last modified in ISO 8601 format ||
+|| **status**
+[`string`](../../data-types.md) | Result status: `open` — open, `closed` — closed ||
+|| **fileIds**
+[`array`](../../data-types.md) | Result file identifiers. If there are no files, the method returns `null` or an empty array, so check for both values ||
+|| **rights**
+[`object`](../../data-types.md) | Current user's rights on the result [(detailed description)](#rights) ||
+|| **messageId**
+[`integer`](../../data-types.md) | Identifier of the chat message the result was created from. `null` if the result was not created from a message ||
+|#
+
+#### Object author {#author}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | User identifier ||
+|| **name**
+[`string`](../../data-types.md) | User's first and last name ||
+|| **role**
+[`string`](../../data-types.md) | User role. Can be `null` ||
+|| **gender**
+[`string`](../../data-types.md) | Gender: `M` or `F` ||
+|| **email**
+[`string`](../../data-types.md) | User's email ||
+|| **externalAuthId**
+[`string`](../../data-types.md) | External authentication code. `null` for regular employees ||
+|| **rights**
+[`array`](../../data-types.md) | User rights. In the response of this method, it is an empty array ||
+|#
+
+#### Object rights {#rights}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **edit**
+[`boolean`](../../data-types.md) | Returns `true` if the current user can edit the result ||
+|| **remove**
+[`boolean`](../../data-types.md) | Returns `true` if the current user can delete the result ||
 |#
 
 ## Error Handling
@@ -503,6 +573,8 @@ Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error Description** | **How to Fix** ||
 || `filter` | The field value cannot be empty | Pass the filter as an array of conditions ||
 || `taskId` | The `taskId` field requires an `int` data type for this request | Pass `taskId` as a number ||
+|| `#FIELD#` | DTO "ResultDto" in field "#FIELD#" requires attribute "Filterable" to perform this request | Filter only by the `taskId`, `id`, `authorId`, `status`, and `messageId` fields ||
+|| `#FIELD#` | DTO "ResultDto" in field "#FIELD#" requires attribute "Sortable" to perform this request | Sort only by the `id`, `authorId`, `createdAt`, `updatedAt`, `status`, and `messageId` fields ||
 |#
 
 Error code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTFILTERVALIDATIONEXCEPTION`

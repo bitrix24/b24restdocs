@@ -11,16 +11,18 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`timeman`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with the "View all work schedules" permission. Employees have this permission by default
 
-The method `timeman.schedule.get` retrieves the work schedule by its identifier. If no schedule exists with the specified identifier, it will return an empty array.
+The method `timeman.schedule.get` retrieves the work schedule by its identifier. If the schedule does not exist or `id` is not a number, the method returns an empty array without an error.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **id**
+|| **id***
 [`integer`](../../data-types.md) | Identifier of the schedule.
 
 You can find the schedule identifier in the list of schedules on the *Employees > Time and Reports > Work Schedules* page ||
@@ -74,10 +76,13 @@ You can find the schedule identifier in the list of schedules on the *Employees 
       CALENDAR_ID: number
       ALLOWED_DEVICES: {
         browser: boolean
+        b24time: boolean
+        mobile: boolean
+        mobileRecordLocation: boolean
       }
       DELETED: string
       IS_FOR_ALL_USERS: boolean
-      WORKTIME_RESTRICTIONS: string[]
+      WORKTIME_RESTRICTIONS: unknown[] | Record<string, boolean | number>
       CONTROLLED_ACTIONS: number
       UPDATED_BY: number
       DELETED_BY: number
@@ -99,7 +104,7 @@ You can find the schedule identifier in the list of schedules on the *Employees 
         NAME: string
         PARENT_CALENDAR_ID: number
         SYSTEM_CODE: string
-        EXCLUSIONS: string[]
+        EXCLUSIONS: unknown[] | Record<string, unknown>
       }
       SCHEDULE_VIOLATION_RULES: {
         ID: number
@@ -316,13 +321,14 @@ HTTP Status: **200**
         },
         "CALENDAR_ID": 1,
         "ALLOWED_DEVICES": {
-            "browser": true
+            "browser": true,
+            "b24time": true,
+            "mobile": true,
+            "mobileRecordLocation": false
         },
         "DELETED": "0",
         "IS_FOR_ALL_USERS": true,
-        "WORKTIME_RESTRICTIONS": [
-            "[]"
-        ],
+        "WORKTIME_RESTRICTIONS": [],
         "CONTROLLED_ACTIONS": 3,
         "UPDATED_BY": 503,
         "DELETED_BY": 0,
@@ -403,13 +409,13 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response.
+[`object`](../../data-types.md) \| [`array`](../../data-types.md) | Root element of the response.
 
-Contains an object with the description of the employees' work schedule ||
+Contains an object with the description of the employees' work schedule. If a schedule with this identifier does not exist or has been deleted, the method returns an empty array ||
 || **ID**
 [`integer`](../../data-types.md) | Identifier of the work schedule ||
 || **NAME**
-[`string`](../../data-types.md) | Name of the work schedule || 
+[`string`](../../data-types.md) | Name of the work schedule ||
 || **SCHEDULE_TYPE**
 [`string`](../../data-types.md) | Type of the work schedule.
 
@@ -424,29 +430,28 @@ Possible values:
 - `MONTH` — month
 - `WEEK` — week
 - `TWO_WEEKS` — two weeks
-- `QUARTER`  — quarter ||
+- `QUARTER` — quarter ||
 || **REPORT_PERIOD_OPTIONS**
 [`object`](../../data-types.md) | Object with the description of [additional settings](#report_period_options) for report generation period.
 
-Only for `REPORT_PERIOD` with values `WEEK` and `TWO_WEEKS` ||
+The field is returned for any `REPORT_PERIOD` value, and its settings apply to the `WEEK` and `TWO_WEEKS` periods ||
 || **CALENDAR_ID**
 [`integer`](../../data-types.md) | Identifier of the calendar associated with the work schedule ||
 || **ALLOWED_DEVICES**
 [`object`](../../data-types.md) | Object with the description of [allowed devices](#allowed_devices) for time tracking ||
 || **DELETED**
-[`string`](../../data-types.md) | Flag indicating if the work schedule is deleted.
-
-Value `"0"` means the schedule is active. Value `"1"` indicates a deleted state ||
+[`string`](../../data-types.md) | Flag indicating if the work schedule is deleted. Always `"0"`: the method does not return a deleted schedule and returns an empty array instead ||
 || **IS_FOR_ALL_USERS**
 [`boolean`](../../data-types.md) | Applicability of the schedule to all employees.
 
 Value `true` means the schedule applies to all users of the system ||
 || **WORKTIME_RESTRICTIONS**
-[`array`](../../data-types.md) | Work time restrictions.
-
-Contains an array of strings with restriction rules ||
+[`array`](../../data-types.md) \| [`object`](../../data-types.md) | Work time restrictions. If there are no restrictions, an empty array is returned. If they are set, an object with the `ALLOWED_TO_EDIT_RECORD`, `ALLOWED_TO_REOPEN_RECORD`, and `MAX_SHIFT_START_OFFSET` keys is returned ||
 || **CONTROLLED_ACTIONS**
-[`integer`](../../data-types.md) | Number of controlled actions within the work schedule ||
+[`integer`](../../data-types.md) | Employee actions controlled by the schedule. Possible values:
+- `1` — start of the workday
+- `2` — end of the workday
+- `3` — start and end ||
 || **UPDATED_BY**
 [`integer`](../../data-types.md) | Identifier of the user who last updated the work schedule ||
 || **DELETED_BY**
@@ -469,9 +474,18 @@ Value `0` indicates system creation ||
 [`object`](../../data-types.md) | Object with information about the [calendar](#calendar) associated with the work schedule ||
 || **SCHEDULE_VIOLATION_RULES**
 [`object`](../../data-types.md) | Object with the description of [schedule violation rules](#schedule_violation_rules) ||
+|| **USER_ASSIGNMENTS**
+`DEPARTMENT_ASSIGNMENTS`
+[`array`](../../data-types.md) | Schedule assignments to employees and departments. The fields are returned only if the schedule has assignments. An employee assignment element: `SCHEDULE_ID`, `USER_ID`, `STATUS` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
+
+{% note warning "" %}
+
+The method returns employee assignments in the `DEPARTMENT_ASSIGNMENTS` field and department assignments in `USER_ASSIGNMENTS`.
+
+{% endnote %}
 
 #### Object REPORT_PERIOD_OPTIONS {#report_period_options}
 
@@ -487,7 +501,7 @@ Possible values:
 - `2` — Wednesday
 - `3` — Thursday
 - `4` — Friday
-- `5` — Saturday 
+- `5` — Saturday
 - `6` — Sunday ||
 |#
 
@@ -500,6 +514,12 @@ Possible values:
 [`boolean`](../../data-types.md) | Is time tracking allowed through the browser.
 
 If `true` — tracking is allowed ||
+|| **b24time**
+[`boolean`](../../data-types.md) | Whether time tracking through the Bitrix24.Time app is allowed ||
+|| **mobile**
+[`boolean`](../../data-types.md) | Whether time tracking through the mobile app is allowed ||
+|| **mobileRecordLocation**
+[`boolean`](../../data-types.md) | Whether to record the location when tracking time through the mobile app ||
 |#
 
 #### Object SHIFTS {#shifts}
@@ -543,9 +563,7 @@ Value `0` indicates that there is no parent calendar ||
 || **SYSTEM_CODE**
 [`string`](../../data-types.md) | System code of the calendar ||
 || **EXCLUSIONS**
-[`array`](../../data-types.md) | Exclusions from the calendar.
-
-Contains an array of strings with dates or periods excluded from the calendar ||
+[`array`](../../data-types.md) \| [`object`](../../data-types.md) | Exclusions from the calendar. If there are no exclusions, an empty array is returned. If they are set, an object is returned: the key is the year, the value is the dates excluded from the calendar ||
 |#
 
 #### Object SCHEDULE_VIOLATION_RULES {#schedule_violation_rules}
@@ -558,9 +576,9 @@ Contains an array of strings with dates or periods excluded from the calendar ||
 || **SCHEDULE_ID**
 [`integer`](../../data-types.md) | Identifier of the work schedule ||
 || **ENTITY_CODE**
-[`string`](../../data-types.md) | Code of the entity to which the rules apply.
+[`string`](../../data-types.md) | Code of the employees to whom the rules apply.
 
-For example, `UA` — user actions ||
+For example, `UA` — all employees ||
 || **MAX_EXACT_START**
 [`integer`](../../data-types.md) | Maximum exact start time of the workday in seconds from midnight ||
 || **MIN_EXACT_END**
@@ -602,9 +620,7 @@ Value `-1` means no restriction is set ||
 
 Value `-1` means no restriction is set ||
 || **MISSED_SHIFT_START**
-[`integer`](../../data-types.md) | Flag indicating if the start of the shift was missed.
-
-Value `0` means no missed start was recorded ||
+[`integer`](../../data-types.md) | Whether monitoring of missed shift starts is enabled: `0` — disabled, a value greater than `0` — enabled ||
 || **USERS_TO_NOTIFY**
 [`object`](../../data-types.md) | Object with the description of users for [notifying about schedule violations](#users_to_notify) ||
 |#
@@ -654,6 +670,7 @@ HTTP status: **400**
 #|
 || **Code** | **Description** | **Value** ||
 || `TIMEMAN_TOOL_DISABLED` | Time management is disabled. | The time tracking tool is disabled ||
+|| `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
