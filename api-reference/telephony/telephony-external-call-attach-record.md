@@ -28,34 +28,47 @@ Call this method after [telephony.externalCall.finish](./telephony-external-call
 [`string`](../data-types.md) | The identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md).
 
 If the method is called again for the same call, the new record will replace the previously attached one. ||
-|| **RECORD_URL***
-[`string`](../data-types.md) | The URL of the record on an external server. If this parameter is provided, Bitrix24 will download the file from the link.
+|| **RECORD_URL**
+[`string`](../data-types.md) | The URL of the record on an external server. Bitrix24 downloads the file from the link. If this parameter is provided, `FILE_CONTENT` is ignored.
 
-It is recommended to use this only if the file is reliably and quickly accessible. ||
-|| **FILENAME***
-[`string`](../data-types.md) | The name of the record file.
+It is recommended to use this only if the file is reliably and quickly accessible.
 
-Possible extensions:
+URL requirements:
+- the scheme is `http` or `https`
+- all IP addresses of the domain, both IPv4 and IPv6, are public. If at least one address is non-public, for example a local network address, `127.0.0.1`, or `100.64.0.0/10`, Bitrix24 does not download the file and the method returns an error
+- the URL contains a domain name. An IPv6 address in place of a domain name is not supported
+- no more than 5 redirects. The address of each redirect is checked against the same rules
+
+To attach a record stored on an internal network, pass it in `FILE_CONTENT` or upload it via `uploadUrl`.
+
+Supported file formats:
+- `mp3`
+- `wav`
+- `flac`
+
+The file size is limited to 512 MB ||
+|| **FILENAME**
+[`string`](../data-types.md) | The name of the record file. Required if `RECORD_URL` is not provided.
+
+If `FILE_CONTENT` is provided, possible extensions:
 - `wav`
 - `mp3`
 
-In `RECORD_URL` mode:
+If `RECORD_URL` is provided:
 - if `FILENAME` is not provided, the name is taken from the URL
-
-{% note info "" %}
-
-Provide at least one of `RECORD_URL` or `FILENAME`
-
-{% endnote %} ||
+- if the extension is not `mp3`, `wav`, or `flac`, it is replaced based on the file content type ||
 || **FILE_CONTENT**
 [`string`](../data-types.md) | The file in [Base64](../files/how-to-upload-files.md) encoding. ||
 |#
 
 {% note info "" %}
 
-If `FILENAME` is provided but `FILE_CONTENT` is not, the method will return `uploadUrl` and `fieldName` for subsequent file content upload in a separate request.
+The method works in three modes:
+- `RECORD_URL` is provided — Bitrix24 downloads the file from the link, and `FILE_ID` is returned in the response
+- `FILENAME` and `FILE_CONTENT` are provided — the file is attached immediately, and `FILE_ID` is returned in the response
+- `FILENAME` is provided without `FILE_CONTENT` — the method returns `uploadUrl` and `fieldName` for uploading the file in a separate request
 
-If both `FILENAME` and `FILE_CONTENT` (or `RECORD_URL`) are provided, the file is attached immediately, and `FILE_ID` is returned in the response.
+If neither `RECORD_URL` nor `FILENAME` is provided, the method returns an error
 
 {% endnote %}
 
@@ -288,7 +301,7 @@ If both `FILENAME` and `FILE_CONTENT` (or `RECORD_URL`) are provided, the file i
 
 ## Response Handling
 
-#### If both FILENAME and FILE_CONTENT are provided
+#### If RECORD_URL or both FILENAME and FILE_CONTENT are provided
 
 HTTP status: **200**
 
@@ -355,7 +368,7 @@ HTTP status: **400**
 ```json
 {
     "error": "",
-    "error_description": "Required parameters are not set. Request should contain either URL or FILENAME parameter"
+    "error_description": "Required parameters are not set. Request should contain or URL or FILENAME parameter"
 }
 ```
 
@@ -365,14 +378,21 @@ HTTP status: **400**
 
 #|
 || **Code** | **Description** | **Value** ||
-|| Empty value | Required parameters are not set. Request should contain either URL or FILENAME parameter | Neither `RECORD_URL` nor `FILENAME` was provided ||
-|| Empty value | Call is not found in the statistic table. It looks like it is not finished yet. | The call was not found in the statistics. Ensure that the call is completed. ||
-|| `ERROR_CORE` | File name is empty | Empty `FILENAME` ||
-|| `ERROR_CORE` | Wrong file extension. Only wav and mp3 are allowed | Invalid file extension ||
-|| `ERROR_CORE` | File content is empty. | Empty `FILE_CONTENT` ||
-|| `ERROR_CORE` | File content is not properly encoded. Base64 encoding is expected. | `FILE_CONTENT` was not provided in Base64 format ||
-|| `ERROR_CORE` | Server returns HTTP error code {N} | HTTP error when uploading the record via `RECORD_URL` ||
-|| Empty value | Record URL resolves to a non-public address and was blocked. | `RECORD_URL` points to a non-public IP address, such as a local network address. Pass the recording in `FILE_CONTENT` or upload it via `uploadUrl` ||
+|| Empty value | Required parameters are not set. Request should contain or URL or FILENAME parameter | Neither `RECORD_URL` nor `FILENAME` was provided ||
+|| Empty value | Call is not found in the statistic table. Looks like it is not finished yet. | The call was not found in the statistics. Ensure that the call is completed. ||
+|| Empty value | File name is empty | Empty `FILENAME` ||
+|| Empty value | Wrong file extension. Only wav and mp3 are allowed | Invalid file extension in `FILENAME` when `FILE_CONTENT` is provided ||
+|| Empty value | File content is empty. | Empty `FILE_CONTENT` ||
+|| Empty value | File content is not properly encoded. Base64 encoding is expected. | `FILE_CONTENT` was not provided in Base64 format ||
+|| Empty value | Record URL could not be parsed. | Invalid `RECORD_URL` ||
+|| Empty value | Record URL scheme must be http or https. | `RECORD_URL` uses a scheme other than `http` or `https` ||
+|| Empty value | Record URL host is empty. | `RECORD_URL` does not contain a domain name ||
+|| Empty value | Record URL host could not be resolved to any address. | The domain in `RECORD_URL` could not be resolved to an IP address. Check the URL and retry the request later ||
+|| Empty value | Record URL resolves to a non-public address and was blocked. | At least one IP address of the domain in `RECORD_URL` or in a redirect is non-public, for example a local network address. Check the domain's A and AAAA records and the redirect addresses. To attach a record stored on an internal network, pass it in `FILE_CONTENT` or upload it via `uploadUrl` ||
+|| Empty value | The record URL uses an IPv6 literal host, which is not supported by this environment. | `RECORD_URL` contains an IPv6 address in place of a domain name ||
+|| Empty value | Maximum number of redirects has been reached. | The URL in `RECORD_URL` redirects more than 5 times ||
+|| Empty value | Server returns HTTP error code {N} | The server in `RECORD_URL` returned an HTTP status other than `200` ||
+|| Empty value | Invalid file type | The file at `RECORD_URL` or in `FILE_CONTENT` is not an audio file. The error message depends on the account language ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
