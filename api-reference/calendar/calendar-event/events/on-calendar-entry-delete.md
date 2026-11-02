@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONCALENDARENTRYDELETE` event is triggered when a calendar event is deleted.
+The `ONCALENDARENTRYDELETE` event is triggered when a calendar event is deleted manually or via the method [calendar.event.delete](../calendar-event-delete.md).
 
 {% note info "" %}
 
@@ -25,7 +25,7 @@ Events will not be sent to the application until the installation is complete. [
 
 Data is transmitted as a POST request {.b24-info}
 
-Example: event for deleting a calendar event object with `id = 1412`.
+Example payload for deleting a calendar event with `id = 1412`.
 
 ```json
 {
@@ -51,7 +51,7 @@ Example: event for deleting a calendar event object with `id = 1412`.
 ```
 
 #|
-|| **Name**
+|| **Parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
@@ -60,15 +60,19 @@ In this case — `ONCALENDARENTRYDELETE` ||
 || **event_handler_id**
 [`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | An object containing information about a remote calendar event object.
+[`object`](../../../data-types.md) | An object containing information about the deleted calendar event.
 
 Contains a single key — `id` ||
 || **data.id**
-[`string`](../../../data-types.md) | Identifier of the calendar event object ||
+[`string`](../../../data-types.md) | Identifier of the deleted calendar event.
+
+The example shows the identifier as a string.
+
+After deletion, the event fields cannot be retrieved: the [calendar.event.getbyid](../calendar-event-get-by-id.md) method returns `null`. Use the identifier saved before deletion ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#

@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `ONCALENDARENTRYADD` event is triggered when a calendar event is added.
+The `ONCALENDARENTRYADD` event is triggered when a calendar event is added manually or via the method [calendar.event.add](../calendar-event-add.md).
 
 {% note info "" %}
 
@@ -25,7 +25,7 @@ Events will not be sent to the application until the installation is complete. [
 
 Data is transmitted as a POST request {.b24-info}
 
-Example: event for creating a calendar event object with `id = 1414`.
+Example payload for adding a calendar event with `id = 1414`.
 
 ```json
 {
@@ -51,7 +51,7 @@ Example: event for creating a calendar event object with `id = 1414`.
 ```
 
 #|
-|| **Name**
+|| **Parameter**
 `type` | **Description** ||
 || **event**
 [`string`](../../../data-types.md) | Symbolic code of the event.
@@ -60,15 +60,19 @@ In this case — `ONCALENDARENTRYADD` ||
 || **event_handler_id**
 [`integer`](../../../data-types.md) | Identifier of the event handler ||
 || **data**
-[`object`](../../../data-types.md) | Object containing information about the created calendar event object.
+[`object`](../../../data-types.md) | An object containing information about the added calendar event.
 
 Contains a single key — `id` ||
 || **data.id**
-[`string`](../../../data-types.md) | Identifier of the calendar event object ||
+[`string`](../../../data-types.md) | Identifier of the added calendar event.
+
+The [calendar.event.getbyid](../calendar-event-get-by-id.md) method retrieves event fields by identifier; it requires only `id`.
+
+The example shows the identifier as a string; pass it to the method as an integer ||
 || **ts**
 [`timestamp`](../../../data-types.md) | Date and time of the event sent from the [event queue](../../../events/index.md) ||
 || **auth**
-[`object`](../../../data-types.md) | Object containing authorization parameters and information about the account where the event occurred.
+[`object`](../../../data-types.md) | Object containing authorization parameters and information about the Bitrix24 account where the event occurred.
 
 The structure is described [below](#auth) ||
 |#

@@ -1,4 +1,4 @@
-# Calendar Event Events: Overview of Events
+# Overview of Events When Working with the Calendar
 
 {% note tip "" %}
 
@@ -25,6 +25,27 @@ You can subscribe to calendar events through:
 - [application](../../../../settings/app-installation/index.md) and the method [event.bind](../../../events/event-bind.md)
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).
+
+## What the Handler Receives
+
+The events in this section pass only the calendar event identifier in `data`. The notification contains no event fields and no list of changes.
+
+```json
+{
+    "event": "ONCALENDARENTRYADD",
+    "event_handler_id": "3",
+    "data": {
+        "id": "1414"
+    },
+    "ts": "1734608169"
+}
+```
+
+The [calendar.event.getbyid](../calendar-event-get-by-id.md) method retrieves event fields by identifier; it requires only `id`.
+
+The `OnCalendarEntryUpdate` and `OnCalendarEntryDelete` events have the same payload structure. The `event`, `event_handler_id`, `data.id`, and `ts` values depend on the event and the subscription.
+
+The `auth` key contains authorization parameters and Bitrix24 account data; it is described on the event pages, for example [OnCalendarEntryAdd](./on-calendar-entry-add.md#auth).
 
 ## Server Availability for Sending and Receiving Events
 
