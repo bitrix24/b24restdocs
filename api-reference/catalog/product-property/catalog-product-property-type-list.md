@@ -23,6 +23,8 @@ The `catalog.product.property.type.list` method returns the product and variatio
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -418,6 +420,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-product-property-type-field-list.md)
 - [{#T}](./catalog-product-property-add-rest-v3.md)
 - [{#T}](./catalog-product-property-field-list.md)
+- [{#T}](./catalog-product-property-type-field-list.md)

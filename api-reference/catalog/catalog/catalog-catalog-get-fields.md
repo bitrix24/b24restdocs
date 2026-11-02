@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method returns the available fields of the trade catalog.
+The method `catalog.catalog.getFields` returns the description of trade catalog fields: type, whether the field is required, and whether it can be changed.
+
+## Method Parameters
 
 No parameters.
 
@@ -143,7 +145,6 @@ No parameters.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -152,7 +153,7 @@ No parameters.
                 'catalog.catalog.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -231,7 +232,7 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": true,
                 "isRequired": false,
-                "type": "integer"
+                "type": "string"
             },
             "id": {
                 "isImmutable": false,
@@ -278,12 +279,14 @@ HTTP Status: **200**
         }
     },
     "time": {
-        "start": 1716391172.384998,
-        "finish": 1716391172.856295,
-        "duration": 0.471297025680542,
-        "processing": 0.014213085174560547,
-        "date_start": "2024-05-22T18:19:32+02:00",
-        "date_finish": "2024-05-22T18:19:32+02:00"
+        "start": 1793613297,
+        "finish": 1793613297.945302,
+        "duration": 0.9453020095825195,
+        "processing": 0,
+        "date_start": "2026-11-02T12:54:57+03:00",
+        "date_finish": "2026-11-02T12:54:57+03:00",
+        "operating_reset_at": 1793613840,
+        "operating": 0
     }
 }
 ```
@@ -295,10 +298,10 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **catalog**
+|| **result.catalog**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [catalog_catalog](../data-types.md#catalog_catalog) object, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -307,8 +310,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -317,9 +320,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have permission to view Bitrix24 settings ||
+|| `400` | `200040300030` | Access Denied | The user does not have permission to read the trade catalog ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

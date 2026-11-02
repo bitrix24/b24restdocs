@@ -177,7 +177,7 @@ To obtain existing identifiers of VAT, you need to use [catalog.vat.list](./vat/
 - `N` — draft,
 - `Y` — approved,
 - `C` — canceled.
-  
+
 The value is automatically changed when the document is approved or canceled ||
 || **statusBy**
 [`integer`](../data-types.md) | User who changed the document status ||
@@ -242,7 +242,7 @@ The value is automatically changed when the document is approved or canceled ||
 [`catalog_document.id`](#catalog_document) | Identifier of the inventory document to which the supplier is bound ||
 || **entityTypeId**
 [`integer`](../data-types.md) | Identifier of the CRM object type:
-`3` — contact 
+`3` — contact
 `4` — company  ||
 || **entityId**
 [`integer`](../data-types.md) | Identifier of the supplier: contact or company ||
@@ -279,17 +279,17 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **barcodeMulti**
 [`string`](../data-types.md) | Unique barcodes for each instance. Possible values:
 - `Y` — yes
-- `N` — no 
+- `N` — no
 ||
 || **bundle**
 [`string`](../data-types.md) | Availability of a set. Possible values:
 - `Y` — yes
-- `N` — no 
+- `N` — no
 ||
 || **canBuyZero**
 [`string`](../data-types.md) | Is purchase of the product allowed when it is out of stock? Possible values:
 - `Y` — yes
-- `N` — no 
+- `N` — no
 ||
 || **createdBy**
 [`user.id`](../data-types.md) | Created by ||
@@ -312,11 +312,11 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
 To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
 To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
@@ -412,9 +412,9 @@ Used only in the on-premise version for content sales ||
 Used only in the on-premise version for content sales
 ||
 || **propertyN**
-[```object|array```](../data-types.md) | Value of the property of the main product, where `N` — identifier of the property. There can be multiple properties. 
+[```object|array```](../data-types.md) | Value of the property of the main product, where `N` — identifier of the property. There can be multiple properties.
 
-The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
+The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property.
 
 If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
@@ -456,27 +456,29 @@ If `valueId` is not specified, the existing value will be removed from the datab
 || **userType**
 [`string`](../data-types.md) | User type of the property. The value corresponds to the specified `propertyType`.
 
-Examples of values:
-- `DateTime` — date and time
-- `Money` — monetary value with currency
-- `SKU` — binding to product variations
-- `directory` — binding to directory
-- `employee` — binding to employee
-- `UserID` — binding to user
-- `EList` — selection of an element from a list
-- `EAutocomplete` — binding to elements with auto-search
-- `SectionAuto` — binding to sections with auto-search
-- `HTML` — value in HTML format
-- `map_google` — coordinates and address on Google map
-- `DiskFile` — binding to a file from Bitrix24.Drive
-- `ECrm` — binding to CRM elements
-- `BoolEnum` — checkbox based on a list ||
+Main values and the base `propertyType` they are used with:
+- `DateTime` — date and time, `S`
+- `Money` — monetary value with currency, `S`
+- `SKU` — binding to product variations, `E`
+- `directory` — binding to directory, `S`
+- `employee` — binding to employee, `S`
+- `UserID` — binding to user, `S`
+- `EList` — selection of an element from a list, `E`
+- `EAutocomplete` — binding to elements with auto-search, `E`
+- `SectionAuto` — binding to sections with auto-search, `G`
+- `HTML` — value in HTML format, `S`
+- `map_google` — coordinates and address on Google map, `S`
+- `DiskFile` — binding to a file from Bitrix24.Drive, `S`
+- `ECrm` — binding to CRM elements, `S`
+- `BoolEnum` — checkbox based on a list, `L` ||
 || **rowCount**
 [`integer`](../data-types.md) | Number of rows in the input field ||
 || **colCount**
 [`integer`](../data-types.md) | Number of columns in the input field ||
 || **listType**
-[`char`](../data-types.md) | Appearance of the list ||
+[`char`](../data-types.md) | Appearance of the list. Possible values:
+- `L` — drop-down list
+- `C` — set of checkboxes ||
 || **multiple**
 [`char`](../data-types.md) | Indicator of multiplicity. Possible values:
 - `Y` — yes
@@ -488,17 +490,21 @@ Examples of values:
 || **multipleCnt**
 [`integer`](../data-types.md) | Number of input fields for multiple values ||
 || **linkIblockId**
-[`catalog_catalog.id`](#catalog_catalog) | Identifier of the linked information block. 
+[`catalog_catalog.id`](#catalog_catalog) | Identifier of the linked information block.
 
 Available identifiers can be obtained using the [catalog.catalog.list](./catalog/catalog-catalog-list.md) method ||
 || **withDescription**
-[`char`](../data-types.md) | Indicator of storing the description of the value ||
+[`char`](../data-types.md) | Indicator of storing the description of the value. Possible values:
+- `Y` — yes
+- `N` — no ||
 || **searchable**
 [`char`](../data-types.md) | Indicator of participation in search. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **filtrable**
-[`char`](../data-types.md) | Indicator of participation in filtering ||
+[`char`](../data-types.md) | Indicator of participation in filtering. Possible values:
+- `Y` — yes
+- `N` — no ||
 || **isRequired**
 [`char`](../data-types.md) | Indicator of mandatory status. Possible values:
 - `Y` — yes
@@ -610,12 +616,12 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **bundle**
 [`string`](../data-types.md) | Availability of a set. Possible values:
 - `Y` — yes
-- `N` — no 
+- `N` — no
 ||
 || **canBuyZero**
 [`string`](../data-types.md) | Is purchase of the parent product allowed when it is out of stock? Possible values:
 - `Y` — yes
-- `N` — no 
+- `N` — no
 
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
@@ -642,11 +648,11 @@ For parent products, the ability to edit this field is available only in the on-
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
 To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
 To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
@@ -725,9 +731,9 @@ Not editable when inventory accounting is enabled.
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled
 ||
 || **propertyN**
-[```object|array```](../data-types.md) | Value of the property of the parent product, where `N` — identifier of the property. There can be multiple properties. 
+[```object|array```](../data-types.md) | Value of the property of the parent product, where `N` — identifier of the property. There can be multiple properties.
 
-The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
+The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property.
 
 If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
@@ -771,17 +777,17 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **barcodeMulti**
 [`string`](../data-types.md) | Unique barcodes for each instance. Possible values:
 - `Y` — yes
-- `N` — no 
+- `N` — no
 ||
 || **bundle**
 [`string`](../data-types.md) | Availability of a set. Possible values:
 - `Y` — yes
-- `N` — no 
+- `N` — no
 ||
 || **canBuyZero**
 [`string`](../data-types.md) | Is purchase of the product variation allowed when it is out of stock? Possible values:
 - `Y` — yes
-- `N` — no 
+- `N` — no
 ||
 || **createdBy**
 [`user.id`](../data-types.md) | Created by ||
@@ -804,11 +810,11 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
 To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
 To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
@@ -905,9 +911,9 @@ Used only in the on-premise version for content sales ||
 Used only in the on-premise version for content sales
 ||
 || **propertyN**
-[```object|array```](../data-types.md) | Value of the property of the product variation, where `N` — identifier of the property. There can be multiple properties. 
+[```object|array```](../data-types.md) | Value of the property of the product variation, where `N` — identifier of the property. There can be multiple properties.
 
-The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
+The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property.
 
 If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
@@ -946,7 +952,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **bundle**
 [`string`](../data-types.md) | Availability of a set. Possible values:
 - `Y` — yes
-- `N` — no 
+- `N` — no
 ||
 || **createdBy**
 [`user.id`](../data-types.md) | Created by ||
@@ -969,11 +975,11 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **detailText**
 [`string`](../data-types.md) | Detailed description ||
 || **previewPicture**
-[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
 To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **detailPicture**
-[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
+[`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
 To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 || **previewTextType**
@@ -1000,9 +1006,9 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 - `7` — service
 ||
 || **propertyN**
-[```object|array```](../data-types.md) | Value of the property of the service, where `N` — identifier of the property. There can be multiple properties. 
+[```object|array```](../data-types.md) | Value of the property of the service, where `N` — identifier of the property. There can be multiple properties.
 
-The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property. 
+The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — value of the property.
 
 If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
@@ -1025,12 +1031,14 @@ If `valueId` is not specified, the existing value will be removed from the datab
 [`string`](../data-types.md) | Type of image:
 - `DETAIL_PICTURE` — detailed picture, field available in the old product card
 - `PREVIEW_PICTURE` — picture for the announcement, field available in the old product card
-- `MORE_PHOTO` — picture
+- `MORE_PHOTO` — additional image
 ||
 || **createTime**
 [`datetime`](../data-types.md) | Date of image creation ||
 || **downloadUrl**
-[`string`](../data-types.md) | Download link, signed with the current access token ||
+[`string`](../data-types.md) | Download link signed with the request token. If the request was made via a webhook, the webhook code can be recovered from the link, so do not share it with third parties or publish it.
+
+In REST 3.0, the value matches `detailUrl` — a link to the image in the CDN ||
 || **detailUrl**
 [`string`](../data-types.md) | Link to the image ||
 |#
@@ -1306,7 +1314,7 @@ To obtain existing identifiers, you need to use [catalog.catalog.list](./catalog
 || **iblockSectionId**
 [`catalog_section.id`](#catalog_section) | Identifier of the parent section.
 
-To obtain existing identifiers, you need to use [catalog.section.list](./section/catalog-section-list.md). 
+To obtain existing identifiers, you need to use [catalog.section.list](./section/catalog-section-list.md).
 
 By default, the top level is selected ||
 || **name**
@@ -1345,7 +1353,6 @@ Can be used to synchronize the current catalog section with a similar position i
 || **quantityReserved**
 [`double`](../data-types.md) | Quantity of the product in reserve ||
 |#
-
 ### catalog_vat
 
 #|
@@ -1376,11 +1383,11 @@ Can be used to synchronize the current catalog section with a similar position i
 || **Value**
 `type` | **Description** ||
 || **isImmutable**
-[`boolean`](../data-types.md) | Indicator of the ability to change the field value after creation. 
+[`boolean`](../data-types.md) | Indicator of the ability to change the field value after creation.
 
 If this indicator is set for the field, then when creating the object, you can specify the field value, but it cannot be changed during updates ||
 || **isReadOnly**
-[`boolean`](../data-types.md) | Indicator of "read-only". 
+[`boolean`](../data-types.md) | Indicator of "read-only".
 
 If this indicator is set for the field, then in the operations of adding and updating the object, the field value does not need to be passed. The value is generated automatically and is intended for read-only ||
 || **isRequired**
@@ -1388,7 +1395,7 @@ If this indicator is set for the field, then in the operations of adding and upd
 || **name**
 [`string`](../data-types.md) | Field name. Returned when a display name is available for the field ||
 || **type**
-[`string`](../data-types.md) | Data type of the field values. Possible values: 
+[`string`](../data-types.md) | Data type of the field values. Possible values:
 - `integer`
 - `double`
 - `string`

@@ -457,6 +457,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-product-image-field-list.md)
 - [{#T}](./catalog-product-image-add-rest-v3.md)
 - [{#T}](./catalog-product-image-get-rest-v3.md)
+- [{#T}](./catalog-product-image-field-list.md)

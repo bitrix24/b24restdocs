@@ -341,5 +341,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 ## Continue Learning
 
 - [{#T}](./catalog-catalog-add.md)
-- [{#T}](./catalog-catalog-is-offers-rest-v3.md)
 - [{#T}](./catalog-catalog-list-rest-v3.md)
+- [{#T}](./catalog-catalog-is-offers-rest-v3.md)

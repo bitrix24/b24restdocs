@@ -23,6 +23,8 @@ The `catalog.catalog.field.list` method returns the list of available trade cata
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -455,7 +457,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-catalog-field-get.md)
 - [{#T}](./catalog-catalog-add.md)
 - [{#T}](./catalog-catalog-list-rest-v3.md)
+- [{#T}](./catalog-catalog-field-get.md)
 - [{#T}](../../rest-v3.md)

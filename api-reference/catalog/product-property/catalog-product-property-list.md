@@ -25,7 +25,7 @@ The method `catalog.productProperty.list` returns a list of product properties a
 || **select**
 [`array`](../../data-types.md) | An array containing the list of fields to select (see fields of the object [catalog_product_property](../data-types.md#catalog_product_property)).
 
-If the parameter is not provided, all fields will be selected ||
+If the parameter is not passed, all fields are selected. The method skips unknown fields without an error, and if `select` contains no fields of the object, it returns all fields ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected properties in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
@@ -46,6 +46,8 @@ An additional prefix can be specified for the key to clarify the filter behavior
 - `!=` — not equal
 - `!` — not equal
 
+The method skips fields that the object does not have without an error.
+
 If `iblockId` is not provided, the method selects properties from all trade catalogs. If an `iblockId` is provided that is not a catalog, the method will return an empty list ||
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected properties in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
@@ -56,7 +58,7 @@ Possible values for `order`:
 - `ASC` — in ascending order
 - `DESC` — in descending order
 
-If the parameter is not provided, sorting `id ASC` is applied ||
+If the parameter is not passed, sorting by `id ASC` is applied. The method skips unknown fields without an error ||
 || **start**
 [`integer`](../../data-types.md) | The parameter is used to control pagination.
 
@@ -81,7 +83,7 @@ If the value `-1` is passed, the response will not include the `total` field ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"select":["id","name","iblockId","propertyType"],"filter":{"iblockId":19},"order":{"id":"ASC"}}' \
+      -d '{"select":["id","name","iblockId","propertyType"],"filter":{"iblockId":25,"propertyType":"L"},"order":{"id":"ASC"}}' \
       https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.productProperty.list
     ```
 
@@ -91,7 +93,7 @@ If the value `-1` is passed, the response will not include the `total` field ||
     curl -X POST \
       -H "Content-Type: application/json" \
       -H "Accept: application/json" \
-      -d '{"select":["id","name","iblockId","propertyType"],"filter":{"iblockId":19},"order":{"id":"ASC"},"auth":"**put_access_token_here**"}' \
+      -d '{"select":["id","name","iblockId","propertyType"],"filter":{"iblockId":25,"propertyType":"L"},"order":{"id":"ASC"},"auth":"**put_access_token_here**"}' \
       https://**put_your_bitrix24_address**/rest/catalog.productProperty.list
     ```
 
@@ -125,7 +127,7 @@ If the value `-1` is passed, the response will not include the `total` field ||
         method: 'catalog.productProperty.list',
         params: {
           select: ['id', 'name', 'iblockId', 'propertyType'],
-          filter: { iblockId: 19 },
+          filter: { iblockId: 25, propertyType: 'L' },
           order: { id: 'ASC' },
           start: 0,
         },
@@ -165,7 +167,7 @@ If the value `-1` is passed, the response will not include the `total` field ||
             method: 'catalog.productProperty.list',
             params: {
               select: ['id', 'name', 'iblockId', 'propertyType'],
-              filter: { iblockId: 19 },
+              filter: { iblockId: 25, propertyType: 'L' },
               order: { id: 'ASC' },
               start: 0,
             },
@@ -204,7 +206,8 @@ If the value `-1` is passed, the response will not include the `total` field ||
                 "propertyType",
             ],
             filter={
-                "iblockId": 19,
+                "iblockId": 25,
+                "propertyType": "L",
             },
             order={
                 "id": "ASC",
@@ -237,7 +240,8 @@ If the value `-1` is passed, the response will not include the `total` field ||
                 [
                     'select' => ['id', 'name', 'iblockId', 'propertyType'],
                     'filter' => [
-                        'iblockId' => 19,
+                        'iblockId' => 25,
+                        'propertyType' => 'L',
                     ],
                     'order' => ['id' => 'ASC'],
                 ]
@@ -257,7 +261,8 @@ If the value `-1` is passed, the response will not include the `total` field ||
         {
             select: ['id', 'name', 'iblockId', 'propertyType'],
             filter: {
-                iblockId: 19
+                iblockId: 25,
+                propertyType: 'L'
             },
             order: { id: 'ASC' }
         },
@@ -280,7 +285,7 @@ If the value `-1` is passed, the response will not include the `total` field ||
         'catalog.productProperty.list',
         [
             'select' => ['id', 'name', 'iblockId', 'propertyType'],
-            'filter' => ['iblockId' => 19],
+            'filter' => ['iblockId' => 25, 'propertyType' => 'L'],
             'order' => ['id' => 'ASC'],
         ]
     );
@@ -295,7 +300,8 @@ If the value `-1` is passed, the response will not include the `total` field ||
     res, err := client.Core().Call(ctx, "catalog.productProperty.list", b24.Params{
     	"select": []string{"id", "name", "iblockId", "propertyType"},
     	"filter": b24.Params{
-    		"iblockId": 19,
+    		"iblockId":     25,
+    		"propertyType": "L",
     	},
     	"order": b24.Params{
     		"id": "ASC",
@@ -321,30 +327,46 @@ HTTP Status: **200**
     "result": {
         "productProperties": [
             {
-                "iblockId": 19,
-                "id": 115,
-                "name": "Brand",
+                "iblockId": 25,
+                "id": 295,
+                "name": "New",
                 "propertyType": "L"
             },
             {
-                "iblockId": 19,
-                "id": 659,
-                "name": "Category",
-                "propertyType": "S"
+                "iblockId": 25,
+                "id": 297,
+                "name": "Bestseller",
+                "propertyType": "L"
             },
-            ... // description for each property
+            {
+                "iblockId": 25,
+                "id": 299,
+                "name": "Special offer",
+                "propertyType": "L"
+            },
+            {
+                "iblockId": 25,
+                "id": 431,
+                "name": "Size",
+                "propertyType": "L"
+            },
+            {
+                "iblockId": 25,
+                "id": 893,
+                "name": "Packaging type",
+                "propertyType": "L"
+            }
         ]
     },
-    "next": 50,
-    "total": 51,
+    "total": 5,
     "time": {
-        "start": 1773933226,
-        "finish": 1773933226.400275,
-        "duration": 0.40027499198913574,
+        "start": 1793618255,
+        "finish": 1793618255.448881,
+        "duration": 0.4488809108734131,
         "processing": 0,
-        "date_start": "2026-03-19T18:13:46+02:00",
-        "date_finish": "2026-03-19T18:13:46+02:00",
-        "operating_reset_at": 1773933826,
+        "date_start": "2026-11-02T14:17:35+03:00",
+        "date_finish": "2026-11-02T14:17:35+03:00",
+        "operating_reset_at": 1793618820,
         "operating": 0
     }
 }
@@ -357,7 +379,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | The root object of the response ||
-|| **productProperties**
+|| **result.productProperties**
 [`catalog_product_property[]`](../data-types.md#catalog_product_property) | An array of objects with information about the selected properties ||
 || **next**
 [`integer`](../../data-types.md) | Offset for the next page. The field is returned if there are more records ||
@@ -385,9 +407,9 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `0` | Access Denied | Insufficient rights to view the catalog ||
-|| `400` | `100` | Invalid value {`...`} to match with parameter {filter}. Should be value of type array | Invalid data type for the value of the `filter` parameter ||
-|| `400` | `100` | Invalid value {`...`} to match with parameter {select}. Should be value of type array | Invalid data type for the value of the `select` parameter ||
-|| `400` | `100` | Invalid value {`...`} to match with parameter {order}. Should be value of type array | Invalid data type for the value of the `order` parameter ||
+|| `400` | `100` | Invalid value {`...`} to match with parameter {filter}. Should be value of type array. | Invalid data type of the `filter` parameter value ||
+|| `400` | `100` | Invalid value {`...`} to match with parameter {select}. Should be value of type array. | Invalid data type of the `select` parameter value ||
+|| `400` | `100` | Invalid value {`...`} to match with parameter {order}. Should be value of type array. | Invalid data type of the `order` parameter value ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

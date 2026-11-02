@@ -338,7 +338,7 @@ The method returns the trade catalog with all its fields after the update.
             "skuPropertyId": 0,
             "iblockTypeId": "lists",
             "lid": "s1",
-            "name": "TestList"
+            "name": "Accessories"
         }
     },
     "time": {

@@ -23,6 +23,8 @@ The `catalog.catalog.list` method returns a list of trade catalogs with filterin
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -41,7 +43,7 @@ Available fields:
 - `lid` — site identifier
 - `name` — catalog name
 
-The `id` field is returned only if it is specified in `select`. The `["*"]` value is not supported.
+If `select` is passed without `id`, the identifier is not returned in the response. The `["*"]` value is not supported: the method returns the `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION` error.
 
 Default: all fields. An empty array `[]` also returns all fields ||
 || **filter**

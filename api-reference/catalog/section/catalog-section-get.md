@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "View catalog products" permission and permission to read the section in the information block
 
 The method `catalog.section.get` returns the field values of the trade catalog section by its identifier.
 
@@ -34,8 +34,8 @@ The method `catalog.section.get` returns the field values of the trade catalog s
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id": 31}' \
@@ -44,8 +44,8 @@ The method `catalog.section.get` returns the field values of the trade catalog s
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id": 31, "auth": "**put_access_token_here**"}' \
@@ -66,15 +66,15 @@ The method `catalog.section.get` returns the field values of the trade catalog s
     type CatalogSectionGetResult = {
       section: {
         active: string
-        code: string
+        code: string | null
         description: string
         descriptionType: string
         iblockId: number
-        iblockSectionId: number
+        iblockSectionId: number | null
         id: number
         name: string
         sort: number
-        xmlId: string
+        xmlId: string | null
       }
     }
 
@@ -162,7 +162,6 @@ The method `catalog.section.get` returns the field values of the trade catalog s
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -173,7 +172,7 @@ The method `catalog.section.get` returns the field values of the trade catalog s
                     'id' => 31
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -260,25 +259,26 @@ HTTP Status: **200**
 {
     "result": {
         "section": {
-        "active": "Y",
-        "code": "toys",
-        "description": "Products for children - toys",
-        "descriptionType": "text",
-        "iblockId": 14,
-        "iblockSectionId": 13,
-        "id": 31,
-        "name": "Children's Toys",
-        "sort": 100,
-        "xmlId": "myXmlId"
+            "active": "Y",
+            "code": "clothes",
+            "description": null,
+            "descriptionType": "text",
+            "iblockId": 25,
+            "iblockSectionId": null,
+            "id": 31,
+            "name": "Clothing",
+            "sort": 50,
+            "xmlId": "clothes-01"
         }
     },
     "time": {
-        "start": 1716558215.93495,
-        "finish": 1716558216.20731,
-        "duration": 0.272363901138306,
-        "processing": 0.028817892074585,
-        "date_start": "2024-05-24T15:43:35+02:00",
-        "date_finish": "2024-05-24T15:43:36+02:00",
+        "start": 1793615591,
+        "finish": 1793615591.776121,
+        "duration": 0.7761209011077881,
+        "processing": 0,
+        "date_start": "2026-11-02T13:33:11+03:00",
+        "date_finish": "2026-11-02T13:33:11+03:00",
+        "operating_reset_at": 1793616180,
         "operating": 0
     }
 }
@@ -291,10 +291,10 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **section**
+|| **result.section**
 [`catalog_section`](../data-types.md#catalog_section) | Object containing information about the catalog section with the specified identifier ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -303,8 +303,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200040300040,
-    "error_description":"Access Denied"
+    "error": "200040300040",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -313,11 +313,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300040` | No access to read ||
-|| `200700300030` | Catalog section with this identifier does not exist ||
-|| `100` | Parameter `id` not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No "View product catalog" or "View catalog products" permission ||
+|| `400` | `200040300040` | Access Denied | No permission to read the section in the information block, or the section with the specified `id` does not exist ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

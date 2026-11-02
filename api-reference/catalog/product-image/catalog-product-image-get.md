@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "View catalog products" permission and permission to read the product
 
-This method returns information about a specific product image, main product, variation, or service.
+The method `catalog.productImage.get` returns information about an image of a product, parent product, variation, or service.
 
 ## Method Parameters
 
@@ -35,7 +35,9 @@ To obtain existing identifiers, use the following methods:
 - for services — [catalog.product.service.list](../product/service/catalog-product-service-list.md)
 ||
 || **id***
-[`catalog_product_image.id`](../data-types.md#catalog_product_image) | Identifier of the image ||
+[`catalog_product_image.id`](../data-types.md#catalog_product_image) | Image identifier. The image must belong to the product from `productId`.
+
+You can get the identifier using the [catalog.productImage.list](./catalog-product-image-list.md) method ||
 |#
 
 ## Code Examples
@@ -77,13 +79,13 @@ To obtain existing identifiers, use the following methods:
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type ProductImageGetResult = {
       productImage: {
-        createTime: ISODate | null,
+        createTime: ISODate,
         detailUrl: string,
         downloadUrl: string,
         id: number,
         name: string,
         productId: number,
-        type: string,
+        type: 'DETAIL_PICTURE' | 'PREVIEW_PICTURE' | 'MORE_PHOTO',
       },
     }
 
@@ -186,7 +188,7 @@ To obtain existing identifiers, use the following methods:
                     'id'        => 1,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -201,11 +203,11 @@ To obtain existing identifiers, use the following methods:
 
     ```js
     BX24.callMethod(
-        'catalog.productImage.get', 
+        'catalog.productImage.get',
         {
             productId: 1,
             id: 1,
-        }, 
+        },
         function(result)
         {
             if(result.error())
@@ -261,22 +263,24 @@ HTTP Status: **200**
 {
     "result": {
         "productImage": {
-            "createTime": "2024-10-17T10:48:05+02:00",
-            "detailUrl": "\/upload\/iblock\/6f1\/bkm7jmwso31wisk423gtp28iagy2e8v0\/test.jpeg",
-            "downloadUrl": "http:\/\/dev.bx\/rest\/download.json?sessid=ae1ada0e5c85babd18ce4af4c702d1d9\u0026token=catalog%7CaWQ9NzY1MSZfPTZWZFhwSDRZRFRvcmNmYWtGMVRQbE4wdjZRcHA5QXBY%7CImRvd25sb2FkfGNhdGFsb2d8YVdROU56WTFNU1pmUFRaV1pGaHdTRFJaUkZSdmNtTm1ZV3RHTVZSUWJFNHdkalpSY0hBNVFYQll8YWUxYWRhMGU1Yzg1YmFiZDE4Y2U0YWY0YzcwMmQxZDki.8jeG4p%2BO6LZSDNqaRR3XdTAM6jSSD4Gtye8zm6Q5Y14%3D",
-            "id": 1,
-            "name": "test.jpeg",
-            "productId": 1,
+            "createTime": "2023-08-21T12:12:19+03:00",
+            "detailUrl": "https:\/\/cdn-com.bitrix24.com\/b1234567\/iblock\/c3e\/c3e6943a5f28fb70dc0051fc74352d4f\/FTTH.jpg",
+            "downloadUrl": "https:\/\/your-domain.bitrix24.com\/rest\/1\/xxxxxxxxxxxxxxxx\/download\/?token=catalog%7CaWQ9MjI0MjEmXz10OUlFWDZTeDJ4eTJ1OUxOaFp1VVNhRm5iQW13eko3eA%3D%3D%7C...",
+            "id": 22421,
+            "name": "FTTH.jpg",
+            "productId": 533,
             "type": "MORE_PHOTO"
         }
     },
     "time": {
-        "start": 1729162290.040193,
-        "finish": 1729162290.63512,
-        "duration": 0.5949268341064453,
-        "processing": 0.20079898834228516,
-        "date_start": "2024-10-17T13:51:30+02:00",
-        "date_finish": "2024-10-17T13:51:30+02:00"
+        "start": 1793615806,
+        "finish": 1793615806.987289,
+        "duration": 0.9872889518737793,
+        "processing": 0,
+        "date_start": "2026-11-02T13:36:46+03:00",
+        "date_finish": "2026-11-02T13:36:46+03:00",
+        "operating_reset_at": 1793616360,
+        "operating": 0
     }
 }
 ```
@@ -288,7 +292,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **productImage**
+|| **result.productImage**
 [`catalog_product_image`](../data-types.md#catalog_product_image) | Object containing information about the image ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -300,8 +304,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "",
+    "error_description": "productImage does not exist."
 }
 ```
 
@@ -310,26 +314,17 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to view the product catalog
-||
-|| `200040300010` | Insufficient permissions to view the product 
-||
-|| `100` | Parameter `productId` not specified
-|| 
-|| `100` | Parameter `id` not specified
-|| 
-|| `0` | Product with the specified identifier not found
-|| 
-|| `0` | Image with the specified identifier not found
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "View catalog products" permission or permission to read the product ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
+|| `400` | `100` | Could not find value for parameter {productId} | The required parameter `productId` is not passed ||
+|| `400` | `0` | Product was not found | The product with the specified `productId` was not found ||
+|| `400` | Empty value | productImage does not exist. | The image with the specified `id` was not found or does not belong to the product ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-product-image-add.md)
 - [{#T}](./catalog-product-image-list.md)

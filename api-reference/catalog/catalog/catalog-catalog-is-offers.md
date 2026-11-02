@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method checks if the trade catalog is a variation catalog.
+The method `catalog.catalog.isOffers` checks whether a trade catalog is a variation catalog.
 
 ## Method Parameters
 
@@ -23,7 +23,9 @@ The method checks if the trade catalog is a variation catalog.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the trade catalog ||
+[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Trade catalog identifier.
+
+You can get the identifier using the [catalog.catalog.list](./catalog-catalog-list.md) method ||
 |#
 
 ## Code Examples
@@ -38,7 +40,7 @@ The method checks if the trade catalog is a variation catalog.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":23}' \
+    -d '{"id":27}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.catalog.isOffers
     ```
 
@@ -48,7 +50,7 @@ The method checks if the trade catalog is a variation catalog.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":23,"auth":"**put_access_token_here**"}' \
+    -d '{"id":27,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.catalog.isOffers
     ```
 
@@ -66,7 +68,7 @@ The method checks if the trade catalog is a variation catalog.
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'catalog.catalog.isOffers',
         params: {
-          id: 23,
+          id: 27,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -98,7 +100,7 @@ The method checks if the trade catalog is a variation catalog.
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.catalog.isOffers',
             params: {
-              id: 23,
+              id: 27,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -128,7 +130,7 @@ The method checks if the trade catalog is a variation catalog.
 
     try:
         bitrix_response = client.catalog.catalog.is_offers(
-            bitrix_id=23,
+            bitrix_id=27,
         ).response
         result = bitrix_response.result
         print(result)
@@ -146,7 +148,6 @@ The method checks if the trade catalog is a variation catalog.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -154,10 +155,10 @@ The method checks if the trade catalog is a variation catalog.
             ->call(
                 'catalog.catalog.isOffers',
                 [
-                    'id' => 23,
+                    'id' => 27,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -174,7 +175,7 @@ The method checks if the trade catalog is a variation catalog.
     BX24.callMethod(
         "catalog.catalog.isOffers",
         {
-            id: 23,
+            id: 27,
         },
         function(result) {
             if (result.error()) {
@@ -194,7 +195,7 @@ The method checks if the trade catalog is a variation catalog.
     $result = CRest::call(
         'catalog.catalog.isOffers',
         [
-            'id' => 23
+            'id' => 27
         ]
     );
 
@@ -208,8 +209,8 @@ The method checks if the trade catalog is a variation catalog.
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.catalog.isOffers", b24.Params{
-    	"id": 23,
-    })
+    	"id": 27
+    }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.catalog.isOffers: %w", err)
     }
@@ -218,7 +219,7 @@ The method checks if the trade catalog is a variation catalog.
     if err := json.Unmarshal(res.Result, &ok); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println("done:", ok)
+    fmt.Println("variation catalog:", ok)
     ```
 
 {% endlist %}
@@ -231,12 +232,14 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1716543897.864191,
-        "finish": 1716543898.270557,
-        "duration": 0.40636587142944336,
-        "processing": 0.011233091354370117,
-        "date_start": "2024-05-24T12:44:57+02:00",
-        "date_finish": "2024-05-24T12:44:58+02:00"
+        "start": 1793613269,
+        "finish": 1793613269.617146,
+        "duration": 0.6171460151672363,
+        "processing": 0,
+        "date_start": "2026-11-02T12:54:29+03:00",
+        "date_finish": "2026-11-02T12:54:29+03:00",
+        "operating_reset_at": 1793613840,
+        "operating": 0
     }
 }
 ```
@@ -247,9 +250,11 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the check if the trade catalog is a variation catalog ||
+[`boolean`](../../data-types.md) | Check result:
+- `true` — the catalog is a variation catalog, its `productIblockId` field is filled in
+- `false` — the catalog is not a variation catalog ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -258,8 +263,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "",
+    "error_description": "catalog does not exist."
 }
 ```
 
@@ -268,17 +273,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog
-|| 
-|| `200040300030` | Insufficient permissions to read the trade catalog
-|| 
-|| `100` | Parameter `id` not specified
-|| 
-|| `0` | Trade catalog with the specified identifier does not exist
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have permission to view Bitrix24 settings ||
+|| `400` | `200040300030` | Access Denied | The user does not have permission to read the trade catalog ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
+|| `400` | Empty value | catalog does not exist. | The trade catalog with the specified `id` was not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

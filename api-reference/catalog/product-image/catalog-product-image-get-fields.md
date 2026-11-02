@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "View catalog products" permission
 
-This method returns the available fields for a product image, main product, variation, or service.
+The method `catalog.productImage.getFields` returns the description of product image fields: type, whether the field is required, and whether it can be changed.
+
+## Method Parameters
 
 No parameters.
 
@@ -152,7 +154,7 @@ No parameters.
                 'catalog.productImage.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -252,7 +254,7 @@ HTTP status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": true,
-                "type": "string"
+                "type": "integer"
             },
             "type": {
                 "isImmutable": false,
@@ -263,12 +265,14 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1729066108.743178,
-        "finish": 1729066109.268203,
-        "duration": 0.5250251293182373,
-        "processing": 0.02494502067565918,
-        "date_start": "2024-10-16T11:08:28+02:00",
-        "date_finish": "2024-10-16T11:08:29+02:00"
+        "start": 1793615808,
+        "finish": 1793615808.574096,
+        "duration": 0.5740959644317627,
+        "processing": 0,
+        "date_start": "2026-11-02T13:36:48+03:00",
+        "date_finish": "2026-11-02T13:36:48+03:00",
+        "operating_reset_at": 1793616360,
+        "operating": 0
     }
 }
 ```
@@ -280,7 +284,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **productImage**
+|| **result.productImage**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the field of the [catalog_product_image](../data-types.md#catalog_product_image), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -292,8 +296,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -302,14 +306,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to view the product catalog ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "View catalog products" permission ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-product-image-add.md)
 - [{#T}](./catalog-product-image-get.md)

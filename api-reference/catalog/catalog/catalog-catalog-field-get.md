@@ -443,6 +443,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-catalog-field-list.md)
-- [{#T}](./catalog-catalog-get-rest-v3.md)
 - [{#T}](./catalog-catalog-add.md)
+- [{#T}](./catalog-catalog-get-rest-v3.md)
+- [{#T}](./catalog-catalog-field-list.md)

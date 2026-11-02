@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 The trade catalog is a tool for managing products and services in an online store. The catalog stores product information: name, description, price, images, and other parameters.
 
-By default, cloud Bitrix24 has one trade catalog — the CRM product catalog. If you use products with variations, Bitrix24 will have two trade catalogs: a product catalog and a variation catalog. In REST 3.0, you can also turn another information block into a trade catalog using the [catalog.catalog.add](./catalog-catalog-add.md) method.
+By default, cloud Bitrix24 has one trade catalog — the CRM product catalog. If you use products with variations, Bitrix24 will have two trade catalogs: a product catalog and a variation catalog. You can turn another information block into a trade catalog using the [catalog.catalog.add](./catalog-catalog-add.md) method.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -33,6 +33,8 @@ Specifics of the new version methods:
 - the [catalog.catalog.add](./catalog-catalog-add.md) method turns an existing information block that is not yet a catalog into a trade catalog. The catalog identifier matches the information block identifier
 - the [catalog.catalog.delete](./catalog-catalog-delete.md) method removes the trade catalog flag from the information block; the information block itself and its elements remain. A variation catalog cannot be deleted
 - the method for checking a variation catalog is named [catalog.catalog.isoffers](./catalog-catalog-is-offers-rest-v3.md) and is called in lowercase only
+- empty `vatId`, `productIblockId`, and `skuPropertyId` fields are returned as `0`, not `null`
+- the list filter is passed as an array of conditions, for example `[["productIblockId", ">", 0]]`
 
 ## Relationship with Other Objects
 
@@ -58,10 +60,10 @@ Specifics of the new version methods:
 || **Method** | **Description** ||
 || [catalog.catalog.add](./catalog-catalog-add.md) | Turns an existing information block into a trade catalog ||
 || [catalog.catalog.update](./catalog-catalog-update.md) | Updates the trade catalog settings ||
-|| [catalog.catalog.list](./catalog-catalog-list.md) | Returns a list of trade catalogs ||
-|| [catalog.catalog.list](./catalog-catalog-list-rest-v3.md) | Returns a list of trade catalogs v 3.0 ||
 || [catalog.catalog.get](./catalog-catalog-get.md) | Returns the values of all trade catalog fields ||
 || [catalog.catalog.get](./catalog-catalog-get-rest-v3.md) | Returns the values of all trade catalog fields v 3.0 ||
+|| [catalog.catalog.list](./catalog-catalog-list.md) | Returns a list of trade catalogs ||
+|| [catalog.catalog.list](./catalog-catalog-list-rest-v3.md) | Returns a list of trade catalogs v 3.0 ||
 || [catalog.catalog.delete](./catalog-catalog-delete.md) | Removes the trade catalog flag from an information block ||
 || [catalog.catalog.isOffers](./catalog-catalog-is-offers.md) | Checks whether a trade catalog is a variation catalog ||
 || [catalog.catalog.isoffers](./catalog-catalog-is-offers-rest-v3.md) | Checks whether a trade catalog is a variation catalog v 3.0 ||

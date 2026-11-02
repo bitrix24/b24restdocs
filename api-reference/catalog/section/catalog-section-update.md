@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "View catalog products" permission, the "Edit product" permission, and permission to edit the section in the information block
 
 The method `catalog.section.update` modifies a section of the catalog.
 
@@ -42,7 +42,7 @@ To obtain existing identifiers, use [catalog.catalog.list](../catalog/catalog-ca
 || **iblockSectionId**
 [`catalog_section.id`](../data-types.md#catalog_section) | Identifier of the parent section.
 
-To obtain existing identifiers, use [catalog.section.list](./catalog-section-list.md) 
+To obtain existing identifiers, use [catalog.section.list](./catalog-section-list.md)
 ||
 || **name***
 [`string`](../../data-types.md) | Name of the catalog section ||
@@ -72,8 +72,8 @@ Can be used to synchronize the current catalog section with a similar position i
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{
@@ -90,8 +90,8 @@ Can be used to synchronize the current catalog section with a similar position i
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{
@@ -121,15 +121,15 @@ Can be used to synchronize the current catalog section with a similar position i
     type CatalogSectionUpdateResult = {
       section: {
         active: string
-        code: string
+        code: string | null
         description: string
         descriptionType: string
         iblockId: number
-        iblockSectionId: number
+        iblockSectionId: number | null
         id: number
         name: string
         sort: number
-        xmlId: string
+        xmlId: string | null
       }
     }
 
@@ -233,7 +233,6 @@ Can be used to synchronize the current catalog section with a similar position i
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -250,13 +249,12 @@ Can be used to synchronize the current catalog section with a similar position i
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating catalog section: ' . $e->getMessage();
@@ -267,7 +265,7 @@ Can be used to synchronize the current catalog section with a similar position i
 
     ```js
     BX24.callMethod(
-        'catalog.section.update', 
+        'catalog.section.update',
         {
             id: 32,
             fields: {
@@ -388,10 +386,10 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **section**
+|| **result.section**
 [`catalog_section`](../data-types.md#catalog_section) | Object with information about the updated catalog section ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -400,8 +398,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"Required fields: name"
+    "error": "200700300030",
+    "error_description": "section does not exist."
 }
 ```
 
@@ -410,16 +408,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300040` | No access to edit ||
-|| `200700300010` | Errors during update, for example, the identifier of the information block of the updated section does not match the identifier of the parent section ||
-|| `200700300030` | No catalog section exists with such an identifier ||
-|| `200700300040` | Violation of the uniqueness of the `code` field ||
-|| `200700300050` | No information block exists with the specified `iblockId` ||
-|| `100` | Parameter `id` not specified ||
-|| `100` | Parameter `fields` not specified or empty ||
-|| `0` | Required fields of the `fields` structure not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No "View product catalog" or "View catalog products" permission ||
+|| `400` | `200040300020` | Access Denied | No "Edit product" permission in the catalog ||
+|| `400` | `200040300040` | Access Denied | No permission to edit the section in the information block ||
+|| `400` | `200040300050` | Access Denied | No permission to bind to the parent section from `iblockSectionId` ||
+|| `400` | `200700300030` | section does not exist. | The section with the specified `id` does not exist ||
+|| `400` | `200700300050` | Iblock is not exists | The parent section from `iblockSectionId` was not found ||
+|| `400` | `200700300010` | Error text | The section was not saved, for example, the parent section is in a different information block ||
+|| `400` | `200700300040` | Duplicate entry for key [code] | A section with this `code` already exists in the information block. The error occurs if uniqueness of the section symbolic code is enabled in the information block settings ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not passed ||
+|| `400` | `0` | Required fields: iblockId, name | The required fields `iblockId` or `name` are not passed in `fields` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

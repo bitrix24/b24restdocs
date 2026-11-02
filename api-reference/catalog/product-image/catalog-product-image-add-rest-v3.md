@@ -422,7 +422,10 @@ HTTP status: **200**
 || **productId**
 [`integer`](../../data-types.md) | Product or variation identifier ||
 || **type**
-[`string`](../../data-types.md) | Image type: `PREVIEW_PICTURE` — preview picture, `DETAIL_PICTURE` — detail picture, `MORE_PHOTO` — additional picture ||
+[`string`](../../data-types.md) | Image type:
+- `PREVIEW_PICTURE` — preview image
+- `DETAIL_PICTURE` — detail image
+- `MORE_PHOTO` — additional image ||
 || **name**
 [`string`](../../data-types.md) | File name ||
 || **createTime**

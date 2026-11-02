@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "View catalog products" permission, the "Delete product" permission, and permission to delete the section in the information block
 
-The method `catalog.section.delete` removes a section from the catalog.
+The method `catalog.section.delete` deletes a trade catalog section together with its nested sections.
+
+{% note warning "" %}
+
+All nested sections of the section and the products that are not bound to other sections are deleted together with it. They cannot be restored. Products bound to other sections as well are kept: one of the remaining sections becomes their main section.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -34,8 +40,8 @@ The method `catalog.section.delete` removes a section from the catalog.
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id": 31}' \
@@ -44,8 +50,8 @@ The method `catalog.section.delete` removes a section from the catalog.
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"id": 31, "auth": "**put_access_token_here**"}' \
@@ -146,7 +152,6 @@ The method `catalog.section.delete` removes a section from the catalog.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -157,7 +162,7 @@ The method `catalog.section.delete` removes a section from the catalog.
                     'id' => 31,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -172,10 +177,10 @@ The method `catalog.section.delete` removes a section from the catalog.
 
     ```js
     BX24.callMethod(
-        'catalog.section.delete', 
-        { 
-            id: 31 
-         }, 
+        'catalog.section.delete',
+        {
+            id: 31
+         },
         function(result)
         {
             if(result.error())
@@ -250,7 +255,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Result of the section deletion ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -259,8 +264,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200040300050,
-    "error_description":"Access Denied"
+    "error": "200040300050",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -269,12 +274,12 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300050` | Insufficient permissions to delete the catalog section ||
-|| `200040300020` | Errors during deletion (e.g., fatal) ||
-|| `200700300030` | No catalog section exists with that identifier ||
-|| `100` | Parameter `id` not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No "View product catalog" or "View catalog products" permission ||
+|| `400` | `200040300020` | Access Denied | No "Delete product" permission in the catalog ||
+|| `400` | `200040300050` | Access Denied | No permission to delete the section in the information block, or the section with the specified `id` does not exist ||
+|| `400` | `200700300020` | delete section error | The section was not deleted ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

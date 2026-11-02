@@ -23,6 +23,8 @@ The method `catalog.section.field.list` returns the list of available trade cata
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -480,6 +482,6 @@ HTTP status: **403**
 
 ## Continue Learning
 
-- [{#T}](./catalog-section-field-get.md)
-- [{#T}](./catalog-section-list-rest-v3.md)
 - [{#T}](./catalog-section-add-rest-v3.md)
+- [{#T}](./catalog-section-list-rest-v3.md)
+- [{#T}](./catalog-section-field-get.md)

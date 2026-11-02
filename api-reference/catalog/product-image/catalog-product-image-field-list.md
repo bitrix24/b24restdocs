@@ -23,6 +23,8 @@ The `catalog.product.image.field.list` method returns a list of available produc
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -465,6 +467,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-product-image-field-get.md)
 - [{#T}](./catalog-product-image-add-rest-v3.md)
 - [{#T}](./catalog-product-image-list-rest-v3.md)
+- [{#T}](./catalog-product-image-field-get.md)

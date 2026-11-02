@@ -23,11 +23,13 @@ The method `catalog.productProperty.update` modifies the fields of a product or 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_property.id`](../data-types.md#catalog_product_property) | Property identifier. 
+[`catalog_product_property.id`](../data-types.md#catalog_product_property) | Property identifier.
 
 Property identifiers can be obtained using the [catalog.productProperty.list](./catalog-product-property-list.md) method. ||
 || **fields***
-[`object`](../../data-types.md) | Set of fields to update the property [(detailed description)](#fields) ||
+[`object`](../../data-types.md) | Object with the property fields to change [(detailed description)](#fields).
+
+Pass `iblockId` and the fields to change. Fields that are not passed keep their current values ||
 |#
 
 ### Fields Parameter {#fields}
@@ -38,17 +40,21 @@ Property identifiers can be obtained using the [catalog.productProperty.list](./
 || **Name**
 `type` | **Description** ||
 || **iblockId***
-[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the trade catalog. 
+[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the trade catalog.
 
 Identifiers can be obtained using the [catalog.catalog.list](../catalog/catalog-catalog-list.md) method. ||
 || **name**
 [`string`](../../data-types.md) | Property name ||
 || **propertyType**
-[`string`](../../data-types.md) | Base type of the property. Cannot be changed ||
+[`string`](../../data-types.md) | Base property type. The allowed values are described in the [catalog.productProperty.add](./catalog-product-property-add.md#fields) method.
+
+If you pass only `propertyType`, the current `userType` is checked for compatibility with the new type. Change the type only for a property without values: the method does not convert saved values ||
 || **active**
 [`char`](../../data-types.md) | Activity status. Allowed values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+Any value other than `Y` is saved as `N` ||
 || **sort**
 [`integer`](../../data-types.md) | Sort index ||
 || **code**
@@ -56,7 +62,9 @@ Identifiers can be obtained using the [catalog.catalog.list](../catalog/catalog-
 || **defaultValue**
 [`text`](../../data-types.md) | Default property value ||
 || **userType**
-[`string`](../../data-types.md) | User-defined property type. Cannot be changed ||
+[`string`](../../data-types.md) | Custom property type. The value must match `propertyType`; the list of values is described in the [catalog.productProperty.add](./catalog-product-property-add.md#fields) method.
+
+Change the type only for a property without values: the method does not convert saved values ||
 || **rowCount**
 [`integer`](../../data-types.md) | Number of input field rows ||
 || **colCount**
@@ -76,7 +84,7 @@ Identifiers can be obtained using the [catalog.catalog.list](../catalog/catalog-
 || **multipleCnt**
 [`integer`](../../data-types.md) | Number of fields for inputting multiple values ||
 || **linkIblockId**
-[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the related information block. 
+[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the related information block.
 
 Available identifiers can be obtained using the [catalog.catalog.list](../catalog/catalog-catalog-list.md) method. ||
 || **withDescription**
@@ -439,7 +447,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response ||
-|| **productProperty**
+|| **result.productProperty**
 [`catalog_product_property`](../data-types.md#catalog_product_property) | Object with information about the updated property ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -462,19 +470,20 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `0` | Required fields: iblockId | The required parameter `iblockId` is not passed in `fields` ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not passed ||
+|| `400` | `0` | Required fields: iblockId | The required parameter `iblockId` is not passed in `fields`. The error is also returned when `fields` is empty ||
 || `400` | `0` | Access Denied | Possible reasons:
 - insufficient rights to view the catalog
 - no permission to modify the property's information block
 - when changing `iblockId`, no permission to modify the new information block ||
 || `400` | `0` | The specified iblock is not a product catalog | The information block passed in `iblockId` is not a product catalog ||
-|| `400` | Empty value | productProperty does not exist | Property with the specified `id` not found ||
+|| `400` | Empty value | productProperty does not exist. | The property with the specified `id` was not found ||
 || `400` | `0` | The specified property does not belong to a product catalog | The property does not belong to the trade catalog ||
 || `400` | `0` | Invalid property type specified | An invalid combination of `propertyType` and `userType` was provided ||
 || `400` | `0` | Invalid custom property type settings specified | An invalid format of `userTypeSettings` was provided ||
 || `400` | `0` | Property code cannot start with a digit | Invalid format of the `code` parameter ||
 || `400` | `0` | Invalid information block code | Invalid format of the `iblockId` parameter ||
-|| `400` | `100` | Invalid value {`...`} to match with parameter {id}. Should be value of type int | Invalid data type for the `id` parameter value ||
+|| `400` | `100` | Invalid value {`...`} to match with parameter {id}. Should be value of type int. | An array or object is passed in `id` ||
 || `400` | `0` | Wrong format of field `...` | A parameter with a type that does not match the field format was provided ||
 || `400` | `0` | Error updating product property | Internal error while updating the property ||
 |#

@@ -13,67 +13,52 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method returns a list of trade catalogs.
+The method `catalog.catalog.list` returns a list of trade catalogs.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | 
-An array with the list of fields to select (see the fields of the [catalog_catalog](../data-types.md#catalog_catalog) object).
+[`array`](../../data-types.md) | Array of fields to return. The fields of the [catalog_catalog](../data-types.md#catalog_catalog) object are available: `id`, `iblockId`, `iblockTypeId`, `lid`, `name`, `productIblockId`, `skuPropertyId`, `subscription`, `vatId`.
 
-If the array is not provided or an empty array is passed, all available fields of the trade catalogs will be selected.
-||
+If the parameter is not passed or an empty array is passed, the method returns all fields. The method skips unknown fields without an error ||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+[`object`](../../data-types.md) | Object for filtering trade catalogs in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_catalog](../data-types.md#catalog_catalog) object.
+Pass the fields of the [catalog_catalog](../data-types.md#catalog_catalog) object in `field`. The method skips a condition with an unknown field without an error.
 
-An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
-- `>=` — greater than or equal to
+You can add a prefix to the key that sets the condition:
+- `=` — equals. Used by default
+- `!` or `!=` — not equal
 - `>` — greater than
-- `<=` — less than or equal to
+- `>=` — greater than or equal to
 - `<` — less than
-- `@` — IN, an array is passed as the value
-- `!@` — NOT IN, an array is passed as the value
-- `%` — LIKE, substring search. The `%` symbol in the filter value should not be passed. The search looks for the substring in any position of the string
-- `=%` — LIKE, substring search. The `%` symbol should be passed in the value. Examples:
-    - `"mol%"` — searches for values starting with "mol"
-    - `"%mol"` — searches for values ending with "mol"
-    - `"%mol%"` — searches for values where "mol" can be in any position
-- `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value should not be passed. The search goes from both sides
-- `!=%` — NOT LIKE, substring search. The `%` symbol should be passed in the value. Examples:
-    - `"mol%"` — searches for values not starting with "mol"
-    - `"%mol"` — searches for values not ending with "mol"
-    - `"%mol%"` — searches for values where the substring "mol" is not present in any position
-- `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default)
-- `!=` — not equal
-- `!` — not equal ||
-|| **order**
-[`object`](../../data-types.md) | 
-An object for sorting the selected trade catalogs in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+- `<=` — less than or equal to
+- `@` — in the list, the value is passed as an array
+- `!@` — not in the list, the value is passed as an array
+- `%` — contains a substring. Do not pass the `%` character in the value
 
-Possible values for `field` correspond to the fields of the [catalog_catalog](../data-types.md#catalog_catalog) object.
+The method does not support the `=%`, `%=`, `!%`, `!=%`, and `!%=` prefixes: conditions with them are not applied ||
+|| **order**
+[`object`](../../data-types.md) | Object for sorting trade catalogs in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+
+Pass the fields of the [catalog_catalog](../data-types.md#catalog_catalog) object in `field`.
 
 Possible values for `order`:
-- `asc` — in ascending order
-- `desc` — in descending order
-||
+- `asc` — ascending
+- `desc` — descending
+
+Default: `{"id": "asc"}` ||
 || **start**
-[`integer`](../../data-types.md) | This parameter is used to control pagination.
+[`integer`](../../data-types.md) | Parameter for pagination.
 
-The page size of results is always static — 50 records.
+The page size is 50 records. To get the second page, pass `50`, the third page — `100`, and so on.
 
-To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
-
-The formula for calculating the `start` parameter value:
-
-`start = (N-1) * 50`, where `N` — the number of the desired page
-||
+Formula for calculating the value: `start = (N-1) * 50`, where `N` is the number of the required page ||
 |#
 
 ## Code Examples
@@ -88,7 +73,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["iblockId","iblockTypeId","id","lid","name","productIblockId","skuPropertyId","subscription","vatId"],"filter":{">id":10,"@vatId":[1,2],"skuPropertyId":121},"order":{"id":"desc"}}' \
+    -d '{"select":["id","iblockId","iblockTypeId","lid","name","productIblockId","skuPropertyId","subscription","vatId"],"filter":{">=id":25,"@vatId":[1,2],"productIblockId":25},"order":{"id":"desc"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.catalog.list
     ```
 
@@ -98,7 +83,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["iblockId","iblockTypeId","id","lid","name","productIblockId","skuPropertyId","subscription","vatId"],"filter":{">id":10,"@vatId":[1,2],"skuPropertyId":121},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","iblockId","iblockTypeId","lid","name","productIblockId","skuPropertyId","subscription","vatId"],"filter":{">=id":25,"@vatId":[1,2],"productIblockId":25},"order":{"id":"desc"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.catalog.list
     ```
 
@@ -115,15 +100,15 @@ The formula for calculating the `start` parameter value:
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type CatalogCatalogListResult = {
       catalogs: {
-        iblockId: number
-        iblockTypeId: number
         id: number
+        iblockId: number
+        iblockTypeId: string
         lid: string
         name: string
-        productIblockId: number
-        skuPropertyId: number
-        subscription: string
-        vatId: number
+        productIblockId: number | null
+        skuPropertyId: number | null
+        subscription: 'Y' | 'N'
+        vatId: number | null
       }[]
     }
 
@@ -137,9 +122,9 @@ The formula for calculating the `start` parameter value:
         method: 'catalog.catalog.list',
         params: {
           select: [
+            'id',
             'iblockId',
             'iblockTypeId',
-            'id',
             'lid',
             'name',
             'productIblockId',
@@ -148,9 +133,9 @@ The formula for calculating the `start` parameter value:
             'vatId',
           ],
           filter: {
-            '>id': 10,
+            '>=id': 25,
             '@vatId': [1, 2],
-            skuPropertyId: 121,
+            productIblockId: 25,
           },
           order: {
             id: 'desc',
@@ -193,9 +178,9 @@ The formula for calculating the `start` parameter value:
             method: 'catalog.catalog.list',
             params: {
               select: [
+                'id',
                 'iblockId',
                 'iblockTypeId',
-                'id',
                 'lid',
                 'name',
                 'productIblockId',
@@ -204,9 +189,9 @@ The formula for calculating the `start` parameter value:
                 'vatId',
               ],
               filter: {
-                '>id': 10,
+                '>=id': 25,
                 '@vatId': [1, 2],
-                skuPropertyId: 121,
+                productIblockId: 25,
               },
               order: {
                 id: 'desc',
@@ -242,9 +227,9 @@ The formula for calculating the `start` parameter value:
     try:
         bitrix_response = client.catalog.catalog.list(
             select=[
+                "id",
                 "iblockId",
                 "iblockTypeId",
-                "id",
                 "lid",
                 "name",
                 "productIblockId",
@@ -253,12 +238,12 @@ The formula for calculating the `start` parameter value:
                 "vatId",
             ],
             filter={
-                ">id": 10,
+                ">=id": 25,
                 "@vatId": [
                     1,
                     2,
                 ],
-                "skuPropertyId": 121,
+                "productIblockId": 25,
             },
             order={
                 "id": "desc",
@@ -281,7 +266,6 @@ The formula for calculating the `start` parameter value:
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -290,9 +274,9 @@ The formula for calculating the `start` parameter value:
                 'catalog.catalog.list',
                 [
                     'select' => [
+                        'id',
                         'iblockId',
                         'iblockTypeId',
-                        'id',
                         'lid',
                         'name',
                         'productIblockId',
@@ -301,22 +285,21 @@ The formula for calculating the `start` parameter value:
                         'vatId',
                     ],
                     'filter' => [
-                        '>id'          => 10,
-                        '@vatId'       => [1, 2],
-                        'skuPropertyId' => 121,
+                        '>=id' => 25,
+                        '@vatId' => [1, 2],
+                        'productIblockId' => 25,
                     ],
                     'order' => [
                         'id' => 'desc',
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching catalog list: ' . $e->getMessage();
@@ -329,23 +312,23 @@ The formula for calculating the `start` parameter value:
     BX24.callMethod(
         "catalog.catalog.list", {
             "select": [
+                "id",
                 "iblockId",
                 "iblockTypeId",
-                "id",
                 "lid",
                 "name",
                 "productIblockId",
                 "skuPropertyId",
                 "subscription",
-                "vatId"
+                "vatId",
             ],
             "filter": {
-                ">id": 10,
+                ">=id": 25,
                 "@vatId": [1, 2],
-                "skuPropertyId": 121,
+                "productIblockId": 25
             },
             "order": {
-                "id": "desc",
+                "id": "desc"
             }
         },
         function(result) {
@@ -367,20 +350,20 @@ The formula for calculating the `start` parameter value:
         'catalog.catalog.list',
         [
             'select' => [
+                'id',
                 'iblockId',
                 'iblockTypeId',
-                'id',
                 'lid',
                 'name',
                 'productIblockId',
                 'skuPropertyId',
                 'subscription',
-                'vatId'
+                'vatId',
             ],
             'filter' => [
-                '>id' => 10,
+                '>=id' => 25,
                 '@vatId' => [1, 2],
-                'skuPropertyId' => 121,
+                'productIblockId' => 25,
             ],
             'order' => [
                 'id' => 'desc',
@@ -398,11 +381,11 @@ The formula for calculating the `start` parameter value:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.catalog.list", b24.Params{
-    	"select": []string{"iblockId", "iblockTypeId", "id", "lid", "name", "productIblockId", "skuPropertyId", "subscription", "vatId"},
+    	"select": []string{"id", "iblockId", "iblockTypeId", "lid", "name", "productIblockId", "skuPropertyId", "subscription", "vatId"},
     	"filter": b24.Params{
-    		">id":           10,
-    		"@vatId":        []int{1, 2},
-    		"skuPropertyId": 121,
+    		">=id":            25,
+    		"@vatId":          []int{1, 2},
+    		"productIblockId": 25,
     	},
     	"order": b24.Params{
     		"id": "desc",
@@ -420,7 +403,7 @@ The formula for calculating the `start` parameter value:
 
     var items []struct {
     	IblockID        b24.ID `json:"iblockId"`
-    	IblockTypeID    b24.ID `json:"iblockTypeId"`
+    	IblockTypeID    string `json:"iblockTypeId"`
     	ID              b24.ID `json:"id"`
     	Lid             string `json:"lid"`
     	Name            string `json:"name"`
@@ -445,13 +428,13 @@ HTTP status: **200**
     "result": {
         "catalogs": [
             {
-                "iblockId": 24,
-                "iblockTypeId": 0,
-                "id": 24,
+                "iblockId": 27,
+                "iblockTypeId": "CRM_PRODUCT_CATALOG",
+                "id": 27,
                 "lid": "s1",
                 "name": "Product Catalog CRM (offers)",
-                "productIblockId": 23,
-                "skuPropertyId": 97,
+                "productIblockId": 25,
+                "skuPropertyId": 101,
                 "subscription": "N",
                 "vatId": 1
             }
@@ -459,12 +442,14 @@ HTTP status: **200**
     },
     "total": 1,
     "time": {
-        "start": 1716796276.902035,
-        "finish": 1716796277.31202,
-        "duration": 0.4099850654602051,
-        "processing": 0.01759815216064453,
-        "date_start": "2024-05-27T10:51:16+02:00",
-        "date_finish": "2024-05-27T10:51:17+02:00"
+        "start": 1793613124,
+        "finish": 1793613124.823565,
+        "duration": 0.8235650062561035,
+        "processing": 0,
+        "date_start": "2026-11-02T12:52:04+03:00",
+        "date_finish": "2026-11-02T12:52:04+03:00",
+        "operating_reset_at": 1793613720,
+        "operating": 0
     }
 }
 ```
@@ -476,12 +461,12 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **catalogs**
+|| **result.catalogs**
 [`catalog_catalog[]`](../data-types.md#catalog_catalog) | Array of objects with information about the selected trade catalogs ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -490,8 +475,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -500,13 +485,9 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read trade catalogs
-|| 
-|| `200040300030` | Insufficient rights to read trade catalogs
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have permission to view Bitrix24 settings ||
+|| `400` | `200040300030` | Access Denied | The user does not have permission to read the trade catalog ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

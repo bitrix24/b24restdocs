@@ -349,7 +349,7 @@ The method returns the created trade catalog with all its fields.
             "skuPropertyId": 0,
             "iblockTypeId": "lists",
             "lid": "s1",
-            "name": "TestList"
+            "name": "Accessories"
         }
     },
     "time": {

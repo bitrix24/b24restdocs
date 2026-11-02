@@ -19,12 +19,12 @@ Different types of images can be added to products and variations:
 
 ## How to Add an Image to a Created Product
 
-To add or replace an image for a created product, use the methods [catalog.productImage.*](#all-methods). Specify the image type and pass an array of two elements in the `fileContent` parameter:
+To add or replace an image of an existing product, use the [catalog.productImage.add](./catalog-product-image-add.md) method. Specify the image type and pass an array of two elements in the `fileContent` parameter:
 
 - the name of the image file with its extension
-- the file in base64 encoding
+- the file in Base64 encoding
 
-If the image type is not specified, it will be saved as an additional image `MORE_PHOTO`.
+If you do not specify the image type, the image is saved as an additional `MORE_PHOTO` image. Images of the `PREVIEW_PICTURE` and `DETAIL_PICTURE` types replace the current ones.
 
 ## How to Add an Image When Creating a Product
 
@@ -39,7 +39,22 @@ Use the method [catalog.product.add](../product/catalog-product-add.md) and pass
 
 {% endnote %}
 
-## Relationship with Other Objects
+## How to Get Started
+
+1. Get the product or variation identifier using the methods from the [Image Relationships with Other Objects](#links) section
+2. Add an image using the [catalog.productImage.add](./catalog-product-image-add.md) or [catalog.product.image.add](./catalog-product-image-add-rest-v3.md) method
+3. Get the product images and their identifiers using the [catalog.productImage.list](./catalog-product-image-list.md) or [catalog.product.image.list](./catalog-product-image-list-rest-v3.md) method
+4. Delete an unnecessary image using the [catalog.productImage.delete](./catalog-product-image-delete.md) or [catalog.product.image.delete](./catalog-product-image-delete-rest-v3.md) method
+
+## Limitations and Specifics
+
+- The file type is checked by the extension in the name. Allowed extensions: `jpg`, `jpeg`, `jpe`, `png`, `gif`, `bmp`, `webp`
+- The file size is limited by the Bitrix24 settings and the free disk space
+- Additional `MORE_PHOTO` images are stored in the product property with the `MORE_PHOTO` code of the "File" type. If the property does not exist or is inactive, you cannot add an additional image
+- The `get` and `delete` methods work only if the image belongs to the product from `productId`
+- In the methods of the previous API version, the `downloadUrl` link is signed with the request token. Do not share it with third parties: authorization data can be recovered from the link
+
+## Relationship of Product and Variation Images with Other Objects {#links}
 
 **Products.** Specify the product ID for which you want to add an image. The list of IDs can be obtained using the methods:
 
@@ -52,9 +67,12 @@ Use the method [catalog.product.add](../product/catalog-product-add.md) and pass
 
 In [REST 3.0](../../rest-v3.md), images have methods for adding, retrieving, and deleting, as well as the `catalog.product.image.field.list` and `catalog.product.image.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
 
+Which version to choose: REST 3.0 accepts a file by the `url` link and returns errors with a code and a field, while the previous version lets you omit the image type.
+
 Specifics of the new version methods:
 
 - the [catalog.product.image.get](./catalog-product-image-get-rest-v3.md) and [catalog.product.image.delete](./catalog-product-image-delete-rest-v3.md) methods require the image `id` and the product `productId`, and the [catalog.product.image.list](./catalog-product-image-list-rest-v3.md) method requires a filter by `productId`
+- the image type `type` is required when adding
 - the file is passed in `fields.file.upload`: the file name `name` and the content `data` in Base64, or a `url` link
 - images of the `PREVIEW_PICTURE` and `DETAIL_PICTURE` types replace the previous ones, and an image of the `MORE_PHOTO` type is added to the existing ones
 - the image identifier matches the file identifier
@@ -65,7 +83,7 @@ Specifics of the new version methods:
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can perform the methods:
-> - administrator — for methods of the previous API version
+> - a user with the "View product catalog" or "View catalog products" permission and permission to read the product — to get images using the methods of the previous API version. Adding and deleting require the "View catalog products" permission and permission to edit the product
 > - a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permission to read the product — for retrieving images in REST 3.0. Adding and deleting require the "Edit product" access permission and permission to edit the product
 
 #|

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View catalog products" permission and permission to edit the product
 
-This method removes an image from a product, parent product, variation, or service.
+The method `catalog.productImage.delete` deletes an image from a product, parent product, variation, or service.
 
 ## Method Parameters
 
@@ -35,8 +35,17 @@ To obtain existing identifiers, use the following methods:
 - for services — [catalog.product.service.list](../product/service/catalog-product-service-list.md)
 ||
 || **id***
-[`catalog_product_image.id`](../data-types.md#catalog_product_image) | Identifier of the image ||
+[`catalog_product_image.id`](../data-types.md#catalog_product_image) | Image identifier. The image must belong to the product from `productId`.
+
+You can get the identifier using the [catalog.productImage.list](./catalog-product-image-list.md) method.
+
+The result depends on the image type:
+- `PREVIEW_PICTURE` — the product's preview image field is cleared
+- `DETAIL_PICTURE` — the product's detail image field is cleared
+- `MORE_PHOTO` — only this value is removed from the additional images, the others are kept ||
 |#
+
+The deletion cannot be undone: the file is deleted from Bitrix24.
 
 ## Code Examples
 
@@ -173,7 +182,7 @@ To obtain existing identifiers, use the following methods:
                     'id'        => 1
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -248,12 +257,14 @@ HTTP Status: **200**
 {
     "result": true,
     "time": {
-        "start": 1729001588.54184,
-        "finish": 1729001589.40018,
-        "duration": 0.8583400249481201,
-        "processing": 0.4529080390930176,
-        "date_start": "2024-10-15T17:13:08+02:00",
-        "date_finish": "2024-10-15T17:13:09+02:00"
+        "start": 1793618596,
+        "finish": 1793618596.280358,
+        "duration": 0.28035807609558105,
+        "processing": 0,
+        "date_start": "2026-11-02T14:23:16+03:00",
+        "date_finish": "2026-11-02T14:23:16+03:00",
+        "operating_reset_at": 1793619180,
+        "operating": 0.1793501377105713
     }
 }
 ```
@@ -274,9 +285,9 @@ HTTP Status: **200**
 HTTP Status: **400**
 
 ```json
-{	
-    "error":200040300020,
-    "error_description":"Access Denied"
+{
+    "error": "",
+    "error_description": "productImage does not exist."
 }
 ```
 
@@ -285,26 +296,18 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to modify the trade catalog
-||
-|| `200040300020` | Insufficient permissions to modify the product
-||
-|| `100` | Parameter `productId` is missing or empty
-||
-|| `100` | Parameter `id` is missing or empty
-|| 
-|| `0` | Product with the specified identifier not found
-|| 
-|| `0` | Image with the specified identifier not found
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "View catalog products" permission or permission to edit the product ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
+|| `400` | `100` | Could not find value for parameter {productId} | The required parameter `productId` is not passed ||
+|| `400` | Empty value | productImage does not exist. | The file with the specified `id` was not found, or the image does not belong to the product ||
+|| `400` | `0` | Product was not found | The product with the specified `productId` was not found ||
+|| `400` | `0` | Internal error deleting product image. Try deleting again. | Database error while deleting. Repeat the request ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-product-image-add.md)
 - [{#T}](./catalog-product-image-get.md)

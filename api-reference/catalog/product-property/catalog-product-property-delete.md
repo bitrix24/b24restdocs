@@ -23,10 +23,16 @@ The method `catalog.productProperty.delete` removes a product property or variat
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_property.id`](../data-types.md#catalog_product_property) | Identifier of the property. 
+[`catalog_product_property.id`](../data-types.md#catalog_product_property) | Identifier of the property.
 
 Property identifiers can be obtained using the method [catalog.productProperty.list](./catalog-product-property-list.md) ||
 |#
+
+{% note warning "" %}
+
+The property's values for all products and variations, list values, section bindings, and files of a "File" property are deleted together with the property. The deletion cannot be undone.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -225,13 +231,13 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1773951201,
-        "finish": 1773951201.704125,
-        "duration": 0.704124927520752,
+        "start": 1793618656,
+        "finish": 1793618656.553741,
+        "duration": 0.5537409782409668,
         "processing": 0,
-        "date_start": "2026-03-19T23:13:21+02:00",
-        "date_finish": "2026-03-19T23:13:21+02:00",
-        "operating_reset_at": 1773951801,
+        "date_start": "2026-11-02T14:24:16+03:00",
+        "date_finish": "2026-11-02T14:24:16+03:00",
+        "operating_reset_at": 1793619240,
         "operating": 0
     }
 }
@@ -266,7 +272,8 @@ HTTP status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `0` | Access Denied | Insufficient permissions to view the catalog, or no permission to modify the property's information block ||
-|| `400` | Empty value | productProperty does not exist | Property with the specified `id` not found ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
+|| `400` | Empty value | productProperty does not exist. | The property with the specified `id` was not found ||
 || `400` | `0` | The specified property does not belong to a product catalog | Property does not belong to the product catalog ||
 || `400` | `0` | Error deleting product property | Internal error while deleting the property ||
 |#

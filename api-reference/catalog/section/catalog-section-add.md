@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "View catalog products" permission, the "Create product" permission, and permission to edit the information block sections
 
 The method `catalog.section.add` adds a section to the catalog.
 
@@ -75,8 +75,8 @@ Default is `Y` ||
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{
@@ -97,8 +97,8 @@ Default is `Y` ||
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{
@@ -132,15 +132,15 @@ Default is `Y` ||
     type SectionAddResult = {
       section: {
         active: string
-        code: string
+        code: string | null
         description: string
         descriptionType: string
         iblockId: number
-        iblockSectionId: number
+        iblockSectionId: number | null
         id: number
         name: string
         sort: number
-        xmlId: string
+        xmlId: string | null
       }
     }
 
@@ -253,7 +253,6 @@ Default is `Y` ||
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -274,13 +273,12 @@ Default is `Y` ||
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding catalog section: ' . $e->getMessage();
@@ -291,7 +289,7 @@ Default is `Y` ||
 
     ```js
     BX24.callMethod(
-        'catalog.section.add', 
+        'catalog.section.add',
         {
             fields: {
                 name: 'Children\'s Toys',
@@ -424,10 +422,10 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **section**
+|| **result.section**
 [`catalog_section`](../data-types.md#catalog_section) | Object containing information about the added catalog section ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -436,8 +434,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200040300040,
-    "error_description":"Access Denied"
+    "error": "0",
+    "error_description": "Required fields: iblockId, name"
 }
 ```
 
@@ -446,14 +444,16 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300040` | No access to editing ||
-|| `200700300000` | Errors while adding, for example, the identifier of the information block of the created section does not match the identifier of the parent section ||
-|| `200700300040` | Violation of the uniqueness of the `code` field ||
-|| `200700300050` | Information block with the specified `iblockId` does not exist ||
-|| `100` | Required parameter `fields` not provided ||
-|| `0` | Required fields not set ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No "View product catalog" or "View catalog products" permission ||
+|| `400` | `200040300020` | Access Denied | No "Create product" permission in the catalog ||
+|| `400` | `200040300040` | Access Denied | No permission to edit the information block sections ||
+|| `400` | `200040300050` | Access Denied | No permission to bind to the parent section from `iblockSectionId` ||
+|| `400` | `200700300050` | Iblock is not exists | The information block from `iblockId` or the parent section from `iblockSectionId` was not found ||
+|| `400` | `200700300000` | Error text | The section was not saved, for example, the parent section is in a different information block ||
+|| `400` | `200700300040` | Duplicate entry for key [code] | A section with this `code` already exists in the information block. The error occurs if uniqueness of the section symbolic code is enabled in the information block settings ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not passed ||
+|| `400` | `0` | Required fields: iblockId, name | The required fields `iblockId` and `name` are not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

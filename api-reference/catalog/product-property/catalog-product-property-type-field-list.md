@@ -23,6 +23,8 @@ The `catalog.product.property.type.field.list` method returns the list of availa
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -412,5 +414,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-product-property-type-field-get.md)
 - [{#T}](./catalog-product-property-type-list.md)
+- [{#T}](./catalog-product-property-type-field-get.md)

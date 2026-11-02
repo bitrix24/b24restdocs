@@ -23,7 +23,7 @@ The method `catalog.section.delete` deletes a trade catalog section together wit
 
 {% note warning "" %}
 
-Together with the section, all its subsections and the products that are not linked to other sections are deleted. They cannot be restored.
+All nested sections of the section and the products that are not bound to other sections are deleted together with it. They cannot be restored. Products bound to other sections as well are kept: one of the remaining sections becomes their main section.
 
 {% endnote %}
 

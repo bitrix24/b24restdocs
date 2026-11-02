@@ -19,6 +19,7 @@ The sections of the Commercial Catalog cover essential data and settings:
 - catalog structure and product images
 - units of measurement, coefficients, and VAT rates
 - warehouses, stock levels, and inventory documents
+- events on changes to products, prices, and reference data
 
 > Quick navigation: [All Catalog Sections](#all-methods)
 >
@@ -34,6 +35,7 @@ The sections of the Commercial Catalog cover essential data and settings:
 || Work with product and variation images | [Product and Variation Images](./product-image/index.md) ||
 || Work with warehouses, stock levels, and inventory documents | [Warehouses](./store/index.md), [Stock Levels by Warehouse](./store-product/index.md), [Inventory Accounting](./document/index.md) ||
 || Get catalog reference values | [Enumerations](./enum/index.md), [Units of Measurement](./measure/index.md), [VAT Rates](./vat/index.md), [Markups](./extra/index.md) ||
+|| Get notified when catalog objects are added, updated, or deleted without repeated `list` requests | [Product Events](./product/events/index.md), [Price Events](./price/events/index.md), [Price Type Events](./price-type/events/index.md), [Rounding Rule Events](./rounding-rule/events/index.md), [Measurement Unit Events](./measure/events/index.md) ||
 |#
 
 {% note tip "User documentation" %}
@@ -52,6 +54,7 @@ The sections of the Commercial Catalog cover essential data and settings:
 3. Open the relevant section and retrieve the list of objects using the `list` method to gather working identifiers.
 4. Modify the object using the `add` or `update` methods of the appropriate section.
 5. Verify the result using the `get` method and, if necessary, clarify available fields using the `getFields` method.
+6. If your integration needs to be notified about catalog changes, subscribe to events using the [event.bind](../events/event-bind.md) method in the context of an [application](../../settings/app-installation/index.md). Events are available for products, prices, price types, rounding rules, and units of measurement — see the list in the [Events](#events) section.
 
 See the complete scenario for creating a product with properties and a price in the tutorial [How to Add a Product with Custom Property Values](../../tutorials/catalog/index.md).
 
@@ -66,6 +69,16 @@ See the complete scenario for creating a product with properties and a price in 
 - [Inventory Management](./document/index.md), [Inventory Document Products](./document/document-element/index.md), [Inventory Document Custom Fields](./userfield-document/index.md), [Working with CRM Vendors](./documentcontractor/index.md), [Inventory Management Vendors](./contractor/index.md)
 
 Some method names of the new version are written in lowercase only, for example `catalog.pricetype.list` and `catalog.roundingrule.list`.
+
+The deprecated inventory management methods `catalog.document.confirm`, `catalog.document.unconfirm`, `catalog.document.fields`, and `catalog.document.element.fields` are kept for existing integrations — their replacements are listed in the [Inventory Management](./document/index.md) section. The [Inventory Management Vendors](./contractor/index.md) directory works only if vendors have not been moved to CRM. Otherwise, use the [methods for working with CRM vendors](./documentcontractor/index.md).
+
+## Lists and Errors
+
+**Lists in REST 2.** The `list` methods return an array under a key named after the object in the plural, for example `result.products` or `result.prices`, and the `total` field with the total count. A page contains 50 records; request the next page with the `start` parameter.
+
+**Lists in REST 3.0.** The `list` methods return an array in `result.items`. The page is set by the `pagination` object with the `limit`, `page`, and `offset` keys. `limit` values greater than `50` are reduced to `50`.
+
+**Errors.** REST 2 methods return a numeric code in `error`, for example `200040300010` when the user does not have permission to view the catalog. REST 3.0 methods return an exception code, for example `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`. The codes of a specific method are listed on its page, and general handling rules are described in the [Error Codes](../../error-codes.md) article.
 
 ## Access Permissions
 
@@ -147,4 +160,16 @@ By default, only the Bitrix24 administrator can edit the catalog and configure a
 || [Inventory Document Custom Fields](./userfield-document/index.md) | Methods for working with custom fields in accounting documents ||
 || [Working with CRM Vendors](./documentcontractor/index.md) | Methods for working with vendors in inventory accounting documents ||
 || [Inventory Management Vendors](./contractor/index.md) | Methods for working with the inventory management vendor directory ||
+|#
+### Events {#events}
+
+You can subscribe to events from an application using the [event.bind](../events/event-bind.md) method. Each object has three events: add, update, and delete.
+
+#|
+|| **Section** | **Events** ||
+|| [Product Events](./product/events/index.md) | `CATALOG.PRODUCT.ON.ADD`, `CATALOG.PRODUCT.ON.UPDATE`, `CATALOG.PRODUCT.ON.DELETE` — for products, services, parent products, and variations ||
+|| [Price Events](./price/events/index.md) | `CATALOG.PRICE.ON.ADD`, `CATALOG.PRICE.ON.UPDATE`, `CATALOG.PRICE.ON.DELETE` ||
+|| [Price Type Events](./price-type/events/index.md) | `CATALOG.PRICE.TYPE.ON.ADD`, `CATALOG.PRICE.TYPE.ON.UPDATE`, `CATALOG.PRICE.TYPE.ON.DELETE` ||
+|| [Rounding Rule Events](./rounding-rule/events/index.md) | `CATALOG.ROUNDING.ON.ADD`, `CATALOG.ROUNDING.ON.UPDATE`, `CATALOG.ROUNDING.ON.DELETE` ||
+|| [Measurement Unit Events](./measure/events/index.md) | `CATALOG.MEASURE.ON.ADD`, `CATALOG.MEASURE.ON.UPDATE`, `CATALOG.MEASURE.ON.DELETE` ||
 |#

@@ -23,7 +23,7 @@ The method `catalog.productProperty.get` returns the values of the product or va
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_property.id`](../data-types.md#catalog_product_property) | Identifier of the property. 
+[`catalog_product_property.id`](../data-types.md#catalog_product_property) | Identifier of the property.
 
 Property identifiers can be obtained using the [catalog.productProperty.list](./catalog-product-property-list.md) method ||
 |#
@@ -67,8 +67,8 @@ Property identifiers can be obtained using the [catalog.productProperty.list](./
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type GetProductPropertyResult = {
       productProperty: {
-        active: string
-        code: string
+        active: 'Y' | 'N'
+        code: string | null
         colCount: number
         defaultValue: string | null
         fileType: string | null
@@ -87,14 +87,8 @@ Property identifiers can be obtained using the [catalog.productProperty.list](./
         searchable: string
         sort: number | null
         timestampX: ISODate | null
-        userType: string
-        userTypeSettings: {
-          group: string
-          multiple: string
-          size: number
-          tableName: string
-          width: number
-        }
+        userType: string | null
+        userTypeSettings: Record<string, unknown> | null
         withDescription: string | null
         xmlId: string | null
       }
@@ -251,17 +245,17 @@ Property identifiers can be obtained using the [catalog.productProperty.list](./
     }
 
     var item struct {
-    	Active    string `json:"active"`
-    	Code      string `json:"code"`
-    	ColCount  int    `json:"colCount"`
-    	Filtrable string `json:"filtrable"`
-    	IblockID  b24.ID `json:"iblockId"`
-    	ID        b24.ID `json:"id"`
+    	Active    string  `json:"active"`
+    	Code      *string `json:"code"`
+    	ColCount  int     `json:"colCount"`
+    	Filtrable string  `json:"filtrable"`
+    	IblockID  b24.ID  `json:"iblockId"`
+    	ID        b24.ID  `json:"id"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Active, item.Code)
+    fmt.Println(item.ID, item.Active)
     ```
 
 {% endlist %}
@@ -275,7 +269,7 @@ HTTP Status: **200**
     "result": {
         "productProperty": {
             "active": "Y",
-            "code": "s12",
+            "code": "CATEGORY",
             "colCount": 30,
             "defaultValue": null,
             "fileType": null,
@@ -326,7 +320,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response ||
-|| **productProperty**
+|| **result.productProperty**
 [`catalog_product_property`](../data-types.md#catalog_product_property) | Object containing information about the product or variation property ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -350,8 +344,8 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `0` | Access Denied | Insufficient rights to view the catalog ||
-|| `400` | Empty value | productProperty does not exist | Property with the specified `id` not found ||
-
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
+|| `400` | Empty value | productProperty does not exist. | The property with the specified `id` was not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

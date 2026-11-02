@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method returns the values of all fields in the trade catalog.
+The method `catalog.catalog.get` returns the field values of a trade catalog by its identifier.
 
 ## Method Parameters
 
@@ -23,7 +23,9 @@ The method returns the values of all fields in the trade catalog.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the trade catalog ||
+[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Trade catalog identifier. It matches the identifier of the catalog information block.
+
+You can get the identifier using the [catalog.catalog.list](./catalog-catalog-list.md) method ||
 |#
 
 ## Code Examples
@@ -38,7 +40,7 @@ The method returns the values of all fields in the trade catalog.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":23}' \
+    -d '{"id":25}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.catalog.get
     ```
 
@@ -48,7 +50,7 @@ The method returns the values of all fields in the trade catalog.
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":23,"auth":"**put_access_token_here**"}' \
+    -d '{"id":25,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.catalog.get
     ```
 
@@ -66,13 +68,13 @@ The method returns the values of all fields in the trade catalog.
     type CatalogGetResult = {
       catalog: {
         iblockId: number
-        iblockTypeId: number
+        iblockTypeId: string
         id: number
         lid: string
         name: string
         productIblockId: number | null
         skuPropertyId: number | null
-        subscription: string
+        subscription: 'Y' | 'N'
         vatId: number | null
       }
     }
@@ -81,7 +83,7 @@ The method returns the values of all fields in the trade catalog.
       const response = await $b24.actions.v2.call.make<CatalogGetResult>({
         method: 'catalog.catalog.get',
         params: {
-          id: 23,
+          id: 25,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -113,7 +115,7 @@ The method returns the values of all fields in the trade catalog.
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.catalog.get',
             params: {
-              id: 23,
+              id: 25,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -143,7 +145,7 @@ The method returns the values of all fields in the trade catalog.
 
     try:
         bitrix_response = client.catalog.catalog.get(
-            bitrix_id=23,
+            bitrix_id=25,
         ).response
         result = bitrix_response.result
         print(result)
@@ -161,7 +163,6 @@ The method returns the values of all fields in the trade catalog.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -169,17 +170,15 @@ The method returns the values of all fields in the trade catalog.
             ->call(
                 'catalog.catalog.get',
                 [
-                    'id' => 23
+                    'id' => 25
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        echo 'Info: ' . print_r($result, true);
-    
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting catalog: ' . $e->getMessage();
@@ -191,7 +190,7 @@ The method returns the values of all fields in the trade catalog.
     ```js
     BX24.callMethod(
         'catalog.catalog.get', {
-            'id': 23
+            'id': 25
         },
         function(result) {
             if (result.error()) {
@@ -211,7 +210,7 @@ The method returns the values of all fields in the trade catalog.
     $result = CRest::call(
         'catalog.catalog.get',
         [
-            'id' => 23
+            'id' => 25
         ]
     );
 
@@ -225,7 +224,7 @@ The method returns the values of all fields in the trade catalog.
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.catalog.get", b24.Params{
-    	"id": 23,
+    	"id": 25,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.catalog.get: %w", err)
@@ -239,7 +238,7 @@ The method returns the values of all fields in the trade catalog.
 
     var item struct {
     	IblockID     b24.ID `json:"iblockId"`
-    	IblockTypeID b24.ID `json:"iblockTypeId"`
+    	IblockTypeID string `json:"iblockTypeId"`
     	ID           b24.ID `json:"id"`
     	Lid          string `json:"lid"`
     	Name         string `json:"name"`
@@ -261,24 +260,26 @@ HTTP Status: **200**
 {
     "result": {
         "catalog": {
-            "iblockId": 23,
-            "iblockTypeId": 0,
-            "id": 23,
+            "iblockId": 25,
+            "iblockTypeId": "CRM_PRODUCT_CATALOG",
+            "id": 25,
             "lid": "s1",
-            "name": "Products QuickBooks and other similar platforms",
+            "name": "CRM product catalog",
             "productIblockId": null,
             "skuPropertyId": null,
             "subscription": "N",
-            "vatId": null
+            "vatId": 1
         }
     },
     "time": {
-        "start": 1716390151.446282,
-        "finish": 1716390151.902625,
-        "duration": 0.4563431739807129,
-        "processing": 0.016014814376831055,
-        "date_start": "2024-05-22T18:02:31+02:00",
-        "date_finish": "2024-05-22T18:02:31+02:00"
+        "start": 1793612963,
+        "finish": 1793612963.560481,
+        "duration": 0.560481071472168,
+        "processing": 0,
+        "date_start": "2026-11-02T12:49:23+03:00",
+        "date_finish": "2026-11-02T12:49:23+03:00",
+        "operating_reset_at": 1793613540,
+        "operating": 0
     }
 }
 ```
@@ -290,10 +291,10 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **catalog**
+|| **result.catalog**
 [`catalog_catalog`](../data-types.md#catalog_catalog) | Object with information about the trade catalog ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -302,8 +303,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "",
+    "error_description": "catalog does not exist."
 }
 ```
 
@@ -312,17 +313,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read the trade catalog
-|| 
-|| `200040300030` | Insufficient permissions to read the trade catalog
-|| 
-|| `100` | Parameter `id` not specified
-|| 
-|| `0` | Trade catalog with the specified identifier does not exist
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have permission to view Bitrix24 settings ||
+|| `400` | `200040300030` | Access Denied | The user does not have permission to read the trade catalog ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
+|| `400` | Empty value | catalog does not exist. | The trade catalog with the specified `id` was not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

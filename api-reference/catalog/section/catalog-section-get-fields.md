@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with the "View product catalog" or "View catalog products" permission
 
-The method `catalog.section.getFields` returns the available fields of the catalog section.
+The method `catalog.section.getFields` returns the available fields of a catalog section.
+
+## Method Parameters
 
 Without parameters.
 
@@ -25,8 +27,8 @@ Without parameters.
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
@@ -35,8 +37,8 @@ Without parameters.
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
@@ -143,7 +145,6 @@ Without parameters.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -152,7 +153,7 @@ Without parameters.
                 'catalog.section.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -222,75 +223,76 @@ HTTP status: **200**
 {
     "result": {
         "section": {
-        "active": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "char"
-        },
-        "code": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
-        },
-        "description": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
-        },
-        "descriptionType": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
-        },
-        "iblockId": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": true,
-            "type": "integer"
-        },
-        "iblockSectionId": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "integer"
-        },
-        "id": {
-            "isImmutable": false,
-            "isReadOnly": true,
-            "isRequired": false,
-            "type": "integer"
-        },
-        "name": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": true,
-            "type": "string"
-        },
-        "sort": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "integer"
-        },
-        "xmlId": {
-            "isImmutable": false,
-            "isReadOnly": false,
-            "isRequired": false,
-            "type": "string"
-        }
+            "active": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "char"
+            },
+            "code": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "description": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "descriptionType": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            },
+            "iblockId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "integer"
+            },
+            "iblockSectionId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "id": {
+                "isImmutable": false,
+                "isReadOnly": true,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "name": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": true,
+                "type": "string"
+            },
+            "sort": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "integer"
+            },
+            "xmlId": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "type": "string"
+            }
         }
     },
     "time": {
-        "start": 1716552521.40908,
-        "finish": 1716552521.69852,
-        "duration": 0.289434909820557,
-        "processing": 0.011207103729248,
-        "date_start": "2024-05-24T14:08:41+02:00",
-        "date_finish": "2024-05-24T14:08:41+02:00",
+        "start": 1793615593,
+        "finish": 1793615593.086393,
+        "duration": 0.08639311790466309,
+        "processing": 0,
+        "date_start": "2026-11-02T13:33:13+03:00",
+        "date_finish": "2026-11-02T13:33:13+03:00",
+        "operating_reset_at": 1793616180,
         "operating": 0
     }
 }
@@ -303,10 +305,10 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **section**
+|| **result.section**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`catalog_section`](../data-types.md#catalog_section), and `value` is an object of type [`rest_field_description`](../data-types.md) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -315,8 +317,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":0,
-    "error_description":"error"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -325,8 +327,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No "View product catalog" or "View catalog products" permission ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

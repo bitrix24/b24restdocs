@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "View catalog products" permission and permission to read the information block sections
 
 The method `catalog.section.list` returns a list of sections in the trade catalog.
 
@@ -26,34 +26,23 @@ The method `catalog.section.list` returns a list of sections in the trade catalo
 [`array`](../../data-types.md) | An array containing the list of fields to select (see the fields of the [catalog_section](../data-types.md#catalog_section) object).
 
 If not provided or an empty array is passed, all available fields of the catalog section will be selected. ||
-|| **filter**
-[`object`](../../data-types.md) | An object for filtering the selected catalog sections in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
+|| **filter***
+[`object`](../../data-types.md) | Object for filtering catalog sections in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_section](../data-types.md#catalog_section) object.
+The required key is `iblockId`, the identifier of the trade catalog information block. You can get it using the [catalog.catalog.list](../catalog/catalog-catalog-list.md) method.
 
-**The `iblockId` field is required**.
+You can filter by the `id`, `iblockId`, `iblockSectionId`, `name`, `code`, `xmlId`, and `active` fields. The method skips conditions on other fields, for example `sort` or `description`, without an error.
 
-An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
-- `>=` — greater than or equal to
+You can add a prefix to the key that sets the condition:
+- `=` — equals. Used by default. If you pass an array of values, the method returns sections whose value is in the array
+- `!` or `!=` — not equal. With an array of values — not in the array
 - `>` — greater than
-- `<=` — less than or equal to
+- `>=` — greater than or equal to
 - `<` — less than
-- `@` — IN (an array is passed as the value)
-- `!@` — NOT IN (an array is passed as the value)
-- `%` — LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search looks for the substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` symbol needs to be passed in the value. Examples:
-    - "mol%" — searching for values starting with "mol"
-    - "%mol" — searching for values ending with "mol"
-    - "%mol%" — searching for values where "mol" can be in any position
+- `<=` — less than or equal to
+- `%` — contains a substring. Do not pass the `%` character in the value
 
-- `%=` — LIKE (see description above)
-
-- `!%` — NOT LIKE, substring search. The `%` symbol in the filter value does not need to be passed. The search goes from both sides.
-
-- `!%=` — NOT LIKE (see description above)
-
-- `=` — equal, exact match (used by default)
-- `!=` - not equal ||
+The method does not support the `@`, `!@`, `=%`, `%=`, `!%`, `!=%`, and `!%=` prefixes: conditions with them are not applied ||
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected catalog sections in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
@@ -82,15 +71,15 @@ The formula for calculating the `start` parameter value:
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{
         "select": ["id", "name", "sort"],
         "filter": {
-            "iblockId": 14,
-            "<=sort": 100
+            "iblockId": 25,
+            "iblockSectionId": 31
         },
         "order": {
             "sort": "DESC"
@@ -101,15 +90,15 @@ The formula for calculating the `start` parameter value:
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{
         "select": ["id", "name", "sort"],
         "filter": {
-            "iblockId": 14,
-            "<=sort": 100
+            "iblockId": 25,
+            "iblockSectionId": 31
         },
         "order": {
             "sort": "DESC"
@@ -149,8 +138,8 @@ The formula for calculating the `start` parameter value:
         params: {
           select: ['id', 'name', 'sort'],
           filter: {
-            iblockId: 14,
-            '<=sort': 100,
+            iblockId: 25,
+            'iblockSectionId': 31,
           },
           order: {
             sort: 'DESC',
@@ -194,8 +183,8 @@ The formula for calculating the `start` parameter value:
             params: {
               select: ['id', 'name', 'sort'],
               filter: {
-                iblockId: 14,
-                '<=sort': 100,
+                iblockId: 25,
+                'iblockSectionId': 31,
               },
               order: {
                 sort: 'DESC',
@@ -236,7 +225,7 @@ The formula for calculating the `start` parameter value:
                 "sort",
             ],
             filter={
-                "iblockId": 14,
+                "iblockId": 25,
             },
             order={
                 "sort": "DESC",
@@ -259,7 +248,6 @@ The formula for calculating the `start` parameter value:
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -269,13 +257,13 @@ The formula for calculating the `start` parameter value:
                 [
                     'select' => ["id", "name", "sort"],
                     'filter' => [
-                        'iblockId' => 14,
-                        '<=sort'  => 100
+                        'iblockId' => 25,
+                        'iblockSectionId'  => 31
                     ],
                     'order'  => ['sort' => 'DESC']
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -290,15 +278,15 @@ The formula for calculating the `start` parameter value:
 
     ```js
     BX24.callMethod(
-        'catalog.section.list', 
+        'catalog.section.list',
         {
             select: ["id", "name", "sort"],
             filter: {
-                'iblockId': 14,
-                '<=sort': 100
+                'iblockId': 25,
+                'iblockSectionId': 31
             },
             order: {'sort': 'DESC'}
-        }, 
+        },
         function(result)
         {
         if(result.error())
@@ -319,8 +307,8 @@ The formula for calculating the `start` parameter value:
         [
             'select' => ["id", "name", "sort"],
             'filter' => [
-                'iblockId' => 14,
-                '<=sort' => 100
+                'iblockId' => 25,
+                'iblockSectionId' => 31
             ],
             'order' => [
                 'sort' => 'DESC'
@@ -340,8 +328,8 @@ The formula for calculating the `start` parameter value:
     res, err := client.Core().Call(ctx, "catalog.section.list", b24.Params{
     	"select": []string{"id", "name", "sort"},
     	"filter": b24.Params{
-    		"iblockId": 14,
-    		"<=sort":   100,
+    		"iblockId": 25,
+    		"iblockSectionId":   31,
     	},
     	"order": b24.Params{
     		"sort": "DESC",
@@ -364,32 +352,50 @@ HTTP status: **200**
 
 ```json
 {
-    "sections": [
-        {
-            "id": 13,
-            "name": "Products",
-            "sort": 500
-        },
-        {
-            "id": 14,
-            "name": "Services",
-            "sort": 500
-        },
-        {
-            "id": 22,
-            "name": "Shoes",
-            "sort": 50
-        }
-    ],
-    "total": 3,
+    "result": {
+        "sections": [
+            {
+                "id": 19,
+                "name": "Excursions",
+                "sort": 500
+            },
+            {
+                "id": 21,
+                "name": "Collectible spoons",
+                "sort": 500
+            },
+            {
+                "id": 43,
+                "name": "Sportswear",
+                "sort": 500
+            },
+            {
+                "id": 41,
+                "name": "T-shirts",
+                "sort": 400
+            },
+            {
+                "id": 39,
+                "name": "Dresses",
+                "sort": 100
+            },
+            {
+                "id": 33,
+                "name": "Shoes",
+                "sort": 50
+            }
+        ]
+    },
+    "total": 6,
     "time": {
-        "start": 1712326352.63409,
-        "finish": 1712326352.8319,
-        "duration": 0.197818040847778,
-        "processing": 0.00833678245544434,
-        "date_start": "2024-04-05T16:12:32+02:00",
-        "date_finish": "2024-04-05T16:12:32+02:00",
-        "operating": 0
+        "start": 1793615638,
+        "finish": 1793615638.10939,
+        "duration": 0.1093900203704834,
+        "processing": 0,
+        "date_start": "2026-11-02T13:33:58+03:00",
+        "date_finish": "2026-11-02T13:33:58+03:00",
+        "operating_reset_at": 1793616180,
+        "operating": 0.6537201404571533
     }
 }
 ```
@@ -401,12 +407,12 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
-|| **section**
+|| **result.sections**
 [`catalog_section[]`](../data-types.md#catalog_section) | An array of objects containing information about the selected catalog sections ||
 || **total**
 [`integer`](../../data-types.md) | The total number of records found ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -415,8 +421,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300030,
-    "error_description":"Access Denied"
+    "error": "0",
+    "error_description": "Required filter fields: iblockId"
 }
 ```
 
@@ -425,10 +431,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300030` | Insufficient permissions to read the catalog section ||
-|| `0` | Required fields in the `filter` structure are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No "View product catalog" or "View catalog products" permission ||
+|| `400` | `200040300030` | Access Denied | No permission to read the information block from `filter.iblockId` ||
+|| `400` | `200700300050` | Iblock is not exists | The information block from `filter.iblockId` was not found ||
+|| `400` | `0` | Required filter fields: iblockId | The required key `iblockId` is not passed in `filter` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -440,4 +447,3 @@ HTTP status: **400**
 - [{#T}](./catalog-section-get.md)
 - [{#T}](./catalog-section-delete.md)
 - [{#T}](./catalog-section-get-fields.md)
-

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to modify the product catalog
+> Who can execute the method: a user with permission to view the catalog and permission to edit the catalog information block
 
 The method `catalog.productProperty.add` adds a property to a product or variation.
 
@@ -34,7 +34,7 @@ The method `catalog.productProperty.add` adds a property to a product or variati
 || **Name**
 `type` | **Description** ||
 || **iblockId***
-[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the trade catalog. 
+[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the trade catalog.
 
 Existing identifiers can be obtained using the method [catalog.catalog.list](../catalog/catalog-catalog-list.md) ||
 || **name***
@@ -51,7 +51,8 @@ Existing identifiers can be obtained using the method [catalog.catalog.list](../
 [`char`](../../data-types.md) | Activity status. Allowed values:
 - `Y` — yes
 - `N` — no
-||
+
+Default: `Y`. Any value other than `Y` is saved as `N` ||
 || **sort**
 [`integer`](../../data-types.md) | Sorting index ||
 || **code**
@@ -61,34 +62,46 @@ Existing identifiers can be obtained using the method [catalog.catalog.list](../
 || **userType**
 [`string`](../../data-types.md) | Custom property type. The value must correspond to the specified `propertyType`.
 
-Value examples:
-- `DateTime` — date and time
-- `Money` — monetary value with currency
-- `SKU` — link to product variations
-- `directory` — link to a directory
-- `employee` — link to an employee
-- `UserID` — link to a user
-- `EList` — select item from a list
-- `EAutocomplete` — link to elements with auto-search
-- `SectionAuto` — link to sections with auto-search
-- `HTML` — value in HTML format
-- `map_google` — coordinates and address on Google Maps
-- `map_yandex` — coordinates and address on a maps service
-- `DiskFile` — link to a file from Bitrix24.Drive
-- `ECrm` — link to CRM elements
-- `BoolEnum` — checkbox based on a list; use this value together with `propertyType = L` ||
+Main values and the base `propertyType` to pass them with:
+- `DateTime` — date and time, `S`
+- `Money` — monetary value with currency, `S`
+- `SKU` — link to product variations, `E`
+- `directory` — link to a directory, `S`
+- `employee` — link to an employee, `S`
+- `UserID` — link to a user, `S`
+- `EList` — select item from a list, `E`
+- `EAutocomplete` — link to elements with auto-search, `E`
+- `SectionAuto` — link to sections with auto-search, `G`
+- `HTML` — value in HTML format, `S`
+- `map_google` — coordinates and address on Google Maps, `S`
+- `map_yandex` — coordinates and address on a maps service, `S`
+- `DiskFile` — link to a file from Bitrix24.Drive, `S`
+- `ECrm` — link to CRM elements, `S`
+- `BoolEnum` — checkbox based on a list, `L`
+
+The set of custom types depends on the Bitrix24 modules. The types supported by the product card are returned by the [catalog.product.property.type.list](./catalog-product-property-type-list.md) method.
+
+If `userType` does not match `propertyType` or the type does not exist, the method returns the `Invalid property type specified` error ||
 || **rowCount**
-[`integer`](../../data-types.md) | Number of rows in the input field ||
+[`integer`](../../data-types.md) | Number of rows in the input field.
+
+Default: `1` ||
 || **colCount**
-[`integer`](../../data-types.md) | Number of columns in the input field ||
+[`integer`](../../data-types.md) | Number of columns in the input field.
+
+Default: `30` ||
 || **listType**
 [`char`](../../data-types.md) | Appearance of the list. Allowed values:
 - `L` — dropdown list
-- `C` — set of checkboxes ||
+- `C` — set of checkboxes
+
+Default: `L` ||
 || **multiple**
 [`char`](../../data-types.md) | Indicator of multiple values. Allowed values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+Default: `N`. Any value other than `Y` is saved as `N` ||
 || **xmlId**
 [`string`](../../data-types.md) | External identifier of the property ||
 || **fileType**
@@ -96,7 +109,7 @@ Value examples:
 || **multipleCnt**
 [`integer`](../../data-types.md) | Number of fields for entering multiple values ||
 || **linkIblockId**
-[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the linked information block. 
+[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the linked information block.
 
 Available identifiers can be obtained using the [catalog.catalog.list](../catalog/catalog-catalog-list.md) method ||
 || **withDescription**
@@ -106,15 +119,21 @@ Available identifiers can be obtained using the [catalog.catalog.list](../catalo
 || **searchable**
 [`char`](../../data-types.md) | Indicator of participation in search. Allowed values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+Default: `N`. Any value other than `Y` is saved as `N` ||
 || **filtrable**
 [`char`](../../data-types.md) | Indicator of participation in filtering. Allowed values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+Default: `N` ||
 || **isRequired**
 [`char`](../../data-types.md) | Indicator of required value. Allowed values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+Default: `N` ||
 || **hint**
 [`string`](../../data-types.md) | Hint for the field ||
 || **userTypeSettings**
@@ -500,7 +519,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response ||
-|| **productProperty**
+|| **result.productProperty**
 [`catalog_product_property`](../data-types.md#catalog_product_property) | Object with information about the added property ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -523,7 +542,8 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `0` | Required fields: iblockId, name, propertyType | Required fields not provided in `fields` ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not passed ||
+|| `400` | `0` | Required fields: iblockId, name, propertyType | Required fields are not passed in `fields`. The text lists only the fields that were not passed ||
 || `400` | `0` | Access Denied | No permission to modify the information block ||
 || `400` | `0` | The specified iblock is not a product catalog | The provided `iblockId` is not a trade catalog ||
 || `400` | `0` | Invalid property type specified | An invalid combination of `propertyType` and `userType` was provided ||
@@ -540,6 +560,6 @@ HTTP status: **400**
 - [{#T}](./catalog-product-property-update.md)
 - [{#T}](./catalog-product-property-get.md)
 - [{#T}](./catalog-product-property-list.md)
-- [{#T}](../../../tutorials/catalog/index.md)
 - [{#T}](./catalog-product-property-delete.md)
 - [{#T}](./catalog-product-property-get-fields.md)
+- [{#T}](../../../tutorials/catalog/index.md)
