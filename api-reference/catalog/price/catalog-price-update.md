@@ -23,23 +23,33 @@ The method `catalog.price.update` updates the price of a product.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_price.id`](../data-types.md#catalog_price) | Identifier of the product price ||
+[`catalog_price.id`](../data-types.md#catalog_price) | Identifier of the product price. You can retrieve it using the [catalog.price.list](./catalog-price-list.md) method ||
 || **fields***
 [`object`](../../data-types.md) | Field values for updating the product price ([detailed description](#fields)) ||
 |#
 
 ### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
+Pass only the fields you want to change. The method takes the remaining values from the current price.
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **price***
-[`double`](../../data-types.md) | Price value ||
-|| **currency***
-[`string`](../../data-types.md) | Currency identifier, can be obtained using the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
+|| **price**
+[`double`](../../data-types.md) | Price value. A negative value causes an error ||
+|| **currency**
+[`string`](../../data-types.md) | Currency code, for example, `USD`. You can retrieve currency codes using the [crm.currency.list](../../crm/currency/crm-currency-list.md) method ||
+|| **extraId**
+[`catalog_extra.id`](../data-types.md#catalog_extra) | Markup identifier. You can retrieve the identifier using the [catalog.extra.list](../extra/catalog-extra-list.md) method.
+
+The markup is retained in the price but does not recalculate it. A base type price does not retain a markup. A non-existent identifier causes an error ||
+|| **quantityFrom**
+[`integer`](../../data-types.md) | Lower bound of the product quantity range. The ranges of all product price types must match the ranges of the base price ||
+|| **quantityTo**
+[`integer`](../../data-types.md) | Upper bound of the product quantity range ||
 |#
+
+The `productId` and `catalogGroupId` fields cannot be changed: if you pass them in `fields`, the method completes without an error, but the values remain unchanged. To move a price to another product or price type, delete it using the [catalog.price.delete](./catalog-price-delete.md) method and create a new one using the [catalog.price.add](./catalog-price-add.md) method.
 
 ## Code Examples
 
@@ -307,6 +317,7 @@ HTTP status: **200**
             "extraId": null,
             "id": 1,
             "price": 120.75,
+            "priceScale": 120.75,
             "productId": 1,
             "quantityFrom": null,
             "quantityTo": null,
@@ -332,7 +343,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **price**
+|| **result.price**
 [`catalog_price`](../data-types.md#catalog_price) | Object containing information about the product price ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -344,8 +355,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description":"Required fields: price, currency"
+    "error": "0",
+    "error_description": "Price is not exists"
 }
 ```
 
@@ -354,14 +365,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300020` | Access Denied | Insufficient rights to edit the price ||
-|| `200040300030` | Access Denied | Insufficient rights to edit the product ||
-|| `100` | Could not find value for parameter {fields} | The `fields` parameter is not specified or is empty ||
-|| `100` | Could not find value for parameter {id} | The `id` parameter is not specified ||
-|| `-` | Price does not exist | No price exists for the product with this identifier ||
-|| `0` | Required fields:  | Required fields not provided ||
-|| `0` | | Other errors ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | No "Edit selling price" access permission ||
+|| `400` | `200040300030` | Access Denied | No permission to modify the prices of this product in the catalog information block ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not provided ||
+|| `400` | `0` | Price is not exists | No price with the specified `id` exists ||
+|| `400` | `0` | Validate price error. Ranges of base price are not equal to another price group range | `quantityFrom` and `quantityTo` are passed, but the base price of the product has no matching quantity range ||
+|| `400` | `BX_ERROR` | Invalid price | A negative number is passed in `price` ||
+|| `400` | `BX_ERROR` | Invalid currency | No currency with the code from `currency` exists ||
+|| `400` | `BX_ERROR` | Invalid surcharge ID | No markup with the specified `extraId` exists ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

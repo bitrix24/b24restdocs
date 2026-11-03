@@ -453,6 +453,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-price-type-group-field-list.md)
 - [{#T}](./catalog-price-type-group-add-rest-v3.md)
 - [{#T}](./catalog-price-type-group-delete-rest-v3.md)
+- [{#T}](./catalog-price-type-group-field-list.md)

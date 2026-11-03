@@ -17,6 +17,8 @@ The method `catalog.priceTypeGroup.list` returns a list of price type bindings t
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -395,7 +397,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | The root element of the response ||
-|| **priceTypeGroups**
+|| **result.priceTypeGroups**
 [`catalog_price_type_group[]`](../../data-types.md#catalog_price_type_group) | An array of objects containing information about the selected price type bindings to customer groups, structure depends on the `select` parameter ||
 || **total**
 [`integer`](../../../data-types.md) | The total number of records found ||
@@ -411,7 +413,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -421,8 +423,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300010` | Access Denied | Insufficient permissions to view the catalog ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | Insufficient permissions to view the catalog ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

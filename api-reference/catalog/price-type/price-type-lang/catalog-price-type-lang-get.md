@@ -40,7 +40,7 @@ You can obtain the identifier using [catalog.priceTypeLang.list](./catalog-price
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":2}' \
+    -d '{"id":267}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.priceTypeLang.get
     ```
 
@@ -50,7 +50,7 @@ You can obtain the identifier using [catalog.priceTypeLang.list](./catalog-price
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":2,"auth":"**put_access_token_here**"}' \
+    -d '{"id":267,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.priceTypeLang.get
     ```
 
@@ -78,7 +78,7 @@ You can obtain the identifier using [catalog.priceTypeLang.list](./catalog-price
       const response = await $b24.actions.v2.call.make<PriceTypeLangGetResult>({
         method: 'catalog.priceTypeLang.get',
         params: {
-          id: 2,
+          id: 267,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -110,7 +110,7 @@ You can obtain the identifier using [catalog.priceTypeLang.list](./catalog-price
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.priceTypeLang.get',
             params: {
-              id: 2,
+              id: 267,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -140,7 +140,7 @@ You can obtain the identifier using [catalog.priceTypeLang.list](./catalog-price
 
     try:
         bitrix_response = client.catalog.price_type_lang.get(
-            bitrix_id=2,
+            bitrix_id=267,
         ).response
         result = bitrix_response.result
         print(result)
@@ -166,7 +166,7 @@ You can obtain the identifier using [catalog.priceTypeLang.list](./catalog-price
             ->call(
                 'catalog.priceTypeLang.get',
                 [
-                    'id' => 2
+                    'id' => 267
                 ]
             );
     
@@ -186,7 +186,7 @@ You can obtain the identifier using [catalog.priceTypeLang.list](./catalog-price
     BX24.callMethod(
         'catalog.priceTypeLang.get',
         {
-            id: 2
+            id: 267
         },
         function(result)
         {
@@ -206,7 +206,7 @@ You can obtain the identifier using [catalog.priceTypeLang.list](./catalog-price
     $result = CRest::call(
         'catalog.priceTypeLang.get',
         [
-            'id' => 2
+            'id' => 267
         ]
     );
 
@@ -255,18 +255,19 @@ HTTP status: **200**
     "result": {
         "priceTypeLang": {
             "catalogGroupId": 1,
-            "id": 2,
+            "id": 267,
             "lang": "de",
             "name": "Retail Price"
         }
     },
     "time": {
-        "start": 1733837855.07932,
-        "finish": 1733837855.33599,
-        "duration": 0.256666898727417,
-        "processing": 0.00620198249816895,
-        "date_start": "2024-12-10T15:37:35+02:00",
-        "date_finish": "2024-12-10T15:37:35+02:00",
+        "start": 1793700559,
+        "finish": 1793700559.778474,
+        "duration": 0.7784740924835205,
+        "processing": 0,
+        "date_start": "2026-11-03T13:09:19+03:00",
+        "date_finish": "2026-11-03T13:09:19+03:00",
+        "operating_reset_at": 1793701140,
         "operating": 0
     }
 }
@@ -279,7 +280,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **priceTypeLang**
+|| **result.priceTypeLang**
 [`catalog_price_type_lang`](../../data-types.md#catalog_price_type_lang) | Object with information about the translation of the price type name with the specified identifier ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the execution time of the request ||
@@ -291,8 +292,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
-    "error_description": "Access Denied"
+    "error": "201200000000",
+    "error_description": "priceTypeLang does not exist."
 }
 ```
 
@@ -301,15 +302,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read
-|| 
-|| `201200000000` | No translation of the price type name with such an identifier exists
-|| 
-|| `100` | The parameter `id` is not specified
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "Manage price types" access permission ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | `201200000000` | priceTypeLang does not exist. | No translation with the specified `id` exists ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

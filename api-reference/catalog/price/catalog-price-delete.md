@@ -172,10 +172,10 @@ The method `catalog.price.delete` removes the product price.
 
     ```js
     BX24.callMethod(
-        'catalog.price.delete', 
-        { 
+        'catalog.price.delete',
+        {
             id: 1
-        }, 
+        },
         function(result)
         {
             if(result.error())
@@ -259,8 +259,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300020,
-    "error_description": "Access Denied"
+    "error": "",
+    "error_description": "price does not exist."
 }
 ```
 
@@ -269,12 +269,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300020` | Access Denied | Insufficient permissions to delete ||
-|| `200040300030` | Access Denied | No permission to modify product prices in the catalog information block ||
-|| `-` | Price does not exist | No price exists for the given identifier ||
-|| `100` | Could not find value for parameter {id} | Parameter `id` not specified || 
-|| `0` | | Other errors || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | No "Edit selling price" access permission ||
+|| `400` | `200040300030` | Access Denied | No permission to modify the prices of this product in the catalog information block ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | Empty value | price does not exist. | No price with the specified `id` exists ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

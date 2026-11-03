@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Events allow applications to respond to changes almost in real-time: receiving notifications about the creation, update, or deletion of a price.
+Events allow applications to respond to changes almost in real-time: receiving notifications about the creation, update, or deletion of a price. The prices themselves are described in the [Prices in the Trade Catalog](../index.md) section.
+
+All three events carry the same data: `data.FIELDS` contains only the price `ID`. Retrieve the other fields using the [catalog.price.get](../catalog-price-get.md) method. A deleted price can no longer be retrieved, so retain the data you need in advance.
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../events/index.md).
 

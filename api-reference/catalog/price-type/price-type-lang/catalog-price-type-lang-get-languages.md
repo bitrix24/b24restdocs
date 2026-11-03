@@ -234,12 +234,17 @@ HTTP Status: **200**
             {
                 "active": "Y",
                 "lid": "ar",
-                "name": "ar"
+                "name": "اَلْعَرَبِيَّةُ"
             },
             {
                 "active": "Y",
                 "lid": "br",
-                "name": "br"
+                "name": "Português (Brasil)"
+            },
+            {
+                "active": "Y",
+                "lid": "de",
+                "name": "Deutsch"
             },
             {
                 "active": "Y",
@@ -249,83 +254,99 @@ HTTP Status: **200**
             {
                 "active": "Y",
                 "lid": "fr",
-                "name": "fr"
+                "name": "Français"
+            },
+            {
+                "active": "N",
+                "lid": "hi",
+                "name": "हिन्दी"
             },
             {
                 "active": "Y",
                 "lid": "id",
-                "name": "id"
+                "name": "Bahasa Indonesia"
+            },
+            {
+                "active": "N",
+                "lid": "in",
+                "name": "English (India)"
             },
             {
                 "active": "Y",
                 "lid": "it",
-                "name": "it"
+                "name": "Italiano"
             },
             {
                 "active": "Y",
                 "lid": "ja",
-                "name": "ja"
+                "name": "日本語"
             },
             {
                 "active": "Y",
                 "lid": "kz",
-                "name": "kz"
+                "name": "Қазақша"
             },
             {
                 "active": "Y",
                 "lid": "la",
-                "name": "la"
+                "name": "Español"
             },
             {
                 "active": "Y",
                 "lid": "ms",
-                "name": "ms"
+                "name": "Bahasa Melayu"
             },
             {
                 "active": "Y",
                 "lid": "pl",
-                "name": "pl"
-            },
-            {
-                "active": "Y",
-                "lid": "de",
-                "name": "German"
+                "name": "Polski"
             },
             {
                 "active": "Y",
                 "lid": "sc",
-                "name": "sc"
+                "name": "中文（简体）"
             },
             {
                 "active": "Y",
                 "lid": "tc",
-                "name": "tc"
+                "name": "中文（繁體）"
             },
             {
                 "active": "Y",
                 "lid": "th",
-                "name": "th"
+                "name": "ภาษาไทย"
             },
             {
                 "active": "Y",
                 "lid": "tr",
-                "name": "tr"
+                "name": "Türkçe"
+            },
+            {
+                "active": "Y",
+                "lid": "ua",
+                "name": "Українська"
+            },
+            {
+                "active": "Y",
+                "lid": "uz",
+                "name": "Oʻzbek tili"
             },
             {
                 "active": "Y",
                 "lid": "vn",
-                "name": "vn"
+                "name": "Tiếng Việt"
             }
         ]
     },
-    "total": 17,
+    "total": 21,
     "time": {
-        "start": 1733844860.95129,
-        "finish": 1733844861.27092,
-        "duration": 0.319633007049561,
-        "processing": 0.0122489929199219,
-        "date_start": "2024-12-10T17:34:20+02:00",
-        "date_finish": "2024-12-10T17:34:21+02:00",
+        "start": 1793700371,
+        "finish": 1793700371.783719,
+        "duration": 0.7837190628051758,
+        "processing": 0,
+        "date_start": "2026-11-03T13:06:11+03:00",
+        "date_finish": "2026-11-03T13:06:11+03:00",
+        "operating_reset_at": 1793700960,
         "operating": 0
     }
 }
@@ -338,7 +359,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **languages**
+|| **result.languages**
 [`catalog_language[]`](../../data-types.md#catalog_language) | Array of objects containing information about available languages for translation ||
 || **total**
 [`integer`](../../../data-types.md) | Total number of languages ||
@@ -352,7 +373,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -362,11 +383,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "Manage price types" access permission ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

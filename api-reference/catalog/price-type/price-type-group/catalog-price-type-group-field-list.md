@@ -23,6 +23,8 @@ The method `catalog.pricetype.group.field.list` returns the list of available pr
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -441,6 +443,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-price-type-group-field-get.md)
 - [{#T}](./catalog-price-type-group-add-rest-v3.md)
 - [{#T}](./catalog-price-type-group-delete-rest-v3.md)
+- [{#T}](./catalog-price-type-group-field-get.md)

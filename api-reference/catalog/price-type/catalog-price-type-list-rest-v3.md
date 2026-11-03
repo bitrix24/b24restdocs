@@ -23,6 +23,8 @@ The `catalog.pricetype.list` method returns a list of price types by filter.
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

@@ -51,7 +51,9 @@ Available values:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the methods: depends on the method
+> Who can execute the methods:
+> - a user with the "View product catalog" or "Manage price types" access permission — to retrieve bindings and field descriptions
+> - a user with the "Manage price types" access permission — to add and delete bindings
 
 #|
 || **Method** | **Description** ||

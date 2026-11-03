@@ -261,7 +261,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300020,
+    "error": "200040300020",
     "error_description": "Access Denied"
 }
 ```
@@ -271,10 +271,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300020` | Access Denied | Insufficient permissions to edit price types ||
-|| `0` | Entity does not exist | Binding with the specified `id` does not exist ||
-|| `100` | Could not find value for parameter {id} | Parameter `id` is not specified || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | Insufficient permissions to edit price types ||
+|| `400` | `0` | Entity is not exists | No binding with the specified `id` exists ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not specified ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}

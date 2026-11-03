@@ -23,6 +23,8 @@ The method `catalog.price.list` returns a list of product prices with filtering,
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

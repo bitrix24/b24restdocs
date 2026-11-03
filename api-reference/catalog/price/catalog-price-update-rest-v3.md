@@ -52,7 +52,7 @@ Currency codes can be retrieved using the [crm.currency.list](../../crm/currency
 
 The identifier can be retrieved using the [catalog.extra.list](../extra/catalog-extra-list-rest-v3.md) method.
 
-If the price type is not the base one, the price is recalculated from the product's base price taking the markup into account. The markup is not applied to the base price type, and the value is reset to `0`. `0` removes the markup ||
+The markup is retained in the price but does not recalculate it. `0` removes the markup. A non-existent identifier causes the `Invalid surcharge ID` error ||
 || **quantityFrom**
 [`integer`](../../data-types.md) | Lower bound of the product quantity range. `0` — no lower bound.
 
@@ -424,6 +424,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `quantityTo` | Invalid quantity range entry: no price is specified for quantity over `#QUANTITY#` | Add a price for the quantity above the upper bound or pass `quantityTo` equal to `0` ||
 || `BX_ERROR` | Invalid price | Pass a number of `0` or greater in `price` ||
 || `BX_ERROR` | Invalid currency | Pass the code of an existing currency ||
+|| `BX_ERROR` | Invalid surcharge ID | Pass the identifier of an existing markup or `0`. You can retrieve identifiers using the [catalog.extra.list](../extra/catalog-extra-list-rest-v3.md) method ||
 |#
 
 #### Object Validation Errors

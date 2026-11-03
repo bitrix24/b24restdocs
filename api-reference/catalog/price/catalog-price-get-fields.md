@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with the "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" or "Edit selling price" access permission
 
-The method `catalog.price.getFields` returns the fields of a product's price.
+The method `catalog.price.getFields` returns descriptions of the product price fields: type, whether the field is required, and whether it can be changed.
 
 ## Method Parameters
 
@@ -169,7 +169,7 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        'catalog.price.getFields', 
+        'catalog.price.getFields',
         {},
         function(result)
         {
@@ -305,7 +305,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **price**
+|| **result.price**
 [`object`](../data-types.md#catalog_price) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object field [catalog_price](../data-types.md#catalog_price), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -317,7 +317,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -327,14 +327,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300010` | Access Denied | Insufficient rights to read ||
-|| `0` | | Other errors || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No "View product catalog" or "Edit selling price" access permission ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-price-add.md)
 - [{#T}](./catalog-price-update.md)

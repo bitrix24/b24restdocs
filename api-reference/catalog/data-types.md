@@ -1158,7 +1158,7 @@ For the standard units that Bitrix24 creates when the catalog is enabled, the fi
 || **price**
 [`double`](../data-types.md) | Value of the price ||
 || **priceScale**
-[`double`](../data-types.md) | Value of the base price ||
+[`double`](../data-types.md) | Price converted to the base currency at the current exchange rate. Read-only field ||
 || **currency**
 [`string`](../data-types.md) | Currency of the price ||
 || **quantityFrom**
@@ -1184,9 +1184,10 @@ For the standard units that Bitrix24 creates when the catalog is enabled, the fi
 [`string`](../data-types.md) | Is the price type basic? Possible values:
 - `Y` — yes
 - `N` — no
-||
+
+Only one price type can be the base type. Setting `Y` for another type removes the flag from the previous base type ||
 || **sort**
-[`integer`](../data-types.md) | Sorting ||
+[`integer`](../data-types.md) | Sorting. A non-numeric value is stored as `100` ||
 || **xmlId**
 [`string`](../data-types.md) | External code.
 

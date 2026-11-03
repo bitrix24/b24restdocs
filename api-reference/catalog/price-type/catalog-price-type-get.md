@@ -23,7 +23,9 @@ The method `catalog.priceType.get` returns information about a price type by its
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_price_type.id`](../data-types.md#catalog_price_type) | Identifier of the price type ||
+[`catalog_price_type.id`](../data-types.md#catalog_price_type) | Identifier of the price type.
+
+You can retrieve the identifier using the [catalog.priceType.list](./catalog-price-type-list.md) method ||
 |#
 
 ## Code Examples
@@ -261,22 +263,23 @@ HTTP Status: **200**
         "priceType": {
             "base": "Y",
             "createdBy": 1,
-            "dateCreate": "2023-08-30T13:43:41+02:00",
+            "dateCreate": "2020-04-22T09:37:42+03:00",
             "id": 1,
-            "modifiedBy": 1,
+            "modifiedBy": 1269,
             "name": "BASE",
             "sort": 100,
-            "timestampX": "2023-08-30T13:43:41+02:00",
+            "timestampX": "2026-11-03T12:50:39+03:00",
             "xmlId": "BASE"
         }
     },
     "time": {
-        "start": 1716558215.93495,
-        "finish": 1716558216.20731,
-        "duration": 0.272363901138306,
-        "processing": 0.028817892074585,
-        "date_start": "2023-08-30T13:43:41+02:00",
-        "date_finish": "2023-08-30T13:43:41+02:00",
+        "start": 1793700362,
+        "finish": 1793700362.16221,
+        "duration": 0.16220998764038086,
+        "processing": 0,
+        "date_start": "2026-11-03T13:06:02+03:00",
+        "date_finish": "2026-11-03T13:06:02+03:00",
+        "operating_reset_at": 1793700960,
         "operating": 0
     }
 }
@@ -289,7 +292,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **priceType**
+|| **result.priceType**
 [`catalog_price_type`](../data-types.md#catalog_price_type) | Object containing information about the price type with the specified identifier ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
@@ -301,8 +304,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300010,
-    "error_description": "Access Denied"
+    "error": "201000000000",
+    "error_description": "priceType does not exist."
 }
 ```
 
@@ -311,15 +314,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
-||
-|| `201000000000` | Price type with such identifier does not exist 
-||
-|| `100` | Parameter `id` not specified
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "Manage price types" access permission ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | `201000000000` | priceType does not exist. | No price type with the specified `id` exists ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

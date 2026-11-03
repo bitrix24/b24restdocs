@@ -17,11 +17,13 @@ The method `catalog.priceTypeLang.list` returns a filtered list of price type na
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | 
+[`array`](../../../data-types.md) |
 An array with the list of fields to select (see the fields of the object [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang)).
 
 If the array is not provided or an empty array is passed, all available fields of the price type name translations will be selected.
@@ -29,7 +31,7 @@ If the array is not provided or an empty array is passed, all available fields o
 || **filter**
 [`object`](../../../data-types.md) | An object for filtering the selected price type name translations in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the object [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang). 
+Possible values for `field` correspond to the fields of the object [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang).
 
 An additional prefix can be set for the key to clarify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -54,7 +56,7 @@ An additional prefix can be set for the key to clarify the filter behavior. Poss
 - `!=` — not equal
 - `!` — not equal ||
 || **order**
-[`object`](../../../data-types.md) | 
+[`object`](../../../data-types.md) |
 An object for sorting the selected price type name translations in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the object [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang).
@@ -88,7 +90,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["name","lang"],"order":{"lang":"ASC"}}' \
+    -d '{"select":["name","lang"],"filter":{"catalogGroupId":1,"@lang":["en","de"]},"order":{"lang":"ASC"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.priceTypeLang.list
     ```
 
@@ -98,7 +100,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["name","lang"],"order":{"lang":"ASC"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["name","lang"],"filter":{"catalogGroupId":1,"@lang":["en","de"]},"order":{"lang":"ASC"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.priceTypeLang.list
     ```
 
@@ -130,6 +132,7 @@ The formula for calculating the `start` parameter value:
         method: 'catalog.priceTypeLang.list',
         params: {
           select: ['name', 'lang'],
+          filter: { catalogGroupId: 1, '@lang': ['en', 'de'] },
           order: { lang: 'ASC' },
           start: 0,
         },
@@ -169,6 +172,7 @@ The formula for calculating the `start` parameter value:
             method: 'catalog.priceTypeLang.list',
             params: {
               select: ['name', 'lang'],
+              filter: { catalogGroupId: 1, '@lang': ['en', 'de'] },
               order: { lang: 'ASC' },
               start: 0,
             },
@@ -204,6 +208,10 @@ The formula for calculating the `start` parameter value:
                 "name",
                 "lang",
             ],
+            filter={
+                "catalogGroupId": 1,
+                "@lang": ["en", "de"]
+            },
             order={
                 "lang": "ASC",
             },
@@ -237,6 +245,7 @@ The formula for calculating the `start` parameter value:
                         'name',
                         'lang',
                     ],
+                    'filter' => ['catalogGroupId' => 1, '@lang' => ['en', 'de']],
                     'order' => [
                         'lang' => 'ASC',
                     ],
@@ -267,6 +276,7 @@ The formula for calculating the `start` parameter value:
                 'name',
                 'lang'
             ],
+            filter:{'catalogGroupId': 1, '@lang': ['en', 'de']},
             order:{
                 'lang': 'ASC'
             }
@@ -294,6 +304,7 @@ The formula for calculating the `start` parameter value:
                 'name',
                 'lang'
             ],
+            'filter' => ['catalogGroupId' => 1, '@lang' => ['en', 'de']],
             'order' => [
                 'lang' => 'ASC'
             ]
@@ -311,6 +322,7 @@ The formula for calculating the `start` parameter value:
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.priceTypeLang.list", b24.Params{
     	"select": []string{"name", "lang"},
+    	"filter": b24.Params{"catalogGroupId": 1, "@lang": []string{"en", "de"}},
     	"order": b24.Params{
     		"lang": "ASC",
     	},
@@ -348,31 +360,24 @@ HTTP Status: **200**
     "result": {
         "priceTypeLangs": [
             {
-                "lang": "ar",
-                "name": "PRICE"
+                "lang": "de",
+                "name": "Retail price"
             },
             {
                 "lang": "en",
                 "name": "Retail price"
-            },
-            {
-                "lang": "kz",
-                "name": "Base Price"
-            },
-            {
-                "lang": "de",
-                "name": "Retail price"
             }
         ]
     },
-    "total": 4,
+    "total": 2,
     "time": {
-        "start": 1733844533.51186,
-        "finish": 1733844533.81483,
-        "duration": 0.302963972091675,
-        "processing": 0.0111780166625977,
-        "date_start": "2024-12-10T17:28:53+02:00",
-        "date_finish": "2024-12-10T17:28:53+02:00",
+        "start": 1793700558,
+        "finish": 1793700558.291934,
+        "duration": 0.2919340133666992,
+        "processing": 0,
+        "date_start": "2026-11-03T13:09:18+03:00",
+        "date_finish": "2026-11-03T13:09:18+03:00",
+        "operating_reset_at": 1793701140,
         "operating": 0
     }
 }
@@ -385,7 +390,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **priceTypeLangs**
+|| **result.priceTypeLangs**
 [`catalog_price_type_lang[]`](../../data-types.md#catalog_price_type_lang) | An array of objects with information about the selected price type name translations ||
 || **total**
 [`integer`](../../../data-types.md) | Total number of records found ||
@@ -401,7 +406,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -411,11 +416,9 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "Manage price types" access permission ||
+|| `400` | `100` | Invalid order "<VALUE>" | The sort direction passed in `order` is neither `asc` nor `desc` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

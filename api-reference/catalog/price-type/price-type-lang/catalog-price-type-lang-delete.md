@@ -174,10 +174,10 @@ You can obtain the identifier using [catalog.priceTypeLang.list](./catalog-price
 
     ```js
     BX24.callMethod(
-    'catalog.priceTypeLang.delete', 
-    { 
+    'catalog.priceTypeLang.delete',
+    {
     id: 3
-    }, 
+    },
     function(result)
     {
     if(result.error())
@@ -233,12 +233,13 @@ HTTP Status: **200**
 {
     "result": true,
     "time": {
-        "start": 1733842077.14235,
-        "finish": 1733842077.43516,
-        "duration": 0.292811155319214,
-        "processing": 0.00620388984680176,
-        "date_start": "2024-12-10T16:47:57+02:00",
-        "date_finish": "2024-12-10T16:47:57+02:00",
+        "start": 1793699472,
+        "finish": 1793699472.12151,
+        "duration": 0.12151002883911133,
+        "processing": 0,
+        "date_start": "2026-11-03T12:51:12+03:00",
+        "date_finish": "2026-11-03T12:51:12+03:00",
+        "operating_reset_at": 1793700060,
         "operating": 0
     }
 }
@@ -261,8 +262,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300020,
-    "error_description": "Access Denied"
+    "error": "201200000000",
+    "error_description": "priceTypeLang does not exist."
 }
 ```
 
@@ -271,15 +272,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to edit
-|| 
-|| `201200000000` | No translation of the price type name with such an identifier exists
-|| 
-|| `100` | Parameter `id` is missing
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Manage price types" access permission ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | `201200000000` | priceTypeLang does not exist. | No translation with the specified `id` exists ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

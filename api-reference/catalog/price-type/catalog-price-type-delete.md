@@ -25,9 +25,17 @@ The method `catalog.priceType.delete` deletes a price type.
 || **id***
 [`catalog_price_type.id`](../data-types.md#catalog_price_type) | Identifier of the price type.
 
-The base price type cannot be deleted
+The base price type cannot be deleted.
+
+You can retrieve the identifier using the [catalog.priceType.list](./catalog-price-type-list.md) method
 ||
 |#
+
+{% note warning "" %}
+
+Deleting a price type also deletes the product prices of this type, its bindings to user groups, its name translations, and its rounding rules. Deletion cannot be undone.
+
+{% endnote %}
 
 ## Code Examples
 
@@ -175,10 +183,10 @@ The base price type cannot be deleted
 
     ```js
     BX24.callMethod(
-        'catalog.priceType.delete', 
-        { 
+        'catalog.priceType.delete',
+        {
     id: 2
-    }, 
+    },
         function(result)
         {
             if(result.error())
@@ -234,12 +242,13 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1716558215.93495,
-        "finish": 1716558216.20731,
-        "duration": 0.272363901138306,
-        "processing": 0.028817892074585,
-        "date_start": "2024-05-24T15:43:35+02:00",
-        "date_finish": "2024-05-24T15:43:36+02:00",
+        "start": 1793699473,
+        "finish": 1793699473.622972,
+        "duration": 0.6229720115661621,
+        "processing": 0,
+        "date_start": "2026-11-03T12:51:13+03:00",
+        "date_finish": "2026-11-03T12:51:13+03:00",
+        "operating_reset_at": 1793700060,
         "operating": 0
     }
 }
@@ -262,8 +271,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300020,
-    "error_description": "Access Denied"
+    "error": "201000000000",
+    "error_description": "priceType does not exist."
 }
 ```
 
@@ -272,17 +281,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to delete
-||
-|| `201000000000` | Price type with this identifier does not exist
-||
-|| `BASE` | Attempt to delete the base price type
-||
-|| `100` | Parameter `id` not specified
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Manage price types" access permission ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | `201000000000` | priceType does not exist. | No price type with the specified `id` exists ||
+|| `400` | `ERROR_CORE` | The base price type cannot be deleted. | The `id` of the base price type is passed ||
+|| `400` | `0` | Error deleting price type | Failed to delete the price type ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

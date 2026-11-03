@@ -337,12 +337,12 @@ Pass all product prices without `id`. The method deletes the current product pri
                         {
                             catalogGroupId: 3,
                             currency: 'USD',
-                            price: 2001               
+                            price: 2001
                         },
                         {
                             catalogGroupId: 5,
                             currency: 'USD',
-                            price: 2001,                
+                            price: 2001,
                         },
                     ]
                 },
@@ -466,7 +466,7 @@ HTTP Status: **200**
                 "extraId": null,
                 "id": 123,
                 "price": 2001,
-                "priceScale":2001,
+                "priceScale": 2001,
                 "productId": 8,
                 "quantityFrom": null,
                 "quantityTo": null,
@@ -478,7 +478,7 @@ HTTP Status: **200**
                 "extraId": null,
                 "id": 124,
                 "price": 2001,
-                "priceScale":2001,
+                "priceScale": 2001,
                 "productId": 8,
                 "quantityFrom": null,
                 "quantityTo": null,
@@ -490,7 +490,7 @@ HTTP Status: **200**
                 "extraId": null,
                 "id": 122,
                 "price": 2001,
-                "priceScale":2001,
+                "priceScale": 2001,
                 "productId": 8,
                 "quantityFrom": null,
                 "quantityTo": null,
@@ -517,7 +517,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **prices**
+|| **result.prices**
 [`catalog_price[]`](../data-types.md#catalog_price) | Array of objects containing product price information ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -529,8 +529,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description": "Required fields: price, currency"
+    "error": "0",
+    "error_description": "Product prices are empty"
 }
 ```
 
@@ -539,14 +539,17 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300020` | Access Denied | Insufficient rights to edit price ||
-|| `200040300030` | Access Denied | No permission to modify product prices in the catalog information block ||
-|| `100` | Could not find value for parameter {fields} | Parameter `fields` is not specified or is empty ||
-|| `0` | Required fields:  | Required fields are not provided ||
-|| `0` | Validate price error. Catalog price group is wrong | Incorrect price type ||
-|| `0` | Validate price error. Catalog product is allowed to have only a single price without ranges in the price group | Duplicate price type. Two or more records with the same `catalogGroupId` were provided in the `prices` array || 
-|| `0` | | Other errors || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | No "Edit selling price" access permission ||
+|| `400` | `200040300030` | Access Denied | No permission to modify the prices of this product in the catalog information block, or no product with the specified `id` exists ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not provided ||
+|| `400` | `0` | Required fields: [product][id], [product][prices][] | `fields` does not contain the `product` object with the `id` and `prices` fields ||
+|| `400` | `0` | Product prices are empty | An empty array is passed in `prices` ||
+|| `400` | `0` | Validate price error. Catalog price group is wrong | No price type with the specified `catalogGroupId` exists, or a price `id` is passed in `prices` ||
+|| `400` | `0` | Validate price error. Catalog product is allowed has only single price without ranges in price group. | Several prices of the same type without quantity ranges are passed in `prices` ||
+|| `400` | `0` | Validate price error. Ranges of base price are not equal to another price group range | `quantityFrom` and `quantityTo` are passed, but the base price of the product has no matching quantity range ||
+|| `400` | `BX_ERROR` | Invalid price | A negative number is passed in `price` ||
+|| `400` | `BX_ERROR` | Invalid currency | No currency with the code from `currency` exists ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" or "Edit selling price" access permission
 
 The method `catalog.price.get` returns information about the product price by its ID.
 
@@ -264,6 +264,7 @@ HTTP status: **200**
             "extraId": null,
             "id": 1,
             "price": 100,
+            "priceScale": 100,
             "productId": 1,
             "quantityFrom": null,
             "quantityTo": null,
@@ -289,7 +290,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **price**
+|| **result.price**
 [`catalog_price`](../data-types.md#catalog_price) | Object containing information about the product price with the specified ID ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -301,8 +302,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
-    "error_description": "Access Denied"
+    "error": "",
+    "error_description": "price does not exist."
 }
 ```
 
@@ -311,11 +312,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300010` | Access Denied | Insufficient permissions to read ||
-|| `-` | Price does not exist | No price exists for the product with this ID ||
-|| `100` | Could not find value for parameter {id} | Parameter `id` is not specified || 
-|| `0` | | Other errors || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No "View product catalog" or "Edit selling price" access permission ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | Empty value | price does not exist. | No price with the specified `id` exists ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -269,7 +269,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **priceTypeGroup**
+|| **result.priceTypeGroup**
 [`object`](../../data-types.md#catalog_price_type_group) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [catalog_price_type_group](../../data-types.md#catalog_price_type_group) object, and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
@@ -281,7 +281,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -291,8 +291,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300010` | Access Denied | Insufficient permissions to view the catalog ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | Insufficient permissions to view the catalog ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

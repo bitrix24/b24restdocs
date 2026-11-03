@@ -50,9 +50,7 @@ The identifier can be retrieved using the [catalog.pricetype.list](../price-type
 
 After the price is created, `catalogGroupId` cannot be changed ||
 || **price***
-[`double`](../../data-types.md) | Price. A negative value causes an error.
-
-If `extraId` is passed and the price type is not the base one, the price is recalculated from the product's base price taking the markup into account ||
+[`double`](../../data-types.md) | Price. A negative value causes an error ||
 || **currency***
 [`string`](../../data-types.md) | Currency code, for example `EUR`. No longer than three characters.
 
@@ -62,7 +60,7 @@ Currency codes can be retrieved using the [crm.currency.list](../../crm/currency
 
 The identifier can be retrieved using the [catalog.extra.list](../extra/catalog-extra-list-rest-v3.md) method.
 
-The markup is not applied to the base price type, and the value is reset to `0`. A non-existent identifier is also reset to `0` without an error ||
+The markup is retained in the price but does not recalculate it: pass the `price` value yourself. A non-existent identifier is reset to `0` without an error ||
 || **quantityFrom**
 [`integer`](../../data-types.md) | Lower bound of the product quantity range in which the price applies. `0` — no lower bound.
 

@@ -328,7 +328,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **priceTypeGroup**
+|| **result.priceTypeGroup**
 [`catalog_price_type_group`](../../data-types.md#catalog_price_type_group) | Object containing information about the created price type binding to the customer group ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
@@ -340,7 +340,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300020,
+    "error": "200040300020",
     "error_description": "Access Denied"
 }
 ```
@@ -350,13 +350,14 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300020` | Access Denied | Insufficient rights to edit price types ||
-|| `100` | Could not find value for parameter {fields} | Required parameter `fields` not provided ||
-|| `0` | The specified price type does not exist | The specified price type does not exist ||
-|| `0` | The specified group does not exist | The specified customer group does not exist ||
-|| `0` | Invalid access type provided. The available values are: Y, N | Invalid access type provided. Available values: `Y`, `N` ||
-|| `0` | The specified access type for this group already exists | This binding for this price type and group already exists ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | Insufficient permissions to edit price types ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not provided ||
+|| `400` | `0` | Required fields: catalogGroupId, groupId, access | Required fields are missing in `fields`. The message lists only the missing fields ||
+|| `400` | `0` | The specified price type does not exist | The specified price type does not exist ||
+|| `400` | `0` | The specified group does not exist | The specified customer group does not exist ||
+|| `400` | `0` | Invalid access type provided. The available values are: Y, N | An invalid access type is passed. Available values: `Y`, `N` ||
+|| `400` | `0` | The specified access type for this group already exists | This binding for the price type and group already exists ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

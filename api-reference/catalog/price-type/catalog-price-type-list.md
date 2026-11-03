@@ -17,16 +17,18 @@ The method `catalog.priceType.list` returns a list of price types based on the f
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
-|| **select** 
-[`array`](../../data-types.md)| An array of fields to select (see fields of the [catalog_price_type](../data-types.md#catalog_price_type) object).
+|| **select**
+[`array`](../../data-types.md) | An array of fields to select (see fields of the [catalog_price_type](../data-types.md#catalog_price_type) object).
 
 If the array is not provided or an empty array is passed, all available fields of the price type will be selected.
 ||
-|| **filter** 
-[`object`](../../data-types.md)| An object for filtering the selected price types in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
+|| **filter**
+[`object`](../../data-types.md) | An object for filtering the selected price types in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_price_type](../data-types.md#catalog_price_type) object.
 
@@ -54,7 +56,7 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `!` — not equal
 ||
 || **order**
-[`object`](../../data-types.md)| An object for sorting the selected price types in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting the selected price types in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_price_type](../data-types.md#catalog_price_type) object.
 
@@ -63,8 +65,8 @@ Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
 ||
-|| **start** 
-[`integer`](../../data-types.md)| This parameter is used to manage pagination.
+|| **start**
+[`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static — 50 records.
 
@@ -357,25 +359,36 @@ HTTP status: **200**
     "result": {
         "priceTypes": [
             {
-                "id": 1,
-                "name": "BASE",
-                "xmlId": "BASE"
+                "id": 3,
+                "name": "2base",
+                "xmlId": null
             },
             {
-                "id": 2,
-                "name": "Base wholesale price",
-                "xmlId": "basewholesale"
+                "id": 5,
+                "name": "Wholesale price",
+                "xmlId": "wholesale"
+            },
+            {
+                "id": 7,
+                "name": "Wholesale price",
+                "xmlId": "wholesale"
+            },
+            {
+                "id": 9,
+                "name": "Wholesale price22222",
+                "xmlId": "wholesale"
             }
         ]
     },
-    "total": 2,
+    "total": 4,
     "time": {
-        "start": 1712326352.63409,
-        "finish": 1712326352.8319,
-        "duration": 0.197818040847778,
-        "processing": 0.00833678245544434,
-        "date_start": "2024-04-05T16:24:46+02:00",
-        "date_finish": "2024-04-05T16:24:46+02:00",
+        "start": 1793700363,
+        "finish": 1793700363.280279,
+        "duration": 0.28027892112731934,
+        "processing": 0,
+        "date_start": "2026-11-03T13:06:03+03:00",
+        "date_finish": "2026-11-03T13:06:03+03:00",
+        "operating_reset_at": 1793700960,
         "operating": 0
     }
 }
@@ -388,7 +401,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **priceTypes**
+|| **result.priceTypes**
 [`catalog_price_type[]`](../data-types.md#catalog_price_type) | Array of objects with information about the selected price types ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
@@ -404,8 +417,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
-    "error_description": "Access Denied"
+    "error": "100",
+    "error_description": "Invalid order \"BAD\""
 }
 ```
 
@@ -414,11 +427,9 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "Manage price types" access permission ||
+|| `400` | `100` | Invalid order "<VALUE>" | The sort direction passed in `order` is neither `asc` nor `desc` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

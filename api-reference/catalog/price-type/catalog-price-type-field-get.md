@@ -434,6 +434,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-price-type-field-list.md)
-- [{#T}](./catalog-price-type-get-rest-v3.md)
 - [{#T}](./catalog-price-type-add-rest-v3.md)
+- [{#T}](./catalog-price-type-get-rest-v3.md)
+- [{#T}](./catalog-price-type-field-list.md)

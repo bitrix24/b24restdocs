@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `catalog.priceTypeLang.getFields` returns the description of fields for price type name translations.
 
+## Method Parameters
+
 No parameters.
 
 ## Code Examples
@@ -167,8 +169,8 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        'catalog.priceTypeLang.getFields', 
-        {}, 
+        'catalog.priceTypeLang.getFields',
+        {},
         function(result)
         {
             if(result.error())
@@ -249,12 +251,13 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1733837668.28562,
-        "finish": 1733837668.54577,
-        "duration": 0.260151147842407,
-        "processing": 0.00585103034973145,
-        "date_start": "2024-12-10T15:34:28+02:00",
-        "date_finish": "2024-12-10T15:34:28+02:00",
+        "start": 1793700372,
+        "finish": 1793700372.773464,
+        "duration": 0.7734639644622803,
+        "processing": 0,
+        "date_start": "2026-11-03T13:06:12+03:00",
+        "date_finish": "2026-11-03T13:06:12+03:00",
+        "operating_reset_at": 1793700960,
         "operating": 0
     }
 }
@@ -267,7 +270,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **priceTypeLang**
+|| **result.priceTypeLang**
 [`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_price_type_lang](../../data-types.md#catalog_price_type_lang), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
@@ -279,7 +282,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -289,11 +292,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "Manage price types" access permission ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

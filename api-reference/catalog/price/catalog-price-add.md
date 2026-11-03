@@ -36,11 +36,23 @@ The method `catalog.price.add` adds a new price for a product.
 || **productId***
 [`catalog_product.id`](../data-types.md#catalog_product) | Product identifier, can be obtained using the methods [catalog.product.list](../product/catalog-product-list.md), [catalog.product.offer.list](../product/offer/catalog-product-offer-list.md), [catalog.product.service.list](../product/service/catalog-product-service-list.md), [catalog.product.sku.list](../product/sku/catalog-product-sku-list.md) ||
 || **catalogGroupId***
-[`catalog_price_type.id`](../data-types.md#catalog_price_type) | Price type identifier, can be obtained using the method [catalog.priceType.list](../price-type/catalog-price-type-list.md) ||
+[`catalog_price_type.id`](../data-types.md#catalog_price_type) | Price type identifier, can be obtained using the method [catalog.priceType.list](../price-type/catalog-price-type-list.md).
+
+Without quantity ranges, a product can have only one price of each type. To change an existing price, use the [catalog.price.update](./catalog-price-update.md) method ||
 || **price***
-[`double`](../../data-types.md) | Value of the price ||
+[`double`](../../data-types.md) | Value of the price. A negative value causes an error, and a non-numeric string is stored as `0` ||
 || **currency***
-[`string`](../../data-types.md) | Currency identifier, can be obtained using the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
+[`string`](../../data-types.md) | Currency code, for example, `USD`. You can retrieve currency codes using the [crm.currency.list](../../crm/currency/crm-currency-list.md) method ||
+|| **extraId**
+[`catalog_extra.id`](../data-types.md#catalog_extra) | Markup identifier. You can retrieve the identifier using the [catalog.extra.list](../extra/catalog-extra-list.md) method.
+
+The markup is retained in the price but does not recalculate it: pass the `price` value yourself. A base type price does not retain a markup. The method skips a non-existent identifier without an error ||
+|| **quantityFrom**
+[`integer`](../../data-types.md) | Lower bound of the product quantity range to which the price applies.
+
+Ranges work only if price ranges are enabled in Bitrix24. The ranges of all product price types must match the ranges of the base price ||
+|| **quantityTo**
+[`integer`](../../data-types.md) | Upper bound of the product quantity range to which the price applies ||
 |#
 
 ## Code Examples
@@ -84,9 +96,10 @@ The method `catalog.price.add` adds a new price for a product.
       price: {
         catalogGroupId: number
         currency: string
-        extraId: string | null
+        extraId: number | null
         id: number
         price: number
+        priceScale: number
         productId: number
         quantityFrom: number | null
         quantityTo: number | null
@@ -240,7 +253,7 @@ The method `catalog.price.add` adds a new price for a product.
                 console.log(result.data());
         }
     );
-    ```	
+    ```
 
 - PHP CRest
 
@@ -315,6 +328,7 @@ HTTP status: **200**
             "extraId": null,
             "id": 3,
             "price": 100.5,
+            "priceScale": 100.5,
             "productId": 1,
             "quantityFrom": null,
             "quantityTo": null,
@@ -340,7 +354,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **price**
+|| **result.price**
 [`catalog_price`](../data-types.md#catalog_price) | Object containing information about the created product price ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -352,8 +366,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300020,
-    "error_description": "Access Denied"
+    "error": "0",
+    "error_description": "Required fields: productId, catalogGroupId, price, currency"
 }
 ```
 
@@ -362,13 +376,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300020` | Access Denied | Insufficient permissions ||
-|| `200040300030` | Access Denied | No permission to modify product prices in the catalog information block ||
-|| `100` | Could not find value for parameter {fields} | Parameter `fields` not specified or empty || 
-|| `0` | Required fields: | Required fields not set ||
-|| `0` | Validate price error. Catalog price group is wrong | Incorrect price type ||
-|| `0` | Validate price error. Catalog product is allowed has only single price without ranges in price group | A price of this type already exists for the product ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | No "Edit selling price" access permission ||
+|| `400` | `200040300030` | Access Denied | No permission to modify the prices of this product in the catalog information block, or no product with the specified `productId` exists ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not provided ||
+|| `400` | `0` | Required fields: productId, catalogGroupId, price, currency | Required fields are not provided. The error message lists only the missing fields ||
+|| `400` | `0` | Validate price error. Catalog price group is wrong | No price type with the specified `catalogGroupId` exists ||
+|| `400` | `0` | Validate price error. Catalog product is allowed has only single price without ranges in price group. | The product already has a price of this type ||
+|| `400` | `0` | Validate price error. Ranges of base price are not equal to another price group range | `quantityFrom` and `quantityTo` are passed, but the base price of the product has no matching quantity range ||
+|| `400` | `BX_ERROR` | Invalid price | A negative number is passed in `price` ||
+|| `400` | `BX_ERROR` | Invalid currency | No currency with the code from `currency` exists ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

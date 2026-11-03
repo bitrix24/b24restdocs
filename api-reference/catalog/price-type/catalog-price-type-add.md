@@ -23,7 +23,7 @@ The method `catalog.priceType.add` adds a new price type.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md)| Field values for creating a new price type ([detailed description](#fields)) ||
+[`object`](../../data-types.md) | Object with the fields of the new price type [(detailed description)](#fields) ||
 |#
 
 ### Field Parameter {#fields}
@@ -240,7 +240,7 @@ After creating a price type, the method automatically adds view (`access: "N"`) 
 
     ```js
     BX24.callMethod(
-        'catalog.priceType.add', 
+        'catalog.priceType.add',
         {
             fields: {
                 name: "Wholesale price",
@@ -327,23 +327,24 @@ HTTP status: **200**
     "result": {
         "priceType": {
             "base": "N",
-            "createdBy": 1,
-            "dateCreate": "2024-10-02T17:49:44+02:00",
-            "id": 2,
-            "modifiedBy": 1,
+            "createdBy": 1269,
+            "dateCreate": "2026-11-03T12:44:53+03:00",
+            "id": 35,
+            "modifiedBy": 1269,
             "name": "Wholesale price",
             "sort": 10,
-            "timestampX": "2024-10-02T17:49:44+02:00",
+            "timestampX": "2026-11-03T12:44:53+03:00",
             "xmlId": "wholesale"
         }
     },
     "time": {
-        "start": 1716552521.40908,
-        "finish": 1716552521.69852,
-        "duration": 0.289434909820557,
-        "processing": 0.011207103729248,
-        "date_start": "2024-10-02T17:49:44+02:00",
-        "date_finish": "2024-10-02T17:49:44+02:00",
+        "start": 1793699093,
+        "finish": 1793699093.715093,
+        "duration": 0.7150928974151611,
+        "processing": 0,
+        "date_start": "2026-11-03T12:44:53+03:00",
+        "date_finish": "2026-11-03T12:44:53+03:00",
+        "operating_reset_at": 1793699640,
         "operating": 0
     }
 }
@@ -356,7 +357,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **priceType**
+|| **result.priceType**
 [`catalog_price_type`](../data-types.md#catalog_price_type) | Object with information about the created price type ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
@@ -368,8 +369,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300020,
-    "error_description": "Access Denied"
+    "error": "0",
+    "error_description": "Required fields: name"
 }
 ```
 
@@ -378,20 +379,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to edit
-||
-|| `100` | Required parameter `fields` not provided
-||
-|| `0` | Required fields not set
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Manage price types" access permission ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not provided ||
+|| `400` | `0` | Required fields: name | The `name` field is not provided in `fields` ||
+|| `400` | `ERROR_CORE` | The price type ID is missing.`<br>` | An empty string is passed in `name` ||
+|| `400` | `0` | Error adding price type | Failed to save the price type ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-price-type-update.md)
 - [{#T}](./catalog-price-type-get.md)

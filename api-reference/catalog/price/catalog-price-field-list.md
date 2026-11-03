@@ -23,6 +23,8 @@ The method `catalog.price.field.list` returns the list of available price fields
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

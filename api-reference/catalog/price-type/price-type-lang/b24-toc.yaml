@@ -1,6 +1,6 @@
 title: Translations of Price Type Names
 href: index.md
-items: 
+items:
   - name: Overview of Methods
     href: index.md
   - name: Add Translation
@@ -13,7 +13,7 @@ items:
     href: catalog-price-type-lang-update-rest-v3.md
   - name: Get Translation Field Values
     href: catalog-price-type-lang-get.md
-  - name: Get List of Translations 
+  - name: Get List of Translations
     href: catalog-price-type-lang-list.md
   - name: Delete Translation
     href: catalog-price-type-lang-delete.md

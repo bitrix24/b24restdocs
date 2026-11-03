@@ -11,22 +11,24 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" or "Edit selling price" access permission
 
 The method `catalog.price.list` returns a list of product prices based on the filter.
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
-|| **select** 
-[`array`](../../data-types.md)| An array of fields from [catalog_price](../data-types.md#catalog_price) that need to be selected.
+|| **select**
+[`array`](../../data-types.md) | An array of fields from [catalog_price](../data-types.md#catalog_price) that need to be selected.
 
-If the array is not provided or an empty array is passed, all available price fields will be selected
+If the array is not passed or is empty, the method returns all fields. The method skips unknown fields without an error, and if `select` contains no fields of the object, it returns all fields
 ||
-|| **filter** 
-[`object`](../../data-types.md)| An object for filtering selected product prices in `{"field_1": "value_1", ..., "field_N": "value_N"}` format.
+|| **filter**
+[`object`](../../data-types.md) | An object for filtering selected product prices in `{"field_1": "value_1", ..., "field_N": "value_N"}` format.
 
 Possible values for `field` correspond to the fields of the [catalog_price](../data-types.md#catalog_price) object.
 
@@ -52,9 +54,11 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
+
+The method skips unknown fields in the filter without an error and returns prices without that condition. Write field names in camelCase: the method skips the condition `{"PRODUCT_ID": 533}`. The method compares numeric field values as a whole: the filter `{"%productId": "64"}` does not find the product with the identifier `6461`
 ||
 || **order**
-[`object`](../../data-types.md)| An object for sorting the selected product prices in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting the selected product prices in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_price](../data-types.md#catalog_price) object.
 
@@ -62,9 +66,11 @@ Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
+
+If `order` is not passed, the method returns prices in ascending order of `id`. The method skips unknown fields in `order` without an error
 ||
-|| **start** 
-[`integer`](../../data-types.md)| This parameter is used to control pagination.
+|| **start**
+[`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static — 50 records.
 
@@ -417,10 +423,10 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **prices**
+|| **result.prices**
 [`catalog_price[]`](../data-types.md#catalog_price) | An array of objects with information about the selected product prices, structure depends on the `select` parameter ||
 || **total**
-[`integer`](../../data-types.md#time) | The total number of records found ||
+[`integer`](../../data-types.md) | The total number of records found ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -431,8 +437,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
-    "error_description": "Access Denied"
+    "error": "100",
+    "error_description": "Invalid order \"BAD\""
 }
 ```
 
@@ -441,9 +447,9 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300010` | Access Denied | Insufficient rights to read ||
-|| `0` | | Other errors || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | No "View product catalog" or "Edit selling price" access permission ||
+|| `400` | `100` | Invalid order "<VALUE>" | The sort direction passed in `order` is neither `asc` nor `desc` ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

@@ -21,9 +21,13 @@ The method `catalog.priceType.update` modifies the values of price type fields.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_price_type.id`](../data-types.md#catalog_price_type) | Identifier of the price type ||
+[`catalog_price_type.id`](../data-types.md#catalog_price_type) | Identifier of the price type.
+
+You can retrieve the identifier using the [catalog.priceType.list](./catalog-price-type-list.md) method ||
 || **fields***
-[`object`](../../data-types.md) | Field values to update the price type ([detailed description](#fields)) ||
+[`object`](../../data-types.md) | Object with the price type fields to change [(detailed description)](#fields).
+
+Pass only the fields you want to change: fields that are not passed keep their current values. The method accepts an empty object without an error and changes nothing ||
 |#
 
 ### Parameter fields {#fields}
@@ -39,9 +43,11 @@ The method `catalog.priceType.update` modifies the values of price type fields.
 [`string`](../../data-types.md) | Indicates if the price type is base. Possible values:
 - `Y` — yes
 - `N` — no
+
+Only one base price type can exist at a time. If you pass `Y`, the current base type stops being the base one
 ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting ||
+[`integer`](../../data-types.md) | Sorting. The method stores a non-numeric value as `100` without an error ||
 || **xmlId**
 [`string`](../../data-types.md) | External code.
 
@@ -61,7 +67,7 @@ Can be used to synchronize the current price type with a similar position in an 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":2,"fields":{"name":"Base wholesale price","base":"Y","sort":1,"xmlId":"basewholesale"}}' \
+    -d '{"id":2,"fields":{"name":"Partner wholesale price","sort":1,"xmlId":"partnerwholesale"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.priceType.update
     ```
 
@@ -71,7 +77,7 @@ Can be used to synchronize the current price type with a similar position in an 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":2,"fields":{"name":"Base wholesale price","base":"Y","sort":1,"xmlId":"basewholesale"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":2,"fields":{"name":"Partner wholesale price","sort":1,"xmlId":"partnerwholesale"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.priceType.update
     ```
 
@@ -106,10 +112,9 @@ Can be used to synchronize the current price type with a similar position in an 
         params: {
           id: 2,
           fields: {
-            name: 'Base wholesale price',
-            base: 'Y',
+            name: 'Partner wholesale price',
             sort: 1,
-            xmlId: 'basewholesale',
+            xmlId: 'partnerwholesale',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -144,10 +149,9 @@ Can be used to synchronize the current price type with a similar position in an 
             params: {
               id: 2,
               fields: {
-                name: 'Base wholesale price',
-                base: 'Y',
+                name: 'Partner wholesale price',
                 sort: 1,
-                xmlId: 'basewholesale',
+                xmlId: 'partnerwholesale',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -180,10 +184,9 @@ Can be used to synchronize the current price type with a similar position in an 
         bitrix_response = client.catalog.price_type.update(
             bitrix_id=2,
             fields={
-                "name": "Base wholesale price",
-                "base": "Y",
+                "name": "Partner wholesale price",
                 "sort": 1,
-                "xmlId": "basewholesale",
+                "xmlId": "partnerwholesale",
             },
         ).response
         result = bitrix_response.result
@@ -212,10 +215,9 @@ Can be used to synchronize the current price type with a similar position in an 
                 [
                     'id' => 2,
                     'fields' => [
-                        'name'  => "Base wholesale price",
-                        'base'  => "Y",
+                        'name'  => "Partner wholesale price",
                         'sort'  => 1,
-                        'xmlId' => "basewholesale",
+                        'xmlId' => "partnerwholesale",
                     ],
                 ]
             );
@@ -234,14 +236,13 @@ Can be used to synchronize the current price type with a similar position in an 
 
     ```js
     BX24.callMethod(
-        'catalog.priceType.update', 
+        'catalog.priceType.update',
         {
             id: 2,
             fields: {
-                name: "Base wholesale price",
-                base: "Y",
+                name: "Partner wholesale price",
                 sort: 1,
-                xmlId: "basewholesale"
+                xmlId: "partnerwholesale"
             }
         },
         function(result)
@@ -264,10 +265,9 @@ Can be used to synchronize the current price type with a similar position in an 
         [
             'id' => 2,
             'fields' => [
-                'name' => 'Base wholesale price',
-                'base' => 'Y',
+                'name' => 'Partner wholesale price',
                 'sort' => 1,
-                'xmlId' => 'basewholesale'
+                'xmlId' => 'partnerwholesale'
             ]
         ]
     );
@@ -284,10 +284,9 @@ Can be used to synchronize the current price type with a similar position in an 
     res, err := client.Core().Call(ctx, "catalog.priceType.update", b24.Params{
     	"id": 2,
     	"fields": b24.Params{
-    		"name":  "Base wholesale price",
-    		"base":  "Y",
+    		"name":  "Partner wholesale price",
     		"sort":  1,
-    		"xmlId": "basewholesale",
+    		"xmlId": "partnerwholesale",
     	},
     })
     if err != nil {
@@ -324,24 +323,25 @@ HTTP status: **200**
 {
     "result": {
         "priceType": {
-            "base": "Y",
-            "createdBy": 1,
-            "dateCreate": "2024-10-02T17:49:44+02:00",
+            "base": "N",
+            "createdBy": 1269,
+            "dateCreate": "2026-11-03T12:44:53+03:00",
             "id": 2,
-            "modifiedBy": 1,
-            "name": "Base wholesale price",
+            "modifiedBy": 1269,
+            "name": "Partner wholesale price",
             "sort": 1,
-            "timestampX": "2024-10-03T12:29:35+02:00",
-            "xmlId": "basewholesale"
+            "timestampX": "2026-11-03T12:45:09+03:00",
+            "xmlId": "partnerwholesale"
         }
     },
     "time": {
-        "start": 1712327086.69665,
-        "finish": 1712327086.95303,
-        "duration": 0.256376028060913,
-        "processing": 0.0112268924713135,
-        "date_start": "2024-10-03T12:29:35+02:00",
-        "date_finish": "2024-10-03T12:29:35+02:00",
+        "start": 1793699473,
+        "finish": 1793699473.622972,
+        "duration": 0.6229720115661621,
+        "processing": 0,
+        "date_start": "2026-11-03T12:51:13+03:00",
+        "date_finish": "2026-11-03T12:51:13+03:00",
+        "operating_reset_at": 1793700060,
         "operating": 0
     }
 }
@@ -354,7 +354,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **priceType**
+|| **result.priceType**
 [`catalog_price_type`](../data-types.md#catalog_price_type) | Object with information about the updated price type ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -366,7 +366,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 201000000000,
+    "error": "201000000000",
     "error_description": "priceType does not exist."
 }
 ```
@@ -376,17 +376,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to edit
-||
-|| `201000000000` | Price type with such identifier does not exist
-||
-|| `100` | Parameter `id` not specified
-||
-|| `100` | Parameter `fields` not specified or empty
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Manage price types" access permission ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not provided ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not provided ||
+|| `400` | `201000000000` | priceType does not exist. | No price type with the specified `id` exists ||
+|| `400` | `ERROR_CORE` | The price type ID is missing.`<br>` | An empty string is passed in `name` ||
+|| `400` | `0` | Error updating price type | Failed to save the price type changes ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -28,6 +28,10 @@ This allows for pricing to be configured based on the type of customer, region, 
 4. Check the price using [catalog.price.get](./catalog-price-get.md) or [catalog.price.list](./catalog-price-list.md)
 5. Track changes through [price events](./events/index.md)
 
+To change a single price and keep its identifier, use the [catalog.price.update](./catalog-price-update.md) method. The [catalog.price.modify](./catalog-price-modify.md) method replaces all product prices: prices missing from the request are deleted, and the passed ones are created again with new identifiers.
+
+Methods of both versions do not change the product `productId` or the price type `catalogGroupId` of an existing price. Without quantity ranges, a product can have only one price of each type.
+
 ## Prices in REST 3.0
 
 In [REST 3.0](../../rest-v3.md), prices have methods for adding, updating, retrieving, and deleting, as well as the `catalog.price.field.list` and `catalog.price.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
@@ -35,8 +39,6 @@ In [REST 3.0](../../rest-v3.md), prices have methods for adding, updating, retri
 Specifics of the new version methods:
 
 - REST 3.0 has no `catalog.price.modify` method. To change a price and keep its identifier, use [catalog.price.update](./catalog-price-update-rest-v3.md)
-- the product and the price type are set when the price is created. The `catalog.price.update` method does not change `productId` and `catalogGroupId`, even if you pass them in `fields`
-- a base type price has no markup: `extraId` is reset to `0`. A non-existent `extraId` is also reset to `0`
 - for a non-existent product, the [catalog.price.add](./catalog-price-add-rest-v3.md) method returns the `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION` access error, not a "not found" error
 - empty `extraId`, `quantityFrom`, and `quantityTo` are returned as `0`
 
@@ -68,7 +70,7 @@ Specifics of the new version methods:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the methods: a user with the "View product catalog" or "Edit selling price" access permission. Adding, updating, and deleting require the "Edit selling price" access permission and permission to modify product prices in the catalog information block. The `catalog.price.field.list` and `catalog.price.field.get` methods — any user
 
 {% list tabs %}
 
@@ -89,7 +91,7 @@ Specifics of the new version methods:
     || [catalog.price.modify](./catalog-price-modify.md) | Updates the collection of product prices ||
     || [catalog.price.getFields](./catalog-price-get-fields.md) | Returns the fields of product prices ||
     || [catalog.price.field.list](./catalog-price-field-list.md) | Returns a list of price fields v 3.0 ||
-    || [catalog.price.field.get](./catalog-price-field-get.md) | Returns the description of a price field ||
+    || [catalog.price.field.get](./catalog-price-field-get.md) | Returns the description of a price field v 3.0 ||
     |#
 
 - Events

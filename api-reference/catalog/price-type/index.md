@@ -17,19 +17,10 @@ One of the price types must be designated as the base type. The base price type 
 
 ## How to Start
 
-1. Create a price type using [catalog.priceType.add](./catalog-price-type-add.md)
+1. Create a price type using [catalog.priceType.add](./catalog-price-type-add.md). The method immediately grants viewing and purchasing at the new price type to user groups with IDs `1` and `2`
 2. Add name translations using [catalog.priceTypeLang.*](./price-type-lang/index.md), if needed
 3. Configure customer group access using [catalog.priceTypeGroup.*](./price-type-group/index.md)
 4. Use the price type when creating a price using [catalog.price.add](../price/catalog-price-add.md)
-
-## Result Format
-
-The methods return data in the following fields:
-
-- `catalog.priceType.add`, `catalog.priceType.get`, and `catalog.priceType.update` — a price type object in `result.priceType`
-- `catalog.priceType.list` — an array of objects in `result.priceTypes` and the total number of records in `total`
-- `catalog.priceType.delete` — the deletion result in `result`
-- `catalog.priceType.getFields` — field descriptions in `result.priceType`
 
 ## Price Types in REST 3.0
 
@@ -55,7 +46,9 @@ Specifics of the new version methods:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute methods: depends on the method
+> Who can execute the methods:
+> - a user with the "View product catalog" or "Manage price types" access permission — to retrieve price types, bindings, translations, and field descriptions
+> - a user with the "Manage price types" access permission — to add, update, and delete
 
 ### Main
 

@@ -370,7 +370,9 @@ HTTP status: **200**
 || **groupId**
 [`integer`](../../../data-types.md) | User group identifier ||
 || **access**
-[`string`](../../../data-types.md) | Access type: `"1"` — purchase, `Y` in the request; an empty string — view, `N` in the request ||
+[`string`](../../../data-types.md) | Access type:
+- `"1"` — purchase, `Y` in the request
+- an empty string — view, `N` in the request ||
 |#
 
 ## Error Handling
