@@ -3,6 +3,10 @@ href: index.md
 items:
   - name: Methods Overview
     href: index.md
+  - name: CRM in REST 3.0
+    include:
+      path: rest-v3/b24-toc.yaml
+      mode: link
   - name: Data Types and Object Structure in the CRM REST API
     href: data-types.md 
   - name: Fields of Main CRM Objects
