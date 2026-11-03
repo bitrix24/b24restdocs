@@ -313,6 +313,7 @@ To work with messages, also use messenger methods:
 || [task.checklistitem.complete](./checklist-item/task-checklist-item-complete.md) | Marks a checklist item as completed ||
 || [task.checklistitem.renew](./checklist-item/task-checklist-item-renew.md) | Marks a completed checklist item as active again ||
 || [task.checklistitem.delete](./checklist-item/task-checklist-item-delete.md) | Deletes a checklist item ||
+|| [task.checklistitem.deleteall](./checklist-item/task-checklist-item-delete-all.md) | Deletes all checklists of a task ||
 || [task.checklistitem.isactionallowed](./checklist-item/task-checklist-item-is-action-allowed.md) | Checks if an action is allowed for a checklist item ||
 || [task.checklistitem.getmanifest](./checklist-item/task-checklist-item-get-manifest.md) | Gets a list of methods and their descriptions ||
 |#

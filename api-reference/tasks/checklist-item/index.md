@@ -61,6 +61,7 @@ An item can be marked as important `IS_IMPORTANT = 'Y'`.
 2. Add items using the [task.checklistitem.add](./task-checklist-item-add.md) method — it returns the item ID.
 3. Retrieve the task's items using the [task.checklistitem.getlist](./task-checklist-item-get-list.md) method, or a single item using the [task.checklistitem.get](./task-checklist-item-get.md) method.
 4. Update an item using the [task.checklistitem.update](./task-checklist-item-update.md) method, move it using [task.checklistitem.moveafteritem](./task-checklist-item-move-after-item.md), change its completion status using [task.checklistitem.complete](./task-checklist-item-complete.md) and [task.checklistitem.renew](./task-checklist-item-renew.md), or delete it using [task.checklistitem.delete](./task-checklist-item-delete.md). These methods require a `TASKID` and `ITEMID` pair.
+5. To delete all checklists of a task at once, call the [task.checklistitem.deleteall](./task-checklist-item-delete-all.md) method — it requires only `TASKID`.
 
 All methods in this section accept parameters by position, not by name: the names `TASKID`, `ITEMID`, and `FIELDS` are ignored, so follow the order given in each method's parameter table. Methods respond differently to a nonexistent `ITEMID`: some return an error, others return `false`, `true`, or `null`. Each method's page describes how to handle such a response.
 
@@ -85,6 +86,7 @@ The [task.checklistitem.getmanifest](./task-checklist-item-get-manifest.md) meth
 || [task.checklistitem.get](./task-checklist-item-get.md) | Gets a checklist item by ID ||
 || [task.checklistitem.getlist](./task-checklist-item-get-list.md) | Gets all checklist items of a task in a single response ||
 || [task.checklistitem.delete](./task-checklist-item-delete.md) | Deletes a checklist item together with its subitems ||
+|| [task.checklistitem.deleteall](./task-checklist-item-delete-all.md) | Deletes all checklists of a task ||
 || [task.checklistitem.moveafteritem](./task-checklist-item-move-after-item.md) | Places a checklist item in the list after the specified one ||
 || [task.checklistitem.complete](./task-checklist-item-complete.md) | Marks a checklist item as completed ||
 || [task.checklistitem.renew](./task-checklist-item-renew.md) | Marks a completed checklist item as not completed ||

@@ -42,7 +42,9 @@ For `GROUP`, `KNOWLEDGE`, and `MAINPAGE`, pass the corresponding `scope` [(detai
 || **Name**
 `type` | **Description** ||
 || **select**
-[`string[]`](../../data-types.md) | List of fields to select from [basic site fields](./base-fields.md). If the parameter is not passed or is not an array, `["*"]` is used. The method always adds `ID` and `TYPE` to the selection. ||
+[`string[]`](../../data-types.md) | List of fields to select from [basic site fields](./base-fields.md). If the parameter is not passed or is not an array, `["*"]` is used. The method always adds `ID` and `TYPE` to the selection.
+
+The `DATE_CREATE_ISO` and `DATE_MODIFY_ISO` fields cannot be passed in `select`: the method returns the `SYSTEM_ERROR` error. To retrieve them, request `DATE_CREATE` and `DATE_MODIFY`. ||
 || **filter**
 [`object`](../../data-types.md) | Filter by fields from [basic site fields](./base-fields.md). If the parameter is not passed or is not an array, an empty filter `{}` is used.
 
@@ -476,6 +478,10 @@ It may be an empty string if the URL could not be determined. ||
 [`string`](../../data-types.md) | Creation date in string format, returned when selecting the field `DATE_CREATE`. ||
 || **DATE_MODIFY**
 [`string`](../../data-types.md) | Modification date in string format, returned when selecting the field `DATE_MODIFY`. ||
+|| **DATE_CREATE_ISO**
+[`string`](../../data-types.md) | Creation date in ISO 8601 format with the time zone, for example `2026-07-16T10:05:17+02:00`. Returned together with `DATE_CREATE`. ||
+|| **DATE_MODIFY_ISO**
+[`string`](../../data-types.md) | Modification date in ISO 8601 format with the time zone, for example `2026-07-16T10:05:17+02:00`. Returned together with `DATE_MODIFY`. ||
 || **LANDING_ID_INDEX**
 [`string`](../../data-types.md) \| `null` | May be present if `PREVIEW_PICTURE` is requested in `select`. ||
 |#
@@ -499,7 +505,7 @@ HTTP Status: **400**
 || **Code** | **Description** ||
 || `ACCESS_DENIED` | Insufficient rights to call landing methods. ||
 || `TYPE_ERROR` | Data type error in method call parameters. ||
-|| `SYSTEM_ERROR` | Internal error during method execution. ||
+|| `SYSTEM_ERROR` | Internal error during method execution, for example, the `DATE_CREATE_ISO` or `DATE_MODIFY_ISO` field is passed in `select`. ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

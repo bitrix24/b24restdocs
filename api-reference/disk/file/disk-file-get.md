@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 The method `disk.file.get` returns data about a file.
 
-If the user has no permissions for the Drive folder, the method checks the file attachments. The file is returned if the user can see at least one object it is attached to, such as a task or a chat message. In this case, the `DETAIL_URL` field is empty, while the `DOWNLOAD_URL` link is present.
+If the user has no permissions for the Drive folder, the method checks the file attachments. The file is returned if the user can see at least one object it is attached to, such as a task or a chat message. In this case, the `DETAIL_URL` field is `null`, while the `DOWNLOAD_URL` link is present.
 
 ## Method Parameters
 
@@ -86,7 +86,7 @@ The identifier can be obtained using the method [disk.storage.getChildren](../st
       UPDATED_BY: string
       DELETED_BY: string
       DOWNLOAD_URL: string
-      DETAIL_URL: string
+      DETAIL_URL: string | null
     }
 
     try {
@@ -344,9 +344,9 @@ HTTP Status: **200**
 || **DOWNLOAD_URL**
 [`string`](../../data-types.md) | Link to download the file ||
 || **DETAIL_URL**
-[`string`](../../data-types.md) | Link to open the file in the interface.
+[`string`](../../data-types.md) \| `null` | Link to open the file in the interface.
 
-The field is empty if the file is available to the user only through an attachment ||
+It is `null` if the file is stored in an app storage or in a storage of another module, such as a chat or CRM, or if the file is available to the user only through an attachment ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

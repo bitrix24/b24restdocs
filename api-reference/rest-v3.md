@@ -92,6 +92,7 @@ The REST 3.0 methods are described in the following sections:
 #|
 || **Section** | **What the methods do** ||
 || [Tasks](./tasks/index.md) | Create and modify tasks, work with the task chat, results, files, and access permissions ||
+|| [CRM Forms](./crm/form/index.md) | Create, configure, enable, and delete CRM forms, retrieve the code for embedding a form on a website and the form builder reference data — the `crm.form.*` group of methods. Other CRM methods belong to the old version ||
 || [Knowledge Base 2.0](./note/index.md) | Maintain knowledge bases, documents, and attached files ||
 || [E-mail](./mail/index.md) | Work with mailboxes, messages, and recipients ||
 || [Trade Catalog](./catalog/index.md) | Work with trade catalogs, catalog sections, products, services, variations, product images and properties, inventory documents, prices, price types, rounding rules, markups, units of measurement, ratios, and VAT rates ||

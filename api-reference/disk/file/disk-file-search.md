@@ -471,7 +471,7 @@ The set of fields depends on the type of the object. The `GLOBAL_CONTENT_VERSION
 || **DOWNLOAD_URL**
 [`string`](../../data-types.md) | Link to download the file. It comes only for files ||
 || **DETAIL_URL**
-[`string`](../../data-types.md) | Link to open the object in the interface. For objects from storages that do not belong to Drive, it comes as `null` ||
+[`string`](../../data-types.md) \| `null` | Link to open the object in the interface. For objects from storages that do not belong to Drive, it comes as `null` ||
 |#
 
 The objects are sorted by the date of the last change, from newest to oldest.

@@ -514,6 +514,7 @@ HTTP Status: **400 Bad Request**
 || `LANDING_NOT_EXIST` | The page with identifier `lid` is not found or is not accessible to the current user ||
 || `ACCESS_DENIED` | Insufficient permissions to call the method ||
 || `BLOCK_NOT_FOUND` | The source block with identifier `block` is not found, is not accessible to the current user, marked as deleted, provided from the published version of the page, or cannot be loaded from the source page ||
+|| `BLOCK_INCOMPATIBLE_SITE_TYPE` | This block cannot be pasted onto the page: the block is not intended for the site type of the `lid` page. For example, a store block cannot be moved to a page of a `PAGE` site ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

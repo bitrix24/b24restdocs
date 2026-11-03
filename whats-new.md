@@ -2,6 +2,11 @@
 
 ## 2026
 
+### November 3, 2026
+
+- Added the [task.checklistitem.deleteall](./api-reference/tasks/checklist-item/task-checklist-item-delete-all.md) method: deletes all checklists of a task in a single call
+- Described the new `DATE_CREATE_ISO` and `DATE_MODIFY_ISO` fields in the responses of the [landing.site.getList](./api-reference/landing/site/landing-site-get-list.md) and [landing.site.getFolders](./api-reference/landing/site/landing-site-get-folders.md) methods: dates in ISO 8601 format with the time zone
+
 ### October 23, 2026
 
 - Added the [sign.b2e.provider.*](./api-reference/sign/index.md#providers) methods to the e-Signature section: an administrator can connect their own signing provider to Bitrix24 with the [sign.b2e.provider.add](./api-reference/sign/sign-b2e-provider-add.md) method, update its data with the [sign.b2e.provider.update](./api-reference/sign/sign-b2e-provider-update.md) method, retrieve the list of providers with the [sign.b2e.provider.tail](./api-reference/sign/sign-b2e-provider-tail.md) method, and disconnect a provider with the [sign.b2e.provider.delete](./api-reference/sign/sign-b2e-provider-delete.md) method. The methods work only from an application with OAuth authorization

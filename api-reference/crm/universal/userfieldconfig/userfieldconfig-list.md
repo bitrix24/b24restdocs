@@ -25,7 +25,7 @@ The method `userfieldconfig.list` returns a list of user field settings based on
 || **moduleId***
 [`string`](../../../data-types.md) | The identifier of the module in which the fields are being searched ||
 || **select**
-[`object`](../../../data-types.md) | Set of fields to return [(detailed description)](#select) ||
+[`object`](../../../data-types.md) | Set of fields to return [(detailed description)](#select). Field names can be passed in camelCase, for example `fieldName`, or in uppercase, for example `FIELD_NAME` ||
 || **order**
 [`object`](../../../data-types.md) | Object format:
 ```
@@ -89,7 +89,13 @@ Use the `next` parameter value from the previous response ||
 || **\***
 [`string`](../../../data-types.md) | Return all standard settings fields ||
 || **language**
-[`string`](../../../data-types.md) | Language identifier for language fields, for example `de` or `en` ||
+[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids), for example `de` or `en`. Passed as an object key: `"language": "de"`. If the parameter is passed, the method returns language fields in the selected language:
+- `languageId` — language identifier
+- `editFormLabel` — label in the edit form
+- `listColumnLabel` — header in the list
+- `listFilterLabel` — label of the filter in the list
+- `errorMessage` — error message
+- `helpMessage` — help ||
 || **id**
 [`string`](../../../data-types.md) | Identifier of the field setting ||
 || **entityId**
@@ -116,13 +122,6 @@ Use the `next` parameter value from the previous response ||
 [`string`](../../../data-types.md) | Whether the field values are searchable. Possible values: `Y` or `N` ||
 || **settings**
 [`string`](../../../data-types.md) | Additional settings for the field ||
-|| **languageId**
-[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). When this parameter is passed, a set of language fields in the selected language is returned:
-- `editFormLabel` - label in the edit form
-- `listColumnLabel` - header in the list
-- `listFilterLabel` - label of the filter in the list
-- `errorMessage` - error message
-- `helpMessage` - help ||
 |#
 
 ### Filterable Fields {#filterable}
@@ -618,6 +617,7 @@ HTTP Status: **400**
 || Empty value | You do not have permission to view user field settings | Insufficient read access permission for fields based on the provided filter ||
 || Empty value | The current method required more scopes. (crm) | The application does not have the required scope for the module from `moduleId` ||
 || Empty value | No settings for UserFieldAccess | Access to user fields is not configured for the provided `moduleId` ||
+|| `100` | Internal server error. | A field that is not in the [list](#select) is passed in `select`, for example `languageId` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

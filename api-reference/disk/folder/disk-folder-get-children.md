@@ -154,7 +154,7 @@ The formula for calculating the `start` parameter value:
       UPDATED_BY: string
       DELETED_BY: string
       DOWNLOAD_URL?: string
-      DETAIL_URL: string
+      DETAIL_URL: string | null
     }
 
     try {
@@ -508,7 +508,7 @@ An empty array means that the user does not have permission to view the files an
 || **DOWNLOAD_URL**
 [`string`](../../data-types.md) | Link to download the file. The field is returned only for a file when `TYPE = file` ||
 || **DETAIL_URL**
-[`string`](../../data-types.md) | Link to open the file/folder in the interface ||
+[`string`](../../data-types.md) \| `null` | Link to open the file or folder in the interface. For objects from app storages and storages of other modules, such as chats or CRM, it is `null` ||
 || **total**
 [`integer`](../../data-types.md) | Total number of files and folders ||
 || **time**

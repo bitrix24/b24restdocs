@@ -92,7 +92,7 @@ You cannot move the root folder of the storage to the trash.
       CREATED_BY: string
       UPDATED_BY: string
       DELETED_BY: string
-      DETAIL_URL: string
+      DETAIL_URL: string | null
     }
 
     try {
@@ -341,7 +341,7 @@ HTTP status: **200**
 || **DELETED_BY**
 [`integer`](../../data-types.md) | Identifier of the user who deleted the folder ||
 || **DETAIL_URL**
-[`string`](../../data-types.md) | Link to open the folder in the interface ||
+[`string`](../../data-types.md) \| `null` | Link to open the folder in the interface. For folders from app storages and storages of other modules, such as chats or CRM, it is `null` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#

@@ -128,6 +128,8 @@ The site identifier can be obtained using the method [landing.site.getList](./la
       MODIFIED_BY_ID: string
       DATE_CREATE: string
       DATE_MODIFY: string
+      DATE_CREATE_ISO: string
+      DATE_MODIFY_ISO: string
     }
 
     try {
@@ -378,7 +380,9 @@ HTTP Status: **200**
             "CREATED_BY_ID": "1",
             "MODIFIED_BY_ID": "29",
             "DATE_CREATE": "11/12/2021 08:39:53 pm",
-            "DATE_MODIFY": "12/28/2021 03:04:04 pm"
+            "DATE_MODIFY": "12/28/2021 03:04:04 pm",
+            "DATE_CREATE_ISO": "2021-11-12T20:39:53+01:00",
+            "DATE_MODIFY_ISO": "2021-12-28T15:04:04+01:00"
         },
         {
             "ID": "33",
@@ -392,7 +396,9 @@ HTTP Status: **200**
             "CREATED_BY_ID": "29",
             "MODIFIED_BY_ID": "29",
             "DATE_CREATE": "12/08/2021 10:23:37 am",
-            "DATE_MODIFY": "12/08/2021 10:24:48 am"
+            "DATE_MODIFY": "12/08/2021 10:24:48 am",
+            "DATE_CREATE_ISO": "2021-12-08T10:23:37+01:00",
+            "DATE_MODIFY_ISO": "2021-12-08T10:24:48+01:00"
         },
         {
             "ID": "3",
@@ -406,7 +412,9 @@ HTTP Status: **200**
             "CREATED_BY_ID": "1",
             "MODIFIED_BY_ID": "29",
             "DATE_CREATE": "11/12/2021 08:39:53 pm",
-            "DATE_MODIFY": "12/03/2021 08:10:21 am"
+            "DATE_MODIFY": "12/03/2021 08:10:21 am",
+            "DATE_CREATE_ISO": "2021-11-12T20:39:53+01:00",
+            "DATE_MODIFY_ISO": "2021-12-03T08:10:21+01:00"
         }
     ],
     "time": {
@@ -462,6 +470,10 @@ HTTP Status: **200**
 [`string`](../../data-types.md) | Date and time of creation in string format ||
 || **DATE_MODIFY**
 [`string`](../../data-types.md) | Date and time of modification in string format ||
+|| **DATE_CREATE_ISO**
+[`string`](../../data-types.md) | Date and time of creation in ISO 8601 format with the time zone, for example `2021-11-12T20:39:53+01:00` ||
+|| **DATE_MODIFY_ISO**
+[`string`](../../data-types.md) | Date and time of modification in ISO 8601 format with the time zone, for example `2021-12-28T15:04:04+01:00` ||
 |#
 
 ## Error Handling

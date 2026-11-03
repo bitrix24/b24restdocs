@@ -92,7 +92,7 @@ The identifier can be obtained using the [disk.storage.getChildren](../storage/d
       UPDATED_BY: string
       DELETED_BY: string
       DOWNLOAD_URL: string
-      DETAIL_URL: string
+      DETAIL_URL: string | null
     }
 
     try {
@@ -350,7 +350,7 @@ HTTP Status: **200**
 || **DOWNLOAD_URL**
 [`string`](../../data-types.md) | Link to download the file ||
 || **DETAIL_URL**
-[`string`](../../data-types.md) | Link to open the file in the interface ||
+[`string`](../../data-types.md) \| `null` | Link to open the file in the interface. For files from app storages and storages of other modules, such as chats or CRM, it is `null` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
