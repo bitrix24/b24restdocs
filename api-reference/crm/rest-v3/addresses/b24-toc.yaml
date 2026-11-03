@@ -3,3 +3,17 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
+  - name: Add a Contact or Company Address
+    href: crm-entity-address-add-rest-v3.md
+  - name: Update a Contact or Company Address
+    href: crm-entity-address-update-rest-v3.md
+  - name: Get an Address
+    href: crm-entity-address-get-rest-v3.md
+  - name: Get Contact or Company Addresses
+    href: crm-entity-address-list-rest-v3.md
+  - name: Delete an Address
+    href: crm-entity-address-delete-rest-v3.md
+  - name: Set a Lead Address
+    href: crm-lead-address-set-rest-v3.md
+  - name: Get Contact, Company, and Lead Addresses
+    href: crm-address-list-rest-v3.md

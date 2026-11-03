@@ -3,3 +3,45 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
+  - name: Item Activities
+    items:
+      - name: Get an Activity
+        href: crm-entity-activity-get-rest-v3.md
+      - name: Get a List of Item Activities
+        href: crm-entity-activity-list-rest-v3.md
+      - name: Delete an Activity
+        href: crm-entity-activity-delete-rest-v3.md
+      - name: Complete an Activity
+        href: crm-entity-activity-complete-rest-v3.md
+      - name: Reopen an Activity
+        href: crm-entity-activity-uncomplete-rest-v3.md
+  - name: Activities Without an Object Type
+    items:
+      - name: Get an Activity
+        href: crm-activity-get-rest-v3.md
+      - name: Get a List of Activities
+        href: crm-activity-list-rest-v3.md
+      - name: Delete an Activity
+        href: crm-activity-delete-rest-v3.md
+      - name: Complete an Activity
+        href: crm-activity-complete-rest-v3.md
+      - name: Reopen an Activity
+        href: crm-activity-uncomplete-rest-v3.md
+  - name: Activity Bindings
+    items:
+      - name: Bind an Activity to an Item
+        href: crm-activity-binding-bind-rest-v3.md
+      - name: Unbind an Activity from an Item
+        href: crm-activity-binding-unbind-rest-v3.md
+      - name: Move an Activity Binding
+        href: crm-activity-binding-move-rest-v3.md
+      - name: Get Activity Bindings
+        href: crm-activity-binding-list-rest-v3.md
+  - name: Emails
+    items:
+      - name: Get the Email Content
+        href: crm-activity-mail-get-content-rest-v3.md
+      - name: Get the Email Thread
+        href: crm-activity-mail-get-thread-rest-v3.md
+      - name: Reply to an Email
+        href: crm-activity-mail-reply-rest-v3.md

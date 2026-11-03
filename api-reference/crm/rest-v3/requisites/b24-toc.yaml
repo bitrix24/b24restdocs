@@ -3,3 +3,57 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
+  - name: Add a Requisite
+    href: crm-entity-requisite-add-rest-v3.md
+  - name: Update a Requisite
+    href: crm-entity-requisite-update-rest-v3.md
+  - name: Get a Requisite
+    href: crm-entity-requisite-get-rest-v3.md
+  - name: Get a List of Contact or Company Requisites
+    href: crm-entity-requisite-list-rest-v3.md
+  - name: Delete a Requisite
+    href: crm-entity-requisite-delete-rest-v3.md
+  - name: Get a List of Bitrix24 Requisites
+    href: crm-requisite-list-rest-v3.md
+  - name: Requisite Templates
+    items:
+      - name: Get a Requisite Template
+        href: crm-entity-requisite-preset-get-rest-v3.md
+      - name: Get a List of Requisite Templates
+        href: crm-entity-requisite-preset-list-rest-v3.md
+  - name: Bank Details
+    items:
+      - name: Add Bank Details
+        href: crm-entity-requisite-bank-requisite-add-rest-v3.md
+      - name: Update Bank Details
+        href: crm-entity-requisite-bank-requisite-update-rest-v3.md
+      - name: Get Bank Details
+        href: crm-entity-requisite-bank-requisite-get-rest-v3.md
+      - name: Get the Bank Details of a Requisite
+        href: crm-entity-requisite-bank-requisite-list-rest-v3.md
+      - name: Get the Bank Details of a Contact or Company
+        href: crm-entity-bank-requisite-list-rest-v3.md
+      - name: Delete Bank Details
+        href: crm-entity-requisite-bank-requisite-delete-rest-v3.md
+  - name: Requisite Addresses
+    items:
+      - name: Add a Requisite Address
+        href: crm-entity-requisite-address-add-rest-v3.md
+      - name: Update a Requisite Address
+        href: crm-entity-requisite-address-update-rest-v3.md
+      - name: Get a Requisite Address
+        href: crm-entity-requisite-address-get-rest-v3.md
+      - name: Get the Addresses of a Requisite
+        href: crm-entity-requisite-address-list-rest-v3.md
+      - name: Delete a Requisite Address
+        href: crm-entity-requisite-address-delete-rest-v3.md
+  - name: Requisites in CRM Items
+    items:
+      - name: Get the Client Requisites of an Item
+        href: crm-entity-client-requisite-get-rest-v3.md
+      - name: Select the Client Requisites in an Item
+        href: crm-entity-client-requisite-set-rest-v3.md
+      - name: Get My Company Requisites of an Item
+        href: crm-entity-my-company-requisite-get-rest-v3.md
+      - name: Select My Company Requisites in an Item
+        href: crm-entity-my-company-requisite-set-rest-v3.md

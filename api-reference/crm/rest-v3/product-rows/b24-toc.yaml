@@ -3,3 +3,17 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
+  - name: Add a Product Item
+    href: crm-entity-product-row-add-rest-v3.md
+  - name: Update a Product Item
+    href: crm-entity-product-row-update-rest-v3.md
+  - name: Get a Product Item
+    href: crm-entity-product-row-get-rest-v3.md
+  - name: Get a List of Product Items
+    href: crm-entity-product-row-list-rest-v3.md
+  - name: Delete a Product Item
+    href: crm-entity-product-row-delete-rest-v3.md
+  - name: Replace All Product Items
+    href: crm-entity-product-row-replace-rest-v3.md
+  - name: Get Unpaid Product Items
+    href: crm-entity-product-row-get-available-for-payment-rest-v3.md
