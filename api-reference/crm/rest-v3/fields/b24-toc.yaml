@@ -3,3 +3,33 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
+  - name: Get a Field Description
+    href: crm-entity-field-get-rest-v3.md
+  - name: Get Field Descriptions
+    href: crm-entity-field-list-rest-v3.md
+  - name: Create a Custom Field
+    href: crm-entity-field-custom-add-rest-v3.md
+  - name: Update a Custom Field
+    href: crm-entity-field-custom-update-rest-v3.md
+  - name: Get a Custom Field
+    href: crm-entity-field-custom-get-rest-v3.md
+  - name: Get a List of Custom Fields
+    href: crm-entity-field-custom-list-rest-v3.md
+  - name: Delete a Custom Field
+    href: crm-entity-field-custom-delete-rest-v3.md
+  - name: Add an Option to a List Field
+    href: crm-entity-field-custom-enum-add-rest-v3.md
+  - name: Update a List Field Option
+    href: crm-entity-field-custom-enum-update-rest-v3.md
+  - name: Get a List Field Option
+    href: crm-entity-field-custom-enum-get-rest-v3.md
+  - name: Get List Field Options
+    href: crm-entity-field-custom-enum-list-rest-v3.md
+  - name: Delete a List Field Option
+    href: crm-entity-field-custom-enum-delete-rest-v3.md
+  - name: Get a Field Requirement
+    href: crm-entity-field-required-get-rest-v3.md
+  - name: Make a Field Required
+    href: crm-entity-field-required-set-rest-v3.md
+  - name: Remove a Field Requirement
+    href: crm-entity-field-required-clear-rest-v3.md
