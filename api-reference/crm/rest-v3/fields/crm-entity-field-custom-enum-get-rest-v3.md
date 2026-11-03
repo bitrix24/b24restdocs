@@ -410,7 +410,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Invalid field in `select`: `#VALUE#` | Pass `select` as an array of names, for example, `["id", "name"]` ||
+|| `-` | Invalid field in `select`: `#VALUE#` | Pass `select` as an array of names, for example, `["id", "value"]` ||
 |#
 
 #### Access Denied
