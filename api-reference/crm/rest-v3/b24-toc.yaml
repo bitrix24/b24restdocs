@@ -1,0 +1,45 @@
+title: CRM in REST 3.0
+href: index.md
+items:
+  - name: Overview
+    href: index.md
+  - name: Items
+    include:
+      path: items/b24-toc.yaml
+      mode: link
+  - name: Field Management
+    include:
+      path: fields/b24-toc.yaml
+      mode: link
+  - name: Pipelines and Stages
+    include:
+      path: categories/b24-toc.yaml
+      mode: link
+  - name: Product Items
+    include:
+      path: product-rows/b24-toc.yaml
+      mode: link
+  - name: Requisites
+    include:
+      path: requisites/b24-toc.yaml
+      mode: link
+  - name: Addresses
+    include:
+      path: addresses/b24-toc.yaml
+      mode: link
+  - name: Card Views
+    include:
+      path: detail-page-layout/b24-toc.yaml
+      mode: link
+  - name: Activities
+    include:
+      path: activities/b24-toc.yaml
+      mode: link
+  - name: Directories
+    include:
+      path: dictionaries/b24-toc.yaml
+      mode: link
+  - name: Lead Mode
+    include:
+      path: lead-mode/b24-toc.yaml
+      mode: link

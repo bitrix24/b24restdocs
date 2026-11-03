@@ -1,0 +1,25 @@
+title: Card Views
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create an Additional Card View
+    href: crm-entity-detail-page-layout-add-rest-v3.md
+  - name: Update a Card View
+    href: crm-entity-detail-page-layout-update-rest-v3.md
+  - name: Get a Card View
+    href: crm-entity-detail-page-layout-get-rest-v3.md
+  - name: Get a List of Additional Card Views
+    href: crm-entity-detail-page-layout-list-rest-v3.md
+  - name: Delete an Additional Card View
+    href: crm-entity-detail-page-layout-delete-rest-v3.md
+  - name: Get the Current Card View
+    href: crm-entity-detail-page-layout-get-current-rest-v3.md
+  - name: Set the Current Card View
+    href: crm-entity-detail-page-layout-set-current-rest-v3.md
+  - name: Get the Personal Card View ID
+    href: crm-entity-detail-page-layout-get-personal-layout-id-rest-v3.md
+  - name: Get the Common Card View ID
+    href: crm-entity-detail-page-layout-get-common-layout-id-rest-v3.md
+  - name: Set the Common Card View for All Users
+    href: crm-entity-detail-page-layout-set-common-for-all-rest-v3.md

@@ -1,0 +1,45 @@
+title: Items
+href: index.md
+items:
+  - name: Overview of Methods
+    href: index.md
+  - name: Create an Item
+    href: crm-entity-add-rest-v3.md
+  - name: Update an Item
+    href: crm-entity-update-rest-v3.md
+  - name: Get an Item by ID
+    href: crm-entity-get-rest-v3.md
+  - name: Get a List of Items
+    href: crm-entity-list-rest-v3.md
+  - name: Delete an Item
+    href: crm-entity-delete-rest-v3.md
+  - name: Count Items
+    href: crm-entity-aggregate-rest-v3.md
+  - name: Add a Value to a Multiple Field
+    href: crm-entity-add-field-value-rest-v3.md
+  - name: Remove a Value from a Multiple Field
+    href: crm-entity-delete-field-value-rest-v3.md
+  - name: Make a Linked Contact Primary
+    href: crm-entity-set-primary-contact-rest-v3.md
+  - name: Get Requisites and Contacts of My Company
+    href: crm-my-company-basic-get-rest-v3.md
+  - name: Get a List of My Companies with Requisites and Contacts
+    href: crm-my-company-basic-list-rest-v3.md
+  - name: Object Fields
+    items:
+      - name: Deal Fields
+        href: fields-deal.md
+      - name: Lead Fields
+        href: fields-lead.md
+      - name: Contact Fields
+        href: fields-contact.md
+      - name: Company Fields
+        href: fields-company.md
+      - name: Estimate Fields
+        href: fields-quote.md
+      - name: Invoice Fields
+        href: fields-smart-invoice.md
+      - name: SPA Fields
+        href: fields-smart-process.md
+      - name: My Company Fields
+        href: fields-my-company.md
