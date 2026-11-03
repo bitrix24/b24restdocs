@@ -3,3 +3,9 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
+  - name: Check Whether Leads Are Enabled
+    href: crm-lead-is-enabled-rest-v3.md
+  - name: Enable Leads
+    href: crm-lead-enable-rest-v3.md
+  - name: Disable Leads
+    href: crm-lead-disable-rest-v3.md
