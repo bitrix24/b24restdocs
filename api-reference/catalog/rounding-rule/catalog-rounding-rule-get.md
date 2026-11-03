@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "Manage price types" access permission
 
-The method returns information about the price rounding rule by its identifier.
+`catalog.roundingRule.get` returns a price rounding rule by its ID.
 
 ## Method Parameters
 
@@ -161,7 +161,6 @@ The method returns information about the price rounding rule by its identifier.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -172,7 +171,7 @@ The method returns information about the price rounding rule by its identifier.
                     'id' => 1
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -289,7 +288,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **roundingRule**
+|| **result.roundingRule**
 [`catalog_rounding_rule`](../data-types.md#catalog_rounding_rule) | Object containing information about the price rounding rule with the specified identifier ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
@@ -301,8 +300,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300010,
-    "error_description": "Access Denied"
+    "error": "200900000000",
+    "error_description": "roundingRule does not exist."
 }
 ```
 
@@ -311,15 +310,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read
-||
-|| `200900000000` | No price rounding rule exists with this identifier 
-||
-|| `100` | The `id` parameter is not specified
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "Manage price types" access permission ||
+|| `400` | `200900000000` | roundingRule does not exist. | There is no rounding rule with the specified `id` ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

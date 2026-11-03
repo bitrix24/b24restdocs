@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage price types" access permission
 
-This method deletes a price rounding rule.
+`catalog.roundingRule.delete` deletes a price rounding rule.
 
 ## Method Parameters
 
@@ -146,7 +146,6 @@ This method deletes a price rounding rule.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -157,7 +156,7 @@ This method deletes a price rounding rule.
                     'id' => 1
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -172,10 +171,10 @@ This method deletes a price rounding rule.
 
     ```js
     BX24.callMethod(
-        'catalog.roundingRule.delete', 
-        { 
+        'catalog.roundingRule.delete',
+        {
             id: 1
-        }, 
+        },
         function(result)
         {
             if(result.error())
@@ -259,8 +258,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300020,
-    "error_description": "Access Denied"
+    "error": "200900000000",
+    "error_description": "roundingRule does not exist."
 }
 ```
 
@@ -269,15 +268,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to delete
-||
-|| `200900000000` | Price rounding rule with this identifier does not exist
-||
-|| `100` | Parameter `id` not specified
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Manage price types" access permission ||
+|| `400` | `200900000000` | roundingRule does not exist. | There is no rounding rule with the specified `id` ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -43,7 +43,9 @@ The method `catalog.vat.add` creates a VAT rate.
 Default is `Y`
 ||
 || **rate***
-[`double`](../../data-types.md) | Rate value in percent, for example `7` or `19`. The value `null` is not accepted: a rate without VAT cannot be created using this method ||
+[`double`](../../data-types.md) | Rate value in percent, for example `7`, `10.5`, or `19`. The value `null` is not accepted: a rate without VAT cannot be created using this method.
+
+The method rejects a negative value. The method does not check the upper limit: a rate of `150` is saved. A string that is not a number is saved as `0` without an error ||
 || **sort**
 [`integer`](../../data-types.md) | Sort order of the rate in lists. The lower the value, the higher the rate appears in the list.
 
@@ -198,7 +200,6 @@ Default is `100`
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -214,7 +215,7 @@ Default is `100`
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -343,7 +344,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **vat**
+|| **result.vat**
 [`catalog_vat`](../data-types.md#catalog_vat) | The created VAT rate with all fields: `active`, `id`, `name`, `rate`, `sort`, `timestampX`. Use the `id` value in the `vatId` field of a trade catalog or product ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -368,10 +369,11 @@ HTTP status: **400**
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `200040300020` | Access Denied | The user does not have the "Manage tax rates" access permission ||
 || `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
-|| `400` | `0` | Required fields: name | The `name` field is missing in `fields` ||
-|| `400` | `0` | Required fields: rate | The `rate` field is missing in `fields` or `null` is passed ||
+|| `400` | `0` | Required fields: name, rate | Required fields are missing in `fields`. The text lists only the fields that are missing, for example `Required fields: rate` ||
+|| `400` | `0` | Required fields: rate | `null` is passed in `rate` ||
+|| `400` | `ERROR_CORE` | Tax rate name is missing.`<br>` | An empty string is passed in `name` ||
+|| `400` | `ERROR_CORE` | Tax rate value is incorrect.`<br>` | A negative number is passed in `rate` ||
 || `400` | `0` | Error adding VAT | Failed to save the VAT rate ||
-|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

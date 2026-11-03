@@ -45,10 +45,12 @@ To retrieve the rate identifiers, use the [catalog.vat.list](./catalog-vat-list.
 - `Y` — active
 - `N` — inactive
 
-If not passed, the value does not change
+If not passed, the value does not change. The method skips other values without an error, and the activity status does not change
 ||
 || **rate***
-[`double`](../../data-types.md) | Rate value in percent, for example `7` or `19`. Pass it in every call: without `rate`, the method returns the `Required fields: rate` error ||
+[`double`](../../data-types.md) | Rate value in percent, for example `7` or `19`. Pass it in every call: without `rate` or with `null`, the method returns the `Required fields: rate` error.
+
+The method rejects a negative value. The method does not check the upper limit. A string that is not a number is saved as `0` without an error ||
 || **sort**
 [`integer`](../../data-types.md) | Sort order of the rate in lists. If not passed, the value does not change
 ||
@@ -204,7 +206,6 @@ If not passed, the value does not change
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -221,7 +222,7 @@ If not passed, the value does not change
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -236,7 +237,7 @@ If not passed, the value does not change
 
     ```js
     BX24.callMethod(
-        'catalog.vat.update', 
+        'catalog.vat.update',
         {
             id: 37,
             fields: {
@@ -354,7 +355,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **vat**
+|| **result.vat**
 [`catalog_vat`](../data-types.md#catalog_vat) | The VAT rate after the update with all fields: `active`, `id`, `name`, `rate`, `sort`, `timestampX` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -382,9 +383,10 @@ HTTP status: **400**
 || `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
 || `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
 || `400` | `0` | Required fields: name | The `name` field is missing in `fields` ||
-|| `400` | `0` | Required fields: rate | The `rate` field is missing in `fields` ||
+|| `400` | `0` | Required fields: rate | The `rate` field is missing in `fields`, or `null` is passed ||
+|| `400` | `ERROR_CORE` | Tax rate name is missing.`<br>` | An empty string is passed in `name` ||
+|| `400` | `ERROR_CORE` | Tax rate value is incorrect.`<br>` | A negative number is passed in `rate` ||
 || `400` | `0` | Error updating VAT | Failed to save the VAT rate changes ||
-|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

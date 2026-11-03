@@ -11,22 +11,27 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog", "Edit selling price", or "Manage mark-ups" access permission
 
-This method returns a list of markups based on the filter.
+`catalog.extra.list` returns a list of markups based on the filter.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **select** 
-[`array`](../../data-types.md)| An array of fields to select (see fields of the [catalog_extra](../data-types.md#catalog_extra) object).
+|| **select**
+[`array`](../../data-types.md) | An array of fields to return:
+- `id` — markup ID
+- `name` — markup name
+- `percentage` — amount of the markup in percent
 
-If the array is not provided or an empty array is passed, all available fields of the markup type will be selected.
+If the array is not passed or is empty, the method returns all fields. The method skips unknown fields without an error, and if `select` contains no fields of the object, it returns all fields
 ||
-|| **filter** 
-[`object`](../../data-types.md)| An object for filtering the selected markups in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
+|| **filter**
+[`object`](../../data-types.md) | An object for filtering the selected markups in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_extra](../data-types.md#catalog_extra) object.
 
@@ -52,9 +57,11 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
+
+The method skips unknown fields in the filter without an error and returns markups without applying that condition
 ||
 || **order**
-[`object`](../../data-types.md)| An object for sorting the selected markups in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting the selected markups in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_extra](../data-types.md#catalog_extra) object.
 
@@ -62,9 +69,11 @@ Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
+
+Any other sort direction causes the `Invalid order` error. The method skips unknown fields in `order` without an error
 ||
-|| **start** 
-[`integer`](../../data-types.md)| This parameter is used to manage pagination.
+|| **start**
+[`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static — 50 records.
 
@@ -230,7 +239,6 @@ The formula for calculating the value of the `start` parameter:
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -250,15 +258,15 @@ The formula for calculating the value of the `start` parameter:
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your required data processing logic
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error listing catalog extras: ' . $e->getMessage();
@@ -349,20 +357,23 @@ HTTP status: **200**
 
 ```json
 {
-    "extras": [
-        {
-            "id": 1,
-            "percentage": 5.10
-        }
-    ],
+    "result": {
+        "extras": [
+            {
+                "id": 1,
+                "percentage": 10
+            }
+        ]
+    },
     "total": 1,
     "time": {
-        "start": 1712326352.63409,
-        "finish": 1712326352.8319,
-        "duration": 0.197818040847778,
-        "processing": 0.00833678245544434,
-        "date_start": "2024-10-24T16:24:46+02:00",
-        "date_finish": "2024-10-24T16:24:46+02:00",
+        "start": 1793688350,
+        "finish": 1793688350.050725,
+        "duration": 0.05072498321533203,
+        "processing": 0,
+        "date_start": "2026-11-03T09:45:50+03:00",
+        "date_finish": "2026-11-03T09:45:50+03:00",
+        "operating_reset_at": 1793688900,
         "operating": 0
     }
 }
@@ -375,10 +386,10 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **extras**
-[`catalog_extra[]`](../data-types.md#catalog_extra) | Array of objects with information about the selected markups ||
+|| **result.extras**
+[`catalog_extra[]`](../data-types.md#catalog_extra) | Array of markups. The set of fields depends on `select` ||
 || **total**
-[`integer`](../../data-types.md#time) | Total number of records found ||
+[`integer`](../../data-types.md) | Total number of records found ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -389,7 +400,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -399,11 +410,9 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog", "Edit selling price", or "Manage mark-ups" access permission ||
+|| `400` | `100` | Invalid order "<VALUE>" | A sort direction other than `asc` and `desc` is passed in `order` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

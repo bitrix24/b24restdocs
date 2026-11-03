@@ -23,6 +23,8 @@ The `catalog.measure.field.list` method returns the list of available unit of me
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to read the catalog or view warehouses and to modify measurement units
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission and the "Create and edit units of measurement" access permission
 
 {% note info "" %}
 

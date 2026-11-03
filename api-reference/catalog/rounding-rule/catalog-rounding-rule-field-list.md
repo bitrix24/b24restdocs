@@ -23,6 +23,8 @@ The method `catalog.roundingrule.field.list` returns the list of available price
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

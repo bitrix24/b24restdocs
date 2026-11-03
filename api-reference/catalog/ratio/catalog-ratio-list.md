@@ -17,6 +17,8 @@ The method `catalog.ratio.list` returns the measurement unit ratios of products 
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -24,7 +26,7 @@ The method `catalog.ratio.list` returns the measurement unit ratios of products 
 [`array`](../../data-types.md) |
 An array with the list of fields to select (see the fields of the [catalog_ratio](../data-types.md#catalog_ratio) object).
 
-If the array is not passed or is empty, the method returns all fields
+If the array is not passed or is empty, the method returns all fields. The method skips unknown fields without an error, and if `select` contains no fields of the object, it returns all fields
 ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected measurement unit ratios in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
@@ -56,7 +58,9 @@ An additional prefix can be set for the key to specify the filter behavior. Poss
 
 The `@` and `!@` prefixes work for the `id`, `productId`, and `isDefault` fields. With the `ratio` field, the method returns an error.
 
-Substring search with the `%`, `=%`, `%=`, `!%`, `!=%`, and `!%=` prefixes works only for the `isDefault` field. The method compares numeric field values as a whole: the filter `{"%productId": "64"}` does not find the product with ID `6461`
+Substring search with the `%`, `=%`, `%=`, `!%`, `!=%`, and `!%=` prefixes works only for the `isDefault` field. The method compares numeric field values as a whole: the filter `{"%productId": "64"}` does not find the product with ID `6461`.
+
+The method skips unknown fields in the filter without an error and returns records without applying that condition. Write field names in camelCase: the method skips the `{"PRODUCT_ID": 533}` condition
 ||
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected fields of measurement unit ratios in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
@@ -67,7 +71,7 @@ Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
 
-If `order` is not passed, the method returns records in ascending order of `id`
+If `order` is not passed, the method returns records in ascending order of `id`. The method skips unknown fields in `order` without an error
 ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to control pagination.
@@ -262,7 +266,6 @@ Write field names in `filter` exactly as they appear in the response: `productId
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -430,7 +433,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **ratios**
+|| **result.ratios**
 [`catalog_ratio[]`](../data-types.md#catalog_ratio) | An array of objects with information about the selected measurement unit ratios ||
 || **total**
 [`integer`](../../data-types.md) | Total number of records found ||
@@ -462,7 +465,6 @@ HTTP status: **400**
 || `400` | `100` | Order must be a string | The sort direction in `order` is not passed as a string ||
 || `400` | `100` | Invalid value {<VALUE>} to match with parameter {filter}. Should be value of type array. | `filter` is not passed as an object. The same text with `{order}` or `{select}` means that `order` is not passed as an object or `select` is not passed as an array ||
 || `400` | `0` | Call to a member function compile() on float | An array with the `@` or `!@` prefix is passed in `filter` for the `ratio` field ||
-|| — | `0` | — | Other errors, such as fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -473,4 +475,3 @@ HTTP status: **400**
 - [{#T}](./catalog-ratio-get.md)
 - [{#T}](./catalog-ratio-get-fields.md)
 - [{#T}](../product/catalog-product-list.md)
-

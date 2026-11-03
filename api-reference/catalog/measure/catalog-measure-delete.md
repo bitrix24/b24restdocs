@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to read the catalog or view warehouses and to modify measurement units
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission and the "Create and edit units of measurement" access permission
 
 The `catalog.measure.delete` method deletes a measurement unit.
 
@@ -148,7 +148,6 @@ If products use the unit, assign them a different unit before deleting it. Delet
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -159,7 +158,7 @@ If products use the unit, assign them a different unit before deleting it. Delet
                     'id' => 6,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -174,10 +173,10 @@ If products use the unit, assign them a different unit before deleting it. Delet
 
     ```js
     BX24.callMethod(
-        'catalog.measure.delete', 
-        { 
-    id: 6 
-    }, 
+        'catalog.measure.delete',
+        {
+    id: 6
+    },
         function(result)
         {
             if(result.error())
@@ -252,7 +251,7 @@ HTTP Status: **200**
 || **result**
 [`boolean`](../../data-types.md) | Result of the measurement unit deletion ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -261,7 +260,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300020,
+    "error": "200040300020",
     "error_description": "Access Denied"
 }
 ```

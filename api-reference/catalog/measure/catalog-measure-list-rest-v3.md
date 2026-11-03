@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to read the catalog or view warehouses
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission
 
 {% note info "" %}
 
@@ -22,6 +22,8 @@ The method belongs to REST 3.0. The call specifics and response format of the ne
 The `catalog.measure.list` method returns a list of units of measurement with filtering, sorting, and pagination.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**

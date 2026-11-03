@@ -1115,9 +1115,11 @@ Can be used to synchronize the current warehouse with a similar position in an e
 Only one unit of measurement from the entire directory can take the value `Y`
 ||
 || **measureTitle**
-[`string`](../data-types.md) | Title of the unit of measurement ||
+[`string`](../data-types.md) | Title of the unit of measurement.
+
+For the standard units that Bitrix24 creates when the catalog is enabled, the field is empty: REST 2 returns `null`, and REST 3.0 returns an empty string. In this case, the interface displays the name from the built-in unit reference by the `code` value or, if there is none, the `symbolIntl` value ||
 || **symbol**
-[`string`](../data-types.md) | Conditional designation ||
+[`string`](../data-types.md) | Conditional designation. For the standard units, the field is empty, as is `measureTitle` ||
 || **symbolIntl**
 [`string`](../data-types.md) | International conditional designation ||
 || **symbolLetterIntl**
@@ -1222,7 +1224,7 @@ Can be used to synchronize the current price type with a similar position in an 
 || **Value**
 `type` | **Description** ||
 || **id**
-[`integer`](../data-types.md) \| [`string`](../data-types.md) | Identifier of the enumeration element ||
+[`integer`](../data-types.md) \| [`string`](../data-types.md) | Identifier of the enumeration element. The type depends on the method: a number for the rounding types of [catalog.enum.getRoundTypes](./enum/catalog-enum-get-round-types.md), a string for the inventory document types of [catalog.enum.getStoreDocumentTypes](./enum/catalog-enum-get-store-document-types.md) ||
 || **name**
 [`string`](../data-types.md) | Name of the enumeration element ||
 |#
@@ -1297,7 +1299,7 @@ Can be used to synchronize the current price type with a similar position in an 
 || **name**
 [`string`](../data-types.md) | Name of the markup ||
 || **percentage**
-[`double`](../data-types.md) | Amount of the markup ||
+[`double`](../data-types.md) | Amount of the markup in percent ||
 |#
 
 ### catalog_section
@@ -1368,7 +1370,9 @@ Can be used to synchronize the current catalog section with a similar position i
 - `N` — inactive
 ||
 || **rate**
-[`double`](../data-types.md) | Rate value in percent, for example `19`. For a rate without VAT, the value is `null` ||
+[`double`](../data-types.md) | Rate value in percent, for example `19`. For a rate without VAT, the value is `null`.
+
+The upper limit of the value is not checked. A string that is not a number is saved as `0` ||
 || **sort**
 [`integer`](../data-types.md) | Sorting ||
 || **timestampX**

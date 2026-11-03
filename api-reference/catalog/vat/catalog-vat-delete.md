@@ -149,7 +149,6 @@ To retrieve the rate identifiers, use the [catalog.vat.list](./catalog-vat-list.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -160,7 +159,7 @@ To retrieve the rate identifiers, use the [catalog.vat.list](./catalog-vat-list.
                     'id' => 37
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -175,10 +174,10 @@ To retrieve the rate identifiers, use the [catalog.vat.list](./catalog-vat-list.
 
     ```js
     BX24.callMethod(
-        'catalog.vat.delete', 
-        { 
+        'catalog.vat.delete',
+        {
             id: 37
-        }, 
+        },
         function(result)
         {
             if(result.error())
@@ -278,7 +277,6 @@ HTTP status: **400**
 || `400` | `200800000000` | vat does not exist. | No VAT rate with this `id` exists, or it has already been deleted ||
 || `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
 || `400` | `0` | Error deleting VAT | Failed to delete the VAT rate ||
-|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

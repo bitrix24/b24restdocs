@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to read the catalog or view warehouses
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission
 
 The `catalog.measure.getFields` method returns the available measurement unit fields.
 
@@ -145,7 +145,6 @@ No parameters.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -154,7 +153,7 @@ No parameters.
                 'catalog.measure.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -288,7 +287,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Request result ([details](#result)) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Object {#result}
@@ -306,7 +305,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```

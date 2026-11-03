@@ -23,6 +23,8 @@ The `catalog.extra.field.list` method returns a list of available markup fields.
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -391,6 +393,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-extra-field-get.md)
 - [{#T}](./catalog-extra-get-rest-v3.md)
 - [{#T}](./catalog-extra-list-rest-v3.md)
+- [{#T}](./catalog-extra-field-get.md)

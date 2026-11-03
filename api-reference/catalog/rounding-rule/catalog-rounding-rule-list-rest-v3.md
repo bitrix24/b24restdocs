@@ -23,6 +23,8 @@ The method `catalog.roundingrule.list` returns a list of price rounding rules wi
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

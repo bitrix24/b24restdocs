@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to read the catalog or view warehouses
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission
 
 The `catalog.measure.get` method returns a measurement unit by its ID.
 
@@ -68,7 +68,7 @@ The `catalog.measure.get` method returns a measurement unit by its ID.
         code: number
         id: number
         isDefault: string
-        measureTitle: string
+        measureTitle: string | null
         symbol: string
         symbolIntl: string
         symbolLetterIntl: string
@@ -159,7 +159,6 @@ The `catalog.measure.get` method returns a measurement unit by its ID.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -170,7 +169,7 @@ The `catalog.measure.get` method returns a measurement unit by its ID.
                     'id' => 6
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -286,7 +285,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Request result ([details](#result)) ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Object {#result}
@@ -304,7 +303,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```

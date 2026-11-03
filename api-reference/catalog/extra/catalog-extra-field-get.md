@@ -415,6 +415,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-extra-field-list.md)
 - [{#T}](./catalog-extra-get-rest-v3.md)
 - [{#T}](./catalog-extra-list-rest-v3.md)
+- [{#T}](./catalog-extra-field-list.md)

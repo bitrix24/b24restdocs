@@ -159,7 +159,6 @@ To find the ratios of a product, use the [catalog.ratio.list](./catalog-ratio-li
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -269,7 +268,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **ratio**
+|| **result.ratio**
 [`catalog_ratio`](../data-types.md#catalog_ratio) | Object containing information about the unit of measure ratio ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
@@ -295,7 +294,6 @@ HTTP Status: **400**
 || `400` | `200040300010` | Access Denied | The user has neither the "View Product Catalog" nor the "Manage Price Types" access permission ||
 || `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not passed ||
 || `400` | Empty value | ratio does not exist. | There is no ratio with this `id` ||
-|| — | `0` | — | Other errors, such as fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

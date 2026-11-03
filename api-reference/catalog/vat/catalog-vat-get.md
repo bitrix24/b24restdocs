@@ -68,7 +68,7 @@ To retrieve the rate identifiers, use the [catalog.vat.list](./catalog-vat-list.
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type VatGetResult = {
       vat: {
-        active: string
+        active: 'Y' | 'N'
         id: number
         name: string
         rate: number | null
@@ -161,7 +161,6 @@ To retrieve the rate identifiers, use the [catalog.vat.list](./catalog-vat-list.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -172,7 +171,7 @@ To retrieve the rate identifiers, use the [catalog.vat.list](./catalog-vat-list.
                     'id' => 3
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -272,7 +271,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **vat**
+|| **result.vat**
 [`catalog_vat`](../data-types.md#catalog_vat) | Object with the VAT rate fields: `active`, `id`, `name`, `rate`, `sort`, `timestampX`. For a rate without VAT, the `rate` field is `null` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -298,7 +297,6 @@ HTTP Status: **400**
 || `400` | `200040300010` | Access Denied | The user has neither the "View product catalog" nor the "Manage tax rates" access permission ||
 || `400` | `200800000000` | vat does not exist. | No VAT rate with this `id` exists ||
 || `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
-|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

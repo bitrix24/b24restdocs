@@ -23,6 +23,8 @@ The `catalog.vat.list` method returns a list of VAT rates with filtering, sortin
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -45,6 +47,8 @@ Default: all fields ||
 [`array`](../../data-types.md) | A filter in the REST 3.0 format: an array of conditions like `["field", "operator", "value"]`. You can filter by any field from `select`.
 
 For `active`, pass `true` or `false`; the strings `Y` and `N` cause a validation error.
+
+The filter by `rate` does not find a rate without VAT: the `["rate", "=", null]` condition causes a validation error, and conditions such as `["rate", "!=", 19]` skip rates whose `rate` is `null`. To find a rate without VAT, retrieve the list without a filter by `rate` and select the rate whose `rate` is `null`.
 
 The syntax and operators are described in the [REST 3.0 overview](../../rest-v3.md#filter) ||
 || **order**

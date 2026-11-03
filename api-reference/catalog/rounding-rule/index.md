@@ -34,8 +34,8 @@ In [REST 3.0](../../rest-v3.md), rounding rules have methods for adding, updatin
 Specifics of the new version methods:
 
 - method names are written in lowercase: `catalog.roundingrule.list`. Calling `catalog.roundingRule.list` at the `/rest/api/` address returns the `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION` error
-- the `price` value must be unique within a price type
-- the [catalog.roundingrule.update](./catalog-rounding-rule-update-rest-v3.md) method changes only the passed fields, including the `catalogGroupId` price type
+- the methods validate the data: the `price` value must be non-negative and unique within a price type, and the `catalogGroupId` price type must exist. Methods of the previous version do not perform these checks and save such rules
+- the [catalog.roundingrule.update](./catalog-rounding-rule-update-rest-v3.md) method changes only the passed fields, including the `catalogGroupId` price type. The [catalog.roundingRule.update](./catalog-rounding-rule-update.md) method of the previous version requires all four fields of the rule
 
 ## Relationship with Other Objects
 
@@ -45,9 +45,7 @@ Specifics of the new version methods:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the methods:
-> - administrator — for methods of the previous API version
-> - a user with the "View product catalog" or "Manage price types" access permission — for retrieving rules in REST 3.0. Adding, updating, and deleting require the "Manage price types" access permission
+> Who can execute the methods: a user with the "View product catalog" or "Manage price types" access permission. Adding, updating, and deleting require the "Manage price types" access permission. The `catalog.roundingrule.field.list` and `catalog.roundingrule.field.get` methods are available to any user
 
 {% list tabs %}
 

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage price types" access permission
 
-This method adds a price rounding rule.
+`catalog.roundingRule.add` adds a price rounding rule.
 
 ## Method Parameters
 
@@ -34,17 +34,23 @@ This method adds a price rounding rule.
 || **Name**
 `type` | **Description** ||
 || **catalogGroupId***
-[`catalog_price_type.id`](../data-types.md#catalog_price_type) | Price type ||
+[`catalog_price_type.id`](../data-types.md#catalog_price_type) | ID of the price type the rule applies to.
+
+You can retrieve the ID using the [catalog.priceType.list](../price-type/catalog-price-type-list.md) method. The method does not check whether the price type exists ||
 || **price***
-[`double`](../../data-types.md) | Minimum price for rounding ||
+[`double`](../../data-types.md) | Minimum price from which the rule applies. `0` means the rule applies to all prices of the type.
+
+The method does not check whether the value is non-negative or whether the price type already has another rule with the same `price` ||
 || **roundType***
 [`integer`](../../data-types.md) | Rounding type. Possible values:
 - `1` — mathematical rounding
-- `2` — rounding up (in favor of the store)
-- `4` — rounding down (in favor of the customer)
+- `2` — rounding up, in favor of the store
+- `4` — rounding down, in favor of the customer
 ||
 || **roundPrecision***
-[`double`](../../data-types.md) | Rounding precision ||
+[`double`](../../data-types.md) | Rounding precision, for example, `10` means rounding to tens.
+
+Possible values: `0.0001`, `0.001`, `0.005`, `0.01`, `0.02`, `0.05`, `0.1`, `0.2`, `0.5`, `1`, `2`, `5`, `10`, `20`, `50`, `100`, `200`, `500`, `1000`, `5000` ||
 |#
 
 ## Code Examples
@@ -197,7 +203,6 @@ This method adds a price rounding rule.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -213,7 +218,7 @@ This method adds a price rounding rule.
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -344,7 +349,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **roundingRule**
+|| **result.roundingRule**
 [`catalog_rounding_rule`](../data-types.md#catalog_rounding_rule) | Object with information about the created price rounding rule ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -356,8 +361,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300020,
-    "error_description": "Access Denied"
+    "error": "0",
+    "error_description": "Required fields: catalogGroupId, price, roundType, roundPrecision"
 }
 ```
 
@@ -366,15 +371,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to edit
-||
-|| `100` | Required parameter `fields` not provided
-||
-|| `0` | Required fields not set
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Manage price types" access permission ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not passed ||
+|| `400` | `0` | Required fields: catalogGroupId, price, roundType, roundPrecision | Required fields are not passed. The error text lists only the fields that are missing ||
+|| `400` | `0` | Invalid rounding type provided. The available values are: 1, 2, 4 | The value passed in `roundType` is not in the list ||
+|| `400` | `0` | Invalid rounding precision provided. The available values are: ... | The value passed in `roundPrecision` is not in the list. The error text lists the allowed values ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

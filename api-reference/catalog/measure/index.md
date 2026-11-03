@@ -13,7 +13,7 @@ Every product has a measurement unit: weight, quantity, volume, and so on. Bitri
 
 A measurement unit has a unique numeric `code`, a `measureTitle` name, and a `symbol`. The `isDefault` field indicates whether it is the default. The object structure is described in [`catalog_measure`](../data-types.md#catalog_measure), and [catalog.measure.getFields](./catalog-measure-get-fields.md) returns field properties.
 
-To set the primary measurement unit, specify the value `Y` in the `isDefault` parameter. Then, when creating a new product, it will be automatically selected in the detail form.
+To set the primary measurement unit, specify the value `Y` in the `isDefault` parameter. Then, when creating a new product, it will be automatically selected in the detail form. There can be only one primary unit: to change it, first clear the flag on the current unit, then set it on the new one.
 
 > Quick navigation: [all methods and events](#all-methods)
 >
@@ -35,7 +35,7 @@ In [REST 3.0](../../rest-v3.md), measurement units have methods for adding, upda
 Specifics of the new version methods:
 
 - the `isDefault` field accepts and returns `true` or `false`; the values `Y` and `N` are not supported
-- there can be only one default unit. To change it, first pass `isDefault: false` for the current unit using the [catalog.measure.update](./catalog-measure-update-rest-v3.md) method, then pass `isDefault: true` for the new one
+- to change the default unit, pass `isDefault: false` for the current unit using the [catalog.measure.update](./catalog-measure-update-rest-v3.md) method, then pass `isDefault: true` for the new one. Passing `true` again to the current default unit succeeds without an error, unlike in the previous version
 - empty string fields are returned as an empty string, not `null`
 
 ## Measurement Unit Ratio
@@ -60,7 +60,7 @@ You can view measurement unit ratios using the methods [catalog.ratio.*](../rati
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the methods: a user with permission to read the catalog or view warehouses. Adding, updating, and deleting also require permission to modify measurement units
+> Who can execute the methods: a user with the "View product catalog" or "View and select warehouses" access permission. Adding, updating, and deleting also require the "Create and edit units of measurement" access permission. The `catalog.measure.field.list` and `catalog.measure.field.get` methods are available to any user
 
 {% list tabs %}
 

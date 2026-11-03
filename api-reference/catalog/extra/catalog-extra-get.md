@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog", "Edit selling price", or "Manage mark-ups" access permission
 
-This method returns information about the margin based on its ID.
+`catalog.extra.get` returns information about a markup by its ID.
 
 ## Method Parameters
 
@@ -23,7 +23,9 @@ This method returns information about the margin based on its ID.
 || **Name**
 `type` | **Description** ||
 || **id*** 
-[`catalog_extra.id`](../data-types.md#catalog_extra) | Margin ID ||
+[`catalog_extra.id`](../data-types.md#catalog_extra) | Markup ID.
+
+You can retrieve the ID using the [catalog.extra.list](./catalog-extra-list.md) method ||
 |#
 
 ## Code Examples
@@ -155,7 +157,6 @@ This method returns information about the margin based on its ID.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -166,7 +167,7 @@ This method returns information about the margin based on its ID.
                     'id' => 1
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -251,18 +252,19 @@ HTTP Status: **200**
     "result": {
         "extra": {
             "id": 1,
-            "name": "test",
-            "percentage": 5.10
+            "name": "Markup1",
+            "percentage": 10
         }
     },
     "time": {
-        "start": 1716558215.93495,
-        "finish": 1716558216.20731,
-        "duration": 0.272363901138306,
-        "processing": 0.028817892074585,
-        "date_start": "2024-10-24T16:40:59+02:00",
-        "date_finish": "2024-10-24T16:40:59+02:00",
-        "operating": 0
+        "start": 1793688334,
+        "finish": 1793688334.074482,
+        "duration": 0.07448196411132812,
+        "processing": 0,
+        "date_start": "2026-11-03T09:45:34+03:00",
+        "date_finish": "2026-11-03T09:45:34+03:00",
+        "operating_reset_at": 1793688840,
+        "operating": 0.1182100772857666
     }
 }
 ```
@@ -274,7 +276,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **extra**
+|| **result.extra**
 [`catalog_extra`](../data-types.md#catalog_extra) | Object containing information about the margin with the specified ID ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -286,8 +288,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300010,
-    "error_description": "Access Denied"
+    "error": "202000000000",
+    "error_description": "extra does not exist."
 }
 ```
 
@@ -296,15 +298,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read
-||
-|| `202000000000` | No margin exists with the specified ID 
-||
-|| `100` | Parameter `id` is missing
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog", "Edit selling price", or "Manage mark-ups" access permission ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
+|| `400` | `202000000000` | extra does not exist. | There is no markup with the specified `id` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

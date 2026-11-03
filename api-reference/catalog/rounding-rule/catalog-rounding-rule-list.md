@@ -11,21 +11,23 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "Manage price types" access permission
 
-The method returns a list of price rounding rules.
+`catalog.roundingRule.list` returns a list of price rounding rules.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **select** 
+|| **select**
 [`array`](../../data-types.md)| An array with a list of fields to select (see fields of the object [catalog_rounding_rule](../data-types.md#catalog_rounding_rule)).
 
 If the array is not provided or an empty array is passed, all available fields of the price rounding rule will be selected.
 ||
-|| **filter** 
+|| **filter**
 [`object`](../../data-types.md)| An object for filtering the selected price rounding rules in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the object [catalog_rounding_rule](../data-types.md#catalog_rounding_rule).
@@ -63,7 +65,7 @@ Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
 ||
-|| **start** 
+|| **start**
 [`integer`](../../data-types.md)| This parameter is used to manage pagination.
 
 The page size of results is always static — 50 records.
@@ -232,7 +234,6 @@ The formula for calculating the value of the `start` parameter:
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -253,15 +254,15 @@ The formula for calculating the value of the `start` parameter:
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error listing rounding rules: ' . $e->getMessage();
@@ -405,7 +406,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -415,11 +416,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read
-||
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "Manage price types" access permission ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -431,4 +429,3 @@ HTTP status: **400**
 - [{#T}](./catalog-rounding-rule-get.md)
 - [{#T}](./catalog-rounding-rule-delete.md)
 - [{#T}](./catalog-rounding-rule-get-fields.md)
-

@@ -23,6 +23,8 @@ The `catalog.ratio.field.list` method returns a list of available measurement un
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

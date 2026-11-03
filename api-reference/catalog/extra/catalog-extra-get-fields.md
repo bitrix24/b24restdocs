@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog", "Edit selling price", or "Manage mark-ups" access permission
 
-The method returns the fields for markup.
+`catalog.extra.getFields` returns the description of markup fields: type, whether the field is required, and whether it can be modified.
+
+## Method Parameters
 
 No parameters.
 
@@ -143,7 +145,6 @@ No parameters.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -152,7 +153,7 @@ No parameters.
                 'catalog.extra.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -167,7 +168,7 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        'catalog.extra.getFields', 
+        'catalog.extra.getFields',
         {},
         function(result)
         {
@@ -243,12 +244,13 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1712325642.686926,
-        "finish": 1712325642.949075,
-        "duration": 0.2621490955352783,
-        "processing": 0.004400968551635742,
-        "date_start": "2024-10-24T16:00:42+02:00",
-        "date_finish": "2024-10-24T16:00:42+02:00",
+        "start": 1793688339,
+        "finish": 1793688339.652799,
+        "duration": 0.6527988910675049,
+        "processing": 0,
+        "date_start": "2026-11-03T09:45:39+03:00",
+        "date_finish": "2026-11-03T09:45:39+03:00",
+        "operating_reset_at": 1793688900,
         "operating": 0
     }
 }
@@ -261,7 +263,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **extra**
+|| **result.extra**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_extra](../data-types.md#catalog_extra), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -273,7 +275,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -283,14 +285,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog", "Edit selling price", or "Manage mark-ups" access permission ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-extra-get.md)
 - [{#T}](./catalog-extra-list.md)

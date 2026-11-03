@@ -15,9 +15,9 @@ Markup is used to calculate the price of a product. The markup object includes t
 
 ## How to Work with Markups
 
-1. Retrieve the list of markups using the [catalog.extra.list](./catalog-extra-list.md) method.
-2. Get the required markup by its identifier using the [catalog.extra.get](./catalog-extra-get.md) method.
-3. If necessary, check the structure of the fields using the [catalog.extra.getFields](./catalog-extra-get-fields.md) method.
+1. Retrieve the list of markups using the [catalog.extra.list](./catalog-extra-list.md) method
+2. Get the required markup by its identifier using the [catalog.extra.get](./catalog-extra-get.md) method
+3. If necessary, check the structure of the fields using the [catalog.extra.getFields](./catalog-extra-get-fields.md) method
 
 ## Markups in REST 3.0
 
@@ -31,9 +31,7 @@ In [REST 3.0](../../rest-v3.md), markups are read-only: there are methods for re
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the methods:
-> - administrator — for methods of the previous API version
-> - a user with the "View product catalog", "Edit selling price", or "Manage mark-ups" access permission — for REST 3.0 methods
+> Who can execute the methods: a user with the "View product catalog", "Edit selling price", or "Manage mark-ups" access permission
 
 #| 
 || **Method** | **Description** ||

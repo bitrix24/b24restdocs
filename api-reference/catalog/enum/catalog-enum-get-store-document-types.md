@@ -150,7 +150,7 @@ No parameters.
                 'catalog.enum.getStoreDocumentTypes',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -270,13 +270,24 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **enum**
-[`catalog_enum[]`](../data-types.md#catalog_enum) | Array of enumeration elements for store accounting document types ||
+|| **result.enum**
+[`catalog_enum[]`](../data-types.md#catalog_enum) | Array of inventory document types. In each element, `id` is the type code and `name` is the name in the Bitrix24 language.
+
+`id` values:
+- `A` — stock receipt
+- `S` — stock adjustment
+- `M` — stock transfer between warehouses
+- `R` — return
+- `D` — write-off
+
+Pass the code in the `docType` field of the [catalog.document.add](../document/catalog-document-add.md) method ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

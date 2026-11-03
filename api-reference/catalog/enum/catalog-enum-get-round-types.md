@@ -150,7 +150,7 @@ No parameters.
                 'catalog.enum.getRoundTypes',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -262,13 +262,22 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **enum**
-[`catalog_enum[]`](../data-types.md#catalog_enum) | Array of rounding type enumeration elements ||
+|| **result.enum**
+[`catalog_enum[]`](../data-types.md#catalog_enum) | Array of rounding types. In each element, `id` is the type code and `name` is the name in the Bitrix24 language.
+
+`id` values:
+- `1` — mathematical rounding
+- `2` — rounding up, in favor of the store
+- `4` — rounding down, in favor of the customer
+
+Pass the code in the `roundType` field of the [catalog.roundingRule.add](../rounding-rule/catalog-rounding-rule-add.md) method ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 

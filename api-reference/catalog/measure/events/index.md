@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, update, or deletion of a measurement unit.
+Events allow applications to respond to changes in almost real-time: receiving notifications about the creation, update, or deletion of a measurement unit. The units themselves are described in [Measurement Units](../index.md).
+
+All three events have the same data: `data.FIELDS` contains only the `ID` of the measurement unit. Retrieve the other fields using the [catalog.measure.get](../catalog-measure-get.md) method. After deletion, the unit can no longer be retrieved, so retain the data you need in advance.
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../events/index.md).
 

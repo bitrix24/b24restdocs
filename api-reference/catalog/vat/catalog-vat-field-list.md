@@ -23,6 +23,8 @@ The `catalog.vat.field.list` method returns a list of available VAT rate fields.
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -459,6 +461,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-vat-field-get.md)
 - [{#T}](./catalog-vat-add-rest-v3.md)
 - [{#T}](./catalog-vat-list-rest-v3.md)
+- [{#T}](./catalog-vat-field-get.md)

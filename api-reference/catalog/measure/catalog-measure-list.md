@@ -11,13 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to read the catalog or view warehouses
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission
 
 The `catalog.measure.list` method returns a list of measurement units.
 
 To find a specific unit, pass its code in `filter`, for example `{"code": 166}`. To process the entire list, request pages with `start` values of 0, 50, 100, and so on until you have retrieved all `total` records.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -62,7 +64,8 @@ Possible values for `field` correspond to the fields of the [catalog_measure](..
 Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
-||
+
+Default: `{"id": "asc"}` ||
 || **start**
 [`integer`](../../data-types.md) | Offset for pagination. Defaults to `0`.
 
@@ -259,7 +262,6 @@ The formula for calculating the value of the `start` parameter:
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -274,7 +276,7 @@ The formula for calculating the value of the `start` parameter:
                     'order' => ['code' => 'DESC']
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -289,14 +291,14 @@ The formula for calculating the value of the `start` parameter:
 
     ```js
     BX24.callMethod(
-        'catalog.measure.list', 
+        'catalog.measure.list',
         {
             select: ["id", "code", "symbolIntl"],
             filter: {
                 '<=code': 200
             },
             order: {'code': 'DESC'}
-        }, 
+        },
         function(result)
         {
             if(result.error())
@@ -403,7 +405,7 @@ HTTP status: **200**
 || **total**
 [`integer`](../../data-types.md) | Total records matching `filter` across all pages. The number of objects in the current response is the length of `result.measures` ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Object {#result}
@@ -421,7 +423,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```

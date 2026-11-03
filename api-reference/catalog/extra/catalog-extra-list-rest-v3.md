@@ -23,6 +23,8 @@ The `catalog.extra.list` method returns a list of markups with filtering, sortin
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

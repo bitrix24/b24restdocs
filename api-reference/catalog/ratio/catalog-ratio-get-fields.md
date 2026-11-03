@@ -15,6 +15,8 @@ Choose a tool for developing with an AI agent:
 
 The method `catalog.ratio.getFields` returns the fields of the measurement unit ratio and their types. The `isRequired` and `isReadOnly` flags describe the object fields, but the ratio cannot be changed through REST: it is set in the product card.
 
+## Method Parameters
+
 No parameters.
 
 ## Code Examples
@@ -143,7 +145,6 @@ No parameters.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -266,7 +267,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **ratio**
+|| **result.ratio**
 [`object`](../../data-types.md) | Object in the format `{"field_1": {...}, ... "field_N": {...}}`, where `field` is the identifier of the [catalog_ratio](../data-types.md#catalog_ratio) object field, and the value is a field description of the [rest_field_description](../data-types.md#rest_field_description) type ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -290,7 +291,6 @@ HTTP status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `200040300010` | Access Denied | The user has neither the "View Product Catalog" nor the "Manage Price Types" access permission ||
-|| — | `0` | — | Other errors, such as fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

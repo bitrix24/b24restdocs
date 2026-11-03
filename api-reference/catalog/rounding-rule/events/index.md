@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Events allow applications to instantly respond to changes. Applications receive notifications about the creation, update, or deletion of price rounding rules.
+Events allow applications to instantly respond to changes. Applications receive notifications about the creation, update, or deletion of price rounding rules. The rules themselves are described in [Price Rounding Rules](../index.md).
+
+All three events have the same data: `data.FIELDS` contains only the `ID` of the rule. Retrieve the other fields using the [catalog.roundingRule.get](../catalog-rounding-rule-get.md) method. After deletion, the rule can no longer be retrieved, so retain the data you need in advance.
 
 Detailed information on working with events is described in the article [Concept and Benefits of Event Processing](../../../events/index.md).
 

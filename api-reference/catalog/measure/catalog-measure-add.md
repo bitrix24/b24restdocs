@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to read the catalog or view warehouses and to modify measurement units
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission and the "Create and edit units of measurement" access permission
 
 The `catalog.measure.add` method adds a new measurement unit.
 
@@ -40,15 +40,14 @@ The `catalog.measure.add` method adds a new measurement unit.
 - `Y` — yes
 - `N` — no
 
-If the field value is not specified, it is automatically set to `N`.
+Default: `N`.
 
-Only one measurement unit from the entire directory can have the value `Y`
-||
+Only one measurement unit from the entire directory can have the value `Y`. If a default unit already exists, the method returns the `200600000010` error. To make a new unit the default one, first pass `N` for the current unit using the [catalog.measure.update](./catalog-measure-update.md) method ||
 || **measureTitle***
 [`string`](../../data-types.md) | Name of the measurement unit
 ||
 || **symbol**
-[`string`](../../data-types.md) | Symbol 
+[`string`](../../data-types.md) | Symbol
 ||
 || **symbolIntl**
 [`string`](../../data-types.md) | International symbol
@@ -100,7 +99,7 @@ Only one measurement unit from the entire directory can have the value `Y`
         code: number
         id: number
         isDefault: string
-        measureTitle: string
+        measureTitle: string | null
         symbol: string
         symbolIntl: string
         symbolLetterIntl: string
@@ -212,7 +211,6 @@ Only one measurement unit from the entire directory can have the value `Y`
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -230,13 +228,12 @@ Only one measurement unit from the entire directory can have the value `Y`
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding measure: ' . $e->getMessage();
@@ -247,7 +244,7 @@ Only one measurement unit from the entire directory can have the value `Y`
 
     ```js
     BX24.callMethod(
-        'catalog.measure.add', 
+        'catalog.measure.add',
         {
             fields: {
                 code: 715,
@@ -368,7 +365,7 @@ HTTP Status: **200**
 || **result**
 [`object`](../../data-types.md) | Request result ([details](#result)) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Object {#result}
@@ -386,7 +383,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 200040300020,
+    "error": "200040300020",
     "error_description": "Access Denied"
 }
 ```

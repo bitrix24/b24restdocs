@@ -23,6 +23,8 @@ The `catalog.ratio.list` method returns a list of measurement unit ratios with f
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

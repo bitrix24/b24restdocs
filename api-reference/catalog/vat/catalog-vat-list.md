@@ -17,15 +17,17 @@ The method `catalog.vat.list` returns a list of VAT rates with filtering, sortin
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
-|| **select** 
+|| **select**
 [`array`](../../data-types.md)| An array of VAT rate fields to return. Available fields: `active`, `id`, `name`, `rate`, `sort`, `timestampX`. The fields are described in the [catalog_vat](../data-types.md#catalog_vat) object.
 
 If the array is not provided or is empty, the method returns all fields. The method skips unknown fields without an error
 ||
-|| **filter** 
+|| **filter**
 [`object`](../../data-types.md)| An object for filtering the selected VAT rates in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
 Possible values for `field`: `active`, `id`, `name`, `rate`, `sort`, `timestampX`. For example, `{"active": "N"}` returns only inactive rates.
@@ -67,7 +69,7 @@ Possible values for `order`:
 
 If `order` is not provided, the method does not set an explicit sort order. For a stable order when paging through results, pass a sort order, for example `{"id": "asc"}`. The method skips unknown fields in `order` without an error
 ||
-|| **start** 
+|| **start**
 [`integer`](../../data-types.md)| This parameter is used for managing pagination.
 
 The page size of results is always static — 50 records.
@@ -252,7 +254,6 @@ The formula for calculating the value of the `start` parameter:
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -273,11 +274,11 @@ The formula for calculating the value of the `start` parameter:
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result['vats'], true);
 
     } catch (Throwable $e) {
@@ -415,7 +416,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **vats**
+|| **result.vats**
 [`catalog_vat[]`](../data-types.md#catalog_vat) | Array of VAT rates on the current page, up to 50 items. Each item contains the fields from `select`. For a rate without VAT, the `rate` field is `null` ||
 || **total**
 [`integer`](../../data-types.md) | Total number of rates matching the filter. If `total` is greater than 50, retrieve the next pages using the `start` parameter ||
@@ -441,7 +442,6 @@ HTTP Status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `200040300010` | Access Denied | The user has neither the "View product catalog" nor the "Manage tax rates" access permission ||
-|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -454,4 +454,3 @@ HTTP Status: **400**
 - [{#T}](./catalog-vat-get.md)
 - [{#T}](./catalog-vat-delete.md)
 - [{#T}](./catalog-vat-get-fields.md)
-

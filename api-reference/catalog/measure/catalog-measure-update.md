@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to read the catalog or view warehouses and to modify measurement units
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission and the "Create and edit units of measurement" access permission
 
 The `catalog.measure.update` method updates a measurement unit.
 
@@ -40,13 +40,14 @@ The `catalog.measure.update` method updates a measurement unit.
 - `Y` — yes
 - `N` — no
 
-Only one measurement unit from the entire directory can have the value `Y`
-||
+Only one measurement unit from the entire directory can have the value `Y`. To change the default unit, first pass `N` for the current unit, then `Y` for the new one.
+
+You cannot pass `Y` again to the unit that is already the default one: the method returns the `200600000010` error ||
 || **measureTitle**
 [`string`](../../data-types.md) | Name of the measurement unit
 ||
 || **symbol**
-[`string`](../../data-types.md) | Conditional designation 
+[`string`](../../data-types.md) | Conditional designation
 ||
 || **symbolIntl**
 [`string`](../../data-types.md) | International conditional designation
@@ -98,7 +99,7 @@ Only one measurement unit from the entire directory can have the value `Y`
         code: number
         id: number
         isDefault: string
-        measureTitle: string
+        measureTitle: string | null
         symbol: string
         symbolIntl: string
         symbolLetterIntl: string
@@ -204,7 +205,6 @@ Only one measurement unit from the entire directory can have the value `Y`
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -220,7 +220,7 @@ Only one measurement unit from the entire directory can have the value `Y`
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -235,7 +235,7 @@ Only one measurement unit from the entire directory can have the value `Y`
 
     ```js
     BX24.callMethod(
-        'catalog.measure.update', 
+        'catalog.measure.update',
         {
             id: 8,
             fields: {
@@ -351,7 +351,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Request result ([details](#result)) ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 #### Result Object {#result}
@@ -369,7 +369,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200600000000,
+    "error": "200600000000",
     "error_description": "Duplicate entry for key [code]"
 }
 ```
@@ -382,7 +382,7 @@ HTTP status: **400**
 || **Status** | **Code** | **Description** | **Cause** ||
 || `400` | `200040300020` | `Access Denied` | No permission to modify measurement units ||
 || `400` | `200600000000` | `Duplicate entry for key [code]` | A measurement unit with this `code` already exists ||
-|| `400` | `200600000010` | `default value can be set once [isDefault]` | A default measurement unit already exists ||
+|| `400` | `200600000010` | `default value can be set once [isDefault]` | A default measurement unit already exists. The error is also returned when `Y` is passed again to the unit that is already the default one ||
 || `400` | `200600000020` | `measure does not exist.` | No measurement unit exists with this `id` ||
 || `400` | `100` | `Could not find value for parameter {id}` | The required `id` parameter was not provided ||
 || `400` | `100` | `Could not find value for parameter {fields}` | The required `fields` parameter was not provided ||

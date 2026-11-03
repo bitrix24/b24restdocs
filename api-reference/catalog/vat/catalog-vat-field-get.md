@@ -458,6 +458,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-vat-field-list.md)
-- [{#T}](./catalog-vat-get-rest-v3.md)
 - [{#T}](./catalog-vat-add-rest-v3.md)
+- [{#T}](./catalog-vat-get-rest-v3.md)
+- [{#T}](./catalog-vat-field-list.md)

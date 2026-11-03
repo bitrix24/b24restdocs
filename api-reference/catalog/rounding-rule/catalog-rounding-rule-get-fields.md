@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "Manage price types" access permission
 
-The method returns the fields of the price rounding rule.
+`catalog.roundingRule.getFields` returns the description of price rounding rule fields: type, whether the field is required, and whether it can be modified.
+
+## Method Parameters
 
 No parameters.
 
@@ -143,7 +145,6 @@ No parameters.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -152,7 +153,7 @@ No parameters.
                 'catalog.roundingRule.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -167,7 +168,7 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        'catalog.roundingRule.getFields', 
+        'catalog.roundingRule.getFields',
         {},
         function(result)
         {
@@ -297,7 +298,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **roundingRule**
+|| **result.roundingRule**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_rounding_rule](../data-types.md#catalog_rounding_rule), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
@@ -309,7 +310,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -319,9 +320,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "Manage price types" access permission ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

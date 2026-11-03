@@ -145,7 +145,6 @@ No parameters.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -154,7 +153,7 @@ No parameters.
                 'catalog.vat.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -169,7 +168,7 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        'catalog.vat.getFields', 
+        'catalog.vat.getFields',
         {},
         function(result)
         {
@@ -282,7 +281,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **vat**
+|| **result.vat**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [catalog_vat](../data-types.md#catalog_vat) object field, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description).
 
 The method returns the fields `active`, `id`, `name`, `rate`, `sort`, `timestampX`. For each field, the following is specified:
@@ -313,7 +312,6 @@ HTTP status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `200040300010` | Access Denied | The user has neither the "View product catalog" nor the "Manage tax rates" access permission ||
-|| — | `0` | — | Other errors, for example, fatal errors ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

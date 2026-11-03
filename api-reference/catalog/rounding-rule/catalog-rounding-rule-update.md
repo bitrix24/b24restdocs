@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Manage price types" access permission
 
-This method updates the price rounding rule.
+`catalog.roundingRule.update` updates a price rounding rule.
 
 ## Method Parameters
 
@@ -22,10 +22,12 @@ This method updates the price rounding rule.
 #|
 || **Name**
 `type` | **Description** ||
-|| **Id***
+|| **id***
 [`catalog_rounding_rule.id`](../data-types.md#catalog_rounding_rule)| Identifier of the price rounding rule ||
 || **fields***
-[`object`](../../data-types.md)| Field values for updating the price rounding rule ([detailed description](#fields)) ||
+[`object`](../../data-types.md) | Field values of the price rounding rule [(detailed description)](#fields).
+
+Pass all four fields, even if you change only one: otherwise, the method returns the `Required fields` error ||
 |#
 
 ### Parameter fields {#fields}
@@ -36,17 +38,23 @@ This method updates the price rounding rule.
 || **Name**
 `type` | **Description** ||
 || **catalogGroupId***
-[`catalog_price_type.id`](../data-types.md#catalog_price_type) | Price type ||
+[`catalog_price_type.id`](../data-types.md#catalog_price_type) | ID of the price type the rule applies to.
+
+You can retrieve the ID using the [catalog.priceType.list](../price-type/catalog-price-type-list.md) method. The method does not check whether the price type exists ||
 || **price***
-[`double`](../../data-types.md) | Minimum price for rounding ||
+[`double`](../../data-types.md) | Minimum price from which the rule applies. `0` means the rule applies to all prices of the type.
+
+The method does not check whether the value is non-negative or whether the price type already has another rule with the same `price` ||
 || **roundType***
 [`integer`](../../data-types.md) | Rounding type. Possible values:
 - `1` — mathematical rounding
-- `2` — rounding up (in favor of the store)
-- `4` — rounding down (in favor of the customer)
+- `2` — rounding up, in favor of the store
+- `4` — rounding down, in favor of the customer
 ||
 || **roundPrecision***
-[`double`](../../data-types.md) | Rounding precision ||
+[`double`](../../data-types.md) | Rounding precision, for example, `10` means rounding to tens.
+
+Possible values: `0.0001`, `0.001`, `0.005`, `0.01`, `0.02`, `0.05`, `0.1`, `0.2`, `0.5`, `1`, `2`, `5`, `10`, `20`, `50`, `100`, `200`, `500`, `1000`, `5000` ||
 |#
 
 ## Code Examples
@@ -202,7 +210,6 @@ This method updates the price rounding rule.
     ```
 
 - PHP
-
     ```php
     try {
         $response = $b24Service
@@ -219,7 +226,7 @@ This method updates the price rounding rule.
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -234,7 +241,7 @@ This method updates the price rounding rule.
 
     ```js
     BX24.callMethod(
-        'catalog.roundingRule.update', 
+        'catalog.roundingRule.update',
         {
             id: 1,
             fields: {
@@ -354,7 +361,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **roundingRule**
+|| **result.roundingRule**
 [`catalog_rounding_rule`](../data-types.md#catalog_rounding_rule) | Object containing information about the updated price rounding rule ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -366,8 +373,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 0,
-    "error_description":"Required fields: catalogGroupId"
+    "error": "0",
+    "error_description": "Required fields: catalogGroupId, roundType, roundPrecision"
 }
 ```
 
@@ -376,19 +383,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to edit
-||
-|| `200900000000` | No price rounding rule exists with this identifier
-||
-|| `100` | Parameter `id` not specified
-||
-|| `100` | Parameter `fields` not specified or empty
-||
-|| `0` | Required fields of the `fields` structure not provided
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Manage price types" access permission ||
+|| `400` | `200900000000` | roundingRule does not exist. | There is no rounding rule with the specified `id` ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` is not passed ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` is not passed ||
+|| `400` | `0` | Required fields: catalogGroupId, price, roundType, roundPrecision | Not all four fields are passed in `fields`. The error text lists only the fields that are missing ||
+|| `400` | `0` | Invalid rounding type provided. The available values are: 1, 2, 4 | The value passed in `roundType` is not in the list ||
+|| `400` | `0` | Invalid rounding precision provided. The available values are: ... | The value passed in `roundPrecision` is not in the list. The error text lists the allowed values ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
