@@ -137,8 +137,12 @@ Possible values:
 - `GRAY` — gray
 - `GRAPHITE` — graphite
 ||
-|| **width** [`integer`](../../data-types.md) | Width of the block in percentage, default is `100`, value must be greater than or equal to `0` ||
-|| **height** [`integer`](../../data-types.md) | Height of the block in percentage, default is `100`, value must be greater than or equal to `0` ||
+|| **width** [`integer`](../../data-types.md) | Width of the application window in pixels, default is `100`. The window opens above the input field when the user clicks the application item.
+
+The value must be greater than or equal to `0`. A string is converted to a number: `"400px"` is saved as `400` ||
+|| **height** [`integer`](../../data-types.md) | Height of the application window in pixels, default is `100`.
+
+The value must be greater than or equal to `0`. A string is converted to a number: `"400px"` is saved as `400` ||
 |#
 
 ## Code Examples
@@ -171,8 +175,8 @@ Possible values:
           "role": "USER",
           "extranet": "N",
           "color": "LIGHT_BLUE",
-          "width": 100,
-          "height": 100
+          "width": 400,
+          "height": 400
         },
         "auth": "**put_access_token_here**"
       }' \
@@ -210,8 +214,8 @@ Possible values:
             role: 'USER',
             extranet: 'N',
             color: 'LIGHT_BLUE',
-            width: 100,
-            height: 100,
+            width: 400,
+            height: 400,
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -261,8 +265,8 @@ Possible values:
                 role: 'USER',
                 extranet: 'N',
                 color: 'LIGHT_BLUE',
-                width: 100,
-                height: 100,
+                width: 400,
+                height: 400,
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -305,13 +309,13 @@ Possible values:
                 },
             },
             options={
-                "iconName": "chat-compose",
+                "iconName": "fa-paperclip",
                 "context": "ALL",
                 "role": "USER",
                 "extranet": "N",
                 "color": "LIGHT_BLUE",
-                "width": 100,
-                "height": 100,
+                "width": 400,
+                "height": 400,
             },
         ).response
         result = bitrix_response.result
@@ -354,8 +358,8 @@ Possible values:
                         'role' => 'USER',
                         'extranet' => 'N',
                         'color' => 'LIGHT_BLUE',
-                        'width' => 100,
-                        'height' => 100,
+                        'width' => 400,
+                        'height' => 400,
                     ],
                 ]
             );
@@ -387,8 +391,8 @@ Possible values:
                 role: 'USER',
                 extranet: 'N',
                 color: 'LIGHT_BLUE',
-                width: 100,
-                height: 100
+                width: 400,
+                height: 400
             }
         },
         function(result) {
@@ -426,8 +430,8 @@ Possible values:
                 'role' => 'USER',
                 'extranet' => 'N',
                 'color' => 'LIGHT_BLUE',
-                'width' => 100,
-                'height' => 100,
+                'width' => 400,
+                'height' => 400,
             ],
         ]
     );
@@ -459,8 +463,8 @@ Possible values:
     		"role":     "USER",
     		"extranet": "N",
     		"color":    "LIGHT_BLUE",
-    		"width":    100,
-    		"height":   100,
+    		"width":    400,
+    		"height":   400,
     	},
     })
     if err != nil {
@@ -480,6 +484,8 @@ Possible values:
 || **Error** | **How to Resolve** ||
 || `placement.bind` returns `WRONG_AUTH_TYPE` with the description `Application context required` | Register the embedding point on behalf of an application. An embedding point cannot be bound with a webhook ||
 || `placement.bind` returns `ERROR_ARGUMENT` | The required `OPTIONS[iconName]` parameter is missing. The code of the empty field arrives in `argument` ||
+|| `placement.bind` returns `INVALID_ERROR_WIDTH` or `INVALID_ERROR_HEIGHT` | A negative number was passed in `OPTIONS[width]` or `OPTIONS[height]`. Pass the window size in pixels, greater than or equal to `0` ||
+|| The application window is too small | `width` and `height` were not passed, and the window opened with the default size of 100 × 100 pixels. Pass the required size in pixels, for example `"width": 400`, `"height": 400`. Percentages are not supported ||
 || The item did not appear in the panel above the input field | Complete the application installation and reopen the chat ||
 || Registration fails because of the `context` value | Use only the valid values: `ALL`, `USER`, `CHAT`, `LINES`, `CRM` ||
 || The item is visible in chats other than those set by `context` | `ALL` was passed along with the other values, and the other values are ignored. Pass either `ALL` or a list of specific contexts separated by `;` ||
