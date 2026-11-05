@@ -317,8 +317,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `documentIds` | Required field `documentIds` is missing | Pass a non-empty array of positive identifiers. Zero and negative values are ignored ||
 || `documentIds` | This request requires data type `array` in field `documentIds` | Pass `documentIds` as an array, for example `[321, 323]` ||
-|| `-` | Error processing inventory object "#DOC_TITLE#": #ERROR# | Fix the specified document according to the error text. The other documents in the list have been processed ||
-|| `-` | Error processing "#DOC_TITLE#" | The document does not exist or is not available to the user. The `#DOC_TITLE#` placeholder in the text is not replaced. Check the identifiers using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `-` | Error processing inventory object "Stock adjustment #33": The document has been already fulfilled.. | Error for one document from the list: the document name is in quotes, the reason follows the colon. Fix this document. The other documents from the list are processed ||
+|| `-` | Error processing "#DOC_TITLE#". | A document from the list does not exist or is unavailable to the user. The text comes literally with `#DOC_TITLE#`, without the document name or ID. Check the IDs with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
 || `-` | Error processing inventory object: Insufficient permissions to save the inventory object | The user does not have the "Process inventory objects" permission for this document type ||
 || `-` | Inventory Management is not available on your plan | Inventory management is not included in your Bitrix24 plan. The document methods are unavailable ||
 || `-` | Inventory management must be enabled to process the document | Enable inventory management. Without it, processing multiple documents is unavailable ||
@@ -339,6 +339,6 @@ HTTP status: **403**
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-list-rest-v3.md)
 - [{#T}](./catalog-document-conduct-rest-v3.md)
 - [{#T}](./catalog-document-cancel-list-rest-v3.md)
-- [{#T}](./catalog-document-list-rest-v3.md)

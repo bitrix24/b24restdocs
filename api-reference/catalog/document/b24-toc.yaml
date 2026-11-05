@@ -11,12 +11,12 @@ items:
     href: catalog-document-update.md
   - name: Update inventory document v 3.0
     href: catalog-document-update-rest-v3.md
+  - name: Get Inventory Document by ID
+    href: catalog-document-get.md
   - name: Get list of documents
     href: catalog-document-list.md
   - name: Get list of inventory documents v 3.0
     href: catalog-document-list-rest-v3.md
-  - name: Get inventory document by ID
-    href: catalog-document-get.md
   - name: Delete document  
     href: catalog-document-delete.md  
   - name: Delete inventory document v 3.0

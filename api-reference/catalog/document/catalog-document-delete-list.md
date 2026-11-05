@@ -11,11 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method:
-> - a user with the "Delete document" access permission for the document type in the request,
-> - and "View and select warehouse" for the incoming or outgoing warehouse.
+> Who can execute the method: a user with the "View and select warehouses" permission and the "Delete inventory object" permission for the required document type. Access to all warehouses specified in the products of the documents is required
 
-The method `catalog.document.deleteList` removes multiple inventory documents. Access permissions are checked for each document in the request.
+The method `catalog.document.deleteList` deletes multiple unprocessed inventory documents.
 
 ## Method Parameters
 
@@ -25,8 +23,14 @@ The method `catalog.document.deleteList` removes multiple inventory documents. A
 || **Name**
 `type` | **Description** ||
 || **documentIds***
-[`catalog_document.id[]`](../data-types.md#catalog_document) | List of document identifiers, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id[]`](../data-types.md#catalog_document) | Array of document IDs, for example `[142, 143, 144]`.
+
+Document IDs can be retrieved with the [catalog.document.list](./catalog-document-list.md) method. The method accepts an empty array without an error and returns `true` ||
 |#
+
+The method handles documents one by one. If a document is not found or is processed, the method skips it, deletes the others, and returns an error at the end. If there are no permissions for a document, the method stops at it: the documents before it are already deleted, the ones after it are not.
+
+Document products are deleted together with the documents.
 
 ## Code Examples
 
@@ -168,12 +172,9 @@ The method `catalog.document.deleteList` removes multiple inventory documents. A
             ->getResponseData()
             ->getResult();
 
-        if ($result === true) {
-            echo 'Documents deleted';
-        }
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting documents: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -232,20 +233,20 @@ The method `catalog.document.deleteList` removes multiple inventory documents. A
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": true,
     "time": {
-        "start": 1761909885,
-        "finish": 1761909885.557104,
-        "duration": 0.5571041107177734,
+        "start": 1793883412,
+        "finish": 1793883412.462494,
+        "duration": 0.462493896484375,
         "processing": 0,
-        "date_start": "2025-10-31T14:24:45+02:00",
-        "date_finish": "2025-10-31T14:24:45+02:00",
-        "operating_reset_at": 1761910485,
-        "operating": 0
+        "date_start": "2026-11-05T15:56:52+03:00",
+        "date_finish": "2026-11-05T15:56:52+03:00",
+        "operating_reset_at": 1793883900,
+        "operating": 0.1538081169128418
     }
 }
 ```
@@ -256,38 +257,41 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` if all documents were deleted ||
+[`boolean`](../../data-types.md) | Root element of the response. Contains `true` if all documents are deleted. If at least one document cannot be deleted, the method returns an error, while the other documents are deleted ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "0",
-    "error_description": "Cannot delete document #143 because it is processed"
-} 
+    "error_description": "You cannot delete inventory object \"Surplus stock adjustment\" because it has already been processed."
+}
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to delete document "Name" | No permission to delete the document type or no access to the document's warehouses ||
-|| `0` | An error occurred while deleting document "#ID": Document not found | A non-existent identifier is specified in the list ||
-|| `0` | You cannot delete document "Name" as it is processed | Cancel the processing of the document using the [catalog.document.cancelList](./catalog-document-cancel-list.md) method ||
-|| `0` | Inventory management is not available on your plan | Inventory management is not available on your plan ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Cannot complete action because you don't have sufficient permissions to view and select warehouses. | The user does not have the "View and select warehouses" permission ||
+|| `400` | `0` | Insufficient permissions to delete inventory object "Surplus stock adjustment". | The user does not have the "Delete inventory object" permission for documents of this type or has no access to a warehouse from the document products. The text contains the document name or, if it has none, the document type name ||
+|| `400` | `100` | Could not find value for parameter {documentIds} | The `documentIds` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {documentIds}. Should be value of type array. | `documentIds` is not an array ||
+|| `400` | `0` | Error deleting inventory object "#999999": Inventory object was not found.. | The document with the specified ID is not found. The text contains the document ID ||
+|| `400` | `0` | You cannot delete inventory object "Surplus stock adjustment" because it has already been processed. | The document is processed. First cancel processing with the [catalog.document.cancelList](./catalog-document-cancel-list.md) method ||
+|| `400` | `0` | Inventory Management is not available on your plan. | Inventory Management is not available on the account plan ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-list.md)
 - [{#T}](./catalog-document-delete.md)
 - [{#T}](./catalog-document-cancel-list.md)
-- [{#T}](./catalog-document-list.md)

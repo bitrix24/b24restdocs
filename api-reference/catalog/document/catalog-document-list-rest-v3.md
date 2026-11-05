@@ -23,6 +23,8 @@ The `catalog.document.list` method returns a list of inventory documents by filt
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -50,7 +52,7 @@ Available fields:
 - `docNumber` — incoming document number
 - `contractorId` — vendor identifier
 
-The `id` field is always returned, even if it is not in `select`. The `["*"]` value is not supported.
+The `id` field is always returned, even if it is not in `select`. The value `["*"]` and uppercase names, for example `ID`, cause an unknown field error.
 
 Default: all fields ||
 || **filter**
@@ -58,7 +60,11 @@ Default: all fields ||
 
 You can filter by the fields `id`, `docType`, `siteId`, `responsibleId`, `dateModify`, `dateCreate`, `createdBy`, `modifiedBy`, `currency`, `status`, `dateStatus`, `dateDocument`, `statusBy`, `total`, `title`, `docNumber`, `contractorId`.
 
-In the filter, pass the processing status `status` as `Y` — processed or `N` — not processed.
+Supported operators: `=`, `!=`, `>`, `>=`, `<`, `<=`, `in`, `between`. The `like` operator is not supported. Filtering by the `commentary` field is not allowed.
+
+Pass the processing status `status` in the filter as a string: `Y` — processed, `N` — not processed. The values `true` and `false` cause an error.
+
+The condition `["total", "=", 0]` does not find documents without a total, although their `total` in the response is `0`. The same applies to `contractorId`. If vendors are managed in CRM, the filter by `contractorId` always returns an empty list — use the [catalog.document.contractor.list](../documentcontractor/catalog-documentcontractor-list-rest-v3.md) method.
 
 The method returns only documents of the types for which the user has the "View" permission ||
 || **order**
@@ -465,15 +471,15 @@ HTTP status: **200**
 || **statusBy**
 [`integer`](../../data-types.md) | Identifier of the user who last changed the status. `0` if the status has not changed ||
 || **total**
-[`double`](../../data-types.md) | Document total ||
+[`double`](../../data-types.md) | Document total. `0` if the total is not set ||
 || **commentary**
-[`string`](../../data-types.md) | Comment ||
+[`string`](../../data-types.md) | Comment. An empty string if the comment is not set ||
 || **title**
 [`string`](../../data-types.md) | Document title ||
 || **docNumber**
-[`string`](../../data-types.md) | Incoming document number ||
+[`string`](../../data-types.md) | Incoming document number. An empty string if the number is not set ||
 || **contractorId**
-[`integer`](../../data-types.md) | Identifier of the vendor from the catalog directory. `0` if no vendor is specified ||
+[`integer`](../../data-types.md) | Vendor ID from the catalog directory. `0` if the vendor is not specified or vendors are managed in CRM ||
 |#
 
 ## Error Handling
@@ -505,8 +511,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `#FIELD#` | DTO `DocumentDto` in field `#FIELD#` requires attribute `Filterable` to perform this request | Remove the non-filterable field from `filter` ||
-|| `#FIELD#` | DTO `DocumentDto` in field `#FIELD#` requires attribute `Sortable` to perform this request | Remove the non-sortable field from `order` ||
+|| `commentary` | DTO `DocumentDto` in field `commentary` requires attribute `Filterable` to perform this request | Filtering by the `commentary` field is not allowed. Remove it from `filter` ||
+|| `siteId` | DTO `DocumentDto` in field `siteId` requires attribute `Sortable` to perform this request | Remove the field that cannot be used for sorting from `order`. Sorting by `siteId`, `currency`, `statusBy`, `commentary` is not allowed ||
+|| `status` | This request requires data type `string` in field `status` | Pass the status as the string `Y` or `N`. The same error with a different type is returned if the condition value does not fit the field, for example, the string `"abc"` for `id` ||
 |#
 
 #### Filter Format Error
@@ -524,7 +531,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNFILTEROPERATOREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Unknown filter operator `#OPERATOR#` | Use the operators from the [REST 3.0 overview](../../rest-v3.md#operators) ||
+|| `filter` | Unknown filter operator `like` | Use the operators from the [REST 3.0 overview](../../rest-v3.md#operators) ||
 |#
 
 #### Pagination Error
@@ -533,7 +540,16 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `pagination` | Incorrect `pagination` parameter value: `#PAGINATION#` | Pass a positive number in `limit` ||
+|| `pagination` | Incorrect `pagination` parameter value: `{"limit":0}` | Pass a positive number in `limit` ||
+|#
+
+#### Sorting Error
+
+Error code: `BITRIX_REST_V3_EXCEPTION_INVALIDORDEREXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to Fix** ||
+|| `order` | Invalid sort order `bad` | Pass the direction `asc` or `desc`. Case does not matter ||
 |#
 
 #### Unknown Field Error
@@ -542,7 +558,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select`, `filter`, `order` | Unknown field `#FIELD#` found in entity `DocumentDto` | Specify only the fields from the `select` parameter description ||
+|| `select`, `filter`, `order` | Unknown field `foo` found in entity `DocumentDto` | Specify only the fields from the `select` parameter description. Write field names in camelCase: `DOC_TYPE` and `*` also cause this error ||
 |#
 
 #### Select Format Error
@@ -551,7 +567,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as an array of strings, for example `["id","title"]` ||
+|| `select` | Invalid field in `select`: `["title"]` | `select` contains a nested array. Pass `select` as an array of strings, for example `["id","title"]` ||
 |#
 
 #### Access Error

@@ -11,37 +11,34 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the following permissions:
-> — "View" and "Create and Edit" for the document type "Incoming",
-> — "View Inventory Accounting Section"
-> — "View Product Catalog"    
+> Who can execute the method: a user with the "View" and "Create and edit" permissions for stock receipt documents and the "View Inventory Management area" and "View product catalog" permissions
 
 The method `catalog.documentcontractor.delete` removes the vendor from the inventory accounting document.
 
-## Method Parameters  
+## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}  
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
-`type` | **Description** || 
+`type` | **Description** ||
 || **id***
-[`catalog_documentcontractor.id`](../data-types.md#catalog_documentcontractor) | Identifier for the vendor binding to the document. It can be obtained using the method [catalog.documentcontractor.list](./catalog-documentcontractor-list.md) ||  
-|#  
+[`catalog_documentcontractor.id`](../data-types.md#catalog_documentcontractor) | Identifier for the vendor binding to the document. It can be obtained using the method [catalog.documentcontractor.list](./catalog-documentcontractor-list.md) ||
+|#
 
-## Code Examples  
+## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %}  
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
 - cURL (Webhook)
 
-    ```bash 
+    ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":42}' \
+    -d '{"id":15}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.documentcontractor.delete
     ```
 
@@ -51,7 +48,7 @@ The method `catalog.documentcontractor.delete` removes the vendor from the inven
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":42,"auth":"**put_access_token_here**"}' \
+    -d '{"id":15,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.documentcontractor.delete
     ```
 
@@ -69,7 +66,7 @@ The method `catalog.documentcontractor.delete` removes the vendor from the inven
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'catalog.documentcontractor.delete',
         params: {
-          id: 42,
+          id: 15,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -101,7 +98,7 @@ The method `catalog.documentcontractor.delete` removes the vendor from the inven
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.documentcontractor.delete',
             params: {
-              id: 42,
+              id: 15,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -131,7 +128,7 @@ The method `catalog.documentcontractor.delete` removes the vendor from the inven
 
     try:
         bitrix_response = client.catalog.documentcontractor.delete(
-            bitrix_id=42,
+            bitrix_id=15,
         ).response
         result = bitrix_response.result
         print(result)
@@ -157,7 +154,7 @@ The method `catalog.documentcontractor.delete` removes the vendor from the inven
             ->call(
                 'catalog.documentcontractor.delete',
                 [
-                    'id' => 42,
+                    'id' => 15,
                 ]
             );
 
@@ -179,7 +176,7 @@ The method `catalog.documentcontractor.delete` removes the vendor from the inven
     ```js
     BX24.callMethod(
         'catalog.documentcontractor.delete',
-        { id: 42 },
+        { id: 15 },
         function(result)
         {
             if (result.error())
@@ -198,7 +195,7 @@ The method `catalog.documentcontractor.delete` removes the vendor from the inven
     $result = CRest::call(
         'catalog.documentcontractor.delete',
         [
-            'id' => 42,
+            'id' => 15,
         ]
     );
 
@@ -225,11 +222,11 @@ The method `catalog.documentcontractor.delete` removes the vendor from the inven
     fmt.Println("done:", ok)
     ```
 
-{% endlist %}    
+{% endlist %}
 
-## Response Handling  
+## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -247,23 +244,20 @@ HTTP Code: **200**
 }
 ```
 
-## Returned Data  
+### Returned Data
 
 #|
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md)| Root element of the response, contains `true` if the binding was successfully deleted.  
-If the response contains `null` — the binding was not found or the user does not have permission to modify the document ||  
+[`boolean`](../../data-types.md) | Root element of the response. Contains `true` if the binding is deleted ||
 || **time**
-[`time`](../../data-types.md#time) | Information about the request execution time || 
-|#  
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
 
-## Error Handling  
+## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}  
-
-HTTP Code: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -272,19 +266,22 @@ HTTP Code: **400**
 }
 ```
 
-### Possible Error Codes  
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Binding was not found | The specified binding identifier does not exist ||  
-|| `0` | Access denied | Insufficient permissions to modify the inventory accounting document ||  
-|| `0` | Contractors should be provided by CRM | The CRM module is not active as a vendor for contractors ||  
-|#  
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
+|| `400` | `0` | Binding was not found | There is no binding with the specified `id`, or the document is not available to the user ||
+|| `400` | `0` | Access denied | Insufficient permissions to modify the inventory accounting document ||
+|| `400` | `0` | Contractors should be provided by CRM | Vendors in Bitrix24 are not managed in CRM ||
+|#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}  
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning  
+## Continue Learning
 
-- [{#T}](./catalog-documentcontractor-list.md)  
-- [{#T}](./catalog-documentcontractor-add.md)  
-- [{#T}](./catalog-documentcontractor-get-fields.md)  
+- [{#T}](./catalog-documentcontractor-add.md)
+- [{#T}](./catalog-documentcontractor-list.md)
+- [{#T}](./catalog-documentcontractor-get-fields.md)

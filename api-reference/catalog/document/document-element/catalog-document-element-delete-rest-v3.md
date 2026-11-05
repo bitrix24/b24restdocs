@@ -326,7 +326,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no product item with this identifier. Check the identifier using the [catalog.document.element.list](./catalog-document-element-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no product item with this identifier. Check the identifier using the [catalog.document.element.list](./catalog-document-element-list-rest-v3.md) method ||
 |#
 
 #### Access Error

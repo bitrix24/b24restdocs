@@ -1,4 +1,4 @@
-# Conduct Warehouse Accounting Document catalog.document.conduct
+# Process Inventory Document catalog.document.conduct
 
 {% note tip "" %}
 
@@ -11,13 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method:
-> - a user with the "Conduct Document" access permission for the document type in the request,
-> - and "View and Select Warehouse" access permission for the incoming or outgoing warehouse.
+> Who can execute the method: a user with the "View product catalog" and "View Inventory Management area" permissions and the "Process inventory objects" permission for the required document type. The document must be available to the user under the "View" permission
 
-The method `catalog.document.conduct` conducts a warehouse accounting document:
-- the document status changes to `Y` — conducted,
-- the warehouse stock of goods is updated according to the document's items.
+The method `catalog.document.conduct` processes an inventory document.
 
 ## Method Parameters
 
@@ -27,8 +23,14 @@ The method `catalog.document.conduct` conducts a warehouse accounting document:
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_document.id`](../data-types.md#catalog_document) | Document identifier, can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id`](../data-types.md#catalog_document) | Document ID.
+
+Document IDs can be retrieved with the [catalog.document.list](./catalog-document-list.md) method ||
 |#
+
+On processing, product stock in warehouses changes according to the document products, the document status `status` becomes `Y`, `statusBy` gets the ID of the current user, and `dateStatus` gets the processing time. The method does not recalculate the document total `total`.
+
+To process a document, it must contain products, and a stock receipt document, type `A`, must also have a vendor. Add products with the [catalog.document.element.add](./document-element/catalog-document-element-add.md) method, and the vendor with the [catalog.documentcontractor.add](../documentcontractor/catalog-documentcontractor-add.md) method.
 
 ## Code Examples
 
@@ -166,12 +168,9 @@ The method `catalog.document.conduct` conducts a warehouse accounting document:
             ->getResponseData()
             ->getResult();
 
-        if ($result === true) {
-            echo 'Document conducted';
-        }
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error conducting document: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -230,20 +229,20 @@ The method `catalog.document.conduct` conducts a warehouse accounting document:
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": true,
     "time": {
-        "start": 1762409135,
-        "finish": 1762409136.304248,
-        "duration": 1.3042480945587158,
-        "processing": 1,
-        "date_start": "2025-11-06T09:05:35+01:00",
-        "date_finish": "2025-11-06T09:05:36+01:00",
-        "operating_reset_at": 1762409735,
-        "operating": 0.3091859817504883
+        "start": 1793883440,
+        "finish": 1793883440.679292,
+        "duration": 0.6792919635772705,
+        "processing": 0,
+        "date_start": "2026-11-05T15:57:20+03:00",
+        "date_finish": "2026-11-05T15:57:20+03:00",
+        "operating_reset_at": 1793883900,
+        "operating": 0.3427731990814209
     }
 }
 ```
@@ -254,40 +253,43 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` if the document is conducted  ||
+[`boolean`](../../data-types.md) | Root element of the response. Contains `true` if the document is processed ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "0",
-    "error_description": "Document not found"
+    "error_description": "Error processing inventory object: Vendor is not specified.."
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Failed to complete the action as you do not have sufficient rights to view and select warehouses | No rights to work with the warehouse of the goods from the document ||
-|| `0` | Insufficient rights to save the document | No rights to the product catalog, warehouse accounting, or no rights to conduct the document ||
-|| `0` | Document not found | A non-existent document identifier was specified ||
-|| `0` | Document conducting error: "error text" | The document contains incorrect data, for example, "Supplier not specified" ||
-|| `0` | Warehouse accounting is not available on your plan | Warehouse accounting is not available on your plan ||
-|| `0` | Warehouse accounting must be enabled to conduct the document | Warehouse accounting must be enabled to conduct the document ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Insufficient permissions to save the inventory object. | The user does not have permissions for the catalog and the Inventory Management area, the "Process inventory objects" permission for documents of this type, or access to the document ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | `id` is not a number ||
+|| `400` | `2` | Inventory object was not found. | The document with the specified `id` is not found ||
+|| `400` | `0` | Error processing inventory object: The document has been already fulfilled.. | The document is already processed ||
+|| `400` | `0` | Error processing inventory object: Items present in the inventory object ID #363 are missing. | The document has no products. The text contains the document ID ||
+|| `400` | `0` | Error processing inventory object: Vendor is not specified.. | The vendor is not specified in the stock receipt document ||
+|| `400` | `0` | Inventory Management is not available on your plan. | Inventory Management is not available on the account plan ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-list.md)
 - [{#T}](./catalog-document-conduct-list.md)
 - [{#T}](./catalog-document-cancel.md)
 - [{#T}](./document-element/catalog-document-element-add.md)

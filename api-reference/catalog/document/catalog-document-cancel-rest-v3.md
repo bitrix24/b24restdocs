@@ -326,12 +326,12 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `documentIds` | Required field `documentIds` is missing | Pass a non-empty array of positive identifiers. Zero and negative values are ignored ||
 || `documentIds` | This request requires data type `array` in field `documentIds` | Pass `documentIds` as an array, for example `[321, 323]` ||
 || `-` | Error canceling inventory object processing: The transaction is still pending | The document is not processed, so there is nothing to cancel. Check the document state in the `status` field using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
-|| `-` | Error canceling inventory object processing: #ERROR# | Fix the document according to the error text after the colon ||
-|| `-` | Error canceling inventory object "#DOC_TITLE#": #ERROR# | Fix the specified document according to the error text. The other documents in the list have been canceled ||
-|| `-` | Error canceling inventory object processing: Inventory object was not found | The document does not exist or is not available to the user. Check the identifiers using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `-` | Error canceling inventory object processing: #ERROR#. | Other reasons why processing cannot be canceled. `#ERROR#` is replaced with the reason text. Fix the document accordingly ||
+|| `-` | Error canceling inventory object "Stock adjustment #33": The transaction is still pending.. | Error for one document from the list: the document name is in quotes, the reason follows the colon. Fix this document. Processing of the other documents from the list is canceled ||
+|| `-` | Error canceling inventory object processing: Inventory object was not found.. | A document from the list does not exist or is unavailable to the user. The text does not specify which document it is. Check the IDs with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
 || `-` | Error canceling inventory object processing: Insufficient permissions to save the inventory object | The user does not have the "Cancel processing" permission for this document type ||
 || `-` | Inventory Management is not available on your plan | Inventory management is not included in your Bitrix24 plan. The document methods are unavailable ||
-|| `-` | Inventory management must be enabled to process the document | Enable inventory management. Without it, canceling the processing of multiple documents is unavailable ||
+|| `-` | You have to enable inventory management to process the inventory object. | Enable Inventory Management. Without it, canceling processing of multiple documents is unavailable ||
 |#
 
 #### Object Not Found Error
@@ -340,7 +340,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no document with this identifier. Check the identifier using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no document with this ID. Check the ID with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
 |#
 
 #### Access Error
@@ -358,7 +358,7 @@ HTTP status: **403**
 
 ## Continue Learning
 
-- [{#T}](./catalog-document-cancel-list-rest-v3.md)
-- [{#T}](./catalog-document-conduct-rest-v3.md)
 - [{#T}](./catalog-document-list-rest-v3.md)
 - [{#T}](./catalog-document-delete-rest-v3.md)
+- [{#T}](./catalog-document-conduct-rest-v3.md)
+- [{#T}](./catalog-document-cancel-list-rest-v3.md)

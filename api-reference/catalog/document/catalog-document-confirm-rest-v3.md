@@ -317,7 +317,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `id` | This request requires data type `int` in field `id` | Pass `id` as a number, not a string ||
 || `-` | Error processing inventory object: The document has been already fulfilled | The document is already processed. Check the document state in the `status` field using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
 || `-` | Error processing inventory object: Vendor is not specified | For a receipt document, specify the vendor using the [catalog.document.contractor.add](../documentcontractor/catalog-documentcontractor-add-rest-v3.md) method ||
-|| `-` | Error processing inventory object: #ERROR# | Fix the document according to the error text after the colon, for example, fill in the warehouse or quantity in the document products ||
+|| `-` | Error processing inventory object: Items present in the inventory object ID #365 are missing. | The document has no products. Add products with the [catalog.document.element.add](./document-element/catalog-document-element-add-rest-v3.md) method. Other reasons come in the same format after the colon, for example, the warehouse or quantity is not specified ||
 || `-` | Inventory Management is not available on your plan | Inventory management is not included in your Bitrix24 plan. The document methods are unavailable ||
 |#
 
@@ -327,7 +327,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no document with this identifier. Check the identifier using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no document with this ID. Check the ID with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
 |#
 
 #### Access Error
@@ -345,6 +345,6 @@ HTTP status: **403**
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-list-rest-v3.md)
 - [{#T}](./catalog-document-conduct-rest-v3.md)
 - [{#T}](./catalog-document-unconfirm-rest-v3.md)
-- [{#T}](./catalog-document-list-rest-v3.md)

@@ -47,7 +47,10 @@ Specifics of the new version methods:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the methods: depending on the method
+> Who can execute the methods:
+> - a user with the "View" permission for stock receipt documents and the "View Inventory Management area" and "View product catalog" permissions — to retrieve bindings and field descriptions
+> - a user with the same permissions and the "Create and edit" permission for stock receipt documents — to add and delete bindings
+> - any user — for `catalog.document.contractor.field.list` and `catalog.document.contractor.field.get`
 
 #|
 || **Method** | **Description** ||

@@ -312,11 +312,11 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `documentIds` | Required field `documentIds` is missing | Pass a non-empty array of positive identifiers ||
+|| `documentIds` | Required field `documentIds` is missing | The parameter is not passed, the array is empty, or it contains only zeros and negative numbers. Pass a non-empty array of positive IDs ||
 || `documentIds` | This request requires data type `array` in field `documentIds` | Pass the identifiers as an array, for example `[345, 347]` ||
-|| `-` | Error deleting inventory object "#ID#": Inventory object was not found | Check the identifier using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
-|| `-` | You cannot delete inventory object "#DOC_TITLE#" because it has already been processed | Cancel processing using the [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) method and repeat the deletion ||
-|| `-` | Inventory Management is not available on your plan | The method works only on plans with inventory management ||
+|| `-` | Error deleting inventory object "#999999": Inventory object was not found.. | There is no document with this ID. The text contains the ID from `documentIds` after `#`. The other documents from the list are deleted. Check the ID with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `-` | You cannot delete inventory object "Stock adjustment #33" because it has already been processed. | The text contains the document name. Cancel processing with the [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) method and repeat the deletion ||
+|| `-` | Inventory Management is not available on your plan. | The method works only on plans with Inventory Management ||
 |#
 
 #### Access Error
@@ -334,8 +334,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 - [{#T}](./catalog-document-add-rest-v3.md)
 - [{#T}](./catalog-document-update-rest-v3.md)
-- [{#T}](./catalog-document-get.md)
 - [{#T}](./catalog-document-list-rest-v3.md)
+- [{#T}](./catalog-document-get.md)
 - [{#T}](./catalog-document-delete-rest-v3.md)
 - [{#T}](./catalog-document-field-list.md)
 - [{#T}](./catalog-document-field-get.md)

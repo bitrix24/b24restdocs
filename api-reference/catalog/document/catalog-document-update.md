@@ -1,4 +1,4 @@
-# Update Warehouse Accounting Document catalog.document.update
+# Update Inventory Document catalog.document.update
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Create and Edit" access permission for the required document type
+> Who can execute the method: a user with the "View and select warehouses" permission and the "Create and edit" permission for the required document type
 
-The method `catalog.document.update` modifies the fields of an existing warehouse accounting document.
+The method `catalog.document.update` updates the fields of an inventory document that has not been processed yet.
 
 ## Method Parameters
 
@@ -23,35 +23,43 @@ The method `catalog.document.update` modifies the fields of an existing warehous
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_document.id`](../data-types.md#catalog_document) | Document identifier, can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id`](../data-types.md#catalog_document) | Document ID.
+
+Document IDs can be retrieved with the [catalog.document.list](./catalog-document-list.md) method ||
 || **fields***
-[`object`](#fields) | Document fields ([detailed description](#fields)) ||
+[`object`](../../data-types.md) | Values of the document fields to update ([detailed description](#fields)).
+
+The method changes only the passed fields, the others keep their previous values. The method accepts an empty object `{}` without an error and updates only the modification date ||
 |#
 
 ### Fields Parameter {#fields}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}
-
 #|
 || **Name**
 `type` | **Description** ||
-|| **responsibleId**
-[`user.id`](../../data-types.md) | Identifier of the responsible person ||
-|| **dateModify**
-[`datetime`](../../data-types.md) | You can provide your own modification date. Defaults to the current date ||
-|| **dateDocument**
-[`datetime`](../../data-types.md) | Document date ||
-|| **total**
-[`double`](../../data-types.md) | Total amount for the document items. Automatically recalculated after modifying the items ||
-|| **commentary**
-[`char`](../../data-types.md) | Commentary for the document ||
 || **title**
-[`string`](../../data-types.md) | Document title ||
+[`string`](../../data-types.md) | Document name. An empty string clears the name, and `title` in the response is `null` ||
 || **docNumber**
-[`string`](../../data-types.md) | Internal document number ||
-|| **modifiedBy**
-[`user.id`](../../data-types.md) | Identifier of the user who modified the document. An administrator can specify any value; defaults to the current user ||
+[`string`](../../data-types.md) | Document number ||
+|| **dateDocument**
+[`datetime`](../../data-types.md) | Document date, for example `2026-11-06T10:00:00+03:00`. You can pass a date without time, for example `2026-11-06`.
+
+The method skips `null` and a string that cannot be parsed as a date without an error: the previous date is kept ||
+|| **commentary**
+[`string`](../../data-types.md) | Document comment ||
+|| **responsibleId**
+[`user.id`](../../data-types.md) | Responsible user ID. The method does not check that the user exists. The method saves a non-numeric value as `null` ||
+|| **total**
+[`double`](../../data-types.md) | Document total. The method saves a non-numeric value as `null` ||
+|| **siteId**
+[`string`](../../data-types.md) | Site code ||
+|| **statusBy**
+[`user.id`](../../data-types.md) | ID of the user who changed the document status ||
 |#
+
+The `docType` and `currency` fields cannot be changed after creation. The method skips them, as well as the `id`, `status`, `createdBy`, `modifiedBy`, `dateCreate`, `dateModify`, `dateStatus` fields and unknown fields, without an error. After the update, `modifiedBy` equals the ID of the current user, and `dateModify` equals the update time.
+
+A processed document cannot be updated: first cancel processing with the [catalog.document.cancel](./catalog-document-cancel.md) method.
 
 ## Code Examples
 
@@ -65,7 +73,7 @@ The method `catalog.document.update` modifies the fields of an existing warehous
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":142,"fields":{"title":"Receipt from Vendor-1 (correction)","commentary":"Updated responsible person","responsibleId":21}}' \
+    -d '{"id":381,"fields":{"commentary":"Corrected the document date","dateDocument":"2026-11-06T10:00:00+03:00"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.update
     ```
 
@@ -75,7 +83,7 @@ The method `catalog.document.update` modifies the fields of an existing warehous
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":142,"fields":{"title":"Receipt from Vendor-1 (correction)","commentary":"Updated responsible person","responsibleId":21},"auth":"**put_access_token_here**"}' \
+    -d '{"id":381,"fields":{"commentary":"Corrected the document date","dateDocument":"2026-11-06T10:00:00+03:00"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.document.update
     ```
 
@@ -91,36 +99,36 @@ The method `catalog.document.update` modifies the fields of an existing warehous
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type DocumentUpdateResult = {
+      // An empty array comes back when no document has the given id
       document: {
-        commentary: string,
-        createdBy: number,
-        currency: string,
-        dateCreate: ISODate,
-        dateDocument: ISODate | null,
-        dateModify: ISODate,
-        dateStatus: ISODate,
-        docNumber: string,
-        docType: string,
-        id: number,
-        modifiedBy: number,
-        responsibleId: number,
-        siteId: string,
-        status: string,
-        statusBy: number | null,
-        title: string,
-        total: number | null,
-      },
+        commentary: string | null
+        createdBy: number
+        currency: string
+        dateCreate: ISODate
+        dateDocument: ISODate | null
+        dateModify: ISODate
+        dateStatus: ISODate
+        docNumber: string | null
+        docType: string
+        id: number
+        modifiedBy: number
+        responsibleId: number | null
+        siteId: string
+        status: string
+        statusBy: number | null
+        title: string | null
+        total: number | null
+      } | []
     }
 
     try {
       const response = await $b24.actions.v2.call.make<DocumentUpdateResult>({
         method: 'catalog.document.update',
         params: {
-          id: 142,
+          id: 381,
           fields: {
-            title: 'Product receipt from Vendor-1 (adjustment)',
-            commentary: 'Updated the responsible person',
-            responsibleId: 21,
+            commentary: 'Corrected the document date',
+            dateDocument: '2026-11-06T10:00:00+03:00',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -131,7 +139,11 @@ The method `catalog.document.update` modifies the fields of an existing warehous
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Updated document:', result.document.id, result.document.title)
+        if (Array.isArray(result.document)) {
+          console.warn('Document not found')
+        } else {
+          console.info('Updated document:', result.document.id, result.document.dateDocument)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -153,11 +165,10 @@ The method `catalog.document.update` modifies the fields of an existing warehous
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.document.update',
             params: {
-              id: 142,
+              id: 381,
               fields: {
-                title: 'Product receipt from Vendor-1 (adjustment)',
-                commentary: 'Updated the responsible person',
-                responsibleId: 21,
+                commentary: 'Corrected the document date',
+                dateDocument: '2026-11-06T10:00:00+03:00',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -170,7 +181,12 @@ The method `catalog.document.update` modifies the fields of an existing warehous
           }
 
           const result = response.getData().result
-          console.info('Updated document:', result.document.id, result.document.title)
+          // An empty array comes back when no document has the given id
+          if (Array.isArray(result.document)) {
+            console.warn('Document not found')
+            return
+          }
+          console.info('Updated document:', result.document.id, result.document.dateDocument)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -188,11 +204,10 @@ The method `catalog.document.update` modifies the fields of an existing warehous
 
     try:
         bitrix_response = client.catalog.document.update(
-            bitrix_id=142,
+            bitrix_id=381,
             fields={
-                "title": "Receipt from Vendor-1 (adjustment)",
-                "commentary": "Updated the person responsible",
-                "responsibleId": 21,
+                "commentary": "Corrected the document date",
+                "dateDocument": "2026-11-06T10:00:00+03:00",
             },
         ).response
         result = bitrix_response.result
@@ -219,12 +234,11 @@ The method `catalog.document.update` modifies the fields of an existing warehous
             ->call(
                 'catalog.document.update',
                 [
-                    'id' => 142,
+                    'id'     => 381,
                     'fields' => [
-                        'title' => 'Receipt from Vendor-1 (correction)',
-                        'commentary' => 'Updated responsible person',
-                        'responsibleId' => 21
-                    ]
+                        'commentary'   => 'Corrected the document date',
+                        'dateDocument' => '2026-11-06T10:00:00+03:00',
+                    ],
                 ]
             );
 
@@ -232,12 +246,9 @@ The method `catalog.document.update` modifies the fields of an existing warehous
             ->getResponseData()
             ->getResult();
 
-        echo 'Success: ' . print_r($result, true);
-        processData($result);
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error updating document: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -247,12 +258,11 @@ The method `catalog.document.update` modifies the fields of an existing warehous
     BX24.callMethod(
         'catalog.document.update',
         {
-            id: 142,
+            id: 381,
             fields: {
-                title: 'Receipt from Vendor-1 (correction)',
-                commentary: 'Updated responsible person',
-                responsibleId: 21
-            }
+                commentary: 'Corrected the document date',
+                dateDocument: '2026-11-06T10:00:00+03:00',
+            },
         },
         function(result)
         {
@@ -272,11 +282,10 @@ The method `catalog.document.update` modifies the fields of an existing warehous
     $result = CRest::call(
         'catalog.document.update',
         [
-            'id' => 142,
+            'id' => 381,
             'fields' => [
-                'title' => 'Receipt from Vendor-1 (correction)',
-                'commentary' => 'Updated responsible person',
-                'responsibleId' => 21
+                'commentary' => 'Corrected the document date',
+                'dateDocument' => '2026-11-06T10:00:00+03:00',
             ]
         ]
     );
@@ -291,11 +300,10 @@ The method `catalog.document.update` modifies the fields of an existing warehous
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.document.update", b24.Params{
-    	"id": 142,
+    	"id": 381,
     	"fields": b24.Params{
-    		"title":         "Receipt from Vendor-1 (correction)",
-    		"commentary":    "Updated responsible person",
-    		"responsibleId": 21,
+    		"commentary":   "Corrected the document date",
+    		"dateDocument": "2026-11-06T10:00:00+03:00",
     	},
     })
     if err != nil {
@@ -303,63 +311,65 @@ The method `catalog.document.update` modifies the fields of an existing warehous
     }
 
     // The method wraps the response in an object with the "document" key.
+    // If the document does not exist, the key contains an empty array [].
     raw, ok := b24.Unwrap(res.Result, "document")
-    if !ok {
-    	return fmt.Errorf("no document key in the response")
+    if !ok || string(raw) == "[]" {
+    	return fmt.Errorf("document not found")
     }
 
+    // Optional fields can be null, so pointers are used for them.
     var item struct {
-    	Commentary string `json:"commentary"`
-    	CreatedBy  int    `json:"createdBy"`
-    	Currency   string `json:"currency"`
-    	DateCreate string `json:"dateCreate"`
-    	DateModify string `json:"dateModify"`
-    	DateStatus string `json:"dateStatus"`
+    	ID           b24.ID  `json:"id"`
+    	Status       string  `json:"status"`
+    	Commentary   *string `json:"commentary"`
+    	DateDocument *string `json:"dateDocument"`
+    	ModifiedBy   int     `json:"modifiedBy"`
+    	DateModify   string  `json:"dateModify"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Commentary, item.CreatedBy)
+    fmt.Println(item.ID, item.DateModify)
     ```
 
 {% endlist %}
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "document": {
-            "commentary": "Updated responsible person",
-            "createdBy": 29,
+            "commentary": "Corrected the document date",
+            "createdBy": 1269,
             "currency": "USD",
-            "dateCreate": "2025-10-30T11:19:38+02:00",
-            "dateDocument": null,
-            "dateModify": "2025-10-30T11:33:42+02:00",
-            "dateStatus": "2025-10-30T11:19:38+02:00",
-            "docNumber": "IN-00042",
-            "docType": "A",
-            "id": 11,
-            "modifiedBy": 29,
-            "responsibleId": 21,
+            "dateCreate": "2026-11-05T15:58:42+03:00",
+            "dateDocument": "2026-11-06T10:00:00+03:00",
+            "dateModify": "2026-11-05T15:59:21+03:00",
+            "dateStatus": "2026-11-05T15:58:42+03:00",
+            "docNumber": "OP-00042",
+            "docType": "S",
+            "id": 381,
+            "modifiedBy": 1269,
+            "responsibleId": 1269,
             "siteId": "s1",
             "status": "N",
             "statusBy": null,
-            "title": "Receipt from Vendor-1 (correction)",
+            "title": "Surplus stock adjustment",
             "total": null
         }
     },
     "time": {
-        "start": 1761806022,
-        "finish": 1761806022.36133,
-        "duration": 0.3613300323486328,
+        "start": 1793883561,
+        "finish": 1793883561.476519,
+        "duration": 0.4765191078186035,
         "processing": 0,
-        "date_start": "2025-10-30T09:33:42+02:00",
-        "date_finish": "2025-10-30T09:33:42+02:00",
-        "operating_reset_at": 1761806622,
-        "operating": 0.17665815353393555
+        "date_start": "2026-11-05T15:59:21+03:00",
+        "date_finish": "2026-11-05T15:59:21+03:00",
+        "operating_reset_at": 1793884140,
+        "operating": 0
     }
 }
 ```
@@ -370,40 +380,49 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md#catalog_document) | Root element of the response ||
-|| **document**
-[`catalog_document`](../data-types.md#catalog_document) | Object with updated document data ||
+[`object`](../../data-types.md) | Root element of the response ||
+|| **result.document**
+[`catalog_document`](../data-types.md#catalog_document) | Object with all document fields after the update.
+
+If there is no document with the passed `id`, the method does not return an error: `result.document` contains an empty array `[]`. You can check that the document exists with the [catalog.document.list](./catalog-document-list.md) method with a filter by `id` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "0",
-    "error_description": "Document not found."
+    "error_description": "Cannot modify processed item"
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to save the document | The user does not have permission to edit the document of the required type or the document with that identifier does not exist ||
-|| `0` | Warehouse accounting is not available on your plan | Warehouse accounting is not available on your plan ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Cannot complete action because you don't have sufficient permissions to view and select warehouses. | The user does not have the "View and select warehouses" permission ||
+|| `400` | `0` | Insufficient permissions to save the inventory object. | The user does not have the "Create and edit" permission for documents of this type or has no catalog permissions ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | `id` is not a number ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {fields}. Should be value of type array. | `fields` is not an object ||
+|| `400` | `0` | Cannot modify processed item | The document is processed. First cancel processing with the [catalog.document.cancel](./catalog-document-cancel.md) method ||
+|| `400` | `0` | Wrong format of field `title`. | The field contains an array or an object instead of a value. The text contains the field name ||
+|| `400` | `0` | Inventory Management is not available on your plan. | Inventory Management is not available on the account plan ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./document-element/catalog-document-element-update.md)
-- [{#T}](../documentcontractor/catalog-documentcontractor-add.md)
-- [{#T}](./catalog-document-cancel.md)
 - [{#T}](./catalog-document-add.md)
-- [{#T}](./catalog-document-conduct.md)
+- [{#T}](./catalog-document-list.md)
+- [{#T}](./catalog-document-cancel.md)
+- [{#T}](./catalog-document-get-fields.md)
+- [{#T}](./document-element/catalog-document-element-update.md)

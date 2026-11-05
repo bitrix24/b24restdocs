@@ -21,6 +21,8 @@ The method belongs to REST 3.0. The call specifics and response format of the ne
 
 The `catalog.document.mode.statusdetails` method returns whether inventory management is enabled and its operating mode.
 
+The method name is written in lowercase: calling `catalog.document.mode.statusDetails` returns the error `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`.
+
 ## Method Parameters
 
 No parameters.
@@ -234,13 +236,13 @@ HTTP status: **200**
         "mode": "B24"
     },
     "time": {
-        "start": 1792665214,
-        "finish": 1792665214.350084,
-        "duration": 0.3500840663909912,
+        "start": 1793883037,
+        "finish": 1793883037.569866,
+        "duration": 0.5698659420013428,
         "processing": 0,
-        "date_start": "2026-10-22T13:33:34+02:00",
-        "date_finish": "2026-10-22T13:33:34+02:00",
-        "operating_reset_at": 1792665780,
+        "date_start": "2026-11-05T15:50:37+03:00",
+        "date_finish": "2026-11-05T15:50:37+03:00",
+        "operating_reset_at": 1793883600,
         "operating": 0
     }
 }
@@ -254,7 +256,12 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | An object with the response data ||
 || **result.enabled**
-[`boolean`](../../data-types.md) | `true` — inventory management is enabled, `false` — it is disabled ||
+[`boolean`](../../data-types.md) | Inventory Management status.
+
+Possible values:
+
+- `true` — Inventory Management is enabled and available on the plan
+- `false` — Inventory Management is disabled or unavailable on the plan ||
 || **result.mode**
 [`string`](../../data-types.md) or `null` | Inventory management mode.
 
@@ -262,7 +269,9 @@ Possible values:
 
 - `B24` — inventory is managed in Bitrix24
 - `1C` — inventory is managed in an external ERP system
-- `null` — inventory management is disabled ||
+- `null` — Inventory Management is disabled in the settings
+
+If Inventory Management is enabled in the settings but unavailable on the plan, `enabled` is `false`, and `mode` contains the mode ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -301,4 +310,5 @@ HTTP status: **403**
 
 - [{#T}](./catalog-document-mode-status-rest-v3.md)
 - [{#T}](./catalog-document-mode-field-list.md)
+- [{#T}](./catalog-document-mode-field-get.md)
 - [{#T}](./catalog-document-conduct-rest-v3.md)

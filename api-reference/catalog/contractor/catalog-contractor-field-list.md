@@ -23,6 +23,8 @@ The method `catalog.contractor.field.list` returns the list of available vendor 
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||

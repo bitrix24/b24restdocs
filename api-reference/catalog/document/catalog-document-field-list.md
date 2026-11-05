@@ -23,6 +23,8 @@ The `catalog.document.field.list` method returns the list of available inventory
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -43,6 +45,8 @@ Available fields:
 - `editableGroups` — groups of operations in which the field is editable
 - `multiple` — whether the field has multiple values
 - `elementType` — element type for composite fields
+
+If you pass a string, for example `"name"`, the method returns only this property.
 
 Default: all description properties ||
 |#
@@ -305,13 +309,13 @@ HTTP status: **200**
         ]
     },
     "time": {
-        "start": 1792665252,
-        "finish": 1792665252.507383,
-        "duration": 0.5073831081390381,
+        "start": 1793883046,
+        "finish": 1793883046.829767,
+        "duration": 0.8297669887542725,
         "processing": 0,
-        "date_start": "2026-10-22T13:34:12+02:00",
-        "date_finish": "2026-10-22T13:34:12+02:00",
-        "operating_reset_at": 1792665840,
+        "date_start": "2026-11-05T15:50:46+03:00",
+        "date_finish": "2026-11-05T15:50:46+03:00",
+        "operating_reset_at": 1793883600,
         "operating": 0
     }
 }
@@ -350,13 +354,15 @@ The example shows the first three fields. The method returns the description of 
 || **requiredGroups**
 [`array`](../../data-types.md) or `null` | Operations in which the field is required. For `docType`, `currency`, and `responsibleId` — `["add"]` ||
 || **filterable**
-[`boolean`](../../data-types.md) | `true` — the field is available in the filter, `false` — it is not ||
+[`boolean`](../../data-types.md) | `true` — the field is available in the filter, `false` — not available. For `commentary` — `false` ||
 || **sortable**
-[`boolean`](../../data-types.md) | `true` — the field is available for sorting, `false` — it is not ||
+[`boolean`](../../data-types.md) | `true` — the field is available for sorting, `false` — not available. For `siteId`, `currency`, `statusBy`, and `commentary` — `false` ||
 || **editable**
 [`boolean`](../../data-types.md) | `true` — the field can be passed in the operations from `editableGroups` ||
 || **editableGroups**
-[`array`](../../data-types.md) or `null` | Operations in which the field can be set. For `docType` and `currency` — `["add"]` ||
+[`array`](../../data-types.md) or `null` | Operations in which the field can be set. For `docType` and `currency` — `["add"]`.
+
+The metadata does not fully match the behavior of [catalog.document.update](./catalog-document-update-rest-v3.md): the method skips `docType` without an error, but changes `currency` ||
 || **multiple**
 [`boolean`](../../data-types.md) | Multiple value flag. For document fields — `false` ||
 || **elementType**
@@ -384,23 +390,29 @@ HTTP status: **400**
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `DtoFieldDto` | In `select`, specify only properties from the description of the `select` parameter ||
+|| `select` | Unknown field `bad` found in entity `DtoFieldDto` | Specify in `select` only the properties from the `select` parameter description. Names are written in camelCase, for example `editableGroups` ||
 |#
 
 #### Select Format Error
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as an array of strings, for example `["name","type"]` ||
+|| `select` | Invalid field in `select`: `["name"]` | `select` contains a nested array or an object. Pass `select` as an array of strings, for example `["name","type"]` ||
 |#
 
 #### Access Error
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+
+HTTP status: **403**
 
 #|
 || **Field** | **Error description** | **How to Fix** ||

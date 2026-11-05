@@ -53,6 +53,8 @@ Available fields:
 - `multiple` — whether the field has multiple values
 - `elementType` — element type for composite fields
 
+If you pass a string, for example `"name"`, the method returns only this property.
+
 Default: all description properties ||
 |#
 
@@ -307,13 +309,13 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1792665221,
-        "finish": 1792665221.108471,
-        "duration": 0.10847091674804688,
+        "start": 1793883062,
+        "finish": 1793883062.720367,
+        "duration": 0.7203669548034668,
         "processing": 0,
-        "date_start": "2026-10-22T13:33:41+02:00",
-        "date_finish": "2026-10-22T13:33:41+02:00",
-        "operating_reset_at": 1792665780,
+        "date_start": "2026-11-05T15:51:02+03:00",
+        "date_finish": "2026-11-05T15:51:02+03:00",
+        "operating_reset_at": 1793883660,
         "operating": 0
     }
 }
@@ -386,9 +388,12 @@ HTTP status: **404**
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `name` | Required field `name` is missing | Pass the `name` parameter with the field name ||
+|| `name` | This request requires data type `string` in field `name` | Pass the field name as a string, not an array ||
 |#
 
 #### Field Not Found Error
@@ -399,25 +404,29 @@ HTTP status: **404**
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `name` | Field `#FIELD#` was not found | Specify a field name from the list: `id`, `name` ||
+|| `name` | Field `code` was not found | Specify a field name from the list: `id`, `name` ||
 |#
 
 #### Errors in the `select` Parameter
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `DtoFieldDto` | Pass only fields from the description of the `select` parameter ||
+|| `select` | Unknown field `bad` found in entity `DtoFieldDto` | Pass only the properties from the `select` parameter description. Names are written in camelCase, for example `editableGroups` ||
 |#
 
 #### `select` Format Error
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as an array of strings, for example `["name","type"]` ||
+|| `select` | Invalid field in `select`: `["name"]` | `select` contains a nested array or an object. Pass `select` as an array of strings, for example `["name","type"]` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

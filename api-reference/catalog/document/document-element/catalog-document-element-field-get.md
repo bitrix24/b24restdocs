@@ -392,7 +392,7 @@ HTTP status: **404**
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `name` | Field `#FIELD#` was not found | Specify a field name from the `name` parameter description ||
+|| `name` | Field `foo` was not found | Specify a field name from the `name` parameter description ||
 |#
 
 #### Request Validation Errors
@@ -410,7 +410,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `DtoFieldDto` | Pass only the fields from the `select` parameter description ||
+|| `select` | Unknown field `foo` found in entity `DtoFieldDto` | Pass only the fields from the `select` parameter description ||
 |#
 
 #### `select` Format Error
@@ -419,7 +419,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as an array of strings, for example `["name","type"]` ||
+|| `select` | Invalid field in `select`: `["name"]` | `select` contains a nested array, for example `[["name"]]`. Pass `select` as an array of strings, for example `["name","type"]` ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

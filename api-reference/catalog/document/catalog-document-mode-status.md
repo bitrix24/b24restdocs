@@ -1,4 +1,4 @@
-# Check the status of inventory management catalog.document.mode.status
+# Check Inventory Management Status catalog.document.mode.status
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with the "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" permission
 
-The method `catalog.document.mode.status` checks the activity of inventory management.
+The method `catalog.document.mode.status` checks whether Inventory Management is enabled on the account.
 
 ## Method Parameters
 
@@ -144,10 +144,9 @@ No parameters.
             ->getResponseData()
             ->getResult();
 
-        echo 'Status: ' . $result;
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting inventory mode: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -183,7 +182,7 @@ No parameters.
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "catalog.document.mode.status", nil)
+    res, err := client.Core().Call(ctx, "catalog.document.mode.status", nil, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.document.mode.status: %w", err)
     }
@@ -199,18 +198,19 @@ No parameters.
 
 ## Response Handling
 
-HTTP code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": "Y",
     "time": {
-        "start": 1759484053.115812,
-        "finish": 1759484053.162347,
-        "duration": 0.04653501510620117,
-        "processing": 0.006915092468261719,
-        "date_start": "2025-11-02T12:54:13+02:00",
-        "date_finish": "2025-11-02T12:54:13+02:00",
+        "start": 1793883497,
+        "finish": 1793883497.243981,
+        "duration": 0.24398088455200195,
+        "processing": 0,
+        "date_start": "2026-11-05T15:58:17+03:00",
+        "date_finish": "2026-11-05T15:58:17+03:00",
+        "operating_reset_at": 1793884080,
         "operating": 0
     }
 }
@@ -222,18 +222,18 @@ HTTP code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Activity of inventory management. Possible values:
-- `'Y'` — enabled,
-- `'N'` — disabled ||
+[`string`](../../data-types.md) | Inventory Management status. Possible values:
+- `Y` — Inventory Management is enabled
+- `N` — Inventory Management is disabled
+
+When Inventory Management is disabled, the [catalog.document.conductList](./catalog-document-conduct-list.md) and [catalog.document.cancelList](./catalog-document-cancel-list.md) methods return an error ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
-
-HTTP code: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -242,11 +242,13 @@ HTTP code: **400**
 }
 ```
 
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access denied | The user does not have permission to read the product catalog ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access denied | The user has neither the "View product catalog" permission nor the "View and select warehouses" permission ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -254,5 +256,5 @@ HTTP code: **400**
 ## Continue Learning
 
 - [{#T}](./catalog-document-list.md)
-- [{#T}](./catalog-document-add.md)
-- [{#T}](./catalog-document-delete.md)
+- [{#T}](./catalog-document-conduct-list.md)
+- [{#T}](./catalog-document-cancel-list.md)

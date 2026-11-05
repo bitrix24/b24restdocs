@@ -161,26 +161,25 @@ To obtain existing identifiers of VAT, you need to use [catalog.vat.list](./vat/
 || **docType**
 [`string`](../data-types.md) | Type of document. Available types can be obtained using the [catalog.enum.getStoreDocumentTypes](./enum/catalog-enum-get-store-document-types.md) method ||
 || **docNumber**
-[`string`](../data-types.md) | Internal document number. If not provided, it is generated automatically ||
+[`string`](../data-types.md) | Document number. If not provided, it is `null` and is not generated automatically ||
 || **title**
-[`string`](../data-types.md) | Title of the document ||
+[`string`](../data-types.md) | Title of the document. Can be `null` ||
 || **siteId**
 [`string`](../data-types.md) | Site code to which the document relates. Default is `s1` ||
 || **responsibleId**
-[`integer`](../data-types.md) | Identifier of the responsible person ||
+[`integer`](../data-types.md) | Identifier of the responsible person. Can be `null` ||
 || **createdBy**
 [`integer`](../data-types.md) | Identifier of the user who created the document ||
 || **modifiedBy**
 [`integer`](../data-types.md) | Identifier of the user who modified the document ||
 || **status**
 [`string`](../data-types.md) | Document status:
-- `N` — draft,
-- `Y` — approved,
-- `C` — canceled.
+- `N` — draft, including after processing is canceled
+- `Y` — processed
 
-The value is automatically changed when the document is approved or canceled ||
+The value is automatically changed when the document is processed or processing is canceled ||
 || **statusBy**
-[`integer`](../data-types.md) | User who changed the document status ||
+[`integer`](../data-types.md) | User who changed the document status. Can be `null` ||
 || **dateStatus**
 [`datetime`](../data-types.md) | Date of status change ||
 || **dateCreate**
@@ -188,13 +187,13 @@ The value is automatically changed when the document is approved or canceled ||
 || **dateModify**
 [`datetime`](../data-types.md) | Date of last modification of the document ||
 || **dateDocument**
-[`datetime`](../data-types.md) | Date of document approval ||
+[`datetime`](../data-types.md) | Document date. Can be `null` ||
 || **currency**
-[`string`](../data-types.md) | Currency of the document ||
+[`string`](../data-types.md) | Currency code. It is not validated and cannot be changed after the document is created ||
 || **total**
-[`double`](../data-types.md) | Total amount for the products in the document. The value is calculated automatically after approval but can be set manually ||
+[`double`](../data-types.md) | Document amount. It is not recalculated automatically, including on processing. Can be `null` ||
 || **commentary**
-[`string`](../data-types.md) | Commentary for the document ||
+[`string`](../data-types.md) | Commentary for the document. Can be `null` ||
 |#
 
 ### catalog_userfield_document
@@ -220,15 +219,15 @@ The value is automatically changed when the document is approved or canceled ||
 || **docId**
 [`catalog_document.id`](#catalog_document) | Identifier of the inventory document ||
 || **elementId**
-[`catalog_product.id`](#catalog_product) | Identifier of the catalog product ||
+[`catalog_product.id`](#catalog_product) | Identifier of the catalog product. Can be `null` in REST 2 ||
 || **storeFrom**
-[`catalog_store.id`](#catalog_store) | Identifier of the source warehouse. Used for documents where write-off is required ||
+[`catalog_store.id`](#catalog_store) | Identifier of the source warehouse. Used in stock transfer and write-off documents. Can be `null` in REST 2 ||
 || **storeTo**
-[`catalog_store.id`](#catalog_store) | Identifier of the recipient warehouse. Used for incoming and transfer documents ||
+[`catalog_store.id`](#catalog_store) | Identifier of the recipient warehouse. Used in stock receipt, stock adjustment, stock transfer, and return documents. Can be `null` in REST 2 ||
 || **amount**
-[`double`](../data-types.md) | Quantity of the product ||
+[`double`](../data-types.md) | Quantity of the product. Can be `null` in REST 2 ||
 || **purchasingPrice**
-[`double`](../data-types.md) | Purchasing price ||
+[`double`](../data-types.md) | Purchasing price. Can be `null` in REST 2 ||
 |#
 
 ### catalog_documentcontractor
@@ -242,8 +241,8 @@ The value is automatically changed when the document is approved or canceled ||
 [`catalog_document.id`](#catalog_document) | Identifier of the inventory document to which the supplier is bound ||
 || **entityTypeId**
 [`integer`](../data-types.md) | Identifier of the CRM object type:
-`3` — contact
-`4` — company  ||
+- `3` — contact
+- `4` — company ||
 || **entityId**
 [`integer`](../data-types.md) | Identifier of the supplier: contact or company ||
 |#

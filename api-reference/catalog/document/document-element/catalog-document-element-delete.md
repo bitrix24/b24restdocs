@@ -1,4 +1,4 @@
-# Delete Item from Inventory Document catalog.document.element.delete
+# Delete Product from Inventory Document catalog.document.element.delete
 
 {% note tip "" %}
 
@@ -11,11 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: 
-> - a user with "Create and edit" permission on the document type in the request
-> - a user with "View and select warehouse" permission on the incoming or outgoing warehouse
+> Who can execute the method: a user with the "Create and edit" permission for documents of this type and the "View and select warehouses" permission for the item warehouses
 
-The method `catalog.document.element.delete` removes an item from the inventory document. The document must be accessible to the user and have a status of `N` — not processed.
+The method `catalog.document.element.delete` deletes a product item from an unprocessed inventory document.
 
 ## Method Parameters
 
@@ -25,7 +23,9 @@ The method `catalog.document.element.delete` removes an item from the inventory 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_document_element.id`](../../data-types.md#catalog_document_element) | Identifier of the item record in the document, can be obtained using the [catalog.document.element.list](./catalog-document-element-list.md) method ||
+[`catalog_document_element.id`](../../data-types.md#catalog_document_element) | Identifier of the product item.
+
+The identifier can be retrieved using the [catalog.document.element.list](./catalog-document-element-list.md) method ||
 |#
 
 ## Code Examples
@@ -40,7 +40,7 @@ The method `catalog.document.element.delete` removes an item from the inventory 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":148}' \
+    -d '{"id":101}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.element.delete
     ```
 
@@ -50,7 +50,7 @@ The method `catalog.document.element.delete` removes an item from the inventory 
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":148,"auth":"**put_access_token_here**"}' \
+    -d '{"id":101,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.document.element.delete
     ```
 
@@ -68,7 +68,7 @@ The method `catalog.document.element.delete` removes an item from the inventory 
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'catalog.document.element.delete',
         params: {
-          id: 148,
+          id: 101,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -100,7 +100,7 @@ The method `catalog.document.element.delete` removes an item from the inventory 
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.document.element.delete',
             params: {
-              id: 148,
+              id: 101,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -130,7 +130,7 @@ The method `catalog.document.element.delete` removes an item from the inventory 
 
     try:
         bitrix_response = client.catalog.document.element.delete(
-            bitrix_id=148,
+            bitrix_id=101,
         ).response
         result = bitrix_response.result
         print(result)
@@ -156,7 +156,7 @@ The method `catalog.document.element.delete` removes an item from the inventory 
             ->call(
                 'catalog.document.element.delete',
                 [
-                    'id' => 148,
+                    'id' => 101,
                 ]
             );
 
@@ -175,7 +175,7 @@ The method `catalog.document.element.delete` removes an item from the inventory 
     ```js
     BX24.callMethod(
         'catalog.document.element.delete',
-        { id: 148 },
+        { id: 101 },
         function(result)
         {
             if (result.error())
@@ -194,7 +194,7 @@ The method `catalog.document.element.delete` removes an item from the inventory 
     $result = CRest::call(
         'catalog.document.element.delete',
         [
-            'id' => 148,
+            'id' => 101,
         ]
     );
 
@@ -208,7 +208,7 @@ The method `catalog.document.element.delete` removes an item from the inventory 
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.document.element.delete", b24.Params{
-    	"id": 148,
+    	"id": 101,
     })
     if err != nil {
     	return fmt.Errorf("catalog.document.element.delete: %w", err)
@@ -231,12 +231,13 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1759482302.413852,
-        "finish": 1759482302.497163,
-        "duration": 0.08331108093261719,
-        "processing": 0.01520085334777832,
-        "date_start": "2025-11-02T12:25:02+02:00",
-        "date_finish": "2025-11-02T12:25:02+02:00",
+        "start": 1793884061,
+        "finish": 1793884061.068368,
+        "duration": 0.06836795806884766,
+        "processing": 0,
+        "date_start": "2026-11-05T16:07:41+03:00",
+        "date_finish": "2026-11-05T16:07:41+03:00",
+        "operating_reset_at": 1793884620,
         "operating": 0
     }
 }
@@ -248,7 +249,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Root element of the response, contains `true` in case of success ||
+[`boolean`](../../../data-types.md) | Deletion result. Returns `true` if the item is deleted ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -260,7 +261,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ERROR_DOCUMENT_STATUS",
-    "error_description": "Conducted document"
+    "error_description": "Document not found"
 }
 ```
 
@@ -269,15 +270,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to work with the document or warehouses ||
-|| `ERROR_DOCUMENT_STATUS` | Document not found / Conducted document | Item not found, document deleted or already processed ||
-|| `0` | Error of deleting document | Failed to delete the record ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_DOCUMENT_RIGHTS` | Access denied | The user does not have the "Create and edit" permission for documents of this type or the "View and select warehouses" permission for the item warehouse ||
+|| `400` | `ERROR_DOCUMENT_STATUS` | Document not found | There is no item with the specified `id` ||
+|| `400` | `ERROR_DOCUMENT_STATUS` | Conducted document | The document is processed. To delete the item, cancel processing using the [catalog.document.cancel](../catalog-document-cancel.md) method ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | `id` is not a number ||
+|| `400` | `0` | Error of deleting document | Failed to delete the item ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-document-element-add.md)
 - [{#T}](./catalog-document-element-update.md)

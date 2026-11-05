@@ -1,4 +1,4 @@
-# Get a List of Warehouse Accounting Documents catalog.document.list
+# Get List of Inventory Documents catalog.document.list
 
 {% note tip "" %}
 
@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" permission
 
-The method `catalog.document.list` returns a paginated list of warehouse accounting documents. By default, filters are applied to the request, limiting the selection to the available document types and the current user's permissions.
+The method `catalog.document.list` returns a list of inventory documents with filtering, sorting, and pagination.
+
+The response includes only documents of the types for which the user has the "View" permission, and only with warehouses available to the user. The method does not return reservation cancellation documents, type `U`.
 
 ## Method Parameters
 
@@ -23,21 +25,20 @@ The method `catalog.document.list` returns a paginated list of warehouse account
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../data-types.md) | An array of fields from [catalog_document](../data-types.md#catalog_document) that need to be selected.
+[`array`](../../data-types.md) | Array of document fields to return. Available fields: `commentary`, `createdBy`, `currency`, `dateCreate`, `dateDocument`, `dateModify`, `dateStatus`, `docNumber`, `docType`, `id`, `modifiedBy`, `responsibleId`, `siteId`, `status`, `statusBy`, `title`, `total`. Field descriptions are in the [catalog_document](../data-types.md#catalog_document) object.
 
-If the array is not provided or an empty array is passed, all available document fields will be selected. ||
+If the array is not passed or is empty, the method returns all fields. The method skips unknown fields without an error. Write field names in camelCase: if `select` contains no known field, for example `["ID", "TITLE"]`, the method returns all fields
+||
 || **filter**
-[`object`](../../data-types.md) | An object for filtering the selected documents in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
+[`object`](../../data-types.md) | Object for filtering documents in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_document](../data-types.md#catalog_document) object.
+Possible values for `field` are the fields from the `select` list. For example, `{"docType": "S", "status": "N"}` returns draft stock adjustment documents.
 
-An additional prefix can be specified for the key to clarify the filter's behavior. Possible prefix values:
+An additional prefix can be set for the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `=` — exact match
-- `!=`, `!` — not equal
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
 - `%` — LIKE, substring search. The `%` symbol should not be included in the filter value. The search looks for the substring in any position of the string.
@@ -45,42 +46,53 @@ An additional prefix can be specified for the key to clarify the filter's behavi
     - `"mol%"` — searches for values starting with "mol"
     - `"%mol"` — searches for values ending with "mol"
     - `"%mol%"` — searches for values where "mol" can be in any position
+- `%=` — LIKE (similar to `=%`)
 - `!%` — NOT LIKE, substring search. The `%` symbol should not be included in the filter value. The search goes from both sides.
 - `!=%` — NOT LIKE, substring search. The `%` symbol must be included in the value. Examples:
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
-- `=` — equal, exact match, used by default
+- `!%=` — NOT LIKE (similar to `!=%`)
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
+
+An array without a prefix works as IN: `{"id": [359, 369]}` returns both documents.
+
+The method skips unknown fields and uppercase names, for example `ID`, without an error and returns documents ignoring such a condition. Check field names against the list above
 || 
 || **order**
-[`object`](../../data-types.md) | An object for sorting the selected documents in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | Object for sorting documents in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_document](../data-types.md#catalog_document) object.
+Possible values for `field` are the fields from the `select` list.
 
 Possible values for `order`:
 
 - `asc` — in ascending order
-- `desc` — in descending order 
+- `desc` — in descending order
 
-By default, documents are sorted in ascending order by `id`. ||
+The direction is case-insensitive: `DESC` and `desc` work the same way. The method skips unknown fields in `order` without an error. By default, documents are sorted by `id` in ascending order
+||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
-The page size is 50 records.
+The page size of results is always static — 50 records.
 
 To select the second page of results, pass the value `50`. To select the third page of results, pass the value `100`, and so on.
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number. 
-Or pass the value from the `next` key in the response. ||
+`start = (N-1) * 50`, where `N` is the number of the required page.
+
+If there is a next page, the response contains the `next` key with the `start` value for it. If `start` is greater than the number of documents found, the method returns an empty `documents` array
+||
 |#
 
 ## Code Examples
 
 {% include [Note on Examples](../../../_includes/examples.md) %}
+
+The example retrieves draft stock adjustment documents whose name contains "Surplus stock adjustment", starting with the newest.
 
 {% list tabs %}
 
@@ -90,12 +102,7 @@ Or pass the value from the `next` key in the response. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{
-          "select": ["id","docType","docNumber","title","status","dateDocument","total"],
-          "filter": {">=dateCreate":"2025-10-01T00:00:00+02:00","<=dateCreate":"2025-10-15T23:59:59+02:00"},
-          "order":  {"id":"ASC"},
-          "start": 50
-        }' \
+    -d '{"select":["id","docType","docNumber","title","status","dateDocument","total"],"filter":{"docType":"S","status":"N","%title":"Surplus stock adjustment"},"order":{"id":"desc"},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.list
     ```
 
@@ -105,13 +112,7 @@ Or pass the value from the `next` key in the response. ||
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{
-          "select": ["id","docType","docNumber","title","status","dateDocument","total"],
-          "filter": {">=dateCreate":"2025-10-01T00:00:00+02:00","<=dateCreate":"2025-10-15T23:59:59+02:00"},
-          "order":  {"id":"ASC"},
-          "start": 50,
-          "auth":  "**put_access_token_here**"
-        }' \
+    -d '{"select":["id","docType","docNumber","title","status","dateDocument","total"],"filter":{"docType":"S","status":"N","%title":"Surplus stock adjustment"},"order":{"id":"desc"},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.document.list
     ```
 
@@ -121,18 +122,19 @@ Or pass the value from the `next` key in the response. ||
     // This snippet is an ES module: top-level await requires type="module" or a bundler.
     // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
     import { Text } from '@bitrix24/b24jssdk'
-    import type { B24Frame } from '@bitrix24/b24jssdk'
+    import type { B24Frame, ISODate } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
 
-    // Shape of the payload returned in result (match the "response handling" section of the page)
-    type DocumentListResult = {
-      documents: {
-        docType: string
-        id: number
-        status: string
-        title: string
-      }[]
+    // Shape of one document returned in result.documents (only the selected fields)
+    type DocumentListItem = {
+      id: number
+      docType: string
+      docNumber: string | null
+      title: string | null
+      status: string
+      dateDocument: ISODate | null
+      total: number | null
     }
 
     try {
@@ -141,15 +143,18 @@ Or pass the value from the `next` key in the response. ||
       // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
       // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
       // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
-      const response = await $b24.actions.v2.call.make<DocumentListResult>({
+      const response = await $b24.actions.v2.call.make<{ documents: DocumentListItem[] }>({
         method: 'catalog.document.list',
         params: {
-          select: ['id', 'docType', 'title', 'status'],
+          select: ['id', 'docType', 'docNumber', 'title', 'status', 'dateDocument', 'total'],
           filter: {
-            '>=dateCreate': '2025-10-01T00:00:00+02:00',
-            '<=dateCreate': '2025-10-15T23:59:59+02:00',
+            docType: 'S',
+            status: 'N',
+            '%title': 'Surplus stock adjustment',
           },
-          order: { id: 'ASC' },
+          order: {
+            id: 'desc',
+          },
           start: 0,
         },
         requestId: Text.getUuidRfc4122()
@@ -160,7 +165,7 @@ Or pass the value from the `next` key in the response. ||
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Documents on this page:', result.documents.length, result.documents)
+        console.info('Documents on page:', result.documents.length)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -174,25 +179,23 @@ Or pass the value from the `next` key in the response. ||
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function fetchDocumentList() {
+      async function listDocuments() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // catalog.document.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.document.list',
             params: {
-              select: ['id', 'docType', 'title', 'status'],
+              select: ['id', 'docType', 'docNumber', 'title', 'status', 'dateDocument', 'total'],
               filter: {
-                '>=dateCreate': '2025-10-01T00:00:00+02:00',
-                '<=dateCreate': '2025-10-15T23:59:59+02:00',
+                docType: 'S',
+                status: 'N',
+                '%title': 'Surplus stock adjustment',
               },
-              order: { id: 'ASC' },
+              order: {
+                id: 'desc',
+              },
               start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -205,14 +208,14 @@ Or pass the value from the `next` key in the response. ||
           }
 
           const result = response.getData().result
-          console.info('Documents on this page:', result.documents.length, result.documents)
+          console.info('Documents on page:', result.documents.length)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', fetchDocumentList)
+      document.addEventListener('DOMContentLoaded', listDocuments)
     </script>
     ```
 
@@ -223,23 +226,16 @@ Or pass the value from the `next` key in the response. ||
 
     try:
         bitrix_response = client.catalog.document.list(
-            select=[
-                "id",
-                "docType",
-                "docNumber",
-                "title",
-                "status",
-                "dateDocument",
-                "total",
-            ],
+            select=["id", "docType", "docNumber", "title", "status", "dateDocument", "total"],
             filter={
-                ">=dateCreate": "2025-10-01T00:00:00+03:00",
-                "<=dateCreate": "2025-10-15T23:59:59+03:00",
+                "docType": "S",
+                "status": "N",
+                "%title": "Surplus stock adjustment",
             },
             order={
-                "id": "ASC",
+                "id": "desc",
             },
-            start=50,
+            start=0,
         ).response
         result = bitrix_response.result
         print(result)
@@ -267,28 +263,24 @@ Or pass the value from the `next` key in the response. ||
                 [
                     'select' => ['id', 'docType', 'docNumber', 'title', 'status', 'dateDocument', 'total'],
                     'filter' => [
-                        '>=dateCreate' => '2025-10-01T00:00:00+02:00',
-                        '<=dateCreate' => '2025-10-15T23:59:59+02:00',
+                        'docType' => 'S',
+                        'status'  => 'N',
+                        '%title'  => 'Surplus stock adjustment',
                     ],
-                    'order'  => ['ID' => 'ASC'],
-                    'start'  => 50, // value of next from the previous response
+                    'order'  => [
+                        'id' => 'desc',
+                    ],
+                    'start'  => 0,
                 ]
             );
 
-        $payload = $response
+        $result = $response
             ->getResponseData()
             ->getResult();
 
-        print_r($payload['documents']);
-
-        $next = $response
-            ->getResponseData()
-            ->getNext();
-
-        echo PHP_EOL . 'next: ' . ($next ?? 'null');
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error loading documents: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -298,24 +290,23 @@ Or pass the value from the `next` key in the response. ||
     BX24.callMethod(
         'catalog.document.list',
         {
-            select: ['id', 'docType', 'title', 'status'],
-            filter: { '>=dateCreate': '2025-10-01T00:00:00+02:00', '<=dateCreate': '2025-10-15T23:59:59+02:00' },
-            order:  { id: 'ASC' }
+            select: ['id', 'docType', 'docNumber', 'title', 'status', 'dateDocument', 'total'],
+            filter: {
+                docType: 'S',
+                status: 'N',
+                '%title': 'Surplus stock adjustment',
+            },
+            order: {
+                id: 'desc',
+            },
+            start: 0,
         },
         function(result)
         {
             if (result.error())
-            {
                 console.error(result.error());
-                return;
-            }
-
-            console.table(result.data().documents);
-
-            if (result.more())
-            {
-                result.next(); // substitutes the value from the response into start and repeats the request
-            }
+            else
+                console.log(result.data());
         }
     );
     ```
@@ -330,17 +321,19 @@ Or pass the value from the `next` key in the response. ||
         [
             'select' => ['id', 'docType', 'docNumber', 'title', 'status', 'dateDocument', 'total'],
             'filter' => [
-                '>=dateCreate' => '2025-10-01T00:00:00+02:00',
-                '<=dateCreate' => '2025-10-15T23:59:59+02:00',
+                'docType' => 'S',
+                'status' => 'N',
+                '%title' => 'Surplus stock adjustment',
             ],
-            'order'  => ['ID' => 'ASC'],
-            'start'  => 50,
+            'order' => [
+                'id' => 'desc',
+            ],
+            'start' => 0,
         ]
     );
 
     echo '<PRE>';
-    print_r($result['result']['documents']);
-    echo PHP_EOL . 'next: ' . ($result['next'] ?? 'null');
+    print_r($result);
     echo '</PRE>';
     ```
 
@@ -351,13 +344,14 @@ Or pass the value from the `next` key in the response. ||
     res, err := client.Core().Call(ctx, "catalog.document.list", b24.Params{
     	"select": []string{"id", "docType", "docNumber", "title", "status", "dateDocument", "total"},
     	"filter": b24.Params{
-    		">=dateCreate": "2025-10-01T00:00:00+03:00",
-    		"<=dateCreate": "2025-10-15T23:59:59+03:00",
+    		"docType": "S",
+    		"status":  "N",
+    		"%title":  "Surplus stock adjustment",
     	},
     	"order": b24.Params{
-    		"id": "ASC",
+    		"id": "desc",
     	},
-    	"start": 50,
+    	"start": 0,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.document.list: %w", err)
@@ -369,17 +363,21 @@ Or pass the value from the `next` key in the response. ||
     	return fmt.Errorf("no documents key in the response")
     }
 
+    // Optional fields can be null, so pointers are used for them.
     var items []struct {
-    	DocType string `json:"docType"`
-    	ID      b24.ID `json:"id"`
-    	Status  string `json:"status"`
-    	Title   string `json:"title"`
+    	ID           b24.ID   `json:"id"`
+    	DocType      string   `json:"docType"`
+    	DocNumber    *string  `json:"docNumber"`
+    	Title        *string  `json:"title"`
+    	Status       string   `json:"status"`
+    	DateDocument *string  `json:"dateDocument"`
+    	Total        *float64 `json:"total"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
     for _, it := range items {
-    	fmt.Println(it.DocType)
+    	fmt.Println(it.ID, it.Status)
     }
     ```
 
@@ -387,43 +385,32 @@ Or pass the value from the `next` key in the response. ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "documents": [
             {
+                "dateDocument": "2026-11-06T10:00:00+03:00",
+                "docNumber": "OP-00042",
                 "docType": "S",
-                "id": 1,
-                "status": "Y",
-                "title": "Receipt #2"
-            },
-            {
-                "docType": "A",
-                "id": 7,
+                "id": 381,
                 "status": "N",
-                "title": "Test Rest"
-            },
-            // ...other documents
-            {
-                "docType": "S",
-                "id": 105,
-                "status": "N",
-                "title": "receipt 10"
+                "title": "Surplus stock adjustment",
+                "total": null
             }
         ]
     },
-    "next": 50,
-    "total": 143,
+    "total": 1,
     "time": {
-        "start": 1761914886,
-        "finish": 1761914886.802491,
-        "duration": 0.8024909496307373,
+        "start": 1793883564,
+        "finish": 1793883564.287555,
+        "duration": 0.2875549793243408,
         "processing": 0,
-        "date_start": "2025-10-31T15:48:06+02:00",
-        "date_finish": "2025-10-31T15:48:06+02:00",
-        "operating_reset_at": 1761915486,
+        "date_start": "2026-11-05T15:59:24+03:00",
+        "date_finish": "2026-11-05T15:59:24+03:00",
+        "operating_reset_at": 1793884140,
         "operating": 0
     }
 }
@@ -436,40 +423,45 @@ HTTP Code: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
-|| **documents**
-[`catalog_document[]`](../data-types.md#catalog_document) | A list of documents, the response structure depends on the `select` parameter ||
+|| **result.documents**
+[`catalog_document[]`](../data-types.md#catalog_document) | Array of documents. Each document has only the fields from `select`, empty fields come with the value `null` ||
 || **next**
-[`integer`](../../data-types.md) | Offset pointer for the next page. Pass this value to the `start` parameter to get the next 50 records ||
+[`integer`](../../data-types.md) | The `start` value for the next page. The key is absent if the page is the last one ||
 || **total**
-[`integer`](../../data-types.md) | The total number of documents ||
+[`integer`](../../data-types.md) | Total number of documents found ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error": "0",
-    "error_description": "Insufficient permissions to save the document"
+    "error": "100",
+    "error_description": "Invalid order \"BAD\""
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to save the document | The user does not have permission to view ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Insufficient permissions to save the inventory object. | The user has neither the "View product catalog" permission nor the "View and select warehouses" permission ||
+|| `400` | `100` | Invalid order "BAD" | `order` contains a direction other than `asc` and `desc`. The text shows the direction in uppercase ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {filter}. Should be value of type array. | `filter` is not an object. The same error comes with `{select}` or `{order}` if they are not an array or an object ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-add.md)
 - [{#T}](./catalog-document-update.md)
+- [{#T}](./catalog-document-delete.md)
+- [{#T}](./catalog-document-conduct.md)
+- [{#T}](./catalog-document-get-fields.md)
 - [{#T}](./document-element/catalog-document-element-list.md)
-- [{#T}](../documentcontractor/catalog-documentcontractor-list.md)

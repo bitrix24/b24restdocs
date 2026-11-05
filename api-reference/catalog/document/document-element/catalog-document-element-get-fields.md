@@ -1,4 +1,4 @@
-# Get the list of product fields for the inventory document catalog.document.element.getFields
+# Get List of Inventory Document Product Fields catalog.document.element.getFields
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: users with the "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" permission
 
-The method `catalog.document.element.getFields` returns the description of product fields from the inventory document.
+The method `catalog.document.element.getFields` returns the description of the fields of an inventory document product item: type, whether the field is required, and whether it can be changed.
 
 ## Method Parameters
 
@@ -239,13 +239,13 @@ HTTP Status: **200**
             "docId": {
                 "isImmutable": true,
                 "isReadOnly": false,
-                "isRequired": true,
+                "isRequired": false,
                 "type": "integer"
             },
             "elementId": {
                 "isImmutable": true,
                 "isReadOnly": false,
-                "isRequired": true,
+                "isRequired": false,
                 "type": "integer"
             },
             "id": {
@@ -275,12 +275,13 @@ HTTP Status: **200**
         }
     },
     "time": {
-        "start": 1759482101.114239,
-        "finish": 1759482101.178452,
-        "duration": 0.06421303749084473,
-        "processing": 0.008214950561523438,
-        "date_start": "2025-11-02T12:21:41+01:00",
-        "date_finish": "2025-11-02T12:21:41+01:00",
+        "start": 1793884083,
+        "finish": 1793884083.308822,
+        "duration": 0.3088219165802002,
+        "processing": 0,
+        "date_start": "2026-11-05T16:08:03+03:00",
+        "date_finish": "2026-11-05T16:08:03+03:00",
+        "operating_reset_at": 1793884680,
         "operating": 0
     }
 }
@@ -293,9 +294,10 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **documentElement**
-[`object`](../../data-types.md#catalog_document_element) | Object describing the fields of the document's product. 
-Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` — identifier of the object [`catalog_document_element`](../../data-types.md#catalog_document_element), and `value` — object of type [`rest_field_description`](../../data-types.md). || ||
+|| **result.documentElement**
+[`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of a field of the [catalog_document_element](../../data-types.md#catalog_document_element) object, and `value` is an object of the [rest_field_description](../../data-types.md#rest_field_description) type.
+
+Not all metadata matches the behavior of the methods: `docId` is marked as optional, but without it [catalog.document.element.add](./catalog-document-element-add.md) returns the `Document not found` error. The `docId` and `elementId` fields with `isImmutable: true` can be set only when adding, and [catalog.document.element.update](./catalog-document-element-update.md) skips them ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -316,14 +318,13 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to read inventory documents ||
-|| `0` |  | Other processing errors ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_DOCUMENT_RIGHTS` | Access denied | The user has neither the "View product catalog" permission nor the "View and select warehouses" permission ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-document-element-add.md)
 - [{#T}](./catalog-document-element-update.md)

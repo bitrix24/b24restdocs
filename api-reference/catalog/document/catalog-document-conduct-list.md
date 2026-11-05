@@ -1,4 +1,4 @@
-# Conduct Multiple Warehouse Accounting Documents catalog.document.conductList
+# Process Multiple Inventory Documents catalog.document.conductList
 
 {% note tip "" %}
 
@@ -11,15 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method:
-> - a user with the "Conduct document" access permission for the document type in the request,
-> - and "View and select warehouse" for the incoming or outgoing warehouse.
+> Who can execute the method: a user with the "View product catalog" and "View Inventory Management area" permissions and the "Process inventory objects" permission for the required document type. The document must be available to the user under the "View" permission
 
-The method `catalog.document.conductList` conducts a group of warehouse accounting documents:
-- the status of the documents changes to `Y` — conducted,
-- the warehouse stock of goods is updated according to the document positions.
-
-Access permissions are checked for each document in the request.
+The method `catalog.document.conductList` processes multiple inventory documents.
 
 ## Method Parameters
 
@@ -29,8 +23,12 @@ Access permissions are checked for each document in the request.
 || **Name**
 `type` | **Description** ||
 || **documentIds***
-[`catalog_document.id[]`](../data-types.md#catalog_document) | List of document identifiers, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id[]`](../data-types.md#catalog_document) | Array of document IDs, for example `[142, 143, 144]`.
+
+Document IDs can be retrieved with the [catalog.document.list](./catalog-document-list.md) method. The method accepts an empty array without an error and returns `true` ||
 |#
+
+The method processes documents one by one, like [catalog.document.conduct](./catalog-document-conduct.md). If a document cannot be processed, the method moves on to the next one: the processed documents stay processed, and the response contains an error.
 
 ## Code Examples
 
@@ -172,12 +170,9 @@ Access permissions are checked for each document in the request.
             ->getResponseData()
             ->getResult();
 
-        if ($result === true) {
-            echo 'Documents conducted';
-        }
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error conducting documents: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -236,20 +231,20 @@ Access permissions are checked for each document in the request.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": true,
     "time": {
-        "start": 1762410455,
-        "finish": 1762410455.743473,
-        "duration": 0.7434730529785156,
-        "processing": 0,
-        "date_start": "2025-11-06T09:27:35+01:00",
-        "date_finish": "2025-11-06T09:27:35+01:00",
-        "operating_reset_at": 1762411055,
-        "operating": 0.2910308837890625
+        "start": 1793883405,
+        "finish": 1793883406.059175,
+        "duration": 1.0591750144958496,
+        "processing": 1,
+        "date_start": "2026-11-05T15:56:45+03:00",
+        "date_finish": "2026-11-05T15:56:46+03:00",
+        "operating_reset_at": 1793883960,
+        "operating": 0.12781405448913574
     }
 }
 ```
@@ -260,40 +255,42 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` if all documents were conducted without errors. If at least one document could not be conducted, the method will return an error in the response `error` / `error_description`. Documents that were successfully processed will remain in the "Conducted" status ||
+[`boolean`](../../data-types.md) | Root element of the response. Contains `true` if all documents are processed. If at least one document cannot be processed, the method returns an error, while the other documents are processed ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "0",
-    "error_description": "An error occurred while conducting the document "Incoming 33": Incorrect quantity of goods #6907 (Monster Energy) in the warehouse accounting document"
+    "error_description": "Error processing inventory object \"Receipt from vendor\": Vendor is not specified.."
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | An error occurred while conducting the document “#document name”: “error text” | The document contains incorrect data, for example “Supplier not specified” ||
-|| `0` | Document conducting error: Insufficient permissions to save the document | No permissions for the product catalog, warehouse accounting, or no permission to conduct the document ||
-|| `0` | Warehouse accounting is not available on your plan | Warehouse accounting is not available on your plan ||
-|| `0` | Warehouse accounting must be enabled to conduct the document | Warehouse accounting must be enabled to conduct the document ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Insufficient permissions to save the inventory object. | The user does not have the "View product catalog" or "View Inventory Management area" permission ||
+|| `400` | `0` | Error processing inventory object: Insufficient permissions to save the inventory object.. | The user does not have the "Process inventory objects" permission for documents of this type ||
+|| `400` | `100` | Could not find value for parameter {documentIds} | The `documentIds` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {documentIds}. Should be value of type array. | `documentIds` is not an array ||
+|| `400` | `0` | Error processing "#DOC_TITLE#". | The document is not found or is unavailable to the user. The text comes with an unfilled `#DOC_TITLE#` ||
+|| `400` | `0` | Error processing inventory object "Receipt from vendor": Vendor is not specified.. | The document could not be processed. The text contains the document name or, if it has none, the document type name, and the reason, for example, no vendor or no products ||
+|| `400` | `0` | Inventory Management is not available on your plan. | Inventory Management is not available on the account plan ||
+|| `400` | `0` | You have to enable inventory management to process the inventory object. | Inventory Management is disabled on the account. You can check the status with the [catalog.document.mode.status](./catalog-document-mode-status.md) method ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-list.md)
 - [{#T}](./catalog-document-conduct.md)
 - [{#T}](./catalog-document-cancel-list.md)
-- [{#T}](./catalog-document-list.md)
-- [{#T}](./document-element/catalog-document-element-add.md)
-- [{#T}](../documentcontractor/catalog-documentcontractor-add.md)

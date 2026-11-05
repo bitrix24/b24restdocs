@@ -424,7 +424,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 ## Continue Learning
 
-- [{#T}](./catalog-documentcontractor-field-list.md)
 - [{#T}](./catalog-documentcontractor-add-rest-v3.md)
 - [{#T}](./catalog-documentcontractor-list-rest-v3.md)
+- [{#T}](./catalog-documentcontractor-field-list.md)
 - [{#T}](./index.md)

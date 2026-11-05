@@ -11,11 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: 
-> - a user with "Create and Edit" permission on the document type in the request
-> - a user with "View and Select Warehouse" permission on the incoming or outgoing warehouse
+> Who can execute the method: a user with the "Create and edit" permission for documents of this type and the "View and select warehouses" permission for the item warehouses
 
-The method `catalog.document.element.update` modifies an existing item in the inventory document and returns the updated product data.
+The method `catalog.document.element.update` updates a product item in an unprocessed inventory document and returns its fields after the update.
 
 ## Method Parameters
 
@@ -25,27 +23,39 @@ The method `catalog.document.element.update` modifies an existing item in the in
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_document_element.id`](../../data-types.md#catalog_document_element) | Identifier of the document product, can be obtained using the [catalog.document.element.list](./catalog-document-element-list.md) method ||
+[`catalog_document_element.id`](../../data-types.md#catalog_document_element) | Identifier of the product item.
+
+The identifier can be retrieved using the [catalog.document.element.list](./catalog-document-element-list.md) method ||
 || **fields***
-[`object`](../../../data-types.md) | Fields to be modified (detailed description below) ||
+[`object`](../../../data-types.md) | Item fields to update ([detailed description](#fields)) ||
 |#
 
 ### Parameter fields {#fields}
-
-{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **storeFrom**
-[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the source warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Use for outgoing documents. If the parameter is not provided, the current value will be retained ||
+[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the write-off warehouse. Filled in for transfer and write-off documents.
+
+The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list.md) method ||
 || **storeTo**
-[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the destination warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Suitable for incoming and transfer documents. If the parameter is not provided, the current value will be retained ||
+[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the receipt warehouse. Filled in for receipt, stock adjustment, transfer, and return documents.
+
+The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list.md) method ||
 || **amount**
-[`double`](../../../data-types.md) | Quantity of the product in the document's accounting units. If the parameter is not provided, the current value will be retained ||
+[`double`](../../../data-types.md) | Product quantity. The method saves a non-numeric value as `null` without an error, and the previous quantity is erased ||
 || **purchasingPrice**
-[`double`](../../../data-types.md) | Purchase price in the document's currency. If the parameter is not provided, the current value will be retained ||
+[`double`](../../../data-types.md) | Purchase price per unit in the document currency. The method saves a non-numeric value as `0` without an error ||
 |#
+
+The method changes only the passed fields; the other fields retain their values.
+
+The `docId` and `elementId` fields cannot be changed: the method skips them without an error. To replace the product or move the item to another document, delete the item using the [catalog.document.element.delete](./catalog-document-element-delete.md) method and add a new one using the [catalog.document.element.add](./catalog-document-element-add.md) method.
+
+If `fields` contains no updatable field — it is an empty object or contains only `docId`, `elementId`, or unknown fields — the method returns the `Error of modifying new document` error.
+
+The method does not check that the warehouses exist and match the document type.
 
 ## Code Examples
 
@@ -59,7 +69,7 @@ The method `catalog.document.element.update` modifies an existing item in the in
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":148,"fields":{"amount":12,"purchasingPrice":1180,"storeTo":2}}' \
+    -d '{"id":101,"fields":{"amount":12,"purchasingPrice":1180,"storeTo":43}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.element.update
     ```
 
@@ -69,7 +79,7 @@ The method `catalog.document.element.update` modifies an existing item in the in
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":148,"fields":{"amount":12,"purchasingPrice":1180,"storeTo":2},"auth":"**put_access_token_here**"}' \
+    -d '{"id":101,"fields":{"amount":12,"purchasingPrice":1180,"storeTo":43},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.document.element.update
     ```
 
@@ -86,13 +96,13 @@ The method `catalog.document.element.update` modifies an existing item in the in
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type DocumentElementUpdateResult = {
       documentElement: {
-        amount: number
+        amount: number | null
         docId: number
-        elementId: number
+        elementId: number | null
         id: number
-        purchasingPrice: number
+        purchasingPrice: number | null
         storeFrom: number | null
-        storeTo: number
+        storeTo: number | null
       }
     }
 
@@ -100,11 +110,11 @@ The method `catalog.document.element.update` modifies an existing item in the in
       const response = await $b24.actions.v2.call.make<DocumentElementUpdateResult>({
         method: 'catalog.document.element.update',
         params: {
-          id: 148,
+          id: 101,
           fields: {
             amount: 12,
             purchasingPrice: 1180,
-            storeTo: 2,
+            storeTo: 43,
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -137,11 +147,11 @@ The method `catalog.document.element.update` modifies an existing item in the in
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.document.element.update',
             params: {
-              id: 148,
+              id: 101,
               fields: {
                 amount: 12,
                 purchasingPrice: 1180,
-                storeTo: 2,
+                storeTo: 43,
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -172,11 +182,11 @@ The method `catalog.document.element.update` modifies an existing item in the in
 
     try:
         bitrix_response = client.catalog.document.element.update(
-            bitrix_id=148,
+            bitrix_id=101,
             fields={
                 "amount": 12,
                 "purchasingPrice": 1180,
-                "storeTo": 2,
+                "storeTo": 43,
             },
         ).response
         result = bitrix_response.result
@@ -203,11 +213,11 @@ The method `catalog.document.element.update` modifies an existing item in the in
             ->call(
                 'catalog.document.element.update',
                 [
-                    'id' => 148,
+                    'id' => 101,
                     'fields' => [
                         'amount' => 12,
                         'purchasingPrice' => 1180,
-                        'storeTo' => 2,
+                        'storeTo' => 43,
                     ],
                 ]
             );
@@ -228,11 +238,11 @@ The method `catalog.document.element.update` modifies an existing item in the in
     BX24.callMethod(
         'catalog.document.element.update',
         {
-            id: 148,
+            id: 101,
             fields: {
                 amount: 12,
                 purchasingPrice: 1180,
-                storeTo: 2
+                storeTo: 43
             }
         },
         function(result)
@@ -253,11 +263,11 @@ The method `catalog.document.element.update` modifies an existing item in the in
     $result = CRest::call(
         'catalog.document.element.update',
         [
-            'id' => 148,
+            'id' => 101,
             'fields' => [
                 'amount' => 12,
                 'purchasingPrice' => 1180,
-                'storeTo' => 2,
+                'storeTo' => 43,
             ],
         ]
     );
@@ -272,11 +282,11 @@ The method `catalog.document.element.update` modifies an existing item in the in
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.document.element.update", b24.Params{
-    	"id": 148,
+    	"id": 101,
     	"fields": b24.Params{
     		"amount":          12,
     		"purchasingPrice": 1180,
-    		"storeTo":         2,
+    		"storeTo":         43,
     	},
     })
     if err != nil {
@@ -289,46 +299,49 @@ The method `catalog.document.element.update` modifies an existing item in the in
     	return fmt.Errorf("no documentElement key in the response")
     }
 
+    // Fields that are not filled in are returned as null, so they use pointers.
     var item struct {
-    	Amount          int    `json:"amount"`
-    	DocID           b24.ID `json:"docId"`
-    	ElementID       b24.ID `json:"elementId"`
-    	ID              b24.ID `json:"id"`
-    	PurchasingPrice int    `json:"purchasingPrice"`
-    	StoreTo         int    `json:"storeTo"`
+    	Amount          *float64 `json:"amount"`
+    	DocID           b24.ID   `json:"docId"`
+    	ElementID       *int     `json:"elementId"`
+    	ID              b24.ID   `json:"id"`
+    	PurchasingPrice *float64 `json:"purchasingPrice"`
+    	StoreFrom       *int     `json:"storeFrom"`
+    	StoreTo         *int     `json:"storeTo"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Amount, item.DocID)
+    fmt.Println(item.ID, item.Amount)
     ```
 
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "documentElement": {
             "amount": 12,
-            "docId": 64,
-            "elementId": 312,
-            "id": 148,
+            "docId": 371,
+            "elementId": 6595,
+            "id": 101,
             "purchasingPrice": 1180,
             "storeFrom": null,
-            "storeTo": 2
+            "storeTo": 43
         }
     },
     "time": {
-        "start": 1759482203.22173,
-        "finish": 1759482203.33928,
-        "duration": 0.11754989624023438,
-        "processing": 0.02244114875793457,
-        "date_start": "2025-11-02T12:23:23+01:00",
-        "date_finish": "2025-11-02T12:23:23+01:00",
+        "start": 1793883948,
+        "finish": 1793883948.402954,
+        "duration": 0.4029541015625,
+        "processing": 0,
+        "date_start": "2026-11-05T16:05:48+03:00",
+        "date_finish": "2026-11-05T16:05:48+03:00",
+        "operating_reset_at": 1793884500,
         "operating": 0
     }
 }
@@ -341,20 +354,20 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **documentElement**
-[`catalog_document_element`](../../data-types.md#catalog_document_element) | Updated product data of the document. ||
+|| **result.documentElement**
+[`catalog_document_element`](../../data-types.md#catalog_document_element) | Object with all item fields after the update. Fields that are not filled in are returned as `null` ||
 || **time**
-[`time`](../../../data-types.md#time) | Service information about the request processing time. ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error": "ERROR_DOCUMENT_STATUS",
-    "error_description": "Document not found"
+    "error": "0",
+    "error_description": "Error of modifying new document"
 }
 ```
 
@@ -363,17 +376,21 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights to modify the document or view warehouses ||
-|| `ERROR_DOCUMENT_STATUS` | Document not found / Conducted document | Item not found, document deleted, unavailable, or already processed ||
-|| `0` | Error of modifying new document | Internal error while saving ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_DOCUMENT_RIGHTS` | Access denied | The user does not have the "Create and edit" permission for documents of this type or the "View and select warehouses" permission for the item warehouse ||
+|| `400` | `ERROR_DOCUMENT_STATUS` | Document not found | There is no item with the specified `id` ||
+|| `400` | `ERROR_DOCUMENT_STATUS` | Conducted document | The document is processed. To change its items, cancel processing using the [catalog.document.cancel](../catalog-document-cancel.md) method ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | `id` is not a number ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not passed ||
+|| `400` | `0` | Error of modifying new document | `fields` contains no updatable field, or the item could not be saved ||
 |#
 
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-document-element-add.md)
-- [{#T}](./catalog-document-element-delete.md)
 - [{#T}](./catalog-document-element-list.md)
+- [{#T}](./catalog-document-element-delete.md)
 - [{#T}](./catalog-document-element-get-fields.md)

@@ -290,13 +290,13 @@ HTTP status: **200**
         ]
     },
     "time": {
-        "start": 1792665215,
-        "finish": 1792665215.710361,
-        "duration": 0.7103610038757324,
+        "start": 1793883053,
+        "finish": 1793883053.926821,
+        "duration": 0.9268209934234619,
         "processing": 0,
-        "date_start": "2026-10-22T13:33:35+02:00",
-        "date_finish": "2026-10-22T13:33:35+02:00",
-        "operating_reset_at": 1792665780,
+        "date_start": "2026-11-05T15:50:53+03:00",
+        "date_finish": "2026-11-05T15:50:53+03:00",
+        "operating_reset_at": 1793883600,
         "operating": 0
     }
 }
@@ -356,28 +356,34 @@ HTTP status: **400**
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id`, `name` | DTO `DocumentTypeDto` in field `#FIELD#` requires attribute `Filterable` to perform this request | Remove `filter`: the method does not filter the directory ||
-|| `id`, `name` | DTO `DocumentTypeDto` in field `#FIELD#` requires attribute `Sortable` to perform this request | Remove `order`: the method does not sort the directory ||
+|| `id`, `name` | DTO `DocumentTypeDto` in field `id` requires attribute `Filterable` to perform this request | Remove `filter`: the method does not filter the directory ||
+|| `id`, `name` | DTO `DocumentTypeDto` in field `id` requires attribute `Sortable` to perform this request | Remove `order`: the method does not sort the directory ||
 |#
 
 #### Pagination Error
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `pagination` | Incorrect `pagination` parameter value: `#PAGINATION#` | Remove `pagination`: the method returns the entire directory ||
+|| `pagination` | Incorrect `pagination` parameter value: `{"limit":2}` | Remove `pagination`: the method returns the whole directory ||
 |#
 
 #### Unknown Field Error
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `DocumentTypeDto` | In `select`, specify only `id` and `name` ||
+|| `select` | Unknown field `bad` found in entity `DocumentTypeDto` | Specify only `id` and `name` in `select` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

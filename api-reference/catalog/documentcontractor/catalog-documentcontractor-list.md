@@ -11,10 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the following access permissions:
-> — "View" on the document type "Incoming",
-> — "View" on the Inventory Accounting section,
-> — "View" on the Product Catalog    
+> Who can execute the method: a user with the "View" permission for stock receipt documents and the "View Inventory Management area" and "View product catalog" permissions
 
 The method `catalog.documentcontractor.list` returns a list of vendor bindings to inventory accounting documents. By default, filters are applied to the request that limit the selection based on the current user's permissions.
 
@@ -22,14 +19,14 @@ The method `catalog.documentcontractor.list` returns a list of vendor bindings t
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
-#|  
-|| **Name**  
-`type` | **Description** ||  
-|| **select**  
+#|
+|| **Name**
+`type` | **Description** ||
+|| **select**
 [`array`](../../data-types.md) | An array containing the list of fields from [catalog_documentcontractor](../data-types.md#catalog_documentcontractor) that need to be selected.
 
-If the array is not provided or an empty array is passed, all available fields of the document will be selected. ||  
-|| **filter**  
+If the array is not provided or empty, the method returns all binding fields. The method skips unknown fields without an error, and if `select` contains no fields of the object, it returns all fields ||
+|| **filter**
 [`object`](../../data-types.md) | An object for filtering the selected bindings in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_documentcontractor](../data-types.md#catalog_documentcontractor) object.
@@ -56,8 +53,12 @@ An additional prefix can be specified for the key to clarify the filter's behavi
 - `=` — equal, exact match, used by default
 - `!=` — not equal
 - `!` — not equal
-||  
-|| **order**  
+
+Substring search with the `%`, `=%`, and `%=` prefixes compares numeric fields as a whole: the filter `{"%documentId": "7"}` does not find document `73`.
+
+The method skips unknown fields in the filter without an error and returns bindings regardless of such a condition. Write field names in camelCase: the method skips the condition `{"DOCUMENT_ID": 3}`
+||
+|| **order**
 [`object`](../../data-types.md) | An object for sorting the selected documents in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
 Possible values for `field` correspond to the fields of the [catalog_documentcontractor](../data-types.md#catalog_documentcontractor) object.
@@ -65,10 +66,10 @@ Possible values for `field` correspond to the fields of the [catalog_documentcon
 Possible values for `order`:
 
 - `asc` — in ascending order
-- `desc` — in descending order 
+- `desc` — in descending order
 
-By default, results are sorted in ascending order by `id`. ||  
-|| **start**  
+By default, results are sorted in ascending order by `id`. The method skips unknown fields without an error ||
+|| **start**
 [`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
 The page size is 50 records.
@@ -77,9 +78,9 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number. 
-Or pass the value from the `next` key in the response. ||  
-|#  
+`start = (N-1) * 50`, where `N` is the desired page number.
+Or pass the value from the `next` key in the response. ||
+|#
 
 ## Code Examples
 
@@ -236,7 +237,7 @@ Or pass the value from the `next` key in the response. ||
 
 - PHP
 
-    ```php  
+    ```php
     try {
         $response = $b24Service
             ->core
@@ -290,7 +291,7 @@ Or pass the value from the `next` key in the response. ||
             }
         }
     );
-    ```	
+    ```
 
 - PHP CRest
 
@@ -352,7 +353,7 @@ Or pass the value from the `next` key in the response. ||
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -380,26 +381,24 @@ HTTP Code: **200**
 
 ### Returned Data
 
-#|  
-|| **Name**  
-`type` | **Description** ||  
-|| **result**  
-[`object`](../../data-types.md) | The root element of the response ||  
-|| **documentContractor**  
-[`catalog_documentContractor[]`](../data-types.md#catalog_documentcontractor) | A list of contractor bindings; the response structure depends on the `select` parameter ||  
-|| **next**  
-[`integer`](../../data-types.md) | Offset pointer for the next page. Pass this value to the `start` parameter to retrieve the next 50 records ||  
-|| **total**  
-[`integer`](../../data-types.md) | The total number of documents ||  
-|| **time**  
-[`time`](../../data-types.md#time) | Information about the request execution time ||  
-|#  
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | The root element of the response ||
+|| **result.documentContractor**
+[`catalog_documentcontractor[]`](../data-types.md#catalog_documentcontractor) | A list of contractor bindings; the response structure depends on the `select` parameter ||
+|| **next**
+[`integer`](../../data-types.md) | Offset pointer for the next page. Pass this value to the `start` parameter to retrieve the next 50 records ||
+|| **total**
+[`integer`](../../data-types.md) | The total number of bindings found ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
 
 ## Error Handling
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -408,18 +407,20 @@ HTTP Code: **400**
 }
 ```
 
-### Possible Error Codes  
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
-#|  
-|| **Code** | **Description** | **Value** ||  
-|| `0` | Access denied | Insufficient permissions to view the document or bindings ||  
-|| `0` | Contractors should be provided by CRM | The CRM module is not active as a vendor for contractors ||  
-|# 
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access denied | Insufficient permissions to view the document or bindings ||
+|| `400` | `0` | Contractors should be provided by CRM | Vendors in Bitrix24 are not managed in CRM ||
+|#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./catalog-documentcontractor-add.md)  
-- [{#T}](./catalog-documentcontractor-delete.md)  
-- [{#T}](./catalog-documentcontractor-get-fields.md)  
+- [{#T}](./catalog-documentcontractor-add.md)
+- [{#T}](./catalog-documentcontractor-delete.md)
+- [{#T}](./catalog-documentcontractor-get-fields.md)

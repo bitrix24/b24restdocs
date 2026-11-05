@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with the "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" permission
 
-The method `catalog.document.getFields` returns the description of fields for the inventory document.
+The method `catalog.document.getFields` returns the description of inventory document fields: type, whether the field is required, and whether it can be changed.
 
 ## Method Parameters
 
@@ -219,7 +219,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -330,13 +330,13 @@ HTTP Code: **200**
         }
     },
     "time": {
-        "start": 1761727898,
-        "finish": 1761727898.554004,
-        "duration": 0.5540039539337158,
+        "start": 1793883495,
+        "finish": 1793883495.11103,
+        "duration": 0.11103010177612305,
         "processing": 0,
-        "date_start": "2025-10-29T11:51:38+01:00",
-        "date_finish": "2025-10-29T11:51:38+01:00",
-        "operating_reset_at": 1761728498,
+        "date_start": "2026-11-05T15:58:15+03:00",
+        "date_finish": "2026-11-05T15:58:15+03:00",
+        "operating_reset_at": 1793884080,
         "operating": 0
     }
 }
@@ -348,19 +348,18 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md#catalog_document) | Root element of the response ||
-|| **document**
-[`object`](../data-types.md#catalog_document) | Object with the description of fields for the inventory document 
-Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the field of the [`catalog_document`](../data-types.md#catalog_document) object, and `value` is an object of type [`rest_field_description`](../data-types.md). ||
+[`object`](../../data-types.md) | Root element of the response ||
+|| **result.document**
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of a field of the [catalog_document](../data-types.md#catalog_document) object, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description).
+
+Not all metadata matches the behavior of the methods: `createdBy`, `modifiedBy`, `dateCreate`, and `dateModify` are marked as editable, but [catalog.document.add](./catalog-document-add.md) and [catalog.document.update](./catalog-document-update.md) fill them in themselves and skip the passed values ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -369,17 +368,20 @@ HTTP Code: **400**
 }
 ```
 
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to save the document | User does not have view permission ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Insufficient permissions to save the inventory object. | The user has neither the "View product catalog" permission nor the "View and select warehouses" permission ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./catalog-document-list.md)
 - [{#T}](./catalog-document-add.md)
 - [{#T}](./catalog-document-update.md)
+- [{#T}](./catalog-document-list.md)
+

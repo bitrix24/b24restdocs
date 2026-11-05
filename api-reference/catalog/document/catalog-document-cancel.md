@@ -1,4 +1,4 @@
-# Cancel Document of Inventory Accounting catalog.document.cancel
+# Cancel Inventory Document Processing catalog.document.cancel
 
 {% note tip "" %}
 
@@ -11,13 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method:
-> - a user with the "Cancel Conduct" permission for the document type in the request,
-> - and "View and Select Warehouse" permission for the incoming or outgoing warehouse.
+> Who can execute the method: a user with the "View product catalog" and "View Inventory Management area" permissions and the "Cancel processing" permission for the required document type. The document must be available to the user under the "View" permission
 
-The method `catalog.document.cancel` cancels the conduct of the inventory accounting document:
-- the document status changes to `C` — canceled,
-- the inventory balances of goods are updated according to the document's positions.
+The method `catalog.document.cancel` cancels processing of an inventory document.
 
 ## Method Parameters
 
@@ -27,8 +23,12 @@ The method `catalog.document.cancel` cancels the conduct of the inventory accoun
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_document.id`](../data-types.md#catalog_document) | Identifier of the document, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id`](../data-types.md#catalog_document) | Document ID.
+
+Document IDs can be retrieved with the [catalog.document.list](./catalog-document-list.md) method ||
 |#
+
+When processing is canceled, product stock in warehouses returns to the previous values, and the document becomes a draft again: `status` is `N`. `statusBy` gets the ID of the current user, and `dateStatus` gets the cancellation time. After cancellation, the document can be updated or deleted.
 
 ## Code Examples
 
@@ -166,12 +166,9 @@ The method `catalog.document.cancel` cancels the conduct of the inventory accoun
             ->getResponseData()
             ->getResult();
 
-        if ($result === true) {
-            echo 'Document cancellation succeeded';
-        }
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error cancelling document: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -230,20 +227,20 @@ The method `catalog.document.cancel` cancels the conduct of the inventory accoun
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": true,
     "time": {
-        "start": 1762411074,
-        "finish": 1762411074.877169,
-        "duration": 0.8771688938140869,
+        "start": 1793883385,
+        "finish": 1793883385.708393,
+        "duration": 0.7083930969238281,
         "processing": 0,
-        "date_start": "2025-11-06T09:37:54+01:00",
-        "date_finish": "2025-11-06T09:37:54+01:00",
-        "operating_reset_at": 1762411674,
-        "operating": 0.2729671001434326
+        "date_start": "2026-11-05T15:56:25+03:00",
+        "date_finish": "2026-11-05T15:56:25+03:00",
+        "operating_reset_at": 1793883960,
+        "operating": 0
     }
 }
 ```
@@ -254,38 +251,41 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` if the document conduct was canceled  ||
+[`boolean`](../../data-types.md) | Root element of the response. Contains `true` if document processing is canceled ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "0",
-    "error_description": "Error cancelling document conduct: Document has not been conducted yet"
+    "error_description": "Error canceling inventory object processing: The transaction is still pending.."
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to save the document | No permissions for the product catalog, inventory accounting, no permission to cancel document conduct, or a non-existent document identifier was specified ||
-|| `0` | Could not complete the action as you do not have sufficient permissions to view and select warehouses | No permissions to work with the product warehouse from the document ||
-|| `0` | Error cancelling document conduct: Document has not been conducted yet | Cannot cancel document conduct if it is not in the conducted status ||
-|| `0` | Inventory accounting is not available on your plan | Inventory accounting is not available on your plan ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Insufficient permissions to save the inventory object. | The user does not have permissions for the catalog and the Inventory Management area, the "Cancel processing" permission for documents of this type, or access to the document ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | `id` is not a number ||
+|| `400` | `2` | Inventory object was not found. | The document with the specified `id` is not found ||
+|| `400` | `0` | Error canceling inventory object processing: The transaction is still pending.. | The document is not processed ||
+|| `400` | `0` | Inventory Management is not available on your plan. | Inventory Management is not available on the account plan ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-update.md)
+- [{#T}](./catalog-document-delete.md)
 - [{#T}](./catalog-document-conduct.md)
 - [{#T}](./catalog-document-cancel-list.md)
-- [{#T}](./catalog-document-list.md)

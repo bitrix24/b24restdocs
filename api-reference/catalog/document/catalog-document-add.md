@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Create and edit" permission for the required document type
+> Who can execute the method: a user with the "View and select warehouses" permission and the "Create and edit" permission for the required document type
 
-The method `catalog.document.add` creates a new inventory document.
+The method `catalog.document.add` creates an inventory document in draft status.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `catalog.document.add` creates a new inventory document.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](#fields) | Document fields ([detailed description](#fields)) ||
+[`object`](../../data-types.md) | Field values for creating the document ([detailed description](#fields)) ||
 |#
 
 ### Parameter fields {#fields}
@@ -34,44 +34,45 @@ The method `catalog.document.add` creates a new inventory document.
 || **Name**
 `type` | **Description** ||
 || **docType***
-[`char`](../../data-types.md) | Document type. Possible values:
-- `A` — receipt,
-- `S` — write-off,
-- `M` — transfer between warehouses,
-- `R` — return,
-- `D` — disposal.
+[`string`](../../data-types.md) | Document type. Possible values:
+- `A` — stock receipt
+- `S` — stock adjustment
+- `M` — stock transfer between warehouses
+- `R` — stock return
+- `D` — write-off
 
-Current document types can be obtained using the method [catalog.enum.getStoreDocumentTypes](../enum/catalog-enum-get-store-document-types.md) ||
+The value is case-sensitive: the method rejects `a` and other values with the error `DOC_TYPE isn't available`.
+
+Type names can be retrieved with the [catalog.enum.getStoreDocumentTypes](../enum/catalog-enum-get-store-document-types.md) method ||
 || **currency***
-[`crm_currency.CURRENCY`](../../crm/data-types.md#crm_currency) | Document currency in ISO 4217 format, for example `USD`. The value cannot be changed after creation.
+[`string`](../../data-types.md) | Document currency code, for example `RUB`. The method does not check that the currency exists. The currency cannot be changed after creation.
 
-To get a list of currencies with codes, use the method [crm.currency.list](../../crm/currency/crm-currency-list.md) ||
+The list of currencies can be retrieved with the [crm.currency.list](../../crm/currency/crm-currency-list.md) method ||
 || **responsibleId***
-[`user.id`](../../data-types.md) | Identifier of the responsible person ||
-|| **siteId**
-[`char`](../../data-types.md) | Site code to which the document relates. Default is `s1`.
+[`user.id`](../../data-types.md) | Responsible user ID. The method does not check that the user exists. The method saves a non-numeric value as `null`.
 
-This parameter is relevant for on-premise Bitrix, for cloud Bitrix the standard value is `s1` ||
-|| **dateDocument**
-[`datetime`](../../data-types.md) | Document date in ISO 8601 format ||
+User IDs can be retrieved with the [user.get](../../user/user-get.md) method ||
 || **title**
-[`string`](../../data-types.md) | Document title ||
-|| **commentary**
-[`char`](../../data-types.md) | Document commentary ||
-|| **total**
-[`double`](../../data-types.md) | Total amount for the document items. The value is calculated automatically after processing but can be set manually ||
+[`string`](../../data-types.md) | Document name. If not passed, `title` in the response is `null` ||
 || **docNumber**
-[`string`](../../data-types.md) | Internal document number. If not provided, it is generated automatically ||
-|| **createdBy**
-[`user.id`](../../data-types.md) | Identifier of the user who created the document. An administrator can specify any value; by default, it is filled with the current user ||
+[`string`](../../data-types.md) | Document number. If not passed, `docNumber` in the response is `null`: the number is not generated automatically ||
+|| **dateDocument**
+[`datetime`](../../data-types.md) | Document date, for example `2026-11-05T10:00:00+03:00`. You can pass a date without time, for example `2026-11-05`.
+
+The method skips a string that cannot be parsed as a date without an error ||
+|| **commentary**
+[`string`](../../data-types.md) | Document comment ||
+|| **total**
+[`double`](../../data-types.md) | Document total. The method does not recalculate it from the products, including on processing. The method saves a non-numeric value as `null` ||
+|| **siteId**
+[`string`](../../data-types.md) | Site code. Default is `s1`. The method does not check that the site exists ||
+|| **statusBy**
+[`user.id`](../../data-types.md) | ID of the user who changed the document status. On processing and on canceling processing, the field gets the ID of the current user ||
 |#
 
-{% note info "" %}
+The method fills in the `id`, `status`, `createdBy`, `modifiedBy`, `dateCreate`, `dateModify`, and `dateStatus` fields itself: `status` is `N`, `createdBy` and `modifiedBy` are the ID of the current user, the dates are the creation time. The method skips passed values of these fields and unknown fields without an error.
 
-To fill in supplier data, use the method [catalog.documentcontractor.add](../documentcontractor/catalog-documentcontractor-add.md).
-To fill in product data, use the method [catalog.document.element.add](./document-element/catalog-document-element-add.md).
-
-{% endnote %}
+Add products to the document with the [catalog.document.element.add](./document-element/catalog-document-element-add.md) method, and the vendor with the [catalog.documentcontractor.add](../documentcontractor/catalog-documentcontractor-add.md) method.
 
 ## Code Examples
 
@@ -85,7 +86,7 @@ To fill in product data, use the method [catalog.document.element.add](./documen
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"docType":"A","currency":"USD","responsibleId":29,"docNumber":"IN-00042","title":"Receipt from Supplier-1","commentary":"Planned warehouse replenishment"}}' \
+    -d '{"fields":{"docType":"S","currency":"RUB","responsibleId":1269,"docNumber":"OP-00042","title":"Surplus stock adjustment","commentary":"Surplus found during stocktaking","dateDocument":"2026-11-05T10:00:00+03:00"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.add
     ```
 
@@ -95,7 +96,7 @@ To fill in product data, use the method [catalog.document.element.add](./documen
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"docType":"A","currency":"USD","responsibleId":29,"docNumber":"IN-00042","title":"Receipt from Supplier-1","commentary":"Planned warehouse replenishment"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"docType":"S","currency":"RUB","responsibleId":1269,"docNumber":"OP-00042","title":"Surplus stock adjustment","commentary":"Surplus found during stocktaking","dateDocument":"2026-11-05T10:00:00+03:00"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.document.add
     ```
 
@@ -112,23 +113,23 @@ To fill in product data, use the method [catalog.document.element.add](./documen
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type DocumentAddResult = {
       document: {
-        commentary: string | null,
-        createdBy: number,
-        currency: string,
-        dateCreate: ISODate | null,
-        dateDocument: ISODate | null,
-        dateModify: ISODate | null,
-        dateStatus: ISODate | null,
-        docNumber: string,
-        docType: string,
-        id: number,
-        modifiedBy: number,
-        responsibleId: number,
-        siteId: string,
-        status: string,
-        statusBy: number | null,
-        title: string | null,
-        total: number | null,
+        commentary: string | null
+        createdBy: number
+        currency: string
+        dateCreate: ISODate
+        dateDocument: ISODate | null
+        dateModify: ISODate
+        dateStatus: ISODate
+        docNumber: string | null
+        docType: string
+        id: number
+        modifiedBy: number
+        responsibleId: number | null
+        siteId: string
+        status: string
+        statusBy: number | null
+        title: string | null
+        total: number | null
       }
     }
 
@@ -137,12 +138,13 @@ To fill in product data, use the method [catalog.document.element.add](./documen
         method: 'catalog.document.add',
         params: {
           fields: {
-            docType: 'A',
+            docType: 'S',
             currency: 'USD',
-            responsibleId: 29,
-            docNumber: 'IN-00042',
-            title: 'Goods receipt from Supplier-1',
-            commentary: 'Planned warehouse replenishment',
+            responsibleId: 1269,
+            docNumber: 'OP-00042',
+            title: 'Surplus stock adjustment',
+            commentary: 'Surplus found during stocktaking',
+            dateDocument: '2026-11-05T10:00:00+03:00',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -153,7 +155,7 @@ To fill in product data, use the method [catalog.document.element.add](./documen
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Created document with ID:', result.document.id, 'status:', result.document.status)
+        console.info('Created document:', result.document.id, result.document.status)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -176,12 +178,13 @@ To fill in product data, use the method [catalog.document.element.add](./documen
             method: 'catalog.document.add',
             params: {
               fields: {
-                docType: 'A',
+                docType: 'S',
                 currency: 'USD',
-                responsibleId: 29,
-                docNumber: 'IN-00042',
-                title: 'Goods receipt from Supplier-1',
-                commentary: 'Planned warehouse replenishment',
+                responsibleId: 1269,
+                docNumber: 'OP-00042',
+                title: 'Surplus stock adjustment',
+                commentary: 'Surplus found during stocktaking',
+                dateDocument: '2026-11-05T10:00:00+03:00',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -194,7 +197,7 @@ To fill in product data, use the method [catalog.document.element.add](./documen
           }
 
           const result = response.getData().result
-          console.info('Created document with ID:', result.document.id, 'status:', result.document.status)
+          console.info('Created document:', result.document.id, result.document.status)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -213,12 +216,13 @@ To fill in product data, use the method [catalog.document.element.add](./documen
     try:
         bitrix_response = client.catalog.document.add(
             fields={
-                "docType": "A",
+                "docType": "S",
                 "currency": "USD",
-                "responsibleId": 29,
-                "docNumber": "IN-00042",
-                "title": "Receipt from Vendor-1",
-                "commentary": "Scheduled warehouse replenishment",
+                "responsibleId": 1269,
+                "docNumber": "OP-00042",
+                "title": "Surplus stock adjustment",
+                "commentary": "Surplus found during stocktaking",
+                "dateDocument": "2026-11-05T10:00:00+03:00",
             },
         ).response
         result = bitrix_response.result
@@ -240,32 +244,30 @@ To fill in product data, use the method [catalog.document.element.add](./documen
 
     ```php
     try {
-    $response = $b24Service
-        ->core
-        ->call(
-            'catalog.document.add',
-            [
-                'fields' => [
-                    'docType' => 'A',
-                    'currency' => 'USD',
-                    'responsibleId' => 29,
-                    'docNumber' => 'IN-00042',
-                    'title' => 'Receipt from Supplier-1',
-                    'commentary' => 'Planned warehouse replenishment'
+        $response = $b24Service
+            ->core
+            ->call(
+                'catalog.document.add',
+                [
+                    'fields' => [
+                        'docType'       => 'S',
+                        'currency'      => 'RUB',
+                        'responsibleId' => 1269,
+                        'docNumber'     => 'OP-00042',
+                        'title'         => 'Surplus stock adjustment',
+                        'commentary'    => 'Surplus found during stocktaking',
+                        'dateDocument'  => '2026-11-05T10:00:00+03:00',
+                    ],
                 ]
-            ]
-        );
+            );
 
-    $result = $response
-        ->getResponseData()
-        ->getResult();
+        $result = $response
+            ->getResponseData()
+            ->getResult();
 
-    echo 'Success: ' . print_r($result, true);
-    processData($result);
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding product row: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -276,13 +278,14 @@ To fill in product data, use the method [catalog.document.element.add](./documen
         'catalog.document.add',
         {
             fields: {
-                docType: 'A',
+                docType: 'S',
                 currency: 'USD',
-                responsibleId: 29,
-                docNumber: 'IN-00042',
-                title: 'Receipt from Supplier-1',
-                commentary: 'Planned warehouse replenishment'
-            }
+                responsibleId: 1269,
+                docNumber: 'OP-00042',
+                title: 'Surplus stock adjustment',
+                commentary: 'Surplus found during stocktaking',
+                dateDocument: '2026-11-05T10:00:00+03:00',
+            },
         },
         function(result)
         {
@@ -303,12 +306,13 @@ To fill in product data, use the method [catalog.document.element.add](./documen
         'catalog.document.add',
         [
             'fields' => [
-                'docType' => 'A',
+                'docType' => 'S',
                 'currency' => 'USD',
-                'responsibleId' => 29,
-                'docNumber' => 'IN-00042',
-                'title' => 'Receipt from Supplier-1',
-                'commentary' => 'Planned warehouse replenishment'
+                'responsibleId' => 1269,
+                'docNumber' => 'OP-00042',
+                'title' => 'Surplus stock adjustment',
+                'commentary' => 'Surplus found during stocktaking',
+                'dateDocument' => '2026-11-05T10:00:00+03:00',
             ]
         ]
     );
@@ -324,12 +328,13 @@ To fill in product data, use the method [catalog.document.element.add](./documen
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.document.add", b24.Params{
     	"fields": b24.Params{
-    		"docType":       "A",
+    		"docType":       "S",
     		"currency":      "EUR",
-    		"responsibleId": 29,
-    		"docNumber":     "IN-00042",
-    		"title":         "Receipt from Supplier-1",
-    		"commentary":    "Planned warehouse replenishment",
+    		"responsibleId": 1269,
+    		"docNumber":     "OP-00042",
+    		"title":         "Surplus stock adjustment",
+    		"commentary":    "Surplus found during stocktaking",
+    		"dateDocument":  "2026-11-05T10:00:00+03:00",
     	},
     })
     if err != nil {
@@ -342,67 +347,67 @@ To fill in product data, use the method [catalog.document.element.add](./documen
     	return fmt.Errorf("no document key in the response")
     }
 
+    // Optional fields can be null, so pointers are used for them.
     var item struct {
-    	Commentary string `json:"commentary"`
-    	CreatedBy  int    `json:"createdBy"`
-    	Currency   string `json:"currency"`
-    	DateCreate string `json:"dateCreate"`
-    	DateModify string `json:"dateModify"`
-    	DateStatus string `json:"dateStatus"`
+    	ID            b24.ID   `json:"id"`
+    	DocType       string   `json:"docType"`
+    	Status        string   `json:"status"`
+    	Currency      string   `json:"currency"`
+    	Title         *string  `json:"title"`
+    	DocNumber     *string  `json:"docNumber"`
+    	Commentary    *string  `json:"commentary"`
+    	ResponsibleID *int     `json:"responsibleId"`
+    	DateDocument  *string  `json:"dateDocument"`
+    	DateCreate    string   `json:"dateCreate"`
+    	Total         *float64 `json:"total"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Commentary, item.CreatedBy)
+    fmt.Println(item.ID, item.Status)
     ```
 
 {% endlist %}
 
 ## Response Handling
 
-HTTP code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "document": {
-            "commentary": "Planned warehouse replenishment",
-            "createdBy": 29,
+            "commentary": "Surplus found during stocktaking",
+            "createdBy": 1269,
             "currency": "USD",
-            "dateCreate": "2025-10-30T11:19:38+02:00",
-            "dateDocument": null,
-            "dateModify": "2025-10-30T11:19:38+02:00",
-            "dateStatus": "2025-10-30T11:19:38+02:00",
-            "docNumber": "IN-00042",
-            "docType": "A",
-            "id": 11,
-            "modifiedBy": 29,
-            "responsibleId": 29,
+            "dateCreate": "2026-11-05T15:58:42+03:00",
+            "dateDocument": "2026-11-05T10:00:00+03:00",
+            "dateModify": "2026-11-05T15:58:42+03:00",
+            "dateStatus": "2026-11-05T15:58:42+03:00",
+            "docNumber": "OP-00042",
+            "docType": "S",
+            "id": 381,
+            "modifiedBy": 1269,
+            "responsibleId": 1269,
             "siteId": "s1",
             "status": "N",
             "statusBy": null,
-            "title": "Receipt from Supplier-1",
+            "title": "Surplus stock adjustment",
             "total": null
         }
     },
     "time": {
-        "start": 1761805178,
-        "finish": 1761805178.991429,
-        "duration": 0.9914290904998779,
+        "start": 1793883522,
+        "finish": 1793883522.271001,
+        "duration": 0.27100110054016113,
         "processing": 0,
-        "date_start": "2025-10-30T09:19:38+02:00",
-        "date_finish": "2025-10-30T09:19:38+02:00",
-        "operating_reset_at": 1761805778,
-        "operating": 0.2595658302307129
+        "date_start": "2026-11-05T15:58:42+03:00",
+        "date_finish": "2026-11-05T15:58:42+03:00",
+        "operating_reset_at": 1793884080,
+        "operating": 0
     }
 }
 ```
-
-{% note info "" %}
-
-The document is created with status `N` — draft. To process the document, use the method [catalog.document.conduct](./catalog-document-conduct.md) or [catalog.document.conductList](./catalog-document-conduct-list.md).
-
-{% endnote %}
 
 ### Returned Data
 
@@ -410,41 +415,49 @@ The document is created with status `N` — draft. To process the document, use 
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md#catalog_document) | Root element of the response ||
-|| **document**
-[`catalog_document`](../data-types.md#catalog_document) | Object with data of the created document ||
+[`object`](../../data-types.md) | Root element of the response ||
+|| **result.document**
+[`catalog_document`](../data-types.md#catalog_document) | Object with the fields of the created document. The method returns all document fields, including empty ones with the value `null`.
+
+The document is created in status `N` — draft. You can process the document with the [catalog.document.conduct](./catalog-document-conduct.md) method ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
-
-HTTP code: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "0",
-    "error_description": "DOC_TYPE isn't available"
+    "error_description": "Required fields: docType, responsibleId, currency"
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to save the document | The user does not have permission to create the required document type ||
-|| `0` | DOC_TYPE isn't available | An invalid document type was provided ||
-|| `0` | Inventory accounting is not available on your plan | Inventory accounting is not available on your plan ||
-|| `0` | -  | Other internal errors when adding the document ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Cannot complete action because you don't have sufficient permissions to view and select warehouses. | The user does not have the "View and select warehouses" permission ||
+|| `400` | `0` | Insufficient permissions to save the inventory object. | The user does not have the "Create and edit" permission for documents of this type or has no catalog permissions ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {fields}. Should be value of type array. | `fields` is not an object ||
+|| `400` | `0` | Required fields: docType, responsibleId, currency | Required fields are not passed. The text lists only the missing fields ||
+|| `400` | `0` | DOC_TYPE isn't available | `docType` contains a type that is not in the list, for example `U` or `a` ||
+|| `400` | `0` | Wrong format of field `title`. | The field contains an array or an object instead of a value. The text contains the field name ||
+|| `400` | `0` | Inventory Management is not available on your plan. | Inventory Management is not available on the account plan ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-update.md)
+- [{#T}](./catalog-document-list.md)
+- [{#T}](./catalog-document-conduct.md)
+- [{#T}](./catalog-document-get-fields.md)
 - [{#T}](./document-element/catalog-document-element-add.md)
 - [{#T}](../documentcontractor/catalog-documentcontractor-add.md)
-- [{#T}](./catalog-document-update.md)
-- [{#T}](./catalog-document-conduct.md)

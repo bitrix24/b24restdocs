@@ -11,11 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: 
-> - a user with "Create and Edit" permission on the document type in the request
-> - a user with "View and Select Warehouse" permission on the incoming or outgoing warehouse
+> Who can execute the method: a user with the "Create and edit" permission for documents of this type and the "View and select warehouses" permission for the item warehouses
 
-The method `catalog.document.element.add` adds a product item to the inventory document.
+The method `catalog.document.element.add` adds a product item to an unprocessed inventory document.
 
 ## Method Parameters
 
@@ -25,7 +23,7 @@ The method `catalog.document.element.add` adds a product item to the inventory d
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Fields of the added product ([detailed description](#fields)) ||
+[`object`](../../../data-types.md) | Product item fields ([detailed description](#fields)) ||
 |#
 
 ### Parameter fields {#fields}
@@ -36,18 +34,32 @@ The method `catalog.document.element.add` adds a product item to the inventory d
 || **Name**
 `type` | **Description** ||
 || **docId***
-[`catalog_document.id`](../../data-types.md#catalog_document) | Identifier of the inventory document, can be obtained using the [catalog.document.list](../catalog-document-list.md) method. The document must have a status of `N` — not processed ||
-|| **elementId***
-[`catalog_product.id`](../../data-types.md#catalog_product) | Identifier of the catalog product. The value can be obtained using the [catalog.product.*](../../product/index.md) methods ||
+[`catalog_document.id`](../../data-types.md#catalog_document) | Identifier of the inventory document. The document must be unprocessed, that is, have the `N` status.
+
+The identifier can be retrieved using the [catalog.document.list](../catalog-document-list.md) method ||
+|| **elementId**
+[`catalog_product.id`](../../data-types.md#catalog_product) | Identifier of a simple product or variation.
+
+The identifier can be retrieved using the [catalog.product.list](../../product/catalog-product-list.md) and [catalog.product.offer.list](../../product/offer/catalog-product-offer-list.md) methods.
+
+The method does not check that the product exists. If the field is not passed, the method creates an item without a product ||
 || **storeFrom**
-[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the source warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Used for outgoing documents ||
+[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the write-off warehouse. Filled in for transfer and write-off documents.
+
+The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list.md) method ||
 || **storeTo**
-[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the receiving warehouse, can be obtained using the [catalog.store.list](../../store/catalog-store-list.md) method. Used for incoming and transfer documents ||
+[`catalog_store.id`](../../data-types.md#catalog_store) | Identifier of the receipt warehouse. Filled in for receipt, stock adjustment, transfer, and return documents.
+
+The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list.md) method ||
 || **amount**
-[`double`](../../../data-types.md) | Quantity of the product. The value is specified in the units of the document ||
+[`double`](../../../data-types.md) | Product quantity. The method saves a non-numeric value as `null` without an error ||
 || **purchasingPrice**
-[`double`](../../../data-types.md) | Purchase price in the document's currency ||
+[`double`](../../../data-types.md) | Purchase price per unit in the document currency. The method saves a non-numeric value as `0` without an error ||
 |#
+
+The `elementId`, `storeFrom`, `storeTo`, `amount`, and `purchasingPrice` fields that are not passed equal `null` in the response. The method fills in the `id` field itself: it skips the passed value and unknown fields without an error.
+
+The method does not check that the warehouses exist and match the document type. Pass warehouse identifiers as numbers: the method saves an array, for example `[43]`, as the warehouse with the identifier `1`.
 
 ## Code Examples
 
@@ -61,7 +73,7 @@ The method `catalog.document.element.add` adds a product item to the inventory d
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"docId":64,"elementId":312,"storeTo":2,"amount":15,"purchasingPrice":1250.5}}' \
+    -d '{"fields":{"docId":371,"elementId":6595,"storeTo":43,"amount":15,"purchasingPrice":1250.5}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.element.add
     ```
 
@@ -71,7 +83,7 @@ The method `catalog.document.element.add` adds a product item to the inventory d
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"docId":64,"elementId":312,"storeTo":2,"amount":15,"purchasingPrice":1250.5},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"docId":371,"elementId":6595,"storeTo":43,"amount":15,"purchasingPrice":1250.5},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.document.element.add
     ```
 
@@ -88,13 +100,13 @@ The method `catalog.document.element.add` adds a product item to the inventory d
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type DocumentElementResult = {
       documentElement: {
-        amount: number
+        amount: number | null
         docId: number
-        elementId: number
+        elementId: number | null
         id: number
-        purchasingPrice: number
+        purchasingPrice: number | null
         storeFrom: number | null
-        storeTo: number
+        storeTo: number | null
       }
     }
 
@@ -103,9 +115,9 @@ The method `catalog.document.element.add` adds a product item to the inventory d
         method: 'catalog.document.element.add',
         params: {
           fields: {
-            docId: 64,
-            elementId: 312,
-            storeTo: 2,
+            docId: 371,
+            elementId: 6595,
+            storeTo: 43,
             amount: 15,
             purchasingPrice: 1250.5,
           },
@@ -141,9 +153,9 @@ The method `catalog.document.element.add` adds a product item to the inventory d
             method: 'catalog.document.element.add',
             params: {
               fields: {
-                docId: 64,
-                elementId: 312,
-                storeTo: 2,
+                docId: 371,
+                elementId: 6595,
+                storeTo: 43,
                 amount: 15,
                 purchasingPrice: 1250.5,
               },
@@ -177,9 +189,9 @@ The method `catalog.document.element.add` adds a product item to the inventory d
     try:
         bitrix_response = client.catalog.document.element.add(
             fields={
-                "docId": 64,
-                "elementId": 312,
-                "storeTo": 2,
+                "docId": 371,
+                "elementId": 6595,
+                "storeTo": 43,
                 "amount": 15,
                 "purchasingPrice": 1250.5,
             },
@@ -209,9 +221,9 @@ The method `catalog.document.element.add` adds a product item to the inventory d
                 'catalog.document.element.add',
                 [
                     'fields' => [
-                        'docId' => 64,
-                        'elementId' => 312,
-                        'storeTo' => 2,
+                        'docId' => 371,
+                        'elementId' => 6595,
+                        'storeTo' => 43,
                         'amount' => 15,
                         'purchasingPrice' => 1250.5,
                     ],
@@ -235,9 +247,9 @@ The method `catalog.document.element.add` adds a product item to the inventory d
         'catalog.document.element.add',
         {
             fields: {
-                docId: 64,
-                elementId: 312,
-                storeTo: 2,
+                docId: 371,
+                elementId: 6595,
+                storeTo: 43,
                 amount: 15,
                 purchasingPrice: 1250.5
             }
@@ -261,9 +273,9 @@ The method `catalog.document.element.add` adds a product item to the inventory d
         'catalog.document.element.add',
         [
             'fields' => [
-                'docId' => 64,
-                'elementId' => 312,
-                'storeTo' => 2,
+                'docId' => 371,
+                'elementId' => 6595,
+                'storeTo' => 43,
                 'amount' => 15,
                 'purchasingPrice' => 1250.5,
             ],
@@ -281,9 +293,9 @@ The method `catalog.document.element.add` adds a product item to the inventory d
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.document.element.add", b24.Params{
     	"fields": b24.Params{
-    		"docId":           64,
-    		"elementId":       312,
-    		"storeTo":         2,
+    		"docId":           371,
+    		"elementId":       6595,
+    		"storeTo":         43,
     		"amount":          15,
     		"purchasingPrice": 1250.5,
     	},
@@ -309,35 +321,36 @@ The method `catalog.document.element.add` adds a product item to the inventory d
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Amount, item.DocID)
+    fmt.Println(item.ID, item.DocID)
     ```
 
 {% endlist %}
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "documentElement": {
             "amount": 15,
-            "docId": 64,
-            "elementId": 312,
-            "id": 148,
+            "docId": 371,
+            "elementId": 6595,
+            "id": 101,
             "purchasingPrice": 1250.5,
             "storeFrom": null,
-            "storeTo": 2
+            "storeTo": 43
         }
     },
     "time": {
-        "start": 1759482001.102334,
-        "finish": 1759482001.215487,
-        "duration": 0.11315321922302246,
-        "processing": 0.018451929092407227,
-        "date_start": "2025-11-02T12:20:01+01:00",
-        "date_finish": "2025-11-02T12:20:01+01:00",
+        "start": 1793883862,
+        "finish": 1793883862.684503,
+        "duration": 0.6845030784606934,
+        "processing": 0,
+        "date_start": "2026-11-05T16:04:22+03:00",
+        "date_finish": "2026-11-05T16:04:22+03:00",
+        "operating_reset_at": 1793884440,
         "operating": 0
     }
 }
@@ -350,20 +363,20 @@ HTTP Code: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **documentElement**
-[`catalog_document_element`](../../data-types.md#catalog_document_element) | Object with information about the added product ||
+|| **result.documentElement**
+[`catalog_document_element`](../../data-types.md#catalog_document_element) | Object with the fields of the added item. Fields that are not filled in are returned as `null` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
     "error": "ERROR_DOCUMENT_STATUS",
-    "error_description": "Conducted document"
+    "error_description": "Document not found"
 }
 ```
 
@@ -372,17 +385,20 @@ HTTP Code: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_DOCUMENT_RIGHTS` | Access denied | Insufficient rights on the document or one of the specified warehouses ||
-|| `ERROR_DOCUMENT_STATUS` | Document not found / Conducted document | Document not found, unavailable, or already processed ||
-|| `0` | Error of adding new document element | Internal error while saving the item ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_DOCUMENT_RIGHTS` | Access denied | The user does not have the "Create and edit" permission for documents of this type or the "View and select warehouses" permission for the item warehouse ||
+|| `400` | `ERROR_DOCUMENT_STATUS` | Document not found | There is no document with the specified `docId`, or `docId` is not passed or is not a number ||
+|| `400` | `ERROR_DOCUMENT_STATUS` | Conducted document | The document is processed. To change its items, cancel processing using the [catalog.document.cancel](../catalog-document-cancel.md) method ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {fields}. Should be value of type array. | `fields` is not an object ||
+|| `400` | `0` | Error of adding new document element | Failed to save the item ||
 |#
 
 {% include [System Errors](../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-document-element-update.md)
-- [{#T}](./catalog-document-element-delete.md)
 - [{#T}](./catalog-document-element-list.md)
+- [{#T}](./catalog-document-element-delete.md)
 - [{#T}](./catalog-document-element-get-fields.md)

@@ -33,10 +33,12 @@ The `catalog.document.update` method updates the fields of an inventory document
 
 The identifier can be retrieved using the [catalog.document.list](./catalog-document-list-rest-v3.md) method or from the [catalog.document.add](./catalog-document-add-rest-v3.md) response ||
 || **fields***
-[`object`](../../data-types.md) | An object with the inventory document fields to update. Pass only the fields you change. [Field description](#fields)
+[`object`](../../data-types.md) | Object with the inventory document fields to update. [Field description](#fields)
 
-An empty object `{}` returns the document unchanged ||
+The method changes only the passed fields, the others keep their previous values. The method accepts an empty object `{}` without an error and updates only the modification date `dateModify` ||
 |#
+
+A processed document cannot be updated. First cancel processing with the [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) method.
 
 ### Parameter fields {#fields}
 
@@ -44,13 +46,15 @@ An empty object `{}` returns the document unchanged ||
 || **Name**
 `type` | **Description** ||
 || **responsibleId**
-[`integer`](../../data-types.md) | Identifier of the responsible person.
+[`integer`](../../data-types.md) | Responsible user ID. The method does not check whether the user exists: a nonexistent ID is saved without an error.
 
 The user identifier can be retrieved using the [user.get](../../user/user-get.md) method ||
 || **currency**
-[`string`](../../data-types.md) | Document currency code, for example `EUR` ||
+[`string`](../../data-types.md) | Document currency code, for example `RUB`. The method does not check whether the currency exists in Bitrix24.
+
+Currency codes can be retrieved with the [crm.currency.list](../../crm/currency/crm-currency-list.md) method ||
 || **title**
-[`string`](../../data-types.md) | Document title. If not passed, Bitrix24 generates the title from the type and number, for example "Stock receipt #37" ||
+[`string`](../../data-types.md) | Document name. An empty string is saved as is: the name is not regenerated from the type and number ||
 || **docNumber**
 [`string`](../../data-types.md) | Incoming document number ||
 || **dateDocument**
@@ -66,7 +70,7 @@ The user identifier can be retrieved using the [user.get](../../user/user-get.md
 || **contractorId**
 [`integer`](../../data-types.md) | Identifier of the vendor from the catalog directory. If vendors are managed in CRM in Bitrix24, the field is not saved. To bind a CRM vendor to the document, use the [catalog.document.contractor.add](../documentcontractor/catalog-documentcontractor-add-rest-v3.md) method ||
 || **siteId**
-[`string`](../../data-types.md) | Site identifier ||
+[`string`](../../data-types.md) | Site ID. The method does not check the value ||
 |#
 
 The `docType` document type cannot be changed: the method does not save the value from `fields` and does not return an error. The `id`, `dateCreate`, `dateModify`, `createdBy`, `status`, and `dateStatus` fields are filled in automatically. If you pass them in `fields`, the method returns an error.
@@ -432,15 +436,15 @@ HTTP status: **200**
 || **statusBy**
 [`integer`](../../data-types.md) | Identifier of the user who last changed the status. `0` if the status has not changed ||
 || **total**
-[`double`](../../data-types.md) | Document total ||
+[`double`](../../data-types.md) | Document total. `0` if the total is not set ||
 || **commentary**
-[`string`](../../data-types.md) | Comment ||
+[`string`](../../data-types.md) | Comment. An empty string if the comment is not set ||
 || **title**
 [`string`](../../data-types.md) | Document title ||
 || **docNumber**
-[`string`](../../data-types.md) | Incoming document number ||
+[`string`](../../data-types.md) | Incoming document number. An empty string if the number is not set ||
 || **contractorId**
-[`integer`](../../data-types.md) | Identifier of the vendor from the catalog directory. `0` if no vendor is specified ||
+[`integer`](../../data-types.md) | Vendor ID from the catalog directory. `0` if the vendor is not specified or vendors are managed in CRM ||
 |#
 
 ## Error Handling
@@ -466,10 +470,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | At least one of the required fields must be not empty: id, filter | Pass the document `id`. A second message comes with this one: "Only one of the following values must be provided: id, filter" ||
+|| `-` | At least one of the required fields must be not empty: id, filter. | Pass the document `id`. The error is also returned when `id` is `0`. A second message comes with this one: "Only one of the following values must be provided: id, filter" ||
+|| `id` | Required field `id` is missing | `id` contains a non-numeric string, for example `"abc"`. Pass `id` as a number ||
+|| `-` | Only one of the following values must be provided: id, filter | Both `id` and `filter` are passed. Remove `filter` ||
 || `fields` | Required field `fields` is missing | Pass the `fields` object ||
 || `dateDocument` | This request requires data type `DateTime` in field `dateDocument` | Pass a date with time in ISO 8601 format, for example `2026-10-22T10:00:00+02:00` ||
-|| `-` | Inventory Management is not available on your plan | The method works only on plans with inventory management ||
+|| `total` | This request requires data type `float` in field `total` | Pass the total as a number. The same error with type `int` is returned for `responsibleId`, `contractorId`, `statusBy`, `modifiedBy` ||
+|| `-` | Cannot modify processed item | Cancel processing with the [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) method and repeat the update ||
+|| `-` | Inventory Management is not available on your plan. | The method works only on plans with Inventory Management ||
 |#
 
 #### Object Validation Errors
@@ -478,7 +486,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `#FIELD#` | Field `#FIELD#` is read-only | Remove the `id`, `dateCreate`, `dateModify`, `createdBy`, `status`, and `dateStatus` fields from `fields` ||
+|| `dateCreate` | Field `dateCreate` is read-only | Remove the automatically filled fields from `fields`: `id`, `dateCreate`, `dateModify`, `createdBy`, `status`, `dateStatus`. The error text contains the name of the passed field ||
 |#
 
 #### Filter Format Error
@@ -487,7 +495,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Invalid filter `filter` | The method does not support `filter`. Pass the document `id` ||
+|| `filter` | Invalid filter `Unknown filter condition` | The method does not support `filter`. Pass the document `id` ||
 |#
 
 #### Object Not Found Error
@@ -496,7 +504,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | Check the identifier using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no document with this ID. Check the ID with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
 |#
 
 #### Unknown Field Error
@@ -505,7 +513,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `DocumentDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields` ||
+|| `-` | Unknown field `foo` found in entity `DocumentDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields`. Write field names in camelCase ||
 |#
 
 #### Access Error
@@ -514,7 +522,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Access denied | Check the user permissions for this document type ||
+|| `-` | Access denied | Check that the user has the "Create and edit" permission for the document type and one of the permissions: "View and select warehouses" or "View product catalog" ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -522,8 +530,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 ## Continue Learning
 
 - [{#T}](./catalog-document-add-rest-v3.md)
-- [{#T}](./catalog-document-get.md)
 - [{#T}](./catalog-document-list-rest-v3.md)
+- [{#T}](./catalog-document-get.md)
 - [{#T}](./catalog-document-delete-rest-v3.md)
 - [{#T}](./catalog-document-delete-list-rest-v3.md)
 - [{#T}](./catalog-document-field-list.md)

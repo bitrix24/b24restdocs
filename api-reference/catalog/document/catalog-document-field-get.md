@@ -69,6 +69,8 @@ Available fields:
 - `multiple` — whether the field has multiple values
 - `elementType` — element type for composite fields
 
+If you pass a string, for example `"name"`, the method returns only this property.
+
 Default: all description properties ||
 |#
 
@@ -323,13 +325,13 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1792665253,
-        "finish": 1792665253.905826,
-        "duration": 0.9058260917663574,
+        "start": 1793883051,
+        "finish": 1793883051.426308,
+        "duration": 0.42630791664123535,
         "processing": 0,
-        "date_start": "2026-10-22T13:34:13+02:00",
-        "date_finish": "2026-10-22T13:34:13+02:00",
-        "operating_reset_at": 1792665840,
+        "date_start": "2026-11-05T15:50:51+03:00",
+        "date_finish": "2026-11-05T15:50:51+03:00",
+        "operating_reset_at": 1793883600,
         "operating": 0
     }
 }
@@ -381,7 +383,7 @@ HTTP status: **200**
 
 ## Error Handling
 
-HTTP status: **400**
+HTTP status: **404**
 
 ```json
 {
@@ -398,45 +400,54 @@ HTTP status: **400**
 
 #### Field Not Found Error
 
-HTTP status: **404**
+Error code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`
 
-Error Code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`
+HTTP status: **404**
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `name` | Field `#FIELD#` was not found | Specify a field name from the description of the `name` parameter ||
+|| `name` | Field `DOC_TYPE` was not found | Specify a field name from the `name` parameter description in camelCase, for example `docType`. The method does not describe custom document fields, for example `field7097` ||
 |#
 
 #### Request Validation Errors
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `name` | Required field `name` is missing | Pass the `name` parameter ||
+|| `name` | This request requires data type `string` in field `name` | Pass the field name as a string, not an array ||
 |#
 
 #### Unknown Field Error
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `DtoFieldDto` | In `select`, specify only properties from the description of the `select` parameter ||
+|| `select` | Unknown field `bad` found in entity `DtoFieldDto` | Specify in `select` only the properties from the `select` parameter description. Names are written in camelCase, for example `editableGroups` ||
 |#
 
 #### Select Format Error
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
+HTTP status: **400**
+
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as an array of strings, for example `["name","type"]` ||
+|| `select` | Invalid field in `select`: `["name"]` | `select` contains a nested array or an object. Pass `select` as an array of strings, for example `["name","type"]` ||
 |#
 
 #### Access Error
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
+
+HTTP status: **403**
 
 #|
 || **Field** | **Error description** | **How to Fix** ||

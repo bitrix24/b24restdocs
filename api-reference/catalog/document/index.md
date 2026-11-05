@@ -27,6 +27,8 @@ The following types of documents are available in inventory accounting:
 - `R` — goods return
 - `D` — goods write-off
 
+The type is passed in uppercase in the `docType` field. The [catalog.document.type.list](./catalog-document-type-list.md) method returns the list of types.
+
 Set access permissions for each type of document. If access permissions are not configured, employees will see an error when attempting to open inventory accounting documents and will be unable to work with them.
 
 {% note tip "User Documentation" %}
@@ -56,7 +58,7 @@ Current replacements:
 
 ## Inventory Accounting in REST 3.0
 
-In [REST 3.0](../../rest-v3.md), inventory accounting documents have methods for adding, updating, retrieving, deleting, conducting, and canceling the conduct, inventory accounting mode methods, the [catalog.document.type.list](./catalog-document-type-list.md) directory of document types, and the `*.field.list` and `*.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the tables.
+In [REST 3.0](../../rest-v3.md), inventory accounting documents have methods for adding, updating, retrieving, deleting, processing, and canceling processing, inventory accounting mode methods, the [catalog.document.type.list](./catalog-document-type-list.md) directory of document types, and the `*.field.list` and `*.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the tables.
 
 Specifics of the new version methods:
 
@@ -64,7 +66,7 @@ Specifics of the new version methods:
 - the `catalog.document.confirm` and `catalog.document.unconfirm` methods in the new version repeat `conduct` and `cancel` for a single document
 - document permissions are checked by document type: "View", "Create and edit", "Process inventory objects", "Cancel processing", "Delete inventory object". The [catalog.document.list](./catalog-document-list-rest-v3.md) method returns only documents of the types the user can view
 - the adding, updating, and deleting methods are unavailable if inventory accounting is not included in the plan
-- in the response, the `status` field of a conducted document is `"1"`, and of an unconducted document — an empty string
+- in the response, the `status` field of a processed document is `"1"`, and of an unprocessed document — an empty string
 - the method names `deletelist`, `conductlist`, `cancellist`, and `mode.statusdetails` are written only in lowercase
 
 ## Linking Inventory Accounting Documents with Other Objects
@@ -75,13 +77,20 @@ Specifics of the new version methods:
 
 **Custom Fields for Inventory Accounting Documents.** You can create additional fields for inventory accounting documents using the method [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md). Pass `moduleId = catalog`, and specify the document type in `entityId` using the `CAT_STORE_DOCUMENT_<DOC_TYPE>` format, for example `CAT_STORE_DOCUMENT_A`. You can view additional fields and change their values using the methods [catalog.userfield.document.*](../userfield-document/index.md).
 
+## How to Start
+
+1. Check that Inventory Management is enabled: the [catalog.document.mode.status](./catalog-document-mode-status.md) method must return `Y`
+2. Get the warehouse ID with the [catalog.store.list](../store/catalog-store-list.md) method
+3. Create a draft document with the [catalog.document.add](./catalog-document-add.md) method. For a stock receipt document `A`, specify the vendor with the [catalog.documentcontractor.*](../documentcontractor/index.md) methods — without it, the document cannot be processed
+4. Add products to the document with the [catalog.document.element.add](./document-element/catalog-document-element-add.md) method: specify `docId`, the product, the quantity, and the warehouse
+5. Process the document with the [catalog.document.conduct](./catalog-document-conduct.md) method. After processing, warehouse stock changes, and the document cannot be updated or deleted
+6. To correct a processed document, cancel processing with the [catalog.document.cancel](./catalog-document-cancel.md) method: the document becomes a draft again, and the stock is restored
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute methods:
-> - administrator — for methods of the previous API version
-> - a user with permissions for documents of the required type — for REST 3.0 methods. The permissions are listed on the page of each method
+> Who can execute methods: a user with the "View product catalog" or "View and select warehouses" permission and with permissions for documents of the required type: "View", "Create and edit", "Process inventory objects", "Cancel processing", "Delete inventory object". The exact permissions are listed on the page of each method
 
 ### Basic
 
@@ -91,23 +100,23 @@ Specifics of the new version methods:
 || [catalog.document.add](./catalog-document-add-rest-v3.md) | Adds an inventory accounting document v 3.0 ||
 || [catalog.document.update](./catalog-document-update.md) | Updates an inventory accounting document ||
 || [catalog.document.update](./catalog-document-update-rest-v3.md) | Updates an inventory accounting document v 3.0 ||
+|| [catalog.document.get](./catalog-document-get.md) | Returns an inventory accounting document by ID v 3.0 ||
 || [catalog.document.list](./catalog-document-list.md) | Returns a list of inventory accounting documents ||
 || [catalog.document.list](./catalog-document-list-rest-v3.md) | Returns a list of inventory accounting documents v 3.0 ||
-|| [catalog.document.get](./catalog-document-get.md) | Returns an inventory accounting document by identifier ||
 || [catalog.document.delete](./catalog-document-delete.md) | Deletes an inventory accounting document ||
 || [catalog.document.delete](./catalog-document-delete-rest-v3.md) | Deletes an inventory accounting document v 3.0 ||
 || [catalog.document.deleteList](./catalog-document-delete-list.md) | Deletes a group of inventory accounting documents ||
 || [catalog.document.deletelist](./catalog-document-delete-list-rest-v3.md) | Deletes a group of inventory accounting documents v 3.0 ||
-|| [catalog.document.conduct](./catalog-document-conduct.md) | Conducts an inventory accounting document ||
-|| [catalog.document.conduct](./catalog-document-conduct-rest-v3.md) | Conducts an inventory accounting document v 3.0 ||
-|| [catalog.document.conductList](./catalog-document-conduct-list.md) | Conducts a group of inventory accounting documents ||
-|| [catalog.document.conductlist](./catalog-document-conduct-list-rest-v3.md) | Conducts a group of inventory accounting documents v 3.0 ||
-|| [catalog.document.cancel](./catalog-document-cancel.md) | Cancels the conduct of an inventory accounting document ||
-|| [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) | Cancels the conduct of an inventory accounting document v 3.0 ||
-|| [catalog.document.cancelList](./catalog-document-cancel-list.md) | Cancels the conduct of a group of inventory accounting documents ||
-|| [catalog.document.cancellist](./catalog-document-cancel-list-rest-v3.md) | Cancels the conduct of a group of inventory accounting documents v 3.0 ||
-|| [catalog.document.confirm](./catalog-document-confirm-rest-v3.md) | Conducts a single inventory accounting document v 3.0 ||
-|| [catalog.document.unconfirm](./catalog-document-unconfirm-rest-v3.md) | Cancels the conduct of a single document v 3.0 ||
+|| [catalog.document.conduct](./catalog-document-conduct.md) | Processes an inventory accounting document ||
+|| [catalog.document.conduct](./catalog-document-conduct-rest-v3.md) | Processes an inventory accounting document v 3.0 ||
+|| [catalog.document.conductList](./catalog-document-conduct-list.md) | Processes a group of inventory accounting documents ||
+|| [catalog.document.conductlist](./catalog-document-conduct-list-rest-v3.md) | Processes a group of inventory accounting documents v 3.0 ||
+|| [catalog.document.cancel](./catalog-document-cancel.md) | Cancels processing of an inventory accounting document ||
+|| [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) | Cancels processing of an inventory accounting document v 3.0 ||
+|| [catalog.document.cancelList](./catalog-document-cancel-list.md) | Cancels processing of a group of inventory accounting documents ||
+|| [catalog.document.cancellist](./catalog-document-cancel-list-rest-v3.md) | Cancels processing of a group of inventory accounting documents v 3.0 ||
+|| [catalog.document.confirm](./catalog-document-confirm-rest-v3.md) | Processes a single inventory accounting document v 3.0 ||
+|| [catalog.document.unconfirm](./catalog-document-unconfirm-rest-v3.md) | Cancels processing of a single document v 3.0 ||
 || [catalog.document.mode.status](./catalog-document-mode-status.md) | Checks if inventory accounting is enabled ||
 || [catalog.document.mode.status](./catalog-document-mode-status-rest-v3.md) | Checks if inventory accounting is enabled v 3.0 ||
 || [catalog.document.mode.statusdetails](./catalog-document-mode-status-details.md) | Returns the inventory accounting status and mode ||

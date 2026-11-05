@@ -47,7 +47,7 @@ Default: all fields ||
 || **filter**
 [`array`](../../../data-types.md) | Filter in the REST 3.0 format: an array of conditions of the form `["field", "operator", "value"]`, for example `[["docId", "=", 325]]`. The filter syntax is described in the [REST 3.0 overview](../../../rest-v3.md#filter).
 
-You can filter by all fields from the `select` parameter. Condition groups with `or` logic are supported.
+You can filter by all fields from the `select` parameter. The `=`, `!=`, `>`, `>=`, `<`, `<=`, `in`, and `between` operators are supported, as well as condition groups with `or` logic. The `like` operator is not supported: all item fields are numeric. The method does not accept `null` in a condition.
 
 The method returns items only of the documents and warehouses available to the user ||
 || **order**
@@ -427,11 +427,11 @@ HTTP status: **200**
 || **storeTo**
 [`integer`](../../../data-types.md) | Identifier of the receiving warehouse. `0` — no warehouse specified ||
 || **elementId**
-[`integer`](../../../data-types.md) | Product identifier ||
+[`integer`](../../../data-types.md) | Product identifier. `0` — no product specified ||
 || **amount**
-[`double`](../../../data-types.md) | Product quantity ||
+[`double`](../../../data-types.md) | Product quantity. `0` — no quantity specified ||
 || **purchasingPrice**
-[`double`](../../../data-types.md) | Purchase price in the document currency ||
+[`double`](../../../data-types.md) | Purchase price per unit in the document currency. `0` — no price specified ||
 |#
 
 ## Error Handling
@@ -463,7 +463,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `storeFrom`, `storeTo` | DTO `DocumentElementDto` in field `#FIELD#` requires attribute `Sortable` to perform this request | Remove `storeFrom` and `storeTo` from `order` ||
+|| `storeFrom`, `storeTo` | DTO `DocumentElementDto` in field `storeTo` requires attribute `Sortable` to perform this request | Remove `storeFrom` and `storeTo` from `order` ||
 |#
 
 #### Unknown Field Error
@@ -472,7 +472,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select`, `filter`, `order` | Unknown field `#FIELD#` found in entity `DocumentElementDto` | Specify only the fields from the `select` parameter description ||
+|| `select`, `filter`, `order` | Unknown field `foo` found in entity `DocumentElementDto` | Specify only the fields from the `select` parameter description ||
 |#
 
 #### Filter Format Error
@@ -490,7 +490,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDORDEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `order` | Invalid sort order `#ORDER#` | Pass the `asc` or `desc` direction ||
+|| `order` | Invalid sort order `bad` | Pass the `asc` or `desc` direction ||
 |#
 
 #### Pagination Error

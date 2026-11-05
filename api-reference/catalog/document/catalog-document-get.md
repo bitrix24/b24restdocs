@@ -374,15 +374,15 @@ HTTP status: **200**
 || **statusBy**
 [`integer`](../../data-types.md) | Identifier of the user who last changed the status. `0` if the status has not changed ||
 || **total**
-[`double`](../../data-types.md) | Document total ||
+[`double`](../../data-types.md) | Document total. `0` if the total is not set ||
 || **commentary**
-[`string`](../../data-types.md) | Comment ||
+[`string`](../../data-types.md) | Comment. An empty string if the comment is not set ||
 || **title**
 [`string`](../../data-types.md) | Document title ||
 || **docNumber**
-[`string`](../../data-types.md) | Incoming document number ||
+[`string`](../../data-types.md) | Incoming document number. An empty string if the number is not set ||
 || **contractorId**
-[`integer`](../../data-types.md) | Identifier of the vendor from the catalog directory. `0` if no vendor is specified ||
+[`integer`](../../data-types.md) | Vendor ID from the catalog directory. `0` if the vendor is not specified or vendors are managed in CRM ||
 |#
 
 ## Error Handling
@@ -408,7 +408,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Required field `id` is missing | Pass a positive integer in `id` ||
+|| `id` | Required field `id` is missing | `id` is not passed, equals `0`, or is passed as a non-numeric string, for example `"abc"`. Pass a positive integer in `id` ||
 |#
 
 #### Object Not Found Error
@@ -417,7 +417,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | Check the identifier using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no document with this ID. Check the ID with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
 |#
 
 #### Unknown Field Error
@@ -426,7 +426,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `DocumentDto` | Specify only the fields from the `select` parameter description in `select` ||
+|| `select` | Unknown field `foo` found in entity `DocumentDto` | Specify in `select` only the fields from the `select` parameter description. Write field names in camelCase: `ID` also causes this error ||
 |#
 
 #### Select Format Error
@@ -435,7 +435,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as an array of strings, for example `["id","title"]` ||
+|| `select` | Invalid field in `select`: `["title"]` | `select` contains a nested array. Pass `select` as an array of strings, for example `["id","title"]` ||
 |#
 
 #### Access Error
@@ -444,7 +444,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Access denied | Make sure the user has the "View" permission for the document type ||
+|| `-` | Access denied | Check that the user has the "View" permission for the document type and one of the permissions: "View and select warehouses" or "View product catalog" ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

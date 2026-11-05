@@ -307,10 +307,12 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | At least one of the required fields must be not empty: id, filter | Pass the document `id`. A second message comes with this one: "Only one of the following values must be provided: id, filter" ||
-|| `-` | Error deleting inventory object "#ID#": Inventory object was not found | Check the identifier using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
-|| `-` | You cannot delete inventory object "#DOC_TITLE#" because it has already been processed | Cancel processing using the [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) method and repeat the deletion ||
-|| `-` | Inventory Management is not available on your plan | The method works only on plans with inventory management ||
+|| `-` | At least one of the required fields must be not empty: id, filter. | Pass the document `id`. The error is also returned when `id` is `0`. A second message comes with this one: "Only one of the following values must be provided: id, filter" ||
+|| `id` | Required field `id` is missing | `id` contains a non-numeric string, for example `"abc"`. Pass `id` as a number ||
+|| `-` | Only one of the following values must be provided: id, filter | Both `id` and `filter` are passed. Remove `filter` ||
+|| `-` | Error deleting inventory object "#999999": Inventory object was not found.. | There is no document with this ID. The text contains the passed `id` after `#`. Check the ID with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `-` | You cannot delete inventory object "Stock adjustment #33" because it has already been processed. | The text contains the document name. The `field` key of this error contains `1` — this is the error code, not a field name. Cancel processing with the [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) method and repeat the deletion ||
+|| `-` | Inventory Management is not available on your plan. | The method works only on plans with Inventory Management ||
 |#
 
 #### Filter Format Error
@@ -319,7 +321,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Invalid filter `filter` | The method does not support `filter`. Pass the document `id` or use [catalog.document.deletelist](./catalog-document-delete-list-rest-v3.md) ||
+|| `filter` | Invalid filter `filter` | The method does not accept `filter`, including conditions only on `id`, for example `[["id","=",343]]` or `[["id","in",[343,345]]]`. Pass the document `id` or use [catalog.document.deletelist](./catalog-document-delete-list-rest-v3.md) ||
 |#
 
 #### Access Error
@@ -337,8 +339,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 - [{#T}](./catalog-document-add-rest-v3.md)
 - [{#T}](./catalog-document-update-rest-v3.md)
-- [{#T}](./catalog-document-get.md)
 - [{#T}](./catalog-document-list-rest-v3.md)
+- [{#T}](./catalog-document-get.md)
 - [{#T}](./catalog-document-delete-list-rest-v3.md)
 - [{#T}](./catalog-document-field-list.md)
 - [{#T}](./catalog-document-field-get.md)

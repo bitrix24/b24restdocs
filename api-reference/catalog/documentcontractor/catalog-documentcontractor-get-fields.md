@@ -1,4 +1,4 @@
-# Get Description of Fields for Binding Vendor to Inventory Document catalog.documentcontractor.getFields  
+# Get Description of Fields for Binding Vendor to Inventory Document catalog.documentcontractor.getFields
 
 {% note tip "" %}
 
@@ -11,20 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the following permissions:
-> — "View" on the document type "Incoming",
-> — "View Inventory Management section"
-> — "View Product Catalog"  
+> Who can execute the method: a user with the "View" permission for stock receipt documents and the "View Inventory Management area" and "View product catalog" permissions
 
 The method `catalog.documentcontractor.getFields` returns the description of fields for binding a vendor, contact, or company to an inventory document.
 
-## Method Parameters  
+## Method Parameters
 
 No parameters.
 
 ## Code Examples
 
-{% include [Note on examples](../../../_includes/examples.md) %} 
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -149,7 +146,7 @@ No parameters.
 
 - PHP
 
-    ```php  
+    ```php
     try {
         $response = $b24Service
             ->core
@@ -182,7 +179,7 @@ No parameters.
                 console.log(result.data());
         }
     );
-    ```	
+    ```
 
 - PHP CRest
 
@@ -221,7 +218,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -273,38 +270,38 @@ HTTP Code: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **documentContractor**
-[`object`](../data-types.md#catalog_documentcontractor) | Object describing the fields for binding a vendor to an inventory document.
-Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the field of the [`catalog_documentContractor`](../data-types.md#catalog_documentcontractor) object, and `value` is an object of type [`rest_field_description`](../data-types.md) ||  
+|| **result.documentContractor**
+[`object`](../../data-types.md) | Object describing the fields for binding a vendor to an inventory document.
+Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Where `field` is the identifier of the field of the [catalog_documentcontractor](../data-types.md#catalog_documentcontractor) object, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-## Error Handling 
+## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}  
+HTTP Status: **400**
 
-HTTP Code: **400**
-
-```json  
+```json
 {
     "error": "0",
     "error_description": "Access denied"
 }
 ```
 
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access denied | Insufficient permissions to view the document or bindings ||  
-|| `0` | Contractors should be provided by CRM | CRM module is not active as a vendor for contractors ||  
-|#  
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access denied | Insufficient permissions to view the document or bindings ||
+|| `400` | `0` | Contractors should be provided by CRM | Vendors in Bitrix24 are not managed in CRM ||
+|#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}  
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning  
+## Continue Learning
 
-- [{#T}](./catalog-documentcontractor-list.md)  
-- [{#T}](./catalog-documentcontractor-add.md)  
-- [{#T}](./catalog-documentcontractor-delete.md)  
+- [{#T}](./catalog-documentcontractor-add.md)
+- [{#T}](./catalog-documentcontractor-list.md)
+- [{#T}](./catalog-documentcontractor-delete.md)

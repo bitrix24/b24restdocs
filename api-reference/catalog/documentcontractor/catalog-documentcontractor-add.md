@@ -11,49 +11,46 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with permissions:
-> — "View" and "Create and edit" on document type "Incoming",
-> — "View Inventory" section
-> — "View Product Catalog"  
+> Who can execute the method: a user with the "View" and "Create and edit" permissions for stock receipt documents and the "View Inventory Management area" and "View product catalog" permissions
 
 The method `catalog.documentcontractor.add` creates a binding of a vendor, contact, or company to an inventory document.
 
-## Method Parameters  
+## Method Parameters
 
-{% include [Note on required parameters](../../../_includes/required.md) %}  
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](#fields) | Binding fields ([detailed description](#fields)) ||
-|# 
+[`object`](../../data-types.md) | Binding fields [(detailed description)](#fields) ||
+|#
 
-## Parameter fields {#fields}  
+### Parameter fields {#fields}
 
-{% include [Note on required parameters](../../../_includes/required.md) %}  
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
-`type` | **Description** || 
-|| **documentId*** 
-[`catalog_document.id`](../data-types.md#catalog_document) | Identifier of the inventory document of type "Incoming" `A`.  
-Can be obtained using the method [catalog.document.list](../document/catalog-document-list.md) ||  
-|| **entityTypeId***  
-[`integer`](../../crm/data-types.md#object_type) | Type of CRM object:  
-`3` — contact 
-`4` — company ||  
-|| **entityId***  
-[`integer`](../../data-types.md) | Identifier of the CRM object, contact, or company from the "Vendor" category.
- 
-To obtain vendor identifiers:  
-1. Get the category identifier with the code `CATALOG_CONTRACTOR_CONTACT` for contacts or `CATALOG_CONTRACTOR_COMPANY` for companies using the method [crm.category.list](../../crm/universal/category/crm-category-list.md).  
-2. Use the obtained `categoryId` in the filter of the request [crm.item.list](../../crm/universal/crm-item-list.md) ||  
-|#  
+`type` | **Description** ||
+|| **documentId***
+[`catalog_document.id`](../data-types.md#catalog_document) | Identifier of the inventory document of type "Incoming" `A`.
+Can be obtained using the method [catalog.document.list](../document/catalog-document-list.md) ||
+|| **entityTypeId***
+[`integer`](../../crm/data-types.md#object_type) | Type of CRM object:
+- `3` — contact
+- `4` — company ||
+|| **entityId***
+[`integer`](../../data-types.md) | Identifier of the CRM object, contact, or company from the "Vendor" category. The method does not check that the contact or company exists: a nonexistent identifier is saved without an error.
 
-## Code Examples  
+To obtain vendor identifiers:
+1. Get the category identifier with the code `CATALOG_CONTRACTOR_CONTACT` for contacts or `CATALOG_CONTRACTOR_COMPANY` for companies using the method [crm.category.list](../../crm/universal/category/crm-category-list.md).
+2. Use the obtained `categoryId` in the filter of the request [crm.item.list](../../crm/universal/crm-item-list.md) ||
+|#
 
-{% include [Note on examples](../../../_includes/examples.md) %}  
+## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -63,7 +60,7 @@ To obtain vendor identifiers:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"documentId":42,"entityTypeId":3,"entityId":101}}' \
+    -d '{"fields":{"documentId":73,"entityTypeId":3,"entityId":2185}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.documentcontractor.add
     ```
 
@@ -73,7 +70,7 @@ To obtain vendor identifiers:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"documentId":42,"entityTypeId":3,"entityId":101},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"documentId":73,"entityTypeId":3,"entityId":2185},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.documentcontractor.add
     ```
 
@@ -102,9 +99,9 @@ To obtain vendor identifiers:
         method: 'catalog.documentcontractor.add',
         params: {
           fields: {
-            documentId: 42,
+            documentId: 73,
             entityTypeId: 3,
-            entityId: 101,
+            entityId: 2185,
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -138,9 +135,9 @@ To obtain vendor identifiers:
             method: 'catalog.documentcontractor.add',
             params: {
               fields: {
-                documentId: 42,
+                documentId: 73,
                 entityTypeId: 3,
-                entityId: 101,
+                entityId: 2185,
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -172,9 +169,9 @@ To obtain vendor identifiers:
     try:
         bitrix_response = client.catalog.documentcontractor.add(
             fields={
-                "documentId": 42,
+                "documentId": 73,
                 "entityTypeId": 3,
-                "entityId": 101,
+                "entityId": 2185,
             },
         ).response
         result = bitrix_response.result
@@ -194,7 +191,7 @@ To obtain vendor identifiers:
 
 - PHP
 
-    ```php  
+    ```php
     try {
         $response = $b24Service
             ->core
@@ -202,9 +199,9 @@ To obtain vendor identifiers:
                 'catalog.documentcontractor.add',
                 [
                     'fields' => [
-                        'documentId' => 42,
+                        'documentId' => 73,
                         'entityTypeId' => 3,
-                        'entityId' => 101
+                        'entityId' => 2185
                     ]
                 ]
             );
@@ -229,9 +226,9 @@ To obtain vendor identifiers:
         'catalog.documentcontractor.add',
         {
             fields: {
-                documentId: 42,
+                documentId: 73,
                 entityTypeId: 3,
-                entityId: 101
+                entityId: 2185
             }
         },
         function(result)
@@ -242,7 +239,7 @@ To obtain vendor identifiers:
                 console.log(result.data());
         }
     );
-    ```	
+    ```
 
 - PHP CRest
 
@@ -253,9 +250,9 @@ To obtain vendor identifiers:
         'catalog.documentcontractor.add',
         [
             'fields' => [
-                'documentId' => 42,
+                'documentId' => 73,
                 'entityTypeId' => 3,
-                'entityId' => 101
+                'entityId' => 2185
             ]
         ]
     );
@@ -271,9 +268,9 @@ To obtain vendor identifiers:
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.documentcontractor.add", b24.Params{
     	"fields": b24.Params{
-    		"documentId":   42,
+    		"documentId":   73,
     		"entityTypeId": 3,
-    		"entityId":     101,
+    		"entityId":     2185,
     	},
     })
     if err != nil {
@@ -302,7 +299,7 @@ To obtain vendor identifiers:
 
 ## Response Handling
 
-HTTP code: **200**
+HTTP Status: **200**
 
 ```json
 {
@@ -334,17 +331,15 @@ HTTP code: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **documentContractor**
-[`catalog_documentContractor`](../data-types.md#catalog_documentcontractor) | Object with data of the created vendor binding to the inventory document ||  
+|| **result.documentContractor**
+[`catalog_documentcontractor`](../data-types.md#catalog_documentcontractor) | Object with data of the created vendor binding to the inventory document ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-## Error Handling 
+## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}  
-
-HTTP code: **400**
+HTTP Status: **400**
 
 ```json
 {
@@ -353,27 +348,31 @@ HTTP code: **400**
 }
 ```
 
+{% include notitle [error handling](../../../_includes/error-info.md) %}
+
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Store document was not found | The specified document identifier does not exist or is inaccessible ||  
-|| `0` | Type of store document is wrong | The document is not of type "Incoming" `A` ||  
-|| `0` | Unable to edit conducted document | The document has already been processed and cannot be changed ||  
-|| `0` | Wrong entity type id | An invalid `entityTypeId` was provided, must be 3 or 4 ||  
-|| `0` | Wrong entity id | An invalid or non-existent `entityId` was specified ||  
-|| `0` | This contractor has been already bound to this document | Such a binding already exists ||  
-|| `0` | This document already has a Company contractor | A company is already bound to the document. Re-binding companies is prohibited ||  
-|| `0` | Access denied | Insufficient permissions to modify the document ||  
-|| `0` | Contractors should be provided by CRM | The CRM module is not active as a vendor for contractors ||  
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` was not provided ||
+|| `400` | `0` | Required fields: documentId, entityTypeId, entityId | Required fields are missing in `fields`. The message lists only the missing fields ||
+|| `400` | `0` | Store document was not found | There is no document with the specified `documentId`, or it is not available to the user ||
+|| `400` | `0` | Type of store document is wrong | The document is not a stock receipt document `A` ||
+|| `400` | `0` | Unable to edit conducted document | The document is already processed ||
+|| `400` | `0` | Wrong entity type id | `entityTypeId` contains a value other than `3` and `4` ||
+|| `400` | `0` | Wrong entity id | `entityId` is `0` ||
+|| `400` | `0` | This contractor has been already bound to this document | Such a binding already exists ||
+|| `400` | `0` | This document already has a Company contractor | A company is already bound to the document ||
+|| `400` | `0` | Access denied | Insufficient permissions to modify the document ||
+|| `400` | `0` | Contractors should be provided by CRM | Vendors in Bitrix24 are not managed in CRM ||
 |#
 
-{% include [System Errors](../../../_includes/system-errors.md) %}  
+{% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./catalog-documentcontractor-list.md)  
-- [{#T}](./catalog-documentcontractor-delete.md)  
+- [{#T}](./catalog-documentcontractor-list.md)
+- [{#T}](./catalog-documentcontractor-delete.md)
 - [{#T}](./catalog-documentcontractor-get-fields.md)
 - [{#T}](../../../tutorials/crm/how-to-add-crm-objects/how-to-add-contractor.md)
 - [{#T}](../../../tutorials/crm/how-to-get-lists/how-to-get-contractors.md)

@@ -46,11 +46,11 @@ The identifier can be retrieved using the [catalog.document.list](../catalog-doc
 
 The identifier can be retrieved using the [catalog.product.list](../../product/catalog-product-list-rest-v3.md) method ||
 || **storeFrom**
-[`integer`](../../../data-types.md) | Identifier of the source warehouse the product is written off from. Used in write-off, sale, and transfer documents.
+[`integer`](../../../data-types.md) | Identifier of the source warehouse the product is written off from. Used in transfer and write-off documents.
 
 The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list.md) method ||
 || **storeTo**
-[`integer`](../../../data-types.md) | Identifier of the receiving warehouse. Used in receipt, stock adjustment, and transfer documents.
+[`integer`](../../../data-types.md) | Identifier of the receiving warehouse. Used in receipt, stock adjustment, transfer, and return documents.
 
 The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list.md) method ||
 || **amount**
@@ -59,7 +59,9 @@ The identifier can be retrieved using the [catalog.store.list](../../store/catal
 [`double`](../../../data-types.md) | Purchase price in the document currency ||
 |#
 
-The `id` field is filled in automatically. If you pass it in `fields`, the method returns an error.
+The `id` field is filled in automatically. If you pass it or an unknown field in `fields`, the method returns an error.
+
+The `storeFrom`, `storeTo`, `amount`, and `purchasingPrice` fields that are not passed equal `0` in the response. The method does not check that the product and the warehouses exist and match the document type.
 
 ## Code Examples
 
@@ -387,11 +389,11 @@ HTTP status: **200**
 || **storeTo**
 [`integer`](../../../data-types.md) | Identifier of the receiving warehouse. `0` — no warehouse specified ||
 || **elementId**
-[`integer`](../../../data-types.md) | Product identifier ||
+[`integer`](../../../data-types.md) | Product identifier. `0` — no product specified ||
 || **amount**
-[`double`](../../../data-types.md) | Product quantity ||
+[`double`](../../../data-types.md) | Product quantity. `0` — no quantity specified ||
 || **purchasingPrice**
-[`double`](../../../data-types.md) | Purchase price in the document currency ||
+[`double`](../../../data-types.md) | Purchase price per unit in the document currency. `0` — no price specified ||
 |#
 
 ## Error Handling
@@ -447,7 +449,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Entity with ID `#ID#` was not found | There is no document with the `docId` identifier. Check the identifier using the [catalog.document.list](../catalog-document-list-rest-v3.md) method ||
+|| `-` | Entity with ID `999999` was not found | There is no document with the `docId` identifier, or `docId` is `0`. The message contains the passed `docId`. Check the identifier using the [catalog.document.list](../catalog-document-list-rest-v3.md) method ||
 |#
 
 #### Unknown Field Error
@@ -456,7 +458,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `DocumentElementDto` | Pass in `fields` only the fields from the [Parameter fields](#fields) table ||
+|| `-` | Unknown field `foo` found in entity `DocumentElementDto` | Pass in `fields` only the fields from the [Parameter fields](#fields) table ||
 |#
 
 #### Access Error

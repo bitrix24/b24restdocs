@@ -327,10 +327,10 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `documentIds` | This request requires data type `array` in field `documentIds` | Pass `documentIds` as an array, for example `[321, 323]` ||
 || `-` | Error processing inventory object: The document has been already fulfilled | The document is already processed. Check the document state in the `status` field using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
 || `-` | Error processing inventory object: Vendor is not specified | For a receipt document, specify the vendor using the [catalog.document.contractor.add](../documentcontractor/catalog-documentcontractor-add-rest-v3.md) method ||
-|| `-` | Error processing inventory object: #ERROR# | Fix the document according to the error text after the colon, for example, fill in the warehouse or quantity in the document products ||
-|| `-` | Error processing inventory object "#DOC_TITLE#": #ERROR# | Fix the specified document according to the error text. The other documents in the list have been processed ||
-|| `-` | Error processing "#DOC_TITLE#" | The document does not exist or is not available to the user. The `#DOC_TITLE#` placeholder in the text is not replaced. Check the identifiers using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
-|| `-` | Error processing inventory object: Insufficient permissions to save the inventory object | The user does not have the "Process inventory objects" permission for this document type ||
+|| `-` | Error processing inventory object: Items present in the inventory object ID #365 are missing. | The document has no products. Add products with the [catalog.document.element.add](./document-element/catalog-document-element-add-rest-v3.md) method. Other reasons come in the same format after the colon, for example, the warehouse or quantity is not specified ||
+|| `-` | Error processing inventory object "Stock adjustment #33": The document has been already fulfilled.. | Error for one document from `documentIds`: the document name is in quotes, the reason follows the colon. Fix this document. The other documents from the list are processed ||
+|| `-` | Error processing "#DOC_TITLE#". | A document from `documentIds` does not exist or is unavailable to the user. The text comes literally with `#DOC_TITLE#`, without the document name or ID. Check the IDs with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `-` | Error processing inventory object: Insufficient permissions to save the inventory object.. | Returned when calling with `documentIds`: the user does not have the "Process inventory objects" permission for the type of this document ||
 || `-` | Inventory Management is not available on your plan | Inventory management is not included in your Bitrix24 plan. The document methods are unavailable ||
 || `-` | Inventory management must be enabled to process the document | Enable inventory management. Without it, processing multiple documents is unavailable ||
 |#
@@ -341,7 +341,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no document with this identifier. Check the identifier using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no document with this ID. Check the ID with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
 |#
 
 #### Access Error
@@ -359,7 +359,7 @@ HTTP status: **403**
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-list-rest-v3.md)
 - [{#T}](./catalog-document-conduct-list-rest-v3.md)
 - [{#T}](./catalog-document-cancel-rest-v3.md)
-- [{#T}](./catalog-document-list-rest-v3.md)
 - [{#T}](./catalog-document-mode-status-rest-v3.md)

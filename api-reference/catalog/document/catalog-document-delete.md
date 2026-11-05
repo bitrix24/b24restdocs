@@ -11,11 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: 
-> - a user with the "Delete document" access permission for the document type in the request,
-> - and "View and select warehouse" access permission for the incoming or outgoing warehouse.
+> Who can execute the method: a user with the "View and select warehouses" permission and the "Delete inventory object" permission for the required document type. Access to all warehouses specified in the document products is required
 
-The method `catalog.document.delete` removes an inventory document. 
+The method `catalog.document.delete` deletes an unprocessed inventory document.
 
 ## Method Parameters
 
@@ -25,8 +23,12 @@ The method `catalog.document.delete` removes an inventory document.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_document.id`](../data-types.md#catalog_document) | Identifier of the document, which can be obtained using the [catalog.document.list](./catalog-document-list.md) method ||
+[`catalog_document.id`](../data-types.md#catalog_document) | Document ID.
+
+Document IDs can be retrieved with the [catalog.document.list](./catalog-document-list.md) method ||
 |#
+
+Document products are deleted together with the document. A processed document cannot be deleted: first cancel processing with the [catalog.document.cancel](./catalog-document-cancel.md) method.
 
 ## Code Examples
 
@@ -164,12 +166,9 @@ The method `catalog.document.delete` removes an inventory document.
             ->getResponseData()
             ->getResult();
 
-        if ($result === true) {
-            echo 'Document deleted';
-        }
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting document: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -228,19 +227,19 @@ The method `catalog.document.delete` removes an inventory document.
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": true,
     "time": {
-        "start": 1761908531,
-        "finish": 1761908531.935914,
-        "duration": 0.9359140396118164,
+        "start": 1793883416,
+        "finish": 1793883416.568415,
+        "duration": 0.5684149265289307,
         "processing": 0,
-        "date_start": "2025-10-31T14:02:11+02:00",
-        "date_finish": "2025-10-31T14:02:11+02:00",
-        "operating_reset_at": 1761909131,
+        "date_start": "2026-11-05T15:56:56+03:00",
+        "date_finish": "2026-11-05T15:56:56+03:00",
+        "operating_reset_at": 1793883960,
         "operating": 0
     }
 }
@@ -252,39 +251,42 @@ HTTP Code: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Root element of the response, contains `true` if the document has been deleted. 
-
-If the response contains `null` — the document cannot be deleted because it has been processed. First, cancel the processing of the document using the [catalog.document.cancel](./catalog-document-cancel.md) method ||
+[`boolean`](../../data-types.md) | Root element of the response. Contains `true` if the document is deleted ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
 
-{% include notitle [error handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error": "0",
-    "error_description": "Document not found"
+    "error": "1",
+    "error_description": "Cannot delete a document for which a transaction was created."
 }
 ```
+
+{% include notitle [error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Insufficient permissions to save the document | Insufficient permissions to work with the document or warehouses ||
-|| `0` | Document not found | A non-existent document identifier was provided ||
-|| `0` | Inventory accounting is not available on your plan | Inventory accounting is not available on your plan ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Cannot complete action because you don't have sufficient permissions to view and select warehouses. | The user does not have the "View and select warehouses" permission ||
+|| `400` | `0` | Insufficient permissions to save the inventory object. | The user does not have the "Delete inventory object" permission for documents of this type or has no access to a warehouse from the document products ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | `id` is not a number ||
+|| `400` | `0` | Inventory object was not found. | The document with the specified `id` is not found ||
+|| `400` | `1` | Cannot delete a document for which a transaction was created. | The document is processed. First cancel processing with the [catalog.document.cancel](./catalog-document-cancel.md) method ||
+|| `400` | `0` | Inventory Management is not available on your plan. | Inventory Management is not available on the account plan ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-add.md)
+- [{#T}](./catalog-document-list.md)
 - [{#T}](./catalog-document-delete-list.md)
 - [{#T}](./catalog-document-cancel.md)
-- [{#T}](./catalog-document-list.md)

@@ -316,7 +316,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `id` | Required field `id` is missing | Pass `id` as a positive integer ||
 || `id` | This request requires data type `int` in field `id` | Pass `id` as a number, not a string ||
 || `-` | Error canceling inventory object processing: The transaction is still pending | The document is not processed, so there is nothing to cancel. Check the document state in the `status` field using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
-|| `-` | Error canceling inventory object processing: #ERROR# | Fix the document according to the error text after the colon ||
+|| `-` | Error canceling inventory object processing: #ERROR#. | Other reasons why processing cannot be canceled. `#ERROR#` is replaced with the reason text. Fix the document accordingly ||
 || `-` | Inventory Management is not available on your plan | Inventory management is not included in your Bitrix24 plan. The document methods are unavailable ||
 |#
 
@@ -326,7 +326,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no document with this identifier. Check the identifier using the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no document with this ID. Check the ID with the [catalog.document.list](./catalog-document-list-rest-v3.md) method ||
 |#
 
 #### Access Error
@@ -344,6 +344,6 @@ HTTP status: **403**
 
 ## Continue Learning
 
+- [{#T}](./catalog-document-list-rest-v3.md)
 - [{#T}](./catalog-document-cancel-rest-v3.md)
 - [{#T}](./catalog-document-confirm-rest-v3.md)
-- [{#T}](./catalog-document-list-rest-v3.md)

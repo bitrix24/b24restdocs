@@ -231,13 +231,13 @@ HTTP status: **200**
         "status": "Y"
     },
     "time": {
-        "start": 1792665213,
-        "finish": 1792665213.037978,
-        "duration": 0.03797793388366699,
+        "start": 1793883033,
+        "finish": 1793883033.043758,
+        "duration": 0.04375791549682617,
         "processing": 0,
-        "date_start": "2026-10-22T13:33:33+02:00",
-        "date_finish": "2026-10-22T13:33:33+02:00",
-        "operating_reset_at": 1792665780,
+        "date_start": "2026-11-05T15:50:33+03:00",
+        "date_finish": "2026-11-05T15:50:33+03:00",
+        "operating_reset_at": 1793883600,
         "operating": 0
     }
 }
@@ -255,8 +255,10 @@ HTTP status: **200**
 
 Possible values:
 
-- `Y` — inventory management is enabled
-- `N` — inventory management is disabled ||
+- `Y` — Inventory Management is enabled and available on the plan
+- `N` — Inventory Management is disabled or unavailable on the plan
+
+The value comes as a string, not `true`/`false`. The `enabled` field of the [catalog.document.mode.statusdetails](./catalog-document-mode-status-details.md) method returns the flag as `boolean` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -297,4 +299,5 @@ HTTP status: **403**
 
 - [{#T}](./catalog-document-mode-status-details.md)
 - [{#T}](./catalog-document-mode-field-list.md)
+- [{#T}](./catalog-document-mode-field-get.md)
 - [{#T}](./catalog-document-conduct-rest-v3.md)

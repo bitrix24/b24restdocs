@@ -38,7 +38,7 @@ The `catalog.document.add` method creates an inventory document and returns its 
 || **Name**
 `type` | **Description** ||
 || **docType***
-[`string`](../../data-types.md) | Document type. The type cannot be changed after creation.
+[`string`](../../data-types.md) | Document type. The type cannot be changed after creation. Pass the value in uppercase: `a` causes an error.
 
 Possible values:
 
@@ -50,13 +50,15 @@ Possible values:
 
 The list of types and their names is returned by the [catalog.document.type.list](./catalog-document-type-list.md) method ||
 || **currency***
-[`string`](../../data-types.md) | Document currency code, for example `EUR` ||
+[`string`](../../data-types.md) | Document currency code, for example `RUB`. The method does not check whether the currency exists in Bitrix24: a nonexistent code is saved without an error.
+
+Currency codes can be retrieved with the [crm.currency.list](../../crm/currency/crm-currency-list.md) method ||
 || **responsibleId***
-[`integer`](../../data-types.md) | Identifier of the responsible person.
+[`integer`](../../data-types.md) | Responsible user ID. The method does not check whether the user exists: a nonexistent ID is saved without an error.
 
 The user identifier can be retrieved using the [user.get](../../user/user-get.md) method ||
 || **title**
-[`string`](../../data-types.md) | Document title. If not passed, Bitrix24 generates the title from the type and number, for example "Stock receipt #37" ||
+[`string`](../../data-types.md) | Document name. If not passed, Bitrix24 generates a name from the type and the sequence number of the document of this type, for example "Shipping manifest #44". The number in the name does not match `id` ||
 || **docNumber**
 [`string`](../../data-types.md) | Incoming document number ||
 || **dateDocument**
@@ -66,7 +68,7 @@ The user identifier can be retrieved using the [user.get](../../user/user-get.md
 || **commentary**
 [`string`](../../data-types.md) | Comment ||
 || **siteId**
-[`string`](../../data-types.md) | Site identifier.
+[`string`](../../data-types.md) | Site ID. The method does not check the value.
 
 Default: `s1` ||
 || **statusBy**
@@ -77,7 +79,7 @@ Default: `s1` ||
 [`integer`](../../data-types.md) | Identifier of the vendor from the catalog directory. If vendors are managed in CRM in Bitrix24, the field is not saved. To bind a CRM vendor to the document, use the [catalog.document.contractor.add](../documentcontractor/catalog-documentcontractor-add-rest-v3.md) method ||
 |#
 
-The `id`, `dateCreate`, `dateModify`, `createdBy`, `status`, and `dateStatus` fields are filled in automatically. If you pass them in `fields`, the method returns an error.
+The `id`, `dateCreate`, `dateModify`, `createdBy`, `status`, and `dateStatus` fields are filled in automatically. If you pass them in `fields`, the method returns an error. A new document is always created unprocessed, you can process it with the [catalog.document.conduct](./catalog-document-conduct-rest-v3.md) method.
 
 ## Code Examples
 
@@ -376,17 +378,17 @@ HTTP status: **200**
 {
     "result": {
         "item": {
-            "id": 343,
+            "id": 383,
             "docType": "A",
             "siteId": "s1",
             "responsibleId": 1,
-            "dateModify": "2026-10-22T13:34:07+02:00",
-            "dateCreate": "2026-10-22T13:34:07+02:00",
-            "createdBy": 1,
-            "modifiedBy": 1,
+            "dateModify": "2026-11-05T15:59:36+03:00",
+            "dateCreate": "2026-11-05T15:59:36+03:00",
+            "createdBy": 1269,
+            "modifiedBy": 1269,
             "currency": "EUR",
             "status": "",
-            "dateStatus": "2026-10-22T13:34:07+02:00",
+            "dateStatus": "2026-11-05T15:59:36+03:00",
             "dateDocument": null,
             "statusBy": 0,
             "total": 0,
@@ -397,14 +399,14 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1792665246,
-        "finish": 1792665246.674998,
-        "duration": 0.6749980449676514,
-        "processing": 0,
-        "date_start": "2026-10-22T13:34:06+02:00",
-        "date_finish": "2026-10-22T13:34:06+02:00",
-        "operating_reset_at": 1792665540,
-        "operating": 0.3588740825653076
+        "start": 1793883576,
+        "finish": 1793883577.199771,
+        "duration": 1.1997709274291992,
+        "processing": 1,
+        "date_start": "2026-11-05T15:59:36+03:00",
+        "date_finish": "2026-11-05T15:59:37+03:00",
+        "operating_reset_at": 1793884140,
+        "operating": 0.2661781311035156
     }
 }
 ```
@@ -454,15 +456,15 @@ HTTP status: **200**
 || **statusBy**
 [`integer`](../../data-types.md) | Identifier of the user who last changed the status. `0` if the status has not changed ||
 || **total**
-[`double`](../../data-types.md) | Document total ||
+[`double`](../../data-types.md) | Document total. `0` if the total is not set ||
 || **commentary**
-[`string`](../../data-types.md) | Comment ||
+[`string`](../../data-types.md) | Comment. An empty string if the comment is not set ||
 || **title**
 [`string`](../../data-types.md) | Document title ||
 || **docNumber**
-[`string`](../../data-types.md) | Incoming document number ||
+[`string`](../../data-types.md) | Incoming document number. An empty string if the number is not set ||
 || **contractorId**
-[`integer`](../../data-types.md) | Identifier of the vendor from the catalog directory. `0` if no vendor is specified ||
+[`integer`](../../data-types.md) | Vendor ID from the catalog directory. `0` if the vendor is not specified or vendors are managed in CRM ||
 |#
 
 ## Error Handling
@@ -497,7 +499,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 || `docType` | Required field `docType` is empty | Pass `docType` in `fields` ||
 || `currency` | Required field `currency` is empty | Pass `currency` in `fields` ||
 || `responsibleId` | Required field `responsibleId` is empty | Pass `responsibleId` in `fields` ||
-|| `#FIELD#` | Field `#FIELD#` is read-only | Remove the `id`, `dateCreate`, `dateModify`, `createdBy`, `status`, and `dateStatus` fields from `fields` ||
+|| `id` | Field `id` is read-only | Remove the automatically filled fields from `fields`: `id`, `dateCreate`, `dateModify`, `createdBy`, `status`, `dateStatus`. The error text contains the name of the passed field ||
 |#
 
 #### Request Validation Errors
@@ -509,8 +511,10 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `fields` | Required field `fields` is missing | Pass the `fields` object ||
 || `responsibleId` | This request requires data type `int` in field `responsibleId` | Pass an integer ||
 || `dateDocument` | This request requires data type `DateTime` in field `dateDocument` | Pass a date with time in ISO 8601 format, for example `2026-10-22T10:00:00+02:00` ||
-|| `-` | DOC_TYPE isn't available | Pass one of the types `A`, `S`, `M`, `R`, `D` in `docType` ||
-|| `-` | Inventory Management is not available on your plan | The method works only on plans with inventory management ||
+|| `total` | This request requires data type `float` in field `total` | Pass the total as a number. The same error with type `int` is returned for `contractorId`, `statusBy`, `modifiedBy` ||
+|| `status` | This request requires data type `string` in field `status` | Remove `status` from `fields`: the status is changed by the [catalog.document.conduct](./catalog-document-conduct-rest-v3.md) and [catalog.document.cancel](./catalog-document-cancel-rest-v3.md) methods ||
+|| `-` | DOC_TYPE isn't available | Pass one of the types `A`, `S`, `M`, `R`, `D` in uppercase in `docType` ||
+|| `-` | Inventory Management is not available on your plan. | The method works only on plans with Inventory Management ||
 |#
 
 #### Unknown Field Error
@@ -519,7 +523,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `DocumentDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields` ||
+|| `-` | Unknown field `foo` found in entity `DocumentDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields`. Write field names in camelCase: `DOC_TYPE` also causes this error ||
+|| `-` | Unknown field `0` found in entity `DocumentDto` | `fields` contains a string or an array instead of an object. Pass `fields` as an object ||
 |#
 
 #### Access Error
@@ -536,8 +541,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 ## Continue Learning
 
 - [{#T}](./catalog-document-update-rest-v3.md)
-- [{#T}](./catalog-document-get.md)
 - [{#T}](./catalog-document-list-rest-v3.md)
+- [{#T}](./catalog-document-get.md)
 - [{#T}](./catalog-document-delete-rest-v3.md)
 - [{#T}](./catalog-document-delete-list-rest-v3.md)
 - [{#T}](./catalog-document-field-list.md)

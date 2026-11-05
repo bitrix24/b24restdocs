@@ -44,11 +44,11 @@ An empty object `{}` causes an error ||
 || **Name**
 `type` | **Description** ||
 || **storeFrom**
-[`integer`](../../../data-types.md) | Identifier of the source warehouse the product is written off from. Used in write-off, sale, and transfer documents.
+[`integer`](../../../data-types.md) | Identifier of the source warehouse the product is written off from. Used in transfer and write-off documents.
 
 The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list.md) method ||
 || **storeTo**
-[`integer`](../../../data-types.md) | Identifier of the receiving warehouse. Used in receipt, stock adjustment, and transfer documents.
+[`integer`](../../../data-types.md) | Identifier of the receiving warehouse. Used in receipt, stock adjustment, transfer, and return documents.
 
 The identifier can be retrieved using the [catalog.store.list](../../store/catalog-store-list.md) method ||
 || **amount**
@@ -56,6 +56,8 @@ The identifier can be retrieved using the [catalog.store.list](../../store/catal
 || **purchasingPrice**
 [`double`](../../../data-types.md) | Purchase price in the document currency ||
 |#
+
+The method changes only the passed fields; the other fields retain their values. The method skips `null` values: if all fields in `fields` are `null`, the method returns the `Error of modifying new document` error. The method does not check that the warehouses exist and match the document type.
 
 {% note warning "" %}
 
@@ -375,11 +377,11 @@ HTTP status: **200**
 || **storeTo**
 [`integer`](../../../data-types.md) | Identifier of the receiving warehouse. `0` — no warehouse specified ||
 || **elementId**
-[`integer`](../../../data-types.md) | Product identifier ||
+[`integer`](../../../data-types.md) | Product identifier. `0` — no product specified ||
 || **amount**
-[`double`](../../../data-types.md) | Product quantity ||
+[`double`](../../../data-types.md) | Product quantity. `0` — no quantity specified ||
 || **purchasingPrice**
-[`double`](../../../data-types.md) | Purchase price in the document currency ||
+[`double`](../../../data-types.md) | Purchase price per unit in the document currency. `0` — no price specified ||
 |#
 
 ## Error Handling
@@ -406,10 +408,11 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `-` | At least one of the required fields must be not empty: id, filter | Pass the `id` of the product item. This message comes together with a second one: "Only one of the following values must be provided: id, filter" ||
+|| `id` | Required field `id` is missing | `id` is not a number. Pass an integer ||
 || `fields` | Required field `fields` is missing | Pass the `fields` object ||
 || `amount` | This request requires data type `float` in field `amount` | Pass a number ||
 || `ERROR_DOCUMENT_STATUS` | Conducted document | The document is processed. Cancel processing using the [catalog.document.cancel](../catalog-document-cancel-rest-v3.md) method and repeat the request ||
-|| `-` | Error of modifying new document | Pass at least one field in `fields` ||
+|| `-` | Error of modifying new document | Pass at least one field with a non-`null` value in `fields` ||
 |#
 
 #### Filter Format Error
@@ -427,7 +430,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no product item with this identifier. Check the identifier using the [catalog.document.element.list](./catalog-document-element-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no product item with this identifier. Check the identifier using the [catalog.document.element.list](./catalog-document-element-list-rest-v3.md) method ||
 |#
 
 #### Unknown Field Error
@@ -436,7 +439,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `DocumentElementDto` | Pass in `fields` only the fields from the [Parameter fields](#fields) table ||
+|| `-` | Unknown field `foo` found in entity `DocumentElementDto` | Pass in `fields` only the fields from the [Parameter fields](#fields) table ||
 |#
 
 #### Access Error
