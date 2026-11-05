@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 > 
 > Who can execute the method: any user with the "delete" permission for CRM object elements.
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.delete](../rest-v3/items/crm-entity-delete-rest-v3.md). REST 3.0 has no equivalent for CRM documents and B2E documents yet, so use this method for them.
+
+{% endnote %}
+
 Deletes a CRM object element by its item ID and entity type ID.
 
 ## Method Parameters

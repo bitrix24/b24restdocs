@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "read" access permission for contacts and companies
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.requisite.preset.get](../../../rest-v3/requisites/crm-entity-requisite-preset-get-rest-v3.md): the template fields are returned in its response. The method does not return the IDs of template fields, so use this method for them.
+
+{% endnote %}
+
 Retrieves the description of a custom field within a company details template by its identifier.
 
 ## Method Parameters

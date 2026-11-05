@@ -93,7 +93,7 @@ Data types and parameter formats, Method scopes, and How to work with files cont
 
 #|
 || **Section** | **Description** ||
-|| [CRM](./crm/index.md) | Leads, deals, contacts, companies, SPAs, quotes, requisites, timeline activities, stages and pipelines, and CRM events ||
+|| [CRM](./crm/index.md) | Leads, deals, contacts, companies, SPAs, quotes, requisites, timeline activities, stages and pipelines, and CRM events. REST 3.0: some of the methods — items, fields, pipelines and stages, product items, requisites, addresses, activities, card views, directories, and [CRM forms](./crm/form/index.md) — are listed in the [CRM overview](./crm/index.md#rest-v3) ||
 || [Online Store](./sale/index.md) | Orders, cart, payments, shipments, cash registers, and store events ||
 || [Product Catalog](./catalog/index.md) | Products, offers, prices, warehouses, warehouse documents, and catalog events ||
 || [Payment Systems](./pay-system/index.md) | Payment processors and payment settings ||

@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.quote.field.custom.update](../../rest-v3/fields/crm-entity-field-custom-update-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.quote.userfield.update` changes the parameters of an estimate custom field: labels, required flag, type settings, and list elements. The field value in a specific estimate is set by the method [crm.item.update](../../universal/crm-item-update.md) with `entityTypeId = 7`.
 
 In REST 3.0, the field is changed by the [crm.quote.field.custom.update](../../rest-v3/fields/crm-entity-field-custom-update-rest-v3.md) method.

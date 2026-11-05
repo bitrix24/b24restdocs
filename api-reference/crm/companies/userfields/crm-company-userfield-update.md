@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: CRM administrator
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.company.field.custom.update](../../rest-v3/fields/crm-entity-field-custom-update-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.company.userfield.update` updates an existing company custom field.
 
 ## Method Parameters

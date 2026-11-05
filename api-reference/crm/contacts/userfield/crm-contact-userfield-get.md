@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user with "read" access permission for contacts
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.contact.field.custom.get](../../rest-v3/fields/crm-entity-field-custom-get-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.contact.userfield.get` returns a custom contact field by its identifier.
 
 ## Method Parameters

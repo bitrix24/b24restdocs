@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [crm.item.delete](../universal/crm-item-delete.md).
+The development of this method has been halted. Please use the REST 3.0 method [crm.deal.delete](../rest-v3/items/crm-entity-delete-rest-v3.md).
 
 {% endnote %}
 

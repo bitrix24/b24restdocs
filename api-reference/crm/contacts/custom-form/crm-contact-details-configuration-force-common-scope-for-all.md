@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [crm.item.details.configuration.forceCommonScopeForAll](../../universal/item-details-configuration/crm-item-details-configuration-forceCommonScopeForAll.md).
+The development of this method has been halted. Please use the REST 3.0 method [crm.contact.detailpagelayout.setcommonforall](../../rest-v3/detail-page-layout/crm-entity-detail-page-layout-set-common-for-all-rest-v3.md).
 
 {% endnote %}
 

@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: Administrator
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.detailpagelayout.setcommonforall](../../rest-v3/detail-page-layout/crm-entity-detail-page-layout-set-common-for-all-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.item.details.configuration.forceCommonScopeForAll` deletes the personal detail form configurations of all users, after which everyone sees the common configuration. The method does not accept the `userId` and `scope` parameters: if they are passed, they are ignored.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}

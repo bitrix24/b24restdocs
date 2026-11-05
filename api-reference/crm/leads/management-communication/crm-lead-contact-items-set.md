@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "Edit" access permission for the lead and the "Read" access permission for the contacts
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.lead.update](../../rest-v3/items/crm-entity-update-rest-v3.md) with the `contactsId` array: the first contact in the array becomes the primary one. The method does not accept explicit `SORT` and `IS_PRIMARY` values, so use this method for them.
+
+{% endnote %}
+
 The method `crm.lead.contact.items.set` establishes the set of contacts linked to the specified lead.
 
 It replaces the entire set: the contacts that are not in `items` are unlinked from the lead. To add or remove a single contact without affecting the others, use [crm.lead.contact.add](./crm-lead-contact-add.md) and [crm.lead.contact.delete](./crm-lead-contact-delete.md). The structure of the binding object is described in the [section overview](./index.md).

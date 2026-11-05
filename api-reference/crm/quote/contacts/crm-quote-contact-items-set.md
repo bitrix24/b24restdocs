@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has stopped. For new integrations, replace the set of contacts in the `contactIds` field with [crm.item.update](../../universal/crm-item-update.md) using `entityTypeId = 7`. Array order determines contact order, and the first contact becomes primary. You cannot set `SORT` and `IS_PRIMARY` separately.
+The development of this method has been halted. Please use the REST 3.0 method [crm.quote.update](../../rest-v3/items/crm-entity-update-rest-v3.md) with the `contactsId` array: the first contact in the array becomes the primary one. The method does not accept explicit `SORT` and `IS_PRIMARY` values, so use this method for them.
 
 {% endnote %}
 

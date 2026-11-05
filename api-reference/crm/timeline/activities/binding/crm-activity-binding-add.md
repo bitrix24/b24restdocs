@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to edit the CRM item the activity is being bound to and permission to read at least one item the activity is already bound to
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.activity.binding.bind](../../../rest-v3/activities/crm-activity-binding-bind-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.activity.binding.add` adds a binding of an activity to a CRM item. After that, the activity appears in the item's timeline.
 
 In REST 3.0, a binding is added by the [crm.activity.binding.bind](../../../rest-v3/activities/crm-activity-binding-bind-rest-v3.md) method: the item is passed as a single `parent` object, and the response contains the activity bindings.

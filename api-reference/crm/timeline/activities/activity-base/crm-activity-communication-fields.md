@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method `crm.activity.field.list` from the [Activities](../../../rest-v3/activities/index.md) group: the means of communication are described by the `communications` field.
+
+{% endnote %}
+
 The `crm.activity.communication.fields` method returns a communication description for an activity. Communications store phone numbers in calls, email addresses in letters, and names in meetings.
 
 ## Method Parameters

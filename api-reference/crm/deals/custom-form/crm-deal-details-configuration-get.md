@@ -17,7 +17,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [crm.item.details.configuration.get](../../universal/item-details-configuration/crm-item-details-configuration-get.md).
+The development of this method has been halted. Please use the REST 3.0 method [crm.deal.detailpagelayout.get](../../rest-v3/detail-page-layout/crm-entity-detail-page-layout-get-rest-v3.md).
 
 {% endnote %}
 

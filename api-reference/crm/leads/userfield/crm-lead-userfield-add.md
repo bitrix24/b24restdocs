@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator CRM
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.lead.field.custom.add](../../rest-v3/fields/crm-entity-field-custom-add-rest-v3.md). The REST 3.0 method does not create fields of the List `enumeration` and File `file` types, so use this method for them.
+
+{% endnote %}
+
 The method `crm.lead.userfield.add` creates a new custom field for leads.
 
 ## Method Parameters

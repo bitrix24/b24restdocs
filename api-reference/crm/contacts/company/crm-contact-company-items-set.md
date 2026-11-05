@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "Edit" access permission for the contact and the "Read" access permission for the companies
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.contact.update](../../rest-v3/items/crm-entity-update-rest-v3.md) with the `companiesId` array: the first company in the array becomes the primary one. The method does not accept an explicit `SORT` value, so use this method for it.
+
+{% endnote %}
+
 The method `crm.contact.company.items.set` sets the set of companies associated with the specified contact.
 
 The method replaces the entire set: companies that are not in `items` are unlinked from the contact. To add or remove a single company without affecting the others, use [crm.contact.company.add](./crm-contact-company-add.md) and [crm.contact.company.delete](./crm-contact-company-delete.md). The structure of the binding object is described in the [section overview](./index.md).

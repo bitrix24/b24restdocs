@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "read" access permission for the CRM object the link is retrieved for
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 methods [crm.&lt;type&gt;.clientrequisite.get](../../rest-v3/requisites/crm-entity-client-requisite-get-rest-v3.md) and [crm.&lt;type&gt;.mycompanyrequisite.get](../../rest-v3/requisites/crm-entity-my-company-requisite-get-rest-v3.md). The REST 3.0 methods select my company requisites only in deals and invoices, so use this method for estimates and SPAs.
+
+{% endnote %}
+
 The method returns the link of the requisites with the object.
 
 ## Method Parameters

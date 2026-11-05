@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.quote.field.custom.add](../../rest-v3/fields/crm-entity-field-custom-add-rest-v3.md). The REST 3.0 method does not create fields of the List `enumeration` and File `file` types, so use this method for them.
+
+{% endnote %}
+
 The method `crm.quote.userfield.add` creates a custom field in all estimates in Bitrix24 and returns its ID. The type `USER_TYPE_ID`, the code `FIELD_NAME`, and the multiple flag `MULTIPLE` cannot be changed after the field is created.
 
 In REST 3.0, the field is created by the [crm.quote.field.custom.add](../../rest-v3/fields/crm-entity-field-custom-add-rest-v3.md) method.

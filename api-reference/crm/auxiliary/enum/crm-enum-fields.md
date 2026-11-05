@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.dictionary.&lt;directory&gt;.field.list](../../rest-v3/dictionaries/index.md).
+
+{% endnote %}
+
 The method `crm.enum.fields` describes the fields that make up an enumeration item: `ID`, `NAME`, `SYMBOL_CODE`, and `SYMBOL_CODE_SHORT`. For example, the response shows that `ID` is an integer and `NAME` is a string. Items returned by the [crm.enum.ownertype](./crm-enum-owner-type.md), [crm.enum.addresstype](./crm-enum-address-type.md), and [crm.enum.settings.mode](./crm-enum-settings-mode.md) methods have these fields. The [crm.enum.getorderownertypes](./crm-enum-get-order-owner-types.md) method has a different response format, so this description does not apply to it.
 
 ## Method Parameters

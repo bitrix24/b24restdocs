@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to edit the CRM item the activity is being unbound from
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.activity.binding.unbind](../../../rest-v3/activities/crm-activity-binding-unbind-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.activity.binding.delete` removes the binding of an activity to a CRM item. The activity disappears from that item's timeline.
 
 If the activity is bound to only one item, this binding cannot be deleted. To move the only binding to an item of the same type, use the [crm.activity.binding.move](./crm-activity-binding-move.md) method. To move the activity to an item of a different type, first bind it to the new item with the [crm.activity.binding.add](./crm-activity-binding-add.md) method, then delete the old binding.

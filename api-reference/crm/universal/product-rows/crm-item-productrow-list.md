@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: requires read access permission for the CRM object whose product rows are being selected
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.productrow.list](../../rest-v3/product-rows/crm-entity-product-row-list-rest-v3.md).
+
+{% endnote %}
+
 Retrieves product rows of a CRM object.
 
 If a single row with a known identifier is needed, use the [crm.item.productrow.get](./crm-item-productrow-get.md) method. If only the rows with no payment issued are needed, use the [crm.item.productrow.getAvailableForPayment](./crm-item-productrow-get-available-for-payment.md) method.

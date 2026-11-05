@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with CRM administrator rights
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. For directories, please use the REST 3.0 method [crm.dictionary.&lt;directory&gt;.add](../rest-v3/dictionaries/crm-dictionary-add-rest-v3.md), and for stages of deals and SPAs, use [crm.&lt;type&gt;.category.stage.add](../rest-v3/categories/crm-entity-category-stage-add-rest-v3.md). REST 3.0 has no stages of leads, estimates, and invoices and no call list status directory, so use this method for them.
+
+{% endnote %}
+
 The method `crm.status.add` creates a new element in the specified CRM directory: deal stage, source, company type, and others.
 
 ## Method Parameters

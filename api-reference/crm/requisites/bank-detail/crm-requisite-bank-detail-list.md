@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "read" access permission for contacts and companies
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.requisite.bankrequisite.list](../../rest-v3/requisites/crm-entity-requisite-bank-requisite-list-rest-v3.md).
+
+{% endnote %}
+
 Returns a list of banking details based on the filter.
 
 ## Method Parameters

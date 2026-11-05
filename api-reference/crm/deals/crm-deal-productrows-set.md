@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [crm.item.productrow.*](../universal/product-rows/index.md).
+The development of this method has been halted. Please use the REST 3.0 method [crm.deal.productrow.replace](../rest-v3/product-rows/crm-entity-product-row-replace-rest-v3.md).
 
 {% endnote %}
 

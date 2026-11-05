@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "Edit" access permission for companies
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.company.update](../../rest-v3/items/crm-entity-update-rest-v3.md) with the `contactsId` array. The method does not accept explicit `SORT` and `IS_PRIMARY` values, so use this method for them.
+
+{% endnote %}
+
 The method `crm.company.contact.items.set` sets a set of contacts associated with the specified company.
 
 The method replaces the entire set: the contacts that are not in `items` are unlinked from the company. For every unlinked contact, the `COMPANY_ID` field switches to another of its companies with the lowest identifier, or is cleared when the contact has no other companies.

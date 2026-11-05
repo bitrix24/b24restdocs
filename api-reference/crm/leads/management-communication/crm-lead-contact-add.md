@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "Edit" access permission for the lead and the "Read" access permission for the contact being added
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.lead.addfieldvalue](../../rest-v3/items/crm-entity-add-field-value-rest-v3.md) with the `contactsId` field. The primary contact is set by the [crm.lead.setprimarycontact](../../rest-v3/items/crm-entity-set-primary-contact-rest-v3.md) method. The REST 3.0 method does not accept the contact position `SORT`, so use this method for it.
+
+{% endnote %}
+
 The method `crm.lead.contact.add` adds a contact to the specified lead.
 
 The lead's other contacts remain linked. To define the entire set of contacts at once, use [crm.lead.contact.items.set](./crm-lead-contact-items-set.md). The structure of the binding object and how a contact relates to the repeat lead indicator are described in the [section overview](./index.md).

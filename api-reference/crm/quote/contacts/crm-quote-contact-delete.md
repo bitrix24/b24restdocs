@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has stopped. For new integrations, retrieve the current `contactIds` with [crm.item.get](../../universal/crm-item-get.md), then remove the required ID from the array with [crm.item.update](../../universal/crm-item-update.md) using `entityTypeId = 7`. The universal method replaces the entire set of contacts and does not let you set `SORT` and `IS_PRIMARY` separately.
+The development of this method has been halted. Please use the REST 3.0 method [crm.quote.deletefieldvalue](../../rest-v3/items/crm-entity-delete-field-value-rest-v3.md). Pass the `contactsId` field and the ID to remove from the links.
 
 {% endnote %}
 

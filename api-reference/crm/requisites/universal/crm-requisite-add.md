@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "add" access permission for the contact or company that owns the requisite
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.requisite.add](../../rest-v3/requisites/crm-entity-requisite-add-rest-v3.md). Custom fields of requisites are not available in REST 3.0 yet.
+
+{% endnote %}
+
 The `crm.requisite.add` method adds new details for a contact or company.
 
 ## Method Parameters

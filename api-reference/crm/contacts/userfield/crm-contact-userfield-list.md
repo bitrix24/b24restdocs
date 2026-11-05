@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user with "read" access permission for contacts
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.contact.field.custom.list](../../rest-v3/fields/crm-entity-field-custom-list-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.contact.userfield.list` returns a list of custom fields for contacts based on a filter.
 
 It also outputs information about these fields, but without the name assigned to the field by the user, only the internal identifier. If you need the user-defined field name, use the method [crm.contact.list](../crm-contact-list.md), which outputs both standard and custom fields.

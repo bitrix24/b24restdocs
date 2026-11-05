@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "Edit" access permission for the contact
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.contact.update](../../rest-v3/items/crm-entity-update-rest-v3.md). To remove all links, pass an empty array `companiesId: []`.
+
+{% endnote %}
+
 The method `crm.contact.company.items.delete` clears the set of companies associated with the specified contact.
 
 The method unlinks all companies at once, and the companies themselves stay in CRM. The contact field `COMPANY_ID` is cleared. To remove a single company, use [crm.contact.company.delete](./crm-contact-company-delete.md).

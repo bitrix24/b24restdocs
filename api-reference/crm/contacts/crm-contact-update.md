@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been discontinued. Please use [crm.item.update](../universal/crm-item-update.md).
+The development of this method has been halted. Please use the REST 3.0 method [crm.contact.update](../rest-v3/items/crm-entity-update-rest-v3.md).
 
 {% endnote %}
 

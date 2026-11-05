@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.requisite.bankrequisite.field.list](../../rest-v3/requisites/index.md).
+
+{% endnote %}
+
 The method returns a formal description of the bank details fields.
 
 No parameters.

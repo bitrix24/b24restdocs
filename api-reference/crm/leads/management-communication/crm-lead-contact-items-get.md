@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "Read" access permission for the lead
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.lead.get](../../rest-v3/items/crm-entity-get-rest-v3.md). The links are returned in the `contactsId` field, and the primary link in the `contactId` field.
+
+{% endnote %}
+
 The method `crm.lead.contact.items.get` returns the set of contacts linked to the specified lead.
 
 The method returns all bindings of the lead at once: it has no parameters for filtering, field selection, or pagination. To change the set, use [crm.lead.contact.items.set](./crm-lead-contact-items-set.md), and to add or remove a single contact, use [crm.lead.contact.add](./crm-lead-contact-add.md) and [crm.lead.contact.delete](./crm-lead-contact-delete.md). The structure of the binding object is described in the [section overview](./index.md).

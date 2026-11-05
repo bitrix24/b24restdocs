@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "read" access permission for contacts and companies
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.requisite.preset.get](../../rest-v3/requisites/crm-entity-requisite-preset-get-rest-v3.md). The REST 3.0 method does not return the `countryId`, `active`, and `xmlId` template fields and does not filter templates, so use this method for that.
+
+{% endnote %}
+
 The `crm.requisite.preset.get` method returns a requisites template by its ID.
 
 ## Method Parameters

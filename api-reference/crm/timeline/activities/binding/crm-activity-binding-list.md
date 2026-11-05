@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with read permissions for CRM items
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.activity.binding.list](../../../rest-v3/activities/crm-activity-binding-list-rest-v3.md).
+
+{% endnote %}
+
 The `crm.activity.binding.list` method retrieves the bindings of an activity to CRM items.
 
 All bindings are returned in a single response, without pagination. By default, an activity can have no more than 100 bindings.

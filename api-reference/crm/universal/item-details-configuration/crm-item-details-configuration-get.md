@@ -15,6 +15,12 @@ Choose a tool for developing with an AI agent:
 >   - Any user has the right to retrieve their own and shared settings
 >   - A user can access another user's settings only if they are an administrator
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.detailpagelayout.get](../../rest-v3/detail-page-layout/crm-entity-detail-page-layout-get-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.item.details.configuration.get` returns the settings of the detail form for a specific CRM object. It can work with both personal settings of the specified user and shared settings defined for all users.
 
 {% include [Extras Notice](./_includes/extras_notice.md) %}

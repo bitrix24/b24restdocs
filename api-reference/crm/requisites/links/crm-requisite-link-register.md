@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "edit" access permission for the CRM object the link is registered for
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 methods [crm.&lt;type&gt;.clientrequisite.set](../../rest-v3/requisites/crm-entity-client-requisite-set-rest-v3.md) and [crm.&lt;type&gt;.mycompanyrequisite.set](../../rest-v3/requisites/crm-entity-my-company-requisite-set-rest-v3.md). The REST 3.0 methods select my company requisites only in deals and invoices, so use this method for estimates and SPAs.
+
+{% endnote %}
+
 This method registers a link between requisites and an object.
 
 For successful registration, the requisite IDs must belong to the client and seller selected in the linked object. If a requisite is not available, its ID is passed as `0`. You can even specify all requisite IDs as zero. In this case, it is considered that the requisites are not linked to the object.

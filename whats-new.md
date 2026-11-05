@@ -2,6 +2,10 @@
 
 ## 2026
 
+### November 5, 2026
+
+- Added CRM methods in REST 3.0: items, fields, pipelines and stages, product items, requisites, addresses, activities, card views, and directories. The equivalents of the old methods are collected on the [Migrating to the New CRM Methods](./api-reference/crm/migration.md) page, and all groups are listed in the [CRM overview](./api-reference/crm/index.md)
+
 ### November 3, 2026
 
 - Added the [task.checklistitem.deleteall](./api-reference/tasks/checklist-item/task-checklist-item-delete-all.md) method: deletes all checklists of a task in a single call

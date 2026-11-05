@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 > 
 > Who can execute the method: any user with "read" access permission for CRM object elements.
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.field.list](../rest-v3/fields/crm-entity-field-list-rest-v3.md). REST 3.0 has no equivalent for CRM documents and B2E documents yet, so use this method for them.
+
+{% endnote %}
+
 This method retrieves a list of fields and their configurations for elements of type `entityTypeId`.
 
 {% note warning %}

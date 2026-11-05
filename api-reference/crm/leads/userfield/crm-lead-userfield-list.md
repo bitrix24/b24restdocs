@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with read access to leads
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.lead.field.custom.list](../../rest-v3/fields/crm-entity-field-custom-list-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.lead.userfield.list` returns a list of custom fields for leads based on a filter.
 
 ## Method Parameters

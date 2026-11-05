@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with permission to edit both CRM items, the source and the target
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.activity.binding.move](../../../rest-v3/activities/crm-activity-binding-move-rest-v3.md).
+
+{% endnote %}
+
 The `crm.activity.binding.move` method moves an activity binding from one CRM item to another item of the same type. The activity disappears from the timeline of the source item and appears in the timeline of the target item.
 
 For example, you can move an activity from one deal to another. You cannot move an activity from a deal to a contact with this method. To move an activity to a contact, bind it to the contact with the [crm.activity.binding.add](./crm-activity-binding-add.md) method and delete the binding to the deal with the [crm.activity.binding.delete](./crm-activity-binding-delete.md) method.

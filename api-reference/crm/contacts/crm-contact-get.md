@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Please use [crm.item.get](../universal/crm-item-get.md).
+The development of this method has been halted. Please use the REST 3.0 method [crm.contact.get](../rest-v3/items/crm-entity-get-rest-v3.md).
 
 {% endnote %}
 

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has stopped. For new integrations, retrieve the linked contact IDs in the `contactIds` field with [crm.item.get](../../universal/crm-item-get.md) using `entityTypeId = 7`. This method does not return `SORT` or `IS_PRIMARY` for each link.
+The development of this method has been halted. Please use the REST 3.0 method [crm.quote.get](../../rest-v3/items/crm-entity-get-rest-v3.md). The links are returned in the `contactsId` field, and the primary link in the `contactId` field.
 
 {% endnote %}
 

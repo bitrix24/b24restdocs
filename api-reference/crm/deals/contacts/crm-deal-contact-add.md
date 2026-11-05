@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "modify" access permission for the deal and the "read" access permission for the contact being linked
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.deal.addfieldvalue](../../rest-v3/items/crm-entity-add-field-value-rest-v3.md) with the `contactsId` field. The primary contact is set by the [crm.deal.setprimarycontact](../../rest-v3/items/crm-entity-set-primary-contact-rest-v3.md) method. The REST 3.0 method does not accept the contact position `SORT`, so use this method for it.
+
+{% endnote %}
+
 The method `crm.deal.contact.add` adds a contact to the specified deal.
 
 The method works with a single binding and does not affect the other contacts of the deal. To set the entire set of contacts at once, use [crm.deal.contact.items.set](./crm-deal-contact-items-set.md). How the link works and how to choose a method is described in the [section overview](./index.md).

@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "Read" access permission for the contact
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.contact.get](../../rest-v3/items/crm-entity-get-rest-v3.md). The links are returned in the `companiesId` field, and the primary link in the `companyId` field.
+
+{% endnote %}
+
 The method `crm.contact.company.items.get` returns a set of companies associated with the specified contact.
 
 The method returns all of the contact's bindings at once: it has no parameters for filtering, field selection, or pagination. To change the set, use [crm.contact.company.items.set](./crm-contact-company-items-set.md), and to add or remove a single company, use [crm.contact.company.add](./crm-contact-company-add.md) and [crm.contact.company.delete](./crm-contact-company-delete.md). The structure of the binding object is described in the [section overview](./index.md).

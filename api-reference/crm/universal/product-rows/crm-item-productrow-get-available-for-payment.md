@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: requires read access permission for the CRM object whose product rows are being selected.
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.productrow.getavailableforpayment](../../rest-v3/product-rows/crm-entity-product-row-get-available-for-payment-rest-v3.md).
+
+{% endnote %}
+
 Retrieves product rows of a CRM object for which the customer has not been billed yet.
 
 The method compares the quantity of a product in a row with the quantity that has already been included in the payments of the CRM object and returns the remainder. Rows that have been fully included in payments are not returned. To get all product rows of the CRM object regardless of payments, call [crm.item.productrow.list](./crm-item-productrow-list.md).

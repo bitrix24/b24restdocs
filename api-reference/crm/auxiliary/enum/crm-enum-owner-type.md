@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.dictionary.entitytype.list](../../rest-v3/dictionaries/crm-dictionary-list-rest-v3.md). The REST 3.0 method does not return the short type codes `D`, `L`, `C`, so use this method for them.
+
+{% endnote %}
+
 The method `crm.enum.ownertype` returns the numeric IDs of CRM object types and SPAs. Pass the ID in the `entityTypeId` parameter of the universal methods [crm.item.*](../../universal/index.md) and in the `OWNER_TYPE_ID` or `ownerTypeId` parameter of the [activity](../../timeline/activities/index.md) methods. For example, to retrieve a deal with the [crm.item.get](../../universal/crm-item-get.md) method, pass `entityTypeId: 2`, and for an SPA, pass its ID, for example, `177`.
 
 Universal methods do not work with all types in the list: they do not support the old invoice with ID `5` and requisites with ID `8`, and return the `ENTITY_TYPE_NOT_SUPPORTED` error.

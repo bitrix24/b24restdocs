@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. For directories, please use the REST 3.0 method `crm.dictionary.<directory>.field.list` from the [Directories](../rest-v3/dictionaries/index.md) group, and for stages, use `crm.<type>.category.stage.field.list` from the [Pipelines and Stages](../rest-v3/categories/index.md) group. REST 3.0 has no stages of leads, estimates, and invoices and no call list status directory, so use this method for them.
+
+{% endnote %}
+
 The method `crm.status.fields` returns the description of CRM reference fields.
 
 ## Method Parameters

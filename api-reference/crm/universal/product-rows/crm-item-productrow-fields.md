@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.productrow.field.list](../../rest-v3/product-rows/index.md).
+
+{% endnote %}
+
 Retrieves the description of product row fields: the value type, whether the field is required, and whether it is available for writing.
 
 Call the method before [crm.item.productrow.add](./crm-item-productrow-add.md), [crm.item.productrow.update](./crm-item-productrow-update.md), or [crm.item.productrow.set](./crm-item-productrow-set.md) to find out which values can be passed. The method calculates the fields with `isReadOnly: true` on its own and ignores the values passed for them without raising an error.

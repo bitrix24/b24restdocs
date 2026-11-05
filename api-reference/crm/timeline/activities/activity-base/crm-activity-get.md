@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.activity.get](../../../rest-v3/activities/crm-activity-get-rest-v3.md). The REST 3.0 method does not return some activity fields: the settings `settings`, the provider data `providerParams`, `location`, `status`, `priority`, and others. If you need them, use this method.
+
+{% endnote %}
+
 The method `crm.activity.get` returns information about the activity by its ID.
 
 ## Method parameters

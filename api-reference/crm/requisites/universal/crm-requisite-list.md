@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "read" access permission for contacts or companies
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.requisite.list](../../rest-v3/requisites/crm-requisite-list-rest-v3.md). Custom fields of requisites are not available in REST 3.0 yet.
+
+{% endnote %}
+
 The `crm.requisite.list` method returns a list of details based on a filter.
 
 ## Method Parameters

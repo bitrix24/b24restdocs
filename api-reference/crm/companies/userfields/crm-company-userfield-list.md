@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with read access permission for companies
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.company.field.custom.list](../../rest-v3/fields/crm-entity-field-custom-list-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.company.userfield.list` returns a list of custom fields for companies based on the filter.
 
 The method returns all matching fields in one response. Its handler does not use the `start` parameter, and it does not paginate results in batches of 50.

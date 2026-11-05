@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "modify" access permission for the deal
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.deal.update](../../rest-v3/items/crm-entity-update-rest-v3.md) with the `contactsId` array: the first contact in the array becomes the primary one. The method does not accept explicit `SORT` and `IS_PRIMARY` values, so use this method for them.
+
+{% endnote %}
+
 The method `crm.deal.contact.items.set` sets a set of contacts associated with the specified deal. Contacts not included in the provided list will be unlinked.
 
 To add or remove a single contact without affecting the others, use [crm.deal.contact.add](./crm-deal-contact-add.md) or [crm.deal.contact.delete](./crm-deal-contact-delete.md). How the link works and how to choose a method is described in the [section overview](./index.md).

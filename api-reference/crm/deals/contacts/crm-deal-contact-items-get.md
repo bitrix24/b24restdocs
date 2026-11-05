@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "read" access permission for the deal
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.deal.get](../../rest-v3/items/crm-entity-get-rest-v3.md). The links are returned in the `contactsId` field, and the primary link in the `contactId` field.
+
+{% endnote %}
+
 The method `crm.deal.contact.items.get` returns a set of contacts associated with the specified deal.
 
 The methods [crm.deal.get](../crm-deal-get.md) and [crm.deal.list](../crm-deal-list.md) do not return the set of contacts, so you need this method to read the bindings. If you only need the contact identifiers, without `SORT` and `IS_PRIMARY`, [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 2` returns them in the `contactIds` field. How the link works is described in the [section overview](./index.md).

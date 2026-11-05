@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.category.list](../../rest-v3/categories/crm-entity-category-list-rest-v3.md). Pipelines of invoices, CRM documents, and B2E documents are not available in REST 3.0 yet, so use this method for them.
+
+{% endnote %}
+
 The method retrieves a list of sales funnels (directions) that belong to the CRM object type with the identifier `entityTypeId`.
 
 {% note warning "Which funnels will be included in the list" %}

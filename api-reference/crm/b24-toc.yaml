@@ -1,97 +1,140 @@
 title: CRM Objects and Methods
 href: index.md
 items:
-  - name: Methods Overview
+  - name: Overview
     href: index.md
-  - name: CRM in REST 3.0
+  - name: Migrating to the New Methods
+    href: migration.md
+  - name: Items
     include:
-      path: rest-v3/b24-toc.yaml
+      path: rest-v3/items/b24-toc.yaml
       mode: link
-  - name: Data Types and Object Structure in the CRM REST API
-    href: data-types.md 
-  - name: Fields of Main CRM Objects
-    href: main-entities-fields.md
-  - name: CRM Field Length Limits
-    href: field-length-limits.md
-  - name: Typical Use-Cases and Tutorials
-    href: tutorials.md
-  - name: Sales Intelligence
+  - name: Field Management
     include:
-      path: tracking/b24-toc.yaml
+      path: rest-v3/fields/b24-toc.yaml
       mode: link
-  - name: Determine the Current CRM Operating Mode
-    href: crm-settings-mode-get.md
-  - name: Universal CRM Methods
+  - name: Pipelines and Stages
     include:
-      path: universal/b24-toc.yaml
+      path: rest-v3/categories/b24-toc.yaml
       mode: link
-  - name: Deals
+  - name: Product Items
     include:
-      path: deals/b24-toc.yaml
-      mode: link
-  - name: Leads
-    include:
-      path: leads/b24-toc.yaml
-      mode: link
-  - name: Contacts
-    include:
-      path: contacts/b24-toc.yaml
-      mode: link
-  - name: Companies
-    include:
-      path: companies/b24-toc.yaml
-      mode: link
-  - name: Estimates
-    include:
-      path: quote/b24-toc.yaml
+      path: rest-v3/product-rows/b24-toc.yaml
       mode: link
   - name: Requisites
     include:
-      path: requisites/b24-toc.yaml
+      path: rest-v3/requisites/b24-toc.yaml
       mode: link
-  - name: Timeline and Deals
+  - name: Addresses
     include:
-      path: timeline/b24-toc.yaml
+      path: rest-v3/addresses/b24-toc.yaml
       mode: link
-  - name: Call List
+  - name: Card Views
     include:
-      path: call-list/b24-toc.yaml
-      mode: link      
-  - name: Search and Process Duplicates in CRM
+      path: rest-v3/detail-page-layout/b24-toc.yaml
+      mode: link
+  - name: Activities
     include:
-      path: duplicates/b24-toc.yaml
+      path: rest-v3/activities/b24-toc.yaml
       mode: link
   - name: Directories
     include:
-      path: status/b24-toc.yaml
+      path: rest-v3/dictionaries/b24-toc.yaml
       mode: link
-  - name: Currencies
+  - name: Lead Mode
     include:
-      path: currency/b24-toc.yaml
-      mode: link
-  - name: Document Generator
-    include:
-      path: document-generator/b24-toc.yaml
-      mode: link
-  - name: Digital Workplaces
-    include:
-      path: automated-solution/b24-toc.yaml
-      mode: link
-  - name: Automation and Triggers
-    include:
-      path: automation/b24-toc.yaml
+      path: rest-v3/lead-mode/b24-toc.yaml
       mode: link
   - name: CRM Forms
     include:
       path: form/b24-toc.yaml
       mode: link
-  - name: Auxiliary Objects
+  - name: Timeline and Activities
     include:
-      path: auxiliary/b24-toc.yaml
+      path: timeline/b24-toc.yaml
       mode: link
-  - name: Outdated CRM Methods
+  - name: Document Generator
     include:
-      path: outdated/b24-toc.yaml
+      path: document-generator/b24-toc.yaml
+      mode: link
+  - name: Automation and Triggers
+    include:
+      path: automation/b24-toc.yaml
+      mode: link
+  - name: Digital Workplaces
+    include:
+      path: automated-solution/b24-toc.yaml
+      mode: link
+  - name: Currencies
+    include:
+      path: currency/b24-toc.yaml
+      mode: link
+  - name: Call List
+    include:
+      path: call-list/b24-toc.yaml
+      mode: link
+  - name: Search and Process Duplicates in CRM
+    include:
+      path: duplicates/b24-toc.yaml
+      mode: link
+  - name: Sales Intelligence
+    include:
+      path: tracking/b24-toc.yaml
       mode: link
   - name: Get Stage Movement History
     href: crm-stage-history-list.md
+  - name: Previous API Version
+    href: previous-api.md
+    items:
+      - name: Overview
+        href: previous-api.md
+      - name: Data Types and Object Structure in the CRM REST API
+        href: data-types.md
+      - name: Fields of Main CRM Objects
+        href: main-entities-fields.md
+      - name: CRM Field Length Limits
+        href: field-length-limits.md
+      - name: Universal CRM Methods
+        include:
+          path: universal/b24-toc.yaml
+          mode: link
+      - name: Deals
+        include:
+          path: deals/b24-toc.yaml
+          mode: link
+      - name: Leads
+        include:
+          path: leads/b24-toc.yaml
+          mode: link
+      - name: Contacts
+        include:
+          path: contacts/b24-toc.yaml
+          mode: link
+      - name: Companies
+        include:
+          path: companies/b24-toc.yaml
+          mode: link
+      - name: Estimates
+        include:
+          path: quote/b24-toc.yaml
+          mode: link
+      - name: Requisites
+        include:
+          path: requisites/b24-toc.yaml
+          mode: link
+      - name: Directories
+        include:
+          path: status/b24-toc.yaml
+          mode: link
+      - name: Auxiliary Objects
+        include:
+          path: auxiliary/b24-toc.yaml
+          mode: link
+      - name: Determine the Current CRM Operating Mode
+        href: crm-settings-mode-get.md
+      - name: Outdated CRM Methods
+        include:
+          path: outdated/b24-toc.yaml
+          mode: link
+  - name: Typical Use-Cases and Tutorials
+    href: tutorials.md

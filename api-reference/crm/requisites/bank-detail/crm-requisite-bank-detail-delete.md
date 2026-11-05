@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "delete" access permission for the contact or company that owns the requisite
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.requisite.bankrequisite.delete](../../rest-v3/requisites/crm-entity-requisite-bank-requisite-delete-rest-v3.md).
+
+{% endnote %}
+
 This method deletes a bank detail.
 
 ## Method Parameters

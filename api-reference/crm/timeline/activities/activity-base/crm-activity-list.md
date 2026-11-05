@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.activity.list](../../../rest-v3/activities/crm-activity-list-rest-v3.md). It is available only to the Bitrix24 administrator. Without administrator permissions, the activities of a single item are returned by [crm.&lt;type&gt;.activity.list](../../../rest-v3/activities/crm-entity-activity-list-rest-v3.md). The REST 3.0 method does not return some activity fields: the settings `settings`, the provider data `providerParams`, `location`, `status`, `priority`, and others. If you need them, use this method.
+
+{% endnote %}
+
 The `crm.activity.list` method returns a list of activities by filter, taking the current user's permissions into account.
 
 ## Method Parameters

@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "read" access permission for contacts, companies, and leads
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.address.list](../../rest-v3/addresses/crm-address-list-rest-v3.md).
+
+{% endnote %}
+
 The method returns a list of addresses based on the filter.
 
 Addresses are moved to the details. In the CRM card, they are displayed as a separate field.

@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with read access to estimates
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.quote.field.custom.get](../../rest-v3/fields/crm-entity-field-custom-get-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.quote.userfield.get` returns a custom estimate field description by its identifier: name, type, settings, and labels in all languages.
 
 ## Method Parameters

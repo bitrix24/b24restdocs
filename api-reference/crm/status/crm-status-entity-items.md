@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. For directories, please use the REST 3.0 method [crm.dictionary.&lt;directory&gt;.list](../rest-v3/dictionaries/crm-dictionary-list-rest-v3.md), and for stages of deals and SPAs, use [crm.&lt;type&gt;.category.stage.list](../rest-v3/categories/crm-entity-category-stage-list-rest-v3.md). REST 3.0 has no stages of leads, estimates, and invoices and no call list status directory, so use this method for them.
+
+{% endnote %}
+
 The `crm.status.entity.items` method retrieves all directory items by the `ENTITY_ID` identifier, sorted by the `SORT` field. 
 This method is similar to [crm.status.list](crm-status-list.md), except that the latter allows you to define sorting rules.
 

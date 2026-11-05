@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: access permission to modify the CRM object whose product rows are saved is required.
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.productrow.replace](../../rest-v3/product-rows/crm-entity-product-row-replace-rest-v3.md).
+
+{% endnote %}
+
 Saves the set of product rows of a CRM object.
 
 {% note warning "" %}

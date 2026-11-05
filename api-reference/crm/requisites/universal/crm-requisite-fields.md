@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.requisite.field.list](../../rest-v3/requisites/index.md). Custom fields of requisites are not available in REST 3.0 yet.
+
+{% endnote %}
+
 The `crm.requisite.fields` method returns descriptions of system and custom detail fields.
 
 ## Method Parameters

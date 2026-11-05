@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: access permission to modify the CRM object that the product row belongs to is required.
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.productrow.update](../../rest-v3/product-rows/crm-entity-product-row-update-rest-v3.md).
+
+{% endnote %}
+
 Updates the product row of a CRM object.
 
 The method changes a single row — to replace the whole set, use the [crm.item.productrow.set](./crm-item-productrow-set.md) method. After `price` or `quantity` changes, CRM recalculates the total of the object: for example, the deal total grows if the row price is raised.

@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-Development of this method has been halted. Please use [crm.item.fields](../universal/crm-item-fields.md).
+The development of this method has been halted. Please use the REST 3.0 method [crm.quote.field.list](../rest-v3/fields/crm-entity-field-list-rest-v3.md). The values of list fields are returned by the [crm.quote.field.custom.enum.list](../rest-v3/fields/crm-entity-field-custom-enum-list-rest-v3.md) method.
 
 {% endnote %}
 

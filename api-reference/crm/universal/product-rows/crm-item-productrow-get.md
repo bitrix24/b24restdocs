@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: access permission to read the CRM object that the product row belongs to is required.
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.productrow.get](../../rest-v3/product-rows/crm-entity-product-row-get-rest-v3.md).
+
+{% endnote %}
+
 Retrieves information about a product row of a CRM object by its identifier.
 
 ## Method Parameters

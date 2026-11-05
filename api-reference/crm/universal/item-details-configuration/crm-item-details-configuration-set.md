@@ -15,6 +15,12 @@ Choose a tool for developing with an AI agent:
 >   - Any user has the right to set their personal settings
 >   - A user can set common and others' settings only if they are an administrator
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.detailpagelayout.update](../../rest-v3/detail-page-layout/crm-entity-detail-page-layout-update-rest-v3.md).
+
+{% endnote %}
+
 
 The method `crm.item.details.configuration.set` saves the personal or common configuration of the sections of a CRM object detail form. The passed `data` completely replaces the current configuration: sections and fields that are not in `data` disappear from the detail form.
 

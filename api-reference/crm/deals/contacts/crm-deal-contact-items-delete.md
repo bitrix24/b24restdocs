@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "read" and "modify" access permissions for the deal
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.deal.update](../../rest-v3/items/crm-entity-update-rest-v3.md). To remove all links, pass an empty array `contactsId: []`.
+
+{% endnote %}
+
 The method `crm.deal.contact.items.delete` removes all contact associations with the specified deal.
 
 The method unlinks all contacts at once and does not delete the contacts themselves. To remove a single contact, use [crm.deal.contact.delete](./crm-deal-contact-delete.md). After the call, the deal field `CONTACT_ID` is cleared. You can restore the set only by linking the contacts again with [crm.deal.contact.items.set](./crm-deal-contact-items-set.md) — the previous `SORT` and `IS_PRIMARY` values are not retained. How the link works is described in the [section overview](./index.md).

@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 > 
 > Who can execute the method: any user with "change" permissions for the CRM object items
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.update](../rest-v3/items/crm-entity-update-rest-v3.md). REST 3.0 has no equivalent for CRM documents and B2E documents yet, so use this method for them.
+
+{% endnote %}
+
 Updates an item of a specific CRM object type by assigning it new values from the `fields` parameter.
 
 When updating an item, a standard series of checks, modifications, and automatic actions are performed:

@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "Edit" access permission for the lead
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.lead.update](../../rest-v3/items/crm-entity-update-rest-v3.md). To remove all links, pass an empty array `contactsId: []`.
+
+{% endnote %}
+
 The method `crm.lead.contact.items.delete` clears the set of contacts linked to the specified lead.
 
 It unlinks all contacts at once, while the contacts themselves remain in CRM. The lead's `CONTACT_ID` field is cleared, and the repeat lead indicator `IS_RETURN_CUSTOMER` stays the same. To remove a single contact, use [crm.lead.contact.delete](./crm-lead-contact-delete.md).

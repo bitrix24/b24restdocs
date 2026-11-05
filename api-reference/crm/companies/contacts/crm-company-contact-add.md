@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "Edit" access permission for companies and "Read" access permission for the contact being added
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.company.addfieldvalue](../../rest-v3/items/crm-entity-add-field-value-rest-v3.md) with the `contactsId` field. The method adds the company to the contact as non-primary. To make it primary, pass it first in the `companiesId` array of the [crm.contact.update](../../rest-v3/items/crm-entity-update-rest-v3.md) method.
+
+{% endnote %}
+
 The method `crm.company.contact.add` adds a contact to the specified company.
 
 The method works with a single link and does not affect the other contacts of the company. To set the entire set of contacts at once, use [crm.company.contact.items.set](./crm-company-contact-items-set.md). The structure of the link object is described in the [section overview](./index.md).

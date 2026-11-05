@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.category.field.list](../../rest-v3/categories/index.md). Pipelines of invoices, CRM documents, and B2E documents are not available in REST 3.0 yet, so use this method for them.
+
+{% endnote %}
+
 The method retrieves information about the fields of the sales funnels (directions) of the CRM object.
 
 ## Method Parameters

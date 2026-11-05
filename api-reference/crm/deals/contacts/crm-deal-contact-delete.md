@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "modify" access permission for the deal and the "read" access permission for the contact being unlinked
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.deal.deletefieldvalue](../../rest-v3/items/crm-entity-delete-field-value-rest-v3.md). Pass the `contactsId` field and the ID to remove from the links.
+
+{% endnote %}
+
 The method `crm.deal.contact.delete` removes a contact from the specified deal.
 
 The method removes a single binding and does not delete the contact itself. The other contacts of the deal do not change. To unlink all contacts at once, use [crm.deal.contact.items.delete](./crm-deal-contact-items-delete.md). How the link works and how to choose a method is described in the [section overview](./index.md).

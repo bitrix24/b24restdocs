@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with read access to leads, deals, or other CRM objects, including those in digital workspaces
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.dictionary.addresstype.list](../../rest-v3/dictionaries/crm-dictionary-list-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.enum.addresstype` returns address types: legal address, physical address, shipping address, and others. Pass the type number in the `TYPE_ID` parameter of the [crm.address.*](../../requisites/addresses/index.md) methods. For example, to find the legal addresses of clients, call the [crm.address.list](../../requisites/addresses/crm-address-list.md) method with the filter `TYPE_ID: 6`.
 
 ## Method Parameters

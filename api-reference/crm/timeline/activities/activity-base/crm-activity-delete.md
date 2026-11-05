@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user with permission to delete an activity
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.activity.delete](../../../rest-v3/activities/crm-activity-delete-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.activity.delete` removes an activity of any type.
 
 ## Method Parameters

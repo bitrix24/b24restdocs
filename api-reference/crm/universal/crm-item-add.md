@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 > 
 > Who can execute the method: any user with "add" permissions for the CRM object item
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.add](../rest-v3/items/crm-entity-add-rest-v3.md). REST 3.0 has no equivalent for CRM documents and B2E documents yet, so use this method for them.
+
+{% endnote %}
+
 This is a universal method for creating objects in the CRM. It allows you to create various types of objects, such as deals, contacts, companies, and others.
 
 To create an object, you must pass the relevant parameters, including the object type and its information: name, description, contact details, and other specifics.

@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 > 
 > Who can execute the method: any user with "read" permission for the CRM object items
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.list](../rest-v3/items/crm-entity-list-rest-v3.md). REST 3.0 has no equivalent for CRM documents and B2E documents yet, so use this method for them.
+
+{% endnote %}
+
 Retrieves a list of items of a specific CRM object type.
 
 CRM object items will not be included in the final selection if the user does not have "read" permission for those items.

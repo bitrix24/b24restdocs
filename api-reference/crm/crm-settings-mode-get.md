@@ -15,6 +15,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: `any user`
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.lead.isenabled](./rest-v3/lead-mode/crm-lead-is-enabled-rest-v3.md). It is available only to the CRM administrator: if your integration runs on behalf of a regular user, use this method.
+
+{% endnote %}
+
 The method returns the current settings of the CRM operating mode: **classic CRM mode** (with leads) or **simple CRM mode** (without leads).
 
 This mode affects a number of CRM operation scenarios, and for better understanding, we recommend reading the [relevant article](https://helpdesk.bitrix24.com/open/24207198/) in the user documentation.

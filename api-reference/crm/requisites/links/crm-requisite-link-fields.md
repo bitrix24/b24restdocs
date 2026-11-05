@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 methods `crm.<type>.clientrequisite.field.list` and `crm.<type>.mycompanyrequisite.field.list` from the [Requisites](../../rest-v3/requisites/index.md) group. The REST 3.0 methods select my company requisites only in deals and invoices, so use this method for estimates and SPAs.
+
+{% endnote %}
+
 The method `crm.requisite.link.fields` returns a formal description of the requisite link fields.
 
 No parameters.

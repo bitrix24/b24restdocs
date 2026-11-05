@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method `crm.address.field.list` from the [Addresses](../../rest-v3/addresses/index.md) group.
+
+{% endnote %}
+
 The method returns a formal description of the address fields.
 
 No parameters.

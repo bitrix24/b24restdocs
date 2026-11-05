@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with the "Allow to modify settings" access permission in CRM
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.deal.field.custom.delete](../../rest-v3/fields/crm-entity-field-custom-delete-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.deal.userfield.delete` removes a custom deal field together with its values in all deals; the values cannot be restored.
 
 ## Method Parameters

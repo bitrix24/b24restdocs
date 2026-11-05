@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "Edit" access permission for companies and "Read" access permission for the contact being removed from the bindings
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.company.deletefieldvalue](../../rest-v3/items/crm-entity-delete-field-value-rest-v3.md). Pass the `contactsId` field and the ID to remove from the links.
+
+{% endnote %}
+
 The method `crm.company.contact.delete` removes a contact from the specified company.
 
 Only the link between the company and the contact is removed — the contact itself stays in CRM. To unlink all contacts from a company at once, use [crm.company.contact.items.delete](./crm-company-contact-items-delete.md). The structure of the binding object is described in the [section overview](./index.md).

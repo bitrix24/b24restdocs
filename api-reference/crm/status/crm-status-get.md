@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user with permission to read at least one CRM object
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. For directories, please use the REST 3.0 method [crm.dictionary.&lt;directory&gt;.get](../rest-v3/dictionaries/crm-dictionary-get-rest-v3.md), and for stages of deals and SPAs, use [crm.&lt;type&gt;.category.stage.get](../rest-v3/categories/crm-entity-category-stage-get-rest-v3.md). REST 3.0 has no stages of leads, estimates, and invoices and no call list status directory, so use this method for them.
+
+{% endnote %}
+
 The method `crm.status.get` returns the parameters of a directory item by its ID.
 
 ## Method Parameters

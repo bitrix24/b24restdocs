@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "edit" access permission for the CRM object the link is removed for
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 methods [crm.&lt;type&gt;.clientrequisite.set](../../rest-v3/requisites/crm-entity-client-requisite-set-rest-v3.md) and [crm.&lt;type&gt;.mycompanyrequisite.set](../../rest-v3/requisites/crm-entity-my-company-requisite-set-rest-v3.md) with `requisiteId: 0`. The REST 3.0 methods select my company requisites only in deals and invoices, so use this method for estimates and SPAs.
+
+{% endnote %}
+
 This method removes the link between requisites and the object.
 
 ## Method Parameters

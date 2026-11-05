@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: User with read access to estimates
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.quote.field.custom.list](../../rest-v3/fields/crm-entity-field-custom-list-rest-v3.md).
+
+{% endnote %}
+
 The method `crm.quote.userfield.list` returns a list of custom fields for estimates based on a filter: field names, types, and settings.
 
 ## Method Parameters

@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: requires access permission to modify the CRM object to which the product row is being added.
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 method [crm.&lt;type&gt;.productrow.add](../../rest-v3/product-rows/crm-entity-product-row-add-rest-v3.md).
+
+{% endnote %}
+
 Adds a product row to a CRM object.
 
 The method adds a single row and does not change the rest. To replace the whole set of product rows of a CRM object, use the [crm.item.productrow.set](./crm-item-productrow-set.md) method.

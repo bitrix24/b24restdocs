@@ -13,6 +13,12 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with "delete" access permission for the contact, company, or lead that owns the address
 
+{% note warning "DEPRECATED" %}
+
+The development of this method has been halted. Please use the REST 3.0 methods: for addresses of contacts, companies, and leads, see the [Addresses](../../rest-v3/addresses/index.md) group, and for requisite addresses, see the [Requisites](../../rest-v3/requisites/index.md) group.
+
+{% endnote %}
+
 The method deletes an address.
 
 ## Method Parameters

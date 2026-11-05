@@ -15,7 +15,7 @@ Choose a tool for developing with an AI agent:
 
 {% note warning "DEPRECATED" %}
 
-The development of this method has been halted. Please use [crm.item.add](../universal/crm-item-add.md).
+The development of this method has been halted. Please use the REST 3.0 method [crm.contact.add](../rest-v3/items/crm-entity-add-rest-v3.md).
 
 {% endnote %}
 
