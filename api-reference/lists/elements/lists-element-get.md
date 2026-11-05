@@ -81,6 +81,7 @@ Available fields:
 
   The property identifier can be obtained using the [lists.field.get](../fields/lists-field-get.md) method.
 
+The `ID` field is always returned. The method skips fields and properties that are not in the list without an error
 || 
 || **FILTER**
 [`object`] | An object for filtering element fields in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. The filterable field can take the following values: 
@@ -105,7 +106,7 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `=` — exact match
+- `=` — equal, exact match. Used by default
 - `!=`, `!` — not equal
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
@@ -119,9 +120,6 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
     - `"mol%"` — searches for values not starting with "mol"
     - `"%mol"` — searches for values not ending with "mol"
     - `"%mol%"` — searches for values where the substring "mol" is not present in any position
-- `=` — equal, exact match, used by default
-- `!=` — not equal
-- `!` — not equal
 
 If no element identifier is provided and no filtering conditions are specified, all elements of the list will be returned
 ||
@@ -562,14 +560,74 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Data of the element or an array of elements. The result depends on the SELECT parameter.
+[`array`](../../data-types.md) | An array of elements. If `ELEMENT_ID` or `ELEMENT_CODE` is passed, the array contains one element [(detailed description)](#element).
 
-An empty array means that there are no elements in the list, or the elements do not match the filter ||
+An empty array means that there are no elements in the list, the elements do not match the filter, or there is no element with the specified `ELEMENT_ID`. In this case, the method does not return an error ||
 || **total**
-[`integer`](../../data-types.md) | Total number of elements ||
+[`integer`](../../data-types.md) | Total number of elements found. If there are no elements, the field is not returned ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
+
+#### Element result {#element}
+
+The set of fields depends on `SELECT` and on the fields added to the list. If `SELECT` is not passed, the response contains the `ID`, `IBLOCK_ID`, `NAME`, `IBLOCK_SECTION_ID`, `CREATED_BY`, `BP_PUBLISHED`, and `CODE` fields, the other system fields of the list, and all properties that have values. Field values are returned as strings.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Element identifier ||
+|| **IBLOCK_ID**
+[`string`](../../data-types.md) | List identifier ||
+|| **NAME**
+[`string`](../../data-types.md) | Element name ||
+|| **IBLOCK_SECTION_ID**
+[`string`](../../data-types.md) | Identifier of the list section. `null` if the element is not in a section ||
+|| **CREATED_BY**
+[`string`](../../data-types.md) | Identifier of the user who created the element ||
+|| **CREATED_USER_NAME**
+[`string`](../../data-types.md) | Name of the user who created the element. Returned if the list has the "Created by" field ||
+|| **MODIFIED_BY**
+[`string`](../../data-types.md) | Identifier of the user who modified the element. Returned if the list has the "Modified by" field ||
+|| **USER_NAME**
+[`string`](../../data-types.md) | Name of the user who modified the element. Returned together with `MODIFIED_BY` ||
+|| **BP_PUBLISHED**
+[`string`](../../data-types.md) | Indicates whether the element is published within a workflow:
+- `Y` — published
+- `N` — not published ||
+|| **CODE**
+[`string`](../../data-types.md) | Symbolic code of the element. `null` if the code is not set ||
+|| **DATE_CREATE**
+[`string`](../../data-types.md) | Element creation date in the Bitrix24 format, for example `12/09/2025 12:49:30 pm`. Returned if the list has the "Create date" field ||
+|| **PROPERTY_PropertyId**
+[`object`](../../data-types.md) | Values of the custom property with the `PropertyId` identifier [(detailed description)](#property) ||
+|#
+
+The `ACTIVE_FROM`, `ACTIVE_TO`, `SORT`, `PREVIEW_TEXT`, `DETAIL_TEXT`, `PREVIEW_TEXT_TYPE`, and `DETAIL_TEXT_TYPE` fields are returned if they are added to the list.
+
+#### Property Values PROPERTY_PropertyId {#property}
+
+Property values are returned as an object: the key is the identifier of the property value, and the value is the value itself. A single-value property has one key in the object, and a multiple-value property has a key for each value. You need the value identifiers to update or delete a specific value with the [lists.element.update](./lists-element-update.md) method.
+
+```json
+{
+    "PROPERTY_951": {
+        "3743": "1269",
+        "3745": "1271"
+    }
+}
+```
+
+In the example, property `951` of the "Bind to employee" type stores two values: employees `1269` and `1271`. The values have the identifiers `3743` and `3745`.
+
+The value format depends on the property type:
+- `S`, `N`, `L`, `E`, `S:employee`, `S:ECrm` — a string with the value or the identifier of the list option, element, employee, or CRM object
+- `S:Date`, `S:DateTime` — a string with a date in the Bitrix24 format
+- `F` — a string with the file identifier. The [lists.element.get.file.url](./lists-element-get-file-url.md) method returns a link to the file
+- `S:DiskFile` — an array of identifiers of attached Drive files
+
+Properties without values are not included in the response. The [lists.field.get](../fields/lists-field-get.md) method returns the types of the list properties.
 
 ## Error Handling
 
@@ -587,15 +645,15 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter is missing ||
-|| `ERROR_IBLOCK_NOT_FOUND` | Iblock not found | Information block not found ||
-|| `ACCESS_DENIED` | Access denied | Insufficient permissions to read the element ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ERROR_REQUIRED_PARAMETERS_MISSING` | Required parameter `X` is missing | Required parameter is missing ||
+|| `400` | `ERROR_IBLOCK_NOT_FOUND` | Iblock not found | Information block not found ||
+|| `400` | `ACCESS_DENIED` | Access denied | Insufficient permissions to read the element ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./lists-element-add.md)
 - [{#T}](./lists-element-update.md)

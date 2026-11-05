@@ -29,11 +29,11 @@ The method `catalog.document.userfield.list` returns the custom field values of 
 || **Name**
 `type` | **Description** ||
 || **filter***
-[`array`](../../data-types.md) | Filter in REST 3.0 format: an array of conditions of the form `["field", "operator", "value"]`, for example `[["docType", "=", "A"], ["id", "=", 325]]`. The filter syntax is described in the [REST 3.0 overview](../../rest-v3.md#filter).
+[`array`](../../data-types.md) | A filter in the REST 3.0 format: an array of conditions of the form `["field", "operator", "value"]`, for example `[["docType", "=", "A"], ["id", "=", 351]]`. The filter syntax is described in the [REST 3.0 overview](../../rest-v3.md#filter).
 
 The condition `["docType", "=", "<type>"]` with the `=` operator is required. Possible type values are returned by the [catalog.document.type.list](../document/catalog-document-type-list.md) method. For a type that does not exist, the method returns an empty list.
 
-Besides `docType`, you can filter by `id`. Filtering by `userFields`, condition groups with `or` logic, and negation are not supported ||
+Besides `docType`, you can filter by `id` with the `=`, `!=`, `>`, `>=`, `<`, `<=`, `in`, and `between` operators. An empty array in `in` returns an empty list. Filtering by `userFields`, condition groups with `or` logic, and negation are not supported ||
 || **select**
 [`array`](../../data-types.md) | Array of fields to return in the response.
 
@@ -94,7 +94,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":[["docType","=","A"],["id","=",325]],"select":["id","docType","userFields"]}' \
+    -d '{"filter":[["docType","=","A"],["id","=",351]],"select":["id","docType","userFields"]}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.userfield.list
     ```
 
@@ -104,7 +104,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":[["docType","=","A"],["id","=",325]],"select":["id","docType","userFields"],"auth":"**put_access_token_here**"}' \
+    -d '{"filter":[["docType","=","A"],["id","=",351]],"select":["id","docType","userFields"],"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/catalog.document.userfield.list
     ```
 
@@ -130,7 +130,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         params: {
           filter: [
             ['docType', '=', 'A'],
-            ['id', '=', 325],
+            ['id', '=', 351],
           ],
           select: ['id', 'docType', 'userFields'],
         },
@@ -163,7 +163,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             params: {
               filter: [
                 ['docType', '=', 'A'],
-                ['id', '=', 325],
+                ['id', '=', 351],
               ],
               select: ['id', 'docType', 'userFields'],
             },
@@ -228,7 +228,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
                 [
                     'filter' => [
                         ['docType', '=', 'A'],
-                        ['id', '=', 325],
+                        ['id', '=', 351],
                     ],
                     'select' => ['id', 'docType', 'userFields'],
                 ]
@@ -254,7 +254,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         {
             filter: [
                 ['docType', '=', 'A'],
-                ['id', '=', 325],
+                ['id', '=', 351],
             ],
             select: ['id', 'docType', 'userFields'],
         },
@@ -279,7 +279,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         [
             'filter' => [
                 ['docType', '=', 'A'],
-                ['id', '=', 325],
+                ['id', '=', 351],
             ],
             'select' => ['id', 'docType', 'userFields'],
         ]
@@ -297,7 +297,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     res, err := client.Core().Call(ctx, "catalog.document.userfield.list", b24.Params{
     	"filter": []any{
     		[]any{"docType", "=", "A"},
-    		[]any{"id", "=", 325},
+    		[]any{"id", "=", 351},
     	},
     	"select": []string{"id", "docType", "userFields"},
     }, b24.WithIdempotent())
@@ -331,22 +331,22 @@ HTTP status: **200**
     "result": {
         "items": [
             {
-                "id": 325,
+                "id": 351,
                 "docType": "A",
                 "userFields": {
-                    "UF_CAT_STORE_DOCUMENT_A_REST_TEST": "1"
+                    "UF_CAT_STORE_DOCUMENT_A_REST_TEST": "Delivery under contract No. 15"
                 }
             }
         ]
     },
     "time": {
-        "start": 1792665383,
-        "finish": 1792665383.478756,
-        "duration": 0.4787559509277344,
+        "start": 1793875716,
+        "finish": 1793875716.49037,
+        "duration": 0.4903700351715088,
         "processing": 0,
-        "date_start": "2026-10-22T13:36:23+02:00",
-        "date_finish": "2026-10-22T13:36:23+02:00",
-        "operating_reset_at": 1792665960,
+        "date_start": "2026-11-05T13:48:36+03:00",
+        "date_finish": "2026-11-05T13:48:36+03:00",
+        "operating_reset_at": 1793876280,
         "operating": 0
     }
 }
@@ -411,6 +411,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `filter` | The docType field is not specified in the filter parameter | Add the condition `["docType", "=", "<type>"]` to `filter`. The `in` operator is not supported for `docType` ||
 || `filter` | Filter OR groups are not supported | Remove groups with `or` logic from `filter` ||
 || `userFields` | DTO `UserfieldDocumentDto` in field `userFields` requires attribute `Filterable` to perform this request | Remove `userFields` from `filter` ||
+|| `userFields` | DTO `UserfieldDocumentDto` in field `userFields` requires attribute `Sortable` to perform this request | Remove `userFields` from `order`. You can sort by `id` and `docType` ||
 |#
 
 #### Unknown Field Error
@@ -419,7 +420,16 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select`, `filter`, `order` | Unknown field `#FIELD#` found in entity `UserfieldDocumentDto` | Specify only fields from the `select` parameter description ||
+|| `select`, `filter`, `order` | Unknown field `nope` found in entity `UserfieldDocumentDto` | Specify only fields from the `select` parameter description. The `["*"]` value in `select` causes the same error ||
+|#
+
+#### Sorting Error
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDORDEREXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to Fix** ||
+|| `order` | Invalid sort order `bad` | Pass the `asc` or `desc` direction ||
 |#
 
 #### Pagination Error

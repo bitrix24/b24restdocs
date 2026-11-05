@@ -154,7 +154,7 @@ By default, only the Bitrix24 administrator can edit the catalog and configure a
 #|
 || **Section** | **Description** ||
 || [Warehouses](./store/index.md) | Methods for working with warehouses ||
-|| [Stock by Warehouse](./store-product/index.md) | Methods for working with stock levels by warehouse ||
+|| [Stock by Warehouse](./store-product/index.md) | Methods for retrieving product stock levels by warehouse ||
 || [Inventory Management](./document/index.md) | Methods for working with inventory accounting documents ||
 || [Inventory Document Products](./document/document-element/index.md) | Methods for working with product lines in accounting documents ||
 || [Inventory Document Custom Fields](./userfield-document/index.md) | Methods for working with custom fields in accounting documents ||

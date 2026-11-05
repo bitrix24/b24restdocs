@@ -27,8 +27,16 @@ The method `catalog.productPropertyFeature.update` updates the parameter of a pr
 
 The parameter identifier can be obtained using the [catalog.productPropertyFeature.list](./catalog-product-property-feature-list.md) method. ||
 || **fields***
-[`object`](../../data-types.md) | Set of fields for the updated property parameter [(detailed description)](#fields) ||
+[`object`](../../data-types.md) | Object with the fields of the property parameter [(detailed description)](#fields).
+
+All four fields are required on every call ||
 |#
+
+{% note warning "" %}
+
+The method updates the parameter that matches the passed `propertyId`, `moduleId`, and `featureId`, not the record with the specified `id`. If the property has no parameter with these `moduleId` and `featureId`, the method creates a new one. In either case, the response returns the record with the specified `id`. To change only the `isEnabled` flag, pass the current `propertyId`, `moduleId`, and `featureId` of the parameter from [catalog.productPropertyFeature.get](./catalog-product-property-feature-get.md)
+
+{% endnote %}
 
 ### Parameter fields {#fields}
 
@@ -346,7 +354,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response ||
-|| **productPropertyFeature**
+|| **result.productPropertyFeature**
 [`catalog_product_property_features`](../data-types.md#catalog_product_property_features) | Object of the updated property parameter ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -358,7 +366,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "0",
+    "error": "",
     "error_description": "productPropertyFeature does not exist."
 }
 ```
@@ -368,10 +376,14 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient permissions to modify the information block property ||
-|| `0` | productPropertyFeature does not exist. | The property parameter with the provided `id` was not found or the `propertyId` does not belong to the product catalog ||
-|| `0` | Required fields: moduleId, featureId, isEnabled | Required fields `moduleId`, `featureId`, `isEnabled` were not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | The user does not have the "View product catalog" permission or permission to modify the information block of the property ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` was not provided ||
+|| `400` | `0` | Required fields: propertyId, moduleId, featureId, isEnabled | Required fields are missing in `fields`. The message lists only the missing fields ||
+|| `400` | Empty value | productPropertyFeature does not exist. | The parameter with the provided `id` was not found, the property from `propertyId` was not found, or they do not belong to the product catalog ||
+|| `400` | `0` | The specified property does not belong to a product catalog | The property does not belong to the product catalog ||
+|| `400` | `0` | Invalid property parameter set | `isEnabled` contains a value other than `Y` and `N` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

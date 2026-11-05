@@ -40,13 +40,17 @@ Property identifiers can be obtained using the [catalog.productProperty.list](..
 || **value***
 [`string`](../../data-types.md) | Value of the list element ||
 || **xmlId***
-[`string`](../../data-types.md) | External identifier of the list value. Must be unique within the property ||
+[`string`](../../data-types.md) | External identifier of the list value. Must be unique within the property, otherwise the method returns the `BX_INVALID_VALUE` error ||
 || **def**
 [`char`](../../data-types.md) | Indicator of the default value. Acceptable values:
 - `Y` — default
-- `N` — not default ||
+- `N` — not default
+
+Default: `N`. Any other value causes the `BX_INVALID_VALUE` error ||
 || **sort**
-[`integer`](../../data-types.md) | Sorting index ||
+[`integer`](../../data-types.md) | Sorting index.
+
+Default: `500`. A non-numeric value is saved as `null` without an error ||
 |#
 
 {% note info "" %}
@@ -348,7 +352,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response ||
-|| **productPropertyEnum**
+|| **result.productPropertyEnum**
 [`catalog_product_property_enum`](../data-types.md#catalog_product_property_enum) | Object of the added list property value ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -370,14 +374,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient rights to modify the information block property ||
-|| `0` | productPropertyEnum does not exist. | The property with the provided `propertyId` was not found or does not belong to the trade catalog ||
-|| `0` | Only list properties are supported | A property was passed whose type is not `List` ||
-|| `0` | Required fields: xmlId | The required field `xmlId` was not provided ||
-|| `0` | A value with xmlId '...' already exists. | A value with this `xmlId` already exists within the property ||
-|| `BX_INVALID_VALUE` | A record with the value "External code" equal to "..." already exists in the database | Localized duplicate error for `xmlId` ||
-|| `0` | Internal error adding enumeration value. Try adding again. | Internal error while adding the list value ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | The user does not have the "View product catalog" permission or permission to modify the information block of the property ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` was not provided ||
+|| `400` | `0` | Required fields: propertyId, value, xmlId | Required fields are missing in `fields`. The message lists only the missing fields ||
+|| `400` | Empty value | productPropertyEnum does not exist. | The property with the provided `propertyId` was not found or does not belong to the trade catalog ||
+|| `400` | `0` | The specified property does not belong to a product catalog | The property does not belong to the trade catalog ||
+|| `400` | `0` | Only list properties are supported | A property was passed whose type is not `List` ||
+|| `400` | `BX_INVALID_VALUE` | A record "External ID" set to "..." already exists in the database. | The property already has a value with this `xmlId` ||
+|| `400` | `BX_INVALID_VALUE` | The value of "Default" is invalid. | `def` contains a value other than `Y` and `N` ||
+|| `400` | `BX_EMPTY_REQUIRED` | The field Value is required. | `value` contains an empty string ||
+|| `400` | `0` | Internal error adding enumeration value. Try adding again. | Internal error while adding the list value ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -387,6 +394,6 @@ HTTP status: **400**
 - [{#T}](./catalog-product-property-enum-update.md)
 - [{#T}](./catalog-product-property-enum-get.md)
 - [{#T}](./catalog-product-property-enum-list.md)
-- [{#T}](../../../tutorials/catalog/index.md)
 - [{#T}](./catalog-product-property-enum-delete.md)
 - [{#T}](./catalog-product-property-enum-get-fields.md)
+- [{#T}](../../../tutorials/catalog/index.md)

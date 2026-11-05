@@ -34,8 +34,8 @@ The `catalog.userfield.document.*` methods read and update the values of custom 
 
 1. Create a custom field using [userfieldconfig.add](../../crm/universal/userfieldconfig/userfieldconfig-add.md)
 2. Retrieve the `documentType` using [catalog.enum.getStoreDocumentTypes](../enum/catalog-enum-get-store-document-types.md)
-3. Get the current field values using [catalog.userfield.document.list](./catalog-userfield-document-list.md)
-4. Update the values using [catalog.userfield.document.update](./catalog-userfield-document-update.md)
+3. Get the current field values using [catalog.userfield.document.list](./catalog-userfield-document-list.md). In REST 2, values are passed and returned by the `fieldN` key, where `N` is the custom field identifier, for example `field7097`
+4. Update the values using [catalog.userfield.document.update](./catalog-userfield-document-update.md). Pass the `documentType` document type and only the fields you want to change in `fields`: the other values are retained
 
 ## Custom Fields in REST 3.0
 
@@ -51,14 +51,17 @@ Specifics of the new version methods:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the methods:
+> - retrieving values — a user with the "View" permission for documents of the required type, as well as the "View product catalog" and "View Inventory Management area" permissions
+> - updating values — a user with the same permissions and the "Create and edit" permission for documents of the required type
+> - retrieving the field description with `field.list` and `field.get` — any user
 
 #|
 || **Method** | **Description** ||
+|| [catalog.userfield.document.update](./catalog-userfield-document-update.md) | Updates the values of custom fields for inventory accounting documents ||
+|| [catalog.document.userfield.update](./catalog-userfield-document-update-rest-v3.md) | Updates the values of custom fields for inventory accounting documents v 3.0 ||
 || [catalog.userfield.document.list](./catalog-userfield-document-list.md) | Returns a list of values for custom fields of inventory accounting documents ||
 || [catalog.document.userfield.list](./catalog-userfield-document-list-rest-v3.md) | Returns a list of values for custom fields of inventory accounting documents v 3.0 ||
 || [catalog.document.userfield.field.list](./catalog-userfield-document-field-list.md) | Returns a list of fields for document custom fields v 3.0 ||
 || [catalog.document.userfield.field.get](./catalog-userfield-document-field-get.md) | Returns the description of a field for document custom fields ||
-|| [catalog.userfield.document.update](./catalog-userfield-document-update.md) | Updates the values of custom fields for inventory accounting documents ||
-|| [catalog.document.userfield.update](./catalog-userfield-document-update-rest-v3.md) | Updates the values of custom fields for inventory accounting documents v 3.0 ||
 |#

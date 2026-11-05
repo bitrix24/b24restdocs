@@ -23,20 +23,24 @@ You can set access permissions for each warehouse. This way, employees will only
 
 1. Check available warehouse fields using [catalog.store.getFields](./catalog-store-get-fields.md)
 2. Create a warehouse using [catalog.store.add](./catalog-store-add.md)
-3. Get the warehouse identifier using [catalog.store.get](./catalog-store-get.md) or [catalog.store.list](./catalog-store-list.md)
+3. Retain the warehouse ID from the response — the `result.store.id` field. The IDs of existing warehouses are returned by [catalog.store.list](./catalog-store-list.md)
 4. Use the warehouse identifier in inventory management documents or when reading inventory balances
+
+You cannot delete a warehouse that is specified in inventory document items — delete those items or documents first. You cannot set a warehouse image via REST.
 
 ## Relationship with Other Objects
 
 **Inventory Levels.** Find out how many items are left in the warehouse using the methods [catalog.storeproduct.*](../store-product/index.md).
 
-**Inventory Management.** Add and modify inventory documents using the methods [catalog.document.*](../document/index.md). When creating documents, specify the `storeFrom` and `storeTo` parameters with the IDs of the sender and recipient warehouses. You can obtain the warehouse IDs using the method [catalog.store.list](./catalog-store-list.md).
+**Inventory Management.** Add and modify inventory documents using the methods [catalog.document.*](../document/index.md). When adding products to a document with [catalog.document.element.add](../document/document-element/catalog-document-element-add.md), specify the IDs of the sender and recipient warehouses in the `storeFrom` and `storeTo` fields. You can obtain the warehouse IDs using the method [catalog.store.list](./catalog-store-list.md).
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the methods: administrator
+> Who can execute the methods:
+> - a user with the "View product catalog" or "View and select warehouses" access permission — for reading
+> - a user with the "Edit warehouses" access permission — for creating, updating, and deleting
 
 #|
 || **Method** | **Description** ||

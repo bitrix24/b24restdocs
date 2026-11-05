@@ -280,7 +280,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response ||
-|| **productPropertyEnum**
+|| **result.productPropertyEnum**
 [`catalog_product_property_enum`](../data-types.md#catalog_product_property_enum) | Object of the list property value ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -292,7 +292,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "0",
+    "error": "",
     "error_description": "productPropertyEnum does not exist."
 }
 ```
@@ -302,10 +302,10 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient rights to view the product catalog ||
-|| `0` | productPropertyEnum does not exist. | The list property value with the provided `id` was not found ||
-|| `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | Insufficient rights to view the product catalog ||
+|| `400` | Empty value | productPropertyEnum does not exist. | The list property value with the provided `id` was not found ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

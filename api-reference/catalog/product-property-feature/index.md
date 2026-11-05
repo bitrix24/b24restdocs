@@ -36,16 +36,22 @@ Examples of `moduleId + featureId` combinations:
 
 - To read property parameters, you need the "View product catalog" access permission. To create and update, you additionally need the permission to modify the information block property
 
-- The combination of `propertyId + moduleId + featureId` must be unique. If the record already exists, the method [catalog.productPropertyFeature.add](./catalog-product-property-feature-add.md) will return the error `Duplicate entry ... for key ...`
+- The combination of `propertyId + moduleId + featureId` must be unique. If the record already exists, the method [catalog.productPropertyFeature.add](./catalog-product-property-feature-add.md) will return the error `Internal server error.`
+
+- The [catalog.productPropertyFeature.update](./catalog-product-property-feature-update.md) method looks up the parameter by `propertyId`, `moduleId`, and `featureId`, not by `id`, and requires all four fields
+
+- The methods do not check that `moduleId` and `featureId` are in the list of available parameters of the property
+
+- There is no method to delete a parameter. Parameters are deleted together with the property
 
 ## How to Work with Property Parameters
 
-1. Obtain the `propertyId` of the property using the method [catalog.productProperty.list](../product-property/catalog-product-property-list.md).
-2. Get the available codes for `moduleId` and `featureId` for the property using the method [catalog.productPropertyFeature.getAvailableFeaturesByProperty](./catalog-product-property-feature-get-available-features-by-property.md).
-3. Retrieve the current parameters using the method [catalog.productPropertyFeature.list](./catalog-product-property-feature-list.md) with a filter by `propertyId`.
-4. If the parameter already exists, modify it using the method [catalog.productPropertyFeature.update](./catalog-product-property-feature-update.md). If the parameter does not exist, add it using the method [catalog.productPropertyFeature.add](./catalog-product-property-feature-add.md).
-5. Verify the parameter by `id` using the method [catalog.productPropertyFeature.get](./catalog-product-property-feature-get.md).
-6. If necessary, obtain the structure of fields through [catalog.productPropertyFeature.getFields](./catalog-product-property-feature-get-fields.md).
+1. Obtain the `propertyId` of the property using the method [catalog.productProperty.list](../product-property/catalog-product-property-list.md)
+2. Get the available codes for `moduleId` and `featureId` for the property using the method [catalog.productPropertyFeature.getAvailableFeaturesByProperty](./catalog-product-property-feature-get-available-features-by-property.md)
+3. Retrieve the current parameters using the method [catalog.productPropertyFeature.list](./catalog-product-property-feature-list.md) with a filter by `propertyId`
+4. If the parameter already exists, modify it using the method [catalog.productPropertyFeature.update](./catalog-product-property-feature-update.md). If the parameter does not exist, add it using the method [catalog.productPropertyFeature.add](./catalog-product-property-feature-add.md)
+5. Verify the parameter by `id` using the method [catalog.productPropertyFeature.get](./catalog-product-property-feature-get.md)
+6. If necessary, obtain the structure of fields through [catalog.productPropertyFeature.getFields](./catalog-product-property-feature-get-fields.md)
 
 ## Relationship of Parameters with Other Objects
 
@@ -55,7 +61,9 @@ Examples of `moduleId + featureId` combinations:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute methods: depending on the method
+> Who can execute the methods:
+> - a user with the "View product catalog" permission — to retrieve parameters, available parameters, and field descriptions
+> - a user with the "View product catalog" permission and permission to modify the information block of the property — to add and update parameters
 
 #| 
 || **Method** | **Description** ||

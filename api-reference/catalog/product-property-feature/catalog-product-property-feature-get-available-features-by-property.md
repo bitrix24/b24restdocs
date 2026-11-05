@@ -280,7 +280,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response ||
-|| **features**
+|| **result.features**
 [`array`](../../data-types.md) | Array of objects in the format `{"featureId": "value", "featureName": "value", "moduleId": "value"}`, where:
 - `featureId` — code of the property parameter
 - `featureName` — name of the property parameter
@@ -295,7 +295,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "0",
+    "error": "",
     "error_description": "productPropertyFeature does not exist."
 }
 ```
@@ -305,11 +305,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient permissions to view the trade catalog ||
-|| `0` | productPropertyFeature does not exist. | The property with the provided `propertyId` was not found or does not belong to the trade catalog ||
-|| `100` | Invalid value {abc} to match with parameter {propertyId}. Should be value of type int. | An invalid type value was provided for `propertyId` ||
-|| `100` | Could not find value for parameter {propertyId} | The required parameter `propertyId` was not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | Insufficient permissions to view the trade catalog ||
+|| `400` | Empty value | productPropertyFeature does not exist. | The property with the provided `propertyId` was not found or does not belong to the trade catalog ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {propertyId}. Should be value of type int. | An invalid type value was provided for `propertyId` ||
+|| `400` | `100` | Could not find value for parameter {propertyId} | The required parameter `propertyId` was not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

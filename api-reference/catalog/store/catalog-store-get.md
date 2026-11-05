@@ -1,4 +1,4 @@
-# Get Store Field Values catalog.store.get
+# Get Warehouse Field Values catalog.store.get
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user who has access to the warehouse through the "View and select warehouses" access permission, or the warehouse author with the "Edit warehouses" access permission
 
-The method returns the field values of a store by its identifier.
+The method `catalog.store.get` returns the values of all warehouse fields by its ID.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ The method returns the field values of a store by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_store.id`](../data-types.md#catalog_store) | Store identifier.
+[`catalog_store.id`](../data-types.md#catalog_store) | Warehouse ID.
 
-You can obtain store identifiers using the [catalog.store.list](./catalog-store-list.md) method ||
+You can retrieve warehouse IDs using the [catalog.store.list](./catalog-store-list.md) method ||
 |#
 
 ## Code Examples
@@ -40,7 +40,7 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1}' \
+    -d '{"id":37}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.store.get
     ```
 
@@ -50,7 +50,7 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1,"auth":"**put_access_token_here**"}' \
+    -d '{"id":37,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.store.get
     ```
 
@@ -69,22 +69,22 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
       store: {
         active: string
         address: string
-        code: string
-        dateCreate: ISODate | null
-        dateModify: ISODate | null
-        description: string
-        email: string
-        gpsN: number
-        gpsS: number
+        code: string | null
+        dateCreate: ISODate
+        dateModify: ISODate
+        description: string | null
+        email: string | null
+        gpsN: number | null
+        gpsS: number | null
         id: number
         imageId: { id: number; url: string } | null
         issuingCenter: string
-        modifiedBy: number
-        phone: string
-        schedule: string
-        sort: number
-        title: string
-        userId: number
+        modifiedBy: number | null
+        phone: string | null
+        schedule: string | null
+        sort: number | null
+        title: string | null
+        userId: number | null
         xmlId: string | null
       }
     }
@@ -93,7 +93,7 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
       const response = await $b24.actions.v2.call.make<StoreGetResult>({
         method: 'catalog.store.get',
         params: {
-          id: 1,
+          id: 37,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -103,7 +103,7 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info(result.store.id, result.store.title, result.store.active)
+        console.info('Store:', result.store.id, result.store.title, result.store.address)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -125,7 +125,7 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.store.get',
             params: {
-              id: 1,
+              id: 37,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -137,7 +137,7 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
           }
 
           const result = response.getData().result
-          console.info(result.store.id, result.store.title, result.store.active)
+          console.info('Store:', result.store.id, result.store.title, result.store.address)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -155,7 +155,7 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
 
     try:
         bitrix_response = client.catalog.store.get(
-            bitrix_id=1,
+            bitrix_id=37,
         ).response
         result = bitrix_response.result
         print(result)
@@ -181,10 +181,10 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
             ->call(
                 'catalog.store.get',
                 [
-                    'id' => 1
+                    'id' => 37,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -199,15 +199,16 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
 
     ```js
     BX24.callMethod(
-        'catalog.store.get', {
-            id: 1
+        'catalog.store.get',
+        {
+            id: 37,
         },
-        function(result) {
-            if (result.error()) {
+        function(result)
+        {
+            if (result.error())
                 console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
+            else
+                console.log(result.data());
         }
     );
     ```
@@ -220,7 +221,7 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
     $result = CRest::call(
         'catalog.store.get',
         [
-            'id' => 1
+            'id' => 37,
         ]
     );
 
@@ -234,15 +235,41 @@ You can obtain store identifiers using the [catalog.store.list](./catalog-store-
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.store.get", b24.Params{
-    	"id": 1,
+    	"id": 37,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.store.get: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
+    // The method wraps the response in an object with the "store" key.
+    raw, ok := b24.Unwrap(res.Result, "store")
+    if !ok {
+    	return fmt.Errorf("the response has no store key")
+    }
+
+    // Optional fields can be null, so they use pointers.
+    var item struct {
+    	ID            b24.ID   `json:"id"`
+    	Title         *string  `json:"title"`
+    	Address       string   `json:"address"`
+    	Active        string   `json:"active"`
+    	IssuingCenter string   `json:"issuingCenter"`
+    	GpsN          *float64 `json:"gpsN"`
+    	GpsS          *float64 `json:"gpsS"`
+    	Phone         *string  `json:"phone"`
+    	Schedule      *string  `json:"schedule"`
+    	Sort          *int     `json:"sort"`
+    	Code          *string  `json:"code"`
+    	XMLID         *string  `json:"xmlId"`
+    	ImageID       *struct {
+    		ID  int    `json:"id"`
+    		URL string `json:"url"`
+    	} `json:"imageId"`
+    }
+    if err := json.Unmarshal(raw, &item); err != nil {
+    	return fmt.Errorf("parsing the response: %w", err)
+    }
+    fmt.Println(item.ID, item.Address)
     ```
 
 {% endlist %}
@@ -256,36 +283,35 @@ HTTP status: **200**
     "result": {
         "store": {
             "active": "Y",
-            "address": "Main St. 52",
-            "code": "store_1",
-            "dateCreate": "2024-10-18T16:30:45+02:00",
-            "dateModify": "2024-10-21T14:29:06+02:00",
-            "description": "Description",
-            "email": "test@test.com",
-            "gpsN": 54.71411,
-            "gpsS": 21.56675,
-            "id": 1,
-            "imageId": {
-                "id": 1,
-                "url": "\/upload\/iblock\/6f1\/bkm7jmwso31wisk423gtp28iagy2e8v0\/test.jpeg"
-            },
+            "address": "Tiergartenstraße 17, 10785 Berlin, Germany",
+            "code": "store_kgd",
+            "dateCreate": "2026-11-05T13:19:57+03:00",
+            "dateModify": "2026-11-05T13:20:13+03:00",
+            "description": "Main retail warehouse",
+            "email": "store-kgd@example.com",
+            "gpsN": 52.51463,
+            "gpsS": 13.35011,
+            "id": 37,
+            "imageId": null,
             "issuingCenter": "N",
-            "modifiedBy": 1,
-            "phone": "+1 (495) 212 85 06",
-            "schedule": "Mon.-Fri. from 9:00 AM to 8:00 PM, Sat.-Sun. from 11:00 AM to 6:00 PM",
-            "sort": 100,
-            "title": "Store 1",
-            "userId": 1,
-            "xmlId": null
+            "modifiedBy": 1269,
+            "phone": "+49 30 2128 2851",
+            "schedule": "Mon-Sun 10:00-22:00",
+            "sort": 200,
+            "title": "Tiergarten Warehouse",
+            "userId": 1269,
+            "xmlId": "store-kgd-01"
         }
     },
     "time": {
-        "start": 1729519143.740275,
-        "finish": 1729519144.2594,
-        "duration": 0.5191249847412109,
-        "processing": 0.0425570011138916,
-        "date_start": "2024-10-21T16:59:03+02:00",
-        "date_finish": "2024-10-21T16:59:04+02:00"
+        "start": 1793874019,
+        "finish": 1793874019.396691,
+        "duration": 0.39669108390808105,
+        "processing": 0,
+        "date_start": "2026-11-05T13:20:19+03:00",
+        "date_finish": "2026-11-05T13:20:19+03:00",
+        "operating_reset_at": 1793874600,
+        "operating": 0
     }
 }
 ```
@@ -297,8 +323,10 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **store**
-[`catalog_store`](../data-types.md#catalog_store) | Object containing store information ||
+|| **result.store**
+[`catalog_store`](../data-types.md#catalog_store) | An object with all warehouse fields. Empty fields come with the `null` value.
+
+If the warehouse has an image, `imageId` contains an object with the file ID `id` and the image link `url`, for example, `{"id": 57, "url": "https://cdn-com.bitrix24.com/.../store.png"}` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -309,8 +337,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "201100000000",
+    "error_description": "store does not exist."
 }
 ```
 
@@ -319,11 +347,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to view the store ||
-|| `201100000000` | Store with the specified identifier not found ||
-|| `100` | Parameter `id` not specified || 
-|| `0` | Other errors (e.g., fatal errors) || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have the "View product catalog" or "View and select warehouses" access permission, or has no access to this warehouse ||
+|| `400` | `201100000000` | store does not exist. | The warehouse with the specified `id` is not found. The method returns the same error if a non-numeric string is passed in `id` ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

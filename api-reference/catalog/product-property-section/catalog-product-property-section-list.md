@@ -33,7 +33,7 @@ Available fields:
 - `propertyId` — the identifier of the product or variation property
 - `smartFilter` — whether the property is displayed in the smart filter
 
-By default, all available fields are returned. ||
+By default, all available fields are returned. The method skips unknown fields without an error, and if `select` contains no available fields, it returns all fields ||
 || **filter** 
 [`object`](../../data-types.md) | An object for filtering the selected settings in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
@@ -54,6 +54,8 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `!=` — not equal
 - `!` — not equal
 
+The method skips unknown fields in the filter without an error and returns settings regardless of such a condition.
+
 If `propertyId` is not provided, the method selects section settings for all properties in the trade catalogs. If a `propertyId` is provided that does not exist or does not belong to the trade catalog, the method will return an empty list. ||
 || **order** 
 [`object`](../../data-types.md) | An object for sorting the selected settings in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
@@ -64,7 +66,7 @@ Possible values for `order`:
 - `ASC` — in ascending order
 - `DESC` — in descending order
 
-If the parameter is not provided, sorting `propertyId ASC` is applied. ||
+If the parameter is not provided, the records are sorted by the trade catalog identifier, not by `propertyId`. The method skips unknown fields without an error ||
 || **start** 
 [`integer`](../../data-types.md) | The parameter is used to control pagination.
 
@@ -116,11 +118,11 @@ If the value `-1` is passed, the response will not include the `total` field. ||
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type ProductPropertySectionListResult = {
       productPropertySections: {
-        displayExpanded: string
-        displayType: string
-        filterHint: string
+        displayExpanded: 'Y' | null
+        displayType: string | null
+        filterHint: string | null
         propertyId: number
-        smartFilter: string
+        smartFilter: 'Y' | null
       }[]
     }
 
@@ -376,8 +378,8 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result** 
 [`object`](../../data-types.md) | The root object of the response ||
-|| **productPropertySections** 
-[`catalog_product_property_section[]`](../data-types.md#catalog_product_property_section) | An array of objects for section property settings ||
+|| **result.productPropertySections**
+[`catalog_product_property_section[]`](../data-types.md#catalog_product_property_section) | An array of objects for section property settings. If a property is linked to several sections, several records with identical fields are returned for it: the section identifier is not included in the response ||
 || **next** 
 [`integer`](../../data-types.md) | Offset for the next page. The field is returned if there are more records ||
 || **total** 
@@ -402,11 +404,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient rights to view the catalog ||
-|| `100` | Invalid value {wrong_type} to match with parameter {filter}. Should be value of type array. | Invalid data type for the `filter` parameter value ||
-|| `100` | Invalid value {wrong_type} to match with parameter {select}. Should be value of type array. | Invalid data type for the `select` parameter value ||
-|| `100` | Invalid value {wrong_type} to match with parameter {order}. Should be value of type array. | Invalid data type for the `order` parameter value ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | Insufficient rights to view the catalog ||
+|| `400` | `100` | Invalid value {wrong_type} to match with parameter {filter}. Should be value of type array. | Invalid data type for the `filter` parameter value ||
+|| `400` | `100` | Invalid value {wrong_type} to match with parameter {select}. Should be value of type array. | Invalid data type for the `select` parameter value ||
+|| `400` | `100` | Invalid value {wrong_type} to match with parameter {order}. Should be value of type array. | Invalid data type for the `order` parameter value ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

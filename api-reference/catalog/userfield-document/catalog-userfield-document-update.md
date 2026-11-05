@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with "Create and Edit" access permission for the required document type
+> Who can execute the method: a user with the "View" and "Create and edit" permissions for documents of this type, as well as the "View product catalog" and "View Inventory Management area" permissions
 
 The method `catalog.userfield.document.update` updates the values of user fields in inventory accounting documents.
 
@@ -36,14 +36,19 @@ The method `catalog.userfield.document.update` updates the values of user fields
 || **Name**
 `type` | **Description** ||
 || **documentType*** 
-[`string`](../../data-types.md) | Type of the inventory accounting document.
+[`string`](../../data-types.md) | Inventory accounting document type. It must match the type of the `documentId` document, otherwise the method returns an error.
 
 Allowed values: [types of inventory accounting documents](../enum/catalog-enum-get-store-document-types.md) ||
 || **fieldN** 
 [`any`](../../data-types.md) | Value of the user field, where `N` is the identifier of the user field, for example `field287`.
 
-Identifiers and settings for user fields can be obtained using the [userfieldconfig.list](../../crm/universal/userfieldconfig/userfieldconfig-list.md) method ||
+You can retrieve custom field identifiers and settings using the [userfieldconfig.list](../../crm/universal/userfieldconfig/userfieldconfig-list.md) method. The [catalog.userfield.document.list](./catalog-userfield-document-list.md) method also returns the `fieldN` keys for documents of the required type.
+
+To clear a value, pass an empty string or `null`. For a single-value field, pass a string or a number: an array in such a field causes the `Internal server error.` error ||
 |#
+
+The method changes only the custom fields that are passed. The method skips keys in another format, for example `UF_*` codes, and fields that documents of this type do not have, without an error. Values can also be changed in a posted document.
+
 
 ## Code Examples
 
@@ -57,7 +62,7 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"documentId":81,"fields":{"documentType":"A","field7097":"Test Field"}}' \
+    -d '{"documentId":351,"fields":{"documentType":"A","field7097":"Delivery under contract No. 15"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.userfield.document.update
     ```
 
@@ -67,7 +72,7 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"documentId":81,"fields":{"documentType":"A","field7097":"Test Field"},"auth":"**put_access_token_here**"}' \
+    -d '{"documentId":351,"fields":{"documentType":"A","field7097":"Delivery under contract No. 15"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.userfield.document.update
     ```
 
@@ -94,10 +99,10 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
       const response = await $b24.actions.v2.call.make<UpdateUserfieldDocumentResult>({
         method: 'catalog.userfield.document.update',
         params: {
-          documentId: 81,
+          documentId: 351,
           fields: {
             documentType: 'A',
-            field7097: 'Test field value',
+            field7097: 'Delivery under contract No. 15',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -130,10 +135,10 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.userfield.document.update',
             params: {
-              documentId: 81,
+              documentId: 351,
               fields: {
                 documentType: 'A',
-                field7097: 'Test field value',
+                field7097: 'Delivery under contract No. 15',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -164,9 +169,10 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
 
     try:
         bitrix_response = client.catalog.userfield.document.update(
-            document_id=81,
+            document_id=351,
             fields={
-                "field7097": "New value",
+                "documentType": "A",
+                "field7097": "Delivery under contract No. 15",
             },
         ).response
         result = bitrix_response.result
@@ -193,10 +199,10 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
             ->call(
                 'catalog.userfield.document.update',
                 [
-                    'documentId' => 81,
+                    'documentId' => 351,
                     'fields' => [
                         'documentType' => 'A',
-                        'field7097' => 'Test Field',
+                        'field7097' => 'Delivery under contract No. 15',
                     ],
                 ]
             );
@@ -218,10 +224,10 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
     BX24.callMethod(
         'catalog.userfield.document.update',
         {
-            documentId: 81,
+            documentId: 351,
             fields: {
                 documentType: 'A',
-                field7097: 'Test Field'
+                field7097: 'Delivery under contract No. 15'
             }
         },
         function(result) {
@@ -242,10 +248,10 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
     $result = CRest::call(
         'catalog.userfield.document.update',
         [
-            'documentId' => 81,
+            'documentId' => 351,
             'fields' => [
                 'documentType' => 'A',
-                'field7097' => 'Test Field',
+                'field7097' => 'Delivery under contract No. 15',
             ],
         ]
     );
@@ -260,10 +266,10 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.userfield.document.update", b24.Params{
-    	"documentId": 81,
+    	"documentId": 351,
     	"fields": b24.Params{
     		"documentType": "A",
-    		"field7097":    "Test Field",
+    		"field7097":    "Delivery under contract No. 15",
     	},
     })
     if err != nil {
@@ -277,9 +283,9 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
     }
 
     var item struct {
-    	DocumentID   b24.ID `json:"documentId"`
-    	DocumentType string `json:"documentType"`
-    	Field7097    string `json:"field7097"`
+    	DocumentID   b24.ID  `json:"documentId"`
+    	DocumentType string  `json:"documentType"`
+    	Field7097    *string `json:"field7097"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -291,25 +297,25 @@ Identifiers and settings for user fields can be obtained using the [userfieldcon
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "document": {
-            "documentId": 81,
+            "documentId": 351,
             "documentType": "A",
-            "field7097": "Test Field"
+            "field7097": "Delivery under contract No. 15"
         }
     },
     "time": {
-        "start": 1774341924,
-        "finish": 1774341924.459929,
-        "duration": 0.4599289894104004,
+        "start": 1793875710,
+        "finish": 1793875710.096168,
+        "duration": 0.09616804122924805,
         "processing": 0,
-        "date_start": "2026-03-24T11:45:24+01:00",
-        "date_finish": "2026-03-24T11:45:24+01:00",
-        "operating_reset_at": 1774342524,
+        "date_start": "2026-11-05T13:48:30+03:00",
+        "date_finish": "2026-11-05T13:48:30+03:00",
+        "operating_reset_at": 1793876280,
         "operating": 0
     }
 }
@@ -322,7 +328,7 @@ HTTP Code: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **document**
+|| **result.document**
 [`catalog_userfield_document`](../data-types.md#catalog_userfield_document) | Object with updated values of the document's user fields ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -330,9 +336,7 @@ HTTP Code: **200**
 
 ## Error Handling
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -341,12 +345,19 @@ HTTP Code: **400**
 }
 ```
 
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** | **Value** ||
-|| `0` | The specified document does not exist | Document with the specified `documentId` not found ||
-|| `0` | Access Denied | Insufficient rights to modify the document of the selected type ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | The user lacks the "Create and edit" or "View" permission for documents of this type, or the "View product catalog" or "View Inventory Management area" permission ||
+|| `400` | `0` | The specified document does not exist | The document with the specified `documentId` was not found. The method returns the same error if `documentId` is not a number ||
+|| `400` | `100` | Could not find value for parameter {documentId} | The `documentId` parameter is not passed ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not passed ||
+|| `400` | `0` | Required fields: documentType | `fields` does not contain `documentType`, including when `fields` is empty ||
+|| `400` | `0` | The DOC_TYPE field does not match the document | The `documentType` value does not match the document type ||
+|| `400` | `0` | Internal server error. | An array is passed to a single-value custom field ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

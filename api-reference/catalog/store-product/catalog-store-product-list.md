@@ -11,24 +11,28 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission
 
-The method `catalog.storeproduct.list` returns a list of product inventory balances by filter.
+The method `catalog.storeproduct.list` returns product inventory balances by warehouse with filtering, sorting, and pagination.
+
+One record is the balance of one product in one warehouse. The response includes only records of warehouses available to the user under the "View and select warehouses" permission.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **select** 
-[`array`](../../data-types.md)| An array with a list of fields from [catalog_storeproduct](../data-types.md#catalog_storeproduct) that need to be selected.
+|| **select**
+[`array`](../../data-types.md) | An array of inventory balance record fields to return. Available fields: `id`, `productId`, `storeId`, `amount`, `quantityReserved`. The fields are described in the [catalog_storeproduct](../data-types.md#catalog_storeproduct) object.
 
-If the array is not provided or an empty array is passed, all available fields of the inventory will be selected.
+If the array is not passed or is empty, the method returns all fields. The method skips unknown fields without an error. Write field names in camelCase: if `select` contains no known field, for example `["ID", "AMOUNT"]`, the method returns all fields
 ||
-|| **filter** 
-[`object`](../../data-types.md)| An object for filtering the selected product inventory balances in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
+|| **filter**
+[`object`](../../data-types.md) | An object for filtering inventory balance records in the format `{"field_1": "value_1", ..., "field_N": "value_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_storeproduct](../data-types.md#catalog_storeproduct) object.
+Possible values for `field` are the fields listed in `select`. For example, `{"productId": 6595}` returns the product balances in all warehouses, and `{"storeId": 1}` returns the balances of all products in the warehouse.
 
 An additional prefix can be assigned to the key to specify the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
@@ -37,22 +41,32 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `<` — less than
 - `@` — IN, an array is passed as the value
 - `!@` — NOT IN, an array is passed as the value
-- `=` — equal, exact match, default filter
+- `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
+
+An array without a prefix works as IN: `{"productId": [6973, 6595]}` returns the balances of both products. To find records without a balance, pass `{"amount": null}`.
+
+The `<` and `<=` conditions on `amount` and `quantityReserved` also match records where the value is `null`. To get only records with a filled-in balance, add the `">amount": 0` or `">=amount": 0` condition.
+
+The substring search prefixes `%`, `=%`, and `!%` do not apply to these fields: all fields are numeric, and with these prefixes the method finds no records.
+
+The method skips unknown fields and uppercase names, for example `PRODUCT_ID`, without an error and returns records without applying that condition. Check field names against the list above
 ||
 || **order**
-[`object`](../../data-types.md)| An object for sorting the selected inventory balances in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
+[`object`](../../data-types.md) | An object for sorting inventory balance records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
 
-Possible values for `field` correspond to the fields of the [catalog_storeproduct](../data-types.md#catalog_storeproduct) object.
+Possible values for `field` are the fields listed in `select`.
 
 Possible values for `order`:
 
 - `asc` — in ascending order
 - `desc` — in descending order
+
+The direction is case-insensitive: `DESC` and `desc` work the same way. The method skips unknown fields in `order` without an error
 ||
-|| **start** 
-[`integer`](../../data-types.md)| This parameter is used to manage pagination.
+|| **start**
+[`integer`](../../data-types.md) | This parameter is used to manage pagination.
 
 The page size of results is always static — 50 records.
 
@@ -60,13 +74,17 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the desired page number
+`start = (N-1) * 50`, where `N` — the desired page number.
+
+If `start` exceeds the number of records found, the method returns an empty `storeProducts` array
 ||
 |#
 
 ## Code Examples
 
 {% include [Note on examples](../../../_includes/examples.md) %}
+
+The example retrieves the warehouses that have the product with the `6595` identifier in stock, from the largest balance to the smallest.
 
 {% list tabs %}
 
@@ -76,7 +94,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","productId","storeId","amount"],"filter":{"productId":6973},"order":{"id":"ASC"}}' \
+    -d '{"select":["id","productId","storeId","amount","quantityReserved"],"filter":{"productId":6595,">amount":0},"order":{"amount":"desc"},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.storeproduct.list
     ```
 
@@ -86,7 +104,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["id","productId","storeId","amount"],"filter":{"productId":6973},"order":{"id":"ASC"},"auth":"**put_access_token_here**"}' \
+    -d '{"select":["id","productId","storeId","amount","quantityReserved"],"filter":{"productId":6595,">amount":0},"order":{"amount":"desc"},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.storeproduct.list
     ```
 
@@ -106,7 +124,8 @@ The formula for calculating the `start` parameter value:
         id: number
         productId: number
         storeId: number
-        amount: number
+        amount: number | null
+        quantityReserved: number | null
       }[]
     }
 
@@ -119,17 +138,13 @@ The formula for calculating the `start` parameter value:
       const response = await $b24.actions.v2.call.make<StoreProductListResult>({
         method: 'catalog.storeproduct.list',
         params: {
-          select: [
-            'id',
-            'productId',
-            'storeId',
-            'amount',
-          ],
+          select: ['id', 'productId', 'storeId', 'amount', 'quantityReserved'],
           filter: {
-            productId: 6973,
+            productId: 6595,
+            '>amount': 0,
           },
           order: {
-            id: 'ASC',
+            amount: 'desc',
           },
           start: 0,
         },
@@ -141,7 +156,9 @@ The formula for calculating the `start` parameter value:
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Store products count:', result.storeProducts.length, result.storeProducts)
+        for (const row of result.storeProducts) {
+          console.info('Store', row.storeId, 'amount', row.amount)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -160,25 +177,16 @@ The formula for calculating the `start` parameter value:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // catalog.storeproduct.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.storeproduct.list',
             params: {
-              select: [
-                'id',
-                'productId',
-                'storeId',
-                'amount',
-              ],
+              select: ['id', 'productId', 'storeId', 'amount', 'quantityReserved'],
               filter: {
-                productId: 6973,
+                productId: 6595,
+                '>amount': 0,
               },
               order: {
-                id: 'ASC',
+                amount: 'desc',
               },
               start: 0,
             },
@@ -192,7 +200,9 @@ The formula for calculating the `start` parameter value:
           }
 
           const result = response.getData().result
-          console.info('Store products count:', result.storeProducts.length, result.storeProducts)
+          for (const row of result.storeProducts) {
+            console.info('Store', row.storeId, 'amount', row.amount)
+          }
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -210,17 +220,13 @@ The formula for calculating the `start` parameter value:
 
     try:
         bitrix_response = client.catalog.storeproduct.list(
-            select=[
-                "id",
-                "productId",
-                "storeId",
-                "amount",
-            ],
+            select=["id", "productId", "storeId", "amount", "quantityReserved"],
             filter={
-                "productId": 6973,
+                "productId": 6595,
+                ">amount": 0,
             },
             order={
-                "id": "ASC",
+                "amount": "desc",
             },
             start=0,
         ).response
@@ -248,18 +254,15 @@ The formula for calculating the `start` parameter value:
             ->call(
                 'catalog.storeproduct.list',
                 [
-                    'select' => [
-                        'id',
-                        'productId',
-                        'storeId',
-                        'amount'
-                    ],
+                    'select' => ['id', 'productId', 'storeId', 'amount', 'quantityReserved'],
                     'filter' => [
-                        'productId' => 6973
+                        'productId' => 6595,
+                        '>amount'   => 0,
                     ],
-                    'order' => [
-                        'id' => 'ASC'
-                    ]
+                    'order'  => [
+                        'amount' => 'desc',
+                    ],
+                    'start'  => 0,
                 ]
             );
 
@@ -267,11 +270,9 @@ The formula for calculating the `start` parameter value:
             ->getResponseData()
             ->getResult();
 
-        echo 'Success: ' . print_r($result, true);
-
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error fetching store products: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -281,26 +282,22 @@ The formula for calculating the `start` parameter value:
     BX24.callMethod(
         'catalog.storeproduct.list',
         {
-            select:[
-                'id',
-                'productId',
-                'storeId',
-                'amount'
-            ],
-            filter:{
-                'productId': 6973
+            select: ['id', 'productId', 'storeId', 'amount', 'quantityReserved'],
+            filter: {
+                productId: 6595,
+                '>amount': 0,
             },
-            order:{
-                'id': 'ASC'
-            }
+            order: {
+                amount: 'desc',
+            },
+            start: 0,
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
                 console.error(result.error());
             else
                 console.log(result.data());
-            result.next();
         }
     );
     ```
@@ -313,18 +310,15 @@ The formula for calculating the `start` parameter value:
     $result = CRest::call(
         'catalog.storeproduct.list',
         [
-            'select' => [
-                'id',
-                'productId',
-                'storeId',
-                'amount'
-            ],
+            'select' => ['id', 'productId', 'storeId', 'amount', 'quantityReserved'],
             'filter' => [
-                'productId' => 6973
+                'productId' => 6595,
+                '>amount' => 0,
             ],
             'order' => [
-                'id' => 'ASC'
-            ]
+                'amount' => 'desc',
+            ],
+            'start' => 0,
         ]
     );
 
@@ -338,13 +332,15 @@ The formula for calculating the `start` parameter value:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.storeproduct.list", b24.Params{
-    	"select": []string{"id", "productId", "storeId", "amount"},
+    	"select": []string{"id", "productId", "storeId", "amount", "quantityReserved"},
     	"filter": b24.Params{
-    		"productId": 6973,
+    		"productId": 6595,
+    		">amount":   0,
     	},
     	"order": b24.Params{
-    		"id": "ASC",
+    		"amount": "desc",
     	},
+    	"start": 0,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.storeproduct.list: %w", err)
@@ -356,17 +352,19 @@ The formula for calculating the `start` parameter value:
     	return fmt.Errorf("no storeProducts key in the response")
     }
 
+    // amount and quantityReserved can be null, so pointers are used for them.
     var items []struct {
-    	Amount    int    `json:"amount"`
-    	ID        b24.ID `json:"id"`
-    	ProductID b24.ID `json:"productId"`
-    	StoreID   b24.ID `json:"storeId"`
+    	ID               b24.ID   `json:"id"`
+    	ProductID        b24.ID   `json:"productId"`
+    	StoreID          b24.ID   `json:"storeId"`
+    	Amount           *float64 `json:"amount"`
+    	QuantityReserved *float64 `json:"quantityReserved"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
     for _, it := range items {
-    	fmt.Println(it.Amount)
+    	fmt.Println(it.StoreID, it.Amount)
     }
     ```
 
@@ -381,27 +379,30 @@ HTTP status: **200**
     "result": {
         "storeProducts": [
             {
-                "amount": 54,
-                "id": 11,
-                "productId": 6973,
+                "amount": 15,
+                "id": 3,
+                "productId": 6595,
+                "quantityReserved": 30,
                 "storeId": 1
             },
             {
-                "amount": 14,
-                "id": 13,
-                "productId": 6973,
+                "amount": 10,
+                "id": 1,
+                "productId": 6595,
+                "quantityReserved": null,
                 "storeId": 11
             }
         ]
     },
     "total": 2,
     "time": {
-        "start": 1758089258.945514,
-        "finish": 1758089258.976911,
-        "duration": 0.031397104263305664,
-        "processing": 0.003245115280151367,
-        "date_start": "2025-09-17T09:07:38+02:00",
-        "date_finish": "2025-09-17T09:07:38+02:00",
+        "start": 1793874773,
+        "finish": 1793874773.615197,
+        "duration": 0.615196943283081,
+        "processing": 0,
+        "date_start": "2026-11-05T13:32:53+03:00",
+        "date_finish": "2026-11-05T13:32:53+03:00",
+        "operating_reset_at": 1793875320,
         "operating": 0
     }
 }
@@ -414,10 +415,10 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **storeProducts**
-[`catalog_storeproduct[]`](../data-types.md#catalog_storeproduct) | An array of objects containing information about the selected product inventory balances, structure depends on the `select` parameter ||
+|| **result.storeProducts**
+[`catalog_storeproduct[]`](../data-types.md#catalog_storeproduct) | An array of inventory balance records. Each record contains only the fields from `select`. Empty `amount` and `quantityReserved` values are returned as `null` ||
 || **total**
-[`integer`](../../data-types.md#time) | Total number of records found ||
+[`integer`](../../data-types.md) | Total number of records found ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -428,8 +429,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
-    "error_description": "Access Denied"
+    "error": "100",
+    "error_description": "Invalid order \"BAD\""
 }
 ```
 
@@ -438,9 +439,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300010` | Access Denied | Insufficient rights to read ||
-|| `0` | | Other errors || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has neither the "View product catalog" nor the "View and select warehouses" permission ||
+|| `400` | `100` | Invalid order "BAD" | A direction other than `asc` and `desc` is passed in `order`. The error text shows the direction in uppercase ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {filter}. Should be value of type array. | `filter` is not an object ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

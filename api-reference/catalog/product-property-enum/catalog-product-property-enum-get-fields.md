@@ -276,7 +276,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response ||
-|| **productPropertyEnum**
+|| **result.productPropertyEnum**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_product_property_enum](../data-types.md#catalog_product_property_enum), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -298,8 +298,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient rights to view the product catalog ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | Insufficient rights to view the product catalog ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

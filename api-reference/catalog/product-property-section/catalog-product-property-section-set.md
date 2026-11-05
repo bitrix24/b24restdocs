@@ -29,7 +29,9 @@ If there are no records for the section settings of the property, the method cre
 
 Property identifiers can be obtained using the [catalog.productProperty.list](../product-property/catalog-product-property-list.md) method ||
 || **fields***
-[`object`](../../data-types.md) | Fields for the section settings of the property [(detailed description)](#fields) ||
+[`object`](../../data-types.md) | Fields for the section settings of the property [(detailed description)](#fields).
+
+Pass only the fields you want to change: the fields you do not pass retain their current values. The method skips unknown fields without an error. An empty object creates settings with `null` values if they did not exist yet ||
 |#
 
 ### Parameter fields {#fields}
@@ -40,16 +42,28 @@ Property identifiers can be obtained using the [catalog.productProperty.list](..
 || **smartFilter**
 [`char`](../../data-types.md) | Whether to show the property in the smart filter. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+The method saves `N` and any other value except `Y` as `null` ||
 || **displayType**
-[`char`](../../data-types.md) | Type of the property in the smart filter. Possible values:
+[`char`](../../data-types.md) | Type of the property in the smart filter. The available values depend on the property type:
 - `F` — checkboxes
 - `K` — radio buttons
-- `P` — dropdown list ||
+- `P` — dropdown list
+- `G` — checkboxes with images, for a directory property
+- `H` — checkboxes with names and images, for a directory property
+- `R` — dropdown list with names and images, for a directory property
+- `U` — calendar, for a Date/Time property
+- `A` — number range with a slider, for a property of type `N`
+- `B` — number range, for a property of type `N`
+
+The method does not validate the value: any other letter is saved without an error ||
 || **displayExpanded**
 [`char`](../../data-types.md) | Whether to show the property expanded in the filter. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+
+The method saves `N` and any other value except `Y` as `null` ||
 || **filterHint**
 [`string`](../../data-types.md) | Hint in the smart filter for visitors ||
 |#
@@ -93,13 +107,13 @@ Property identifiers can be obtained using the [catalog.productProperty.list](..
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type ProductPropertySectionSetResult = {
       productPropertySection: {
-        displayExpanded: string
-        displayType: string
-        filterHint: string
+        displayExpanded: 'Y' | null
+        displayType: string | null
+        filterHint: string | null
         iblockId: string
         propertyId: string
         sectionId: string
-        smartFilter: string
+        smartFilter: 'Y' | null
       }
     }
 
@@ -321,13 +335,13 @@ HTTP Status: **200**
 {
     "result": {
         "productPropertySection": {
-        "displayExpanded": "N",
-        "displayType": "F",
-        "filterHint": "Filter hint",
-        "iblockId": "25",
-        "propertyId": "901",
-        "sectionId": "0",
-        "smartFilter": "Y"
+            "displayExpanded": null,
+            "displayType": "F",
+            "filterHint": "Filter hint",
+            "iblockId": "25",
+            "propertyId": "901",
+            "sectionId": "0",
+            "smartFilter": "Y"
         }
     },
     "time": {
@@ -350,8 +364,10 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response ||
-|| **productPropertySection**
-[`catalog_product_property_section`](../data-types.md#catalog_product_property_section) | Object of section settings for the property ||
+|| **result.productPropertySection**
+[`catalog_product_property_section`](../data-types.md#catalog_product_property_section) | Object of section settings for the property.
+
+Unlike [catalog.productPropertySection.get](./catalog-product-property-section-get.md), the response also contains `iblockId`, the trade catalog identifier, and `sectionId`, the section identifier, which is `0` for general settings. Identifiers in the response are strings ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -362,7 +378,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "0",
+    "error": "",
     "error_description": "productPropertySection does not exist."
 }
 ```
@@ -372,11 +388,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient permissions to view the catalog, or no permission to modify the property's information block ||
-|| `0` | productPropertySection does not exist. | The property with the provided `propertyId` was not found or does not belong to the product catalog ||
-|| `100` | Could not find value for parameter {fields} | The required parameter `fields` was not provided ||
-|| `0` | Error setting section properties | Internal error while saving the section settings of the property ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | Insufficient permissions to view the catalog, or no permission to modify the property's information block ||
+|| `400` | Empty value | productPropertySection does not exist. | The property with the provided `propertyId` was not found or does not belong to the product catalog ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` was not provided ||
+|| `400` | `0` | Error setting section properties | Internal error while saving the section settings of the property ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

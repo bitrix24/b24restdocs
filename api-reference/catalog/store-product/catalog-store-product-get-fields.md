@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission
 
-The method `catalog.storeproduct.getFields` returns the fields of product inventory balances.
+The method `catalog.storeproduct.getFields` returns the description of inventory balance record fields: type, whether the field is required, and whether it can be changed.
+
+All fields are marked as read-only: the group has no methods for changing inventory balances. Inventory balances are changed through inventory management documents using the [catalog.document.*](../document/index.md) methods.
 
 ## Method Parameters
 
@@ -169,7 +171,7 @@ No parameters.
 
     ```js
     BX24.callMethod(
-        'catalog.storeproduct.getFields', 
+        'catalog.storeproduct.getFields',
         {},
         function(result)
         {
@@ -257,12 +259,13 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1758088849.185919,
-        "finish": 1758088849.224685,
-        "duration": 0.038765907287597656,
-        "processing": 0.0013179779052734375,
-        "date_start": "2025-09-17T09:00:49+02:00",
-        "date_finish": "2025-09-17T09:00:49+02:00",
+        "start": 1793874872,
+        "finish": 1793874872.626021,
+        "duration": 0.6260209083557129,
+        "processing": 0,
+        "date_start": "2026-11-05T13:34:32+03:00",
+        "date_finish": "2026-11-05T13:34:32+03:00",
+        "operating_reset_at": 1793875440,
         "operating": 0
     }
 }
@@ -275,7 +278,7 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **storeProduct**
+|| **result.storeProduct**
 [`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the [catalog_storeproduct](../data-types.md#catalog_storeproduct) field, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -287,7 +290,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -297,9 +300,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300010` | Access Denied | Insufficient permissions to read ||
-|| `0` | | Other errors || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has neither the "View product catalog" nor the "View and select warehouses" permission ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

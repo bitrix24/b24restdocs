@@ -1,4 +1,4 @@
-# Delete warehouse catalog.store.delete
+# Delete Warehouse catalog.store.delete
 
 {% note tip "" %}
 
@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Edit warehouses" access permission who has access to the warehouse through the "View and select warehouses" access permission, or the warehouse author
 
-This method deletes a warehouse.
+The method `catalog.store.delete` deletes a warehouse.
+
+You cannot delete a warehouse that is specified in inventory document items, even if the document is not posted. Delete such items or documents first using the [catalog.document.*](../document/index.md) methods. Together with the warehouse, the method deletes the product stock records in this warehouse and the warehouse image.
 
 ## Method Parameters
 
@@ -23,9 +25,9 @@ This method deletes a warehouse.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_store.id`](../data-types.md#catalog_store) | Identifier of the warehouse.
+[`catalog_store.id`](../data-types.md#catalog_store) | Warehouse ID.
 
-You can obtain warehouse identifiers using the [catalog.store.list](./catalog-store-list.md) method ||
+You can retrieve warehouse IDs using the [catalog.store.list](./catalog-store-list.md) method ||
 |#
 
 ## Code Examples
@@ -40,7 +42,7 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1}' \
+    -d '{"id":37}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.store.delete
     ```
 
@@ -50,7 +52,7 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1,"auth":"**put_access_token_here**"}' \
+    -d '{"id":37,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.store.delete
     ```
 
@@ -68,7 +70,7 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'catalog.store.delete',
         params: {
-          id: 1,
+          id: 37,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -100,7 +102,7 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.store.delete',
             params: {
-              id: 1,
+              id: 37,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -130,7 +132,7 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
 
     try:
         bitrix_response = client.catalog.store.delete(
-            bitrix_id=1,
+            bitrix_id=37,
         ).response
         result = bitrix_response.result
         print(result)
@@ -156,21 +158,17 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
             ->call(
                 'catalog.store.delete',
                 [
-                    'id' => 1,
+                    'id' => 37,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting warehouse: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -180,14 +178,14 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
     BX24.callMethod(
         'catalog.store.delete',
         {
-            id: 1,
+            id: 37,
         },
-        function(result) {
-            if (result.error()) {
+        function(result)
+        {
+            if (result.error())
                 console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
+            else
+                console.log(result.data());
         }
     );
     ```
@@ -200,7 +198,7 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
     $result = CRest::call(
         'catalog.store.delete',
         [
-            'id' => 1
+            'id' => 37,
         ]
     );
 
@@ -214,15 +212,18 @@ You can obtain warehouse identifiers using the [catalog.store.list](./catalog-st
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.store.delete", b24.Params{
-    	"id": 1,
+    	"id": 37,
     })
     if err != nil {
     	return fmt.Errorf("catalog.store.delete: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
-    fmt.Printf("%s\n", res.Result)
+    // The method returns true if the warehouse is deleted.
+    var deleted bool
+    if err := json.Unmarshal(res.Result, &deleted); err != nil {
+    	return fmt.Errorf("parsing the response: %w", err)
+    }
+    fmt.Println(deleted)
     ```
 
 {% endlist %}
@@ -235,12 +236,14 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1729516191.298727,
-        "finish": 1729516191.799495,
-        "duration": 0.5007679462432861,
-        "processing": 0.16301894187927246,
-        "date_start": "2024-10-21T16:09:51+03:00",
-        "date_finish": "2024-10-21T16:09:51+03:00"
+        "start": 1793874045,
+        "finish": 1793874045.267999,
+        "duration": 0.26799893379211426,
+        "processing": 0,
+        "date_start": "2026-11-05T13:20:45+03:00",
+        "date_finish": "2026-11-05T13:20:45+03:00",
+        "operating_reset_at": 1793874600,
+        "operating": 0
     }
 }
 ```
@@ -251,7 +254,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the warehouse deletion ||
+[`boolean`](../../data-types.md) | Deletion result. Returns `true` if the warehouse is deleted ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -261,9 +264,9 @@ HTTP status: **200**
 HTTP status: **400**
 
 ```json
-{	
-    "error":200040300020,
-    "error_description":"Access Denied"
+{
+    "error": "0",
+    "error_description": "An inventory document connected to this warehouse prevents deleting. "
 }
 ```
 
@@ -272,12 +275,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300020` | Insufficient permissions to delete the warehouse ||
-|| `201100000000` | Warehouse with the specified identifier not found ||
-|| `100` | Parameter `id` is missing or empty ||
-|| `0` | Documents are issued for this warehouse || 
-|| `0` | Other errors (e.g., fatal errors) || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300020` | Access Denied | The user does not have the "Edit warehouses" access permission or has no access to the warehouse ||
+|| `400` | `201100000000` | store does not exist. | The warehouse with the specified `id` is not found ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | A non-numeric value is passed in `id` ||
+|| `400` | `0` | An inventory document connected to this warehouse prevents deleting. | The warehouse is specified in inventory document items, including unposted ones ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

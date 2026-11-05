@@ -24,7 +24,7 @@ Section settings define how product and variation properties work in trade catal
 **Smart Filter.** The fields of the section settings determine how the property is displayed in the catalog filter:
 
 - `smartFilter` — whether to show the property in the filter
-- `displayType` — how to display the property: checkboxes, radio buttons, or a dropdown list
+- `displayType` — how to display the property, for example as checkboxes, radio buttons, or a dropdown list. The available display types depend on the property type
 - `displayExpanded` — whether to expand the property block in the filter
 - `filterHint` — what hint to show the user
 
@@ -39,7 +39,9 @@ Section settings define how product and variation properties work in trade catal
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "View Product Catalog" access permission
+> Who can execute the methods:
+> - a user with the "View product catalog" permission — to retrieve the settings
+> - a user with the "View product catalog" permission and permission to modify the information block of the property — for the `catalog.productPropertySection.set` method
 
 #|
 || **Method** | **Description** ||

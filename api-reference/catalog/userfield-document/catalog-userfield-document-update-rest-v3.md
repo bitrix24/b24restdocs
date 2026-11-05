@@ -48,7 +48,7 @@ The identifier can be retrieved using the [catalog.document.list](../document/ca
 
 Custom field identifiers and codes can be retrieved using the [userfieldconfig.list](../../crm/universal/userfieldconfig/userfieldconfig-list.md) method.
 
-Keys that documents of this type do not have are skipped by the method without an error ||
+The method skips keys that documents of this type do not have, without an error. To clear a value, pass an empty string or `null`. For a single-value field, pass a string or a number: an array in such a field causes a server error ||
 |#
 
 The method also updates the values of a processed document.
@@ -73,7 +73,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":325,"fields":{"docType":"A","userFields":{"FIELD_7097":"1"}}}' \
+    -d '{"id":351,"fields":{"docType":"A","userFields":{"FIELD_7097":"Delivery under contract No. 15"}}}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.userfield.update
     ```
 
@@ -83,7 +83,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":325,"fields":{"docType":"A","userFields":{"FIELD_7097":"1"}},"auth":"**put_access_token_here**"}' \
+    -d '{"id":351,"fields":{"docType":"A","userFields":{"FIELD_7097":"Delivery under contract No. 15"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/catalog.document.userfield.update
     ```
 
@@ -107,11 +107,11 @@ The new API call differs by adding the `/api/` segment to the request URL:
       const response = await $b24.actions.v3.call.make<DocumentUserfieldUpdateResult>({
         method: 'catalog.document.userfield.update',
         params: {
-          id: 325,
+          id: 351,
           fields: {
             docType: 'A',
             userFields: {
-              FIELD_7097: '1',
+              FIELD_7097: 'Delivery under contract No. 15',
             },
           },
         },
@@ -142,11 +142,11 @@ The new API call differs by adding the `/api/` segment to the request URL:
           const response = await $b24.actions.v3.call.make({
             method: 'catalog.document.userfield.update',
             params: {
-              id: 325,
+              id: 351,
               fields: {
                 docType: 'A',
                 userFields: {
-                  FIELD_7097: '1',
+                  FIELD_7097: 'Delivery under contract No. 15',
                 },
               },
             },
@@ -211,11 +211,11 @@ The new API call differs by adding the `/api/` segment to the request URL:
             ->call(
                 'catalog.document.userfield.update',
                 [
-                    'id' => 325,
+                    'id' => 351,
                     'fields' => [
                         'docType' => 'A',
                         'userFields' => [
-                            'FIELD_7097' => '1',
+                            'FIELD_7097' => 'Delivery under contract No. 15',
                         ],
                     ],
                 ]
@@ -239,11 +239,11 @@ The new API call differs by adding the `/api/` segment to the request URL:
     BX24.callMethod(
         'catalog.document.userfield.update',
         {
-            id: 325,
+            id: 351,
             fields: {
                 docType: 'A',
                 userFields: {
-                    FIELD_7097: '1',
+                    FIELD_7097: 'Delivery under contract No. 15',
                 },
             },
         },
@@ -266,11 +266,11 @@ The new API call differs by adding the `/api/` segment to the request URL:
     $result = CRest::call(
         'catalog.document.userfield.update',
         [
-            'id' => 325,
+            'id' => 351,
             'fields' => [
                 'docType' => 'A',
                 'userFields' => [
-                    'FIELD_7097' => '1',
+                    'FIELD_7097' => 'Delivery under contract No. 15',
                 ],
             ],
         ]
@@ -286,11 +286,11 @@ The new API call differs by adding the `/api/` segment to the request URL:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.document.userfield.update", b24.Params{
-    	"id":     325,
+    	"id":     351,
     	"fields": b24.Params{
     		"docType":    "A",
     		"userFields": b24.Params{
-    			"FIELD_7097": "1",
+    			"FIELD_7097": "Delivery under contract No. 15",
     		},
     	},
     })
@@ -325,21 +325,21 @@ HTTP status: **200**
 {
     "result": {
         "item": {
-            "id": 325,
+            "id": 351,
             "docType": "A",
             "userFields": {
-                "FIELD_7097": "1"
+                "FIELD_7097": "Delivery under contract No. 15"
             }
         }
     },
     "time": {
-        "start": 1792665382,
-        "finish": 1792665382.27269,
-        "duration": 0.2726900577545166,
+        "start": 1793875714,
+        "finish": 1793875714.931872,
+        "duration": 0.9318718910217285,
         "processing": 0,
-        "date_start": "2026-10-22T13:36:22+02:00",
-        "date_finish": "2026-10-22T13:36:22+02:00",
-        "operating_reset_at": 1792665960,
+        "date_start": "2026-11-05T13:48:34+03:00",
+        "date_finish": "2026-11-05T13:48:34+03:00",
+        "operating_reset_at": 1793876280,
         "operating": 0
     }
 }
@@ -408,7 +408,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | At least one of the required fields must be not empty: id, filter | Pass the document `id`. This message comes together with a second one: "Only one of the following values must be provided: id, filter" ||
+|| `-` | At least one of the required fields must be not empty: id, filter | Pass the document `id`. A second message comes with this one: "Only one of the following values must be provided: id, filter". The same pair of messages is returned when `id` is `0` ||
+|| `-` | Only one of the following values must be provided: id, filter | Both `id` and `filter` are passed. Remove `filter` ||
+|| `id` | Required field `id` is missing | `id` is not a number. Pass a numeric document identifier ||
 || `fields` | Required field `fields` is missing | Pass the `fields` object ||
 || `-` | The docType field does not match the document | Pass the type of the document `id` in `docType` ||
 || `userFields` | This request requires data type `array` in field `userFields` | Pass `userFields` as an object ||
@@ -429,7 +431,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no document with this identifier. Check the identifier using the [catalog.document.list](../document/catalog-document-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no document with this identifier. Check the identifier using the [catalog.document.list](../document/catalog-document-list-rest-v3.md) method ||
 |#
 
 #### Unknown Field Error
@@ -438,8 +440,23 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `UserfieldDocumentDto` | Pass only `docType` and `userFields` in `fields` ||
+|| `-` | Unknown field `bad` found in entity `UserfieldDocumentDto` | Pass only `docType` and `userFields` in `fields` ||
 |#
+
+#### Server Error
+
+HTTP status: **500**
+
+If you pass an array to a single-value custom field, the method returns an error in the format of the previous API version, without the `error.code` object:
+
+```json
+{
+    "error": "INTERNAL_SERVER_ERROR",
+    "error_description": "Internal server error"
+}
+```
+
+Pass a string or a number to such a field.
 
 #### Access Error
 

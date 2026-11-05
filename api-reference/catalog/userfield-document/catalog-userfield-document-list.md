@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with the "View Product Catalog" access permission
+> Who can execute the method: a user with the "View" permission for documents of this type, as well as the "View product catalog" and "View Inventory Management area" permissions
 
-The method `catalog.userfield.document.list` returns a paginated list of custom field values for inventory accounting documents.
+The method `catalog.userfield.document.list` returns the custom field values of inventory accounting documents of one type with filtering, sorting, and pagination.
 
 ## Method Parameters
 
@@ -23,9 +23,9 @@ The method `catalog.userfield.document.list` returns a paginated list of custom 
 || **Name**
 `type` | **Description** ||
 || **select***
-[`array`](../../data-types.md) | An array containing the list of fields to select (see the fields of the [catalog_userfield_document](../data-types.md#catalog_userfield_document) object).
+[`array`](../../data-types.md) | An array containing the list of fields to select (see the fields of the [catalog_userfield_document](../data-types.md#catalog_userfield_document) object): `documentId`, `documentType`, and custom fields in the `fieldN` format, where `N` is the field identifier, for example `field7097`.
 
-Make sure to include `documentType` — [the type of inventory accounting document](../enum/catalog-enum-get-store-document-types.md) ||
+Make sure to include `documentType` — the [inventory accounting document type](../enum/catalog-enum-get-store-document-types.md). The method skips unknown fields without an error ||
 || **filter***
 [`object`](../../data-types.md) | An object for filtering the selected records in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
@@ -38,6 +38,8 @@ You can add an additional prefix to the key to clarify the filter's behavior. Po
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
+- `@` — IN, an array is passed as the value
+- `!@` — NOT IN, an array is passed as the value
 - `%` — LIKE, substring search. The `%` symbol should not be included in the filter value
 - `=%` — LIKE, substring search. The `%` symbol should be included in the value
 - `%=` — LIKE (similar to `=%`)
@@ -47,6 +49,10 @@ You can add an additional prefix to the key to clarify the filter's behavior. Po
 - `=` — equal, exact match, used by default
 - `!=` — not equal
 - `!` — not equal
+
+An array without a prefix works as IN: `{"documentId": [3, 351]}` returns both documents. The NOT LIKE conditions `!%`, `!=%`, and `!%=` do not match documents where the field is empty.
+
+If the document type does not exist, for example `{"documentType": "Z"}`, the method returns `"result": null` without an error. The method skips unknown fields in the filter without an error
 ||
 || **order**
 [`object`](../../data-types.md) | A sorting object in the format `{"field_1": "order_1", ..., "field_N": "order_N"}`.
@@ -58,8 +64,8 @@ Possible values for `order`:
 - `asc` — in ascending order
 - `desc` — in descending order
 
-If the parameter is not provided, the sorting `documentId ASC` is applied ||
-|| **start** 
+If the parameter is not passed, the method does not set an explicit sort order. For a stable order when paginating, pass a sort order, for example `{"documentId": "asc"}`. The direction is case-insensitive ||
+|| **start**
 [`integer`](../../data-types.md)| This parameter is used to manage pagination.
 
 The page size for results is always static — 50 records.
@@ -68,7 +74,9 @@ To select the second page of results, pass the value `50`. To select the third p
 
 The formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` is the desired page number
+`start = (N-1) * 50`, where `N` is the desired page number.
+
+If `start` exceeds the number of records found, the method returns an empty `documents` array
 ||
 |#
 
@@ -84,7 +92,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["documentType","documentId","field7097"],"filter":{"documentType":"A","documentId":81},"order":{"documentId":"ASC"},"start":0}' \
+    -d '{"select":["documentType","documentId","field7097"],"filter":{"documentType":"A","documentId":351},"order":{"documentId":"ASC"},"start":0}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.userfield.document.list
     ```
 
@@ -94,7 +102,7 @@ The formula for calculating the `start` parameter value:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"select":["documentType","documentId","field7097"],"filter":{"documentType":"A","documentId":81},"order":{"documentId":"ASC"},"start":0,"auth":"**put_access_token_here**"}' \
+    -d '{"select":["documentType","documentId","field7097"],"filter":{"documentType":"A","documentId":351},"order":{"documentId":"ASC"},"start":0,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.userfield.document.list
     ```
 
@@ -113,7 +121,7 @@ The formula for calculating the `start` parameter value:
       documents: Array<{
         documentId: number
         documentType: string
-        field7097: string
+        field7097: string | null
       }>
     }
 
@@ -127,7 +135,7 @@ The formula for calculating the `start` parameter value:
         method: 'catalog.userfield.document.list',
         params: {
           select: ['documentType', 'documentId', 'field7097'],
-          filter: { documentType: 'A', documentId: 81 },
+          filter: { documentType: 'A', documentId: 351 },
           order: { documentId: 'ASC' },
           start: 0,
         },
@@ -167,7 +175,7 @@ The formula for calculating the `start` parameter value:
             method: 'catalog.userfield.document.list',
             params: {
               select: ['documentType', 'documentId', 'field7097'],
-              filter: { documentType: 'A', documentId: 81 },
+              filter: { documentType: 'A', documentId: 351 },
               order: { documentId: 'ASC' },
               start: 0,
             },
@@ -206,7 +214,7 @@ The formula for calculating the `start` parameter value:
             ],
             filter={
                 "documentType": "A",
-                "documentId": 81,
+                "documentId": 351,
             },
             order={
                 "documentId": "ASC",
@@ -238,7 +246,7 @@ The formula for calculating the `start` parameter value:
                 'catalog.userfield.document.list',
                 [
                     'select' => ['documentType', 'documentId', 'field7097'],
-                    'filter' => ['documentType' => 'A', 'documentId' => 81],
+                    'filter' => ['documentType' => 'A', 'documentId' => 351],
                     'order' => ['documentId' => 'ASC'],
                     'start' => 0
                 ]
@@ -257,7 +265,7 @@ The formula for calculating the `start` parameter value:
         'catalog.userfield.document.list',
         {
             select: ['documentType', 'documentId', 'field7097'],
-            filter: { documentType: 'A', documentId: 81 },
+            filter: { documentType: 'A', documentId: 351 },
             order:  { documentId: 'ASC' }
         },
         function(result) {
@@ -283,7 +291,7 @@ The formula for calculating the `start` parameter value:
         'catalog.userfield.document.list',
         [
             'select' => ['documentType', 'documentId', 'field7097'],
-            'filter' => ['documentType' => 'A', 'documentId' => 81],
+            'filter' => ['documentType' => 'A', 'documentId' => 351],
             'order' => ['documentId' => 'ASC'],
             'start' => 0
         ]
@@ -302,7 +310,7 @@ The formula for calculating the `start` parameter value:
     	"select": []string{"documentType", "documentId", "field7097"},
     	"filter": b24.Params{
     		"documentType": "A",
-    		"documentId":   81,
+    		"documentId":   351,
     	},
     	"order": b24.Params{
     		"documentId": "ASC",
@@ -320,9 +328,9 @@ The formula for calculating the `start` parameter value:
     }
 
     var items []struct {
-    	DocumentID   b24.ID `json:"documentId"`
-    	DocumentType string `json:"documentType"`
-    	Field7097    string `json:"field7097"`
+    	DocumentID   b24.ID  `json:"documentId"`
+    	DocumentType string  `json:"documentType"`
+    	Field7097    *string `json:"field7097"`
     }
     if err := json.Unmarshal(raw, &items); err != nil {
     	return fmt.Errorf("parse response: %w", err)
@@ -336,29 +344,29 @@ The formula for calculating the `start` parameter value:
 
 ## Response Handling
 
-HTTP Code: **200**
+HTTP status: **200**
 
 ```json
 {
     "result": {
         "documents": [
-        {
-            "documentId": 81,
-            "documentType": "A",
-            "field7097": "Test Field"
-        }
+            {
+                "documentId": 351,
+                "documentType": "A",
+                "field7097": "Delivery under contract No. 15"
+            }
         ]
     },
     "total": 1,
     "time": {
-        "start": 1774343822,
-        "finish": 1774343822.822166,
-        "duration": 0.8221659660339355,
+        "start": 1793875713,
+        "finish": 1793875713.347841,
+        "duration": 0.3478410243988037,
         "processing": 0,
-        "date_start": "2026-03-24T12:17:02+01:00",
-        "date_finish": "2026-03-24T12:17:02+01:00",
-        "operating_reset_at": 1774344422,
-        "operating": 0
+        "date_start": "2026-11-05T13:48:33+03:00",
+        "date_finish": "2026-11-05T13:48:33+03:00",
+        "operating_reset_at": 1793875920,
+        "operating": 0.12599587440490723
     }
 }
 ```
@@ -370,7 +378,7 @@ HTTP Code: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | The root element of the response ||
-|| **documents**
+|| **result.documents**
 [`catalog_userfield_document[]`](../data-types.md#catalog_userfield_document) | A list of objects with values of custom fields for documents. The composition of fields depends on the `select` parameter ||
 || **next**
 [`integer`](../../data-types.md) | Offset for the next page. This field is returned if there are more records ||
@@ -382,9 +390,7 @@ HTTP Code: **200**
 
 ## Error Handling
 
-{% include notitle [Error Handling](../../../_includes/error-info.md) %}
-
-HTTP Code: **400**
+HTTP status: **400**
 
 ```json
 {
@@ -393,13 +399,16 @@ HTTP Code: **400**
 }
 ```
 
+{% include notitle [Error Handling](../../../_includes/error-info.md) %}
+
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | The documentType field is not specified in the select parameter | The `documentType` is not specified in the `select` parameter ||
-|| `0` | The documentType field is not specified in the filter parameter | The `documentType` is not specified in the `filter` parameter ||
-|| `0` | Access Denied | Insufficient rights to read the values of custom fields for documents ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | The documentType field is not specified in the select parameter | `documentType` is not specified in the `select` parameter ||
+|| `400` | `0` | The documentType field is not specified in the filter parameter | `documentType` is not specified in the `filter` parameter ||
+|| `400` | `0` | Access Denied | The user lacks the "View" permission for documents of this type, or the "View product catalog" or "View Inventory Management area" permission ||
+|| `400` | `100` | Invalid order "BAD" | A direction other than `asc` and `desc` is passed in `order`. The error text shows the direction in uppercase ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}

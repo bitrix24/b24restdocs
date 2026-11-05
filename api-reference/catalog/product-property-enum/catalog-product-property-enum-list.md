@@ -25,7 +25,7 @@ The method `catalog.productPropertyEnum.list` returns a list of values for list 
 || **select**
 [`array`](../../data-types.md) | An array containing the list of fields to be selected (see fields of the object [catalog_product_property_enum](../data-types.md#catalog_product_property_enum)).
 
-If the parameter is not provided, all fields will be selected ||
+If the parameter is not provided, all fields will be selected. The method skips unknown fields without an error, and if `select` contains no fields of the object, it returns all fields ||
 || **filter**
 [`object`](../../data-types.md) | An object for filtering the selected values in the format `{"field_1": "value_1", ... "field_N": "value_N"}`.
 
@@ -45,7 +45,9 @@ An additional prefix can be assigned to the key to specify the filter behavior. 
 - `=` — equal, exact match (used by default)
 - `!=` — not equal
 - `!` — not equal
-  
+
+The method skips unknown fields in the filter without an error and returns values regardless of such a condition.
+
 If `propertyId` is not provided, the method selects values for all list properties in the product catalogs. If a `propertyId` is provided that does not exist or does not belong to the product catalog, the method will return an empty list ||
 || **order**
 [`object`](../../data-types.md) | An object for sorting the selected values in the format `{"field_1": "order_1", ... "field_N": "order_N"}`.
@@ -56,7 +58,7 @@ Possible values for `order`:
 - `ASC` — in ascending order
 - `DESC` — in descending order
 
-If the parameter is not provided, sorting `id ASC` is applied ||
+If the parameter is not provided, sorting `id ASC` is applied. The method skips unknown fields without an error ||
 || **start**
 [`integer`](../../data-types.md) | This parameter is used for managing pagination.
 
@@ -406,7 +408,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | The root object of the response ||
-|| **productPropertyEnums**
+|| **result.productPropertyEnums**
 [`catalog_product_property_enum[]`](../data-types.md#catalog_product_property_enum) | An array of objects containing information about the selected values of list properties ||
 || **next**
 [`integer`](../../data-types.md) | Offset for the next page. This field is returned if there are more records ||
@@ -432,11 +434,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient permissions to view the catalog ||
-|| `100` | Invalid value {wrong_type} to match with parameter {filter}. Should be value of type array. | Invalid data type for the `filter` parameter value ||
-|| `100` | Invalid value {wrong_type} to match with parameter {select}. Should be value of type array. | Invalid data type for the `select` parameter value ||
-|| `100` | Invalid value {wrong_type} to match with parameter {order}. Should be value of type array. | Invalid data type for the `order` parameter value ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | Insufficient permissions to view the catalog ||
+|| `400` | `100` | Invalid value {wrong_type} to match with parameter {filter}. Should be value of type array. | Invalid data type for the `filter` parameter value ||
+|| `400` | `100` | Invalid value {wrong_type} to match with parameter {select}. Should be value of type array. | Invalid data type for the `select` parameter value ||
+|| `400` | `100` | Invalid value {wrong_type} to match with parameter {order}. Should be value of type array. | Invalid data type for the `order` parameter value ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

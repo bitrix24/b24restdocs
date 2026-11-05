@@ -44,7 +44,9 @@ The module identifier can be obtained using the [catalog.productPropertyFeature.
 || **featureId***
 [`string`](../../data-types.md) | Code of the property parameter.
 
-The parameter code can be obtained using the [catalog.productPropertyFeature.getAvailableFeaturesByProperty](./catalog-product-property-feature-get-available-features-by-property.md) method. ||
+The parameter code can be obtained using the [catalog.productPropertyFeature.getAvailableFeaturesByProperty](./catalog-product-property-feature-get-available-features-by-property.md) method.
+
+The method does not check that the `moduleId` and `featureId` pair is in the list of available parameters: a record with a nonexistent code is saved without an error ||
 || **isEnabled***
 [`char`](../../data-types.md) | Indicator of the parameter's activity. Acceptable values:
 - `Y` — enabled
@@ -341,7 +343,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response ||
-|| **productPropertyFeature**
+|| **result.productPropertyFeature**
 [`catalog_product_property_features`](../data-types.md#catalog_product_property_features) | Object of the added property parameter ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
@@ -363,12 +365,14 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient permissions to modify the information block property ||
-|| `0` | productPropertyFeature does not exist. | Property with the provided `propertyId` not found or does not belong to the product catalog ||
-|| `0` | Required fields: moduleId, featureId, isEnabled | Required fields `moduleId`, `featureId`, `isEnabled` not provided ||
-|| `0` | Invalid property parameter set | Incorrect set of `moduleId`, `featureId`, `isEnabled` provided ||
-|| `0` | Mysql query error: (1062) Duplicate entry '...' for key 'b_iblock_property_feature.ix_iblock_property_feature' | Entry with this combination of `propertyId` + `moduleId` + `featureId` already exists ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | The user does not have the "View product catalog" permission or permission to modify the information block of the property ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` was not provided ||
+|| `400` | `0` | Required fields: propertyId, moduleId, featureId, isEnabled | Required fields are missing in `fields`. The message lists only the missing fields ||
+|| `400` | Empty value | productPropertyFeature does not exist. | Property with the provided `propertyId` not found or does not belong to the product catalog ||
+|| `400` | `0` | The specified property does not belong to a product catalog | The property does not belong to the product catalog ||
+|| `400` | `0` | Invalid property parameter set | `isEnabled` contains a value other than `Y` and `N` ||
+|| `400` | `400` | Internal server error. | The property already has a parameter with these `moduleId` and `featureId` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

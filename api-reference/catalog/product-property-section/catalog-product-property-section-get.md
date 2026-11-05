@@ -67,11 +67,11 @@ Property identifiers can be obtained using the [catalog.productProperty.list](..
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type ProductPropertySectionResult = {
       productPropertySection: {
-        displayExpanded: string
-        displayType: string
-        filterHint: string
+        displayExpanded: 'Y' | null
+        displayType: string | null
+        filterHint: string | null
         propertyId: number
-        smartFilter: string
+        smartFilter: 'Y' | null
       }
     }
 
@@ -277,8 +277,8 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | The root object of the response ||
-|| **productPropertySection**
-[`catalog_product_property_section`](../data-types.md#catalog_product_property_section) | The object of section settings for the property ||
+|| **result.productPropertySection**
+[`catalog_product_property_section`](../data-types.md#catalog_product_property_section) | The object of section settings for the property. If the settings have not been set for the property yet, the setting fields are `null` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
@@ -289,7 +289,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "0",
+    "error": "",
     "error_description": "productPropertySection does not exist."
 }
 ```
@@ -299,11 +299,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient rights to view the product catalog ||
-|| `0` | productPropertySection does not exist. | The property with the provided `propertyId` was not found or does not belong to the product catalog ||
-|| `100` | Invalid value {abc} to match with parameter {propertyId}. Should be value of type int. | An invalid type value was provided for `propertyId` ||
-|| `100` | Could not find value for parameter {propertyId} | The required parameter `propertyId` was not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | Insufficient rights to view the product catalog ||
+|| `400` | Empty value | productPropertySection does not exist. | The property with the provided `propertyId` was not found or does not belong to the product catalog ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {propertyId}. Should be value of type int. | An invalid type value was provided for `propertyId` ||
+|| `400` | `100` | Could not find value for parameter {propertyId} | The required parameter `propertyId` was not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

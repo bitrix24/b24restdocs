@@ -1,6 +1,6 @@
 title: Warehouses
 href: index.md
-items: 
+items:
   - name: Overview of Methods
     href: index.md
   - name: Add Warehouse
@@ -10,7 +10,7 @@ items:
   - name: Get Warehouse Field Values
     href: catalog-store-get.md
   - name: Get List of Warehouses
-    href: catalog-store-list.md   
+    href: catalog-store-list.md
   - name: Delete Warehouse
     href: catalog-store-delete.md
   - name: Get Warehouse Fields

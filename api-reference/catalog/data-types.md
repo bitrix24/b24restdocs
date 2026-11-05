@@ -154,7 +154,7 @@ To obtain existing identifiers of VAT, you need to use [catalog.vat.list](./vat/
 ### catalog_document
 
 #|
-|| **Name**
+|| **Value**
 `type` | **Description** ||
 || **id**
 [`integer`](../data-types.md) | Identifier of the inventory document ||
@@ -200,14 +200,14 @@ The value is automatically changed when the document is approved or canceled ||
 ### catalog_userfield_document
 
 #|
-|| **Name**
+|| **Value**
 `type` | **Description** ||
 || **documentId**
 [`catalog_document.id`](#catalog_document) | Identifier of the inventory document ||
 || **documentType**
 [`string`](../data-types.md) | Type of inventory document ||
 || **fieldN**
-[`any`](../data-types.md) | Value of the custom field of the document, where `N` — identifier of the custom field, for example `field7097` ||
+[`any`](../data-types.md) | Value of the custom field of the document, where `N` — identifier of the custom field, for example `field7097`. `null` if not set ||
 |#
 
 ### catalog_document_element
@@ -561,26 +561,35 @@ Available identifiers can be obtained using the [catalog.catalog.list](./catalog
 || **Value**
 `type` | **Description** ||
 || **iblockId**
-[`catalog_catalog.id`](#catalog_catalog) | Identifier of the trade catalog ||
+[`catalog_catalog.id`](#catalog_catalog) | Identifier of the trade catalog. Returned only in the response of the `catalog.productPropertySection.set` method ||
 || **propertyId**
 [`catalog_product_property.id`](#catalog_product_property) | Identifier of the product property or variation ||
 || **sectionId**
 [`integer`](../data-types.md) | Identifier of the catalog section.
 
-For general section settings, the value `0` is returned ||
+For general section settings, the value `0` is returned. Returned only in the response of the `catalog.productPropertySection.set` method ||
 || **smartFilter**
 [`char`](../data-types.md) | Show the property in the smart filter. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+- `null` — the value is not set. If you pass `N` to `catalog.productPropertySection.set`, `null` is saved ||
 || **displayType**
 [`char`](../data-types.md) | Appearance of the property in the smart filter. Possible values:
 - `F` — checkboxes
 - `K` — radio buttons
-- `P` — dropdown list ||
+- `P` — dropdown list
+- `G` — checkboxes with images
+- `H` — checkboxes with names and images
+- `R` — dropdown list with names and images
+- `U` — calendar
+- `A` — number range with a slider
+- `B` — number range
+- `null` — the display type is not set ||
 || **displayExpanded**
 [`char`](../data-types.md) | Show the property expanded in the filter. Possible values:
 - `Y` — yes
-- `N` — no ||
+- `N` — no
+- `null` — the value is not set. If you pass `N` to `catalog.productPropertySection.set`, `null` is saved ||
 || **filterHint**
 [`string`](../data-types.md) | Hint in the smart filter for visitors ||
 |#
@@ -1046,7 +1055,7 @@ In REST 3.0, the value matches `detailUrl` — a link to the image in the CDN ||
 ### catalog_store
 
 #|
-|| **Name**
+|| **Value**
 `type` | **Description** ||
 || **id**
 [`integer`](../data-types.md) | Identifier of the warehouse ||
@@ -1065,19 +1074,15 @@ In REST 3.0, the value matches `detailUrl` — a link to the image in the CDN ||
 || **gpsS**
 [`double`](../data-types.md) | GPS longitude ||
 || **imageId**
-[`object`](../data-types.md) | Image. Object in the format `{fileData: [value1, value2]}`, where:
-- `value1` – name of the picture file with extension
-- `value2` – picture in base64 format
-
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+[`object`](../data-types.md) | Warehouse image. In the response, an object `{"id": <file id>, "url": "<image link>"}` or `null`. You cannot set or delete the image via REST ||
 || **dateModify**
-[`datetime`](../data-types.md) | Date of modification ||
+[`datetime`](../data-types.md) | Date of modification. Filled in automatically ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Date of creation ||
+[`datetime`](../data-types.md) | Date of creation. Filled in automatically ||
 || **userId**
-[`user.id`](../data-types.md) | Created by ||
+[`user.id`](../data-types.md) | Created by. Filled in automatically. `null` for system warehouses ||
 || **modifiedBy**
-[`user.id`](../data-types.md) | Modified by ||
+[`user.id`](../data-types.md) | Modified by. Filled in automatically ||
 || **phone**
 [`string`](../data-types.md) | Phone ||
 || **schedule**
@@ -1092,8 +1097,8 @@ Can be used to synchronize the current warehouse with a similar position in an e
 [`string`](../data-types.md) | E-mail ||
 || **issuingCenter**
 [`string`](../data-types.md) | Is it a pickup point? Possible values:
-- `Y` – yes
-- `N` – no ||
+- `Y` — yes
+- `N` — no ||
 || **code**
 [`string`](../data-types.md) | Symbolic code ||
 |#
@@ -1352,9 +1357,9 @@ Can be used to synchronize the current catalog section with a similar position i
 || **storeId**
 [`catalog_store.id`](#catalog_store) | Identifier of the warehouse ||
 || **amount**
-[`double`](../data-types.md) | Available quantity of the product ||
+[`double`](../data-types.md) | Available quantity of the product. `null` if not set ||
 || **quantityReserved**
-[`double`](../data-types.md) | Quantity of the product in reserve ||
+[`double`](../data-types.md) | Quantity of the product in reserve. `null` if not set ||
 |#
 ### catalog_vat
 

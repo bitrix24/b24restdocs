@@ -256,7 +256,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "0",
+    "error": "",
     "error_description": "productPropertyEnum does not exist."
 }
 ```
@@ -266,11 +266,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient rights to view the product catalog, or no permission to modify the property's information block ||
-|| `0` | productPropertyEnum does not exist. | The list property value with the provided `id` was not found or does not belong to the product catalog ||
-|| `0` | Internal error deleting enumeration value. Try deleting again. | Internal error while deleting the list value ||
-|| `100` | Could not find value for parameter {id} | Required parameter `id` was not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | Insufficient rights to view the product catalog, or no permission to modify the property's information block ||
+|| `400` | Empty value | productPropertyEnum does not exist. | The list property value with the provided `id` was not found or does not belong to the product catalog ||
+|| `400` | `0` | Internal error deleting enumeration value. Try deleting again. | Internal error while deleting the list value ||
+|| `400` | `100` | Could not find value for parameter {id} | Required parameter `id` was not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

@@ -27,7 +27,9 @@ The method `catalog.productPropertyEnum.update` updates the value of a list prop
 
 The identifier can be obtained using the [catalog.productPropertyEnum.list](./catalog-product-property-enum-list.md) method. ||
 || **fields***
-[`object`](../../data-types.md) | Set of fields for the updated list value [(detailed description)](#fields) ||
+[`object`](../../data-types.md) | Object with the fields of the list value [(detailed description)](#fields).
+
+The `propertyId`, `value`, and `xmlId` fields are required on every call: to keep a field unchanged, pass its current value from [catalog.productPropertyEnum.get](./catalog-product-property-enum-get.md). The optional `def` and `sort` fields retain their current values if you do not pass them ||
 |#
 
 ### Parameter fields {#fields}
@@ -40,7 +42,9 @@ The identifier can be obtained using the [catalog.productPropertyEnum.list](./ca
 || **propertyId***
 [`catalog_product_property.id`](../data-types.md#catalog_product_property) | Identifier of the product or variation property.
 
-Property identifiers can be obtained using the [catalog.productProperty.list](../product-property/catalog-product-property-list.md) method. ||
+Property identifiers can be obtained using the [catalog.productProperty.list](../product-property/catalog-product-property-list.md) method.
+
+You cannot move a value to another property: if you pass the `propertyId` of another property, the method skips it without an error and the value stays with its current property ||
 || **value***
 [`string`](../../data-types.md) | Value of the list item. ||
 || **xmlId***
@@ -48,7 +52,9 @@ Property identifiers can be obtained using the [catalog.productProperty.list](..
 || **def**
 [`char`](../../data-types.md) | Indicator of the default value. Acceptable values:
 - `Y` — default
-- `N` — not default ||
+- `N` — not default
+
+Any other value causes the `BX_INVALID_VALUE` error ||
 || **sort**
 [`integer`](../../data-types.md) | Sort index. ||
 |#
@@ -353,7 +359,7 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root object of the response. ||
-|| **productPropertyEnum**
+|| **result.productPropertyEnum**
 [`catalog_product_property_enum`](../data-types.md#catalog_product_property_enum) | Object of the updated list property value. ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time. ||
@@ -365,7 +371,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "0",
+    "error": "",
     "error_description": "productPropertyEnum does not exist."
 }
 ```
@@ -375,13 +381,17 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Access Denied | Insufficient permissions to modify the information block property. ||
-|| `0` | productPropertyEnum does not exist. | The list property value with the provided `id` was not found or does not belong to the product catalog. ||
-|| `0` | The specified property does not belong to a product catalog | The property with the provided `propertyId` does not belong to the product catalog. ||
-|| `0` | Required fields: xmlId | The required field `xmlId` was not provided. ||
-|| `0` | Internal error updating enumeration value. Try updating again. | An internal error occurred while updating the list value. ||
-|| `100` | Could not find value for parameter {id} | The required parameter `id` was not provided. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Access Denied | The user does not have the "View product catalog" permission or permission to modify the information block of the property ||
+|| `400` | `100` | Could not find value for parameter {id} | The required parameter `id` was not provided ||
+|| `400` | `100` | Could not find value for parameter {fields} | The required parameter `fields` was not provided ||
+|| `400` | `0` | Required fields: propertyId, value, xmlId | Required fields are missing in `fields`. The message lists only the missing fields ||
+|| `400` | Empty value | productPropertyEnum does not exist. | The value with the provided `id` was not found, the property from `propertyId` was not found, or they do not belong to the product catalog ||
+|| `400` | `0` | The specified property does not belong to a product catalog | The property does not belong to the product catalog ||
+|| `400` | `BX_INVALID_VALUE` | A record "External ID" set to "..." already exists in the database. | The property already has a value with this `xmlId` ||
+|| `400` | `BX_INVALID_VALUE` | The value of "Default" is invalid. | `def` contains a value other than `Y` and `N` ||
+|| `400` | `BX_EMPTY_REQUIRED` | The field Value is required. | `value` contains an empty string ||
+|| `400` | `0` | Internal error updating enumeration value. Try updating again. | An internal error occurred while updating the list value ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

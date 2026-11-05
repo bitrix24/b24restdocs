@@ -1,4 +1,4 @@
-# Get Available Store Fields catalog.store.getFields
+# Get Available Warehouse Fields catalog.store.getFields
 
 {% note tip "" %}
 
@@ -11,15 +11,17 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission
 
-The method returns the available fields of the store.
+The method `catalog.store.getFields` returns the description of warehouse fields: type, whether the field is required, and whether it can be changed.
+
+## Method Parameters
 
 No parameters.
 
 ## Code Examples
 
-{% include [Example Notes](../../../_includes/examples.md) %}
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -144,6 +146,7 @@ No parameters.
 
 - PHP
 
+
     ```php
     try {
         $response = $b24Service
@@ -152,7 +155,7 @@ No parameters.
                 'catalog.store.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -203,8 +206,8 @@ No parameters.
     	return fmt.Errorf("catalog.store.getFields: %w", err)
     }
 
-    // The response arrives as json.RawMessage — unmarshal it
-    // into a struct matching the response shape shown below on this page.
+    // The response comes as json.RawMessage — parse it
+    // into a struct matching the response shown below on this page.
     fmt.Printf("%s\n", res.Result)
     ```
 
@@ -212,7 +215,7 @@ No parameters.
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -292,7 +295,7 @@ HTTP Status: **200**
             },
             "modifiedBy": {
                 "isImmutable": false,
-                "isReadOnly": false,
+                "isReadOnly": true,
                 "isRequired": false,
                 "type": "integer"
             },
@@ -322,7 +325,7 @@ HTTP Status: **200**
             },
             "userId": {
                 "isImmutable": false,
-                "isReadOnly": false,
+                "isReadOnly": true,
                 "isRequired": false,
                 "type": "integer"
             },
@@ -335,12 +338,14 @@ HTTP Status: **200**
         }
     },
     "time": {
-        "start": 1729520477.308384,
-        "finish": 1729520477.729865,
-        "duration": 0.4214811325073242,
-        "processing": 0.014774084091186523,
-        "date_start": "2024-10-21T17:21:17+02:00",
-        "date_finish": "2024-10-21T17:21:17+02:00"
+        "start": 1793874438,
+        "finish": 1793874438.354447,
+        "duration": 0.3544468879699707,
+        "processing": 0,
+        "date_start": "2026-11-05T13:27:18+03:00",
+        "date_finish": "2026-11-05T13:27:18+03:00",
+        "operating_reset_at": 1793875020,
+        "operating": 0
     }
 }
 ```
@@ -352,20 +357,22 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **store**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_store](../data-types.md#catalog_store), and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description) ||
+|| **result.store**
+[`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the field ID of the [catalog_store](../data-types.md#catalog_store) object, and `value` is an object of the [rest_field_description](../data-types.md#rest_field_description) type.
+
+Not all metadata matches the behavior of the methods: `dateCreate` and `dateModify` are marked as editable, but [catalog.store.add](./catalog-store-add.md) and [catalog.store.update](./catalog-store-update.md) fill them in themselves and ignore the passed values. You cannot set the `imageId` field of the `file` type through these methods ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -374,9 +381,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has neither the "View product catalog" nor the "View and select warehouses" access permission ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

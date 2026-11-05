@@ -28,15 +28,17 @@ A property of type `List` has a set of permissible values. Each value is stored 
 
 - The `xmlId` field is mandatory and must be unique within a single property
 
-- To read and delete list property values, you need the "View product catalog" access permission. For creating and updating, you additionally need permission to modify the information block property
+- To read values, you need the "View product catalog" permission. To add, update, and delete values, you additionally need permission to modify the information block of the property
+
+- The `catalog.productPropertyEnum.update` method requires `propertyId`, `value`, and `xmlId` on every call. You cannot move a value to another property
 
 ## How to Work with List Property Values
 
-1. Check the structure of the fields using [catalog.productPropertyEnum.getFields](./catalog-product-property-enum-get-fields.md).
-2. Determine the `propertyId` of the list property using the method [catalog.productProperty.list](../product-property/catalog-product-property-list.md).
-3. Request the current list values using the method [catalog.productPropertyEnum.list](./catalog-product-property-enum-list.md) with a filter by `propertyId`.
-4. Add a value using the method [catalog.productPropertyEnum.add](./catalog-product-property-enum-add.md) or modify an existing one using the method [catalog.productPropertyEnum.update](./catalog-product-property-enum-update.md).
-5. Retrieve a value by `id` using the method [catalog.productPropertyEnum.get](./catalog-product-property-enum-get.md) or delete it using the method [catalog.productPropertyEnum.delete](./catalog-product-property-enum-delete.md).
+1. Check the structure of the fields using [catalog.productPropertyEnum.getFields](./catalog-product-property-enum-get-fields.md)
+2. Determine the `propertyId` of the list property using the method [catalog.productProperty.list](../product-property/catalog-product-property-list.md)
+3. Request the current list values using the method [catalog.productPropertyEnum.list](./catalog-product-property-enum-list.md) with a filter by `propertyId`
+4. Add a value using the method [catalog.productPropertyEnum.add](./catalog-product-property-enum-add.md) or modify an existing one using the method [catalog.productPropertyEnum.update](./catalog-product-property-enum-update.md)
+5. Retrieve a value by `id` using the method [catalog.productPropertyEnum.get](./catalog-product-property-enum-get.md) or delete it using the method [catalog.productPropertyEnum.delete](./catalog-product-property-enum-delete.md)
 
 ## Relationship with Other Objects
 
@@ -48,7 +50,9 @@ A property of type `List` has a set of permissible values. Each value is stored 
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute methods: depending on the method
+> Who can execute the methods:
+> - a user with the "View product catalog" permission — to retrieve values and field descriptions
+> - a user with the "View product catalog" permission and permission to modify the information block of the property — to add, update, and delete values
 
 #| 
 || **Method** | **Description** ||

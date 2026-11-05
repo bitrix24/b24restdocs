@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with "View product catalog" access permission
+> Who can execute the method: a user with the "View product catalog" or "View and select warehouses" access permission
 
-The method `catalog.storeproduct.get` returns information about the product inventory by the record ID.
+The method `catalog.storeproduct.get` returns the product quantity and reserve in a warehouse by the inventory balance record identifier.
+
+The method returns a record only if its warehouse is available to the user under the "View and select warehouses" permission. For a record of an unavailable warehouse, the method returns a "not found" error.
 
 ## Method Parameters
 
@@ -23,7 +25,9 @@ The method `catalog.storeproduct.get` returns information about the product inve
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_storeproduct.id`](../data-types.md#catalog_storeproduct) | Record ID of the inventory, can be obtained using the [catalog.storeproduct.list](./catalog-store-product-list.md) method ||
+[`catalog_storeproduct.id`](../data-types.md#catalog_storeproduct) | Inventory balance record identifier, not the product identifier.
+
+You can retrieve the record identifier by product and warehouse using the [catalog.storeproduct.list](./catalog-store-product-list.md) method with the `{"productId": ..., "storeId": ...}` filter ||
 |#
 
 ## Code Examples
@@ -38,7 +42,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1}' \
+    -d '{"id":3}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.storeproduct.get
     ```
 
@@ -48,7 +52,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1,"auth":"**put_access_token_here**"}' \
+    -d '{"id":3,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.storeproduct.get
     ```
 
@@ -65,7 +69,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type StoreProductGetResult = {
       storeProduct: {
-        amount: number
+        amount: number | null
         id: number
         productId: number
         quantityReserved: number | null
@@ -77,7 +81,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
       const response = await $b24.actions.v2.call.make<StoreProductGetResult>({
         method: 'catalog.storeproduct.get',
         params: {
-          id: 1,
+          id: 3,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -87,7 +91,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info(result.storeProduct)
+        console.info('Amount:', result.storeProduct.amount, 'Reserved:', result.storeProduct.quantityReserved)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -109,7 +113,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.storeproduct.get',
             params: {
-              id: 1,
+              id: 3,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -121,7 +125,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
           }
 
           const result = response.getData().result
-          console.info(result.storeProduct)
+          console.info('Amount:', result.storeProduct.amount, 'Reserved:', result.storeProduct.quantityReserved)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -139,7 +143,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
 
     try:
         bitrix_response = client.catalog.storeproduct.get(
-            bitrix_id=1,
+            bitrix_id=3,
         ).response
         result = bitrix_response.result
         print(result)
@@ -165,7 +169,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
             ->call(
                 'catalog.storeproduct.get',
                 [
-                    'id' => 1
+                    'id' => 3,
                 ]
             );
 
@@ -185,11 +189,11 @@ The method `catalog.storeproduct.get` returns information about the product inve
     BX24.callMethod(
         'catalog.storeproduct.get',
         {
-            id: 1
+            id: 3,
         },
         function(result)
         {
-            if(result.error())
+            if (result.error())
                 console.error(result.error());
             else
                 console.log(result.data());
@@ -205,7 +209,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
     $result = CRest::call(
         'catalog.storeproduct.get',
         [
-            'id' => 1
+            'id' => 3,
         ]
     );
 
@@ -219,7 +223,7 @@ The method `catalog.storeproduct.get` returns information about the product inve
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.storeproduct.get", b24.Params{
-    	"id": 1,
+    	"id": 3,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.storeproduct.get: %w", err)
@@ -231,16 +235,18 @@ The method `catalog.storeproduct.get` returns information about the product inve
     	return fmt.Errorf("no storeProduct key in the response")
     }
 
+    // amount and quantityReserved can be null, so pointers are used for them.
     var item struct {
-    	Amount    int    `json:"amount"`
-    	ID        b24.ID `json:"id"`
-    	ProductID b24.ID `json:"productId"`
-    	StoreID   b24.ID `json:"storeId"`
+    	ID               b24.ID   `json:"id"`
+    	ProductID        b24.ID   `json:"productId"`
+    	StoreID          b24.ID   `json:"storeId"`
+    	Amount           *float64 `json:"amount"`
+    	QuantityReserved *float64 `json:"quantityReserved"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Amount, item.ID)
+    fmt.Println(item.ID, item.StoreID)
     ```
 
 {% endlist %}
@@ -253,20 +259,21 @@ HTTP status: **200**
 {
     "result": {
         "storeProduct": {
-            "amount": 14,
-            "id": 13,
-            "productId": 6973,
-            "quantityReserved": null,
-            "storeId": 11
+            "amount": 15,
+            "id": 3,
+            "productId": 6595,
+            "quantityReserved": 30,
+            "storeId": 1
         }
     },
     "time": {
-        "start": 1758089295.545724,
-        "finish": 1758089295.586371,
-        "duration": 0.040647029876708984,
-        "processing": 0.0036160945892333984,
-        "date_start": "2025-09-17T09:08:15+02:00",
-        "date_finish": "2025-09-17T09:08:15+02:00",
+        "start": 1793874771,
+        "finish": 1793874771.975931,
+        "duration": 0.97593092918396,
+        "processing": 0,
+        "date_start": "2026-11-05T13:32:51+03:00",
+        "date_finish": "2026-11-05T13:32:51+03:00",
+        "operating_reset_at": 1793875320,
         "operating": 0
     }
 }
@@ -279,8 +286,8 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
-|| **storeProduct**
-[`catalog_storeproduct`](../data-types.md#catalog_storeproduct) | Object containing information about product inventory by warehouses with the specified ID ||
+|| **result.storeProduct**
+[`catalog_storeproduct`](../data-types.md#catalog_storeproduct) | Inventory balance record: product, warehouse, quantity in the warehouse, and reserve. If the quantity or reserve is not filled in, `amount` and `quantityReserved` are returned as `null` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -291,8 +298,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
-    "error_description": "Access Denied"
+    "error": "",
+    "error_description": "storeProduct does not exist."
 }
 ```
 
@@ -301,11 +308,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `200040300010` | Access Denied | Insufficient rights to read ||
-|| `-` | Store product does not exist | No inventory for products with such ID exists ||
-|| `100` | Could not find value for parameter {id} | Parameter `id` is not specified || 
-|| `0` | | Other errors || 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has neither the "View product catalog" nor the "View and select warehouses" permission ||
+|| `400` | Empty value | storeProduct does not exist. | There is no inventory balance record with this `id`, or its warehouse is not available to the user. The method returns the same error if `id` is a string that is not a number ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
