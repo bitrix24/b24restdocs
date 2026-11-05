@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with read access permission for CRM entities
+> Who can execute the method: an administrator, the creator of the call list, or the user responsible for the call list activity. Read permission for contacts or companies is also required, depending on the type of call list participants
 
-The method `crm.calllist.get` returns information about the call list by its identifier, without the list of participants.
+The method `crm.calllist.get` returns the call list parameters by its identifier. The response contains the creation date, the author, the CRM form, and the participant type. The method does not return the participants themselves.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `crm.calllist.get` returns information about the call list by its ide
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`integer`](../../data-types.md) | Identifier of the call list ||
+[`integer`](../../data-types.md) | Identifier of the call list. You can retrieve it using the [crm.calllist.add](./crm-calllist-add.md) and [crm.calllist.list](./crm-calllist-list.md) methods. This is not the identifier of the call list activity in the timeline ||
 |#
 
 ## Code Examples
@@ -38,7 +38,7 @@ The method `crm.calllist.get` returns information about the call list by its ide
     curl -X POST \
          -H "Content-Type: application/json" \
          -d '{"ID":123}' \
-         https://**your_bitrix24**/rest/**user_id**/**webhook**/crm.calllist.get
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.calllist.get
     ```
 
 - cURL (OAuth)
@@ -47,7 +47,7 @@ The method `crm.calllist.get` returns information about the call list by its ide
     curl -X POST \
          -H "Content-Type: application/json" \
          -d '{"ID":123,"auth":"**put_access_token_here**"}' \
-         https://**your_bitrix24**/rest/crm.calllist.get
+         https://**put_your_bitrix24_address**/rest/crm.calllist.get
     ```
 
 - JS (TS)
@@ -166,7 +166,7 @@ The method `crm.calllist.get` returns information about the call list by its ide
                     'ID' => 123,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -241,7 +241,7 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-        "ID": "13",
+        "ID": "123",
         "DATE_CREATE": "2025-07-14 08:47:19",
         "CREATED_BY_ID": "29",
         "WEBFORM_ID": "1",
@@ -263,23 +263,34 @@ HTTP Status: **200**
 
 ### Returned Data
 
+Numeric values are returned as strings, for example `"ID": "123"`.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **result**
+[`object`](../../data-types.md) | Call list parameters [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Result Object {#result}
+
 #|
 || **Name**
 `type` | **Description** ||
 || **ID**
-[`integer`](../../data-types.md) | Identifier of the call list ||
+[`string`](../../data-types.md) | Identifier of the call list ||
 || **DATE_CREATE**
-[`datetime`](../../data-types.md) | Date and time of call list creation ||
+[`string`](../../data-types.md) | Date and time of call list creation in the format `YYYY-MM-DD HH:MM:SS` ||
 || **CREATED_BY_ID**
-[`integer`](../../data-types.md) | Identifier of the user who created the call list ||
+[`string`](../../data-types.md) | Identifier of the user who created the call list ||
 || **WEBFORM_ID**
-[`integer`](../../data-types.md) | Identifier of the associated CRM form ||
+[`string`](../../data-types.md) | Identifier of the attached CRM form. If no form is attached — `null` ||
 || **ENTITY_TYPE_ID**
-[`integer`](../../data-types.md) | Identifier of the object type ||
+[`string`](../../data-types.md) | Identifier of the participant type: `3` — contacts, `4` — companies ||
 || **ENTITY_TYPE**
-[`string`](../../data-types.md) | Type of the object ||
-|| **time**
-[`time`](../../data-types.md#time) | Information about the request execution time ||
+[`string`](../../data-types.md) | Participant type: `CONTACT` or `COMPANY` ||
 |#
 
 ## Error Handling
@@ -312,3 +323,4 @@ HTTP Status: **400**
 - [{#T}](./crm-calllist-list.md)
 - [{#T}](./crm-calllist-statuslist.md)
 - [{#T}](./crm-calllist-update.md)
+- [{#T}](./index.md)

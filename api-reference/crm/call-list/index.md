@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-A call list is a CRM activity from which multiple clients can be called consecutively. An employee works with a single activity that contains selected contacts or companies. The results of the calls will be automatically saved in the client cards:
+A call list is a set of contacts or companies that an employee calls one after another. For example, the employee invites all clients from one city to a webinar.
+
+In CRM, a call list is shown as an activity — a scheduled action, like a call, meeting, or email. The employee makes the calls from this activity. The results of the calls are automatically saved in the client cards:
 
 - in the attached call activity and its comments
 - in the filled CRM form and fields of the card
@@ -23,31 +25,39 @@ A call list is a CRM activity from which multiple clients can be called consecut
 
 1. Retrieve the identifiers of the call list participants — contacts or companies — using the [crm.item.list](../universal/crm-item-list.md) method
 
-2. Create a call list using the [crm.calllist.add](./crm-calllist-add.md) method: pass the object type in the `ENTITY_TYPE` parameter and the array of identifiers in the `ENTITIES` parameter. If necessary, attach a CRM form using the `WEBFORM_ID` parameter
+2. Create a call list using the [crm.calllist.add](./crm-calllist-add.md) method: pass the object type in the `ENTITY_TYPE` parameter and the array of identifiers in the `ENTITIES` parameter. To let the employee fill in the client's data during a call, attach a CRM form using the `WEBFORM_ID` parameter
 
 3. Check the composition of the call list using the [crm.calllist.items.get](./crm-calllist-items-get.md) method, and the parameters of the call list itself using the [crm.calllist.get](./crm-calllist-get.md) method
 
-4. The employee then calls the participants in the Bitrix24 interface. The statuses of the participants during the call list are returned by the same [crm.calllist.items.get](./crm-calllist-items-get.md) method, and the list of possible statuses is returned by the [crm.calllist.statuslist](./crm-calllist-statuslist.md) method
+4. The employee then calls the participants in the Bitrix24 interface. You can track the progress of the call list using the same [crm.calllist.items.get](./crm-calllist-items-get.md) method: it returns the call status for each participant. A participant in the response looks like this:
 
-5. To add or remove participants of an already created call list, use the [crm.calllist.update](./crm-calllist-update.md) method
+    ```json
+    {
+        "ID": 9,
+        "STATUS": "IN_WORK",
+        "ENTITY_TYPE": 3
+    }
+    ```
+
+    `ID` — identifier of the contact or company. `ENTITY_TYPE` — participant type: `3` — contact, `4` — company. `STATUS` — call status code. All codes are returned by the [crm.calllist.statuslist](./crm-calllist-statuslist.md) method
+
+5. Change the participants using the [crm.calllist.update](./crm-calllist-update.md) method. The method replaces the entire list: pass everyone who must remain together with the new participants. If a CRM form is attached to the call list, pass `WEBFORM_ID` as well — without it, the method detaches the form
 
 ## Relationships with Other Objects
 
-**Contact**. To call multiple contacts, specify an array of `ID` contacts in the [creation](./crm-calllist-add.md) or [update](./crm-calllist-update.md) method of the call list. You can obtain the `ID` of contacts using the [crm.item.list](../universal/crm-item-list.md) method with the parameter `entityTypeId = 3`.
+**Contact and Company.** The call list participants are set by an array of contact or company `ID`s in the call list [creation](./crm-calllist-add.md) or [update](./crm-calllist-update.md) method. You can retrieve the `ID`s using the [crm.item.list](../universal/crm-item-list.md) method: for contacts, with the parameter `entityTypeId = 3`, for companies, with `entityTypeId = 4`.
 
-**Company**. To call multiple companies, specify an array of `ID` companies in the [creation](./crm-calllist-add.md) or [update](./crm-calllist-update.md) method of the call list. You can obtain the `ID` of companies using the [crm.item.list](../universal/crm-item-list.md) method with the parameter `entityTypeId = 4`.
+**CRM Form.** You can attach a CRM form to a call list: during a call, the employee can fill in the client's data in it. After the call, the form appears in the client card, and its data is saved in the card fields. To attach a form, specify its `ID` in the call list [creation](./crm-calllist-add.md) or [update](./crm-calllist-update.md) method. The form `ID` is returned by the [crm.form.list](../form/crm-form-list.md) method, and you can also see it in the list of forms in Bitrix24 at `https://your-domain.com/crm/webform/`.
 
-**CRM Form**. During the call, the employee can fill in information about the client in the CRM form attached to the call list. After the call is completed, the form will be available in the client card, and the information from the form will be saved in the fields of the card. To attach a form to the call list, specify its `ID` in the [creation](./crm-calllist-add.md) or [update](./crm-calllist-update.md) method of the call list. The `ID` of the form can be found in the list of forms in Bitrix24 at `https://your-domain.com/crm/webform/`.
+**Directory.** Call statuses, for example `IN_WORK`, are stored in the [directory](../status/index.md) with `ENTITY_ID = CALL_LIST`, which is handled by the [crm.status.*](../status/index.md) methods. All statuses are returned by the [crm.calllist.statuslist](./crm-calllist-statuslist.md) method, and you can change a status by its `ID` using the [crm.status.update](../status/crm-status-update.md) method.
 
-**Directory**. The status of the call in the call list card is an element of the [directory](../status/index.md). The list of statuses available to the call list participants is returned by the [crm.calllist.statuslist](./crm-calllist-statuslist.md) method. To change the statuses themselves, use the directory methods [crm.status.*](../status/index.md) with the parameter `ENTITY_ID = CALL_LIST`.
+**User.** The `CREATED_BY_ID` field in the response of the [crm.calllist.get](./crm-calllist-get.md) and [crm.calllist.list](./crm-calllist-list.md) methods contains the numeric identifier of the user who created the call list. The data of this user is returned by the [user.get](../../user/user-get.md) method.
 
-**User**. The call list is linked to its creator by a numeric identifier in the `CREATED_BY_ID` field. This field is returned by the [crm.calllist.get](./crm-calllist-get.md) and [crm.calllist.list](./crm-calllist-list.md) methods. You can obtain user data by identifier using the [user.get](../../user/user-get.md) method.
+## How to Remove a Call List from the Timeline
 
-## How to Delete a Call List
+A call list has no delete method. You can remove a call list from the timeline by deleting its activity using the [crm.activity.delete](../timeline/activities/activity-base/crm-activity-delete.md) method. The call list itself remains: the [crm.calllist.get](./crm-calllist-get.md), [crm.calllist.list](./crm-calllist-list.md), and [crm.calllist.items.get](./crm-calllist-items-get.md) methods continue to return it. After the activity is deleted, the user responsible for the activity loses access to the call list unless they are the creator of the call list or an administrator.
 
-There is no method for deleting a call list among the call list methods. You can delete a call list by deleting the activity using the [crm.activity.delete](../timeline/activities/activity-base/crm-activity-delete.md) method.
-
-1. Use the [crm.activity.list](../timeline/activities/activity-base/crm-activity-list.md) method with a filter by the activity name `SUBJECT`. In the field value, specify `Call list #ID`. Replace `ID` with the identifier of the call list obtained from the [crm.calllist.add](./crm-calllist-add.md) or [crm.calllist.list](./crm-calllist-list.md) methods.
+1. Find the call list activity using the [crm.activity.list](../timeline/activities/activity-base/crm-activity-list.md) method with the filter `PROVIDER_ID` = `CALL_LIST` and `ASSOCIATED_ENTITY_ID` = the call list identifier. The call list identifier is returned by the [crm.calllist.add](./crm-calllist-add.md) and [crm.calllist.list](./crm-calllist-list.md) methods.
 
 2. Pass the `ID` of the activity from the result to the deletion method [crm.activity.delete](../timeline/activities/activity-base/crm-activity-delete.md).
 
@@ -78,7 +88,8 @@ There is no method for deleting a call list among the call list methods. You can
         method: 'crm.activity.list',
         params: {
           filter: {
-            SUBJECT: 'Call list #13',
+            PROVIDER_ID: 'CALL_LIST',
+            ASSOCIATED_ENTITY_ID: 13,
           },
           select: ['ID'],
           start: 0,
@@ -92,7 +103,7 @@ There is no method for deleting a call list among the call list methods. You can
       } else {
         const activities = listResponse.getData()!.result
         if (activities.length === 0) {
-          console.info('No activities named "Call list #13" found.')
+          console.info('No activity found for call list 13.')
         } else {
           const activityId = activities[0].ID
 
@@ -139,7 +150,8 @@ There is no method for deleting a call list among the call list methods. You can
             method: 'crm.activity.list',
             params: {
               filter: {
-                SUBJECT: 'Call list #13',
+                PROVIDER_ID: 'CALL_LIST',
+                ASSOCIATED_ENTITY_ID: 13,
               },
               select: ['ID'],
               start: 0,
@@ -155,7 +167,7 @@ There is no method for deleting a call list among the call list methods. You can
 
           const activities = listResponse.getData().result
           if (activities.length === 0) {
-            console.info('No activities named "Call list #13" found.')
+            console.info('No activity found for call list 13.')
             return
           }
 
@@ -195,7 +207,8 @@ There is no method for deleting a call list among the call list methods. You can
     try:
         bitrix_response = client.crm.activity.list(
             filter={
-                "SUBJECT": "Call list #13",
+                "PROVIDER_ID": "CALL_LIST",
+                "ASSOCIATED_ENTITY_ID": 13,
             },
             select=[
                 "ID",
@@ -204,7 +217,7 @@ There is no method for deleting a call list among the call list methods. You can
         result = bitrix_response.result
 
         if not result:
-            print("The activity titled 'Call list #13' was not found.")
+            print("No activity found for call list 13.")
         else:
             activity_id = int(result[0]["ID"])
             delete_response = client.crm.activity.delete(
@@ -235,7 +248,8 @@ There is no method for deleting a call list among the call list methods. You can
                 'crm.activity.list',
                 [
                     'filter' => [
-                        'SUBJECT' => 'Call list #13',
+                        'PROVIDER_ID' => 'CALL_LIST',
+                        'ASSOCIATED_ENTITY_ID' => 13,
                     ],
                     'select' => ['ID']
                 ]
@@ -249,7 +263,7 @@ There is no method for deleting a call list among the call list methods. You can
 
         // If there are no activities, exit
         if (count($deals) === 0) {
-            echo "No activities named 'Call list #13' were found.";
+            echo "No activity found for call list 13.";
             return;
         }
 
@@ -283,7 +297,8 @@ There is no method for deleting a call list among the call list methods. You can
         "crm.activity.list",
         {
             filter: {
-                "SUBJECT": "Call list #13",
+                "PROVIDER_ID": "CALL_LIST",
+                "ASSOCIATED_ENTITY_ID": 13,
             },
             select: ["ID"]
         },
@@ -297,7 +312,7 @@ There is no method for deleting a call list among the call list methods. You can
 
             // If there are no activities, exit
             if (deals.length === 0) {
-                console.log("No activities named 'Call list #13' were found.");
+                console.log("No activity found for call list 13.");
                 return;
             }
 
@@ -328,12 +343,13 @@ There is no method for deleting a call list among the call list methods. You can
     <?php
     require_once('crest.php');
 
-    // 1. Retrieve the list of activities by title
+    // 1. Find the call list activity by the call list identifier
     $result = CRest::call(
-        'crm.deal.list',
+        'crm.activity.list',
         [
             'filter' => [
-                'TITLE' => 'Call list #13'
+                'PROVIDER_ID' => 'CALL_LIST',
+                'ASSOCIATED_ENTITY_ID' => 13
             ],
             'select' => ['ID']
         ]
@@ -348,7 +364,7 @@ There is no method for deleting a call list among the call list methods. You can
 
     // If there are no activities, exit
     if (empty($deals)) {
-        echo "No activities named 'Call list #13' were found.\n";
+        echo "No activity found for call list 13.\n";
         exit;
     }
 
@@ -357,7 +373,7 @@ There is no method for deleting a call list among the call list methods. You can
 
     // 2. Delete the activity by ID
     $result = CRest::call(
-        'crm.deal.delete',
+        'crm.activity.delete',
         [
             'id' => $dealId
         ]
@@ -376,8 +392,10 @@ There is no method for deleting a call list among the call list methods. You can
 
 Permissions depend on the operation:
 
-- a user with read access to the specified contacts or companies can create and update a call list, as well as retrieve its participants: objects unavailable to the user will not be included in the call list, and the [crm.calllist.items.get](./crm-calllist-items-get.md) method will return only the available ones
-- any user can retrieve the parameters of a call list and the list of call lists
+- any user can create a call list: contacts or companies that the user cannot read are not included in it
+- an administrator, the creator of the call list, or the user responsible for the call list activity can update a call list and retrieve its parameters. Read permission for contacts or companies is also required, depending on the type of call list participants
+- an administrator, the creator of the call list, or the user responsible for the call list activity can retrieve the participants. The [crm.calllist.items.get](./crm-calllist-items-get.md) method returns only those the user can read
+- any user can retrieve the list of call lists: an administrator receives all call lists; other users receive only the ones they created
 
 ## Overview of Methods {#all-methods}
 
@@ -388,9 +406,9 @@ Permissions depend on the operation:
 #|
 || **Method** | **Description** ||
 || [crm.calllist.add](./crm-calllist-add.md) | Creates a new call list ||
-|| [crm.calllist.update](./crm-calllist-update.md) | Updates the composition of the call list ||
-|| [crm.calllist.get](./crm-calllist-get.md) | Returns information about the call list ||
-|| [crm.calllist.list](./crm-calllist-list.md) | Returns a list of all call lists ||
+|| [crm.calllist.update](./crm-calllist-update.md) | Changes the participants and the CRM form of the call list ||
+|| [crm.calllist.get](./crm-calllist-get.md) | Returns the call list parameters without participants ||
+|| [crm.calllist.list](./crm-calllist-list.md) | Returns a list of call lists ||
 || [crm.calllist.items.get](./crm-calllist-items-get.md) | Returns participants of the call list ||
-|| [crm.calllist.statuslist](./crm-calllist-statuslist.md) | Returns a list of call list participant statuses ||
+|| [crm.calllist.statuslist](./crm-calllist-statuslist.md) | Returns the possible call statuses in the call list ||
 |#

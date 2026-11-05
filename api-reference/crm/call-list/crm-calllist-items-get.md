@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with read access permission to CRM entities
+> Who can execute the method: an administrator, the creator of the call list, or the user responsible for the call list activity
 
-The method `crm.calllist.items.get` returns a list of participants, contacts, or companies, along with the call status.
+The method `crm.calllist.items.get` returns the call list participants — contacts or companies — and the call status for each of them.
+
+The response includes only the participants that the user can read. The method returns up to 50 participants per call.
 
 ## Method Parameters
 
@@ -25,8 +27,18 @@ The method `crm.calllist.items.get` returns a list of participants, contacts, or
 || **LIST_ID***
 [`integer`](../../data-types.md) | Identifier of the call list, which can be obtained using the methods [crm.calllist.add](./crm-calllist-add.md) and [crm.calllist.list](./crm-calllist-list.md) ||
 || **FILTER**
-[`object`](../../data-types.md) | Filter by the call status of the item: `{ STATUS: "status_code" }`. 
-You can get the status code values using the method [crm.calllist.statuslist](./crm-calllist-statuslist.md)||
+[`object`](../../data-types.md) | Filter by the call status of the participant: `{ STATUS: "status_code" }`, for example `{ STATUS: "IN_WORK" }`.
+All status codes are returned by the [crm.calllist.statuslist](./crm-calllist-statuslist.md) method ||
+|| **start**
+[`integer`](../../data-types.md) | This parameter is used to control pagination.
+
+The page size of results is always static — 50 records.
+
+To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
+
+Default is `0`.
+
+The method does not return `total` and `next`. The method checks permissions for participants after the page is selected: participants the user cannot access are dropped from it. Therefore, for a user without access to all participants, a page can contain fewer than 50 records even if more participants follow. If the page contains no accessible participants, the method returns the `ACCESS_ERROR` error. An administrator receives full pages: the list has ended when fewer than 50 records are returned ||
 |#
 
 ## Code Examples
@@ -41,7 +53,7 @@ You can get the status code values using the method [crm.calllist.statuslist](./
     curl -X POST \
          -H "Content-Type: application/json" \
          -d '{"LIST_ID":13,"FILTER":{"STATUS":"IN_WORK"}}' \
-         https://**your_bitrix24**/rest/**user_id**/**webhook**/crm.calllist.items.get
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.calllist.items.get
     ```
 
 - cURL (OAuth)
@@ -50,7 +62,7 @@ You can get the status code values using the method [crm.calllist.statuslist](./
     curl -X POST \
          -H "Content-Type: application/json" \
          -d '{"LIST_ID":13,"FILTER":{"STATUS":"IN_WORK"},"auth":"**put_access_token_here**"}' \
-         https://**your_bitrix24**/rest/crm.calllist.items.get
+         https://**put_your_bitrix24_address**/rest/crm.calllist.items.get
     ```
 
 - JS (TS)
@@ -178,15 +190,15 @@ You can get the status code values using the method [crm.calllist.statuslist](./
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting call list items: ' . $e->getMessage();
@@ -300,9 +312,22 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Array of items with call statuses and object types ||
+[`array`](../../data-types.md) | Array of call list participants [(detailed description)](#result) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Element of the result Array {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`integer`](../../data-types.md) | Identifier of the contact or company ||
+|| **STATUS**
+[`string`](../../data-types.md) | Code of the call status for the participant, for example `IN_WORK`. All status codes and names are returned by the [crm.calllist.statuslist](./crm-calllist-statuslist.md) method ||
+|| **ENTITY_TYPE**
+[`integer`](../../data-types.md) | Participant type: `3` — contact, `4` — company ||
 |#
 
 ## Error Handling
@@ -323,9 +348,9 @@ HTTP status: **400**
 #|
 || **Status** | **Code** | **Description** | **Value** ||
 || `400` | `ERROR_ARGUMENT` | `LIST_ID is not found` | The required parameter `LIST_ID` was not passed ||
-|| `400` | `LIST_ID_ERROR` | `List id should be positive`, `Call list is not found` | The call list identifier is less than one, or a call list with this identifier does not exist ||
+|| `400` | `LIST_ID_ERROR` | `List id should be positive`, `Call list is not found` | The call list identifier is less than one, a call list with this identifier does not exist, or the user does not have access to the call list ||
 || `400` | `STATUS_ERROR` | `Incorrect status` | The `STATUS` filter received a value that is not in the list of statuses ||
-|| `403` | `ACCESS_ERROR` | `You do not have access to the participants of this call list` | The user does not have access to any participant of the call list ||
+|| `403` | `ACCESS_ERROR` | `You do not have access to the participants of this call list` | The requested page contains no participants that the user can read ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -337,3 +362,4 @@ HTTP status: **400**
 - [{#T}](./crm-calllist-list.md)
 - [{#T}](./crm-calllist-statuslist.md)
 - [{#T}](./crm-calllist-update.md)
+- [{#T}](./index.md)

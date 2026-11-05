@@ -11,17 +11,19 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to modify CRM settings
+> Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
-This method updates an existing currency.
+The `crm.currency.update` method changes the exchange rate, sort order, and localizations of a currency.
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
-||  **Name**
+|| **Name**
 `type`| **Description** ||
-|| **ID**
-[`string`](../../data-types.md) | Currency identifier. 
+|| **ID***
+[`string`](../../data-types.md) | Currency identifier.
 
 Corresponds to the ISO 4217 standard.
 
@@ -32,9 +34,9 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
 
 ```js
 fields: {
-    SORT: 'value'
+    SORT: 'value',
     AMOUNT_CNT: 'value',
-    AMOUNT: 'value'
+    AMOUNT: 'value',
     BASE: 'value',
     LANG: {
         lang_1: {
@@ -57,60 +59,47 @@ fields: {
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-||  **Name**
+|| **Name**
 `type`| **Description** ||
 || **SORT**
 [`integer`](../../data-types.md) | Position in the currency list.
 
- Default value is `100`.
+If not passed, the value does not change
  ||
-|| **AMOUNT_CNT***
-[`integer`](../../data-types.md) | Denomination. Typically, `1` or a multiple of `10` is used as the denomination.
+|| **AMOUNT_CNT**
+[`integer`](../../data-types.md) | Denomination — the number of currency units for which the `AMOUNT` rate is set. Usually `1`, `10`, `100`, and so on
  ||
-|| **AMOUNT***
-[`double`](../../data-types.md) | Exchange rate relative to the base currency. ||
+|| **AMOUNT**
+[`double`](../../data-types.md) | The value of the `AMOUNT_CNT` denomination in the base currency, for example `15.3449` ||
 || **BASE**
-[`string`](../../data-types.md) | Indicates whether the currency is a base currency.
-
-Possible values:
- - `Y` — yes
- - `N` — no
-
-Default value is `N`.
-
-{% note warning %}
-
-It is not recommended to change the base currency via REST. Otherwise, you will need to change the rates of all currencies.
-
-{% endnote %}
-
+[`string`](../../data-types.md) | Base currency flag. The method ignores this parameter and does not return an error: you cannot make a currency the base currency with this method. The base currency is changed by the [crm.currency.base.set](./crm-currency-base-set.md) method
  ||
 || **LANG**
 [`object`](../../data-types.md) | Currency localization parameters.
 
 An object in the format `{"lang_1": "value_1", ... "lang_N": "value_N"}`, where `lang_N` is the language identifier, and `value` is an object of type [crm_currency_localization](../data-types.md#crm_currency_localization).
 
-If not all languages are specified, [default localization parameters](../data-types.md#crm_currency_localization) will be used for the remaining ones.
+The method changes localizations only for the languages passed in `LANG`. The others stay unchanged
  ||
 |#
 
 ### Parameter LANG
 
 #|
-||  **Name**
+|| **Name**
 `type`| **Description** ||
-|| **DECIMALS***
-[`integer`](../../data-types.md) | Number of decimal places in the fractional part. ||
+|| **DECIMALS**
+[`integer`](../../data-types.md) | Number of decimal places ||
 || **DEC_POINT**
-[`string`](../../data-types.md) | Decimal point for output. ||
+[`string`](../../data-types.md) | Decimal separator ||
 || **FORMAT_STRING**
-[`string`](../../data-types.md) | Format template. ||
+[`string`](../../data-types.md) | Amount display template, for example `$#`. Required if the language does not have a localization yet ||
 || **FULL_NAME**
 [`string`](../../data-types.md) | Name of the currency in the language for which localization is added. ||
 || **HIDE_ZERO**
-[`string`](../../data-types.md) | Indicates whether to hide insignificant zeros. ||
+[`string`](../../data-types.md) | Whether to hide insignificant zeros: `Y` — hide, `N` — show ||
 || **THOUSANDS_SEP**
-[`string`](../../data-types.md) | Thousands separator. ||
+[`string`](../../data-types.md) | Thousands separator ||
 || **THOUSANDS_VARIANT**
 [`string`](../../data-types.md) | Code for the thousands separator.
 
@@ -251,6 +240,57 @@ Refer to the [crm_currency_localization](../data-types.md#crm_currency_localizat
     - PHP
 
         ```php
+        try {
+            $response = $b24Service
+                ->core
+                ->call(
+                    'crm.currency.update',
+                    [
+                        'ID' => 'CNY',
+                        'fields' => [
+                            'AMOUNT' => 15.3449,
+                        ],
+                    ]
+                );
+
+            $result = $response
+                ->getResponseData()
+                ->getResult();
+
+            print_r($result);
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+        }
+        ```
+
+    - BX24.js
+
+        ```js
+        BX24.callMethod(
+            "crm.currency.update",
+            {
+                ID: 'CNY',
+                fields: {
+                    AMOUNT: 15.3449
+                }
+            },
+            function(result)
+            {
+                if (result.error())
+                {
+                    console.error(result.error());
+                }
+                else
+                {
+                    console.log(result.data());
+                }
+            }
+        );
+        ```
+
+    - PHP CRest
+
+        ```php
         require_once('crest.php');
 
         $result = CRest::call(
@@ -293,9 +333,9 @@ Refer to the [crm_currency_localization](../data-types.md#crm_currency_localizat
 
 2. Changing the localizations of the currency (using the example of the US dollar)
 
-    After executing this example, the localizations for the currency USD will be changed (or added) only for English and German languages. Localizations for other languages, if they existed, will not be changed.
+    The example changes or adds the localizations of the US dollar `USD` only for English and German. Localizations in other languages, if any, do not change.
 
-    This example is similar to the operation of the [crm.currency.localizations.set](./localizations/crm-currency-localizations-set.md) method.
+    The [crm.currency.localizations.set](./localizations/crm-currency-localizations-set.md) method works in a similar way.
 
     {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -478,6 +518,91 @@ Refer to the [crm_currency_localization](../data-types.md#crm_currency_localizat
     - PHP
 
         ```php
+        try {
+            $response = $b24Service
+                ->core
+                ->call(
+                    'crm.currency.update',
+                    [
+                        'ID' => 'USD',
+                        'fields' => [
+                            'LANG' => [
+                                'en' => [
+                                    'DECIMALS' => 2,
+                                    'DEC_POINT' => '.',
+                                    'FORMAT_STRING' => '$#',
+                                    'FULL_NAME' => 'US Dollar',
+                                    'HIDE_ZERO' => 'Y',
+                                    'THOUSANDS_VARIANT' => 'S',
+                                ],
+                                'de' => [
+                                    'DECIMALS' => 2,
+                                    'DEC_POINT' => '.',
+                                    'FORMAT_STRING' => '# $',
+                                    'FULL_NAME' => 'US-Dollar',
+                                    'HIDE_ZERO' => 'Y',
+                                    'THOUSANDS_VARIANT' => 'C',
+                                ],
+                            ],
+                        ],
+                    ]
+                );
+
+            $result = $response
+                ->getResponseData()
+                ->getResult();
+
+            print_r($result);
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+        }
+        ```
+
+    - BX24.js
+
+        ```js
+        BX24.callMethod(
+            "crm.currency.update",
+            {
+                ID: 'USD',
+                fields: {
+                    LANG: {
+                        en: {
+                            DECIMALS: 2,
+                            DEC_POINT: '.',
+                            FORMAT_STRING: '$#',
+                            FULL_NAME: 'US Dollar',
+                            HIDE_ZERO: 'Y',
+                            THOUSANDS_VARIANT: 'S'
+                        },
+                        de: {
+                            DECIMALS: 2,
+                            DEC_POINT: '.',
+                            FORMAT_STRING: '# $',
+                            FULL_NAME: 'US-Dollar',
+                            HIDE_ZERO: 'Y',
+                            THOUSANDS_VARIANT: 'C'
+                        }
+                    }
+                }
+            },
+            function(result)
+            {
+                if (result.error())
+                {
+                    console.error(result.error());
+                }
+                else
+                {
+                    console.log(result.data());
+                }
+            }
+        );
+        ```
+
+    - PHP CRest
+
+        ```php
         require_once('crest.php');
 
         $result = CRest::call(
@@ -577,7 +702,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of the currency update. ||
+[`boolean`](../../data-types.md) | `true` if the currency is updated ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -598,10 +723,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access rights. ||
-|| Empty string | "Currencies" module not found! Please install the "Currencies" module. |  ||
-|| `ERROR_CODE` | Other errors in the data for changing the currency |  ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | `ID` is not passed ||
+|| `400` | Empty value | `The parameter id is not string.` | `ID` is not passed as a string ||
+|| `400` | Empty value | `Parameter 'fields' must be array.` | `fields` is not passed as an object ||
+|| `400` | Empty value | `Access denied.` | The user does not have the "Edit CRM preferences" permission in CRM ||
+|| `400` | Empty value | `Currency is not found` | There is no currency with this code ||
+|| `400` | `ERROR_CORE` | `The default exchange rate is incorrect.` | `AMOUNT` is not greater than zero ||
+|| `400` | `ERROR_CORE` | `The currency face value is incorrect.` | `AMOUNT_CNT` is not greater than zero ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -613,3 +742,4 @@ HTTP status: **400**
 - [{#T}](./crm-currency-list.md)
 - [{#T}](./crm-currency-delete.md)
 - [{#T}](./crm-currency-fields.md)
+- [{#T}](./index.md)

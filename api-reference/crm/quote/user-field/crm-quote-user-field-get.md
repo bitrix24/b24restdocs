@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with read access to estimates
 
-The method `crm.quote.userfield.get` returns a custom field of estimates by its identifier.
+The method `crm.quote.userfield.get` returns a custom estimate field description by its identifier: name, type, settings, and labels in all languages.
 
 ## Method Parameters
 
@@ -23,7 +23,7 @@ The method `crm.quote.userfield.get` returns a custom field of estimates by its 
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../../data-types.md) | Identifier of the custom field associated with the quote.
+[`integer`](../../../data-types.md) | Identifier of the custom estimate field.
 
 The identifier can be obtained using the methods [crm.quote.userfield.add](./crm-quote-user-field-add.md) or [crm.quote.userfield.list](./crm-quote-user-field-list.md) ||
 |#
@@ -187,7 +187,7 @@ The identifier can be obtained using the methods [crm.quote.userfield.add](./crm
                     'id' => 399,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -266,7 +266,7 @@ HTTP status: **200**
 ```json
 {
     "result": {
-        "ID": "6997",
+        "ID": "399",
         "ENTITY_ID": "CRM_QUOTE",
         "FIELD_NAME": "UF_CRM_HELLO_WORLD",
         "USER_TYPE_ID": "string",
@@ -416,9 +416,68 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | The root element of the response, contains information about the fields of the custom field. The final list of fields depends on the field type; detailed descriptions of the fields can be found in the method [crm.quote.userfield.add](./crm-quote-user-field-add.md)||
+[`object`](../../../data-types.md) | Custom field description [(detailed description)](#result) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+Numeric values of `ID` and `SORT` are returned as strings.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../../data-types.md) | Custom field identifier ||
+|| **ENTITY_ID**
+[`string`](../../../data-types.md) | The object the field belongs to. For estimates, always `CRM_QUOTE` ||
+|| **FIELD_NAME**
+[`string`](../../../data-types.md) | Full field name with the `UF_CRM_` prefix. The universal methods [crm.item.update](../../universal/crm-item-update.md) and [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 7` write and read the field value. In these methods, the field name is written in camelCase: `UF_CRM_MANAGER_NOTE` becomes `ufCrmManagerNote`. The methods [crm.quote.update](../crm-quote-update.md) and [crm.quote.get](../crm-quote-get.md) work with the full name, but their development has been halted. The method `crm.quote.userfield.get` does not return field values in estimates ||
+|| **USER_TYPE_ID**
+[`string`](../../../data-types.md) | Field type. For the list of values, see the `USER_TYPE_ID` parameter of the method [crm.quote.userfield.add](./crm-quote-user-field-add.md#parameter-fields) ||
+|| **USER_TYPE_OWNER**
+[`string`](../../../data-types.md) | Identifier of the application that registered the [custom field type](../../universal/user-defined-fields/userfield-type.md). Returned only for fields of a custom type ||
+|| **XML_ID**
+[`string`](../../../data-types.md) | External code. If not set, `null` ||
+|| **SORT**
+[`string`](../../../data-types.md) | Sort index ||
+|| **MULTIPLE**
+[`char`](../../../data-types.md) | Whether the field is multiple: `Y` or `N` ||
+|| **MANDATORY**
+[`char`](../../../data-types.md) | Whether the field is required: `Y` or `N` ||
+|| **SHOW_FILTER**
+[`char`](../../../data-types.md) | Field mode in the list filter:
+- `N` — the field is not in the filter
+- `I` — exact match search
+- `E` — mask search
+- `S` — substring search ||
+|| **SHOW_IN_LIST**
+[`char`](../../../data-types.md) | Whether to show the field in the list: `Y` or `N` ||
+|| **EDIT_IN_LIST**
+[`char`](../../../data-types.md) | Whether the user can edit the field: `Y` or `N` ||
+|| **IS_SEARCHABLE**
+[`char`](../../../data-types.md) | Whether the field values are included in search: `Y` or `N` ||
+|| **SETTINGS**
+[`object`](../../../data-types.md) | Field type settings. Besides the settings accepted by [crm.quote.userfield.add](./crm-quote-user-field-add.md#settings), it may contain service keys, for example, `SIZE`, `MIN_LENGTH`, and `MAX_LENGTH` for the `string` type. The method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) returns the list of type settings ||
+|| **EDIT_FORM_LABEL**
+[`lang_map`](../../data-types.md#lang-ids) | Label in the edit form in each language ||
+|| **LIST_COLUMN_LABEL**
+[`lang_map`](../../data-types.md#lang-ids) | Column header in the list in each language ||
+|| **LIST_FILTER_LABEL**
+[`lang_map`](../../data-types.md#lang-ids) | Filter label in each language ||
+|| **ERROR_MESSAGE**
+[`lang_map`](../../data-types.md#lang-ids) | Error message in each language ||
+|| **HELP_MESSAGE**
+[`lang_map`](../../data-types.md#lang-ids) | Help text in each language ||
+|| **LIST**
+[`object[]`](../../../data-types.md) | List items. Returned only for `enumeration` fields, sorted by `SORT`. Each item contains:
+- `ID` — item identifier; pass it as the field value when writing to an estimate
+- `SORT` — sort index
+- `VALUE` — item value
+- `DEF` — whether the item is the default: `Y` or `N`
+
+The method does not return the item's external code `XML_ID`; the method [crm.quote.userfield.list](./crm-quote-user-field-list.md) returns it ||
 |#
 
 ## Error Handling
@@ -437,13 +496,14 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `403` | Access denied | Occurs when:
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `ID is not defined or invalid.` | `id` is not provided or is less than one ||
+|| `400` | Empty value | `Access denied.` | Occurs when:
 - the user does not have read access to estimates
-- the user attempts to retrieve a custom field not associated with estimates ||
-|| `400` | ID is not defined or invalid | The provided `id` is less than or equal to zero, or not provided at all ||
-|| `ERROR_NOT_FOUND` | The entity with ID 'id' is not found | The custom field with the provided `id` was not found ||
+- the field with the provided `id` belongs to another object, for example, leads ||
+|| `400` | `ERROR_NOT_FOUND` | `The entity with ID 'id' is not found.` | The custom field with the provided `id` does not exist ||
 |#
+
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
@@ -452,12 +512,5 @@ HTTP status: **400**
 - [{#T}](./crm-quote-user-field-update.md)
 - [{#T}](./crm-quote-user-field-list.md)
 - [{#T}](./crm-quote-user-field-delete.md)
-
-
-
-
-
-
-
-
-
+- [{#T}](../../universal/crm-item-get.md)
+- [{#T}](./index.md)

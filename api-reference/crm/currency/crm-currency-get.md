@@ -1,4 +1,4 @@
-# Get Currency by ID crm.currency.get
+# Get Currency by Code crm.currency.get
 
 {% note tip "" %}
 
@@ -11,13 +11,13 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to CRM settings
+> Who can execute the method: a user with read access to at least one CRM object
 
-This method retrieves currency data by its symbolic identifier `id` according to ISO 4217.
+The `crm.currency.get` method returns a currency by its code, for example, `USD`. The response contains the exchange rate to the base currency, the sort index, and display parameters for different languages.
 
 {% note info %}
 
-Localization parameters (settings dependent on language) will be returned for the current account language.
+The method returns the currency name, amount format, and separators for the current Bitrix24 language. Localizations for all languages are returned in the `LANG` field.
 
 {% endnote %}
 
@@ -26,15 +26,16 @@ Localization parameters (settings dependent on language) will be returned for th
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-||  **Name**
+|| **Name**
 `type`| **Description** ||
-|| **id**
+|| **id***
 [`crm_currency.CURRENCY`](../data-types.md#crm_currency) | Symbolic identifier of the currency.
 
 Corresponds to the ISO 4217 standard.
 
-Can be obtained using the [crm.currency.list](./crm-currency-list.md) method
- ||
+The value is case-insensitive: the method accepts `usd` as `USD`.
+
+The code can be obtained using the [crm.currency.list](./crm-currency-list.md) method ||
 |#
 
 ## Code Examples
@@ -194,7 +195,7 @@ Can be obtained using the [crm.currency.list](./crm-currency-list.md) method
                     'id' => 'USD',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -213,8 +214,6 @@ Can be obtained using the [crm.currency.list](./crm-currency-list.md) method
         {
             id: "USD"
         },
-    )
-    .then(
         function(result)
         {
             if (result.error())
@@ -225,10 +224,6 @@ Can be obtained using the [crm.currency.list](./crm-currency-list.md) method
             {
                 console.log(result.data());
             }
-        },
-        function(error)
-        {
-            console.info(error);
         }
     );
     ```
@@ -335,9 +330,44 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`crm_currency`](../data-types.md#crm_currency) | Object with currency data ||
+[`crm_currency`](../data-types.md#crm_currency) | Currency data [(detailed description)](#result) ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+#### result Object {#result}
+
+Numeric values are returned as strings. The fields `FULL_NAME`, `LID`, `FORMAT_STRING`, `DEC_POINT`, `THOUSANDS_SEP`, and `DECIMALS` refer to the current Bitrix24 language. If there is no localization for this language, `FULL_NAME` equals the currency code, and the other fields are `null`.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **CURRENCY**
+[`string`](../../data-types.md) | Currency code according to ISO 4217, for example, `USD` ||
+|| **AMOUNT_CNT**
+[`string`](../../data-types.md) | Nominal value — the number of currency units for which the rate is specified, for example, `1` ||
+|| **AMOUNT**
+[`string`](../../data-types.md) | Exchange rate of the nominal value to the base currency, for example, `0.9250` ||
+|| **SORT**
+[`string`](../../data-types.md) | Sort index ||
+|| **BASE**
+[`string`](../../data-types.md) | Whether the currency is the base currency: `Y` or `N` ||
+|| **FULL_NAME**
+[`string`](../../data-types.md) | Currency name in the current language ||
+|| **LID**
+[`string`](../../data-types.md) | Language for which the display fields are returned ||
+|| **FORMAT_STRING**
+[`string`](../../data-types.md) | Amount display template, for example, `# $` ||
+|| **DEC_POINT**
+[`string`](../../data-types.md) | Decimal separator ||
+|| **THOUSANDS_SEP**
+[`string`](../../data-types.md) | Thousands separator ||
+|| **DECIMALS**
+[`string`](../../data-types.md) | Number of decimal places ||
+|| **DATE_UPDATE**
+[`string`](../../data-types.md) | Date and time of the last change in ISO 8601 format ||
+|| **LANG**
+[`object`](../../data-types.md) | Currency localizations by language in the format `{"en": {...}, "de": {...}}`. The localization fields are described in the [crm_currency_localization](../data-types.md#crm_currency_localization) type. If there are no localizations, an empty array `[]` ||
 |#
 
 ## Error Handling
@@ -356,9 +386,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access rights. ||
-|| Empty string | Not found | Currency with the specified code not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user has no read access to any CRM object ||
+|| `400` | Empty value | `ID is not defined or invalid.` | The `id` parameter is not passed ||
+|| `400` | Empty value | `The parameter id is not string.` | `id` is not passed as a string ||
+|| `400` | Empty value | `Not found` | No currency with this code exists ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -370,3 +402,4 @@ HTTP status: **400**
 - [{#T}](./crm-currency-list.md)
 - [{#T}](./crm-currency-delete.md)
 - [{#T}](./crm-currency-fields.md)
+- [{#T}](./index.md)

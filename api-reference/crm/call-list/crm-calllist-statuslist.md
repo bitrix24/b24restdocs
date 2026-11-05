@@ -13,9 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `crm.calllist.statuslist` returns a list of call statuses.
+The method `crm.calllist.statuslist` returns the statuses of calls to call list participants, for example "Scheduled", "Success", "Invalid number".
 
-To create a new status, modify, or delete an existing one, use the methods [crm.status.*](../status/index.md).
+You can create, modify, or delete a status using the [crm.status.*](../status/index.md) methods with the parameter `ENTITY_ID = CALL_LIST`.
 
 ## Method Parameters
 
@@ -33,7 +33,7 @@ No parameters.
     curl -X POST \
          -H "Content-Type: application/json" \
          -d '{}' \
-         https://**your_bitrix24**/rest/**user_id**/**webhook**/crm.calllist.statuslist
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.calllist.statuslist
     ```
 
 - cURL (OAuth)
@@ -42,7 +42,7 @@ No parameters.
     curl -X POST \
          -H "Content-Type: application/json" \
          -d '{"auth":"**put_access_token_here**"}' \
-         https://**your_bitrix24**/rest/crm.calllist.statuslist
+         https://**put_your_bitrix24_address**/rest/crm.calllist.statuslist
     ```
 
 - JS (TS)
@@ -226,25 +226,25 @@ HTTP status: **200**
     "result": [
         {
             "ID": 61,
-            "NAME": "In Progress",
+            "NAME": "Scheduled",
             "SORT": 10,
             "STATUS_ID": "IN_WORK"
         },
         {
             "ID": 63,
-            "NAME": "Successful",
+            "NAME": "Success",
             "SORT": 20,
             "STATUS_ID": "SUCCESS"
         },
         {
             "ID": 65,
-            "NAME": "Wrong Number",
+            "NAME": "Invalid number",
             "SORT": 30,
             "STATUS_ID": "WRONG_NUMBER"
         },
         {
             "ID": 67,
-            "NAME": "Do Not Call Again",
+            "NAME": "Do not call",
             "SORT": 40,
             "STATUS_ID": "STOP_CALLING"
         }
@@ -273,7 +273,7 @@ HTTP status: **200**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
-#### Field Descriptions for result {#result}
+#### Element of the result Array {#result}
 
 #|
 || **Name**
@@ -285,7 +285,7 @@ HTTP status: **200**
 || **SORT**
 [`integer`](../../data-types.md) | Sort order ||
 || **STATUS_ID**
-[`string`](../../data-types.md) | Status code, use in the method [crm.calllist.items.get](./crm-calllist-items-get.md) ||
+[`string`](../../data-types.md) | Status code. You can use it to filter participants in the [crm.calllist.items.get](./crm-calllist-items-get.md) method ||
 |#
 
 ## Error Handling
@@ -301,3 +301,4 @@ HTTP status: **200**
 - [{#T}](./crm-calllist-items-get.md)
 - [{#T}](./crm-calllist-list.md)
 - [{#T}](./crm-calllist-update.md)
+- [{#T}](./index.md)

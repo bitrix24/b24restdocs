@@ -1,8 +1,8 @@
 # Binding Deals with CRM Entities: Overview of Methods
 
-The group of methods `crm.activity.binding.*` works with the relationships of an existing deal to CRM entities: it adds a binding, returns a list, moves a binding to another entity, or deletes it.
+An activity is shown in the timeline of the CRM item it is linked to. The `crm.activity.binding.*` methods add, move, and delete bindings of an existing activity and return a list of them.
 
-For example, you may need to move a customer's e-mail from the lead's timeline to the company's detail form. To do this, you add a binding with the company—the deal will then appear in its timeline. After that, you can remove the binding with the lead.
+For example, to move a customer's e-mail from the lead's timeline to the company's detail form, bind the activity to the company and then delete the binding to the lead.
 
 {% note tip "" %}
 
@@ -19,28 +19,36 @@ Choose a tool for developing with an AI agent:
 
 ## Getting Started
 
-1. Retrieve the `activityId` of the deal.
+1. Retrieve the `activityId` of the activity with the [crm.activity.list](../activity-base/crm-activity-list.md) method.
 2. Determine the `entityTypeId` and `entityId` of the CRM entity.
 3. Add the binding of the deal to the CRM entity using the [crm.activity.binding.add](./crm-activity-binding-add.md) method.
-4. To check the current bindings of the deal, use the [crm.activity.binding.list](./crm-activity-binding-list.md) method.
-5. If you need to move the binding to another entity of the same type, use the [crm.activity.binding.move](./crm-activity-binding-move.md) method.
-6. Delete the required binding using the [crm.activity.binding.delete](./crm-activity-binding-delete.md) method.
+4. Check the activity bindings with the [crm.activity.binding.list](./crm-activity-binding-list.md) method.
+5. If needed, move the binding to another item of the same type with the [crm.activity.binding.move](./crm-activity-binding-move.md) method.
+6. Delete the unnecessary binding with the [crm.activity.binding.delete](./crm-activity-binding-delete.md) method.
 
 ## Operational Features
 
-**Multiple Detail Forms.** One deal can be linked to multiple CRM entities, but no more than 100—it will be displayed in the timeline of each linked detail form.
+**Multiple Detail Forms.** One activity can be linked to multiple CRM items—it will be displayed in the timeline of each linked detail form.
 
-**Moving a Binding.** The [crm.activity.binding.move](./crm-activity-binding-move.md) method changes the binding only between entities of the same type: from one deal to another, but not from a deal to a contact.
+**Binding Limit.** By default, an activity can have no more than 100 bindings. If you add a binding beyond the limit, Bitrix24 deletes the binding to the item with the lowest ID without returning an error. The [crm.activity.binding.list](./crm-activity-binding-list.md) method shows only bindings to items the user can read.
 
-**Deleting a Binding.** You cannot delete a binding if it is the only one for the deal.
+**Moving a Binding.** The [crm.activity.binding.move](./crm-activity-binding-move.md) method moves a binding only to an item of the same type: from one deal to another, but not from a deal to a contact.
+
+**Deleting a Binding.** You cannot delete the only binding of an activity. To move such an activity to an item of a different type, first add a binding to the new item.
 
 ## Connection with Other Objects
 
-**CRM Deals.** All methods in this section accept the deal identifier `activityId`. Obtain `activityId` from the response of the [crm.activity.add](../activity-base/crm-activity-add.md) method or retrieve it from the list using the [crm.activity.list](../activity-base/crm-activity-list.md) method.
+**CRM Activities.** All methods in this section accept the activity identifier `activityId`. Take `activityId` from the response of the [crm.activity.todo.add](../todo/crm-activity-todo-add.md) method or retrieve it from the list using the [crm.activity.list](../activity-base/crm-activity-list.md) method.
 
-**CRM Entities.** To bind a deal to a CRM entity, pass `entityTypeId` and `entityId`. The typical values of `entityTypeId` for leads, deals, contacts, and companies are returned by the [crm.enum.ownertype](../../../auxiliary/enum/crm-enum-owner-type.md) method. For Smart Processes, `entityTypeId` is obtained when creating the type using the [crm.type.add](../../../universal/user-defined-object-types/crm-type-add.md) method or from the list using the [crm.type.list](../../../universal/user-defined-object-types/crm-type-list.md) method. The identifier of the required entity `entityId` can be obtained using the universal [crm.item.list](../../../universal/crm-item-list.md) method.
+**CRM Items.** A CRM item is specified by two parameters: the object type `entityTypeId` and the item identifier `entityId`. Where to get them:
 
-**Universal Deals.** A universal deal is an advanced type of deal that includes synchronization with a calendar, selection of a meeting place, and negotiation room. A universal deal is created using the [crm.activity.todo.add](../todo/crm-activity-todo-add.md) method. This method returns the identifier of the created deal, which is passed to the `crm.activity.binding.*` methods as `activityId`.
+- `entityTypeId` of a lead, deal, contact, or company — the [crm.enum.ownertype](../../../auxiliary/enum/crm-enum-owner-type.md) method
+- `entityTypeId` of an SPA — the [crm.type.add](../../../universal/user-defined-object-types/crm-type-add.md) method when creating the type, or the [crm.type.list](../../../universal/user-defined-object-types/crm-type-list.md) method
+- `entityId` — the [crm.item.list](../../../universal/crm-item-list.md) method
+
+**Universal Activities.** A universal activity is an advanced type of activity that includes calendar synchronization, selection of a meeting place, and a meeting room. Its identifier from the [crm.activity.todo.add](../todo/crm-activity-todo-add.md) response is passed to the methods of this section as `activityId`.
+
+**REST 3.0.** In REST 3.0, the same operations are performed by the [crm.activity.binding.bind](../../../rest-v3/activities/crm-activity-binding-bind-rest-v3.md), [unbind](../../../rest-v3/activities/crm-activity-binding-unbind-rest-v3.md), [move](../../../rest-v3/activities/crm-activity-binding-move-rest-v3.md), and [list](../../../rest-v3/activities/crm-activity-binding-list-rest-v3.md) methods.
 
 {% note tip "Typical use-cases and scenarios" %}
 

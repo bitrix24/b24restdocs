@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user with read access to at least one CRM object
 
-This method retrieves the symbolic identifier of the base currency.
+The `crm.currency.base.get` method returns the code of the base currency, for example, `USD`. The base currency is the currency in which the company conducts transactions. The rates of other currencies are set relative to it.
+
+## Method Parameters
 
 No parameters.
 
@@ -141,7 +143,7 @@ No parameters.
                 'crm.currency.base.get',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -158,8 +160,6 @@ No parameters.
     BX24.callMethod(
         "crm.currency.base.get",
         {},
-    )
-    .then(
         function(result)
         {
             if (result.error())
@@ -170,10 +170,6 @@ No parameters.
             {
                 console.log(result.data());
             }
-        },
-        function(error)
-        {
-            console.info(error);
         }
     );
     ```
@@ -247,15 +243,23 @@ HTTP status: **400**
 
 ```json
 {
-    "error": " ERROR_UNEXPECTED_ANSWER ",
-    "error_description": "Server returned an unexpected response."
+    "error": "",
+    "error_description": "Access denied."
 }
 ```
 
 {% include notitle [Error handling](../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user has no read access to any CRM object ||
+|#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
 - [{#T}](./crm-currency-base-set.md)
+- [{#T}](./index.md)

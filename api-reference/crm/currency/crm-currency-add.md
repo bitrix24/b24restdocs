@@ -11,18 +11,18 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to modify CRM settings
+> Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
-This method adds a new currency.
+The `crm.currency.add` method adds a currency and returns its code.
 
-For the languages used on the account, localization parameters must be specified. If not provided, [default parameters](../data-types.md#crm_currency_localization) will be used. Localization parameters for a specific language can be set using the [crm.currency.localizations.set](./localizations/crm-currency-localizations-set.md) method.
+Pass the localization parameters — the currency name and the amount format for each Bitrix24 language — in the `LANG` field. Languages missing from it get the [default parameters](../data-types.md#crm_currency_localization). You can also set the parameters for a single language separately with the [crm.currency.localizations.set](./localizations/crm-currency-localizations-set.md) method.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-||  **Name**
+|| **Name**
 `type`| **Description** ||
 || **fields***
 [`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a new currency in the form of a structure:
@@ -32,8 +32,8 @@ fields: {
     CURRENCY: 'value',
     BASE: 'value',
     AMOUNT_CNT: 'value',
-    AMOUNT: 'value'
-    SORT: 'value'
+    AMOUNT: 'value',
+    SORT: 'value',
     LANG: 'value'
 }
 ```
@@ -46,7 +46,7 @@ fields: {
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-||  **Name**
+|| **Name**
 `type`| **Description** ||
 || **CURRENCY***
 [`string`](../../data-types.md) | Currency identifier.
@@ -54,26 +54,13 @@ fields: {
 Corresponds to the ISO 4217 standard
  ||
 || **BASE**
-[`string`](../../data-types.md) | Indicates whether the currency is base.
-
-Possible values:
- - `Y` — yes
- - `N` — no
-
-Default value is `N`.
-
-{% note warning %}
-
-It is not recommended to change the base currency via REST. Otherwise, it will be necessary to change the rates of all currencies.
-
-{% endnote %}
-
+[`string`](../../data-types.md) | Base currency flag. The method ignores this parameter and does not return an error: you cannot make a currency the base currency with this method. The base currency is changed by the [crm.currency.base.set](./crm-currency-base-set.md) method
  ||
 || **AMOUNT_CNT***
-[`integer`](../../data-types.md) | Denomination. Typically, `1` or a multiple of `10` is used as the denomination.
+[`integer`](../../data-types.md) | Denomination — the number of currency units for which the `AMOUNT` rate is set. Usually `1`, `10`, `100`, and so on
  ||
 || **AMOUNT***
-[`double`](../../data-types.md) | Exchange rate relative to the base currency. ||
+[`double`](../../data-types.md) | The value of the `AMOUNT_CNT` denomination in the base currency, for example `0.1220` ||
 || **SORT**
 [`integer`](../../data-types.md) | Position in the currency list.
 
@@ -91,20 +78,20 @@ If not all languages are specified, [default localization parameters](../data-ty
 ### Parameter LANG
 
 #|
-||  **Name**
+|| **Name**
 `type`| **Description** ||
-|| **DECIMALS***
-[`integer`](../../data-types.md) | Number of decimal places in the fractional part. ||
+|| **DECIMALS**
+[`integer`](../../data-types.md) | Number of decimal places ||
 || **DEC_POINT**
-[`string`](../../data-types.md) | Decimal point for output. ||
-|| **FORMAT_STRING**
-[`string`](../../data-types.md) | Format template. ||
+[`string`](../../data-types.md) | Decimal separator ||
+|| **FORMAT_STRING***
+[`string`](../../data-types.md) | Amount display template, for example `# CNY` ||
 || **FULL_NAME**
 [`string`](../../data-types.md) | Name of the currency in the language for which localization is added. ||
 || **HIDE_ZERO**
-[`string`](../../data-types.md) | Indicates whether to hide insignificant zeros. ||
+[`string`](../../data-types.md) | Whether to hide insignificant zeros: `Y` — hide, `N` — show. The method saves any other value as `N` ||
 || **THOUSANDS_SEP**
-[`string`](../../data-types.md) | Thousands separator. ||
+[`string`](../../data-types.md) | Thousands separator ||
 || **THOUSANDS_VARIANT**
 [`string`](../../data-types.md) | Code for the thousands separator.
 
@@ -115,7 +102,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
 
 1. Creating the yuan with localization parameters (Russian and English languages)
 
-    The base currency is the ruble. The exchange rate for the yuan is 12.2251 rubles for 1 yuan.
+    The base currency is the euro. One yuan costs 0.1220 euros.
 
     {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -127,7 +114,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"fields":{"CURRENCY":"CNY","BASE":"N","AMOUNT":12.2251,"AMOUNT_CNT":1,"SORT":9000,"LANG":{"ru":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"# CNY","FULL_NAME":"yuan","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"S"},"en":{"DECIMALS":2,"DEC_POINT":",","FORMAT_STRING":"# CNY","FULL_NAME":"yuan","HIDE_ZERO":"Y","THOUSANDS_SEP":"."}}}}' \
+        -d '{"fields":{"CURRENCY":"CNY","BASE":"N","AMOUNT":0.1220,"AMOUNT_CNT":1,"SORT":9000,"LANG":{"ru":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"# CNY","FULL_NAME":"yuan","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"S"},"en":{"DECIMALS":2,"DEC_POINT":",","FORMAT_STRING":"# CNY","FULL_NAME":"yuan","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"D"}}}}' \
         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.currency.add
         ```
 
@@ -137,7 +124,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"fields":{"CURRENCY":"CNY","BASE":"N","AMOUNT":12.2251,"AMOUNT_CNT":1,"SORT":9000,"LANG":{"ru":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"# CNY","FULL_NAME":"yuan","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"S"},"en":{"DECIMALS":2,"DEC_POINT":",","FORMAT_STRING":"# CNY","FULL_NAME":"yuan","HIDE_ZERO":"Y","THOUSANDS_SEP":"."}}},"auth":"**put_access_token_here**"}' \
+        -d '{"fields":{"CURRENCY":"CNY","BASE":"N","AMOUNT":0.1220,"AMOUNT_CNT":1,"SORT":9000,"LANG":{"ru":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"# CNY","FULL_NAME":"yuan","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"S"},"en":{"DECIMALS":2,"DEC_POINT":",","FORMAT_STRING":"# CNY","FULL_NAME":"yuan","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"D"}}},"auth":"**put_access_token_here**"}' \
         https://**put_your_bitrix24_address**/rest/crm.currency.add
         ```
 
@@ -158,7 +145,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
               fields: {
                 CURRENCY: 'CNY',
                 BASE: 'N',
-                AMOUNT: 12.2251,
+                AMOUNT: 0.1220,
                 AMOUNT_CNT: 1,
                 SORT: 9000,
                 LANG: {
@@ -166,7 +153,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                     DECIMALS: 2,
                     DEC_POINT: '.',
                     FORMAT_STRING: '# CNY',
-                    FULL_NAME: 'Yuan',
+                    FULL_NAME: 'yuan',
                     HIDE_ZERO: 'Y',
                     THOUSANDS_VARIANT: 'S',
                   },
@@ -174,9 +161,9 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                     DECIMALS: 2,
                     DEC_POINT: ',',
                     FORMAT_STRING: '# CNY',
-                    FULL_NAME: 'Yuan',
+                    FULL_NAME: 'yuan',
                     HIDE_ZERO: 'Y',
-                    THOUSANDS_SEP: '.',
+                    THOUSANDS_VARIANT: 'D',
                   },
                 },
               },
@@ -214,7 +201,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                   fields: {
                     CURRENCY: 'CNY',
                     BASE: 'N',
-                    AMOUNT: 12.2251,
+                    AMOUNT: 0.1220,
                     AMOUNT_CNT: 1,
                     SORT: 9000,
                     LANG: {
@@ -222,7 +209,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                         DECIMALS: 2,
                         DEC_POINT: '.',
                         FORMAT_STRING: '# CNY',
-                        FULL_NAME: 'Yuan',
+                        FULL_NAME: 'yuan',
                         HIDE_ZERO: 'Y',
                         THOUSANDS_VARIANT: 'S',
                       },
@@ -230,9 +217,9 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                         DECIMALS: 2,
                         DEC_POINT: ',',
                         FORMAT_STRING: '# CNY',
-                        FULL_NAME: 'Yuan',
+                        FULL_NAME: 'yuan',
                         HIDE_ZERO: 'Y',
-                        THOUSANDS_SEP: '.',
+                        THOUSANDS_VARIANT: 'D',
                       },
                     },
                   },
@@ -269,7 +256,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                 fields={
                     "CURRENCY": "CNY",
                     "BASE": "N",
-                    "AMOUNT": 12.2251,
+                    "AMOUNT": 0.1220,
                     "AMOUNT_CNT": 1,
                     "SORT": 9000,
                     "LANG": {
@@ -287,7 +274,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                             "FORMAT_STRING": "# CNY",
                             "FULL_NAME": "yuan",
                             "HIDE_ZERO": "Y",
-                            "THOUSANDS_SEP": ".",
+                            "THOUSANDS_VARIANT": "D",
                         },
                     },
                 },
@@ -310,6 +297,99 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
     - PHP
 
         ```php
+        try {
+            $response = $b24Service
+                ->core
+                ->call(
+                    'crm.currency.add',
+                    [
+                        'fields' => [
+                            'CURRENCY' => 'CNY',
+                            'BASE' => 'N',
+                            'AMOUNT' => 0.1220,
+                            'AMOUNT_CNT' => 1,
+                            'SORT' => 9000,
+                            'LANG' => [
+                                'ru' => [
+                                    'DECIMALS' => 2,
+                                    'DEC_POINT' => '.',
+                                    'FORMAT_STRING' => '# CNY',
+                                    'FULL_NAME' => 'yuan',
+                                    'HIDE_ZERO' => 'Y',
+                                    'THOUSANDS_VARIANT' => 'S',
+                                ],
+                                'en' => [
+                                    'DECIMALS' => 2,
+                                    'DEC_POINT' => ',',
+                                    'FORMAT_STRING' => '# CNY',
+                                    'FULL_NAME' => 'yuan',
+                                    'HIDE_ZERO' => 'Y',
+                                    'THOUSANDS_VARIANT' => 'D',
+                                ],
+                            ],
+                        ],
+                    ]
+                );
+
+            $result = $response
+                ->getResponseData()
+                ->getResult();
+
+            print_r($result);
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+        }
+        ```
+
+    - BX24.js
+
+        ```js
+        BX24.callMethod(
+            "crm.currency.add",
+            {
+                fields: {
+                    CURRENCY: 'CNY',
+                    BASE: 'N',
+                    AMOUNT: 0.1220,
+                    AMOUNT_CNT: 1,
+                    SORT: 9000,
+                    LANG: {
+                        ru: {
+                            DECIMALS: 2,
+                            DEC_POINT: '.',
+                            FORMAT_STRING: '# CNY',
+                            FULL_NAME: 'yuan',
+                            HIDE_ZERO: 'Y',
+                            THOUSANDS_VARIANT: 'S'
+                        },
+                        en: {
+                            DECIMALS: 2,
+                            DEC_POINT: ',',
+                            FORMAT_STRING: '# CNY',
+                            FULL_NAME: 'yuan',
+                            HIDE_ZERO: 'Y',
+                            THOUSANDS_VARIANT: 'D'
+                        }
+                    }
+                }
+            },
+            function(result)
+            {
+                if (result.error())
+                {
+                    console.error(result.error());
+                }
+                else
+                {
+                    console.log(result.data());
+                }
+            }
+        );
+        ```
+
+    - PHP CRest
+
+        ```php
         require_once('crest.php');
 
         $result = CRest::call(
@@ -318,7 +398,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                 'fields' => [
                     'CURRENCY' => 'CNY',
                     'BASE' => 'N',
-                    'AMOUNT' => 12.2251,
+                    'AMOUNT' => 0.1220,
                     'AMOUNT_CNT' => 1,
                     'SORT' => 9000,
                     'LANG' => [
@@ -336,7 +416,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                             'FORMAT_STRING' => '# CNY',
                             'FULL_NAME' => 'yuan',
                             'HIDE_ZERO' => 'Y',
-                            'THOUSANDS_SEP' => '.',
+                            'THOUSANDS_VARIANT' => 'D',
                         ],
                     ],
                 ]
@@ -356,7 +436,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         	"fields": b24.Params{
         		"CURRENCY":   "CNY",
         		"BASE":       "N",
-        		"AMOUNT":     12.2251,
+        		"AMOUNT":     0.1220,
         		"AMOUNT_CNT": 1,
         		"SORT":       9000,
         		"LANG": b24.Params{
@@ -374,7 +454,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         				"FORMAT_STRING": "# CNY",
         				"FULL_NAME":     "yuan",
         				"HIDE_ZERO":     "Y",
-        				"THOUSANDS_SEP": ".",
+        				"THOUSANDS_VARIANT": "D",
         			},
         		},
         	},
@@ -394,7 +474,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
 
 2. Creating the Indonesian rupiah
 
-    Assuming the base currency is the ruble. The currency has a very low exchange rate — 1 rupiah is equivalent to 0.00548 rubles. In this case, we increase the denomination (AMOUNT_CNT) to set the rate with the required precision.
+    The base currency is the euro. One rupiah costs 0.00005405 euros. To set such a low rate precisely, we increase the denomination: `AMOUNT` = `0.5405` euros per `AMOUNT_CNT` = `10000` rupiah.
 
     {% include [Note on examples](../../../_includes/examples.md) %}
 
@@ -406,7 +486,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"fields":{"CURRENCY":"IDR","AMOUNT":54.8738,"AMOUNT_CNT":10000,"SORT":8000,"LANG":{"ru":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"Rp#","FULL_NAME":"rupiah","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"C"},"en":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"# CNY","FULL_NAME":"rupee","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"C"}}}}' \
+        -d '{"fields":{"CURRENCY":"IDR","AMOUNT":0.5405,"AMOUNT_CNT":10000,"SORT":8000,"LANG":{"ru":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"Rp#","FULL_NAME":"rupiah","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"C"},"en":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"Rp#","FULL_NAME":"rupee","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"C"}}}}' \
         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.currency.add
         ```
 
@@ -416,7 +496,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         curl -X POST \
         -H "Content-Type: application/json" \
         -H "Accept: application/json" \
-        -d '{"fields":{"CURRENCY":"IDR","AMOUNT":54.8738,"AMOUNT_CNT":10000,"SORT":8000,"LANG":{"ru":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"Rp#","FULL_NAME":"rupiah","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"C"},"en":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"# CNY","FULL_NAME":"rupee","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"C"}}},"auth":"**put_access_token_here**"}' \
+        -d '{"fields":{"CURRENCY":"IDR","AMOUNT":0.5405,"AMOUNT_CNT":10000,"SORT":8000,"LANG":{"ru":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"Rp#","FULL_NAME":"rupiah","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"C"},"en":{"DECIMALS":2,"DEC_POINT":".","FORMAT_STRING":"Rp#","FULL_NAME":"rupee","HIDE_ZERO":"Y","THOUSANDS_VARIANT":"C"}}},"auth":"**put_access_token_here**"}' \
         https://**put_your_bitrix24_address**/rest/crm.currency.add
         ```
 
@@ -436,7 +516,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
             params: {
               fields: {
                 CURRENCY: 'IDR',
-                AMOUNT: 54.8738,
+                AMOUNT: 0.5405,
                 AMOUNT_CNT: 10000,
                 SORT: 8000,
                 LANG: {
@@ -444,7 +524,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                     DECIMALS: 2,
                     DEC_POINT: '.',
                     FORMAT_STRING: 'Rp#',
-                    FULL_NAME: 'Rupee',
+                    FULL_NAME: 'rupiah',
                     HIDE_ZERO: 'Y',
                     THOUSANDS_VARIANT: 'C',
                   },
@@ -452,7 +532,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                     DECIMALS: 2,
                     DEC_POINT: '.',
                     FORMAT_STRING: 'Rp#',
-                    FULL_NAME: 'Rupee',
+                    FULL_NAME: 'rupee',
                     HIDE_ZERO: 'Y',
                     THOUSANDS_VARIANT: 'C',
                   },
@@ -491,7 +571,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                 params: {
                   fields: {
                     CURRENCY: 'IDR',
-                    AMOUNT: 54.8738,
+                    AMOUNT: 0.5405,
                     AMOUNT_CNT: 10000,
                     SORT: 8000,
                     LANG: {
@@ -499,7 +579,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                         DECIMALS: 2,
                         DEC_POINT: '.',
                         FORMAT_STRING: 'Rp#',
-                        FULL_NAME: 'Rupee',
+                        FULL_NAME: 'rupiah',
                         HIDE_ZERO: 'Y',
                         THOUSANDS_VARIANT: 'C',
                       },
@@ -507,7 +587,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                         DECIMALS: 2,
                         DEC_POINT: '.',
                         FORMAT_STRING: 'Rp#',
-                        FULL_NAME: 'Rupee',
+                        FULL_NAME: 'rupee',
                         HIDE_ZERO: 'Y',
                         THOUSANDS_VARIANT: 'C',
                       },
@@ -545,7 +625,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
             bitrix_response = client.crm.currency.add(
                 fields={
                     "CURRENCY": "IDR",
-                    "AMOUNT": 54.8738,
+                    "AMOUNT": 0.5405,
                     "AMOUNT_CNT": 10000,
                     "SORT": 8000,
                     "LANG": {
@@ -560,7 +640,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
                         "en": {
                             "DECIMALS": 2,
                             "DEC_POINT": ".",
-                            "FORMAT_STRING": "# CNY",
+                            "FORMAT_STRING": "Rp#",
                             "FULL_NAME": "rupee",
                             "HIDE_ZERO": "Y",
                             "THOUSANDS_VARIANT": "C",
@@ -586,6 +666,97 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
     - PHP
 
         ```php
+        try {
+            $response = $b24Service
+                ->core
+                ->call(
+                    'crm.currency.add',
+                    [
+                        'fields' => [
+                            'CURRENCY' => 'IDR',
+                            'AMOUNT' => 0.5405,
+                            'AMOUNT_CNT' => 10000,
+                            'SORT' => 8000,
+                            'LANG' => [
+                                'ru' => [
+                                    'DECIMALS' => 2,
+                                    'DEC_POINT' => '.',
+                                    'FORMAT_STRING' => 'Rp#',
+                                    'FULL_NAME' => 'rupiah',
+                                    'HIDE_ZERO' => 'Y',
+                                    'THOUSANDS_VARIANT' => 'C',
+                                ],
+                                'en' => [
+                                    'DECIMALS' => 2,
+                                    'DEC_POINT' => '.',
+                                    'FORMAT_STRING' => 'Rp#',
+                                    'FULL_NAME' => 'rupee',
+                                    'HIDE_ZERO' => 'Y',
+                                    'THOUSANDS_VARIANT' => 'C',
+                                ],
+                            ],
+                        ],
+                    ]
+                );
+
+            $result = $response
+                ->getResponseData()
+                ->getResult();
+
+            print_r($result);
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+        }
+        ```
+
+    - BX24.js
+
+        ```js
+        BX24.callMethod(
+            "crm.currency.add",
+            {
+                fields: {
+                    CURRENCY: 'IDR',
+                    AMOUNT: 0.5405,
+                    AMOUNT_CNT: 10000,
+                    SORT: 8000,
+                    LANG: {
+                        ru: {
+                            DECIMALS: 2,
+                            DEC_POINT: '.',
+                            FORMAT_STRING: 'Rp#',
+                            FULL_NAME: 'rupiah',
+                            HIDE_ZERO: 'Y',
+                            THOUSANDS_VARIANT: 'C'
+                        },
+                        en: {
+                            DECIMALS: 2,
+                            DEC_POINT: '.',
+                            FORMAT_STRING: 'Rp#',
+                            FULL_NAME: 'rupee',
+                            HIDE_ZERO: 'Y',
+                            THOUSANDS_VARIANT: 'C'
+                        }
+                    }
+                }
+            },
+            function(result)
+            {
+                if (result.error())
+                {
+                    console.error(result.error());
+                }
+                else
+                {
+                    console.log(result.data());
+                }
+            }
+        );
+        ```
+
+    - PHP CRest
+
+        ```php
         require_once('crest.php');
 
         $result = CRest::call(
@@ -593,7 +764,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
             [
                 'fields' => [
                     'CURRENCY' => 'IDR',
-                    'AMOUNT' => 54.8738,
+                    'AMOUNT' => 0.5405,
                     'AMOUNT_CNT' => 10000,
                     'SORT' => 8000,
                     'LANG' => [
@@ -630,7 +801,7 @@ Allowed values are described in the [reference](../data-types.md#crm_currency_lo
         res, err := client.Core().Call(ctx, "crm.currency.add", b24.Params{
         	"fields": b24.Params{
         		"CURRENCY":   "IDR",
-        		"AMOUNT":     54.8738,
+        		"AMOUNT":     0.5405,
         		"AMOUNT_CNT": 10000,
         		"SORT":       8000,
         		"LANG": b24.Params{
@@ -712,13 +883,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access rights. ||
-|| Empty string | "Currencies" module not found! Please install the "Currencies" module. |  ||
-|| `ERROR_CORE` | Undefined array key "#FIELD#" | Required field #FIELD
-
-# Is Not Specified (the Missing Field Code Will Be Substituted Instead of #FIELD#) ||
-|| `ERROR_CORE` | Other errors in the data for creating the currency |  ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user does not have the "Edit CRM preferences" permission in CRM ||
+|| `400` | `ERROR_CORE` | `The currency ID must be represented by three Latin characters.` | `CURRENCY` is not three Latin letters ||
+|| `400` | `ERROR_CORE` | `Currency with this ID already exists.` | A currency with this code already exists ||
+|| `400` | `ERROR_CORE` | `The default exchange rate is not specified.` | `AMOUNT` is not passed ||
+|| `400` | `ERROR_CORE` | `The field "Format" for language ru is empty.` | `FORMAT_STRING` is not passed in a localization from `LANG` ||
+|| `400` | `ERROR_CORE` | `The decimal point is the same as the thousands separator specified for en` | In a localization from `LANG`, the thousands separator is the same as `DEC_POINT` ||
+|| `400` | `ERROR_CORE` | `The default exchange rate is incorrect.` | `AMOUNT` is not greater than zero ||
+|| `400` | `ERROR_CORE` | `The currency face value is incorrect.` | `AMOUNT_CNT` is not greater than zero ||
+|| `400` | Empty value | `The Currency module is not installed.` | The Currency module is not installed ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -730,3 +904,4 @@ HTTP status: **400**
 - [{#T}](./crm-currency-list.md)
 - [{#T}](./crm-currency-delete.md)
 - [{#T}](./crm-currency-fields.md)
+- [{#T}](./index.md)

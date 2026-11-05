@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to CRM settings
+> Who can execute the method: a user with read access to at least one CRM object
 
-This method retrieves the description of currency fields. Each field is described as a field settings structure [crm_rest_field_description](../data-types.md#crm_rest_field_description).
+The `crm.currency.fields` method returns the description of currency fields: the type and title of each field, whether it is required, and whether it can be changed. Description format: [crm_rest_field_description](../data-types.md#crm_rest_field_description).
+
+## Method Parameters
 
 No parameters.
 
@@ -154,7 +156,7 @@ No parameters.
                 'crm.currency.fields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -171,8 +173,6 @@ No parameters.
     BX24.callMethod(
         "crm.currency.fields",
         {},
-    )
-    .then(
         function(result)
         {
             if (result.error())
@@ -183,10 +183,6 @@ No parameters.
             {
                 console.log(result.data());
             }
-        },
-        function(error)
-        {
-            console.info(error);
         }
     );
     ```
@@ -387,8 +383,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access rights. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user has no read access to any CRM object ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -400,3 +396,4 @@ HTTP status: **400**
 - [{#T}](./crm-currency-get.md)
 - [{#T}](./crm-currency-list.md)
 - [{#T}](./crm-currency-delete.md)
+- [{#T}](./index.md)

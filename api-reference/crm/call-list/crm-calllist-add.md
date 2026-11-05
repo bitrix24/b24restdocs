@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with access permission to read CRM entities
+> Who can execute the method: any user
 
-The method `crm.calllist.add` creates a new call list.
+The method `crm.calllist.add` creates a call list and returns its identifier.
+
+The call list includes only the contacts or companies that the user can read.
 
 ## Method Parameters
 
@@ -23,14 +25,16 @@ The method `crm.calllist.add` creates a new call list.
 || **Name**
 `type` | **Description** ||
 || **ENTITY_TYPE***
-[`string`](../../data-types.md) | Type of the object: 
-- `CONTACT` — contact,
+[`string`](../../data-types.md) | Type of the object:
+- `CONTACT` — contact
 - `COMPANY` — company ||
 || **ENTITIES***
-[`integer[]`](../../data-types.md) | Array of numeric identifiers of contacts or companies, which can be obtained using the [crm.item.list](../universal/crm-item-list.md) method ||
+[`integer[]`](../../data-types.md) | Array of numeric identifiers of contacts or companies. You can retrieve them using the [crm.item.list](../universal/crm-item-list.md) method.
+
+Identifiers must not repeat; otherwise, the method returns an error. The method does not limit the number of participants. The 500-record limit applies only to a call list created from a list of contacts or companies in the Bitrix24 interface ||
 || **WEBFORM_ID**
-[`integer`](../../data-types.md) | `ID` of the CRM form that will be displayed in the call list form. 
-The identifier can be retrieved using the [crm.form.list](../form/crm-form-list.md) method ||
+[`integer`](../../data-types.md) | `ID` of the CRM form for the call list: during a call, the employee fills in the client's data in it.
+The identifier is returned by the [crm.form.list](../form/crm-form-list.md) method ||
 |#
 
 ## Code Examples
@@ -44,8 +48,8 @@ The identifier can be retrieved using the [crm.form.list](../form/crm-form-list.
     ```bash
     curl -X POST \
          -H "Content-Type: application/json" \
-         -d '{"ENTITY_TYPE":"CONTACT","ENTITIES":[1,2,3],"WEBFORM_ID":5}' \
-         https://**your_bitrix24**/rest/**user_id**/**webhook**/crm.calllist.add
+         -d '{"ENTITY_TYPE":"CONTACT","ENTITIES":[9,17,19],"WEBFORM_ID":1}' \
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.calllist.add
     ```
 
 - cURL (OAuth)
@@ -53,8 +57,8 @@ The identifier can be retrieved using the [crm.form.list](../form/crm-form-list.
     ```bash
     curl -X POST \
          -H "Content-Type: application/json" \
-         -d '{"ENTITY_TYPE":"CONTACT","ENTITIES":[1,2,3],"WEBFORM_ID":5,"auth":"**put_access_token_here**"}' \
-         https://**your_bitrix24**/rest/crm.calllist.add
+         -d '{"ENTITY_TYPE":"CONTACT","ENTITIES":[9,17,19],"WEBFORM_ID":1,"auth":"**put_access_token_here**"}' \
+         https://**put_your_bitrix24_address**/rest/crm.calllist.add
     ```
 
 - JS (TS)
@@ -171,7 +175,7 @@ The identifier can be retrieved using the [crm.form.list](../form/crm-form-list.
                     'WEBFORM_ID'  => 1,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -210,8 +214,8 @@ The identifier can be retrieved using the [crm.form.list](../form/crm-form-list.
         'crm.calllist.add',
         [
             'ENTITY_TYPE' => 'CONTACT',
-            'ENTITIES' => [1,2,3],
-            'WEBFORM_ID' => 5
+            'ENTITIES' => [9,17,19],
+            'WEBFORM_ID' => 1
         ]
     );
 
@@ -226,8 +230,8 @@ The identifier can be retrieved using the [crm.form.list](../form/crm-form-list.
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "crm.calllist.add", b24.Params{
     	"ENTITY_TYPE": "CONTACT",
-    	"ENTITIES":    []int{1, 2, 3},
-    	"WEBFORM_ID":  5,
+    	"ENTITIES":    []int{9, 17, 19},
+    	"WEBFORM_ID":  1,
     })
     if err != nil {
     	return fmt.Errorf("crm.calllist.add: %w", err)
@@ -293,7 +297,8 @@ HTTP status: **400**
 || `400` | `ERROR_ARGUMENT` | `ENTITY_TYPE is not found`, `ENTITIES is not found` | A required parameter was not passed ||
 || `400` | `ENTITIES_ERROR` | `Entities is not array` | The `ENTITIES` parameter received a value that is not an array ||
 || `400` | `ENTITY_TYPE_ERROR` | `Incorrect entity type` | The `ENTITY_TYPE` parameter received a value other than `CONTACT` or `COMPANY` ||
-|| `400` | `ENTITY_ERROR` | `Incorrect entities id` | The `ENTITIES` parameter contains identifiers that do not exist in CRM ||
+|| `400` | `ENTITY_ERROR` | `Incorrect entities id` | The `ENTITIES` parameter contains identifiers that do not exist in CRM, or duplicates ||
+|| `400` | `ENTITIES_ERROR` | `Incorrect entities id` | An empty `ENTITIES` array was passed ||
 || `400` | `WEBFORM_ERROR` | `Incorrect webform id` | The `WEBFORM_ID` parameter specifies a CRM form that does not exist ||
 || `403` | `ACCESS_ERROR` | `You don't have access to these entities` | There is no access to any of the passed elements ||
 |#
@@ -307,3 +312,4 @@ HTTP status: **400**
 - [{#T}](./crm-calllist-list.md)
 - [{#T}](./crm-calllist-statuslist.md)
 - [{#T}](./crm-calllist-update.md)
+- [{#T}](./index.md)

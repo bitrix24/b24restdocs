@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to edit CRM items
+> Who can execute the method: a user with permission to edit both CRM items, the source and the target
 
-The `crm.activity.binding.move` method updates the link between an activity and a CRM item.
+The `crm.activity.binding.move` method moves an activity binding from one CRM item to another item of the same type. The activity disappears from the timeline of the source item and appears in the timeline of the target item.
+
+For example, you can move an activity from one deal to another. You cannot move an activity from a deal to a contact with this method. To move an activity to a contact, bind it to the contact with the [crm.activity.binding.add](./crm-activity-binding-add.md) method and delete the binding to the deal with the [crm.activity.binding.delete](./crm-activity-binding-delete.md) method.
 
 ## Method Parameters
 
@@ -23,15 +25,21 @@ The `crm.activity.binding.move` method updates the link between an activity and 
 || **Name**
 `type` | **Description** ||
 || **activityId***
-[`integer`](../../../../data-types.md) | Identifier of the activity in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | Identifier of the activity in the timeline, for example `999`.
+
+The ID can be retrieved with the [crm.activity.list](../activity-base/crm-activity-list.md) method ||
 || **sourceEntityTypeId***
 [`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal is linked, for example, `2` for a deal ||
 || **sourceEntityId***
-[`integer`](../../../../data-types.md) | The identifier of the CRM entity to which the deal is linked, for example, `1`  ||
+[`integer`](../../../../data-types.md) | The identifier of the CRM item to which the activity is bound, for example, `1`.
+
+The ID can be retrieved with the [crm.activity.binding.list](./crm-activity-binding-list.md) method ||
 || **targetEntityTypeId***
-[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the deal should be linked, for example, `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Identifier of the CRM object type](../../../data-types.md#object_type) to which the activity should be bound, for example, `2` for a deal. Must match `sourceEntityTypeId` ||
 || **targetEntityId***
-[`integer`](../../../../data-types.md) | The identifier of the CRM entity to which the deal should be linked, for example, `100`  ||
+[`integer`](../../../../data-types.md) | The identifier of the CRM item to which the activity should be bound, for example, `100`.
+
+The ID can be retrieved with the [crm.item.list](../../../universal/crm-item-list.md) method ||
 |#
 
 ## Code Examples
@@ -147,9 +155,9 @@ The `crm.activity.binding.move` method updates the link between an activity and 
         bitrix_response = client.crm.activity.binding.move(
             activity_id=999,
             source_entity_type_id=2,
-            source_entity_id=101,
-            target_entity_type_id=3,
-            target_entity_id=205,
+            source_entity_id=1,
+            target_entity_type_id=2,
+            target_entity_id=100,
         ).response
         result = bitrix_response.result
         print(result)
@@ -182,15 +190,15 @@ The `crm.activity.binding.move` method updates the link between an activity and 
                     'targetEntityId'     => 100,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // The data processing logic you need
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error moving activity binding: ' . $e->getMessage();
@@ -211,9 +219,9 @@ The `crm.activity.binding.move` method updates the link between an activity and 
         },
         function(result) {
             if (result.error()) {
-                console.error('Error:', result.error()); 
+                console.error('Error:', result.error());
             } else {
-                console.log('Result:', result.data()); 
+                console.log('Result:', result.data());
             }
         }
     );
@@ -278,7 +286,7 @@ HTTP status: **200**
         "processing": 0.032338857650756836,
         "date_start": "2024-04-03T10:26:32+02:00",
         "date_finish": "2024-04-03T10:26:33+02:00",
-        "operating_reset_at": 1705765533,
+        "operating_reset_at": 1712133392,
         "operating": 3.3076241016387939
     }
 }
@@ -290,7 +298,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | The result of the operation. Returns `true` if the connection was successfully changed, otherwise returns `false` ||
+[`boolean`](../../../../data-types.md) | The result of the operation. Returns `true` if the binding was moved ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -302,7 +310,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Element not found"
+    "error_description": "Item was not found."
 }
 ```
 
@@ -311,23 +319,24 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `100` | Required fields are not provided ||
-|| `NOT_FOUND` | Element not found ||
-|| `OWNER_NOT_FOUND` | Owner of the item not found ||
-|| `SOURCE_AND_TARGET_ENTITY_TYPES_ARE_NOT_EQUAL_ERROR` | Cannot move the deal from one CRM object type to another ||
-|| `SOURCE_AND_TARGET_ENTITY_ID_ARE_EQUAL_ERROR` | Cannot move the deal to the same deal ||
-|| `ACCESS_DENIED` | Insufficient rights to perform the operation ||
-|| `ACTIVITY_IS_ALREADY_BOUND` | The deal is already bound to this entity ||
-|| `BINDING_NOT_FOUND` | The deal is not linked to the specified entity ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {targetEntityId} | The required parameter `activityId`, `sourceEntityTypeId`, `sourceEntityId`, `targetEntityTypeId`, or `targetEntityId` was not passed. The description contains the parameter name ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {activityId}. Should be value of type int. | The parameter value is not an integer. The description contains the parameter name ||
+|| `400` | `NOT_FOUND` | Item was not found | The activity with the `activityId` identifier was not found. In cloud Bitrix24, the error also occurs for a non-existent CRM item ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to edit the source or target CRM item ||
+|| `400` | `SOURCE_AND_TARGET_ENTITY_TYPES_ARE_NOT_EQUAL_ERROR` | Source and target entity types are not equal | The `sourceEntityTypeId` and `targetEntityTypeId` values differ ||
+|| `400` | `SOURCE_AND_TARGET_ENTITY_ID_ARE_EQUAL_ERROR` | Source and target entity ID cannot be equal | The `sourceEntityId` and `targetEntityId` values are the same ||
+|| `400` | `ACTIVITY_IS_ALREADY_BOUND` | Activity is already linked to this entity | The activity is already bound to the target item ||
+|| `400` | `BINDING_NOT_FOUND` | Activity is not linked to this entity | The activity is not bound to the source item ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./crm-activity-binding-add.md)
 - [{#T}](./crm-activity-binding-list.md)
 - [{#T}](./crm-activity-binding-delete.md)
-- [{#T}](./crm-activity-binding-add.md)
 - [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity.md)
 - [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity-between-objects.md)
+- [{#T}](./index.md)

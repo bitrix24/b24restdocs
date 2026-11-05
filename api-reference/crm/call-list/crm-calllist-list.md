@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with read access permission for CRM elements
+> Who can execute the method: any user
 
-The method `crm.calllist.list` returns a list of call list activities.
+The method `crm.calllist.list` returns a list of call lists: the identifier, creation date, author, CRM form, and participant type.
+
+An administrator receives all call lists in Bitrix24; other users receive only the ones they created.
 
 ## Method Parameters
 
@@ -25,10 +27,10 @@ The method `crm.calllist.list` returns a list of call list activities.
 || **SELECT**
 [`array`](../../data-types.md) | Array of fields to retrieve. By default, all fields are returned.
 List of fields to retrieve:
-- `ID`,
-- `DATE_CREATE`,
-- `CREATED_BY_ID`,
-- `WEBFORM_ID`,
+- `ID`
+- `DATE_CREATE`
+- `CREATED_BY_ID`
+- `WEBFORM_ID`
 - `ENTITY_TYPE_ID` ||
 || **FILTER**
 [`object`](../../data-types.md) | Object format:
@@ -46,21 +48,20 @@ List of fields to retrieve:
 - `value_n` — filter value
 
 List of fields for filtering:
-- `ID`,
-- `CREATED_BY_ID`,
-- `WEBFORM_ID`,
-- `ENTITY_TYPE_ID`.
-  
+- `ID`
+- `CREATED_BY_ID`
+- `WEBFORM_ID`
+- `ENTITY_TYPE_ID`
+
 An additional prefix can be assigned to the field to specify the filter behavior. Possible prefix values:
-- `>=` — greater than or equal to,
-- `>` — greater than,
-- `<=` — less than or equal to,
-- `<` — less than,
-- `@` — IN, an array is passed as the value,
-- `!@`— NOT IN, an array is passed as the value,
-- `=` — equal, exact match, used by default,
-- `!=` - not equal,
-- `!` — not equal ||
+- `>=` — greater than or equal to
+- `>` — greater than
+- `<=` — less than or equal to
+- `<` — less than
+- `@` — IN, an array is passed as the value
+- `=` — equal, exact match, used by default
+
+The method does not accept other prefixes, for example `!` and `!=`, and returns the `ERROR_ARGUMENT` error ||
 || **ORDER**
 [`object`](../../data-types.md) | Object format:
 
@@ -76,7 +77,22 @@ An additional prefix can be assigned to the field to specify the filter behavior
 - `field_n` — name of the field by which the call list will be sorted
 - `value_n` — value of type `string`, equal to:
     - `ASC` — ascending sort
-    - `DESC` — descending sort ||
+    - `DESC` — descending sort
+
+List of fields for sorting:
+- `ID`
+- `DATE_CREATE`
+- `CREATED_BY_ID`
+- `WEBFORM_ID`
+- `ENTITY_TYPE_ID` ||
+|| **start**
+[`integer`](../../data-types.md) | This parameter is used to control pagination.
+
+The page size of results is always static — 50 records.
+
+To select the second page of results, pass the value `50`. To select the third page of results — the value `100`, and so on.
+
+The method does not return `total` and `next`. Request the next pages until the response contains fewer than 50 records ||
 |#
 
 ## Code Examples
@@ -259,15 +275,15 @@ An additional prefix can be assigned to the field to specify the filter behavior
                     'ORDER'  => ['ID' => 'DESC'],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error fetching call list: ' . $e->getMessage();
@@ -317,7 +333,11 @@ An additional prefix can be assigned to the field to specify the filter behavior
 
     ```go
     // client and ctx are already created — see the Go SDK section
-    res, err := client.Core().Call(ctx, "crm.calllist.list", nil, b24.WithIdempotent())
+    res, err := client.Core().Call(ctx, "crm.calllist.list", b24.Params{
+    	"SELECT": []string{"ID", "CREATED_BY_ID"},
+    	"FILTER": map[string]any{"ENTITY_TYPE_ID": 3},
+    	"ORDER":  map[string]string{"ID": "DESC"},
+    }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("crm.calllist.list: %w", err)
     }
@@ -333,11 +353,8 @@ An additional prefix can be assigned to the field to specify the filter behavior
     	fmt.Println(it.ID, it.CreatedByID)
     }
 
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
-    if res.Total != nil {
-    	fmt.Println("total:", *res.Total)
-    }
+    // crm.calllist.list does not return total and next: request the next page
+    // with start = 50, 100, and so on, until fewer than 50 records are returned.
     ```
 
 {% endlist %}
@@ -385,11 +402,28 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../data-types.md) | Root element of the response. Contains an array of objects with information about call lists. 
-
-The structure of fields depends on the `select` parameter ||
+[`array`](../../data-types.md) | Array of call lists [(detailed description)](#result). The set of fields depends on the `SELECT` parameter ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Element of the result Array {#result}
+
+Numeric values are returned as strings.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Identifier of the call list ||
+|| **DATE_CREATE**
+[`string`](../../data-types.md) | Date and time of creation in the format `YYYY-MM-DD HH:MM:SS` ||
+|| **CREATED_BY_ID**
+[`string`](../../data-types.md) | Identifier of the user who created the call list ||
+|| **WEBFORM_ID**
+[`string`](../../data-types.md) | Identifier of the call list CRM form. If no form is attached — `null` ||
+|| **ENTITY_TYPE_ID**
+[`string`](../../data-types.md) | Identifier of the participant type: `3` — contacts, `4` — companies ||
 |#
 
 ## Error Handling
@@ -398,8 +432,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "100",
-    "error_description": "Unknown field definition `TITLE` (TITLE) for \\Bitrix\\Crm\\CallList\\Internals\\CallList Entity."
+    "error": "ERROR_ARGUMENT",
+    "error_description": "Select field not allowed: TITLE"
 }
 ```
 
@@ -409,7 +443,13 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Value** ||
-|| `400` | `100` | ``Unknown field definition `FIELD` (FIELD) for \Bitrix\Crm\CallList\Internals\CallList Entity.`` | The `select`, `filter`, or `order` parameter received a field that the call list does not have ||
+|| `400` | `ERROR_ARGUMENT` | `Select field not allowed: FIELD`, `Filter field not allowed: FIELD`, `Order field not allowed: FIELD` | The `SELECT`, `FILTER`, or `ORDER` parameter received a field that is not in the list of available fields ||
+|| `400` | `ERROR_ARGUMENT` | `Filter operation not allowed: !=` | The `FILTER` parameter received an unsupported prefix ||
+|| `400` | `ERROR_ARGUMENT` | `The filter is not an array.` | `FILTER` was passed not as an object ||
+|| `400` | `ERROR_ARGUMENT` | `The order is not an array.` | `ORDER` was passed not as an object ||
+|| `400` | `ERROR_ARGUMENT` | `Order direction should be one of {ASC\|DESC}` | The `ORDER` parameter received a direction other than `ASC` and `DESC` ||
+|| `400` | `ERROR_ARGUMENT` | `Order value should be a field name or a direction` | The `ORDER` parameter received a value that is not a string ||
+|| `400` | `ERROR_ARGUMENT` | `Select should be a list of field names` | `SELECT` was passed not as a list of field names ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
@@ -421,4 +461,5 @@ HTTP status: **400**
 - [{#T}](./crm-calllist-items-get.md)
 - [{#T}](./crm-calllist-statuslist.md)
 - [{#T}](./crm-calllist-update.md)
+- [{#T}](./index.md)
 

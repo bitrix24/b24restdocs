@@ -11,22 +11,24 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to modify CRM settings
+> Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
-This method changes the base currency.
+The `crm.currency.base.set` method changes the base currency. If no currency with the passed code exists, the method returns `false` without an error, so check `result`.
 
 {% note warning %}
 
-After changing the base currency, it is necessary to update the exchange rates of other currencies relative to the base!
+The method does not recalculate the exchange rates of other currencies. Set them again relative to the new base currency using the [crm.currency.update](./crm-currency-update.md) method. The method sets the rate of the new base currency to `1`, and its previous rate is not retained.
 
 {% endnote %}
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
-||  **Name**
+|| **Name**
 `type`| **Description** ||
-|| **id**
+|| **id***
 [`string`](../../data-types.md) | Identifier of the currency that will become the base.
 
 Corresponds to the ISO 4217 standard.
@@ -165,13 +167,13 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
                     'id' => 'USD',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error setting base currency: ' . $e->getMessage();
@@ -186,8 +188,6 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
         {
             id: 'USD'
         },
-    )
-    .then(
         function(result)
         {
             if (result.error())
@@ -198,10 +198,6 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
             {
                 console.log(result);
             }
-        },
-        function(error)
-        {
-            console.info(error);
         }
     );
     ```
@@ -268,11 +264,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Returns the value:
+[`boolean`](../../data-types.md) | `true` — the passed currency became the base currency, including when it was already the base one.
 
-- `true` — if successful
-- `false` — if the operation could not be completed, but there is no error, or the situation is not considered erroneous. Possible reason: currency module is missing
- ||
+`false` — the base currency was not changed. The method returns `false` without an error if no currency with this code exists or `id` is not passed ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -293,8 +287,8 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access rights. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user does not have the "Edit CRM preferences" permission in CRM ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -302,3 +296,4 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-currency-base-get.md)
+- [{#T}](./index.md)

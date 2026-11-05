@@ -11,23 +11,25 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to CRM settings
+> Who can execute the method: a user with read access to at least one CRM object
 
-Retrieves a list of currencies created on the account.
+The `crm.currency.list` method returns all Bitrix24 currencies in a single response. For each currency, it returns the code, the exchange rate to the base currency, the sort index, and display parameters. The method has no paging, and the `start` parameter is ignored.
 
 {% note info %}
 
-Localization parameters (settings dependent on language) will be returned for the current account language.
+The method returns the currency name, amount format, and separators for the current Bitrix24 language.
 
 {% endnote %}
 
 ## Method Parameters
 
 #|
-||  **Name**
+|| **Name**
 `type`| **Description** ||
 || **order**
-[`object`](../../data-types.md) | An object for sorting records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`, where `field_N` is the identifier of the [crm_currency](../data-types.md#crm_currency).
+[`object`](../../data-types.md) | An optional object for sorting records in the format `{"field_1": "order_1", ... "field_N": "order_N"}`, where `field_N` is the identifier of a [crm_currency](../data-types.md#crm_currency) field, for example, `sort`. You can sort by the fields `sort`, `currency`, and `name` — the currency name.
+
+The method uses only the first field in `order` and skips the rest. Default: `{"sort": "asc"}`.
 
 Possible values for `order_N`:
 
@@ -90,11 +92,7 @@ Possible values for `order_N`:
     }
 
     try {
-      // crm.currency.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // crm.currency.list returns all currencies in one response (no paging)
       const response = await $b24.actions.v2.call.make<CrmCurrencyListItem[]>({
         method: 'crm.currency.list',
         params: {
@@ -102,7 +100,6 @@ Possible values for `order_N`:
             sort: 'asc',
             currency: 'asc',
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -131,11 +128,7 @@ Possible values for `order_N`:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.currency.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // crm.currency.list returns all currencies in one response (no paging)
           const response = await $b24.actions.v2.call.make({
             method: 'crm.currency.list',
             params: {
@@ -143,7 +136,6 @@ Possible values for `order_N`:
                 sort: 'asc',
                 currency: 'asc',
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -223,35 +215,6 @@ Possible values for `order_N`:
         print(f"Unexpected error: {error}")
     ```
 
-    `as_list_fast` Example
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.currency.list(
-            order={
-                "sort": "asc",
-                "currency": "asc",
-            },
-        ).as_list_fast(descending=True).response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
 - PHP
 
     ```php
@@ -267,15 +230,15 @@ Possible values for `order_N`:
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // The data processing logic you need
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error: ' . $e->getMessage();
@@ -293,8 +256,6 @@ Possible values for `order_N`:
                 currency: 'asc',
             },
         },
-    )
-    .then(
         function(result)
         {
             if (result.error())
@@ -303,12 +264,8 @@ Possible values for `order_N`:
             }
             else
             {
-                console.log(result.data);
+                console.log(result.data());
             }
-        },
-        function(error)
-        {
-            console.info(error);
         }
     );
     ```
@@ -437,11 +394,44 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`crm_currency[]`](../data-types.md#crm_currency) | An array of objects with information about the selected currencies ||
+[`crm_currency[]`](../data-types.md#crm_currency) | An array of all Bitrix24 currencies [(detailed description)](#result) ||
 || **total**
-[`integer`](../../data-types.md) | Currently always has a value of `0` ||
+[`integer`](../../data-types.md) | Always `0`. The number of currencies is the length of the `result` array ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
+|#
+
+#### result Array Element {#result}
+
+Numeric values are returned as strings. If there is no localization for the current Bitrix24 language, the fields `FULL_NAME`, `LID`, `FORMAT_STRING`, `DEC_POINT`, `THOUSANDS_SEP`, and `DECIMALS` are `null`. The [crm.currency.get](./crm-currency-get.md) method returns localizations for all languages in the `LANG` field.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **CURRENCY**
+[`string`](../../data-types.md) | Currency code, for example, `USD` ||
+|| **AMOUNT_CNT**
+[`string`](../../data-types.md) | Nominal value — the number of currency units for which the rate is specified ||
+|| **AMOUNT**
+[`string`](../../data-types.md) | The value of the nominal amount in the base currency ||
+|| **SORT**
+[`string`](../../data-types.md) | Sort index ||
+|| **BASE**
+[`string`](../../data-types.md) | Whether the currency is the base currency: `Y` or `N` ||
+|| **FULL_NAME**
+[`string`](../../data-types.md) | Currency name in the current language ||
+|| **LID**
+[`string`](../../data-types.md) | Language for which the display fields are returned ||
+|| **FORMAT_STRING**
+[`string`](../../data-types.md) | Amount display template, for example, `# $` ||
+|| **DEC_POINT**
+[`string`](../../data-types.md) | Decimal separator ||
+|| **THOUSANDS_SEP**
+[`string`](../../data-types.md) | Thousands separator ||
+|| **DECIMALS**
+[`string`](../../data-types.md) | Number of decimal places ||
+|| **DATE_UPDATE**
+[`string`](../../data-types.md) | Date and time of the last change in ISO 8601 format ||
 |#
 
 ## Error Handling
@@ -460,9 +450,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access rights. ||
-|| Empty string | Failed to get list. General error. | Currency module not installed ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter 'order' must be array.` | `order` is not passed as an object ||
+|| `400` | Empty value | `Parameter 'filter' must be array.` | `filter` is not passed as an object. The method only checks the type of `filter` and does not apply the filter itself ||
+|| `400` | Empty value | `Access denied.` | The user has no read access to any CRM object ||
+|| `400` | Empty value | `Failed to get list. General error.` | The Currency module is not installed ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -474,3 +466,4 @@ HTTP status: **400**
 - [{#T}](./crm-currency-get.md)
 - [{#T}](./crm-currency-delete.md)
 - [{#T}](./crm-currency-fields.md)
+- [{#T}](./index.md)

@@ -9,7 +9,7 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Custom fields add data to the estimate detail form for which there are no system fields: a string, a number, a link, an address, a reference to another CRM object. The methods for working with the estimates themselves are collected in the section [Estimates](../index.md).
+Custom fields add data to the estimate detail form for which there are no system fields, for example, a manager's note. A field can store a string, a number, a link, an address, or a reference to another CRM object. Estimates themselves are created and updated by the methods described in the [estimates overview](../index.md).
 
 > Quick navigation: [all methods and events](#all-methods)
 >
@@ -17,24 +17,28 @@ Custom fields add data to the estimate detail form for which there are no system
 
 ## Getting Started
 
-1. Choose the field type — it determines the format of the stored data and the set of available settings. The full list of types is returned by the method [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md)
-2. Find out which settings the chosen type supports using the method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md), and the list of general field characteristics using the method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md)
-3. Create the field using the method [crm.quote.userfield.add](./crm-quote-user-field-add.md). The response contains the field identifier, and the full name is returned by the method [crm.quote.userfield.get](./crm-quote-user-field-get.md)
-4. Write and read the field value by its full name in the methods [crm.quote.add](../crm-quote-add.md), [crm.quote.update](../crm-quote-update.md), and [crm.quote.get](../crm-quote-get.md)
+1. Choose the field type: it determines what data the field stores and which settings it has. The method [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) returns all types
+2. Find out the settings of the chosen type using the method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md). The method [crm.userfield.fields](../../universal/user-defined-fields/crm-userfield-fields.md) returns the general field parameters
+3. Create the field using the method [crm.quote.userfield.add](./crm-quote-user-field-add.md). The response contains the field identifier. The method [crm.quote.userfield.get](./crm-quote-user-field-get.md#result) returns the full name, type, settings, and labels of the field
+4. Write and read the field value using the methods [crm.item.add](../../universal/crm-item-add.md), [crm.item.update](../../universal/crm-item-update.md), and [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 7`. For example, `"fields": {"ufCrmManagerNote": "Call back on Friday"}` — how the field name changes in these methods is described in the "Custom Field Name" section. For an `enumeration` field, pass the `ID` of an item from the `LIST` array in the response of [crm.quote.userfield.get](./crm-quote-user-field-get.md#result)
+
+The `crm.quote.userfield.*` methods work only with estimate fields. Custom fields of any CRM object are managed by the [userfieldconfig.*](../../universal/userfieldconfig/index.md) methods. In REST 3.0, estimate fields are configured by the `crm.quote.field.custom.*` methods — they are described in the [REST 3.0 fields overview](../../rest-v3/fields/index.md).
 
 ## Custom Field Name
 
-The field code is passed in the required parameter `FIELD_NAME` of the method [crm.quote.userfield.add](./crm-quote-user-field-add.md), and the system builds the full name itself: the prefix `UF_CRM_` is added to the code. For `FIELD_NAME = MANAGER_NOTE`, the full field name will be `UF_CRM_MANAGER_NOTE`. For fields created in the Bitrix24 interface, the code is substituted automatically, and their names look like `UF_CRM_QUOTE_1768404002`.
+The field code is set in the required parameter `FIELD_NAME` of the method [crm.quote.userfield.add](./crm-quote-user-field-add.md). Bitrix24 builds the full name itself: it adds the `UF_CRM_` prefix to the code. `MANAGER_NOTE` becomes `UF_CRM_MANAGER_NOTE`. For fields created in the Bitrix24 interface, the code is substituted automatically, and their names look like `UF_CRM_QUOTE_1768404002`.
 
-It is the full name that is used further on:
+The full name is needed in three places:
 
-- in the `fields` parameter of the methods [crm.quote.add](../crm-quote-add.md) and [crm.quote.update](../crm-quote-update.md) — to write the value
-- in the `select` parameter of the method [crm.quote.list](../crm-quote-list.md) — to return the value in the selection. The `UF_*` mask selects all custom fields at once
-- in the `FIELD_NAME` field of custom field [events](./events/index.md) — to determine which field has changed
+- in the `fields` parameter of the methods [crm.quote.add](../crm-quote-add.md) and [crm.quote.update](../crm-quote-update.md) — to write the value. The development of these methods has been halted
+- in the `select` parameter of the method [crm.quote.list](../crm-quote-list.md) — to return the value in the selection. The development of this method has also been halted. The `UF_*` mask selects all custom fields at once
+- in the `FIELD_NAME` field of custom field [events](./events/index.md) — to determine which field the event is about
+
+In the universal `crm.item.*` methods with `entityTypeId = 7`, the same field is named in camelCase: `UF_CRM_MANAGER_NOTE` becomes `ufCrmManagerNote`. These methods return the original name if you pass the parameter `useOriginalUfNames = Y`.
 
 ## Types of Custom Fields
 
-The type is set in the `USER_TYPE_ID` field when the field is created and cannot be changed afterwards.
+The type is set in the `USER_TYPE_ID` parameter when the field is created. It cannot be changed afterwards.
 
 #|
 || **Type** | **What It Stores** ||
@@ -48,7 +52,7 @@ The type is set in the `USER_TYPE_ID` field when the field is created and cannot
 || `url` | A link ||
 || `address` | An address on a map ||
 || `file` | A file ||
-|| `enumeration` | A value from a list that is defined in the `LIST` field ||
+|| `enumeration` | A value from a list that is defined in the `LIST` parameter ||
 || `employee` | A reference to a Bitrix24 user ||
 || `crm` | A reference to a CRM entity: a lead, deal, contact, or company ||
 || `crm_status` | A reference to a CRM reference guide item ||
@@ -56,13 +60,11 @@ The type is set in the `USER_TYPE_ID` field when the field is created and cannot
 || `iblock_section` | A reference to an information block section ||
 |#
 
-The current list of types is returned by the method [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md), and the set of settings for a specific type — by the method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md).
+## Errors When Working with Custom Fields {#errors}
 
-## Errors When Working with Custom Fields
+When creating or deleting a custom field, the request may be interrupted with an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md). This is an internal error: its cause is visible only in the server logs for the time of the request. How to get the error details:
 
-When creating or deleting custom fields, the request may be interrupted with an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md). This is an internal server error, and its cause is visible only in the server logs at the time of the request:
-
-- in cloud Bitrix24, submit a request to [technical support](../../../../bitrix-support.md) to get details about the error
+- in cloud Bitrix24, submit a request to [technical support](../../../../bitrix-support.md)
 - in on-premise Bitrix24, request the server error log from the server or hosting administrator, and then contact [technical support](../../../../bitrix-support.md) and attach the log for analysis
 
 ### Common Causes of Server Errors
@@ -71,17 +73,17 @@ When creating or deleting custom fields, the request may be interrupted with an 
 
     You can check the number of custom fields for estimates using the method [crm.quote.userfield.list](./crm-quote-user-field-list.md)
 
-2. There is a limitation on servers for the execution time of a single request — `max_execution_time`, with a standard value of 60 seconds. If the request takes longer, it is interrupted with an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md)
+2. The server interrupts a request that takes longer than `max_execution_time` and returns an error [INTERNAL_SERVER_ERROR](../../../../error-codes.md). The standard value of `max_execution_time` is 60 seconds
 
-    The time for [creating](./crm-quote-user-field-add.md) or [deleting](./crm-quote-user-field-delete.md) a custom field depends on the number of estimates: when a field is created, it is added to all estimate detail forms, and when it is deleted, it is removed from all detail forms. The fewer estimates you have in Bitrix24, the faster fields are created and deleted
+    [Creating](./crm-quote-user-field-add.md) and [deleting](./crm-quote-user-field-delete.md) a field take longer the more estimates there are in Bitrix24: the field is added to all estimate detail forms or removed from them
 
-    To find out the number of estimates, use the method [crm.quote.list](../crm-quote-list.md)
+    You can find out the number of estimates using the method [crm.quote.list](../crm-quote-list.md)
 
 ## Overview of Methods and Events {#all-methods}
 
 > Scope: [`crm`](../../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method — only a CRM administrator can create, update, and delete fields, while a user with permission to read estimates can read them
+> Who can execute the method: depending on the method. A user with the "Edit CRM preferences" permission in CRM can create, update, and delete a field. A user with permission to read estimates can retrieve a field and a list of fields
 
 {% list tabs %}
 
@@ -103,7 +105,7 @@ When creating or deleting custom fields, the request may be interrupted with an 
     || [onCrmQuoteUserFieldAdd](./events/on-crm-quote-user-field-add.md) | When a custom field is added manually or via the method [crm.quote.userfield.add](./crm-quote-user-field-add.md) ||
     || [onCrmQuoteUserFieldUpdate](./events/on-crm-quote-user-field-update.md) | When a custom field is updated manually or via the method [crm.quote.userfield.update](./crm-quote-user-field-update.md) ||
     || [onCrmQuoteUserFieldDelete](./events/on-crm-quote-user-field-delete.md) | When a custom field is deleted manually or via the method [crm.quote.userfield.delete](./crm-quote-user-field-delete.md) ||
-    || [onCrmQuoteUserFieldSetEnumValues](./events/on-crm-quote-user-field-set-enum-values.md) | When the set of values for a list-type custom field is changed manually or via the method [crm.quote.userfield.update](./crm-quote-user-field-update.md) ||
+    || [onCrmQuoteUserFieldSetEnumValues](./events/on-crm-quote-user-field-set-enum-values.md) | When list items in an `enumeration` field are changed manually or via the method [crm.quote.userfield.update](./crm-quote-user-field-update.md) ||
     |#
 
 {% endlist %}

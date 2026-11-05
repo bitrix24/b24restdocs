@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: user with permission to edit CRM entities
+> Who can execute the method: a user with permission to edit the CRM item the activity is being unbound from
 
-The method `crm.activity.binding.delete` removes the connection of a deal with a CRM object. If the deal is linked to only one entity, this connection cannot be deleted.
+The method `crm.activity.binding.delete` removes the binding of an activity to a CRM item. The activity disappears from that item's timeline.
+
+If the activity is bound to only one item, this binding cannot be deleted. To move the only binding to an item of the same type, use the [crm.activity.binding.move](./crm-activity-binding-move.md) method. To move the activity to an item of a different type, first bind it to the new item with the [crm.activity.binding.add](./crm-activity-binding-add.md) method, then delete the old binding.
 
 ## Method Parameters
 
@@ -23,11 +25,15 @@ The method `crm.activity.binding.delete` removes the connection of a deal with a
 || **Name**
 `type` | **Description** ||
 || **activityId*** 
-[`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999`.
+
+The ID can be retrieved with the [crm.activity.list](../activity-base/crm-activity-list.md) method ||
 || **entityTypeId*** 
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal connection is being removed, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) from which the activity should be unbound, for example `2` for a deal ||
 || **entityId*** 
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM object to which the deal connection is being removed, for example `1` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM item from which the activity should be unbound, for example `1`.
+
+The ID can be retrieved with the [crm.activity.binding.list](./crm-activity-binding-list.md) method ||
 |#
 
 ## Code Examples
@@ -139,7 +145,7 @@ The method `crm.activity.binding.delete` removes the connection of a deal with a
         bitrix_response = client.crm.activity.binding.delete(
             activity_id=999,
             entity_type_id=2,
-            entity_id=101,
+            entity_id=1,
         ).response
         result = bitrix_response.result
         print(result)
@@ -170,13 +176,13 @@ The method `crm.activity.binding.delete` removes the connection of a deal with a
                     'entityId'     => 1 // CRM object ID
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Result: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error: ' . $e->getMessage();
@@ -195,9 +201,9 @@ The method `crm.activity.binding.delete` removes the connection of a deal with a
         },
         function(result) {
             if (result.error()) {
-                console.error('Error:', result.error()); 
+                console.error('Error:', result.error());
             } else {
-                console.log('Result:', result.data()); 
+                console.log('Result:', result.data());
             }
         }
     );
@@ -258,7 +264,7 @@ HTTP Status: **200**
         "processing": 0.032338857650756836,
         "date_start": "2024-04-03T10:26:32+02:00",
         "date_finish": "2024-04-03T10:26:33+02:00",
-        "operating_reset_at": 1705765533,
+        "operating_reset_at": 1712133392,
         "operating": 3.3076241016387939
     }
 }
@@ -270,7 +276,7 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the connection was successfully deleted, otherwise `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the binding was deleted ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -281,8 +287,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "NOT_FOUND",
-    "error_description": "Element not found"
+    "error": "LAST_BINDING_CANNOT_BE_DELETED",
+    "error_description": "Cannot delete the only one activity-to-entity link."
 }
 ```
 
@@ -291,20 +297,21 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `100` | Required fields are not provided ||
-|| `NOT_FOUND` | Element not found ||
-|| `OWNER_NOT_FOUND` | Owner of the element not found ||
-|| `ACCESS_DENIED` | Insufficient permissions to perform the operation ||
-|| `BINDING_NOT_FOUND` | Deal is not linked to this entity ||
-|| `LAST_BINDING_CANNOT_BE_DELETED` | Cannot delete the only binding of the deal to the entity ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {entityId} | The required parameter `activityId`, `entityTypeId`, or `entityId` was not passed. The description contains the parameter name ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {activityId}. Should be value of type int. | The parameter value is not an integer. The description contains the parameter name ||
+|| `400` | `NOT_FOUND` | Item was not found | The activity with the `activityId` identifier was not found ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to edit the CRM item ||
+|| `400` | `BINDING_NOT_FOUND` | Activity is not linked to this entity | The activity is not bound to the specified CRM item ||
+|| `400` | `LAST_BINDING_CANNOT_BE_DELETED` | Cannot delete the only one activity-to-entity link | The binding to the specified item is the only binding of the activity ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
-- [{#T}](./crm-activity-binding-list.md)
 - [{#T}](./crm-activity-binding-add.md)
 - [{#T}](./crm-activity-binding-move.md)
+- [{#T}](./crm-activity-binding-list.md)
 - [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity-between-objects.md)
+- [{#T}](./index.md)

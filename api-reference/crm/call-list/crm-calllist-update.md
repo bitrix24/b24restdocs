@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: user with read access permission for CRM entities
+> Who can execute the method: an administrator, the creator of the call list, or the user responsible for the call list activity. Read permission for contacts or companies is also required, depending on the type of call list participants
 
-The `crm.calllist.update` method allows you to add or remove participants from an existing call list and update the associated CRM form.
+The `crm.calllist.update` method replaces the call list participants and the attached CRM form.
 
 ## Method Parameters
 
@@ -23,33 +23,26 @@ The `crm.calllist.update` method allows you to add or remove participants from a
 || **Name**
 `type` | **Description** ||
 || **LIST_ID***
-[`integer`](../../data-types.md) | Identifier of the call list ||
+[`integer`](../../data-types.md) | Identifier of the call list. You can retrieve it using the [crm.calllist.add](./crm-calllist-add.md) and [crm.calllist.list](./crm-calllist-list.md) methods ||
 || **ENTITY_TYPE***
-[`string`](../../data-types.md) | Type of entity: 
-- `CONTACT` — contact,
+[`string`](../../data-types.md) | Type of entity:
+- `CONTACT` — contact
 - `COMPANY` — company ||
 || **ENTITIES***
-[`array`](../../data-types.md) | Array of `ID`s of contacts or companies, which can be obtained using the [crm.item.list](../universal/crm-item-list.md) method ||
+[`integer[]`](../../data-types.md) | Array of numeric identifiers of contacts or companies that must remain in the call list. You can retrieve them using the [crm.item.list](../universal/crm-item-list.md) method ||
 || **WEBFORM_ID**
-[`integer`](../../data-types.md) | `ID` of the CRM form that will be displayed in the call form. 
-The identifier can be retrieved using the [crm.form.list](../form/crm-form-list.md) method ||
+[`integer`](../../data-types.md) | `ID` of the CRM form for the call list: during a call, the employee fills in the client's data in it.
+The identifier is returned by the [crm.form.list](../form/crm-form-list.md) method ||
 |#
 
 ### Method Operation Features
 
-The method overwrites the `ENTITIES` array. To add an element, include both current and new `ID`s in the request:
+The method replaces the call list participants with the `ENTITIES` array from the request. Pass everyone who must remain in the call list:
 
-1. Current IDs: [1,2,3].
-2. New IDs: [4].
-3. Send: [1,2,3,4].
+- to add participant `4` to a call list with participants `[1,2,3]`, pass `[1,2,3,4]`
+- to remove participant `2` from the same call list, pass `[1,3]`
 
-To remove an element, send only those `ID`s that should remain in the list:
-
-4. Current IDs: [1,2,3].
-5. Remove: [2].
-6. Send: [1,3].
-
-The method overwrites the `WEBFORM_ID` field. If the `WEBFORM_ID` field is not provided when calling the method, it will be cleared.
+The method also overwrites `WEBFORM_ID`: if the parameter is not passed, the form is detached.
 
 ## Code Examples
 
@@ -63,7 +56,7 @@ The method overwrites the `WEBFORM_ID` field. If the `WEBFORM_ID` field is not p
     curl -X POST \
          -H "Content-Type: application/json" \
          -d '{"LIST_ID":123,"ENTITY_TYPE":"CONTACT","ENTITIES":[1,2,3],"WEBFORM_ID":5}' \
-         https://**your_bitrix24**/rest/**user_id**/**webhook**/crm.calllist.update
+         https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/crm.calllist.update
     ```
 
 - cURL (OAuth)
@@ -72,7 +65,7 @@ The method overwrites the `WEBFORM_ID` field. If the `WEBFORM_ID` field is not p
     curl -X POST \
          -H "Content-Type: application/json" \
          -d '{"LIST_ID":123,"ENTITY_TYPE":"CONTACT","ENTITIES":[1,2,3],"WEBFORM_ID":5,"auth":"**put_access_token_here**"}' \
-         https://**your_bitrix24**/rest/crm.calllist.update
+         https://**put_your_bitrix24_address**/rest/crm.calllist.update
     ```
 
 - JS (TS)
@@ -193,7 +186,7 @@ The method overwrites the `WEBFORM_ID` field. If the `WEBFORM_ID` field is not p
                     'WEBFORM_ID'  => 5,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -318,7 +311,7 @@ HTTP Status: **400**
 || `400` | `ERROR_ARGUMENT` | `LIST_ID is not found`, `ENTITY_TYPE is not found`, `ENTITIES is not found` | A required parameter was not passed ||
 || `400` | `ENTITY_TYPE_ERROR` | `EntityType is incorrect` | The `ENTITY_TYPE` parameter received a value other than `CONTACT` or `COMPANY` ||
 || `400` | `ENTITIES_ERROR` | `Entities is not array` | The `ENTITIES` parameter received a value that is not an array ||
-|| `400` | `ENTITIES_ERROR` | `Incorrect entities id` | The `ENTITIES` parameter contains identifiers that do not exist in CRM ||
+|| `400` | `ENTITIES_ERROR` | `Incorrect entities id` | The `ENTITIES` parameter contains an empty array, duplicates, or identifiers that do not exist in CRM ||
 || `400` | `LIST_ID_ERROR` | `Incorrect list id or access denied` | A call list with this identifier does not exist, or there is no access to it ||
 || `400` | `ENTITY_TYPE_ERROR` | `Discrepancy between the type of call participants and incoming type` | The entity type in `ENTITY_TYPE` does not match the type of the call list participants ||
 || `400` | `WEBFORM_ERROR` | `Incorrect webform id` | The `WEBFORM_ID` parameter specifies a CRM form that does not exist ||
@@ -334,3 +327,4 @@ HTTP Status: **400**
 - [{#T}](./crm-calllist-items-get.md)
 - [{#T}](./crm-calllist-list.md)
 - [{#T}](./crm-calllist-statuslist.md)
+- [{#T}](./index.md)

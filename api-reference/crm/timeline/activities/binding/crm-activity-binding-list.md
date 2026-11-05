@@ -13,14 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: a user with read permissions for CRM items
 
-The `crm.activity.binding.list` method retrieves a list of all deal links.
+The `crm.activity.binding.list` method retrieves the bindings of an activity to CRM items.
 
-The method returns an array of objects containing deal links:
+All bindings are returned in a single response, without pagination. By default, an activity can have no more than 100 bindings.
 
-- `entityTypeId` — the integer identifier of the [CRM object type](../../../data-types.md#object_type)
-- `entityId` — the integer identifier of the CRM item
-
-The result will contain only the items for which the current user has read access.
+The response includes only the items the user can read. If the user has no access to any of them, the method returns an empty array without an error.
 
 ## Method Parameters
 
@@ -30,7 +27,9 @@ The result will contain only the items for which the current user has read acces
 || **Name**
 `type` | **Description** ||
 || **activityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999`.
+
+The ID can be retrieved with the [crm.activity.list](../activity-base/crm-activity-list.md) method ||
 |#
 
 ## Code Examples
@@ -76,16 +75,11 @@ The result will contain only the items for which the current user has read acces
     }
 
     try {
-      // crm.activity.binding.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // crm.activity.binding.list returns all bindings of the activity in one response (no paging)
       const response = await $b24.actions.v2.call.make<BindingItem[]>({
         method: 'crm.activity.binding.list',
         params: {
           activityId: 999,
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -114,16 +108,11 @@ The result will contain only the items for which the current user has read acces
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.activity.binding.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // crm.activity.binding.list returns all bindings of the activity in one response (no paging)
           const response = await $b24.actions.v2.call.make({
             method: 'crm.activity.binding.list',
             params: {
               activityId: 999,
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -183,13 +172,13 @@ The result will contain only the items for which the current user has read acces
                     'activityId' => 999, // Case ID
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Result: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error: ' . $e->getMessage();
@@ -206,9 +195,9 @@ The result will contain only the items for which the current user has read acces
         },
         function(result) {
             if (result.error()) {
-                console.error('Error:', result.error()); 
+                console.error('Error:', result.error());
             } else {
-                console.log('Result:', result.data()); 
+                console.log('Result:', result.data());
             }
         }
     );
@@ -253,11 +242,6 @@ The result will contain only the items for which the current user has read acces
     	fmt.Println(it.EntityTypeID, it.EntityID)
     }
 
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
-    if res.Total != nil {
-    	fmt.Println("total:", *res.Total)
-    }
     ```
 
 {% endlist %}
@@ -289,7 +273,7 @@ HTTP status: **200**
         "processing": 0.032338857650756836,
         "date_start": "2024-04-03T10:26:32+02:00",
         "date_finish": "2024-04-03T10:26:33+02:00",
-        "operating_reset_at": 1705765533,
+        "operating_reset_at": 1712133392,
         "operating": 3.3076241016387939
     }
 }
@@ -301,7 +285,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`array`](../../../../data-types.md) | Array of objects with case bindings [(detailed description)](#result) ||
+[`array`](../../../../data-types.md) | Array of objects with activity bindings [(detailed description)](#result) ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -324,7 +308,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Element not found"
+    "error_description": "Item was not found."
 }
 ```
 
@@ -333,9 +317,10 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `100` | Required fields are not provided ||
-|| `ACCESS_DENIED` | Insufficient rights to perform the operation ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {activityId} | The required parameter `activityId` was not passed ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {activityId}. Should be value of type int. | The `activityId` value is not an integer ||
+|| `400` | `NOT_FOUND` | Item was not found | The activity with the `activityId` identifier was not found ||
 |#
 
 {% include [System errors](../../../../../_includes/system-errors.md) %}
@@ -343,5 +328,6 @@ HTTP status: **400**
 ## Continue Learning
 
 - [{#T}](./crm-activity-binding-add.md)
-- [{#T}](./crm-activity-binding-delete.md)
 - [{#T}](./crm-activity-binding-move.md)
+- [{#T}](./crm-activity-binding-delete.md)
+- [{#T}](./index.md)

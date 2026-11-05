@@ -11,16 +11,16 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user with access to modify CRM settings
+> Who can execute the method: a user with the "Edit CRM preferences" permission in CRM
 
-This method deletes a currency.
+The `crm.currency.delete` method deletes a currency. The method does not delete the base currency or the reporting currency. To delete the base currency, first make another currency the base one using the [crm.currency.base.set](./crm-currency-base-set.md) method.
 
 ## Method Parameters
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-||  **Name**
+|| **Name**
 `type`| **Description** ||
 || **id***
 [`string`](../../data-types.md) | Currency identifier.
@@ -161,7 +161,7 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
                     'id' => 'IDR',
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -180,8 +180,6 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
         {
             id: 'IDR'
         },
-    )
-    .then(
         function(result)
         {
             if (result.error())
@@ -192,10 +190,6 @@ The identifier can be obtained using the [crm.currency.list](./crm-currency-list
             {
                 console.log(result.data());
             }
-        },
-        function(error)
-        {
-            console.info(error);
         }
     );
     ```
@@ -262,7 +256,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Result of the currency deletion ||
+[`boolean`](../../data-types.md) | `true` if the currency is deleted ||
 || **time**
 [`time`](../../data-types.md) | Information about the request execution time ||
 |#
@@ -283,13 +277,13 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| Empty string | Access denied. | Insufficient access rights. ||
-|| Empty string | "Currencies" module not found! Please install the "Currencies" module. |  ||
-|| Empty string | Empty string | Currency identifier must consist of 3 characters ||
-|| Empty string | Cannot delete base currency. |  ||
-|| Empty string | Cannot delete report currency. |  ||
-|| `ERROR_CODE` | Other errors in the data for changing currency |  ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Access denied.` | The user does not have the "Edit CRM preferences" permission in CRM ||
+|| `400` | Empty value | `The base currency cannot be deleted.` | The code of the base currency is passed ||
+|| `400` | Empty value | `The reporting currency cannot be deleted.` | The code of the reporting currency is passed ||
+|| `400` | Empty value | `ID is not defined or invalid.` | `id` is not passed or is empty ||
+|| `400` | Empty value | Empty value | No currency with this code exists, or the code is not three characters long ||
+|| `400` | Empty value | `The Currency module is not installed.` | The Currency module is not installed ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
@@ -301,3 +295,4 @@ HTTP status: **400**
 - [{#T}](./crm-currency-get.md)
 - [{#T}](./crm-currency-list.md)
 - [{#T}](./crm-currency-fields.md)
+- [{#T}](./index.md)

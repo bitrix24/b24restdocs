@@ -13,9 +13,11 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: User with read access to estimates
 
-The method `crm.quote.userfield.list` returns a list of custom fields for estimates based on a filter.
+The method `crm.quote.userfield.list` returns a list of custom fields for estimates based on a filter: field names, types, and settings.
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../../../_includes/required.md) %}
 
 #|
 || **Name**
@@ -31,10 +33,12 @@ The method `crm.quote.userfield.list` returns a list of custom fields for estima
 }
 ```
 
-- `field_n` — the name of the field by which the selection of custom fields will be filtered
+- `field_n` — the field to filter by
 - `value_n` — the filter value
 
-All conditions for individual fields are combined using `AND`. See the [list of available fields for filtering](#filterable) below. ||
+If `filter` is not provided, the method returns all custom estimate fields.
+
+A field is included in the response if it matches all conditions at once (`AND`). The filter supports exact match only. The method silently skips conditions with the `>`, `<`, `!`, `%` prefixes and conditions with an array of values. See the [list of available fields for filtering](#filterable) below. ||
 || **order**
 [`object`](../../../data-types.md) | Object format:
 ```
@@ -46,14 +50,14 @@ All conditions for individual fields are combined using `AND`. See the [list of 
 }
 ```
 
-- `field_n` — the name of the field by which the selection of elements will be sorted
+- `field_n` — the field to sort by
 - `value_n` — a `string` value equal to:
     - `ASC` — ascending sort
     - `DESC` — descending sort
 
 Available fields for sorting:
 - `ID` — identifier of the custom field
-- `FIELD_NAME` — code of the custom field
+- `FIELD_NAME` — full field name with the `UF_CRM_` prefix
 - `USER_TYPE_ID` — type of the custom field
 - `XML_ID` — external code
 - `SORT` — sort index
@@ -76,7 +80,7 @@ By default:
 || **ID**
 [`integer`](../../../data-types.md) | Identifier of the custom field ||
 || **FIELD_NAME**
-[`string`](../../../data-types.md) | Code of the custom field ||
+[`string`](../../../data-types.md) | Full field name with the `UF_CRM_` prefix ||
 || **USER_TYPE_ID**
 [`string`](../../../data-types.md) | Type of the custom field. Possible values:
 - `string` — string
@@ -96,42 +100,43 @@ By default:
 - `iblock_element` — binding to information block elements
 - `crm` — binding to CRM elements
 - [custom field types](../../universal/user-defined-fields/userfield-type.md)
-||
+
+The method [crm.userfield.types](../../universal/user-defined-fields/crm-userfield-types.md) returns the full list of types available in Bitrix24 ||
 || **XML_ID**
 [`string`](../../../data-types.md) | External code ||
 || **SORT**
 [`integer`](../../../data-types.md) | Sorting index ||
 || **MULTIPLE**
-[`boolean`](../../../data-types.md) | Is the custom field multiple.
+[`char`](../../../data-types.md) | Is the custom field multiple.
 Possible values:
 - `Y` — yes
 - `N` — no ||
 || **MANDATORY**
-[`boolean`](../../../data-types.md) | Is the custom field mandatory. Possible values:
+[`char`](../../../data-types.md) | Is the custom field mandatory. Possible values:
 - `Y` — yes
 - `N` — no ||
 || **SHOW_FILTER**
-[`char`](../../../data-types.md) | Show in the list filter. Possible values:
-- `N` — do not show
-- `I` — exact match
-- `E` — mask
-- `S` — substring ||
+[`char`](../../../data-types.md) | Field mode in the list filter:
+- `N` — the field is not in the filter
+- `I` — exact match search
+- `E` — mask search
+- `S` — substring search ||
 || **SHOW_IN_LIST**
-[`boolean`](../../../data-types.md) | Whether to show in the list. Possible values:
+[`char`](../../../data-types.md) | Whether to show the field in the list. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **EDIT_IN_LIST**
-[`boolean`](../../../data-types.md) | Allow user editing? Possible values:
+[`char`](../../../data-types.md) | Allow user editing? Possible values:
 - `Y` — yes
 - `N` — no ||
 || **IS_SEARCHABLE**
-[`boolean`](../../../data-types.md) | Whether the field values participate in search. Possible values:
+[`char`](../../../data-types.md) | Whether the field values participate in search. Possible values:
 - `Y` — yes
 - `N` — no
 ||
 || **LANG**
-[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). When filtering by this parameter, a set of fields with values in the provided language will be returned:
+[`string`](../../../data-types.md) | [Language identifier](../../data-types.md#lang-ids). If you pass `LANG`, the method returns the field labels in this language:
 - `EDIT_FORM_LABEL` — label in the edit form
 - `LIST_COLUMN_LABEL` — header in the list
 - `LIST_FILTER_LABEL` — filter label in the list
@@ -143,10 +148,7 @@ Possible values:
 
 {% include [Note on examples](../../../../_includes/examples.md) %}
 
-Retrieves a list of custom fields that:
-- are multiple,
-- are mandatory,
-- have custom field labels in German. By filtering with the `LANG` parameter, field names will additionally be included in the response.
+The example retrieves fields that are both multiple and mandatory. `LANG` in the filter adds field labels in German to the response.
 
 {% list tabs %}
 
@@ -203,11 +205,7 @@ Retrieves a list of custom fields that:
     }
 
     try {
-      // crm.quote.userfield.list returns a single page (max 50 records). For the whole result set
-      // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-      // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-      // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-      // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+      // crm.quote.userfield.list returns all matching fields in one response (no paging)
       const response = await $b24.actions.v2.call.make<QuoteUserFieldItem[]>({
         method: 'crm.quote.userfield.list',
         params: {
@@ -220,7 +218,6 @@ Retrieves a list of custom fields that:
             USER_TYPE_ID: 'ASC',
             SORT: 'ASC',
           },
-          start: 0,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -249,11 +246,7 @@ Retrieves a list of custom fields that:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          // crm.quote.userfield.list returns a single page (max 50 records). For the whole result set
-          // use a list helper: $b24.actions.v2.callList.make() returns every record as one
-          // array, $b24.actions.v2.fetchList.make() yields them in chunks (async generator).
-          // NOTE: the list helpers do not accept `order` (it is excluded from their params, so
-          // passing it is a TS error) — keep this call.make + `start` variant when sort matters.
+          // crm.quote.userfield.list returns all matching fields in one response (no paging)
           const response = await $b24.actions.v2.call.make({
             method: 'crm.quote.userfield.list',
             params: {
@@ -266,7 +259,6 @@ Retrieves a list of custom fields that:
                 USER_TYPE_ID: 'ASC',
                 SORT: 'ASC',
               },
-              start: 0,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -290,8 +282,6 @@ Retrieves a list of custom fields that:
     ```
 
 - Python
-
-    Example
 
     ```python
 
@@ -344,33 +334,6 @@ Retrieves a list of custom fields that:
         print(f"Unexpected error: {error}")
     ```
 
-    Example `as_list_fast`
-
-    ```python
-
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
-
-    try:
-        bitrix_response = client.crm.quote.userfield.list(
-            filter={"MULTIPLE": "Y", "MANDATORY": "Y", "LANG": "de"},
-            order={"ID": "DESC"},
-        ).as_list_fast(descending=True).response
-        result = bitrix_response.result
-        for item in result:
-            print(item)
-    except BitrixAPIError as error:
-        print(
-            "Bitrix API Error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
-            sep="\n",
-        )
-    except BitrixSDKException as error:
-        print(f"Bitrix SDK Error: {error.message}")
-    except Exception as error:
-        print(f"Unexpected error: {error}")
-    ```
-
 - PHP
 
     ```php
@@ -391,7 +354,7 @@ Retrieves a list of custom fields that:
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -437,7 +400,7 @@ Retrieves a list of custom fields that:
         [
             'filter' => [
                 'MULTIPLE' => "Y",
-                'MANDATORY' => "N",
+                'MANDATORY' => "Y",
                 'LANG' => "de",
             ],
             'order' => [
@@ -486,11 +449,6 @@ Retrieves a list of custom fields that:
     	fmt.Println(it.ID, it.EntityID)
     }
 
-    // Total and Next are filled in by list methods; for a full
-    // list traversal, use client.Core().Pages and Scan.
-    if res.Total != nil {
-    	fmt.Println("total:", *res.Total)
-    }
     ```
 
 {% endlist %}
@@ -743,13 +701,53 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../../data-types.md) | Root element of the response, contains a list of custom fields.
+[`object[]`](../../../data-types.md) | Array of custom estimate fields [(detailed description)](#result). If no fields match, an empty array `[]`.
 
-The structure of an individual custom field depends on its type. The fields `EDIT_FORM_LABEL`, `LIST_COLUMN_LABEL`, `LIST_FILTER_LABEL`, `ERROR_MESSAGE`, `HELP_MESSAGE` are returned as `string` when passing `filter.LANG` ||
+The method has no pagination: all matching fields come in one response, and the `start` parameter is ignored ||
 || **total**
-[`integer`](../../../data-types.md) | Number of found custom fields ||
+[`integer`](../../../data-types.md) | Number of found custom fields. Equals the length of the `result` array ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### result Array Element {#result}
+
+Numeric values of `ID` and `SORT` are returned as strings.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../../data-types.md) | Custom field identifier. Used in the methods [crm.quote.userfield.get](./crm-quote-user-field-get.md), [crm.quote.userfield.update](./crm-quote-user-field-update.md), and [crm.quote.userfield.delete](./crm-quote-user-field-delete.md) ||
+|| **ENTITY_ID**
+[`string`](../../../data-types.md) | The object the field belongs to. For estimates, always `CRM_QUOTE` ||
+|| **FIELD_NAME**
+[`string`](../../../data-types.md) | Full field name with the `UF_CRM_` prefix. The universal methods [crm.item.update](../../universal/crm-item-update.md) and [crm.item.get](../../universal/crm-item-get.md) with `entityTypeId = 7` write and read the field value. In these methods, the field name is written in camelCase: `UF_CRM_MANAGER_NOTE` becomes `ufCrmManagerNote`. The methods [crm.quote.update](../crm-quote-update.md) and [crm.quote.get](../crm-quote-get.md) work with the full name, but their development has been halted. The method `crm.quote.userfield.list` does not return field values in estimates ||
+|| **USER_TYPE_ID**
+[`string`](../../../data-types.md) | Field type; for values, see the [list of fields for filtering](#filterable) ||
+|| **USER_TYPE_OWNER**
+[`string`](../../../data-types.md) | Identifier of the application that registered the [custom field type](../../universal/user-defined-fields/userfield-type.md). Returned only for fields of a custom type ||
+|| **XML_ID**
+[`string`](../../../data-types.md) | External code. If not set, `null` ||
+|| **SORT**
+[`string`](../../../data-types.md) | Sort index ||
+|| **MULTIPLE**, **MANDATORY**, **SHOW_IN_LIST**, **EDIT_IN_LIST**, **IS_SEARCHABLE**
+[`char`](../../../data-types.md) | Field flags with the values `Y` or `N`; for their meaning, see the [list of fields for filtering](#filterable) ||
+|| **SHOW_FILTER**
+[`char`](../../../data-types.md) | Filter mode: `N`, `I`, `E`, or `S`; for their meanings, see the [list of fields for filtering](#filterable) ||
+|| **SETTINGS**
+[`object`](../../../data-types.md) | Field type settings, for example, `DEFAULT_VALUE` or `PRECISION`. The set of keys depends on `USER_TYPE_ID`. The method [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) returns the list of keys for a type. The default value of `datetime` fields is returned in ISO 8601 format ||
+|| **EDIT_FORM_LABEL**, **LIST_COLUMN_LABEL**, **LIST_FILTER_LABEL**, **ERROR_MESSAGE**, **HELP_MESSAGE**
+[`string`](../../../data-types.md) | Field labels in the language from `filter.LANG`. Returned only if `LANG` is passed in the filter. If there is no label in this language, `null`.
+
+The method [crm.quote.userfield.get](./crm-quote-user-field-get.md) returns labels in all languages at once ||
+|| **LIST**
+[`object[]`](../../../data-types.md) | List items. Returned only for `enumeration` fields, sorted by `SORT`. Each item contains:
+- `ID` — item identifier; pass it as the field value when writing to an estimate
+- `SORT` — sort index
+- `VALUE` — item value
+- `DEF` — whether the item is the default: `Y` or `N`
+- `XML_ID` — item external code ||
 |#
 
 ## Error Handling
@@ -768,10 +766,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `400`     | Parameter 'order' must be array | The provided `order` is not an object ||
-|| `400`     | Parameter 'filter' must be array | The provided `filter` is not an object ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Parameter 'order' must be array.` | The provided `order` is not an object ||
+|| `400` | Empty value | `Parameter 'filter' must be array.` | The provided `filter` is not an object ||
+|| `400` | Empty value | `Access denied.` | The user does not have read access to estimates ||
 |#
+
 {% include [System errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning
@@ -780,3 +780,6 @@ HTTP status: **400**
 - [{#T}](./crm-quote-user-field-update.md)
 - [{#T}](./crm-quote-user-field-get.md)
 - [{#T}](./crm-quote-user-field-delete.md)
+- [{#T}](../../universal/crm-item-get.md)
+- [{#T}](../../universal/crm-item-update.md)
+- [{#T}](./index.md)

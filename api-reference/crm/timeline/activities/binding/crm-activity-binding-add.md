@@ -11,16 +11,19 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`crm`](../../../../scopes/permissions.md)
 >
-> Who can execute the method: user with editing access permission for CRM entities
+> Who can execute the method: a user with permission to edit the CRM item the activity is being bound to and permission to read at least one item the activity is already bound to
 
-The method `crm.activity.binding.add` adds a binding of a deal to a CRM object.
+The method `crm.activity.binding.add` adds a binding of an activity to a CRM item. After that, the activity appears in the item's timeline.
 
-{% note info "Limit" %}
+In REST 3.0, a binding is added by the [crm.activity.binding.bind](../../../rest-v3/activities/crm-activity-binding-bind-rest-v3.md) method: the item is passed as a single `parent` object, and the response contains the activity bindings.
 
-The maximum number of bindings for a single deal is 100 CRM entities.
+{% note warning "Limit" %}
+
+By default, an activity can be bound to no more than 100 CRM items. If you add a binding beyond the limit, the method returns `true` but deletes the binding to the item with the lowest ID. The activity disappears from that item's timeline. The deleted binding may also be the one you have just added.
+
+Before adding a binding, check the number of activity bindings with the [crm.activity.binding.list](./crm-activity-binding-list.md) method. The method shows only bindings to items the user can read, so the number of bindings in its response may be lower than the actual number. After adding, use the same method to make sure the new binding is in the list.
 
 {% endnote %}
-
 
 ## Method Parameters
 
@@ -30,11 +33,15 @@ The maximum number of bindings for a single deal is 100 CRM entities.
 || **Name**
 `type` | **Description** ||
 || **activityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the deal in the timeline, for example `999` ||
+[`integer`](../../../../data-types.md) | Integer identifier of the activity in the timeline, for example `999`.
+
+The ID can be retrieved with the [crm.activity.list](../activity-base/crm-activity-list.md) method ||
 || **entityTypeId***
-[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the deal should be bound, for example `2` for a deal ||
+[`integer`](../../../../data-types.md) | [Integer identifier of the CRM object type](../../../data-types.md#object_type) to which the activity should be bound, for example `2` for a deal ||
 || **entityId***
-[`integer`](../../../../data-types.md) | Integer identifier of the CRM object to which the deal should be bound, for example `1`  ||
+[`integer`](../../../../data-types.md) | Integer identifier of the CRM item to which the activity should be bound, for example `1`.
+
+The ID can be retrieved with the [crm.item.list](../../../universal/crm-item-list.md) method ||
 |#
 
 ## Code Examples
@@ -146,7 +153,7 @@ The maximum number of bindings for a single deal is 100 CRM entities.
         bitrix_response = client.crm.activity.binding.add(
             activity_id=999,
             entity_type_id=2,
-            entity_id=101,
+            entity_id=1,
         ).response
         result = bitrix_response.result
         print(result)
@@ -177,15 +184,15 @@ The maximum number of bindings for a single deal is 100 CRM entities.
                     'entityId'     => 1 // CRM object ID
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding activity binding: ' . $e->getMessage();
@@ -204,9 +211,9 @@ The maximum number of bindings for a single deal is 100 CRM entities.
         },
         function(result) {
             if (result.error()) {
-                console.error('Error:', result.error()); 
+                console.error('Error:', result.error());
             } else {
-                console.log('Result:', result.data()); 
+                console.log('Result:', result.data());
             }
         }
     );
@@ -267,7 +274,7 @@ HTTP status: **200**
         "processing": 0.032338857650756836,
         "date_start": "2024-04-03T10:26:32+02:00",
         "date_finish": "2024-04-03T10:26:33+02:00",
-        "operating_reset_at": 1705765533,
+        "operating_reset_at": 1712133392,
         "operating": 3.3076241016387939
     }
 }
@@ -279,7 +286,7 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if the binding was successfully created, otherwise `false` ||
+[`boolean`](../../../../data-types.md) | Result of the operation. Returns `true` if Bitrix24 updated the activity bindings. When the limit is exceeded, `true` does not guarantee that the new binding was retained ||
 || **time**
 [`time`](../../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -291,7 +298,7 @@ HTTP status: **400**
 ```json
 {
     "error": "NOT_FOUND",
-    "error_description": "Entity not found"
+    "error_description": "Item was not found."
 }
 ```
 
@@ -300,19 +307,21 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `100` | Required fields not provided ||
-|| `NOT_FOUND` | Entity not found ||
-|| `OWNER_NOT_FOUND` | Owner of the entity not found ||
-|| `ACCESS_DENIED` | Insufficient rights to perform the operation ||
-|| `ACTIVITY_IS_ALREADY_BOUND` | The deal is already bound to this entity ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {entityId} | The required parameter `activityId`, `entityTypeId`, or `entityId` was not passed. The description contains the parameter name ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {activityId}. Should be value of type int. | The parameter value is not an integer. The description contains the parameter name ||
+|| `400` | `NOT_FOUND` | Item was not found | The activity with the `activityId` identifier was not found. In cloud Bitrix24, the error also occurs for a non-existent CRM item ||
+|| `400` | `ACCESS_DENIED` | Access denied | The user does not have permission to edit the CRM item or cannot read any of the items the activity is already bound to ||
+|| `400` | `ACTIVITY_IS_ALREADY_BOUND` | Activity is already linked to this entity | The activity is already bound to this CRM item ||
 |#
 
 {% include [system errors](../../../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./crm-activity-binding-move.md)
 - [{#T}](./crm-activity-binding-list.md)
 - [{#T}](./crm-activity-binding-delete.md)
-- [{#T}](./crm-activity-binding-move.md)
 - [{#T}](../../../../../tutorials/crm/how-to-edit-crm-objects/how-to-move-activity-between-objects.md)
+- [{#T}](../../../rest-v3/activities/crm-activity-binding-bind-rest-v3.md)
+- [{#T}](./index.md)
