@@ -72,7 +72,7 @@ Possible values:
 Default: `false` ||
 |#
 
-The `id` field is read-only, and the method does not accept it. The list of pipeline fields with a flag showing whether a field can be changed is returned by the [crm.&lt;type&gt;.category.field.list](./index.md) method.
+The `id` field is read-only, and the method does not accept it. The list of pipeline fields with a flag showing whether a field can be changed is returned by the [crm.&lt;type&gt;.category.field.list](./index.md#field-methods) method.
 
 ### Object Type Differences {#entity-differences}
 
@@ -366,7 +366,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Object with response data ||
 || **result.id**
-[`integer`](../../../data-types.md) | ID of the created pipeline. It is passed in `categoryId` when creating deal and SPA items and stages. The pipeline fields can be retrieved with the [crm.&lt;type&gt;.category.get](./crm-entity-category-get-rest-v3.md) method ||
+[`integer`](../../../data-types.md) | ID of the created pipeline. Pass it in `categoryId` when you create items and stages in this pipeline for a deal or an SPA. The pipeline fields can be retrieved with the [crm.&lt;type&gt;.category.get](./crm-entity-category-get-rest-v3.md) method ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -424,7 +424,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `#DTO#` | Check the parameter name against the [fields parameter table](#fields). Names are written in camelCase: `name`, not `NAME`. An error with the field name `0` is caused by `fields` passed as a string or a non-empty array instead of an object ||
+|| `-` | Unknown field `#FIELD#` found in entity `#DTO#` | Check the parameter name against the [fields parameter table](#fields). Names are written in camelCase: `name`, not `NAME`. If the error names the field `0`, `fields` was passed as a string or a non-empty array. Pass `fields` as an object ||
 || `-` | Unknown field `isSystem` found in entity `CategoryDealDto` | A deal pipeline has no `isSystem` or `code` fields. Remove them from `fields` ||
 |#
 

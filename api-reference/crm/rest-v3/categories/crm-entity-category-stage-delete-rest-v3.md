@@ -21,7 +21,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `crm.<type>.category.stage.delete` method deletes a stage from a pipeline. The object type is set by the `<type>` segment of the method name.
 
-Only a stage that has no items can be deleted. First move the items to another stage by setting `stageId` with the [crm.&lt;type&gt;.update](../items/crm-entity-update-rest-v3.md) method, or delete them with the [crm.&lt;type&gt;.delete](../items/crm-entity-delete-rest-v3.md) method. System stages with `isSystem: true` — the first stage, the successful stage, and the main failed stage — cannot be deleted.
+Only a stage that has no items can be deleted. If the stage has items, move them to another stage: specify it in the `stageId` field with the [crm.&lt;type&gt;.update](../items/crm-entity-update-rest-v3.md) method. Or delete the items with the [crm.&lt;type&gt;.delete](../items/crm-entity-delete-rest-v3.md) method.
 
 ## Method Name for the Object Type
 
@@ -47,7 +47,9 @@ The method name is written in lowercase: `crm.smartprocess1038.category.stage.de
 || **id***
 [`string`](../../../data-types.md) | Stage ID, for example, `DT1038_127:UC_WUHOJE`. [ID format](#stage-id).
 
-Stage IDs are returned by the [crm.&lt;type&gt;.category.stage.list](./crm-entity-category-stage-list-rest-v3.md) method ||
+Stage IDs are returned by the [crm.&lt;type&gt;.category.stage.list](./crm-entity-category-stage-list-rest-v3.md) method.
+
+System stages with `isSystem: true` cannot be deleted: the first stage, the successful stage, and the main failed stage ||
 |#
 
 ### Stage ID {#stage-id}
@@ -359,7 +361,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `OPERATION_NOT_ALLOWED_FOR_STAGE` | This action is not available for this stage | This is a system stage. Only a stage with `isSystem: false` can be deleted ||
 |#
 
-For errors with the `STAGE_NOT_FOUND`, `DEPENDENT_ITEMS_EXIST`, and `OPERATION_NOT_ALLOWED_FOR_STAGE` codes, `field` contains the error code, not a field name. If the stage does not exist, the method returns a request validation error with the `STAGE_NOT_FOUND` code in `field` instead of the `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION` code.
+For errors with the `STAGE_NOT_FOUND`, `DEPENDENT_ITEMS_EXIST`, and `OPERATION_NOT_ALLOWED_FOR_STAGE` codes, `field` contains the error code, not a field name. If the stage does not exist, the method returns a request validation error rather than the `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION` code. Identify this error by `STAGE_NOT_FOUND` in `field`.
 
 #### Access Denied
 
@@ -384,6 +386,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./crm-entity-category-stage-add-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-list-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-replace-rest-v3.md)
-- [{#T}](./crm-entity-category-stage-add-rest-v3.md)

@@ -61,9 +61,9 @@ IDs are returned by the [crm.dictionary.&lt;directory&gt;.list](./crm-dictionary
 If the parameter is not passed or an empty array is passed, the method returns all fields ||
 |#
 
-In [CRM value directories](./crm-dictionary-list-rest-v3.md#crm-values), the ID is case-insensitive: `sale` finds `SALE`. In the other directories, pass the ID exactly as it appears in the response of the [crm.dictionary.&lt;directory&gt;.list](./crm-dictionary-list-rest-v3.md) method.
+In [CRM value directories](./crm-dictionary-list-rest-v3.md#crm-values), that is, the directories whose values can be changed, for example, `dealtype` or `source`, the ID is case-insensitive: `sale` finds `SALE`. In the other directories, pass the ID in the same case as in the response of the [crm.dictionary.&lt;directory&gt;.list](./crm-dictionary-list-rest-v3.md) method.
 
-The `entitytype` directory contains no SPAs. For an SPA type ID, for example, `1038`, the `crm.dictionary.entitytype.get` method returns the ["Value Not Found"](#not-found) error.
+The `entitytype` directory contains no SPAs. For an SPA type ID, for example, `1038`, the `crm.dictionary.entitytype.get` method returns the ["Value Not Found"](#not-found) error. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method.
 
 ## Code Examples
 
@@ -77,7 +77,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 {% endnote %}
 
-The examples retrieve the name of the `SALE` deal type and the default value flag. For a different directory, replace the method name according to the table above, take `id` from the `list` response, and check the fields in `select` against the [directory field descriptions](./crm-dictionary-list-rest-v3.md#fields).
+The examples retrieve the name of the `SALE` deal type and the default value flag. For a different directory, replace the method name according to the table above, take `id` from the response of the [crm.dictionary.&lt;directory&gt;.list](./crm-dictionary-list-rest-v3.md) method, and check the fields in `select` against the [directory field descriptions](./crm-dictionary-list-rest-v3.md#fields).
 
 {% list tabs %}
 
@@ -418,7 +418,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./crm-dictionary-list-rest-v3.md)
 - [{#T}](./crm-dictionary-add-rest-v3.md)
 - [{#T}](./crm-dictionary-update-rest-v3.md)
+- [{#T}](./crm-dictionary-list-rest-v3.md)
 - [{#T}](./crm-dictionary-delete-rest-v3.md)

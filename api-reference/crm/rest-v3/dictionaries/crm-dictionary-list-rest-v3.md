@@ -19,7 +19,9 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `crm.dictionary.<directory>.list` method returns CRM directory values with filtering, sorting, and pagination. The directory is set by the `<directory>` segment of the method name.
+The `crm.dictionary.<directory>.list` method returns CRM directory values, for example, all deal types or all sources. The directory is set by the `<directory>` segment of the method name.
+
+To specify a deal type, pass the value ID in the `typeId` field: for the "Sales" type, it is `SALE`. The IDs of all deal types are returned by the `crm.dictionary.dealtype.list` method.
 
 ## Method Name for the Directory
 
@@ -73,18 +75,18 @@ If the parameter is not passed, CRM value directories return the first 50 values
 
 Each directory has its own set of fields, which is described in the [Directory Fields](#fields) section.
 
-Values in the response contain only the fields from `select`. An empty array `[]` returns all fields. An unknown field causes the `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION` error.
+Values in the response contain only the fields from `select`. An empty array `[]` returns all fields. For an unknown field, the method returns an error.
 
-Dot notation works only for the `types` field of the activity provider directory: `types.name` returns the names of activity types without the other keys.
+If you only need the names of the provider activity types, pass the `types.name` path in `select`, and the other keys are left out of the response. Dot notation works only for the `types` field of the `activityprovider` directory.
 
 ### The filter Parameter {#filter}
 
 A filter is an array of conditions. The method combines the conditions in the array with AND logic. A condition is written in one of these ways:
 
 - `["field", "operator", value]` — for example, `["sort", ">=", 20]`
-- `["field", value]` — the `=` operator, or `in` for an array value: `["id", ["CALL", "WEB"]]`
+- `["field", value]` — without an operator: the method uses `=`, or `in` for an array value, for example, `["id", ["CALL", "WEB"]]`
 
-Operators are described in the [REST 3.0 overview](../../../rest-v3.md#operators). The set of operators depends on the directory and is listed in the [Directory Fields](#fields) section. The `like` operator and partial string search are not supported: `["name", "=", "Sales"]` finds only the value with exactly this name.
+The operators available for each directory are listed in the [Directory Fields](#fields) section, and what each operator does is described in the [REST 3.0 overview](../../../rest-v3.md#operators). Partial string search is not supported: there is no `like` operator, and `["name", "=", "Sales"]` finds only the value with exactly this name.
 
 The value must match the field type: a number for `integer`, `true` or `false` for `boolean`, and a string for `string`. The string `"10"` for the `sort` field or `"N"` for the `isSystem` field causes a validation error.
 
@@ -92,7 +94,7 @@ To combine conditions with OR logic, pass a group — an object with these keys:
 
 - `type` — the value `filter`
 - `logic` — `and` or `or`, `and` by default
-- `negative` — `true` inverts the group. Works only in CRM value directories and in the `entitytype` directory
+- `negative` — `true` selects the values for which the group condition is not met. Works only in CRM value directories and in the `entitytype` directory
 - `conditions` — an array of conditions and nested groups
 
 Example: the `SALE` deal type or types with a sort order greater than 40.
@@ -123,7 +125,11 @@ An object where the key is a field name and the value is the sort direction:
 
 The direction is case-insensitive. The fields available for sorting are listed in the [Directory Fields](#fields) section.
 
-If `order` is not passed, the values of CRM value directories are sorted by `sort` in ascending order, stage groups are sorted by `id`, and the other directories return values in the order in which Bitrix24 stores them.
+If `order` is not passed, the order depends on the directory:
+
+- CRM value directories — by `sort` in ascending order
+- stage groups — by `id`
+- other directories — in the order in which Bitrix24 stores them
 
 ### The pagination Parameter {#pagination}
 
@@ -131,13 +137,13 @@ If `order` is not passed, the values of CRM value directories are sorted by `sor
 || **Name**
 `type` | **Description** ||
 || **limit**
-[`integer`](../../../data-types.md) | Number of values per page. Values greater than `1000` are reduced to `1000`. Zero, negative, and non-numeric values cause an error.
+[`integer`](../../../data-types.md) | Number of values per page. For a value greater than `1000`, the method returns no more than 1000 values. Zero, negative, and non-numeric values cause an error.
 
 Default: `50` ||
 || **page**
 [`integer`](../../../data-types.md) | Page number, starting from `1`. The offset is calculated as `(page - 1) × limit`. Zero and negative values return the first page.
 
-If `page` is passed, it sets the offset instead of `offset` ||
+If `page` is passed, the `offset` parameter is ignored ||
 || **offset**
 [`integer`](../../../data-types.md) | Number of values to skip from the beginning of the list. A negative value causes an error.
 
@@ -176,7 +182,7 @@ The `dealtype`, `contacttype`, `companytype`, `honorific`, `employees`, `industr
 - `false` — the value can be deleted ||
 |#
 
-Filtering — by all fields, with the operators `=`, `!=`, `>`, `>=`, `<`, `<=`, `in`. The `between` operator — only for `sort`. Sorting — by `id`, `name`, `sort`.
+You can filter by all fields with the operators `=`, `!=`, `>`, `>=`, `<`, `<=`, `in`. The `between` operator works only for `sort`. You can sort by `id`, `name`, `sort`.
 
 ### Communication Types {#communication-types}
 
@@ -198,7 +204,7 @@ The `phonetype`, `emailtype`, `webtype`, and `imtype` directories — types of p
 - `false` — the type is in use ||
 |#
 
-Filtering — by all fields, with the operators `=`, `!=`, `in`. Sorting — by all fields.
+You can filter by all fields with the operators `=`, `!=`, `in`. You can sort by all fields.
 
 ### Address Types {#address-types}
 
@@ -215,7 +221,7 @@ The `addresstype` directory — types of contact and company addresses, for exam
 [`string`](../../../data-types.md) | Type name, for example, "Legal address" ||
 |#
 
-Filtering — by all fields, with the operators `=`, `!=`, `in`. Sorting — by all fields.
+You can filter by all fields with the operators `=`, `!=`, `in`. You can sort by all fields.
 
 ### Stage Groups {#stage-semantics}
 
@@ -234,7 +240,7 @@ The `stagesemantic` directory — the groups to which a CRM item stage belongs.
 [`string`](../../../data-types.md) | Group name ||
 |#
 
-Filtering — by all fields, with the operators `=`, `!=`, `in`. Sorting — by all fields.
+You can filter by all fields with the operators `=`, `!=`, `in`. You can sort by all fields.
 
 ### CRM Object Types {#entity-types}
 
@@ -251,11 +257,11 @@ The `entitytype` directory contains only system object types: lead, deal, contac
 [`string`](../../../data-types.md) | Type name ||
 |#
 
-Filtering — by all fields, with the operators `=`, `!=`, `>`, `>=`, `<`, `<=`, `in`. The `between` operator — only for `id`. Sorting — by all fields.
+You can filter by all fields with the operators `=`, `!=`, `>`, `>=`, `<`, `<=`, `in`. The `between` operator works only for `id`. You can sort by all fields.
 
 ### Activity Providers {#activity-providers}
 
-The `activityprovider` directory — CRM activity providers: universal activity, meeting, call, email, task, and others.
+The `activityprovider` directory — CRM activity providers, for example, universal activity, meeting, call, email, task.
 
 #|
 || **Name**
@@ -282,7 +288,7 @@ The `activityprovider` directory — CRM activity providers: universal activity,
 [`string[]`](../../../data-types.md) | Capabilities of the provider activities, for example, `calendar`, `completion`, `timeline` ||
 |#
 
-Filtering — only by the `id`, `isAvailable`, and `isActive` fields, with the operators `=`, `!=`, `in`. Sorting — only by `id`.
+You can filter only by the `id`, `isAvailable`, and `isActive` fields with the operators `=`, `!=`, `in`. You can sort only by `id`.
 
 ## Code Examples
 
@@ -296,7 +302,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 {% endnote %}
 
-The examples retrieve deal types that can be deleted — the first page of three values in ascending sort order. For a different directory, replace the method name according to the table above and check the fields in `select`, `filter`, and `order` against the [Directory Fields](#fields) section.
+The examples retrieve the first three deal types that can be deleted, in ascending sort order. For a different directory, replace the method name according to the table above and check the fields in `select`, `filter`, and `order` against the [Directory Fields](#fields) section.
 
 {% list tabs %}
 
@@ -739,7 +745,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./crm-dictionary-get-rest-v3.md)
 - [{#T}](./crm-dictionary-add-rest-v3.md)
 - [{#T}](./crm-dictionary-update-rest-v3.md)
+- [{#T}](./crm-dictionary-get-rest-v3.md)
 - [{#T}](./crm-dictionary-delete-rest-v3.md)

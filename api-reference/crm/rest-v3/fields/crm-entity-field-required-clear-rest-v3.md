@@ -58,14 +58,14 @@ Bitrix24 stores the field requirement separately for each pipeline. Whether to p
 #|
 || **Object type** | **categoryId** ||
 || Deal, contact, company | Required. The default pipeline is set by `0`, other pipelines by their IDs from the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) method ||
-|| SPA | Required. The pipeline ID from the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) method. If pipelines are disabled in the type, the SPA has no pipeline methods: the ID of its only pipeline is returned by the [crm.category.list](../../universal/category/crm-category-list.md) method with the `entityTypeId` of the SPA ||
+|| SPA | Required. The pipeline ID is returned by the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) method. If pipelines are disabled in the type, the SPA has one pipeline and no pipeline methods. The ID of this pipeline is returned by the [crm.category.list](../../universal/category/crm-category-list.md) method with the `entityTypeId` of the SPA ||
 || Invoice | Required. The invoice pipeline ID is returned by the [crm.category.list](../../universal/category/crm-category-list.md) method with `entityTypeId` = `31`: REST 3.0 has no pipeline method for invoices ||
 || Lead, estimate | Not passed ||
 |#
 
 If `categoryId` does not follow the rules in the table, the method returns an error with the text `Invalid category ID.`
 
-The method does not change the `isMandatory` attribute of a custom field: you can clear it with the [crm.&lt;type&gt;.field.custom.update](./crm-entity-field-custom-update-rest-v3.md) method.
+If a custom field has `isMandatory` set to `true`, the field stays required in all pipelines after the call: the method does not change this attribute. You can clear it with the [crm.&lt;type&gt;.field.custom.update](./crm-entity-field-custom-update-rest-v3.md) method.
 
 ## Code Examples
 

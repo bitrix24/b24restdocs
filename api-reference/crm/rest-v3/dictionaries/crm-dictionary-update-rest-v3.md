@@ -62,7 +62,7 @@ The method name is written in lowercase: `crm.dictionary.dealtype.update`, not `
 [`integer`](../../../data-types.md) | New sort order. Bitrix24 replaces zero and negative values with `10` ||
 |#
 
-The method changes only the passed fields. If `fields` is empty, the method returns `true` and changes nothing, provided that a value with this `id` exists. The `id` and `isSystem` fields cannot be changed: the method returns an [object validation error](#dto-validation).
+The method changes only the passed fields. If `fields` is an empty object and a value with this `id` exists, the method returns `true` and changes nothing. The `id` and `isSystem` fields cannot be changed: the method returns an [object validation error](#dto-validation).
 
 ## Code Examples
 
@@ -414,7 +414,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Invalid filter `#FILTER#` | The request contains `filter`. The method updates a single value by `id` and does not accept a filter — remove `filter` ||
+|| `-` | Invalid filter `#FILTER#` | Remove `filter`: the method updates a single value by `id` and does not accept a filter ||
 |#
 
 #### Unknown Field Error
@@ -423,7 +423,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `DictionaryValueDto` | Pass only `name` and `sort` in `fields`. The error with the field name `0` occurs when `fields` is passed as a string instead of an object ||
+|| `-` | Unknown field `#FIELD#` found in entity `DictionaryValueDto` | Pass only `name` and `sort` in `fields`. An error with the field `0` means that `fields` was passed as a string rather than an object ||
 |#
 
 #### Access Denied
@@ -449,7 +449,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./crm-dictionary-list-rest-v3.md)
-- [{#T}](./crm-dictionary-get-rest-v3.md)
 - [{#T}](./crm-dictionary-add-rest-v3.md)
+- [{#T}](./crm-dictionary-get-rest-v3.md)
+- [{#T}](./crm-dictionary-list-rest-v3.md)
 - [{#T}](./crm-dictionary-delete-rest-v3.md)

@@ -23,7 +23,7 @@ The `crm.lead.disable` method switches CRM to the simple mode without leads and 
 
 {% note warning "" %}
 
-The method does not convert existing leads: they remain in CRM as leads. In the Bitrix24 interface, switching to the simple mode first converts leads in progress into deals and clients, while the method changes the mode right away.
+The method changes the mode right away and does not convert existing leads: they remain in CRM as leads. If you need leads in progress to become deals and clients, switch the mode in the Bitrix24 interface: there, switching to the simple mode converts them first.
 
 {% endnote %}
 

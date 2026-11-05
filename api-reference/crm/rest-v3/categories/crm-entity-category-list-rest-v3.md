@@ -39,6 +39,8 @@ The method name is written in lowercase: `crm.smartprocess1038.category.list`, n
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -52,7 +54,7 @@ The method returns pipelines in ascending `sort` order, and pipelines with the s
 
 {% note warning "" %}
 
-The method has no `filter`, `order`, or `select` parameters. If they are passed, the method skips them without an error: it returns unfiltered pipelines with all fields, in `sort` order.
+You cannot filter or sort pipelines or select individual fields. The method skips the `filter`, `order`, and `select` parameters without an error and returns all pipelines with all fields.
 
 {% endnote %}
 
@@ -393,7 +395,10 @@ HTTP status: **200**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
-The list of deal, contact, and company pipelines includes a pipeline with `id` `0`. Deal pipelines have no `isSystem` or `code` fields. The list for a contact and a company can contain system pipelines with `isSystem: true`, for example, the contact vendor pipeline with `code` `CATALOG_CONTRACTOR_CONTACT`.
+The list contents depend on the object type:
+
+- deal — a pipeline with `id` `0`, and the pipelines have no `isSystem` or `code` fields
+- contact and company — a pipeline with `id` `0`, and the list can contain system pipelines with `isSystem: true`, for example, the contact vendor pipeline with `code` `CATALOG_CONTRACTOR_CONTACT`
 
 ## Error Handling
 
@@ -435,6 +440,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./crm-entity-category-get-rest-v3.md)
 - [{#T}](./crm-entity-category-add-rest-v3.md)
+- [{#T}](./crm-entity-category-get-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-list-rest-v3.md)

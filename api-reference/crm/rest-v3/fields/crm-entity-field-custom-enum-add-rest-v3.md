@@ -21,7 +21,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `crm.<type>.field.custom.enum.add` method adds an option to a custom list field and returns the option description. The object type is set by the `<type>` segment of the method name.
 
-A list field stores a set of options from which the user selects a value, for example, the priorities "High", "Medium", and "Low". The list field itself cannot be created with the [crm.&lt;type&gt;.field.custom.add](./crm-entity-field-custom-add-rest-v3.md) method: it does not accept the `enumeration` type. The option methods [crm.&lt;type&gt;.field.custom.enum.*](./crm-entity-field-custom-enum-list-rest-v3.md) work with list fields created in the Bitrix24 interface or in other ways. List fields are present in the response of the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method: their `userTypeId` is `enumeration`.
+A list field stores a set of options from which the user selects a value, for example, the priorities "High", "Medium", and "Low". Such a field cannot be created with the [crm.&lt;type&gt;.field.custom.add](./crm-entity-field-custom-add-rest-v3.md) method: it does not accept the `enumeration` type. The field can be created in the Bitrix24 interface or in another way, and its options can be handled with the [crm.&lt;type&gt;.field.custom.enum.*](./crm-entity-field-custom-enum-list-rest-v3.md) methods. List fields are present in the response of the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method: their `userTypeId` is `enumeration`.
 
 ## Method Name for the Object Type
 
@@ -70,7 +70,9 @@ Possible values:
 - `true` — the option is selected by default
 - `false` — not selected
 
-Default: `false` ||
+Default: `false`.
+
+If the field already has a default option, the method does not clear its flag: both options are selected by default ||
 || **sort**
 [`integer`](../../../data-types.md) | Option position in the list.
 

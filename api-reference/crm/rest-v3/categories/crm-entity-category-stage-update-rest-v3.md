@@ -88,11 +88,11 @@ Possible values:
 [`integer`](../../../data-types.md) | Position of the stage in the pipeline: stages follow in ascending `sort` order ||
 |#
 
-The method does not accept the `stageId`, `categoryId`, and `isSystem` fields. The stage is specified by the `id` parameter, and a stage cannot be moved to another pipeline.
+The method does not accept the `stageId`, `categoryId`, and `isSystem` fields. The stage is specified by the `id` parameter. A stage cannot be moved to another pipeline.
 
 For a system stage, all fields except `semantics` can be changed.
 
-Bitrix24 checks that the stages keep their order after the change: in-progress stages first, then one successful stage, and after it the failed stages. For example, to move an in-progress stage after the successful stage, pass `semantics: failure` together with the new `sort`.
+Bitrix24 checks the stage order after the change: in-progress stages first, then one successful stage, and after it the failed stages. For example, to move an in-progress stage after the successful stage, pass `semantics: failure` together with the new `sort`.
 
 ## Code Examples
 
@@ -379,7 +379,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Object with response data ||
 || **result.result**
-[`boolean`](../../../data-types.md) | `true` if the request was executed. The method also returns `true` for an empty `fields` — see the [fields parameter description](#fields). The new values can be retrieved with the [crm.&lt;type&gt;.category.stage.get](./crm-entity-category-stage-get-rest-v3.md) method ||
+[`boolean`](../../../data-types.md) | `true` if the request was executed. For an empty [`fields`](#fields) object, the method also returns `true` but changes nothing. The new values can be retrieved with the [crm.&lt;type&gt;.category.stage.get](./crm-entity-category-stage-get-rest-v3.md) method ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -422,7 +422,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `FIELD_VALUE_NOT_ALLOWED` | Invalid field value | Pass a name in `name` that contains more than spaces ||
 |#
 
-For the errors with the `STAGE_NOT_FOUND`, `OPERATION_NOT_ALLOWED_FOR_STAGE`, and `FIELD_VALUE_NOT_ALLOWED` codes, `field` contains the error code, not a field name. If the stage does not exist, the method returns a request validation error with the `STAGE_NOT_FOUND` code in `field` rather than the `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION` code.
+For the errors with the `STAGE_NOT_FOUND`, `OPERATION_NOT_ALLOWED_FOR_STAGE`, and `FIELD_VALUE_NOT_ALLOWED` codes, `field` contains the error code, not a field name. If the stage does not exist, the method returns a request validation error rather than the `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION` code. Identify this error by `STAGE_NOT_FOUND` in `field`.
 
 #### Object Validation Errors
 

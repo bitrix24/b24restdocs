@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `crm.<type>.field.custom.enum.delete` method deletes an option from a custom list field. The object type is set by the `<type>` segment of the method name.
+The `crm.<type>.field.custom.enum.delete` method deletes an option from a custom list field. In items where this option was selected, the field keeps the ID of the deleted option. The object type is set by the `<type>` segment of the method name.
 
 ## Method Name for the Object Type
 

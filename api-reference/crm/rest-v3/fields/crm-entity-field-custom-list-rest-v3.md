@@ -40,11 +40,13 @@ The method name is written in lowercase: `crm.smartinvoice.field.custom.list`, n
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
 || **select**
-[`array`](../../../data-types.md) | List of field parameters to return, for example, `["id", "name", "userTypeId"]`. Parameter names are given in the description of the [fields parameter](./crm-entity-field-custom-add-rest-v3.md#fields) of the create method, plus `id` and `entityId`.
+[`array`](../../../data-types.md) | List of field parameters to return, for example, `["id", "name", "userTypeId"]`. You can pass `id`, `entityId`, and the parameters from the description of the [fields parameter](./crm-entity-field-custom-add-rest-v3.md#fields) of the create method.
 
 By default, the method returns all field parameters ||
 || **filter**
@@ -66,8 +68,6 @@ You can filter by these parameters:
 - `entityId` — object type code
 
 The method does not filter by other parameters, for example, `userTypeId`, and returns a request validation error. If `filter` is passed as a string instead of an array, the method returns a filter error.
-
-For a user without the "Edit CRM preferences" permission in CRM, the method returns an empty list.
 
 ## Code Examples
 
@@ -371,7 +371,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Object with response data ||
 || **result.items**
-[`array`](../../../data-types.md) | Array of field descriptions with the parameters from `select`. Without `select`, all [field parameters](./crm-entity-field-custom-add-rest-v3.md#fields), `id`, and `entityId`. If there are no fields, the array is empty ||
+[`array`](../../../data-types.md) | Array of field descriptions with the parameters from `select`. Without `select`, all [field parameters](./crm-entity-field-custom-add-rest-v3.md#fields), `id`, and `entityId`. The array is empty if there are no fields or the user does not have the "Edit CRM preferences" permission in CRM ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#

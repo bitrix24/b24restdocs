@@ -1,6 +1,13 @@
 # CRM Pipelines and Stages in REST 3.0: Overview of Methods
 
-A pipeline is a separate set of CRM items within an object type. For deals and SPAs, a pipeline defines the path of an item through stages — from the first stage to success or failure. For example, a requests SPA can have a pipeline for equipment procurement with its own stages: request preparation, contract review, budget approval. The [pipeline methods](#categories-methods) create and update pipelines, and the [stage methods](#stages-methods) do the same for the stages within a pipeline.
+{% note tip "" %}
+
+Choose a tool for developing with an AI agent:
+
+- use [Alaio Vibecode](../../../../ai-tools/vibecode.md) to build an app for Bitrix24 from a task description without knowing any programming language. The agent writes the code and deploys the app to a server, with no manual hosting setup
+- use the [MCP server](../../../../ai-tools/mcp.md) to develop a REST API integration in your own project. The agent refers to the official REST documentation
+
+{% endnote %}
 
 {% note info "" %}
 
@@ -8,37 +15,49 @@ These methods belong to REST 3.0. The call specifics and response format of the 
 
 {% endnote %}
 
-> Quick navigation: [all methods](#all-methods)
+A pipeline is a separate set of CRM items within an object type. For deals and SPAs, a pipeline defines the path of an item through stages — from the first stage to success or failure. For example, a requests SPA can have a pipeline for equipment procurement with its own stages: request preparation, contract review, budget approval. The [pipeline methods](#categories-methods) create and update pipelines, and the [stage methods](#stages-methods) do the same for the stages within a pipeline.
 
-## Object Types and Method Names
+> Quick navigation: [all methods](#all-methods)
+>
+> User documentation: [Sales Pipelines](https://helpdesk.bitrix24.com/open/20739996/)
+
+## Object Types
+
+The object type is set by the `<type>` segment of the method name: `crm.deal.category.add` creates a deal pipeline, and `crm.smartprocess1038.category.add` creates a pipeline of the SPA with `entityTypeId = 1038`.
 
 #|
-|| **Object type** | **Pipelines** | **Stages** ||
-|| Deal | `crm.deal.category.*` | `crm.deal.category.stage.*` ||
-|| Contact | `crm.contact.category.*` | None ||
-|| Company | `crm.company.category.*` | None ||
-|| SPA | `crm.smartprocess<entityTypeId>.category.*`, if pipelines are enabled in the type settings | `crm.smartprocess<entityTypeId>.category.stage.*`, if both pipelines and stages are enabled ||
+|| **Methods** | **Object types** ||
+|| `crm.<type>.category.*` | Deal `deal`, contact `contact`, company `company`, SPA `smartprocess<entityTypeId>` ||
+|| `crm.<type>.category.stage.*` | Deal `deal`, SPA `smartprocess<entityTypeId>` ||
 |#
 
-Leads, estimates, invoices, and my company have no pipeline or stage methods. SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field. Method names are written in lowercase: `crm.smartprocess1038.category.list`.
+An SPA has pipeline methods only if pipelines are enabled in the type settings, and stage methods only if both pipelines and stages are enabled. Leads, estimates, invoices, and my company have no pipeline or stage methods.
+
+SPA type IDs are returned by the [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md) method in the `entityTypeId` field. Method names are written in lowercase: `crm.smartprocess1038.category.list`.
 
 ## Getting Started
 
 1. Check which pipelines already exist with the [crm.&lt;type&gt;.category.list](./crm-entity-category-list-rest-v3.md) method
-2. Create a pipeline with the [crm.&lt;type&gt;.category.add](./crm-entity-category-add-rest-v3.md) method. For a deal, and for an SPA with stages enabled in the type, Bitrix24 immediately adds default stages to the pipeline
+2. Create a pipeline with the [crm.&lt;type&gt;.category.add](./crm-entity-category-add-rest-v3.md) method. Bitrix24 adds default stages to it: always for a deal, and for an SPA if stages are enabled in the type
 3. Retrieve the pipeline stages with the [crm.&lt;type&gt;.category.stage.list](./crm-entity-category-stage-list-rest-v3.md) method — you will need the `stageId` values
-4. Configure stages one by one with the [crm.&lt;type&gt;.category.stage.add](./crm-entity-category-stage-add-rest-v3.md) and [crm.&lt;type&gt;.category.stage.update](./crm-entity-category-stage-update-rest-v3.md) methods, or set all stages of the `process` group in a single request with the [crm.&lt;type&gt;.category.stage.replace](./crm-entity-category-stage-replace-rest-v3.md) method
+4. Configure stages one by one with the [crm.&lt;type&gt;.category.stage.add](./crm-entity-category-stage-add-rest-v3.md) and [crm.&lt;type&gt;.category.stage.update](./crm-entity-category-stage-update-rest-v3.md) methods. All in-progress stages of the `process` group can be set in a single request with the [crm.&lt;type&gt;.category.stage.replace](./crm-entity-category-stage-replace-rest-v3.md) method
 5. Create a deal or SPA item in the pipeline with the [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md) method and the `categoryId` field
 
 ## Default Pipeline
 
-One of the pipelines of an object type is the default pipeline, which has `isDefault: true`. For a deal, it is always the pipeline with `id` `0`. For a contact and a company, pipeline `0` is the default pipeline until it is changed. Pipeline `0` cannot be deleted. For an SPA, the default pipeline is a regular pipeline with its own ID, for example, `69`.
+One of the pipelines of an object type is the default pipeline, which has `isDefault: true`:
+
+- deal — always the pipeline with `id` `0`
+- contact and company — pipeline `0`, until it is changed
+- SPA — a regular pipeline with its own ID, for example, `69`
+
+Pipeline `0` cannot be deleted.
 
 For a contact, a company, and an SPA, the default pipeline can be changed with the `isDefault: true` field in the [crm.&lt;type&gt;.category.add](./crm-entity-category-add-rest-v3.md) and [crm.&lt;type&gt;.category.update](./crm-entity-category-update-rest-v3.md) methods. For a deal, `isDefault` is read-only.
 
 {% note warning "" %}
 
-Contacts and companies have no `categoryId` field in REST 3.0: the [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md) and [crm.&lt;type&gt;.update](../items/crm-entity-update-rest-v3.md) methods do not accept it and create items in pipeline `0`. Contact and company pipelines can be created and configured, but items cannot be moved to them through REST 3.0.
+Contact and company pipelines can be created and configured, but an item cannot be placed in them through REST 3.0. The [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md) method creates contacts and companies only in pipeline `0`, and [crm.&lt;type&gt;.update](../items/crm-entity-update-rest-v3.md) does not move them to another pipeline.
 
 {% endnote %}
 
@@ -67,11 +86,11 @@ The stage ID includes the pipeline ID:
 
 The [crm.&lt;type&gt;.category.list](./crm-entity-category-list-rest-v3.md) and [crm.&lt;type&gt;.category.stage.list](./crm-entity-category-stage-list-rest-v3.md) methods accept pagination, with up to 100 records per page. The stage method also requires a pipeline filter as a single condition: `"filter": ["categoryId", "=", 127]`.
 
-The methods skip the `order` and `select` parameters, and for pipelines also `filter`, without an error. Records are returned in ascending `sort` order, each with all its fields.
+The methods skip the `order` and `select` parameters without an error, and the pipeline method also skips `filter`. Records are returned in ascending `sort` order, each with all its fields.
 
 ## Permissions
 
-A pipeline and its stages can be read by a user with permission to read the items of this pipeline. The list of pipelines returns only such pipelines, and the methods treat a pipeline without read permission as nonexistent.
+A pipeline and its stages can be read by a user with permission to read the items of this pipeline. The list of pipelines includes only the pipelines the user can read. The methods treat a pipeline without read permission as nonexistent.
 
 Pipelines can be created, updated, and deleted by a CRM administrator or a user with the "Manage pipelines" permission in a CRM access role. Stages require the "Manage stages" permission. For an SPA of a digital workplace, Bitrix24 checks permissions in the roles of this digital workplace.
 
@@ -100,6 +119,10 @@ Pipelines are linked to CRM items, the stage group directory, and card views.
 
 **Card views.** Item card views are stored separately for each pipeline. The pipeline ID is passed in the `categoryId` parameter of the [crm.&lt;type&gt;.detailpagelayout.*](../detail-page-layout/index.md) methods.
 
+## Methods of the Previous Version
+
+At the `/rest/` address, pipelines are handled by the [crm.category.*](../../universal/category/index.md) methods, which take the object type in the `entityTypeId` parameter. In the previous version, stages are directory values, and they are handled by the [crm.status.*](../../status/index.md) methods. The stage directory is set by the `ENTITY_ID` parameter, for example, `DEAL_STAGE_1` for the deal pipeline with ID `1`. In REST 3.0, the object type is part of the method name, and stages have their own `crm.<type>.category.stage.*` methods.
+
 ## Overview of Methods {#all-methods}
 
 > Scope: [`crm`](../../../scopes/permissions.md)
@@ -115,6 +138,8 @@ Pipelines are linked to CRM items, the stage group directory, and card views.
 || [crm.&lt;type&gt;.category.get](./crm-entity-category-get-rest-v3.md) | Returns a pipeline by ID ||
 || [crm.&lt;type&gt;.category.list](./crm-entity-category-list-rest-v3.md) | Returns the pipelines of an object type ||
 || [crm.&lt;type&gt;.category.delete](./crm-entity-category-delete-rest-v3.md) | Deletes an empty pipeline together with its stages ||
+|| [crm.&lt;type&gt;.category.field.list](#field-methods) | Returns pipeline field descriptions ||
+|| [crm.&lt;type&gt;.category.field.get](#field-methods) | Returns a pipeline field description by name ||
 |#
 
 ### Stages {#stages-methods}
@@ -127,8 +152,15 @@ Pipelines are linked to CRM items, the stage group directory, and card views.
 || [crm.&lt;type&gt;.category.stage.list](./crm-entity-category-stage-list-rest-v3.md) | Returns the stages of a pipeline ||
 || [crm.&lt;type&gt;.category.stage.delete](./crm-entity-category-stage-delete-rest-v3.md) | Deletes a stage that has no items ||
 || [crm.&lt;type&gt;.category.stage.replace](./crm-entity-category-stage-replace-rest-v3.md) | Sets the entire set of in-progress stages in a single request ||
+|| [crm.&lt;type&gt;.category.stage.field.list](#field-methods) | Returns stage field descriptions ||
+|| [crm.&lt;type&gt;.category.stage.field.get](#field-methods) | Returns a stage field description by name ||
 |#
 
-### Pipeline and Stage Field Descriptions
+### Pipeline and Stage Field Descriptions {#field-methods}
 
-The group has the `crm.<type>.category.field.list` and `crm.<type>.category.field.get` methods for pipeline fields and the `crm.<type>.category.stage.field.list` and `crm.<type>.category.stage.field.get` methods for stage fields. They return field descriptions with the required and editable flags. The response format is the same as for the [crm.&lt;type&gt;.field.list](../fields/crm-entity-field-list-rest-v3.md) method.
+Field descriptions with the required and editable flags are returned by the following methods:
+
+- pipeline fields — `crm.<type>.category.field.list` and `crm.<type>.category.field.get`
+- stage fields — `crm.<type>.category.stage.field.list` and `crm.<type>.category.stage.field.get`
+
+The response format is the same as for the [crm.&lt;type&gt;.field.list](../fields/crm-entity-field-list-rest-v3.md) method.

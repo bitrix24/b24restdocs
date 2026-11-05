@@ -76,10 +76,10 @@ Possible values:
 
 Default: `process` ||
 || **sort**
-[`integer`](../../../data-types.md) | Position of the stage in the pipeline: stages follow in ascending `sort` order. Without `sort`, the method places an in-progress stage last among the in-progress stages, before the successful stage. For a failed stage, `sort` must be passed ||
+[`integer`](../../../data-types.md) | Position of the stage in the pipeline: stages follow in ascending `sort` order. If `sort` is not passed, an in-progress stage is placed last among the in-progress stages, before the successful stage. For a failed stage, `sort` must be passed ||
 |#
 
-The `stageId` and `isSystem` fields are read-only: they are set by Bitrix24. The list of stage fields with a flag showing whether a field can be changed is returned by the [crm.&lt;type&gt;.category.stage.field.list](./index.md) method.
+The `stageId` and `isSystem` fields are read-only: they are set by Bitrix24. The [crm.&lt;type&gt;.category.stage.field.list](./index.md#field-methods) method shows which stage fields can be changed.
 
 ### Stage Order {#order}
 
@@ -510,5 +510,5 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 - [{#T}](./crm-entity-category-stage-update-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-get-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-list-rest-v3.md)
-- [{#T}](./crm-entity-category-stage-replace-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-delete-rest-v3.md)
+- [{#T}](./crm-entity-category-stage-replace-rest-v3.md)

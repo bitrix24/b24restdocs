@@ -21,15 +21,6 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `crm.<type>.category.stage.replace` method sets the entire set of in-progress stages of a pipeline in a single request and returns the pipeline stages after the replacement. The object type is set by the `<type>` segment of the method name.
 
-The method compares the passed set with the pipeline stages by `stageId`:
-
-- a stage with `stageId` is kept, and the method updates its name, and its color if passed
-- a stage without `stageId` is created in the `process` group
-- an in-progress stage that is not in the set is deleted if it has no items
-- the order of stages in the set becomes the order of stages in the pipeline: the set is placed after the first system stage and before the successful stage
-
-The method does not delete or rename system stages and failed stages, so you do not need to pass them in the set. The method renumbers their `sort` values along with those of the other stages. An empty `stages` array deletes all in-progress stages except the first system stage. If at least one change causes an error, the method does not change the pipeline.
-
 ## Method Name for the Object Type
 
 #|
@@ -76,9 +67,20 @@ Stage IDs are returned by the [crm.&lt;type&gt;.category.stage.list](./crm-entit
 [`string`](../../../data-types.md) | Stage color in the `#RRGGBB` format. If not passed, the color of an existing stage does not change. An empty string removes the color ||
 |#
 
-The method does not accept other stage fields, such as `semantics` and `sort`: Bitrix24 sets the stage group, and the array order determines the stage position in the pipeline.
+The method compares the passed set with the pipeline stages by `stageId`:
 
-A system stage or a failed stage can be passed in the set only with its current name and color: then the method does not change it. A different name or color causes the `OPERATION_NOT_ALLOWED_FOR_STAGE` error. A system stage can be renamed with the [crm.&lt;type&gt;.category.stage.update](./crm-entity-category-stage-update-rest-v3.md) method.
+- a stage with `stageId` is kept, and the method updates its name, and its color if passed
+- a stage without `stageId` is created in the `process` group
+- an in-progress stage that is not in the set is deleted if it has no items
+- the order of stages in the set becomes the order of stages in the pipeline: the set is placed after the first system stage and before the successful stage
+
+The method does not delete or rename system stages and failed stages, so you do not need to pass them in the set. A system stage or a failed stage can be passed in the set, but only with its current name and color. If they differ, the method returns the `OPERATION_NOT_ALLOWED_FOR_STAGE` error. A system stage can be renamed with the [crm.&lt;type&gt;.category.stage.update](./crm-entity-category-stage-update-rest-v3.md) method.
+
+An empty `stages` array deletes all in-progress stages except the first system stage.
+
+If at least one change causes an error, the method does not change the pipeline.
+
+The method does not accept other stage fields, such as `semantics` and `sort`: Bitrix24 sets the stage group, and the array order determines the stage position in the pipeline.
 
 ## Code Examples
 
@@ -592,7 +594,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `StageInputDto` | A stage in the set has only `stageId`, `name`, and `color`. Remove `semantics`, `sort`, and other fields. An error with the field name `0` is caused by `stages` passed as an object instead of an array ||
+|| `-` | Unknown field `#FIELD#` found in entity `StageInputDto` | A stage in the set has only `stageId`, `name`, and `color`. Remove `semantics`, `sort`, and other fields. If the error names the field `0`, `stages` was passed as an object. Pass an array ||
 |#
 
 #### Access Denied
@@ -618,7 +620,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./crm-entity-category-stage-list-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-add-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-update-rest-v3.md)
+- [{#T}](./crm-entity-category-stage-list-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-delete-rest-v3.md)

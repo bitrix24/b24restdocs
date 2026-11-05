@@ -50,7 +50,7 @@ The method name is written in lowercase: `crm.smartinvoice.field.custom.get`, no
 
 Field IDs and names are returned by the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method ||
 || **select**
-[`array`](../../../data-types.md) | List of field parameters to return, for example, `["id", "name", "settings"]`. Parameter names are given in the description of the [fields parameter](./crm-entity-field-custom-add-rest-v3.md#fields) of the create method, plus `id` and `entityId`.
+[`array`](../../../data-types.md) | List of field parameters to return, for example, `["id", "name", "settings"]`. You can pass `id`, `entityId`, and the parameters from the description of the [fields parameter](./crm-entity-field-custom-add-rest-v3.md#fields) of the create method.
 
 By default, the method returns all field parameters ||
 |#
@@ -346,7 +346,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Object with response data ||
 || **result.item**
-[`object`](../../../data-types.md) | Field description: [field parameters](./crm-entity-field-custom-add-rest-v3.md#fields), plus `id` — the field ID, and `entityId` — the object type code, for example, `CRM_DEAL` for a deal or `CRM_19` for the SPA from the examples. The number in the code is the `id` field from [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md), not `entityTypeId` ||
+[`object`](../../../data-types.md) | Field description: [field parameters](./crm-entity-field-custom-add-rest-v3.md#fields), the field ID `id`, and the object type code `entityId`. The type code is, for example, `CRM_DEAL` for a deal or `CRM_19` for the SPA from the examples. The number in the SPA code is the `id` field from [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md), not `entityTypeId` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -376,7 +376,7 @@ Error Code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`, HTTP 
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Field `#ID#` was not found | Check the field ID or name with the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method. The error also occurs for a field of a different object type and for a field that is not available to the user ||
+|| `-` | Field `#ID#` was not found | Check the field ID or name with the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method. The same error is returned if the field belongs to a different object type or is not available to the user ||
 |#
 
 #### Request Validation Errors

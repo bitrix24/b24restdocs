@@ -47,12 +47,12 @@ The method name is written in lowercase: `crm.smartprocess1038.category.get`, no
 || **id***
 [`integer`](../../../data-types.md) | Pipeline ID. For the default pipeline of a deal, a contact, and a company, it is `0`.
 
-It is returned by the [crm.&lt;type&gt;.category.add](./crm-entity-category-add-rest-v3.md) method when a pipeline is created. IDs of existing pipelines can be retrieved with the [crm.&lt;type&gt;.category.list](./crm-entity-category-list-rest-v3.md) method ||
+The ID of a new pipeline is returned by the [crm.&lt;type&gt;.category.add](./crm-entity-category-add-rest-v3.md) method. IDs of existing pipelines can be retrieved with the [crm.&lt;type&gt;.category.list](./crm-entity-category-list-rest-v3.md) method ||
 |#
 
 {% note warning "" %}
 
-The method has no `select` parameter. If `select` is passed, the method does not return an error and returns all pipeline fields.
+The method returns all pipeline fields. It ignores the `select` parameter and does not return an error for it.
 
 {% endnote %}
 

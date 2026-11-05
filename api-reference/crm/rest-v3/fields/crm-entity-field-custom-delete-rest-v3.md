@@ -53,7 +53,7 @@ Field IDs and names are returned by the [crm.&lt;type&gt;.field.custom.list](./c
 
 {% note warning "" %}
 
-The method deletes the field together with its values in all items of the type. After deletion, the [item methods](../items/index.md) do not return the field: requesting it in `select` causes the "Unknown field" error.
+The method deletes the field together with its values in all items of the type. After deletion, the [item methods](../items/index.md) do not return this field. If you specify it in `select`, they return the "Unknown field" error.
 
 {% endnote %}
 
@@ -342,7 +342,7 @@ Error Code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`, HTTP 
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Field `#ID#` was not found | Check the field ID or name with the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method. The error is also caused by a field of a different object type and by a field that is not available to the user ||
+|| `-` | Field `#ID#` was not found | Check the field ID or name with the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method. The same error is returned if the field belongs to a different object type or is not available to the user ||
 |#
 
 #### Request Validation Errors

@@ -53,7 +53,7 @@ A default value with `isSystem: true` cannot be deleted ||
 
 {% note warning "" %}
 
-The method deletes a value even if it is used in CRM items. For example, after a deal type is deleted, deals of this type retain the old `typeId` value, and the [crm.&lt;type&gt;.get](../items/crm-entity-get-rest-v3.md) method returns the related `type` object as `null`. The [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md) method does not create new deals with the deleted type: it returns a validation error for the `typeId` field.
+A value can be deleted even if it is used in CRM items. For example, deals of the deleted type keep their previous `typeId`, but the [crm.&lt;type&gt;.get](../items/crm-entity-get-rest-v3.md) method returns the related `type` object as `null`. You cannot create a new deal with the deleted type with the [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md) method: the method returns a validation error for the `typeId` field.
 
 {% endnote %}
 
@@ -361,7 +361,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Invalid filter `#FILTER#` | The request contains `filter`. The method deletes a single value by `id` and does not accept a filter — remove `filter` ||
+|| `-` | Invalid filter `#FILTER#` | Remove `filter`: the method deletes a single value by `id` and does not accept a filter ||
 |#
 
 #### Access Denied
@@ -387,7 +387,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./crm-dictionary-list-rest-v3.md)
-- [{#T}](./crm-dictionary-get-rest-v3.md)
 - [{#T}](./crm-dictionary-add-rest-v3.md)
 - [{#T}](./crm-dictionary-update-rest-v3.md)
+- [{#T}](./crm-dictionary-get-rest-v3.md)
+- [{#T}](./crm-dictionary-list-rest-v3.md)

@@ -66,7 +66,7 @@ Pipeline IDs can be retrieved with the [crm.&lt;type&gt;.category.list](./crm-en
 
 {% note warning "" %}
 
-The method has no `order` and `select` parameters. If you pass them, the method does not return an error: it returns stages with all fields in ascending `sort` order.
+The method returns stages with all fields in ascending `sort` order. You cannot select fields with `select` or change the order with `order`. If these parameters are passed, the method skips them without an error.
 
 {% endnote %}
 
@@ -505,6 +505,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
+- [{#T}](./crm-entity-category-list-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-get-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-replace-rest-v3.md)
-- [{#T}](./crm-entity-category-list-rest-v3.md)

@@ -47,7 +47,7 @@ The method name is written in lowercase: `crm.smartprocess1038.category.update`,
 || **id***
 [`integer`](../../../data-types.md) | ID of the pipeline to update. For the default pipeline of a deal, a contact, and a company, it is `0`.
 
-It is returned by the [crm.&lt;type&gt;.category.add](./crm-entity-category-add-rest-v3.md) method when a pipeline is created. IDs of existing pipelines can be retrieved with the [crm.&lt;type&gt;.category.list](./crm-entity-category-list-rest-v3.md) method ||
+The ID of a new pipeline is returned by the [crm.&lt;type&gt;.category.add](./crm-entity-category-add-rest-v3.md) method. IDs of existing pipelines can be retrieved with the [crm.&lt;type&gt;.category.list](./crm-entity-category-list-rest-v3.md) method ||
 || **fields***
 [`object`](../../../data-types.md) | Object with the new field values in the format `{"field": "value"}`. [Parameter description](#fields) ||
 |#
@@ -74,7 +74,7 @@ Possible values:
 - `false` — the pipeline becomes a regular one ||
 |#
 
-The method does not accept the `id` field in `fields`: the pipeline is specified by the `id` parameter. The list of pipeline fields with a flag showing whether a field can be changed is returned by the [crm.&lt;type&gt;.category.field.list](./index.md) method.
+The method does not accept the `id` field in `fields`: the pipeline is specified by the `id` parameter. The list of pipeline fields with a flag showing whether a field can be changed is returned by the [crm.&lt;type&gt;.category.field.list](./index.md#field-methods) method.
 
 ### Object Type Differences {#entity-differences}
 

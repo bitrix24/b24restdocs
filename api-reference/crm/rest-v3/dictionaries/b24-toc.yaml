@@ -3,13 +3,13 @@ href: index.md
 items:
   - name: Overview of Methods
     href: index.md
-  - name: Get a List of Directory Values
-    href: crm-dictionary-list-rest-v3.md
-  - name: Get a Directory Value
-    href: crm-dictionary-get-rest-v3.md
   - name: Add a Directory Value
     href: crm-dictionary-add-rest-v3.md
   - name: Update a Directory Value
     href: crm-dictionary-update-rest-v3.md
+  - name: Get a Directory Value
+    href: crm-dictionary-get-rest-v3.md
+  - name: Get a List of Directory Values
+    href: crm-dictionary-list-rest-v3.md
   - name: Delete a Directory Value
     href: crm-dictionary-delete-rest-v3.md

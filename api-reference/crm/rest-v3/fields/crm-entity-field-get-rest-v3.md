@@ -358,7 +358,7 @@ HTTP status: **200**
 || **validationRules**
 [`array`](../../../data-types.md) | Value validation rules, for example, `{"name": "Length", "parameters": {"max": 255}}` — a length of no more than 255 characters ||
 || **requiredGroups**
-[`array`](../../../data-types.md) | Methods in which the field is required at the method level, for example, `["add"]`. If there are no such methods, `null`. The requirement set with [crm.&lt;type&gt;.field.required.*](./crm-entity-field-required-get-rest-v3.md) is not included here. The contact rule "`name` or `lastName`" is not shown either: it is returned only as an error of [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md#required-fields) ||
+[`array`](../../../data-types.md) | Methods that require this field, for example, `["add"]`. If there are no such methods, `null`. A requirement set with the [crm.&lt;type&gt;.field.required.*](./crm-entity-field-required-get-rest-v3.md) methods is not shown here. The contact rule "`name` or `lastName`" is not shown here either: it is reported only by an error returned by [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md#required-fields) ||
 || **filterable**
 [`boolean`](../../../data-types.md) | Whether the field can be used for filtering in the [crm.&lt;type&gt;.list](../items/crm-entity-list-rest-v3.md) method ||
 || **sortable**

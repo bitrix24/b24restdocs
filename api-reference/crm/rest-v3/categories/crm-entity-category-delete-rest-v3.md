@@ -356,7 +356,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `id` | Field value must be 0 or greater | Pass a non-negative ID from [crm.&lt;type&gt;.category.list](./crm-entity-category-list-rest-v3.md) ||
 || `id` | This request requires data type `int` in field `id` | Pass `id` as a number ||
 || `DEPENDENT_ITEMS_EXIST` | Move or delete the related items first | The pipeline has items. Move or delete them ||
-|| `OPERATION_NOT_ALLOWED_FOR_CATEGORY` | This action is not available for this pipeline | Pass the `id` of another pipeline ||
+|| `OPERATION_NOT_ALLOWED_FOR_CATEGORY` | This action is not available for this pipeline | This pipeline cannot be deleted, for example, the pipeline with `id` `0`. Pass the `id` of another pipeline ||
 |#
 
 For the `DEPENDENT_ITEMS_EXIST` and `OPERATION_NOT_ALLOWED_FOR_CATEGORY` errors, the `field` contains the error code, not a field name.
@@ -384,6 +384,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./crm-entity-category-list-rest-v3.md)
 - [{#T}](./crm-entity-category-add-rest-v3.md)
 - [{#T}](./crm-entity-category-update-rest-v3.md)
+- [{#T}](./crm-entity-category-list-rest-v3.md)

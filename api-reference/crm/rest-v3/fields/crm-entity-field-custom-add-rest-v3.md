@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `crm.<type>.field.custom.add` method creates a custom field for a CRM object type and returns the description of the created field. The object type is set by the `<type>` segment of the method name.
+The `crm.<type>.field.custom.add` method creates a custom field for a CRM object type, for example, "Contract number", and returns its description. The object type is set by the `<type>` segment of the method name.
 
 ## Method Name for the Object Type
 
@@ -46,7 +46,7 @@ The method name is written in lowercase: `crm.smartinvoice.field.custom.add`, no
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Object with the settings of the new field in the format `{"parameter": "value"}`. The required fields are `name` and `userTypeId`. [Parameter description](#fields) ||
+[`object`](../../../data-types.md) | Object with the settings of the new field in the format `{"parameter": "value"}`. It requires `name` and `userTypeId`. [Parameter description](#fields) ||
 |#
 
 ### The fields Parameter {#fields}
@@ -57,7 +57,7 @@ The method name is written in lowercase: `crm.smartinvoice.field.custom.add`, no
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../../data-types.md) | Field name. The field value is passed under this name in the `fields` of item methods, for example, [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md). [Name rules](#name).
+[`string`](../../../data-types.md) | Field name, for example, `UF_CRM_CONTRACT_NUMBER`. The field value is passed under this name in the `fields` of item methods, for example, [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md). [Name rules](#name).
 
 The name cannot be changed after the field is created ||
 || **userTypeId***
@@ -171,7 +171,7 @@ Names already in use are returned by the [crm.&lt;type&gt;.field.custom.list](./
 - `iblock_section` — link to information block sections
 - `iblock_element` — link to information block elements
 
-The method does not create fields of the "List" `enumeration` and "File" `file` types and returns a [validation error](#dto-validation). The values of an existing list field are managed by the [crm.&lt;type&gt;.field.custom.enum.*](./crm-entity-field-custom-enum-list-rest-v3.md) methods.
+The method does not create fields of the "List" `enumeration` and "File" `file` types and returns a [validation error](#dto-validation). If a list field already exists, its values can be added, updated, and deleted with the [crm.&lt;type&gt;.field.custom.enum.*](./crm-entity-field-custom-enum-list-rest-v3.md) methods.
 
 #### Field Labels {#labels}
 
@@ -184,9 +184,9 @@ In the response, the method returns the label as a string in the default languag
 
 ### The settings Parameter {#settings}
 
-The `settings` keys are written in camelCase: `iblockId`, `defaultValue`, `maxLength`. This rule applies only to first-level keys: Bitrix24 does not rename the keys of nested objects. For example, for a `datetime` field, the `defaultValue` value is returned as `{"TYPE": "NONE", "VALUE": ""}`.
+The `settings` keys are written in camelCase: `iblockId`, `defaultValue`, `maxLength`. The keys of nested objects stay as they are: for example, for a `datetime` field, the `defaultValue` value is returned as `{"TYPE": "NONE", "VALUE": ""}`.
 
-Each field type has its own set of keys. It is returned by the [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) method with uppercase keys: the `IBLOCK_ID` key corresponds to `iblockId`.
+Each field type has its own set of keys, which is returned by the [crm.userfield.settings.fields](../../universal/user-defined-fields/crm-userfield-settings-fields.md) method. The method writes the keys in uppercase: instead of `IBLOCK_ID`, pass `iblockId`.
 
 Boolean settings are passed as `true` or `false`. Settings that are not passed are filled in by Bitrix24 with default values and returned in the response.
 
@@ -601,7 +601,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `field` | Select an information block to bind to this field | Pass `iblockId` in `settings` for an `iblock_section` or `iblock_element` field ||
 |#
 
-Errors in the field name and information block settings are returned with `"field": "field"`, and their text ends with the `<br>` tag. If there are several such errors, Bitrix24 combines them into one message.
+Errors in the field name and information block settings are returned with `"field": "field"`. Their text ends with the `<br>` tag. If there are several such errors, Bitrix24 combines them into one message.
 
 #### Object Validation Errors {#dto-validation}
 
@@ -632,7 +632,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `CustomFieldConfigDto` | Check the parameter name against the [fields parameter table](#fields). An error with the field name `0` occurs when `fields` is passed as a string or an array instead of an object ||
+|| `-` | Unknown field `#FIELD#` found in entity `CustomFieldConfigDto` | Check the parameter name against the [fields parameter table](#fields). If the error names the field `0`, `fields` was passed as a string or an array: pass it as an object ||
 |#
 
 #### Access Denied

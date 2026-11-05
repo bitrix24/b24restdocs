@@ -46,7 +46,7 @@ The method name is written in lowercase: `crm.dictionary.dealtype.add`, not `crm
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Object with the fields of the new value in the format `{"field": "value"}`. [Parameter description](#fields).
+[`object`](../../../data-types.md) | Object with the fields of the new value in the format `{"field": "value"}`. [Parameter description](#fields)
 
 Required field — `name` ||
 |#
@@ -374,7 +374,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Object with response data ||
 || **result.item**
-[`object`](../../../data-types.md) | The created value with all fields: `id`, `name`, `sort`, `isSystem`. If `id` or `sort` was not passed, the response contains the values assigned by Bitrix24. [Field descriptions](./crm-dictionary-list-rest-v3.md#crm-values) ||
+[`object`](../../../data-types.md) | The created value with all fields: `id`, `name`, `sort`, `isSystem`. If `id` or `sort` was not passed, the response contains the values assigned by Bitrix24. Pass the `id` in a CRM item field, for example, in the `typeId` field of a deal. [Field descriptions](./crm-dictionary-list-rest-v3.md#crm-values) ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -431,7 +431,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `DictionaryValueDto` | Pass only `id`, `name`, and `sort` in `fields`. The error with the field name `0` occurs when `fields` is passed as a string instead of an object ||
+|| `-` | Unknown field `#FIELD#` found in entity `DictionaryValueDto` | Pass only `id`, `name`, and `sort` in `fields`. An error with the field `0` means that `fields` was passed as a string rather than an object ||
 |#
 
 #### Access Denied
@@ -457,7 +457,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./crm-dictionary-list-rest-v3.md)
-- [{#T}](./crm-dictionary-get-rest-v3.md)
 - [{#T}](./crm-dictionary-update-rest-v3.md)
+- [{#T}](./crm-dictionary-get-rest-v3.md)
+- [{#T}](./crm-dictionary-list-rest-v3.md)
 - [{#T}](./crm-dictionary-delete-rest-v3.md)

@@ -21,7 +21,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `crm.<type>.field.list` method returns a list of available fields of a CRM object type with their attributes: whether a field can be edited, used for filtering, and used for sorting. The object type is set by the `<type>` segment of the method name.
 
-The set of fields depends on the object type and, for an SPA, also on the type settings. The fields that appear with each setting are shown on the [SPA fields](../items/fields-smart-process.md) page. The response includes standard fields, related objects, for example, `assignedBy`, and custom fields together with their [paired `UF_CRM_…_data` fields](../items/fields-smart-process.md#userfields). Field descriptions with sample values are given on the field pages of each object type, linked in the table below.
+The response includes standard fields, related objects, for example, `assignedBy`, and custom fields together with their [paired `UF_CRM_…_data` fields](../items/fields-smart-process.md#userfields). The set of fields depends on the object type and, for an SPA, also on the type settings: the fields that each setting adds are shown on the [SPA fields](../items/fields-smart-process.md) page. Field descriptions with sample values are given on the field pages linked in the table below.
 
 ## Method Name for the Object Type
 
@@ -43,6 +43,8 @@ The method name is written in lowercase: `crm.smartinvoice.field.list`, not `crm
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -52,7 +54,7 @@ The method name is written in lowercase: `crm.smartinvoice.field.list`, not `crm
 By default, the method returns all description fields ||
 |#
 
-The method ignores the `filter`, `order`, and `pagination` parameters: if they are passed, it returns the full list of fields without an error.
+The method returns the full list of fields: it skips the `filter`, `order`, and `pagination` parameters without an error.
 
 ## Code Examples
 
@@ -373,7 +375,7 @@ The example shows the first three of 61 fields.
 || **validationRules**
 [`array`](../../../data-types.md) | Value validation rules, for example, `{"name": "Length", "parameters": {"max": 255}}` — a length of no more than 255 characters ||
 || **requiredGroups**
-[`array`](../../../data-types.md) | Methods in which the field is required at the method level, for example, `["add"]`. If there are no such methods, `null`. The requirement set with [crm.&lt;type&gt;.field.required.*](./crm-entity-field-required-get-rest-v3.md) is not included here. The contact rule "`name` or `lastName`" is not shown either: it is returned only as an error of [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md#required-fields) ||
+[`array`](../../../data-types.md) | Methods that require this field, for example, `["add"]`. If there are no such methods, `null`. A requirement set with the [crm.&lt;type&gt;.field.required.*](./crm-entity-field-required-get-rest-v3.md) methods is not shown here. The contact rule "`name` or `lastName`" is not shown here either: it is reported only by an error returned by [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md#required-fields) ||
 || **filterable**
 [`boolean`](../../../data-types.md) | Whether the field can be used for filtering in the [crm.&lt;type&gt;.list](../items/crm-entity-list-rest-v3.md) method ||
 || **sortable**

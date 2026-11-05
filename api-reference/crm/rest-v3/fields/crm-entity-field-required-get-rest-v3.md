@@ -58,12 +58,15 @@ Bitrix24 stores the field requirement separately for each pipeline. Whether to p
 #|
 || **Object type** | **categoryId** ||
 || Deal, contact, company | Required. The default pipeline is set by `0`, other pipelines by their IDs from the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) method ||
-|| SPA | Required. The pipeline ID from the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) method. If pipelines are disabled in the type, the SPA has no pipeline methods: the ID of its only pipeline is returned by the [crm.category.list](../../universal/category/crm-category-list.md) method with the `entityTypeId` of the SPA ||
+|| SPA | Required. The pipeline ID is returned by:
+
+- the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) method if pipelines are enabled in the type
+- the [crm.category.list](../../universal/category/crm-category-list.md) method with the `entityTypeId` of the SPA if pipelines are disabled. Such a type has no pipeline methods and only one pipeline ||
 || Invoice | Required. The invoice pipeline ID is returned by the [crm.category.list](../../universal/category/crm-category-list.md) method with `entityTypeId` = `31`: REST 3.0 has no pipeline method for invoices ||
 || Lead, estimate | Not passed ||
 |#
 
-If `categoryId` does not follow the rules in the table, the method returns an error with the text `Invalid category ID.`
+If `categoryId` does not follow the rules in the table, the method returns an error.
 
 ## Code Examples
 

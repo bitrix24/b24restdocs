@@ -67,7 +67,7 @@ The field name `name`, the type `userTypeId`, and the `isMultiple` flag, which i
 
 {% note warning "" %}
 
-The method does not change the `name` and `userTypeId` parameters and does not return an error for them. If you pass them together with other parameters, the method changes only the other parameters and responds with success. If `fields` contains no other parameters, the method returns the "At least one field must be specified." error.
+The method skips `name` and `userTypeId` without an error and changes the other parameters. If `fields` contains nothing else, the method returns the "At least one field must be specified." error.
 
 {% endnote %}
 
@@ -77,7 +77,7 @@ The method replaces the `settings` entirely: settings that are not passed are re
 
 {% endnote %}
 
-A string label changes the text only in the default language of Bitrix24, and labels in other languages are retained. An object with language codes changes the labels in the specified languages.
+A string label changes only the text in the default language of Bitrix24, and an object with language codes changes the labels in the specified languages. The other labels are retained.
 
 ## Code Examples
 
@@ -440,7 +440,7 @@ HTTP status: **200**
 || **result**
 [`object`](../../../data-types.md) | Object with response data ||
 || **result.item**
-[`object`](../../../data-types.md) | Description of the field after the update: [field parameters](./crm-entity-field-custom-add-rest-v3.md#fields), as well as `id` — field ID, and `entityId` — object type code, for example, `CRM_DEAL` for a deal or `CRM_19` for the SPA from the examples: the number in the code is the `id` field from [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md), not `entityTypeId` ||
+[`object`](../../../data-types.md) | Description of the field after the update: [field parameters](./crm-entity-field-custom-add-rest-v3.md#fields), the field ID `id`, and the object type code `entityId`. The type code is, for example, `CRM_DEAL` for a deal or `CRM_19` for the SPA from the examples. The number in the SPA code is the `id` field from [crm.type.list](../../universal/user-defined-object-types/crm-type-list.md), not `entityTypeId` ||
 || **time**
 [`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
@@ -500,7 +500,7 @@ Error Code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`, HTTP 
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Field `#ID#` was not found | Check the field ID or name with the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method. The error is also caused by a field of a different object type and by a field that is not available to the user ||
+|| `-` | Field `#ID#` was not found | Check the field ID or name with the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method. The same error is returned if the field belongs to a different object type or is not available to the user ||
 |#
 
 #### Filter Error
@@ -518,7 +518,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `CustomFieldConfigDto` | Check the parameter name against the [fields parameter table](./crm-entity-field-custom-add-rest-v3.md#fields). An error with the field name `0` occurs when `fields` is passed as a string or an array instead of an object ||
+|| `-` | Unknown field `#FIELD#` found in entity `CustomFieldConfigDto` | Check the parameter name against the [fields parameter table](./crm-entity-field-custom-add-rest-v3.md#fields). If the error names the field `0`, `fields` was passed as a string or an array: pass an object ||
 |#
 
 #### Access Denied

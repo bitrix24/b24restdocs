@@ -48,6 +48,8 @@ The method name is written in lowercase: `crm.smartprocess1038.category.stage.ge
 Stage IDs are returned by the [crm.&lt;type&gt;.category.stage.list](./crm-entity-category-stage-list-rest-v3.md) method ||
 |#
 
+The method returns all stage fields. It ignores the `select` parameter and does not return an error for it.
+
 ### Stage ID {#stage-id}
 
 The stage ID format depends on the pipeline:
@@ -415,7 +417,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `STAGE_NOT_FOUND` | Stage was not found | Check `id` with the [crm.&lt;type&gt;.category.stage.list](./crm-entity-category-stage-list-rest-v3.md) method. This object type has no such stage, the stage has been deleted, or the user has no permission to read the items of its pipeline ||
 |#
 
-If the stage does not exist, the method returns a request validation error with the `STAGE_NOT_FOUND` code in `field` rather than the `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION` code.
+If the stage does not exist, the method returns a request validation error rather than the `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION` code. Identify this error by `STAGE_NOT_FOUND` in `field`.
 
 #### Method Not Found {#method-not-found}
 
@@ -431,6 +433,6 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_METHODNOTFOUNDEXCEPTION`, HTTP status: **4
 ## Continue Learning
 
 - [{#T}](./index.md)
-- [{#T}](./crm-entity-category-stage-list-rest-v3.md)
-- [{#T}](./crm-entity-category-stage-update-rest-v3.md)
 - [{#T}](./crm-entity-category-stage-add-rest-v3.md)
+- [{#T}](./crm-entity-category-stage-update-rest-v3.md)
+- [{#T}](./crm-entity-category-stage-list-rest-v3.md)

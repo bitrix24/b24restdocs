@@ -73,7 +73,7 @@ Possible values:
 [`string`](../../../data-types.md) | Option external code, unique within the field ||
 |#
 
-The method does not change the `fieldId` parameter and does not return an error: the option stays in its field. The method also accepts an empty `fields` object and returns the option unchanged.
+An option cannot be moved to another field: the method skips `fieldId` without an error. The method also accepts an empty `fields` object and returns the option unchanged.
 
 {% note warning "" %}
 

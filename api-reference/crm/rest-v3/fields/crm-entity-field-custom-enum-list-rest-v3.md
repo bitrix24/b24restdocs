@@ -21,7 +21,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 The `crm.<type>.field.custom.enum.list` method returns the options of a single custom list field. The object type is set by the `<type>` segment of the method name.
 
-A list field stores a set of options from which the user selects a value, for example, the priorities "High", "Medium", and "Low". The list field itself cannot be created with the [crm.&lt;type&gt;.field.custom.add](./crm-entity-field-custom-add-rest-v3.md) method: it does not accept the `enumeration` type. The option methods [crm.&lt;type&gt;.field.custom.enum.*](./crm-entity-field-custom-enum-list-rest-v3.md) work with list fields created in the Bitrix24 interface or in other ways. List fields are present in the response of the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method: their `userTypeId` is `enumeration`.
+A list field stores a set of options from which the user selects a value, for example, the priorities "High", "Medium", and "Low". Such a field cannot be created with the [crm.&lt;type&gt;.field.custom.add](./crm-entity-field-custom-add-rest-v3.md) method: it does not accept the `enumeration` type. The field can be created in the Bitrix24 interface or in another way, and its options can be handled with the [crm.&lt;type&gt;.field.custom.enum.*](./crm-entity-field-custom-enum-list-rest-v3.md) methods. List fields are present in the response of the [crm.&lt;type&gt;.field.custom.list](./crm-entity-field-custom-list-rest-v3.md) method: their `userTypeId` is `enumeration`.
 
 ## Method Name for the Object Type
 
@@ -67,7 +67,7 @@ For a user without the "Edit CRM preferences" permission, the [crm.&lt;type&gt;.
 
 {% note warning "" %}
 
-The method does not accept the array of conditions `[["fieldId", "=", 6008205]]` from the [REST 3.0 overview](../../../rest-v3.md#filter) and returns the error "Filter for required field `fieldId` is required".
+The method does not accept an array of conditions `[["fieldId", "=", 6008205]]` as in the [REST 3.0 overview](../../../rest-v3.md#filter) and returns the error "Filter for required field `fieldId` is required".
 
 {% endnote %}
 

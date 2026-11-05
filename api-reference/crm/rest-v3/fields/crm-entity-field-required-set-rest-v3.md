@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The `crm.<type>.field.required.set` method makes a field required in the entire pipeline or at selected stages and returns the new configuration. The object type is set by the `<type>` segment of the method name.
+The `crm.<type>.field.required.set` method makes a field required in the entire pipeline or at selected stages and returns the new configuration. For example, if the "Contract number" field is required at the "Approval" stage, an item cannot be moved to this stage in the card while the field is empty. The object type is set by the `<type>` segment of the method name.
 
 ## Method Name for the Object Type
 
@@ -60,7 +60,7 @@ Bitrix24 stores the field requirement separately for each pipeline. Whether to p
 #|
 || **Object type** | **categoryId** ||
 || Deal, contact, company | Required. The default pipeline is set by `0`, other pipelines by their IDs from the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) method ||
-|| SPA | Required. The pipeline ID from the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) method. If pipelines are disabled in the type, the SPA has no pipeline methods: the ID of its only pipeline is returned by the [crm.category.list](../../universal/category/crm-category-list.md) method with the `entityTypeId` of the SPA ||
+|| SPA | Required. The pipeline ID is returned by the [crm.&lt;type&gt;.category.list](../categories/crm-entity-category-list-rest-v3.md) method. If pipelines are disabled in the type, the SPA has one pipeline and no pipeline methods. The ID of this pipeline is returned by the [crm.category.list](../../universal/category/crm-category-list.md) method with the `entityTypeId` of the SPA ||
 || Invoice | Required. The invoice pipeline ID is returned by the [crm.category.list](../../universal/category/crm-category-list.md) method with `entityTypeId` = `31`: REST 3.0 has no pipeline method for invoices ||
 || Lead, estimate | Not passed ||
 |#
@@ -75,13 +75,19 @@ The requirement mode depends on this parameter:
 - a non-empty array is passed — the field is required only at the specified stages, mode `stages`
 - an empty array `[]` is passed — the method removes the requirement, mode `none`
 
-Pass stages as strings and only from the `categoryId` pipeline. Deal and SPA stages are returned by the [crm.&lt;type&gt;.category.stage.list](../categories/crm-entity-category-stage-list-rest-v3.md) method. Lead, estimate, and invoice stages are returned by the [crm.status.list](../../status/crm-status-list.md) method with `ENTITY_ID` = `STATUS`, `QUOTE_STATUS`, and `SMART_INVOICE_STAGE_<categoryId>`. Contacts and companies have no stages: for them, the method makes the field required in the entire pipeline.
+Pass stages as strings and only from the `categoryId` pipeline. Deal and SPA stages are returned by the [crm.&lt;type&gt;.category.stage.list](../categories/crm-entity-category-stage-list-rest-v3.md) method. Lead, estimate, and invoice stages are returned by the [crm.status.list](../../status/crm-status-list.md) method. The `ENTITY_ID` value for it depends on the object type:
+
+- lead — `STATUS`
+- estimate — `QUOTE_STATUS`
+- invoice — `SMART_INVOICE_STAGE_<categoryId>`
+
+Contacts and companies have no stages: for them, the method makes the field required in the entire pipeline.
 
 The new configuration replaces the previous one. To add a stage, pass the entire list of stages again.
 
 {% note warning "" %}
 
-REST 3.0 item methods do not check this requirement. For example, if a field is required in the `all` mode, the [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md) method still creates an item without this field, and [crm.&lt;type&gt;.update](../items/crm-entity-update-rest-v3.md) moves an item to a stage where the field is required.
+By default, REST 3.0 item methods do not check a requirement set by this method. For example, if a field is required in the `all` mode, the [crm.&lt;type&gt;.add](../items/crm-entity-add-rest-v3.md) method still creates an item without this field, and [crm.&lt;type&gt;.update](../items/crm-entity-update-rest-v3.md) moves an item to a stage where the field is required. To make the methods check requirements, enable the "Validate required custom fields in REST" option in the CRM settings.
 
 {% endnote %}
 
