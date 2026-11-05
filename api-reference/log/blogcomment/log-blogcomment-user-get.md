@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `log.blogcomment.user.get` returns a list of comments on a News Feed post for the specified user and information about attached files.
+The method `log.blogcomment.user.get` returns a user's comments on News Feed posts and information about the files attached to them.
 
 ## Method Parameters
 
@@ -23,17 +23,17 @@ The method `log.blogcomment.user.get` returns a list of comments on a News Feed 
 || **Name**
 `type` | **Description** ||
 || **USER_ID**
-[`integer`](../../data-types.md) | The identifier of the user whose comments need to be retrieved. If the identifier is not specified, the method will return comments from the current user.
+[`integer`](../../data-types.md) | The identifier of the user whose comments need to be retrieved. If the parameter is not passed or is passed by a non-administrator, the comments of the current user are returned.
 
-If the request is made by an administrator on behalf of another user, the `text` field in the response may be empty.
+Only an administrator can retrieve another user's comments. For these comments, the `text` field is empty unless the comment is a system comment, in which case it contains the system text.
 
 The user identifier can be obtained using the [user.get](../../user/user-get.md) or [user.search](../../user/user-search.md) methods. ||
 || **FIRST_ID**
-[`integer`](../../data-types.md) | The method will return comments with identifiers greater than the specified value. ||
+[`integer`](../../data-types.md) | The method returns comments whose `id` is greater than this value. Do not pass `comment_id` here: it is a different identifier ||
 || **LAST_ID**
-[`integer`](../../data-types.md) | The method will return comments with identifiers less than the specified value. ||
+[`integer`](../../data-types.md) | The method returns comments whose `id` is less than this value. If `FIRST_ID` is also passed, the method uses only `FIRST_ID` ||
 || **LIMIT**
-[`integer`](../../data-types.md) | The number of records in the response. The maximum value is `1000`; a larger value is replaced with `1000`. By default, `100` comments are returned. ||
+[`integer`](../../data-types.md) | How many comments to return, from `1` to `1000`. The default is `100`. The method replaces a larger value with `1000` ||
 |#
 
 ## Code Examples
@@ -48,7 +48,7 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"USER_ID":28,"FIRST_ID":215,"LAST_ID":216}' \
+    -d '{"USER_ID":28,"FIRST_ID":215}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/log.blogcomment.user.get
     ```
 
@@ -58,7 +58,7 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"USER_ID":28,"FIRST_ID":215,"LAST_ID":216,"auth":"**put_access_token_here**"}' \
+    -d '{"USER_ID":28,"FIRST_ID":215,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/log.blogcomment.user.get
     ```
 
@@ -77,7 +77,7 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
       COMMENTS: {
         id: number
         comment_id: number
-        log_id: number
+        post_id: number
         date: ISODate
         text: string
         attach: number[]
@@ -89,13 +89,14 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
         type: string
         name: string
         size: number
-        image?: {
+        // Image or video preview size; false for other files
+        image: {
           width: number
           height: number
-        }
+        } | false
         authorId: number
         authorName: string
-        urlPreview: string
+        urlPreview: string | null
         urlShow: string
         urlDownload: string
       }>
@@ -107,7 +108,6 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
         params: {
           USER_ID: 28,
           FIRST_ID: 215,
-          LAST_ID: 216,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -141,7 +141,6 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
             params: {
               USER_ID: 28,
               FIRST_ID: 215,
-              LAST_ID: 216,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -173,7 +172,6 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
         bitrix_response = client.log.blogcomment.user.get(
             user_id=28,
             first_id=215,
-            last_id=216,
         ).response
         result = bitrix_response.result
         print(result)
@@ -189,6 +187,7 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -200,7 +199,6 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
                 [
                     'USER_ID' => 28,
                     'FIRST_ID' => 215,
-                    'LAST_ID' => 216,
                 ]
             );
 
@@ -219,8 +217,7 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
     ```js
     BX24.callMethod('log.blogcomment.user.get', {
         USER_ID: 28,
-        FIRST_ID: 215,
-        LAST_ID: 216
+        FIRST_ID: 215
     },
     function(result) {
             if (result.error()) {
@@ -242,11 +239,10 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
         [
             'USER_ID'  => 28,
             'FIRST_ID' => 215,
-            'LAST_ID'  => 216,
         ]
     );
 
-    if (!empty($result['error'])) {
+    if (array_key_exists('error', $result)) {
         echo 'Error: ' . $result['error_description'];
     } else {
         echo 'Comments: ' . print_r($result['result'], true);
@@ -260,7 +256,6 @@ The user identifier can be obtained using the [user.get](../../user/user-get.md)
     res, err := client.Core().Call(ctx, "log.blogcomment.user.get", b24.Params{
     	"USER_ID":  28,
     	"FIRST_ID": 215,
-    	"LAST_ID":  216,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("log.blogcomment.user.get: %w", err)
@@ -283,8 +278,8 @@ HTTP Status: **200**
             {
                 "id": 4821,
                 "comment_id": 4821,
-                "log_id": 13579,
-                "date": "2025-01-28T11:05:42+02:00",
+                "post_id": 13579,
+                "date": "2024-10-14T11:05:42+02:00",
                 "text": "I support the idea!",
                 "attach": [
                     90210
@@ -294,7 +289,7 @@ HTTP Status: **200**
         "FILES": {
             "90210": {
                 "id": 90210,
-                "date": "2025-01-28T11:02:18+02:00",
+                "date": "2024-10-14T11:02:18+02:00",
                 "type": "image",
                 "name": "diagram.png",
                 "size": 184320,
@@ -315,8 +310,8 @@ HTTP Status: **200**
         "finish": 1728905100.498321,
         "duration": 0.38608813285827637,
         "processing": 0.14598798751831055,
-        "date_start": "2025-10-14T12:45:00+02:00",
-        "date_finish": "2025-10-14T12:45:00+02:00",
+        "date_start": "2024-10-14T14:25:00+02:00",
+        "date_finish": "2024-10-14T14:25:00+02:00",
         "operating": 0
     }
 }
@@ -328,27 +323,73 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | The root object of the response. Contains an array of comments and information about attached files. ||
+[`object`](../../data-types.md) | The root object of the response. Contains an array of comments and information about attached files [(detailed description)](#result) ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request. ||
 |#
 
-### Structure of the `result` Object
+#### Object result {#result}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **COMMENTS**
-[`object[]`](../../data-types.md) | An array of comments. Each element contains fields:
-- `id`, `comment_id`, `log_id`, `date` — in ISO 8601 format
-- `text` and `attach` — an array of file identifiers from the `FILES` array. ||
+[`object[]`](../../data-types.md) | Array of the user's comments, from newest to oldest: in descending order of `comment_id`. The element structure is described [below](#comments) ||
 || **FILES**
-[`object`](../../data-types.md) | An associative array describing the files, where the key is the identifier of the Drive object. If there are no files, an empty array `[]` is returned. For each file, `id`, `date`, `type`, `name`, `size`, author information, and direct links `urlPreview`, `urlShow`, `urlDownload` are provided. ||
+[`object`](../../data-types.md) \| [`array`](../../data-types.md) | Files attached to the comments, in the format `{"<file identifier>": {…}}`. The key is the Drive file identifier from the comment's `attach` array. The file structure is described [below](#files).
+
+If there are no files, an empty array `[]` is returned ||
+|#
+
+#### COMMENTS Array Element {#comments}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the comment record in the News Feed. This is the value passed in `FIRST_ID` and `LAST_ID` ||
+|| **comment_id**
+[`integer`](../../data-types.md) | Identifier of the comment itself. Pass it to the [log.blogcomment.delete](./log-blogcomment-delete.md) method ||
+|| **post_id**
+[`integer`](../../data-types.md) | Identifier of the News Feed post the comment was left on ||
+|| **date**
+[`datetime`](../../data-types.md) | Comment creation date and time in ISO 8601 format ||
+|| **text**
+[`string`](../../data-types.md) | Comment text. If an administrator retrieves another user's comments, the text is empty, except for system comments ||
+|| **attach**
+[`integer[]`](../../data-types.md) | Identifiers of the Drive files attached to the comment. The files are described in the `FILES` object ||
+|#
+
+#### File Object in FILES {#files}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | Drive file identifier ||
+|| **date**
+[`datetime`](../../data-types.md) | File upload date and time in ISO 8601 format ||
+|| **type**
+[`string`](../../data-types.md) | File type: `image` — image, `video` — video, `file` — other file ||
+|| **name**
+[`string`](../../data-types.md) | File name ||
+|| **size**
+[`integer`](../../data-types.md) | File size in bytes ||
+|| **image**
+[`object`](../../data-types.md) \| [`boolean`](../../data-types.md) | Dimensions of the image or video preview: `width` and `height` — width and height in pixels, integers. For other files, `false` ||
+|| **authorId**
+[`integer`](../../data-types.md) | Identifier of the user who uploaded the file ||
+|| **authorName**
+[`string`](../../data-types.md) | Name of the user who uploaded the file ||
+|| **urlPreview**
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Link to the file preview. If there is no preview, `null` is returned ||
+|| **urlShow**
+[`string`](../../data-types.md) | Link to view the image. For other files, it matches the download link ||
+|| **urlDownload**
+[`string`](../../data-types.md) | Link to download the file ||
 |#
 
 ## Error Handling
-
-If the user identifier is not specified or an incorrect value is provided, the method returns comments from the current user.
 
 {% include notitle [error handling](../../../_includes/error-info.md) %}
 
@@ -356,6 +397,7 @@ If the user identifier is not specified or an incorrect value is provided, the m
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./log-blogcomment-add.md)
 - [{#T}](./log-blogcomment-get.md)
 - [{#T}](./log-blogcomment-delete.md)

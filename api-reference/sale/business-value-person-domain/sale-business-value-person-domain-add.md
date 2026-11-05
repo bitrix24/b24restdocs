@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.businessValuePersonDomain.add` adds correspondence for the selected payer type to a natural or legal person. This is necessary for the operation of the business meanings mechanism.
+The method `sale.businessValuePersonDomain.add` sets the correspondence of a payer type to a natural or legal person. Without a correspondence, the payer type is not included in the business meanings settings.
 
 ## Method Parameters
 
@@ -23,10 +23,10 @@ The method `sale.businessValuePersonDomain.add` adds correspondence for the sele
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for creating correspondence to a natural or legal person ||
+[`object`](../../data-types.md) | Fields of the new correspondence [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -34,11 +34,11 @@ The method `sale.businessValuePersonDomain.add` adds correspondence for the sele
 || **Name**
 `type` | **Description** ||
 || **personTypeId***
-[`sale_person_type.id`](../data-types.md) | Identifier for the payer type. 
+[`sale_person_type.id`](../data-types.md) | Identifier for the payer type.
 
 You can obtain the identifiers for payer types using the method [sale.persontype.list](../person-type/sale-person-type-list.md) ||
 || **domain***
-[`string`](../../data-types.md) | Value corresponding to the payer type: natural or legal person.
+[`string`](../../data-types.md) | Who pays under this payer type:
 - `I` — natural person
 - `E` — legal person ||
 |#
@@ -51,8 +51,8 @@ You can obtain the identifiers for payer types using the method [sale.persontype
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"personTypeId":3,"domain":"I"}}' \
@@ -61,8 +61,8 @@ You can obtain the identifiers for payer types using the method [sale.persontype
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"personTypeId":3,"domain":"I"},"auth":"**put_access_token_here**"}' \
@@ -180,7 +180,55 @@ You can obtain the identifiers for payer types using the method [sale.persontype
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
+
+    ```php
+    try {
+        $response = $b24Service
+            ->core
+            ->call(
+                'sale.businessValuePersonDomain.add',
+                [
+                    'fields' => [
+                        'personTypeId' => 3,
+                        'domain'       => 'I',
+                    ],
+                ]
+            );
+
+        $result = $response
+            ->getResponseData()
+            ->getResult();
+
+        print_r($result);
+    } catch (Throwable $e) {
+        echo $e->getMessage();
+    }
+    ```
+
+- BX24.js
+
+    ```js
+    BX24.callMethod(
+        'sale.businessValuePersonDomain.add',
+        {
+            fields: {
+                personTypeId: 3,
+                domain: 'I'
+            }
+        },
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
+        }
+    );
+    ```
+
+- PHP CRest
 
     ```php
     require_once('crest.php');
@@ -228,9 +276,11 @@ HTTP Status: **200**
 
 ```json
 {
-    "businessValuePersonDomain": {
-        "domain": "I",
-        "personTypeId": 3
+    "result": {
+        "businessValuePersonDomain": {
+            "domain": "I",
+            "personTypeId": 3
+        }
     },
     "time": {
         "start": 1712325642.686926,
@@ -250,11 +300,18 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Root element of the response ||
-|| **businessValuePersonDomain**
-[`sale_business_value_person_domain`](../data-types.md) | Object containing information about the added correspondence of the payer type to a natural or legal person ||
+[`object`](../../data-types.md) | Root element of the response [(detailed description)](#result) ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **businessValuePersonDomain**
+[`sale_business_value_person_domain`](../data-types.md#sale_business_value_person_domain) | The added correspondence ||
 |#
 
 ## Error Handling
@@ -263,7 +320,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": 201450000001,
+    "error": "201450000001",
     "error_description": "Duplicate entry for key [personTypeId]"
 }
 ```
@@ -273,19 +330,19 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201250000001` | Correspondence for the specified payer type identifier already exists ||
-|| `201240400002` | Payer type with the specified identifier does not exist ||
-|| `200040300020` | Access error to the record ||
-|| `100` | Parameter `fields` is not specified or is empty ||
-|| `0` | Required fields are not provided ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `201450000001` | Duplicate entry for key [personTypeId] | The payer type already has a correspondence. To change the domain, delete the correspondence using [sale.businessValuePersonDomain.deleteByFilter](./sale-business-value-person-domain-delete-by-filter.md) and add it again ||
+|| `400` | `201440400002` | person type is not exists | The payer type with the specified identifier does not exist ||
+|| `400` | `200040300020` | Access Denied | No permission to change the correspondence ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `0` | Required fields: `list of fields` | The required fields `personTypeId` or `domain` are not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-business-value-person-domain-list.md)
 - [{#T}](./sale-business-value-person-domain-delete-by-filter.md)
 - [{#T}](./sale-business-value-person-domain-get-fields.md)

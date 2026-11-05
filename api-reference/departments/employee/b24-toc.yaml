@@ -5,7 +5,7 @@ items:
     href: index.md
   - name: Find Employees
     href: humanresources-employee-search.md
-  - name: Get Employee Subordinates
+  - name: Get the Number of Employee Subordinates by Department
     href: humanresources-employee-subordinates.md
   - name: Get Number of Employees
     href: humanresources-employee-count.md

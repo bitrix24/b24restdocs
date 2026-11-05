@@ -9,9 +9,12 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-When creating a [payer type](../person-type/index.md), you can specify any name, but you need to define the status: 
-- `I` — individual,
-- `E` — legal entity.
+A [payer type](../person-type/index.md) can have any name, so the name does not tell you who pays — a person or a company. Who pays is defined by the mapping of the payer type to an individual or legal entity. In the REST API, this is the `businessValuePersonDomain` object. Each payer type can have one mapping. Its value is called the domain:
+
+- `I` — individual
+- `E` — legal entity
+
+The domain is used for order export to an ERP system and for the business meanings settings. Business meanings match order data to the fields that payment systems require. A payer type without a mapping is not included in the business meanings settings.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -19,21 +22,21 @@ When creating a [payer type](../person-type/index.md), you can specify any name,
 
 ## Relationship of Payer Type Statuses with Other Objects
 
-**Payer Types.** Specify the payer type for which you are configuring the correspondence to an individual or legal entity. You can access the available payer types using the method [sale.persontype.list](../person-type/sale-person-type-list.md).
+**Payer Types.** A mapping is set for a payer type: pass its ID in the `personTypeId` field. The [sale.persontype.list](../person-type/sale-person-type-list.md) method returns the IDs of payer types.
 
 ## How to Get Started
 
-1. Retrieve the list of payer types using [sale.persontype.list](../person-type/sale-person-type-list.md).
-2. Select the domain value: `I` for an individual or `E` for a legal entity.
-3. Create a mapping using [sale.businessValuePersonDomain.add](./sale-business-value-person-domain-add.md).
-4. Check the list of mappings using [sale.businessValuePersonDomain.list](./sale-business-value-person-domain-list.md).
-5. If the mapping is no longer needed, delete it using [sale.businessValuePersonDomain.deleteByFilter](./sale-business-value-person-domain-delete-by-filter.md).
+1. Retrieve the list of payer types using [sale.persontype.list](../person-type/sale-person-type-list.md)
+2. Check which fields a mapping requires using [sale.businessValuePersonDomain.getFields](./sale-business-value-person-domain-get-fields.md)
+3. Check whether the payer type already has a mapping using [sale.businessValuePersonDomain.list](./sale-business-value-person-domain-list.md)
+4. Create a mapping using [sale.businessValuePersonDomain.add](./sale-business-value-person-domain-add.md): `I` for an individual or `E` for a legal entity
+5. To change the domain, delete the mapping using [sale.businessValuePersonDomain.deleteByFilter](./sale-business-value-person-domain-delete-by-filter.md) and create it again: there is no update method
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: depends on the method
 
 #| 
 || **Method** | **Description** ||

@@ -1,4 +1,4 @@
-# Get Subordinates of Employee humanresources.employee.subordinates
+# Get the Number of Employee Subordinates by Department humanresources.employee.subordinates
 
 {% note tip "" %}
 
@@ -19,7 +19,11 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `humanresources.employee.subordinates` returns the number of subordinates of the user by departments.
+The method `humanresources.employee.subordinates` returns the number of the user's subordinates in each department where the user is a head or deputy head. The method does not return the list of subordinates.
+
+Subordinates are all employees of the department and its child departments, except the user from the request. The method does not take teams into account. If the user does not manage anyone, the `departments` array is empty.
+
+The response excludes departments that are not visible to the user on whose behalf the method is called.
 
 ## Method Parameters
 
@@ -29,7 +33,7 @@ The method `humanresources.employee.subordinates` returns the number of subordin
 || **Name**
 `type` | **Description** ||
 || **id***
-[`integer`](../../data-types.md) | Identifier of the user for whom to get subordinates.
+[`integer`](../../data-types.md) | Identifier of the user whose subordinates you need to count.
 
 The identifier can be obtained using the [user.get](../../user/user-get.md) method ||
 |#
@@ -174,9 +178,10 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -203,7 +208,7 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -220,7 +225,7 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -308,20 +313,31 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
-|| **userId**
+|| **result.userId**
 [`integer`](../../data-types.md) | Identifier of the user from the request ||
-|| **departments[]**
-[`array`](../../data-types.md) | Array of departments with the number of the user's subordinates ||
-|| **departments[].nodeId**
-[`integer`](../../data-types.md) | Identifier of the department ||
-|| **departments[].name**
-[`string`](../../data-types.md) | Name of the department ||
-|| **departments[].role**
-[`string`](../../data-types.md) | User's role in the department ||
-|| **departments[].subordinatesCount**
-[`integer`](../../data-types.md) | Number of the user's subordinates in the department ||
+|| **result.departments**
+[`object[]`](../../data-types.md) | Departments where the user is a head or deputy. [Element fields](#departments). If there are no such departments, the array is empty ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Departments Array Element {#departments}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **nodeId**
+[`integer`](../../data-types.md) | Identifier of the department ||
+|| **name**
+[`string`](../../data-types.md) | Name of the department ||
+|| **role**
+[`string`](../../data-types.md) | User's role in the department:
+- `HEAD` — head
+- `DEPUTY_HEAD` — deputy head
+
+If the user is both the head and the deputy in the department, `HEAD` is returned ||
+|| **subordinatesCount**
+[`integer`](../../data-types.md) | Number of subordinates: unique employees of the department and its child departments, excluding the user ||
 |#
 
 ## Error Handling
@@ -336,7 +352,7 @@ HTTP Status: **400**
         "validation": [
             {
                 "message": "Parameter \"id\" is required and must be a positive integer.",
-                "field": "id"
+                "field": "INVALID_ID"
             }
         ]
     }
@@ -354,7 +370,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error Description** | **How to Fix** ||
 || `id` | Required field `id` is not specified | Provide the user identifier ||
-|| `id` | Parameter `"id"` is required and must be a positive integer | Provide a positive user identifier ||
+|| `INVALID_ID` | Parameter `"id"` is required and must be a positive integer. | Provide a positive user identifier ||
 |#
 
 #### Access Errors
@@ -363,7 +379,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | Ensure that the current user is an employee of Bitrix24 ||
+|| `-` | Access denied | Ensure that the current user is linked to a department in the company structure ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

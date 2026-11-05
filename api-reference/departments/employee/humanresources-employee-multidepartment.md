@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `humanresources.employee.multidepartment` returns employees who belong to multiple departments.
+The method `humanresources.employee.multidepartment` returns employees who belong to multiple departments, along with the list of these departments for each employee. A single call returns all such employees of the company. Departments are counted regardless of the current user's permissions.
 
 ## Method Parameters
 
@@ -76,7 +76,7 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
       employees: {
         userId: number
         name: string
-        workPosition: string
+        workPosition: string | null
         departments: {
           id: number
           name: string
@@ -163,9 +163,10 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -190,7 +191,7 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -205,7 +206,7 @@ https://{installation_address}/rest/api/{user_id}/{webhook_token}/humanresources
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -251,7 +252,7 @@ HTTP Status: **200**
             {
                 "userId": 7,
                 "name": "John Smith",
-                "workPosition": "",
+                "workPosition": null,
                 "departments": [
                     {
                         "id": 15,
@@ -301,27 +302,43 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
-|| **employees**
-[`array`](../../data-types.md) | Array of employees who belong to multiple departments ||
-|| **employees[].userId**
-[`integer`](../../data-types.md) | User identifier ||
-|| **employees[].name**
-[`string`](../../data-types.md) | Employee name ||
-|| **employees[].workPosition**
-[`string`](../../data-types.md) | Employee position ||
-|| **employees[].departments[]**
-[`array`](../../data-types.md) | Array of employee departments ||
-|| **employees[].departments[].id**
-[`integer`](../../data-types.md) | Department identifier ||
-|| **employees[].departments[].name**
-[`string`](../../data-types.md) | Department name ||
-|| **total**
-[`integer`](../../data-types.md) | Number of found employees ||
+|| **result.employees**
+[`object[]`](../../data-types.md) | Employees who belong to multiple departments. [Element fields](#employees). If there are no such employees, the array is empty ||
+|| **result.total**
+[`integer`](../../data-types.md) | Number of employees in `employees` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
+#### Employees Array Element {#employees}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **userId**
+[`integer`](../../data-types.md) | User identifier ||
+|| **name**
+[`string`](../../data-types.md) | Employee's first and last name ||
+|| **workPosition**
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Employee position. If the position is not specified, `null` is returned ||
+|| **departments**
+[`object[]`](../../data-types.md) | Employee departments, excluding teams. Element fields:
+- `id` — department identifier, `integer`
+- `name` — department name, `string` ||
+|#
+
 ## Error Handling
+
+HTTP Status: **403**
+
+```json
+{
+    "error": {
+        "code": "BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION",
+        "message": "Access denied"
+    }
+}
+```
 
 {% include notitle [error handling](../../../_includes/error-info-v3.md) %}
 
@@ -333,7 +350,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | Ensure the current user is an employee of Bitrix24 ||
+|| `-` | Access denied | Ensure the current user is linked to a department in the company structure ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

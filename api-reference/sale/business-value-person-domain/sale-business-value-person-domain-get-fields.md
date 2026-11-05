@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`sale`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: user with access to the Online Store
 
-The method `sale.businessValuePersonDomain.getFields` retrieves fields corresponding to a natural or legal person.
+The method `sale.businessValuePersonDomain.getFields` returns a description of the correspondence fields `personTypeId` and `domain`: the field type, whether it is required, and whether it can be changed.
 
 No parameters.
 
@@ -25,8 +25,8 @@ No parameters.
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{}' \
@@ -35,8 +35,8 @@ No parameters.
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"auth":"**put_access_token_here**"}' \
@@ -141,6 +141,7 @@ No parameters.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -151,7 +152,7 @@ No parameters.
                 'sale.businessValuePersonDomain.getFields',
                 []
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -255,9 +256,9 @@ HTTP status: **200**
 || **result**
 [`object`](../../data-types.md) | Root element of the response ||
 || **businessValuePersonDomain**
-[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_business_value_person_domain`](../data-types.md), and `value` is an object of type [`rest_field_description`](../../data-types.md) ||
+[`object`](../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [`sale_business_value_person_domain`](../data-types.md#sale_business_value_person_domain), and `value` is an object of type [`rest_field_description`](../data-types.md#rest_field_description) ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -266,7 +267,7 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 200040300010,
+    "error": "200040300010",
     "error_description": "Access Denied"
 }
 ```
@@ -276,15 +277,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient permissions to read available fields of the entity ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | Insufficient permissions to read the correspondence fields ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-business-value-person-domain-add.md)
 - [{#T}](./sale-business-value-person-domain-list.md)
 - [{#T}](./sale-business-value-person-domain-delete-by-filter.md)

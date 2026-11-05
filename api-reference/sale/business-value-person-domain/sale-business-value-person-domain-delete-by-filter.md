@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: administrator
 
-The method `sale.businessValuePersonDomain.deleteByFilter` removes the correspondence with a natural or legal person.
+The method `sale.businessValuePersonDomain.deleteByFilter` removes the correspondence of a payer type with a natural or legal person. There is no update method: to change the domain, delete the correspondence and create it again using [sale.businessValuePersonDomain.add](./sale-business-value-person-domain-add.md).
 
 ## Method Parameters
 
@@ -23,24 +23,26 @@ The method `sale.businessValuePersonDomain.deleteByFilter` removes the correspon
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values for deleting the correspondence with a natural or legal person ||
+[`object`](../../data-types.md) | Fields of the correspondence to delete [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
-|| **Parameter**
+|| **Name**
 `type` | **Description** ||
 || **personTypeId***
-[`sale_person_type.id`](../data-types.md) | ID of the payer type. Unique parameter.
+[`sale_person_type.id`](../data-types.md) | ID of the payer type. Each payer type has only one correspondence.
 
 You can obtain the identifiers of payer types using the method [sale.persontype.list](../person-type/sale-person-type-list.md) ||
 || **domain***
-[`string`](../../data-types.md) | Value corresponding to the payer type: natural person or legal entity.
+[`string`](../../data-types.md) | The domain set for the payer type:
 - `I` — natural person
-- `E` — legal entity ||
+- `E` — legal entity
+
+If the domain does not match, the method returns the error `201440400003` ||
 |#
 
 ## Code Examples
@@ -51,8 +53,8 @@ You can obtain the identifiers of payer types using the method [sale.persontype.
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"personTypeId":3,"domain":"I"}}' \
@@ -61,8 +63,8 @@ You can obtain the identifiers of payer types using the method [sale.persontype.
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{"fields":{"personTypeId":3,"domain":"I"},"auth":"**put_access_token_here**"}' \
@@ -172,6 +174,7 @@ You can obtain the identifiers of payer types using the method [sale.persontype.
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -187,7 +190,7 @@ You can obtain the identifiers of payer types using the method [sale.persontype.
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -202,7 +205,7 @@ You can obtain the identifiers of payer types using the method [sale.persontype.
 
     ```js
     BX24.callMethod(
-        'sale.businessValuePersonDomain.deleteByFilter', 
+        'sale.businessValuePersonDomain.deleteByFilter',
         {
             fields: {
                 personTypeId: 3,
@@ -287,9 +290,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of deleting the correspondence with a natural or legal person ||
+[`boolean`](../../data-types.md) | `true` — the correspondence is deleted ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -298,8 +301,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": 201440400003,
-    "error_description": "business value person domain does not exist"
+    "error": "201440400003",
+    "error_description": "business value person domain is not exists"
 }
 ```
 
@@ -308,20 +311,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `201450000002` | Parameter `personTypeId` not provided ||
-|| `201450000003` | Parameter `domain` not provided ||
-|| `201440400003` | The specified `domain` does not exist for the given `personTypeId` ||
-|| `200040300020` | Access error for deletion ||
-|| `100` | Parameter `fields` not specified or empty ||
-|| `0` | Required parameter not specified ||
-|| `0` | Other errors (e.g., fatal errors) ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `201440400003` | business value person domain is not exists | The payer type has no correspondence with the specified `domain` ||
+|| `400` | `200040300020` | Access Denied | No permission to change the correspondence ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `0` | Required fields: `list of fields` | The required fields `personTypeId` or `domain` are not provided ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./sale-business-value-person-domain-add.md)
 - [{#T}](./sale-business-value-person-domain-list.md)
 - [{#T}](./sale-business-value-person-domain-get-fields.md)

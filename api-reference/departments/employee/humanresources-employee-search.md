@@ -19,7 +19,9 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `humanresources.employee.search` searches for employees by name.
+The method `humanresources.employee.search` searches for employees by name. By default, the search covers active Bitrix24 users, and the response contains no more than 30 employees. To search within a single department or team, pass its identifier in `nodeId`: the method then returns all found employees of that department, without the limit of 30.
+
+`departments` and `teams` include only the departments and teams visible to the user on whose behalf the method is called.
 
 ## Method Parameters
 
@@ -29,13 +31,13 @@ The method `humanresources.employee.search` searches for employees by name.
 || **Name**
 `type` | **Description** ||
 || **name***
-[`string`](../../data-types.md) | Search string for the employee's name ||
+[`string`](../../data-types.md) | A first name, last name, or part of either, for example, `John` ||
 || **nodeId**
-[`integer`](../../data-types.md) | Identifier of the department or team to limit the search.
+[`integer`](../../data-types.md) | Identifier of the department or team to search in.
 
 The identifier can be obtained using the [humanresources.node.list](../node/humanresources-node-list.md) method. ||
 || **select**
-[`array`](../../data-types.md) | List of employee fields to return.
+[`array`](../../data-types.md) | List of employee fields. The method validates the field names and returns an error for an unknown field. The response always contains all employee fields.
 
 Available fields:
 
@@ -98,7 +100,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
       items: {
         userId: number
         name: string
-        workPosition: string
+        workPosition: string | null
         avatar: string
         url: string
         departments: { id: number; name: string }[]
@@ -110,7 +112,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
       const response = await $b24.actions.v3.call.make<EmployeeSearchResult>({
         method: 'humanresources.employee.search',
         params: {
-          name: 'Ivan',
+          name: 'John',
           select: [
             'userId',
             'name',
@@ -151,7 +153,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           const response = await $b24.actions.v3.call.make({
             method: 'humanresources.employee.search',
             params: {
-              name: 'Ivan',
+              name: 'John',
               select: [
                 'userId',
                 'name',
@@ -217,9 +219,10 @@ The new API call differs by adding the `/api/` segment to the request URL:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -255,7 +258,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -281,7 +284,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -386,10 +389,33 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
-|| **items**
-[`array`](../../data-types.md) | Array of found employees. The structure of the element fields depends on `select` ||
+|| **result.items**
+[`array`](../../data-types.md) | Found employees. [Element fields](#items). If no one is found, the array is empty ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the execution time of the request ||
+|#
+
+#### Items Array Element {#items}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **userId**
+[`integer`](../../data-types.md) | User identifier ||
+|| **name**
+[`string`](../../data-types.md) | Employee name in the format configured in Bitrix24, for example, first and last name ||
+|| **workPosition**
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Position. If the position is not specified, `null` or an empty string is returned ||
+|| **avatar**
+[`string`](../../data-types.md) | Link to the avatar. If there is no photo, the default image from the Bitrix24 settings is returned, and if there is none, an empty string ||
+|| **url**
+[`string`](../../data-types.md) | Relative link to the employee's profile, for example, `/company/personal/user/7/` ||
+|| **departments**
+[`object[]`](../../data-types.md) | Employee's departments. Element fields:
+- `id` — department identifier, `integer`
+- `name` — department name, `string` ||
+|| **teams**
+[`object[]`](../../data-types.md) | Employee's teams in the same format as `departments`: `id` and `name`. If the employee does not belong to any team, the array is empty ||
 |#
 
 ## Error Handling
@@ -404,7 +430,7 @@ HTTP Status: **400**
         "validation": [
             {
                 "message": "Parameter \"name\" is required.",
-                "field": "name"
+                "field": "MISSING_NAME"
             }
         ]
     }
@@ -421,7 +447,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `name` | Parameter `"name"` is required. | Provide a search string ||
+|| `MISSING_NAME` | Parameter `"name"` is required. | Pass a non-empty search string in `name` ||
 |#
 
 #### Errors in the `select` Parameter
@@ -446,7 +472,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | Ensure that the current user is an employee of Bitrix24 ||
+|| `-` | Access denied | Ensure that the current user is linked to a department in the company structure ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
