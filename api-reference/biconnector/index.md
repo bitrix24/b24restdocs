@@ -175,6 +175,7 @@ The methods return neither the total number of items nor a link to the next page
 || [biconnector.table.fields.update](./table/biconnector-table-fields-update.md) | Updates the column set of the table ||
 || [biconnector.table.fields](./table/biconnector-table-fields.md) | Returns the description of the table fields ||
 |#
+
 ## Continue Learning
 
 - [{#T}](./connector/index.md)

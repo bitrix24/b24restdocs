@@ -1361,6 +1361,7 @@ Can be used to synchronize the current catalog section with a similar position i
 || **quantityReserved**
 [`double`](../data-types.md) | Quantity of the product in reserve. `null` if not set ||
 |#
+
 ### catalog_vat
 
 #|

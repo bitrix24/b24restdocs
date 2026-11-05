@@ -161,6 +161,7 @@ By default, only the Bitrix24 administrator can edit the catalog and configure a
 || [Working with CRM Vendors](./documentcontractor/index.md) | Methods for working with vendors in inventory accounting documents ||
 || [Inventory Management Vendors](./contractor/index.md) | Methods for working with the inventory management vendor directory ||
 |#
+
 ### Events {#events}
 
 You can subscribe to events from an application using the [event.bind](../events/event-bind.md) method. Each object has three events: add, update, and delete.
