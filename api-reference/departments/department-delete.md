@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with rights to modify the structure
 
-The method `department.delete` removes a department from the company structure.
+The `department.delete` method deletes a department from the company structure. Child departments remain and move to the department one level up.
+
+The method belongs to the previous API version. A department cannot be deleted in REST 3.0. Method correspondence is described in the [section overview](./index.md#v2-v3).
 
 ## Method Parameters
 
@@ -23,7 +25,9 @@ The method `department.delete` removes a department from the company structure.
 || **Name**
 `type` | **Description** ||
 || **ID***
-[`integer`](../data-types.md) | Identifier of the department ||
+[`integer`](../data-types.md) | Identifier of the department.
+
+The identifier can be retrieved using [department.get](./department-get.md) ||
 |#
 
 ## Code Examples
@@ -34,53 +38,106 @@ The method `department.delete` removes a department from the company structure.
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":18}' \
+    -d '{
+        "ID": 18
+    }' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/department.delete
     ```
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"ID":18,"auth":"**put_access_token_here**"}' \
+    -d '{
+        "ID": 18,
+        "auth": "**put_access_token_here**"
+    }' \
     https://**put_your_bitrix24_address**/rest/department.delete
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		"department.delete", {
-    			"ID": 18
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.info(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<boolean>({
+        method: 'department.delete',
+        params: {
+          ID: 18,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Deleted:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error('Error:', error);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function deleteDepartment() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'department.delete',
+            params: {
+              ID: 18,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Deleted:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', deleteDepartment)
+    </script>
     ```
 
 - Python
 
     ```python
-
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.department.delete(
-            bitrix_id=42,
+            bitrix_id=18,
         ).response
         result = bitrix_response.result
         print(result)
@@ -106,21 +163,17 @@ The method `department.delete` removes a department from the company structure.
             ->call(
                 'department.delete',
                 [
-                    'ID' => 18
+                    'ID' => 18,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting department: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -128,10 +181,13 @@ The method `department.delete` removes a department from the company structure.
 
     ```js
     BX24.callMethod(
-        "department.delete", {
-            "ID": 18
+        'department.delete',
+        {
+            ID: 18,
         },
         function(result) {
+            if (result.error()) {
+                console.error(result.error());
             } else {
                 console.info(result.data());
             }
@@ -147,7 +203,7 @@ The method `department.delete` removes a department from the company structure.
     $result = CRest::call(
         'department.delete',
         [
-            'ID' => 18
+            'ID' => 18,
         ]
     );
 
@@ -201,9 +257,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../data-types.md) | Result of the department deletion in the company structure ||
+[`boolean`](../data-types.md) | `true` if the department is deleted. On failure, the method returns an error ||
 || **time**
-[`time`](../data-types.md) | Information about the request execution time ||
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -212,8 +268,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":"ERROR_CORE",
-    "error_description":"Department not found"
+    "error": "510",
+    "error_description": "Department not found"
 }
 ```
 
@@ -222,15 +278,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `ERROR_CORE` | Department not found | The department to be deleted was not found ||
-|| `ERROR_CORE` | Access denied | Insufficient rights to delete the department ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `510` | Department not found | `ID` is not passed, or there is no department with this identifier ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to change the company structure ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./department-add.md)
 - [{#T}](./department-update.md)
 - [{#T}](./department-get.md)

@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: user with rights to modify the structure
 
-The method `department.add` adds a new department to the company's structure.
+The `department.add` method creates a department in the company structure and returns its identifier. The new department belongs to the parent department specified in `PARENT`.
+
+The method belongs to the previous API version. The REST 3.0 counterpart is [humanresources.node.add](./node/humanresources-node-add.md); method correspondence is described in the [section overview](./index.md#v2-v3).
 
 ## Method Parameters
 
@@ -29,9 +31,13 @@ The method `department.add` adds a new department to the company's structure.
 || **PARENT***
 [`integer`](../data-types.md) | Identifier of the parent department.
 
-Pass a number. If the parameter is not passed, the method returns the `Argument 'PARENT' is null or empty` error. If a non-numeric string is passed, including an empty one, the method returns the `PARENT must be numeric.` error ||
+Pass a number. If the parameter is not passed, the method returns the `Argument 'PARENT' is null or empty` error. If a non-numeric string is passed, including an empty one, the method returns the `PARENT must be numeric.` error
+
+The department identifier can be retrieved using [department.get](./department-get.md) ||
 || **UF_HEAD**
-[`integer`](../data-types.md) | Identifier of the user who will become the head of the department ||
+[`integer`](../data-types.md) | Identifier of the user who will become the head of the department. The method does not check whether such a user exists in Bitrix24: with a non-existent identifier, the department is created without an error, and this identifier is retained in `UF_HEAD`.
+
+The user identifier can be retrieved using [user.get](../user/user-get.md) ||
 |#
 
 ## Code Examples
@@ -42,71 +48,121 @@ Pass a number. If the parameter is not passed, the method returns the `Argument 
 
 - cURL (Webhook)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{
-        "NAME": "Muggle Studies Department",
+        "NAME": "Regional Sales Department",
         "SORT": 450,
         "UF_HEAD": 1,
-        "PARENT": 15
+        "PARENT": 1
     }' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/department.add
     ```
 
 - cURL (OAuth)
 
-    ```curl
-    -X POST \
+    ```bash
+    curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -d '{
-        "NAME": "Muggle Studies Department",
+        "NAME": "Regional Sales Department",
         "SORT": 450,
         "UF_HEAD": 1,
-        "PARENT": 15,
+        "PARENT": 1,
         "auth": "**put_access_token_here**"
     }' \
     https://**put_your_bitrix24_address**/rest/department.add
     ```
 
-- JS
+- JS (TS)
 
-    ```js
-    try
-    {
-    	const response = await $b24.callMethod(
-    		'department.add',
-    		{
-    			"NAME": "Muggle Studies Department",
-    			"SORT": 450,
-    			"UF_HEAD": 1,
-    			"PARENT": 15
-    		}
-    	);
-    	
-    	const result = response.getData().result;
-    	console.log(result);
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import { Text } from '@bitrix24/b24jssdk'
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const response = await $b24.actions.v2.call.make<number>({
+        method: 'department.add',
+        params: {
+          NAME: 'Regional Sales Department',
+          SORT: 450,
+          UF_HEAD: 1,
+          PARENT: 1,
+        },
+        requestId: Text.getUuidRfc4122()
+      })
+
+      // The payload is available only on a successful response
+      if (!response.isSuccess) {
+        console.error(response.getErrorMessages().join('; '))
+      } else {
+        const result = response.getData()!.result
+        console.info('Created department ID:', result)
+      }
+    } catch (error) {
+      // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+      console.error(error)
     }
-    catch( error )
-    {
-    	console.error(error.ex);
-    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function addDepartment() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+
+          const response = await $b24.actions.v2.call.make({
+            method: 'department.add',
+            params: {
+              NAME: 'Regional Sales Department',
+              SORT: 450,
+              UF_HEAD: 1,
+              PARENT: 1,
+            },
+            requestId: B24Js.Text.getUuidRfc4122()
+          })
+
+          // The payload is available only on a successful response
+          if (!response.isSuccess) {
+            console.error(response.getErrorMessages().join('; '))
+            return
+          }
+
+          const result = response.getData().result
+          console.info('Created department ID:', result)
+        } catch (error) {
+          // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', addDepartment)
+    </script>
     ```
 
 - Python
 
     ```python
-
     from b24pysdk.errors import BitrixAPIError, BitrixSDKException
 
     try:
         bitrix_response = client.department.add(
             name="Regional Sales Department",
-            parent=1,
-            sort=500,
+            sort=450,
             uf_head=1,
+            parent=1,
         ).response
         result = bitrix_response.result
         print(result)
@@ -132,13 +188,13 @@ Pass a number. If the parameter is not passed, the method returns the `Argument 
             ->call(
                 'department.add',
                 [
-                    'NAME'   => 'Muggle Studies Department',
-                    'SORT'   => 450,
+                    'NAME'    => 'Regional Sales Department',
+                    'SORT'    => 450,
                     'UF_HEAD' => 1,
-                    'PARENT' => 15,
+                    'PARENT'  => 1,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -155,17 +211,17 @@ Pass a number. If the parameter is not passed, the method returns the `Argument 
     BX24.callMethod(
         'department.add',
         {
-            "NAME": "Muggle Studies Department",
-            "SORT": 450,
-            "UF_HEAD": 1,
-            "PARENT": 15
+            NAME: 'Regional Sales Department',
+            SORT: 450,
+            UF_HEAD: 1,
+            PARENT: 1,
         },
-        function(result)
-        {
-            if(result.error())
-                console.error(result.error().ex);
-            else
-                console.log(result.data());
+        function(result) {
+            if (result.error()) {
+                console.error(result.error());
+            } else {
+                console.info(result.data());
+            }
         }
     );
     ```
@@ -178,10 +234,10 @@ Pass a number. If the parameter is not passed, the method returns the `Argument 
     $result = CRest::call(
         'department.add',
         [
-            'NAME' => 'Muggle Studies Department',
-            'SORT' => 450,
+            'NAME'    => 'Regional Sales Department',
+            'SORT'    => 450,
             'UF_HEAD' => 1,
-            'PARENT' => 15,
+            'PARENT'  => 1,
         ]
     );
 
@@ -195,10 +251,10 @@ Pass a number. If the parameter is not passed, the method returns the `Argument 
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "department.add", b24.Params{
-    	"NAME":    "Muggle Studies Department",
+    	"NAME":    "Regional Sales Department",
     	"SORT":    450,
     	"UF_HEAD": 1,
-    	"PARENT":  15,
+    	"PARENT":  1,
     })
     if err != nil {
     	return fmt.Errorf("department.add: %w", err)
@@ -240,7 +296,7 @@ HTTP status: **200**
 || **result**
 [`integer`](../data-types.md) | Identifier of the created department ||
 || **time**
-[`time`](../data-types.md) | Information about the execution time of the request ||
+[`time`](../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -249,8 +305,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error": "ERROR_CORE",
-    "error_description": "Department name not provided.\u003Cbr\u003E"
+    "error": "",
+    "error_description": "Incorrect parent section!<br>"
 }
 ```
 
@@ -259,18 +315,20 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| `ERROR_CORE` | Department name not provided.\u003Cbr\u003E | Required parameter `NAME` is missing ||
-|| `ERROR_ARGUMENT` | Argument 'PARENT' is null or empty | The required `PARENT` parameter is not passed. The response contains the `argument` field with the `PARENT` value ||
-|| `ERROR_ARGUMENT` | PARENT must be numeric. | A non-numeric string, including an empty one, is passed in `PARENT` ||
-|| `ERROR_CORE` | There can only be one top-level department in the company structure | Incorrect `PARENT` parameter specified ||
-|| `ERROR_CORE` | Access denied | Insufficient rights to add a department ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | `Section name is not specified.<br>` | The `NAME` parameter is not passed ||
+|| `400` | `ERROR_ARGUMENT` | Argument 'PARENT' is null or empty | The required `PARENT` parameter is not passed. The response contains the `argument` field with the `PARENT` value ||
+|| `400` | `ERROR_ARGUMENT` | PARENT must be numeric. | A non-numeric string, including an empty one, is passed in `PARENT` ||
+|| `400` | Empty value | `Incorrect parent section!<br>` | There is no department with the identifier from `PARENT` ||
+|| `400` | `ERROR_CORE` | The company structure may contain only one top level section. | `0` is passed in `PARENT`. There can be only one top-level department in the company structure ||
+|| `403` | `ACCESS_DENIED` | Access denied! | The user does not have permission to change the company structure ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./department-update.md)
 - [{#T}](./department-get.md)
 - [{#T}](./department-delete.md)

@@ -41,20 +41,21 @@ Available fields:
 - `departments` — employee departments
 - `teams` — employee teams ||
 || **select**
-[`array`](../../data-types.md) | List of description fields to return in the response.
+[`array`](../../data-types.md) | Which properties of the field description to return in the response. If `select` is not passed, the method returns all properties.
 
-Available fields:
+Available properties:
 
 - `name` — field name
 - `type` — data type
 - `title` — title
 - `description` — description
 - `validationRules` — validation rules
-- `requiredGroups` — required groups
-- `filterable` — filter availability indicator
-- `sortable` — sort availability indicator
-- `editable` — editability indicator
-- `multiple` — multiple value indicator
+- `requiredGroups` — operations in which the field is required
+- `filterable` — whether the field is available in the filter
+- `sortable` — whether the field is available for sorting
+- `editable` — whether the field can be changed
+- `editableGroups` — operations in which the field can be set
+- `multiple` — whether the field supports multiple values or a single value
 - `elementType` — element type for composite fields ||
 |#
 
@@ -243,9 +244,10 @@ The new API call differs by adding the `/api/` segment to the request URL:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -285,7 +287,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -315,7 +317,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -420,10 +422,43 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
-|| **item**
-[`object`](../../data-types.md) | Object with field description. The response structure depends on `select` ||
+|| **result.item**
+[`object`](../../data-types.md) | Description of the employee field. The [object properties](#item) depend on `select` ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Item Object {#item}
+
+The description contents depend on `select`; the table lists all properties that can be requested. Employee fields are read-only, so the flags are the same for all fields: for example, `editable` is `false` for all fields.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name**
+[`string`](../../data-types.md) | Field name: `userId`, `name`, `workPosition`, `avatar`, `url`, `departments`, `teams` ||
+|| **type**
+[`string`](../../data-types.md) | Field type: `int` for `userId`, `array` for `departments` and `teams`, `string` for the other fields ||
+|| **title**
+[`string`](../../data-types.md) | Field title. Matches `name` ||
+|| **description**
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Field description. `null` for all fields ||
+|| **validationRules**
+[`array`](../../data-types.md) | Validation rules. An empty array `[]` for all fields ||
+|| **requiredGroups**
+[`array`](../../data-types.md) \| [`null`](../../data-types.md) | Operations in which the field is required. `null` for all fields ||
+|| **filterable**
+[`boolean`](../../data-types.md) | `true` — the field is available in the filter, `false` — it is not. `false` for all fields ||
+|| **sortable**
+[`boolean`](../../data-types.md) | `true` — the field is available for sorting, `false` — it is not. `false` for all fields ||
+|| **editable**
+[`boolean`](../../data-types.md) | `true` — the field can be changed, `false` — it cannot. `false` for all fields ||
+|| **editableGroups**
+[`array`](../../data-types.md) \| [`null`](../../data-types.md) | Operations in which the field can be set. `null` for all fields ||
+|| **multiple**
+[`boolean`](../../data-types.md) | `true` — the field supports multiple values, `false` — a single value. `false` for all fields ||
+|| **elementType**
+[`string`](../../data-types.md) \| [`null`](../../data-types.md) | Element type of a composite field. `null` for all fields ||
 |#
 
 ## Error Handling
@@ -464,7 +499,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` for object `DtoFieldDto` | Provide only description fields from the list ||
+|| `select` | Unknown field `#FIELD#` found in entity `DtoFieldDto` | Pass in `select` only the properties listed in the parameter description ||
 |#
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
@@ -476,11 +511,11 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #### Data Not Found Errors
 
-Error Code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`
+Error Code: `BITRIX_REST_V3_REALISATION_EXCEPTION_FIELDNOTFOUNDEXCEPTION`, HTTP status: **404**
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `name` | Field `#FIELD#` not found | Specify an existing field name ||
+|| `name` | Field `#FIELD#` was not found | Specify one of the names listed for the `name` parameter ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

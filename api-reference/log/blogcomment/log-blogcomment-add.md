@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `log.blogcomment.add` adds a comment to a News Feed message.
+The method `log.blogcomment.add` adds a comment to a News Feed message and returns its identifier. If the user's comments on the message require moderator approval, the comment is stored but appears in the News Feed only after a moderator approves it.
 
 ## Method Parameters
 
@@ -27,11 +27,11 @@ The method `log.blogcomment.add` adds a comment to a News Feed message.
 
 The message identifier can be obtained using the method [log.blogpost.get](../log-blogpost-get.md) ||
 || **TEXT***
-[`string`](../../data-types.md) | The text of the comment. It is considered during duplication checks and is saved in the `POST_TEXT` field ||
+[`string`](../../data-types.md) | The text of the comment. It is saved in the `POST_TEXT` field. If an identical comment without files has already been published on the message, the method returns the `Duplicate comment` error ||
 || **FILES**
-[`array`](../../data-types.md) | An array of files described according to the [file handling rules](../../files/how-to-upload-files.md). Files will be uploaded to the user's Drive and linked to the comment ||
+[`array`](../../data-types.md) | An array of files in the format `[["file name", "content in Base64"]]` according to the [file handling rules](../../files/how-to-upload-files.md). The method uploads the files to the user's Drive and attaches them to the comment ||
 || **USER_ID**
-[`integer`](../../data-types.md) | Identifier of the user on behalf of whom the comment is published. Available only to administrators. By default, the current user initiating the method call is used.
+[`integer`](../../data-types.md) | Identifier of the user on behalf of whom the comment is published. By default, the user who called the method. The parameter is applied only if the method is called by an administrator.
 
 The user identifier can be obtained using the method [user.get](../../user/user-get.md) or [user.search](../../user/user-search.md) ||
 |#
@@ -180,6 +180,7 @@ The user identifier can be obtained using the method [user.get](../../user/user-
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -224,7 +225,7 @@ The user identifier can be obtained using the method [user.get](../../user/user-
                 'SXQncyBhIHRlc3QgZmlsZSBmb3IgQml0cml4IFJlc3QgQVBJLg==',
             ],
         ]
-    }, 
+    },
     function(result) {
             if (result.error()) {
                 console.error(result.error());
@@ -255,7 +256,7 @@ The user identifier can be obtained using the method [user.get](../../user/user-
         ]
     );
 
-    if (!empty($result['error'])) {
+    if (array_key_exists('error', $result)) {
         echo 'Error: ' . $result['error_description'];
     } else {
         echo 'Created comment ID: ' . $result['result'];
@@ -299,8 +300,8 @@ HTTP status: **200**
         "finish": 1728904800.398112,
         "duration": 0.2746560573577881,
         "processing": 0.10234594345092773,
-        "date_start": "2025-10-14T12:40:00+02:00",
-        "date_finish": "2025-10-14T12:40:00+02:00",
+        "date_start": "2024-10-14T14:20:00+02:00",
+        "date_finish": "2024-10-14T14:20:00+02:00",
         "operating": 0
     }
 }
@@ -330,22 +331,23 @@ HTTP status: **400**
 
 {% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `-` | `No blog module installed` | The `blog` module is not installed ||
-|| `-` | `No post found` | The News Feed message with the provided `POST_ID` was not found or is unavailable ||
-|| `-` | `No blog found` | Failed to retrieve the blog associated with the message ||
-|| `-` | `Duplicate comment` | A similar comment has already been published, checked only for posts without attachments ||
-|| `-` | `No permissions` | The user does not have permission to add a comment to the message ||
-|| `-` | `Blog comment hasn't been added` | Internal error while saving the comment ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | No blog module installed | The `blog` module is not installed ||
+|| `400` | Empty value | No post found | There is no News Feed message with the provided `POST_ID` ||
+|| `400` | Empty value | No blog found | Failed to retrieve the blog associated with the message ||
+|| `400` | Empty value | Duplicate comment | An identical comment has already been published. Checked only for comments without files ||
+|| `400` | Empty value | No permissions | The user does not have permission to add a comment to the message ||
+|| `400` | Empty value | Blog comment hasn't been added | The comment was not saved, for example due to an error in the input data ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./log-blogcomment-get.md)
 - [{#T}](./log-blogcomment-user-get.md)
 - [{#T}](./log-blogcomment-delete.md)

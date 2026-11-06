@@ -19,7 +19,7 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `humanresources.employee.count` returns the number of unique employees in the company structure.
+The method `humanresources.employee.count` returns the number of employees in the company structure. An employee who belongs to multiple departments is counted once.
 
 ## Method Parameters
 
@@ -150,9 +150,10 @@ The new API call differs by adding the `/api/` segment to the request URL:
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     try {
@@ -177,7 +178,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - BX24.js
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```js
     BX24.callMethod(
@@ -192,7 +193,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - PHP CRest
 
-    SDKs do not yet support the `/rest/api/` address in calls. Use direct HTTP requests, for example, via `curl` or `fetch`.
+    The SDK does not yet support calls to the `/rest/api/` address. Use a direct HTTP request, for example, via cURL or fetch.
 
     ```php
     require_once('crest.php');
@@ -256,13 +257,24 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../data-types.md) | Object with response data ||
-|| **total**
+|| **result.total**
 [`integer`](../../data-types.md) | Number of unique employees in the company structure ||
 || **time**
 [`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
+
+HTTP Status: **403**
+
+```json
+{
+    "error": {
+        "code": "BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION",
+        "message": "Access denied"
+    }
+}
+```
 
 {% include notitle [error handling](../../../_includes/error-info-v3.md) %}
 
@@ -274,7 +286,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ACCESSDENIEDEXCEPTION`
 
 #|
 || **Field** | **Error Description** | **How to Fix** ||
-|| `-` | Access denied | Ensure the current user is an employee of Bitrix24 ||
+|| `-` | Access denied | Ensure the current user is linked to a department in the company structure ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

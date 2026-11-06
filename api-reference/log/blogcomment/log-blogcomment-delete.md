@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`log`](../../scopes/permissions.md)
 >
-> Who can execute the method: the comment author or a user with full write access
+> Who can execute the method: the comment author or an administrator
 
-The method `log.blogcomment.delete` removes a comment from the News Feed.
+The method `log.blogcomment.delete` deletes a comment on a News Feed post.
 
 ## Method Parameters
 
@@ -23,11 +23,11 @@ The method `log.blogcomment.delete` removes a comment from the News Feed.
 || **Name**
 `type` | **Description** ||
 || **COMMENT_ID***
-[`integer`](../../data-types.md) | The identifier of the comment. The value must be greater than `0`.
+[`integer`](../../data-types.md) | The identifier of the comment, greater than `0`.
 
-The comment identifier can be obtained using the method [log.blogcomment.add](./log-blogcomment-add.md) ||
+The [log.blogcomment.add](./log-blogcomment-add.md) method returns the identifier of a new comment. The identifiers of a user's comments are returned in the `comment_id` field of the [log.blogcomment.user.get](./log-blogcomment-user-get.md) method response ||
 || **USER_ID**
-[`integer`](../../data-types.md) | The identifier of the user performing the deletion. Available only to administrators. By default, the current user who initiated the call is used.
+[`integer`](../../data-types.md) | The identifier of the user on behalf of whom the deletion is performed. By default, the user who called the method. The parameter is applied only if the method is called by an administrator.
 
 The user identifier can be obtained using the method [user.get](../../user/user-get.md) or [user.search](../../user/user-search.md) ||
 |#
@@ -153,6 +153,7 @@ The user identifier can be obtained using the method [user.get](../../user/user-
     except Exception as error:
         print(f"Unexpected error: {error}")
     ```
+
 - PHP
 
     ```php
@@ -209,7 +210,7 @@ The user identifier can be obtained using the method [user.get](../../user/user-
         ]
     );
 
-    if (!empty($result['error'])) {
+    if (array_key_exists('error', $result)) {
         echo 'Error: ' . $result['error_description'];
     } else {
         echo 'Deleted: ' . print_r($result['result'], true);
@@ -249,8 +250,8 @@ HTTP status: **200**
         "finish": 1728901200.456789,
         "duration": 0.33333301544189453,
         "processing": 0.12000012397766113,
-        "date_start": "2025-10-14T11:40:00+02:00",
-        "date_finish": "2025-10-14T11:40:00+02:00",
+        "date_start": "2024-10-14T13:20:00+02:00",
+        "date_finish": "2024-10-14T13:20:00+02:00",
         "operating": 0
     }
 }
@@ -280,20 +281,21 @@ HTTP status: **400**
 
 {% include notitle [Error Handling](../../../_includes/error-info.md) %}
 
-### Possible Errors
+### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `-` | `Wrong comment ID` | An empty or incorrect comment identifier was provided ||
-|| `-`| `Blog module not installed` | The `blog` module is not installed ||
-|| `-` | `No delete perms` | The user does not have permission to delete the comment ||
-|| `-` | `No comment found` | A comment with the provided identifier was not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | Wrong comment ID | An empty or incorrect comment identifier was provided ||
+|| `400` | Empty value | Blog module not installed | The `blog` module is not installed ||
+|| `400` | Empty value | No delete perms | The user does not have permission to delete the comment. The same error is returned if the comment does not exist or has already been deleted: the method checks permissions before looking up the comment ||
 |#
 
 {% include [System Errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./log-blogcomment-add.md)
 - [{#T}](./log-blogcomment-get.md)
 - [{#T}](./log-blogcomment-user-get.md)
+- [{#T}](../log-blogpost-get.md)
