@@ -37,6 +37,8 @@ The identifier can be obtained using the [humanresources.node.list](../node/huma
 
 The method adds new participants, updates roles of existing ones, and removes users from the department who are not present in the input `userIds` object.
 
+An employee cannot be removed from a department if it is their only department. In this case, the method returns the `MEMBER_DELETE_FAILED` error and removes no one. New participants and changed roles are still retained.
+
 User identifiers can be obtained using the [user.get](../../user/user-get.md) method. ||
 |#
 
@@ -387,6 +389,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `nodeId` | Parameter `"nodeId"` is required. | Provide the identifier of the department or team. ||
 || `userIds` | Parameter `"userIds"` is required and must be a non-empty array. | Provide an object with non-empty user lists by roles. ||
 || `userIds` | Invalid roles: `#ROLE#`. Allowed: `#ROLE_LIST#`. | Provide only roles that are supported for the selected type of department or team. ||
+|| `MEMBER_DELETE_FAILED` | Cannot remove employee from their only department. | This department is the only one for an employee who is not listed in `userIds`. Add the employee to another department using the [humanresources.node.member.add](./humanresources-node-member-add.md) method or move them using the [humanresources.node.member.move](./humanresources-node-member-move.md) method, then repeat the request. New participants and changed roles from the first request are already retained, and the repeated request will not change them. ||
+|| `MEMBER_DELETE_FAILED` | Could not remove the employee because their data is being updated. Please try again later. | Another operation is changing the employee's data at the moment. Repeat the request later. ||
 |#
 
 #### Access Errors
