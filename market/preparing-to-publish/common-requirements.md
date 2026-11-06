@@ -189,8 +189,11 @@ For the first version of the application, this field does not need to be filled;
   4. Offensive, obscene information is present in the interface or demo data: calls to violence, pornography, racism, and other materials prohibited by government legislation;
   5. The functionality of the solution does not correspond to what is stated in the title and description;
   6. The solution fully or partially imitates the name, icon, description, images, demo content, or interface of another solution in a way that may mislead users about the developer, the rights holder, the official status of the solution, or its connection with another solution or product;
-  7. The solution is a knowledge base or a training app about Bitrix24 features and/or how to work in Bitrix24;
-  8. The solution's only function is technical support for the developer's apps;
+  7. Bitrix24 reserves the right to decline publication of a solution that fully or substantially duplicates the functionality, content, or user experience of a solution already presented in the catalog and does not offer meaningful differences or added value for users.
+
+     Changing the name, icon, color scheme, individual texts, or demo data alone is not considered a meaningful difference;
+  8. The solution is a knowledge base or a training app about Bitrix24 features and/or how to work in Bitrix24;
+  9. The solution's only function is technical support for the developer's apps;
 - The functionality of the solution reveals:
   1. Texts with incorrect encoding;
   2. PHP Warnings, Fatal Errors, Syntax Errors, and/or Parse Errors, and similar messages from another server platform on which the solution is implemented;
