@@ -50,7 +50,7 @@ Possible values:
 
 The list of types and their names is returned by the [catalog.document.type.list](./catalog-document-type-list.md) method ||
 || **currency***
-[`string`](../../data-types.md) | Document currency code, for example `RUB`. The method does not check whether the currency exists in Bitrix24: a nonexistent code is saved without an error.
+[`string`](../../data-types.md) | Document currency code, for example `EUR`. The method does not check whether the currency exists in Bitrix24: a nonexistent code is saved without an error.
 
 Currency codes can be retrieved with the [crm.currency.list](../../crm/currency/crm-currency-list.md) method ||
 || **responsibleId***

@@ -50,7 +50,7 @@ A processed document cannot be updated. First cancel processing with the [catalo
 
 The user identifier can be retrieved using the [user.get](../../user/user-get.md) method ||
 || **currency**
-[`string`](../../data-types.md) | Document currency code, for example `RUB`. The method does not check whether the currency exists in Bitrix24.
+[`string`](../../data-types.md) | Document currency code, for example `EUR`. The method does not check whether the currency exists in Bitrix24.
 
 Currency codes can be retrieved with the [crm.currency.list](../../crm/currency/crm-currency-list.md) method ||
 || **title**

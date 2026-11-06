@@ -45,7 +45,7 @@ The value is case-sensitive: the method rejects `a` and other values with the er
 
 Type names can be retrieved with the [catalog.enum.getStoreDocumentTypes](../enum/catalog-enum-get-store-document-types.md) method ||
 || **currency***
-[`string`](../../data-types.md) | Document currency code, for example `RUB`. The method does not check that the currency exists. The currency cannot be changed after creation.
+[`string`](../../data-types.md) | Document currency code, for example `EUR`. The method does not check that the currency exists. The currency cannot be changed after creation.
 
 The list of currencies can be retrieved with the [crm.currency.list](../../crm/currency/crm-currency-list.md) method ||
 || **responsibleId***
@@ -86,7 +86,7 @@ Add products to the document with the [catalog.document.element.add](./document-
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"docType":"S","currency":"RUB","responsibleId":1269,"docNumber":"OP-00042","title":"Surplus stock adjustment","commentary":"Surplus found during stocktaking","dateDocument":"2026-11-05T10:00:00+03:00"}}' \
+    -d '{"fields":{"docType":"S","currency":"EUR","responsibleId":1269,"docNumber":"OP-00042","title":"Surplus stock adjustment","commentary":"Surplus found during stocktaking","dateDocument":"2026-11-05T10:00:00+03:00"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.document.add
     ```
 
@@ -96,7 +96,7 @@ Add products to the document with the [catalog.document.element.add](./document-
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"docType":"S","currency":"RUB","responsibleId":1269,"docNumber":"OP-00042","title":"Surplus stock adjustment","commentary":"Surplus found during stocktaking","dateDocument":"2026-11-05T10:00:00+03:00"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"docType":"S","currency":"EUR","responsibleId":1269,"docNumber":"OP-00042","title":"Surplus stock adjustment","commentary":"Surplus found during stocktaking","dateDocument":"2026-11-05T10:00:00+03:00"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.document.add
     ```
 
@@ -251,7 +251,7 @@ Add products to the document with the [catalog.document.element.add](./document-
                 [
                     'fields' => [
                         'docType'       => 'S',
-                        'currency'      => 'RUB',
+                        'currency'      => 'EUR',
                         'responsibleId' => 1269,
                         'docNumber'     => 'OP-00042',
                         'title'         => 'Surplus stock adjustment',
