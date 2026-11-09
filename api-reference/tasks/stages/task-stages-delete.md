@@ -1,4 +1,4 @@
-# Delete a Kanban or "My Plan" Stage task.stages.delete
+# Delete a Kanban or "My Planner" Stage task.stages.delete
 
 {% note tip "" %}
 
@@ -12,12 +12,14 @@ Choose a tool for developing with an AI agent:
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for "My Plan" stages
-> - any user with group access for Kanban stages
+> - any user for stages of their own "My Planner"
+> - the group owner or moderator for the group's Kanban stages
 
-The method `task.stages.delete` deletes a Kanban or "My Plan" stage.
+The method `task.stages.delete` deletes a Kanban or "My Planner" stage.
 
-It accepts the `id` of the stage as input. The stage is checked for sufficient access permission levels and whether it contains any tasks.
+Only an empty stage without a system type can be deleted. First move the tasks out of the stage with the [task.stages.movetask](./task-stages-move-task.md) method.
+
+The system type of a stage is returned by the [task.stages.get](./task-stages-get.md) method in the `SYSTEM_TYPE` field. The first stage always has `NEW`. To delete the first stage, first move it with the [task.stages.update](./task-stages-update.md) method using the `AFTER_ID` parameter in `fields`. The `NEW` type passes to the stage that becomes the first one.
 
 ## Method Parameters
 
@@ -29,7 +31,7 @@ It accepts the `id` of the stage as input. The stage is checked for sufficient a
 || **id***
 [`integer`](../../data-types.md) | Identifier of the stage to be deleted ||
 || **isAdmin**
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will be skipped, provided the requester is an administrator of the account ||
+[`boolean`](../../data-types.md) | If `true` is passed, the method does not check permissions. The parameter applies only to a Bitrix24 administrator; for other users, permissions are checked as usual. Default is `false` ||
 |#
 
 ## Code Examples
@@ -43,10 +45,11 @@ It accepts the `id` of the stage as input. The stage is checked for sufficient a
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
     -d '{
     "id": 5
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.delete
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.stages.delete
     ```
 
 - cURL (OAuth)
@@ -54,11 +57,12 @@ It accepts the `id` of the stage as input. The stage is checked for sufficient a
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -H "Accept: application/json" \
     -d '{
-    "id": 5
+    "id": 5,
+    "auth": "**put_access_token_here**"
     }' \
-    https://your-domain.bitrix24.com/rest/task.stages.delete
+    https://**put_your_bitrix24_address**/rest/task.stages.delete
     ```
 
 - JS (TS)
@@ -166,15 +170,15 @@ It accepts the `id` of the stage as input. The stage is checked for sufficient a
                     'id' => $stageId,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error deleting task stage: ' . $e->getMessage();
@@ -246,7 +250,15 @@ HTTP Status: **200**
 
 ```json
 {
-    "result": true
+    "result": true,
+    "time": {
+        "start": 1793956087,
+        "finish": 1793956087.677343,
+        "duration": 0.6773428916931152,
+        "processing": 0,
+        "date_start": "2026-11-06T12:08:07+03:00",
+        "date_finish": "2026-11-06T12:08:07+03:00"
+    }
 }
 ```
 
@@ -255,9 +267,11 @@ HTTP Status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **result** 
+|| **result**
 [`boolean`](../../data-types.md) | Returns `true` if the stage was successfully deleted
 ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -266,8 +280,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "CANT_DELETE_FIRST",
-    "error_description": "Cannot delete the first stage. Move the stage to delete it."
+    "error": "NO_EMPTY",
+    "error_description": "There are tasks in this stage"
 }
 ```
 
@@ -276,16 +290,17 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | You cannot manage stages ||
-|| `CANT_DELETE_FIRST` | Cannot delete the first stage. Move the stage to delete it ||
-|| `IS_SYSTEM` | The default stage cannot be deleted ||
-|| `NOT_FOUND` | Stage not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `NOT_FOUND` | Stage was not found | There is no stage with the ID `id` ||
+|| `400` | `IS_SYSTEM` | Default stage cannot be deleted | The stage is a system stage, for example the first stage of a Kanban or "My Planner" ||
+|| `400` | `ACCESS_DENIED` | You cannot manage stages | The user is not the owner or moderator of the group the stage belongs to, or the stage belongs to another user's "My Planner" ||
+|| `400` | `NO_EMPTY` | There are tasks in this stage | The stage contains tasks ||
+|| `400` | `DISPATCHER_ERROR` | Argument "id" is required, but no value passed for task.stages.delete | The required parameter `id` is not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./task-stages-add.md)

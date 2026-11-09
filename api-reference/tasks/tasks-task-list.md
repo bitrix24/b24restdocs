@@ -13,14 +13,24 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `tasks.task.list` retrieves a list of tasks with pagination.
+{% note info "" %}
 
-Access to data depends on permissions:
-- Administrators can see all tasks,
-- Managers can see their employees' tasks,
-- Others can only see tasks available to them.
+The method has a REST 3.0 version with the same name — [tasks.task.list](./tasks-task-list-rest-v3.md). It is called at an address with `/rest/api/`. It returns tasks in `result.items` instead of `result.tasks` and selects pages with the `pagination` parameter instead of `start`.
+
+{% endnote %}
+
+The method `tasks.task.list` retrieves a list of tasks with pagination. It replaces the deprecated method [task.items.getlist](./deprecated/task-items-get-list.md).
+
+Which tasks are included in the list depends on the user's permissions:
+- administrator — all tasks
+- manager — tasks of their employees
+- others — only tasks available to them
 
 ## Method Parameters
+
+{% include [Note on required parameters](../../_includes/required.md) %}
+
+All parameters are optional.
 
 #|
 || **Name**
@@ -36,75 +46,75 @@ The sorting direction can take the following values:
 By default, it sorts in descending order by `ID`.
 
 The field for sorting can take the following values:
-- `ID` — task identifier  
-- `TITLE` — task title  
-- `TIME_SPENT_IN_LOGS` — time spent recorded in the change history  
-- `DATE_START` — task start date  
-- `CREATED_DATE` — task creation date  
-- `CHANGED_DATE` — last task modification date  
-- `CLOSED_DATE` — task completion date  
-- `ACTIVITY_DATE` — date of last activity  
-- `START_DATE_PLAN` — planned start date for task execution  
-- `END_DATE_PLAN` — planned completion date for task execution  
-- `DEADLINE` — task deadline  
-- `REAL_STATUS` — task status  
-- `STATUS_COMPLETE` — task completion flag  
-- `PRIORITY` — task priority  
-- `MARK` — task performance rating  
-- `CREATED_BY_LAST_NAME` — last name of the Creator  
-- `RESPONSIBLE_LAST_NAME` — last name of the Participant  
-- `GROUP_ID` — identifier of the working group  
-- `TIME_ESTIMATE` — time allocated for the task  
-- `ALLOW_CHANGE_DEADLINE` — flag allowing the Participant to change the deadline  
-- `ALLOW_TIME_TRACKING` — flag enabling time tracking for the task  
-- `MATCH_WORK_TIME` — flag indicating the need to skip weekends  
-- `FAVORITE` — flag indicating that the task has been added to favorites  
-- `SORTING` — sorting index  
-- `IS_PINNED` — pinned status  
+- `ID` — task identifier
+- `TITLE` — task title
+- `TIME_SPENT_IN_LOGS` — time spent recorded in the change history
+- `DATE_START` — task start date
+- `CREATED_DATE` — task creation date
+- `CHANGED_DATE` — last task modification date
+- `CLOSED_DATE` — task completion date
+- `ACTIVITY_DATE` — date of last activity
+- `START_DATE_PLAN` — planned start date for task execution
+- `END_DATE_PLAN` — planned completion date for task execution
+- `DEADLINE` — task deadline
+- `REAL_STATUS` — task status
+- `STATUS_COMPLETE` — task completion flag
+- `PRIORITY` — task priority
+- `MARK` — task performance rating
+- `CREATED_BY_LAST_NAME` — last name of the Creator
+- `RESPONSIBLE_LAST_NAME` — last name of the Participant
+- `GROUP_ID` — identifier of the working group
+- `TIME_ESTIMATE` — time allocated for the task
+- `ALLOW_CHANGE_DEADLINE` — flag allowing the Participant to change the deadline
+- `ALLOW_TIME_TRACKING` — flag enabling time tracking for the task
+- `MATCH_WORK_TIME` — flag indicating the need to skip weekends
+- `FAVORITE` — flag indicating that the task has been added to favorites
+- `SORTING` — sorting index
+- `IS_PINNED` — pinned status
 - `IS_PINNED_IN_GROUP` — pinned in group status
 
 ||
 || **filter**
 [`object`](../data-types.md) | An object for filtering the task list in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. The filterable fields can take the following values:
 
-- `ID` — task identifier  
-- `PARENT_ID` — parent task identifier  
-- `GROUP_ID` — working group identifier  
-- `CREATED_BY` — Creator  
-- `STATUS_CHANGED_BY` — user who last changed the task status  
-- `PRIORITY` — priority  
-- `FORUM_TOPIC_ID` — forum topic identifier  
-- `RESPONSIBLE_ID` — Participant  
-- `TITLE` — task title (can search by pattern [\%_])  
-- `TAG` — task tag  
+- `ID` — task identifier
+- `PARENT_ID` — parent task identifier
+- `GROUP_ID` — working group identifier
+- `CREATED_BY` — Creator
+- `STATUS_CHANGED_BY` — user who last changed the task status
+- `PRIORITY` — priority
+- `FORUM_TOPIC_ID` — forum topic identifier
+- `RESPONSIBLE_ID` — Participant
+- `TITLE` — task title (can search by pattern [\%_])
+- `TAG` — task tag
 - `REAL_STATUS` — task status. Corresponds to the `status` field in the response.
     - `2` — waiting for execution
     - `3` — in progress
     - `4` — awaiting control
     - `5` — completed
-    - `6` — postponed  
+    - `6` — postponed
 - `STATUS` — status for sorting. Corresponds to the `subStatus` field in the response. Similar to `REAL_STATUS`, but has three additional meta-statuses:
     - `-3` — task is almost overdue
     - `-2` — unviewed task
     - `-1` — overdue task
-- `MARK` — rating  
-- `SITE_ID` — site identifier  
-- `ADD_IN_REPORT` — task in report  
-- `DATE_START` — start date  
-- `DEADLINE` — deadline  
-- `CREATED_DATE` — creation date  
-- `CLOSED_DATE` — completion date  
-- `CHANGED_DATE` — last modification date  
-- `ACCOMPLICE` — identifier of the Participant  
-- `AUDITOR` — identifier of the auditor  
-- `DEPENDS_ON` — identifier of the previous task  
-- `ONLY_ROOT_TASKS` — only root tasks and subtasks without access to the parent  
-- `STAGE_ID` — stage  
-- `SPRINT_ID` — sprint identifier  
-- `BACKLOG_ID` — backlog identifier  
+- `MARK` — rating
+- `SITE_ID` — site identifier
+- `ADD_IN_REPORT` — task in report
+- `DATE_START` — start date
+- `DEADLINE` — deadline
+- `CREATED_DATE` — creation date
+- `CLOSED_DATE` — completion date
+- `CHANGED_DATE` — last modification date
+- `ACCOMPLICE` — identifier of the Participant
+- `AUDITOR` — identifier of the observer
+- `DEPENDS_ON` — identifier of the previous task
+- `ONLY_ROOT_TASKS` — only root tasks and subtasks without access to the parent
+- `STAGE_ID` — stage
+- `SPRINT_ID` — sprint identifier
+- `BACKLOG_ID` — backlog identifier
 - `UF_CRM_TASK` — binding to CRM entities
 
-To get tasks from Favorites, add the filter parameter `$filter[::SUBFILTER-PARAMS][FAVORITE]=Y`.
+To get tasks from Favorites, pass `"FAVORITE": "Y"` in the filter. `"::SUBFILTER-PARAMS": {"FAVORITE": "Y"}` returns the same list.
 
 You can specify the type of filtering before the name of the filterable field:
 - `!` — not equal
@@ -115,7 +125,7 @@ You can specify the type of filtering before the name of the filterable field:
 
 By default, records are not filtered ||
 || **select**
-[`array`](../data-types.md) | An array containing a [list of fields](./fields.md) to select. 
+[`array`](../data-types.md) | An array containing a [list of fields](./fields.md) to select.
 
 By default, the system returns only those fields stored in the record — without additional data calculated on the fly.
 
@@ -126,22 +136,33 @@ Always specify fields in `select`. The default set of fields may change.
 {% endnote %}
 ||
 || **params**
-[`object`](../data-types.md) | Additional information that can be retrieved about the task:
-- `WITH_RESULT_INFO` — information about the result in the task
-- `WITH_TIMER_INFO` — data on time spent
-- `WITH_PARSED_DESCRIPTION` — description with HTML markup
-||
+[`object`](../data-types.md) | Field groups the method adds to each task: result, time spent, description for the mobile app [(detailed description)](#params).
+
+By default, these fields are not returned ||
 || **start**
-[`integer`](../data-types.md) | This parameter is used to manage pagination.
+[`integer`](../data-types.md) | How many records to skip from the beginning of the list. A page contains no more than 50 records.
 
-The page size is always static — 50 records.
+To retrieve the second page, pass `50`; for the third page, pass `100`. For page `N`, calculate the value with the formula `start = (N - 1) * 50`.
 
-To select the second page of results, you need to pass the value `50`. To select the third page of results — the value `100`, and so on.
-
-The formula for calculating the `start` parameter value:
-
-`start = (N - 1) * 50`, where `N` — the desired page number ||
+Default is `0`, the first page ||
 |#
+
+### Parameter params {#params}
+
+Each key adds its own group of fields to the response. The fields are returned for any key value, even `false` or `"N"`. To omit them, do not pass the key.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **WITH_RESULT_INFO**
+[`boolean`](../data-types.md) | Adds fields about the task result: `taskRequireResult`, `taskHasOpenResult`, `taskHasResult` ||
+|| **WITH_TIMER_INFO**
+[`boolean`](../data-types.md) | Adds fields about time spent: `timeElapsed`, `timerIsRunningForCurrentUser` ||
+|| **WITH_PARSED_DESCRIPTION**
+[`boolean`](../data-types.md) | Adds the `parsedDescription` field — the task description prepared for the mobile app ||
+|#
+
+The fields are described in detail in the [Additional Task Fields](#extra-fields) section.
 
 ## Code Examples
 
@@ -578,7 +599,7 @@ HTTP Status: **200**
                 "createdDate": "2025-06-04T16:15:55+02:00",
                 "responsibleId": "547",
                 "priority": "2",
-                "mark": "",
+                "mark": null,
                 "descriptionInBbcode": "Y",
                 "lengthDeadline": "1",
                 "status": "2",
@@ -661,14 +682,60 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../data-types.md) | An object containing the response data ||
-|| **tasks**
-[`object`](../data-types.md) | An array of objects, where each object contains a [task description](./fields.md).
+|| **result.tasks**
+[`object[]`](../data-types.md) | An array of tasks. Each element is an object with [task fields](./fields.md) and [additional fields](#extra-fields).
 
-The set of fields depends on the `select` parameter ||
+Which fields are returned depends on `select`, `params`, and the `order` sorting ||
 || **total**
 [`integer`](../data-types.md) | Total number of records found ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Additional Task Fields {#extra-fields}
+
+Each field has its own condition, specified in its description: the required field in `select`, a key in `params`, or sorting by `DEADLINE`.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **group**
+[`object`](../data-types.md) | The task's group: `id`, `name`, `opened` — whether the group is open, `membersCount` — number of members, `image` — image URL, `additionalData`.
+
+Returned as an empty array `[]` if the task is not in a group or `select` does not contain `GROUP_ID` ||
+|| **creator**
+[`object`](../data-types.md) | [Creator data](./fields.md#user). Returned if `select` contains `CREATED_BY` ||
+|| **responsible**
+[`object`](../data-types.md) | [Responsible person data](./fields.md#user). Returned if `select` contains `RESPONSIBLE_ID` ||
+|| **accomplicesData**
+[`object`](../data-types.md) | Participant data. The key is the user ID, the value is [user data](./fields.md#user). If there are no participants, an empty array `[]` is returned. Returned if `select` contains `ACCOMPLICES` ||
+|| **auditorsData**
+[`object`](../data-types.md) | Observer data in the same format as `accomplicesData`. Returned if `select` contains `AUDITORS` ||
+|| **subStatus**
+[`string`](../data-types.md) | Status that accounts for overdue and viewed state, for example `-1` — the task is overdue. Values are the same as for the `STATUS` filter. Returned if `select` contains `STATUS`. The regular status is returned in the `status` field ||
+|| **lengthDeadline**
+[`string`](../data-types.md) | `1` — the task has a deadline, `0` — it does not. Returned if the list is sorted by `DEADLINE` in ascending order ||
+|| **counter**
+[`object`](../data-types.md) | Task counters for the current user:
+- `counters` — overdue and new comment counters: `expired` and `newComments`; for group tasks — `projectExpired` and `projectNewComments`; for tasks with muted notifications — `mutedExpired` and `mutedNewComments`
+- `value` — sum of all counters
+- `color` — counter color: `danger` — the task is overdue, `success` — there are new comments, `gray` — all other cases
+
+Returned if `select` contains `COUNTERS` ||
+|| **tags**
+[`object`](../data-types.md) | Task tags. The key is the tag ID, the value is an object with the `id` and `title` fields. Returned if `select` contains `TAGS` ||
+|| **taskRequireResult**
+[`string`](../data-types.md) | `Y` — the creator requires a result report, `N` — does not. Returned with the `WITH_RESULT_INFO` key ||
+|| **taskHasResult**
+[`string`](../data-types.md) | `Y` — the task has a result, `N` — it does not. Returned with the `WITH_RESULT_INFO` key ||
+|| **taskHasOpenResult**
+[`string`](../data-types.md) | `Y` — the latest task result is open, `N` — it is not. Returned with the `WITH_RESULT_INFO` key ||
+|| **timeElapsed**
+[`string`](../data-types.md) | Time spent in seconds. If the current user has a timer running for the task, the timer time is added to the time from the history. Returned with the `WITH_TIMER_INFO` key. To retrieve a value rather than `null`, add the `TIME_SPENT_IN_LOGS` field to `select` ||
+|| **timerIsRunningForCurrentUser**
+[`string`](../data-types.md) | `Y` — the current user has a timer running for the task, `N` — does not. Returned with the `WITH_TIMER_INFO` key ||
+|| **parsedDescription**
+[`string`](../data-types.md) | Task description in BB code, prepared for the mobile app: tables, videos, and files are replaced with links; list and alignment markup is removed. Returned with the `WITH_PARSED_DESCRIPTION` key if the mobile tasks module is installed in Bitrix24. To retrieve text rather than an empty string, add the `DESCRIPTION` field to `select` ||
 |#
 
 ## Error Handling
@@ -678,7 +745,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Invalid sorting key (internal error)"
+    "error_description": "Incorrect sort field"
 }
 ```
 
@@ -687,8 +754,8 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `0` | Invalid sorting key (internal error) | The `order` parameter contains a task field that cannot be sorted or a non-existent field ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | Incorrect sort field | The `order` parameter contains a task field that cannot be sorted or a non-existent field ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}
@@ -701,6 +768,7 @@ HTTP Status: **400**
 - [{#T}](./tasks-task-get.md)
 - [{#T}](./tasks-task-delete.md)
 - [{#T}](./tasks-task-get-fields.md)
+- [{#T}](./tasks-task-list-rest-v3.md)
 - [{#T}](../../tutorials/tasks/how-to-create-comment-with-file.md)
 - [{#T}](../../tutorials/tasks/how-to-upload-file-to-task.md)
 - [{#T}](../../tutorials/tasks/how-to-create-task-with-file.md)

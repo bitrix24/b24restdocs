@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: Creator or administrator of the flow
+> Who can execute the method: Bitrix24 administrator, flow creator, or flow administrator
 
 The method `tasks.flow.Flow.delete` deletes a flow by its identifier.
+
+Deletion is irreversible: the flow is not moved to the Recycle Bin. The flow's tasks remain in the flow group with the same assignees, but their `flowId` field becomes empty. The method does not delete the flow group.
 
 ## Method Parameters
 
@@ -22,12 +24,21 @@ The method `tasks.flow.Flow.delete` deletes a flow by its identifier.
 #|
 || **Name**
 `type` | **Description** ||
-|| **flowData*** 
-[`object`](../../data-types.md) | Object containing data for deleting the flow ||
-|| **flowData.id*** 
-[`integer`](../../data-types.md) | Identifier of the flow to be deleted. 
+|| **flowData***
+[`object`](../../data-types.md) | Object with the flow identifier [(detailed description)](#flowdata) ||
+|#
 
-You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+### Parameter flowData {#flowdata}
+
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id***
+[`integer`](../../data-types.md) | Identifier of the flow to be deleted.
+
+The identifier is returned by the [tasks.flow.Flow.create](./tasks-flow-flow-create.md) method when a flow is created, and for a task from a flow — by the [tasks.task.get](../tasks-task-get.md) method ||
 |#
 
 ## Code Examples
@@ -41,12 +52,13 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
     -d '{
         "flowData": {
             "id": 517
         }
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.delete
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.flow.Flow.delete
     ```
 
 - cURL (OAuth)
@@ -54,13 +66,14 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+    -H "Accept: application/json" \
     -d '{
         "flowData": {
             "id": 517
-        }
+        },
+        "auth": "**put_access_token_here**"
     }' \
-    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.delete
+    https://**put_your_bitrix24_address**/rest/tasks.flow.Flow.delete
     ```
 
 - JS (TS)
@@ -182,7 +195,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -270,6 +283,14 @@ HTTP status: **200**
 {
     "result": {
         "deleted": true
+    },
+    "time": {
+        "start": 1793956087,
+        "finish": 1793956087.677343,
+        "duration": 0.6773428916931152,
+        "processing": 0,
+        "date_start": "2026-11-06T12:08:07+03:00",
+        "date_finish": "2026-11-06T12:08:07+03:00"
     }
 }
 ```
@@ -279,10 +300,19 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **result** 
-[`object`](../../data-types.md) | Object with the result of the operation ||
-|| **deleted** 
-[`boolean`](../../data-types.md) | Success of the flow deletion ||
+|| **result**
+[`object`](../../data-types.md) | Object with the result of the operation [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **deleted**
+[`boolean`](../../data-types.md) | `true` if the flow is deleted ||
 |#
 
 ## Error Handling
@@ -292,7 +322,7 @@ HTTP status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Flow not found"
+    "error_description": "Cannot find flow"
 }
 ```
 
@@ -301,16 +331,17 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or stream not found | The account plan does not allow working with flows or the user does not have permission to delete the flow ||
-|| `0` | `Flow not found` | The flow with the specified identifier was not found ||
-|| `0` | `Unknown error` | Unknown error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | 'id': field's value must be greater than 0 | `flowData.id` is missing or its value is less than `1` ||
+|| `400` | `0` | Cannot find flow | The user does not have permission to delete the flow, or there is no flow with this `id` ||
+|| `400` | `0` | Unknown error. [Flow: 312] | There is no flow with this `id`, for example, it has already been deleted. A Bitrix24 administrator receives this error, other users receive the access error ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-flow-flow-create.md)
 - [{#T}](./tasks-flow-flow-update.md)
 - [{#T}](./tasks-flow-flow-get.md)

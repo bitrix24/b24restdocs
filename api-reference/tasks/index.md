@@ -379,9 +379,9 @@ Comment methods are not applicable to the new task card. Task discussions are he
 || [task.stages.add](./stages/task-stages-add.md) | Adds Kanban or "My Plan" stages ||
 || [task.stages.update](./stages/task-stages-update.md) | Updates Kanban or "My Plan" stages ||
 || [task.stages.get](./stages/task-stages-get.md) | Gets Kanban or "My Plan" stages ||
+|| [task.stages.delete](./stages/task-stages-delete.md) | Deletes Kanban or "My Plan" stages ||
 || [task.stages.canmovetask](./stages/task-stages-can-move-task.md) | Determines if the current user can move tasks in the specified object ||
 || [task.stages.movetask](./stages/task-stages-move-task.md) | Moves tasks from one stage to another ||
-|| [task.stages.delete](./stages/task-stages-delete.md) | Deletes Kanban or "My Plan" stages ||
 |#
 
 ### Tasks in "Plan for the day"

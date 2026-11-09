@@ -9,9 +9,11 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Kanban is a tool that helps visually represent task management through columns and cards. Columns represent stages of work, while cards represent tasks. Kanban is used for managing tasks in groups and projects.
+Kanban displays the tasks of a group or project as columns and cards: a column is a stage of work, a card is a task.
 
-"My Planner" is a task management mode presented in a Kanban format. Each employee will have their own stages in "My Planner."
+"My Planner" is an employee's own Kanban of their tasks. Each employee has their own stages in it.
+
+The methods in this section retrieve, add, update, and delete Kanban and "My Planner" stages and move tasks between stages.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -19,13 +21,18 @@ Kanban is a tool that helps visually represent task management through columns a
 > - [Kanban: Track tasks in projects effectively](https://helpdesk.bitrix24.com/open/25762719/)
 > - [Planner view in Tasks](https://helpdesk.bitrix24.com/open/18891600/)
 
+## How to Get Started
+
+1. Retrieve the stages with the [task.stages.get](./task-stages-get.md) method. To retrieve the Kanban stages of a group, pass the group ID in `entityId`; to retrieve the stages of your own "My Planner", pass `0`.
+2. If the stage you need does not exist, add it with the [task.stages.add](./task-stages-add.md) method. The position is set by `AFTER_ID` — the ID of the stage after which the new one is added. Without `AFTER_ID` or with `0`, the new stage becomes the first one. The method returns the ID of the new stage.
+3. Move the task to the stage with the [task.stages.movetask](./task-stages-move-task.md) method. To check in advance whether the user can move tasks in the group, use the [task.stages.canmovetask](./task-stages-can-move-task.md) method.
+4. Check the result: retrieve the tasks of the stage with the [tasks.task.list](../tasks-task-list.md) method filtered by `STAGE_ID`, as described below in "How to Get the List of Tasks in a Stage".
+
 ## Connection of Kanban Stages and "My Planner" with Other Objects
 
-**Workgroup.** The Kanban stage is linked to the workgroup by the object identifier `ENTITY_ID`. The identifier can be obtained using the [create new group method](../../sonet-group/sonet-group-create.md) or the [get list of groups method](../../sonet-group/socialnetwork-api-workgroup-list.md).
+**Workgroup.** A Kanban stage belongs to a group: the group ID is passed in `ENTITY_ID`. It is returned by the [create new group method](../../sonet-group/sonet-group-create.md) and the [get list of groups method](../../sonet-group/socialnetwork-api-workgroup-list.md).
 
-**User.** The stage of "My Planner" is tied to the user. Any user, including the account administrator, can change stages only in their own planner.
-
-**Stage.** Kanban or "My Planner" stages can be linked to each other. Specify the stage identifier in the `AFTER_ID` parameter to define which stage the new stage should be added after. You can obtain the identifier using the [add new stage](task-stages-add.md) method or the [get list of stages](./task-stages-get.md) method. If the identifier is not specified or is set to zero, the stage is added to the beginning of the Kanban.
+**User.** The stage of "My Planner" is tied to the user. Any user, including the Bitrix24 administrator, can change stages only in their own planner.
 
 {% note tip "User Documentation" %}
 
@@ -35,38 +42,38 @@ Kanban is a tool that helps visually represent task management through columns a
 
 ## How to Move Tasks Between Stages
 
-You can move a task from one stage to another using the [task.stages.movetask](./task-stages-move-task.md) method. This method allows you to specify the `ID` of the task before or after which the moving task should be placed. You can obtain the task identifier using the [create task method](../tasks-task-add.md) or the [get list of tasks method](../tasks-task-list.md).
+You can move a task to another stage using the [task.stages.movetask](./task-stages-move-task.md) method. Within the stage, the task can be placed before or after another task — pass the `ID` of the neighboring task in `before` or `after`. Task IDs are returned by the [create task method](../tasks-task-add.md) and the [get list of tasks method](../tasks-task-list.md).
 
 You can move a task:
-- in the group's Kanban if you have access to the group
+- in the group's Kanban, if the user has permission to sort tasks in the group
 - in "My Planner"
 
-The method [task.stages.canmovetask](./task-stages-can-move-task.md) allows you to check if the task can be moved.
+To check in advance whether the user can move tasks in the group, use the [task.stages.canmovetask](./task-stages-can-move-task.md) method.
 
 ## How to Get the List of Tasks in a Stage
 
-You can obtain the list of tasks in a stage using the [task.task.list](../tasks-task-list.md) method.
+You can retrieve the list of tasks in a stage using the [tasks.task.list](../tasks-task-list.md) method.
 
-**Selection from the group's Kanban stages.** In the filter array, pass the key `STAGE_ID` with the `ID` of the desired stage. If you are selecting tasks from the first stage, pass an array of values in `STAGE_ID` consisting of `0` and the `ID` of your stage `[0, ID]`. Additionally, filter the selection by group.
+**Selection from the group's Kanban stages.** In the filter, pass `STAGE_ID` with the stage ID and `GROUP_ID` with the group ID. For the first stage, pass the array `[0, ID]` in `STAGE_ID`: tasks that have not yet been moved between stages are stored with stage `0` and appear in the first stage.
 
-**Selection from "My Planner."** In the filter array, pass the key `STAGE_ID` with the `ID` of the stage. There is no need to pass an array of values.
-
-You can obtain the Kanban or "My Planner" stage identifier using the [add stage method](./task-stages-add.md) or the [get list of stages method](./task-stages-get.md).
+**Selection from "My Planner."** In the filter, pass `STAGE_ID` with the stage ID. The `[0, ID]` array is not needed here.
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for "My Planner" stages
-> - any user with access to the group for Kanban stages
+> - work with stages of their own "My Planner" — any user
+> - retrieve Kanban stages of a group — a user with permission to view the group's tasks
+> - add, update, and delete Kanban stages of a group — the group owner or moderator
+> - move tasks in a group's Kanban — a user with permission to sort tasks in the group
 
 #|
 || **Method** | **Description** ||
 || [task.stages.add](./task-stages-add.md) | Adds Kanban or "My Planner" stages ||
 || [task.stages.update](./task-stages-update.md) | Updates Kanban or "My Planner" stages ||
 || [task.stages.get](./task-stages-get.md) | Retrieves Kanban or "My Planner" stages ||
+|| [task.stages.delete](./task-stages-delete.md) | Deletes Kanban or "My Planner" stages ||
 || [task.stages.canmovetask](./task-stages-can-move-task.md) | Determines if the current user can move tasks in the specified object ||
 || [task.stages.movetask](./task-stages-move-task.md) | Moves tasks from one stage to another ||
-|| [task.stages.delete](./task-stages-delete.md) | Deletes Kanban or "My Planner" stages ||
 |#

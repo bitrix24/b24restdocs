@@ -9,9 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Flows are a tool that automates the distribution and execution of tasks. Employees do not need to search for who will complete a task. They assign tasks to the department's flow, and it automatically assigns an assignee.
+Flows automate the distribution and execution of tasks. An employee adds a task to the department's flow, and the flow assigns an assignee on its own. There is no need to look for someone to complete the task.
 
-In the flow, you can track the efficiency of task completion. Efficiency is calculated using the formula: `<number of overdue tasks> / <total number of tasks in the flow> * 100%`. To improve efficiency, change the type of task distribution or the flow team.
+Flow efficiency is the share of tasks that are not overdue. It is calculated using the formula `(1 − <number of overdue tasks> / <total number of tasks in the flow>) * 100%`. A flow with no tasks has an efficiency of 100%. To improve it, change the task distribution type or the flow team.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -19,19 +19,19 @@ In the flow, you can track the efficiency of task completion. Efficiency is calc
 
 ## Types of Distribution
 
-- **Manual distribution** `manually`. All tasks are assigned to the flow moderator. The moderator distributes tasks among employees.
-- **Queue distribution** `queue`. Tasks are assigned in turn to each team member. A member will be skipped if they are absent from work, for example, on vacation or sick leave.
-- **Self-assignment** `himself`. Tasks are assigned to the creator. Each team member in the flow will receive a notification. A flow member will become the assignee if they click the Take to Work button. If a task is taken to work, the system will change the task status to In Progress.
+- **Manual distribution** `manually`. All tasks go to the flow moderator, who distributes them among employees.
+- **Queue distribution** `queue`. The flow assigns tasks in turn to employees from the flow team — the list of responsible persons `responsibleList`. If the list includes a department, its employees receive the tasks. The flow skips an employee who is absent from work, for example on vacation or sick leave.
+- **Self-assignment** `himself`. A task is assigned to the creator, and each team member receives a notification. The member who clicks the "Accept task" button becomes the assignee. The task status changes to "In progress".
 
-If there are no employees left in the flow team with queue distribution or self-assignment, the flow will automatically switch to manual distribution mode. The flow administrator will become the moderator and receive a notification.
+If, with queue distribution or self-assignment, no one from the team is at work, the flow switches to manual distribution. The flow administrator becomes the moderator and receives a notification.
 
 ## Relationships with Other Objects
 
-**Group.** The flow is linked to a group by the identifier `groupId`. You can obtain the identifier using the [create new group](../../sonet-group/sonet-group-create.md) method or the [get list of groups](../../sonet-group/socialnetwork-api-workgroup-list.md) method. If the group identifier is not specified when creating the flow, a new group will be created.
+**Group.** A flow is linked to a group, whose identifier is passed in the `groupId` parameter. If no group is specified when creating a flow, a new one is created. The group identifier is returned by the [get list of groups](../../sonet-group/socialnetwork-api-workgroup-list.md) method or the [create group](../../sonet-group/sonet-group-create.md) method.
 
-**User.** The flow is linked to a user by the flow administrator identifier `ownerId`. You can obtain the user identifier using the [user.get](../../user/user-get.md) method. If the identifier is not specified when creating the flow, the creator will become the flow administrator.
+**User.** A flow has an administrator, whose identifier is passed in the `ownerId` parameter. If no administrator is specified when creating a flow, the flow creator becomes the administrator. The user identifier is returned by the [user.get](../../user/user-get.md) method.
 
-**Task Template.** Flow tasks are created based on a template. The template identifier is specified in `templateId`.
+**Task Template.** Flow tasks can be created from a template — the template identifier is passed in the `templateId` parameter.
 
 {% note tip "User Documentation" %}
 
@@ -43,11 +43,9 @@ If there are no employees left in the flow team with queue distribution or self-
 
 ## How to Add a Task to the Flow
 
-You can add a task to a flow using the [create new task](../tasks-task-add.md) method or the [update existing task](../tasks-task-update.md) method. Specify the flow identifier in the `FLOW_ID` parameter.
+To add a task to a flow, pass the flow identifier in the `FLOW_ID` parameter of the [create new task](../tasks-task-add.md) or [update existing task](../tasks-task-update.md) method. Bitrix24 fills in the other fields the flow needs on its own, according to the flow settings.
 
-Bitrix24 will automatically fill in all the necessary fields for the flow according to the flow settings.
-
-The title and assignee are required fields when creating a task outside the flow. In the case of tasks in the flow, it is sufficient to fill in `FLOW_ID` and the title. The flow will assign the assignee.
+Without a flow, a new task requires a title and an assignee. For a task in an enabled flow, a title and `FLOW_ID` are enough: the flow assigns the assignee.
 
 {% note tip "User Documentation" %}
 
@@ -55,21 +53,31 @@ The title and assignee are required fields when creating a task outside the flow
 
 {% endnote %}
 
-## Enable or Disable the Flow
+## How to Enable or Disable a Flow
 
-If you need to temporarily stop working with the flow, you can disable it. The flow can be enabled or disabled using the method [tasks.flow.Flow.activate](./tasks-flow-flow-activate.md) by the identifier `flowId`. 
+You can temporarily disable a flow and enable it again later with the [tasks.flow.Flow.activate](./tasks-flow-flow-activate.md) method. While a flow is disabled, it does not assign assignees to new tasks. Tasks already in the flow remain in it.
 
-You can obtain the flow identifier using the [create new flow](./tasks-flow-flow-create.md) method or the [get task information](../tasks-task-get.md) method for a task from the flow.
+The method accepts the flow identifier `flowId`. It is returned by the [create new flow](./tasks-flow-flow-create.md) method, and for a task from a flow — by the [get task information](../tasks-task-get.md) method.
 
-## Check Flow Name Uniqueness
+## How to Check Flow Name Uniqueness
 
-The flow name must be unique. You can check the uniqueness of the name using the method [tasks.flow.Flow.isExists](./tasks-flow-flow-is-exists.md).
+The flow name must be unique. The [tasks.flow.Flow.isExists](./tasks-flow-flow-is-exists.md) method checks whether a name is already taken.
+
+## Limitations
+
+- A flow must have at least one responsible person: when creating a flow, the `responsibleList` parameter is required for any distribution type
+- The time allotted to complete a task, `plannedCompletionTime`, is at least one hour
+- The [tasks.flow.Flow.update](./tasks-flow-flow-update.md) method resets the description, flags, and notifications missing from the request to their default values: the description is cleared and notifications are turned off. Before updating, retrieve the current values with the [tasks.flow.Flow.get](./tasks-flow-flow-get.md) method
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: depending on the method
+> Who can execute the method:
+> - create a flow — a Bitrix24 administrator or a user with permission to create flows, except extranet users
+> - update, delete, enable, or disable a flow — a Bitrix24 administrator, the flow creator, or the flow administrator
+> - retrieve and pin a flow — a user who can see the flow: a Bitrix24 administrator, a flow member, or an employee of a department specified in the flow. If all users can add tasks to the flow, all employees can see it
+> - check a name — any user
 
 #| 
 || **Method** | **Description** ||

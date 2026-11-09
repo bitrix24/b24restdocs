@@ -1,4 +1,4 @@
-# Activate/Deactivate the Flow tasks.flow.Flow.activate
+# Enable or Disable a Flow tasks.flow.Flow.activate
 
 {% note tip "" %}
 
@@ -11,9 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: Creator or administrator of the flow
+> Who can execute the method: Bitrix24 administrator, flow creator, or flow administrator
 
-The method `tasks.flow.Flow.activate` turns the flow on or off by its identifier. If the flow is off, it turns it on. If it is on, it turns it off.
+The method `tasks.flow.Flow.activate` switches a flow to the opposite state: an enabled flow is disabled, and a disabled flow is enabled. You cannot set a specific state.
+
+A disabled flow does not assign assignees to new tasks. If you add a task without an assignee to it, the [tasks.task.add](../tasks-task-add.md) method returns the error "Assignee not specified." Tasks already in the flow remain in it.
 
 ## Method Parameters
 
@@ -22,10 +24,10 @@ The method `tasks.flow.Flow.activate` turns the flow on or off by its identifier
 #|
 || **Name**
 `type` | **Description** ||
-|| **flowId*** 
-[`integer`](../../data-types.md) | The identifier of the flow to be activated or deactivated. 
+|| **flowId***
+[`integer`](../../data-types.md) | The identifier of the flow to enable or disable.
 
-You can obtain the identifier by creating a new flow using the method [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task using the method [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+The identifier is returned by the [tasks.flow.Flow.create](./tasks-flow-flow-create.md) method when a flow is created, and for a task from a flow — by the [tasks.task.get](../tasks-task-get.md) method ||
 |#
 
 ## Code Examples
@@ -39,10 +41,11 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
     -d '{
         "flowId": 517
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.activate
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.flow.Flow.activate
     ```
 
 - cURL (OAuth)
@@ -50,11 +53,12 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+    -H "Accept: application/json" \
     -d '{
-        "flowId": 517
+        "flowId": 517,
+        "auth": "**put_access_token_here**"
     }' \
-    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.activate
+    https://**put_your_bitrix24_address**/rest/tasks.flow.Flow.activate
     ```
 
 - JS (TS)
@@ -161,7 +165,7 @@ You can obtain the identifier by creating a new flow using the method [tasks.flo
                     'flowId' => 517
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -239,7 +243,15 @@ HTTP status: **200**
 
 ```json
 {
-    "result": true
+    "result": true,
+    "time": {
+        "start": 1793956087,
+        "finish": 1793956087.677343,
+        "duration": 0.6773428916931152,
+        "processing": 0,
+        "date_start": "2026-11-06T12:08:07+03:00",
+        "date_finish": "2026-11-06T12:08:07+03:00"
+    }
 }
 ```
 
@@ -248,8 +260,10 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **result** 
-[`boolean`](../../data-types.md) | Success of the operation ||
+|| **result**
+[`boolean`](../../data-types.md) | `true` — both when the flow was enabled and when it was disabled. Whether the flow is enabled is shown by the `active` field of the [tasks.flow.Flow.get](./tasks-flow-flow-get.md) method ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -259,7 +273,7 @@ HTTP status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Flow not found"
+    "error_description": "Flow with this ID does not exist."
 }
 ```
 
@@ -268,16 +282,18 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or stream not found | The account plan does not allow working with flows or the user does not have permission to perform the operation ||
-|| `0` | `Flow not found` | The flow with the specified identifier was not found ||
-|| `0` | `Unknown error` | Unknown error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {flowId} | The required parameter `flowId` is missing ||
+|| `400` | `0` | Cannot find flow | The user does not have permission to enable or disable the flow, or there is no flow with this `flowId` ||
+|| `400` | `0` | Flow with this ID does not exist | There is no flow with this `flowId`. A Bitrix24 administrator receives this error, other users receive the access error ||
+|| `400` | `0` | Unknown error. [Flow: 451] | Internal error. The number in brackets is the place in the code where the error occurred; it helps support find the cause ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-flow-flow-create.md)
 - [{#T}](./tasks-flow-flow-update.md)
 - [{#T}](./tasks-flow-flow-get.md)

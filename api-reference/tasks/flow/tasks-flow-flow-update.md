@@ -11,9 +11,22 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: Creator or administrator of the flow
+> Who can execute the method: Bitrix24 administrator, flow creator, or flow administrator
 
 The method `tasks.flow.Flow.update` modifies the flow.
+
+{% note warning "" %}
+
+The method resets settings that are not passed in `flowData` to their default values:
+- description `description`
+- flags `matchWorkTime`, `matchSchedule`, `responsibleCanChangeDeadline`, `notifyAtHalfTime`, `taskControl`
+- notifications `notifyOnQueueOverflow`, `notifyOnTasksInProgressOverflow`, `notifyWhenEfficiencyDecreases`
+
+For example, a call with only `id` and `name` renames the flow, clears its description, and turns off notifications.
+
+To change one field without losing the others, retrieve the flow with the [tasks.flow.Flow.get](./tasks-flow-flow-get.md) method and pass the current values of these settings along with the change.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -22,53 +35,50 @@ The method `tasks.flow.Flow.update` modifies the flow.
 #|
 || **Name**
 `type` | **Description** ||
-|| **flowData*** 
-[`object`](../../data-types.md) | Field values to modify the flow (detailed description below) ||
+|| **flowData***
+[`object`](../../data-types.md) | Field values to modify the flow [(detailed description)](#flowdata) ||
 |#
 
-### Parameter flowData
+### Parameter flowData {#flowdata}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **id*** 
-[`integer`](../../data-types.md) | Identifier of the flow to be modified. 
+|| **id***
+[`integer`](../../data-types.md) | Identifier of the flow to be modified.
 
-You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
-|| **name** 
-[`string`](../../data-types.md) | Name of the flow. Must be unique for each flow. 
+The ID is returned by the [tasks.flow.Flow.create](./tasks-flow-flow-create.md) method when the flow is created, and for a task from the flow, by the [tasks.task.get](../tasks-task-get.md) method ||
+|| **name**
+[`string`](../../data-types.md) | The name of the flow, from 1 to 255 characters. Must be unique within Bitrix24.
 
-To check the name, you can use the method [tasks.flow.Flow.isExists](./tasks-flow-flow-is-exists.md) ||
-|| **description** 
-[`string`](../../data-types.md) | Description of the flow ||
-|| **groupId** 
-[`integer`](../../data-types.md) | Identifier of the group to which the flow will be linked. 
-
-If not specified, a new group is automatically created ||
-|| **ownerId** 
-[`integer`](../../data-types.md) | Identifier of the flow administrator. 
-
-If not specified, the creator of the flow will be the administrator ||
-|| **templateId** 
+You can check the name using the method [tasks.flow.Flow.isExists](./tasks-flow-flow-is-exists.md) ||
+|| **description**
+[`string`](../../data-types.md) | Description of the flow. If not passed, the description becomes empty ||
+|| **groupId**
+[`integer`](../../data-types.md) | The ID of the group to which the flow will be linked. If not passed, the group does not change ||
+|| **ownerId**
+[`integer`](../../data-types.md) | The ID of the flow administrator. If not passed, the administrator does not change ||
+|| **templateId**
 [`integer`](../../data-types.md) | The ID of the template that users will use to add tasks to the flow ||
-|| **plannedCompletionTime***
-[`integer`](../../data-types.md) | The planned time to complete the task in seconds ||
-
-|| **distributionType***
+|| **plannedCompletionTime**
+[`integer`](../../data-types.md) | Number of seconds allowed to complete a task, at least `3600` (one hour). The flow calculates the task deadline from this time. If not passed, the time does not change ||
+|| **distributionType**
 [`string`](../../data-types.md) | Type of distribution:
 - `manually` — manual distribution
 - `queue` — distribution by queue
 - `himself` — self-distribution
 
-More about distribution types can be found in the article [{#T}](./index.md) ||
-|| **responsibleList***
-[`array`](../../data-types.md) | IDs of employees who will receive tasks.
+More about distribution types can be found in the article [{#T}](./index.md).
 
-For manual distribution, specify the moderator's ID.
+If not passed, the distribution type does not change ||
+|| **responsibleList**
+[`array`](../../data-types.md) | Employees or departments that will receive tasks. Each element is a "type — ID" pair.
 
-For self-distribution or queue distribution, specify the IDs of employees or departments. For example:
+For manual distribution, specify a single pair with the flow moderator, for example `["user", "1"]`.
+
+For self-distribution or queue distribution, specify employees or departments. For example:
 
 ```js
 [
@@ -81,9 +91,11 @@ For self-distribution or queue distribution, specify the IDs of employees or dep
 ]
 ```
 
-If you do not add the suffix `:F`, the system will select all sub-departments of the specified department according to the company structure ||
+A department without the `:F` suffix is included together with all its sub-departments according to the company structure. With the `:F` suffix, only the department itself is included.
+
+If not passed, the list of responsible persons does not change ||
 || **taskCreators**
-[`object`](../../data-types.md) | List of users who can add tasks to the flow in the `{"<entity-type>": "<entity-id>"}` format. For example
+[`array`](../../data-types.md) | Who can add tasks to the flow: users or departments. Each element is a `["<object-type>", "<object-id>"]` pair, for example:
 
 ```js
 [
@@ -96,37 +108,43 @@ If you do not add the suffix `:F`, the system will select all sub-departments of
 ]
 ```
 
-If you do not add the `:F` suffix, the system will select all sub-departments of the specified department according to the company structure
+A department without the `:F` suffix is included together with all its sub-departments according to the company structure. With the `:F` suffix, only the department itself is included
 
-To allow all users to add tasks, specify the value `{"meta-user": "all-users"}` ||
-|| **matchWorkTime** 
-[`integer`](../../data-types.md) | Skip weekends and holidays when calculating the task deadline. 
+To allow all users to add tasks, pass the pair `["meta-user", "all-users"]`.
 
-Accepts values `0` and `1`. Default is `1` ||
-|| **responsibleCanChangeDeadline** 
-[`integer`](../../data-types.md) | Can the responsible person change the task deadline. 
+If not passed, the list does not change ||
+|| **matchWorkTime**
+[`integer`](../../data-types.md) | Skip weekends and holidays when calculating the task deadline.
 
-Accepts values `0` and `1`. Default is `0` ||
-|| **notifyAtHalfTime** 
-[`integer`](../../data-types.md) | Notify the performer at half the task deadline. 
+Accepts values `0` and `1`. If not passed, `1` is used ||
+|| **matchSchedule**
+[`integer`](../../data-types.md) | Count the task completion time only during working hours according to the work schedule.
 
-Accepts values `0` and `1`. Default is `0` ||
-|| **taskControl** 
-[`integer`](../../data-types.md) | Send the completed task to the Creator for review. 
+Accepts values `0` and `1`. If not passed, `0` is used ||
+|| **responsibleCanChangeDeadline**
+[`integer`](../../data-types.md) | Can the responsible person change the task deadline.
 
-Accepts values `0` and `1`. Default is `0` ||
-|| **notifyOnQueueOverflow** 
-[`integer`](../../data-types.md) | Notify the flow administrator when the number of tasks in the queue exceeds this parameter. 
+Accepts values `0` and `1`. If not passed, `1` is used ||
+|| **notifyAtHalfTime**
+[`integer`](../../data-types.md) | Notify the performer at half the task deadline.
 
-Default is `null` (do not notify) ||
-|| **notifyOnTasksInProgressOverflow** 
-[`integer`](../../data-types.md) | Notify the flow administrator when the number of tasks in progress exceeds this parameter. 
+Accepts values `0` and `1`. If not passed, `0` is used ||
+|| **taskControl**
+[`integer`](../../data-types.md) | Send the completed task to the creator for review.
 
-Default is `50` ||
-|| **notifyWhenEfficiencyDecreases** 
-[`integer`](../../data-types.md) | Notify the flow administrator when efficiency falls below this parameter. 
+Accepts values `0` and `1`. If not passed, `0` is used ||
+|| **notifyOnQueueOverflow**
+[`integer`](../../data-types.md) | Number of tasks in the queue above which the flow administrator receives a notification.
 
-Default is `null` (do not notify) ||
+If not passed, the notification is turned off ||
+|| **notifyOnTasksInProgressOverflow**
+[`integer`](../../data-types.md) | Number of tasks in progress above which the flow administrator receives a notification.
+
+If not passed, the notification is turned off ||
+|| **notifyWhenEfficiencyDecreases**
+[`integer`](../../data-types.md) | Efficiency percentage below which the flow administrator receives a notification.
+
+If not passed, the notification is turned off ||
 |#
 
 ## Code Examples
@@ -140,6 +158,7 @@ Default is `null` (do not notify) ||
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
     -d '{
         "flowData": {
             "id": 517,
@@ -153,7 +172,7 @@ Default is `null` (do not notify) ||
             "notifyAtHalfTime": 0
         }
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.flow.Flow.update
     ```
 
 - cURL (OAuth)
@@ -161,7 +180,7 @@ Default is `null` (do not notify) ||
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+    -H "Accept: application/json" \
     -d '{
         "flowData": {
             "id": 517,
@@ -173,9 +192,10 @@ Default is `null` (do not notify) ||
             "taskCreators": [["meta-user","all-users"]],
             "matchWorkTime": 1,
             "notifyAtHalfTime": 0
-        }
+        },
+        "auth": "**put_access_token_here**"
     }' \
-    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.update
+    https://**put_your_bitrix24_address**/rest/tasks.flow.Flow.update
     ```
 
 - JS (TS)
@@ -206,10 +226,11 @@ Default is `null` (do not notify) ||
       demo: boolean
       responsibleCanChangeDeadline: boolean
       matchWorkTime: boolean
+      matchSchedule: boolean
       taskControl: boolean
       notifyAtHalfTime: boolean
       notifyOnQueueOverflow: number | null
-      notifyOnTasksInProgressOverflow: number
+      notifyOnTasksInProgressOverflow: number | null
       notifyWhenEfficiencyDecreases: number | null
       taskCreators: string[][]
       team: string[][]
@@ -382,13 +403,13 @@ Default is `null` (do not notify) ||
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating flow: ' . $e->getMessage();
@@ -515,12 +536,12 @@ HTTP status: **200**
         "id": 517,
         "creatorId": 1,
         "ownerId": 1,
-        "groupId": 178,
+        "groupId": 7,
         "templateId": 0,
-        "efficiency": 0,
+        "efficiency": 100,
         "active": true,
         "plannedCompletionTime": 7200,
-        "activity": "2024-09-02T15:27:29+00:00",
+        "activity": "2026-11-06T12:06:34+03:00",
         "name": "Updated Flow Name",
         "description": "Updated description",
         "distributionType": "manually",
@@ -533,24 +554,23 @@ HTTP status: **200**
         "demo": false,
         "responsibleCanChangeDeadline": true,
         "matchWorkTime": true,
+        "matchSchedule": false,
         "taskControl": false,
         "notifyAtHalfTime": false,
-        "notifyOnQueueOverflow": 10,
-        "notifyOnTasksInProgressOverflow": 50,
+        "notifyOnQueueOverflow": null,
+        "notifyOnTasksInProgressOverflow": null,
         "notifyWhenEfficiencyDecreases": null,
-        "taskCreators": [
-            [
-                "meta-user",
-                "all-users"
-            ]
-        ],
-        "team": [
-            [
-                "user",
-                "3"
-            ]
-        ],
+        "taskCreators": [],
+        "team": [],
         "trialFeatureEnabled": false
+    },
+    "time": {
+        "start": 1793956397,
+        "finish": 1793956397.557803,
+        "duration": 0.5578029155731201,
+        "processing": 0,
+        "date_start": "2026-11-06T12:13:17+03:00",
+        "date_finish": "2026-11-06T12:13:17+03:00"
     }
 }
 ```
@@ -560,62 +580,75 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **result** 
-[`object`](../../data-types.md) | Object containing flow data ||
-|| **id** 
-[`integer`](../../data-types.md) | ID of the created flow ||
-|| **creatorId** 
-[`integer`](../../data-types.md) | ID of the flow creator. Read-only ||
-|| **ownerId** 
+|| **result**
+[`object`](../../data-types.md) | Object containing flow data [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **id**
+[`integer`](../../data-types.md) | ID of the updated flow ||
+|| **creatorId**
+[`integer`](../../data-types.md) | ID of the flow creator ||
+|| **ownerId**
 [`integer`](../../data-types.md) | ID of the flow administrator ||
-|| **groupId** 
+|| **groupId**
 [`integer`](../../data-types.md) | ID of the group to which the flow is linked ||
-|| **templateId** 
+|| **templateId**
 [`integer`](../../data-types.md) | ID of the template used to create tasks in the flow ||
-|| **efficiency** 
-[`integer`](../../data-types.md) | Efficiency of the flow in percentage. Read-only ||
-|| **active** 
-[`boolean`](../../data-types.md) | Status of the flow's activity ||
-|| **plannedCompletionTime** 
-[`integer`](../../data-types.md) | The planned time to complete the task in seconds ||
-|| **activity** 
-[`string`](../../data-types.md) | Date and time of the last activity in the flow. Read-only ||
-|| **name** 
+|| **efficiency**
+[`integer`](../../data-types.md) | Efficiency of the flow in percentage ||
+|| **active**
+[`boolean`](../../data-types.md) | Whether the flow is enabled ||
+|| **plannedCompletionTime**
+[`integer`](../../data-types.md) | Number of seconds allowed to complete a task, at least `3600` (one hour). The flow calculates the task deadline from this time ||
+|| **activity**
+[`datetime`](../../data-types.md) | Date and time of the last activity in the flow ||
+|| **name**
 [`string`](../../data-types.md) | Flow name ||
-|| **description** 
+|| **description**
 [`string`](../../data-types.md) | Description of the flow ||
-|| **distributionType** 
+|| **distributionType**
 [`string`](../../data-types.md) | Type of task distribution in the flow ||
 || **responsibleList**
-[`array`](../../data-types.md) | List of responsible persons for tasks in the flow. For manual distribution, this is the flow moderator ||
-|| **demo** 
-[`boolean`](../../data-types.md) | Indicates whether the flow is a demo. System parameter. Read-only ||
-|| **responsibleCanChangeDeadline** 
+[`array`](../../data-types.md) | List of responsible persons for tasks in the flow, with "type — ID" pairs as elements. For manual distribution, this is the flow moderator ||
+|| **demo**
+[`boolean`](../../data-types.md) | Indicates whether the flow is a demo. System parameter ||
+|| **responsibleCanChangeDeadline**
 [`boolean`](../../data-types.md) | Can the responsible person change the task deadline ||
-|| **matchWorkTime** 
+|| **matchWorkTime**
 [`boolean`](../../data-types.md) | Whether to skip weekends and holidays when calculating the task deadline ||
-|| **taskControl** 
+|| **matchSchedule**
+[`boolean`](../../data-types.md) | Whether to count the task completion time only during working hours according to the work schedule ||
+|| **taskControl**
 [`boolean`](../../data-types.md) | Whether to send the completed task to the creator for review ||
-|| **notifyAtHalfTime** 
+|| **notifyAtHalfTime**
 [`boolean`](../../data-types.md) | Whether to notify the performer at half the task deadline ||
-|| **notifyOnQueueOverflow** 
-[`integer`](../../data-types.md) | Number of tasks in the queue, exceeding which will send a notification to the flow administrator (if `null`, notifications are disabled) ||
-|| **notifyOnTasksInProgressOverflow** 
-[`integer`](../../data-types.md) | Number of tasks in progress, exceeding which will send a notification to the flow administrator (if `null`, notifications are disabled) ||
-|| **notifyWhenEfficiencyDecreases** 
-[`integer`](../../data-types.md) | Efficiency in percentage, below which a notification will be sent to the flow administrator (if `null`, notifications are disabled) ||
-|| **taskCreators** 
-[`object`](../../data-types.md) | List of users who can add tasks to the flow in the `{"<object-type>": "<object-id>"}` format. For example, `[{"user": 3}, {"department": "17:F"}]`.
+|| **notifyOnQueueOverflow**
+[`integer`](../../data-types.md) | Number of tasks in the queue above which the flow administrator receives a notification. `null` — the notification is disabled ||
+|| **notifyOnTasksInProgressOverflow**
+[`integer`](../../data-types.md) | Number of tasks in progress above which the flow administrator receives a notification. `null` — the notification is disabled ||
+|| **notifyWhenEfficiencyDecreases**
+[`integer`](../../data-types.md) | Efficiency percentage below which the flow administrator receives a notification. `null` — the notification is disabled ||
+|| **taskCreators**
+[`array`](../../data-types.md) | Who can add tasks to the flow. Each element is a "type — ID" pair, for example `["user", "3"]` or `["department", "17:F"]`. The pair `["meta-user", "all-users"]` means that all users can add tasks.
 
-Item `{"meta-user": "all-users"}` means that all users can add tasks ||
+In the response of this method, the field is empty even if task creators are set. The current list is returned by the [tasks.flow.Flow.get](./tasks-flow-flow-get.md) method ||
 || **team**
-[`object`](../../data-types.md) | Flow team.
+[`array`](../../data-types.md) | Flow team.
 
-For manual distribution, this includes all project participants linked to the flow, except for the moderator.
+For manual distribution, this includes all members of the group linked to the flow, except for the moderator.
 
-For queue and self-distribution, the team is the same as in `responsibleList` ||
-|| **trialFeatureEnabled** 
-[`boolean`](../../data-types.md) | Indicates whether the trial period is enabled for the flow. System parameter. Read-only ||
+For queue and self-distribution, the team is the same as in `responsibleList`.
+
+Elements are "type — ID" pairs, as in `taskCreators`. In the response of this method, the field is empty; the current team is returned by the [tasks.flow.Flow.get](./tasks-flow-flow-get.md) method ||
+|| **trialFeatureEnabled**
+[`boolean`](../../data-types.md) | Indicates whether the trial period is enabled for the flow. System parameter ||
 |#
 
 ## Error Handling
@@ -625,7 +658,7 @@ HTTP status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Flow not found"
+    "error_description": "'id': field's value must be greater than 0"
 }
 ```
 
@@ -634,17 +667,20 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or flow not found | The portal plan does not allow working with flows or the user does not have permission to modify the flow ||
-|| `0` | `Unknown error` | Unknown error ||
-|| `0` | `'distributionType': field's value has an invalid value` | Invalid value for `distributionType`. Similar for other parameters ||
-|| `0` | A flow with this name already exists | ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | 'id': field's value must be greater than 0 | `flowData.id` is not passed or the value is less than `1` ||
+|| `400` | `0` | Cannot find flow | The user does not have the permission to modify the flow, or a flow with this `id` does not exist ||
+|| `400` | `0` | 'plannedCompletionTime': field's value must be greater than 3600 | The completion time is less than an hour: `plannedCompletionTime` is less than `3600` seconds ||
+|| `400` | `0` | distributionType: unexpected value | `distributionType` contains a value that is not in the list ||
+|| `400` | `0` | A flow with this name already exists | The flow name is already taken in Bitrix24. You can check the name in advance using the method [tasks.flow.Flow.isExists](./tasks-flow-flow-is-exists.md) ||
+|| `400` | `0` | Unknown error. [Flow: 267] | A flow with this `id` does not exist. Bitrix24 administrators receive this error, other users receive the access error ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-flow-flow-create.md)
 - [{#T}](./tasks-flow-flow-get.md)
 - [{#T}](./tasks-flow-flow-delete.md)

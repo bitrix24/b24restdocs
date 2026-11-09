@@ -1,4 +1,4 @@
-# Get the List of Kanban Stages or "My Plan" task.stages.get
+# Get the List of Kanban Stages or "My Planner" task.stages.get
 
 {% note tip "" %}
 
@@ -11,11 +11,11 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: 
-> - any user for "My Plan" stages
-> - any user with group access for Kanban stages
+> Who can execute the method:
+> - any user for stages of their own "My Planner"
+> - a user with permission to view the group's tasks for the group's Kanban stages
 
-The method `task.stages.get` retrieves Kanban stages or "My Plan" stages.
+The method `task.stages.get` retrieves Kanban stages or "My Planner" stages. If there are no stages yet, the method first creates the default stages.
 
 ## Method Parameters
 
@@ -25,13 +25,13 @@ The method `task.stages.get` retrieves Kanban stages or "My Plan" stages.
 || **Name**
 `type` | **Description** ||
 || **entityId*** 
-[`integer`](../../data-types.md) | Identifier of the object.
-
-Possible values:
-- `ID` of the group — the method will retrieve the Kanban stages of the group. An access error will be returned if the permission level is insufficient.
-- `0` — the method will retrieve the stages of "My Plan" for the current user. ||
+[`integer`](../../data-types.md) | Whose stages to retrieve:
+- group `ID` — the group's Kanban stages. If the user does not have permission to view the group's tasks, the method returns an access error
+- `0` — the "My Planner" stages of the current user ||
+|| **numeric**
+[`boolean`](../../data-types.md) | If `true` is passed, the method returns the stages as an array rather than an object keyed by stage IDs. Default is `false` ||
 || **isAdmin** 
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided that the requester is an administrator of the account. ||
+[`boolean`](../../data-types.md) | If `true` is passed, the method does not check permissions in the group. The parameter applies only to a Bitrix24 administrator; for other users, permissions are checked as usual. Default is `false` ||
 |#
 
 ## Code Examples
@@ -45,10 +45,11 @@ Possible values:
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
     -d '{
     "entityId": 0
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.get
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.stages.get
     ```
 
 - cURL (OAuth)
@@ -56,11 +57,12 @@ Possible values:
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -H "Accept: application/json" \
     -d '{
-    "entityId": 0
+    "entityId": 0,
+    "auth": "**put_access_token_here**"
     }' \
-    https://your-domain.bitrix24.com/rest/task.stages.get
+    https://**put_your_bitrix24_address**/rest/task.stages.get
     ```
 
 - JS (TS)
@@ -85,6 +87,7 @@ Possible values:
       ADDITIONAL_FILTER: unknown[]
       TO_UPDATE: unknown[]
       TO_UPDATE_ACCESS: null
+      CAN_SORT_ITEMS?: boolean
     }
 
     // result is a map of stage ID → StageInfo
@@ -177,6 +180,7 @@ Possible values:
 
     ```php
     try {
+        $entityId = 0;
         $response = $b24Service
             ->core
             ->call(
@@ -185,13 +189,13 @@ Possible values:
                     'entityId' => $entityId,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting task stages: ' . $e->getMessage();
@@ -264,67 +268,83 @@ HTTP Status: **200**
 ```json
 {
     "result": {
-        "5": {
-         "ID": "5",
-         "TITLE": "Not Planned",
-         "SORT": "100",
-         "COLOR": "00C4FB",
-         "SYSTEM_TYPE": "NEW",
-         "ENTITY_ID": "1",
-         "ENTITY_TYPE": "U",
-         "ADDITIONAL_FILTER": [],
-         "TO_UPDATE": [],
-         "TO_UPDATE_ACCESS": null
+        "19": {
+            "ID": "19",
+            "TITLE": "Not planned",
+            "SORT": "100",
+            "COLOR": "00C4FB",
+            "SYSTEM_TYPE": "NEW",
+            "ENTITY_ID": "129",
+            "ENTITY_TYPE": "U",
+            "ADDITIONAL_FILTER": [],
+            "TO_UPDATE": [],
+            "TO_UPDATE_ACCESS": null,
+            "CAN_SORT_ITEMS": true
         },
-        "6": {
-         "ID": "6",
-         "TITLE": "I Will Do It This Week",
-         "SORT": "200",
-         "COLOR": "47D1E2",
-         "SYSTEM_TYPE": null,
-         "ENTITY_ID": "1",
-         "ENTITY_TYPE": "U",
-         "ADDITIONAL_FILTER": [],
-         "TO_UPDATE": [],
-         "TO_UPDATE_ACCESS": null
+        "20": {
+            "ID": "20",
+            "TITLE": "In progress",
+            "SORT": "200",
+            "COLOR": "9DCF00",
+            "SYSTEM_TYPE": null,
+            "ENTITY_ID": "129",
+            "ENTITY_TYPE": "U",
+            "ADDITIONAL_FILTER": [],
+            "TO_UPDATE": [],
+            "TO_UPDATE_ACCESS": null
         }
+    },
+    "time": {
+        "start": 1793956087,
+        "finish": 1793956087.677343,
+        "duration": 0.6773428916931152,
+        "processing": 0,
+        "date_start": "2026-11-06T12:08:07+03:00",
+        "date_finish": "2026-11-06T12:08:07+03:00"
     }
 }
 ```
 
-## Returned Data
+### Returned Data
 
 #| 
-|| **Field**
+|| **Name**
 `type` | **Description** ||
-|| **result** 
-`object` | An object containing data about the Kanban / My Plan stages, with stage IDs as keys. ||
-|| **ID** 
-`integer` | Identifier of the stage. ||
-|| **TITLE** 
-`string` | Title. ||
-|| **SORT** 
-`integer` | Sorting. ||
-|| **COLOR** 
-`string` | Color in RGB format. ||
-|| **SYSTEM_TYPE** 
-`string` | System type. Possible values: `NEW`, `PROGRESS`, `WORK`, `REVIEW`, `FINISH`. ||
-|| **ENTITY_ID** 
-`integer` | Identifier of the object, i.e., group or user. ||
-|| **ENTITY_TYPE** 
-`string` | Type of the object. `U` for user, `G` for group. ||
-|| **ADDITIONAL_FILTER** 
-`array` | Additional filters. 
+|| **result**
+[`object`](../../data-types.md) | Kanban or "My Planner" stages. The key is the stage ID, the value is the stage object [(detailed description)](#stage).
 
-System parameter. Always has the value of an empty array. ||
-|| **TO_UPDATE** 
-`array` | Array of elements to update.
+If you pass `numeric: true`, an array of stage objects is returned ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
 
-System parameter. Always has the value of an empty array. ||
-|| **TO_UPDATE_ACCESS** 
-`null` | Functions applied to the task when moving to this stage.
+#### Stage Object {#stage}
 
-System parameter. Always has the value of `null`. ||
+#|
+|| **Name**
+`type` | **Description** ||
+|| **ID**
+[`string`](../../data-types.md) | Stage ID ||
+|| **TITLE**
+[`string`](../../data-types.md) | Stage name ||
+|| **SORT**
+[`string`](../../data-types.md) | Stage sequence number: the smaller the number, the further left the stage is in the Kanban ||
+|| **COLOR**
+[`string`](../../data-types.md) | Stage color — a hexadecimal RGB code without `#` ||
+|| **SYSTEM_TYPE**
+[`string`](../../data-types.md) | System type of the stage: `NEW`, `WORK`, `REVIEW`, or `FINISH`. A stage with a system type cannot be deleted. The first stage always has `NEW`. A regular stage has `null` or an empty string ||
+|| **ENTITY_ID**
+[`string`](../../data-types.md) | ID of the group or user that owns the stages ||
+|| **ENTITY_TYPE**
+[`string`](../../data-types.md) | Type of the stage owner: `U` — the user's "My Planner", `G` — the group's Kanban ||
+|| **ADDITIONAL_FILTER**
+[`array`](../../data-types.md) | System parameter, always an empty array ||
+|| **TO_UPDATE**
+[`array`](../../data-types.md) | System parameter, always an empty array ||
+|| **TO_UPDATE_ACCESS**
+[`null`](../../data-types.md) | System parameter, always `null` ||
+|| **CAN_SORT_ITEMS**
+[`boolean`](../../data-types.md) | Whether tasks can be sorted within the stage. Returned only for stages with a system type ||
 |#
 
 ## Error Handling
@@ -334,7 +354,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "You cannot view stages in this group."
+    "error_description": "You cannot view tasks in this group"
 }
 ```
 
@@ -343,17 +363,18 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | You cannot view stages in this group. ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `ACCESS_DENIED` | You cannot view tasks in this group | The user does not have permission to view tasks of the group from `entityId` ||
+|| `400` | `DISPATCHER_ERROR` | Argument "entityid" is required, but no value passed for task.stages.get | The required parameter `entityId` is not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./task-stages-add.md)
 - [{#T}](./task-stages-update.md)
+- [{#T}](./task-stages-delete.md)
 - [{#T}](./task-stages-can-move-task.md)
 - [{#T}](./task-stages-move-task.md)
-- [{#T}](./task-stages-delete.md)

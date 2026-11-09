@@ -1,4 +1,4 @@
-# Check the Existence of tasks.flow.Flow.isExists
+# Check Flow Name Uniqueness tasks.flow.Flow.isExists
 
 {% note tip "" %}
 
@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-The method `tasks.flow.Flow.isExists` checks whether a flow with the specified name exists. If an `id` is provided, it checks for flows with the same name, excluding the specified one.
+The method `tasks.flow.Flow.isExists` checks whether Bitrix24 already has a flow with this name. A flow name must be unique, so check it before creating or renaming a flow.
+
+The method is case-insensitive: it treats `Sales flow` and `sales flow` as the same name. The method does not check user permissions and searches among all flows.
 
 ## Method Parameters
 
@@ -22,14 +24,23 @@ The method `tasks.flow.Flow.isExists` checks whether a flow with the specified n
 #|
 || **Name**
 `type` | **Description** ||
-|| **flowData*** 
-[`object`](../../data-types.md) | Object containing data to check for flow existence ||
-|| **name*** 
-[`string`](../../data-types.md) | The name of the flow to check ||
-|| **id** 
-[`integer`](../../data-types.md) | Identifier of the flow to exclude from the check (optional). 
+|| **flowData***
+[`object`](../../data-types.md) | Object with the flow name to check [(detailed description)](#flowdata) ||
+|#
 
-You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+### Parameter flowData {#flowdata}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **name***
+[`string`](../../data-types.md) | The name of the flow to check.
+
+For an empty string, the method returns `"exists": false` ||
+|| **id**
+[`integer`](../../data-types.md) | Identifier of the flow that the method skips during the check. Pass it when checking a new name for an existing flow: then the method does not find this flow itself.
+
+The identifier is returned by the [tasks.flow.Flow.create](./tasks-flow-flow-create.md) method when a flow is created, and for a task from a flow — by the [tasks.task.get](../tasks-task-get.md) method ||
 |#
 
 ## Code Examples
@@ -43,12 +54,13 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
     -d '{
         "flowData": {
             "name": "Flow Name"
         }
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.isExists
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.flow.Flow.isExists
     ```
 
 - cURL (OAuth)
@@ -56,13 +68,14 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+    -H "Accept: application/json" \
     -d '{
         "flowData": {
             "name": "Flow Name"
-        }
+        },
+        "auth": "**put_access_token_here**"
     }' \
-    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.isExists
+    https://**put_your_bitrix24_address**/rest/tasks.flow.Flow.isExists
     ```
 
 - JS (TS)
@@ -184,7 +197,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
                     ]
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -272,6 +285,14 @@ HTTP status: **200**
 {
     "result": {
         "exists": true
+    },
+    "time": {
+        "start": 1793956087,
+        "finish": 1793956087.677343,
+        "duration": 0.6773428916931152,
+        "processing": 0,
+        "date_start": "2026-11-06T12:08:07+03:00",
+        "date_finish": "2026-11-06T12:08:07+03:00"
     }
 }
 ```
@@ -281,10 +302,19 @@ HTTP status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **result** 
-[`object`](../../data-types.md) | Object with the result of the operation ||
-|| **exists** 
-[`boolean`](../../data-types.md) | Indicates whether a flow with the specified name exists ||
+|| **result**
+[`object`](../../data-types.md) | Object with the result of the operation [(detailed description)](#result) ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **exists**
+[`boolean`](../../data-types.md) | `true` if a flow with this name exists, `false` if it does not ||
 |#
 
 ## Error Handling
@@ -294,7 +324,7 @@ HTTP status: **400**
 ```json
 {
     "error": "0",
-    "error_description": "Flow not found"
+    "error_description": "name: cannot be null"
 }
 ```
 
@@ -303,15 +333,16 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or stream not found | The account plan does not allow working with flows or the user does not have permission to perform the check ||
-|| `0` | `Unknown error` | Unknown error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `0` | name: cannot be null | `flowData.name` is missing ||
+|| `400` | `0` | Unknown error. [Flow: 424] | Internal error. The number in brackets is the place in the code where the error occurred; it helps support find the cause ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-flow-flow-create.md)
 - [{#T}](./tasks-flow-flow-update.md)
 - [{#T}](./tasks-flow-flow-get.md)

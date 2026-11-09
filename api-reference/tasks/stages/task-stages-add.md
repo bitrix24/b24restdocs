@@ -1,4 +1,4 @@
-# Add a Kanban or "My Plan" Stage task.stages.add
+# Add a Kanban or "My Planner" Stage task.stages.add
 
 {% note tip "" %}
 
@@ -12,10 +12,10 @@ Choose a tool for developing with an AI agent:
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for "My Plan" stages
-> - any user with group access for Kanban stages
+> - any user for stages of their own "My Planner"
+> - the group owner or moderator for the group's Kanban stages
 
-The method `task.stages.add` adds a Kanban or "My Plan" stage.
+The method `task.stages.add` adds a Kanban or "My Planner" stage.
 
 ## Method Parameters
 
@@ -25,12 +25,12 @@ The method `task.stages.add` adds a Kanban or "My Plan" stage.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for adding a new stage ||
+[`object`](../../data-types.md) | Field values for adding a new stage [(detailed description)](#fields) ||
 || **isAdmin**
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an administrator of the account ||
+[`boolean`](../../data-types.md) | If `true` is passed, the method does not check permissions in the group. The parameter applies only to a Bitrix24 administrator; for other users, permissions are checked as usual. Default is `false` ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -38,21 +38,21 @@ The method `task.stages.add` adds a Kanban or "My Plan" stage.
 || **Name**
 `type` | **Description** ||
 || **TITLE***
-[`string`](../../data-types.md) | Stage title ||
+[`string`](../../data-types.md) | Stage name ||
 || **COLOR**
-[`string`](../../data-types.md) | Stage color in RGB format ||
+[`string`](../../data-types.md) | Stage color — a 6-character hexadecimal RGB code without `#`, for example `FFAAEE`.
+
+The method does not validate the format. If you pass `#FFAAEE`, the truncated value `#FFAAE` is retained ||
 || **AFTER_ID**
 [`integer`](../../data-types.md) | Identifier of the stage after which the new stage should be added.
 
-If not specified or equal to `0`, it will be added at the beginning ||
+If not passed or `0` is passed, the stage becomes the first one. If there is no stage with this ID, the stage becomes the last one ||
 || **ENTITY_ID**
-[`integer`](../../data-types.md)| Object identifier.
+[`integer`](../../data-types.md) | Where to create the stage:
+- group `ID` — in the group's Kanban
+- `0` or not passed — in "My Planner" of the current user
 
-Can equal the `ID` of the group, in which case the stage will be added to the group's Kanban.
-
-If equal to `0` or absent, the stage will be added to "My Plan" of the current user.
-
-An access error will be returned if the permission level is insufficient ||
+If the user is not the group owner or moderator, the method returns an access error ||
 |#
 
 ## Code Examples
@@ -66,16 +66,17 @@ An access error will be returned if the permission level is insufficient ||
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
     -d '{
     "fields": {
         "TITLE": "Stage title",
-        "COLOR": "#FFAAEE",
+        "COLOR": "FFAAEE",
         "AFTER_ID": 1,
         "ENTITY_ID": 1
     },
     "isAdmin": false
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.add
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.stages.add
     ```
 
 - cURL (OAuth)
@@ -83,17 +84,18 @@ An access error will be returned if the permission level is insufficient ||
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -H "Accept: application/json" \
     -d '{
     "fields": {
         "TITLE": "Stage title",
-        "COLOR": "#FFAAEE",
+        "COLOR": "FFAAEE",
         "AFTER_ID": 1,
         "ENTITY_ID": 1
     },
-    "isAdmin": false
+    "isAdmin": false,
+    "auth": "**put_access_token_here**"
     }' \
-    https://your-domain.bitrix24.com/rest/task.stages.add
+    https://**put_your_bitrix24_address**/rest/task.stages.add
     ```
 
 - JS (TS)
@@ -116,7 +118,7 @@ An access error will be returned if the permission level is insufficient ||
         params: {
           fields: {
             TITLE: 'Stage title',
-            COLOR: '#FFAAEE',
+            COLOR: 'FFAAEE',
             AFTER_ID: 1,
             ENTITY_ID: 1,
           },
@@ -154,7 +156,7 @@ An access error will be returned if the permission level is insufficient ||
             params: {
               fields: {
                 TITLE: 'Stage title',
-                COLOR: '#FFAAEE',
+                COLOR: 'FFAAEE',
                 AFTER_ID: 1,
                 ENTITY_ID: 1,
               },
@@ -188,7 +190,7 @@ An access error will be returned if the permission level is insufficient ||
 
     fields = {
         "TITLE": "Stage name",
-        "COLOR": "#FFAAEE",
+        "COLOR": "FFAAEE",
         "AFTER_ID": 1,
         "ENTITY_ID": 1,
     }
@@ -223,22 +225,22 @@ An access error will be returned if the permission level is insufficient ||
                 [
                     'fields' => [
                         'TITLE'    => 'Stage title',
-                        'COLOR'    => '#FFAAEE',
+                        'COLOR'    => 'FFAAEE',
                         'AFTER_ID' => 1,
                         'ENTITY_ID' => 1
                     ],
                     'isAdmin' => false,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding task stage: ' . $e->getMessage();
@@ -253,7 +255,7 @@ An access error will be returned if the permission level is insufficient ||
         {
             fields: {
                 TITLE: 'Stage title',
-                COLOR: '#FFAAEE',
+                COLOR: 'FFAAEE',
                 AFTER_ID: 1,
                 ENTITY_ID: 1
             },
@@ -276,7 +278,7 @@ An access error will be returned if the permission level is insufficient ||
 
     $fields = [
         "TITLE" => "Stage title",
-        "COLOR" => "#FFAAEE",
+        "COLOR" => "FFAAEE",
         "AFTER_ID" => 1,
         "ENTITY_ID" => 1
     ];
@@ -305,7 +307,7 @@ An access error will be returned if the permission level is insufficient ||
     res, err := client.Core().Call(ctx, "task.stages.add", b24.Params{
     	"fields": b24.Params{
     		"TITLE":     "Stage title",
-    		"COLOR":     "#FFAAEE",
+    		"COLOR":     "FFAAEE",
     		"AFTER_ID":  1,
     		"ENTITY_ID": 1,
     	},
@@ -330,7 +332,15 @@ HTTP Status: **200**
 
 ```json
 {
-    "result": 1
+    "result": 1,
+    "time": {
+        "start": 1793956087,
+        "finish": 1793956087.677343,
+        "duration": 0.6773428916931152,
+        "processing": 0,
+        "date_start": "2026-11-06T12:08:07+03:00",
+        "date_finish": "2026-11-06T12:08:07+03:00"
+    }
 }
 ```
 
@@ -339,8 +349,10 @@ HTTP Status: **200**
 #|
 || **Name**
 `type` | **Description** ||
-|| **result** 
+|| **result**
 [`integer`](../../data-types.md) | Identifier of the added stage ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -350,7 +362,7 @@ HTTP Status: **400**
 ```json
 {
     "error": "EMPTY_TITLE",
-    "error_description": "Stage title is not specified"
+    "error_description": "Stage title is missing"
 }
 ```
 
@@ -359,18 +371,19 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `EMPTY_TITLE` | Stage title is not specified ||
-|| `ACCESS_DENIED` | You do not have permission to manage stages ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `EMPTY_TITLE` | Stage title is missing | `TITLE` is not passed or an empty string is passed ||
+|| `400` | `ACCESS_DENIED` | You cannot manage stages | The user is not the owner or moderator of the group from `ENTITY_ID`, or there is no group with this ID ||
+|| `400` | `DISPATCHER_ERROR` | Argument "fields" is required, but no value passed for task.stages.add | The required parameter `fields` is not passed ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./task-stages-update.md)
 - [{#T}](./task-stages-get.md)
+- [{#T}](./task-stages-delete.md)
 - [{#T}](./task-stages-can-move-task.md)
 - [{#T}](./task-stages-move-task.md)
-- [{#T}](./task-stages-delete.md)

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`task`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user who can see the flow in the list of flows.
+> Who can execute the method: a user who can see the flow — a Bitrix24 administrator, a flow member, or an employee of a department specified in the flow. If all users can add tasks to the flow, all employees can see it
 
-The method `tasks.flow.Flow.pin` pins or unpins a flow in the list of flows by its identifier.
+The method `tasks.flow.Flow.pin` pins a flow in the list of flows or unpins a flow that is already pinned. Only the user who called the method sees the pin: the list does not change for others.
 
 ## Method Parameters
 
@@ -22,10 +22,10 @@ The method `tasks.flow.Flow.pin` pins or unpins a flow in the list of flows by i
 #|
 || **Name**
 `type` | **Description** ||
-|| **flowId*** 
+|| **flowId***
 [`integer`](../../data-types.md) | The identifier of the flow to be pinned or unpinned.
 
-You can obtain the identifier using the method for creating a new flow [tasks.flow.Flow.create](./tasks-flow-flow-create.md) or by retrieving a task [tasks.task.get](../tasks-task-get.md) for a task from the flow ||
+The identifier is returned by the [tasks.flow.Flow.create](./tasks-flow-flow-create.md) method when a flow is created, and for a task from a flow — by the [tasks.task.get](../tasks-task-get.md) method ||
 |#
 
 ## Code Examples
@@ -39,10 +39,11 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
     -d '{
         "flowId": 517
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/tasks.flow.Flow.pin
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/tasks.flow.Flow.pin
     ```
 
 - cURL (OAuth)
@@ -50,11 +51,12 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+    -H "Accept: application/json" \
     -d '{
-        "flowId": 517
+        "flowId": 517,
+        "auth": "**put_access_token_here**"
     }' \
-    https://your-domain.bitrix24.com/rest/tasks.flow.Flow.pin
+    https://**put_your_bitrix24_address**/rest/tasks.flow.Flow.pin
     ```
 
 - JS (TS)
@@ -164,7 +166,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
                     'flowId' => 517
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -197,9 +199,9 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
 
     ```php
     require_once('crest.php'); // connecting the CRest PHP SDK
-    
+
     $flowId = 517;
-    
+
     // executing a request to the REST API
     $result = CRest::call(
         'tasks.flow.Flow.pin',
@@ -207,7 +209,7 @@ You can obtain the identifier using the method for creating a new flow [tasks.fl
             'flowId' => $flowId
         ]
     );
-    
+
     // Processing the response from Bitrix24
     if ($result['error']) {
         echo 'Error: '.$result['error_description'];
@@ -242,48 +244,62 @@ HTTP status: **200**
 
 ```json
 {
-    "result": true
+    "result": true,
+    "time": {
+        "start": 1793956087,
+        "finish": 1793956087.677343,
+        "duration": 0.6773428916931152,
+        "processing": 0,
+        "date_start": "2026-11-06T12:08:07+03:00",
+        "date_finish": "2026-11-06T12:08:07+03:00"
+    }
 }
 ```
 
 ### Returned Data
 
 #|
-|| **Name** 
+|| **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | The result of the method execution. Possible values:
+[`boolean`](../../data-types.md) | Possible values:
 - `true` — flow pinned
-- `false` — flow unpinned 
+- `false` — flow unpinned
 ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP status: **200**
+HTTP status: **400**
 
 ```json
 {
     "error": "0",
-    "error_description": "Unknown error"
+    "error_description": "Cannot find flow"
 }
 ```
+
+{% include notitle [Error handling](../../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Additional Information** ||
-|| `0` | Access denied or stream not found | The account plan does not allow working with flows or the user does not have permission to perform the operation ||
-|| `0` | Unknown error | Unknown error ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `100` | Could not find value for parameter {flowId} | The required parameter `flowId` is missing ||
+|| `400` | `0` | Cannot find flow | The user cannot see the flow, or there is no flow with this `flowId`. A Bitrix24 administrator does not receive this error: for a non-existent flow, the method returns `true` ||
+|| `400` | `0` | Unknown error. [Flow: 477] | Internal error. The number in brackets is the place in the code where the error occurred; it helps support find the cause ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 
 ## Continue Learning
 
+- [{#T}](./index.md)
 - [{#T}](./tasks-flow-flow-create.md)
-- [{#T}](./tasks-flow-flow-get.md)
 - [{#T}](./tasks-flow-flow-update.md)
+- [{#T}](./tasks-flow-flow-get.md)
 - [{#T}](./tasks-flow-flow-delete.md)
 - [{#T}](./tasks-flow-flow-is-exists.md)
 - [{#T}](./tasks-flow-flow-activate.md)

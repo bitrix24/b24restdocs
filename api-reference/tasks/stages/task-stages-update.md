@@ -1,4 +1,4 @@
-# Update Kanban Stage or "My Plan" task.stages.update
+# Update Kanban Stage or "My Planner" task.stages.update
 
 {% note tip "" %}
 
@@ -12,12 +12,12 @@ Choose a tool for developing with an AI agent:
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for "My Plan" stages
-> - any user with access to the group for Kanban stages
+> - any user for stages of their own "My Planner"
+> - the group owner or moderator for the group's Kanban stages
 
-The method `task.stages.update` updates Kanban or "My Plan" stages.
+The method `task.stages.update` changes the name, color, or position of a Kanban or "My Planner" stage.
 
-The method can also be used to move a stage from one position to another. To do this, simply pass the required `AFTER_ID`.
+To move a stage, pass in `AFTER_ID` the ID of the stage after which it should be placed.
 
 ## Method Parameters
 
@@ -29,24 +29,27 @@ The method can also be used to move a stage from one position to another. To do 
 || **id*** 
 [`integer`](../../data-types.md) | Identifier of the stage ||
 || **fields*** 
-[`array`](../../data-types.md) | Field values (detailed description provided [below](#parameter-fields)) for updating the Kanban stage or "My Plan" ||
+[`object`](../../data-types.md) | Field values for updating the Kanban or "My Planner" stage [(detailed description)](#fields) ||
 || **isAdmin** 
-[`boolean`](../../data-types.md) | If set to `true`, permission checks will not occur, provided the requester is an administrator of the account ||
+[`boolean`](../../data-types.md) | If `true` is passed, the method does not check permissions in the group. The parameter applies only to a Bitrix24 administrator; for other users, permissions are checked as usual. Default is `false` ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 #| 
 || **Name**
 `type` | **Description** ||
-|| **TITLE** [`string`](../../data-types.md) | Title of the stage ||
-|| **COLOR** [`string`](../../data-types.md) | Color of the stage in RGB format ||
-|| **AFTER_ID** [`integer`](../../data-types.md) | Identifier of the stage after which the new stage should be added.
+|| **TITLE**
+[`string`](../../data-types.md) | Stage name. If not passed, the name stays the same ||
+|| **COLOR**
+[`string`](../../data-types.md) | Stage color — a 6-character hexadecimal RGB code without `#`, for example `FF5733` ||
+|| **AFTER_ID**
+[`integer`](../../data-types.md) | Identifier of the stage after which this stage should be placed.
 
-If not specified or equal to `0`, it will be added at the beginning ||
+If `0` is passed, the stage becomes the first one. If not passed, the stage stays in place ||
 |#
 
-When updating a group stage with insufficient permission levels, an access error will be displayed.
+The method silently skips other fields. For example, `SORT` does not change the order of stages: the stage position is set only by `AFTER_ID`.
 
 ## Code Examples
 
@@ -59,15 +62,15 @@ When updating a group stage with insufficient permission levels, an access error
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
     -d '{
     "id": 5,
     "fields": {
         "TITLE": "New Stage",
-        "SORT": 200,
         "COLOR": "FF5733"
     }
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.update
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.stages.update
     ```
 
 - cURL (OAuth)
@@ -75,16 +78,16 @@ When updating a group stage with insufficient permission levels, an access error
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -H "Accept: application/json" \
     -d '{
     "id": 5,
     "fields": {
         "TITLE": "New Stage",
-        "SORT": 200,
         "COLOR": "FF5733"
-    }
+    },
+    "auth": "**put_access_token_here**"
     }' \
-    https://your-domain.bitrix24.com/rest/task.stages.update
+    https://**put_your_bitrix24_address**/rest/task.stages.update
     ```
 
 - JS (TS)
@@ -104,7 +107,6 @@ When updating a group stage with insufficient permission levels, an access error
           id: 5,
           fields: {
             TITLE: 'New Stage',
-            SORT: 200,
             COLOR: 'FF5733',
           },
         },
@@ -141,7 +143,6 @@ When updating a group stage with insufficient permission levels, an access error
               id: 5,
               fields: {
                 TITLE: 'New Stage',
-                SORT: 200,
                 COLOR: 'FF5733',
               },
             },
@@ -173,7 +174,6 @@ When updating a group stage with insufficient permission levels, an access error
 
     fields = {
         "TITLE": "New stage",
-        "SORT": 200,
         "COLOR": "FF5733",
     }
 
@@ -203,10 +203,9 @@ When updating a group stage with insufficient permission levels, an access error
         $stageId = 5;
         $fields = [
             'TITLE' => "New Stage",
-            'SORT' => 200,
             'COLOR' => "FF5733"
         ];
-    
+
         $response = $b24Service
             ->core
             ->call(
@@ -216,13 +215,13 @@ When updating a group stage with insufficient permission levels, an access error
                     'fields' => $fields
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error updating task stage: ' . $e->getMessage();
@@ -235,7 +234,6 @@ When updating a group stage with insufficient permission levels, an access error
     const stageId = 5;
     const fields = {
         TITLE: "New Stage",
-        SORT: 200,
         COLOR: "FF5733"
     };
     BX24.callMethod(
@@ -259,7 +257,6 @@ When updating a group stage with insufficient permission levels, an access error
     $stageId = 5;
     $fields = [
         "TITLE" => "New Stage",
-        "SORT" => 200,
         "COLOR" => "FF5733"
     ];
 
@@ -288,7 +285,6 @@ When updating a group stage with insufficient permission levels, an access error
     	"id": 5,
     	"fields": b24.Params{
     		"TITLE": "New Stage",
-    		"SORT":  200,
     		"COLOR": "FF5733",
     	},
     })
@@ -307,11 +303,19 @@ When updating a group stage with insufficient permission levels, an access error
 
 ## Response Handling
 
-HTTP Status: 200
+HTTP Status: **200**
 
 ```json
 {
-    "result": true
+    "result": true,
+    "time": {
+        "start": 1793956087,
+        "finish": 1793956087.677343,
+        "duration": 0.6773428916931152,
+        "processing": 0,
+        "date_start": "2026-11-06T12:08:07+03:00",
+        "date_finish": "2026-11-06T12:08:07+03:00"
+    }
 }
 ```
 
@@ -320,9 +324,11 @@ HTTP Status: 200
 #| 
 || **Name**
 `type` | **Description** ||
-|| **result** 
+|| **result**
 [`boolean`](../../data-types.md) | Returns `true` if the stage was successfully updated
 ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -332,7 +338,7 @@ HTTP status: **400**
 ```json
 {
     "error": "ACCESS_DENIED",
-    "error_description": "You cannot modify stages in this group"
+    "error_description": "You cannot manage stages"
 }
 ```
 
@@ -341,18 +347,20 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED` | You cannot modify stages in this group ||
-|| `NOT_FOUND` | Stage not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `NOT_FOUND` | Stage was not found | There is no stage with the ID `id` ||
+|| `400` | `ACCESS_DENIED` | You cannot manage stages | The user is not the owner or moderator of the group the stage belongs to, or the stage belongs to another user's "My Planner" ||
+|| `400` | `EMPTY_TITLE` | Stage title is missing | An empty string is passed in `TITLE` ||
+|| `400` | `DISPATCHER_ERROR` | Argument "id" is required, but no value passed for task.stages.update | The required parameter `id` is not passed. If `fields` is not passed, the error text contains its name ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./task-stages-add.md)
 - [{#T}](./task-stages-get.md)
+- [{#T}](./task-stages-delete.md)
 - [{#T}](./task-stages-can-move-task.md)
 - [{#T}](./task-stages-move-task.md)
-- [{#T}](./task-stages-delete.md)

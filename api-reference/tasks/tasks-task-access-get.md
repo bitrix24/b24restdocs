@@ -19,7 +19,13 @@ This method belongs to REST 3.0. The call specifics and response format of the n
 
 {% endnote %}
 
-The method `tasks.task.access.get` checks the available actions a user can perform on a task.
+The method `tasks.task.access.get` returns which actions on a task are available to the user, such as viewing, editing, completing, or delegating.
+
+The method checks the permissions of the user on whose behalf it is called: the webhook owner or the application user. You cannot use this method to check another user's permissions — use the [tasks.task.getaccess](./tasks-task-get-access.md) method with the `users` parameter instead.
+
+If the user has no access to the task, the method returns `false` in all fields except `automate` and `admin`: these depend on the user's permissions, not on the task.
+
+The method does not check whether the task exists: a nonexistent `id` does not cause an error.
 
 ## Method Parameters
 
@@ -31,7 +37,7 @@ The method `tasks.task.access.get` checks the available actions a user can perfo
 || **id***
 [`integer`](../data-types.md) | Task identifier.
 
-The task identifier can be obtained when [creating a new task](./tasks-task-add-rest-v3.md) or through the old method of [getting the task list](./tasks-task-list-rest-v3.md) ||
+The task identifier can be obtained when [creating a new task](./tasks-task-add-rest-v3.md) or by using the method for [getting the task list](./tasks-task-list-rest-v3.md) ||
 |#
 
 ## Code Examples
@@ -371,9 +377,108 @@ HTTP Status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | The root element of the response. Contains an object describing the available actions for the current user ||
+[`object`](../data-types.md) | Permissions of the current user for the task [(detailed description)](#result) ||
 || **time**
 [`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Object result {#result}
+
+Each field is a permission for an action: `true` means allowed, `false` means denied. The exceptions are `changeDirector`, `resultEdit`, `removeResult`, and `resultRead`: the method always returns `false` in them.
+
+#|
+|| **Name**
+`type` | **Description** ||
+|| **read**
+[`boolean`](../data-types.md) | View the task ||
+|| **watch**
+[`boolean`](../data-types.md) | Follow the task as an observer. The value matches `read` ||
+|| **mute**
+[`boolean`](../data-types.md) | Mute notifications for the task. The value matches `read` ||
+|| **createSubtask**
+[`boolean`](../data-types.md) | Create subtasks ||
+|| **createResult**
+[`boolean`](../data-types.md) | Add a task result. The value matches `read` ||
+|| **edit**
+[`boolean`](../data-types.md) | Edit the task ||
+|| **remove**
+[`boolean`](../data-types.md) | Delete the task ||
+|| **complete**
+[`boolean`](../data-types.md) | Complete the task ||
+|| **approve**
+[`boolean`](../data-types.md) | Accept work on a task awaiting control ||
+|| **disapprove**
+[`boolean`](../data-types.md) | Return a task awaiting control for revision ||
+|| **start**
+[`boolean`](../data-types.md) | Start working on the task ||
+|| **take**
+[`boolean`](../data-types.md) | Take a task from a flow with self-assignment ||
+|| **delegate**
+[`boolean`](../data-types.md) | Delegate the task ||
+|| **defer**
+[`boolean`](../data-types.md) | Defer the task ||
+|| **renew**
+[`boolean`](../data-types.md) | Resume a completed or deferred task ||
+|| **deadline**
+[`boolean`](../data-types.md) | Change the deadline ||
+|| **datePlan**
+[`boolean`](../data-types.md) | Change the planned start and end dates ||
+|| **changeDirector**
+[`boolean`](../data-types.md) | Change the creator. The method always returns `false`, even if the permission is granted ||
+|| **changeResponsible**
+[`boolean`](../data-types.md) | Change the responsible person ||
+|| **changeAccomplices**
+[`boolean`](../data-types.md) | Change participants ||
+|| **pause**
+[`boolean`](../data-types.md) | Pause work on the task ||
+|| **timeTracking**
+[`boolean`](../data-types.md) | Start time tracking for the task ||
+|| **mark**
+[`boolean`](../data-types.md) | Rate the task ||
+|| **changeStatus**
+[`boolean`](../data-types.md) | Change the task status ||
+|| **reminder**
+[`boolean`](../data-types.md) | Create reminders ||
+|| **addAuditors**
+[`boolean`](../data-types.md) | Add observers ||
+|| **elapsedTime**
+[`boolean`](../data-types.md) | Add time spent ||
+|| **favorite**
+[`boolean`](../data-types.md) | Add the task to favorites. The value matches `read` ||
+|| **checklistAdd**
+[`boolean`](../data-types.md) | Add checklist items ||
+|| **checklistEdit**
+[`boolean`](../data-types.md) | Edit checklist items ||
+|| **checklistSave**
+[`boolean`](../data-types.md) | Save the checklist ||
+|| **checklistToggle**
+[`boolean`](../data-types.md) | Mark checklist items as completed ||
+|| **automate**
+[`boolean`](../data-types.md) | Configure task automation rules. A user permission that does not depend on the task ||
+|| **resultEdit**
+[`boolean`](../data-types.md) | Edit the task result. The method always returns `false`, even if the permission is granted ||
+|| **completeResult**
+[`boolean`](../data-types.md) | Complete a task that requires a result ||
+|| **removeResult**
+[`boolean`](../data-types.md) | Delete the task result. The method always returns `false`, even if the permission is granted ||
+|| **resultRead**
+[`boolean`](../data-types.md) | Read the task result. The method always returns `false`, even if the permission is granted ||
+|| **admin**
+[`boolean`](../data-types.md) | Manage access permissions for tasks. A user permission that does not depend on the task ||
+|| **copy**
+[`boolean`](../data-types.md) | Copy the task ||
+|| **saveAsTemplate**
+[`boolean`](../data-types.md) | Save the task as a template ||
+|| **attachFile**
+[`boolean`](../data-types.md) | Attach files to the task ||
+|| **detachFile**
+[`boolean`](../data-types.md) | Detach files from the task ||
+|| **detachParent**
+[`boolean`](../data-types.md) | Unlink the task from its parent task ||
+|| **createGanttDependence**
+[`boolean`](../data-types.md) | Create task dependencies on the Gantt chart ||
+|| **sort**
+[`boolean`](../data-types.md) | Change the task order in a group. Can be `true` only for a task in a group ||
 |#
 
 ## Error Handling
@@ -399,7 +504,7 @@ HTTP Status: **400**
 
 ### Possible Error Codes
 
-#### Request Validation Errors  
+#### Request Validation Errors
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
@@ -413,6 +518,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 
 ## Continue Learning
 
+- [{#T}](./tasks-task-get-access.md)
 - [{#T}](./tasks-task-update-rest-v3.md)
 - [{#T}](./tasks-task-chat-message-send.md)
 - [{#T}](./tasks-task-delete-rest-v3.md)

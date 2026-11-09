@@ -9,9 +9,9 @@ items:
     href: task-stages-update.md  
   - name: Get a List of Kanban Stages or "My Planner"  
     href: task-stages-get.md  
+  - name: Delete a Kanban Stage or "My Planner"  
+    href: task-stages-delete.md  
   - name: Check the Possibility of Moving a Task  
     href: task-stages-can-move-task.md  
   - name: Move a Task from One Stage to Another  
     href: task-stages-move-task.md  
-  - name: Delete a Kanban Stage or "My Planner"  
-    href: task-stages-delete.md  

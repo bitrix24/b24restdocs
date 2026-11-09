@@ -12,14 +12,12 @@ Choose a tool for developing with an AI agent:
 > Scope: [`task`](../../scopes/permissions.md)
 >
 > Who can execute the method:
-> - any user for stages of "My Plan"
-> - any user with access to the group for kanban stages
+> - any user for stages of their own "My Planner"
+> - a user with permission to sort tasks in the group for the group's Kanban stages
 
-The method `task.stages.movetask` moves a task from one stage to another and allows you to change the task position within a group Kanban or "My Plan".
+The method `task.stages.movetask` moves a task to another stage and can place it before or after another task.
 
-The method works as follows:
-- If a group stage is provided, the move occurs within the group's kanban.
-- If "My Plan" stage is provided, the move occurs within it.
+The method determines the Kanban by the `stageId` stage: if the stage belongs to a group, the task is moved in the group's Kanban; if it belongs to "My Planner", the task is moved in "My Planner".
 
 ## Method Parameters
 
@@ -40,13 +38,15 @@ The method works as follows:
 
 {% note info %}
 
-The `before` and `after` parameters are mutually exclusive. You must specify either one or the other.
+Pass `before` or `after`, not both. If you pass both, the method uses only `before`. In the examples below, the task is placed before task `3`. To place it after another task, pass `after` instead of `before`.
 
-If both parameters are not filled, the task is added to the stage column according to the project or "My Plan" settings.
+If you pass neither `before` nor `after`, the task is placed in the stage according to the group or "My Planner" settings.
 
 {% endnote %}
 
 ## Code Examples
+
+{% include [Note on examples](../../../_includes/examples.md) %}
 
 {% list tabs %}
 
@@ -55,13 +55,13 @@ If both parameters are not filled, the task is added to the stage column accordi
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
     -d '{
     "id": 1,
     "stageId": 2,
-    "before": 3,
-    "after": 4
+    "before": 3
     }' \
-    https://your-domain.bitrix24.com/rest/_USER_ID_/_CODE_/task.stages.movetask
+    https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/task.stages.movetask
     ```
 
 - cURL (OAuth)
@@ -69,14 +69,14 @@ If both parameters are not filled, the task is added to the stage column accordi
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN" \
+    -H "Accept: application/json" \
     -d '{
     "id": 1,
     "stageId": 2,
     "before": 3,
-    "after": 4
+    "auth": "**put_access_token_here**"
     }' \
-    https://your-domain.bitrix24.com/rest/task.stages.movetask
+    https://**put_your_bitrix24_address**/rest/task.stages.movetask
     ```
 
 - JS (TS)
@@ -99,7 +99,6 @@ If both parameters are not filled, the task is added to the stage column accordi
           id: 1,
           stageId: 2,
           before: 3,
-          after: 4,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -134,7 +133,6 @@ If both parameters are not filled, the task is added to the stage column accordi
               id: 1,
               stageId: 2,
               before: 3,
-              after: 4,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -167,7 +165,6 @@ If both parameters are not filled, the task is added to the stage column accordi
             bitrix_id=1,
             stage_id=2,
             before=3,
-            after=4,
         ).response
         result = bitrix_response.result
         print(result)
@@ -192,21 +189,20 @@ If both parameters are not filled, the task is added to the stage column accordi
             ->call(
                 'task.stages.movetask',
                 [
-                    'id'     => $taskId,
-                    'stageId' => $stageId,
-                    'before' => 3,
-                    'after'  => 4
+                    'id'      => 1,
+                    'stageId' => 2,
+                    'before'  => 3
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error moving task stage: ' . $e->getMessage();
@@ -223,8 +219,7 @@ If both parameters are not filled, the task is added to the stage column accordi
         {
             id: taskId,
             stageId: stageId,
-            before: 3,
-            after: 4
+            before: 3
         },
         function(res)
         {
@@ -247,8 +242,7 @@ If both parameters are not filled, the task is added to the stage column accordi
         [
             'id' => $taskId,
             'stageId' => $stageId,
-            'before' => 3,
-            'after' => 4
+            'before' => 3
         ]
     );
 
@@ -268,7 +262,6 @@ If both parameters are not filled, the task is added to the stage column accordi
     	"id":      1,
     	"stageId": 2,
     	"before":  3,
-    	"after":   4,
     })
     if err != nil {
     	return fmt.Errorf("task.stages.movetask: %w", err)
@@ -289,7 +282,15 @@ HTTP Status: **200**
 
 ```json
 {
-    "result": true
+    "result": true,
+    "time": {
+        "start": 1793956087,
+        "finish": 1793956087.677343,
+        "duration": 0.6773428916931152,
+        "processing": 0,
+        "date_start": "2026-11-06T12:08:07+03:00",
+        "date_finish": "2026-11-06T12:08:07+03:00"
+    }
 }
 ```
 
@@ -298,9 +299,11 @@ HTTP Status: **200**
 #| 
 || **Name**
 `type` | **Description** ||
-|| **result** 
-[`boolean`](../../data-types.md) | Returns `true` if the stage move was successful
+|| **result**
+[`boolean`](../../data-types.md) | Returns `true` if the task was successfully moved
 ||
+|| **time**
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -319,19 +322,21 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #| 
-|| **Code** | **Description** ||
-|| `ACCESS_DENIED_MOVE` | You cannot move this task ||
-|| `TASK_NOT_FOUND` | Task not found or access to it is denied ||
-|| `NOT_FOUND` | Stage not found ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `NOT_FOUND` | Stage was not found | There is no stage with the ID `stageId` ||
+|| `400` | `TASK_NOT_FOUND` | The task was not found, or access is denied | There is no task with the ID `id`, or the user does not have access to it ||
+|| `400` | `ACCESS_DENIED_MOVE` | You cannot move this task | The user does not have permission to sort tasks in the group, or the stage belongs to another user's "My Planner" ||
+|| `400` | `DIFFERENT_STAGES` | Stage and task belong to different groups | The `stageId` stage belongs to the Kanban of a different group than the one the task is in ||
+|| `400` | `DISPATCHER_ERROR` | Argument "id" is required, but no value passed for task.stages.movetask | The required parameter `id` is not passed. If `stageId` is not passed, the error text contains its name ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./index.md)
 - [{#T}](./task-stages-add.md)
 - [{#T}](./task-stages-update.md)
 - [{#T}](./task-stages-get.md)
-- [{#T}](./task-stages-can-move-task.md)
 - [{#T}](./task-stages-delete.md)
+- [{#T}](./task-stages-can-move-task.md)
