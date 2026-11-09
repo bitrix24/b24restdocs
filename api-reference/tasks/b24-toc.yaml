@@ -41,18 +41,10 @@ items:
     href: tasks-task-get-access.md
   - name: Check Access to Task v 3.0
     href: tasks-task-access-get.md
-  - name: Get List of Access Permission Fields
-    href: tasks-task-access-field-list.md
-  - name: Get Access Permission Field Description
-    href: tasks-task-access-field-get.md
   - name: Attach Files to Task
     href: tasks-task-files-attach.md
   - name: Attach Files to Task v 3.0
     href: tasks-task-file-attach.md
-  - name: Get List of Task File Fields
-    href: tasks-task-file-field-list.md
-  - name: Get Task File Field Description
-    href: tasks-task-file-field-get.md
   - name: Send Message to Task Chat
     href: tasks-task-chat-message-send.md
   - name: Get List of Task Chat Message Fields

@@ -233,12 +233,8 @@ To work with messages, also use messenger methods:
     || [tasks.task.field.get](./tasks-task-field-get.md) | Gets task field description ||
     || [tasks.task.getaccess](./tasks-task-get-access.md) | Checks access to the task ||
     || [tasks.task.access.get](./tasks-task-access-get.md) | Checks access to the task v 3.0 ||
-    || [tasks.task.access.field.list](./tasks-task-access-field-list.md) | Gets a list of access permission fields ||
-    || [tasks.task.access.field.get](./tasks-task-access-field-get.md) | Gets access permission field description ||
     || [tasks.task.files.attach](./tasks-task-files-attach.md) | Attaches files to a task ||
     || [tasks.task.file.attach](./tasks-task-file-attach.md) | Attaches files to a task v 3.0 ||
-    || [tasks.task.file.field.list](./tasks-task-file-field-list.md) | Gets a list of task file fields ||
-    || [tasks.task.file.field.get](./tasks-task-file-field-get.md) | Gets task file field description ||
     || [tasks.task.chat.message.send](./tasks-task-chat-message-send.md) | Sends a message to the task chat ||
     || [tasks.task.chat.message.field.list](./tasks-task-chat-message-field-list.md) | Gets a list of task chat message fields ||
     || [tasks.task.chat.message.field.get](./tasks-task-chat-message-field-get.md) | Gets task chat message field description ||
