@@ -19,7 +19,7 @@ The method belongs to REST 3.0. The call specifics and response format of the ne
 
 {% endnote %}
 
-The method `catalog.product.delete` deletes a product.
+The method `catalog.product.delete` deletes a product or another trade catalog item, such as a service.
 
 ## Method Parameters
 
@@ -227,7 +227,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.delete", b24.Params{
-    	"id":7549,
+    	"id": 7549,
     })
     if err != nil {
     	return fmt.Errorf("catalog.product.delete: %w", err)
@@ -303,7 +303,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `-` | At least one of the required fields must be not empty: id, filter | Pass the product `id`. This message comes together with a second one: "Only one of the following values must be provided: id, filter" ||
+|| `id` | Required field `id` is missing | Pass a positive integer in `id` ||
 || `-` | delete iBlockElement error | The product was not deleted. Repeat the request or check the product in Bitrix24 ||
+|| `-` | Internal error deleting product. Try deleting again. | A database error occurred during deletion. Repeat the request ||
 |#
 
 #### Object Not Found Error
@@ -321,7 +323,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Invalid filter `filter` | The method does not support `filter`. Pass the product `id` ||
+|| `filter` | Invalid filter `Unknown filter condition` | The method does not support `filter`. Pass the product `id` ||
 |#
 
 #### Access Error
@@ -340,4 +342,6 @@ HTTP status: **403**
 ## Continue Learning
 
 - [{#T}](./catalog-product-add-rest-v3.md)
+- [{#T}](./catalog-product-update-rest-v3.md)
+- [{#T}](./catalog-product-get-rest-v3.md)
 - [{#T}](./catalog-product-list-rest-v3.md)

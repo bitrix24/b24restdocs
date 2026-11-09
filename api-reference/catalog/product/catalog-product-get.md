@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to view the product catalog and read the information block element
+> Who can execute the method: a user with the "View product catalog", "View catalog products", or "Edit selling price" permission and permission to read the product in the information block
 
-This method retrieves information about a product in the trade catalog by its `ID`.
+The `catalog.product.get` method retrieves the fields and property values of a trade catalog product by its identifier.
 
 ## Method Parameters
 
@@ -22,11 +22,12 @@ This method retrieves information about a product in the trade catalog by its `I
 #|
 || **Name**
 `type` | **Description** ||
-|| **id*** 
-[`catalog_product.id`](../data-types.md#catalog_product)| Identifier of the product.
+|| **id***
+[`catalog_product.id`](../data-types.md#catalog_product) | Identifier of the product.
 
-To obtain product identifiers, use [catalog.product.list](./catalog-product-list.md)
- ||
+The method returns a trade catalog item of any type: a simple product, a product with variations, a variation, or a service. The type is returned in the `type` field.
+
+You can retrieve product identifiers using the [catalog.product.list](./catalog-product-list.md) method ||
 |#
 
 {% note warning "Working with product prices" %}
@@ -199,9 +200,9 @@ To get product prices, use the methods [catalog.price.*](../price/index.md).
 
 - PHP
 
-    ```php       
+    ```php
     try {
-        $productId = 123; // Replace with the actual product ID you want to retrieve
+        $productId = 1243;
         $productResult = $serviceBuilder->getCatalogScope()
             ->product()
             ->get($productId);
@@ -304,72 +305,85 @@ HTTP status: **200**
         "product": {
             "active": "Y",
             "available": "Y",
+            "barcodeMulti": "N",
             "bundle": "N",
             "canBuyZero": "Y",
-            "code": "Product",
+            "code": "java_bench_120_cm",
             "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-            "dateActiveTo": "2024-05-29T10:00:00+03:00",
-            "dateCreate": "2024-05-27T10:00:00+03:00",
+            "dateActiveFrom": null,
+            "dateActiveTo": null,
+            "dateCreate": "2026-10-12T13:12:22+01:00",
             "detailPicture": {
                 "id": "6455",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6455\u0026fields%5BproductId%5D=1243",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6455\u0026fields%5BproductId%5D=1243"
+                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture&fields%5BfileId%5D=6455&fields%5BproductId%5D=1243",
+                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture&fields%5BfileId%5D=6455&fields%5BproductId%5D=1243"
             },
-            "detailText": null,
+            "detailText": "Java garden bench, teak, 120x61x92 cm",
             "detailTextType": "text",
-            "height": 100,
-            "iblockId": 23,
-            "iblockSectionId": 47,
+            "height": 920,
+            "iblockId": 25,
+            "iblockSection": [
+                85
+            ],
+            "iblockSectionId": 85,
             "id": 1243,
-            "length": 100,
-            "measure": 5,
+            "length": 610,
+            "measure": 9,
             "modifiedBy": 1,
-            "name": "Product",
-            "previewPicture": {
-                "id": "6454",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6454\u0026fields%5BproductId%5D=1243",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6454\u0026fields%5BproductId%5D=1243"
-            },
+            "name": "Java bench, 120 cm",
+            "previewPicture": null,
             "previewText": null,
             "previewTextType": "text",
-            "property258": {
-                "value": "test",
-                "valueId": "9743"
+            "property301": {
+                "value": "1001",
+                "valueId": "2967"
             },
-            "property259": [
+            "property305": [
                 {
-                    "value": "test1",
-                    "valueId": "9744"
-                },
-                {
-                    "value": "test2",
-                    "valueId": "9745"
+                    "value": "Teak",
+                    "valueId": "2969"
                 }
             ],
+            "property309": [
+                {
+                    "value": {
+                        "id": "8303",
+                        "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=property309&fields%5BfileId%5D=8303&fields%5BproductId%5D=1243",
+                        "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=property309&fields%5BfileId%5D=8303&fields%5BproductId%5D=1243"
+                    },
+                    "valueId": "2973"
+                }
+            ],
+            "property311": null,
             "purchasingCurrency": "EUR",
-            "purchasingPrice": "1000.000000",
+            "purchasingPrice": "4500.00000000",
             "quantity": 10,
             "quantityReserved": 1,
             "quantityTrace": "Y",
-            "sort": 100,
+            "recurSchemeLength": null,
+            "recurSchemeType": "D",
+            "sort": 500,
             "subscribe": "Y",
-            "timestampX": "2024-06-06T16:45:35+03:00",
+            "timestampX": "2026-11-05T16:08:15+01:00",
+            "trialPriceId": null,
             "type": 1,
             "vatId": 1,
             "vatIncluded": "Y",
-            "weight": 100,
-            "width": 100,
+            "weight": 12000,
+            "width": 1200,
+            "withoutOrder": "N",
             "xmlId": "1243"
         }
     },
     "time": {
-        "start": 1717745698.684563,
-        "finish": 1717745699.571344,
-        "duration": 0.8867809772491455,
-        "processing": 0.47261500358581543,
-        "date_start": "2024-06-07T10:34:58+03:00",
-        "date_finish": "2024-06-07T10:34:59+03:00"
+        "start": 1793891754,
+        "finish": 1793891754.838614,
+        "duration": 0.8386139869689941,
+        "processing": 0,
+        "date_start": "2026-11-05T18:15:54+01:00",
+        "date_finish": "2026-11-05T18:15:54+01:00",
+        "operating_reset_at": 1793892300,
+        "operating": 0
     }
 }
 ```
@@ -380,11 +394,15 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Request result containing the product ||
+[`object`](../../data-types.md) | Root element of the response ||
 || **result.product**
-[`catalog_product`](../data-types.md#catalog_product) | Object containing product information ||
+[`catalog_product`](../data-types.md#catalog_product) | Product fields and the values of all its properties. Empty fields are returned as `null`.
+
+Properties are returned in `propertyN` keys, where `N` is the property identifier. The value of a single property is an object `{"value": ..., "valueId": ...}`, and the value of a multiple property is an array of such objects. For a property of the "File" type, `value` contains an object with the file identifier and download links.
+
+The `purchasingPrice` and `purchasingCurrency` fields are returned only if the user has the "View purchase price" permission ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -393,8 +411,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -405,10 +423,10 @@ HTTP status: **400**
 #|
 || **Status** | **Code** | **Description** | **Cause** ||
 || `400` | `200040300000` | `Iblock Not Found` | The product's information block was not found ||
-|| `400` | `200040300040` | `Access Denied` | No permission to read the information block element ||
-|| `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
+|| `400` | `200040300040` | `Access Denied` | No permission to read the product in the information block ||
+|| `400` | `200040300010` | `Access Denied` | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" permissions ||
 || `400` | `100` | `Could not find value for parameter {id}` | The required `id` parameter was not provided ||
-|| `400` | Empty code | `product does not exist.` | No product exists with the specified `id` ||
+|| `400` | Empty value | `product does not exist.` | No product exists with the specified `id`, or `id` is not a positive integer ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

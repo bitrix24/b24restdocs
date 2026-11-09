@@ -23,6 +23,8 @@ The method `catalog.product.type.list` returns the directory of trade catalog pr
 
 ## Method Parameters
 
+{% include [Note on required parameters](../../../_includes/required.md) %}
+
 #|
 || **Name**
 `type` | **Description** ||
@@ -371,6 +373,15 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `id`, `name` | DTO `ProductTypeDto` in field `#FIELD#` requires attribute `Sortable` to perform this request | Remove the `order` parameter ||
 |#
 
+#### Filter Format Error
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to Fix** ||
+|| `filter` | Invalid filter `Unknown filter condition` | Remove the `filter` parameter ||
+|#
+
 #### Pagination Parameter Error
 
 Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
@@ -386,7 +397,16 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `ProductTypeDto` | Specify only `id` and `name` in `select` ||
+|| `select`, `order` | Unknown field `#FIELD#` found in entity `ProductTypeDto` | Specify only `id` and `name` in `select`. Remove the `order` parameter ||
+|#
+
+#### Select Format Error
+
+Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
+
+#|
+|| **Field** | **Error description** | **How to Fix** ||
+|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as a flat array of strings without nested arrays, for example `["id","name"]` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}

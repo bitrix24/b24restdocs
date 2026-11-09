@@ -48,7 +48,7 @@ Possible values:
 
 - `PREVIEW_PICTURE` — preview picture
 - `DETAIL_PICTURE` — detail picture
-- `PROPERTY_{id}` — a property of the "File" type, where `id` is the property identifier
+- `PROPERTY_{id}` — a property of the "File" type, where `id` is the property identifier. Instead of the identifier, you can specify the symbolic code of the property, for example `PROPERTY_MORE_PHOTO`
 
 Field names in the response format, such as `previewPicture`, are not supported ||
 || **fileId***
@@ -400,7 +400,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `productId` | Entity with ID `#ID#` was not found | Check the product identifier using the [catalog.product.list](./catalog-product-list-rest-v3.md) method ||
+|| `productId` | Entity with ID `#ID#` was not found | The error also occurs with an empty `fields` object: the method does not check required fields and looks for the product with ID = `0`. Check the product identifier using the [catalog.product.list](./catalog-product-list-rest-v3.md) method ||
 |#
 
 #### Access Error

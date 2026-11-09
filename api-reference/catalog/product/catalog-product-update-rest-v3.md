@@ -35,7 +35,7 @@ The identifier can be retrieved using the [catalog.product.list](./catalog-produ
 || **fields***
 [`object`](../../data-types.md) | An object with the product fields to update. Pass only the fields you want to change. [Field description](#fields)
 
-An empty object `{}` returns the product unchanged ||
+An empty object `{}` does not change the product fields but updates the modification date `timestampX` ||
 |#
 
 ### Parameter fields {#fields}
@@ -127,7 +127,9 @@ Possible values:
 - `N` — no
 - `D` — the value from the Trade Catalog module settings ||
 || **vatId**
-[`integer`](../../data-types.md) | VAT rate identifier. The identifier can be retrieved using the [catalog.vat.list](../vat/catalog-vat-list-rest-v3.md) method ||
+[`integer`](../../data-types.md) | VAT rate identifier. The identifier can be retrieved using the [catalog.vat.list](../vat/catalog-vat-list-rest-v3.md) method.
+
+The method does not check that the rate exists: a nonexistent identifier is saved without an error ||
 || **vatIncluded**
 [`string`](../../data-types.md) | VAT is included in the price.
 
@@ -724,15 +726,14 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 #|
 || **Field** | **Error description** | **How to Fix** ||
 || `-` | At least one of the required fields must be not empty: id, filter | Pass the product `id`. This message comes with a second one: "Only one of the following values must be provided: id, filter" ||
+|| `id` | Required field `id` is missing | Pass a positive integer in `id` ||
 || `fields` | Required field `fields` is missing | Pass the `fields` object ||
 || `-` | Product - #ID# is not exists in catalog - #IBLOCK_ID# | Do not pass `iblockId`, or pass the current information block of the product ||
-|| `-` | VAT vatId is not exists | Pass the identifier of an existing VAT rate ||
-|| `-` | Currency purchasingCurrency is not exists | Pass the code of an existing currency ||
 || `-` | User createdBy is not exists | Pass the identifier of an existing user ||
 || `-` | User modifiedBy is not exists | Pass the identifier of an existing user ||
 || `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: #KEYS# | Pass only keys in the `PROPERTY_{id}` format in `properties` ||
 || `-` | The properties field names one property by several keys: #KEYS# | Specify each property with one key, for example only `PROPERTY_301` ||
-|| `dateActiveFrom` | Wrong format of field `dateActiveFrom`. | Currently, the date cannot be set with REST 3.0 methods. Pass `null` or do not pass the field ||
+|| `-` | Wrong format of field `dateActiveFrom`. | Currently, the date cannot be set with REST 3.0 methods. Pass `null` or do not pass the field ||
 || `dateActiveFrom` | This request requires data type `DateTime` in field `dateActiveFrom` | Currently, the date cannot be set with REST 3.0 methods. Pass `null` or do not pass the field ||
 || `sort` | This request requires data type `int` in field `sort` | Pass an integer ||
 |#
@@ -761,7 +762,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Invalid filter `filter` | The method does not support `filter`. Pass the product `id` ||
+|| `filter` | Invalid filter `Unknown filter condition` | The method does not support `filter`. Pass the product `id` ||
 |#
 
 #### Unknown Field Error
@@ -788,6 +789,7 @@ HTTP status: **403**
 
 ## Continue Learning
 
+- [{#T}](./catalog-product-add-rest-v3.md)
 - [{#T}](./catalog-product-get-rest-v3.md)
 - [{#T}](./catalog-product-list-rest-v3.md)
 - [{#T}](./catalog-product-delete-rest-v3.md)

@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Delete product" access permission and one of the following permissions: "View product catalog", "View catalog products", or "Edit selling price"
 
-This method removes a product from the trade catalog.
+The method `catalog.product.delete` deletes a product or another trade catalog item, such as a service.
 
 ## Method Parameters
 
@@ -22,11 +22,10 @@ This method removes a product from the trade catalog.
 #|
 || **Name**
 `type` | **Description** ||
-|| **id*** 
-[`catalog_product.id`](../data-types.md#catalog_product)| Product identifier.
+|| **id***
+[`catalog_product.id`](../data-types.md#catalog_product) | Product identifier.
 
-To obtain product identifiers, use the [catalog.product.list](./catalog-product-list.md)
- ||
+The identifier can be retrieved using the [catalog.product.list](./catalog-product-list.md) method ||
 |#
 
 ## Code Examples
@@ -150,9 +149,9 @@ To obtain product identifiers, use the [catalog.product.list](./catalog-product-
 
 - PHP
 
-    ```php       
+    ```php
     try {
-        $productId = 123; // Replace with the actual product ID you want to delete
+        $productId = 1242;
         $result = $serviceBuilder
             ->getCatalogScope()
             ->product()
@@ -230,12 +229,14 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1717578025.70057,
-        "finish": 1717578176.028261,
-        "duration": 150.32769083976746,
-        "processing": 149.8356819152832,
-        "date_start": "2024-06-05T12:00:25+02:00",
-        "date_finish": "2024-06-05T12:02:56+02:00"
+        "start": 1793892130,
+        "finish": 1793892131.33496,
+        "duration": 1.3349599838256836,
+        "processing": 1,
+        "date_start": "2026-11-05T16:22:10+01:00",
+        "date_finish": "2026-11-05T16:22:11+01:00",
+        "operating_reset_at": 1793892420,
+        "operating": 8.514746904373169
     }
 }
 ```
@@ -246,9 +247,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../data-types.md) | Result of product deletion ||
+[`boolean`](../../data-types.md) | `true` if the product is deleted ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -256,9 +257,9 @@ HTTP status: **200**
 HTTP status: **400**
 
 ```json
-{	
-   "error":200040300040,
-   "error_description":"Access Denied"
+{
+    "error": "",
+    "error_description": "product does not exist."
 }
 ```
 
@@ -268,15 +269,18 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Cause** ||
+|| `400` | `100` | `Could not find value for parameter {id}` | The required parameter `id` was not provided ||
+|| `400` | `100` | `Invalid value {#VALUE#} to match with parameter {id}. Should be value of type int.` | `id` is not an integer ||
+|| `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
 || `400` | `200040300040` | `Access Denied` | No permission to delete the product in the catalog or the information block element ||
 || `400` | `200040300000` | `Iblock Not Found` | The product's information block was not found ||
-|| `400` | Empty code | `product does not exist.` | No product exists with the specified `id` ||
+|| `400` | Empty value | `product does not exist.` | No product exists with the specified `id`, or `id` is `0` ||
 || Depends on the error | `0` | Deletion error text | Deleting the element failed. The method passes through the information block error text; a database error returns `Internal error deleting product. Try deleting again.` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-product-add.md)
 - [{#T}](./catalog-product-update.md)

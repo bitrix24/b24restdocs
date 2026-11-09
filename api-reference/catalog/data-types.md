@@ -289,6 +289,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 [`string`](../data-types.md) | Is purchase of the product allowed when it is out of stock? Possible values:
 - `Y` — yes
 - `N` — no
+- `D` — value from the Trade Catalog module settings
 ||
 || **createdBy**
 [`user.id`](../data-types.md) | Created by ||
@@ -304,6 +305,8 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 [`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
 [`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
+|| **iblockSection**
+[`catalog_section.id[]`](#catalog_section) | Array of identifiers of the sections the product is linked to. If the product is not linked to any section — `null` ||
 || **measure**
 [`catalog_measure.id`](#catalog_measure) | Unit of measurement ||
 || **previewText**
@@ -334,7 +337,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 [`string`](../data-types.md) | Permission to subscribe to the product. Possible values:
 - `Y` — yes
 - `N` — no
-- `D` — default
+- `D` — value from the Trade Catalog module settings
 ||
 || **vatId**
 [`catalog_vat.id`](#catalog_vat) | Identifier of VAT ||
@@ -355,7 +358,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 [`string`](../data-types.md) | Quantity accounting mode. Possible values:
 - `Y` — enabled
 - `N` — disabled
-- `D` — default
+- `D` — value from the Trade Catalog module settings
 ||
 || **type**
 [`integer`](../data-types.md) | Type of product. Read-only. Possible values:
@@ -367,11 +370,15 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 The list of currencies can be obtained using the [crm.currency.list](../crm/currency/crm-currency-list.md) method.
 
 Not editable when inventory accounting is enabled
+
+Returned only if the user has the permission to view the purchasing price
 ||
 || **purchasingPrice**
 [`double`](../data-types.md) | Purchasing price.
 
 Not editable when inventory accounting is enabled
+
+Returned only if the user has the permission to view the purchasing price
 ||
 || **quantity**
 [`double`](../data-types.md) | Quantity.
@@ -618,9 +625,9 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 - `N` — no
 ||
 || **code**
-[`string`](../data-types.md) | Symbolic code ||
+[`string`](../data-types.md) | Symbolic code. Can be `null` ||
 || **xmlId**
-[`string`](../data-types.md) | External code ||
+[`string`](../data-types.md) | External code. Equals `id` by default ||
 || **bundle**
 [`string`](../data-types.md) | Availability of a set. Possible values:
 - `Y` — yes
@@ -647,22 +654,28 @@ For parent products, the ability to edit this field is available only in the on-
 [`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
 [`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
+|| **iblockSection**
+[`catalog_section.id[]`](#catalog_section) | Array of identifiers of the sections the product is linked to. If the product is not linked to any section — `null` ||
 || **measure**
 [`catalog_measure.id`](#catalog_measure) | Unit of measurement.
 
 For parent products, the ability to edit this field is available only in the on-premise version when the option "Show the Trade Catalog tab for products with trade offers" is enabled ||
 || **previewText**
-[`string`](../data-types.md) | Description for the announcement ||
+[`string`](../data-types.md) | Description for the announcement. Can be `null` ||
 || **detailText**
-[`string`](../data-types.md) | Detailed description ||
+[`string`](../data-types.md) | Detailed description. Can be `null` ||
 || **previewPicture**
 [`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the picture, use the object in the format `{remove: ‘Y’}`
+
+The response contains an object `{id, url, urlMachine}` or `null` if there is no picture ||
 || **detailPicture**
 [`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the picture, use the object in the format `{remove: ‘Y’}`
+
+The response contains an object `{id, url, urlMachine}` or `null` if there is no picture ||
 || **previewTextType**
 [`string`](../data-types.md) | Type of description for the announcement. Possible values:
 - `text` — text
@@ -674,7 +687,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 - `html` — HTML
 ||
 || **sort**
-[`integer`](../data-types.md) | Sorting ||
+[`integer`](../data-types.md) | Sorting. Can be `null` ||
 || **subscribe**
 [`string`](../data-types.md) | Permission to subscribe to the parent product. Possible values:
 - `Y` — yes
@@ -745,7 +758,9 @@ The value is specified in the format `{valueId: valueId, value: value}` or in th
 
 If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
-`valueId` of all properties of the parent product can be obtained using the [catalog.product.sku.get](./product/sku/catalog-product-sku-get.md) and [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md) methods
+`valueId` of all properties of the parent product can be obtained using the [catalog.product.sku.get](./product/sku/catalog-product-sku-get.md) and [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md) methods.
+
+The response contains an object `{value, valueId}`, an array of such objects for a multiple property, or `null` if the value is not set
 ||
 |#
 
@@ -759,7 +774,9 @@ If `valueId` is not specified, the existing value will be removed from the datab
 || **parentId**
 [`catalog_product_sku.id`](#catalog_product_sku) | Identifier of the parent product.
 
-You can retrieve parent product identifiers using [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md)
+You can retrieve parent product identifiers using [catalog.product.sku.list](./product/sku/catalog-product-sku-list.md).
+
+The response contains an object `{value, valueId}` or `null` for a variation without a parent product
 ||
 || **iblockId**
 [`catalog_catalog.id`](#catalog_catalog) | Identifier of the information block of the trade catalog.
@@ -781,7 +798,7 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **code**
 [`string`](../data-types.md) | Symbolic code ||
 || **xmlId**
-[`string`](../data-types.md) | External code ||
+[`string`](../data-types.md) | External code. Equals `id` by default ||
 || **barcodeMulti**
 [`string`](../data-types.md) | Unique barcodes for each instance. Possible values:
 - `Y` — yes
@@ -820,11 +837,15 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **previewPicture**
 [`object`](../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the picture, use the object in the format `{remove: ‘Y’}`
+
+The response contains an object `{id, url, urlMachine}` or `null` if there is no picture ||
 || **detailPicture**
 [`object`](../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format.
 
-To delete the picture, use the object in the format `{remove: ‘Y’}` ||
+To delete the picture, use the object in the format `{remove: ‘Y’}`
+
+The response contains an object `{id, url, urlMachine}` or `null` if there is no picture ||
 || **previewTextType**
 [`string`](../data-types.md) | Type of description for the announcement. Possible values:
 - `text` — text
@@ -836,7 +857,7 @@ To delete the picture, use the object in the format `{remove: ‘Y’}` ||
 - `html` — HTML
 ||
 || **sort**
-[`integer`](../data-types.md) | Sorting ||
+[`integer`](../data-types.md) | Sorting. Default is `500` ||
 || **subscribe**
 [`string`](../data-types.md) | Permission to subscribe to the product variation. Possible values:
 - `Y` — yes
@@ -877,7 +898,7 @@ The list of currencies can be obtained using the [crm.currency.list](../crm/curr
 Not editable when inventory accounting is enabled
 ||
 || **purchasingPrice**
-[`double`](../data-types.md) | Purchasing price.
+[`double`](../data-types.md) | Purchasing price. The response contains it as a string, for example `"100.00000000"`.
 
 Not editable when inventory accounting is enabled
 ||
@@ -925,7 +946,9 @@ The value is specified in the format `{valueId: valueId, value: value}` or in th
 
 If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
-`valueId` of all properties of the trade offer can be obtained using the [catalog.product.offer.get](./product/offer/catalog-product-offer-get.md) and [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md) methods
+`valueId` of all properties of the trade offer can be obtained using the [catalog.product.offer.get](./product/offer/catalog-product-offer-get.md) and [catalog.product.offer.list](./product/offer/catalog-product-offer-list.md) methods.
+
+The response contains an object `{value, valueId}` (with the `valueEnum` field for a list), an array of such objects for a multiple property, or `null`
 ||
 |#
 
@@ -971,11 +994,13 @@ To obtain existing identifiers of information blocks, you need to use [catalog.c
 || **dateActiveTo**
 [`datetime`](../data-types.md) | Date of activity end ||
 || **dateCreate**
-[`datetime`](../data-types.md) | Date of creation ||
+[`datetime`](../data-types.md) | Date of creation. When passed to `add` and `update`, it is saved incorrectly, for example as `2001-11-30T00:00:00+01:00` ||
 || **timestampX**
 [`datetime`](../data-types.md) | Date of modification. Read-only ||
 || **iblockSectionId**
 [`catalog_section.id`](#catalog_section) | Identifier of the information block section ||
+|| **iblockSection**
+[`catalog_section.id[]`](#catalog_section) | Array of identifiers of the sections the service is linked to. If the service is not linked to any section — `null` ||
 || **measure**
 [`catalog_measure.id`](#catalog_measure) | Unit of measurement ||
 || **previewText**
@@ -1020,7 +1045,9 @@ The value is specified in the format `{valueId: valueId, value: value}` or in th
 
 If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing values of the property for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
 
-`valueId` of all properties of the service can be obtained using the [catalog.product.service.get](./product/service/catalog-product-service-get.md) and [catalog.product.service.list](./product/service/catalog-product-service-list.md) methods
+`valueId` of all properties of the service can be obtained using the [catalog.product.service.get](./product/service/catalog-product-service-get.md) and [catalog.product.service.list](./product/service/catalog-product-service-list.md) methods.
+
+In the response, the value of a single property is an object `{"value": ..., "valueId": ...}`, of a multiple property — an array of such objects, of an empty property — `null`
 ||
 |#
 
@@ -1419,4 +1446,12 @@ If this indicator is set for the field, then in the operations of adding and upd
 - `productproperty`
 - `productpropertysettings`
 ||
+|| **isDynamic**
+[`boolean`](../data-types.md) | Catalog properties only. `true` — the field is a catalog property ||
+|| **isMultiple**
+[`boolean`](../data-types.md) | Catalog properties only. `true` — the property is multiple ||
+|| **propertyType**
+[`string`](../data-types.md) | Catalog properties only. Base property type: `S` — string, `N` — number, `L` — list, `F` — file, `E` — link to elements, `G` — link to sections ||
+|| **userType**
+[`string`](../data-types.md) | Catalog properties only. Custom property type, for example `directory` or `Date`. If the type is not set — `null` or an empty string ||
 |#

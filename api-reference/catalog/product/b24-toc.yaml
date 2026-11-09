@@ -1,6 +1,6 @@
 title: Product
 href: index.md
-items: 
+items:
   - name: Overview of methods
     href: index.md
   - name: Add product
@@ -11,9 +11,9 @@ items:
     href: catalog-product-update.md
   - name: Update product v 3.0
     href: catalog-product-update-rest-v3.md
-  - name: Get product by id
+  - name: Get product by ID
     href: catalog-product-get.md
-  - name: Get product by id v 3.0
+  - name: Get product by ID v 3.0
     href: catalog-product-get-rest-v3.md
   - name: Get list of products by filter
     href: catalog-product-list.md

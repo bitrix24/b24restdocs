@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to view the product catalog
+> Who can execute the method: a user with the "View product catalog", "View catalog products", or "Edit selling price" permission
 
-The `catalog.product.getFieldsByFilter` method retrieves product field descriptions for a specified catalog. The response shows available fields and their `isRequired`, `isReadOnly`, and `isImmutable` attributes. Use them to prepare [catalog.product.add](./catalog-product-add.md) and [catalog.product.update](./catalog-product-update.md) requests.
+The `catalog.product.getFieldsByFilter` method retrieves the descriptions of simple product fields in the specified catalog, including catalog properties.
 
 ## Method Parameters
 
@@ -22,23 +22,24 @@ The `catalog.product.getFieldsByFilter` method retrieves product field descripti
 #|
 || **Name**
 `type` | **Description** ||
-|| **filter*** 
-[`object`](../../data-types.md) | Filter to retrieve all product fields ||
+|| **filter***
+[`object`](../../data-types.md) | An object with the catalog identifier [(detailed description)](#filter) ||
 |#
 
-### Filter Parameter
+### Filter Parameter {#filter}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **iblockId*** 
-[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the information block.
+|| **iblockId***
+[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the product trade catalog. You can retrieve the identifier using the [catalog.catalog.list](../catalog/catalog-catalog-list.md) method.
 
-To obtain existing identifiers of information blocks, use [catalog.catalog.list](../catalog/catalog-catalog-list.md)
- ||
+For a variation catalog, the method returns the `productType is not allowed for this catalog` error ||
 |#
+
+The method always returns the fields of a simple product. The `productType` key in `filter` is ignored.
 
 ## Code Examples
 
@@ -52,7 +53,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"iblockId":23}}' \
+    -d '{"filter":{"iblockId":25}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.getFieldsByFilter
     ```
 
@@ -62,7 +63,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"iblockId":23},"auth":"**put_access_token_here**"}' \
+    -d '{"filter":{"iblockId":25},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.getFieldsByFilter
     ```
 
@@ -98,7 +99,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
         method: 'catalog.product.getFieldsByFilter',
         params: {
           filter: {
-            iblockId: 23,
+            iblockId: 25,
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -132,7 +133,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
             method: 'catalog.product.getFieldsByFilter',
             params: {
               filter: {
-                iblockId: 23,
+                iblockId: 25,
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -164,7 +165,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     try:
         bitrix_response = client.catalog.product.get_fields_by_filter(
             filter={
-                "iblockId": 23,
+                "iblockId": 25,
             },
         ).response
         result = bitrix_response.result
@@ -192,11 +193,11 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
                 'catalog.product.getFieldsByFilter',
                 [
                     'filter' => [
-                        'iblockId' => 23,
+                        'iblockId' => 25,
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -211,10 +212,10 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
 
     ```js
     BX24.callMethod(
-        'catalog.product.getFieldsByFilter', 
+        'catalog.product.getFieldsByFilter',
         {
             filter: {
-                iblockId: 23,
+                iblockId: 25,
             }
         },
         function(result) {
@@ -235,7 +236,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
         'catalog.product.getFieldsByFilter',
         [
             'filter' => [
-                'iblockId' => 23
+                'iblockId' => 25
             ]
         ]
     );
@@ -251,7 +252,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.getFieldsByFilter", b24.Params{
     	"filter": b24.Params{
-    		"iblockId": 23,
+    		"iblockId": 25,
     	},
     })
     if err != nil {
@@ -298,13 +299,6 @@ HTTP status: **200**
                 "name": "Set Availability",
                 "type": "char"
             },
-            "canBuyZero": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Allow Purchase When Out of Stock",
-                "type": "char"
-            },
             "code": {
                 "isImmutable": false,
                 "isReadOnly": false,
@@ -312,25 +306,11 @@ HTTP status: **200**
                 "name": "Symbolic Code",
                 "type": "string"
             },
-            "createdBy": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Created By",
-                "type": "integer"
-            },
             "dateActiveFrom": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
                 "name": "DATE_ACTIVE_FROM",
-                "type": "datetime"
-            },
-            "dateActiveTo": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "DATE_ACTIVE_TO",
                 "type": "datetime"
             },
             "dateCreate": {
@@ -347,33 +327,19 @@ HTTP status: **200**
                 "name": "Detail Picture",
                 "type": "file"
             },
-            "detailText": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Detailed Description",
-                "type": "string"
-            },
-            "detailTextType": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Type of Detailed Description",
-                "type": "string"
-            },
-            "height": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Height",
-                "type": "double"
-            },
             "iblockId": {
                 "isImmutable": true,
                 "isReadOnly": false,
                 "isRequired": true,
                 "name": "Information Block Identifier",
                 "type": "integer"
+            },
+            "iblockSection": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "name": "Sections",
+                "type": "list"
             },
             "iblockSectionId": {
                 "isImmutable": false,
@@ -389,25 +355,11 @@ HTTP status: **200**
                 "name": "Identifier",
                 "type": "integer"
             },
-            "length": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Length",
-                "type": "double"
-            },
             "measure": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
                 "name": "Unit of Measurement",
-                "type": "integer"
-            },
-            "modifiedBy": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Modified By",
                 "type": "integer"
             },
             "name": {
@@ -417,13 +369,6 @@ HTTP status: **200**
                 "name": "Name",
                 "type": "string"
             },
-            "negativeAmountTrace": {
-                "isImmutable": false,
-                "isReadOnly": true,
-                "isRequired": false,
-                "name": "NEGATIVE_AMOUNT_TRACE",
-                "type": "char"
-            },
             "previewPicture": {
                 "isImmutable": false,
                 "isReadOnly": false,
@@ -431,48 +376,27 @@ HTTP status: **200**
                 "name": "Preview Picture",
                 "type": "file"
             },
-            "previewText": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Preview Description",
-                "type": "string"
-            },
-            "previewTextType": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Type of Preview Description",
-                "type": "string"
-            },
-            "priceType": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Payment Type",
-                "type": "char"
-            },
-            "property258": {
+            "property301": {
                 "isDynamic": true,
                 "isImmutable": false,
                 "isMultiple": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "New Line",
+                "name": "Article number",
                 "propertyType": "S",
                 "type": "productproperty",
                 "userType": ""
             },
-            "property259": {
+            "property305": {
                 "isDynamic": true,
                 "isImmutable": false,
                 "isMultiple": true,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "New Line 2",
+                "name": "Material",
                 "propertyType": "S",
                 "type": "productproperty",
-                "userType": ""
+                "userType": null
             },
             "purchasingCurrency": {
                 "isImmutable": false,
@@ -495,41 +419,6 @@ HTTP status: **200**
                 "name": "Available Quantity",
                 "type": "double"
             },
-            "quantityReserved": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Reserved Quantity",
-                "type": "double"
-            },
-            "quantityTrace": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Quantity Accounting Mode",
-                "type": "char"
-            },
-            "sort": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Sort Index",
-                "type": "integer"
-            },
-            "subscribe": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Allow Subscription to Product",
-                "type": "char"
-            },
-            "timestampX": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Modification Date",
-                "type": "datetime"
-            },
             "type": {
                 "isImmutable": false,
                 "isReadOnly": true,
@@ -551,20 +440,6 @@ HTTP status: **200**
                 "name": "VAT Included in Price",
                 "type": "char"
             },
-            "weight": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Weight",
-                "type": "double"
-            },
-            "width": {
-                "isImmutable": false,
-                "isReadOnly": false,
-                "isRequired": false,
-                "name": "Width",
-                "type": "double"
-            },
             "xmlId": {
                 "isImmutable": false,
                 "isReadOnly": false,
@@ -575,15 +450,19 @@ HTTP status: **200**
         }
     },
     "time": {
-        "start": 1717598883.81413,
-        "finish": 1717598884.460406,
-        "duration": 0.6462759971618652,
-        "processing": 0.15173888206481934,
-        "date_start": "2024-06-05T17:48:03+02:00",
-        "date_finish": "2024-06-05T17:48:04+02:00"
+        "start": 1793892123,
+        "finish": 1793892123.226906,
+        "duration": 0.22690606117248535,
+        "processing": 0,
+        "date_start": "2026-11-05T18:22:03+01:00",
+        "date_finish": "2026-11-05T18:22:03+01:00",
+        "operating_reset_at": 1793892720,
+        "operating": 0
     }
 }
 ```
+
+The method returns the descriptions of all product fields and catalog properties. The example shows some of the fields.
 
 ### Returned Data
 
@@ -591,11 +470,18 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Request result containing product field descriptions ||
+[`object`](../../data-types.md) | Root element of the response ||
 || **result.product**
-[`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`. Each `field` identifies a [`catalog_product`](../data-types.md#catalog_product) field, and each `value` is a [`rest_field_description`](../data-types.md#rest_field_description) object ||
+[`object`](../../data-types.md) | An object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of a [catalog_product](../data-types.md#catalog_product) object field, and `value` is an object of type [rest_field_description](../data-types.md#rest_field_description).
+
+Catalog properties are returned with the `property{id}` key, for example `property301`. Their description contains additional fields:
+
+- `isDynamic` — `true`, the field is a catalog property
+- `isMultiple` — `true` if the property is multiple
+- `propertyType` — the base property type: `S` — string, `N` — number, `L` — list, `F` — file, `E` — link to elements, `G` — link to sections
+- `userType` — the custom property type, for example `directory` or `Date`. If the type is not set — `null` or an empty string ||
 || **time**
-[`time`](../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -604,8 +490,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "200040300010",
+    "error_description": "Access Denied"
 }
 ```
 
@@ -615,17 +501,17 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Cause** ||
-|| `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
+|| `400` | `200040300010` | `Access Denied` | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" permissions ||
 || `400` | `100` | `Could not find value for parameter {filter}` | The required `filter` parameter was not provided ||
-|| `400` | `0` | `Incorrect filter format` | `filter` was not provided as an object ||
-|| `400` | `0` | `parameter - iblockId is empty` | `filter.iblockId` was not specified ||
-|| `400` | `0` | `iblock is not catalog` | The specified information block is not a trade catalog ||
-|| `400` | `0` | `productType is not allowed for this catalog` | The product type is not allowed for this catalog ||
+|| `400` | `0` | `Incorrect filter format` | The `filter` parameter was not passed as an object, for example as a string ||
+|| `400` | `0` | `parameter - iblockId is empty` | The `iblockId` key was not passed in `filter`, or its value is not a number ||
+|| `400` | `0` | `iblock is not catalog` | The information block with the specified `iblockId` does not exist or is not a trade catalog ||
+|| `400` | `0` | `productType is not allowed for this catalog` | A variation catalog identifier was passed. Pass the identifier of the product catalog ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-product-add.md)
 - [{#T}](./catalog-product-update.md)
@@ -633,3 +519,4 @@ HTTP status: **400**
 - [{#T}](./catalog-product-list.md)
 - [{#T}](./catalog-product-download.md)
 - [{#T}](./catalog-product-delete.md)
+- [{#T}](./catalog-product-fields-get-by-filter.md)

@@ -23,6 +23,12 @@ You can subscribe to product events through the [application](../../../../settin
 
 An example of a handler code for the event is described in the article [How to Test Your Handler for Processing Bitrix24 Events](../../../events/test-handler.md).
 
+## Event Data
+
+All three events pass two fields in `data.FIELDS`: `ID`, the product identifier, and `TYPE`, the product type. The [catalog.product.type.list](../catalog-product-type-list.md) method returns the directory of types.
+
+To retrieve the other fields, call the `get` method for the product type: [catalog.product.get](../catalog-product-get.md), [catalog.product.sku.get](../sku/catalog-product-sku-get.md), [catalog.product.offer.get](../offer/catalog-product-offer-get.md), or [catalog.product.service.get](../service/catalog-product-service-get.md). After the `CATALOG.PRODUCT.ON.DELETE` event, the product is already deleted, and its fields cannot be retrieved.
+
 ## Server Availability for Sending and Receiving Events
 
 {% include notitle [Server Availability for Sending and Receiving Events](../../../../_includes/events-index.md) %}

@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to view the product catalog and permission to read the commercial catalog information block
+> Who can execute the method: a user with the "View product catalog", "View catalog products", or "Edit selling price" permission and permission to read the trade catalog information block
 
 The `catalog.product.list` method retrieves a list of products from the trade catalog based on a filter.
 
@@ -23,50 +23,46 @@ The `catalog.product.list` method retrieves a list of products from the trade ca
 || **Name**
 `type` | **Description** ||
 || **select***
-[`array`](../../data-types.md)| Fields of [catalog_product](../data-types.md#catalog_product) to return. Include `id` and `iblockId`, for example `["id", "iblockId", "name"]` ||
+[`array`](../../data-types.md) | Fields of [catalog_product](../data-types.md#catalog_product) to return. Include `id` and `iblockId`, for example `["id", "iblockId", "name"]`.
+
+To retrieve property values, specify `propertyN` keys, where `N` is the property identifier. To retrieve all sections of a product, specify `iblockSection`.
+
+The method skips unknown fields without an error ||
 || **filter***
-[`object`](../../data-types.md)| An object for filtering selected products in `{"field_1": "value_1", ... "field_N": "value_N"}` format.
+[`object`](../../data-types.md) | An object for filtering products in `{"field_1": "value_1", ... "field_N": "value_N"}` format.
 
-Possible values for `field` correspond to the fields of the [catalog_product](../data-types.md#catalog_product) object.
+Possible values for `field` correspond to the fields of the [catalog_product](../data-types.md#catalog_product) object and the `propertyN` property keys. The method skips unknown fields without an error.
 
-Required field: `iblockId`.
+Required field: `iblockId` — the identifier of the trade catalog information block, a single number. You can retrieve it using the [catalog.catalog.list](../catalog/catalog-catalog-list.md) method. The method returns information block items of all types: simple products, products with variations, and services in the product information block, and variations in the variation information block.
 
 A key can be assigned an additional prefix that specifies the filter behavior. Possible prefix values:
 - `>=` — greater than or equal to
 - `>` — greater than
 - `<=` — less than or equal to
 - `<` — less than
-- `%` — LIKE, substring search. The `%` character does not need to be passed in the filter value. The search looks for a substring in any position of the string.
-- `=%` — LIKE, substring search. The `%` character must be passed in the value. Examples:
-  - `"mol%"` — searching for values starting with "mol"
-  - `"%mol"` — searching for values ending with "mol"
-  - `"%mol%"` — searching for values where "mol" can be in any position
-- `%=` — LIKE (similar to `=%`)
-- `!%` — NOT LIKE, substring search. The `%` character does not need to be passed in the filter value. The search goes from both sides.
-- `!=%` — NOT LIKE, substring search. The `%` character must be passed in the value. Examples:
-  - `"mol%"` — searching for values not starting with "mol"
-  - `"%mol"` — searching for values not ending with "mol"
-  - `"%mol%"` — searching for values where the substring "mol" is not present in any position
-- `!%=` — NOT LIKE (similar to `!=%`)
-- `=` — equal, exact match (used by default). For IN searches, you can pass multiple values as an array 
+- `%` — LIKE, substring search in any position of the string. The `%` character does not need to be passed in the filter value
+- `!%` — NOT LIKE, values without the substring. The `%` character does not need to be passed in the filter value
+- `=` — equal, exact match. Used by default. For IN searches, you can pass multiple values as an array
 - `!=` — not equal
 - `!` — not equal. For NOT IN searches, you can pass multiple values as an array
 
-For custom fields `propertyN`, the value format in `filter` depends on the condition type:
+The method does not support the `=%`, `%=`, `!=%`, `!%=`, `><`, and `!><` prefixes: a condition with such a prefix is skipped without an error, and the method returns products without applying this condition.
+
+For `propertyN` properties, the value format in `filter` depends on the condition type:
 - if you are filtering a date or date-time type property by range, use a prefix in the key and pass the value in the `value` field
-- if you are filtering a numeric, string, or list custom field by exact match, pass the value directly without `value`
+- if you are filtering a numeric, string, or list property by exact match, pass the value directly without `value`
 - for `IN` and `NOT IN` searches, you can pass an array of values
 
-Examples of filtering by custom fields:
+Example of filtering by properties:
 
 ```js
 filter: {
     iblockId: 23,
     '>=property424': {
-        value: '2025-05-29T12:00:00+03:00' 
+        value: '2025-05-29T12:00:00+01:00'
     },
     '<=property424': {
-        value: '2025-05-30T13:00:00+03:00'
+        value: '2025-05-30T13:00:00+01:00'
     },
     property996: 9636,
     property997: [9636, 568, 570, 9658],
@@ -75,7 +71,7 @@ filter: {
 
 ||
 || **order**
-[`object`](../../data-types.md)| An object for sorting products in the format `{"field_1": "order_1", ... "field_N": "order_N"}`. For example, `{"id": "desc"}` returns products in descending ID order. If omitted, products are sorted by `id` in ascending order.
+[`object`](../../data-types.md) | An object for sorting products in the format `{"field_1": "order_1", ... "field_N": "order_N"}`. For example, `{"id": "desc"}` returns products in descending ID order. If omitted, products are sorted by `id` in ascending order.
 
 Possible values for `field` correspond to the fields of the [catalog_product](../data-types.md#catalog_product) object.
 
@@ -83,18 +79,18 @@ Possible values for order:
 
 - `asc` — in ascending order
 - `desc` — in descending order
- ||
-|| **start** 
-[`integer`](../../data-types.md)| Offset for pagination. Defaults to `0`.
 
-The results page size is always static — 50 records.
+The method skips unknown fields without an error ||
+|| **start**
+[`integer`](../../data-types.md) | Offset for pagination. Defaults to `0`.
 
-To select the second page of results, you need to pass the value — `50`. To select the third page of results, the value is — `100` and so on.
+The results page size is always static — 50 records. To select the second page, pass `50`, for the third page — `100`, and so on.
 
 Formula for calculating the `start` parameter value:
 
-`start = (N-1) * 50`, where `N` — the required page number
- ||
+`start = (N-1) * 50`, where `N` is the required page number.
+
+The method rounds a value that is not a multiple of 50 down to the nearest multiple of 50. If `start` exceeds the number of products found, the method returns the last page ||
 |#
 
 {% note warning "Working with product prices" %}
@@ -462,7 +458,7 @@ To retrieve product prices, use the [catalog.price.*](../price/index.md) methods
 
 - PHP
 
-    ```php        
+    ```php
     try {
         $select = ['id', 'name', 'price', 'active', 'available', 'dateCreate'];
         $filter = ['active' => 'Y'];
@@ -684,9 +680,9 @@ HTTP status: **200**
                 "canBuyZero": "Y",
                 "code": "Tovar",
                 "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-                "dateActiveTo": "2024-05-29T10:00:00+03:00",
-                "dateCreate": "2024-05-27T10:00:00+03:00",
+                "dateActiveFrom": "2024-05-28T10:00:00+01:00",
+                "dateActiveTo": "2024-05-29T10:00:00+01:00",
+                "dateCreate": "2024-05-27T10:00:00+01:00",
                 "detailPicture": {
                     "id": "6439",
                     "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6439\u0026fields%5BproductId%5D=1243",
@@ -732,7 +728,7 @@ HTTP status: **200**
                 "recurSchemeType": "D",
                 "sort": 100,
                 "subscribe": "Y",
-                "timestampX": "2024-06-05T10:05:06+03:00",
+                "timestampX": "2024-06-05T10:05:06+01:00",
                 "trialPriceId": 175,
                 "type": 1,
                 "vatId": 1,
@@ -746,12 +742,14 @@ HTTP status: **200**
     },
     "total": 1,
     "time": {
-        "start": 1717661048.302644,
-        "finish": 1717661049.079089,
-        "duration": 0.7764449119567871,
-        "processing": 0.3525362014770508,
-        "date_start": "2024-06-06T11:04:08+03:00",
-        "date_finish": "2024-06-06T11:04:09+03:00"
+        "start": 1793892163,
+        "finish": 1793892163.471609,
+        "duration": 0.47160911560058594,
+        "processing": 0,
+        "date_start": "2026-11-05T18:22:43+01:00",
+        "date_finish": "2026-11-05T18:22:43+01:00",
+        "operating_reset_at": 1793892720,
+        "operating": 0
     }
 }
 ```
@@ -762,13 +760,15 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../../data-types.md) | Request result containing the product list ||
+[`object`](../../data-types.md) | Root element of the response ||
 || **result.products**
-[`catalog_product[]`](../data-types.md#catalog_product) | Array of objects containing information about the selected products ||
+[`catalog_product[]`](../data-types.md#catalog_product) | Array of products with the fields from `select`.
+
+The value of a single `propertyN` property is an object `{"value": ..., "valueId": ...}`, and the value of a multiple property is an array of such objects. The `purchasingPrice` and `purchasingCurrency` fields are returned only if the user has the "View purchase price" permission ||
 || **total**
-[`integer`](../../data-types.md) | The total number of records found ||
+[`integer`](../../data-types.md) | The total number of products found ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -777,8 +777,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access denied"
+    "error": "200040300000",
+    "error_description": "Iblock Not Found"
 }
 ```
 
@@ -788,12 +788,14 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Cause** ||
-|| `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
+|| `400` | `200040300010` | `Access Denied` | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" permissions ||
 || `400` | `200040300030` | `Access Denied` | No permission to read the product information block ||
-|| `400` | `200040300000` | `Iblock Not Found` | The information block in `filter.iblockId` was not found ||
+|| `400` | `200040300000` | `Iblock Not Found` | The information block in `filter.iblockId` was not found, or `iblockId` is not a number ||
 || `400` | `0` | `Required select fields: id, iblockId` | `select` lacks one or both required fields; the error lists the missing fields ||
 || `400` | `0` | `Required filter fields: iblockId` | `filter.iblockId` was not provided ||
-|| `400` | `0` | `Incorrect filter format` | `filter` was not provided as an object ||
+|| `400` | `0` | ``Wrong format value of filter field `iblockId`.`` | An array was passed in `filter.iblockId` ||
+|| `400` | `100` | `Invalid value {...} to match with parameter {select}. Should be value of type array.` | The `select` parameter was not passed as an array ||
+|| `400` | `100` | `Invalid value {...} to match with parameter {filter}. Should be value of type array.` | The `filter` parameter was not passed as an object ||
 |#
 
 {% include [System errors](../../../_includes/system-errors.md) %}

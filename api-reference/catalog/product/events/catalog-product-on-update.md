@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can subscribe: any user
 
-The `CATALOG.PRODUCT.ON.UPDATE` event is triggered when a product is updated.
+The `CATALOG.PRODUCT.ON.UPDATE` event is triggered when a product, bundle, parent product, variation, or service is updated.
 
 {% note info "" %}
 
@@ -88,20 +88,23 @@ The structure is described [below](#auth) ||
 [`catalog_product_sku.id`](../../data-types.md#catalog_product_sku)\|
 [`catalog_product_offer.id`](../../data-types.md#catalog_product_offer)\|
 [`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Product identifier. You can retrieve all product fields by its identifier using the methods:
-- [catalog.product.get](../catalog-product-get.md) — for simple products
+
+- [catalog.product.get](../catalog-product-get.md) — for simple products and bundles
 - [catalog.product.sku.get](../sku/catalog-product-sku-get.md) — for parent products
 - [catalog.product.offer.get](../offer/catalog-product-offer-get.md) — for variations
-- [catalog.product.service.get](../service/catalog-product-service-get.md) — for services
-||
+- [catalog.product.service.get](../service/catalog-product-service-get.md) — for services ||
 || **TYPE***
 [`integer`](../../../data-types.md) | Product type:
+
 - `1` — simple product
+- `2` — bundle
 - `3` — parent product with variations
 - `4` — variation
-- `5` — variation without a product
+- `5` — variation without a parent product
 - `6` — parent product without variations
 - `7` — service
-||
+
+The [catalog.product.type.list](../catalog-product-type-list.md) method returns the directory of types ||
 |#
 
 ### Parameter auth {#auth}

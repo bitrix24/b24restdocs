@@ -611,8 +611,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `200040300000` | Iblock Not Found | Add the `["iblockId", "=", <identifier>]` condition with an existing information block to `filter` ||
 || `-` | Filter OR groups are not supported | Remove groups with `or` logic from the filter ||
-|| `#FIELD#` | DTO `ProductDto` in field `#FIELD#` requires attribute `Filterable` to perform this request | Filter only by the fields from the `filter` parameter description ||
-|| `#FIELD#` | DTO `ProductDto` in field `#FIELD#` requires attribute `Sortable` to perform this request | Sort only by the fields from the `order` parameter description ||
+|| `previewText` | DTO `ProductDto` in field `previewText` requires attribute `Filterable` to perform this request | Filter only by the fields from the `filter` parameter description ||
+|| `vatId` | DTO `ProductDto` in field `vatId` requires attribute `Sortable` to perform this request | Sort only by the fields from the `order` parameter description ||
 || `-` | pagination.offset must be a non-negative multiple of pagination.limit | Pass an `offset` that is a multiple of `limit`, or use `page` ||
 |#
 
@@ -622,7 +622,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `pagination` | Incorrect `pagination` parameter value: `#PAGINATION#` | Pass a `limit` greater than zero ||
+|| `pagination` | Incorrect `pagination` parameter value: `{"limit":0}` | Pass a `limit` greater than `0` ||
 |#
 
 #### Unknown Field Error

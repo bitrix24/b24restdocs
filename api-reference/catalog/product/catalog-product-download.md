@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: a user with permission to view the product catalog
+> Who can execute the method: a user with the "View product catalog", "View catalog products", or "Edit selling price" permission and permission to read the product in the information block
 
 The `catalog.product.download` method downloads product files from the trade catalog using the provided parameters.
 
@@ -22,38 +22,33 @@ The `catalog.product.download` method downloads product files from the trade cat
 #|
 || **Name**
 `type` | **Description** ||
-|| **fields*** 
- [`object`](../../data-types.md)| Field values for downloading product files ||
+|| **fields***
+[`object`](../../data-types.md) | Parameters of the file to download. [Field description](#fields) ||
 |#
 
-### Parameter fields
-
-{% include [Note on required parameters](../../../_includes/required.md) %}
+### Parameter fields {#fields}
 
 #|
 || **Name**
 `type` | **Description** ||
-|| **fileId*** 
- [`integer`](../../data-types.md)| Identifier of the registered file.
+|| **fileId***
+[`integer`](../../data-types.md) | Identifier of the file.
 
-To obtain file identifiers for products, use [catalog.product.get](./catalog-product-get.md) or [catalog.product.list](./catalog-product-list.md)
- ||
-|| **productId*** 
- [`catalog_product.id`](../data-types.md#catalog_product)| Identifier of the product.
+The identifier is returned by the [catalog.product.get](./catalog-product-get.md) and [catalog.product.list](./catalog-product-list.md) methods in the `detailPicture` and `previewPicture` fields or in the `value` of a "File" type property ||
+|| **productId***
+[`catalog_product.id`](../data-types.md#catalog_product) | Identifier of the product.
 
-To obtain product identifiers, use [catalog.product.list](./catalog-product-list.md)
- ||
-|| **fieldName*** 
-[`string`](../../data-types.md) | Name of the field (property or field of the information block element) where the file is stored.
+You can retrieve product identifiers using the [catalog.product.list](./catalog-product-list.md) method ||
+|| **fieldName***
+[`string`](../../data-types.md) | Product field where the file is stored:
 
 - `detailPicture` — detailed image
 - `previewPicture` — preview image
-- `propertyN` — file property, where `N` is the property ID or code
+- `propertyN` — a "File" type property, where `N` is the property identifier. Instead of the identifier, you can specify the symbolic code of the property in camelCase, for example `propertyMorePhoto` for the `MORE_PHOTO` code
 
-In [catalog.product.get](./catalog-product-get.md) and [catalog.product.list](./catalog-product-list.md) responses, the `fieldName` value is already included in the file's `url` and `urlMachine`. Pass it in the same form. Internally, the method converts field names to `DETAIL_PICTURE`, `PREVIEW_PICTURE`, and `PROPERTY_N`
+In [catalog.product.get](./catalog-product-get.md) and [catalog.product.list](./catalog-product-list.md) responses, the `fieldName` value is already included in the file's `url` and `urlMachine`. Pass it in the same form. The method does not accept uppercase names, such as `DETAIL_PICTURE` or `PROPERTY_N`.
 
-To obtain existing identifiers or property codes for products, use [catalog.productProperty.list](../product-property/catalog-product-property-list.md)
- ||
+You can retrieve property identifiers using the [catalog.productProperty.list](../product-property/catalog-product-property-list.md) method ||
 |#
 
 ## Code Examples
@@ -84,10 +79,102 @@ The examples use direct HTTP requests to save the binary response.
     https://**put_your_bitrix24_address**/rest/catalog.product.download
     ```
 
-- Python (Webhook)
+- JS (TS)
+
+    ```ts
+    // This snippet is an ES module: top-level await requires type="module" or a bundler.
+    // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
+    import type { B24Frame } from '@bitrix24/b24jssdk'
+
+    declare const $b24: B24Frame
+
+    try {
+      const auth = $b24.auth.getAuthData()
+      if (!auth) {
+        throw new Error('No auth data')
+      }
+
+      // The method returns a binary file, so the request is sent directly
+      const response = await fetch(`${$b24.getTargetOriginWithPath()}/catalog.product.download`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields: {
+            fileId: 6439,
+            productId: 1243,
+            fieldName: 'detailPicture',
+          },
+          auth: auth.access_token,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error_description)
+      }
+
+      const blob: Blob = await response.blob()
+      console.info('File size:', blob.size, 'type:', blob.type)
+    } catch (error) {
+      console.error(error)
+    }
+    ```
+
+- JS (UMD)
+
+    ```html
+    <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
+    <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
+    <script>
+      async function downloadProductFile() {
+        try {
+          // Initialize the SDK inside a Bitrix24 frame
+          const $b24 = await B24Js.initializeB24Frame()
+          const auth = $b24.auth.getAuthData()
+          if (!auth) {
+            throw new Error('No auth data')
+          }
+
+          // The method returns a binary file, so the request is sent directly
+          const response = await fetch(`${$b24.getTargetOriginWithPath()}/catalog.product.download`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              fields: {
+                fileId: 6439,
+                productId: 1243,
+                fieldName: 'detailPicture',
+              },
+              auth: auth.access_token,
+            }),
+          })
+
+          if (!response.ok) {
+            const error = await response.json()
+            throw new Error(error.error_description)
+          }
+
+          // Save the file in the browser
+          const blob = await response.blob()
+          const link = document.createElement('a')
+          link.href = URL.createObjectURL(blob)
+          link.download = 'product-picture.png'
+          link.click()
+          URL.revokeObjectURL(link.href)
+        } catch (error) {
+          console.error(error)
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', downloadProductFile)
+    </script>
+    ```
+
+- Python
 
     ```python
     import json
+    from urllib.error import HTTPError
     from urllib.request import Request, urlopen
 
     url = "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.download"
@@ -105,11 +192,14 @@ The examples use direct HTTP requests to save the binary response.
         method="POST",
     )
 
-    with urlopen(request) as response, open("product-picture.png", "wb") as output:
-        output.write(response.read())
+    try:
+        with urlopen(request) as response, open("product-picture.png", "wb") as output:
+            output.write(response.read())
+    except HTTPError as error:
+        print("Bitrix API error:", json.loads(error.read()).get("error_description"))
     ```
 
-- PHP (Webhook)
+- PHP
 
     ```php
     <?php
@@ -140,13 +230,118 @@ The examples use direct HTTP requests to save the binary response.
     file_put_contents('product-picture.png', $file);
     ```
 
+- BX24.js
+
+    ```js
+    // The method returns a binary file, so the request is sent directly
+    const auth = BX24.getAuth();
+
+    fetch(`https://${auth.domain}/rest/catalog.product.download`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            fields: {
+                fileId: 6439,
+                productId: 1243,
+                fieldName: 'detailPicture'
+            },
+            auth: auth.access_token
+        })
+    })
+        .then(response => response.ok
+            ? response.blob()
+            : response.json().then(error => { throw new Error(error.error_description); }))
+        .then(blob => {
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'product-picture.png';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        })
+        .catch(error => console.error(error));
+    ```
+
+- PHP CRest
+
+    ```php
+    require_once('crest.php');
+
+    // CRest::call() decodes the response as JSON, so the binary file is requested directly.
+    // C_REST_WEB_HOOK_URL is set in settings.php
+    $request = curl_init(C_REST_WEB_HOOK_URL . 'catalog.product.download');
+    curl_setopt_array($request, [
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => http_build_query([
+            'fields' => [
+                'fileId' => 6439,
+                'productId' => 1243,
+                'fieldName' => 'detailPicture',
+            ],
+        ]),
+        CURLOPT_RETURNTRANSFER => true,
+    ]);
+
+    $file = curl_exec($request);
+    $status = curl_getinfo($request, CURLINFO_HTTP_CODE);
+    curl_close($request);
+
+    if ($status === 200) {
+        file_put_contents('product-picture.png', $file);
+    } else {
+        echo '<PRE>';
+        print_r(json_decode($file, true));
+        echo '</PRE>';
+    }
+    ```
+
+- Go
+
+    ```go
+    // The method returns a binary file, so the request is sent directly
+    url := "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.download"
+    body, err := json.Marshal(map[string]any{
+    	"fields": map[string]any{
+    		"fileId":    6439,
+    		"productId": 1243,
+    		"fieldName": "detailPicture",
+    	},
+    })
+    if err != nil {
+    	return err
+    }
+
+    resp, err := http.Post(url, "application/json", bytes.NewReader(body))
+    if err != nil {
+    	return fmt.Errorf("catalog.product.download: %w", err)
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+    	var apiErr struct {
+    		Error            string `json:"error"`
+    		ErrorDescription string `json:"error_description"`
+    	}
+    	_ = json.NewDecoder(resp.Body).Decode(&apiErr)
+    	return fmt.Errorf("catalog.product.download: %s", apiErr.ErrorDescription)
+    }
+
+    file, err := os.Create("product-picture.png")
+    if err != nil {
+    	return err
+    }
+    defer file.Close()
+    if _, err := io.Copy(file, resp.Body); err != nil {
+    	return fmt.Errorf("save file: %w", err)
+    }
+    ```
+
 {% endlist %}
 
 ## Response Handling
 
 HTTP status: **200**
 
-The response contains the file content. The method checks that `fileId` belongs to the specified product and `fieldName`. Save the response as a file: a successful call has no JSON `result` field.
+The response contains the file content with the `Content-Type` and `Content-Disposition` headers, for example `Content-Type: image/png` and `Content-Disposition: attachment; filename="logo.png"`. The method checks that `fileId` belongs to the specified product and `fieldName`. Save the response as a file: a successful call has no JSON `result` field.
 
 ### Returned Data
 
@@ -157,9 +352,9 @@ The file content is returned, not a JSON `result` object. Retrieve the file ID a
 HTTP status: **400**
 
 ```json
-{	
-   "error":0,
-   "error_description":"Required fields: fileId"
+{
+    "error": "0",
+    "error_description": "Product file wrong"
 }
 ```
 
@@ -169,17 +364,20 @@ HTTP status: **400**
 
 #|
 || **Status** | **Code** | **Description** | **Cause** ||
-|| `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
-|| `400` | Empty code | `product does not exist.` | No product exists with the specified `productId` ||
-|| `400` | `0` | `Required fields: fieldName, fileId, productId` | Required fields were not provided; the description lists the missing fields ||
-|| `400` | `0` | `Name file field is not available` | `fieldName` is not a valid product file field ||
+|| `400` | `200040300010` | `Access Denied` | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" permissions ||
+|| `400` | `200040300000` | `Iblock Not Found` | The product's information block was not found ||
+|| `400` | `200040300040` | `Access Denied` | No permission to read the product in the information block ||
+|| `400` | Empty value | `product does not exist.` | No product exists with the specified `productId` ||
+|| `400` | `100` | `Could not find value for parameter {fields}` | The `fields` parameter was not provided ||
+|| `400` | `0` | `Required fields: fieldName, fileId, productId` | Required fields were not provided. The description lists only the missing fields ||
+|| `400` | `0` | `Name file field is not available` | `fieldName` is not a "File" type field or property, or it was passed in uppercase ||
 || `400` | `0` | `Product file wrong` | `fileId` does not belong to the specified product and field ||
 || `400` | `0` | `Product is empty` | The file record was not found ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
 
-## Continue Learning 
+## Continue Learning
 
 - [{#T}](./catalog-product-add.md)
 - [{#T}](./catalog-product-update.md)

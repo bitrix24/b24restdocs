@@ -11,11 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Create product" permission and one of the following permissions: "View product catalog", "View catalog products", or "Edit selling price"
 
-The `catalog.product.add` method adds a product to the trade catalog.
-
-For a minimal request, pass the catalog ID `iblockId` and product name `name` in `fields`. Add other fields as needed; their availability depends on the catalog configuration and is described in [`catalog_product`](../data-types.md#catalog_product).
+The `catalog.product.add` method adds a product to the trade catalog and returns its fields.
 
 ## Method Parameters
 
@@ -25,62 +23,10 @@ For a minimal request, pass the catalog ID `iblockId` and product name `name` in
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../data-types.md)| Field values (a detailed description is provided [below](#parameter-fields)) for adding a new product as a structure:
-
-```js
-'fields': {
-    iblockId: 'value',
-    name: 'value',
-    active: 'value',
-    barcodeMulti: 'value',
-    canBuyZero: 'value',
-    code: 'value',
-    createdBy: 'value',
-    dateActiveFrom: 'value',
-    dateActiveTo: 'value',
-    dateCreate: 'value',
-    detailPicture: {
-        'fileData': ['image_name', 'image']
-    },
-    detailText: 'value',
-    detailTextType: 'value',
-    height: 'value',
-    iblockSectionId: 'value',
-    IblockSection: ['value_1', ... , 'value_N'],
-    length: 'value',
-    measure: 'value',
-    modifiedBy: 'value',
-    previewPicture: {
-        'fileData': ['image_name', 'image']
-    },
-    previewText: 'value',
-    previewTextType: 'value',
-    purchasingCurrency: 'value',
-    purchasingPrice: 'value',
-    quantity: 'value',
-    quantityReserved: 'value',
-    quantityTrace: 'value',
-    recurSchemeLength: 'value',
-    recurSchemeType: 'value',
-    sort: 'value',
-    subscribe: 'value',
-    trialPriceId: 'value',
-    vatId: 'value',
-    vatIncluded: 'value',
-    weight: 'value',
-    width: 'value',
-    withoutOrder: 'value',
-    xmlId: 'value',
-    property1: 'value',
-    ...
-    propertyN: 'value',
-},
-```
-
- ||
+[`object`](../../data-types.md) | Object with the fields of the new product [(detailed description)](#fields) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../_includes/required.md) %}
 
@@ -88,148 +34,165 @@ For a minimal request, pass the catalog ID `iblockId` and product name `name` in
 || **Name**
 `type` | **Description** ||
 || **iblockId***
-[`catalog_catalog.id`](../data-types.md)| Identifier of the trading catalog information block.
+[`catalog_catalog.id`](../data-types.md#catalog_catalog) | Identifier of the trade catalog information block. You can retrieve the identifier using the [catalog.catalog.list](../catalog/catalog-catalog-list.md) method.
 
-To get existing identifiers of trading catalog information blocks, use the method [catalog.catalog.list](../catalog/catalog-catalog-list.md)
- ||
+Pass the products information block, not the variations one: with the variations information block, the method creates a variation without a parent product. Add variations using the [catalog.product.offer.add](./offer/catalog-product-offer-add.md) method ||
 || **name***
-[`string`](../../data-types.md)| Name of the product ||
+[`string`](../../data-types.md) | Product name ||
 || **active**
-[`string`](../../data-types.md)| Product activity. Possible values:
-- `Y` — yes
-- `N` — no
+[`string`](../../data-types.md) | Product activity.
 
-Default value is set to `Y`
- ||
+Possible values:
+
+- `Y` — active
+- `N` — inactive
+
+Other values are saved as `N`
+
+Default: `Y` ||
 || **code**
-[`string`](../../data-types.md)| Symbolic code ||
+[`string`](../../data-types.md) | Symbolic code ||
 || **xmlId**
-[`string`](../../data-types.md)| External code ||
-|| **barcodeMulti**
-[`string`](../../data-types.md)| Use unique barcodes for each instance. Values:
-- `Y` — yes
-- `N` — no
-
-Default value is set to `N`
- ||
-|| **canBuyZero**
-[`string`](../../data-types.md)| Is it possible to buy the product when out of stock:
-- `Y` — yes
-- `N` — no
-
-Default value is set to `N`
- ||
-|| **createdBy**
-[`user.id`](../../data-types.md)| Created by ||
-|| **modifiedBy**
-[`user.id`](../../data-types.md)| Modified by ||
-|| **dateActiveFrom**
-[`datetime`](../../data-types.md)| Date of activity start ||
-|| **dateActiveTo**
-[`datetime`](../../data-types.md)| Date of activity end ||
-|| **dateCreate**
-[`datetime`](../../data-types.md)| Create date ||
-|| **iblockSectionId**
-[`catalog_section.id`](../data-types.md#catalog_section)| Identifier of the main section of the information block ||
-|| **IblockSection**
-[`array`](../../data-types.md)| Array of all sections to which the product is linked ||
-|| **measure**
-[`catalog_measure.id`](../data-types.md#catalog_measure)| Unit of measurement ||
-|| **previewText**
-[`string`](../../data-types.md)| Description for the announcement ||
-|| **detailText**
-[`string`](../../data-types.md)| Detailed description ||
-|| **previewPicture**
-[`object`](../../data-types.md)| Picture for the announcement.
-
-Object in the format `{fileData: [value1, value2]}`, where `value1` — file name of the picture with extension, `value2` — image in [base64](../../files/how-to-upload-files.md) format.
-
-To delete the picture, use the object in the format `{remove: 'Y'}` ||
-|| **detailPicture**
-[`object`](../../data-types.md)| Detailed picture.
-
-Object in the format `{fileData: [value1, value2]}`, where `value1` — file name of the picture with extension, `value2` — image in [base64](../../files/how-to-upload-files.md) format.
-
-To delete the picture, use the object in the format `{remove: 'Y'}` ||
-|| **previewTextType**
-[`string`](../../data-types.md)| Type of description for the announcement. Possible values:
-- `text` — text
-- `html` — HTML
-
-Default value is set to `text`
- ||
-|| **detailTextType**
-[`string`](../../data-types.md)| Type of detailed description. Possible values:
-- `text` — text
-- `html` — HTML
-
-Default value is set to `text` ||
+[`string`](../../data-types.md) | External code. If not passed, it matches the product identifier ||
 || **sort**
-[`integer`](../../data-types.md)| Sorting ||
-|| **subscribe**
-[`string`](../../data-types.md)| Subscription permission for the product. Options:
-- `Y` — yes
-- `N` — no
-- `D` — default
+[`integer`](../../data-types.md) | Sorting
 
-Default value is set to `D`
- ||
-|| **vatId**
-[`catalog_vat.id`](../data-types.md#catalog_vat)| Identifier of VAT ||
-|| **vatIncluded**
-[`string`](../../data-types.md)| VAT included in the price:
-- `Y` — yes
-- `N` — no
+Default: `500` ||
+|| **createdBy**
+[`user.id`](../../data-types.md) | Identifier of the user who created the product. You can retrieve the identifier using the [user.get](../../user/user-get.md) method.
 
-Default value is set to `N`
- ||
-|| **height**
-[`double`](../../data-types.md)| Height of the product ||
-|| **length**
-[`double`](../../data-types.md)| Length of the product ||
-|| **weight**
-[`double`](../../data-types.md)| Weight of the product ||
-|| **width**
-[`double`](../../data-types.md)| Width of the product ||
-|| **quantityTrace**
-[`string`](../../data-types.md)| Quantity accounting mode:
-- `Y` – enabled
-- `N` – disabled
-- `D` – default
+Default: the user who called the method ||
+|| **modifiedBy**
+[`user.id`](../../data-types.md) | Identifier of the user who modified the product.
 
-Default value is set to `D`
- ||
-|| **purchasingCurrency**
-[`string`](../../data-types.md)| Currency of the purchasing price.
+Default: the user who called the method ||
+|| **dateActiveFrom**
+[`datetime`](../../data-types.md) | Activity start date. Currently the date cannot be set: a string in any format causes the "Incorrect starting date format" error, and a number is ignored. `null` is accepted ||
+|| **dateActiveTo**
+[`datetime`](../../data-types.md) | Activity end date. Currently the date cannot be set: a string in any format causes the "Incorrect expiration date format" error, and a number is ignored. `null` is accepted ||
+|| **dateCreate**
+[`datetime`](../../data-types.md) | Creation date. The field is filled in automatically, so you do not need to pass it: currently a passed date is saved incorrectly, for example, `2024-05-27T10:00:00+01:00` is saved as `2001-11-30T00:00:00+01:00` ||
+|| **iblockSectionId**
+[`catalog_section.id`](../data-types.md#catalog_section) | Identifier of the main section. You can retrieve the identifier using the [catalog.section.list](../section/catalog-section-list.md) method.
 
-The list of currencies can be obtained using the [crm.currency.list](../../crm/currency/crm-currency-list.md) method.
+For a nonexistent section, the method returns the `200040300050` error ||
+|| **iblockSection**
+[`catalog_section.id[]`](../data-types.md#catalog_section) | Array of identifiers of the sections to link the product to, for example, `[41, 39]`. Set the main section in `iblockSectionId` ||
+|| **previewText**
+[`string`](../../data-types.md) | Preview description ||
+|| **previewTextType**
+[`string`](../../data-types.md) | Type of the preview description.
 
-Not editable when inventory accounting is enabled
- ||
-|| **purchasingPrice**
-[`double`](../../data-types.md)| Purchasing price.
+Possible values:
 
-Not editable when inventory accounting is enabled
- ||
+- `text` — text
+- `html` — HTML
+
+Default: `text` ||
+|| **previewPicture**
+[`object`](../../data-types.md) | Preview picture. An object in the format `{"fileData": ["photo.png", "base64"]}`: the first element is the file name with the extension, the second is the file content in [Base64](../../files/how-to-upload-files.md) encoding.
+
+To delete the picture, pass `{"remove": "Y"}` ||
+|| **detailText**
+[`string`](../../data-types.md) | Detailed description ||
+|| **detailTextType**
+[`string`](../../data-types.md) | Type of the detailed description.
+
+Possible values:
+
+- `text` — text
+- `html` — HTML
+
+Default: `text` ||
+|| **detailPicture**
+[`object`](../../data-types.md) | Detailed picture. An object in the format `{"fileData": ["photo.png", "base64"]}`: the first element is the file name with the extension, the second is the file content in [Base64](../../files/how-to-upload-files.md) encoding.
+
+To delete the picture, pass `{"remove": "Y"}` ||
 || **quantity**
-[`double`](../../data-types.md)| Quantity.
-
-Not editable when inventory accounting is enabled
- ||
+[`double`](../../data-types.md) | Available quantity. When inventory management is enabled, the value is not retained: the method returns no error, but the field keeps its previous value ||
 || **quantityReserved**
-[`double`](../../data-types.md)| Reserved quantity.
+[`double`](../../data-types.md) | Reserved quantity. When inventory management is enabled, the value is not retained: the method returns no error, but the field keeps its previous value ||
+|| **quantityTrace**
+[`string`](../../data-types.md) | Quantity accounting mode.
 
-Not editable when inventory accounting is enabled
- ||
+Possible values:
+
+- `Y` — enabled
+- `N` — disabled
+- `D` — value from the Trade Catalog module settings
+
+Default: `D`.
+
+The response returns the resulting value `Y` or `N` ||
+|| **canBuyZero**
+[`string`](../../data-types.md) | Allow purchase when the product is out of stock.
+
+Possible values:
+
+- `Y` — yes
+- `N` — no
+- `D` — value from the Trade Catalog module settings
+
+Default: `D`.
+
+The response returns the resulting value `Y` or `N` ||
+|| **subscribe**
+[`string`](../../data-types.md) | Allow subscription to the product.
+
+Possible values:
+
+- `Y` — yes
+- `N` — no
+- `D` — value from the Trade Catalog module settings
+
+Default: `D`.
+
+The response returns the resulting value `Y` or `N` ||
+|| **vatId**
+[`catalog_vat.id`](../data-types.md#catalog_vat) | VAT rate identifier. You can retrieve the identifier using the [catalog.vat.list](../vat/catalog-vat-list.md) method ||
+|| **vatIncluded**
+[`string`](../../data-types.md) | VAT is included in the price.
+
+Possible values:
+
+- `Y` — yes
+- `N` — no
+
+Default: `N` ||
+|| **purchasingPrice**
+[`double`](../../data-types.md) | Purchasing price. When inventory management is enabled, the value is not retained: the method returns no error, but the field keeps its previous value ||
+|| **purchasingCurrency**
+[`string`](../../data-types.md) | Purchasing price currency, for example, `EUR`. You can retrieve the list of currencies using the [crm.currency.list](../../crm/currency/crm-currency-list.md) method.
+
+When inventory management is enabled, the value is not retained: the method returns no error, but the field keeps its previous value ||
+|| **barcodeMulti**
+[`string`](../../data-types.md) | Unique barcode for each item.
+
+Possible values:
+
+- `Y` — yes
+- `N` — no
+
+Default: `N` ||
+|| **weight**
+[`double`](../../data-types.md) | Weight ||
+|| **length**
+[`double`](../../data-types.md) | Length ||
+|| **width**
+[`double`](../../data-types.md) | Width ||
+|| **height**
+[`double`](../../data-types.md) | Height ||
+|| **measure**
+[`catalog_measure.id`](../data-types.md#catalog_measure) | Unit of measure identifier. You can retrieve the identifier using the [catalog.measure.list](../measure/catalog-measure-list.md) method.
+
+The method does not check that the unit of measure exists: a nonexistent identifier is saved without an error ||
 || **recurSchemeLength**
-[`integer`](../../data-types.md)| Length of the payment period.
-
-Default value is set to `0`.
-
-Used only in [on-premise](../../../settings/cloud-and-on-premise/index.md) for content sales
- ||
+[`integer`](../../data-types.md) | Payment period length. Used only in the [on-premise version](../../../settings/cloud-and-on-premise/index.md) for selling content ||
 || **recurSchemeType**
-[`string`](../../data-types.md)| Unit of time for the payment period:
+[`string`](../../data-types.md) | Time unit of the payment period.
+
+Possible values:
+
 - `H` — hour
 - `D` — day
 - `W` — week
@@ -238,36 +201,35 @@ Used only in [on-premise](../../../settings/cloud-and-on-premise/index.md) for c
 - `S` — half-year
 - `Y` — year
 
-Default value is set to `D`.
+Default: `D`.
 
-Used only in [on-premise](../../../settings/cloud-and-on-premise/index.md) for content sales
- ||
+Used only in the [on-premise version](../../../settings/cloud-and-on-premise/index.md) for selling content ||
 || **trialPriceId**
-[`integer`](../../data-types.md)| Product for trial payment.
-
-Used only in [on-premise](../../../settings/cloud-and-on-premise/index.md) for content sales
- ||
+[`integer`](../../data-types.md) | Identifier of the product for trial payment. Used only in the [on-premise version](../../../settings/cloud-and-on-premise/index.md) for selling content ||
 || **withoutOrder**
-[`string`](../../data-types.md)| Extension without placing an order. Values:
+[`string`](../../data-types.md) | Renewal without placing an order.
+
+Possible values:
+
 - `Y` — yes
 - `N` — no
 
-Default value is set to `N`.
+Default: `N`.
 
-Used only in [on-premise](../../../settings/cloud-and-on-premise/index.md) for content sales
- ||
+Used only in the [on-premise version](../../../settings/cloud-and-on-premise/index.md) for selling content ||
 || **propertyN**
-[`any`](../../data-types.md)| Value of the product property, where `N` — property identifier. There can be multiple properties.
+[`any`](../../data-types.md) | Product property value, where `N` is the property identifier, for example, `property301`. You can retrieve property identifiers using the [catalog.productProperty.list](../product-property/catalog-product-property-list.md) method.
 
-When adding a product, the property value can be specified as a string, number, or as an object `{value: value}`. If the property is multiple, an array of values or objects of the form `{value: value}` is specified.
+Pass a single property value as a string, a number, or a `{"value": "value"}` object. Pass a multiple property value as an array of values or `{"value": "value"}` objects.
 
-File field uploads are described in the article [How to update and delete files](../../files/how-to-update-files.md)
-||
+The method skips properties with a nonexistent identifier without an error. Uploading values of "File" properties is described in the [How to Upload Files](../../files/how-to-upload-files.md) article ||
 |#
 
-{% note warning "Working with product prices" %}
+The `id`, `type`, `available`, `bundle`, and `timestampX` fields are filled in automatically. The method skips fields that are not in the table without an error.
 
-To specify the product price, use the methods [catalog.price.*](../price/index.md).
+{% note warning "Working with Product Prices" %}
+
+To set the product price, use the [catalog.price.*](../price/index.md) methods.
 
 {% endnote %}
 
@@ -283,7 +245,7 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"iblockId":23,"name":"Product","active":"Y","barcodeMulti":"Y","canBuyZero":"Y","code":"Product","createdBy":1,"dateActiveFrom":"2024-05-28T10:00:00","dateActiveTo":"2024-05-29T10:00:00","dateCreate":"2024-05-27T10:00:00","detailPicture":{"fileData":["detailPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"]},"detailText":"","detailTextType":"text","height":100,"iblockSectionId":47,"length":100,"measure":5,"modifiedBy":1,"previewPicture":{"fileData":["previewPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"]},"previewText":"","previewTextType":"text","purchasingCurrency":"EUR","purchasingPrice":1000,"quantity":10,"quantityReserved":1,"quantityTrace":"Y","recurSchemeLength":1,"recurSchemeType":"D","sort":100,"subscribe":"Y","trialPriceId":175,"vatId":1,"vatIncluded":"Y","weight":100,"width":100,"withoutOrder":"Y","xmlId":"","property258":"test","property259":["test1","test2"]}}' \
+    -d '{"fields":{"iblockId":25,"name":"Basic T-shirt","code":"tshirt-basic","iblockSectionId":41,"iblockSection":[41,39],"vatId":1,"vatIncluded":"Y","measure":9,"weight":200,"previewText":"Cotton T-shirt","previewPicture":{"fileData":["photo.png","iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="]},"property301":"TS-001","property305":["Cotton","Polyester"]}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.add
     ```
 
@@ -293,7 +255,7 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"iblockId":23,"name":"Product","active":"Y","barcodeMulti":"Y","canBuyZero":"Y","code":"Product","createdBy":1,"dateActiveFrom":"2024-05-28T10:00:00","dateActiveTo":"2024-05-29T10:00:00","dateCreate":"2024-05-27T10:00:00","detailPicture":{"fileData":["detailPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"]},"detailText":"","detailTextType":"text","height":100,"iblockSectionId":47,"length":100,"measure":5,"modifiedBy":1,"previewPicture":{"fileData":["previewPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"]},"previewText":"","previewTextType":"text","purchasingCurrency":"EUR","purchasingPrice":1000,"quantity":10,"quantityReserved":1,"quantityTrace":"Y","recurSchemeLength":1,"recurSchemeType":"D","sort":100,"subscribe":"Y","trialPriceId":175,"vatId":1,"vatIncluded":"Y","weight":100,"width":100,"withoutOrder":"Y","xmlId":"","property258":"test","property259":["test1","test2"]},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"iblockId":25,"name":"Basic T-shirt","code":"tshirt-basic","iblockSectionId":41,"iblockSection":[41,39],"vatId":1,"vatIncluded":"Y","measure":9,"weight":200,"previewText":"Cotton T-shirt","previewPicture":{"fileData":["photo.png","iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="]},"property301":"TS-001","property305":["Cotton","Polyester"]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.add
     ```
 
@@ -308,107 +270,46 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
     declare const $b24: B24Frame
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
-    type ProductAddResult = {
+    type ProductResult = {
       element: {
         id: number,
         iblockId: number,
-        iblockSectionId: number,
+        iblockSectionId: number | null,
+        iblockSection: number[] | null,
         name: string,
+        code: string | null,
         active: string,
-        available: string,
-        bundle: string,
-        canBuyZero: string,
-        code: string,
-        createdBy: number,
-        modifiedBy: number,
-        dateActiveFrom: ISODate | null,
-        dateActiveTo: ISODate | null,
-        dateCreate: ISODate | null,
-        timestampX: ISODate | null,
-        detailPicture: { id: string, url: string, urlMachine: string } | null,
-        detailText: string | null,
-        detailTextType: string,
-        height: number,
-        length: number,
-        measure: number,
-        previewPicture: { id: string, url: string, urlMachine: string } | null,
-        previewText: string | null,
-        previewTextType: string,
-        purchasingCurrency: string,
-        purchasingPrice: string,
-        quantity: number,
-        quantityReserved: number,
-        quantityTrace: string,
-        sort: number,
-        subscribe: string,
-        type: number,
-        vatId: number,
-        vatIncluded: string,
-        weight: number,
-        width: number,
         xmlId: string,
-        property258: { value: string, valueId: string } | null,
-        property259: Array<{ value: string, valueId: string }>,
+        dateCreate: ISODate,
+        timestampX: ISODate,
+        previewPicture: { id: string, url: string, urlMachine: string } | null,
+        detailPicture: { id: string, url: string, urlMachine: string } | null,
+        property301: { value: string, valueId: string } | null,
+        property305: Array<{ value: string, valueId: string }> | null,
+        [key: string]: unknown,
       }
     }
 
     try {
-      const response = await $b24.actions.v2.call.make<ProductAddResult>({
+      const response = await $b24.actions.v2.call.make<ProductResult>({
         method: 'catalog.product.add',
         params: {
           fields: {
-            iblockId: 23,
-            name: 'Product',
-            active: 'Y',
-            barcodeMulti: 'Y',
-            canBuyZero: 'Y',
-            code: 'Product',
-            createdBy: 1,
-            dateActiveFrom: '2024-05-28T10:00:00',
-            dateActiveTo: '2024-05-29T10:00:00',
-            dateCreate: '2024-05-27T10:00:00',
-            detailPicture: {
-              fileData: [
-                'detailPicture.png',
-                'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC',
-              ],
-            },
-            detailText: '',
-            detailTextType: 'text',
-            height: 100,
-            iblockSectionId: 47,
-            length: 100,
-            measure: 5,
-            modifiedBy: 1,
-            previewPicture: {
-              fileData: [
-                'previewPicture.png',
-                'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC',
-              ],
-            },
-            previewText: '',
-            previewTextType: 'text',
-            purchasingCurrency: 'EUR',
-            purchasingPrice: 1000,
-            quantity: 10,
-            quantityReserved: 1,
-            quantityTrace: 'Y',
-            recurSchemeLength: 1,
-            recurSchemeType: 'D',
-            sort: 100,
-            subscribe: 'Y',
-            trialPriceId: 175,
+            iblockId: 25,
+            name: 'Basic T-shirt',
+            code: 'tshirt-basic',
+            iblockSectionId: 41,
+            iblockSection: [41, 39],
             vatId: 1,
             vatIncluded: 'Y',
-            weight: 100,
-            width: 100,
-            withoutOrder: 'Y',
-            xmlId: '',
-            property258: 'test',
-            property259: [
-              'test1',
-              'test2',
-            ],
+            measure: 9,
+            weight: 200,
+            previewText: 'Cotton T-shirt',
+            previewPicture: {
+              fileData: ['photo.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='],
+            },
+            property301: 'TS-001',
+            property305: ['Cotton', 'Polyester'],
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -442,58 +343,21 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
             method: 'catalog.product.add',
             params: {
               fields: {
-                iblockId: 23,
-                name: 'Product',
-                active: 'Y',
-                barcodeMulti: 'Y',
-                canBuyZero: 'Y',
-                code: 'Product',
-                createdBy: 1,
-                dateActiveFrom: '2024-05-28T10:00:00',
-                dateActiveTo: '2024-05-29T10:00:00',
-                dateCreate: '2024-05-27T10:00:00',
-                detailPicture: {
-                  fileData: [
-                    'detailPicture.png',
-                    'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC',
-                  ],
-                },
-                detailText: '',
-                detailTextType: 'text',
-                height: 100,
-                iblockSectionId: 47,
-                length: 100,
-                measure: 5,
-                modifiedBy: 1,
-                previewPicture: {
-                  fileData: [
-                    'previewPicture.png',
-                    'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC',
-                  ],
-                },
-                previewText: '',
-                previewTextType: 'text',
-                purchasingCurrency: 'EUR',
-                purchasingPrice: 1000,
-                quantity: 10,
-                quantityReserved: 1,
-                quantityTrace: 'Y',
-                recurSchemeLength: 1,
-                recurSchemeType: 'D',
-                sort: 100,
-                subscribe: 'Y',
-                trialPriceId: 175,
+                iblockId: 25,
+                name: 'Basic T-shirt',
+                code: 'tshirt-basic',
+                iblockSectionId: 41,
+                iblockSection: [41, 39],
                 vatId: 1,
                 vatIncluded: 'Y',
-                weight: 100,
-                width: 100,
-                withoutOrder: 'Y',
-                xmlId: '',
-                property258: 'test',
-                property259: [
-                  'test1',
-                  'test2',
-                ],
+                measure: 9,
+                weight: 200,
+                previewText: 'Cotton T-shirt',
+                previewPicture: {
+                  fileData: ['photo.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='],
+                },
+                property301: 'TS-001',
+                property305: ['Cotton', 'Polyester'],
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -525,62 +389,27 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
     try:
         bitrix_response = client.catalog.product.add(
             fields={
-                "iblockId": 23,
-                "name": "Product",
-                "active": "Y",
-                "barcodeMulti": "Y",
-                "canBuyZero": "Y",
-                "code": "Tovar",
-                "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00",
-                "dateActiveTo": "2024-05-29T10:00:00",
-                "dateCreate": "2024-05-27T10:00:00",
-                "detailPicture": {
-                    "fileData": [
-                        "detailPicture.png",
-                        "put_base64_file_content_here",
-                    ],
-                },
-                "detailText": "",
-                "detailTextType": "text",
-                "height": 100,
-                "iblockSectionId": 47,
-                "length": 100,
-                "measure": 5,
-                "modifiedBy": 1,
-                "previewPicture": {
-                    "fileData": [
-                        "previewPicture.png",
-                        "put_base64_file_content_here",
-                    ],
-                },
-                "previewText": "",
-                "previewTextType": "text",
-                "purchasingCurrency": "EUR",
-                "purchasingPrice": 1000,
-                "quantity": 10,
-                "quantityReserved": 1,
-                "quantityTrace": "Y",
-                "recurSchemeLength": 1,
-                "recurSchemeType": "D",
-                "sort": 100,
-                "subscribe": "Y",
-                "trialPriceId": 175,
+                "iblockId": 25,
+                "name": "Basic T-shirt",
+                "code": "tshirt-basic",
+                "iblockSectionId": 41,
+                "iblockSection": [41, 39],
                 "vatId": 1,
                 "vatIncluded": "Y",
-                "weight": 100,
-                "width": 100,
-                "withoutOrder": "Y",
-                "xmlId": "",
-                "property258": "test",
-                "property259": [
-                    "test1",
-                    "test2",
-                ],
+                "measure": 9,
+                "weight": 200,
+                "previewText": "Cotton T-shirt",
+                "previewPicture": {
+                    "fileData": ["photo.png", "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="],
+                },
+                "property301": "TS-001",
+                "property305": ["Cotton", "Polyester"],
             },
         ).response
+
         result = bitrix_response.result
         print(result)
+
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
@@ -604,68 +433,31 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
                 'catalog.product.add',
                 [
                     'fields' => [
-                        'iblockId'            => 23,
-                        'name'                => 'Product',
-                        'active'              => 'Y',
-                        'barcodeMulti'        => 'Y',
-                        'canBuyZero'          => 'Y',
-                        'code'                => 'Product',
-                        'createdBy'           => 1,
-                        'dateActiveFrom'      => '2024-05-28T10:00:00',
-                        'dateActiveTo'        => '2024-05-29T10:00:00',
-                        'dateCreate'          => '2024-05-27T10:00:00',
-                        'detailPicture'       => [
-                            'fileData' => [
-                                'detailPicture.png',
-                                'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
-                            ]
+                        'iblockId'        => 25,
+                        'name'            => 'Basic T-shirt',
+                        'code'            => 'tshirt-basic',
+                        'iblockSectionId' => 41,
+                        'iblockSection'   => [41, 39],
+                        'vatId'           => 1,
+                        'vatIncluded'     => 'Y',
+                        'measure'         => 9,
+                        'weight'          => 200,
+                        'previewText'     => 'Cotton T-shirt',
+                        'previewPicture'  => [
+                            'fileData' => ['photo.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='],
                         ],
-                        'detailText'          => '',
-                        'detailTextType'      => 'text',
-                        'height'              => 100,
-                        'iblockSectionId'     => 47,
-                        'length'              => 100,
-                        'measure'             => 5,
-                        'modifiedBy'          => 1,
-                        'previewPicture'      => [
-                            'fileData' => [
-                                'previewPicture.png',
-                                'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
-                            ]
-                        ],
-                        'previewText'         => '',
-                        'previewTextType'     => 'text',
-                        'purchasingCurrency'  => 'EUR',
-                        'purchasingPrice'     => 1000,
-                        'quantity'            => 10,
-                        'quantityReserved'    => 1,
-                        'quantityTrace'       => 'Y',
-                        'recurSchemeLength'   => 1,
-                        'recurSchemeType'     => 'D',
-                        'sort'                => 100,
-                        'subscribe'           => 'Y',
-                        'trialPriceId'        => 175,
-                        'vatId'               => 1,
-                        'vatIncluded'         => 'Y',
-                        'weight'              => 100,
-                        'width'               => 100,
-                        'withoutOrder'        => 'Y',
-                        'xmlId'               => '',
-                        'property258'         => 'test',
-                        'property259'         => [
-                            'test1',
-                            'test2'
-                        ],
+                        'property301'     => 'TS-001',
+                        'property305'     => ['Cotton', 'Polyester'],
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error adding product: ' . $e->getMessage();
@@ -676,62 +468,25 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
 
     ```js
     BX24.callMethod(
-        'catalog.product.add', 
+        'catalog.product.add',
         {
             'fields': {
-                iblockId: 23,
-                name: 'Product',
-                active: 'Y',
-                barcodeMulti: 'Y',
-                canBuyZero: 'Y',
-                code: 'Product',
-                createdBy: 1,
-                dateActiveFrom: '2024-05-28T10:00:00',
-                dateActiveTo: '2024-05-29T10:00:00',
-                dateCreate: '2024-05-27T10:00:00',
-                detailPicture: {
-                    'fileData': [
-                        'detailPicture.png',
-                        'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
-                    ]
+                'iblockId': 25,
+                'name': 'Basic T-shirt',
+                'code': 'tshirt-basic',
+                'iblockSectionId': 41,
+                'iblockSection': [41, 39],
+                'vatId': 1,
+                'vatIncluded': 'Y',
+                'measure': 9,
+                'weight': 200,
+                'previewText': 'Cotton T-shirt',
+                'previewPicture': {
+                    'fileData': ['photo.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==']
                 },
-                detailText: '',
-                detailTextType: 'text',
-                height: 100,
-                iblockSectionId: 47,
-                length: 100,
-                measure: 5,
-                modifiedBy: 1,
-                previewPicture: {
-                    'fileData': [
-                        'previewPicture.png',
-                        'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
-                    ]
-                },
-                previewText: '',
-                previewTextType: 'text',
-                purchasingCurrency: 'EUR',
-                purchasingPrice: 1000,
-                quantity: 10,
-                quantityReserved: 1,
-                quantityTrace: 'Y',
-                recurSchemeLength: 1,
-                recurSchemeType: 'D',
-                sort: 100,
-                subscribe: 'Y',
-                trialPriceId: 175,
-                vatId: 1,
-                vatIncluded: 'Y',
-                weight: 100,
-                width: 100,
-                withoutOrder: 'Y',
-                xmlId: '',
-                property258: 'test',
-                property259: [
-                    'test1',
-                    'test2'
-                ],
-            },
+                'property301': 'TS-001',
+                'property305': ['Cotton', 'Polyester']
+            }
         },
         function(result)
         {
@@ -752,59 +507,22 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
         'catalog.product.add',
         [
             'fields' => [
-                'iblockId' => 23,
-                'name' => 'Product',
-                'active' => 'Y',
-                'barcodeMulti' => 'Y',
-                'canBuyZero' => 'Y',
-                'code' => 'Product',
-                'createdBy' => 1,
-                'dateActiveFrom' => '2024-05-28T10:00:00',
-                'dateActiveTo' => '2024-05-29T10:00:00',
-                'dateCreate' => '2024-05-27T10:00:00',
-                'detailPicture' => [
-                    'fileData' => [
-                        'detailPicture.png',
-                        'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
-                    ]
+                'iblockId'        => 25,
+                'name'            => 'Basic T-shirt',
+                'code'            => 'tshirt-basic',
+                'iblockSectionId' => 41,
+                'iblockSection'   => [41, 39],
+                'vatId'           => 1,
+                'vatIncluded'     => 'Y',
+                'measure'         => 9,
+                'weight'          => 200,
+                'previewText'     => 'Cotton T-shirt',
+                'previewPicture'  => [
+                    'fileData' => ['photo.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='],
                 ],
-                'detailText' => '',
-                'detailTextType' => 'text',
-                'height' => 100,
-                'iblockSectionId' => 47,
-                'length' => 100,
-                'measure' => 5,
-                'modifiedBy' => 1,
-                'previewPicture' => [
-                    'fileData' => [
-                        'previewPicture.png',
-                        'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'
-                    ]
-                ],
-                'previewText' => '',
-                'previewTextType' => 'text',
-                'purchasingCurrency' => 'EUR',
-                'purchasingPrice' => 1000,
-                'quantity' => 10,
-                'quantityReserved' => 1,
-                'quantityTrace' => 'Y',
-                'recurSchemeLength' => 1,
-                'recurSchemeType' => 'D',
-                'sort' => 100,
-                'subscribe' => 'Y',
-                'trialPriceId' => 175,
-                'vatId' => 1,
-                'vatIncluded' => 'Y',
-                'weight' => 100,
-                'width' => 100,
-                'withoutOrder' => 'Y',
-                'xmlId' => '',
-                'property258' => 'test',
-                'property259' => [
-                    'test1',
-                    'test2'
-                ],
-            ]
+                'property301'     => 'TS-001',
+                'property305'     => ['Cotton', 'Polyester'],
+            ],
         ]
     );
 
@@ -819,49 +537,21 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.add", b24.Params{
     	"fields": b24.Params{
-    		"iblockId":       23,
-    		"name":           "Product",
-    		"active":         "Y",
-    		"barcodeMulti":   "Y",
-    		"canBuyZero":     "Y",
-    		"code":           "Tovar",
-    		"createdBy":      1,
-    		"dateActiveFrom": "2024-05-28T10:00:00",
-    		"dateActiveTo":   "2024-05-29T10:00:00",
-    		"dateCreate":     "2024-05-27T10:00:00",
-    		"detailPicture": b24.Params{
-    			"fileData": []string{"detailPicture.png", "iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"},
+    		"iblockId":        25,
+    		"name":            "Basic T-shirt",
+    		"code":            "tshirt-basic",
+    		"iblockSectionId": 41,
+    		"iblockSection":   []int{41, 39},
+    		"vatId":           1,
+    		"vatIncluded":     "Y",
+    		"measure":         9,
+    		"weight":          200,
+    		"previewText":     "Cotton T-shirt",
+    		"previewPicture":  b24.Params{
+    			"fileData": []string{"photo.png", "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="},
     		},
-    		"detailText":      "",
-    		"detailTextType":  "text",
-    		"height":          100,
-    		"iblockSectionId": 47,
-    		"length":          100,
-    		"measure":         5,
-    		"modifiedBy":      1,
-    		"previewPicture": b24.Params{
-    			"fileData": []string{"previewPicture.png", "iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"},
-    		},
-    		"previewText":        "",
-    		"previewTextType":    "text",
-    		"purchasingCurrency": "EUR",
-    		"purchasingPrice":    1000,
-    		"quantity":           10,
-    		"quantityReserved":   1,
-    		"quantityTrace":      "Y",
-    		"recurSchemeLength":  1,
-    		"recurSchemeType":    "D",
-    		"sort":               100,
-    		"subscribe":          "Y",
-    		"trialPriceId":       175,
-    		"vatId":              1,
-    		"vatIncluded":        "Y",
-    		"weight":             100,
-    		"width":              100,
-    		"withoutOrder":       "Y",
-    		"xmlId":              "",
-    		"property258":        "test",
-    		"property259":        []string{"test1", "test2"},
+    		"property301":     "TS-001",
+    		"property305":     []string{"Cotton", "Polyester"},
     	},
     })
     if err != nil {
@@ -875,17 +565,18 @@ To specify the product price, use the methods [catalog.price.*](../price/index.m
     }
 
     var item struct {
-    	Active     string `json:"active"`
-    	Available  string `json:"available"`
-    	Bundle     string `json:"bundle"`
-    	CanBuyZero string `json:"canBuyZero"`
-    	Code       string `json:"code"`
-    	CreatedBy  int    `json:"createdBy"`
+    	ID              int    `json:"id"`
+    	IblockID        int    `json:"iblockId"`
+    	IblockSectionID int    `json:"iblockSectionId"`
+    	Name            string `json:"name"`
+    	Code            string `json:"code"`
+    	Active          string `json:"active"`
+    	XMLID           string `json:"xmlId"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Active, item.Available)
+    fmt.Println(item.ID, item.Name)
     ```
 
 {% endlist %}
@@ -900,72 +591,79 @@ HTTP status: **200**
         "element": {
             "active": "Y",
             "available": "Y",
+            "barcodeMulti": "N",
             "bundle": "N",
             "canBuyZero": "Y",
-            "code": "Product",
-            "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+03:00",
-            "dateActiveTo": "2024-05-29T10:00:00+03:00",
-            "dateCreate": "2024-05-27T10:00:00+03:00",
-            "detailPicture": {
-                "id": "6505",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6505\u0026fields%5BproductId%5D=1267",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6505\u0026fields%5BproductId%5D=1267"
-            },
+            "code": "tshirt-basic",
+            "createdBy": 1269,
+            "dateActiveFrom": null,
+            "dateActiveTo": null,
+            "dateCreate": "2026-11-05T18:23:16+01:00",
+            "detailPicture": null,
             "detailText": null,
             "detailTextType": "text",
-            "height": 100,
-            "iblockId": 23,
-            "iblockSectionId": 47,
-            "id": 1267,
-            "length": 100,
-            "measure": 5,
-            "modifiedBy": 1,
-            "name": "Product",
+            "height": null,
+            "iblockId": 25,
+            "iblockSection": [
+                39,
+                41
+            ],
+            "iblockSectionId": 41,
+            "id": 7651,
+            "length": null,
+            "measure": 9,
+            "modifiedBy": 1269,
+            "name": "Basic T-shirt",
             "previewPicture": {
-                "id": "6504",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6504\u0026fields%5BproductId%5D=1267",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6504\u0026fields%5BproductId%5D=1267"
+                "id": "40041",
+                "url": "/rest/catalog.product.download?fields%5BfieldName%5D=previewPicture&fields%5BfileId%5D=40041&fields%5BproductId%5D=7651",
+                "urlMachine": "/rest/catalog.product.download?fields%5BfieldName%5D=previewPicture&fields%5BfileId%5D=40041&fields%5BproductId%5D=7651"
             },
-            "previewText": null,
+            "previewText": "Cotton T-shirt",
             "previewTextType": "text",
-            "property258": {
-                "value": "test",
-                "valueId": "9816"
+            "property301": {
+                "value": "TS-001",
+                "valueId": "4083"
             },
-            "property259": [
+            "property305": [
                 {
-                    "value": "test1",
-                    "valueId": "9817"
+                    "value": "Cotton",
+                    "valueId": "4085"
                 },
                 {
-                    "value": "test2",
-                    "valueId": "9818"
+                    "value": "Polyester",
+                    "valueId": "4087"
                 }
             ],
-            "purchasingCurrency": "EUR",
-            "purchasingPrice": "1000.000000",
-            "quantity": 10,
-            "quantityReserved": 1,
+            "purchasingCurrency": null,
+            "purchasingPrice": null,
+            "quantity": null,
+            "quantityReserved": null,
             "quantityTrace": "Y",
-            "sort": 100,
+            "recurSchemeLength": null,
+            "recurSchemeType": "D",
+            "sort": 500,
             "subscribe": "Y",
-            "timestampX": "2024-06-14T14:18:56+03:00",
+            "timestampX": "2026-11-05T18:23:16+01:00",
+            "trialPriceId": null,
             "type": 1,
             "vatId": 1,
             "vatIncluded": "Y",
-            "weight": 100,
-            "width": 100,
-            "xmlId": "1267"
+            "weight": 200,
+            "width": null,
+            "withoutOrder": "N",
+            "xmlId": "7651"
         }
     },
     "time": {
-        "start": 1718371135.560245,
-        "finish": 1718371136.659369,
-        "duration": 1.0991239547729492,
-        "processing": 0.6940958499908447,
-        "date_start": "2024-06-14T16:18:55+03:00",
-        "date_finish": "2024-06-14T16:18:56+03:00"
+        "start": 1793892196,
+        "finish": 1793892196.679604,
+        "duration": 0.6796040534973145,
+        "processing": 0,
+        "date_start": "2026-11-05T18:23:16+01:00",
+        "date_finish": "2026-11-05T18:23:16+01:00",
+        "operating_reset_at": 1793892360,
+        "operating": 1.0158729553222656
     }
 }
 ```
@@ -980,7 +678,7 @@ HTTP status: **200**
 || **result.element**
 [`catalog_product`](../data-types.md#catalog_product) | Object with information about the added product ||
 || **time**
-[`time`](../../data-types.md) | Information about the request execution time ||
+[`time`](../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -989,7 +687,7 @@ HTTP status: **400**
 
 ```json
 {
-   "error":200040300010,
+   "error":"200040300010",
    "error_description":"Access Denied"
 }
 ```
@@ -999,21 +697,22 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Status** | **Code** | **Description** | **Cause** ||
-|| `400` | `200040300050` | `Access Denied` | No permission to link the product to an information block section ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300050` | `Access Denied` | The section in `iblockSectionId` was not found, or there is no permission to link the product to the section ||
 || `400` | `200040300040` | `Access Denied` | No permission to create a product ||
 || `400` | `200040300043` | `Access Denied` | No permission to add an information block element ||
 || `400` | `200040300010` | `Access Denied` | No permission to view the product catalog ||
 || `400` | `200040300000` | `Iblock Not Found` | The information block in `fields.iblockId` was not found ||
 || `400` | `100` | `Could not find value for parameter {fields}` | The required `fields` parameter was not provided ||
-|| `400` | `0` | `Section is not exists` | The product section was not found ||
+|| `400` | `0` | `Required fields: name, iblockId` | Required fields are missing in `fields`. The message lists only the missing fields ||
+|| `400` | `0` | `Incorrect starting date format.<br>` | A `dateActiveFrom` value was passed. For `dateActiveTo`, the error text is `Incorrect expiration date format.<br>` ||
 || `400` | `0` | `VAT vatId is not exists` | The VAT rate in `fields.vatId` was not found ||
 || `400` | `0` | `Currency purchasingCurrency is not exists` | The purchasing price currency was not found ||
 || `400` | `0` | `User createdBy is not exists` or `User modifiedBy is not exists` | The user in `createdBy` or `modifiedBy` was not found ||
 || `400` | `0` | `Internal error adding product. Try adding again.` | An internal error occurred while saving the product ||
 |#
 
-Validating required fields and product properties may return additional errors that identify the specific field.
+Validation of required fields and product properties can return additional errors that describe a specific field.
 
 {% include [System errors](../../../_includes/system-errors.md) %}
 

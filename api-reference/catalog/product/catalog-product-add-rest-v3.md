@@ -779,7 +779,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `-` | User modifiedBy is not exists | Pass the identifier of an existing user ||
 || `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: #KEYS# | Pass only keys in the `PROPERTY_{id}` format in `properties` ||
 || `-` | The properties field names one property by several keys: #KEYS# | Specify each property with one key, for example only `PROPERTY_301` ||
-|| `dateActiveFrom` | Wrong format of field `dateActiveFrom`. | Currently, the date cannot be set with REST 3.0 methods. Pass `null` or do not pass the field ||
+|| `-` | Wrong format of field `dateActiveFrom`. | Currently, the date cannot be set with REST 3.0 methods. Pass `null` or do not pass the field ||
 || `dateActiveFrom` | This request requires data type `DateTime` in field `dateActiveFrom` | Currently, the date cannot be set with REST 3.0 methods. Pass `null` or do not pass the field ||
 || `sort` | This request requires data type `int` in field `sort` | Pass an integer ||
 |#

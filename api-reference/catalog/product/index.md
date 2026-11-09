@@ -13,7 +13,7 @@ Using REST methods, you can create simple products or services, as well as produ
 
 For a simple product, use `catalog.product.*`; for a service, use `catalog.product.service.*`. Create a product with variations through a parent product using `catalog.product.sku.*` and its related variations using `catalog.product.offer.*`. The fields for each type are described in [Catalog data types](../data-types.md); use the corresponding group's `getFieldsByFilter` method to retrieve the fields available in a specific catalog.
 
-A simple product or service is a single inventory item with a name and unit of measurement. A product variation is a trade offer where the product has additional characteristics: color and size. For each combination of characteristics, a separate inventory item with a unique SKU is created.
+A simple product or service is a single inventory item with a name and unit of measurement. A product variation is a trade offer where the product has additional characteristics, such as color and size. For each combination of characteristics, a separate inventory item with a unique SKU is created.
 
 > Quick navigation: [all methods and events](#all-methods)
 >

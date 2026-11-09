@@ -452,7 +452,7 @@ HTTP status: **404**
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `name` | Field `#FIELD#` was not found | Specify a field name from the `name` parameter description ||
+|| `name` | Field `#FIELD#` was not found | Specify a field name from the `name` parameter description. The name is case-sensitive ||
 |#
 
 #### Errors in the `select` Parameter
@@ -470,7 +470,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as an array of strings, for example `["name","type"]` ||
+|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as a flat array of strings without nested arrays, for example `["name","type"]` ||
 |#
 
 {% include [system errors](../../../_includes/system-errors.md) %}
