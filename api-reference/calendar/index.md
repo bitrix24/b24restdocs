@@ -137,8 +137,8 @@ An application can be embedded into the calendar. In the list of calendar view t
 #|
 || **Method** | **Description** ||
 || [calendar.resource.add](./resource/calendar-resource-add.md) | Adds a resource ||
-|| [calendar.resource.update](./resource/calendar-resource-update.md) | Updates a resource ||
+|| [calendar.resource.update](./resource/calendar-resource-update.md) | Changes the resource name ||
 || [calendar.resource.list](./resource/calendar-resource-list.md) | Retrieves a list of resources ||
+|| [calendar.resource.delete](./resource/calendar-resource-delete.md) | Deletes a resource together with its bookings ||
 || [calendar.resource.booking.list](./resource/calendar-resource-booking-list.md) | Retrieves resource bookings by filter ||
-|| [calendar.resource.delete](./resource/calendar-resource-delete.md) | Deletes a resource ||
 |#

@@ -1,4 +1,4 @@
-title: Resource
+title: Resource Booking
 href: index.md
 items: 
   - name: Overview of Methods
@@ -9,7 +9,7 @@ items:
     href: calendar-resource-update.md
   - name: Get Resource List
     href: calendar-resource-list.md
-  - name: Get Resource Bookings by Filter
-    href: calendar-resource-booking-list.md
   - name: Delete Resource
     href: calendar-resource-delete.md
+  - name: Get Resource Bookings by Filter
+    href: calendar-resource-booking-list.md

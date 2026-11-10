@@ -9,7 +9,9 @@ Choose a tool for developing with an AI agent:
 
 {% endnote %}
 
-Resource booking is the ability to provide services for a specific time. A resource is something that clients book, such as a car, a meeting room, or a bowling lane.
+Resource booking lets you schedule clients for a service at a specific time. A resource is something that clients book, such as a car, a specialist's office, or a bowling lane. Calendar meeting rooms are booked differently: through the `location` parameter of the [calendar.event.*](../calendar-event/index.md) methods.
+
+Bitrix24 also has [Online Booking](../../booking/index.md), a separate tool with its own resources, bookings, and `booking.v1.*` methods. The `calendar.resource.*` resources are not related to it.
 
 > Quick navigation: [all methods](#all-methods)
 >
@@ -17,13 +19,15 @@ Resource booking is the ability to provide services for a specific time. A resou
 
 ## How Resource Booking Works
 
-In Bitrix24, resource booking is done through a custom CRM field of type `resourcebooking`. This field can be created in the detail forms of leads and deals.
+Resources are booked through a custom CRM field of type `resourcebooking`. This field can be created in the detail forms of leads and deals. The `calendar.resource.*` methods cannot create bookings.
 
-Resource availability can be tracked in the CRM Calendar. Technically, a resource is a section of the calendar, and booking is a calendar event.
+Technically, a resource is a calendar of type `resource`, and a booking is an event in that calendar. This is why the `calendar.resource.booking.list` method returns bookings with the fields of a [calendar event](../calendar-event/index.md).
 
-The method [calendar.resource.add](./calendar-resource-add.md) adds a new resource. The resource will only appear in the system. It can be linked to a custom field of a CRM object only through the detail form of the entity in edit mode.
+## Getting Started
 
-Resource bookings can be retrieved using the method [calendar.resource.booking.list](./calendar-resource-booking-list.md). A booking has a set of fields similar to the fields of a calendar event. Some fields remain empty because they are not relevant for booking.
+1. Create a resource with the [calendar.resource.add](./calendar-resource-add.md) method. A resource can be created by an administrator or by a user with permission to edit resource calendars.
+2. Select the resource in the settings of the `resourcebooking` field in the lead or deal detail form. The resource cannot be linked to the field through REST.
+3. Once clients are booked through the field, retrieve the bookings with the [calendar.resource.booking.list](./calendar-resource-booking-list.md) method: by resources for a period or by booking IDs from the field.
 
 {% note tip "User Documentation" %}
 
@@ -33,28 +37,32 @@ Resource bookings can be retrieved using the method [calendar.resource.booking.l
 
 ## Linking Resources to Other Entities
 
-**User.** A resource is linked to a user through the identifier in the `CREATED_BY` field. The system automatically sets the identifier of the user who created the resource.
+A resource is linked to the user who created it, to custom CRM fields, and to REST events.
 
-**Custom CRM Fields.** Resource bookings in deals and leads are linked to custom fields of type `resourcebooking`. Identifiers of bookings can be obtained through:
+**User.** The `CREATED_BY` field in the [calendar.resource.list](./calendar-resource-list.md) response contains the ID of the user who created the resource. User data can be retrieved with the [user.get](../../user/user-get.md) method.
+
+**Custom CRM Fields.** Booking IDs are stored in the value of the `resourcebooking` field. Pass them to the `filter.resourceIdList` parameter of the [calendar.resource.booking.list](./calendar-resource-booking-list.md) method. The IDs can be retrieved through:
 - universal methods — [crm.item.get](../../crm/universal/crm-item-get.md), [crm.item.list](../../crm/universal/crm-item-list.md)
 - methods for leads — [crm.lead.get](../../crm/leads/crm-lead-get.md), [crm.lead.list](../../crm/leads/crm-lead-list.md)
 - methods for deals — [crm.deal.get](../../crm/deals/crm-deal-get.md), [crm.deal.list](../../crm/deals/crm-deal-list.md)
 
-To find out which custom fields have the type resourcebooking, you can use the method to get the list of fields:
+To find out which custom fields have the type `resourcebooking`, use the method that retrieves the list of fields:
 - for leads — [crm.lead.userfield.list](../../crm/leads/userfield/crm-lead-userfield-list.md)
 - for deals — [crm.deal.userfield.list](../../crm/deals/user-defined-fields/crm-deal-userfield-list.md)
+
+**REST Events.** When a resource is added, updated, or deleted, the [OnCalendarSectionAdd](../events/on-calendar-section-add.md), [OnCalendarSectionUpdate](../events/on-calendar-section-update.md), and [OnCalendarSectionDelete](../events/on-calendar-section-delete.md) events are sent. How to distinguish a resource from a regular calendar in a handler is described in the [calendar events overview](../events/index.md#section-or-resource).
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`calendar`](../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: depends on the method
 
 #|
 || **Method** | **Description** ||
 || [calendar.resource.add](./calendar-resource-add.md) | Adds a resource ||
-|| [calendar.resource.update](./calendar-resource-update.md) | Updates a resource ||
+|| [calendar.resource.update](./calendar-resource-update.md) | Changes the resource name ||
 || [calendar.resource.list](./calendar-resource-list.md) | Retrieves a list of resources ||
+|| [calendar.resource.delete](./calendar-resource-delete.md) | Deletes a resource together with its bookings ||
 || [calendar.resource.booking.list](./calendar-resource-booking-list.md) | Retrieves resource bookings by filter ||
-|| [calendar.resource.delete](./calendar-resource-delete.md) | Deletes a resource ||
 |#
