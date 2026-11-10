@@ -13,7 +13,7 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method sets user calendar settings for the current user.
+This method `calendar.user.settings.set` sets user calendar settings for the current user.
 
 ## Method Parameters
 
@@ -23,26 +23,38 @@ This method sets user calendar settings for the current user.
 || **Name**
 `type` | **Description** ||
 || **settings***
-[`object`](../data-types.md) | An object with values for user [calendar settings](#settings) ||
+[`object`](../data-types.md) | An object with values for user calendar settings [(detailed description)](#settings) ||
 |#
 
 ### Parameter settings {#settings}
 
+All fields of the `settings` object are optional. Top-level fields that are not passed are left unchanged by the method. If `defaultSections` or `defaultReminders` is passed, the saved value is replaced entirely: nested keys that are missing in the new value are removed.
+
+The `timezoneName`, `timezoneOffsetUTC`, `timezoneDefaultName`, `work_time_start`, and `work_time_end` fields are not set by this method — they are returned by [calendar.user.settings.get](./calendar-user-settings-get.md) and changed by the employee in the calendar interface.
+
+The method saves values without validation: it ignores unknown keys and writes an invalid value of a known key as is. For example, `view: "zzz"` is saved and returned by `calendar.user.settings.get`. Validate the values on your side.
+
 #|
+|| **Name**
+`type` | **Description** ||
 || **view**
 [`string`](../data-types.md) | Default view for the calendar. Possible values:
 - `day` — day
 - `week` — week
 - `month` — month
-- `list` — list  ||
+- `list` — list ||
 || **meetSection**
-[`string`](../data-types.md) | Calendar for invitations ||
+[```string|boolean```](../data-types.md) | Identifier of the calendar for invitations. Default value — `false` ||
 || **crmSection**
-[`string`](../data-types.md) | Calendar for CRM ||
+[```string|boolean```](../data-types.md) | Identifier of the calendar for CRM. Default value — `false` ||
 || **showDeclined**
 [`boolean`](../data-types.md) | Show events that the user declined to participate in ||
 || **denyBusyInvitation**
 [`boolean`](../data-types.md) | Prevent inviting to an event if the time is busy ||
+|| **CalendarSelCont**
+[```string|boolean```](../data-types.md) | Service field of the calendar interface. Default value — `false` ||
+|| **SPCalendarSelCont**
+[```string|boolean```](../data-types.md) | Service field of the calendar interface. Default value — `false` ||
 || **collapseOffHours**
 [`string`](../data-types.md) | Hide non-working hours in the calendar in weekly and daily views. Possible values:
 - `Y` — hide
@@ -62,11 +74,11 @@ This method sets user calendar settings for the current user.
 || **showCompletedTasks**
 [`string`](../data-types.md) | Display completed tasks. Possible values:
 - `Y` — display
-- `N` — do not display  ||
+- `N` — do not display ||
 || **lastUsedSection**
-[`string`](../data-types.md) | Identifier of the calendar used when creating events if the calendar identifier is not provided in the parameters. 
+[```string|boolean```](../data-types.md) | Identifier of the calendar used when creating events if the calendar identifier is not provided in the parameters.
 
-Default value — `false` ||
+Default value — `false`, no calendar is selected ||
 || **sendFromEmail**
 [`string`](../data-types.md) | E-mail for sending mail invitations ||
 || **defaultSections**
@@ -76,13 +88,13 @@ The key of the settings object can be:
 - `user[id]` — User Calendar type with user identifier. For example, `user12` corresponds to the calendar of the user with identifier `12`
 - `group[id]` — Group Calendar type with group identifier. For example, `group36` corresponds to the calendar of the group with identifier `36`
 
-The value of the object is the calendar identifier ||
+The value is the calendar identifier ||
 || **syncPeriodPast**
-[`string`](../data-types.md) | Number of months for synchronization in the past period ||
+[```string|integer```](../data-types.md) | Number of months for synchronization in the past period. Default value — `3` ||
 || **syncPeriodFuture**
-[`string`](../data-types.md) | Number of months for synchronization in the future period ||
+[```string|integer```](../data-types.md) | Number of months for synchronization in the future period. Default value — `12` ||
 || **defaultReminders**
-[`object`](../data-types.md) | An object with standard [event reminder settings](#defaultReminders) ||
+[`object`](../data-types.md) | An object with standard event reminder settings [(detailed description)](#defaultReminders) ||
 |#
 
 ### Object defaultReminders {#defaultReminders}
@@ -91,12 +103,14 @@ The value of the object is the calendar identifier ||
 || **Name**
 `type` | **Description** ||
 || **fullDay**
-[`array`](../data-types.md) | Array of [standard reminder settings](#reminder-settings) for all-day events ||
+[```object|array```](../data-types.md) | Reminder settings for all-day events: a single object or an array of objects [(detailed description)](#reminder-settings) ||
 || **withTime**
-[`array`](../data-types.md) | Array of [standard reminder settings](#reminder-settings) for timed events ||
+[```object|array```](../data-types.md) | Reminder settings for timed events: a single object or an array of objects [(detailed description)](#reminder-settings) ||
 |#
 
-#### Reminder settings object {#reminder-settings}
+The `defaultReminders` value is replaced entirely: to change a single reminder, pass both object fields in the required form.
+
+### Reminder settings object {#reminder-settings}
 
 #|
 || **Name**
@@ -105,11 +119,15 @@ The value of the object is the calendar identifier ||
 [`string`](../data-types.md) | Time type of reminder. Possible values:
 - `min` — minutes
 - `hour` — hours
-- `day` — days ||
+- `day` — days
+- `daybefore` — reminder at the specified time of the event day ||
 || **count**
-[`integer`](../data-types.md) | Numeric value of the time interval ||
+[```integer|string```](../data-types.md) | Numeric value of the time interval. Used with the `min`, `hour`, and `day` types. Can be passed as a number or a string ||
+|| **before**
+[`integer`](../data-types.md) | Reminder shift in days before the event day. Used with the `daybefore` type. With `0`, the reminder comes on the event day ||
+|| **time**
+[`integer`](../data-types.md) | Reminder time in minutes from the start of the day. Used with the `daybefore` type. With `before: 0` and `time: 480`, the reminder comes on the event day at 08:00 ||
 |#
-
 
 ## Code Examples
 
@@ -384,9 +402,8 @@ The value of the object is the calendar identifier ||
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your required data processing logic
-        processData($result);
-    
+        // Next, process $result in your code
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error setting user calendar settings: ' . $e->getMessage();
@@ -564,6 +581,8 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`boolean`](../data-types.md) | Returns `true` if the execution was successful ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -576,13 +595,14 @@ HTTP status: **400**
     "error_description": "The mandatory parameter \"settings\" is not specified for the method \"calendar.user.settings.set\""
 }
 ```
+
 {% include notitle [error handling](../../_includes/error-info.md) %}
 
 ### Possible Error Codes
 
 #|
-|| **Code** | **Error Message** | **Description** ||
-|| Empty value | The mandatory parameter "settings" is not specified for the method "calendar.user.settings.set" | The required parameter `settings` was not provided ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | The mandatory parameter "settings" is not specified for the method "calendar.user.settings.set" | The required parameter `settings` was not provided ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

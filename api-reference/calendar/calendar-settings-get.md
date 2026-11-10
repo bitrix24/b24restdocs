@@ -13,7 +13,13 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method retrieves the main calendar settings. Only an administrator of the account can modify the main settings.
+The `calendar.settings.get` method retrieves the main calendar settings: the company's working hours, weekends and holidays, link templates, and meeting room parameters.
+
+Only an administrator of the Bitrix24 account can modify the main settings, in the interface. An employee's user settings are retrieved and modified by the [calendar.user.settings.get](./calendar-user-settings-get.md) and [calendar.user.settings.set](./calendar-user-settings-set.md) methods.
+
+For extranet users, the method returns only `work_time_start` and `work_time_end`, and the other fields are absent from the response. The values of these fields for extranet users are fixed — `9` and `19` — rather than the company's working hours.
+
+## Method Parameters
 
 No parameters.
 
@@ -55,15 +61,15 @@ No parameters.
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type CalendarSettingsResult = {
-      work_time_start: string
-      work_time_end: string
+      work_time_start: string | number
+      work_time_end: string | number
       year_holidays: string
       year_workdays: string
       week_holidays: string[]
       week_start: string
       user_name_template: string
-      sync_by_push: boolean
-      user_show_login: boolean
+      sync_by_push: string | boolean
+      user_show_login: string | boolean
       path_to_user: string
       path_to_user_calendar: string
       path_to_group: string
@@ -72,14 +78,16 @@ No parameters.
       path_to_rm: string
       rm_iblock_type: string
       rm_iblock_id: string
-      dep_manager_sub: boolean
+      dep_manager_sub: string | boolean
       denied_superpose_types: string[]
-      pathes_for_sites: string
+      pathes_for_sites: string | boolean
+      pathes: Array<Record<string, string>>
       forum_id: string
-      rm_for_sites: boolean
+      rm_for_sites: string | boolean
       path_to_type_company_calendar: string
       path_to_type_location: string
-      path_to_type_open_event: string
+      path_to_type_events: string
+      path_to_type_resource: string
     }
 
     try {
@@ -175,9 +183,8 @@ No parameters.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+        // Next, process $result in your code
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting calendar settings: ' . $e->getMessage();
@@ -217,9 +224,11 @@ No parameters.
     	return fmt.Errorf("calendar.settings.get: %w", err)
     }
 
+    // The structure is shortened: only the fields needed for the example are listed below.
+    // The full list of fields is in the "Returned Data" section.
     var item struct {
-    	WorkTimeStart    string `json:"work_time_start"`
-    	WorkTimeEnd      string `json:"work_time_end"`
+    	WorkTimeStart    any    `json:"work_time_start"`
+    	WorkTimeEnd      any    `json:"work_time_end"`
     	YearHolidays     string `json:"year_holidays"`
     	YearWorkdays     string `json:"year_workdays"`
     	WeekStart        string `json:"week_start"`
@@ -242,7 +251,7 @@ HTTP status: **200**
     "result": {
         "work_time_start": "9",
         "work_time_end": "19",
-        "year_holidays": "1.01,2.01,7.01,23.02,8.03,1.05,9.05,12.06,4.11",
+        "year_holidays": "01.01,04.07,01.11,25.12",
         "year_workdays": "31.12",
         "week_holidays": [
             "SA",
@@ -250,8 +259,8 @@ HTTP status: **200**
         ],
         "week_start": "MO",
         "user_name_template": "#NAME# #LAST_NAME#",
-        "sync_by_push": false,
-        "user_show_login": true,
+        "sync_by_push": "",
+        "user_show_login": "1",
         "path_to_user": "/company/personal/user/#user_id#/",
         "path_to_user_calendar": "/company/personal/user/#user_id#/calendar/",
         "path_to_group": "/workgroups/group/#group_id#/",
@@ -260,14 +269,16 @@ HTTP status: **200**
         "path_to_rm": "",
         "rm_iblock_type": "",
         "rm_iblock_id": "",
-        "dep_manager_sub": true,
+        "dep_manager_sub": "1",
         "denied_superpose_types": [],
         "pathes_for_sites": "",
+        "pathes": [],
         "forum_id": "8",
-        "rm_for_sites": true,
+        "rm_for_sites": "1",
         "path_to_type_company_calendar": "",
         "path_to_type_location": "",
-        "path_to_type_open_event": ""
+        "path_to_type_events": "",
+        "path_to_type_resource": ""
     },
     "time": {
         "start": 1733924639.802569,
@@ -286,23 +297,34 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response ||
+[`object`](../data-types.md) | Root element of the response [(detailed description)](#settings) ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Settings Object {#settings}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **work_time_start**
-[`string`](../data-types.md) | Start time of the workday ||
+[```string|integer```](../data-types.md) | Start time of the workday. Until the setting is saved, the value comes as the number `9`; after it is saved, usually as a string. If the saved value is greater than `23`, the method returns the number `23` ||
 || **work_time_end**
-[`string`](../data-types.md) | End time of the workday ||
+[```string|integer```](../data-types.md) | End time of the workday. Until the setting is saved, the value comes as the number `19`; after it is saved, usually as a string. If the end time is not later than the start time, the method returns a number — the start time plus one hour. If the value is greater than `23.30`, the method returns the number `23.3` ||
 || **year_holidays**
-[`string`](../data-types.md) | List of holidays ||
+[`string`](../data-types.md) | Holidays in the year: dates separated by commas in `day.month` format, for example `01.01,04.07,01.11,25.12` ||
+|| **year_workdays**
+[`string`](../data-types.md) | Working days in the year: dates separated by commas in `day.month` format, for example `31.12` ||
 || **week_holidays**
-[`array`](../data-types.md) | Array of weekend days ||
+[`array`](../data-types.md) | Array of weekend days. An array element is a [`string`](../data-types.md): a two-letter day-of-week code, `MO`, `TU`, `WE`, `TH`, `FR`, `SA`, `SU` ||
 || **week_start**
 [`string`](../data-types.md) | Day the week starts ||
 || **user_name_template**
 [`string`](../data-types.md) | User name template ||
 || **sync_by_push**
-[`boolean`](../data-types.md) | Flag for automatic calendar synchronization via subscription. Push events from Google/Office365 ||
+[```string|boolean```](../data-types.md) | Flag for automatic calendar synchronization via subscription to Google and Office365 push events. Until the setting is saved, the value comes as `false`; after it is saved, as a string: `'1'` — enabled, an empty string — disabled ||
 || **user_show_login**
-[`boolean`](../data-types.md) | Flag for displaying user login ||
+[```string|boolean```](../data-types.md) | Flag for displaying user login. Until the setting is saved, the value comes as `true`; after it is saved, as a string: `'1'` — enabled, an empty string — disabled ||
 || **path_to_user**
 [`string`](../data-types.md) | Template link to user profile ||
 || **path_to_user_calendar**
@@ -320,24 +342,34 @@ HTTP status: **200**
 || **rm_iblock_id**
 [`string`](../data-types.md) | Identifier of the infoblock for booking meeting rooms ||
 || **dep_manager_sub**
-[`boolean`](../data-types.md) | Flag allowing managers to view subordinates' calendars ||
+[```string|boolean```](../data-types.md) | Flag allowing managers to view subordinates' calendars. Until the setting is saved, the value comes as `true`; after it is saved, as a string: `'1'` — enabled, an empty string — disabled ||
 || **denied_superpose_types**
-[`array`](../data-types.md) | List of calendar types that cannot be added to favorites ||
+[`array`](../data-types.md) | List of calendar types that cannot be added to favorites. An array element is a [`string`](../data-types.md), for example `user` or `group` ||
 || **pathes_for_sites**
-[`boolean`](../data-types.md) | Sets link templates common for all sites ||
+[```string|boolean```](../data-types.md) | Flag that enables link templates common for all sites. Until the setting is saved, the value comes as `true`; after it is saved, as a string. An empty string means the templates are set separately for each site ||
+|| **pathes**
+[`array`](../data-types.md) | Array of link templates. The method does not pass the site code, so link templates set separately for sites do not appear in the response. If the array is not empty, its element is an object where the key is the path name, for example `path_to_user`, and the value is the link template ||
 || **forum_id**
 [`string`](../data-types.md) | Identifier of the forum for comments ||
 || **rm_for_sites**
-[`boolean`](../data-types.md) | Sets meeting room parameters common for all sites ||
+[```string|boolean```](../data-types.md) | Flag for meeting room parameters common to all sites. Until the setting is saved, the value comes as `true`; after it is saved, as a string: `'1'` — enabled, an empty string — disabled ||
 || **path_to_type_company_calendar**
 [`string`](../data-types.md) | Template link to view company calendars ||
 || **path_to_type_location**
 [`string`](../data-types.md) | Template link to view meeting room bookings ||
+|| **path_to_type_events**
+[`string`](../data-types.md) | Template link to view the event calendar ||
 || **path_to_type_open_event**
 [`string`](../data-types.md) | Template link to view open event calendar ||
+|| **path_to_type_resource**
+[`string`](../data-types.md) | Template link to view the resource calendar ||
 |#
 
+The `path_to_type_*` keys are built from the calendar types registered in the Bitrix24 account: for each type except `user` and `group`, the method returns a `path_to_type_<XML_ID>` key. For example, for the type with the code `open_event`, the `path_to_type_open_event` key is returned. The set of keys differs from one Bitrix24 to another.
+
 ## Error Handling
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
 
 {% include [system errors](../../_includes/system-errors.md) %}
 

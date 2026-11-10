@@ -13,7 +13,9 @@ Choose a tool for developing with an AI agent:
 >
 > Who can execute the method: any user
 
-This method retrieves user calendar settings.
+The `calendar.user.settings.get` method retrieves user calendar settings.
+
+## Method Parameters
 
 No parameters.
 
@@ -56,8 +58,8 @@ No parameters.
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type CalendarUserSettingsResult = {
       view: string
-      meetSection: string
-      crmSection: string
+      meetSection: string | boolean
+      crmSection: string | boolean
       showDeclined: boolean
       denyBusyInvitation: boolean
       collapseOffHours: string
@@ -65,20 +67,29 @@ No parameters.
       showTasks: string
       syncTasks: string
       showCompletedTasks: string
-      lastUsedSection: string
+      lastUsedSection: string | boolean
       sendFromEmail: string
       defaultSections: Record<string, string>
-      syncPeriodPast: string
-      syncPeriodFuture: string
+      syncPeriodPast: string | number
+      syncPeriodFuture: string | number
       defaultReminders: {
-        fullDay: Array<{ type: string; count: number }>
-        withTime: Array<{ type: string; count: number }>
+        fullDay:
+          | { type: string; count?: number; before?: number; time?: number }
+          | Array<{ type: string; count?: number; before?: number; time?: number }>
+        withTime:
+          | { type: string; count?: number; before?: number; time?: number }
+          | Array<{ type: string; count?: number; before?: number; time?: number }>
       }
+      tabId?: string
+      view_crm?: string
+      view_tasks?: string
       timezoneName: string
       timezoneOffsetUTC: number
       timezoneDefaultName: string
-      work_time_start: string
-      work_time_end: string
+      work_time_start?: string
+      work_time_end?: string
+      CalendarSelCont: string | boolean
+      SPCalendarSelCont: string | boolean
     }
 
     try {
@@ -174,9 +185,8 @@ No parameters.
             ->getResult();
     
         echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+        // Next, process $result in your code
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting user calendar settings: ' . $e->getMessage();
@@ -216,10 +226,12 @@ No parameters.
     	return fmt.Errorf("calendar.user.settings.get: %w", err)
     }
 
+    // The structure is shortened: only the fields needed for the example are listed below.
+    // The full list of fields is in the "Returned Data" section.
     var item struct {
     	View               string `json:"view"`
-    	MeetSection        string `json:"meetSection"`
-    	CrmSection         string `json:"crmSection"`
+    	MeetSection        any    `json:"meetSection"`
+    	CrmSection         any    `json:"crmSection"`
     	ShowDeclined       bool   `json:"showDeclined"`
     	DenyBusyInvitation bool   `json:"denyBusyInvitation"`
     	CollapseOffHours   string `json:"collapseOffHours"`
@@ -244,6 +256,8 @@ HTTP status: **200**
         "crmSection": "4",
         "showDeclined": true,
         "denyBusyInvitation": false,
+        "CalendarSelCont": "false",
+        "SPCalendarSelCont": "false",
         "collapseOffHours": "N",
         "showWeekNumbers": "N",
         "showTasks": "Y",
@@ -261,7 +275,7 @@ HTTP status: **200**
             "fullDay": [
                 {
                     "type": "min",
-                    "count": 15
+                    "count": "15"
                 }
             ],
             "withTime": [
@@ -271,6 +285,9 @@ HTTP status: **200**
                 }
             ]
         },
+        "tabId": "month",
+        "view_crm": "month",
+        "view_tasks": "month",
         "timezoneName": "Europe/Berlin",
         "timezoneOffsetUTC": 7200,
         "timezoneDefaultName": "",
@@ -294,7 +311,16 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`object`](../data-types.md) | Root element of the response ||
+[`object`](../data-types.md) | Root element of the response [(detailed description)](#settings) ||
+|| **time**
+[`time`](../data-types.md#time) | Information about the request execution time ||
+|#
+
+#### Settings Object {#settings}
+
+#|
+|| **Name**
+`type` | **Description** ||
 || **view**
 [`string`](../data-types.md) | Standard view for the calendar. Possible values:
 - `day` — day
@@ -302,9 +328,9 @@ HTTP status: **200**
 - `month` — month
 - `list` — list ||
 || **meetSection**
-[`string`](../data-types.md) | Calendar for invitations ||
+[```string|boolean```](../data-types.md) | Identifier of the calendar for invitations. Until the setting is saved, the value comes as `false` ||
 || **crmSection**
-[`string`](../data-types.md) | Calendar for CRM ||
+[```string|boolean```](../data-types.md) | Identifier of the calendar for CRM. Until the setting is saved, the value comes as `false` ||
 || **showDeclined**
 [`boolean`](../data-types.md) | Show events where the user declined to participate ||
 || **denyBusyInvitation**
@@ -330,9 +356,9 @@ HTTP status: **200**
 - `Y` — display
 - `N` — do not display  ||
 || **lastUsedSection**
-[`string`](../data-types.md) | Identifier of the calendar used when creating events if the calendar identifier is not provided in the parameters. 
+[```string|boolean```](../data-types.md) | Identifier of the calendar used when creating events if the calendar identifier is not provided in the parameters.
 
-Default value — `false` ||
+Until the setting is saved, the value comes as `false` — no calendar is selected ||
 || **sendFromEmail**
 [`string`](../data-types.md) | E-mail for sending mail invitations ||
 || **defaultSections**
@@ -342,23 +368,45 @@ The key of the settings object can be:
 - `user[id]` — type User calendar with user identifier. For example, `user12` corresponds to the user calendar with identifier `12`
 - `group[id]` — type Group calendar with group identifier. For example, `group36` corresponds to the group calendar with identifier `36`
 
-The value of the object is the calendar identifier ||
+The value is the calendar identifier ||
 || **syncPeriodPast**
-[`string`](../data-types.md) | Number of months for synchronization in the past period ||
+[```string|integer```](../data-types.md) | Number of months for synchronization in the past period. Until the setting is saved, the value comes as the number `3` ||
 || **syncPeriodFuture**
-[`string`](../data-types.md) | Number of months for synchronization in the future period ||
+[```string|integer```](../data-types.md) | Number of months for synchronization in the future period. Until the setting is saved, the value comes as the number `12` ||
 || **defaultReminders**
-[`object`](../data-types.md) | Object with standard settings for [event reminders](#defaultReminders) ||
+[`object`](../data-types.md) | Object with standard settings for event reminders [(detailed description)](#defaultReminders) ||
+|| **tabId**
+[`string`](../data-types.md) | Last opened calendar tab. The field comes only if the calendar interface saved it. The [calendar.user.settings.set](./calendar-user-settings-set.md) method does not accept this field ||
+|| **view_crm**
+[`string`](../data-types.md) | Default view for the CRM calendar. Possible values:
+- `day` — day
+- `week` — week
+- `month` — month
+- `list` — list
+
+The field comes only if the calendar interface saved it. The [calendar.user.settings.set](./calendar-user-settings-set.md) method does not accept this field ||
+|| **view_tasks**
+[`string`](../data-types.md) | Default view for the task calendar. Possible values:
+- `day` — day
+- `week` — week
+- `month` — month
+- `list` — list
+
+The field comes only if the calendar interface saved it. The [calendar.user.settings.set](./calendar-user-settings-set.md) method does not accept this field ||
 || **timezoneName**
 [`string`](../data-types.md) | Calendar timezone ||
 || **timezoneOffsetUTC**
 [`integer`](../data-types.md) | Timezone offset relative to UTC in seconds ||
 || **timezoneDefaultName**
-[`string`](../data-types.md) | If the `timezoneName` parameter is not set, the timezone from the `timezoneOffsetUTC` parameter will be specified here ||
+[`string`](../data-types.md) | Timezone that Bitrix24 offers to the user if `timezoneName` is not set. The value is selected by the `timezoneOffsetUTC` offset ||
 || **work_time_start**
-[`string`](../data-types.md) | Start time of the workday ||
+[`string`](../data-types.md) | Start time of the workday. The field comes only if the user has working hours filled in the calendar ||
 || **work_time_end**
-[`string`](../data-types.md) | End time of the workday ||
+[`string`](../data-types.md) | End time of the workday. The field comes only if the user has working hours filled in the calendar ||
+|| **CalendarSelCont**
+[```string|boolean```](../data-types.md) | Service field of the calendar interface. Until the setting is saved, the value comes as `false`, after saving — as the string `"true"` or `"false"` ||
+|| **SPCalendarSelCont**
+[```string|boolean```](../data-types.md) | Service field of the calendar interface. Until the setting is saved, the value comes as `false`, after saving — as the string `"true"` or `"false"` ||
 |#
 
 #### Object defaultReminders {#defaultReminders}
@@ -367,10 +415,12 @@ The value of the object is the calendar identifier ||
 || **Name**
 `type` | **Description** ||
 || **fullDay**
-[`array`](../data-types.md) | Array of [standard reminder settings](#reminder-settings) for all-day events ||
+[```object|array```](../data-types.md) | Reminder settings for all-day events: a single object or an array of objects [(detailed description)](#reminder-settings). Until the setting is saved, the value comes as an object: `{"type": "daybefore", "before": 0, "time": 480}` ||
 || **withTime**
-[`array`](../data-types.md) | Array of [standard reminder settings](#reminder-settings) for events with specified time ||
+[```object|array```](../data-types.md) | Reminder settings for events with specified time: a single object or an array of objects [(detailed description)](#reminder-settings). Until the setting is saved, the value comes as an object: `{"type": "min", "count": 15}` ||
 |#
+
+If the reminder settings were passed to [calendar.user.settings.set](./calendar-user-settings-set.md), the method returns them in the same form: an object or an array of objects.
 
 #### Reminder Settings Object {#reminder-settings}
 
@@ -381,12 +431,19 @@ The value of the object is the calendar identifier ||
 [`string`](../data-types.md) | Time type of the reminder. Possible values:
 - `min` — minutes
 - `hour` — hours
-- `day` — days ||
+- `day` — days
+- `daybefore` — reminder at the specified time of the event day ||
 || **count**
-[`integer`](../data-types.md) | Numeric value of the time interval ||
+[```integer|string```](../data-types.md) | Numeric value of the time interval. Used with the `min`, `hour`, and `day` types. Can come as a number or a string ||
+|| **before**
+[`integer`](../data-types.md) | Reminder shift in days before the event day. Used with the `daybefore` type. With `0`, the reminder comes on the event day ||
+|| **time**
+[`integer`](../data-types.md) | Reminder time in minutes from the start of the day. Used with the `daybefore` type. With `before: 0` and `time: 480`, the reminder comes on the event day at 08:00 ||
 |#
 
 ## Error Handling
+
+{% include notitle [error handling](../../_includes/error-info.md) %}
 
 {% include [system errors](../../_includes/system-errors.md) %}
 
