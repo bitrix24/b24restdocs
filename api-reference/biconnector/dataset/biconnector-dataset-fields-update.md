@@ -51,21 +51,27 @@ The method works only in the context of an [application](../../../settings/app-i
 - `name` [`string`](../../data-types.md) — field name, uppercase Latin letters `A-Z`, digits, and the `_` sign, no longer than 32 characters
 - `externalCode` [`string`](../../data-types.md) — external code of the field
 
+Optional key:
+
+- `description` [`string`](../../data-types.md) — field description
+
 Visibility is not set for a field being added: new fields are created visible ||
 || **update**
-[`array`](../../data-types.md) | Array of fields to change. Each element is an object with two required keys:
+[`array`](../../data-types.md) | Array of fields to change. Each element is an object with the `id` key and at least one of the `visible` or `description` keys:
 
 ```
 {
     "id": 12,
-    "visible": false
+    "visible": false,
+    "description": "Customer name"
 }
 ```
 
 - `id` [`integer`](../../data-types.md) — field identifier, can be obtained with the [biconnector.dataset.get](./biconnector-dataset-get.md) method
 - `visible` [`boolean`](../../data-types.md) — field visibility
+- `description` [`string`](../../data-types.md) — field description
 
-Visibility is the only field attribute that this block changes. The name, type, and external code of an existing field cannot be changed ||
+The name, type, and external code of an existing field cannot be changed ||
 || **delete**
 [`integer[]`](../../data-types.md) | Array of identifiers of the fields to delete. The identifiers can be obtained with the [biconnector.dataset.get](./biconnector-dataset-get.md) method ||
 |#
@@ -74,7 +80,7 @@ All three parameters are optional and are processed in a single call in the orde
 
 {% note warning "" %}
 
-Identifiers in `update` that do not belong to this dataset are skipped silently — no error is returned. Deletion, however, filters only by `id`, without checking that the field belongs to the specified dataset: before the call, verify the identifiers against the response of [biconnector.dataset.get](./biconnector-dataset-get.md)
+Identifiers in `update` and `delete` that do not belong to this dataset are skipped silently — no error is returned. The method does not change or delete fields of other datasets. To make sure the changes were applied, verify the identifiers against the response of [biconnector.dataset.get](./biconnector-dataset-get.md)
 
 {% endnote %}
 
@@ -587,7 +593,7 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, BI Builder external data sources are not available on this Bitrix24, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `DATASET_NOT_FOUND` | Dataset was not found. | The dataset does not exist or belongs to another application ||
@@ -601,7 +607,8 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 || `VALIDATION_DUPLICATE_EXIST_CODE` | The following "externalCode" values already exist in the current fields: #LIST_CODES# | Fields with this `externalCode` parameter already exist ||
 || `VALIDATION_DUPLICATE_EXIST_NAME` | The following "name" values already exist in the current fields: #LIST_NAMES# | Fields with this `name` parameter already exist ||
 || `VALIDATION_FIELD_ADD_MISSING_REQUIRED_FIELDS` | Field to be added must include the required parameters: "name", "externalCode" and "type". | Field to be added must include `name`, `externalCode`, and `type` parameters ||
-|| `VALIDATION_FIELD_UPDATE_MISSING_REQUIRED_FIELDS` | Field to be updated must include the required parameters: "id" and "visible". | Field to be updated must include `id` and `visible` parameters ||
+|| `VALIDATION_FIELD_UPDATE_MISSING_REQUIRED_FIELDS` | Field to be updated must include the required parameters: "id" and "visible". "description" can be passed instead of "visible". | An `update` element must contain `id` and at least one of the `visible` or `description` keys ||
+|| `VALIDATION_INVALID_FIELD_TYPE` | Field "description" must be of type string. | A field description in `add` or `update` is not a string ||
 || `VALIDATION_FIELD_DELETE_INVALID_ID` | ID to be deleted must be a positive integer. | Invalid `id` format for deletion ||
 |#
 

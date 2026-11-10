@@ -25,7 +25,7 @@ The method `telephony.call.attachTranscription` adds a transcription of the conv
 || **CALL_ID***
 [`string`](../data-types.md) | Identifier of the call from the method [telephony.externalCall.register](./telephony-external-call-register.md) ||
 || **MESSAGES***
-[`array`](../data-types.md) | Array of [transcription utterances](#messages) ||
+[`array`](../data-types.md) | Array of [transcription utterances](#messages). Each array element is an object with the utterance fields ||
 || **COST**
 [`double`](../data-types.md) | Cost of the transcription.
 
@@ -361,8 +361,8 @@ HTTP Status: **400**
 
 ```json
 {
-    "error": "ERROR_CORE",
-    "error_description": "MESSAGES should be an array"
+    "error": "",
+    "error_description": "MESSAGES[0] should be an array"
 }
 ```
 
@@ -371,14 +371,15 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** | **Value** ||
-|| `ERROR_CORE` | CALL_ID should be set | `CALL_ID` not provided ||
-|| `ERROR_CORE` | MESSAGES should be an array | Parameter `MESSAGES` not passed as an array ||
-|| `ERROR_CORE` | MESSAGES[{N}][SIDE] should be either Client or User | Invalid value for `SIDE` ||
-|| `ERROR_CORE` | MESSAGES[{N}][START_TIME] should be greater or equal to zero | Invalid `START_TIME` ||
-|| `ERROR_CORE` | MESSAGES[{N}][STOP_TIME] should be greater than zero | Invalid `STOP_TIME` ||
-|| `ERROR_CORE` | MESSAGES[{N}][MESSAGE] is empty | Empty text for the utterance ||
-|| `ERROR_CORE` | Call {CALL_ID} is not found. Is it finished? | Call not found in the statistics. Ensure the call is completed ||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | Empty value | CALL_ID should be set | `CALL_ID` not provided ||
+|| `400` | Empty value | MESSAGES should be an array | Parameter `MESSAGES` not passed as an array ||
+|| `400` | Empty value | MESSAGES[{N}] should be an array | The utterance with index `N` in `MESSAGES` is not passed as an object ||
+|| `400` | Empty value | MESSAGES[{N}][SIDE] should be either Client or User | Invalid value for `SIDE` ||
+|| `400` | Empty value | MESSAGES[{N}][START_TIME] should be greater or equal to zero | Invalid `START_TIME` ||
+|| `400` | Empty value | MESSAGES[{N}][STOP_TIME] should be greater than zero | Invalid `STOP_TIME` ||
+|| `400` | Empty value | MESSAGES[{N}][MESSAGE] is empty | Empty text for the utterance ||
+|| `400` | Empty value | Call {CALL_ID} is not found. Is it finished? | Call not found in the statistics. Ensure the call is completed ||
 |#
 
 {% include [system errors](../../_includes/system-errors.md) %}

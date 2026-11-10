@@ -303,8 +303,8 @@ HTTP Status: **400**
 || `PUBLIC_PAGE_REACHED` | There is a limit on the number of published pages in the tariff plan ||
 || `LANDING_PAYMENT_FAILED` | The page was added from an application; a subscription to Bitrix24 Marketplace is required for publishing ||
 || `LANDING_PAYMENT_FAILED_BLOCK` | The block was added from an application; a subscription to Bitrix24 Marketplace is required for publishing ||
-|| `PUBLIC_SITE_REACHED` | There is a limit on the number of created or published sites in the tariff plan ||
-|| `PUBLIC_SITE_REACHED_FREE` | Publishing sites is temporarily available only on paid plans ||
+|| `PUBLIC_SITE_REACHED` | There is a limit on the number of created or published sites in the tariff plan. The error is not returned for knowledge bases and group knowledge bases ||
+|| `PUBLIC_SITE_REACHED_FREE` | Publishing sites is temporarily available only on paid plans. The error is not returned for knowledge bases and group knowledge bases ||
 || `PUBLIC_HTML_DISALLOWED[...]` | There is a limit on adding custom HTML code in the tariff plan ||
 || `LICENSE_EXPIRED` | Your product license has expired ||
 || `TYPE_ERROR` | Data type error in the method call parameters ||

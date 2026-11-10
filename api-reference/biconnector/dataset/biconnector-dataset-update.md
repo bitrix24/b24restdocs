@@ -20,7 +20,7 @@ Development of the method has been discontinued. Use [biconnector.table.update](
 
 {% endnote %}
 
-The `biconnector.dataset.update` method updates the description of an existing dataset — the only field that the method changes.
+The `biconnector.dataset.update` method updates the user-friendly name, description, and groups of an existing dataset.
 
 {% note warning "" %}
 
@@ -61,8 +61,16 @@ The object format:
 #|
 || **Name**
 `type` | **Description** ||
+|| **verboseName**
+[`string`](../../data-types.md) | User-friendly dataset name, for example, `Orders`. The maximum length is 255 characters ||
 || **description**
 [`string`](../../data-types.md) | Description of the dataset ||
+|| **tableGroupIds**
+[`array`](../../data-types.md) | Array of table group identifiers. The dataset table ends up in exactly these groups. Each identifier is a positive integer, and the group must exist.
+
+If the parameter is not passed or an empty array is passed, the groups do not change.
+
+The list of table groups cannot be retrieved via the REST API. The [biconnector.dataset.get](./biconnector-dataset-get.md) and [biconnector.dataset.list](./biconnector-dataset-list.md) methods do not return the groups ||
 |#
 
 To change the set of fields, use the [biconnector.dataset.fields.update](./biconnector-dataset-fields-update.md) method.
@@ -406,7 +414,7 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, BI Builder external data sources are not available on this Bitrix24, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields were not passed in the request ||
@@ -414,6 +422,9 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 || `VALIDATION_READ_ONLY_FIELD` | Field "#TITLE#" is read only. | Field #TITLE# is read-only and cannot be modified ||
 || `VALIDATION_IMMUTABLE_FIELD` | Field "#TITLE#" is immutable. | Field #TITLE# is immutable ||
 || `VALIDATION_INVALID_FIELD_TYPE` | Field "#TITLE#" must be of type #TYPE#. | Field #TITLE# must be of type #TYPE# ||
+|| `VALIDATION_INVALID_FIELD_TYPE` | Field "tableGroupIds" must be an array of positive integers. | The `tableGroupIds` array contains a value that is not a positive integer ||
+|| `VALIDATION_TABLE_GROUP_NOT_FOUND` | Table group was not found. | There is no table group with one of the identifiers from `tableGroupIds` ||
+|| `BX_INVALID_VALUE` | The length of "VERBOSE_NAME" should not exceed 255 characters. | The `verboseName` value is longer than 255 characters ||
 || `DATASET_NOT_FOUND` | Dataset was not found. | The dataset does not exist or belongs to another application ||
 || `INVALID_METHOD` | Use the method "biconnector.dataset.fields.update" to update the dataset fields." | The `fields` key was passed inside the `fields` parameter. To update the fields, use the [biconnector.dataset.fields.update](./biconnector-dataset-fields-update.md) method. The extra quotation mark at the end is part of the text returned by the module ||
 || Empty value | Error updating table. | The update was rejected by a handler subscribed to the before-save event. This error has no string code of its own: the `error` field carries a numeric zero ||

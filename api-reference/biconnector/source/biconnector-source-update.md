@@ -55,12 +55,15 @@ The object format:
 || **Name**
 `type` | **Description** ||
 || **title***
-[`string`](../../data-types.md) | New name of the source ||
+[`string`](../../data-types.md) | New name of the source.
+
+Not required if only the `active` field is passed in `fields` ||
 || **description**
 [`string`](../../data-types.md) | New description of the source ||
 || **active**
-[`boolean`](../../data-types.md) | Source activity.
-The method does not read this field: a source cannot be switched off via REST ||
+[`boolean`](../../data-types.md) | Source activity: `true` — the source is on, `false` — the source is off. An inactive source stops returning data.
+
+If only the `active` field is passed in `fields`, the method changes the activity without a connection check and without the `title` field ||
 || **settings**
 [`object`](../../data-types.md) | Values of the authorization parameters [(detailed description)](#settings) ||
 |#
@@ -69,7 +72,7 @@ The method changes only the fields that were passed: whatever you did not pass s
 
 The `connectorId` field is set once when the source is created and cannot be changed with the `biconnector.source.update` method.
 
-On every update, Bitrix24 calls the connection check endpoint of the connector, even if the request contained no `settings`. If the external system does not respond, the method returns the `SOURCE_UPDATE_CONNECTION_ERROR` error.
+On every update, Bitrix24 calls the connection check endpoint of the connector, even if the request contained no `settings`. The exception is a request that passes only the `active` field. If the external system does not respond, the method returns the `SOURCE_UPDATE_CONNECTION_ERROR` error.
 
 #### Parameter settings {#settings}
 
@@ -470,7 +473,7 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, BI Builder external data sources are not available on this Bitrix24, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not specified ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `VALIDATION_FIELDS_NOT_PROVIDED` | Fields not provided. | Fields not passed in the request ||

@@ -60,7 +60,7 @@ The "Required" column shows when a field has to be passed in `fields`, "Read" sh
 || **description**
 [`string`](../../data-types.md) | Source description | No | ✅ | ✅ ||
 || **active**
-[`boolean`](../../data-types.md) | Source activity. A new source is always created active, and the value is not changed via REST: activity is controlled by the toggle in the Analytics hub section. An inactive source stops returning data | No | ✅ | ❌ ||
+[`boolean`](../../data-types.md) | Source activity. A new source is always created active. The activity can be changed with the [biconnector.source.update](./biconnector-source-update.md) method. An inactive source stops returning data | No | ✅ | ✅ ||
 || **dateCreate**
 [`datetime`](../../data-types.md) | Date the source was created | No | ✅ | ❌ ||
 || **dateUpdate**
@@ -77,7 +77,7 @@ The "Required" column shows when a field has to be passed in `fields`, "Read" sh
 
 The flat list above describes the composition of a source, but in the response of the [biconnector.source.get](./biconnector-source-get.md) method the fields sit at two levels: the source's own fields are in the nested `item.connection` object, while `connectorId` and `settings` are directly in `item`. The path to the source name looks like `result.item.connection.title`, not `result.item.title`.
 
-The [biconnector.source.fields](./biconnector-source-fields.md) method returns `active` as writable, but the `add` and `update` methods do not read the value of this field.
+The [biconnector.source.add](./biconnector-source-add.md) method does not read the `active` value, only [biconnector.source.update](./biconnector-source-update.md) reads it.
 
 ### Settings Field {#settings}
 

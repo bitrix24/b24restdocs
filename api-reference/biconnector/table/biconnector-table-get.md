@@ -340,6 +340,7 @@ HTTP status: **200**
             "id": 27,
             "type": "rest",
             "name": "sales_orders",
+            "verboseName": "Orders",
             "description": "Orders from an external service",
             "externalCode": "sales_orders",
             "externalName": "Sales orders",
@@ -392,6 +393,8 @@ HTTP status: **200**
 [`string`](../../data-types.md) | Table type. For tables of a REST source the value is always `rest` ||
 || **name**
 [`string`](../../data-types.md) | Table name ||
+|| **verboseName**
+[`string`](../../data-types.md) | User-friendly table name. If it is not set, an empty string is returned ||
 || **description**
 [`string`](../../data-types.md) | Table description ||
 || **externalCode**
@@ -434,7 +437,7 @@ There is no `sourceId` field in the response — the source identifier is return
 || **visible**
 [`boolean`](../../data-types.md) | Column visibility flag ||
 || **description**
-[`string`](../../data-types.md) | Column description. It is not filled in via the REST API ||
+[`string`](../../data-types.md) | Column description. If it is not set, an empty string is returned ||
 |#
 
 ## Error Handling
@@ -464,7 +467,7 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or the method was called via a webhook or outside the application context ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, BI Builder external data sources are not available on this Bitrix24, or the method was called via a webhook or outside the application context ||
 || `VALIDATION_ID_NOT_PROVIDED` | ID is missing. | Identifier is not provided ||
 || `VALIDATION_INVALID_ID_FORMAT` | ID has to be a positive integer. | Invalid ID format ||
 || `DATASET_NOT_FOUND` | Dataset was not found. | The table does not exist or belongs to another application ||

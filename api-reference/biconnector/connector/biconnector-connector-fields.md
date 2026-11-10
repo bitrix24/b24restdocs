@@ -484,7 +484,7 @@ The method returns an error [inside the `result` field](../index.md#errors) and 
 
 #|
 || **Code** | **Description** | **Value** ||
-|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing ||
+|| `ACCESS_DENIED` | Access denied. | One of the two permissions is missing, or BI Builder external data sources are not available on this Bitrix24 ||
 |#
 
 

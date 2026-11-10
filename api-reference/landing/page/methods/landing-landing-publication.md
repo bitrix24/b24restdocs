@@ -300,8 +300,8 @@ HTTP Status: **400**
 || `PUBLIC_PAGE_REACHED` | The tariff plan has a limit on the number of published pages ||
 || `LANDING_PAYMENT_FAILED` | The page was added from an application; a subscription to Bitrix24 Marketplace is required for publication ||
 || `LANDING_PAYMENT_FAILED_BLOCK` | The page contains a block from an application; a subscription to Bitrix24 Marketplace is required for publication ||
-|| `PUBLIC_SITE_REACHED` | The tariff plan has a limit on the number of created or published sites ||
-|| `PUBLIC_SITE_REACHED_FREE` | Publishing sites is temporarily available only on paid plans ||
+|| `PUBLIC_SITE_REACHED` | The tariff plan has a limit on the number of created or published sites. The error is not returned for knowledge bases and group knowledge bases ||
+|| `PUBLIC_SITE_REACHED_FREE` | Publishing sites is temporarily available only on paid plans. The error is not returned for knowledge bases and group knowledge bases ||
 || `PUBLIC_HTML_DISALLOWED[...]` | The tariff plan has a limit on adding custom HTML code. In square brackets, the method returns the type of object and its identifier: `S<site_id>` for the site or `L<landing_id>` for the page ||
 || `PHONE_NOT_CONFIRMED` | Phone number confirmation is required for publication ||
 || `EMAIL_NOT_CONFIRMED` | E-mail confirmation is required for publication ||
