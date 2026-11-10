@@ -69,9 +69,9 @@ Default: `500` ||
 || **modifiedBy**
 [`integer`](../../../data-types.md) | Identifier of the user who modified the record. Defaults to the current user ||
 || **dateActiveFrom**
-[`datetime`](../../../data-types.md) | Activity start date in ISO 8601 format ||
+[`datetime`](../../../data-types.md) | Activity start date. Currently the method rejects this field in any date format with a request validation error, so do not pass it ||
 || **dateActiveTo**
-[`datetime`](../../../data-types.md) | Activity end date in ISO 8601 format ||
+[`datetime`](../../../data-types.md) | Activity end date. Currently the method rejects this field in any date format with a request validation error, so do not pass it ||
 || **previewText**
 [`string`](../../../data-types.md) | Preview description ||
 || **previewTextType**
@@ -239,7 +239,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"iblockId":27,"name":"DOCS-V3-OFFER Blue T-shirt M","code":"docs-v3-offer-blue-m","measure":9,"vatId":1,"vatIncluded":"Y","weight":200,"properties":{"PROPERTY_101":7553}}}' \
+    -d '{"fields":{"iblockId":27,"name":"Blue T-shirt M","code":"tshirt-blue-m","measure":9,"vatId":1,"vatIncluded":"Y","weight":200,"properties":{"PROPERTY_101":7553}}}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.offer.add
     ```
 
@@ -249,7 +249,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"iblockId":27,"name":"DOCS-V3-OFFER Blue T-shirt M","code":"docs-v3-offer-blue-m","measure":9,"vatId":1,"vatIncluded":"Y","weight":200,"properties":{"PROPERTY_101":7553}},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"iblockId":27,"name":"Blue T-shirt M","code":"tshirt-blue-m","measure":9,"vatId":1,"vatIncluded":"Y","weight":200,"properties":{"PROPERTY_101":7553}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/catalog.product.offer.add
     ```
 
@@ -277,8 +277,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
         params: {
           fields: {
             iblockId: 27,
-            name: 'DOCS-V3-OFFER Blue T-shirt M',
-            code: 'docs-v3-offer-blue-m',
+            name: 'Blue T-shirt M',
+            code: 'tshirt-blue-m',
             measure: 9,
             vatId: 1,
             vatIncluded: 'Y',
@@ -317,8 +317,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
             params: {
               fields: {
                 iblockId: 27,
-                name: 'DOCS-V3-OFFER Blue T-shirt M',
-                code: 'docs-v3-offer-blue-m',
+                name: 'Blue T-shirt M',
+                code: 'tshirt-blue-m',
                 measure: 9,
                 vatId: 1,
                 vatIncluded: 'Y',
@@ -357,8 +357,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
         bitrix_response = client.catalog.product.offer.add(
             fields={
                 "iblockId": 27,
-                "name": "DOCS-V3-OFFER Blue T-shirt M",
-                "code": "docs-v3-offer-blue-m",
+                "name": "Blue T-shirt M",
+                "code": "tshirt-blue-m",
                 "measure": 9,
                 "vatId": 1,
                 "vatIncluded": "Y",
@@ -396,8 +396,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
                 [
                     'fields' => [
                         'iblockId' => 27,
-                        'name' => 'DOCS-V3-OFFER Blue T-shirt M',
-                        'code' => 'docs-v3-offer-blue-m',
+                        'name' => 'Blue T-shirt M',
+                        'code' => 'tshirt-blue-m',
                         'measure' => 9,
                         'vatId' => 1,
                         'vatIncluded' => 'Y',
@@ -429,8 +429,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
         {
             fields: {
                 iblockId: 27,
-                name: 'DOCS-V3-OFFER Blue T-shirt M',
-                code: 'docs-v3-offer-blue-m',
+                name: 'Blue T-shirt M',
+                code: 'tshirt-blue-m',
                 measure: 9,
                 vatId: 1,
                 vatIncluded: 'Y',
@@ -461,8 +461,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
         [
             'fields' => [
                 'iblockId' => 27,
-                'name' => 'DOCS-V3-OFFER Blue T-shirt M',
-                'code' => 'docs-v3-offer-blue-m',
+                'name' => 'Blue T-shirt M',
+                'code' => 'tshirt-blue-m',
                 'measure' => 9,
                 'vatId' => 1,
                 'vatIncluded' => 'Y',
@@ -486,8 +486,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
     res, err := client.Core().Call(ctx, "catalog.product.offer.add", b24.Params{
     	"fields": b24.Params{
     		"iblockId": 27,
-    		"name": "DOCS-V3-OFFER Blue T-shirt M",
-    		"code": "docs-v3-offer-blue-m",
+    		"name": "Blue T-shirt M",
+    		"code": "tshirt-blue-m",
     		"measure": 9,
     		"vatId": 1,
     		"vatIncluded": "Y",
@@ -530,8 +530,8 @@ HTTP status: **200**
         "item": {
             "id": 7555,
             "iblockId": 27,
-            "name": "DOCS-V3-OFFER Blue T-shirt M",
-            "code": "docs-v3-offer-blue-m",
+            "name": "Blue T-shirt M",
+            "code": "tshirt-blue-m",
             "xmlId": "7555",
             "active": "Y",
             "sort": 500,
@@ -773,8 +773,9 @@ In some errors, the `field` field contains a numeric error code instead of a fie
 || `-` | VAT vatId is not exists | Pass the identifier of an existing VAT rate ||
 || `-` | User createdBy is not exists | Pass the identifier of an existing user. A similar error is returned for `modifiedBy` ||
 || `-` | Currency purchasingCurrency is not exists | Pass the code of an existing currency ||
-|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: #KEYS# | Pass only keys of the `PROPERTY_{id}` form in `properties` ||
-|| `-` | The properties field names one property by several keys: #KEYS# | Pass each property under one key ||
+|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: foo, bar | Pass only keys of the `PROPERTY_{id}` form in `properties` ||
+|| `-` | The properties field names one property by several keys: PROPERTY_891, 891 | Pass each property under one key ||
+|| `-` | Wrong format of field `dateActiveFrom`. | Remove `dateActiveFrom` and `dateActiveTo` from `fields`: the method currently does not accept activity dates ||
 || `200040500010` | Parent product not found. | Pass the identifier of an existing parent product in the binding property ||
 || `200040500020` | Invalid parent product type. | Only a simple product or a parent product can be the parent product. A variation or a service cannot be specified ||
 || `200040500020` | Invalid information block of the parent product. | Pass a parent product from the product information block that the offers catalog is linked to ||
@@ -787,7 +788,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `ProductDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields` ||
+|| `-` | Unknown field `foo` found in entity `ProductDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields` ||
 |#
 
 #### Access Error

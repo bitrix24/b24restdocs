@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Create product" access permission, one of the "View product catalog", "View catalog products", or "Edit selling price" access permissions, and the permission to edit elements of the catalog information block
 
-This method adds a service to the trade catalog.
+The `catalog.product.service.add` method adds a service to the trade catalog.
 
 ## Method Parameters
 
@@ -23,10 +23,10 @@ This method adds a service to the trade catalog.
 || **Name**
 `type` | **Description** ||
 || **fields***
-[`object`](../../../data-types.md) | Field values for adding the service ||
+[`object`](../../../data-types.md) | Field values for creating the service ([detailed description](#fields)) ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -36,83 +36,90 @@ This method adds a service to the trade catalog.
 || **iblockId***
 [`catalog_catalog.id`](../../data-types.md#catalog_catalog) | Identifier of the trade catalog information block.
 
-To obtain existing identifiers of trade catalog information blocks, use [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
-||
+You can retrieve the identifier using the [catalog.catalog.list](../../catalog/catalog-catalog-list.md) method. The variations information block is not suitable: the method returns the `productType is not allowed for this catalog` error ||
 || **name***
-[`string`](../../../data-types.md) | Name of the service ||
+[`string`](../../../data-types.md) | Service name ||
 || **active**
-[`string`](../../../data-types.md) | Activity status. Possible values:
-- `Y` — yes
-- `N` — no
+[`string`](../../../data-types.md) | Service activity. Possible values:
+- `Y` — active
+- `N` — inactive
 
-Defaults to `Y`
-||
+The method saves any other value as `N`.
+
+Default is `Y` ||
 || **code**
-[`string`](../../../data-types.md) | Symbolic code ||
+[`string`](../../../data-types.md) | Symbolic code. The method does not check that the code is unique ||
 || **xmlId**
-[`string`](../../../data-types.md) | External code ||
+[`string`](../../../data-types.md) | External code. Use it to link the service to a record in an external system.
+
+If it is not passed, the method writes the service identifier to the field ||
+|| **sort**
+[`integer`](../../../data-types.md) | Sort order.
+
+Default is `500` ||
 || **createdBy**
-[`user.id`](../../../data-types.md) | Created by ||
+[`user.id`](../../../data-types.md) | Identifier of the user who created the service. The user must exist.
+
+If it is not passed, the method writes the identifier of the current user ||
 || **modifiedBy**
-[`user.id`](../../../data-types.md) | Modified by ||
+[`user.id`](../../../data-types.md) | Identifier of the user who last modified the service. The user must exist.
+
+If it is not passed, the method writes the identifier of the current user ||
 || **dateActiveFrom**
-[`datetime`](../../../data-types.md) | Start date of activity ||
+[`datetime`](../../../data-types.md) | Activity start date. Currently the date cannot be set: a string in any format causes the "Incorrect starting date format" error, and a number is ignored. `null` is accepted ||
 || **dateActiveTo**
-[`datetime`](../../../data-types.md) | End date of activity ||
-|| **dateCreate**
-[`datetime`](../../../data-types.md) | Creation date ||
+[`datetime`](../../../data-types.md) | Activity end date. Currently the date cannot be set: a string in any format causes the "Incorrect expiration date format" error, and a number is ignored. `null` is accepted ||
 || **iblockSectionId**
-[`catalog_section.id`](../../data-types.md#catalog_section) | Identifier of the main section of the information block ||
-|| **IblockSection**
-[`array`](../../../data-types.md)| Array of all sections to which the service is linked ||
+[`catalog_section.id`](../../data-types.md#catalog_section) | Identifier of the main catalog section.
+
+You can retrieve the identifier using the [catalog.section.list](../../section/catalog-section-list.md) method. For a nonexistent section, the method returns the `200040300050` access error ||
 || **measure**
-[`catalog_measure.id`](../../data-types.md#catalog_measure)| Unit of measurement ||
+[`catalog_measure.id`](../../data-types.md#catalog_measure) | Identifier of the unit of measurement.
+
+You can retrieve the identifier using the [catalog.measure.list](../../measure/catalog-measure-list.md) method. If it is not passed, `measure` is `null` in the response. The method does not check that the unit of measurement exists: a nonexistent identifier is saved without an error ||
 || **previewText**
-[`string`](../../../data-types.md) | Description for the announcement ||
+[`string`](../../../data-types.md) | Preview description ||
+|| **previewTextType**
+[`string`](../../../data-types.md) | Type of the preview description. Possible values:
+- `text` — text
+- `html` — HTML
+
+Default is `text` ||
 || **detailText**
 [`string`](../../../data-types.md) | Detailed description ||
-|| **previewPicture**
-[`object`](../../../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
-
-To delete the picture, use the object in the format `{remove: 'Y'}` ||
-|| **detailPicture**
-[`object`](../../../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — name of the picture file with extension, `value2` — picture in base64 format. 
-
-To delete the picture, use the object in the format `{remove: 'Y'}` ||
-|| **previewTextType**
-[`string`](../../../data-types.md) | Type of description for the announcement. Possible values:
-- `text` — text
-- `html` — HTML
-
-Defaults to `text`
-||
 || **detailTextType**
-[`string`](../../../data-types.md) | Type of detailed description. Possible values:
+[`string`](../../../data-types.md) | Type of the detailed description. Possible values:
 - `text` — text
 - `html` — HTML
 
-Defaults to `text`
-||
-|| **sort**
-[`integer`](../../../data-types.md) | Sorting ||
+Default is `text` ||
+|| **previewPicture**
+[`object`](../../../data-types.md) | Preview picture. An object in the `{"fileData": ["file_name.png", "base64 content"]}` format ||
+|| **detailPicture**
+[`object`](../../../data-types.md) | Detailed picture. An object in the `{"fileData": ["file_name.png", "base64 content"]}` format ||
 || **vatId**
-[`catalog_vat.id`](../../data-types.md#catalog_vat) | VAT identifier ||
+[`catalog_vat.id`](../../data-types.md#catalog_vat) | Identifier of the VAT rate. The rate must exist.
+
+You can retrieve the identifier using the [catalog.vat.list](../../vat/catalog-vat-list.md) method ||
 || **vatIncluded**
-[`string`](../../../data-types.md) | Is VAT included in the price. Possible values:
+[`string`](../../../data-types.md) | Whether VAT is included in the price. Possible values:
 - `Y` — yes
 - `N` — no
 
-Defaults to `N` 
-||
+Default is `N` ||
 || **propertyN**
-[`any`](../../../data-types.md) | Value of the service property, where `N` — property identifier. There can be multiple properties. 
+[`any`](../../../data-types.md) | Value of the service property, where `N` is the property identifier, for example `property301`.
 
-When adding a service, the property value can be specified as a string, number, or as an object `{value: value}`. If the property is multiple, an array of values or objects of the form `{value: value}` should be specified ||
+You can pass the value as a string, a number, or an object `{"value": "value"}`. For a multiple property, pass an array of values or `{"value": "value"}` objects. An array for a single property causes the `Wrong format value of field` error.
+
+You can retrieve property identifiers using the [catalog.product.service.getFieldsByFilter](./catalog-product-service-get-fields-by-filter.md) method ||
 |#
 
-{% note warning "Working with service prices" %}
+The method fills in the `id`, `type`, `available`, `bundle`, `dateCreate`, and `timestampX` fields itself: `type` is always `7` for a service, and the dates are the creation time. The method skips passed values of these fields and unknown fields without an error. The exception is `dateCreate`: currently a passed date is saved incorrectly, for example `2026-11-01T10:00:00+01:00` is saved as `2001-11-30T00:00:00+01:00`, so do not pass this field.
 
-To specify the service price, use the methods [catalog.price.*](../../price/index.md).
+{% note warning "Service Price" %}
+
+To set the service price, use the [catalog.price.*](../../price/index.md) methods.
 
 {% endnote %}
 
@@ -128,7 +135,7 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"iblockId":23,"name":"Service","active":"Y","code":"service","createdBy":1,"dateActiveFrom":"2024-05-28T10:00:00","dateActiveTo":"2024-05-29T10:00:00","dateCreate":"2024-05-27T10:00:00","detailPicture":{"fileData":["detailPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"]},"detailText":"","detailTextType":"text","iblockSectionId":47,"modifiedBy":1,"previewPicture":{"fileData":["previewPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCC"]},"previewText":"","previewTextType":"text","sort":100,"vatId":1,"vatIncluded":"Y","xmlId":"","property258":"test","property259":["test1","test2"]}}' \
+    -d '{"fields":{"iblockId":25,"name":"Air conditioner installation","code":"ac_installation","xmlId":"srv-ac-01","sort":200,"vatId":9,"vatIncluded":"Y","measure":9,"previewText":"Installation of a split system up to 3.5 kW","detailText":"<p>Installation of the indoor and outdoor units</p>","detailTextType":"html","previewPicture":{"fileData":["ac.png","iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEUlEQVR4nGPQqDiBFTEMLQkAAtVaAcSRe60AAAAASUVORK5CYII="]},"property301":"SRV-AC-01","property303":"Klima Service GmbH"}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.service.add
     ```
 
@@ -138,7 +145,7 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"iblockId":23,"name":"Service","active":"Y","code":"service","createdBy":1,"dateActiveFrom":"2024-05-28T10:00:00","dateActiveTo":"2024-05-29T10:00:00","dateCreate":"2024-05-27T10:00:00","detailPicture":{"fileData":["detailPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"]},"detailText":"","detailTextType":"text","iblockSectionId":47,"modifiedBy":1,"previewPicture":{"fileData":["previewPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC"]},"previewText":"","previewTextType":"text","sort":100,"vatId":1,"vatIncluded":"Y","xmlId":"","property258":"test","property259":["test1","test2"]},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"iblockId":25,"name":"Air conditioner installation","code":"ac_installation","xmlId":"srv-ac-01","sort":200,"vatId":9,"vatIncluded":"Y","measure":9,"previewText":"Installation of a split system up to 3.5 kW","detailText":"<p>Installation of the indoor and outdoor units</p>","detailTextType":"html","previewPicture":{"fileData":["ac.png","iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEUlEQVR4nGPQqDiBFTEMLQkAAtVaAcSRe60AAAAASUVORK5CYII="]},"property301":"SRV-AC-01","property303":"Klima Service GmbH"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.service.add
     ```
 
@@ -152,36 +159,30 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
 
     declare const $b24: B24Frame
 
+    type PictureInfo = { id: string; url: string; urlMachine: string }
+    type PropertyValue = { value: string; valueId: string }
+
     // Shape of the payload returned in result (match the "response handling" section of the page)
     type ServiceAddResult = {
       service: {
-        active: string
-        available: string
-        bundle: string
-        code: string
-        createdBy: number
-        dateActiveFrom: ISODate | null
-        dateActiveTo: ISODate | null
-        dateCreate: ISODate | null
-        detailPicture: { id: string; url: string; urlMachine: string } | null
-        detailText: string | null
-        detailTextType: string
-        iblockId: number
-        iblockSectionId: number | null
         id: number
-        modifiedBy: number
+        iblockId: number
         name: string
-        previewPicture: { id: string; url: string; urlMachine: string } | null
-        previewText: string | null
-        previewTextType: string
-        property258: { value: string; valueId: string } | null
-        property259: Array<{ value: string; valueId: string }>
+        active: string
+        code: string | null
+        xmlId: string
         sort: number
-        timestampX: ISODate | null
         type: number
+        measure: number | null
         vatId: number | null
         vatIncluded: string
-        xmlId: string
+        previewText: string | null
+        previewPicture: PictureInfo | null
+        detailPicture: PictureInfo | null
+        dateCreate: ISODate
+        timestampX: ISODate
+        // Properties come as propertyN: null, a string, an object or an array of objects
+        [key: `property${number}`]: PropertyValue | PropertyValue[] | string | null
       }
     }
 
@@ -190,32 +191,22 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
         method: 'catalog.product.service.add',
         params: {
           fields: {
-            iblockId: 23,
-            name: 'Service',
-            active: 'Y',
-            code: 'service',
-            createdBy: 1,
-            dateActiveFrom: '2024-05-28T10:00:00',
-            dateActiveTo: '2024-05-29T10:00:00',
-            dateCreate: '2024-05-27T10:00:00',
-            detailPicture: {
-              fileData: ['detailPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'],
-            },
-            detailText: '',
-            detailTextType: 'text',
-            iblockSectionId: 47,
-            modifiedBy: 1,
-            previewPicture: {
-              fileData: ['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'],
-            },
-            previewText: '',
-            previewTextType: 'text',
-            sort: 100,
-            vatId: 1,
+            iblockId: 25,
+            name: 'Air conditioner installation',
+            code: 'ac_installation',
+            xmlId: 'srv-ac-01',
+            sort: 200,
+            vatId: 9,
             vatIncluded: 'Y',
-            xmlId: '',
-            property258: 'test',
-            property259: ['test1', 'test2'],
+            measure: 9,
+            previewText: 'Installation of a split system up to 3.5 kW',
+            detailText: '<p>Installation of the indoor and outdoor units</p>',
+            detailTextType: 'html',
+            previewPicture: {
+              fileData: ['ac.png', 'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEUlEQVR4nGPQqDiBFTEMLQkAAtVaAcSRe60AAAAASUVORK5CYII='],
+            },
+            property301: 'SRV-AC-01',
+            property303: 'Klima Service GmbH',
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -226,7 +217,7 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Added service ID:', result.service.id, 'name:', result.service.name)
+        console.info('Added service:', result.service.id, result.service.name)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -249,32 +240,22 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
             method: 'catalog.product.service.add',
             params: {
               fields: {
-                iblockId: 23,
-                name: 'Service',
-                active: 'Y',
-                code: 'service',
-                createdBy: 1,
-                dateActiveFrom: '2024-05-28T10:00:00',
-                dateActiveTo: '2024-05-29T10:00:00',
-                dateCreate: '2024-05-27T10:00:00',
-                detailPicture: {
-                  fileData: ['detailPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'],
-                },
-                detailText: '',
-                detailTextType: 'text',
-                iblockSectionId: 47,
-                modifiedBy: 1,
-                previewPicture: {
-                  fileData: ['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'],
-                },
-                previewText: '',
-                previewTextType: 'text',
-                sort: 100,
-                vatId: 1,
+                iblockId: 25,
+                name: 'Air conditioner installation',
+                code: 'ac_installation',
+                xmlId: 'srv-ac-01',
+                sort: 200,
+                vatId: 9,
                 vatIncluded: 'Y',
-                xmlId: '',
-                property258: 'test',
-                property259: ['test1', 'test2'],
+                measure: 9,
+                previewText: 'Installation of a split system up to 3.5 kW',
+                detailText: '<p>Installation of the indoor and outdoor units</p>',
+                detailTextType: 'html',
+                previewPicture: {
+                  fileData: ['ac.png', 'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEUlEQVR4nGPQqDiBFTEMLQkAAtVaAcSRe60AAAAASUVORK5CYII='],
+                },
+                property301: 'SRV-AC-01',
+                property303: 'Klima Service GmbH',
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -287,7 +268,7 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
           }
 
           const result = response.getData().result
-          console.info('Added service ID:', result.service.id, 'name:', result.service.name)
+          console.info('Added service:', result.service.id, result.service.name)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -306,41 +287,22 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
     try:
         bitrix_response = client.catalog.product.service.add(
             fields={
-                "iblockId": 23,
-                "name": "Service",
-                "active": "Y",
-                "code": "service",
-                "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00",
-                "dateActiveTo": "2024-05-29T10:00:00",
-                "dateCreate": "2024-05-27T10:00:00",
-                "detailPicture": {
-                    "fileData": [
-                        "detailPicture.png",
-                        "put_base64_file_content_here",
-                    ],
-                },
-                "detailText": "",
-                "detailTextType": "text",
-                "iblockSectionId": 47,
-                "modifiedBy": 1,
-                "previewPicture": {
-                    "fileData": [
-                        "previewPicture.png",
-                        "put_base64_file_content_here",
-                    ],
-                },
-                "previewText": "",
-                "previewTextType": "text",
-                "sort": 100,
-                "vatId": 1,
+                "iblockId": 25,
+                "name": "Air conditioner installation",
+                "code": "ac_installation",
+                "xmlId": "srv-ac-01",
+                "sort": 200,
+                "vatId": 9,
                 "vatIncluded": "Y",
-                "xmlId": "",
-                "property258": "test",
-                "property259": [
-                    "test1",
-                    "test2",
-                ],
+                "measure": 9,
+                "previewText": "Installation of a split system up to 3.5 kW",
+                "detailText": "<p>Installation of the indoor and outdoor units</p>",
+                "detailTextType": "html",
+                "previewPicture": {
+                    "fileData": ["ac.png", "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEUlEQVR4nGPQqDiBFTEMLQkAAtVaAcSRe60AAAAASUVORK5CYII="],
+                },
+                "property301": "SRV-AC-01",
+                "property303": "Klima Service GmbH",
             },
         ).response
         result = bitrix_response.result
@@ -368,46 +330,33 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
                 'catalog.product.service.add',
                 [
                     'fields' => [
-                        'iblockId' => 23,
-                        'name' => 'Service',
-                        'active' => 'Y',
-                        'code' => 'service',
-                        'createdBy' => 1,
-                        'dateActiveFrom' => '2024-05-28T10:00:00',
-                        'dateActiveTo' => '2024-05-29T10:00:00',
-                        'dateCreate' => '2024-05-27T10:00:00',
-                        'detailPicture' => [
-                            'fileData' => ['detailPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC']
+                        'iblockId'        => 25,
+                        'name'            => 'Air conditioner installation',
+                        'code'            => 'ac_installation',
+                        'xmlId'           => 'srv-ac-01',
+                        'sort'            => 200,
+                        'vatId'           => 9,
+                        'vatIncluded'     => 'Y',
+                        'measure'         => 9,
+                        'previewText'     => 'Installation of a split system up to 3.5 kW',
+                        'detailText'      => '<p>Installation of the indoor and outdoor units</p>',
+                        'detailTextType'  => 'html',
+                        'previewPicture'  => [
+                            'fileData' => ['ac.png', 'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEUlEQVR4nGPQqDiBFTEMLQkAAtVaAcSRe60AAAAASUVORK5CYII='],
                         ],
-                        'detailText' => '',
-                        'detailTextType' => 'text',
-                        'iblockSectionId' => 47,
-                        'modifiedBy' => 1,
-                        'previewPicture' => [
-                            'fileData' => ['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCC']
-                        ],
-                        'previewText' => '',
-                        'previewTextType' => 'text',
-                        'sort' => 100,
-                        'vatId' => 1,
-                        'vatIncluded' => 'Y',
-                        'xmlId' => '',
-                        'property258' => 'test',
-                        'property259' => ['test1', 'test2'],
-                    ]
+                        'property301'     => 'SRV-AC-01',
+                        'property303'     => 'Klima Service GmbH',
+                    ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        processData($result);
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error adding product service: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -415,42 +364,34 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
 
     ```js
     BX24.callMethod(
-    'catalog.product.service.add', 
-    {
-    'fields':{
-                iblockId: 23,
-                name: 'Service',
-                active: 'Y',
-                code: 'service',
-                createdBy: 1,
-                dateActiveFrom: '2024-05-28T10:00:00',
-                dateActiveTo: '2024-05-29T10:00:00',
-                dateCreate: '2024-05-27T10:00:00',
-                detailPicture: {
-                    'fileData':  ['detailPicture.png','iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC']},
-                detailText: '',
-                detailTextType: 'text',
-                iblockSectionId: 47,
-                modifiedBy: 1,
-                previewPicture: {
-                    'fileData':['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC']},
-                previewText: '',
-                previewTextType: 'text',
-                sort: 100,
-                vatId: 1,
+        'catalog.product.service.add',
+        {
+            fields: {
+                iblockId: 25,
+                name: 'Air conditioner installation',
+                code: 'ac_installation',
+                xmlId: 'srv-ac-01',
+                sort: 200,
+                vatId: 9,
                 vatIncluded: 'Y',
-                xmlId: '',
-                property258: 'test',
-                property259: ['test1', 'test2'],
-    },
-    },
-    function(result)
-    {
-    if(result.error())
-    console.error(result.error());
-    else
-    console.log(result.data());
-    }
+                measure: 9,
+                previewText: 'Installation of a split system up to 3.5 kW',
+                detailText: '<p>Installation of the indoor and outdoor units</p>',
+                detailTextType: 'html',
+                previewPicture: {
+                    fileData: ['ac.png', 'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEUlEQVR4nGPQqDiBFTEMLQkAAtVaAcSRe60AAAAASUVORK5CYII='],
+                },
+                property301: 'SRV-AC-01',
+                property303: 'Klima Service GmbH',
+            },
+        },
+        function(result)
+        {
+            if (result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
     );
     ```
 
@@ -463,32 +404,22 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
         'catalog.product.service.add',
         [
             'fields' => [
-                'iblockId' => 23,
-                'name' => 'Service',
-                'active' => 'Y',
-                'code' => 'service',
-                'createdBy' => 1,
-                'dateActiveFrom' => '2024-05-28T10:00:00',
-                'dateActiveTo' => '2024-05-29T10:00:00',
-                'dateCreate' => '2024-05-27T10:00:00',
-                'detailPicture' => [
-                    'fileData' => ['detailPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCC']
-                ],
-                'detailText' => '',
-                'detailTextType' => 'text',
-                'iblockSectionId' => 47,
-                'modifiedBy' => 1,
-                'previewPicture' => [
-                    'fileData' => ['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC']
-                ],
-                'previewText' => '',
-                'previewTextType' => 'text',
-                'sort' => 100,
-                'vatId' => 1,
+                'iblockId' => 25,
+                'name' => 'Air conditioner installation',
+                'code' => 'ac_installation',
+                'xmlId' => 'srv-ac-01',
+                'sort' => 200,
+                'vatId' => 9,
                 'vatIncluded' => 'Y',
-                'xmlId' => '',
-                'property258' => 'test',
-                'property259' => ['test1', 'test2'],
+                'measure' => 9,
+                'previewText' => 'Installation of a split system up to 3.5 kW',
+                'detailText' => '<p>Installation of the indoor and outdoor units</p>',
+                'detailTextType' => 'html',
+                'previewPicture' => [
+                    'fileData' => ['ac.png', 'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEUlEQVR4nGPQqDiBFTEMLQkAAtVaAcSRe60AAAAASUVORK5CYII='],
+                ],
+                'property301' => 'SRV-AC-01',
+                'property303' => 'Klima Service GmbH',
             ]
         ]
     );
@@ -504,32 +435,22 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.service.add", b24.Params{
     	"fields": b24.Params{
-    		"iblockId":       23,
-    		"name":           "Service",
-    		"active":         "Y",
-    		"code":           "service",
-    		"createdBy":      1,
-    		"dateActiveFrom": "2024-05-28T10:00:00",
-    		"dateActiveTo":   "2024-05-29T10:00:00",
-    		"dateCreate":     "2024-05-27T10:00:00",
-    		"detailPicture": b24.Params{
-    			"fileData": []string{"detailPicture.png", "iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"},
-    		},
-    		"detailText":      "",
-    		"detailTextType":  "text",
-    		"iblockSectionId": 47,
-    		"modifiedBy":      1,
+    		"iblockId":       25,
+    		"name":           "Air conditioner installation",
+    		"code":           "ac_installation",
+    		"xmlId":          "srv-ac-01",
+    		"sort":           200,
+    		"vatId":          9,
+    		"vatIncluded":    "Y",
+    		"measure":        9,
+    		"previewText":    "Installation of a split system up to 3.5 kW",
+    		"detailText":     "<p>Installation of the indoor and outdoor units</p>",
+    		"detailTextType": "html",
     		"previewPicture": b24.Params{
-    			"fileData": []string{"previewPicture.png", "iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"},
+    			"fileData": []string{"ac.png", "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEUlEQVR4nGPQqDiBFTEMLQkAAtVaAcSRe60AAAAASUVORK5CYII="},
     		},
-    		"previewText":     "",
-    		"previewTextType": "text",
-    		"sort":            100,
-    		"vatId":           1,
-    		"vatIncluded":     "Y",
-    		"xmlId":           "",
-    		"property258":     "test",
-    		"property259":     []string{"test1", "test2"},
+    		"property301": "SRV-AC-01",
+    		"property303": "Klima Service GmbH",
     	},
     })
     if err != nil {
@@ -542,25 +463,34 @@ To specify the service price, use the methods [catalog.price.*](../../price/inde
     	return fmt.Errorf("no service key in the response")
     }
 
+    // Optional fields can be null, so pointers are used for them.
     var item struct {
-    	Active         string `json:"active"`
-    	Available      string `json:"available"`
-    	Bundle         string `json:"bundle"`
-    	Code           string `json:"code"`
-    	CreatedBy      int    `json:"createdBy"`
-    	DateActiveFrom string `json:"dateActiveFrom"`
+    	ID          b24.ID  `json:"id"`
+    	IblockID    int     `json:"iblockId"`
+    	Name        string  `json:"name"`
+    	Code        *string `json:"code"`
+    	XMLID       string  `json:"xmlId"`
+    	Sort        int     `json:"sort"`
+    	Type        int     `json:"type"`
+    	Measure     *int    `json:"measure"`
+    	VatID       *int    `json:"vatId"`
+    	VatIncluded string  `json:"vatIncluded"`
+    	PreviewPicture *struct {
+    		ID  string `json:"id"`
+    		URL string `json:"url"`
+    	} `json:"previewPicture"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Active, item.Available)
+    fmt.Println(item.ID, item.Name)
     ```
 
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -569,59 +499,86 @@ HTTP Status: **200**
             "active": "Y",
             "available": "N",
             "bundle": "N",
-            "code": "service",
-            "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
-            "dateActiveTo": "2024-05-29T10:00:00+02:00",
-            "dateCreate": "2024-05-27T10:00:00+02:00",
-            "detailPicture": {
-                "id": "6495",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6495\u0026fields%5BproductId%5D=1264",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6495\u0026fields%5BproductId%5D=1264"
-            },
-            "detailText": null,
-            "detailTextType": "text",
-            "iblockId": 23,
-            "iblockSectionId": 47,
-            "id": 1264,
-            "modifiedBy": 1,
-            "name": "Service",
+            "code": "ac_installation",
+            "createdBy": 1269,
+            "dateActiveFrom": null,
+            "dateActiveTo": null,
+            "dateCreate": "2026-11-05T18:19:49+01:00",
+            "detailPicture": null,
+            "detailText": "<p>Installation of the indoor and outdoor units</p>",
+            "detailTextType": "html",
+            "iblockId": 25,
+            "iblockSection": null,
+            "iblockSectionId": null,
+            "id": 7623,
+            "measure": 9,
+            "modifiedBy": 1269,
+            "name": "Air conditioner installation",
             "previewPicture": {
-                "id": "6494",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6494\u0026fields%5BproductId%5D=1264",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6494\u0026fields%5BproductId%5D=1264"
+                "id": "40035",
+                "url": "/rest/catalog.product.download?fields%5BfieldName%5D=previewPicture&fields%5BfileId%5D=40035&fields%5BproductId%5D=7623",
+                "urlMachine": "/rest/catalog.product.download?fields%5BfieldName%5D=previewPicture&fields%5BfileId%5D=40035&fields%5BproductId%5D=7623"
             },
-            "previewText": null,
+            "previewText": "Installation of a split system up to 3.5 kW",
             "previewTextType": "text",
-            "property258": {
-                "value": "test",
-                "valueId": "9806"
+            "property293": null,
+            "property295": "N",
+            "property297": "N",
+            "property299": "N",
+            "property301": {
+                "value": "SRV-AC-01",
+                "valueId": "4059"
             },
-            "property259": [
-                {
-                    "value": "test1",
-                    "valueId": "9807"
-                },
-                {
-                    "value": "test2",
-                    "valueId": "9808"
-                }
-            ],
-            "sort": 100,
-            "timestampX": "2024-06-14T11:51:08+02:00",
+            "property303": {
+                "value": "Klima Service GmbH",
+                "valueId": "4061"
+            },
+            "property305": null,
+            "property307": null,
+            "property309": null,
+            "property311": null,
+            "property313": null,
+            "property315": null,
+            "property329": null,
+            "property343": null,
+            "property359": null,
+            "property431": null,
+            "property433": null,
+            "property435": null,
+            "property893": null,
+            "property897": null,
+            "property901": null,
+            "property917": null,
+            "property921": null,
+            "property931": null,
+            "property933": null,
+            "property935": null,
+            "property1013": null,
+            "property1015": null,
+            "property1019": null,
+            "property1021": null,
+            "property1023": null,
+            "property1077": null,
+            "property1081": null,
+            "property1083": null,
+            "property1085": null,
+            "sort": 200,
+            "timestampX": "2026-11-05T18:19:49+01:00",
             "type": 7,
-            "vatId": 1,
+            "vatId": 9,
             "vatIncluded": "Y",
-            "xmlId": "1264"
+            "xmlId": "srv-ac-01"
         }
     },
     "time": {
-        "start": 1718362267.704109,
-        "finish": 1718362268.795468,
-        "duration": 1.0913591384887695,
-        "processing": 0.676487922668457,
-        "date_start": "2024-06-14T13:51:07+02:00",
-        "date_finish": "2024-06-14T13:51:08+02:00"
+        "start": 1793891989,
+        "finish": 1793891989.83412,
+        "duration": 0.8341200351715088,
+        "processing": 0,
+        "date_start": "2026-11-05T18:19:49+01:00",
+        "date_finish": "2026-11-05T18:19:49+01:00",
+        "operating_reset_at": 1793892589,
+        "operating": 0
     }
 }
 ```
@@ -633,20 +590,22 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **service**
-[`catalog_product_service`](../../data-types.md#catalog_product_service) | Object with information about the added service ||
+|| **result.service**
+[`catalog_product_service`](../../data-types.md#catalog_product_service) | Object with the fields of the created service. The method returns all fields, including empty ones with the `null` value, and all catalog properties in the `propertyN` format.
+
+The value of a filled property is an object `{"value": "...", "valueId": "..."}`, a multiple property is an array of such objects. A picture is an object with the file identifier `id` and the `url` and `urlMachine` download links for the [catalog.product.service.download](./catalog-product-service-download.md) method ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "0",
+    "error_description": "Required fields: name"
 }
 ```
 
@@ -655,35 +614,23 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300050` | Insufficient rights to bind the information block element to the section
-|| 
-|| `200040300040` | Insufficient rights to create a service
-|| 
-|| `200040300000` | Information block with the specified identifier does not exist
-|| 
-|| `200040300043` | Insufficient rights to edit the information block element
-|| 
-|| `200040300010` | Insufficient rights to read the trade catalog
-|| 
-|| `100` | The `fields` parameter is not specified or is empty
-|| 
-|| `0` | The section with the specified identifier does not exist
-|| 
-|| `0` | The VAT rate with the specified identifier does not exist
-|| 
-|| `0` | The specified currency for the purchase price does not exist
-|| 
-|| `0` | The user with the specified identifier who created the service does not exist
-|| 
-|| `0` | The user with the specified identifier who modified the service does not exist
-|| 
-|| `0` | Required fields are not provided
-|| 
-|| `0` | A service with the specified symbolic code already exists
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" access permissions ||
+|| `400` | `200040300040` | Access Denied | The user does not have the "Create product" access permission ||
+|| `400` | `200040300043` | Access Denied | The user does not have the permission to edit elements of the catalog information block ||
+|| `400` | `200040300050` | Access Denied | The `iblockSectionId` section does not exist, or the user does not have the permission to link elements to it ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `0` | Incorrect fields format | `fields` is not an object ||
+|| `400` | `0` | Required fields: name | A required field is not provided. The text lists the missing fields ||
+|| `400` | `0` | iblock is not catalog | `iblockId` is not provided, is not a number, or the information block is not a trade catalog ||
+|| `400` | `0` | productType is not allowed for this catalog | `iblockId` contains a variations information block ||
+|| `400` | `0` | VAT vatId is not exists | The VAT rate with the specified `vatId` was not found ||
+|| `400` | `0` | User createdBy is not exists | The `createdBy` user was not found ||
+|| `400` | `0` | User modifiedBy is not exists | The `modifiedBy` user was not found ||
+|| `400` | `0` | Incorrect starting date format.<br> | `dateActiveFrom` contains a string. Currently the date cannot be set ||
+|| `400` | `0` | Incorrect expiration date format.<br> | `dateActiveTo` contains a string. Currently the date cannot be set ||
+|| `400` | `0` | Wrong format value of field `property301`. | A single property contains an array. The text names the property ||
+|| `400` | `0` | Wrong format of field `name`. | The field contains an array or an object instead of a value. The text names the field ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -693,6 +640,6 @@ HTTP Status: **400**
 - [{#T}](./catalog-product-service-update.md)
 - [{#T}](./catalog-product-service-get.md)
 - [{#T}](./catalog-product-service-list.md)
-- [{#T}](./catalog-product-service-download.md)
 - [{#T}](./catalog-product-service-delete.md)
+- [{#T}](./catalog-product-service-download.md)
 - [{#T}](./catalog-product-service-get-fields-by-filter.md)

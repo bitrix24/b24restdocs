@@ -427,7 +427,7 @@ HTTP status: **200**
             {
                 "id": 7551,
                 "name": "Equipment installation and setup",
-                "xmlId": "DOCS-V3-SERVICE-1",
+                "xmlId": "installation-001",
                 "vatId": 1,
                 "measure": 9
             },
@@ -603,8 +603,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `-` | The type field supports only the =, != and in filter operators | Use the `=`, `!=`, or `in` operators for `type` ||
 || `-` | Filter OR groups are not supported | Remove groups with `or` logic from the filter ||
 || `-` | pagination.offset must be a non-negative multiple of pagination.limit | Pass an `offset` that is a multiple of `limit`, or use `page` ||
-|| `#FIELD#` | DTO `ProductDto` in field `#FIELD#` requires attribute `Filterable` to perform this request | Filter only by the fields from the `filter` parameter description ||
-|| `#FIELD#` | DTO `ProductDto` in field `#FIELD#` requires attribute `Sortable` to perform this request | Sort only by the fields from the `order` parameter description ||
+|| `previewText` | DTO `ProductDto` in field `previewText` requires attribute `Filterable` to perform this request | Filter only by the fields from the `filter` parameter description ||
+|| `vatId` | DTO `ProductDto` in field `vatId` requires attribute `Sortable` to perform this request | Sort only by the fields from the `order` parameter description ||
 |#
 
 #### Filter Operator Error
@@ -613,7 +613,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNFILTEROPERATOREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Unknown filter operator `#OPERATOR#` | Use the operators from the [REST 3.0 overview](../../../rest-v3.md#operators) ||
+|| `filter` | Unknown filter operator `like` | Use the operators from the [REST 3.0 overview](../../../rest-v3.md#operators) ||
 |#
 
 #### Pagination Error
@@ -622,7 +622,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDPAGINATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `pagination` | Incorrect `pagination` parameter value: `#PAGINATION#` | Pass a number greater than `0` in `limit` ||
+|| `pagination` | Incorrect `pagination` parameter value: `{"limit":0}` | Pass a number greater than `0` in `limit` ||
 |#
 
 #### Errors in the `select`, `filter`, and `order` Parameters
@@ -631,7 +631,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `ProductDto` | Specify only the fields from the `select` parameter description. `PROPERTY_{id}` keys are not supported ||
+|| `-` | Unknown field `foo` found in entity `ProductDto` | Specify only the fields from the `select` parameter description. `PROPERTY_{id}` keys are not supported ||
 |#
 
 #### Access Error

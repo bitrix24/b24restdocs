@@ -313,7 +313,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Invalid filter `filter` | The method does not support `filter`. Pass the service `id` ||
+|| `filter` | Invalid filter `Unknown filter condition` | The method does not support `filter`. Pass the service `id` ||
 |#
 
 #### Object Not Found Error
@@ -322,7 +322,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no service with this identifier. The error is also returned for the identifier of a product of another type. Check the identifier using the [catalog.product.service.list](./catalog-product-service-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no service with this identifier. The error is also returned for the identifier of a product of another type. Check the identifier using the [catalog.product.service.list](./catalog-product-service-list-rest-v3.md) method ||
 |#
 
 #### Access Error

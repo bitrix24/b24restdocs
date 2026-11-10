@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with permission to read the variation in the information block and one of the permissions: "View product catalog", "View catalog products", or "Edit selling price"
 
 The method `catalog.product.offer.download` downloads a product variation file from an image field or a file property.
 
@@ -73,7 +73,7 @@ The method returns the file contents, not JSON. Send a direct HTTP request and s
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -d '{"fields":{"fileId":6538,"productId":1286,"fieldName":"detailPicture"}}' \
+    -d '{"fields":{"fileId":40057,"productId":7695,"fieldName":"previewPicture"}}' \
     --output offer-file \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.offer.download
     ```
@@ -83,7 +83,7 @@ The method returns the file contents, not JSON. Send a direct HTTP request and s
     ```bash
     curl -X POST \
     -H "Content-Type: application/json" \
-    -d '{"fields":{"fileId":6538,"productId":1286,"fieldName":"detailPicture"},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"fileId":40057,"productId":7695,"fieldName":"previewPicture"},"auth":"**put_access_token_here**"}' \
     --output offer-file \
     https://**put_your_bitrix24_address**/rest/catalog.product.offer.download
     ```
@@ -102,9 +102,9 @@ The method returns the file contents, not JSON. Send a direct HTTP request and s
         },
         body: JSON.stringify({
           fields: {
-            fileId: 6538,
-            productId: 1286,
-            fieldName: 'detailPicture',
+            fileId: 40057,
+            productId: 7695,
+            fieldName: 'previewPicture',
           },
         }),
       },
@@ -132,9 +132,9 @@ The method returns the file contents, not JSON. Send a direct HTTP request and s
             },
             body: JSON.stringify({
               fields: {
-                fileId: 6538,
-                productId: 1286,
-                fieldName: 'detailPicture',
+                fileId: 40057,
+                productId: 7695,
+                fieldName: 'previewPicture',
               },
               auth: '**put_access_token_here**',
             }),
@@ -169,9 +169,9 @@ The method returns the file contents, not JSON. Send a direct HTTP request and s
         "https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.offer.download",
         json={
             "fields": {
-                "fileId": 6538,
-                "productId": 1286,
-                "fieldName": "detailPicture",
+                "fileId": 40057,
+                "productId": 7695,
+                "fieldName": "previewPicture",
             }
         },
     )
@@ -191,9 +191,9 @@ The method returns the file contents, not JSON. Send a direct HTTP request and s
         CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
         CURLOPT_POSTFIELDS => json_encode([
             'fields' => [
-                'fileId' => 6538,
-                'productId' => 1286,
-                'fieldName' => 'detailPicture',
+                'fileId' => 40057,
+                'productId' => 7695,
+                'fieldName' => 'previewPicture',
             ],
         ]),
     ]);
@@ -215,9 +215,9 @@ The method returns the file contents, not JSON. Send a direct HTTP request and s
     const auth = BX24.getAuth()
     const url = new URL(`https://${auth.domain}/rest/catalog.product.offer.download`)
     url.searchParams.set('auth', auth.access_token)
-    url.searchParams.set('fields[fileId]', 6538)
-    url.searchParams.set('fields[productId]', 1286)
-    url.searchParams.set('fields[fieldName]', 'detailPicture')
+    url.searchParams.set('fields[fileId]', 40057)
+    url.searchParams.set('fields[productId]', 7695)
+    url.searchParams.set('fields[fieldName]', 'previewPicture')
 
     fetch(url)
       .then(async response => {
@@ -244,7 +244,7 @@ The method returns the file contents, not JSON. Send a direct HTTP request and s
     ```go
     payload, err := json.Marshal(map[string]any{
         "fields": map[string]any{
-            "fileId": 6538, "productId": 1286, "fieldName": "detailPicture",
+            "fileId": 40057, "productId": 7695, "fieldName": "previewPicture",
         },
     })
     if err != nil {
@@ -297,19 +297,15 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **error_description** | **Description** ||
-|| `200040300010` | `Access denied` | Insufficient permissions to read the product catalog
-||
-|| Empty value | `offer does not exist.` | The product variation with the specified `productId` does not exist
-||
-|| `0` | `Name file field is not available` | The `fieldName` field is unavailable for download: the name is incorrect, the property does not exist, or it is not a file-type property
-||
-|| `0` | `Product file wrong` | The `fileId` file does not belong to the specified variation field
-||
-|| `0` | `Product is empty` | The file with the specified `fileId` was not found in file storage
-||
-|| `0` | `Required fields: fieldName, fileId, productId` | One or more required parameters are missing. The message lists the missing parameters
-||
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" permissions ||
+|| `400` | `200040300040` | Access Denied | The user does not have permission to read this variation in the information block ||
+|| `400` | Empty value | offer does not exist. | No variation exists with the specified `productId` ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter was not provided ||
+|| `400` | `0` | Required fields: fieldName, fileId, productId | One or more parameters in `fields` were not provided. The text lists the missing parameters ||
+|| `400` | `0` | Name file field is not available | The `fieldName` field is not available for download: the name is incorrect, for example in uppercase, the property does not exist, or it is not a file-type property ||
+|| `400` | `0` | Product file wrong | The `fileId` file does not belong to the `fieldName` field of this variation ||
+|| `400` | `0` | Product is empty | The file with the specified `fileId` was not found in file storage ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

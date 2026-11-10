@@ -331,8 +331,8 @@ HTTP status: **200**
         "item": {
             "id": 7553,
             "iblockId": 25,
-            "name": "DOCS-V3-SKU Cotton T-shirt",
-            "code": "docs-v3-sku-t-shirt",
+            "name": "Cotton T-shirt",
+            "code": "t-shirt",
             "active": "Y",
             "dateCreate": "2026-10-22T12:18:48+02:00",
             "previewText": "Cotton T-shirt",
@@ -503,7 +503,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | The record does not exist or is not a parent product. Retrieve variations using the [catalog.product.offer.get](../offer/catalog-product-offer-get-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | The record does not exist or is not a parent product. Retrieve variations using the [catalog.product.offer.get](../offer/catalog-product-offer-get-rest-v3.md) method ||
 |#
 
 #### Unknown Field Error
@@ -512,7 +512,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `ProductDto` | Specify in `select` only the fields from the `select` parameter description. For property values, use `properties` ||
+|| `select` | Unknown field `foo` found in entity `ProductDto` | Specify in `select` only the fields from the `select` parameter description. For property values, use `properties` ||
 |#
 
 #### Access Error

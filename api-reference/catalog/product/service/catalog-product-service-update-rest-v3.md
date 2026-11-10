@@ -558,7 +558,7 @@ HTTP status: **200**
             "iblockId": 25,
             "name": "Equipment installation and setup",
             "code": null,
-            "xmlId": "DOCS-V3-SERVICE-1",
+            "xmlId": "installation-001",
             "active": "Y",
             "sort": 200,
             "createdBy": 1,
@@ -801,13 +801,13 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `-` | At least one of the required fields must be not empty: id, filter | Pass the service `id`. A second message is returned together with this one: "Only one of the following values must be provided: id, filter" ||
 || `fields` | Required field `fields` is missing | Pass the `fields` object ||
-|| `-` | Product - `#ID#` is not exists in catalog - `#IBLOCK_ID#` | Remove `iblockId` from `fields`: a service cannot be moved to another catalog ||
+|| `-` | Product - 7551 is not exists in catalog - 27 | Remove `iblockId` from `fields`: a service cannot be moved to another catalog ||
 || `-` | Name is not specified.`<br>` | Pass a non-empty value in `name` ||
 || `-` | User createdBy is not exists | Pass the identifier of an existing user in `createdBy` ||
 || `-` | User modifiedBy is not exists | Pass the identifier of an existing user in `modifiedBy` ||
-|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: `#KEYS#` | Pass property keys in the `PROPERTY_{id}` format, for example `PROPERTY_301` ||
-|| `-` | The properties field names one property by several keys: `#KEYS#` | Pass each property with a single key ||
-|| `#FIELD#` | This request requires data type `#TYPE#` in field `#FIELD#` | Pass a value of the required type ||
+|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: bad | Pass property keys in the `PROPERTY_{id}` format, for example `PROPERTY_301` ||
+|| `-` | The properties field names one property by several keys: PROPERTY_301, 301 | Pass each property with a single key ||
+|| `sort` | This request requires data type `int` in field `sort` | Pass a value of the required type. The field column and the error text name the field with the invalid value ||
 || `-` | Internal error updating product. Try updating again. | Repeat the request ||
 |#
 
@@ -817,7 +817,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `#FIELD#` | Field `#FIELD#` is read-only | Remove the read-only fields from `fields`: `id`, `dateCreate`, `timestampX`, `type`, `available`, `bundle` ||
+|| `type` | Field `type` is read-only | Remove the read-only fields from `fields`: `id`, `dateCreate`, `timestampX`, `type`, `available`, `bundle` ||
 |#
 
 #### Filter Format Error
@@ -826,7 +826,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Invalid filter `filter` | The method does not support `filter`. Pass the service `id` ||
+|| `filter` | Invalid filter `Unknown filter condition` | The method does not support `filter`. Pass the service `id` ||
 |#
 
 #### Object Not Found Error
@@ -835,7 +835,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no service with this identifier. The error is also returned for the identifier of a product of another type. Check the identifier using the [catalog.product.service.list](./catalog-product-service-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no service with this identifier. The error is also returned for the identifier of a product of another type. Check the identifier using the [catalog.product.service.list](./catalog-product-service-list-rest-v3.md) method ||
 |#
 
 #### Unknown Field Error
@@ -844,7 +844,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `ProductDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields` ||
+|| `-` | Unknown field `foo` found in entity `ProductDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields` ||
 |#
 
 #### Access Error

@@ -393,7 +393,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Entity with ID `#ID#` was not found | The record does not exist or is not a variation. Check `productId` ||
+|| `-` | Entity with ID `999999` was not found | The record does not exist or is not a variation. Check `productId` ||
 |#
 
 #### Access Error

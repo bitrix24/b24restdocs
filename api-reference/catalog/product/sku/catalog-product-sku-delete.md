@@ -11,9 +11,15 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Delete product" access permission, a catalog view permission ("View product catalog", "View catalog products", or "Edit selling price"), and the permission to delete the catalog information block element
 
-This method deletes the parent product.
+The `catalog.product.sku.delete` method deletes a parent product together with all its variations.
+
+{% note warning "" %}
+
+The method does not check the product type: with the identifier of a simple product or a variation, it deletes that product. Before the call, make sure that the identifier belongs to a parent product using the [catalog.product.sku.get](./catalog-product-sku-get.md) method.
+
+{% endnote %}
 
 ## Method Parameters
 
@@ -25,7 +31,7 @@ This method deletes the parent product.
 || **id***
 [`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the parent product.
 
-To obtain the identifiers of parent products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md) ||
+You can retrieve parent product identifiers using the [catalog.product.sku.list](./catalog-product-sku-list.md) method ||
 |#
 
 ## Code Examples
@@ -40,7 +46,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1288}' \
+    -d '{"id":7679}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.sku.delete
     ```
 
@@ -50,7 +56,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1288,"auth":"**put_access_token_here**"}' \
+    -d '{"id":7679,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.sku.delete
     ```
 
@@ -68,7 +74,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
       const response = await $b24.actions.v2.call.make<boolean>({
         method: 'catalog.product.sku.delete',
         params: {
-          id: 1288,
+          id: 7679,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -100,7 +106,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.product.sku.delete',
             params: {
-              id: 1288,
+              id: 7679,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -130,7 +136,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
 
     try:
         bitrix_response = client.catalog.product.sku.delete(
-            bitrix_id=1288,
+            bitrix_id=7679,
         ).response
         result = bitrix_response.result
         print(result)
@@ -156,21 +162,17 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
             ->call(
                 'catalog.product.sku.delete',
                 [
-                    'id' => 1288,
+                    'id' => 7679,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        // Your logic for processing data
-        processData($result);
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error deleting product SKU: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -180,7 +182,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     BX24.callMethod(
         'catalog.product.sku.delete',
         {
-            id: 1288,
+            id: 7679,
         },
         function(result) {
             if (result.error()) {
@@ -200,7 +202,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     $result = CRest::call(
         'catalog.product.sku.delete',
         [
-            'id' => 1288
+            'id' => 7679
         ]
     );
 
@@ -214,7 +216,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.sku.delete", b24.Params{
-    	"id": 1288,
+    	"id": 7679,
     })
     if err != nil {
     	return fmt.Errorf("catalog.product.sku.delete: %w", err)
@@ -237,12 +239,14 @@ HTTP status: **200**
 {
     "result": true,
     "time": {
-        "start": 1718630898.795719,
-        "finish": 1718630899.598307,
-        "duration": 0.8025879859924316,
-        "processing": 0.35277414321899414,
-        "date_start": "2024-06-17T16:28:18+02:00",
-        "date_finish": "2024-06-17T16:28:19+02:00"
+        "start": 1793893645,
+        "finish": 1793893646.139728,
+        "duration": 1.13972806930542,
+        "processing": 1,
+        "date_start": "2026-11-05T18:47:25+01:00",
+        "date_finish": "2026-11-05T18:47:26+01:00",
+        "operating_reset_at": 1793893740,
+        "operating": 2.513129949569702
     }
 }
 ```
@@ -253,9 +257,9 @@ HTTP status: **200**
 || **Name**
 `type` | **Description** ||
 || **result**
-[`boolean`](../../../data-types.md) | Result of deleting the parent product ||
+[`boolean`](../../../data-types.md) | Deletion result. `true` means the parent product and its variations are deleted ||
 || **time**
-[`time`](../../../data-types.md) | Information about the execution time of the request ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -263,9 +267,9 @@ HTTP status: **200**
 HTTP status: **400**
 
 ```json
-{	
-    "error":200040300040,
-    "error_description":"Access Denied"
+{
+    "error": "",
+    "error_description": "sku does not exist."
 }
 ```
 
@@ -274,17 +278,12 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300040` | Insufficient permissions to delete the parent product
-|| 
-|| `200040300040` | Insufficient permissions to delete the information block
-|| 
-|| `200040300010` | Insufficient permissions to view the trade catalog
-|| 
-|| `200040300000` | Information block not found
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have a permission to view the catalog ||
+|| `400` | `200040300040` | Access Denied | The user does not have the "Delete product" permission or the permission to delete the catalog information block element ||
+|| `400` | Empty value | sku does not exist. | No product exists with the specified `id` ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {id}. Should be value of type int. | `id` is not an integer ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

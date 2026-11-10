@@ -311,7 +311,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | The record does not exist or is not a parent product. Check the identifier using the [catalog.product.sku.list](./catalog-product-sku-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | The record does not exist or is not a parent product. Check the identifier using the [catalog.product.sku.list](./catalog-product-sku-list-rest-v3.md) method ||
 |#
 
 #### Filter Format Error
@@ -320,7 +320,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Invalid filter `filter` | The method does not support `filter`. Pass `id` ||
+|| `filter` | Invalid filter `Unknown filter condition` | The method does not support `filter`. Pass `id` ||
 |#
 
 #### Access Error

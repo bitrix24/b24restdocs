@@ -15,9 +15,19 @@ A variation is linked to a parent product, which contains general information: n
 
 To work with parent products, use the methods [catalog.product.sku.*](../sku/index.md).
 
+Variation methods are available in two API versions: REST 2 and [REST 3.0](../../../rest-v3.md). REST 3.0 methods are marked `v 3.0` in the method table. The differences between the versions are described in the [Specifics of REST 2 Methods](#rest2) and [Variations in REST 3.0](#rest3) sections.
+
 > Quick navigation: [all methods](#all-methods)
 >
 > User documentation: [Working with the product variants](https://helpdesk.bitrix24.com/open/18839102/)
+
+## How to Start
+
+1. Get the trade catalog identifier for variations using [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
+2. Get the parent product identifier using [catalog.product.sku.list](../sku/catalog-product-sku-list.md)
+3. Create a variation using [catalog.product.offer.add](./catalog-product-offer-add.md)
+4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
+5. Set variation prices using [catalog.price.*](../../price/index.md)
 
 ## Relationship with Other Objects
 
@@ -47,31 +57,28 @@ To work with parent products, use the methods [catalog.product.sku.*](../sku/ind
 
 **Order Cart.** A product variation can be added, modified, or removed from the cart using the [sale.basketitem.*](../../../sale/basket-item/index.md) method group.
 
-## How to Start
+## Specifics of REST 2 Methods {#rest2}
 
-1. Get the trade catalog identifier for variations using [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
-2. Get the parent product identifier using [catalog.product.sku.list](../sku/catalog-product-sku-list.md)
-3. Create a variation using [catalog.product.offer.add](./catalog-product-offer-add.md)
-4. Add images using [catalog.productImage.add](../../product-image/catalog-product-image-add.md), if needed
-5. Set variation prices using [catalog.price.*](../../price/index.md)
+- The parent product is passed in the `parentId` field of the [catalog.product.offer.add](./catalog-product-offer-add.md) method. Without it, the method creates a variation without a parent product with type `5`, and such a variation cannot be purchased
+- In the [catalog.product.offer.update](./catalog-product-offer-update.md) method, the parent product cannot be changed: the method skips `parentId` without an error
+- In `catalog.product.offer.update`, pass property values as an object `{"value": ...}`: a plain value clears the property
+- The `dateCreate`, `dateActiveFrom`, and `dateActiveTo` fields cannot be set at the moment: the creation date is saved incorrectly, and the method rejects activity dates
 
-## Variations in REST 3.0
+## Variations in REST 3.0 {#rest3}
 
 In [REST 3.0](../../../rest-v3.md), variations have methods for adding, updating, retrieving, deleting, and downloading files, as well as the `catalog.product.offer.field.list` and `catalog.product.offer.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table. The general specifics of the new version product methods are described in the [products overview](../index.md).
 
 Specifics of the new version methods:
 
-- a variation is linked to its parent product through the `PROPERTY_{skuPropertyId}` property in `fields.properties`. There is no `parentId` field, unlike in the previous version. The `skuPropertyId` property identifier is returned by the [catalog.catalog.get](../../catalog/catalog-catalog-get-rest-v3.md) method for the variations catalog
-- in the [catalog.product.offer.update](./catalog-product-offer-update-rest-v3.md) method, pass the link as an object `{"VALUE": id}`: the method does not save a number
+- a variation is linked to its parent product through the `PROPERTY_{skuPropertyId}` property in `fields.properties`. There is no `parentId` field, unlike in REST 2. The `skuPropertyId` property identifier is returned by the [catalog.catalog.get](../../catalog/catalog-catalog-get-rest-v3.md) method for the variations catalog
+- in the [catalog.product.offer.update](./catalog-product-offer-update-rest-v3.md) method, pass property values, including the link, as an object `{"VALUE": ...}`: the method does not save a string or a number
 - variations of a single parent product cannot be found by a filter on the link property
 
 ## Overview of Methods {#all-methods}
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the methods:
-> - administrator — for methods of the previous API version
-> - a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permissions for the information block — for retrieving variations in REST 3.0. Adding, updating, and deleting also require the "Create product", "Edit product", or "Delete product" access permission
+> Who can execute the methods: a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permissions for the variations information block. Adding, updating, and deleting also require the "Create product", "Edit product", or "Delete product" access permission
 
 #|
 || **Method** | **Description** ||

@@ -1,4 +1,4 @@
-# Get the values of the parent product fields catalog.product.sku.get
+# Get Parent Product Field Values catalog.product.sku.get
 
 {% note tip "" %}
 
@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and the permission to read the catalog information block element
 
-The method returns the values of the parent product fields by identifier.
+The `catalog.product.sku.get` method returns the values of parent product fields by identifier.
 
 ## Method Parameters
 
@@ -25,7 +25,7 @@ The method returns the values of the parent product fields by identifier.
 || **id***
 [`catalog_product_sku.id`](../../data-types.md#catalog_product_sku) | Identifier of the parent product.
 
-To obtain the identifiers of parent products, you need to use [catalog.product.sku.list](./catalog-product-sku-list.md) ||
+You can retrieve parent product identifiers using the [catalog.product.sku.list](./catalog-product-sku-list.md) method ||
 |#
 
 ## Code Examples
@@ -40,7 +40,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1289}' \
+    -d '{"id":7679}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.sku.get
     ```
 
@@ -50,7 +50,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1289,"auth":"**put_access_token_here**"}' \
+    -d '{"id":7679,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.sku.get
     ```
 
@@ -64,54 +64,49 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
 
     declare const $b24: B24Frame
 
-    // Shape of the payload returned in result (match the "response handling" section of the page)
+    type PropertyValue = { value: string; valueId: string }
+    type Picture = { id: string; url: string; urlMachine: string }
+
+    type SkuItem = {
+      active: string
+      available: string
+      bundle: string
+      code: string | null
+      createdBy: number
+      dateActiveFrom: ISODate | null
+      dateActiveTo: ISODate | null
+      dateCreate: ISODate
+      detailPicture: Picture | null
+      detailText: string | null
+      detailTextType: string
+      iblockId: number
+      iblockSection: number[] | null
+      iblockSectionId: number | null
+      id: number
+      modifiedBy: number
+      name: string
+      previewPicture: Picture | null
+      previewText: string | null
+      previewTextType: string
+      property303: PropertyValue | null
+      property305: PropertyValue[] | null
+      sort: number | null
+      timestampX: ISODate
+      type: number
+      xmlId: string | null
+    }
+
+    // Shape of the payload returned in result (match the "response handling" section of the page).
+    // For a simple product or a variation the method returns an empty array.
     type SkuGetResult = {
-      sku: {
-        active: string
-        available: string
-        bundle: string
-        canBuyZero: string
-        code: string
-        createdBy: number
-        dateActiveFrom: ISODate | null
-        dateActiveTo: ISODate | null
-        dateCreate: ISODate | null
-        detailPicture: { id: string; url: string; urlMachine: string } | null
-        detailText: string | null
-        detailTextType: string
-        height: number
-        iblockId: number
-        iblockSectionId: number
-        id: number
-        length: number
-        measure: number
-        modifiedBy: number
-        name: string
-        previewPicture: { id: string; url: string; urlMachine: string } | null
-        previewText: string | null
-        previewTextType: string
-        property258: { value: string; valueId: string }
-        property259: { value: string; valueId: string }[]
-        purchasingCurrency: string
-        purchasingPrice: string
-        quantity: number
-        sort: number
-        subscribe: string
-        timestampX: ISODate | null
-        type: number
-        vatId: number
-        vatIncluded: string
-        weight: number
-        width: number
-        xmlId: string
-      }
+      sku: SkuItem | []
     }
 
     try {
       const response = await $b24.actions.v2.call.make<SkuGetResult>({
         method: 'catalog.product.sku.get',
         params: {
-          id: 1289,
+          id: 7679,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -120,8 +115,12 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
       if (!response.isSuccess) {
         console.error(response.getErrorMessages().join('; '))
       } else {
-        const result = response.getData()!.result
-        console.info(result.sku.id, result.sku.name, result.sku.type)
+        const sku = response.getData()!.result.sku
+        if (Array.isArray(sku)) {
+          console.warn('The ID does not belong to a parent product')
+        } else {
+          console.info('SKU product:', sku.id, sku.name)
+        }
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -135,7 +134,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
-      async function getProductSku() {
+      async function getSkuProduct() {
         try {
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
@@ -143,7 +142,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.product.sku.get',
             params: {
-              id: 1289,
+              id: 7679,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -154,15 +153,19 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
             return
           }
 
-          const result = response.getData().result
-          console.info(result.sku.id, result.sku.name, result.sku.type)
+          const sku = response.getData().result.sku
+          if (Array.isArray(sku)) {
+            console.warn('The ID does not belong to a parent product')
+            return
+          }
+          console.info('SKU product:', sku.id, sku.name)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
         }
       }
 
-      document.addEventListener('DOMContentLoaded', getProductSku)
+      document.addEventListener('DOMContentLoaded', getSkuProduct)
     </script>
     ```
 
@@ -173,7 +176,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
 
     try:
         bitrix_response = client.catalog.product.sku.get(
-            bitrix_id=1289,
+            bitrix_id=7679,
         ).response
         result = bitrix_response.result
         print(result)
@@ -199,20 +202,17 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
             ->call(
                 'catalog.product.sku.get',
                 [
-                    'id' => 1289
+                    'id' => 7679,
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
-        echo 'Success: ' . print_r($result, true);
-        echo 'Info: ' . print_r($result, true);
-    
+
+        print_r($result);
     } catch (Throwable $e) {
-        error_log($e->getMessage());
-        echo 'Error getting product SKU: ' . $e->getMessage();
+        echo $e->getMessage();
     }
     ```
 
@@ -220,15 +220,16 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
 
     ```js
     BX24.callMethod(
-        'catalog.product.sku.get', {
-            'id': 1289
+        'catalog.product.sku.get',
+        {
+            id: 7679,
         },
-        function(result) {
-            if (result.error()) {
+        function(result)
+        {
+            if (result.error())
                 console.error(result.error());
-            } else {
-                console.info(result.data());
-            }
+            else
+                console.log(result.data());
         }
     );
     ```
@@ -241,7 +242,7 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     $result = CRest::call(
         'catalog.product.sku.get',
         [
-            'id' => 1289
+            'id' => 7679,
         ]
     );
 
@@ -255,30 +256,44 @@ To obtain the identifiers of parent products, you need to use [catalog.product.s
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.sku.get", b24.Params{
-    	"id": 1289,
+    	"id": 7679,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.product.sku.get: %w", err)
     }
 
     // The method wraps the response in an object with the "sku" key.
+    // For a simple product or a variation, "sku" contains an empty array.
     raw, ok := b24.Unwrap(res.Result, "sku")
     if !ok {
     	return fmt.Errorf("no sku key in the response")
     }
+    if string(raw) == "[]" {
+    	return fmt.Errorf("the product is not a parent product")
+    }
 
+    // Optional fields can be null, so pointers are used for them.
+    type propertyValue struct {
+    	Value   string `json:"value"`
+    	ValueID string `json:"valueId"`
+    }
     var item struct {
-    	Active     string `json:"active"`
-    	Available  string `json:"available"`
-    	Bundle     string `json:"bundle"`
-    	CanBuyZero string `json:"canBuyZero"`
-    	Code       string `json:"code"`
-    	CreatedBy  int    `json:"createdBy"`
+    	ID              b24.ID          `json:"id"`
+    	IblockID        int             `json:"iblockId"`
+    	Name            string          `json:"name"`
+    	Active          string          `json:"active"`
+    	Code            *string         `json:"code"`
+    	Sort            *int            `json:"sort"`
+    	Type            int             `json:"type"`
+    	IblockSectionID *int            `json:"iblockSectionId"`
+    	PreviewText     *string         `json:"previewText"`
+    	Property303     *propertyValue  `json:"property303"`
+    	Property305     []propertyValue `json:"property305"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Active, item.Available)
+    fmt.Println(item.ID, item.Name)
     ```
 
 {% endlist %}
@@ -294,69 +309,50 @@ HTTP status: **200**
             "active": "Y",
             "available": "N",
             "bundle": "N",
-            "canBuyZero": "Y",
-            "code": "product_sku",
-            "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
-            "dateActiveTo": "2024-05-29T10:00:00+02:00",
-            "dateCreate": "2024-05-27T10:00:00+02:00",
-            "detailPicture": {
-                "id": "6552",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6552\u0026fields%5BproductId%5D=1289",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6552\u0026fields%5BproductId%5D=1289"
-            },
-            "detailText": null,
-            "detailTextType": "text",
-            "height": 100,
-            "iblockId": 23,
-            "iblockSectionId": 47,
-            "id": 1289,
-            "length": 100,
-            "measure": 5,
-            "modifiedBy": 1,
-            "name": "Parent Product",
-            "previewPicture": {
-                "id": "6551",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6551\u0026fields%5BproductId%5D=1289",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6551\u0026fields%5BproductId%5D=1289"
-            },
-            "previewText": null,
+            "code": "basic-t-shirt",
+            "createdBy": 1269,
+            "dateActiveFrom": null,
+            "dateActiveTo": null,
+            "dateCreate": "2026-11-05T18:38:10+01:00",
+            "detailPicture": null,
+            "detailText": "<p>T-shirt made of 100% cotton</p>",
+            "detailTextType": "html",
+            "iblockId": 25,
+            "iblockSection": [
+                31
+            ],
+            "iblockSectionId": 31,
+            "id": 7679,
+            "modifiedBy": 1269,
+            "name": "Basic T-shirt",
+            "previewPicture": null,
+            "previewText": "Loose-fit cotton T-shirt",
             "previewTextType": "text",
-            "property258": {
-                "value": "test",
-                "valueId": "9877"
+            "property303": {
+                "value": "Cotton Yard",
+                "valueId": "4117"
             },
-            "property259": [
+            "property305": [
                 {
-                    "value": "test1",
-                    "valueId": "9878"
-                },
-                {
-                    "value": "test2",
-                    "valueId": "9879"
+                    "value": "Cotton",
+                    "valueId": "4119"
                 }
             ],
-            "purchasingCurrency": "USD",
-            "purchasingPrice": "1000.000000",
-            "quantity": 10,
-            "sort": 100,
-            "subscribe": "Y",
-            "timestampX": "2024-06-17T16:03:20+02:00",
+            "sort": 300,
+            "timestampX": "2026-11-05T18:38:23+01:00",
             "type": 6,
-            "vatId": 1,
-            "vatIncluded": "Y",
-            "weight": 100,
-            "width": 100,
-            "xmlId": "1243"
+            "xmlId": "tshirt-basic-01"
         }
     },
     "time": {
-        "start": 1718636890.413679,
-        "finish": 1718636891.096817,
-        "duration": 0.6831381320953369,
-        "processing": 0.27536606788635254,
-        "date_start": "2024-06-17T18:08:10+02:00",
-        "date_finish": "2024-06-17T18:08:11+02:00"
+        "start": 1793893104,
+        "finish": 1793893104.8058,
+        "duration": 0.8057999610900879,
+        "processing": 0,
+        "date_start": "2026-11-05T18:38:24+01:00",
+        "date_finish": "2026-11-05T18:38:24+01:00",
+        "operating_reset_at": 1793893680,
+        "operating": 0
     }
 }
 ```
@@ -368,10 +364,16 @@ HTTP status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **sku**
-[`catalog_product_sku`](../../data-types.md#catalog_product_sku) | Object with information about the parent product ||
+|| **result.sku**
+[`catalog_product_sku`](../../data-types.md#catalog_product_sku) | Object with the parent product fields. Empty fields have the `null` value.
+
+The response contains all information block properties as `propertyN` keys: a filled property is a `{"value": ..., "valueId": ...}` object, a multiple property is an array of such objects. The example shows only the `property303` and `property305` properties.
+
+The method does not return trade catalog fields such as `canBuyZero` and `vatId`. You can retrieve them using the [catalog.product.sku.list](./catalog-product-sku-list.md) method by listing the fields in `select`.
+
+If `id` belongs to a simple product or a variation, `sku` contains an empty array `[]` ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the execution time of the request ||
 |#
 
 ## Error Handling
@@ -380,8 +382,8 @@ HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
-    "error_description":"Access Denied"
+    "error": "",
+    "error_description": "sku does not exist."
 }
 ```
 
@@ -390,19 +392,11 @@ HTTP status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300000` | The information block with the specified identifier does not exist
-|| 
-|| `200040300040` | Insufficient rights to read the information block element
-|| 
-|| `200040300010` | Insufficient rights to read the trade catalog
-|| 
-|| `100` | The `id` parameter is not specified
-|| 
-|| `0` | The parent product does not exist
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user does not have a permission to view the catalog ||
+|| `400` | `200040300040` | Access Denied | The user does not have the permission to read the catalog information block element ||
+|| `400` | Empty value | sku does not exist. | No product exists with the specified `id`. The method returns the same error if `id` is `0` or a string that is not a number ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

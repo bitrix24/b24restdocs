@@ -208,7 +208,7 @@ Possible values:
 - `N` — not allowed
 - `D` — according to the module settings ||
 || **properties**
-[`object`](../../../data-types.md) | Values of the properties to update. The key is `PROPERTY_{id}`, where `{id}` is the property identifier. Pass the value as a `{"VALUE": ...}` object or an array of such objects. The method does not save a value passed as a string or a number.
+[`object`](../../../data-types.md) | Values of the properties to update. The key is `PROPERTY_{id}`, where `{id}` is the property identifier. Pass the value as a `{"VALUE": ...}` object or an array of such objects. The method does not save a value passed as a string or a number and clears the current property value without an error.
 
 Properties that are not passed keep their current values ||
 |#
@@ -239,7 +239,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":7553,"fields":{"name":"DOCS-V3-SKU Cotton T-shirt","detailText":"Composition: 100% cotton"}}' \
+    -d '{"id":7553,"fields":{"name":"Cotton T-shirt","detailText":"Composition: 100% cotton"}}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.sku.update
     ```
 
@@ -249,7 +249,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":7553,"fields":{"name":"DOCS-V3-SKU Cotton T-shirt","detailText":"Composition: 100% cotton"},"auth":"**put_access_token_here**"}' \
+    -d '{"id":7553,"fields":{"name":"Cotton T-shirt","detailText":"Composition: 100% cotton"},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/catalog.product.sku.update
     ```
 
@@ -275,7 +275,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         params: {
           id: 7553,
           fields: {
-            name: 'DOCS-V3-SKU Cotton T-shirt',
+            name: 'Cotton T-shirt',
             detailText: 'Composition: 100% cotton',
           },
         },
@@ -308,7 +308,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             params: {
               id: 7553,
               fields: {
-                name: 'DOCS-V3-SKU Cotton T-shirt',
+                name: 'Cotton T-shirt',
                 detailText: 'Composition: 100% cotton',
               },
             },
@@ -341,7 +341,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         bitrix_response = client.catalog.product.sku.update(
             id=7553,
             fields={
-                "name": "DOCS-V3-SKU Cotton T-shirt",
+                "name": "Cotton T-shirt",
                 "detailText": "Composition: 100% cotton",
             },
         ).response
@@ -373,7 +373,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
                 [
                     'id' => 7553,
                     'fields' => [
-                        'name' => 'DOCS-V3-SKU Cotton T-shirt',
+                        'name' => 'Cotton T-shirt',
                         'detailText' => 'Composition: 100% cotton',
                     ],
                 ]
@@ -399,7 +399,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         {
             id: 7553,
             fields: {
-                name: 'DOCS-V3-SKU Cotton T-shirt',
+                name: 'Cotton T-shirt',
                 detailText: 'Composition: 100% cotton',
             },
         },
@@ -424,7 +424,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
         [
             'id' => 7553,
             'fields' => [
-                'name' => 'DOCS-V3-SKU Cotton T-shirt',
+                'name' => 'Cotton T-shirt',
                 'detailText' => 'Composition: 100% cotton',
             ],
         ]
@@ -442,7 +442,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     res, err := client.Core().Call(ctx, "catalog.product.sku.update", b24.Params{
     	"id": 7553,
     	"fields": b24.Params{
-    		"name": "DOCS-V3-SKU Cotton T-shirt",
+    		"name": "Cotton T-shirt",
     		"detailText": "Composition: 100% cotton",
     	},
     })
@@ -479,8 +479,8 @@ HTTP status: **200**
         "item": {
             "id": 7553,
             "iblockId": 25,
-            "name": "DOCS-V3-SKU Cotton T-shirt",
-            "code": "docs-v3-sku-t-shirt",
+            "name": "Cotton T-shirt",
+            "code": "t-shirt",
             "xmlId": "7553",
             "active": "Y",
             "sort": 100,
@@ -721,8 +721,8 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `-` | At least one of the required fields must be not empty: id, filter | Pass `id`. A second message comes with this one: "Only one of the following values must be provided: id, filter" ||
 || `fields` | Required field `fields` is missing | Pass the `fields` object ||
-|| `-` | Product - #ID# is not exists in catalog - #IBLOCK_ID# | Remove `iblockId` from `fields` or pass the current information block of the record ||
-|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: #KEYS# | Pass only keys of the `PROPERTY_{id}` form in `properties` ||
+|| `-` | Product - 7553 is not exists in catalog - 27 | Remove `iblockId` from `fields` or pass the current information block of the record ||
+|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: foo | Pass only keys of the `PROPERTY_{id}` form in `properties` ||
 |#
 
 #### Object Validation Errors
@@ -731,7 +731,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `#FIELD#` | Field `#FIELD#` is read-only | Remove read-only fields from `fields`: `id`, `type`, `available`, `bundle`, `dateCreate`, `timestampX` ||
+|| `available` | Field `available` is read-only | Remove read-only fields from `fields`. An error with the same text is returned for each such field: `id`, `type`, `available`, `bundle`, `dateCreate`, `timestampX` ||
 |#
 
 #### Object Not Found Error
@@ -740,7 +740,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | The record does not exist or is not a parent product. Check the identifier using the [catalog.product.sku.list](./catalog-product-sku-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | The record does not exist or is not a parent product. Check the identifier using the [catalog.product.sku.list](./catalog-product-sku-list-rest-v3.md) method ||
 |#
 
 #### Filter Format Error
@@ -749,7 +749,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDFILTEREXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `filter` | Invalid filter `filter` | The method does not support `filter`. Pass `id` ||
+|| `filter` | Invalid filter `Unknown filter condition` | The method does not support `filter`. Pass `id` ||
 |#
 
 #### Unknown Field Error
@@ -758,7 +758,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `ProductDto` | Pass in `fields` only the fields from the [Parameter fields](#fields) table ||
+|| `-` | Unknown field `foo` found in entity `ProductDto` | Pass in `fields` only the fields from the [Parameter fields](#fields) table ||
 |#
 
 #### Access Error

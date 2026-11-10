@@ -52,7 +52,7 @@ Use the method [catalog.product.add](../product/catalog-product-add.md) and pass
 - The file size is limited by the Bitrix24 settings and the free disk space
 - Additional `MORE_PHOTO` images are stored in the product property with the `MORE_PHOTO` code of the "File" type. If the property does not exist or is inactive, you cannot add an additional image
 - The `get` and `delete` methods work only if the image belongs to the product from `productId`
-- In the methods of the previous API version, the `downloadUrl` link is signed with the request token. Do not share it with third parties: authorization data can be recovered from the link
+- In REST 2 methods, the `downloadUrl` link is signed with the request token. Do not share it with third parties: authorization data can be recovered from the link
 
 ## Relationship of Product and Variation Images with Other Objects {#links}
 
@@ -67,7 +67,7 @@ Use the method [catalog.product.add](../product/catalog-product-add.md) and pass
 
 In [REST 3.0](../../rest-v3.md), images have methods for adding, retrieving, and deleting, as well as the `catalog.product.image.field.list` and `catalog.product.image.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the table.
 
-Which version to choose: REST 3.0 accepts a file by the `url` link and returns errors with a code and a field, while the previous version lets you omit the image type.
+Which version to choose: REST 3.0 accepts a file by the `url` link and returns errors with a code and a field, while REST 2 lets you omit the image type.
 
 Specifics of the new version methods:
 
@@ -83,7 +83,7 @@ Specifics of the new version methods:
 > Scope: [`catalog`](../../scopes/permissions.md)
 >
 > Who can perform the methods:
-> - a user with the "View product catalog" or "View catalog products" permission and permission to read the product — to get images using the methods of the previous API version. Adding and deleting require the "View catalog products" permission and permission to edit the product
+> - a user with the "View product catalog" or "View catalog products" permission and permission to read the product — to get images using REST 2 methods. Adding and deleting require the "View catalog products" permission and permission to edit the product
 > - a user with the "View product catalog", "View catalog products", or "Edit selling price" access permission and permission to read the product — for retrieving images in REST 3.0. Adding and deleting require the "Edit product" access permission and permission to edit the product
 
 #|

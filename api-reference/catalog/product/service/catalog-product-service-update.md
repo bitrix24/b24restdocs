@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with the "Edit product" access permission, one of the "View product catalog", "View catalog products", or "Edit selling price" access permissions, and the permission to edit elements of the catalog information block
 
-This method updates the service fields.
+The `catalog.product.service.update` method updates the service fields.
 
 ## Method Parameters
 
@@ -23,91 +23,107 @@ This method updates the service fields.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the service.
+[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the service. You can retrieve the identifier using the [catalog.product.service.list](./catalog-product-service-list.md) method.
 
-To obtain service identifiers, use [catalog.product.service.list](./catalog-product-service-list.md) 
-||
+The method does not check the element type: if you pass the identifier of a product, the method updates its fields and returns `service: []` ||
 || **fields***
-[`object`](../../../data-types.md) | Field values for updating the service ||
+[`object`](../../../data-types.md) | Object with the service fields to update [(detailed description)](#fields).
+
+If you pass an empty object, the method returns the service unchanged ||
 |#
 
-### Parameter fields
+### Parameter fields {#fields}
 
 #|
 || **Name**
 `type` | **Description** ||
 || **name**
-[`string`](../../../data-types.md) | Name of the service ||
+[`string`](../../../data-types.md) | Service name. An empty value causes the "Name is not specified" error ||
 || **active**
-[`string`](../../../data-types.md) | Active status. Possible values:
-- `Y` — yes
-- `N` — no
-||
+[`string`](../../../data-types.md) | Service activity.
+
+Possible values:
+
+- `Y` — active
+- `N` — inactive
+
+Other values are saved as `N` ||
 || **code**
 [`string`](../../../data-types.md) | Symbolic code ||
 || **xmlId**
 [`string`](../../../data-types.md) | External code ||
+|| **sort**
+[`integer`](../../../data-types.md) | Sort order ||
 || **createdBy**
-[`user.id`](../../../data-types.md) | Created by ||
+[`user.id`](../../../data-types.md) | Identifier of the user who created the service. You can retrieve the identifier using the [user.get](../../../user/user-get.md) method ||
 || **modifiedBy**
-[`user.id`](../../../data-types.md) | Modified by ||
+[`user.id`](../../../data-types.md) | Identifier of the user who modified the service ||
 || **dateActiveFrom**
-[`datetime`](../../../data-types.md) | Start date of activity ||
+[`datetime`](../../../data-types.md) | Activity start date. Currently the date cannot be set: a string in any format causes the "Incorrect starting date format" error, and a number is ignored. `null` is accepted ||
 || **dateActiveTo**
-[`datetime`](../../../data-types.md) | End date of activity ||
+[`datetime`](../../../data-types.md) | Activity end date. Currently the date cannot be set: a string in any format causes the "Incorrect expiration date format" error, and a number is ignored. `null` is accepted ||
 || **dateCreate**
-[`datetime`](../../../data-types.md) | Creation date ||
+[`datetime`](../../../data-types.md) | Creation date. The field is filled in automatically, so you do not need to pass it: currently a passed date is saved incorrectly, for example `2026-11-01T10:00:00+01:00` is saved as `2001-11-30T00:00:00+01:00` ||
 || **iblockSectionId**
-[`catalog_section.id`](../../data-types.md#catalog_section) | Identifier of the main section of the information block ||
-|| **IblockSection**
-[`array`](../../../data-types.md)| Array of all sections to which the service is linked ||
+[`catalog_section.id`](../../data-types.md#catalog_section) | Identifier of the main section. You can retrieve the identifier using the [catalog.section.list](../../section/catalog-section-list.md) method.
+
+For a nonexistent section, the method returns the `200040300050` error. To unlink the service from sections, pass `0` ||
+|| **iblockSection**
+[`catalog_section.id[]`](../../data-types.md#catalog_section) | Array of identifiers of the sections to link the service to, for example `[41, 39]`. Set the main section in `iblockSectionId`.
+
+The array replaces the current section links ||
 || **measure**
-[`catalog_measure.id`](../../data-types.md#catalog_measure)| Unit of measurement ||
+[`catalog_measure.id`](../../data-types.md#catalog_measure) | Identifier of the unit of measurement. You can retrieve the identifier using the [catalog.measure.list](../../measure/catalog-measure-list.md) method.
+
+The method does not check that the unit of measurement exists: a nonexistent identifier is saved without an error ||
 || **previewText**
-[`string`](../../../data-types.md) | Description for the announcement ||
+[`string`](../../../data-types.md) | Preview description ||
+|| **previewTextType**
+[`string`](../../../data-types.md) | Type of the preview description.
+
+Possible values:
+
+- `text` — text
+- `html` — HTML ||
+|| **previewPicture**
+[`object`](../../../data-types.md) | Preview picture. An object in the format `{"fileData": ["photo.png", "base64"]}`: the first element is the file name with the extension, the second is the file content in [Base64](../../../files/how-to-upload-files.md).
+
+To delete the picture, pass `{"remove": "Y"}` ||
 || **detailText**
 [`string`](../../../data-types.md) | Detailed description ||
-|| **previewPicture**
-[`object`](../../../data-types.md) | Picture for the announcement. Object in the format `{fileData: [value1, value2]}`, where `value1` — file name of the picture with extension, `value2` — picture in base64 format. 
-
-To delete the picture, use the object in the format `{remove: 'Y'}` ||
-|| **detailPicture**
-[`object`](../../../data-types.md) | Detailed picture. Object in the format `{fileData: [value1, value2]}`, where `value1` — file name of the picture with extension, `value2` — picture in base64 format. 
-
-To delete the picture, use the object in the format `{remove: 'Y'}` ||
-|| **previewTextType**
-[`string`](../../../data-types.md) | Type of description for the announcement. Possible values:
-- `text` — text
-- `html` — HTML
-||
 || **detailTextType**
-[`string`](../../../data-types.md) | Type of detailed description. Possible values:
+[`string`](../../../data-types.md) | Type of the detailed description.
+
+Possible values:
+
 - `text` — text
-- `html` — HTML
-||
-|| **sort**
-[`integer`](../../../data-types.md) | Sorting ||
+- `html` — HTML ||
+|| **detailPicture**
+[`object`](../../../data-types.md) | Detailed picture. An object in the format `{"fileData": ["photo.png", "base64"]}`: the first element is the file name with the extension, the second is the file content in [Base64](../../../files/how-to-upload-files.md).
+
+To delete the picture, pass `{"remove": "Y"}` ||
 || **vatId**
-[`catalog_vat.id`](../../data-types.md#catalog_vat) | VAT identifier ||
+[`catalog_vat.id`](../../data-types.md#catalog_vat) | Identifier of the VAT rate. You can retrieve the identifier using the [catalog.vat.list](../../vat/catalog-vat-list.md) method.
+
+The method does not check that the rate exists: a nonexistent identifier is saved without an error ||
 || **vatIncluded**
-[`string`](../../../data-types.md) | Whether VAT is included in the price. Possible values:
+[`string`](../../../data-types.md) | Whether VAT is included in the price.
+
+Possible values:
+
 - `Y` — yes
-- `N` — no
-||
+- `N` — no ||
 || **propertyN**
-[`object`\|`array`](../../../data-types.md) | Value of the service property, where `N` — property identifier. There can be multiple properties. 
+[`object`\|`array`](../../../data-types.md) | Value of the service property, where `N` is the property identifier. There can be multiple properties.
 
-The value is specified in the format `{valueId: valueId, value: value}` or in the format `[{valueId: valueId1, value: value1}, ..., {valueId: valueIdN, value: valueN}]`, if the property is multiple. Here `valueId` — identifier of the property value, and `value` — property value. 
+The value of a single property is an object `{"valueId": 4159, "value": "SRV-AC-03"}`, the value of a multiple property is an array of such objects. `valueId` is the identifier of the property value, you can retrieve it using the [catalog.product.service.get](./catalog-product-service-get.md) method.
 
-If `valueId` is not specified, the existing value will be removed from the database and replaced with the new one specified in `value`. If the property is multiple, all existing property values for which `valueId` was not specified will be removed. An exception is "file" type properties: their values that are not passed in the request are retained, but after a removal the `valueId` of the remaining values changes.
-
-`valueId` of all service properties can be obtained using the methods [catalog.product.service.get](./catalog-product-service-get.md) and [catalog.product.service.list](./catalog-product-service-list.md)
-||
+If `valueId` is not specified, the existing value is deleted and replaced with the new one from `value`. For a multiple property, all values for which `valueId` is not passed are deleted. The exception is properties of the "File" type: values not passed in the request are retained, but their `valueId` change ||
 |#
 
-{% note warning "Working with service prices" %}
+{% note warning "Working with Service Prices" %}
 
-To change the service price, use the methods [catalog.price.*](../../price/index.md).
+To change the service price, use the [catalog.price.*](../../price/index.md) methods.
 
 {% endnote %}
 
@@ -123,7 +139,7 @@ To change the service price, use the methods [catalog.price.*](../../price/index
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1265,"fields":{"name":"Service","active":"Y","code":"service","createdBy":1,"dateActiveFrom":"2024-05-28T10:00:00","dateActiveTo":"2024-05-29T10:00:00","dateCreate":"2024-05-27T10:00:00","detailPicture":{"fileData":["detailPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"]},"detailText":"","detailTextType":"text","iblockSectionId":47,"modifiedBy":1,"previewPicture":{"fileData":["previewPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC"]},"previewText":"","previewTextType":"text","sort":100,"vatId":1,"vatIncluded":"Y","xmlId":"216","property258":{"value":"test","valueId":9809},"property259":[{"value":"test1","valueId":9810},{"value":"test2","valueId":9811}]}}' \
+    -d '{"id":7697,"fields":{"name":"Air conditioner installation with an on-site visit","previewText":"Split system installation with a technician visit","detailPicture":{"fileData":["photo.png","iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="]},"property301":{"valueId":4159,"value":"SRV-AC-03"},"property305":[{"valueId":4161,"value":"Technician visit"},{"value":"Removal of the old unit"}]}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.service.update
     ```
 
@@ -133,7 +149,7 @@ To change the service price, use the methods [catalog.price.*](../../price/index
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1265,"fields":{"name":"Service","active":"Y","code":"service","createdBy":1,"dateActiveFrom":"2024-05-28T10:00:00","dateActiveTo":"2024-05-29T10:00:00","dateCreate":"2024-05-27T10:00:00","detailPicture":{"fileData":["detailPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"]},"detailText":"","detailTextType":"text","iblockSectionId":47,"modifiedBy":1,"previewPicture":{"fileData":["previewPicture.png","iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC"]},"previewText":"","previewTextType":"text","sort":100,"vatId":1,"vatIncluded":"Y","xmlId":"216","property258":{"value":"test","valueId":9809},"property259":[{"value":"test1","valueId":9810},{"value":"test2","valueId":9811}]},"auth":"**put_access_token_here**"}' \
+    -d '{"id":7697,"fields":{"name":"Air conditioner installation with an on-site visit","previewText":"Split system installation with a technician visit","detailPicture":{"fileData":["photo.png","iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="]},"property301":{"valueId":4159,"value":"SRV-AC-03"},"property305":[{"valueId":4161,"value":"Technician visit"},{"value":"Removal of the old unit"}]},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.service.update
     ```
 
@@ -148,71 +164,49 @@ To change the service price, use the methods [catalog.price.*](../../price/index
     declare const $b24: B24Frame
 
     // Shape of the payload returned in result (match the "response handling" section of the page)
-    type ServiceUpdateResult = {
+    type ServiceResult = {
       service: {
-        active: string,
-        available: string,
-        bundle: string,
-        code: string,
-        createdBy: number,
-        dateActiveFrom: ISODate | null,
-        dateActiveTo: ISODate | null,
-        dateCreate: ISODate | null,
-        detailPicture: { id: string, url: string, urlMachine: string } | null,
-        detailText: string | null,
-        detailTextType: string,
-        iblockId: number,
-        iblockSectionId: number,
         id: number,
-        modifiedBy: number,
+        iblockId: number,
+        iblockSectionId: number | null,
+        iblockSection: number[] | null,
         name: string,
-        previewPicture: { id: string, url: string, urlMachine: string } | null,
-        previewText: string | null,
-        previewTextType: string,
-        property258: { value: string, valueId: string } | null,
-        property259: Array<{ value: string, valueId: string }> | null,
-        sort: number,
-        timestampX: ISODate,
-        type: number,
-        vatId: number,
-        vatIncluded: string,
+        code: string | null,
+        active: string,
         xmlId: string,
-      },
+        dateCreate: ISODate,
+        timestampX: ISODate,
+        previewPicture: { id: string, url: string, urlMachine: string } | null,
+        detailPicture: { id: string, url: string, urlMachine: string } | null,
+        property301: { value: string, valueId: string } | null,
+        property305: Array<{ value: string, valueId: string }> | null,
+        [key: string]: unknown,
+      }
     }
 
     try {
-      const response = await $b24.actions.v2.call.make<ServiceUpdateResult>({
+      const response = await $b24.actions.v2.call.make<ServiceResult>({
         method: 'catalog.product.service.update',
         params: {
-          id: 1265,
+          id: 7697,
           fields: {
-            name: 'Service',
-            active: 'Y',
-            code: 'service',
-            createdBy: 1,
-            dateActiveFrom: '2024-05-28T10:00:00',
-            dateActiveTo: '2024-05-29T10:00:00',
-            dateCreate: '2024-05-27T10:00:00',
+            name: 'Air conditioner installation with an on-site visit',
+            previewText: 'Split system installation with a technician visit',
             detailPicture: {
-              fileData: ['detailPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4no3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nо3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'],
+              fileData: ['photo.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='],
             },
-            detailText: '',
-            detailTextType: 'text',
-            iblockSectionId: 47,
-            modifiedBy: 1,
-            previewPicture: {
-              fileData: ['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nо3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nо3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'],
+            property301: {
+              valueId: 4159,
+              value: 'SRV-AC-03',
             },
-            previewText: '',
-            previewTextType: 'text',
-            sort: 100,
-            vatId: 1,
-            vatIncluded: 'Y',
-            xmlId: '216',
-            property258: { value: 'test', valueId: 9809 },
-            property259: [
-              { value: 'test1', valueId: 9810 },
-              { value: 'test2', valueId: 9811 },
+            property305: [
+              {
+                valueId: 4161,
+                value: 'Technician visit',
+              },
+              {
+                value: 'Removal of the old unit',
+              },
             ],
           },
         },
@@ -224,7 +218,7 @@ To change the service price, use the methods [catalog.price.*](../../price/index
         console.error(response.getErrorMessages().join('; '))
       } else {
         const result = response.getData()!.result
-        console.info('Updated service:', result.service.id, result.service.name)
+        console.info('Updated service id:', result.service.id, 'name:', result.service.name)
       }
     } catch (error) {
       // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
@@ -246,35 +240,25 @@ To change the service price, use the methods [catalog.price.*](../../price/index
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.product.service.update',
             params: {
-              id: 1265,
+              id: 7697,
               fields: {
-                name: 'Service',
-                active: 'Y',
-                code: 'service',
-                createdBy: 1,
-                dateActiveFrom: '2024-05-28T10:00:00',
-                dateActiveTo: '2024-05-29T10:00:00',
-                dateCreate: '2024-05-27T10:00:00',
+                name: 'Air conditioner installation with an on-site visit',
+                previewText: 'Split system installation with a technician visit',
                 detailPicture: {
-                  fileData: ['detailPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nо3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nо3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'],
+                  fileData: ['photo.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='],
                 },
-                detailText: '',
-                detailTextType: 'text',
-                iblockSectionId: 47,
-                modifiedBy: 1,
-                previewPicture: {
-                  fileData: ['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nо3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nо3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC'],
+                property301: {
+                  valueId: 4159,
+                  value: 'SRV-AC-03',
                 },
-                previewText: '',
-                previewTextType: 'text',
-                sort: 100,
-                vatId: 1,
-                vatIncluded: 'Y',
-                xmlId: '216',
-                property258: { value: 'test', valueId: 9809 },
-                property259: [
-                  { value: 'test1', valueId: 9810 },
-                  { value: 'test2', valueId: 9811 },
+                property305: [
+                  {
+                    valueId: 4161,
+                    value: 'Technician visit',
+                  },
+                  {
+                    value: 'Removal of the old unit',
+                  },
                 ],
               },
             },
@@ -288,7 +272,7 @@ To change the service price, use the methods [catalog.price.*](../../price/index
           }
 
           const result = response.getData().result
-          console.info('Updated service:', result.service.id, result.service.name)
+          console.info('Updated service id:', result.service.id, 'name:', result.service.name)
         } catch (error) {
           // Thrown on transport or SDK failures (AjaxError, SdkError, etc.)
           console.error(error)
@@ -306,55 +290,32 @@ To change the service price, use the methods [catalog.price.*](../../price/index
 
     try:
         bitrix_response = client.catalog.product.service.update(
-            bitrix_id=1265,
+            id=7697,
             fields={
-                "name": "Service",
-                "active": "Y",
-                "code": "service",
-                "createdBy": 1,
-                "dateActiveFrom": "2024-05-28T10:00:00",
-                "dateActiveTo": "2024-05-29T10:00:00",
-                "dateCreate": "2024-05-27T10:00:00",
+                "name": "Air conditioner installation with an on-site visit",
+                "previewText": "Split system installation with a technician visit",
                 "detailPicture": {
-                    "fileData": [
-                        "detailPicture.png",
-                        "put_base64_file_content_here",
-                    ],
+                    "fileData": ["photo.png", "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="],
                 },
-                "detailText": "",
-                "detailTextType": "text",
-                "iblockSectionId": 47,
-                "modifiedBy": 1,
-                "previewPicture": {
-                    "fileData": [
-                        "previewPicture.png",
-                        "put_base64_file_content_here",
-                    ],
+                "property301": {
+                    "valueId": 4159,
+                    "value": "SRV-AC-03",
                 },
-                "previewText": "",
-                "previewTextType": "text",
-                "sort": 100,
-                "vatId": 1,
-                "vatIncluded": "Y",
-                "xmlId": "216",
-                "property258": {
-                    "value": "test",
-                    "valueId": 9809,
-                },
-                "property259": [
+                "property305": [
                     {
-                        "value": "test1",
-                        "valueId": 9810,
+                        "valueId": 4161,
+                        "value": "Technician visit",
                     },
                     {
-                        "value": "test2",
-                        "valueId": 9811,
+                        "value": "Removal of the old unit",
                     },
                 ],
             },
         ).response
+
         result = bitrix_response.result
         print(result)
+
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
@@ -377,50 +338,39 @@ To change the service price, use the methods [catalog.price.*](../../price/index
             ->call(
                 'catalog.product.service.update',
                 [
-                    'id' => 1265,
+                    'id'     => 7697,
                     'fields' => [
-                        'name' => 'Service',
-                        'active' => 'Y',
-                        'code' => 'service',
-                        'createdBy' => 1,
-                        'dateActiveFrom' => '2024-05-28T10:00:00',
-                        'dateActiveTo' => '2024-05-29T10:00:00',
-                        'dateCreate' => '2024-05-27T10:00:00',
+                        'name'          => 'Air conditioner installation with an on-site visit',
+                        'previewText'   => 'Split system installation with a technician visit',
                         'detailPicture' => [
-                            'fileData' => ['detailPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC']
+                            'fileData' => ['photo.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='],
                         ],
-                        'detailText' => '',
-                        'detailTextType' => 'text',
-                        'iblockSectionId' => 47,
-                        'modifiedBy' => 1,
-                        'previewPicture' => [
-                            'fileData' => ['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC']
+                        'property301'   => [
+                            'valueId' => 4159,
+                            'value'   => 'SRV-AC-03',
                         ],
-                        'previewText' => '',
-                        'previewTextType' => 'text',
-                        'sort' => 100,
-                        'vatId' => 1,
-                        'vatIncluded' => 'Y',
-                        'xmlId' => '216',
-                        'property258' => ['value' => 'test', 'valueId' => 9809],
-                        'property259' => [
-                            ['value' => 'test1', 'valueId' => 9810],
-                            ['value' => 'test2', 'valueId' => 9811]
+                        'property305'   => [
+                            [
+                                'valueId' => 4161,
+                                'value'   => 'Technician visit',
+                            ],
+                            [
+                                'value' => 'Removal of the old unit',
+                            ],
                         ],
-                    ]
+                    ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
-        processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
-        echo 'Error updating product service: ' . $e->getMessage();
+        echo 'Error updating service: ' . $e->getMessage();
     }
     ```
 
@@ -428,42 +378,37 @@ To change the service price, use the methods [catalog.price.*](../../price/index
 
     ```js
     BX24.callMethod(
-    'catalog.product.service.update', 
-    {
-        'id': 1265,
-        'fields':{
-                name: 'Service',
-                active: 'Y',
-                code: 'service',
-                createdBy: 1,
-                dateActiveFrom: '2024-05-28T10:00:00',
-                dateActiveTo: '2024-05-29T10:00:00',
-                dateCreate: '2024-05-27T10:00:00',
-                detailPicture: {
-                    'fileData':  ['detailPicture.png','iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC']},
-                detailText: '',
-                detailTextType: 'text',
-                iblockSectionId: 47,
-                modifiedBy: 1,
-                previewPicture: {
-                    'fileData':['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC']},
-                previewText: '',
-                previewTextType: 'text',
-                sort: 100,
-                vatId: 1,
-                vatIncluded: 'Y',
-                xmlId: '216',
-                property258: {value: 'test', valueId: 9809},
-                property259: [{value: 'test1', valueId: 9810}, {value: 'test2', valueId: 9811}],
-    },
-    },
-    function(result)
-    {
-    if(result.error())
-    console.error(result.error());
-    else
-    console.log(result.data());
-    }
+        'catalog.product.service.update',
+        {
+            'id': 7697,
+            'fields': {
+                'name': 'Air conditioner installation with an on-site visit',
+                'previewText': 'Split system installation with a technician visit',
+                'detailPicture': {
+                    'fileData': ['photo.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==']
+                },
+                'property301': {
+                    'valueId': 4159,
+                    'value': 'SRV-AC-03'
+                },
+                'property305': [
+                    {
+                        'valueId': 4161,
+                        'value': 'Technician visit'
+                    },
+                    {
+                        'value': 'Removal of the old unit'
+                    }
+                ]
+            }
+        },
+        function(result)
+        {
+            if(result.error())
+                console.error(result.error());
+            else
+                console.log(result.data());
+        }
     );
     ```
 
@@ -475,37 +420,27 @@ To change the service price, use the methods [catalog.price.*](../../price/index
     $result = CRest::call(
         'catalog.product.service.update',
         [
-            'id' => 1265,
+            'id'     => 7697,
             'fields' => [
-                'name' => 'Service',
-                'active' => 'Y',
-                'code' => 'service',
-                'createdBy' => 1,
-                'dateActiveFrom' => '2024-05-28T10:00:00',
-                'dateActiveTo' => '2024-05-29T10:00:00',
-                'dateCreate' => '2024-05-27T10:00:00',
+                'name'          => 'Air conditioner installation with an on-site visit',
+                'previewText'   => 'Split system installation with a technician visit',
                 'detailPicture' => [
-                    'fileData' => ['detailPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCC']
+                    'fileData' => ['photo.png', 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='],
                 ],
-                'detailText' => '',
-                'detailTextType' => 'text',
-                'iblockSectionId' => 47,
-                'modifiedBy' => 1,
-                'previewPicture' => [
-                    'fileData' => ['previewPicture.png', 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElFTkSuQmCC']
+                'property301'   => [
+                    'valueId' => 4159,
+                    'value'   => 'SRV-AC-03',
                 ],
-                'previewText' => '',
-                'previewTextType' => 'text',
-                'sort' => 100,
-                'vatId' => 1,
-                'vatIncluded' => 'Y',
-                'xmlId' => '216',
-                'property258' => ['value' => 'test', 'valueId' => 9809],
-                'property259' => [
-                    ['value' => 'test1', 'valueId' => 9810],
-                    ['value' => 'test2', 'valueId' => 9811]
+                'property305'   => [
+                    [
+                        'valueId' => 4161,
+                        'value'   => 'Technician visit',
+                    ],
+                    [
+                        'value' => 'Removal of the old unit',
+                    ],
                 ],
-            ]
+            ],
         ]
     );
 
@@ -519,43 +454,24 @@ To change the service price, use the methods [catalog.price.*](../../price/index
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.service.update", b24.Params{
-    	"id": 1265,
+    	"id":     7697,
     	"fields": b24.Params{
-    		"name":           "Service",
-    		"active":         "Y",
-    		"code":           "service",
-    		"createdBy":      1,
-    		"dateActiveFrom": "2024-05-28T10:00:00",
-    		"dateActiveTo":   "2024-05-29T10:00:00",
-    		"dateCreate":     "2024-05-27T10:00:00",
+    		"name":          "Air conditioner installation with an on-site visit",
+    		"previewText":   "Split system installation with a technician visit",
     		"detailPicture": b24.Params{
-    			"fileData": []string{"detailPicture.png", "iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"},
+    			"fileData": []string{"photo.png", "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="},
     		},
-    		"detailText":      "",
-    		"detailTextType":  "text",
-    		"iblockSectionId": 47,
-    		"modifiedBy":      1,
-    		"previewPicture": b24.Params{
-    			"fileData": []string{"previewPicture.png", "iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BMVEX37ff/­///58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7EAAAOxAGV­Kw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCocSfQFGKP3­+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA/q2TwrXZ­ib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt3qSQtwdJ­Ssku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+28tICq4rT­qXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQEFhV3CCN­Tph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKrihqje7Y9­iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guvayybW1i3­Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWtJSyP21r+­FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0hPtw86hMX­99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xfAAAAAElF­TkSuQmCCiVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAAG1BM­VEX37ff////58fn9+v3+/P779vv8+Pz47/j68/oDfe+3AAAACXBIWXMAAA7E­AAAOxAGVKw4bAAABrUlEQVR4nO3UT0/CMBjH8ccx2I56IFynkHg1SgxHHCoc­SfQFGKP3+e++xL1wn7bPUCAeKF5Mvp+EluX3ZN3ariIAAAAAAAAAAAAAAAAA­/q2TwrXZib94LTbj5GdgVbtKxhdXS+2uL270ajQbL9fz4WzcXwVWtbNeIdmt­3qSQtwdJSsku1/NHkfdVEKriHFey0G4haS3+ty4ZtEGoipMW+VS7T2m0zc+2­8tICq4rTqXtuJV7kWdvsUJtuoc1Hm08ssKo4B1Wn1i6tJu5qrj9dA8lWEzOQ­EFhV3CCNTph2naJ0V+eu0SV+ry3WWQqBVcUNsgiP16ndS4SnzuffL5LWEgKr­ihqje7Y9iDTN6mZ38geDNNX2dEm338b5XPafrmRuj/dj4fULfGoXeFTJ/guv­ayybW1i3Vl7aM7h+3y2c+y07FfeZjaT9GHVrNYXPG/fkIbCqCPf+9d1WKiWt­JSyP21r+FaTrZ8+CULW7XliCUe0PyIUdkD29qQzdv7A0FoSq3R0fqaU78d0h­Ptw86hMX99vAqqJlp757/W3vhMCqAAAAAAAAAAAAAAAAAPxbX82/SILlk9xf­AAAAAElFTkSuQmCC"},
+    		"property301":   b24.Params{
+    			"valueId": 4159,
+    			"value":   "SRV-AC-03",
     		},
-    		"previewText":     "",
-    		"previewTextType": "text",
-    		"sort":            100,
-    		"vatId":           1,
-    		"vatIncluded":     "Y",
-    		"xmlId":           "216",
-    		"property258": b24.Params{
-    			"value":   "test",
-    			"valueId": 9809,
-    		},
-    		"property259": []b24.Params{
-    			{
-    				"value":   "test1",
-    				"valueId": 9810,
+    		"property305":   []b24.Params{
+    			b24.Params{
+    				"valueId": 4161,
+    				"value":   "Technician visit",
     			},
-    			{
-    				"value":   "test2",
-    				"valueId": 9811,
+    			b24.Params{
+    				"value": "Removal of the old unit",
     			},
     		},
     	},
@@ -571,24 +487,25 @@ To change the service price, use the methods [catalog.price.*](../../price/index
     }
 
     var item struct {
-    	Active         string `json:"active"`
-    	Available      string `json:"available"`
-    	Bundle         string `json:"bundle"`
-    	Code           string `json:"code"`
-    	CreatedBy      int    `json:"createdBy"`
-    	DateActiveFrom string `json:"dateActiveFrom"`
+    	ID              int    `json:"id"`
+    	IblockID        int    `json:"iblockId"`
+    	IblockSectionID int    `json:"iblockSectionId"`
+    	Name            string `json:"name"`
+    	Code            string `json:"code"`
+    	Active          string `json:"active"`
+    	XMLID           string `json:"xmlId"`
     }
     if err := json.Unmarshal(raw, &item); err != nil {
     	return fmt.Errorf("parse response: %w", err)
     }
-    fmt.Println(item.Active, item.Available)
+    fmt.Println(item.ID, item.Name)
     ```
 
 {% endlist %}
 
 ## Response Handling
 
-HTTP Status: **200**
+HTTP status: **200**
 
 ```json
 {
@@ -597,59 +514,60 @@ HTTP Status: **200**
             "active": "Y",
             "available": "N",
             "bundle": "N",
-            "code": "service",
-            "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
-            "dateActiveTo": "2024-05-29T10:00:00+02:00",
-            "dateCreate": "2024-05-27T10:00:00+02:00",
+            "code": null,
+            "createdBy": 1269,
+            "dateActiveFrom": null,
+            "dateActiveTo": null,
+            "dateCreate": "2026-11-06T14:21:47+01:00",
             "detailPicture": {
-                "id": "6501",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6501\u0026fields%5BproductId%5D=1265",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6501\u0026fields%5BproductId%5D=1265"
+                "id": "40065",
+                "url": "/rest/catalog.product.download?fields%5BfieldName%5D=detailPicture&fields%5BfileId%5D=40065&fields%5BproductId%5D=7697",
+                "urlMachine": "/rest/catalog.product.download?fields%5BfieldName%5D=detailPicture&fields%5BfileId%5D=40065&fields%5BproductId%5D=7697"
             },
             "detailText": null,
             "detailTextType": "text",
-            "iblockId": 23,
-            "iblockSectionId": 47,
-            "id": 1265,
-            "modifiedBy": 1,
-            "name": "Service",
-            "previewPicture": {
-                "id": "6500",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6500\u0026fields%5BproductId%5D=1265",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6500\u0026fields%5BproductId%5D=1265"
-            },
-            "previewText": null,
+            "iblockId": 25,
+            "iblockSection": null,
+            "iblockSectionId": null,
+            "id": 7697,
+            "measure": null,
+            "modifiedBy": 1269,
+            "name": "Air conditioner installation with an on-site visit",
+            "previewPicture": null,
+            "previewText": "Split system installation with a technician visit",
             "previewTextType": "text",
-            "property258": {
-                "value": "test",
-                "valueId": "9809"
+            "property301": {
+                "value": "SRV-AC-03",
+                "valueId": "4159"
             },
-            "property259": [
+            "property303": null,
+            "property305": [
                 {
-                    "value": "test1",
-                    "valueId": "9810"
+                    "value": "Technician visit",
+                    "valueId": "4161"
                 },
                 {
-                    "value": "test2",
-                    "valueId": "9811"
+                    "value": "Removal of the old unit",
+                    "valueId": "4163"
                 }
             ],
-            "sort": 100,
-            "timestampX": "2024-06-14T12:53:26+02:00",
+            "sort": 500,
+            "timestampX": "2026-11-06T14:21:59+01:00",
             "type": 7,
-            "vatId": 1,
-            "vatIncluded": "Y",
-            "xmlId": "216"
+            "vatId": null,
+            "vatIncluded": "N",
+            "xmlId": "7697"
         }
     },
     "time": {
-        "start": 1718366006.003236,
-        "finish": 1718366007.201945,
-        "duration": 1.1987090110778809,
-        "processing": 0.7935080528259277,
-        "date_start": "2024-06-14T14:53:26+02:00",
-        "date_finish": "2024-06-14T14:53:27+02:00"
+        "start": 1793964118,
+        "finish": 1793964119.417712,
+        "duration": 1.4177119731903076,
+        "processing": 0,
+        "date_start": "2026-11-06T14:21:58+01:00",
+        "date_finish": "2026-11-06T14:21:59+01:00",
+        "operating_reset_at": 1793964660,
+        "operating": 0.6042139530181885
     }
 }
 ```
@@ -661,19 +579,21 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **service**
-[`catalog_product_service`](../../data-types.md#catalog_product_service) | Object with information about the updated service ||
+|| **result.service**
+[`catalog_product_service`](../../data-types.md#catalog_product_service) | Object with the service fields after the update. Empty fields are returned as `null`.
+
+The response contains all information block properties as `propertyN` keys. The example shows only the `property301`, `property303`, and `property305` properties ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
 
-HTTP Status: **400**
+HTTP status: **400**
 
 ```json
 {
-    "error":200040300010,
+    "error":"200040300010",
     "error_description":"Access denied"
 }
 ```
@@ -683,37 +603,22 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300043` | Insufficient rights to update the information block
-|| 
-|| `200040300050` | Insufficient rights to bind the information block element to the section
-|| 
-|| `200040300040` | Insufficient rights to update services
-|| 
-|| `200040300000` | Information block with the specified identifier not found
-|| 
-|| `200040300010` | Insufficient rights to read the trade catalog
-|| 
-|| `100` | Parameter `id` not specified
-|| 
-|| `100` | Parameter `fields` not specified or empty
-|| 
-|| `0` | Section with the specified identifier does not exist
-|| 
-|| `0` | VAT rate with the specified identifier does not exist
-|| 
-|| `0` | The specified currency of the purchase price does not exist
-|| 
-|| `0` | User with the specified identifier who created the service does not exist
-|| 
-|| `0` | User with the specified identifier who modified the service does not exist
-|| 
-|| `0` | Service with the specified identifier does not exist in the information block with the specified identifier
-|| 
-|| `0` | Service with the specified identifier does not exist
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" access permissions ||
+|| `400` | `200040300040` | Access Denied | The user does not have the "Edit product" access permission ||
+|| `400` | `200040300043` | Access Denied | The user does not have the permission to edit elements of the catalog information block ||
+|| `400` | `200040300050` | Access Denied | The `iblockSectionId` section does not exist, or the user does not have the permission to link elements to it ||
+|| `400` | Empty value | service does not exist. | There is no service with the specified `id`. The method returns the same error if `id` contains a string that is not a number ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
+|| `400` | `100` | Could not find value for parameter {fields} | The `fields` parameter is not provided ||
+|| `400` | `100` | Invalid value {abc} to match with parameter {fields}. Should be value of type array. | `fields` is not an object ||
+|| `400` | `0` | productType is not allowed for this catalog | `fields.iblockId` contains another information block. A service cannot be moved to another catalog ||
+|| `400` | `0` | Incorrect starting date format.<br> | `dateActiveFrom` contains a string. Currently the date cannot be set ||
+|| `400` | `0` | Incorrect expiration date format.<br> | `dateActiveTo` contains a string. Currently the date cannot be set ||
+|| `400` | `0` | Name is not specified.<br> | `name` contains an empty string ||
+|| `400` | `0` | User createdBy is not exists | The `createdBy` user was not found ||
+|| `400` | `0` | User modifiedBy is not exists | The `modifiedBy` user was not found ||
+|| `400` | `0` | Wrong format of field `name`. | The field contains an array or an object instead of a value. The text names the field ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
@@ -723,6 +628,6 @@ HTTP Status: **400**
 - [{#T}](./catalog-product-service-add.md)
 - [{#T}](./catalog-product-service-get.md)
 - [{#T}](./catalog-product-service-list.md)
-- [{#T}](./catalog-product-service-download.md)
 - [{#T}](./catalog-product-service-delete.md)
+- [{#T}](./catalog-product-service-download.md)
 - [{#T}](./catalog-product-service-get-fields-by-filter.md)

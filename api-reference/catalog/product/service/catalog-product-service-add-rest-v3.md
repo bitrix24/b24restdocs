@@ -272,7 +272,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"iblockId":25,"name":"Equipment installation","xmlId":"DOCS-V3-SERVICE-1","sort":100,"vatId":1,"vatIncluded":"Y","measure":9,"previewText":"Installation and connection of equipment","iblockSectionId":45,"properties":{"PROPERTY_301":"SRV-001"}}}' \
+    -d '{"fields":{"iblockId":25,"name":"Equipment installation","xmlId":"installation-001","sort":100,"vatId":1,"vatIncluded":"Y","measure":9,"previewText":"Installation and connection of equipment","iblockSectionId":45,"properties":{"PROPERTY_301":"SRV-001"}}}' \
     https://**put_your_bitrix24_address**/rest/api/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.service.add
     ```
 
@@ -282,7 +282,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"fields":{"iblockId":25,"name":"Equipment installation","xmlId":"DOCS-V3-SERVICE-1","sort":100,"vatId":1,"vatIncluded":"Y","measure":9,"previewText":"Installation and connection of equipment","iblockSectionId":45,"properties":{"PROPERTY_301":"SRV-001"}},"auth":"**put_access_token_here**"}' \
+    -d '{"fields":{"iblockId":25,"name":"Equipment installation","xmlId":"installation-001","sort":100,"vatId":1,"vatIncluded":"Y","measure":9,"previewText":"Installation and connection of equipment","iblockSectionId":45,"properties":{"PROPERTY_301":"SRV-001"}},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/api/catalog.product.service.add
     ```
 
@@ -321,7 +321,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
           fields: {
             iblockId: 25,
             name: 'Equipment installation',
-            xmlId: 'DOCS-V3-SERVICE-1',
+            xmlId: 'installation-001',
             sort: 100,
             vatId: 1,
             vatIncluded: 'Y',
@@ -363,7 +363,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
               fields: {
                 iblockId: 25,
                 name: 'Equipment installation',
-                xmlId: 'DOCS-V3-SERVICE-1',
+                xmlId: 'installation-001',
                 sort: 100,
                 vatId: 1,
                 vatIncluded: 'Y',
@@ -405,7 +405,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             fields={
                 "iblockId": 25,
                 "name": "Equipment installation",
-                "xmlId": "DOCS-V3-SERVICE-1",
+                "xmlId": "installation-001",
                 "sort": 100,
                 "vatId": 1,
                 "vatIncluded": "Y",
@@ -446,7 +446,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
                     'fields' => [
                         'iblockId' => 25,
                         'name' => 'Equipment installation',
-                        'xmlId' => 'DOCS-V3-SERVICE-1',
+                        'xmlId' => 'installation-001',
                         'sort' => 100,
                         'vatId' => 1,
                         'vatIncluded' => 'Y',
@@ -481,7 +481,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             fields: {
                 iblockId: 25,
                 name: 'Equipment installation',
-                xmlId: 'DOCS-V3-SERVICE-1',
+                xmlId: 'installation-001',
                 sort: 100,
                 vatId: 1,
                 vatIncluded: 'Y',
@@ -515,7 +515,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
             'fields' => [
                 'iblockId' => 25,
                 'name' => 'Equipment installation',
-                'xmlId' => 'DOCS-V3-SERVICE-1',
+                'xmlId' => 'installation-001',
                 'sort' => 100,
                 'vatId' => 1,
                 'vatIncluded' => 'Y',
@@ -542,7 +542,7 @@ The new API call differs by adding the `/api/` segment to the request URL:
     	"fields": b24.Params{
     		"iblockId":        25,
     		"name":            "Equipment installation",
-    		"xmlId":           "DOCS-V3-SERVICE-1",
+    		"xmlId":           "installation-001",
     		"sort":            100,
     		"vatId":           1,
     		"vatIncluded":     "Y",
@@ -590,7 +590,7 @@ HTTP status: **200**
             "iblockId": 25,
             "name": "Equipment installation",
             "code": null,
-            "xmlId": "DOCS-V3-SERVICE-1",
+            "xmlId": "installation-001",
             "active": "Y",
             "sort": 100,
             "createdBy": 1,
@@ -844,9 +844,9 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_REQUESTVALIDATIONEXCEPTION`
 || `-` | Currency purchasingCurrency is not exists | Pass the code of an existing currency ||
 || `-` | User createdBy is not exists | Pass the identifier of an existing user in `createdBy` ||
 || `-` | User modifiedBy is not exists | Pass the identifier of an existing user in `modifiedBy` ||
-|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: `#KEYS#` | Pass property keys in the `PROPERTY_{id}` format, for example `PROPERTY_301` ||
-|| `-` | The properties field names one property by several keys: `#KEYS#` | Pass each property with a single key ||
-|| `#FIELD#` | This request requires data type `#TYPE#` in field `#FIELD#` | Pass a value of the required type ||
+|| `-` | The properties field accepts only the property keys PROPERTY_{id}, unknown keys: bad | Pass property keys in the `PROPERTY_{id}` format, for example `PROPERTY_301` ||
+|| `-` | The properties field names one property by several keys: PROPERTY_301, 301 | Pass each property with a single key ||
+|| `sort` | This request requires data type `int` in field `sort` | Pass a value of the required type. The field column and the error text name the field with the invalid value ||
 || `-` | Internal error adding product. Try adding again. | Repeat the request ||
 |#
 
@@ -858,7 +858,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_VALIDATION_DTOVALIDATIONEXCEPTION`
 || **Field** | **Error description** | **How to Fix** ||
 || `name` | Required field `name` is empty | Pass the service name in `fields.name` ||
 || `iblockId` | Required field `iblockId` is empty | Pass the catalog identifier in `fields.iblockId` ||
-|| `#FIELD#` | Field `#FIELD#` is read-only | Remove the read-only fields from `fields`: `id`, `dateCreate`, `timestampX`, `type`, `available`, `bundle` ||
+|| `id` | Field `id` is read-only | Remove the read-only fields from `fields`: `id`, `dateCreate`, `timestampX`, `type`, `available`, `bundle` ||
 |#
 
 #### Unknown Field Error
@@ -867,7 +867,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `-` | Unknown field `#FIELD#` found in entity `ProductDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields` ||
+|| `-` | Unknown field `foo` found in entity `ProductDto` | Pass only the fields from the [Parameter fields](#fields) table in `fields` ||
 |#
 
 #### Access Error

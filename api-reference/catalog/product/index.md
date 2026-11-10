@@ -15,11 +15,22 @@ For a simple product, use `catalog.product.*`; for a service, use `catalog.produ
 
 A simple product or service is a single inventory item with a name and unit of measurement. A product variation is a trade offer where the product has additional characteristics, such as color and size. For each combination of characteristics, a separate inventory item with a unique SKU is created.
 
+Product methods are available in two API versions: REST 2 and [REST 3.0](../../rest-v3.md). In the method tables, REST 3.0 methods are marked as `v 3.0`. The specifics of the new version are described in the [Products in REST 3.0](#rest3) section.
+
 > Quick navigation: [all methods and events](#all-methods)
 >
 > User documentation:
 > - [Add products to the catalog](https://helpdesk.bitrix24.com/open/18532198/)
 > - [Working with the product variants](https://helpdesk.bitrix24.com/open/18839102/)
+
+## How to Start
+
+1. Get the trade catalog identifier using [catalog.catalog.list](../catalog/catalog-catalog-list.md)
+2. If products need to be distributed across sections, create sections using [catalog.section.*](../section/index.md)
+3. Create a [product](./catalog-product-add.md), a [service](./service/catalog-product-service-add.md), or a [parent product](./sku/catalog-product-sku-add.md) with [variations](./offer/catalog-product-offer-add.md)
+4. Add images using [catalog.productImage.add](../product-image/catalog-product-image-add.md) or through image fields when creating a product
+5. Set the price using [catalog.price.*](../price/index.md)
+6. Verify the result with [catalog.product.get](./catalog-product-get.md) or the corresponding `get` method for a service, parent product, or variation
 
 ## Relationship with Other Objects
 
@@ -39,16 +50,7 @@ A simple product or service is a single inventory item with a name and unit of m
 
 **Inventory Management.** If inventory management is enabled, you do not need to specify the available quantity when creating or editing a product — inventory management will automatically set the values.
 
-## How to Start
-
-1. Get the trade catalog identifier using [catalog.catalog.list](../catalog/catalog-catalog-list.md)
-2. If products need to be distributed across sections, create sections using [catalog.section.*](../section/index.md)
-3. Create a [product](./catalog-product-add.md), a [service](./service/catalog-product-service-add.md), or a [parent product](./sku/catalog-product-sku-add.md) with [variations](./offer/catalog-product-offer-add.md)
-4. Add images using [catalog.productImage.add](../product-image/catalog-product-image-add.md) or through image fields when creating a product
-5. Set the price using [catalog.price.*](../price/index.md)
-6. Verify the result with [catalog.product.get](./catalog-product-get.md) or the corresponding `get` method for a service, parent product, or variation
-
-## Products in REST 3.0
+## Products in REST 3.0 {#rest3}
 
 In [REST 3.0](../../rest-v3.md), products, services, parent products, and variations have methods for adding, updating, retrieving, deleting, and downloading files, as well as the `*.field.list` and `*.field.get` methods for retrieving the field schema. Methods available in both API versions are marked `v 3.0` in the tables. The directory of product types is returned by the [catalog.product.type.list](./catalog-product-type-list.md) method.
 

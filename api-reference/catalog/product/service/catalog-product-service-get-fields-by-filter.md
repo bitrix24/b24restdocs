@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with one of the "View product catalog", "View catalog products", or "Edit selling price" access permissions
 
-The method returns service fields based on the filter.
+The `catalog.product.service.getFieldsByFilter` method returns descriptions of the service fields in the specified catalog, including catalog properties.
 
 ## Method Parameters
 
@@ -23,10 +23,10 @@ The method returns service fields based on the filter.
 || **Name**
 `type` | **Description** ||
 || **filter***
-[`object`](../../../data-types.md) | Filter to retrieve all service fields ||
+[`object`](../../../data-types.md) | Filter to retrieve all service fields [(detailed description)](#filter) ||
 |#
 
-### Filter Parameter
+### Filter Parameter {#filter}
 
 {% include [Note on required parameters](../../../../_includes/required.md) %}
 
@@ -34,10 +34,9 @@ The method returns service fields based on the filter.
 || **Name**
 `type` | **Description** ||
 || **iblockId***
-[`catalog_catalog.id`](../../data-types.md#catalog_catalog) | Identifier of the information block.
+[`catalog_catalog.id`](../../data-types.md#catalog_catalog) | Identifier of the product trade catalog. You can retrieve the identifier using the [catalog.catalog.list](../../catalog/catalog-catalog-list.md) method.
 
-To obtain existing identifiers of information blocks, use [catalog.catalog.list](../../catalog/catalog-catalog-list.md)
-||
+For a variations catalog, the method returns the `productType is not allowed for this catalog` error ||
 |#
 
 ## Code Examples
@@ -52,7 +51,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"iblockId":14}}' \
+    -d '{"filter":{"iblockId":25}}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.service.getFieldsByFilter
     ```
 
@@ -62,7 +61,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"filter":{"iblockId":14},"auth":"**put_access_token_here**"}' \
+    -d '{"filter":{"iblockId":25},"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.service.getFieldsByFilter
     ```
 
@@ -98,7 +97,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
         method: 'catalog.product.service.getFieldsByFilter',
         params: {
           filter: {
-            iblockId: 14,
+            iblockId: 25,
           },
         },
         requestId: Text.getUuidRfc4122()
@@ -132,7 +131,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
             method: 'catalog.product.service.getFieldsByFilter',
             params: {
               filter: {
-                iblockId: 14,
+                iblockId: 25,
               },
             },
             requestId: B24Js.Text.getUuidRfc4122()
@@ -164,7 +163,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     try:
         bitrix_response = client.catalog.product.service.get_fields_by_filter(
             filter={
-                "iblockId": 14,
+                "iblockId": 25,
             },
         ).response
         result = bitrix_response.result
@@ -192,11 +191,11 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
                 'catalog.product.service.getFieldsByFilter',
                 [
                     'filter' => [
-                        'iblockId' => 14,
+                        'iblockId' => 25,
                     ],
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
@@ -214,7 +213,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
         'catalog.product.service.getFieldsByFilter',
         {
             filter: {
-                iblockId: 14,
+                iblockId: 25,
             }
         },
         function(result) {
@@ -235,7 +234,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
         'catalog.product.service.getFieldsByFilter',
         [
             'filter' => [
-                'iblockId' => 14,
+                'iblockId' => 25,
             ]
         ]
     );
@@ -251,7 +250,7 @@ To obtain existing identifiers of information blocks, use [catalog.catalog.list]
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.service.getFieldsByFilter", b24.Params{
     	"filter": b24.Params{
-    		"iblockId": 14,
+    		"iblockId": 25,
     	},
     })
     if err != nil {
@@ -281,35 +280,35 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Activity",
+                "name": "Active",
                 "type": "char"
             },
             "available": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Availability for Purchase",
+                "name": "Available for purchase",
                 "type": "char"
             },
             "bundle": {
                 "isImmutable": false,
                 "isReadOnly": true,
                 "isRequired": false,
-                "name": "Set Availability",
+                "name": "In bundle",
                 "type": "char"
             },
             "code": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Symbolic Code",
+                "name": "Symbolic code",
                 "type": "string"
             },
             "createdBy": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Created By",
+                "name": "Created by",
                 "type": "integer"
             },
             "dateActiveFrom": {
@@ -330,56 +329,70 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Creation Date",
+                "name": "Created on",
                 "type": "datetime"
             },
             "detailPicture": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Detail Picture",
+                "name": "Full image",
                 "type": "file"
             },
             "detailText": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Detailed Description",
+                "name": "Detailed description",
                 "type": "string"
             },
             "detailTextType": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Type of Detailed Description",
+                "name": "Detailed description type",
                 "type": "string"
             },
             "iblockId": {
                 "isImmutable": true,
                 "isReadOnly": false,
                 "isRequired": true,
-                "name": "Information Block Identifier",
+                "name": "Information block ID",
                 "type": "integer"
+            },
+            "iblockSection": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "name": "Sections",
+                "type": "list"
             },
             "iblockSectionId": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Main Section",
+                "name": "Main section",
                 "type": "integer"
             },
             "id": {
                 "isImmutable": false,
                 "isReadOnly": true,
                 "isRequired": false,
-                "name": "Identifier",
+                "name": "ID",
+                "type": "integer"
+            },
+            "measure": {
+                "isImmutable": false,
+                "isReadOnly": false,
+                "isRequired": false,
+                "name": "Unit of measurement",
                 "type": "integer"
             },
             "modifiedBy": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Modified By",
+                "name": "Modified by",
                 "type": "integer"
             },
             "name": {
@@ -393,103 +406,105 @@ HTTP Status: **200**
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Preview Picture",
+                "name": "Preview image",
                 "type": "file"
             },
             "previewText": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Preview Description",
+                "name": "Preview text",
                 "type": "string"
             },
             "previewTextType": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Type of Preview Description",
+                "name": "Preview text type",
                 "type": "string"
             },
             "priceType": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Payment Type",
+                "name": "Payment type",
                 "type": "char"
             },
-            "property258": {
+            "property301": {
                 "isDynamic": true,
                 "isImmutable": false,
                 "isMultiple": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "New Line",
+                "name": "Article number",
                 "propertyType": "S",
                 "type": "productproperty",
                 "userType": ""
             },
-            "property259": {
+            "property305": {
                 "isDynamic": true,
                 "isImmutable": false,
                 "isMultiple": true,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "New Line 2",
+                "name": "Material",
                 "propertyType": "S",
                 "type": "productproperty",
-                "userType": ""
+                "userType": null
             },
             "sort": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Sort Index",
+                "name": "Sort index",
                 "type": "integer"
             },
             "timestampX": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "Modification Date",
+                "name": "Modified on",
                 "type": "datetime"
             },
             "type": {
                 "isImmutable": false,
                 "isReadOnly": true,
                 "isRequired": false,
-                "name": "Product Type",
+                "name": "Product type",
                 "type": "integer"
             },
             "vatId": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "VAT Identifier",
+                "name": "Tax ID",
                 "type": "integer"
             },
             "vatIncluded": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "VAT Included in Price",
+                "name": "Tax included",
                 "type": "char"
             },
             "xmlId": {
                 "isImmutable": false,
                 "isReadOnly": false,
                 "isRequired": false,
-                "name": "External Code",
+                "name": "External ID",
                 "type": "string"
             }
         }
     },
     "time": {
-        "start": 1718363352.550883,
-        "finish": 1718363353.116101,
-        "duration": 0.5652179718017578,
-        "processing": 0.1428060531616211,
-        "date_start": "2024-06-14T14:09:12+02:00",
-        "date_finish": "2024-06-14T14:09:13+02:00"
+        "start": 1793963980,
+        "finish": 1793963980.92457,
+        "duration": 0.9245700836181641,
+        "processing": 0,
+        "date_start": "2026-11-06T14:19:40+01:00",
+        "date_finish": "2026-11-06T14:19:40+01:00",
+        "operating_reset_at": 1793964540,
+        "operating": 0
     }
 }
 ```
@@ -501,10 +516,17 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **service**
-[`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_product_service](../../data-types.md#catalog_product_service), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description) ||
+|| **result.service**
+[`object`](../../../data-types.md) | Object in the format `{"field_1": "value_1", ... "field_N": "value_N"}`, where `field` is the identifier of the object [catalog_product_service](../../data-types.md#catalog_product_service), and `value` is an object of type [rest_field_description](../../data-types.md#rest_field_description).
+
+Catalog properties are returned with the `property{id}` key, for example `property301`. Their description contains additional fields:
+
+- `isDynamic` — `true`, the field is a catalog property
+- `isMultiple` — `true` if the property is multiple
+- `propertyType` — the base property type: `S` — string, `N` — number, `L` — list, `F` — file, `E` — link to elements, `G` — link to sections
+- `userType` — the custom property type, for example `directory` or `Date`. If the type is not set — `null` or an empty string ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -513,7 +535,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200040300010,
+    "error":"200040300010",
     "error_description":"Access Denied"
 }
 ```
@@ -523,15 +545,13 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300010` | Insufficient rights to read the trade catalog
-|| 
-|| `100` | Parameter `filter` is not specified or is empty
-|| 
-|| `0` | Information block identifier is not specified
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" access permissions ||
+|| `400` | `100` | Could not find value for parameter {filter} | The `filter` parameter is not provided ||
+|| `400` | `0` | Incorrect filter format | `filter` is not an object ||
+|| `400` | `0` | parameter - iblockId is empty | `iblockId` is not provided in `filter` ||
+|| `400` | `0` | iblock is not catalog | The `iblockId` information block is not a trade catalog ||
+|| `400` | `0` | productType is not allowed for this catalog | `iblockId` contains a variations information block. Services are stored in the products information block ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}

@@ -409,7 +409,7 @@ HTTP status: **200**
         "item": {
             "id": 7551,
             "name": "Equipment installation and setup",
-            "xmlId": "DOCS-V3-SERVICE-1",
+            "xmlId": "installation-001",
             "active": "Y",
             "detailPicture": "39453",
             "iblockSectionId": 45,
@@ -580,7 +580,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_ENTITYNOTFOUNDEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `id` | Entity with ID `#ID#` was not found | There is no service with this identifier. The error is also returned for the identifier of a product of another type. Check the identifier using the [catalog.product.service.list](./catalog-product-service-list-rest-v3.md) method ||
+|| `id` | Entity with ID `999999` was not found | There is no service with this identifier. The error is also returned for the identifier of a product of another type. Check the identifier using the [catalog.product.service.list](./catalog-product-service-list-rest-v3.md) method ||
 |#
 
 #### Errors in the `select` Parameter
@@ -589,7 +589,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `ProductDto` | Pass only the fields from the `select` parameter description in `select` ||
+|| `select` | Unknown field `foo` found in entity `ProductDto` | Pass only the fields from the `select` parameter description in `select` ||
 |#
 
 #### Access Error

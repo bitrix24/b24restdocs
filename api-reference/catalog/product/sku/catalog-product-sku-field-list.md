@@ -723,7 +723,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_UNKNOWNDTOPROPERTYEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Unknown field `#FIELD#` found in entity `DtoFieldDto` | Pass only the properties from the `select` parameter description ||
+|| `select` | Unknown field `foo` found in entity `DtoFieldDto` | Pass only the properties from the `select` parameter description ||
 |#
 
 #### `select` Format Error
@@ -732,7 +732,7 @@ Error Code: `BITRIX_REST_V3_EXCEPTION_INVALIDSELECTEXCEPTION`
 
 #|
 || **Field** | **Error description** | **How to Fix** ||
-|| `select` | Invalid field in `select`: `#SELECT#` | Pass `select` as an array of strings, for example `["name","type"]` ||
+|| `select` | Invalid field in `select`: `["name"]` | Pass `select` as an array of strings, for example `["name","type"]` ||
 |#
 
 #### Access Error

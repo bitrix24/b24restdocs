@@ -11,9 +11,9 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`catalog`](../../../scopes/permissions.md)
 >
-> Who can execute the method: administrator
+> Who can execute the method: a user with one of the "View product catalog", "View catalog products", or "Edit selling price" access permissions and the permission to read elements of the catalog information block
 
-The method returns the field values of the service by its identifier.
+The `catalog.product.service.get` method returns the field values of a service by its identifier.
 
 ## Method Parameters
 
@@ -23,10 +23,7 @@ The method returns the field values of the service by its identifier.
 || **Name**
 `type` | **Description** ||
 || **id***
-[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the service.
-
-To obtain service identifiers, use [catalog.product.service.list](./catalog-product-service-list.md) 
-||
+[`catalog_product_service.id`](../../data-types.md#catalog_product_service) | Identifier of the service. You can retrieve the identifier using the [catalog.product.service.list](./catalog-product-service-list.md) method ||
 |#
 
 {% note warning "Working with Service Prices" %}
@@ -47,7 +44,7 @@ To get service prices, use the methods [catalog.price.*](../../price/index.md).
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1265}' \
+    -d '{"id":7623}' \
     https://**put_your_bitrix24_address**/rest/**put_your_user_id_here**/**put_your_webhook_here**/catalog.product.service.get
     ```
 
@@ -57,7 +54,7 @@ To get service prices, use the methods [catalog.price.*](../../price/index.md).
     curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -d '{"id":1265,"auth":"**put_access_token_here**"}' \
+    -d '{"id":7623,"auth":"**put_access_token_here**"}' \
     https://**put_your_bitrix24_address**/rest/catalog.product.service.get
     ```
 
@@ -106,7 +103,7 @@ To get service prices, use the methods [catalog.price.*](../../price/index.md).
       const response = await $b24.actions.v2.call.make<GetServiceResult>({
         method: 'catalog.product.service.get',
         params: {
-          id: 1265,
+          id: 7623,
         },
         requestId: Text.getUuidRfc4122()
       })
@@ -138,7 +135,7 @@ To get service prices, use the methods [catalog.price.*](../../price/index.md).
           const response = await $b24.actions.v2.call.make({
             method: 'catalog.product.service.get',
             params: {
-              id: 1265,
+              id: 7623,
             },
             requestId: B24Js.Text.getUuidRfc4122()
           })
@@ -168,7 +165,7 @@ To get service prices, use the methods [catalog.price.*](../../price/index.md).
 
     try:
         bitrix_response = client.catalog.product.service.get(
-            bitrix_id=1265,
+            bitrix_id=7623,
         ).response
         result = bitrix_response.result
         print(result)
@@ -194,18 +191,18 @@ To get service prices, use the methods [catalog.price.*](../../price/index.md).
             ->call(
                 'catalog.product.service.get',
                 [
-                    'id' => 1265
+                    'id' => 7623
                 ]
             );
-    
+
         $result = $response
             ->getResponseData()
             ->getResult();
-    
+
         echo 'Success: ' . print_r($result, true);
         // Your logic for processing data
         processData($result);
-    
+
     } catch (Throwable $e) {
         error_log($e->getMessage());
         echo 'Error getting product service: ' . $e->getMessage();
@@ -217,7 +214,7 @@ To get service prices, use the methods [catalog.price.*](../../price/index.md).
     ```js
     BX24.callMethod(
         'catalog.product.service.get', {
-            id: 1265
+            id: 7623
         },
         function(result) {
             if (result.error()) {
@@ -237,7 +234,7 @@ To get service prices, use the methods [catalog.price.*](../../price/index.md).
     $result = CRest::call(
         'catalog.product.service.get',
         [
-            'id' => 1265
+            'id' => 7623
         ]
     );
 
@@ -251,7 +248,7 @@ To get service prices, use the methods [catalog.price.*](../../price/index.md).
     ```go
     // client and ctx are already created — see the Go SDK section
     res, err := client.Core().Call(ctx, "catalog.product.service.get", b24.Params{
-    	"id": 1265,
+    	"id": 7623,
     }, b24.WithIdempotent())
     if err != nil {
     	return fmt.Errorf("catalog.product.service.get: %w", err)
@@ -290,59 +287,54 @@ HTTP Status: **200**
             "active": "Y",
             "available": "N",
             "bundle": "N",
-            "code": "service",
-            "createdBy": 1,
-            "dateActiveFrom": "2024-05-28T10:00:00+02:00",
-            "dateActiveTo": "2024-05-29T10:00:00+02:00",
-            "dateCreate": "2024-05-27T10:00:00+02:00",
-            "detailPicture": {
-                "id": "6497",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6497\u0026fields%5BproductId%5D=1265",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=detailPicture\u0026fields%5BfileId%5D=6497\u0026fields%5BproductId%5D=1265"
-            },
-            "detailText": null,
-            "detailTextType": "text",
-            "iblockId": 23,
-            "iblockSectionId": 47,
-            "id": 1265,
-            "modifiedBy": 1,
-            "name": "Service",
+            "code": "ac_installation",
+            "createdBy": 1269,
+            "dateActiveFrom": null,
+            "dateActiveTo": null,
+            "dateCreate": "2026-11-05T18:19:49+01:00",
+            "detailPicture": null,
+            "detailText": "<p>Installation of the indoor and outdoor units</p>",
+            "detailTextType": "html",
+            "iblockId": 25,
+            "iblockSection": null,
+            "iblockSectionId": null,
+            "id": 7623,
+            "measure": 9,
+            "modifiedBy": 1269,
+            "name": "Air conditioner installation",
             "previewPicture": {
-                "id": "6496",
-                "url": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6496\u0026fields%5BproductId%5D=1265",
-                "urlMachine": "\/rest\/catalog.product.download?fields%5BfieldName%5D=previewPicture\u0026fields%5BfileId%5D=6496\u0026fields%5BproductId%5D=1265"
+                "id": "40055",
+                "url": "/rest/catalog.product.download?fields%5BfieldName%5D=previewPicture&fields%5BfileId%5D=40055&fields%5BproductId%5D=7623",
+                "urlMachine": "/rest/catalog.product.download?fields%5BfieldName%5D=previewPicture&fields%5BfileId%5D=40055&fields%5BproductId%5D=7623"
             },
-            "previewText": null,
+            "previewText": "Turnkey installation of a split system up to 3.5 kW",
             "previewTextType": "text",
-            "property258": {
-                "value": "test",
-                "valueId": "9809"
+            "property301": {
+                "value": "SRV-AC-01",
+                "valueId": "4147"
             },
-            "property259": [
-                {
-                    "value": "test1",
-                    "valueId": "9810"
-                },
-                {
-                    "value": "test2",
-                    "valueId": "9811"
-                }
-            ],
-            "sort": 100,
-            "timestampX": "2024-06-14T11:59:04+02:00",
+            "property303": {
+                "value": "Klima Service GmbH",
+                "valueId": "4061"
+            },
+            "property305": null,
+            "sort": 200,
+            "timestampX": "2026-11-05T19:09:53+01:00",
             "type": 7,
-            "vatId": 1,
+            "vatId": 9,
             "vatIncluded": "Y",
-            "xmlId": "1265"
+            "xmlId": "srv-ac-01"
         }
     },
     "time": {
-        "start": 1718363239.355821,
-        "finish": 1718363240.027938,
-        "duration": 0.6721169948577881,
-        "processing": 0.2661628723144531,
-        "date_start": "2024-06-14T14:07:19+02:00",
-        "date_finish": "2024-06-14T14:07:20+02:00"
+        "start": 1793964025,
+        "finish": 1793964025.810799,
+        "duration": 0.8107988834381104,
+        "processing": 0,
+        "date_start": "2026-11-06T14:20:25+01:00",
+        "date_finish": "2026-11-06T14:20:25+01:00",
+        "operating_reset_at": 1793964600,
+        "operating": 0
     }
 }
 ```
@@ -354,10 +346,14 @@ HTTP Status: **200**
 `type` | **Description** ||
 || **result**
 [`object`](../../../data-types.md) | Root element of the response ||
-|| **service**
-[`catalog_product_service`](../../data-types.md#catalog_product_service) | Object containing service information ||
+|| **result.service**
+[`catalog_product_service`](../../data-types.md#catalog_product_service) | Object with the service fields. Empty fields are returned as `null`.
+
+The response contains all information block properties as `propertyN` keys: a filled property is an object `{"value": ..., "valueId": ...}`, a multiple property is an array of such objects. The example shows only the `property301`, `property303`, and `property305` properties.
+
+If `id` belongs to a product of another type, for example a simple product, `service` contains an empty array `[]` ||
 || **time**
-[`time`](../../../data-types.md) | Information about the request execution time ||
+[`time`](../../../data-types.md#time) | Information about the request execution time ||
 |#
 
 ## Error Handling
@@ -366,7 +362,7 @@ HTTP Status: **400**
 
 ```json
 {
-    "error":200040300010,
+    "error":"200040300010",
     "error_description":"Access Denied"
 }
 ```
@@ -376,19 +372,11 @@ HTTP Status: **400**
 ### Possible Error Codes
 
 #|
-|| **Code** | **Description** ||
-|| `200040300000` | The information block with the specified identifier does not exist
-|| 
-|| `200040300040` | Insufficient rights to read the information block element
-|| 
-|| `200040300010` | Insufficient rights to read the trade catalog
-|| 
-|| `100` | The `id` parameter is not specified
-|| 
-|| `0` | The service does not exist
-|| 
-|| `0` | Other errors (e.g., fatal errors)
-|| 
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `200040300010` | Access Denied | The user has none of the "View product catalog", "View catalog products", or "Edit selling price" access permissions ||
+|| `400` | `200040300040` | Access Denied | The user does not have the permission to read the catalog information block element ||
+|| `400` | Empty value | service does not exist. | There is no service with the specified `id`. The method returns the same error if `id` contains a string that is not a number ||
+|| `400` | `100` | Could not find value for parameter {id} | The `id` parameter is not provided ||
 |#
 
 {% include [system errors](../../../../_includes/system-errors.md) %}
