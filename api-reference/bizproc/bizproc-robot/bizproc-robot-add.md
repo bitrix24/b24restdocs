@@ -172,7 +172,9 @@ Default is `N` ||
 - `Y` — yes
 - `N` — no ||
 || **Default** 
-[`any`](../../data-types.md) | Default value of the parameter. For `Type = 'select'`, specify the key from `Options` ||
+[`any`](../../data-types.md) | Default value of the parameter. For `Type = 'select'`, specify the key from `Options`.
+
+For a parameter in `RETURN_PROPERTIES`, this value is kept if [bizproc.event.send](./bizproc-event-send.md#empty-value) does not pass the key of this parameter or passes `null` ||
 |#
 
 #### Examples of Objects
