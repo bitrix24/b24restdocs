@@ -94,8 +94,10 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - JS (TS)
 
+    CRM methods are not yet included in the list of REST 3.0 methods known to `$b24.actions.v3.call.make`: such a call returns the SDK error `JSSDK_CORE_METHOD_NOT_SUPPORT_IN_API_V3`. Call the method through the REST 3.0 HTTP client — `$b24.getHttpClient(ApiVersion.v3).call`.
+
     ```ts
-    import { Text } from '@bitrix24/b24jssdk'
+    import { ApiVersion, Text } from '@bitrix24/b24jssdk'
     import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
@@ -109,9 +111,9 @@ The new API call differs by adding the `/api/` segment to the request URL:
     }
 
     try {
-      const response = await $b24.actions.v3.call.make<Result>({
-        method: 'crm.form.embedding.field.get',
-        params: {
+      const response = await $b24.getHttpClient(ApiVersion.v3).call<Result>(
+        'crm.form.embedding.field.get',
+        {
           name: 'click',
           select: [
             'name',
@@ -123,8 +125,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
             'elementType',
           ],
         },
-        requestId: Text.getUuidRfc4122()
-      })
+        Text.getUuidRfc4122()
+      )
 
       if (!response.isSuccess) {
         console.error(response.getErrorMessages().join('; '))
@@ -140,6 +142,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - JS (UMD)
 
+    CRM methods are not yet included in the list of REST 3.0 methods known to `$b24.actions.v3.call.make`. Call the method through the REST 3.0 HTTP client — `$b24.getHttpClient(B24Js.ApiVersion.v3).call`.
+
     ```html
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
     <script>
@@ -147,9 +151,9 @@ The new API call differs by adding the `/api/` segment to the request URL:
         try {
           const $b24 = await B24Js.initializeB24Frame()
 
-          const response = await $b24.actions.v3.call.make({
-            method: 'crm.form.embedding.field.get',
-            params: {
+          const response = await $b24.getHttpClient(B24Js.ApiVersion.v3).call(
+            'crm.form.embedding.field.get',
+            {
               name: 'click',
               select: [
                 'name',
@@ -161,8 +165,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
                 'elementType',
               ],
             },
-            requestId: B24Js.Text.getUuidRfc4122()
-          })
+            B24Js.Text.getUuidRfc4122()
+          )
 
           if (!response.isSuccess) {
             console.error(response.getErrorMessages().join('; '))
@@ -183,8 +187,15 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - Python
 
+    `b24pysdk` has no ready-made wrappers for CRM methods, and the SDK sends to REST 3.0 only the methods from the `Config().api_v3_methods` list. Add the method to this list and call it via `bitrix_token.call_method` with `prefer_version=3`.
+
     ```python
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+    from b24pysdk import Config
+    from b24pysdk.errors import BitrixSDKException
+    from b24pysdk.errors.v3 import BitrixAPIError
+
+    method = "crm.form.embedding.field.get"
+    Config().configure(api_v3_methods=Config().api_v3_methods | {method})
 
     select = [
         "name",
@@ -197,17 +208,21 @@ The new API call differs by adding the `/api/` segment to the request URL:
     ]
 
     try:
-        bitrix_response = client.crm.form.embedding.field.get(
-            name="click",
-            select=select,
-        ).response
-        result = bitrix_response.result
+        response = bitrix_token.call_method(
+            api_method=method,
+            params={
+                "name": "click",
+                "select": select,
+            },
+            prefer_version=3,
+        )
+        result = response["result"]
         print(result)
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
+            f"code: {error.code}",
+            f"message: {error.error.message}",
             sep="\n",
         )
     except BitrixSDKException as error:

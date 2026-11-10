@@ -61,10 +61,12 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - JS (TS)
 
+    CRM methods are not yet included in the list of REST 3.0 methods known to `$b24.actions.v3.call.make`: such a call returns the SDK error `JSSDK_CORE_METHOD_NOT_SUPPORT_IN_API_V3`. Call the method through the REST 3.0 HTTP client — `$b24.getHttpClient(ApiVersion.v3).call`.
+
     ```ts
     // This snippet is an ES module: top-level await requires type="module" or a bundler.
     // $b24 is an already-initialized SDK instance (see the SDK "Get started" guide).
-    import { Text } from '@bitrix24/b24jssdk'
+    import { ApiVersion, Text } from '@bitrix24/b24jssdk'
     import type { B24Frame } from '@bitrix24/b24jssdk'
 
     declare const $b24: B24Frame
@@ -105,11 +107,11 @@ The new API call differs by adding the `/api/` segment to the request URL:
     }
 
     try {
-      const response = await $b24.actions.v3.call.make<FormConfigurationResult>({
-        method: 'crm.form.configuration.get',
-        params: {},
-        requestId: Text.getUuidRfc4122()
-      })
+      const response = await $b24.getHttpClient(ApiVersion.v3).call<FormConfigurationResult>(
+        'crm.form.configuration.get',
+        {},
+        Text.getUuidRfc4122()
+      )
 
       // The payload is available only on a successful response
       if (!response.isSuccess) {
@@ -126,6 +128,8 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - JS (UMD)
 
+    CRM methods are not yet included in the list of REST 3.0 methods known to `$b24.actions.v3.call.make`. Call the method through the REST 3.0 HTTP client — `$b24.getHttpClient(B24Js.ApiVersion.v3).call`.
+
     ```html
     <!-- Load the SDK (UMD build); it is exposed as the global B24Js -->
     <script src="https://unpkg.com/@bitrix24/b24jssdk@1/dist/umd/index.min.js"></script>
@@ -135,11 +139,11 @@ The new API call differs by adding the `/api/` segment to the request URL:
           // Initialize the SDK inside a Bitrix24 frame
           const $b24 = await B24Js.initializeB24Frame()
 
-          const response = await $b24.actions.v3.call.make({
-            method: 'crm.form.configuration.get',
-            params: {},
-            requestId: B24Js.Text.getUuidRfc4122()
-          })
+          const response = await $b24.getHttpClient(B24Js.ApiVersion.v3).call(
+            'crm.form.configuration.get',
+            {},
+            B24Js.Text.getUuidRfc4122()
+          )
 
           // The payload is available only on a successful response
           if (!response.isSuccess) {
@@ -161,18 +165,29 @@ The new API call differs by adding the `/api/` segment to the request URL:
 
 - Python
 
+    `b24pysdk` has no ready-made wrappers for CRM methods, and the SDK sends to REST 3.0 only the methods from the `Config().api_v3_methods` list. Add the method to this list and call it via `bitrix_token.call_method` with `prefer_version=3`.
+
     ```python
-    from b24pysdk.errors import BitrixAPIError, BitrixSDKException
+    from b24pysdk import Config
+    from b24pysdk.errors import BitrixSDKException
+    from b24pysdk.errors.v3 import BitrixAPIError
+
+    method = "crm.form.configuration.get"
+    Config().configure(api_v3_methods=Config().api_v3_methods | {method})
 
     try:
-        bitrix_response = client.crm.form.configuration.get().response
-        result = bitrix_response.result
+        response = bitrix_token.call_method(
+            api_method=method,
+            params={},
+            prefer_version=3,
+        )
+        result = response["result"]
         print(result)
     except BitrixAPIError as error:
         print(
             "Bitrix API error",
-            f"error: {error.error}",
-            f"error_description: {error.error_description}",
+            f"code: {error.code}",
+            f"message: {error.error.message}",
             sep="\n",
         )
     except BitrixSDKException as error:
