@@ -21,7 +21,9 @@ The development of this method has been halted. Please use [Smart scripts](../..
 
 This method updates the timeline entry with the identifier `id`. It only updates the `title` and `description` fields.
 
-The method allows changes only to comments that were added by the same user.
+The method allows changes only to comments that were added by the same user. A Bitrix24 administrator can edit any comment.
+
+To change the set of comment files, the user needs permission to edit the element: they are listed in the "Users allowed to edit stage items" setting of the current stage, or they are the element author allowed to start the workflow. Without this permission, `files` can contain only the IDs of files already attached, as an array of numbers. Adding a new file in such a request is not allowed: the method returns the error "You do not have permission to edit this comment".
 
 ## Method Parameters
 

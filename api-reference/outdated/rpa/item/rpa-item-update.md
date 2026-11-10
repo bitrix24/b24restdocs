@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: a user allowed to edit stage items or change the item stage, or the element author allowed to start the workflow
 
 {% note warning "DEPRECATED" %}
 
@@ -20,6 +20,26 @@ The development of this method has been halted. Please use [Smart scripts](../..
 {% endnote %}
 
 This method updates the element with the identifier `id` in the process with the identifier `typeId`.
+
+The method checks permissions in the following order.
+
+1. The user must be able to view the element. All Bitrix24 employees can view elements; they are not available to extranet users. Without view access, the method returns an error and does not return the element data. The error code depends on the request:
+    - `RPA_ITEM_MOVE_ACCESS_DENIED` — the request contains `stageId`
+    - `RPA_ITEM_MODIFY_ACCESS_DENIED` — the request contains custom fields
+    - `RPA_ITEM_VIEW_ACCESS_DENIED` — in all other cases
+
+2. If the request contains `stageId`, the method checks the permission to change the stage. The user has it if any of the following is true:
+    - the user is listed in the "Users allowed to change item stage" setting of the current stage
+    - the user is the element author and is listed in "Users allowed to start the workflow"
+    - the user is the element author, and the element is at the first stage
+
+3. If the request changes custom field values, the method checks the permission to edit the element. The user has it if any of the following is true:
+    - the user is listed in the "Users allowed to edit stage items" setting of the current stage
+    - the user is the element author and is listed in "Users allowed to start the workflow". In this case, the user can edit their own element at any stage
+
+A Bitrix24 administrator passes all checks. The permission to start the workflow does not allow editing or moving other users' elements.
+
+If the request does not change field values, for example, it passes the current values, the edit permission is not checked.
 
 ## Method Parameters
 
@@ -135,6 +155,30 @@ This method updates the element with the identifier `id` in the process with the
         ```
 
     {% endlist %}
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "RPA_ITEM_MODIFY_ACCESS_DENIED",
+    "error_description": "You do not have permission to edit items in stage Approval"
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `RPA_ITEM_VIEW_ACCESS_DENIED` | You don't have permission to view this item | The user cannot view the element, and the request contains neither `stageId` nor custom fields ||
+|| `400` | `RPA_ITEM_MOVE_ACCESS_DENIED` | You do not have permission to change item stage from stage #STAGE# | No permission to change the element stage. If the user cannot view the element, the error description is "You don't have permission to view this item" ||
+|| `400` | `RPA_ITEM_MODIFY_ACCESS_DENIED` | You do not have permission to edit items in stage #STAGE# | No permission to edit the element. If the user cannot view the element, the error description is "You don't have permission to view this item" ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Learning 
 

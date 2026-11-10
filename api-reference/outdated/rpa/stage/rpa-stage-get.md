@@ -75,6 +75,7 @@ HTTP status: **200**
         }
     ],
     "robotsCount": 0,
+    "settingsUrl": "/rpa/stage/1/?typeId=1",
     "possibleNextStages": [1,2,3,4,5],
     "permissions": {
         "droppable": true,
@@ -106,6 +107,7 @@ HTTP status: **200**
 - `robotName` — name of the activity
 - `users` — array of participants for the task to be displayed in the kanban at the stage ||
 || **robotsCount** | computed field. Number of robots at the stage ||
+|| **settingsUrl** | Link to the stage settings. Returned if the user is allowed to edit the workflow ||
 || **possibleNextStages** | array of identifiers of stages to which the item can be moved. Not used ||
 || **permissions** | set of permissions for the kanban:
 - `droppable` — items can be moved to this stage

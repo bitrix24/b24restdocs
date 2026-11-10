@@ -60,6 +60,12 @@ HTTP Status: **200**
                 1
             ]
         },
+        "permissions": {
+            "draggable": true,
+            "droppable": true,
+            "canDelete": true,
+            "canModify": true
+        },
         "users": {
             "1": {
                 "id": "1",
@@ -96,6 +102,11 @@ HTTP Status: **200**
 - `completed` — who completed the task
 - `running` — who is currently working on the task
 - `all` — all participants ||
+|| **permissions** | Permissions of the current user for the element:
+- `draggable` — can change the element stage
+- `droppable` — internal flag for the kanban
+- `canDelete` — can delete the element
+- `canModify` — can edit the element field values ||
 || **users** | Aggregated information about all users related to the element. A list where the key is the user identifier:
 - `id` — identifier
 - `name` — first name
@@ -114,6 +125,28 @@ File-type field values are returned as a list:
 - `url` — link to the file on the account
 - `urlMachine` — link to the file for the application ||
 |#
+
+## Error Handling
+
+HTTP Status: **400**
+
+```json
+{
+    "error": "RPA_ITEM_VIEW_ACCESS_DENIED",
+    "error_description": "You don't have permission to view this item."
+}
+```
+
+{% include notitle [error handling](../../../../_includes/error-info.md) %}
+
+### Possible Error Codes
+
+#|
+|| **Status** | **Code** | **Description** | **Value** ||
+|| `400` | `RPA_ITEM_VIEW_ACCESS_DENIED` | You don't have permission to view this item | The user cannot view the element. All Bitrix24 employees can view elements; they are not available to extranet users ||
+|#
+
+{% include [system errors](../../../../_includes/system-errors.md) %}
 
 ## Continue Exploring 
 

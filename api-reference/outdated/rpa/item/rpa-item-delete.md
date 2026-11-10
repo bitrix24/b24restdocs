@@ -11,7 +11,7 @@ Choose a tool for developing with an AI agent:
 
 > Scope: [`rpa`](../../../scopes/permissions.md)
 >
-> Who can execute the method: any user
+> Who can execute the method: the element author, a Bitrix24 administrator, or a user allowed to edit stage items
 
 {% note warning "DEPRECATED" %}
 
@@ -20,6 +20,13 @@ The development of this method has been halted. Please use [Smart scripts](../..
 {% endnote %}
 
 This method deletes an element.
+
+The element can be deleted by:
+- the element author
+- a Bitrix24 administrator
+- a user listed in the "Users allowed to edit stage items" setting of the current stage, if they have no incomplete tasks for this element
+
+The permission to start the workflow does not allow deleting other users' elements.
 
 ## Method Parameters
 

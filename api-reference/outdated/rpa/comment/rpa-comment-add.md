@@ -21,6 +21,8 @@ The development of this method has been halted. Please use [Smart scripts](../..
 
 This method creates a new comment in the timeline of the item with the identifier `itemId` for the process with the identifier `typeId`.
 
+View access to the element is enough to add a text comment. To attach files in `files`, the user needs permission to edit the element: they are listed in the "Users allowed to edit stage items" setting of the current stage, or they are the element author allowed to start the workflow. Without the required permission, the method returns the error "You do not have permission to add comments to this item".
+
 #|
 || **Name**
 `type` | **Description** ||

@@ -23,6 +23,8 @@ This method executes a task.
 
 The set of parameters depends on the task.
 
+If the task creates a timeline entry for the element, the method returns the element `item` and the timeline entry `timeline` in the response. The method returns this data only if the user can view the element after completing the task.
+
 ## Continue Your Exploration
 
 - [{#T}](./index.md)
